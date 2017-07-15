@@ -13,6 +13,8 @@ with open('HISTORY.rst') as history_file:
 
 requirements = [
     'Click>=6.0',
+    'numpy',
+    'scipy'
     # TODO: put package requirements here
 ]
 
@@ -33,7 +35,7 @@ setup(
     long_description=readme + '\n\n' + history,
     author="<TBD>",
     author_email='<TBD>@<TBD>.com',
-    url='https://github.com/<TBD>/gnpy',
+    url='https://github.com/Telecominfraproject/gnpy',
     packages=find_packages(include=['gnpy']),
     entry_points={
         'console_scripts': [
