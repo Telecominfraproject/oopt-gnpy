@@ -24,7 +24,8 @@ class NetworkElement:
                     setattr(self, key, kwargs[key])
                 else:
                     setattr(self, key, None)
-                    print('No Value defined for :', key)
+                    # print('No Value defined for :', key)
+                    # TODO: add logging functionality
         except KeyError as e:
             if 'name' in kwargs:
                 s = kwargs['name']
@@ -44,4 +45,4 @@ class NetworkElement:
         return None
 
     def __repr__(self):
-        return None
+        return self.__class__.__name__
