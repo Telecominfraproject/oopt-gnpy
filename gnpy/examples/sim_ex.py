@@ -4,22 +4,8 @@ import networkx as nx
 plt.rcdefaults()
 
 
-# [print(d) for d in dir(gnpy) if '__' not in d]
-
 config_fn = './gnpy/examples/config/config_ex1.json'
 config, g = Utils.load_network(config_fn)
-
-
-def find_by_node_id(g, nid):
-    return next((n for n in g.nodes() if n.id == nid), None)
-
-
-for gpath in config['topology']:
-    n0 = find_by_node_id(g, gpath[0])
-    for en, nid in enumerate(gpath[1:]):
-        n1 = find_by_node_id(g, nid)
-        g.add_edge(n0, n1)
-        n0 = n1
 
 
 graph_pos = nx.fruchterman_reingold_layout(g)
