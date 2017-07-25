@@ -104,41 +104,43 @@
         {
             "type": "tx",
             "name": "tx1",
-            "id": "abc123",
+            "id": "tx1",
             "description": "transmitter 1",
-            "channels": [{
-                    "manufacturer": "acme corp",
-                    "manufacturer_pn": "acme model1",
-                    "frequency": [193.95],
-                    "modulation": "QPSK",
-                    "baud_rate": 32.0,
-                    "capacity": 100,
-                    "psd": "acme_model1_mode_1",
-                    "dispersion_precomp": 0,
-                    "fecOH": 25.0,
-                    "filter": "rrc",
-                    "filter_params": [0.4],
-                    "polarization_mux": "interleaved",
-                    "osnr": 40.0,
-                    "power": -5.0
-                },
-                {
-                    "manufacturer": "acme corp",
-                    "manufacturer_pn": "acme model1",
-                    "frequency": [194.15],
-                    "modulation": "QPSK",
-                    "baud_rate": 32.0,
-                    "capacity": 100,
-                    "psd": "acme_model1_mode_1",
-                    "dispersion_precomp": 0,
-                    "fecOH": 25.0,
-                    "filter": "rrc",
-                    "filter_params": [0.4],
-                    "polarization_mux": "interleaved",
-                    "osnr": 40.0,
-                    "power": -5.0
-                }
-            ]
+            "parameters": {
+                "channels": [{
+                        "manufacturer": "acme corp",
+                        "manufacturer_pn": "acme model1",
+                        "frequency": [193.95],
+                        "modulation": "QPSK",
+                        "baud_rate": 32.0,
+                        "capacity": 100,
+                        "psd": "acme_model1_mode_1",
+                        "dispersion_precomp": 0,
+                        "fecOH": 25.0,
+                        "filter": "rrc",
+                        "filter_params": [0.4],
+                        "polarization_mux": "interleaved",
+                        "osnr": 40.0,
+                        "power": -5.0
+                    },
+                    {
+                        "manufacturer": "acme corp",
+                        "manufacturer_pn": "acme model1",
+                        "frequency": [194.15],
+                        "modulation": "QPSK",
+                        "baud_rate": 32.0,
+                        "capacity": 100,
+                        "psd": "acme_model1_mode_1",
+                        "dispersion_precomp": 0,
+                        "fecOH": 25.0,
+                        "filter": "rrc",
+                        "filter_params": [0.4],
+                        "polarization_mux": "interleaved",
+                        "osnr": 40.0,
+                        "power": -5.0
+                    }
+                ]
+            }
         }
     ],
     "topology": [

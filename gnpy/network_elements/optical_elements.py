@@ -6,8 +6,47 @@ Created on Wed Dec 21 15:09:47 2016
 """
 
 import numpy as np
-from scipy.constants import h, c
-from network_elements.network_element import NetworkElement
+from gnpy.constants import c, h
+
+
+class NetworkElement:
+
+    def __init__(self, **kwargs):
+        """
+        self.direction = [("E", "Z"), ("E", "Z"), ("E", "Z"), ("W", "Z")]
+        self.port_mapping = [(1, 5), (2, 5), (3, 5), (4, 5)]
+        self.uid = uuid4()
+        self.coordinates = (29.9792, 31.1342)
+        """
+        try:
+            for key in ('port_mapping', 'direction', 'coordinates', 'name',
+                        'description', 'manufacturer', 'model', 'sn', 'id'):
+                if key in kwargs:
+                    setattr(self, key, kwargs[key])
+                else:
+                    setattr(self, key, None)
+                    # print('No Value defined for :', key)
+                    # TODO: add logging functionality
+        except KeyError as e:
+            if 'name' in kwargs:
+                s = kwargs['name']
+                print('Missing Required Network Element Key!', 'name:=', s)
+#           TODO Put log here instead of print
+            print(e)
+            raise
+
+    def get_output_ports(self):
+        """Translate the port mapping into list of output ports
+        """
+        return None
+
+    def get_input_ports(self):
+        """Translate the port mapping into list of output ports
+        """
+        return None
+
+    def __repr__(self):
+        return self.__class__.__name__
 
 
 class Edfa(NetworkElement):
@@ -46,7 +85,7 @@ class Edfa(NetworkElement):
             raise
 
 
-class Span(NetworkElement):
+class Fiber(NetworkElement):
     class_counter = 0
 
     def __init__(self, **kwargs):
@@ -93,17 +132,7 @@ class Span(NetworkElement):
         aleff = 1/(2 * alpha)
         return aleff
 
-    def dbkm_2_lin(self, loss_coef):
-        """ calculates the linear loss coefficient
-        """
-        alpha_pcoef = loss_coef
-        alpha_acoef = alpha_pcoef/(2*4.3429448190325184)
-        s = 'alpha_pcoef is linear loss coefficient in [dB/km^-1] units'
-        s = ''.join([s, "alpha_acoef is linear loss field amplitude \
-                     coefficient in [km^-1] units"])
-        d = {'alpha_pcoef': alpha_pcoef, 'alpha_acoef': alpha_acoef,
-             'description:': s}
-        return d
+
 
     def beta2(self, dispersion, ref_wavelength=None):
         """ Returns beta2 from dispersion parameter.  Dispersion is entered in
@@ -123,9 +152,7 @@ class Span(NetworkElement):
     def generic_span(self):
         """ calculates a generic version that shows how all the functions of
         the class are used.  It makes the following assumptions about the span:
-
         """
-
         return
 
     def __repr__(self):
