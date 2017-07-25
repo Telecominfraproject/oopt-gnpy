@@ -467,3 +467,16 @@ def compute_edfa_profile(gain_zero, gain_tilting, noise_fig, central_freq, freq)
     gain = 10 * np.log10(gain)
 
     return gain, g_ase
+
+def compute_attenuation_profile(a_zero, a_tilting, freq):
+    """compute_attenuation_profile returns
+
+    :param a_zero: the attenuation [dB] @ the baseband central frequency. Scalar
+    :param a_tilting: the attenuation tilt in dB/THz. Scalar
+    :param freq: the baseband frequencies at which the ASE noise is computed in THz. Array
+    :return: attenuation: the attenuation profile in dB
+    """
+
+    attenuation = a_zero + a_tilting * freq
+
+    return attenuation
