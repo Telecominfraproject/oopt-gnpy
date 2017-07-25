@@ -417,3 +417,53 @@ def gn_model(spectrum_param, fiber_param, accuracy_param, n_cores):
         g_nli_interp = interpolate_in_range(f_nli_comp, g_nli_comp, f_nli_interp, kind_interp)
 
     return g_nli_comp, f_nli_comp, g_nli_interp, f_nli_interp
+
+
+def compute_gain_profile(gain_zero, gain_tilting, freq):
+    """ compute_gain_profile evaluates the gain at the frequencies freq.
+
+        :param gain_zero: the gain at f=0 in dB. Scalar
+        :param gain_tilting: the gain tilt in dB/THz. Scalar
+        :param freq: the baseband frequencies at which the gain profile is computed in THz. Array
+        :return: gain: the gain profile in dB
+        """
+    gain = gain_zero + gain_tilting * freq
+    return gain
+
+
+def compute_ase_noise(noise_fig, gain, central_freq, freq):
+    """ compute_ase_noise evaluates the ASE spectral density at the frequencies freq.
+
+        :param noise_fig: the amplifier noise figure in dB. Scalar
+        :param gain: the gain profile in dB at the frequencies contained in freq array. Array
+        :param central_freq: the central frequency of the WDM comb. Scalar
+        :param freq: the baseband frequencies at which the ASE noise is computed in THz. Array
+        :return: g_ase: the ase noise profile
+        """
+    # the Planck constant in W/THz^2
+    planck = 6.62607004 * 1e-34 * 1e24
+
+    # Conversion from dB to linear
+    gain_lin = np.power(10, gain / 10)
+    noise_fig_lin = np.power(10, noise_fig / 10)
+
+    g_ase = (gain_lin - 1) * noise_fig_lin * planck * (central_freq + freq)
+    return g_ase
+
+
+def compute_edfa_profile(gain_zero, gain_tilting, noise_fig, central_freq, freq):
+    """ compute_edfa_profile evaluates the gain profile and the ASE spectral density at the frequencies freq.
+
+        :param gain_zero: the gain at f=0 in dB. Scalar
+        :param gain_tilting: the gain tilt in dB/THz. Scalar
+        :param noise_fig: the amplifier noise figure in dB. Scalar
+        :param central_freq: the central frequency of the WDM comb. Scalar
+        :param freq: the baseband frequencies at which the ASE noise is computed in THz. Array
+        :return: gain: the gain profile in dB
+        :return: g_ase: the ase noise profile in W/THz
+        """
+    gain = compute_gain_profile(gain_zero, gain_tilting, freq)
+    g_ase = compute_ase_noise(noise_fig, gain, central_freq, freq)
+    gain = 10 * np.log10(gain)
+
+    return gain, g_ase
