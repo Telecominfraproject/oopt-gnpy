@@ -1,7 +1,27 @@
 # import network_elements as ne
 import networkx as nx
 import matplotlib.pyplot as plt
+from gnpy.utils import Utils
 plt.rcdefaults()
+
+config_fn = '/Users/giladg/python_projects/gnpy_fork/gnpy/examples/config/config_ex1.json'
+config = Utils.read_config(config_fn)
+
+
+import os
+cwd = os.getcwd()
+print(cwd)
+
+
+
+
+exit()
+
+
+
+
+
+
 
 
 import network_elements.optical_elements as oe

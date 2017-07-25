@@ -1,0 +1,148 @@
+{
+    "elements": [{
+            "id": "span0",
+            "type": "fiber",
+            "name": "",
+            "description": "Booster_Connection",
+            "parameters": {
+                "length": 0.0,
+                "dispersion": null,
+                "dispersion_slope": 16.7,
+                "pmd": 0.0,
+                "loss": 0.0,
+                "fiber_type": "SMF-28e",
+                "nonlinear_coef": 0.0
+            }
+        },
+        {
+            "id": "span1",
+            "type": "fiber",
+            "name": "",
+            "description": "Booster_Connection",
+            "parameters": {
+                "length": 0.0,
+                "dispersion": null,
+                "dispersion_slope": 16.7,
+                "pmd": 0.0,
+                "loss": 0.0,
+                "fiber_type": "SMF-28e",
+                "nonlinear_coef": 0.0
+            }
+        },
+        {
+            "id": "span2",
+            "type": "fiber",
+            "name": "",
+            "description": "Booster_Connection",
+            "parameters": {
+                "length": 0.0,
+                "dispersion": null,
+                "dispersion_slope": 16.7,
+                "pmd": 0.0,
+                "loss": 0.0,
+                "fiber_type": "SMF-28e",
+                "nonlinear_coef": 0.0
+            }
+        },
+        {
+            "id": "amp0",
+            "name": "Booster",
+            "description": "This is the booster amp",
+            "type": "edfa_boost",
+            "parameters": {
+                "manufacturer": "acme corp",
+                "manufacturer_pn": "acme model1",
+                "manufacturer_gain_profile": "?",
+                "frequencies": [193.95],
+                "gain": [15.0],
+                "nf": [8],
+                "input_voa": 0.0,
+                "output_voa": 14.0,
+                "pin": [-10],
+                "ptarget": [0],
+                "pmax": 23.0
+            }
+        },
+        {
+            "id": "amp1",
+            "name": "line",
+            "description": "This is the line amp",
+            "type": "edfa_line",
+            "parameters": {
+                "manufacturer": "acme corp",
+                "manufacturer_pn": "acme model2",
+                "manufacturer_gain_profile": null,
+                "frequencies": [193.95],
+                "gain": [24.0],
+                "nf": [5.5],
+                "input_voa": 0.0,
+                "output_voa": 4.0,
+                "pin": [-20],
+                "ptarget": [0],
+                "pmax": 23.0
+            }
+        },
+        {
+            "id": "amp2",
+            "name": "PreAmp",
+            "description": "This is the preamp",
+            "type": "edfa_preamp",
+            "parameters": {
+                "manufacturer": "acme corp",
+                "manufacturer_pn": "acme model2",
+                "manufacturer_gain_profile": null,
+                "frequencies": [193.95],
+                "gain": [24.0],
+                "nf": [5.5],
+                "input_voa": 0.0,
+                "output_voa": 4.0,
+                "pin": [-20],
+                "ptarget": [0],
+                "pmax": 23.0
+            }
+        },
+        {
+            "type": "tx",
+            "name": "tx1",
+            "id": "abc123",
+            "description": "transmitter 1",
+            "channels": [{
+                    "manufacturer": "acme corp",
+                    "manufacturer_pn": "acme model1",
+                    "frequency": [193.95],
+                    "modulation": "QPSK",
+                    "baud_rate": 32.0,
+                    "capacity": 100,
+                    "psd": "acme_model1_mode_1",
+                    "dispersion_precomp": 0,
+                    "fecOH": 25.0,
+                    "filter": "rrc",
+                    "filter_params": [0.4],
+                    "polarization_mux": "interleaved",
+                    "osnr": 40.0,
+                    "power": -5.0
+                },
+                {
+                    "manufacturer": "acme corp",
+                    "manufacturer_pn": "acme model1",
+                    "frequency": [194.15],
+                    "modulation": "QPSK",
+                    "baud_rate": 32.0,
+                    "capacity": 100,
+                    "psd": "acme_model1_mode_1",
+                    "dispersion_precomp": 0,
+                    "fecOH": 25.0,
+                    "filter": "rrc",
+                    "filter_params": [0.4],
+                    "polarization_mux": "interleaved",
+                    "osnr": 40.0,
+                    "power": -5.0
+                }
+            ]
+        }
+    ],
+    "topology": [
+        ["tx1", "amp0", "span0", "amp1", "span1", "amp2"],
+        ["tx1", "span2"]
+    ]
+}

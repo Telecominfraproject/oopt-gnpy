@@ -17,7 +17,8 @@ from logging import getLogger
 logger = getLogger(__name__)
 
 # remember me?
-nwise = lambda g, n=2: zip(*(islice(g, i, None) for i, g in enumerate(tee(g, n))))
+nwise = lambda g, n=2: zip(*(islice(g, i, None)
+                             for i, g in enumerate(tee(g, n))))
 
 # here's an example that includes a little
 #   bit of complexity to help suss out details
@@ -59,6 +60,7 @@ nwise = lambda g, n=2: zip(*(islice(g, i, None) for i, g in enumerate(tee(g, n))
 #         would be in separate modules so that you can
 #        `from tpe.physical import Node, Edge`
 
+
 class Physical:
     # for Node: neither fixed nor position are computed fields
     #   - fixed cannot be changed (immutable)
@@ -67,17 +69,21 @@ class Physical:
         def __init__(self, fixed, position):
             self._fixed = fixed
             self.position = position
+
         @property
         def fixed(self):
             return self._fixed
+
         @property
         def position(self):
             return self._position
+
         @position.setter
         def position(self, value):
             if len(value) != 2:
                 raise ValueError('position must be (x, y) value')
             self._position = value
+
         def __repr__(self):
             return f'Node({self.fixed}, {self.position})'
 
@@ -117,8 +123,8 @@ class Physical:
         #         modelling pushes data storage onto individual Python objects
         #         such as the edge data dicts whereas the mathematical
         #         modelling keeps the data in a single place (probably in
-        #         the graph data dict); moving data between the two is also clumsy
-        data = {k:v['physical'].position for k, v in graph.node.items()}
+        # the graph data dict); moving data between the two is also clumsy
+        data = {k: v['physical'].position for k, v in graph.node.items()}
         positions = array(list(data.values()))
         distances = cdist(positions, positions)
 
@@ -126,9 +132,9 @@ class Physical:
         ##  graph['physical'].distances = distances
 
         # or back onto the edge data itself:
-        ##  for (i, u), (j, v) in product(enumerate(data), enumerate(data)):
-        ##      if (u, v) not in graph.edge:
-        ##          continue
+        # for (i, u), (j, v) in product(enumerate(data), enumerate(data)):
+        # if (u, v) not in graph.edge:
+        # continue
         ##      edge, redge = graph.edge[u][v], graph.edge[v][u]
         ##      dist = distances[i, j]
         ##      edge['physical'].computed_distance = dist
@@ -137,6 +143,8 @@ class Physical:
 #   - they consume PHYSICAL data
 #   - they modify PHYSICAl data
 #   - they do not add their own data
+
+
 class Latency:
     @staticmethod
     def latency(graph, u, v):
@@ -145,7 +153,7 @@ class Latency:
                  graph.get_edge_data(a, b)['physical'].distance(graph))
                 for path in paths
                 for a, b in nwise(path)]
-        return min(distance/speed for speed, distance in data)
+        return min(distance / speed for speed, distance in data)
 
     @staticmethod
     def total_latency(graph):
@@ -164,13 +172,14 @@ class Latency:
         for u in nodes:
             for v in nodes[u]:
                 upos, vpos = graph.node[u]['physical'].position, \
-                             graph.node[v]['physical'].position
+                    graph.node[v]['physical'].position
                 new_upos = Latency.nudge(upos, vpos)
                 before = Latency.total_latency(graph)
                 graph.node[u]['physical'].position = new_upos
                 after = Latency.total_latency(graph)
                 graph.node[u]['physical'].position = upos
-                logger.info(f'Gradient {u} ⇋ {v}; u to {new_upos}; grad {after-before}')
+                logger.info(
+                    f'Gradient {u} ⇋ {v}; u to {new_upos}; grad {after-before}')
                 yield u, v, new_upos, after - before
 
     # their public API may include only the following
@@ -178,19 +187,20 @@ class Latency:
     @staticmethod
     def minimize(graph, *, n=5, threshold=1e-5 * 1e-9, d=None):
         mobile = {k: list(graph.edge[k]) for k, v in graph.node.items()
-                                         if not v['physical'].fixed}
+                  if not v['physical'].fixed}
         # XXX: VERY sloppy optimization repeatedly compute gradients
         #        nudging nodes in the direction of the best latency improvement
         for it in count():
             gradients = u, v, pos, grad = min(Latency.gradient(graph, mobile),
                                               key=lambda rv: rv[-1])
             logger.info(f'Best gradient {u} ⇋ {v}; u to {pos}; grad {grad}')
-            logger.info(f'Moving {u} in dir of {v} for {grad/1e-12:.2f} ps gain')
+            logger.info(
+                f'Moving {u} in dir of {v} for {grad/1e-12:.2f} ps gain')
             graph.node[u]['physical'].position = pos
             if d:
                 d.send((f'step #{it}', graph))
-            if it > n or abs(grad) < threshold: # stop after N iterations
-                break                           #   or if improvement < threshold
+            if it > n or abs(grad) < threshold:  # stop after N iterations
+                break  # or if improvement < threshold
 
 # our Network object is just a networkx.DiGraph
 #   with some additional storage for graph-level
@@ -198,10 +208,13 @@ class Latency:
 # NOTE: this may actually need to be a networkx.MultiDiGraph?
 #         in the event that graphs may have multiple links
 #         with distance edge data connecting them
+
+
 def Network(*args, data=None, **kwargs):
     n = DiGraph()
     n.data = {} if data is None else data
     return n
+
 
 def draw_changes():
     ''' simple helper to draw changes to the network '''
@@ -211,8 +224,8 @@ def draw_changes():
         if not data:
             break
         for i, ax in enumerate(fig.axes):
-            ax.change_geometry(n+1, 1, i+1)
-        ax = fig.add_subplot(n+1, 1, n+1)
+            ax.change_geometry(n + 1, 1, i + 1)
+        ax = fig.add_subplot(n + 1, 1, n + 1)
         title, network, *edge_labels = data
         node_data = {u: (u, network.node[u]['physical'].position)
                      for u in network.nodes()}
@@ -221,16 +234,18 @@ def draw_changes():
                      for u, v in network.edges()}
         labels = {u: f'{n}' for u, (n, p) in node_data.items()}
         distances = {(u, v): f'dist = {d:.2f} m\nspeed = {s/1e6:.2f}e6 m/s'
-                     for (u, v), (d,s) in edge_data.items()}
+                     for (u, v), (d, s) in edge_data.items()}
 
         pos = {u: p for u, (_, p) in node_data.items()}
         label_pos = pos
 
         draw_networkx_edges(network, alpha=.25, width=.5, pos=pos, ax=ax)
         draw_networkx_nodes(network, node_size=600, alpha=.5, pos=pos, ax=ax)
-        draw_networkx_labels(network, labels=labels, pos=pos, label_pos=.3, ax=ax)
+        draw_networkx_labels(network, labels=labels,
+                             pos=pos, label_pos=.3, ax=ax)
         if edge_labels:
-            draw_networkx_edge_labels(network, edge_labels=distances, pos=pos, font_size=8, ax=ax)
+            draw_networkx_edge_labels(
+                network, edge_labels=distances, pos=pos, font_size=8, ax=ax)
 
         ax.set_title(title)
         ax.set_axis_off()
@@ -239,6 +254,7 @@ def draw_changes():
         simplefilter('ignore')
         show()
     yield
+
 
 parser = ArgumentParser()
 parser.add_argument('-v', action='count')
@@ -267,18 +283,19 @@ if __name__ == '__main__':
 
     # create network
     n = Network()
-    for name, fixed, (x, y) in [('a', True,  ( 0,  0)),
-                                ('b', False, ( 5,  5)),
+    for name, fixed, (x, y) in [('a', True,  (0,  0)),
+                                ('b', False, (5,  5)),
                                 ('c', True,  (10, 10)),
-                                ('d', True,  (20, 20)),]:
-        n.add_node(name, physical=Physical.Node(fixed=fixed, position=(x,y)))
+                                ('d', True,  (20, 20)), ]:
+        n.add_node(name, physical=Physical.Node(fixed=fixed, position=(x, y)))
     for u, v, speed in [('a', 'b', 299790000),
                         ('b', 'c', 225000000),
-                        ('c', 'd', 225000000),]:
+                        ('c', 'd', 225000000), ]:
         n.add_edge(u, v, physical=Physical.Edge(speed=speed, endpoints=(u, v)))
         n.add_edge(v, u, physical=Physical.Edge(speed=speed, endpoints=(v, u)))
 
-    d = draw_changes(); next(d)
+    d = draw_changes()
+    next(d)
     d.send(('initial', n, True))
 
     # core computation
@@ -287,11 +304,11 @@ if __name__ == '__main__':
     Latency.minimize(n, d=d)
     total_latency = Latency.total_latency(n)
 
-    print( 'Before:')
+    print('Before:')
     print(f'  Current latency from a ⇋ d: {latency/1e-9:.2f} ns')
     print(f'  Total latency on n:         {total_latency/1e-9:.2f} ns')
 
-    print( 'After:')
+    print('After:')
     print(f'  Total latency on n:         {total_latency/1e-9:.2f} ns')
 
     next(d)
