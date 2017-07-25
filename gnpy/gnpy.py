@@ -468,15 +468,65 @@ def compute_edfa_profile(gain_zero, gain_tilting, noise_fig, central_freq, freq)
 
     return gain, g_ase
 
+
 def compute_attenuation_profile(a_zero, a_tilting, freq):
-    """compute_attenuation_profile returns
+    """compute_attenuation_profile returns the attenuation profile at the frequencies freq
 
     :param a_zero: the attenuation [dB] @ the baseband central frequency. Scalar
     :param a_tilting: the attenuation tilt in dB/THz. Scalar
-    :param freq: the baseband frequencies at which the ASE noise is computed in THz. Array
+    :param freq: the baseband frequencies at which attenuation is computed [THz]. Array
     :return: attenuation: the attenuation profile in dB
     """
 
     attenuation = a_zero + a_tilting * freq
 
     return attenuation
+
+
+def passive_component(spectrum, a_zero, a_tilting, freq):
+    """passive_component updates the input spectrum with the attenuation described by a_zero and a_tilting
+
+    :param spectrum: the WDM spectrum to be attenuated. List of dictionaries
+    :param a_zero: attenuation at the central frequency [dB]. Scalar
+    :param a_tilting: attenuation tilting [dB/THz]. Scalar
+    :param freq: the central frequency of each WDM channel [THz]. Array
+    :return: None
+    """
+    attenuation_db = compute_attenuation_profile(a_zero, a_tilting, freq)
+    attenuation_lin = 10**(-abs(attenuation_db) / 10)
+
+    for index, s in enumerate(spectrum['signals']):
+        spectrum['signals'][index]['p_ch'] *= attenuation_lin[index]
+        spectrum['signals'][index]['p_nli'] *= attenuation_lin[index]
+        spectrum['signals'][index]['p_ase'] *= attenuation_lin[index]
+
+    return None
+
+
+def optical_amplifier(spectrum, gain_zero, gain_tilting, noise_fig, central_freq, freq, b_eq):
+    """optical_amplifier updates the input spectrum with the gain described by gain_zero and gain_tilting plus ASE noise
+
+        :param spectrum: the WDM spectrum to be attenuated. List of dictionaries
+        :param gain_zero: gain at the central frequency [dB]. Scalar
+        :param gain_tilting: gain tilting [dB/THz]. Scalar
+        :param noise_fig: the noise figure of the amplifier [dB]. Scalar
+        :param central_freq: the central frequency of the optical band [THz]. Scalar
+        :param freq: the central frequency of each WDM channel [THz]. Array
+        :param b_eq: the equivalent bandwidth of each WDM channel [THZ]. Array
+        :return: None
+        """
+
+    gain_db, g_ase = compute_edfa_profile(gain_zero, gain_tilting, noise_fig, central_freq, freq)
+
+    p_ase = g_ase * b_eq
+
+    gain_lin = 10**(gain_db / 10)
+
+    for index, s in enumerate(spectrum['signals']):
+        spectrum['signals'][index]['p_ch'] *= gain_lin[index]
+        spectrum['signals'][index]['p_nli'] *= gain_lin[index]
+        spectrum['signals'][index]['p_ase'] *= gain_lin[index]
+        spectrum['signals'][index]['p_ase'] += p_ase[index]
+
+    return None
+
