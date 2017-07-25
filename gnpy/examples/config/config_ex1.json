@@ -48,7 +48,7 @@
             "id": "amp0",
             "name": "Booster",
             "description": "This is the booster amp",
-            "type": "edfa_boost",
+            "type": "edfa",
             "parameters": {
                 "manufacturer": "acme corp",
                 "manufacturer_pn": "acme model1",
@@ -67,7 +67,7 @@
             "id": "amp1",
             "name": "line",
             "description": "This is the line amp",
-            "type": "edfa_line",
+            "type": "edfa",
             "parameters": {
                 "manufacturer": "acme corp",
                 "manufacturer_pn": "acme model2",
@@ -86,7 +86,7 @@
             "id": "amp2",
             "name": "PreAmp",
             "description": "This is the preamp",
-            "type": "edfa_preamp",
+            "type": "edfa",
             "parameters": {
                 "manufacturer": "acme corp",
                 "manufacturer_pn": "acme model2",
@@ -141,10 +141,19 @@
                     }
                 ]
             }
+        },
+        {
+            "type": "rx",
+            "name": "rx1",
+            "id": "rx1",
+            "description": "receiver 1",
+            "parameters":{
+                "sensitivity": -7
+            }
         }
     ],
     "topology": [
-        ["tx1", "amp0", "span0", "amp1", "span1", "amp2"],
-        ["tx1", "span2"]
+        ["tx1", "amp0", "span0", "amp1", "span1", "amp2", "rx1"],
+        ["tx1", "span2", "rx1"]
     ]
 }

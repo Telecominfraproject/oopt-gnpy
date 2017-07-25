@@ -5,6 +5,7 @@ from .gnpy import (raised_cosine_comb, analytic_formula, compute_psi, fwm_eff,
                    interpolate_in_range, GN_integral)
 
 from .constants import (pi, c, h)
-from .network_elements import (Tx, Fiber, Edfa_boost, Edfa_line, Edfa_preamp)
+from .network_elements import (Network,
+                               Tx, Rx, Fiber,Edfa)
 
 __all__ = ['gnpy', 'constants', 'network_elements']
