@@ -444,8 +444,8 @@ def compute_ase_noise(noise_fig, gain, central_freq, freq):
     planck = 6.62607004 * 1e-34 * 1e24
 
     # Conversion from dB to linear
-    gain_lin = np.power(10, gain / 10)
-    noise_fig_lin = np.power(10, noise_fig / 10)
+    gain_lin = np.power(10, gain / 10.0)
+    noise_fig_lin = np.power(10, noise_fig / 10.0)
 
     g_ase = (gain_lin - 1) * noise_fig_lin * planck * (central_freq + freq)
     return g_ase
@@ -480,6 +480,9 @@ def compute_attenuation_profile(a_zero, a_tilting, freq):
 
     attenuation = a_zero + a_tilting * freq
 
+    # abs in order to avoid ambiguity due to the sign convention
+    attenuation = abs(attenuation)
+
     return attenuation
 
 
@@ -493,7 +496,7 @@ def passive_component(spectrum, a_zero, a_tilting, freq):
     :return: None
     """
     attenuation_db = compute_attenuation_profile(a_zero, a_tilting, freq)
-    attenuation_lin = 10**(-abs(attenuation_db) / 10)
+    attenuation_lin = 10**(-abs(attenuation_db) / 10.0)
 
     for index, s in enumerate(spectrum['signals']):
         spectrum['signals'][index]['p_ch'] *= attenuation_lin[index]
@@ -520,7 +523,7 @@ def optical_amplifier(spectrum, gain_zero, gain_tilting, noise_fig, central_freq
 
     p_ase = g_ase * b_eq
 
-    gain_lin = 10**(gain_db / 10)
+    gain_lin = 10**(gain_db / 10.0)
 
     for index, s in enumerate(spectrum['signals']):
         spectrum['signals'][index]['p_ch'] *= gain_lin[index]
