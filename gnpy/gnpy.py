@@ -101,7 +101,7 @@ def get_freqarray(f, Bopt, fmax, max_step, f_dense_low, f_dense_up, df_dense):
     return f1_array
 
 
-def GN_integral(b2, Lspan, a_db, gam, f_ch, rs, roll_off, power, Nch, model_param):
+def GN_integral(b2, Lspan, a_db, gam, f_ch, b_ch, roll_off, power, Nch, model_param):
     """ GN_integral computes the GN reference formula via smart brute force integration. The Gaussian Noise model is
     applied in its incoherent form (phased-array factor =1). The function computes the integral by columns: for each f1,
     a non-uniformly spaced f2 array is generated, and the integrand function is computed there. At the end of the loop
@@ -112,7 +112,7 @@ def GN_integral(b2, Lspan, a_db, gam, f_ch, rs, roll_off, power, Nch, model_para
     :param a_db: Fiber loss coeffiecient in dB/km. Scalar
     :param gam: Fiber nonlinear coefficient in 1/W/km. Scalar
     :param f_ch: Baseband channels center frequencies in THz. Array of size 1xNch
-    :param rs: Channels' Symbol Rates in TBaud. Array of size 1xNch
+    :param b_ch: Channels' -3 dB bandwidth. Array of size 1xNch
     :param roll_off: Channels' Roll-off factors [0,1). Array of size 1xNch
     :param power: Channels' power values in W. Array of size 1xNch
     :param Nch: Number of channels. Scalar
@@ -131,7 +131,7 @@ def GN_integral(b2, Lspan, a_db, gam, f_ch, rs, roll_off, power, Nch, model_para
     n_grid = model_param['n_grid']
     n_grid_min = model_param['n_grid_min']
     f_array = model_param['f_array']
-    fmax = (f_ch[-1] - (rs[-1] / 2.0)) - (f_ch[0] - (rs[0] / 2.0))  # Get frequency limit
+    fmax = (f_ch[-1] - (b_ch[-1] / 2.0)) - (f_ch[0] - (b_ch[0] / 2.0))  # Get frequency limit
     f2eval = np.max(np.diff(f_ch))
     Bopt = f2eval * Nch  # Overall optical bandwidth [THz]
     min_step = f2eval / n_grid  # Minimum integration step
@@ -156,7 +156,7 @@ def GN_integral(b2, Lspan, a_db, gam, f_ch, rs, roll_off, power, Nch, model_para
         df = f_dense_width / n_grid_dense
         # Get non-uniformly spaced f1 array
         f1_array = get_freqarray(f, Bopt, fmax, max_step, f_dense_low, f_dense_up, df)
-        G1 = raised_cosine_comb(f1_array, rs, roll_off, f_ch, power)  # Get corresponding spectrum
+        G1 = raised_cosine_comb(f1_array, b_ch, roll_off, f_ch, power)  # Get corresponding spectrum
         Gpart = np.zeros(f1_array.size)  # Pre-allocate partial result for inner integral
         f_ind = 0
         for f1 in f1_array:  # Loop over f1
@@ -183,9 +183,9 @@ def GN_integral(b2, Lspan, a_db, gam, f_ch, rs, roll_off, power, Nch, model_para
             f2_array = get_freqarray(f, Bopt, fmax, max_step, f2_dense_low, f2_dense_up, df2)
             f2_array = f2_array[f2_array >= f1]  # Do not consider points below the bisector of quadrants I and III
             if f2_array.size > 0:
-                G2 = raised_cosine_comb(f2_array, rs, roll_off, f_ch, power)  # Get spectrum there
+                G2 = raised_cosine_comb(f2_array, b_ch, roll_off, f_ch, power)  # Get spectrum there
                 f3_array = f1 + f2_array - f  # Compute f3
-                G3 = raised_cosine_comb(f3_array, rs, roll_off, f_ch, power)  # Get spectrum over f3
+                G3 = raised_cosine_comb(f3_array, b_ch, roll_off, f_ch, power)  # Get spectrum over f3
                 G = G2 * G3 * G1[f_ind]
                 if np.count_nonzero(G):
                     FWM_eff = fwm_eff(alpha_lin, Lspan, b2, (f1 - f) * (f2_array - f))  # Compute FWM efficiency
@@ -197,7 +197,7 @@ def GN_integral(b2, Lspan, a_db, gam, f_ch, rs, roll_off, power, Nch, model_para
     return GNLI  # Return GNLI array in W/THz and the array of the corresponding frequencies
 
 
-def compute_psi(b2, l_eff_a, f_ch, channel_index, interfering_index, rs):
+def compute_psi(b2, l_eff_a, f_ch, channel_index, interfering_index, b_ch):
     """ compute_psi computes the psi coefficient of the analytical formula.
 
     :param b2: Fiber dispersion coefficient in ps/THz/km. Scalar
@@ -205,27 +205,27 @@ def compute_psi(b2, l_eff_a, f_ch, channel_index, interfering_index, rs):
     :param f_ch: Baseband channels center frequencies in THz. Array of size 1xNch
     :param channel_index: Index of the channel. Scalar
     :param interfering_index: Index of the interfering signal. Scalar
-    :param rs: Channels' Symbol Rates in TBaud. Array of size 1xNch
+    :param b_ch: Channels' -3 dB bandwidth [THz]. Array of size 1xNch
     :return: psi: the coefficient
     """
     b2 = np.abs(b2)
 
     if channel_index == interfering_index:  # The signal interfere with itself
-        rs_sig = rs[channel_index]
-        psi = np.arcsinh(0.5 * np.pi ** 2.0 * l_eff_a * b2 * rs_sig ** 2.0)
+        b_ch_sig = b_ch[channel_index]
+        psi = np.arcsinh(0.5 * np.pi ** 2.0 * l_eff_a * b2 * b_ch_sig ** 2.0)
     else:
         f_sig = f_ch[channel_index]
-        rs_sig = rs[channel_index]
+        b_ch_sig = b_ch[channel_index]
         f_int = f_ch[interfering_index]
-        rs_int = rs[interfering_index]
+        b_ch_int = b_ch[interfering_index]
         del_f = f_sig - f_int
-        psi = np.arcsinh(np.pi ** 2.0 * l_eff_a * b2 * rs_sig * (del_f + 0.5 * rs_int))
-        psi -= np.arcsinh(np.pi ** 2.0 * l_eff_a * b2 * rs_sig * (del_f - 0.5 * rs_int))
+        psi = np.arcsinh(np.pi ** 2.0 * l_eff_a * b2 * b_ch_sig * (del_f + 0.5 * b_ch_int))
+        psi -= np.arcsinh(np.pi ** 2.0 * l_eff_a * b2 * b_ch_sig * (del_f - 0.5 * b_ch_int))
 
     return psi
 
 
-def analytic_formula(ind, b2, l_eff, l_eff_a, gam, f_ch, g_ch, rs, n_ch):
+def analytic_formula(ind, b2, l_eff, l_eff_a, gam, f_ch, g_ch, b_ch, n_ch):
     """ analytic_formula computes the analytical formula.
 
     :param ind: index of the channel at which g_nli is computed. Scalar
@@ -235,7 +235,7 @@ def analytic_formula(ind, b2, l_eff, l_eff_a, gam, f_ch, g_ch, rs, n_ch):
     :param gam: Fiber nonlinear coefficient in 1/W/km. Scalar
     :param f_ch: Baseband channels center frequencies in THz. Array of size 1xNch
     :param g_ch: Power spectral density W/THz. Array of size 1xNch
-    :param rs: Channels' Symbol Rates in TBaud. Array of size 1xNch
+    :param b_ch: Channels' -3 dB bandwidth [THz]. Array of size 1xNch
     :param n_ch: Number of channels. Scalar
     :return: g_nli: power spectral density in W/THz of the nonlinear interference
     """
@@ -244,7 +244,7 @@ def analytic_formula(ind, b2, l_eff, l_eff_a, gam, f_ch, g_ch, rs, n_ch):
 
     g_nli = 0.0
     for n in np.arange(0, n_ch):
-        psi = compute_psi(b2, l_eff_a, f_ch, ind, n, rs)
+        psi = compute_psi(b2, l_eff_a, f_ch, ind, n, b_ch)
         g_nli += g_ch[n] * ch_psd ** 2.0 * psi
 
     g_nli *= (16.0 / 27.0) * (gam * l_eff) ** 2.0 / (2.0 * np.pi * b2 * l_eff_a)
@@ -252,26 +252,26 @@ def analytic_formula(ind, b2, l_eff, l_eff_a, gam, f_ch, g_ch, rs, n_ch):
     return g_nli
 
 
-def gn_analytic(b2, l_span, a_db, gam, f_ch, rs, power, n_ch):
+def gn_analytic(b2, l_span, a_db, gam, f_ch, b_ch, power, n_ch):
     """ gn_analytic computes the GN reference formula via analytical solution.
 
     :param b2: Fiber dispersion coefficient in ps/THz/km. Scalar
     :param l_span: Fiber Span length in km. Scalar
-    :param a_db: Fiber loss coeffiecient in dB/km. Scalar
+    :param a_db: Fiber loss coefficient in dB/km. Scalar
     :param gam: Fiber nonlinear coefficient in 1/W/km. Scalar
     :param f_ch: Baseband channels center frequencies in THz. Array of size 1xNch
-    :param rs: Channels' Symbol Rates in TBaud. Array of size 1xNch
+    :param b_ch: Channels' -3 dB bandwidth [THz]. Array of size 1xNch
     :param power: Channels' power values in W. Array of size 1xNch
     :param n_ch: Number of channels. Scalar
     :return: g_nli: power spectral density in W/THz of the nonlinear interference at frequencies model_param['f_array']
     """
-    g_ch = power / rs
+    g_ch = power / b_ch
     alpha_lin = a_db / 20.0 / np.log10(np.e)  # Conversion in linear units 1/km
     l_eff = (1.0 - np.exp(-2.0 * alpha_lin * l_span)) / (2.0 * alpha_lin)  # Effective length
     l_eff_a = 1.0 / (2.0 * alpha_lin)  # Asymptotic effective length
     g_nli = np.zeros(f_ch.size)
     for ind in np.arange(0, f_ch.size):
-        g_nli[ind] = analytic_formula(ind, b2, l_eff, l_eff_a, gam, f_ch, g_ch, rs, n_ch)
+        g_nli[ind] = analytic_formula(ind, b2, l_eff, l_eff_a, gam, f_ch, g_ch, b_ch, n_ch)
 
     return g_nli
 
@@ -350,19 +350,19 @@ def gn_model(spectrum_param, fiber_param, accuracy_param, n_cores):
     :param spectrum_param: Dictionary with spectrum parameters
                            spectrum_param['num_ch']: Number of channels. Scalar
                            spectrum_param['f_ch']: Baseband channels center frequencies in THz. Array of size 1xnum_ch
-                           spectrum_param['rs']: Channels' Symbol Rates in TBaud. Array of size 1xnum_ch
+                           spectrum_param['b_ch']: Channels' -3 dB band [THz]. Array of size 1xnum_ch
                            spectrum_param['roll_off']: Channels' Roll-off factors [0,1). Array of size 1xnum_ch
                            spectrum_param['power']: Channels' power values in W. Array of size 1xnum_ch
     :param fiber_param: Dictionary with the parameters of the fiber
                         fiber_param['a_db']: Fiber loss coeffiecient in dB/km. Scalar
                         fiber_param['span_length']: Fiber Span length in km. Scalar
-                        fiber_param['beta2']: Fiber dispersion coefficient in ps/THz/km. Scalar
+                        fiber_param['beta_2']: Fiber dispersion coefficient in ps/THz/km. Scalar
                         fiber_param['gamma']: Fiber nonlinear coefficient in 1/W/km. Scalar
     :param accuracy_param: Dictionary with model parameters for accuracy tuning
                            accuracy_param['is_analytic']: A boolean indicating if you want to compute the NLI through
                            the analytic formula (is_analytic = True) of the smart brute force integration (is_analytic =
                            False). Boolean
-                           accuracy_param['n_not_interp']: The number of NLI which will be calculated. Others are
+                           accuracy_param['points_not_interp']: The number of NLI which will be calculated. Others are
                            interpolated
                            accuracy_param['kind_interp']: The kind of interpolation using the function
                            scipy.interpolate.interp1d
@@ -381,19 +381,19 @@ def gn_model(spectrum_param, fiber_param, accuracy_param, n_cores):
     # Take signal parameters
     num_ch = spectrum_param['num_ch']
     f_ch = spectrum_param['f_ch']
-    rs = spectrum_param['rs']
+    b_ch = spectrum_param['b_ch']
     roll_off = spectrum_param['roll_off']
     power = spectrum_param['power']
 
     # Take fiber parameters
     a_db = fiber_param['a_db']
     l_span = fiber_param['span_length']
-    beta2 = fiber_param['beta2']
+    beta2 = fiber_param['beta_2']
     gam = fiber_param['gamma']
 
     # Take accuracy parameters
     is_analytic = accuracy_param['is_analytic']
-    n_not_interp = accuracy_param['n_not_interp']
+    n_not_interp = accuracy_param['points_not_interp']
     kind_interp = accuracy_param['kind_interp']
     th_fwm = accuracy_param['th_fwm']
     n_points = accuracy_param['n_points']
@@ -401,7 +401,7 @@ def gn_model(spectrum_param, fiber_param, accuracy_param, n_cores):
 
     # Computing NLI
     if is_analytic:  # Analytic solution
-        g_nli_comp = gn_analytic(beta2, l_span, a_db, gam, f_ch, rs, power, num_ch)
+        g_nli_comp = gn_analytic(beta2, l_span, a_db, gam, f_ch, b_ch, power, num_ch)
         f_nli_comp = np.copy(f_ch)
         g_nli_interp = []
         f_nli_interp = []
@@ -411,7 +411,7 @@ def gn_model(spectrum_param, fiber_param, accuracy_param, n_cores):
         model_param = {'min_FWM_inv': th_fwm, 'n_grid': n_points, 'n_grid_min': n_points_min,
                        'f_array': np.array(f_nli_comp, copy=True)}
 
-        g_nli_comp = GN_integral(beta2, l_span, a_db, gam, f_ch, rs, roll_off, power, num_ch, model_param)
+        g_nli_comp = GN_integral(beta2, l_span, a_db, gam, f_ch, b_ch, roll_off, power, num_ch, model_param)
 
         # Interpolation
         g_nli_interp = interpolate_in_range(f_nli_comp, g_nli_comp, f_nli_interp, kind_interp)
@@ -441,7 +441,7 @@ def compute_ase_noise(noise_fig, gain, central_freq, freq):
         :return: g_ase: the ase noise profile
         """
     # the Planck constant in W/THz^2
-    planck = 6.62607004 * 1e-34 * 1e24
+    planck = (6.62607004 * 1e-34) * 1e24
 
     # Conversion from dB to linear
     gain_lin = np.power(10, gain / 10.0)
@@ -515,7 +515,7 @@ def optical_amplifier(spectrum, gain_zero, gain_tilting, noise_fig, central_freq
         :param noise_fig: the noise figure of the amplifier [dB]. Scalar
         :param central_freq: the central frequency of the optical band [THz]. Scalar
         :param freq: the central frequency of each WDM channel [THz]. Array
-        :param b_eq: the equivalent bandwidth of each WDM channel [THZ]. Array
+        :param b_eq: the equivalent -3 dB bandwidth of each WDM channel [THZ]. Array
         :return: None
         """
 
@@ -533,3 +533,48 @@ def optical_amplifier(spectrum, gain_zero, gain_tilting, noise_fig, central_freq
 
     return None
 
+
+def fiber(spectrum, fiber_param, fiber_length, f_ch, b_ch, roll_off, control_param):
+
+    n_cores = control_param['n_cores']
+
+
+    # Evaluation of NLI
+    if not control_param['is_linear']:
+        num_ch = len(spectrum['signals'])
+        spectrum_param = {
+            'num_ch': num_ch,
+            'f_ch': f_ch,
+            'b_ch': b_ch,
+            'roll_off': roll_off
+        }
+
+        p_ch = np.zeros(num_ch)
+        for index, signal in enumerate(spectrum['signals']):
+            p_ch[index] = signal['p_ch']
+
+        spectrum_param['power'] = p_ch
+
+        fiber_param['a_db'] = fiber_param['alpha']
+        fiber_param['span_length'] = fiber_length
+
+        nli_cmp, f_nli_cmp, nli_int, f_nli_int = gn_model(spectrum_param, fiber_param, control_param, n_cores)
+        f_nli = np.concatenate((f_nli_cmp, f_nli_int))
+        order = np.argsort(f_nli)
+        g_nli = np.concatenate((nli_cmp, nli_int))
+        g_nli = np.array(g_nli)[order]
+
+        p_nli = g_nli * b_ch
+
+    a_zero = fiber_param['alpha'] * fiber_length
+    a_tilting = fiber_param['alpha_1st'] * fiber_length
+
+    # Apply attenuation
+    passive_component(spectrum, a_zero, a_tilting, f_ch)
+
+    # Apply NLI
+    if not control_param['is_linear']:
+        for index, s in enumerate(spectrum['signals']):
+            spectrum['signals'][index]['p_ase'] += p_nli[index]
+
+    return None

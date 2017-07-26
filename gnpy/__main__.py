@@ -13,7 +13,7 @@ def main():
     threshold_fwm = 50
     n_points = 500
     n_points_min = 4
-    accuracy_param = {'is_analytic': flag_analytic, 'n_not_interp': num_computed_values, 'kind_interp': interp_method,
+    accuracy_param = {'is_analytic': flag_analytic, 'points_not_interp': num_computed_values, 'kind_interp': interp_method,
                       'th_fwm': threshold_fwm, 'n_points': n_points, 'n_points_min': n_points_min}
 
     # Parallelization Parameters
@@ -22,6 +22,7 @@ def main():
     # Spectrum parameters
     num_ch = 95
     rs = np.ones(num_ch) * 0.032
+    b_ch = rs            # For root raised cosine shapes, the -3 dB band is equal to the symbol rate
     roll_off = np.ones(num_ch) * 0.05
     power = np.ones(num_ch) * 0.001
     central_freq = 193.5
@@ -29,14 +30,14 @@ def main():
         fch = np.arange(-(num_ch // 2), (num_ch // 2) + 1, 1) * 0.05  # noqa: E501
     else:
         fch = (np.arange(0, num_ch) - (num_ch / 2.0) + 0.5) * 0.05
-    spectrum_param = {'num_ch': num_ch, 'f_ch': fch, 'rs': rs, 'roll_off': roll_off, 'power': power}
+    spectrum_param = {'num_ch': num_ch, 'f_ch': fch, 'b_ch': b_ch, 'roll_off': roll_off, 'power': power}
 
     # Fiber Parameters
     beta2 = 21.27
     l_span = 100.0
     loss = 0.2
     gam = 1.27
-    fiber_param = {'a_db': loss, 'span_length': l_span, 'beta2': beta2, 'gamma': gam}
+    fiber_param = {'a_db': loss, 'span_length': l_span, 'beta_2': beta2, 'gamma': gam}
 
     # EDFA Parameters
     noise_fig = 5.5
