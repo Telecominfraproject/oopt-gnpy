@@ -15,10 +15,6 @@ class Params:
             setattr(self, k, v)
 
 
-class Channels():
-    pass
-
-
 class Network:
     g = nx.DiGraph()
     nw_elems = {}
@@ -38,7 +34,7 @@ class Network:
                 n0 = Utils.find_by_node_id(self.g, gpath[0])
                 for nid in gpath[1:]:
                     n1 = Utils.find_by_node_id(self.g, nid)
-                    self.g.add_edge(n0, n1, channels=Channels())
+                    self.g.add_edge(n0, n1, channels=[])
                     n0 = n1
 
 

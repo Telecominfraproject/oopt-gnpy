@@ -5,11 +5,11 @@
             "name": "",
             "description": "Booster_Connection",
             "parameters": {
-                "length": 0.0,
+                "length": 80.0,
                 "dispersion": null,
                 "dispersion_slope": 16.7,
                 "pmd": 0.0,
-                "loss": 0.0,
+                "loss": 0.2,
                 "fiber_type": "SMF-28e",
                 "nonlinear_coef": 0.0
             }
@@ -20,11 +20,11 @@
             "name": "",
             "description": "Booster_Connection",
             "parameters": {
-                "length": 0.0,
+                "length": 100.0,
                 "dispersion": null,
                 "dispersion_slope": 16.7,
                 "pmd": 0.0,
-                "loss": 0.0,
+                "loss": 0.2,
                 "fiber_type": "SMF-28e",
                 "nonlinear_coef": 0.0
             }
@@ -35,11 +35,11 @@
             "name": "",
             "description": "Booster_Connection",
             "parameters": {
-                "length": 0.0,
+                "length": 80.0,
                 "dispersion": null,
                 "dispersion_slope": 16.7,
                 "pmd": 0.0,
-                "loss": 0.0,
+                "loss": 0.2,
                 "fiber_type": "SMF-28e",
                 "nonlinear_coef": 0.0
             }
@@ -110,7 +110,7 @@
                 "channels": [{
                         "manufacturer": "acme corp",
                         "manufacturer_pn": "acme model1",
-                        "frequency": [193.95],
+                        "frequency": 193.95,
                         "modulation": "QPSK",
                         "baud_rate": 32.0,
                         "capacity": 100,
@@ -121,12 +121,12 @@
                         "filter_params": [0.4],
                         "polarization_mux": "interleaved",
                         "osnr": 40.0,
-                        "power": -5.0
+                        "power": -10.0
                     },
                     {
                         "manufacturer": "acme corp",
                         "manufacturer_pn": "acme model1",
-                        "frequency": [194.15],
+                        "frequency": 194.15,
                         "modulation": "QPSK",
                         "baud_rate": 32.0,
                         "capacity": 100,
