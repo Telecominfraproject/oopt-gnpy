@@ -1,4 +1,6 @@
 import json
+from gnpy.constants import c, h
+import numpy as np
 
 
 class Utils:
@@ -29,3 +31,23 @@ class Utils:
         d = {'alpha_pcoef': alpha_pcoef, 'alpha_acoef': alpha_acoef,
              'description:': s}
         return d
+
+    @staticmethod
+    def db_to_lin(val):
+        return 10 ** (val / 10)
+
+    @staticmethod
+    def chan_osnr(chan_params, amp_params):
+        in_osnr = Utils.db_to_lin(chan_params['osnr'])
+        pin = Utils.db_to_lin(chan_params['power']) / 1e3
+        nf = Utils.db_to_lin(amp_params.nf[0])
+        ase_cont = nf * h * chan_params['frequency'] * 12.5 * 1e21
+        ret = -10 * np.log10(1 / in_osnr + ase_cont / pin)
+        return ret
+
+    @staticmethod
+    def edge_dict(chan, osnr, d_power):
+        dct = {'frequency': chan['frequency'],
+               'osnr': osnr if osnr else chan['osnr'],
+               'power': chan['power'] + d_power}
+        return dct

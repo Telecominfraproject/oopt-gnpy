@@ -9,24 +9,37 @@ config_fn = './gnpy/examples/config/config_ex1.json'
 nw = gnpy.Network(config_fn)
 
 
-def db_to_lin(val):
-    return 10 ** (val / 10)
+def propagate(opath):
+
+    print(opath.edge_list)
+    for elem in opath.path:
+        print(elem, opath.elem_dict[elem])
+        #try:
+        if 1:
+            elem.propagate(path=opath)
+        #except Exception as e:
+        #    print(e)
+        #    pass
 
 
-def chan_osnr(chan_params, amp_params):
-    in_osnr = db_to_lin(chan_params['osnr'])
-    pin = db_to_lin(chan_params['power']) / 1e3
-    nf = db_to_lin(amp_params.nf[0])
-    ase_cont = nf * gnpy.h * chan_params['frequency'] * 12.5 * 1e21
-    ret = -10 * np.log10(1 / in_osnr + ase_cont / pin)
-    return ret
+for opath in nw.tr_paths:
+    propagate(opath)
+    print("*"*10)
+
+if 1:
+    layout = nx.spring_layout(nw.g)
+    nx.draw_networkx_nodes(nw.g, layout, node_size=1000,
+                           node_color='b', alpha=0.2)
+    nx.draw_networkx_labels(nw.g, layout)
+    nx.draw_networkx_edges(nw.g, layout, width=2,
+                           alpha=0.3, edge_color='green')
+    nx.draw_networkx_edge_labels(nw.g, layout, font_size=6)
+    plt.show()
 
 
-def edge_dict(chan, osnr, d_power):
-    dct = {'frequency': chan['frequency'],
-           'osnr': osnr if osnr else chan['osnr'],
-           'power': chan['power'] + d_power}
-    return dct
+exit()
+
+
 
 
 def calc_path_osnr(nw, opath):
