@@ -44,10 +44,3 @@ class Utils:
         ase_cont = nf * h * chan_params['frequency'] * 12.5 * 1e21
         ret = -10 * np.log10(1 / in_osnr + ase_cont / pin)
         return ret
-
-    @staticmethod
-    def edge_dict(chan, osnr, d_power):
-        dct = {'frequency': chan['frequency'],
-               'osnr': osnr if osnr else chan['osnr'],
-               'power': chan['power'] + d_power}
-        return dct

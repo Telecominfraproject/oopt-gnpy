@@ -1,9 +1,10 @@
 import networkx as nx
 from .utils import Utils
 import gnpy
-from pprint import pprint as pp
+
 
 class Params:
+
     def __init__(self, *args):
         req_params = args[0]
         params = args[1].get('parameters')
@@ -18,29 +19,22 @@ class Params:
 class Opath:
 
     def __init__(self, nw, path):
+        self.nw = nw
         self.path = path
         self.edge_list = [(elem, path[en + 1])
                           for en, elem in enumerate(path[:-1])]
-        self.elem_dict = {elem: self.find_io_edges(nw, elem)
+        self.elem_dict = {elem: self.find_io_edges(elem)
                           for elem in self.path}
 
-    def find_io_edges(self, nw, elem):
-        iedges = set(nw.g.in_edges(elem)).intersection(self.edge_list)
-        oedges = set(nw.g.out_edges(elem)).intersection(self.edge_list)
+    def find_io_edges(self, elem):
+        iedges = set(self.nw.g.in_edges(elem)).intersection(self.edge_list)
+        oedges = set(self.nw.g.out_edges(elem)).intersection(self.edge_list)
         return {'in': list(iedges),
                 'out': list(oedges)}
 
-        ies = []
-        for ie in list(iedges):
-            ies.append(nw.g[ie[0]][ie[1]])
-        oes = []
-        for ie in list(oedges):
-            ies.append(nw.g[ie[0]][ie[1]])
-        return {'in': ies, 'out': oes}
-
-    #def propegate(self):
-    #    for elem in self.path:
-    #        print(elem)
+    def propagate(self):
+        for elem in self.path:
+            elem.propagate(path=self)
 
 
 class Network:
@@ -74,7 +68,7 @@ class Network:
 
     def propagate_all_paths(self):
         for opath in self.tr_paths:
-            print(opath.path)
+            opath.propagate()
 
 
 class NetworkElement:
@@ -90,6 +84,12 @@ class NetworkElement:
     def fetch_edge(self, edge):
         return self.nw.g[edge[0]][edge[1]]
 
+    def edge_dict(self, chan, osnr, d_power):
+        dct = {'frequency': chan['frequency'],
+               'osnr': osnr if osnr else chan['osnr'],
+               'power': chan['power'] + d_power}
+        return dct
+
     def __repr__(self):
         return self.id
 
@@ -104,7 +104,7 @@ class Fiber(NetworkElement):
             for inedge in path.elem_dict[self]['in']:
                 pedge = self.fetch_edge(inedge)
                 for chan in pedge['channels']:
-                    edge['channels'].append(Utils.edge_dict(chan, None, -attn))
+                    edge['channels'].append(self.edge_dict(chan, None, -attn))
 
 
 class Edfa(NetworkElement):
@@ -118,7 +118,7 @@ class Edfa(NetworkElement):
                 osnr = Utils.chan_osnr(chan, self.params)
                 for oedge in path.elem_dict[self]['out']:
                     edge = self.fetch_edge(oedge)
-                    edge['channels'].append(Utils.edge_dict(chan, osnr, gain))
+                    edge['channels'].append(self.edge_dict(chan, osnr, gain))
 
 
 class Tx(NetworkElement):
@@ -128,14 +128,15 @@ class Tx(NetworkElement):
         for oedge in path.elem_dict[self]['out']:
             edge = self.fetch_edge(oedge)
             for chan in self.params.channels:
-                edge['channels'].append(Utils.edge_dict(chan, None, 0))
+                edge['channels'].append(self.edge_dict(chan, None, 0))
 
 
 class Rx(NetworkElement):
     required_params = ['sensitivity']
+    channels = {}
 
     def propagate(self, path):
+        self.channels = {}
         for iedge in path.elem_dict[self]['in']:
             edge = self.fetch_edge(iedge)
-            print(path)
-            pp(edge['channels'])
+            self.channels[path] = edge['channels']
