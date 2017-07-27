@@ -37,7 +37,7 @@ def main():
     l_span = 100.0
     loss = 0.2
     gam = 1.27
-    fiber_param = {'a_db': loss, 'span_length': l_span, 'beta_2': beta2, 'gamma': gam}
+    fiber_param = {'alpha': loss, 'span_length': l_span, 'beta_2': beta2, 'gamma': gam}
 
     # EDFA Parameters
     noise_fig = 5.5

@@ -354,7 +354,7 @@ def gn_model(spectrum_param, fiber_param, accuracy_param, n_cores):
                            spectrum_param['roll_off']: Channels' Roll-off factors [0,1). Array of size 1xnum_ch
                            spectrum_param['power']: Channels' power values in W. Array of size 1xnum_ch
     :param fiber_param: Dictionary with the parameters of the fiber
-                        fiber_param['a_db']: Fiber loss coeffiecient in dB/km. Scalar
+                        fiber_param['alpha']: Fiber loss coefficient in dB/km. Scalar
                         fiber_param['span_length']: Fiber Span length in km. Scalar
                         fiber_param['beta_2']: Fiber dispersion coefficient in ps/THz/km. Scalar
                         fiber_param['gamma']: Fiber nonlinear coefficient in 1/W/km. Scalar
@@ -386,7 +386,7 @@ def gn_model(spectrum_param, fiber_param, accuracy_param, n_cores):
     power = spectrum_param['power']
 
     # Take fiber parameters
-    a_db = fiber_param['a_db']
+    a_db = fiber_param['alpha']
     l_span = fiber_param['span_length']
     beta2 = fiber_param['beta_2']
     gam = fiber_param['gamma']
@@ -535,9 +535,38 @@ def optical_amplifier(spectrum, gain_zero, gain_tilting, noise_fig, central_freq
 
 
 def fiber(spectrum, fiber_param, fiber_length, f_ch, b_ch, roll_off, control_param):
+    """ fiber updates spectrum with the effects of the fiber
+
+    :param spectrum: the WDM spectrum to be attenuated. List of dictionaries
+    :param fiber_param: Dictionary with the parameters of the fiber
+                fiber_param['alpha']: Fiber loss coeffiecient in dB/km. Scalar
+                fiber_param['beta_2']: Fiber dispersion coefficient in ps/THz/km. Scalar
+                fiber_param['n_2']: second-order nonlinear refractive index [m^2/W]. Scalar
+                fiber_param['a_eff']: the effective area of the fiber [um^2]. Scalar
+    :param fiber_length: the span length [km]. Scalar
+    :param f_ch: the central frequency [THz]. Scalar
+    :param b_ch: the -3 dB bandwidth of each WDM channel [THz]. Array
+    :param roll_off: the roll off of each WDM channel. Array
+    :param control_param: Dictionary with the control parameters
+                control_param['save_each_comp']: a boolean flag. If true, it saves in output folder one spectrum file at
+                    the output of each component, otherwise it saves just the last spectrum. Boolean
+                control_param['is_linear']: a bool flag. If true, is doesn't compute NLI, if false, OLE will consider
+                 NLI. Boolean
+                control_param['is_analytic']:  a boolean flag. If true, the NLI is computed through the analytic
+                    formula, otherwise it uses the double integral. Warning: the double integral is very slow. Boolean
+                control_param['points_not_interp']: if the double integral is used, it indicates how much points are
+                    calculated, others will be interpolated. Scalar
+                control_param['kind_interp']:  the interpolation method when double integral is used. String
+                control_param['th_fwm']: he threshold of the four wave mixing efficiency for the double integral. Scalar
+                control_param['n_points']: number of points in the high FWM efficiency region in which the double
+                    integral is computed. Scalar
+                control_param['n_points_min']:  number of points in which the double integral is computed in the low FWM
+                    efficiency region. Scalar
+                control_param['n_cores']: number of cores for parallel computation [not yet implemented]. Scalar
+    :return: None
+    """
 
     n_cores = control_param['n_cores']
-
 
     # Evaluation of NLI
     if not control_param['is_linear']:
@@ -554,9 +583,8 @@ def fiber(spectrum, fiber_param, fiber_length, f_ch, b_ch, roll_off, control_par
             p_ch[index] = signal['p_ch']
 
         spectrum_param['power'] = p_ch
-
-        fiber_param['a_db'] = fiber_param['alpha']
         fiber_param['span_length'] = fiber_length
+        fiber_param['gamma'] = fiber_param['n_2'] / fiber_param['a_eff']
 
         nli_cmp, f_nli_cmp, nli_int, f_nli_int = gn_model(spectrum_param, fiber_param, control_param, n_cores)
         f_nli = np.concatenate((f_nli_cmp, f_nli_int))
