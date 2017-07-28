@@ -40,7 +40,7 @@ class Opath:
 class Network:
 
     g = nx.DiGraph()
-    nw_elems = {}
+    nw_elems = {} # This can go..
 
     def __init__(self, network_config):
         self.config = Utils.read_config(network_config)
@@ -104,7 +104,8 @@ class Fiber(NetworkElement):
             for inedge in path.elem_dict[self]['in']:
                 pedge = self.fetch_edge(inedge)
                 for chan in pedge['channels']:
-                    edge['channels'].append(self.edge_dict(chan, None, -attn))
+                    dct = self.edge_dict(chan, None, -attn)
+                    edge['channels'].append(dct)
 
 
 class Edfa(NetworkElement):
@@ -118,7 +119,8 @@ class Edfa(NetworkElement):
                 osnr = Utils.chan_osnr(chan, self.params)
                 for oedge in path.elem_dict[self]['out']:
                     edge = self.fetch_edge(oedge)
-                    edge['channels'].append(self.edge_dict(chan, osnr, gain))
+                    dct = self.edge_dict(chan, osnr, gain)
+                    edge['channels'].append(dct)
 
 
 class Tx(NetworkElement):
@@ -128,7 +130,8 @@ class Tx(NetworkElement):
         for oedge in path.elem_dict[self]['out']:
             edge = self.fetch_edge(oedge)
             for chan in self.params.channels:
-                edge['channels'].append(self.edge_dict(chan, None, 0))
+                dct = self.edge_dict(chan, None, 0)
+                edge['channels'].append(dct)
 
 
 class Rx(NetworkElement):
