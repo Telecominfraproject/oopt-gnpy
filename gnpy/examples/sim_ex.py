@@ -1,7 +1,30 @@
-import matplotlib.pyplot as plt
-import gnpy
+from gnpy import Network
+from gnpy.utils import read_config
+from os.path import realpath, join, dirname
 
-config_fn = './gnpy/examples/config/config_ex1-copy.json'
+if __name__ == '__main__':
+    basedir = dirname(realpath(__file__))
+    filename = join(basedir, 'config/config_ex1.json')
+    config = read_config(filename)
+    nw = Network(config)
+    nw.propagate_all_paths()
+
+    # output OSNR propagation
+    for path in nw.tr_paths:
+        print(' → '.join(x.id for x in path.path))
+        for u, v in path.edge_list:
+            channels = nw.g[u][v]['channels']
+            channel_info = ('\n' + ' ' * 24).join(
+                '    '.join([f'freq: {x["frequency"]:7.2f}',
+                             f'osnr: {x["osnr"]:7.2f}',
+                             f'power: {x["power"]:7.2f}'])
+                for x in channels)
+            print(f'{u.id:^10s} → {v.id:^10s} {channel_info}')
+
+exit()
+
+
+config_fn = './gnpy/examples/config/config_ex1.json'
 nw = gnpy.Network(config_fn)
 nw.propagate_all_paths()
 

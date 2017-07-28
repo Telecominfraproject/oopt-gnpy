@@ -1,36 +1,25 @@
-import networkx as nx
-from .utils import Utils
+from networkx import DiGraph, all_simple_paths
+from collections import defaultdict
+from itertools import product
+
 import gnpy
-
-
-class Params:
-
-    def __init__(self, *args):
-        req_params = args[0]
-        params = args[1].get('parameters')
-        missing_params = list(set(req_params) - set(params.keys()))
-        if len(missing_params):
-            print("missing params:", ','.join(missing_params))
-            raise ValueError
-        for k, v in params.items():
-            setattr(self, k, v)
+from . import utils
 
 
 class Opath:
 
     def __init__(self, nw, path):
-        self.nw = nw
-        self.path = path
-        self.edge_list = [(elem, path[en + 1])
-                          for en, elem in enumerate(path[:-1])]
+        self.nw, self.path = nw, path
+
+        self.edge_list = {(elem, path[en + 1])
+                          for en, elem in enumerate(path[:-1])}
         self.elem_dict = {elem: self.find_io_edges(elem)
                           for elem in self.path}
 
     def find_io_edges(self, elem):
-        iedges = set(self.nw.g.in_edges(elem)).intersection(self.edge_list)
-        oedges = set(self.nw.g.out_edges(elem)).intersection(self.edge_list)
-        return {'in': list(iedges),
-                'out': list(oedges)}
+        iedges = set(self.nw.g.in_edges(elem) ) & self.edge_list
+        oedges = set(self.nw.g.out_edges(elem)) & self.edge_list
+        return {'in': iedges, 'out': oedges}
 
     def propagate(self):
         for elem in self.path:
@@ -39,32 +28,29 @@ class Opath:
 
 class Network:
 
-    g = nx.DiGraph()
-    nw_elems = {} # This can go..
+    def __init__(self, config):
+        self.config = config
+        self.nw_elems = defaultdict(list)
+        self.g = DiGraph()
 
-    def __init__(self, network_config):
-        self.config = Utils.read_config(network_config)
         for elem in self.config['elements']:
-            ne_type = elem['type'].capitalize()
-            if ne_type not in self.nw_elems:
-                self.nw_elems[ne_type] = []
-            ne = getattr(gnpy, ne_type)(self, **elem)
+            ne_type = TYPE_MAP[elem['type']]
+            params = elem.pop('parameters')
+            ne = ne_type(self, **elem, **params)
             self.nw_elems[ne_type].append(ne)
             self.g.add_node(ne)
 
         for gpath in self.config['topology']:
-            n0 = Utils.find_by_node_id(self.g, gpath[0])
-            for nid in gpath[1:]:
-                n1 = Utils.find_by_node_id(self.g, nid)
+            for u, v in utils.nwise(gpath):
+                n0 = utils.find_by_node_id(self.g, u)
+                n1 = utils.find_by_node_id(self.g, v)
                 self.g.add_edge(n0, n1, channels=[])
-                n0 = n1
 
         # define all possible paths between tx's and rx's
         self.tr_paths = []
-        for tx in self.nw_elems['Tx']:
-            for rx in self.nw_elems['Rx']:
-                for spath in nx.all_simple_paths(self.g, tx, rx):
-                    self.tr_paths.append(Opath(self, spath))
+        for tx, rx in product(self.nw_elems[Tx], self.nw_elems[Rx]):
+            for spath in all_simple_paths(self.g, tx, rx):
+                self.tr_paths.append(Opath(self, spath))
 
     def propagate_all_paths(self):
         for opath in self.tr_paths:
@@ -73,73 +59,92 @@ class Network:
 
 class NetworkElement:
 
-    def __init__(self, nw, **kwargs):
+    def __init__(self, nw, *, id, type, name, description, **kwargs):
         self.nw = nw
-        self.id = kwargs.get('id')
-        self.type = kwargs.get('type')
-        self.name = kwargs.get('name')
-        self.description = kwargs.get('description')
-        self.params = Params(self.required_params, kwargs)
+        self.id, self.type = id, type
+        self.name, self.description = name, description
 
     def fetch_edge(self, edge):
-        return self.nw.g[edge[0]][edge[1]]
+        u, v = edge
+        return self.nw.g[u][v]
 
     def edge_dict(self, chan, osnr, d_power):
-        dct = {'frequency': chan['frequency'],
-               'osnr': osnr if osnr else chan['osnr'],
-               'power': chan['power'] + d_power}
-        return dct
+        return {'frequency': chan['frequency'],
+                'osnr': osnr if osnr else chan['osnr'],
+                'power': chan['power'] + d_power}
 
     def __repr__(self):
-        return self.id
+        return f'NetworkElement(id={self.id}, type={self.type})'
 
 
 class Fiber(NetworkElement):
-    required_params = ['length', 'loss']
+
+    def __init__(self, *args, length, loss, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.length = length
+        self.loss = loss
 
     def propagate(self, path):
-        attn = self.params.length * self.params.loss
+        attn = self.length * self.loss
+
         for oedge in path.elem_dict[self]['out']:
             edge = self.fetch_edge(oedge)
-            for inedge in path.elem_dict[self]['in']:
-                pedge = self.fetch_edge(inedge)
+            for pedge in (self.fetch_edge(x)
+                          for x in path.elem_dict[self]['in']):
                 for chan in pedge['channels']:
                     dct = self.edge_dict(chan, None, -attn)
                     edge['channels'].append(dct)
 
 
 class Edfa(NetworkElement):
-    required_params = ['gain', 'nf']
+
+    def __init__(self, *args, gain, nf, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.gain = gain
+        self.nf = nf
 
     def propagate(self, path):
-        gain = self.params.gain[0]
+        gain = self.gain[0]
         for inedge in path.elem_dict[self]['in']:
+
             in_channels = self.fetch_edge(inedge)['channels']
             for chan in in_channels:
-                osnr = Utils.chan_osnr(chan, self.params)
-                for oedge in path.elem_dict[self]['out']:
-                    edge = self.fetch_edge(oedge)
+                osnr = utils.chan_osnr(chan, self)
+                for edge in (self.fetch_edge(x)
+                             for x in path.elem_dict[self]['out']):
                     dct = self.edge_dict(chan, osnr, gain)
                     edge['channels'].append(dct)
 
 
 class Tx(NetworkElement):
-    required_params = ['channels']
+
+    def __init__(self, *args, channels, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.channels = channels
 
     def propagate(self, path):
-        for oedge in path.elem_dict[self]['out']:
-            edge = self.fetch_edge(oedge)
-            for chan in self.params.channels:
+        for edge in (self.fetch_edge(x) for x in path.elem_dict[self]['out']):
+            for chan in self.channels:
                 dct = self.edge_dict(chan, None, 0)
                 edge['channels'].append(dct)
 
 
 class Rx(NetworkElement):
-    required_params = ['sensitivity']
-    channels = {}
+
+    def __init__(self, *args, sensitivity, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.sensitivity = sensitivity
 
     def propagate(self, path):
         self.channels = {}
         for iedge in path.elem_dict[self]['in']:
             edge = self.fetch_edge(iedge)
             self.channels[path] = edge['channels']
+
+
+TYPE_MAP = {
+    'fiber': Fiber,
+    'tx':    Tx,
+    'rx':    Rx,
+    'edfa':  Edfa,
+}
