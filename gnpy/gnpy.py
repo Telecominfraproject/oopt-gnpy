@@ -210,7 +210,7 @@ def compute_psi(b2, l_eff_a, f_ch, channel_index, interfering_index, b_ch):
     """
     b2 = np.abs(b2)
 
-    if channel_index == interfering_index:  # The signal interfere with itself
+    if channel_index == interfering_index:  # The signal interferes with itself
         b_ch_sig = b_ch[channel_index]
         psi = np.arcsinh(0.5 * np.pi ** 2.0 * l_eff_a * b2 * b_ch_sig ** 2.0)
     else:
@@ -416,6 +416,19 @@ def gn_model(spectrum_param, fiber_param, accuracy_param, n_cores):
         # Interpolation
         g_nli_interp = interpolate_in_range(f_nli_comp, g_nli_comp, f_nli_interp, kind_interp)
 
+    a_zero = fiber_param['alpha'] * fiber_param['span_length']
+    a_tilting = fiber_param['alpha_1st'] * fiber_param['span_length']
+
+    attenuation_db_comp = compute_attenuation_profile(a_zero, a_tilting, f_nli_comp)
+    attenuation_lin_comp = 10 ** (-abs(attenuation_db_comp) / 10)
+
+    g_nli_comp *= attenuation_lin_comp
+
+    attenuation_db_interp = compute_attenuation_profile(a_zero, a_tilting, f_nli_interp)
+    attenuation_lin_interp = 10 ** (-np.abs(attenuation_db_interp) / 10)
+
+    g_nli_interp *= attenuation_lin_interp
+
     return g_nli_comp, f_nli_comp, g_nli_interp, f_nli_interp
 
 
@@ -464,7 +477,6 @@ def compute_edfa_profile(gain_zero, gain_tilting, noise_fig, central_freq, freq)
         """
     gain = compute_gain_profile(gain_zero, gain_tilting, freq)
     g_ase = compute_ase_noise(noise_fig, gain, central_freq, freq)
-    gain = 10 * np.log10(gain)
 
     return gain, g_ase
 
@@ -478,10 +490,13 @@ def compute_attenuation_profile(a_zero, a_tilting, freq):
     :return: attenuation: the attenuation profile in dB
     """
 
-    attenuation = a_zero + a_tilting * freq
+    if len(freq):
+        attenuation = a_zero + a_tilting * freq
 
-    # abs in order to avoid ambiguity due to the sign convention
-    attenuation = abs(attenuation)
+        # abs in order to avoid ambiguity due to the sign convention
+        attenuation = abs(attenuation)
+    else:
+        attenuation = []
 
     return attenuation
 
@@ -492,7 +507,7 @@ def passive_component(spectrum, a_zero, a_tilting, freq):
     :param spectrum: the WDM spectrum to be attenuated. List of dictionaries
     :param a_zero: attenuation at the central frequency [dB]. Scalar
     :param a_tilting: attenuation tilting [dB/THz]. Scalar
-    :param freq: the central frequency of each WDM channel [THz]. Array
+    :param freq: the baseband frequency of each WDM channel [THz]. Array
     :return: None
     """
     attenuation_db = compute_attenuation_profile(a_zero, a_tilting, freq)
@@ -544,7 +559,7 @@ def fiber(spectrum, fiber_param, fiber_length, f_ch, b_ch, roll_off, control_par
                 fiber_param['n_2']: second-order nonlinear refractive index [m^2/W]. Scalar
                 fiber_param['a_eff']: the effective area of the fiber [um^2]. Scalar
     :param fiber_length: the span length [km]. Scalar
-    :param f_ch: the central frequency [THz]. Scalar
+    :param f_ch: the baseband frequencies of the WDM channels [THz]. Scalar
     :param b_ch: the -3 dB bandwidth of each WDM channel [THz]. Array
     :param roll_off: the roll off of each WDM channel. Array
     :param control_param: Dictionary with the control parameters
@@ -584,7 +599,6 @@ def fiber(spectrum, fiber_param, fiber_length, f_ch, b_ch, roll_off, control_par
 
         spectrum_param['power'] = p_ch
         fiber_param['span_length'] = fiber_length
-        fiber_param['gamma'] = fiber_param['n_2'] / fiber_param['a_eff']
 
         nli_cmp, f_nli_cmp, nli_int, f_nli_int = gn_model(spectrum_param, fiber_param, control_param, n_cores)
         f_nli = np.concatenate((f_nli_cmp, f_nli_int))
@@ -603,6 +617,201 @@ def fiber(spectrum, fiber_param, fiber_length, f_ch, b_ch, roll_off, control_par
     # Apply NLI
     if not control_param['is_linear']:
         for index, s in enumerate(spectrum['signals']):
-            spectrum['signals'][index]['p_ase'] += p_nli[index]
+            spectrum['signals'][index]['p_nli'] += p_nli[index]
 
     return None
+
+
+def get_frequencies_wdm(spectrum, sys_param):
+    """ the function computes the central frequency of the WDM comb and the frequency of each channel.
+
+    :param spectrum: the WDM spectrum to be attenuated. List of dictionaries
+    :param sys_param: a dictionary containing the system parameters:
+                'f0': the starting frequency, i.e the frequency of the first spectral slot [THz]
+                'ns': the number of spectral slots. The space between two slots is 6.25 GHz
+    :return: f_cent: the central frequency of the WDM comb [THz]
+    :return: f_ch: the baseband frequency of each WDM channel [THz]
+    """
+
+    delta_f = 6.25E-3
+    # Evaluate the central frequency
+    f0 = sys_param['f0']
+    ns = sys_param['ns']
+
+    f_cent = f0 + ((ns // 2.0) * delta_f)
+
+    # Evaluate the baseband frequencies
+    n_ch = spectrum['laser_position'].count(1)
+    f_ch = np.zeros(n_ch)
+    count = 0
+    for index, bool_laser in enumerate(spectrum['laser_position']):
+        if bool_laser:
+            f_ch[count] = (f0 - f_cent) + delta_f * index
+            count += 1
+
+    return f_cent, f_ch
+
+
+def get_spectrum_param(spectrum):
+    """ the function returns the number of WDM channels and 3 arrays containing the power, the equivalent bandwidth
+     and the roll off of each WDM channel.
+
+    :param spectrum: the WDM spectrum to be attenuated. List of dictionaries
+    :return: power: the power of each WDM channel [W]
+    :return: b_eq: the equivalent bandwidth of each WDM channel [THz]
+    :return: roll_off: the roll off of each WDM channel
+    :return: p_ase: the power of the ASE noise [W]
+    :return: p_nli: the power of NLI [W]
+    :return: n_ch: the number of WDM channels
+    """
+
+    n_ch = spectrum['laser_position'].count(1)
+    roll_off = np.zeros(n_ch)
+    b_eq = np.zeros(n_ch)
+    power = np.zeros(n_ch)
+    p_ase = np.zeros(n_ch)
+    p_nli = np.zeros(n_ch)
+    for index, signal in enumerate(spectrum['signals']):
+        b_eq[index] = signal['b_ch']
+        roll_off[index] = signal['roll_off']
+        power[index] = signal['p_ch']
+        p_ase[index] = signal['p_ase']
+        p_nli[index] = signal['p_nli']
+
+    return power, b_eq, roll_off, p_ase, p_nli, n_ch
+
+
+def change_component_ref(f_ref, link, fibers):
+    """ it updates the reference frequency of OA gain, PC attenuation and fiber attenuation coefficient
+
+    :param f_ref: the new reference frequency [THz]. Scalar
+    :param link: the link structure. A list in which each element indicates one link component (PC, OA or fiber). List
+    :param fibers: a dictionary containing the description of each fiber type. Dictionary
+    :return: None
+    """
+
+    light_speed = 3e8       # [m/s]
+
+    # Change reference to the central frequency f_cent for OA and PC
+    for index, component in enumerate(link):
+        if component['comp_cat'] is 'PC':
+
+            old_loss = component['loss']
+            delta_loss = component['loss_tlt']
+            old_ref = component['ref_freq']
+            new_loss =  old_loss + delta_loss * (f_ref - old_ref)
+
+            link[index]['ref_freq'] = f_ref
+            link[index]['loss'] = new_loss
+
+        elif component['comp_cat'] is 'OA':
+
+            old_gain = component['gain']
+            delta_gain = component['gain_tlt']
+            old_ref = component['ref_freq']
+            new_gain = old_gain + delta_gain * (f_ref - old_ref)
+
+            link[index]['ref_freq'] = f_ref
+            link[index]['gain'] = new_gain
+
+        elif not component['comp_cat'] is 'fiber':
+
+            error_string = 'Error in link structure: the ' + str(index+1) + '-th component have unknown category \n'\
+                + 'allowed values are (case sensitive): PC, OA and fiber'
+            print(error_string)
+
+    # Change reference to the central frequency f_cent for fiber
+    for fib_type in fibers:
+        old_ref = fibers[fib_type]['reference_frequency']
+        old_alpha = fibers[fib_type]['alpha']
+        alpha_1st = fibers[fib_type]['alpha_1st']
+        new_alpha = old_alpha + alpha_1st * (f_ref - old_ref)
+
+        fibers[fib_type]['reference_frequency'] = f_ref
+        fibers[fib_type]['alpha'] = new_alpha
+
+        fibers[fib_type]['gamma'] = (2 * np.pi) * (f_ref / light_speed) * \
+                                    (fibers[fib_type]['n_2'] / fibers[fib_type]['a_eff']) * 1e27
+
+    return None
+
+
+def ole(spectrum, link, fibers, sys_param, control_param):
+    """
+
+    :param spectrum:
+    :param link:
+    :param fibers:
+    :param sys_param:
+    :param control_param:
+    :return:
+    """
+
+    # Take control parameters
+    flag_save_each_comp = control_param['save_each_comp']
+    flag_is_linear = control_param['is_linear']
+
+    # Evaluate frequency parameters
+    f_cent, f_ch = get_frequencies_wdm(spectrum, sys_param)
+
+    # Evaluate spectrum parameters
+    power, b_eq, roll_off, p_ase, p_nli, n_ch = get_spectrum_param(spectrum)
+
+    # Change reference to the central frequency f_cent for OA, PC and fibers
+    change_component_ref(f_cent, link, fibers)
+
+    # Emulate the link
+    for component in link:
+        if component['comp_cat'] is 'PC':
+            a_zero = component['loss']
+            a_tilting = component['loss_tlt']
+
+            passive_component(spectrum, a_zero, a_tilting, f_ch)
+
+        elif component['comp_cat'] is 'OA':
+            gain_zero = component['gain']
+            gain_tilting = component['gain_tlt']
+            noise_fig = component['noise_figure']
+
+            optical_amplifier(spectrum, gain_zero, gain_tilting, noise_fig, f_cent, f_ch, b_eq)
+
+        elif component['comp_cat'] is 'fiber':
+            fiber_type = component['fiber_type']
+            fiber_param = fibers[fiber_type]
+            fiber_length = component['length']
+
+            fiber(spectrum, fiber_param, fiber_length, f_ch, b_eq, roll_off, control_param)
+
+        else:
+            error_string = 'Error in link structure: the ' + component['comp_cat'] + ' category is unknown \n' \
+                           + 'allowed values are (case sensitive): PC, OA and fiber'
+            print(error_string)
+
+        if flag_save_each_comp:
+
+            p_ch, b_eq, roll_off, p_ase, p_nli, n_ch = get_spectrum_param(spectrum)
+
+            if (p_ase == 0).any():
+                osnr_lin = np.zeros(n_ch)
+                for index, p_noise in enumerate(p_ase):
+                    if p_noise == 0:
+                        osnr_lin[index] = float('inf')
+                    else:
+                        osnr_lin[index] = p_ch[index] / p_noise
+
+            else:
+                osnr_lin = np.divide(p_ch, p_ase)
+
+            if not flag_is_linear:
+                if ((p_ase + p_nli) == 0).any():
+                    osnr_nli = np.zeros(n_ch)
+                    for index, p_noise in enumerate(p_ase + p_nli):
+
+                        if p_noise == 0:
+                            osnr_nli[index] = float('inf')
+                        else:
+                            osnr_nli[index] = p_ch[index] / p_noise
+
+                osnr_nli = np.divide(p_ch, p_ase + p_nli)
+
+    return osnr_nli, osnr_lin
