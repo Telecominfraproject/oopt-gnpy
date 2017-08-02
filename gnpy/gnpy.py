@@ -511,7 +511,7 @@ def passive_component(spectrum, a_zero, a_tilting, freq):
     :return: None
     """
     attenuation_db = compute_attenuation_profile(a_zero, a_tilting, freq)
-    attenuation_lin = 10**(-abs(attenuation_db) / 10.0)
+    attenuation_lin = 10 ** np.divide(-abs(attenuation_db), 10.0)
 
     for index, s in enumerate(spectrum['signals']):
         spectrum['signals'][index]['p_ch'] *= attenuation_lin[index]
@@ -536,9 +536,9 @@ def optical_amplifier(spectrum, gain_zero, gain_tilting, noise_fig, central_freq
 
     gain_db, g_ase = compute_edfa_profile(gain_zero, gain_tilting, noise_fig, central_freq, freq)
 
-    p_ase = g_ase * b_eq
+    p_ase = np.multiply(g_ase, b_eq)
 
-    gain_lin = 10**(gain_db / 10.0)
+    gain_lin = 10 ** np.divide(gain_db, 10.0)
 
     for index, s in enumerate(spectrum['signals']):
         spectrum['signals'][index]['p_ch'] *= gain_lin[index]
@@ -606,7 +606,7 @@ def fiber(spectrum, fiber_param, fiber_length, f_ch, b_ch, roll_off, control_par
         g_nli = np.concatenate((nli_cmp, nli_int))
         g_nli = np.array(g_nli)[order]
 
-        p_nli = g_nli * b_ch
+        p_nli = np.multiply(g_nli, b_ch)
 
     a_zero = fiber_param['alpha'] * fiber_length
     a_tilting = fiber_param['alpha_1st'] * fiber_length
@@ -699,7 +699,7 @@ def change_component_ref(f_ref, link, fibers):
             old_loss = component['loss']
             delta_loss = component['loss_tlt']
             old_ref = component['ref_freq']
-            new_loss =  old_loss + delta_loss * (f_ref - old_ref)
+            new_loss = old_loss + delta_loss * (f_ref - old_ref)
 
             link[index]['ref_freq'] = f_ref
             link[index]['loss'] = new_loss
@@ -797,7 +797,7 @@ def compute_and_save_osnr(spectrum, flag_save=False, file_name='00', output_path
     if flag_save:
 
         f = open(out_fle_name, 'w')
-        f.write(''.join(('# Output parameters', '\n\n')))
+        f.write(''.join(('# Output parameters. The values of OSNR are evaluated in the -3 dB channel band', '\n\n')))
         f.write(''.join(('osnr_lin_central_channel_db = ', str(osnr_lin_central_channel_db), '\n\n')))
         f.write(''.join(('osnr_nl_central_channel_db = ', str(osnr_nl_central_channel_db), '\n\n')))
         f.write(''.join(('osnr_lin_db = ', str(osnr_lin_db), '\n\n')))
@@ -810,20 +810,52 @@ def compute_and_save_osnr(spectrum, flag_save=False, file_name='00', output_path
 
 
 def ole(spectrum, link, fibers, sys_param, control_param, output_path='./output/'):
-    """
+    """ The function takes the input spectrum, the link description, the fiber description, the system parameters,
+    the control parameters and a string describing the destination folder of the output files. After the function is
+    executed the spectrum is updated with all the impairments of the link. The function also returns the linear and
+    non linear OSNR, computed in the equivalent bandwidth.
 
-    :param spectrum:
-    :param link:
-    :param fibers:
-    :param sys_param:
-    :param control_param:
-    :param output_path:
-    :return:
+    :param spectrum: the spectrum dictionary containing the laser position (a list of boolean) and the list signals,
+        which is a list of dictionaries (one for each channel) containing:
+            'b_ch': the -3 dB bandwidth of the signal [THz]
+            'roll_off': the roll off of the signal
+            'p_ch': the signal power [W]
+            'p_nli': the equivalent nli power [W]
+            'p_ase': the ASE noise [W]
+    :param link: the link structure. A list in which each element is a dictionary and it indicates one link component
+        (PC, OA or fiber). List
+    :param fibers: fibers is a dictionary containing a dictionary for each kind of fiber. Each dictionary has to report:
+        reference_frequency: the frequency at which the parameters are evaluated [THz]
+        alpha: the attenuation coefficient [dB/km]
+        alpha_1st: the first derivative of alpha indicating the alpha slope [dB/km/THz]
+                if you assume a flat attenuation with respect to the frequency you put it as zero
+        beta_2: the dispersion coefficient [ps^2/km]
+        n_2: second-order nonlinear refractive index [m^2/W]
+            a typical value is 2.5E-20 m^2/W
+        a_eff: the effective area of the fiber [um^2]
+    :param sys_param: a dictionary containing the general system parameters:
+            f0: the starting frequency of the laser grid used to describe the WDM system
+            ns: the number of 6.25 GHz slots in the grid
+    :param control_param: a dictionary containing the following parameters:
+            save_each_comp: a boolean flag. If true, it saves in output folder one spectrum file at the output of each
+                            component, otherwise it saves just the last spectrum
+            is_linear: a bool flag. If true, is doesn't compute NLI, if false, OLE will consider NLI
+            is_analytic: a boolean flag. If true, the NLI is computed through the analytic formula, otherwise it uses
+                the double integral. Warning: the double integral is very slow.
+            points_not_interp: if the double integral is used, it indicates how much points are calculated, others will
+                be interpolated
+            kind_interp: a string indicating the interpolation method for the double integral
+            th_fwm: the threshold of the four wave mixing efficiency for the double integral
+            n_points: number of points in which the double integral is computed in the high FWM efficiency region
+            n_points_min: number of points in which the double integral is computed in the low FWM efficiency region
+            n_cores: number of cores for parallel computation [not yet implemented]
+    :param output_path: the path in which the output files are saved. String
+    :return: osnr_nli_db: an array containing the non-linear OSNR [dB], one value for each WDM channel. Array
+    :return: osnr_lin_db: an array containing the linear OSNR [dB], one value for each WDM channel. Array
     """
 
     # Take control parameters
     flag_save_each_comp = control_param['save_each_comp']
-    flag_is_linear = control_param['is_linear']
 
     # Evaluate frequency parameters
     f_cent, f_ch = get_frequencies_wdm(spectrum, sys_param)
