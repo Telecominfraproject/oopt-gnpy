@@ -736,7 +736,80 @@ def change_component_ref(f_ref, link, fibers):
     return None
 
 
-def ole(spectrum, link, fibers, sys_param, control_param):
+def compute_and_save_osnr(spectrum, flag_save=False, file_name='00', output_path='./output/'):
+    """ Given the spectrum structure, the function returns the linear and non linear OSNR. If the boolean variable
+    flag_save is true, the function also saves the osnr values for the central channel, the osnr for each channel and
+    spectrum in a file with the name file_name, in the folder indicated by output_path
+
+    :param spectrum: the spectrum dictionary containing the laser position (a list of boolean) and the list signals,
+        which is a list of dictionaries (one for each channel) containing:
+            'b_ch': the -3 dB bandwidth of the signal [THz]
+            'roll_off': the roll off of the signal
+            'p_ch': the signal power [W]
+            'p_nli': the equivalent nli power [W]
+            'p_ase': the ASE noise [W]
+    :param flag_save: if True it saves all the data, otherwise it doesn't
+    :param file_name: the name of the file in which the variables are saved
+    :param output_path: the path in which you want to save the file
+    :return: osnr_lin_db: the linear OSNR [dB]
+    :return: osnr_nli_db: the non-linear equivalent OSNR (in linear units, NOT in [dB]
+    """
+
+    # Get the parameters from spectrum
+    p_ch, b_eq, roll_off, p_ase, p_nli, n_ch = get_spectrum_param(spectrum)
+
+    # Compute the linear OSNR
+    if (p_ase == 0).any():
+        osnr_lin = np.zeros(n_ch)
+        for index, p_noise in enumerate(p_ase):
+            if p_noise == 0:
+                osnr_lin[index] = float('inf')
+            else:
+                osnr_lin[index] = p_ch[index] / p_noise
+
+    else:
+        osnr_lin = np.divide(p_ch, p_ase)
+
+    # Compute the non-linear OSNR
+    if ((p_ase + p_nli) == 0).any():
+        osnr_nli = np.zeros(n_ch)
+        for index, p_noise in enumerate(p_ase + p_nli):
+
+            if p_noise == 0:
+                osnr_nli[index] = float('inf')
+            else:
+                osnr_nli[index] = p_ch[index] / p_noise
+
+    osnr_nli = np.divide(p_ch, p_ase + p_nli)
+
+    # Compute linear and non linear OSNR for the central channel
+    ind_c = n_ch // 2
+    osnr_lin_central_channel_db = 10 * np.log10(osnr_lin[ind_c])
+    osnr_nl_central_channel_db = 10 * np.log10(osnr_nli[ind_c])
+
+    # Conversion in dB
+    osnr_lin_db = 10 * np.log10(osnr_lin)
+    osnr_nli_db = 10 * np.log10(osnr_nli)
+
+    # Save spectrum, the non linear OSNR and the linear OSNR
+    out_fle_name = output_path + file_name
+
+    if flag_save:
+
+        f = open(out_fle_name, 'w')
+        f.write(''.join(('# Output parameters', '\n\n')))
+        f.write(''.join(('osnr_lin_central_channel_db = ', str(osnr_lin_central_channel_db), '\n\n')))
+        f.write(''.join(('osnr_nl_central_channel_db = ', str(osnr_nl_central_channel_db), '\n\n')))
+        f.write(''.join(('osnr_lin_db = ', str(osnr_lin_db), '\n\n')))
+        f.write(''.join(('osnr_nl_db = ', str(osnr_nli_db), '\n\n')))
+        f.write(''.join(('spectrum = ', str(spectrum), '\n')))
+
+        f.close()
+
+    return osnr_nli_db, osnr_lin_db
+
+
+def ole(spectrum, link, fibers, sys_param, control_param, output_path='./output/'):
     """
 
     :param spectrum:
@@ -744,6 +817,7 @@ def ole(spectrum, link, fibers, sys_param, control_param):
     :param fibers:
     :param sys_param:
     :param control_param:
+    :param output_path:
     :return:
     """
 
@@ -788,30 +862,11 @@ def ole(spectrum, link, fibers, sys_param, control_param):
             print(error_string)
 
         if flag_save_each_comp:
+            f_name = 'Output from component ID #' + component['comp_id']
+            osnr_nli_db, osnr_lin_db = \
+                compute_and_save_osnr(spectrum, flag_save=True, file_name=f_name, output_path=output_path)
 
-            p_ch, b_eq, roll_off, p_ase, p_nli, n_ch = get_spectrum_param(spectrum)
+    osnr_nli_db, osnr_lin_db = \
+        compute_and_save_osnr(spectrum, flag_save=True, file_name='link_output', output_path=output_path)
 
-            if (p_ase == 0).any():
-                osnr_lin = np.zeros(n_ch)
-                for index, p_noise in enumerate(p_ase):
-                    if p_noise == 0:
-                        osnr_lin[index] = float('inf')
-                    else:
-                        osnr_lin[index] = p_ch[index] / p_noise
-
-            else:
-                osnr_lin = np.divide(p_ch, p_ase)
-
-            if not flag_is_linear:
-                if ((p_ase + p_nli) == 0).any():
-                    osnr_nli = np.zeros(n_ch)
-                    for index, p_noise in enumerate(p_ase + p_nli):
-
-                        if p_noise == 0:
-                            osnr_nli[index] = float('inf')
-                        else:
-                            osnr_nli[index] = p_ch[index] / p_noise
-
-                osnr_nli = np.divide(p_ch, p_ase + p_nli)
-
-    return osnr_nli, osnr_lin
+    return osnr_nli_db, osnr_lin_db
