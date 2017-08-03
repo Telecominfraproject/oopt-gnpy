@@ -779,8 +779,8 @@ def compute_and_save_osnr(spectrum, flag_save=False, file_name='00', output_path
                 osnr_nli[index] = float('inf')
             else:
                 osnr_nli[index] = p_ch[index] / p_noise
-
-    osnr_nli = np.divide(p_ch, p_ase + p_nli)
+    else:
+        osnr_nli = np.divide(p_ch, p_ase + p_nli)
 
     # Compute linear and non linear OSNR for the central channel
     ind_c = n_ch // 2
