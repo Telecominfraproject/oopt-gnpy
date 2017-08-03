@@ -23,62 +23,26 @@
         'length': the fiber length [km]
 
 """
-
-Link = [{
-    'comp_cat': 'PC',
-    'comp_id': '01',
-    'ref_freq': 193.5e3,
-    'loss': 2.0,
-    'loss_tlt': 0.0
-    },
-    {
-    'comp_cat': 'OA',
-    'comp_id': '02',
-    'ref_freq': 193.5e3,
-    'gain': 20,
-    'gain_tlt': 0.5e-3,
-    'noise_figure': 5
-    },
-    {
+smf = {
     'comp_cat': 'fiber',
-    'comp_id': '03',
+    'comp_id': '',
     'fiber_type': 'SMF',
     'length': 100
-    },
-    {
-    'comp_cat': 'PC',
-    'comp_id': '04',
-    'ref_freq': 193.5e-3,
-    'loss': 2.0,
-    'loss_tlt': 0.0
-    },
-    {
-    'comp_cat': 'OA',
-    'comp_id': '05',
-    'ref_freq': 193.5e3,
-    'gain': 20,
-    'gain_tlt': 0.5e-3,
-    'noise_figure': 5
-    },
-    {
-    'comp_cat': 'fiber',
-    'comp_id': '06',
-    'fiber_type': 'NZDF',
-    'length': 80
-    },
-    {
-    'comp_cat': 'OA',
-    'comp_id': '07',
-    'ref_freq': 193.5e3,
-    'gain': 20,
-    'gain_tlt': 0.5e-3,
-    'noise_figure': 5
-    },
-    {
-    'comp_cat': 'PC',
-    'comp_id': '08',
-    'ref_freq': 193.5e3,
-    'loss': 2.0,
-    'loss_tlt': 0.0
     }
-]
+
+oa = {
+    'comp_cat': 'OA',
+    'comp_id': '',
+    'ref_freq': 193.5,
+    'gain': 20,
+    'gain_tlt': 0.0,
+    'noise_figure': 5
+    }
+
+link = []
+
+for index in range(20):
+    smf['comp_id'] = '%03d' % (2 * index)
+    oa['comp_id'] = '%03d' % (2 * index + 1)
+    link += [dict(smf)]
+    link += [dict(oa)]

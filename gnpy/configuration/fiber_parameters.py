@@ -15,11 +15,11 @@
 fibers = {
     'SMF': {
         'reference_frequency': 193.5,
-        'alpha': 0.21,
+        'alpha': 0.2,
         'alpha_1st': 0,
         'beta_2': 21.27,
         'n_2': 2.5E-20,
-        'a_eff': 80,
+        'a_eff': 77.77,
     },
     'NZDF': {
         'reference_frequency': 193.5,

@@ -3,7 +3,7 @@
 
     The sectings are subdivided in two dictionaries:
         sys_param: a dictionary containing the general system parameters:
-            f0: the starting frequency of the laser grid used to describe the WDM system
+            f0: the starting frequency of the laser grid used to describe the WDM system [THz]
             ns: the number of 6.25 GHz slots in the grid
 
         control_param:

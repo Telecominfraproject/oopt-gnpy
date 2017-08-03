@@ -52,7 +52,6 @@ def main_ole():
     gtx = gn.raised_cosine_comb(f1_array, rs, roll_off, f_ch, power)
     gtx = gtx + 10 ** -6  # To avoid log10 issues.
 
-
     # OSNR at in the central channel
     ind_c = n_ch // 2
     osnr_lin_central_db = osnr_lin_db[ind_c]
@@ -83,4 +82,3 @@ def main_ole():
 
 if __name__ == '__main__':
     main_ole()
-
