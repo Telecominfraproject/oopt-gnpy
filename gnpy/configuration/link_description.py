@@ -39,6 +39,14 @@ oa = {
     'noise_figure': 5
     }
 
+pc = {
+    'comp_cat': 'PC',
+    'comp_id': '04',
+    'ref_freq': 193.,
+    'loss': 2.0,
+    'loss_tlt': 0.0
+    }
+
 link = []
 
 for index in range(20):
@@ -46,3 +54,6 @@ for index in range(20):
     oa['comp_id'] = '%03d' % (2 * index + 1)
     link += [dict(smf)]
     link += [dict(oa)]
+
+pc['comp_id'] = '%03d' % 40
+link += [dict(pc)]

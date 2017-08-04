@@ -18,7 +18,7 @@
 n_ch = 41
 
 spectrum = {
-    'laser_position': [1, 0, 0, 0, 0, 0, 0, 0] * n_ch,
+    'laser_position': [0, 0, 0, 1, 0, 0, 0, 0] * n_ch,
     'signals': [{
         'b_ch': 0.032,
         'roll_off': 0.15,

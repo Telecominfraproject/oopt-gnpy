@@ -22,8 +22,8 @@
 """
 # System parameters
 sys_param = {
-    'f0': 190.603,
-    'ns': 800
+    'f0': 192.075,
+    'ns': 328
 }
 
 # control parameters
