@@ -60,3 +60,6 @@ target/
 
 # pyenv python configuration file
 .python-version
+
+# MacOS DS_store
+.DS_Store
