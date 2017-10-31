@@ -1,0 +1,726 @@
+{
+  "nodes": [
+    {
+      "node": "Abilene"
+    },
+    {
+      "node": "Albany"
+    },
+    {
+      "node": "Albuquerque"
+    },
+    {
+      "node": "Atlanta"
+    },
+    {
+      "node": "Austin"
+    },
+    {
+      "node": "Baltimore"
+    },
+    {
+      "node": "Baton_Rouge"
+    },
+    {
+      "node": "Billings"
+    },
+    {
+      "node": "Birmingham"
+    },
+    {
+      "node": "Bismarck"
+    },
+    {
+      "node": "Boston"
+    },
+    {
+      "node": "Buffalo"
+    },
+    {
+      "node": "Charleston"
+    },
+    {
+      "node": "Charlotte"
+    },
+    {
+      "node": "Chicago"
+    },
+    {
+      "node": "Cincinnati"
+    },
+    {
+      "node": "Cleveland"
+    },
+    {
+      "node": "Columbus"
+    },
+    {
+      "node": "Dallas"
+    },
+    {
+      "node": "Denver"
+    },
+    {
+      "node": "Detroit"
+    },
+    {
+      "node": "El_Paso"
+    },
+    {
+      "node": "Fresno"
+    },
+    {
+      "node": "Greensboro"
+    },
+    {
+      "node": "Hartford"
+    },
+    {
+      "node": "Houston"
+    },
+    {
+      "node": "Jacksonville"
+    },
+    {
+      "node": "Kansas_City"
+    },
+    {
+      "node": "Las_Vegas"
+    },
+    {
+      "node": "Little_Rock"
+    },
+    {
+      "node": "Long_Island"
+    },
+    {
+      "node": "Los_Angeles"
+    },
+    {
+      "node": "Louisville"
+    },
+    {
+      "node": "Memphis"
+    },
+    {
+      "node": "Miami"
+    },
+    {
+      "node": "Milwaukee"
+    },
+    {
+      "node": "Minneapolis"
+    },
+    {
+      "node": "Nashville"
+    },
+    {
+      "node": "New_Orleans"
+    },
+    {
+      "node": "New_York"
+    },
+    {
+      "node": "Newark"
+    },
+    {
+      "node": "Norfolk"
+    },
+    {
+      "node": "Oakland"
+    },
+    {
+      "node": "Oklahoma_City"
+    },
+    {
+      "node": "Omaha"
+    },
+    {
+      "node": "Orlando"
+    },
+    {
+      "node": "Philadelphia"
+    },
+    {
+      "node": "Phoenix"
+    },
+    {
+      "node": "Pittsburgh"
+    },
+    {
+      "node": "Portland"
+    },
+    {
+      "node": "Providence"
+    },
+    {
+      "node": "Raleigh"
+    },
+    {
+      "node": "Richmond"
+    },
+    {
+      "node": "Rochester"
+    },
+    {
+      "node": "Sacramento"
+    },
+    {
+      "node": "Salt_Lake_City"
+    },
+    {
+      "node": "San_Antonio"
+    },
+    {
+      "node": "San_Diego"
+    },
+    {
+      "node": "San_Francisco"
+    },
+    {
+      "node": "San_Jose"
+    },
+    {
+      "node": "Santa_Barbara"
+    },
+    {
+      "node": "Scranton"
+    },
+    {
+      "node": "Seattle"
+    },
+    {
+      "node": "Spokane"
+    },
+    {
+      "node": "Springfield"
+    },
+    {
+      "node": "St_Louis"
+    },
+    {
+      "node": "Syracuse"
+    },
+    {
+      "node": "Tallahassee"
+    },
+    {
+      "node": "Tampa"
+    },
+    {
+      "node": "Toledo"
+    },
+    {
+      "node": "Tucson"
+    },
+    {
+      "node": "Tulsa"
+    },
+    {
+      "node": "Washington_DC"
+    },
+    {
+      "node": "West_Palm_Beach"
+    },
+    {
+      "node": "Wilmington"
+    }
+  ],
+  "links": [
+    {
+      "from_node": "Abilene",
+      "to_node": "Dallas",
+      "distance": 336950.933442355
+    },
+    {
+      "from_node": "Abilene",
+      "to_node": "El_Paso",
+      "distance": 761209.0776328612
+    },
+    {
+      "from_node": "Albany",
+      "to_node": "Boston",
+      "distance": 277064.9612527358
+    },
+    {
+      "from_node": "Albany",
+      "to_node": "Syracuse",
+      "distance": 234221.2200660136
+    },
+    {
+      "from_node": "Albuquerque",
+      "to_node": "Dallas",
+      "distance": 1133443.1193705667
+    },
+    {
+      "from_node": "Albuquerque",
+      "to_node": "Denver",
+      "distance": 647737.1779491204
+    },
+    {
+      "from_node": "Albuquerque",
+      "to_node": "El_Paso",
+      "distance": 436949.4668129474
+    },
+    {
+      "from_node": "Albuquerque",
+      "to_node": "Las_Vegas",
+      "distance": 943536.4332586244
+    },
+    {
+      "from_node": "Atlanta",
+      "to_node": "Birmingham",
+      "distance": 266228.09475545
+    },
+    {
+      "from_node": "Atlanta",
+      "to_node": "Charlotte",
+      "distance": 439237.96438878984
+    },
+    {
+      "from_node": "Atlanta",
+      "to_node": "Jacksonville",
+      "distance": 554110.8875028704
+    },
+    {
+      "from_node": "Austin",
+      "to_node": "Houston",
+      "distance": 282048.8175552249
+    },
+    {
+      "from_node": "Austin",
+      "to_node": "San_Antonio",
+      "distance": 143552.50635083037
+    },
+    {
+      "from_node": "Baltimore",
+      "to_node": "Philadelphia",
+      "distance": 179194.96513094116
+    },
+    {
+      "from_node": "Baltimore",
+      "to_node": "Pittsburgh",
+      "distance": 384818.75394461013
+    },
+    {
+      "from_node": "Baltimore",
+      "to_node": "Washington_DC",
+      "distance": 67179.47405391949
+    },
+    {
+      "from_node": "Baton_Rouge",
+      "to_node": "Houston",
+      "distance": 500151.79571277794
+    },
+    {
+      "from_node": "Baton_Rouge",
+      "to_node": "New_Orleans",
+      "distance": 147350.405765844
+    },
+    {
+      "from_node": "Billings",
+      "to_node": "Bismarck",
+      "distance": 729017.0987051496
+    },
+    {
+      "from_node": "Billings",
+      "to_node": "Denver",
+      "distance": 880041.7120055627
+    },
+    {
+      "from_node": "Billings",
+      "to_node": "Spokane",
+      "distance": 848857.9798603198
+    },
+    {
+      "from_node": "Birmingham",
+      "to_node": "Nashville",
+      "distance": 352382.9079978737
+    },
+    {
+      "from_node": "Birmingham",
+      "to_node": "New_Orleans",
+      "distance": 582464.4303930057
+    },
+    {
+      "from_node": "Bismarck",
+      "to_node": "Minneapolis",
+      "distance": 738940.164214936
+    },
+    {
+      "from_node": "Boston",
+      "to_node": "Providence",
+      "distance": 79922.93576874546
+    },
+    {
+      "from_node": "Buffalo",
+      "to_node": "Cleveland",
+      "distance": 336433.7393351862
+    },
+    {
+      "from_node": "Buffalo",
+      "to_node": "Rochester",
+      "distance": 126626.38243870728
+    },
+    {
+      "from_node": "Charleston",
+      "to_node": "Jacksonville",
+      "distance": 379311.10595847014
+    },
+    {
+      "from_node": "Charleston",
+      "to_node": "Raleigh",
+      "distance": 430181.8131120458
+    },
+    {
+      "from_node": "Charlotte",
+      "to_node": "Greensboro",
+      "distance": 159883.44694071537
+    },
+    {
+      "from_node": "Chicago",
+      "to_node": "Detroit",
+      "distance": 459145.2686200482
+    },
+    {
+      "from_node": "Chicago",
+      "to_node": "Milwaukee",
+      "distance": 165326.48054217966
+    },
+    {
+      "from_node": "Chicago",
+      "to_node": "Springfield",
+      "distance": 357573.0072946256
+    },
+    {
+      "from_node": "Cincinnati",
+      "to_node": "Columbus",
+      "distance": 193215.3767474445
+    },
+    {
+      "from_node": "Cincinnati",
+      "to_node": "Louisville",
+      "distance": 177492.5815650221
+    },
+    {
+      "from_node": "Cincinnati",
+      "to_node": "Washington_DC",
+      "distance": 777050.7391959417
+    },
+    {
+      "from_node": "Cleveland",
+      "to_node": "Columbus",
+      "distance": 238963.05716464267
+    },
+    {
+      "from_node": "Cleveland",
+      "to_node": "Toledo",
+      "distance": 191243.62944993825
+    },
+    {
+      "from_node": "Columbus",
+      "to_node": "Pittsburgh",
+      "distance": 294713.5668849075
+    },
+    {
+      "from_node": "Dallas",
+      "to_node": "Houston",
+      "distance": 432731.24908762786
+    },
+    {
+      "from_node": "Dallas",
+      "to_node": "Little_Rock",
+      "distance": 553958.2807348323
+    },
+    {
+      "from_node": "Dallas",
+      "to_node": "Oklahoma_City",
+      "distance": 366936.135078018
+    },
+    {
+      "from_node": "Denver",
+      "to_node": "Omaha",
+      "distance": 920337.3587581345
+    },
+    {
+      "from_node": "Denver",
+      "to_node": "Salt_Lake_City",
+      "distance": 731271.7231491925
+    },
+    {
+      "from_node": "Detroit",
+      "to_node": "Toledo",
+      "distance": 107243.69565949208
+    },
+    {
+      "from_node": "El_Paso",
+      "to_node": "San_Antonio",
+      "distance": 964453.1908086437
+    },
+    {
+      "from_node": "El_Paso",
+      "to_node": "Tucson",
+      "distance": 505748.53067973146
+    },
+    {
+      "from_node": "Fresno",
+      "to_node": "Las_Vegas",
+      "distance": 496199.0406606754
+    },
+    {
+      "from_node": "Fresno",
+      "to_node": "Los_Angeles",
+      "distance": 386670.78167770646
+    },
+    {
+      "from_node": "Fresno",
+      "to_node": "Oakland",
+      "distance": 289941.06181541015
+    },
+    {
+      "from_node": "Greensboro",
+      "to_node": "Louisville",
+      "distance": 690409.1793568647
+    },
+    {
+      "from_node": "Greensboro",
+      "to_node": "Raleigh",
+      "distance": 131097.21015274964
+    },
+    {
+      "from_node": "Greensboro",
+      "to_node": "Richmond",
+      "distance": 317896.5468659796
+    },
+    {
+      "from_node": "Hartford",
+      "to_node": "Long_Island",
+      "distance": 186270.76215771865
+    },
+    {
+      "from_node": "Hartford",
+      "to_node": "Providence",
+      "distance": 125559.9482424726
+    },
+    {
+      "from_node": "Jacksonville",
+      "to_node": "Orlando",
+      "distance": 246577.03478271543
+    },
+    {
+      "from_node": "Kansas_City",
+      "to_node": "Omaha",
+      "distance": 314032.2057923469
+    },
+    {
+      "from_node": "Kansas_City",
+      "to_node": "St_Louis",
+      "distance": 470865.7976302973
+    },
+    {
+      "from_node": "Kansas_City",
+      "to_node": "Tulsa",
+      "distance": 418438.38443924417
+    },
+    {
+      "from_node": "Las_Vegas",
+      "to_node": "Phoenix",
+      "distance": 495900.32385130826
+    },
+    {
+      "from_node": "Las_Vegas",
+      "to_node": "Salt_Lake_City",
+      "distance": 700005.1285708123
+    },
+    {
+      "from_node": "Little_Rock",
+      "to_node": "Memphis",
+      "distance": 261343.34712478204
+    },
+    {
+      "from_node": "Long_Island",
+      "to_node": "New_York",
+      "distance": 29361.522825216678
+    },
+    {
+      "from_node": "Los_Angeles",
+      "to_node": "San_Diego",
+      "distance": 223844.50861005278
+    },
+    {
+      "from_node": "Los_Angeles",
+      "to_node": "Santa_Barbara",
+      "distance": 150676.61338412543
+    },
+    {
+      "from_node": "Louisville",
+      "to_node": "Nashville",
+      "distance": 295118.2141824404
+    },
+    {
+      "from_node": "Louisville",
+      "to_node": "St_Louis",
+      "distance": 473801.67553397635
+    },
+    {
+      "from_node": "Memphis",
+      "to_node": "Nashville",
+      "distance": 377836.3294188946
+    },
+    {
+      "from_node": "Miami",
+      "to_node": "Tampa",
+      "distance": 397114.91068285884
+    },
+    {
+      "from_node": "Miami",
+      "to_node": "West_Palm_Beach",
+      "distance": 129825.0315009734
+    },
+    {
+      "from_node": "Milwaukee",
+      "to_node": "Minneapolis",
+      "distance": 568333.8474875162
+    },
+    {
+      "from_node": "Minneapolis",
+      "to_node": "Omaha",
+      "distance": 561327.0039343047
+    },
+    {
+      "from_node": "New_Orleans",
+      "to_node": "Tallahassee",
+      "distance": 653359.3336046303
+    },
+    {
+      "from_node": "New_York",
+      "to_node": "Newark",
+      "distance": 24213.534771953015
+    },
+    {
+      "from_node": "New_York",
+      "to_node": "Scranton",
+      "distance": 199575.0873581046
+    },
+    {
+      "from_node": "New_York",
+      "to_node": "Wilmington",
+      "distance": 204151.6726069126
+    },
+    {
+      "from_node": "Newark",
+      "to_node": "Philadelphia",
+      "distance": 136060.45210990414
+    },
+    {
+      "from_node": "Norfolk",
+      "to_node": "Raleigh",
+      "distance": 298655.8234036971
+    },
+    {
+      "from_node": "Norfolk",
+      "to_node": "Wilmington",
+      "distance": 383669.0534326684
+    },
+    {
+      "from_node": "Oakland",
+      "to_node": "Sacramento",
+      "distance": 132649.02173675701
+    },
+    {
+      "from_node": "Oakland",
+      "to_node": "Salt_Lake_City",
+      "distance": 1135717.4023355232
+    },
+    {
+      "from_node": "Oakland",
+      "to_node": "San_Francisco",
+      "distance": 25719.917162524547
+    },
+    {
+      "from_node": "Oklahoma_City",
+      "to_node": "Tulsa",
+      "distance": 193358.7768184288
+    },
+    {
+      "from_node": "Orlando",
+      "to_node": "West_Palm_Beach",
+      "distance": 275792.8547669195
+    },
+    {
+      "from_node": "Philadelphia",
+      "to_node": "Scranton",
+      "distance": 193408.99038575066
+    },
+    {
+      "from_node": "Phoenix",
+      "to_node": "San_Diego",
+      "distance": 574675.0815615965
+    },
+    {
+      "from_node": "Phoenix",
+      "to_node": "Tucson",
+      "distance": 222458.2756108501
+    },
+    {
+      "from_node": "Pittsburgh",
+      "to_node": "Scranton",
+      "distance": 473565.38062836556
+    },
+    {
+      "from_node": "Portland",
+      "to_node": "Sacramento",
+      "distance": 937740.4055592439
+    },
+    {
+      "from_node": "Portland",
+      "to_node": "Salt_Lake_City",
+      "distance": 1221189.2893718134
+    },
+    {
+      "from_node": "Portland",
+      "to_node": "Seattle",
+      "distance": 279081.73105798045
+    },
+    {
+      "from_node": "Richmond",
+      "to_node": "Washington_DC",
+      "distance": 190144.66852785257
+    },
+    {
+      "from_node": "Rochester",
+      "to_node": "Syracuse",
+      "distance": 145265.92096779268
+    },
+    {
+      "from_node": "San_Francisco",
+      "to_node": "San_Jose",
+      "distance": 77162.67231374908
+    },
+    {
+      "from_node": "San_Jose",
+      "to_node": "Santa_Barbara",
+      "distance": 446989.8708341154
+    },
+    {
+      "from_node": "Scranton",
+      "to_node": "Syracuse",
+      "distance": 223775.0822342436
+    },
+    {
+      "from_node": "Seattle",
+      "to_node": "Spokane",
+      "distance": 444206.9519329237
+    },
+    {
+      "from_node": "Springfield",
+      "to_node": "St_Louis",
+      "distance": 144059.96844998273
+    },
+    {
+      "from_node": "Tallahassee",
+      "to_node": "Tampa",
+      "distance": 394094.2686484811
+    }
+  ]
+}
