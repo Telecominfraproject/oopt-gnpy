@@ -1,0 +1,406 @@
+{
+  "elements": [
+    {
+      "id": "Amsterdam",
+      "metadata": {
+        "city": "Amsterdam",
+        "region": "Europe",
+        "latitude": 52.3699996,
+        "longitude": 4.88999915
+      },
+      "type": "City"
+    },
+    {
+      "id": "Berlin",
+      "metadata": {
+        "city": "Berlin",
+        "region": "Europe",
+        "latitude": 52.520002,
+        "longitude": 13.379995
+      },
+      "type": "City"
+    },
+    {
+      "id": "Brussels",
+      "metadata": {
+        "city": "Brussels",
+        "region": "Europe",
+        "latitude": 50.830002,
+        "longitude": 4.330002
+      },
+      "type": "City"
+    },
+    {
+      "id": "Bucharest",
+      "metadata": {
+        "city": "Bucharest",
+        "region": "Europe",
+        "latitude": 44.44,
+        "longitude": 26.1
+      },
+      "type": "City"
+    },
+    {
+      "id": "Frankfurt",
+      "metadata": {
+        "city": "Frankfurt",
+        "region": "Europe",
+        "latitude": 50.1199992,
+        "longitude": 8.68000104
+      },
+      "type": "City"
+    },
+    {
+      "id": "Istanbul",
+      "metadata": {
+        "city": "Istanbul",
+        "region": "Europe",
+        "latitude": 41.1,
+        "longitude": 29.0
+      },
+      "type": "City"
+    },
+    {
+      "id": "London",
+      "metadata": {
+        "city": "London",
+        "region": "Europe",
+        "latitude": 51.5200005,
+        "longitude": -0.100000296
+      },
+      "type": "City"
+    },
+    {
+      "id": "Madrid",
+      "metadata": {
+        "city": "Madrid",
+        "region": "Europe",
+        "latitude": 40.419998,
+        "longitude": -3.7100002
+      },
+      "type": "City"
+    },
+    {
+      "id": "Paris",
+      "metadata": {
+        "city": "Paris",
+        "region": "Europe",
+        "latitude": 48.86,
+        "longitude": 2.3399995
+      },
+      "type": "City"
+    },
+    {
+      "id": "Rome",
+      "metadata": {
+        "city": "Rome",
+        "region": "Europe",
+        "latitude": 41.8899996,
+        "longitude": 12.5000004
+      },
+      "type": "City"
+    },
+    {
+      "id": "Vienna",
+      "metadata": {
+        "city": "Vienna",
+        "region": "Europe",
+        "latitude": 48.2200024,
+        "longitude": 16.3700005
+      },
+      "type": "City"
+    },
+    {
+      "id": "Warsaw",
+      "metadata": {
+        "city": "Warsaw",
+        "region": "Europe",
+        "latitude": 52.2599987,
+        "longitude": 21.0200005
+      },
+      "type": "City"
+    },
+    {
+      "id": "Zurich",
+      "metadata": {
+        "city": "Zurich",
+        "region": "Europe",
+        "latitude": 47.3800015,
+        "longitude": 8.5399996
+      },
+      "type": "City"
+    },
+    {
+      "id": "fiber (Amsterdam \u2192 Berlin)",
+      "metadata": {
+        "length": 690.6082920593449,
+        "units": "km",
+        "latitude": 52.4450008,
+        "longitude": 9.134997075
+      },
+      "type": "Fiber"
+    },
+    {
+      "id": "fiber (Amsterdam \u2192 Brussels)",
+      "metadata": {
+        "length": 210.72879668411468,
+        "units": "km",
+        "latitude": 51.600000800000004,
+        "longitude": 4.610000575000001
+      },
+      "type": "Fiber"
+    },
+    {
+      "id": "fiber (Amsterdam \u2192 Frankfurt)",
+      "metadata": {
+        "length": 436.32424081216897,
+        "units": "km",
+        "latitude": 51.2449994,
+        "longitude": 6.785000095000001
+      },
+      "type": "Fiber"
+    },
+    {
+      "id": "fiber (Berlin \u2192 Warsaw)",
+      "metadata": {
+        "length": 623.0146935618342,
+        "units": "km",
+        "latitude": 52.390000349999994,
+        "longitude": 17.199997749999998
+      },
+      "type": "Fiber"
+    },
+    {
+      "id": "fiber (Brussels \u2192 London)",
+      "metadata": {
+        "length": 381.913012710562,
+        "units": "km",
+        "latitude": 51.17500125,
+        "longitude": 2.115000852
+      },
+      "type": "Fiber"
+    },
+    {
+      "id": "fiber (Bucharest \u2192 Istanbul)",
+      "metadata": {
+        "length": 528.5804934964391,
+        "units": "km",
+        "latitude": 42.769999999999996,
+        "longitude": 27.55
+      },
+      "type": "Fiber"
+    },
+    {
+      "id": "fiber (Bucharest \u2192 Warsaw)",
+      "metadata": {
+        "length": 1136.2004559222928,
+        "units": "km",
+        "latitude": 48.34999935,
+        "longitude": 23.56000025
+      },
+      "type": "Fiber"
+    },
+    {
+      "id": "fiber (Frankfurt \u2192 Vienna)",
+      "metadata": {
+        "length": 717.0013849336048,
+        "units": "km",
+        "latitude": 49.1700008,
+        "longitude": 12.52500077
+      },
+      "type": "Fiber"
+    },
+    {
+      "id": "fiber (Istanbul \u2192 Rome)",
+      "metadata": {
+        "length": 1650.405833597658,
+        "units": "km",
+        "latitude": 41.4949998,
+        "longitude": 20.7500002
+      },
+      "type": "Fiber"
+    },
+    {
+      "id": "fiber (London \u2192 Paris)",
+      "metadata": {
+        "length": 411.69237336349147,
+        "units": "km",
+        "latitude": 50.19000025,
+        "longitude": 1.1199996019999998
+      },
+      "type": "Fiber"
+    },
+    {
+      "id": "fiber (Madrid \u2192 Paris)",
+      "metadata": {
+        "length": 1263.6192323447242,
+        "units": "km",
+        "latitude": 44.639999,
+        "longitude": -0.6850003500000001
+      },
+      "type": "Fiber"
+    },
+    {
+      "id": "fiber (Madrid \u2192 Zurich)",
+      "metadata": {
+        "length": 1497.3583126093179,
+        "units": "km",
+        "latitude": 43.89999975,
+        "longitude": 2.4149997
+      },
+      "type": "Fiber"
+    },
+    {
+      "id": "fiber (Rome \u2192 Vienna)",
+      "metadata": {
+        "length": 920.025605583882,
+        "units": "km",
+        "latitude": 45.055001000000004,
+        "longitude": 14.43500045
+      },
+      "type": "Fiber"
+    },
+    {
+      "id": "fiber (Rome \u2192 Zurich)",
+      "metadata": {
+        "length": 823.399678170238,
+        "units": "km",
+        "latitude": 44.63500055,
+        "longitude": 10.52
+      },
+      "type": "Fiber"
+    },
+    {
+      "id": "fiber (Vienna \u2192 Warsaw)",
+      "metadata": {
+        "length": 669.2971801468174,
+        "units": "km",
+        "latitude": 50.24000055,
+        "longitude": 18.6950005
+      },
+      "type": "Fiber"
+    }
+  ],
+  "connections": [
+    {
+      "from_node": "Amsterdam",
+      "to_node": "fiber (Amsterdam \u2192 Berlin)"
+    },
+    {
+      "from_node": "Amsterdam",
+      "to_node": "fiber (Amsterdam \u2192 Brussels)"
+    },
+    {
+      "from_node": "Amsterdam",
+      "to_node": "fiber (Amsterdam \u2192 Frankfurt)"
+    },
+    {
+      "from_node": "Berlin",
+      "to_node": "fiber (Berlin \u2192 Warsaw)"
+    },
+    {
+      "from_node": "Brussels",
+      "to_node": "fiber (Brussels \u2192 London)"
+    },
+    {
+      "from_node": "Bucharest",
+      "to_node": "fiber (Bucharest \u2192 Istanbul)"
+    },
+    {
+      "from_node": "Bucharest",
+      "to_node": "fiber (Bucharest \u2192 Warsaw)"
+    },
+    {
+      "from_node": "Frankfurt",
+      "to_node": "fiber (Frankfurt \u2192 Vienna)"
+    },
+    {
+      "from_node": "Istanbul",
+      "to_node": "fiber (Istanbul \u2192 Rome)"
+    },
+    {
+      "from_node": "London",
+      "to_node": "fiber (London \u2192 Paris)"
+    },
+    {
+      "from_node": "Madrid",
+      "to_node": "fiber (Madrid \u2192 Paris)"
+    },
+    {
+      "from_node": "Madrid",
+      "to_node": "fiber (Madrid \u2192 Zurich)"
+    },
+    {
+      "from_node": "Rome",
+      "to_node": "fiber (Rome \u2192 Vienna)"
+    },
+    {
+      "from_node": "Rome",
+      "to_node": "fiber (Rome \u2192 Zurich)"
+    },
+    {
+      "from_node": "Vienna",
+      "to_node": "fiber (Vienna \u2192 Warsaw)"
+    },
+    {
+      "from_node": "fiber (Amsterdam \u2192 Berlin)",
+      "to_node": "Berlin"
+    },
+    {
+      "from_node": "fiber (Amsterdam \u2192 Brussels)",
+      "to_node": "Brussels"
+    },
+    {
+      "from_node": "fiber (Amsterdam \u2192 Frankfurt)",
+      "to_node": "Frankfurt"
+    },
+    {
+      "from_node": "fiber (Berlin \u2192 Warsaw)",
+      "to_node": "Warsaw"
+    },
+    {
+      "from_node": "fiber (Brussels \u2192 London)",
+      "to_node": "London"
+    },
+    {
+      "from_node": "fiber (Bucharest \u2192 Istanbul)",
+      "to_node": "Istanbul"
+    },
+    {
+      "from_node": "fiber (Bucharest \u2192 Warsaw)",
+      "to_node": "Warsaw"
+    },
+    {
+      "from_node": "fiber (Frankfurt \u2192 Vienna)",
+      "to_node": "Vienna"
+    },
+    {
+      "from_node": "fiber (Istanbul \u2192 Rome)",
+      "to_node": "Rome"
+    },
+    {
+      "from_node": "fiber (London \u2192 Paris)",
+      "to_node": "Paris"
+    },
+    {
+      "from_node": "fiber (Madrid \u2192 Paris)",
+      "to_node": "Paris"
+    },
+    {
+      "from_node": "fiber (Madrid \u2192 Zurich)",
+      "to_node": "Zurich"
+    },
+    {
+      "from_node": "fiber (Rome \u2192 Vienna)",
+      "to_node": "Vienna"
+    },
+    {
+      "from_node": "fiber (Rome \u2192 Zurich)",
+      "to_node": "Zurich"
+    },
+    {
+      "from_node": "fiber (Vienna \u2192 Warsaw)",
+      "to_node": "Warsaw"
+    }
+  ]
+}
