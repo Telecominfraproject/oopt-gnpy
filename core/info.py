@@ -2,17 +2,28 @@
 
 from collections import namedtuple
 
-class Power(namedtuple('Power', 'signal nonlinear_interference amplified_spontaneous_emission')):
-    # convenient access
-    nli = property(lambda self: self.nonlinear_interference)
-    ase = property(lambda self: self.amplified_spontaneous_emission)
+class ConvenienceAccess:
+    def __init_subclass__(cls):
+        for abbrev, field in getattr(cls, '_ABBREVS', {}).items():
+            setattr(cls, abbrev, property(lambda self, f=field: getattr(self, f)))
 
-class Carrier(namedtuple('Carrier', 'channel_number frequency modulation baud_rate alpha power')):
-    # convenient access
-    ch = channel = property(lambda self: self.channel_number)
-    ffs = freq = property(lambda self: self.frequency)
+    def update(self, **kwargs):
+        for abbrev, field in getattr(self, '_ABBREVS', {}).items():
+            if abbrev in kwargs:
+                kwargs[field] = kwargs.pop(abbrev)
+        return self._replace(**kwargs)
 
-class SpectralInformation(namedtuple('SpectralInformation', 'carriers')):
+class Power(namedtuple('Power', 'signal nonlinear_interference amplified_spontaneous_emission'), ConvenienceAccess):
+    _ABBREVS = {'nli': 'nonlinear_interference',
+                'ase': 'amplified_spontaneous_emission',}
+
+class Carrier(namedtuple('Carrier', 'channel_number frequency modulation baud_rate alpha power'), ConvenienceAccess):
+    _ABBREVS = {'channel': 'channel_number',
+                'ch':      'channel_number',
+                'ffs':     'frequency',
+                'freq':    'frequency',}
+
+class SpectralInformation(namedtuple('SpectralInformation', 'carriers'), ConvenienceAccess):
     def __new__(cls, *carriers):
         return super().__new__(cls, carriers)
 
@@ -24,3 +35,7 @@ if __name__ == '__main__':
             Power(1.2e-3, 1e-6, 1e-6)),           # 1.2 mW, 1uW, 1uW
     )
     print(f'si = {si}')
+    print(f'si = {si.carriers[0].power.nli}')
+    si2 = si.update(carriers=tuple(c.update(power = c.power.update(nli = c.power.nli * 1e5))
+                              for c in si.carriers))
+    print(f'si2 = {si2}')

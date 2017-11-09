@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+
 from collections import namedtuple
 
 # helpers
@@ -26,9 +27,8 @@ class Transceiver(namedtuple('Transceiver', 'uid location')):
         location = Location(**location)
         return super().__new__(cls, uid, location)
 
-    def __call__(self, *spectral_infos):
-        for si in spectral_infos:
-            yield si
+    def __call__(self, spectral_info):
+        return spectral_info
 
     # convenience access
     loc  = property(lambda self: self.location)
@@ -52,9 +52,8 @@ class Fiber(namedtuple('Fiber', 'uid length_ location')):
                                    amplified_spontaneous_emission = power.ase * 2)
             yield carrier._replace(power=power)
 
-    def __call__(self, *spectral_infos):
-        for si in spectral_infos:
-            yield si._replace(carriers=tuple(self.propagate(*si.carriers)))
+    def __call__(self, spectral_info):
+        return spectral_info.update(carriers=tuple(self.propagate(*spectral_info.carriers)))
 
     # convenience access
     length = property(lambda self: self.length_.value)
