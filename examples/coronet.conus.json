@@ -1747,792 +1747,1584 @@
       "to_node": "fiber (Abilene \u2192 Dallas)"
     },
     {
+      "from_node": "fiber (Abilene \u2192 Dallas)",
+      "to_node": "Abilene"
+    },
+    {
       "from_node": "Abilene",
       "to_node": "fiber (Abilene \u2192 El_Paso)"
+    },
+    {
+      "from_node": "fiber (Abilene \u2192 El_Paso)",
+      "to_node": "Abilene"
     },
     {
       "from_node": "Albany",
       "to_node": "fiber (Albany \u2192 Boston)"
     },
     {
+      "from_node": "fiber (Albany \u2192 Boston)",
+      "to_node": "Albany"
+    },
+    {
       "from_node": "Albany",
       "to_node": "fiber (Albany \u2192 Syracuse)"
+    },
+    {
+      "from_node": "fiber (Albany \u2192 Syracuse)",
+      "to_node": "Albany"
     },
     {
       "from_node": "Albuquerque",
       "to_node": "fiber (Albuquerque \u2192 Dallas)"
     },
     {
+      "from_node": "fiber (Albuquerque \u2192 Dallas)",
+      "to_node": "Albuquerque"
+    },
+    {
       "from_node": "Albuquerque",
       "to_node": "fiber (Albuquerque \u2192 Denver)"
+    },
+    {
+      "from_node": "fiber (Albuquerque \u2192 Denver)",
+      "to_node": "Albuquerque"
     },
     {
       "from_node": "Albuquerque",
       "to_node": "fiber (Albuquerque \u2192 El_Paso)"
     },
     {
+      "from_node": "fiber (Albuquerque \u2192 El_Paso)",
+      "to_node": "Albuquerque"
+    },
+    {
       "from_node": "Albuquerque",
       "to_node": "fiber (Albuquerque \u2192 Las_Vegas)"
+    },
+    {
+      "from_node": "fiber (Albuquerque \u2192 Las_Vegas)",
+      "to_node": "Albuquerque"
     },
     {
       "from_node": "Atlanta",
       "to_node": "fiber (Atlanta \u2192 Birmingham)"
     },
     {
+      "from_node": "fiber (Atlanta \u2192 Birmingham)",
+      "to_node": "Atlanta"
+    },
+    {
       "from_node": "Atlanta",
       "to_node": "fiber (Atlanta \u2192 Charlotte)"
+    },
+    {
+      "from_node": "fiber (Atlanta \u2192 Charlotte)",
+      "to_node": "Atlanta"
     },
     {
       "from_node": "Atlanta",
       "to_node": "fiber (Atlanta \u2192 Jacksonville)"
     },
     {
+      "from_node": "fiber (Atlanta \u2192 Jacksonville)",
+      "to_node": "Atlanta"
+    },
+    {
       "from_node": "Austin",
       "to_node": "fiber (Austin \u2192 Houston)"
+    },
+    {
+      "from_node": "fiber (Austin \u2192 Houston)",
+      "to_node": "Austin"
     },
     {
       "from_node": "Austin",
       "to_node": "fiber (Austin \u2192 San_Antonio)"
     },
     {
+      "from_node": "fiber (Austin \u2192 San_Antonio)",
+      "to_node": "Austin"
+    },
+    {
       "from_node": "Baltimore",
       "to_node": "fiber (Baltimore \u2192 Philadelphia)"
+    },
+    {
+      "from_node": "fiber (Baltimore \u2192 Philadelphia)",
+      "to_node": "Baltimore"
     },
     {
       "from_node": "Baltimore",
       "to_node": "fiber (Baltimore \u2192 Pittsburgh)"
     },
     {
+      "from_node": "fiber (Baltimore \u2192 Pittsburgh)",
+      "to_node": "Baltimore"
+    },
+    {
       "from_node": "Baltimore",
       "to_node": "fiber (Baltimore \u2192 Washington_DC)"
+    },
+    {
+      "from_node": "fiber (Baltimore \u2192 Washington_DC)",
+      "to_node": "Baltimore"
     },
     {
       "from_node": "Baton_Rouge",
       "to_node": "fiber (Baton_Rouge \u2192 Houston)"
     },
     {
+      "from_node": "fiber (Baton_Rouge \u2192 Houston)",
+      "to_node": "Baton_Rouge"
+    },
+    {
       "from_node": "Baton_Rouge",
       "to_node": "fiber (Baton_Rouge \u2192 New_Orleans)"
+    },
+    {
+      "from_node": "fiber (Baton_Rouge \u2192 New_Orleans)",
+      "to_node": "Baton_Rouge"
     },
     {
       "from_node": "Billings",
       "to_node": "fiber (Billings \u2192 Bismarck)"
     },
     {
+      "from_node": "fiber (Billings \u2192 Bismarck)",
+      "to_node": "Billings"
+    },
+    {
       "from_node": "Billings",
       "to_node": "fiber (Billings \u2192 Denver)"
+    },
+    {
+      "from_node": "fiber (Billings \u2192 Denver)",
+      "to_node": "Billings"
     },
     {
       "from_node": "Billings",
       "to_node": "fiber (Billings \u2192 Spokane)"
     },
     {
+      "from_node": "fiber (Billings \u2192 Spokane)",
+      "to_node": "Billings"
+    },
+    {
       "from_node": "Birmingham",
       "to_node": "fiber (Birmingham \u2192 Nashville)"
+    },
+    {
+      "from_node": "fiber (Birmingham \u2192 Nashville)",
+      "to_node": "Birmingham"
     },
     {
       "from_node": "Birmingham",
       "to_node": "fiber (Birmingham \u2192 New_Orleans)"
     },
     {
+      "from_node": "fiber (Birmingham \u2192 New_Orleans)",
+      "to_node": "Birmingham"
+    },
+    {
       "from_node": "Bismarck",
       "to_node": "fiber (Bismarck \u2192 Minneapolis)"
+    },
+    {
+      "from_node": "fiber (Bismarck \u2192 Minneapolis)",
+      "to_node": "Bismarck"
     },
     {
       "from_node": "Boston",
       "to_node": "fiber (Boston \u2192 Providence)"
     },
     {
+      "from_node": "fiber (Boston \u2192 Providence)",
+      "to_node": "Boston"
+    },
+    {
       "from_node": "Buffalo",
       "to_node": "fiber (Buffalo \u2192 Cleveland)"
+    },
+    {
+      "from_node": "fiber (Buffalo \u2192 Cleveland)",
+      "to_node": "Buffalo"
     },
     {
       "from_node": "Buffalo",
       "to_node": "fiber (Buffalo \u2192 Rochester)"
     },
     {
+      "from_node": "fiber (Buffalo \u2192 Rochester)",
+      "to_node": "Buffalo"
+    },
+    {
       "from_node": "Charleston",
       "to_node": "fiber (Charleston \u2192 Jacksonville)"
+    },
+    {
+      "from_node": "fiber (Charleston \u2192 Jacksonville)",
+      "to_node": "Charleston"
     },
     {
       "from_node": "Charleston",
       "to_node": "fiber (Charleston \u2192 Raleigh)"
     },
     {
+      "from_node": "fiber (Charleston \u2192 Raleigh)",
+      "to_node": "Charleston"
+    },
+    {
       "from_node": "Charlotte",
       "to_node": "fiber (Charlotte \u2192 Greensboro)"
+    },
+    {
+      "from_node": "fiber (Charlotte \u2192 Greensboro)",
+      "to_node": "Charlotte"
     },
     {
       "from_node": "Chicago",
       "to_node": "fiber (Chicago \u2192 Detroit)"
     },
     {
+      "from_node": "fiber (Chicago \u2192 Detroit)",
+      "to_node": "Chicago"
+    },
+    {
       "from_node": "Chicago",
       "to_node": "fiber (Chicago \u2192 Milwaukee)"
+    },
+    {
+      "from_node": "fiber (Chicago \u2192 Milwaukee)",
+      "to_node": "Chicago"
     },
     {
       "from_node": "Chicago",
       "to_node": "fiber (Chicago \u2192 Springfield)"
     },
     {
+      "from_node": "fiber (Chicago \u2192 Springfield)",
+      "to_node": "Chicago"
+    },
+    {
       "from_node": "Cincinnati",
       "to_node": "fiber (Cincinnati \u2192 Columbus)"
+    },
+    {
+      "from_node": "fiber (Cincinnati \u2192 Columbus)",
+      "to_node": "Cincinnati"
     },
     {
       "from_node": "Cincinnati",
       "to_node": "fiber (Cincinnati \u2192 Louisville)"
     },
     {
+      "from_node": "fiber (Cincinnati \u2192 Louisville)",
+      "to_node": "Cincinnati"
+    },
+    {
       "from_node": "Cincinnati",
       "to_node": "fiber (Cincinnati \u2192 Washington_DC)"
+    },
+    {
+      "from_node": "fiber (Cincinnati \u2192 Washington_DC)",
+      "to_node": "Cincinnati"
     },
     {
       "from_node": "Cleveland",
       "to_node": "fiber (Cleveland \u2192 Columbus)"
     },
     {
+      "from_node": "fiber (Cleveland \u2192 Columbus)",
+      "to_node": "Cleveland"
+    },
+    {
       "from_node": "Cleveland",
       "to_node": "fiber (Cleveland \u2192 Toledo)"
+    },
+    {
+      "from_node": "fiber (Cleveland \u2192 Toledo)",
+      "to_node": "Cleveland"
     },
     {
       "from_node": "Columbus",
       "to_node": "fiber (Columbus \u2192 Pittsburgh)"
     },
     {
+      "from_node": "fiber (Columbus \u2192 Pittsburgh)",
+      "to_node": "Columbus"
+    },
+    {
       "from_node": "Dallas",
       "to_node": "fiber (Dallas \u2192 Houston)"
+    },
+    {
+      "from_node": "fiber (Dallas \u2192 Houston)",
+      "to_node": "Dallas"
     },
     {
       "from_node": "Dallas",
       "to_node": "fiber (Dallas \u2192 Little_Rock)"
     },
     {
+      "from_node": "fiber (Dallas \u2192 Little_Rock)",
+      "to_node": "Dallas"
+    },
+    {
       "from_node": "Dallas",
       "to_node": "fiber (Dallas \u2192 Oklahoma_City)"
+    },
+    {
+      "from_node": "fiber (Dallas \u2192 Oklahoma_City)",
+      "to_node": "Dallas"
     },
     {
       "from_node": "Denver",
       "to_node": "fiber (Denver \u2192 Omaha)"
     },
     {
+      "from_node": "fiber (Denver \u2192 Omaha)",
+      "to_node": "Denver"
+    },
+    {
       "from_node": "Denver",
       "to_node": "fiber (Denver \u2192 Salt_Lake_City)"
+    },
+    {
+      "from_node": "fiber (Denver \u2192 Salt_Lake_City)",
+      "to_node": "Denver"
     },
     {
       "from_node": "Detroit",
       "to_node": "fiber (Detroit \u2192 Toledo)"
     },
     {
+      "from_node": "fiber (Detroit \u2192 Toledo)",
+      "to_node": "Detroit"
+    },
+    {
       "from_node": "El_Paso",
       "to_node": "fiber (El_Paso \u2192 San_Antonio)"
+    },
+    {
+      "from_node": "fiber (El_Paso \u2192 San_Antonio)",
+      "to_node": "El_Paso"
     },
     {
       "from_node": "El_Paso",
       "to_node": "fiber (El_Paso \u2192 Tucson)"
     },
     {
+      "from_node": "fiber (El_Paso \u2192 Tucson)",
+      "to_node": "El_Paso"
+    },
+    {
       "from_node": "Fresno",
       "to_node": "fiber (Fresno \u2192 Las_Vegas)"
+    },
+    {
+      "from_node": "fiber (Fresno \u2192 Las_Vegas)",
+      "to_node": "Fresno"
     },
     {
       "from_node": "Fresno",
       "to_node": "fiber (Fresno \u2192 Los_Angeles)"
     },
     {
+      "from_node": "fiber (Fresno \u2192 Los_Angeles)",
+      "to_node": "Fresno"
+    },
+    {
       "from_node": "Fresno",
       "to_node": "fiber (Fresno \u2192 Oakland)"
+    },
+    {
+      "from_node": "fiber (Fresno \u2192 Oakland)",
+      "to_node": "Fresno"
     },
     {
       "from_node": "Greensboro",
       "to_node": "fiber (Greensboro \u2192 Louisville)"
     },
     {
+      "from_node": "fiber (Greensboro \u2192 Louisville)",
+      "to_node": "Greensboro"
+    },
+    {
       "from_node": "Greensboro",
       "to_node": "fiber (Greensboro \u2192 Raleigh)"
+    },
+    {
+      "from_node": "fiber (Greensboro \u2192 Raleigh)",
+      "to_node": "Greensboro"
     },
     {
       "from_node": "Greensboro",
       "to_node": "fiber (Greensboro \u2192 Richmond)"
     },
     {
+      "from_node": "fiber (Greensboro \u2192 Richmond)",
+      "to_node": "Greensboro"
+    },
+    {
       "from_node": "Hartford",
       "to_node": "fiber (Hartford \u2192 Long_Island)"
+    },
+    {
+      "from_node": "fiber (Hartford \u2192 Long_Island)",
+      "to_node": "Hartford"
     },
     {
       "from_node": "Hartford",
       "to_node": "fiber (Hartford \u2192 Providence)"
     },
     {
+      "from_node": "fiber (Hartford \u2192 Providence)",
+      "to_node": "Hartford"
+    },
+    {
       "from_node": "Jacksonville",
       "to_node": "fiber (Jacksonville \u2192 Orlando)"
+    },
+    {
+      "from_node": "fiber (Jacksonville \u2192 Orlando)",
+      "to_node": "Jacksonville"
     },
     {
       "from_node": "Kansas_City",
       "to_node": "fiber (Kansas_City \u2192 Omaha)"
     },
     {
+      "from_node": "fiber (Kansas_City \u2192 Omaha)",
+      "to_node": "Kansas_City"
+    },
+    {
       "from_node": "Kansas_City",
       "to_node": "fiber (Kansas_City \u2192 St_Louis)"
+    },
+    {
+      "from_node": "fiber (Kansas_City \u2192 St_Louis)",
+      "to_node": "Kansas_City"
     },
     {
       "from_node": "Kansas_City",
       "to_node": "fiber (Kansas_City \u2192 Tulsa)"
     },
     {
+      "from_node": "fiber (Kansas_City \u2192 Tulsa)",
+      "to_node": "Kansas_City"
+    },
+    {
       "from_node": "Las_Vegas",
       "to_node": "fiber (Las_Vegas \u2192 Phoenix)"
+    },
+    {
+      "from_node": "fiber (Las_Vegas \u2192 Phoenix)",
+      "to_node": "Las_Vegas"
     },
     {
       "from_node": "Las_Vegas",
       "to_node": "fiber (Las_Vegas \u2192 Salt_Lake_City)"
     },
     {
+      "from_node": "fiber (Las_Vegas \u2192 Salt_Lake_City)",
+      "to_node": "Las_Vegas"
+    },
+    {
       "from_node": "Little_Rock",
       "to_node": "fiber (Little_Rock \u2192 Memphis)"
+    },
+    {
+      "from_node": "fiber (Little_Rock \u2192 Memphis)",
+      "to_node": "Little_Rock"
     },
     {
       "from_node": "Long_Island",
       "to_node": "fiber (Long_Island \u2192 New_York)"
     },
     {
+      "from_node": "fiber (Long_Island \u2192 New_York)",
+      "to_node": "Long_Island"
+    },
+    {
       "from_node": "Los_Angeles",
       "to_node": "fiber (Los_Angeles \u2192 San_Diego)"
+    },
+    {
+      "from_node": "fiber (Los_Angeles \u2192 San_Diego)",
+      "to_node": "Los_Angeles"
     },
     {
       "from_node": "Los_Angeles",
       "to_node": "fiber (Los_Angeles \u2192 Santa_Barbara)"
     },
     {
+      "from_node": "fiber (Los_Angeles \u2192 Santa_Barbara)",
+      "to_node": "Los_Angeles"
+    },
+    {
       "from_node": "Louisville",
       "to_node": "fiber (Louisville \u2192 Nashville)"
+    },
+    {
+      "from_node": "fiber (Louisville \u2192 Nashville)",
+      "to_node": "Louisville"
     },
     {
       "from_node": "Louisville",
       "to_node": "fiber (Louisville \u2192 St_Louis)"
     },
     {
+      "from_node": "fiber (Louisville \u2192 St_Louis)",
+      "to_node": "Louisville"
+    },
+    {
       "from_node": "Memphis",
       "to_node": "fiber (Memphis \u2192 Nashville)"
+    },
+    {
+      "from_node": "fiber (Memphis \u2192 Nashville)",
+      "to_node": "Memphis"
     },
     {
       "from_node": "Miami",
       "to_node": "fiber (Miami \u2192 Tampa)"
     },
     {
+      "from_node": "fiber (Miami \u2192 Tampa)",
+      "to_node": "Miami"
+    },
+    {
       "from_node": "Miami",
       "to_node": "fiber (Miami \u2192 West_Palm_Beach)"
+    },
+    {
+      "from_node": "fiber (Miami \u2192 West_Palm_Beach)",
+      "to_node": "Miami"
     },
     {
       "from_node": "Milwaukee",
       "to_node": "fiber (Milwaukee \u2192 Minneapolis)"
     },
     {
+      "from_node": "fiber (Milwaukee \u2192 Minneapolis)",
+      "to_node": "Milwaukee"
+    },
+    {
       "from_node": "Minneapolis",
       "to_node": "fiber (Minneapolis \u2192 Omaha)"
+    },
+    {
+      "from_node": "fiber (Minneapolis \u2192 Omaha)",
+      "to_node": "Minneapolis"
     },
     {
       "from_node": "New_Orleans",
       "to_node": "fiber (New_Orleans \u2192 Tallahassee)"
     },
     {
+      "from_node": "fiber (New_Orleans \u2192 Tallahassee)",
+      "to_node": "New_Orleans"
+    },
+    {
       "from_node": "New_York",
       "to_node": "fiber (New_York \u2192 Newark)"
+    },
+    {
+      "from_node": "fiber (New_York \u2192 Newark)",
+      "to_node": "New_York"
     },
     {
       "from_node": "New_York",
       "to_node": "fiber (New_York \u2192 Scranton)"
     },
     {
+      "from_node": "fiber (New_York \u2192 Scranton)",
+      "to_node": "New_York"
+    },
+    {
       "from_node": "New_York",
       "to_node": "fiber (New_York \u2192 Wilmington)"
+    },
+    {
+      "from_node": "fiber (New_York \u2192 Wilmington)",
+      "to_node": "New_York"
     },
     {
       "from_node": "Newark",
       "to_node": "fiber (Newark \u2192 Philadelphia)"
     },
     {
+      "from_node": "fiber (Newark \u2192 Philadelphia)",
+      "to_node": "Newark"
+    },
+    {
       "from_node": "Norfolk",
       "to_node": "fiber (Norfolk \u2192 Raleigh)"
+    },
+    {
+      "from_node": "fiber (Norfolk \u2192 Raleigh)",
+      "to_node": "Norfolk"
     },
     {
       "from_node": "Norfolk",
       "to_node": "fiber (Norfolk \u2192 Wilmington)"
     },
     {
+      "from_node": "fiber (Norfolk \u2192 Wilmington)",
+      "to_node": "Norfolk"
+    },
+    {
       "from_node": "Oakland",
       "to_node": "fiber (Oakland \u2192 Sacramento)"
+    },
+    {
+      "from_node": "fiber (Oakland \u2192 Sacramento)",
+      "to_node": "Oakland"
     },
     {
       "from_node": "Oakland",
       "to_node": "fiber (Oakland \u2192 Salt_Lake_City)"
     },
     {
+      "from_node": "fiber (Oakland \u2192 Salt_Lake_City)",
+      "to_node": "Oakland"
+    },
+    {
       "from_node": "Oakland",
       "to_node": "fiber (Oakland \u2192 San_Francisco)"
+    },
+    {
+      "from_node": "fiber (Oakland \u2192 San_Francisco)",
+      "to_node": "Oakland"
     },
     {
       "from_node": "Oklahoma_City",
       "to_node": "fiber (Oklahoma_City \u2192 Tulsa)"
     },
     {
+      "from_node": "fiber (Oklahoma_City \u2192 Tulsa)",
+      "to_node": "Oklahoma_City"
+    },
+    {
       "from_node": "Orlando",
       "to_node": "fiber (Orlando \u2192 West_Palm_Beach)"
+    },
+    {
+      "from_node": "fiber (Orlando \u2192 West_Palm_Beach)",
+      "to_node": "Orlando"
     },
     {
       "from_node": "Philadelphia",
       "to_node": "fiber (Philadelphia \u2192 Scranton)"
     },
     {
+      "from_node": "fiber (Philadelphia \u2192 Scranton)",
+      "to_node": "Philadelphia"
+    },
+    {
       "from_node": "Phoenix",
       "to_node": "fiber (Phoenix \u2192 San_Diego)"
+    },
+    {
+      "from_node": "fiber (Phoenix \u2192 San_Diego)",
+      "to_node": "Phoenix"
     },
     {
       "from_node": "Phoenix",
       "to_node": "fiber (Phoenix \u2192 Tucson)"
     },
     {
+      "from_node": "fiber (Phoenix \u2192 Tucson)",
+      "to_node": "Phoenix"
+    },
+    {
       "from_node": "Pittsburgh",
       "to_node": "fiber (Pittsburgh \u2192 Scranton)"
+    },
+    {
+      "from_node": "fiber (Pittsburgh \u2192 Scranton)",
+      "to_node": "Pittsburgh"
     },
     {
       "from_node": "Portland",
       "to_node": "fiber (Portland \u2192 Sacramento)"
     },
     {
+      "from_node": "fiber (Portland \u2192 Sacramento)",
+      "to_node": "Portland"
+    },
+    {
       "from_node": "Portland",
       "to_node": "fiber (Portland \u2192 Salt_Lake_City)"
+    },
+    {
+      "from_node": "fiber (Portland \u2192 Salt_Lake_City)",
+      "to_node": "Portland"
     },
     {
       "from_node": "Portland",
       "to_node": "fiber (Portland \u2192 Seattle)"
     },
     {
+      "from_node": "fiber (Portland \u2192 Seattle)",
+      "to_node": "Portland"
+    },
+    {
       "from_node": "Richmond",
       "to_node": "fiber (Richmond \u2192 Washington_DC)"
+    },
+    {
+      "from_node": "fiber (Richmond \u2192 Washington_DC)",
+      "to_node": "Richmond"
     },
     {
       "from_node": "Rochester",
       "to_node": "fiber (Rochester \u2192 Syracuse)"
     },
     {
+      "from_node": "fiber (Rochester \u2192 Syracuse)",
+      "to_node": "Rochester"
+    },
+    {
       "from_node": "San_Francisco",
       "to_node": "fiber (San_Francisco \u2192 San_Jose)"
+    },
+    {
+      "from_node": "fiber (San_Francisco \u2192 San_Jose)",
+      "to_node": "San_Francisco"
     },
     {
       "from_node": "San_Jose",
       "to_node": "fiber (San_Jose \u2192 Santa_Barbara)"
     },
     {
+      "from_node": "fiber (San_Jose \u2192 Santa_Barbara)",
+      "to_node": "San_Jose"
+    },
+    {
       "from_node": "Scranton",
       "to_node": "fiber (Scranton \u2192 Syracuse)"
+    },
+    {
+      "from_node": "fiber (Scranton \u2192 Syracuse)",
+      "to_node": "Scranton"
     },
     {
       "from_node": "Seattle",
       "to_node": "fiber (Seattle \u2192 Spokane)"
     },
     {
+      "from_node": "fiber (Seattle \u2192 Spokane)",
+      "to_node": "Seattle"
+    },
+    {
       "from_node": "Springfield",
       "to_node": "fiber (Springfield \u2192 St_Louis)"
+    },
+    {
+      "from_node": "fiber (Springfield \u2192 St_Louis)",
+      "to_node": "Springfield"
     },
     {
       "from_node": "Tallahassee",
       "to_node": "fiber (Tallahassee \u2192 Tampa)"
     },
     {
+      "from_node": "fiber (Tallahassee \u2192 Tampa)",
+      "to_node": "Tallahassee"
+    },
+    {
       "from_node": "fiber (Abilene \u2192 Dallas)",
       "to_node": "Dallas"
+    },
+    {
+      "from_node": "Dallas",
+      "to_node": "fiber (Abilene \u2192 Dallas)"
     },
     {
       "from_node": "fiber (Abilene \u2192 El_Paso)",
       "to_node": "El_Paso"
     },
     {
+      "from_node": "El_Paso",
+      "to_node": "fiber (Abilene \u2192 El_Paso)"
+    },
+    {
       "from_node": "fiber (Albany \u2192 Boston)",
       "to_node": "Boston"
+    },
+    {
+      "from_node": "Boston",
+      "to_node": "fiber (Albany \u2192 Boston)"
     },
     {
       "from_node": "fiber (Albany \u2192 Syracuse)",
       "to_node": "Syracuse"
     },
     {
+      "from_node": "Syracuse",
+      "to_node": "fiber (Albany \u2192 Syracuse)"
+    },
+    {
       "from_node": "fiber (Albuquerque \u2192 Dallas)",
       "to_node": "Dallas"
+    },
+    {
+      "from_node": "Dallas",
+      "to_node": "fiber (Albuquerque \u2192 Dallas)"
     },
     {
       "from_node": "fiber (Albuquerque \u2192 Denver)",
       "to_node": "Denver"
     },
     {
+      "from_node": "Denver",
+      "to_node": "fiber (Albuquerque \u2192 Denver)"
+    },
+    {
       "from_node": "fiber (Albuquerque \u2192 El_Paso)",
       "to_node": "El_Paso"
+    },
+    {
+      "from_node": "El_Paso",
+      "to_node": "fiber (Albuquerque \u2192 El_Paso)"
     },
     {
       "from_node": "fiber (Albuquerque \u2192 Las_Vegas)",
       "to_node": "Las_Vegas"
     },
     {
+      "from_node": "Las_Vegas",
+      "to_node": "fiber (Albuquerque \u2192 Las_Vegas)"
+    },
+    {
       "from_node": "fiber (Atlanta \u2192 Birmingham)",
       "to_node": "Birmingham"
+    },
+    {
+      "from_node": "Birmingham",
+      "to_node": "fiber (Atlanta \u2192 Birmingham)"
     },
     {
       "from_node": "fiber (Atlanta \u2192 Charlotte)",
       "to_node": "Charlotte"
     },
     {
+      "from_node": "Charlotte",
+      "to_node": "fiber (Atlanta \u2192 Charlotte)"
+    },
+    {
       "from_node": "fiber (Atlanta \u2192 Jacksonville)",
       "to_node": "Jacksonville"
+    },
+    {
+      "from_node": "Jacksonville",
+      "to_node": "fiber (Atlanta \u2192 Jacksonville)"
     },
     {
       "from_node": "fiber (Austin \u2192 Houston)",
       "to_node": "Houston"
     },
     {
+      "from_node": "Houston",
+      "to_node": "fiber (Austin \u2192 Houston)"
+    },
+    {
       "from_node": "fiber (Austin \u2192 San_Antonio)",
       "to_node": "San_Antonio"
+    },
+    {
+      "from_node": "San_Antonio",
+      "to_node": "fiber (Austin \u2192 San_Antonio)"
     },
     {
       "from_node": "fiber (Baltimore \u2192 Philadelphia)",
       "to_node": "Philadelphia"
     },
     {
+      "from_node": "Philadelphia",
+      "to_node": "fiber (Baltimore \u2192 Philadelphia)"
+    },
+    {
       "from_node": "fiber (Baltimore \u2192 Pittsburgh)",
       "to_node": "Pittsburgh"
+    },
+    {
+      "from_node": "Pittsburgh",
+      "to_node": "fiber (Baltimore \u2192 Pittsburgh)"
     },
     {
       "from_node": "fiber (Baltimore \u2192 Washington_DC)",
       "to_node": "Washington_DC"
     },
     {
+      "from_node": "Washington_DC",
+      "to_node": "fiber (Baltimore \u2192 Washington_DC)"
+    },
+    {
       "from_node": "fiber (Baton_Rouge \u2192 Houston)",
       "to_node": "Houston"
+    },
+    {
+      "from_node": "Houston",
+      "to_node": "fiber (Baton_Rouge \u2192 Houston)"
     },
     {
       "from_node": "fiber (Baton_Rouge \u2192 New_Orleans)",
       "to_node": "New_Orleans"
     },
     {
+      "from_node": "New_Orleans",
+      "to_node": "fiber (Baton_Rouge \u2192 New_Orleans)"
+    },
+    {
       "from_node": "fiber (Billings \u2192 Bismarck)",
       "to_node": "Bismarck"
+    },
+    {
+      "from_node": "Bismarck",
+      "to_node": "fiber (Billings \u2192 Bismarck)"
     },
     {
       "from_node": "fiber (Billings \u2192 Denver)",
       "to_node": "Denver"
     },
     {
+      "from_node": "Denver",
+      "to_node": "fiber (Billings \u2192 Denver)"
+    },
+    {
       "from_node": "fiber (Billings \u2192 Spokane)",
       "to_node": "Spokane"
+    },
+    {
+      "from_node": "Spokane",
+      "to_node": "fiber (Billings \u2192 Spokane)"
     },
     {
       "from_node": "fiber (Birmingham \u2192 Nashville)",
       "to_node": "Nashville"
     },
     {
+      "from_node": "Nashville",
+      "to_node": "fiber (Birmingham \u2192 Nashville)"
+    },
+    {
       "from_node": "fiber (Birmingham \u2192 New_Orleans)",
       "to_node": "New_Orleans"
+    },
+    {
+      "from_node": "New_Orleans",
+      "to_node": "fiber (Birmingham \u2192 New_Orleans)"
     },
     {
       "from_node": "fiber (Bismarck \u2192 Minneapolis)",
       "to_node": "Minneapolis"
     },
     {
+      "from_node": "Minneapolis",
+      "to_node": "fiber (Bismarck \u2192 Minneapolis)"
+    },
+    {
       "from_node": "fiber (Boston \u2192 Providence)",
       "to_node": "Providence"
+    },
+    {
+      "from_node": "Providence",
+      "to_node": "fiber (Boston \u2192 Providence)"
     },
     {
       "from_node": "fiber (Buffalo \u2192 Cleveland)",
       "to_node": "Cleveland"
     },
     {
+      "from_node": "Cleveland",
+      "to_node": "fiber (Buffalo \u2192 Cleveland)"
+    },
+    {
       "from_node": "fiber (Buffalo \u2192 Rochester)",
       "to_node": "Rochester"
+    },
+    {
+      "from_node": "Rochester",
+      "to_node": "fiber (Buffalo \u2192 Rochester)"
     },
     {
       "from_node": "fiber (Charleston \u2192 Jacksonville)",
       "to_node": "Jacksonville"
     },
     {
+      "from_node": "Jacksonville",
+      "to_node": "fiber (Charleston \u2192 Jacksonville)"
+    },
+    {
       "from_node": "fiber (Charleston \u2192 Raleigh)",
       "to_node": "Raleigh"
+    },
+    {
+      "from_node": "Raleigh",
+      "to_node": "fiber (Charleston \u2192 Raleigh)"
     },
     {
       "from_node": "fiber (Charlotte \u2192 Greensboro)",
       "to_node": "Greensboro"
     },
     {
+      "from_node": "Greensboro",
+      "to_node": "fiber (Charlotte \u2192 Greensboro)"
+    },
+    {
       "from_node": "fiber (Chicago \u2192 Detroit)",
       "to_node": "Detroit"
+    },
+    {
+      "from_node": "Detroit",
+      "to_node": "fiber (Chicago \u2192 Detroit)"
     },
     {
       "from_node": "fiber (Chicago \u2192 Milwaukee)",
       "to_node": "Milwaukee"
     },
     {
+      "from_node": "Milwaukee",
+      "to_node": "fiber (Chicago \u2192 Milwaukee)"
+    },
+    {
       "from_node": "fiber (Chicago \u2192 Springfield)",
       "to_node": "Springfield"
+    },
+    {
+      "from_node": "Springfield",
+      "to_node": "fiber (Chicago \u2192 Springfield)"
     },
     {
       "from_node": "fiber (Cincinnati \u2192 Columbus)",
       "to_node": "Columbus"
     },
     {
+      "from_node": "Columbus",
+      "to_node": "fiber (Cincinnati \u2192 Columbus)"
+    },
+    {
       "from_node": "fiber (Cincinnati \u2192 Louisville)",
       "to_node": "Louisville"
+    },
+    {
+      "from_node": "Louisville",
+      "to_node": "fiber (Cincinnati \u2192 Louisville)"
     },
     {
       "from_node": "fiber (Cincinnati \u2192 Washington_DC)",
       "to_node": "Washington_DC"
     },
     {
+      "from_node": "Washington_DC",
+      "to_node": "fiber (Cincinnati \u2192 Washington_DC)"
+    },
+    {
       "from_node": "fiber (Cleveland \u2192 Columbus)",
       "to_node": "Columbus"
+    },
+    {
+      "from_node": "Columbus",
+      "to_node": "fiber (Cleveland \u2192 Columbus)"
     },
     {
       "from_node": "fiber (Cleveland \u2192 Toledo)",
       "to_node": "Toledo"
     },
     {
+      "from_node": "Toledo",
+      "to_node": "fiber (Cleveland \u2192 Toledo)"
+    },
+    {
       "from_node": "fiber (Columbus \u2192 Pittsburgh)",
       "to_node": "Pittsburgh"
+    },
+    {
+      "from_node": "Pittsburgh",
+      "to_node": "fiber (Columbus \u2192 Pittsburgh)"
     },
     {
       "from_node": "fiber (Dallas \u2192 Houston)",
       "to_node": "Houston"
     },
     {
+      "from_node": "Houston",
+      "to_node": "fiber (Dallas \u2192 Houston)"
+    },
+    {
       "from_node": "fiber (Dallas \u2192 Little_Rock)",
       "to_node": "Little_Rock"
+    },
+    {
+      "from_node": "Little_Rock",
+      "to_node": "fiber (Dallas \u2192 Little_Rock)"
     },
     {
       "from_node": "fiber (Dallas \u2192 Oklahoma_City)",
       "to_node": "Oklahoma_City"
     },
     {
+      "from_node": "Oklahoma_City",
+      "to_node": "fiber (Dallas \u2192 Oklahoma_City)"
+    },
+    {
       "from_node": "fiber (Denver \u2192 Omaha)",
       "to_node": "Omaha"
+    },
+    {
+      "from_node": "Omaha",
+      "to_node": "fiber (Denver \u2192 Omaha)"
     },
     {
       "from_node": "fiber (Denver \u2192 Salt_Lake_City)",
       "to_node": "Salt_Lake_City"
     },
     {
+      "from_node": "Salt_Lake_City",
+      "to_node": "fiber (Denver \u2192 Salt_Lake_City)"
+    },
+    {
       "from_node": "fiber (Detroit \u2192 Toledo)",
       "to_node": "Toledo"
+    },
+    {
+      "from_node": "Toledo",
+      "to_node": "fiber (Detroit \u2192 Toledo)"
     },
     {
       "from_node": "fiber (El_Paso \u2192 San_Antonio)",
       "to_node": "San_Antonio"
     },
     {
+      "from_node": "San_Antonio",
+      "to_node": "fiber (El_Paso \u2192 San_Antonio)"
+    },
+    {
       "from_node": "fiber (El_Paso \u2192 Tucson)",
       "to_node": "Tucson"
+    },
+    {
+      "from_node": "Tucson",
+      "to_node": "fiber (El_Paso \u2192 Tucson)"
     },
     {
       "from_node": "fiber (Fresno \u2192 Las_Vegas)",
       "to_node": "Las_Vegas"
     },
     {
+      "from_node": "Las_Vegas",
+      "to_node": "fiber (Fresno \u2192 Las_Vegas)"
+    },
+    {
       "from_node": "fiber (Fresno \u2192 Los_Angeles)",
       "to_node": "Los_Angeles"
+    },
+    {
+      "from_node": "Los_Angeles",
+      "to_node": "fiber (Fresno \u2192 Los_Angeles)"
     },
     {
       "from_node": "fiber (Fresno \u2192 Oakland)",
       "to_node": "Oakland"
     },
     {
+      "from_node": "Oakland",
+      "to_node": "fiber (Fresno \u2192 Oakland)"
+    },
+    {
       "from_node": "fiber (Greensboro \u2192 Louisville)",
       "to_node": "Louisville"
+    },
+    {
+      "from_node": "Louisville",
+      "to_node": "fiber (Greensboro \u2192 Louisville)"
     },
     {
       "from_node": "fiber (Greensboro \u2192 Raleigh)",
       "to_node": "Raleigh"
     },
     {
+      "from_node": "Raleigh",
+      "to_node": "fiber (Greensboro \u2192 Raleigh)"
+    },
+    {
       "from_node": "fiber (Greensboro \u2192 Richmond)",
       "to_node": "Richmond"
+    },
+    {
+      "from_node": "Richmond",
+      "to_node": "fiber (Greensboro \u2192 Richmond)"
     },
     {
       "from_node": "fiber (Hartford \u2192 Long_Island)",
       "to_node": "Long_Island"
     },
     {
+      "from_node": "Long_Island",
+      "to_node": "fiber (Hartford \u2192 Long_Island)"
+    },
+    {
       "from_node": "fiber (Hartford \u2192 Providence)",
       "to_node": "Providence"
+    },
+    {
+      "from_node": "Providence",
+      "to_node": "fiber (Hartford \u2192 Providence)"
     },
     {
       "from_node": "fiber (Jacksonville \u2192 Orlando)",
       "to_node": "Orlando"
     },
     {
+      "from_node": "Orlando",
+      "to_node": "fiber (Jacksonville \u2192 Orlando)"
+    },
+    {
       "from_node": "fiber (Kansas_City \u2192 Omaha)",
       "to_node": "Omaha"
+    },
+    {
+      "from_node": "Omaha",
+      "to_node": "fiber (Kansas_City \u2192 Omaha)"
     },
     {
       "from_node": "fiber (Kansas_City \u2192 St_Louis)",
       "to_node": "St_Louis"
     },
     {
+      "from_node": "St_Louis",
+      "to_node": "fiber (Kansas_City \u2192 St_Louis)"
+    },
+    {
       "from_node": "fiber (Kansas_City \u2192 Tulsa)",
       "to_node": "Tulsa"
+    },
+    {
+      "from_node": "Tulsa",
+      "to_node": "fiber (Kansas_City \u2192 Tulsa)"
     },
     {
       "from_node": "fiber (Las_Vegas \u2192 Phoenix)",
       "to_node": "Phoenix"
     },
     {
+      "from_node": "Phoenix",
+      "to_node": "fiber (Las_Vegas \u2192 Phoenix)"
+    },
+    {
       "from_node": "fiber (Las_Vegas \u2192 Salt_Lake_City)",
       "to_node": "Salt_Lake_City"
+    },
+    {
+      "from_node": "Salt_Lake_City",
+      "to_node": "fiber (Las_Vegas \u2192 Salt_Lake_City)"
     },
     {
       "from_node": "fiber (Little_Rock \u2192 Memphis)",
       "to_node": "Memphis"
     },
     {
+      "from_node": "Memphis",
+      "to_node": "fiber (Little_Rock \u2192 Memphis)"
+    },
+    {
       "from_node": "fiber (Long_Island \u2192 New_York)",
       "to_node": "New_York"
+    },
+    {
+      "from_node": "New_York",
+      "to_node": "fiber (Long_Island \u2192 New_York)"
     },
     {
       "from_node": "fiber (Los_Angeles \u2192 San_Diego)",
       "to_node": "San_Diego"
     },
     {
+      "from_node": "San_Diego",
+      "to_node": "fiber (Los_Angeles \u2192 San_Diego)"
+    },
+    {
       "from_node": "fiber (Los_Angeles \u2192 Santa_Barbara)",
       "to_node": "Santa_Barbara"
+    },
+    {
+      "from_node": "Santa_Barbara",
+      "to_node": "fiber (Los_Angeles \u2192 Santa_Barbara)"
     },
     {
       "from_node": "fiber (Louisville \u2192 Nashville)",
       "to_node": "Nashville"
     },
     {
+      "from_node": "Nashville",
+      "to_node": "fiber (Louisville \u2192 Nashville)"
+    },
+    {
       "from_node": "fiber (Louisville \u2192 St_Louis)",
       "to_node": "St_Louis"
+    },
+    {
+      "from_node": "St_Louis",
+      "to_node": "fiber (Louisville \u2192 St_Louis)"
     },
     {
       "from_node": "fiber (Memphis \u2192 Nashville)",
       "to_node": "Nashville"
     },
     {
+      "from_node": "Nashville",
+      "to_node": "fiber (Memphis \u2192 Nashville)"
+    },
+    {
       "from_node": "fiber (Miami \u2192 Tampa)",
       "to_node": "Tampa"
+    },
+    {
+      "from_node": "Tampa",
+      "to_node": "fiber (Miami \u2192 Tampa)"
     },
     {
       "from_node": "fiber (Miami \u2192 West_Palm_Beach)",
       "to_node": "West_Palm_Beach"
     },
     {
+      "from_node": "West_Palm_Beach",
+      "to_node": "fiber (Miami \u2192 West_Palm_Beach)"
+    },
+    {
       "from_node": "fiber (Milwaukee \u2192 Minneapolis)",
       "to_node": "Minneapolis"
+    },
+    {
+      "from_node": "Minneapolis",
+      "to_node": "fiber (Milwaukee \u2192 Minneapolis)"
     },
     {
       "from_node": "fiber (Minneapolis \u2192 Omaha)",
       "to_node": "Omaha"
     },
     {
+      "from_node": "Omaha",
+      "to_node": "fiber (Minneapolis \u2192 Omaha)"
+    },
+    {
       "from_node": "fiber (New_Orleans \u2192 Tallahassee)",
       "to_node": "Tallahassee"
+    },
+    {
+      "from_node": "Tallahassee",
+      "to_node": "fiber (New_Orleans \u2192 Tallahassee)"
     },
     {
       "from_node": "fiber (New_York \u2192 Newark)",
       "to_node": "Newark"
     },
     {
+      "from_node": "Newark",
+      "to_node": "fiber (New_York \u2192 Newark)"
+    },
+    {
       "from_node": "fiber (New_York \u2192 Scranton)",
       "to_node": "Scranton"
+    },
+    {
+      "from_node": "Scranton",
+      "to_node": "fiber (New_York \u2192 Scranton)"
     },
     {
       "from_node": "fiber (New_York \u2192 Wilmington)",
       "to_node": "Wilmington"
     },
     {
+      "from_node": "Wilmington",
+      "to_node": "fiber (New_York \u2192 Wilmington)"
+    },
+    {
       "from_node": "fiber (Newark \u2192 Philadelphia)",
       "to_node": "Philadelphia"
+    },
+    {
+      "from_node": "Philadelphia",
+      "to_node": "fiber (Newark \u2192 Philadelphia)"
     },
     {
       "from_node": "fiber (Norfolk \u2192 Raleigh)",
       "to_node": "Raleigh"
     },
     {
+      "from_node": "Raleigh",
+      "to_node": "fiber (Norfolk \u2192 Raleigh)"
+    },
+    {
       "from_node": "fiber (Norfolk \u2192 Wilmington)",
       "to_node": "Wilmington"
+    },
+    {
+      "from_node": "Wilmington",
+      "to_node": "fiber (Norfolk \u2192 Wilmington)"
     },
     {
       "from_node": "fiber (Oakland \u2192 Sacramento)",
       "to_node": "Sacramento"
     },
     {
+      "from_node": "Sacramento",
+      "to_node": "fiber (Oakland \u2192 Sacramento)"
+    },
+    {
       "from_node": "fiber (Oakland \u2192 Salt_Lake_City)",
       "to_node": "Salt_Lake_City"
+    },
+    {
+      "from_node": "Salt_Lake_City",
+      "to_node": "fiber (Oakland \u2192 Salt_Lake_City)"
     },
     {
       "from_node": "fiber (Oakland \u2192 San_Francisco)",
       "to_node": "San_Francisco"
     },
     {
+      "from_node": "San_Francisco",
+      "to_node": "fiber (Oakland \u2192 San_Francisco)"
+    },
+    {
       "from_node": "fiber (Oklahoma_City \u2192 Tulsa)",
       "to_node": "Tulsa"
+    },
+    {
+      "from_node": "Tulsa",
+      "to_node": "fiber (Oklahoma_City \u2192 Tulsa)"
     },
     {
       "from_node": "fiber (Orlando \u2192 West_Palm_Beach)",
       "to_node": "West_Palm_Beach"
     },
     {
+      "from_node": "West_Palm_Beach",
+      "to_node": "fiber (Orlando \u2192 West_Palm_Beach)"
+    },
+    {
       "from_node": "fiber (Philadelphia \u2192 Scranton)",
       "to_node": "Scranton"
+    },
+    {
+      "from_node": "Scranton",
+      "to_node": "fiber (Philadelphia \u2192 Scranton)"
     },
     {
       "from_node": "fiber (Phoenix \u2192 San_Diego)",
       "to_node": "San_Diego"
     },
     {
+      "from_node": "San_Diego",
+      "to_node": "fiber (Phoenix \u2192 San_Diego)"
+    },
+    {
       "from_node": "fiber (Phoenix \u2192 Tucson)",
       "to_node": "Tucson"
+    },
+    {
+      "from_node": "Tucson",
+      "to_node": "fiber (Phoenix \u2192 Tucson)"
     },
     {
       "from_node": "fiber (Pittsburgh \u2192 Scranton)",
       "to_node": "Scranton"
     },
     {
+      "from_node": "Scranton",
+      "to_node": "fiber (Pittsburgh \u2192 Scranton)"
+    },
+    {
       "from_node": "fiber (Portland \u2192 Sacramento)",
       "to_node": "Sacramento"
+    },
+    {
+      "from_node": "Sacramento",
+      "to_node": "fiber (Portland \u2192 Sacramento)"
     },
     {
       "from_node": "fiber (Portland \u2192 Salt_Lake_City)",
       "to_node": "Salt_Lake_City"
     },
     {
+      "from_node": "Salt_Lake_City",
+      "to_node": "fiber (Portland \u2192 Salt_Lake_City)"
+    },
+    {
       "from_node": "fiber (Portland \u2192 Seattle)",
       "to_node": "Seattle"
+    },
+    {
+      "from_node": "Seattle",
+      "to_node": "fiber (Portland \u2192 Seattle)"
     },
     {
       "from_node": "fiber (Richmond \u2192 Washington_DC)",
       "to_node": "Washington_DC"
     },
     {
+      "from_node": "Washington_DC",
+      "to_node": "fiber (Richmond \u2192 Washington_DC)"
+    },
+    {
       "from_node": "fiber (Rochester \u2192 Syracuse)",
       "to_node": "Syracuse"
+    },
+    {
+      "from_node": "Syracuse",
+      "to_node": "fiber (Rochester \u2192 Syracuse)"
     },
     {
       "from_node": "fiber (San_Francisco \u2192 San_Jose)",
       "to_node": "San_Jose"
     },
     {
+      "from_node": "San_Jose",
+      "to_node": "fiber (San_Francisco \u2192 San_Jose)"
+    },
+    {
       "from_node": "fiber (San_Jose \u2192 Santa_Barbara)",
       "to_node": "Santa_Barbara"
+    },
+    {
+      "from_node": "Santa_Barbara",
+      "to_node": "fiber (San_Jose \u2192 Santa_Barbara)"
     },
     {
       "from_node": "fiber (Scranton \u2192 Syracuse)",
       "to_node": "Syracuse"
     },
     {
+      "from_node": "Syracuse",
+      "to_node": "fiber (Scranton \u2192 Syracuse)"
+    },
+    {
       "from_node": "fiber (Seattle \u2192 Spokane)",
       "to_node": "Spokane"
+    },
+    {
+      "from_node": "Spokane",
+      "to_node": "fiber (Seattle \u2192 Spokane)"
     },
     {
       "from_node": "fiber (Springfield \u2192 St_Louis)",
       "to_node": "St_Louis"
     },
     {
+      "from_node": "St_Louis",
+      "to_node": "fiber (Springfield \u2192 St_Louis)"
+    },
+    {
       "from_node": "fiber (Tallahassee \u2192 Tampa)",
       "to_node": "Tampa"
+    },
+    {
+      "from_node": "Tampa",
+      "to_node": "fiber (Tallahassee \u2192 Tampa)"
     }
   ]
 }

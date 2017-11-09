@@ -287,120 +287,240 @@
       "to_node": "fiber (Amsterdam \u2192 Berlin)"
     },
     {
+      "from_node": "fiber (Amsterdam \u2192 Berlin)",
+      "to_node": "Amsterdam"
+    },
+    {
       "from_node": "Amsterdam",
       "to_node": "fiber (Amsterdam \u2192 Brussels)"
+    },
+    {
+      "from_node": "fiber (Amsterdam \u2192 Brussels)",
+      "to_node": "Amsterdam"
     },
     {
       "from_node": "Amsterdam",
       "to_node": "fiber (Amsterdam \u2192 Frankfurt)"
     },
     {
+      "from_node": "fiber (Amsterdam \u2192 Frankfurt)",
+      "to_node": "Amsterdam"
+    },
+    {
       "from_node": "Berlin",
       "to_node": "fiber (Berlin \u2192 Warsaw)"
+    },
+    {
+      "from_node": "fiber (Berlin \u2192 Warsaw)",
+      "to_node": "Berlin"
     },
     {
       "from_node": "Brussels",
       "to_node": "fiber (Brussels \u2192 London)"
     },
     {
+      "from_node": "fiber (Brussels \u2192 London)",
+      "to_node": "Brussels"
+    },
+    {
       "from_node": "Bucharest",
       "to_node": "fiber (Bucharest \u2192 Istanbul)"
+    },
+    {
+      "from_node": "fiber (Bucharest \u2192 Istanbul)",
+      "to_node": "Bucharest"
     },
     {
       "from_node": "Bucharest",
       "to_node": "fiber (Bucharest \u2192 Warsaw)"
     },
     {
+      "from_node": "fiber (Bucharest \u2192 Warsaw)",
+      "to_node": "Bucharest"
+    },
+    {
       "from_node": "Frankfurt",
       "to_node": "fiber (Frankfurt \u2192 Vienna)"
+    },
+    {
+      "from_node": "fiber (Frankfurt \u2192 Vienna)",
+      "to_node": "Frankfurt"
     },
     {
       "from_node": "Istanbul",
       "to_node": "fiber (Istanbul \u2192 Rome)"
     },
     {
+      "from_node": "fiber (Istanbul \u2192 Rome)",
+      "to_node": "Istanbul"
+    },
+    {
       "from_node": "London",
       "to_node": "fiber (London \u2192 Paris)"
+    },
+    {
+      "from_node": "fiber (London \u2192 Paris)",
+      "to_node": "London"
     },
     {
       "from_node": "Madrid",
       "to_node": "fiber (Madrid \u2192 Paris)"
     },
     {
+      "from_node": "fiber (Madrid \u2192 Paris)",
+      "to_node": "Madrid"
+    },
+    {
       "from_node": "Madrid",
       "to_node": "fiber (Madrid \u2192 Zurich)"
+    },
+    {
+      "from_node": "fiber (Madrid \u2192 Zurich)",
+      "to_node": "Madrid"
     },
     {
       "from_node": "Rome",
       "to_node": "fiber (Rome \u2192 Vienna)"
     },
     {
+      "from_node": "fiber (Rome \u2192 Vienna)",
+      "to_node": "Rome"
+    },
+    {
       "from_node": "Rome",
       "to_node": "fiber (Rome \u2192 Zurich)"
+    },
+    {
+      "from_node": "fiber (Rome \u2192 Zurich)",
+      "to_node": "Rome"
     },
     {
       "from_node": "Vienna",
       "to_node": "fiber (Vienna \u2192 Warsaw)"
     },
     {
+      "from_node": "fiber (Vienna \u2192 Warsaw)",
+      "to_node": "Vienna"
+    },
+    {
       "from_node": "fiber (Amsterdam \u2192 Berlin)",
       "to_node": "Berlin"
+    },
+    {
+      "from_node": "Berlin",
+      "to_node": "fiber (Amsterdam \u2192 Berlin)"
     },
     {
       "from_node": "fiber (Amsterdam \u2192 Brussels)",
       "to_node": "Brussels"
     },
     {
+      "from_node": "Brussels",
+      "to_node": "fiber (Amsterdam \u2192 Brussels)"
+    },
+    {
       "from_node": "fiber (Amsterdam \u2192 Frankfurt)",
       "to_node": "Frankfurt"
+    },
+    {
+      "from_node": "Frankfurt",
+      "to_node": "fiber (Amsterdam \u2192 Frankfurt)"
     },
     {
       "from_node": "fiber (Berlin \u2192 Warsaw)",
       "to_node": "Warsaw"
     },
     {
+      "from_node": "Warsaw",
+      "to_node": "fiber (Berlin \u2192 Warsaw)"
+    },
+    {
       "from_node": "fiber (Brussels \u2192 London)",
       "to_node": "London"
+    },
+    {
+      "from_node": "London",
+      "to_node": "fiber (Brussels \u2192 London)"
     },
     {
       "from_node": "fiber (Bucharest \u2192 Istanbul)",
       "to_node": "Istanbul"
     },
     {
+      "from_node": "Istanbul",
+      "to_node": "fiber (Bucharest \u2192 Istanbul)"
+    },
+    {
       "from_node": "fiber (Bucharest \u2192 Warsaw)",
       "to_node": "Warsaw"
+    },
+    {
+      "from_node": "Warsaw",
+      "to_node": "fiber (Bucharest \u2192 Warsaw)"
     },
     {
       "from_node": "fiber (Frankfurt \u2192 Vienna)",
       "to_node": "Vienna"
     },
     {
+      "from_node": "Vienna",
+      "to_node": "fiber (Frankfurt \u2192 Vienna)"
+    },
+    {
       "from_node": "fiber (Istanbul \u2192 Rome)",
       "to_node": "Rome"
+    },
+    {
+      "from_node": "Rome",
+      "to_node": "fiber (Istanbul \u2192 Rome)"
     },
     {
       "from_node": "fiber (London \u2192 Paris)",
       "to_node": "Paris"
     },
     {
+      "from_node": "Paris",
+      "to_node": "fiber (London \u2192 Paris)"
+    },
+    {
       "from_node": "fiber (Madrid \u2192 Paris)",
       "to_node": "Paris"
+    },
+    {
+      "from_node": "Paris",
+      "to_node": "fiber (Madrid \u2192 Paris)"
     },
     {
       "from_node": "fiber (Madrid \u2192 Zurich)",
       "to_node": "Zurich"
     },
     {
+      "from_node": "Zurich",
+      "to_node": "fiber (Madrid \u2192 Zurich)"
+    },
+    {
       "from_node": "fiber (Rome \u2192 Vienna)",
       "to_node": "Vienna"
+    },
+    {
+      "from_node": "Vienna",
+      "to_node": "fiber (Rome \u2192 Vienna)"
     },
     {
       "from_node": "fiber (Rome \u2192 Zurich)",
       "to_node": "Zurich"
     },
     {
+      "from_node": "Zurich",
+      "to_node": "fiber (Rome \u2192 Zurich)"
+    },
+    {
       "from_node": "fiber (Vienna \u2192 Warsaw)",
       "to_node": "Warsaw"
+    },
+    {
+      "from_node": "Warsaw",
+      "to_node": "fiber (Vienna \u2192 Warsaw)"
     }
   ]
 }

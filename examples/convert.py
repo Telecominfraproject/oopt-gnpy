@@ -7,6 +7,7 @@ except ModuleNotFoundError:
     exit('Required: `pip install xlrd`')
 from argparse import ArgumentParser
 from collections import namedtuple, Counter
+from itertools import chain
 from json import dumps
 
 Node = namedtuple('Node', 'city state country region latitude longitude')
@@ -68,7 +69,7 @@ if __name__ == '__main__':
     nodes, links = parse_excel(args)
 
     if args.filter_region:
-        nodes = [n for n in nodes if n.region in args.filter_region]
+        nodes = [n for n in nodes if n.region.lower() in args.filter_region]
         cities = {n.city for n in nodes}
         links = [lnk for lnk in links if lnk.from_city in cities and
                                          lnk.to_city in cities]
@@ -92,12 +93,21 @@ if __name__ == '__main__':
               'type': 'Fiber'}
              for x in links],
         'connections':
+            list(chain.from_iterable(zip( # put bidi next to each other
             [{'from_node': x.from_city,
               'to_node':   f'fiber ({x.from_city} → {x.to_city})'}
-             for x in links] +
+             for x in links],
+            [{'from_node': f'fiber ({x.from_city} → {x.to_city})',
+              'to_node':   x.from_city}
+             for x in links])))
+            +
+            list(chain.from_iterable(zip(
             [{'from_node': f'fiber ({x.from_city} → {x.to_city})',
               'to_node':   x.to_city}
-             for x in links]
+             for x in links],
+            [{'from_node': x.to_city,
+              'to_node':   f'fiber ({x.from_city} → {x.to_city})'}
+             for x in links])))
     }
 
     print(dumps(data, indent=2))
