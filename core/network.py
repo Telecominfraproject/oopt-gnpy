@@ -12,9 +12,9 @@ def network_from_json(json_data):
 
     nodes = {}
     for el in json_data['elements']:
-        el = getattr(elements, el['type'])(el['id'], **el['metadata'])
+        el = getattr(elements, el['type'])(el['uid'], **el['metadata'])
         g.add_node(el)
-        nodes[el.id] = el
+        nodes[el.uid] = el
 
     for cx in json_data['connections']:
         from_node, to_node = nodes[cx['from_node']], nodes[cx['to_node']]

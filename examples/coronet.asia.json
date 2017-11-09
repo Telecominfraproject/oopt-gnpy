@@ -1,262 +1,314 @@
 {
   "elements": [
     {
-      "id": "Bangkok",
+      "uid": "Bangkok",
       "metadata": {
-        "city": "Bangkok",
-        "region": "Asia",
-        "latitude": 13.73,
-        "longitude": 100.5
+        "location": {
+          "city": "Bangkok",
+          "region": "Asia",
+          "latitude": 13.73,
+          "longitude": 100.5
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Beijing",
+      "uid": "Beijing",
       "metadata": {
-        "city": "Beijing",
-        "region": "Asia",
-        "latitude": 39.92999979,
-        "longitude": 116.4000013
+        "location": {
+          "city": "Beijing",
+          "region": "Asia",
+          "latitude": 39.92999979,
+          "longitude": 116.4000013
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Delhi",
+      "uid": "Delhi",
       "metadata": {
-        "city": "Delhi",
-        "region": "Asia",
-        "latitude": 28.6700003,
-        "longitude": 77.2099989
+        "location": {
+          "city": "Delhi",
+          "region": "Asia",
+          "latitude": 28.6700003,
+          "longitude": 77.2099989
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Hong_Kong",
+      "uid": "Hong_Kong",
       "metadata": {
-        "city": "Hong_Kong",
-        "region": "Asia",
-        "latitude": 22.267,
-        "longitude": 114.14
+        "location": {
+          "city": "Hong_Kong",
+          "region": "Asia",
+          "latitude": 22.267,
+          "longitude": 114.14
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Honolulu",
+      "uid": "Honolulu",
       "metadata": {
-        "city": "Honolulu",
-        "region": "Asia",
-        "latitude": 21.3199996,
-        "longitude": -157.800003
+        "location": {
+          "city": "Honolulu",
+          "region": "Asia",
+          "latitude": 21.3199996,
+          "longitude": -157.800003
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Mumbai",
+      "uid": "Mumbai",
       "metadata": {
-        "city": "Mumbai",
-        "region": "Asia",
-        "latitude": 18.9599987,
-        "longitude": 72.8199999
+        "location": {
+          "city": "Mumbai",
+          "region": "Asia",
+          "latitude": 18.9599987,
+          "longitude": 72.8199999
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Seoul",
+      "uid": "Seoul",
       "metadata": {
-        "city": "Seoul",
-        "region": "Asia",
-        "latitude": 37.56000108,
-        "longitude": 126.9899988
+        "location": {
+          "city": "Seoul",
+          "region": "Asia",
+          "latitude": 37.56000108,
+          "longitude": 126.9899988
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Shanghai",
+      "uid": "Shanghai",
       "metadata": {
-        "city": "Shanghai",
-        "region": "Asia",
-        "latitude": 31.23,
-        "longitude": 121.47
+        "location": {
+          "city": "Shanghai",
+          "region": "Asia",
+          "latitude": 31.23,
+          "longitude": 121.47
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Singapore",
+      "uid": "Singapore",
       "metadata": {
-        "city": "Singapore",
-        "region": "Asia",
-        "latitude": 1.299999907,
-        "longitude": 103.8499992
+        "location": {
+          "city": "Singapore",
+          "region": "Asia",
+          "latitude": 1.299999907,
+          "longitude": 103.8499992
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Sydney",
+      "uid": "Sydney",
       "metadata": {
-        "city": "Sydney",
-        "region": "Asia",
-        "latitude": -33.86999896,
-        "longitude": 151.2100066
+        "location": {
+          "city": "Sydney",
+          "region": "Asia",
+          "latitude": -33.86999896,
+          "longitude": 151.2100066
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Taipei",
+      "uid": "Taipei",
       "metadata": {
-        "city": "Taipei",
-        "region": "Asia",
-        "latitude": 25.0200005,
-        "longitude": 121.449997
+        "location": {
+          "city": "Taipei",
+          "region": "Asia",
+          "latitude": 25.0200005,
+          "longitude": 121.449997
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Tokyo",
+      "uid": "Tokyo",
       "metadata": {
-        "city": "Tokyo",
-        "region": "Asia",
-        "latitude": 35.6699986,
-        "longitude": 139.770004
+        "location": {
+          "city": "Tokyo",
+          "region": "Asia",
+          "latitude": 35.6699986,
+          "longitude": 139.770004
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "fiber (Bangkok \u2192 Delhi)",
+      "uid": "fiber (Bangkok \u2192 Delhi)",
       "metadata": {
-        "length": 3505.949664416427,
+        "length": 3505.95,
         "units": "km",
-        "latitude": 21.20000015,
-        "longitude": 88.85499945000001
+        "location": {
+          "latitude": 21.20000015,
+          "longitude": 88.85499945000001
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Bangkok \u2192 Hong_Kong)",
+      "uid": "fiber (Bangkok \u2192 Hong_Kong)",
       "metadata": {
-        "length": 2070.724162058727,
+        "length": 2070.724,
         "units": "km",
-        "latitude": 17.9985,
-        "longitude": 107.32
+        "location": {
+          "latitude": 17.9985,
+          "longitude": 107.32
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Beijing \u2192 Seoul)",
+      "uid": "fiber (Beijing \u2192 Seoul)",
       "metadata": {
-        "length": 1146.1242170685186,
+        "length": 1146.124,
         "units": "km",
-        "latitude": 38.745000434999994,
-        "longitude": 121.69500005
+        "location": {
+          "latitude": 38.745000434999994,
+          "longitude": 121.69500005
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Beijing \u2192 Shanghai)",
+      "uid": "fiber (Beijing \u2192 Shanghai)",
       "metadata": {
-        "length": 1284.46539141146,
+        "length": 1284.465,
         "units": "km",
-        "latitude": 35.579999895,
-        "longitude": 118.93500065
+        "location": {
+          "latitude": 35.579999895,
+          "longitude": 118.93500065
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Delhi \u2192 Mumbai)",
+      "uid": "fiber (Delhi \u2192 Mumbai)",
       "metadata": {
-        "length": 1402.1410424889511,
+        "length": 1402.141,
         "units": "km",
-        "latitude": 23.8149995,
-        "longitude": 75.0149994
+        "location": {
+          "latitude": 23.8149995,
+          "longitude": 75.0149994
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Hong_Kong \u2192 Shanghai)",
+      "uid": "fiber (Hong_Kong \u2192 Shanghai)",
       "metadata": {
-        "length": 1480.405514673738,
+        "length": 1480.406,
         "units": "km",
-        "latitude": 26.7485,
-        "longitude": 117.805
+        "location": {
+          "latitude": 26.7485,
+          "longitude": 117.805
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Hong_Kong \u2192 Sydney)",
+      "uid": "fiber (Hong_Kong \u2192 Sydney)",
       "metadata": {
         "length": 8856.6,
         "units": "km",
-        "latitude": -5.801499479999999,
-        "longitude": 132.67500330000001
+        "location": {
+          "latitude": -5.801499479999999,
+          "longitude": 132.67500330000001
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Hong_Kong \u2192 Taipei)",
+      "uid": "fiber (Hong_Kong \u2192 Taipei)",
       "metadata": {
-        "length": 966.1766738801513,
+        "length": 966.177,
         "units": "km",
-        "latitude": 23.64350025,
-        "longitude": 117.79499849999999
+        "location": {
+          "latitude": 23.64350025,
+          "longitude": 117.79499849999999
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Honolulu \u2192 Sydney)",
+      "uid": "fiber (Honolulu \u2192 Sydney)",
       "metadata": {
-        "length": 9808.61585417977,
+        "length": 9808.616,
         "units": "km",
-        "latitude": -6.274999679999999,
-        "longitude": -3.294998199999995
+        "location": {
+          "latitude": -6.274999679999999,
+          "longitude": -3.294998199999995
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Honolulu \u2192 Taipei)",
+      "uid": "fiber (Honolulu \u2192 Taipei)",
       "metadata": {
-        "length": 9767.012902360886,
+        "length": 9767.013,
         "units": "km",
-        "latitude": 23.17000005,
-        "longitude": -18.175003000000004
+        "location": {
+          "latitude": 23.17000005,
+          "longitude": -18.175003000000004
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Mumbai \u2192 Singapore)",
+      "uid": "fiber (Mumbai \u2192 Singapore)",
       "metadata": {
-        "length": 4692.7080485536935,
+        "length": 4692.708,
         "units": "km",
-        "latitude": 10.1299993035,
-        "longitude": 88.33499954999999
+        "location": {
+          "latitude": 10.1299993035,
+          "longitude": 88.33499954999999
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Seoul \u2192 Tokyo)",
+      "uid": "fiber (Seoul \u2192 Tokyo)",
       "metadata": {
-        "length": 1391.0845320188098,
+        "length": 1391.085,
         "units": "km",
-        "latitude": 36.614999839999996,
-        "longitude": 133.3800014
+        "location": {
+          "latitude": 36.614999839999996,
+          "longitude": 133.3800014
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Singapore \u2192 Sydney)",
+      "uid": "fiber (Singapore \u2192 Sydney)",
       "metadata": {
-        "length": 7562.33052211171,
+        "length": 7562.331,
         "units": "km",
-        "latitude": -16.2849995265,
-        "longitude": 127.5300029
+        "location": {
+          "latitude": -16.2849995265,
+          "longitude": 127.5300029
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Taipei \u2192 Tokyo)",
+      "uid": "fiber (Taipei \u2192 Tokyo)",
       "metadata": {
-        "length": 2537.3446021508994,
+        "length": 2537.345,
         "units": "km",
-        "latitude": 30.344999549999997,
-        "longitude": 130.6100005
+        "location": {
+          "latitude": 30.344999549999997,
+          "longitude": 130.6100005
+        }
       },
       "type": "Fiber"
     }

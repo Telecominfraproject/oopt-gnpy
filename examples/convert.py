@@ -9,6 +9,7 @@ from argparse import ArgumentParser
 from collections import namedtuple, Counter
 from itertools import chain
 from json import dumps
+from uuid import uuid4
 
 Node = namedtuple('Node', 'city state country region latitude longitude')
 class Link(namedtuple('Link', 'from_city to_city distance distance_units')):
@@ -80,16 +81,18 @@ if __name__ == '__main__':
 
     data = {
         'elements':
-            [{'id': x.city,
-              'metadata': {'city': x.city, 'region': x.region,
-                           'latitude': x.latitude,
-                           'longitude': x.longitude},
-              'type': 'City'}
+            [{'uid': x.city,
+              'metadata': {'location': {'city':      x.city,
+                                        'region':    x.region,
+                                        'latitude':  x.latitude,
+                                        'longitude': x.longitude}},
+              'type': 'Transceiver'}
              for x in nodes] +
-            [{'id': f'fiber ({x.from_city} → {x.to_city})',
-              'metadata': {'length': x.distance, 'units': x.distance_units,
-                            **midpoint(nodes_by_city[x.from_city],
-                                       nodes_by_city[x.to_city])},
+            [{'uid': f'fiber ({x.from_city} → {x.to_city})',
+              'metadata': {'length':   round(x.distance, 3),
+                           'units':    x.distance_units,
+                           'location': midpoint(nodes_by_city[x.from_city],
+                                                nodes_by_city[x.to_city])},
               'type': 'Fiber'}
              for x in links],
         'connections':

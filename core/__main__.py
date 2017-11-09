@@ -9,7 +9,7 @@ from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels)
 
 from . import network_from_json
-from .elements import City, Fiber
+from .elements import Transceiver, Fiber
 
 logger = getLogger('gnpy.core')
 
@@ -18,11 +18,13 @@ def main(args):
         json_data = load(f)
 
     network = network_from_json(json_data)
-    pos    = {n: (n.longitude, n.latitude) for n in network.nodes()}
+    pos    = {n: (n.long, n.lat) for n in network.nodes()}
     labels_pos = {n: (long-.5, lat-.5) for n, (long, lat) in pos.items()}
-    size   = [20        if isinstance(n, Fiber) else 80    for n in network.nodes()]
-    color  = ['green'   if isinstance(n, City)  else 'red' for n in network.nodes()]
-    labels = {n: n.city if isinstance(n, City)  else ''    for n in network.nodes()}
+    size   = [20 if isinstance(n, Fiber) else 80 for n in network.nodes()]
+    color  = ['green' if isinstance(n, Transceiver) else 'red'
+              for n in network.nodes()]
+    labels = {n: n.location.city if isinstance(n, Transceiver) else ''
+              for n in network.nodes()}
     draw_networkx_nodes(network, pos=pos, node_size=size, node_color=color)
     draw_networkx_edges(network, pos=pos)
     draw_networkx_labels(network, pos=labels_pos, labels=labels, font_size=14)

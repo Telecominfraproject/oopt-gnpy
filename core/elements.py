@@ -1,25 +1,46 @@
 #!/usr/bin/env python
 from collections import namedtuple
 
-class City(namedtuple('City', 'id city region latitude longitude')):
-    def __call__(self, spectral_info):
+class Coords(namedtuple('Coords', 'latitude longitude')):
+    lat  = property(lambda self: self.latitude)
+    long = property(lambda self: self.longitude)
+
+class Location(namedtuple('Location', 'city region coords')):
+    def __new__(cls, city, region, **kwargs):
+        return super().__new__(cls, city, region, Coords(**kwargs))
+
+class Transceiver(namedtuple('Transceiver', 'uid location')):
+    def __new__(cls, uid, location):
+        return super().__new__(cls, uid, Location(**location))
+
+    def __call__(self, *spectral_infos):
         return spectral_info.copy()
 
-class Fiber:
-    UNITS = {'m': 1, 'km': 1e3}
-    def __init__(self, id, length, units, latitude, longitude):
-        self.id = id
-        self._length = length
-        self._units = units
-        self.latitude = latitude
-        self.longitude = longitude
+    # convenience access
+    loc  = property(lambda self: self.location)
+    lat  = property(lambda self: self.location.coords.latitude)
+    long = property(lambda self: self.location.coords.longitude)
 
-    def __repr__(self):
-        return f'{type(self).__name__}(id={self.id}, length={self.length})'
+class Length(namedtuple('Length', 'quantity units')):
+    UNITS = {'m': 1, 'km': 1e3}
 
     @property
-    def length(self):
-        return self._length * self.UNITS[self._units]
+    def value(self):
+        return self.quantity * self.UNITS[self.units]
+    val = value
 
-    def __call__(self, spectral_info):
+class Fiber(namedtuple('Fiber', 'uid length_ location')):
+    def __new__(cls, uid, length, units, location):
+        return super().__new__(cls, uid, Length(length, units), Coords(**location))
+
+    def __repr__(self):
+        return f'{type(self).__name__}(uid={self.uid}, length={self.length})'
+
+    def __call__(self, *spectral_infos):
         return spectral_info.copy()
+
+    # convenience access
+    length = property(lambda self: self.length_.value)
+    loc  = property(lambda self: self.location)
+    lat  = property(lambda self: self.location.latitude)
+    long = property(lambda self: self.location.longitude)
