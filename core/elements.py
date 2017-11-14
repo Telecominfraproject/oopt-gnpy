@@ -22,6 +22,15 @@ class Length(namedtuple('Length', 'quantity units')):
         return self.quantity * self.UNITS[self.units]
     val = value
 
+class Loss(namedtuple('Loss', 'quantity units')):
+    UNITS = {'1/m': 0.0002, '1/km': 0.2, 'dB/m': 0.0002, 'dB/km': 0.2}
+
+    @property
+    def value(self):
+        return self.quantity * self.UNITS[self.units]
+    val = value
+
+
 # network elements
 
 class Transceiver(namedtuple('Transceiver', 'uid location')):
@@ -41,6 +50,7 @@ class Fiber(namedtuple('Fiber', 'uid length_ location')):
     def __new__(cls, uid, length, units, location):
         length = Length(length, units)
         location = Coords(**location)
+        loss = Loss(loss, units)
         return super().__new__(cls, uid, length, location)
 
     def __repr__(self):
@@ -96,11 +106,7 @@ class Fiber(namedtuple('Fiber', 'uid length_ location')):
         return b2
 
     # convenience access
-    length = property(lambda self: self.length_.value)
-    loc  = property(lambda self: self.location)
-    lat  = property(lambda self: self.location.latitude)
-    long = property(lambda self: self.location.longitude)
-    # convenience access
+    loss = property(lambda self: self.loss_.value)
     length = property(lambda self: self.length_.value)
     loc  = property(lambda self: self.location)
     lat  = property(lambda self: self.location.latitude)
