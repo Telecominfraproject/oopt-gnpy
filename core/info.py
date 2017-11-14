@@ -17,9 +17,10 @@ class Power(namedtuple('Power', 'signal nonlinear_interference amplified_spontan
     _ABBREVS = {'nli': 'nonlinear_interference',
                 'ase': 'amplified_spontaneous_emission',}
 
-class Carrier(namedtuple('Carrier', 'channel_number frequency modulation baud_rate alpha power'), ConvenienceAccess):
+class Channel(namedtuple('Channel', 'channel_number frequency modulation baud_rate alpha power'), ConvenienceAccess):
     _ABBREVS = {'channel': 'channel_number',
-                'ch':      'channel_number',
+                'num_chan':      'channel_number',
+                'num_carriers': 'num_carriers',
                 'ffs':     'frequency',
                 'freq':    'frequency',}
 
@@ -29,9 +30,9 @@ class SpectralInformation(namedtuple('SpectralInformation', 'carriers'), Conveni
 
 if __name__ == '__main__':
     si = SpectralInformation(
-        Carrier(1, 193.95e12, '16-qam', 32e9, 0,  # 193.95 THz, 32 Gbaud
+        Channel(1, 193.95e12, '16-qam', 32e9, 0,  # 193.95 THz, 32 Gbaud
             Power(1e-3, 1e-6, 1e-6)),             # 1 mW, 1uW, 1uW
-        Carrier(1, 195.95e12, '16-qam', 32e9, 0,  # 195.95 THz, 32 Gbaud
+        Channel(1, 195.95e12, '16-qam', 32e9, 0,  # 195.95 THz, 32 Gbaud
             Power(1.2e-3, 1e-6, 1e-6)),           # 1.2 mW, 1uW, 1uW
     )
     print(f'si = {si}')
