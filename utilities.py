@@ -12,33 +12,55 @@ def c():
     """
     Returns the speed of light in meters per second
     """
-    return 299792458
+    return 299792458.0
 
 
 def wavelength2freq(value):
+    """ Converts wavelength units to frequeuncy units.
+    """
     return c()/value
 
 
 def freq2wavelength(value):
+    """ Converts frequency units to wavelength units.
+    """
     return c()/value
 
 
 def deltawl2deltaf(delta_wl, wavelength):
-    '''deltawl2deltaf(delta_wl, wavelength):
+    """ deltawl2deltaf(delta_wl, wavelength):
     delta_wl is BW in wavelength units
     wavelength is the center wl
     units for delta_wl and wavelength must be same
-    '''
+    
+        
+
+    :param delta_wl: delta wavelength BW in same units as wavelength
+    :param wavelength: wavelength BW is relevant for
+    :type delta_wl: float or numpy.ndarray
+    :type wavelength: float
+    :return: The BW in frequency units
+    :rtype: float or ndarray
+
+    """ 
     f = wavelength2freq(wavelength)
     return delta_wl*f/wavelength
 
 
 def deltaf2deltawl(delta_f, frequency):
-    '''deltawl2deltaf(delta_f, frequency):
-    delta_f is BW in HZ
-    frequency is in HZ
-    units for delta_wl and wavelength must be same
-    '''
+    """ deltawl2deltaf(delta_f, frequency):
+        converts delta frequency to delta wavelength
+        units for delta_wl and wavelength must be same
+    
+    
+    :param delta_f: delta frequency in same units as frequency
+    :param frequency: frequency BW is relevant for
+    :type delta_f: float or numpy.ndarray
+    :type frequency: float
+    :return: The BW in wavelength units
+    :rtype: float or ndarray
+    
+    """
     wl = freq2wavelength(frequency)
     return delta_f*wl/frequency
 
