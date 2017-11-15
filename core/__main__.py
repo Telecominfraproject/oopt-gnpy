@@ -14,7 +14,7 @@ from networkx import (draw_networkx_nodes, draw_networkx_edges,
 
 from . import network_from_json
 from .elements import Transceiver, Fiber
-from .info import SpectralInformation, Carrier, Power
+from .info import SpectralInformation, Channel, Power
 from .algorithms import closed_paths
 
 logger = getLogger(__package__ or __file__)
@@ -43,9 +43,9 @@ def main(args):
               for n in network.nodes()}
 
     si = SpectralInformation(
-        Carrier(1, 193.95e12, '16-qam', 32e9, 0,  # 193.95 THz, 32 Gbaud
+        Channel(1, 193.95e12, '16-qam', 32e9, 0,  # 193.95 THz, 32 Gbaud
             Power(1e-3, 1e-6, 1e-6)),             # 1 mW, 1uW, 1uW
-        Carrier(1, 195.95e12, '16-qam', 32e9, 0,  # 195.95 THz, 32 Gbaud
+        Channel(1, 195.95e12, '16-qam', 32e9, 0,  # 195.95 THz, 32 Gbaud
             Power(1.2e-3, 1e-6, 1e-6)),           # 1.2 mW, 1uW, 1uW
     )
 
