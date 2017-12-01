@@ -6,7 +6,7 @@ Created on Fri Nov 10 17:50:46 2017
 @author: briantaylor
 """
 import numpy as np
-from numpy import pi, cos, sqrt
+from numpy import pi, cos, sqrt, log10
 
 def c():
     """
@@ -14,6 +14,20 @@ def c():
     """
     return 299792458.0
 
+def h():
+    """
+    Returns plank's constant in J*s
+    """
+    return 6.62607004e-34
+
+
+def lin2db(value):
+    return 10*log10(value)
+
+
+def db2lin(value):
+    return 10**(value/10)
+    
 
 def wavelength2freq(value):
     """ Converts wavelength units to frequeuncy units.
