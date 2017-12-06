@@ -36,7 +36,7 @@ def main(args):
         json_data = load(f)
 
     network = network_from_json(json_data)
-    pos    = {n: (n.long, n.lat) for n in network.nodes()}
+    pos    = {n: (n.lng, n.lat) for n in network.nodes()}
     labels_pos = {n: (long-.5, lat-.5) for n, (long, lat) in pos.items()}
     size   = [20 if isinstance(n, Fiber) else 80 for n in network.nodes()]
     labels = {n: n.location.city if isinstance(n, Transceiver) else ''
