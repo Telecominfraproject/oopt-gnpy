@@ -1,46 +1,34 @@
-#!/usr/bin/env python
-from collections import namedtuple
+#!/usr/bin/env python3
 
-class Coords(namedtuple('Coords', 'latitude longitude')):
-    lat  = property(lambda self: self.latitude)
-    long = property(lambda self: self.longitude)
+from core.node import Node
+from core.units import UNITS
 
-class Location(namedtuple('Location', 'city region coords')):
-    def __new__(cls, city, region, **kwargs):
-        return super().__new__(cls, city, region, Coords(**kwargs))
 
-class Transceiver(namedtuple('Transceiver', 'uid location')):
-    def __new__(cls, uid, location):
-        return super().__new__(cls, uid, Location(**location))
+class Transceiver(Node):
+    def __init__(self, config):
+        super().__init__(config)
 
-    def __call__(self, *spectral_infos):
-        return spectral_info.copy()
+    def __call__(self, spectral_info):
+        return spectral_info
 
-    # convenience access
-    loc  = property(lambda self: self.location)
-    lat  = property(lambda self: self.location.coords.latitude)
-    long = property(lambda self: self.location.coords.longitude)
 
-class Length(namedtuple('Length', 'quantity units')):
-    UNITS = {'m': 1, 'km': 1e3}
-
-    @property
-    def value(self):
-        return self.quantity * self.UNITS[self.units]
-    val = value
-
-class Fiber(namedtuple('Fiber', 'uid length_ location')):
-    def __new__(cls, uid, length, units, location):
-        return super().__new__(cls, uid, Length(length, units), Coords(**location))
+class Fiber(Node):
+    def __init__(self, config):
+        super().__init__(config)
+        metadata = self.config.metadata
+        self.length = metadata.length * UNITS[metadata.units]
 
     def __repr__(self):
         return f'{type(self).__name__}(uid={self.uid}, length={self.length})'
 
-    def __call__(self, *spectral_infos):
-        return spectral_info.copy()
+    def propagate(self, *carriers):
+        for carrier in carriers:
+            power = carrier.power
+            power = power._replace(signal=0.5 * power.signal * .5,
+                                   nonlinear_interference=2 * power.nli,
+                                   amplified_spontaneous_emission=2 * power.ase)
+            yield carrier._replace(power=power)
 
-    # convenience access
-    length = property(lambda self: self.length_.value)
-    loc  = property(lambda self: self.location)
-    lat  = property(lambda self: self.location.latitude)
-    long = property(lambda self: self.location.longitude)
+    def __call__(self, spectral_info):
+        carriers = tuple(self.propagate(*spectral_info.carriers))
+        return spectral_info.update(carriers=carriers)
