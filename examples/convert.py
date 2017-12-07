@@ -10,11 +10,35 @@ from collections import namedtuple, Counter
 from itertools import chain
 from json import dumps
 from uuid import uuid4
+import math
+import numpy as np
 
 Node = namedtuple('Node', 'city state country region latitude longitude')
 class Link(namedtuple('Link', 'from_city to_city distance distance_units')):
     def __new__(cls, from_city, to_city, distance, distance_units='km'):
         return super().__new__(cls, from_city, to_city, distance, distance_units)
+
+def define_span_range(min_span, max_span, nspans):
+    srange = (max_span - min_span) + min_span*np.random.rand(nspans)
+    return srange
+
+def amp_spacings(min_span,max_span,length):
+    nspans =  math.ceil(length/100)
+    spans = define_span_range(min_span, max_span, nspans)
+    tot = spans.sum()
+    delta = length -tot
+    if delta > 0 and delta < 25:
+        ind  = np.where(np.min(spans))
+        spans[ind] = spans[ind] + delta
+    elif delta >= 25 and delta < 40:
+        spans = spans + delta/float(nspans)
+    elif delta > 40 and delta < 100:
+        spans = np.append(spans,delta)
+    elif delta > 100:
+        spans  = np.append(spans, [delta/2, delta/2])
+    elif delta < 0:
+        spans = spans + delta/float(nspans)
+    return list(spans)
 
 def parse_excel(args):
     with open_workbook(args.workbook) as wb:
