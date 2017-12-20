@@ -33,6 +33,6 @@ Features
 * GNPY simulation of an amplified optical link
 
 .. |docs| image:: https://readthedocs.org/projects/gnpy/badge/?version=develop
-:target: http://gnpy.readthedocs.io/en/develop/?badge=develop
-:alt: Documentation Status
-:scale: 100%
+  :target: http://gnpy.readthedocs.io/en/develop/?badge=develop
+  :alt: Documentation Status
+  :scale: 100%
