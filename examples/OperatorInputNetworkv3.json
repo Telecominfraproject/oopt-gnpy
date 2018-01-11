@@ -1,0 +1,157 @@
+{
+"network_name": "pt to pt",
+"nodes_elements": 
+[
+	{
+        "id":"M_KMA",
+        "type":"ROADM",
+        "metadata": {
+        	"city":"M",
+        	"region":"RLD",
+        	"latitude":0,
+        	"longitude":0
+        }
+    },
+    {
+        "id":"T_CAS",
+        "type":"ROADM",
+        "metadata": {
+        	"city":"T",
+        	"region":"RLD",
+        	"latitude":0,
+        	"longitude":0
+        }
+    },
+    {
+        "id":"LA",
+        "type":"ILA",
+        "metadata": {
+        	"city":"LA",
+        	"region":"RLD",
+        	"latitude":0,
+        	"longitude":0
+        }
+    },
+    {
+        "id":"SR",
+        "type":"fused",
+        "metadata": {
+        	"city":"SR",
+        	"region":"RLD",
+        	"latitude":0,
+        	"longitude":0
+        }
+    },
+    {
+        "id":"C",
+        "type":"ILA",
+        "metadata": {
+        	"city":"C",
+        	"region":"RLD",
+        	"latitude":0,
+        	"longitude":0
+        }
+    },
+    {
+        "id":"N_KBE",
+        "type":"ROADM",
+        "metadata": {
+        	"city":"N",
+        	"region":"RLD",
+        	"latitude":0,
+        	"longitude":0
+        }
+    },
+    {
+        "id":"N_KBA",
+        "type":"ROADM",
+        "metadata": {
+        	"city":"N",
+        	"region":"RLD",
+        	"latitude":0,
+        	"longitude":0
+        }
+    },
+],
+"OTS_elements":[
+	{
+		"id":1,
+		"source_id":"M_KMA",
+		"dest_id":"T_CAS",
+		"parameters_cable":{
+			"units":"km",
+			"length":60,
+			"id":"F060",
+			"type":"G652"
+		},
+		"parameters_east":{
+			"con_in":0.5,
+			"con_out":0.5,
+			"loss":16,
+			"pmd":2,
+			"fo_id":5
+		},
+		"parameters_west":{
+			"con_in":0.5,
+			"con_out":0.5,
+			"loss":15,
+			"pmd":2,
+			"fo_id":6			
+		}
+	},
+	{
+		"id":2,
+		"source_id":"T_CAS",
+		"dest_id":"LA",
+		"parameters_cable":{
+		},
+		"parameters_east":{
+		},
+		"parameters_west":{
+		}
+	},
+	{
+		"id":3,
+		"source_id":"LA",
+		"dest_id":"SR",
+		"parameters_cable":{
+		},
+		"parameters_east":{
+		},
+		"parameters_west":{
+		}
+	},
+	{
+		"id":3,
+		"source_id":"SR",
+		"dest_id":"C",
+		"parameters_cable":{
+		},
+		"parameters_east":{
+		},
+		"parameters_west":{
+		}
+	},
+	{
+		"id":5,
+		"source_id":"C",
+		"dest_id":"N_KBE",
+		"parameters_cable":{
+		},
+		"parameters_east":{
+		},
+		"parameters_west":{
+		}
+	},
+	{
+		"id":6,
+		"source_id":"N_KBE",
+		"dest_id":"N_KBA",
+		"parameters_cable":{
+		},
+		"parameters_east":{
+		},
+		"parameters_west":{
+		}
+	},							
+]}
