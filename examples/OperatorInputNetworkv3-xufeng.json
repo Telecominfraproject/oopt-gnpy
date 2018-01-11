@@ -1,0 +1,143 @@
+{
+  "networks": {
+    "network": [
+      {
+        "network-types": {
+          "tip-oopt-pse": {}
+        },
+        "network-id": "pt-to-pt",
+        "node": [
+          {
+            "node-id": "M_KMA",
+            "type":"roadm",
+            "termination-point": [
+              {
+                "tp-id": "1-2-1"
+              }
+            ]
+          },
+          {
+            "node-id": "T_CAS",
+            "type":"roadm",
+            "termination-point": [
+              {
+                "tp-id": "2-1-1"
+              },
+              {
+                "tp-id": "2-3-1"
+              }
+            ]
+          },
+          {
+            "node-id": "LA",
+            "type":"ila",
+            "termination-point": [
+              {
+                "tp-id": "3-2-1"
+              },
+              {
+                "tp-id": "3-4-1"
+              }
+            ]
+          },
+          {
+            "node-id": "SR",
+            "type":"fused",
+            "termination-point": [
+              {
+                "tp-id": "4-3-1"
+              }
+            ]
+          },
+          {
+            "node-id": "C",
+            "type":"ila",
+            "termination-point": [
+              {
+                "tp-id": "5-6-1"
+              }
+            ]
+          },
+          {
+            "node-id": "N_KBE",
+            "type":"roadm",
+            "termination-point": [
+              {
+                "tp-id": "6-5-1"
+              },
+              {
+                "tp-id": "6-7-1"
+              }
+            ]
+          },
+          {
+            "node-id": "N_KBA",
+            "type":"roadm",
+            "termination-point": [
+              {
+                "tp-id": "7-6-1"
+              }
+            ]
+          }
+        ],
+        "link": [
+          {
+            "link-id": "M_KMA,1-2-1,T_CAS,2-1-1",
+            "source": {
+              "source-node": "M_KMA",
+              "source-tp": "1-2-1"
+            }
+            "destination": {
+              "dest-node": "T_CAS",
+              "dest-tp": "2-1-1"
+            }
+          },
+          {
+            "link-id": "T_CAS,2-3-1,LA,3-2-1",
+            "source": {
+              "source-node": "T_CAS",
+              "source-tp": "2-3-1"
+            }
+            "destination": {
+              "dest-node": "LA",
+              "dest-tp": "3-2-1"
+            }
+          },
+          {
+            "link-id": "LA,3-4-1,SR,4-3-1",
+            "source": {
+              "source-node": "LA",
+              "source-tp": "3-4-1"
+            }
+            "destination": {
+              "dest-node": "SR",
+              "dest-tp": "4-3-1"
+            }
+          },
+          {
+            "link-id": "C,5-6-1,N_KBE,6-5-1",
+            "source": {
+              "source-node": "C",
+              "source-tp": "5-6-1"
+            }
+            "destination": {
+              "dest-node": "N_KBE",
+              "dest-tp": "6-5-1"
+            }
+          },
+          {
+            "link-id": "N_KBE,6-7-1,N_KBA,7-6-1",
+            "source": {
+              "source-node": "N_KBE",
+              "source-tp": "6-7-1"
+            }
+            "destination": {
+              "dest-node": "N_KBA",
+              "dest-tp": "7-6-1"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
