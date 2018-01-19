@@ -8,10 +8,10 @@ from matplotlib.pyplot import show, axis
 from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels)
 
-from . import network_from_json
-from .elements import Transceiver, Fiber
-from .info import SpectralInformation, Channel, Power
-from .algorithms import closed_paths
+from gnpy.core import network_from_json
+from gnpy.core.elements import Transceiver, Fiber
+from gnpy.core.info import SpectralInformation, Channel, Power
+from gnpy.core.algorithms import closed_paths
 
 logger = getLogger(__package__ or __file__)
 
