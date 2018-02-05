@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from core.node import Node
-from core.units import UNITS
+from gnpy.core.node import Node
+from gnpy.core.units import UNITS
 import numpy as np
 from scipy.constants import c
 
@@ -22,7 +22,7 @@ class Fiber(Node):
 
     def __repr__(self):
         return f'{type(self).__name__}(uid={self.uid}, length={self.length})'
-    
+
     def effective_length(self, loss_coef):
         alpha_dict = self.dbkm_2_lin(loss_coef)
         alpha = alpha_dict['alpha_acoef']
@@ -79,4 +79,3 @@ class Fiber(Node):
     def __call__(self, spectral_info):
         carriers = tuple(self.propagate(*spectral_info.carriers))
         return spectral_info.update(carriers=carriers)
-

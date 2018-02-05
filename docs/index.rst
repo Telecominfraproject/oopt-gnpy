@@ -1,17 +1,12 @@
-====
-gnpy
-====
+.. GNpy documentation master file, created by
+   sphinx-quickstart on Mon Dec 18 14:41:01 2017.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
 
+Welcome to GNpy's documentation!
+================================
 
-|docs|
-                
-
-Gaussian Noise (GN) modeling library
-
-
-* Free software: BSD license
-* Documentation: https://gnpy.readthedocs.io.
-
+Gaussian Noise (GN) based modeling library for physical layer impairment evaluation in optical networks.
 
 Summary
 --------
@@ -32,7 +27,21 @@ Features
 
 * GNPY simulation of an amplified optical link
 
-.. |docs| image:: https://readthedocs.org/projects/gnpy/badge/?version=develop
-  :target: http://gnpy.readthedocs.io/en/develop/?badge=develop
-  :alt: Documentation Status
-  :scale: 100%
+.. toctree::
+   :maxdepth: 2
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
+Contributors
+============
+Mattia Cantono, Alessio Ferrari, Vittorio Curri - Politecnico di Torino - Italy
+Gilad Goldfarb, Brian Taylor - Facebook Inc.
+James Powell
+Gert Grammel - Juniper Inc.
+
