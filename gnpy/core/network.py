@@ -2,7 +2,7 @@
 
 from networkx import DiGraph
 
-from core import elements
+from gnpy.core import elements
 
 
 def network_from_json(json_data):
