@@ -1,0 +1,14 @@
+{
+"OA_type1": {
+        "type":"EDFA",
+        "gain_flat":25,
+        "gain_min":15,
+        "p_max":21,
+        "nf_model": 
+            {
+            "enabled":"true",
+        	"nf_min":5.5,
+        	"nf_max":8
+            }
+        }
+}
