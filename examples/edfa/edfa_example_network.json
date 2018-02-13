@@ -1,0 +1,56 @@
+{
+    "network_name": "EDFA Example Network - P2P",
+    "elements": [{
+            "uid": "Site A",
+            "type": "Transceiver",
+            "metadata": {
+                "latitude": 0,
+                "longitude": 0
+            }
+        },
+        {
+            "uid": "Span1",
+            "type": "Fiber",
+            "params": {
+                "length": 80,
+                "length_units": "km"
+            },
+            "metadata": {
+                "latitude": 1,
+                "longitude": 0
+            }
+        },
+        {
+            "uid": "Edfa1",
+            "type": "Edfa",
+            "config_from_json": "edfa_config.json",
+            "metadata": {
+                "latitude": 2,
+                "longitude": 0
+            }
+        },
+        {
+            "uid": "Site B",
+            "type": "Transceiver",
+            "metadata": {
+                "latitude": 3,
+                "longitude": 0
+            }
+        }
+
+    ],
+    "connections": [{
+            "from_node": "Site A",
+            "to_node": "Span1"
+        },
+        {
+            "from_node": "Span1",
+            "to_node": "Edfa1"
+        },
+        {
+            "from_node": "Edfa1",
+            "to_node": "Site B"
+        }
+
+    ]
+}
