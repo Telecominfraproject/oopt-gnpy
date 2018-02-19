@@ -1,14 +1,15 @@
 {
-"OA_type1": {
-        "type":"EDFA",
-        "gain_flat":25,
-        "gain_min":15,
-        "p_max":21,
-        "nf_model": 
-            {
-            "enabled":"true",
-        	"nf_min":5.5,
-        	"nf_max":8
-            }
-        }
+    "gain_flatmax": 25,
+    "gain_min": 15,
+    "p_max": 21,
+    "nf_fit_coeff": "pNFfit3.txt",
+    "nf_ripple": "NFR_96.txt", 
+    "dfg": "DFG_96.txt",
+    "dgt": "DGT_96.txt",
+    "nf_model": 
+        {
+        "enabled": true,
+    	"nf_min": 5.8,
+    	"nf_max": 10
+        }     
 }

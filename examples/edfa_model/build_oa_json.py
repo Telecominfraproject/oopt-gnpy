@@ -8,134 +8,157 @@ Created on Tue Jan 30 12:32:00 2018
 
 update an existing json file with all the 96ch txt files for a given amplifier type
 amplifier type 'OA_type1' is hard coded but can be modified and other types added
-returns an updated amplifier json file: output_json_file_name = 'newOA.json'
+returns an updated amplifier json file: output_json_file_name = 'edfa_config.json'
 """
 import re
+import sys
 import json
 import numpy as np
+from gnpy.core.utils import lin2db, db2lin
 
 """amplifier file names
-there is one set of files / amplifier type:
-NF polynomial coefficients txt file (optional)
-NF ripple excursion txt file (optional)
-gain ripple excursion txt file
-dgt function txt file
-+ requires an input and output json file name
-the json input file should have prefilled fields for each amplifier type:
+convert a set of amplifier files + input json definiton file into a valid edfa_json_file:
+nf_fit_coeff: NF polynomial coefficients txt file (optional)
+nf_ripple: NF ripple excursion txt file
+dfg: gain txt file
+dgt: dynamic gain txt file
+input json file in argument (defult = 'OA.json')
+the json input file should have the following fields:
 {
-"OA_type1": {
-        "type":"EDFA",
-        "gain_flat":22,
-        "gain_min":15,
-        "p_max":21,
-        "use_nf_fit":"False",
-        "nf_model": 
-            {
-        	"nf_min":5.5,
-        	"nf_max":8,
-        	"delta_p":5
-            }
+    "gain_flatmax": 25,
+    "gain_min": 15,
+    "p_max": 21,
+    "nf_fit_coeff": "pNFfit3.txt",
+    "nf_ripple": "NFR_96.txt", 
+    "dfg": "DFG_96.txt",
+    "dgt": "DGT_96.txt",
+    "nf_model": 
+        {
+        "enabled": true,
+        "nf_min": 5.8,
+        "nf_max": 10
         }
 }
-type = EDFA, RAMAN(not yet supported)
 gain_flat = max flat gain (dB)
 gain_min = min gain (dB) : will consider an input VOA if below (TBD vs throwing an exception)
 p_max = max power (dBm)
-nf_fit = boolean (True, False) : if False the nf_fit_file_name is ignored and nf_model field is used
+nf_fit = boolean (True, False) : 
+        if False nf_fit_coeff are ignored and nf_model fields are used
 """
-input_json_file_name = 'OA.json'
-output_json_file_name = 'newOA.json'
 
-"""
-pNFfit3:  Cubic polynomial fit coefficients to noise figure in dB 
-averaged across wavelength as a function of gain change from design flat:  
+input_json_file_name = "OA.json" #default path
+output_json_file_name = "edfa_config.json"
+param_field  ="params"
+gain_min_field = "gain_min"
+gain_max_field = "gain_flatmax"
+gain_ripple_field = "dfg"
+nf_ripple_field = "nf_ripple"
+nf_fit_coeff = "nf_fit_coeff"
+nf_model_field = "nf_model"
+nf_model_enabled_field = "enabled"
+nf_min_field  ="nf_min"
+nf_max_field = "nf_max"
 
-    NFavg = pNFfit3(1)*dG^3 + pNFfit3(2)*dG^2 pNFfit3(3)*dG + pNFfit3(4)
-where 
-    dG = GainTarget - average(DFG_96)
-note that dG will normally be a negative value.
-=> json field 'nf_fit3'
-"""
-nf_fit_file_name = 'pNFfit3.txt'
-nf_fit_field = 'nf_fit3'
+def read_file(field, file_name):
+    """read and format the 96 channels txt files describing the amplifier NF and ripple
+        convert dfg into gain ripple by removing the mean component
+    """
 
-"""NFR_96:  Noise figure ripple in dB away from the average noise figure
-across the band.  This captures the wavelength dependence of the NF.  To
-calculate the NF across channels, one uses the cubic fit coefficients
-with the external gain target to get the average nosie figure, NFavg and 
-then adds this to NFR_96:
-NF_96 = NFR_96 + NFavg
-=> json field 'nf_ripple'
-""" 
-nf_ripple_file_name = 'NFR_96.txt'
-nf_ripple_field = 'nf_ripple'
+    #with open(path + file_name,'r') as this_file:
+    #   data = this_file.read()
+    #data.strip()
+    #data = re.sub(r"([0-9])([ ]{1,3})([0-9-+])",r"\1,\3",data)
+    #data = list(data.split(","))
+    #data = [float(x) for x in data]
+    data = np.loadtxt(file_name)
+    if field == gain_ripple_field or field == nf_ripple_field:
+        #consider ripple excursion only to avoid redundant information
+        #because the max flat_gain is already given by the 'gain_flat' field in json
+        #remove the mean component
+        data = data - data.mean()
+    data = data.tolist()
+    return data
 
-"""
-DFG_96:  Design flat gain at each wavelength in the 96 channel 50GHz ITU
-grid in dB.  This can be experimentally determined by measuring the gain 
-at each wavelength using a full, flat channel (or ASE) load at the input.
-The amplifier should be set to its maximum flat gain (tilt = 0dB).  This 
-measurement captures the ripple of the amplifier.  If the amplifier was 
-designed to be mimimum ripple at some other tilt value, then the ripple
-reflected in this measurement will not be that minimum.  However, when
-the DGT gets applied through the provisioning of tilt, the model should
-accurately reproduce the expected ripple at that tilt value.  One could
-also do the measurement at some expected tilt value and back-calculate
-this vector using the DGT method.  Alternatively, one could re-write the
-algorithm to accept a nominal tilt and a tiled version of this vector.
-=> json field 'gain_ripple'
-"""
-gain_ripple_file_name = 'DFG_96.txt'
-gain_ripple_field = 'gain_ripple'
+def nf_model(amp_dict):
+    if amp_dict[nf_model_field][nf_model_enabled_field] == True:
+        gain_min = amp_dict[gain_min_field]
+        gain_max = amp_dict[gain_max_field]
+        nf_min = amp_dict[nf_model_field][nf_min_field]
+        nf_max = amp_dict[nf_model_field][nf_max_field]
+        #use NF estimation model based on NFmin and NFmax in json OA file
+        delta_p = 5 #max power dB difference between 1st and 2nd stage coils
+        #dB g1a = (1st stage gain) - (internal voa attenuation)
+        g1a_min = gain_min - (gain_max-gain_min) - delta_p
+        g1a_max = gain_max - delta_p
+        #nf1 and nf2 are the nf of the 1st and 2nd stage coils
+        #calculate nf1 and nf2 values that solve nf_[min/max] = nf1 + nf2 / g1a[min/max]
+        nf2 = lin2db((db2lin(nf_min) - db2lin(nf_max)) / (1/db2lin(g1a_max)-1/db2lin(g1a_min)))
+        nf1 = lin2db(db2lin(nf_min)- db2lin(nf2)/db2lin(g1a_max)) #expression (1)
 
-"""
-DGT_96:  This is the so-called Dynamic Gain Tilt of the EDFA in dB/dB. It
-is the change in gain at each wavelength corresponding to a 1dB change at
-the longest wavelength supported.  The value can be obtained
-experimentally or through analysis of the cross sections or Giles
-parameters of the Er fibre.  This is experimentally measured by changing 
-the gain of the amplifier above the maximum flat gain while not changing 
-the internal VOA (i.e. the mid-stage VOA is set to minimum and does not 
-change during the measurement). Note that the measurement can change the 
-gain by an arbitrary amount and divide by the gain change (in dB) which
-is measured at the reference wavelength (the red end of the band).
-=> json field 'dgt'
-"""
-dgt_file_name = 'DGT_96.txt'
-dgt_field = 'dgt'
+        """ now checking and recalculating the results:
+        recalculate delta_p to check it is within [1-6] boundaries
+        This is to check that the nf_min and nf_max values from the json file
+        make sense. If not a warning is printed """
+        if nf1 < 4:
+            print('1st coil nf calculated value {} is too low: revise inputs'.format(nf1))
+        if nf2 < nf1 + 0.3 or nf2 > nf1 + 2: 
+            """nf2 should be with [nf1+0.5 - nf1 +2] boundaries
+            there shouldn't be very high nf differences between 2 coils
+            => recalculate delta_p 
+            """            
+            nf2 = max(nf2, nf1+0.3)
+            nf2 = min(nf2, nf1+2)
+            g1a_max = lin2db(db2lin(nf2) / (db2lin(nf_min) - db2lin(nf1))) #use expression (1)
+            delta_p = gain_max - g1a_max
+            g1a_min = gain_min - (gain_max-gain_min) - delta_p
+            if delta_p < 1 or delta_p > 6:
+                #delta_p should be > 1dB and < 6dB => consider user warning if not
+                print('1st coil vs 2nd coil calculated DeltaP {} is not valid: revise inputs'
+                            .format(delta_p))
+        #check the calculated values for nf1 & nf2:
+        nf_min_calc = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_max))
+        nf_max_calc = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_min))
+        if (abs(nf_min_calc-nf_min) > 0.01) or (abs(nf_max_calc-nf_max) > 0.01):
+            print('nf model calculation failed with nf_min {} and nf_max {} calculated'
+                    .format(nf_min_calc, nf_max_calc))
+            print('do not use the generated edfa_config.json file')
+    else :
+        (nf1, nf2, delta_p) = (0, 0, 0)
 
-def read_file(path, file_name, field):
-	"""read and format the 96 channels txt files describing the amplifier NF and ripple"""
-	#with open(path + file_name,'r') as this_file:
-	#	data = this_file.read()
-	#data.strip()
-	#data = re.sub(r"([0-9])([ ]{1,3})([0-9-+])",r"\1,\3",data)
-	#data = list(data.split(","))
-	#data = [float(x) for x in data]
-	data = np.loadtxt(path + file_name)
-	if field == gain_ripple_field or field == nf_ripple_field:
-		#consider ripple excursion only to avoid redundant information
-		#because the max flat_gain is already given by the 'gain_flat' field in json
-		data = data - data.mean()
-	data = data.tolist()
-	return data
+    return (nf1, nf2, delta_p)
 
-def input_json(path, ampli_name):
-	"""read the json input file and add all the 96 channels txt files
-	create the output json file with output_json_file_name"""
-	with open(path + input_json_file_name,'r') as edfa_json_file:
-		amp_dict = edfa_json_file.read()
-	amp_dict = json.loads(amp_dict)
+def input_json(path):
+    """read the json input file and add all the 96 channels txt files
+    create the output json file with output_json_file_name"""
+    with open(path,'r') as edfa_json_file:
+        amp_text = edfa_json_file.read()
+    amp_dict = json.loads(amp_text)
 
-	amp_dict[ampli_name][nf_fit_field] = read_file(path,nf_fit_file_name,nf_fit_field)
-	amp_dict[ampli_name][nf_ripple_field] = read_file(path,nf_ripple_file_name,nf_ripple_field)
-	amp_dict[ampli_name][gain_ripple_field] = read_file(path,gain_ripple_file_name,gain_ripple_field)
-	amp_dict[ampli_name][dgt_field] = read_file(path,dgt_file_name,dgt_field)
+    for k, v in amp_dict.items():
+        if re.search(r'.txt$',str(v)) :
+            amp_dict[k] = read_file(k, v)
 
-	amp_dict = json.dumps(amp_dict, indent=4)
-	with  open(path + 'newOA.json','w') as edfa_json_file:
-		edfa_json_file.write(amp_dict)
-	print(amp_dict)
+    #calculate nf of 1st and 2nd coil for the nf_model if 'enabled'==true
+    (nf1, nf2, delta_p) = nf_model(amp_dict)
+    #rename nf_min and nf_max in nf1 and nf2 after the nf model calculation:
+    del amp_dict[nf_model_field][nf_min_field]
+    del amp_dict[nf_model_field][nf_max_field]
+    amp_dict[nf_model_field]['nf1'] = nf1
+    amp_dict[nf_model_field]['nf2'] = nf2
+    amp_dict[nf_model_field]['delta_p'] = delta_p
+    #rename dfg into gain_ripple after removing the average part:
+    amp_dict['gain_ripple'] = amp_dict.pop(gain_ripple_field)
+
+    new_amp_dict = {}
+    new_amp_dict[param_field] = amp_dict
+    amp_text = json.dumps(new_amp_dict, indent=4)
+    #print(amp_text)
+    with  open(output_json_file_name,'w') as edfa_json_file:
+        edfa_json_file.write(amp_text)
 
 if __name__ == '__main__':
-	input_json('', 'OA_type1')
+    if len(sys.argv) == 2:
+        path = sys.argv[1]
+    else:
+        path = input_json_file_name
+    input_json(path)

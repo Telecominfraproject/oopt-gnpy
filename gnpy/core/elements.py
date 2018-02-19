@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+"""
+Network elements class with SpectralInformation propagation using 
+__call__ and propagate methods
+@author: giladgoldfarb
+@author: briantaylor
+@author: jeanluc-auge
+@acknowledgement : Dave Boertjes
+"""
 import numpy as np
 from scipy.constants import c, h
 
@@ -99,29 +107,50 @@ class Fiber(Node):
 class Edfa(Node):
     def __init__(self, config):
         super().__init__(config)
-        self.gain_target = self.operational.gain_target
-        self.tilt_target = self.operational.tilt_target
-        self.dgt = self.params.dgt
-        self.dfg = self.params.dfg
-        self.nf_ripple = self.params.nf_ripple
-        self.channel_freq = None
-        self.nf = None
+        self.interpol_dgt = None #inerpolated dynamic gain tilt: N numpy array
+        self.interpol_gain_ripple = None #gain ripple: N numpy array
+        self.interpol_nf_ripple = None #nf_ripple: N numpy array
+        self.channel_freq = None #SI channel frequencies: N numpy array
+        """nf and gprofile attributs are set by interpol_params"""
+        self.nf = None #edfa nf @ operational.gain_target: N numpy array 
+        self.gprofile = None
 
-    def interpol_params(self, frequencies):
-
-        #TODO read amplifier dgt, dfg, nf_ripple frequencies from additional params in json
+    def interpol_params(self, frequencies, pin):
+        """interpolate SI channel frequencies with the edfa dgt and gain_ripple frquencies from json
+        set the edfa class __init__ None parameters :
+                self.channel_freq, self.nf, self.interpol_dgt and self.interpol_gain_ripple
+        """
+        #TODO read amplifier actual frequencies from additional params in json
         amplifier_freq = itufs(0.05)*1e12 # Hz
-
         self.channel_freq = frequencies
-        self.dgt = np.interp(self.channel_freq, amplifier_freq, self.params.dgt)
-        self.dfg = np.interp(self.channel_freq, amplifier_freq, self.params.dfg)
-        self.nf_ripple = np.interp(self.channel_freq, amplifier_freq, self.params.nf_ripple)
-        self.get_nf()
+        self.interpol_dgt = np.interp(self.channel_freq, amplifier_freq, self.params.dgt)
+        self.interpol_gain_ripple = np.interp(self.channel_freq, amplifier_freq, self.params.gain_ripple)
+        self.interpol_nf_ripple = np.interp(self.channel_freq, amplifier_freq, self.params.nf_ripple)
 
-    def get_nf(self):
-        dg = self.gain_target - np.mean(self.dfg)
-        nf_avg = np.polyval(self.params.nf_fit_coeff, dg)
-        self.nf = self.nf_ripple + nf_avg
+        """check power saturation and correct target_gain accordingly:"""
+        tot_in_power_db = lin2db(np.sum(pin*1e3))
+        gain_target = min(self.operational.gain_target, self.params.p_max-tot_in_power_db)
+        self.operational.gain_target = gain_target
+
+        self._calc_nf()
+        self._gain_profile(pin)
+
+    def _calc_nf(self):
+        """nf calculation based on 2 models: self.params.nf_model.enabled from json import:
+        True => 2 stages amp modelling based on precalculated nf1, nf2 and delta_p in build_OA_json
+        False => polynomial fit based on self.params.nf_fit_coeff"""
+        #TODO : tbd alarm rising or input VOA padding in case
+        #gain_min > gain_target TBD:
+        pad = max(self.params.gain_min - self.operational.gain_target, 0)
+        gain_target = self.operational.gain_target + pad
+
+        dg = gain_target - self.params.gain_flatmax # ! <0
+        if self.params.nf_model.enabled:
+            g1a = gain_target - self.params.nf_model.delta_p + dg
+            nf_avg = lin2db(db2lin(self.params.nf_model.nf1) + db2lin(self.params.nf_model.nf2)/db2lin(g1a))
+        else:
+            nf_avg = np.polyval(self.params.nf_fit_coeff, dg)
+        self.nf = self.interpol_nf_ripple + nf_avg + pad #input VOA = 1 for 1 NF degradation
 
     def noise_profile(self, bw):
         """ noise_profile(bw) computes amplifier ase (W) in signal bw (Hz) 
@@ -161,23 +190,20 @@ class Edfa(Node):
 
         nchan = list(range(len(self.channel_freq)))
         df = np.array([bw]*(nchan[-1] + 1)) #Hz
-
-        nf_lin = db2lin(self.nf)
-        ase = h * df * self.channel_freq * nf_lin  #W
-        #print('nf,ase',lin2db(nf_lin), lin2db(ase*1e3))
+        ase = h * df * self.channel_freq * db2lin(self.nf)  #W
         return ase #in W, @amplifier input 
         #checked 02/15/2018 @ 02:00pm -45dBm @ nf = 8.8dB in 32GHz
 
-    def gain_profile(self, Pin):
+    def _gain_profile(self, pin):
         """
         Pin : input power / channel in W
 
-        :param dfg: design flat gain
+        :param gain_ripple: design flat gain
         :param dgt: design gain tilt
         :param Pin: total input power in W
         :param gp: Average gain setpoint in dB units
         :param gtp: gain tilt setting
-        :type dfg: numpy.ndarray
+        :type gain_ripple: numpy.ndarray
         :type dgt: numpy.ndarray
         :type Pin: numpy.ndarray
         :type gp: float
@@ -187,7 +213,7 @@ class Edfa(Node):
 
         AMPLIFICATION USING INPUT PROFILE
         INPUTS:
-            DFG - vector of length number of channels or spectral slices
+            gain_ripple - vector of length number of channels or spectral slices
             DGT - vector of length number of channels or spectral slices
             Pin - input powers vector of length number of channels or
             spectral slices
@@ -198,6 +224,7 @@ class Edfa(Node):
             amp gain per channel or spectral slice
         NOTE: there is no checking done for violations of the total output
             power capability of the amp.
+        EDIT OF PREVIOUS NOTE: power violation now added in interpol_params
             Ported from Matlab version written by David Boerges at Ciena.
         Based on:
             R. di Muro, "The Er3+ fiber gain coefficient derived from a dynamic
@@ -209,19 +236,19 @@ class Edfa(Node):
         simple_opt = True
 
         # TODO check what param should be used (currently length(dgt))
-        nchan = np.arange(len(self.dgt))
+        nchan = np.arange(len(self.interpol_dgt))
 
         # TODO find a way to use these or lose them.  Primarily we should have
         # a way to determine if exceeding the gain or output power of the amp
-        tot_in_power_db = lin2db(np.sum(Pin*1e3)) # ! Pin expressed in W
+        tot_in_power_db = lin2db(np.sum(pin*1e3)) # ! Pin expressed in W
 
         # Linear fit to get the
-        p = np.polyfit(nchan, self.dgt, 1)
+        p = np.polyfit(nchan, self.interpol_dgt, 1)
         dgt_slope = p[0]
 
         # Calculate the target slope-  Currently assumes equal spaced channels
         # TODO make it so that supports arbitrary channel spacing.
-        targ_slope = self.tilt_target / (len(nchan) - 1)
+        targ_slope = self.operational.tilt_target / (len(nchan) - 1)
 
         # 1st estimate of DGT scaling
         dgts1 = targ_slope / dgt_slope
@@ -233,59 +260,60 @@ class Edfa(Node):
         if simple_opt:
 
             # 1st estimate of Er gain & voa loss
-            g1st = np.array(self.dfg) + \
-                np.array(self.dgt) * dgts1
-            voa = lin2db(np.mean(db2lin(g1st))) - self.gain_target
+            g1st = np.array(self.interpol_gain_ripple) + self.params.gain_flatmax + \
+                np.array(self.interpol_dgt) * dgts1
+            voa = lin2db(np.mean(db2lin(g1st))) - self.operational.gain_target
 
             # 2nd estimate of Amp ch gain using the channel input profile
             g2nd = g1st - voa
-            pout_db = lin2db(np.sum(Pin*1e3*db2lin(g2nd)))
-            dgts2 = self.gain_target - (pout_db - tot_in_power_db)
+            pout_db = lin2db(np.sum(pin*1e3*db2lin(g2nd)))
+            dgts2 = self.operational.gain_target - (pout_db - tot_in_power_db)
 
             # Center estimate of amp ch gain
             xcent = dgts2
-            gcent = g1st - voa + np.array(self.dgt) * xcent
-            pout_db = lin2db(np.sum(Pin*1e3*db2lin(gcent)))
+            gcent = g1st - voa + np.array(self.interpol_dgt) * xcent
+            pout_db = lin2db(np.sum(pin*1e3*db2lin(gcent)))
             gavg_cent = pout_db - tot_in_power_db
 
             # Lower estimate of Amp ch gain
             deltax = np.max(g1st) - np.min(g1st)
             xlow = dgts2 - deltax
-            glow = g1st - voa + np.array(self.dgt) * xlow
-            pout_db = lin2db(np.sum(Pin*1e3*db2lin(glow)))
+            glow = g1st - voa + np.array(self.interpol_dgt) * xlow
+            pout_db = lin2db(np.sum(pin*1e3*db2lin(glow)))
             gavg_low = pout_db - tot_in_power_db
 
             # Upper gain estimate
             xhigh = dgts2 + deltax
-            ghigh = g1st - voa + np.array(self.dgt) * xhigh
-            pout_db = lin2db(np.sum(Pin*1e3*db2lin(ghigh)))        
+            ghigh = g1st - voa + np.array(self.interpol_dgt) * xhigh
+            pout_db = lin2db(np.sum(pin*1e3*db2lin(ghigh)))        
             gavg_high = pout_db - tot_in_power_db
 
             # compute slope
             slope1 = (gavg_low - gavg_cent) / (xlow - xcent)
             slope2 = (gavg_cent - gavg_high) / (xcent - xhigh)
 
-            if np.abs(self.gain_target - gavg_cent) <= err_tolerance:
+            if np.abs(self.operational.gain_target - gavg_cent) <= err_tolerance:
                 dgts3 = xcent
-            elif self.gain_target < gavg_cent:
-                dgts3 = xcent - (gavg_cent - self.gain_target) / slope1
+            elif self.operational.gain_target < gavg_cent:
+                dgts3 = xcent - (gavg_cent - self.operational.gain_target) / slope1
             else:
-                dgts3 = xcent + (-gavg_cent + self.gain_target) / slope2
+                dgts3 = xcent + (-gavg_cent + self.operational.gain_target) / slope2
 
-            gprofile = g1st - voa + np.array(self.dgt) * dgts3
+            gprofile = g1st - voa + np.array(self.interpol_dgt) * dgts3
             #print(gprofile[0])
         else:
             gprofile = None
 
-        return gprofile
+        self.gprofile = gprofile
 
     def propagate(self, *carriers):
         """add ase noise to the propagating carriers of SpectralInformation"""
         i = 0
         pin = np.array([c.power.signal+c.power.nli+c.power.ase for c in carriers]) #pin in W
         freq = np.array([c.frequency for c in carriers])
-        self.interpol_params(freq) #interpolate the amplifier vectors with the carriers freq
-        gain = db2lin(self.gain_profile(pin))
+        #interpolate the amplifier vectors with the carriers freq, calculate nf & gain profile
+        self.interpol_params(freq, pin) 
+        gain = db2lin(self.gprofile)
 
         for carrier in carriers:
 
