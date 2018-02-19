@@ -95,7 +95,7 @@ def main(args):
 
 parser = ArgumentParser()
 parser.add_argument('filename', nargs='?', type=Path,
-  default= Path(__file__).parent / 'examples/edfa/edfa_example_network.json')
+  default= Path(__file__).parent / 'edfa/edfa_example_network.json')
 parser.add_argument('-v', '--verbose', action='count')
 
 if __name__ == '__main__':
