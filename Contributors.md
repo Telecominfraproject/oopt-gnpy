@@ -12,5 +12,6 @@ Gert | Grammel | Juniper Networks | ggrammel@juniper.net
 Gilad | Goldfarb | Facebook | giladg@fb.com
 James | Powell | Consultant | james@dontusethiscode.com
 Jeanluc | Auge | Orange | jeanluc.auge@orange.com
+Liu | Xufeng | Jabil | Xufeng_Liu@jabil.com
 Mattia | Cantono | Politecnico di Torino | mattia.cantono@polito.it
 Vittorio | Curri | Politecnico di Torino | vittorio.curri@polito.it
