@@ -13,6 +13,7 @@
             "type": "Fiber",
             "params": {
                 "length": 80,
+                "loss_coef": 0.2,
                 "length_units": "km"
             },
             "metadata": {
@@ -23,6 +24,10 @@
         {
             "uid": "Edfa1",
             "type": "Edfa",
+            "operational": {
+                "gain_target": 16,
+                "tilt_target": 0
+            },
             "config_from_json": "edfa_config.json",
             "metadata": {
                 "latitude": 2,

@@ -33,9 +33,11 @@ class Node:
         else:
             self.uid = self.config.uid
         if hasattr(self.config, 'params'):
-            self.params = self.config.params
+            self.params = self.config.params     
         if hasattr(self.config, 'metadata'):
             self.metadata = self.config.metadata
+        if hasattr(self.config, 'operational'):
+            self.operational = self.config.operational            
 
     @property
     def coords(self):
