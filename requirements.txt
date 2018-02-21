@@ -7,8 +7,10 @@ networkx==2.0
 numpy==1.13.3
 pluggy==0.6.0
 py==1.5.2
+scipy==1.0.0
 pyparsing==2.2.0
 pytest==3.3.2
 python-dateutil==2.6.1
 pytz==2017.3
 six==1.11.0
+xlrd==1.1.0

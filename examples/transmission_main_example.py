@@ -1,3 +1,13 @@
+#!/usr/bin/env 
+"""
+@author: briantaylor
+@author: giladgoldfarb
+@author: jeanluc-auge
+
+Transmission setup example: 
+reads from network json (default = examples/edfa/edfa_example_network.json)
+propagates a 96 channels comb 
+"""
 from argparse import ArgumentParser
 from json import load
 from sys import exit
@@ -6,12 +16,12 @@ from logging import getLogger, basicConfig, INFO, ERROR, DEBUG
 
 from matplotlib.pyplot import show, axis
 from networkx import (draw_networkx_nodes, draw_networkx_edges,
-                      draw_networkx_labels)
+                      draw_networkx_labels, dijkstra_path)
 
-from . import network_from_json
-from .elements import Transceiver, Fiber
-from .info import SpectralInformation, Channel, Power
-from .algorithms import closed_paths
+from gnpy.core import network_from_json
+from gnpy.core.elements import Transceiver, Fiber, Edfa
+from gnpy.core.info import SpectralInformation, Channel, Power
+#from gnpy.core.algorithms import closed_paths
 
 logger = getLogger(__package__ or __file__)
 
@@ -29,6 +39,7 @@ def main(args):
         json_data = load(f)
 
     network = network_from_json(json_data)
+    """jla put in comment
     pos    = {n: (n.lng, n.lat) for n in network.nodes()}
     labels_pos = {n: (long-.5, lat-.5) for n, (long, lat) in pos.items()}
     size   = [20 if isinstance(n, Fiber) else 80 for n in network.nodes()]
@@ -36,17 +47,27 @@ def main(args):
               for n in network.nodes()]
     labels = {n: n.location.city if isinstance(n, Transceiver) else ''
               for n in network.nodes()}
+    """
 
-    si = SpectralInformation(
-        Channel(1, 193.95e12, '16-qam', 32e9, 0,  # 193.95 THz, 32 Gbaud
-            Power(1e-3, 1e-6, 1e-6)),             # 1 mW, 1uW, 1uW
-        Channel(1, 195.95e12, '16-qam', 32e9, 0,  # 195.95 THz, 32 Gbaud
-            Power(1.2e-3, 1e-6, 1e-6)),           # 1.2 mW, 1uW, 1uW
-    )
+    spacing = 0.05 #THz
+    si = SpectralInformation() # !! SI units W, Hz
+    si = si.update(carriers=tuple(Channel(f+1, (191.3+spacing*(f+1))*1e12, 
+            32e9, 0.15, Power(1e-3, 0, 0)) for f in range(96)))
 
     nodes = [n for n in network.nodes() if isinstance(n, Transceiver)]
-    source, sink = choice(nodes), choice(nodes)
+    source, sink = nodes[0], nodes[1]
+    results = dijkstra_path(network, source, sink)
+    print('dijkstra path:', results)
 
+    for ne in results:
+        si = ne(si)
+
+    print('total SNR comb in signal bandwidth', sink.snr(si))
+
+    #print(Rx_signal_power[0])
+    #p.array([c.power.signal+c.power.nli+c.power.ase for c in carriers]) 
+
+    """jla put in comment 
     results = list(islice(closed_paths(network, source, sink, si), 3))
     paths = [[n for _, n, _ in r] for r in results]
     infos = {}
@@ -70,10 +91,11 @@ def main(args):
     title(f'Propagating from {source.loc.city} to {sink.loc.city}')
     axis('off')
     show()
+    """
 
 parser = ArgumentParser()
 parser.add_argument('filename', nargs='?', type=Path,
-  default= Path(__file__).parent / '../examples/coronet.conus.json')
+  default= Path(__file__).parent / 'edfa/edfa_example_network.json')
 parser.add_argument('-v', '--verbose', action='count')
 
 if __name__ == '__main__':
