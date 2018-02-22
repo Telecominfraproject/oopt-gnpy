@@ -4,8 +4,12 @@
             "uid": "Site A",
             "type": "Transceiver",
             "metadata": {
-                "latitude": 0,
-                "longitude": 0
+                "location": {
+                    "city": "Site A",
+                    "region": "",
+                    "latitude": 0,
+                    "longitude": 0
+                }
             }
         },
         {
@@ -19,8 +23,11 @@
 		"gamma": 1.27E-3
             },
             "metadata": {
-                "latitude": 1,
-                "longitude": 0
+                "location": {
+                    "region": "",
+                    "latitude": 1,
+                    "longitude": 0
+                }
             }
         },
         {
@@ -32,16 +39,23 @@
             },
             "config_from_json": "edfa_config.json",
             "metadata": {
-                "latitude": 2,
-                "longitude": 0
+                "location": {
+                    "region": "",
+                    "latitude": 2,
+                    "longitude": 0
+                }
             }
         },
         {
             "uid": "Site B",
             "type": "Transceiver",
             "metadata": {
-                "latitude": 3,
-                "longitude": 0
+                "location": {
+                    "city": "Site B",
+                    "region": "",
+                    "latitude": 3,
+                    "longitude": 0
+                }
             }
         }
 
