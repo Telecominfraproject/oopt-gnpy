@@ -901,306 +901,6 @@
       "type": "Transceiver"
     },
     {
-      "uid": "trx Amsterdam",
-      "metadata": {
-        "location": {
-          "city": "Amsterdam",
-          "region": "Europe",
-          "latitude": 52.3699996,
-          "longitude": 4.88999915
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Berlin",
-      "metadata": {
-        "location": {
-          "city": "Berlin",
-          "region": "Europe",
-          "latitude": 52.520002,
-          "longitude": 13.379995
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Brussels",
-      "metadata": {
-        "location": {
-          "city": "Brussels",
-          "region": "Europe",
-          "latitude": 50.830002,
-          "longitude": 4.330002
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Bucharest",
-      "metadata": {
-        "location": {
-          "city": "Bucharest",
-          "region": "Europe",
-          "latitude": 44.44,
-          "longitude": 26.1
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Frankfurt",
-      "metadata": {
-        "location": {
-          "city": "Frankfurt",
-          "region": "Europe",
-          "latitude": 50.1199992,
-          "longitude": 8.68000104
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Istanbul",
-      "metadata": {
-        "location": {
-          "city": "Istanbul",
-          "region": "Europe",
-          "latitude": 41.1,
-          "longitude": 29.0
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx London",
-      "metadata": {
-        "location": {
-          "city": "London",
-          "region": "Europe",
-          "latitude": 51.5200005,
-          "longitude": -0.100000296
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Madrid",
-      "metadata": {
-        "location": {
-          "city": "Madrid",
-          "region": "Europe",
-          "latitude": 40.419998,
-          "longitude": -3.7100002
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Paris",
-      "metadata": {
-        "location": {
-          "city": "Paris",
-          "region": "Europe",
-          "latitude": 48.86,
-          "longitude": 2.3399995
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Rome",
-      "metadata": {
-        "location": {
-          "city": "Rome",
-          "region": "Europe",
-          "latitude": 41.8899996,
-          "longitude": 12.5000004
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Vienna",
-      "metadata": {
-        "location": {
-          "city": "Vienna",
-          "region": "Europe",
-          "latitude": 48.2200024,
-          "longitude": 16.3700005
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Warsaw",
-      "metadata": {
-        "location": {
-          "city": "Warsaw",
-          "region": "Europe",
-          "latitude": 52.2599987,
-          "longitude": 21.0200005
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Zurich",
-      "metadata": {
-        "location": {
-          "city": "Zurich",
-          "region": "Europe",
-          "latitude": 47.3800015,
-          "longitude": 8.5399996
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Bangkok",
-      "metadata": {
-        "location": {
-          "city": "Bangkok",
-          "region": "Asia",
-          "latitude": 13.73,
-          "longitude": 100.5
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Beijing",
-      "metadata": {
-        "location": {
-          "city": "Beijing",
-          "region": "Asia",
-          "latitude": 39.92999979,
-          "longitude": 116.4000013
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Delhi",
-      "metadata": {
-        "location": {
-          "city": "Delhi",
-          "region": "Asia",
-          "latitude": 28.6700003,
-          "longitude": 77.2099989
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Hong_Kong",
-      "metadata": {
-        "location": {
-          "city": "Hong_Kong",
-          "region": "Asia",
-          "latitude": 22.267,
-          "longitude": 114.14
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Honolulu",
-      "metadata": {
-        "location": {
-          "city": "Honolulu",
-          "region": "Asia",
-          "latitude": 21.3199996,
-          "longitude": -157.800003
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Mumbai",
-      "metadata": {
-        "location": {
-          "city": "Mumbai",
-          "region": "Asia",
-          "latitude": 18.9599987,
-          "longitude": 72.8199999
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Seoul",
-      "metadata": {
-        "location": {
-          "city": "Seoul",
-          "region": "Asia",
-          "latitude": 37.56000108,
-          "longitude": 126.9899988
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Shanghai",
-      "metadata": {
-        "location": {
-          "city": "Shanghai",
-          "region": "Asia",
-          "latitude": 31.23,
-          "longitude": 121.47
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Singapore",
-      "metadata": {
-        "location": {
-          "city": "Singapore",
-          "region": "Asia",
-          "latitude": 1.299999907,
-          "longitude": 103.8499992
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Sydney",
-      "metadata": {
-        "location": {
-          "city": "Sydney",
-          "region": "Asia",
-          "latitude": -33.86999896,
-          "longitude": 151.2100066
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Taipei",
-      "metadata": {
-        "location": {
-          "city": "Taipei",
-          "region": "Asia",
-          "latitude": 25.0200005,
-          "longitude": 121.449997
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Tokyo",
-      "metadata": {
-        "location": {
-          "city": "Tokyo",
-          "region": "Asia",
-          "latitude": 35.6699986,
-          "longitude": 139.770004
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
       "uid": "roadm Abilene",
       "metadata": {
         "location": {
@@ -2101,309 +1801,10 @@
       "type": "Roadm"
     },
     {
-      "uid": "roadm Amsterdam",
-      "metadata": {
-        "location": {
-          "city": "Amsterdam",
-          "region": "Europe",
-          "latitude": 52.3699996,
-          "longitude": 4.88999915
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Berlin",
-      "metadata": {
-        "location": {
-          "city": "Berlin",
-          "region": "Europe",
-          "latitude": 52.520002,
-          "longitude": 13.379995
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Brussels",
-      "metadata": {
-        "location": {
-          "city": "Brussels",
-          "region": "Europe",
-          "latitude": 50.830002,
-          "longitude": 4.330002
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Bucharest",
-      "metadata": {
-        "location": {
-          "city": "Bucharest",
-          "region": "Europe",
-          "latitude": 44.44,
-          "longitude": 26.1
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Frankfurt",
-      "metadata": {
-        "location": {
-          "city": "Frankfurt",
-          "region": "Europe",
-          "latitude": 50.1199992,
-          "longitude": 8.68000104
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Istanbul",
-      "metadata": {
-        "location": {
-          "city": "Istanbul",
-          "region": "Europe",
-          "latitude": 41.1,
-          "longitude": 29.0
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm London",
-      "metadata": {
-        "location": {
-          "city": "London",
-          "region": "Europe",
-          "latitude": 51.5200005,
-          "longitude": -0.100000296
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Madrid",
-      "metadata": {
-        "location": {
-          "city": "Madrid",
-          "region": "Europe",
-          "latitude": 40.419998,
-          "longitude": -3.7100002
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Paris",
-      "metadata": {
-        "location": {
-          "city": "Paris",
-          "region": "Europe",
-          "latitude": 48.86,
-          "longitude": 2.3399995
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Rome",
-      "metadata": {
-        "location": {
-          "city": "Rome",
-          "region": "Europe",
-          "latitude": 41.8899996,
-          "longitude": 12.5000004
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Vienna",
-      "metadata": {
-        "location": {
-          "city": "Vienna",
-          "region": "Europe",
-          "latitude": 48.2200024,
-          "longitude": 16.3700005
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Warsaw",
-      "metadata": {
-        "location": {
-          "city": "Warsaw",
-          "region": "Europe",
-          "latitude": 52.2599987,
-          "longitude": 21.0200005
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Zurich",
-      "metadata": {
-        "location": {
-          "city": "Zurich",
-          "region": "Europe",
-          "latitude": 47.3800015,
-          "longitude": 8.5399996
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Bangkok",
-      "metadata": {
-        "location": {
-          "city": "Bangkok",
-          "region": "Asia",
-          "latitude": 13.73,
-          "longitude": 100.5
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Beijing",
-      "metadata": {
-        "location": {
-          "city": "Beijing",
-          "region": "Asia",
-          "latitude": 39.92999979,
-          "longitude": 116.4000013
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Delhi",
-      "metadata": {
-        "location": {
-          "city": "Delhi",
-          "region": "Asia",
-          "latitude": 28.6700003,
-          "longitude": 77.2099989
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Hong_Kong",
-      "metadata": {
-        "location": {
-          "city": "Hong_Kong",
-          "region": "Asia",
-          "latitude": 22.267,
-          "longitude": 114.14
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Honolulu",
-      "metadata": {
-        "location": {
-          "city": "Honolulu",
-          "region": "Asia",
-          "latitude": 21.3199996,
-          "longitude": -157.800003
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Mumbai",
-      "metadata": {
-        "location": {
-          "city": "Mumbai",
-          "region": "Asia",
-          "latitude": 18.9599987,
-          "longitude": 72.8199999
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Seoul",
-      "metadata": {
-        "location": {
-          "city": "Seoul",
-          "region": "Asia",
-          "latitude": 37.56000108,
-          "longitude": 126.9899988
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Shanghai",
-      "metadata": {
-        "location": {
-          "city": "Shanghai",
-          "region": "Asia",
-          "latitude": 31.23,
-          "longitude": 121.47
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Singapore",
-      "metadata": {
-        "location": {
-          "city": "Singapore",
-          "region": "Asia",
-          "latitude": 1.299999907,
-          "longitude": 103.8499992
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Sydney",
-      "metadata": {
-        "location": {
-          "city": "Sydney",
-          "region": "Asia",
-          "latitude": -33.86999896,
-          "longitude": 151.2100066
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Taipei",
-      "metadata": {
-        "location": {
-          "city": "Taipei",
-          "region": "Asia",
-          "latitude": 25.0200005,
-          "longitude": 121.449997
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Tokyo",
-      "metadata": {
-        "location": {
-          "city": "Tokyo",
-          "region": "Asia",
-          "latitude": 35.6699986,
-          "longitude": 139.770004
-        }
-      },
-      "type": "Roadm"
-    },
-    {
       "uid": "fiber (Abilene \u2192 Dallas)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 32.620000000000005,
           "longitude": -98.254999
         }
@@ -2421,6 +1822,7 @@
       "uid": "fiber (Abilene \u2192 El_Paso)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 32.149905000000004,
           "longitude": -103.089799
         }
@@ -2438,6 +1840,7 @@
       "uid": "fiber (Albany \u2192 Boston)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 42.504999350000006,
           "longitude": -72.4099994
         }
@@ -2455,6 +1858,7 @@
       "uid": "fiber (Albany \u2192 Syracuse)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 42.8549996,
           "longitude": -74.97000109999999
         }
@@ -2472,6 +1876,7 @@
       "uid": "fiber (Albuquerque \u2192 Dallas)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 33.9549885,
           "longitude": -101.694985
         }
@@ -2489,6 +1894,7 @@
       "uid": "fiber (Albuquerque \u2192 Denver)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 37.444989855,
           "longitude": -105.74498679999999
         }
@@ -2506,6 +1912,7 @@
       "uid": "fiber (Albuquerque \u2192 El_Paso)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 33.4848935,
           "longitude": -106.529785
         }
@@ -2523,6 +1930,7 @@
       "uid": "fiber (Albuquerque \u2192 Las_Vegas)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 35.6649835,
           "longitude": -110.919935
         }
@@ -2537,77 +1945,10 @@
       }
     },
     {
-      "uid": "fiber (Amsterdam \u2192 Berlin)",
-      "metadata": {
-        "location": {
-          "latitude": 52.4450008,
-          "longitude": 9.134997075
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 690.608,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Amsterdam \u2192 Brussels)",
-      "metadata": {
-        "location": {
-          "latitude": 51.600000800000004,
-          "longitude": 4.610000575000001
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 210.729,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Amsterdam \u2192 Frankfurt)",
-      "metadata": {
-        "location": {
-          "latitude": 51.2449994,
-          "longitude": 6.785000095000001
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 436.324,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Amsterdam \u2192 New_York)",
-      "metadata": {
-        "location": {
-          "latitude": 46.51999895,
-          "longitude": -34.525002175000004
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 7035.611,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
       "uid": "fiber (Atlanta \u2192 Birmingham)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 33.644998349999995,
           "longitude": -85.6100008
         }
@@ -2625,6 +1966,7 @@
       "uid": "fiber (Atlanta \u2192 Charlotte)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 34.4799991,
           "longitude": -82.62499935
         }
@@ -2642,6 +1984,7 @@
       "uid": "fiber (Atlanta \u2192 Jacksonville)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 32.0450006,
           "longitude": -83.04000035
         }
@@ -2659,6 +2002,7 @@
       "uid": "fiber (Austin \u2192 Houston)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 30.0399994,
           "longitude": -96.5700009
         }
@@ -2676,6 +2020,7 @@
       "uid": "fiber (Austin \u2192 San_Antonio)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 29.884997900000002,
           "longitude": -98.1300019
         }
@@ -2693,6 +2038,7 @@
       "uid": "fiber (Baltimore \u2192 Philadelphia)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 39.65499885,
           "longitude": -75.8699986
         }
@@ -2710,6 +2056,7 @@
       "uid": "fiber (Baltimore \u2192 Pittsburgh)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 39.7999996,
           "longitude": -78.3700004
         }
@@ -2727,6 +2074,7 @@
       "uid": "fiber (Baltimore \u2192 Washington_DC)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 39.104999750000005,
           "longitude": -76.81499865
         }
@@ -2741,43 +2089,10 @@
       }
     },
     {
-      "uid": "fiber (Bangkok \u2192 Delhi)",
-      "metadata": {
-        "location": {
-          "latitude": 21.20000015,
-          "longitude": 88.85499945000001
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 3505.95,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Bangkok \u2192 Hong_Kong)",
-      "metadata": {
-        "location": {
-          "latitude": 17.9985,
-          "longitude": 107.32
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 2070.724,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
       "uid": "fiber (Baton_Rouge \u2192 Houston)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 30.1099998,
           "longitude": -93.2599984
         }
@@ -2795,6 +2110,7 @@
       "uid": "fiber (Baton_Rouge \u2192 New_Orleans)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 30.259999800000003,
           "longitude": -90.52999840000001
         }
@@ -2809,60 +2125,10 @@
       }
     },
     {
-      "uid": "fiber (Beijing \u2192 Seoul)",
-      "metadata": {
-        "location": {
-          "latitude": 38.745000434999994,
-          "longitude": 121.69500005
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 1146.124,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Beijing \u2192 Shanghai)",
-      "metadata": {
-        "location": {
-          "latitude": 35.579999895,
-          "longitude": 118.93500065
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 1284.465,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Berlin \u2192 Warsaw)",
-      "metadata": {
-        "location": {
-          "latitude": 52.390000349999994,
-          "longitude": 17.199997749999998
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 623.015,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
       "uid": "fiber (Billings \u2192 Bismarck)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 46.30000129,
           "longitude": -104.65499855
         }
@@ -2880,6 +2146,7 @@
       "uid": "fiber (Billings \u2192 Denver)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 42.780001874999996,
           "longitude": -106.7050021
         }
@@ -2897,6 +2164,7 @@
       "uid": "fiber (Billings \u2192 Spokane)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 46.729999545,
           "longitude": -112.9750022
         }
@@ -2914,6 +2182,7 @@
       "uid": "fiber (Birmingham \u2192 Nashville)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 34.84999845,
           "longitude": -86.7900009
         }
@@ -2931,6 +2200,7 @@
       "uid": "fiber (Birmingham \u2192 New_Orleans)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 31.79999925,
           "longitude": -88.36500145
         }
@@ -2948,6 +2218,7 @@
       "uid": "fiber (Bismarck \u2192 Minneapolis)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 45.88500017,
           "longitude": -97.0199969
         }
@@ -2965,6 +2236,7 @@
       "uid": "fiber (Boston \u2192 Providence)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 42.08000025,
           "longitude": -71.21999794999999
         }
@@ -2979,60 +2251,10 @@
       }
     },
     {
-      "uid": "fiber (Brussels \u2192 London)",
-      "metadata": {
-        "location": {
-          "latitude": 51.17500125,
-          "longitude": 2.115000852
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 381.913,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Bucharest \u2192 Istanbul)",
-      "metadata": {
-        "location": {
-          "latitude": 42.769999999999996,
-          "longitude": 27.55
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 528.58,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Bucharest \u2192 Warsaw)",
-      "metadata": {
-        "location": {
-          "latitude": 48.34999935,
-          "longitude": 23.56000025
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 1136.2,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
       "uid": "fiber (Buffalo \u2192 Cleveland)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 42.184999250000004,
           "longitude": -80.2700012
         }
@@ -3050,6 +2272,7 @@
       "uid": "fiber (Buffalo \u2192 Rochester)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 43.029998899999995,
           "longitude": -78.240002
         }
@@ -3067,6 +2290,7 @@
       "uid": "fiber (Charleston \u2192 Jacksonville)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 31.560001900000003,
           "longitude": -80.82500010000001
         }
@@ -3084,6 +2308,7 @@
       "uid": "fiber (Charleston \u2192 Raleigh)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 34.30500015,
           "longitude": -79.3250008
         }
@@ -3101,6 +2326,7 @@
       "uid": "fiber (Charlotte \u2192 Greensboro)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 35.6400012,
           "longitude": -80.3300009
         }
@@ -3118,6 +2344,7 @@
       "uid": "fiber (Chicago \u2192 Detroit)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 42.109999450000004,
           "longitude": -85.3900004
         }
@@ -3135,6 +2362,7 @@
       "uid": "fiber (Chicago \u2192 Milwaukee)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 42.44999915,
           "longitude": -87.82500075
         }
@@ -3152,6 +2380,7 @@
       "uid": "fiber (Chicago \u2192 Springfield)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 40.6699985,
           "longitude": -88.5400005
         }
@@ -3169,6 +2398,7 @@
       "uid": "fiber (Cincinnati \u2192 Columbus)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 39.56500054999999,
           "longitude": -83.74999985
         }
@@ -3186,6 +2416,7 @@
       "uid": "fiber (Cincinnati \u2192 Louisville)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 38.68,
           "longitude": -85.12500030000001
         }
@@ -3203,6 +2434,7 @@
       "uid": "fiber (Cincinnati \u2192 Washington_DC)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 39.024999699999995,
           "longitude": -80.76499960000001
         }
@@ -3220,6 +2452,7 @@
       "uid": "fiber (Cleveland \u2192 Columbus)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 40.7350006,
           "longitude": -82.3349992
         }
@@ -3237,6 +2470,7 @@
       "uid": "fiber (Cleveland \u2192 Toledo)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 41.5699981,
           "longitude": -82.6300007
         }
@@ -3254,6 +2488,7 @@
       "uid": "fiber (Columbus \u2192 Pittsburgh)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 40.14500099999999,
           "longitude": -81.5599985
         }
@@ -3271,6 +2506,7 @@
       "uid": "fiber (Dallas \u2192 Houston)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 31.28,
           "longitude": -96.08
         }
@@ -3288,6 +2524,7 @@
       "uid": "fiber (Dallas \u2192 Little_Rock)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 33.754999999999995,
           "longitude": -94.56
         }
@@ -3305,6 +2542,7 @@
       "uid": "fiber (Dallas \u2192 Oklahoma_City)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 34.13000075,
           "longitude": -97.14000139999999
         }
@@ -3319,43 +2557,10 @@
       }
     },
     {
-      "uid": "fiber (Delhi \u2192 Istanbul)",
-      "metadata": {
-        "location": {
-          "latitude": 34.88500015,
-          "longitude": 53.10499945
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 5457.525,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Delhi \u2192 Mumbai)",
-      "metadata": {
-        "location": {
-          "latitude": 23.8149995,
-          "longitude": 75.0149994
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 1402.141,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
       "uid": "fiber (Denver \u2192 Omaha)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 40.515000555,
           "longitude": -100.4400029
         }
@@ -3373,6 +2578,7 @@
       "uid": "fiber (Denver \u2192 Salt_Lake_City)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 40.27500067,
           "longitude": -108.40000215
         }
@@ -3390,6 +2596,7 @@
       "uid": "fiber (Detroit \u2192 Toledo)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 42.01999945,
           "longitude": -83.33999990000001
         }
@@ -3407,6 +2614,7 @@
       "uid": "fiber (El_Paso \u2192 San_Antonio)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 30.654903500000003,
           "longitude": -102.474801
         }
@@ -3424,6 +2632,7 @@
       "uid": "fiber (El_Paso \u2192 Tucson)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 32.024905000000004,
           "longitude": -108.6648
         }
@@ -3438,26 +2647,10 @@
       }
     },
     {
-      "uid": "fiber (Frankfurt \u2192 Vienna)",
-      "metadata": {
-        "location": {
-          "latitude": 49.1700008,
-          "longitude": 12.52500077
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 717.001,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
       "uid": "fiber (Fresno \u2192 Las_Vegas)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 36.494995349999996,
           "longitude": -117.504951
         }
@@ -3475,6 +2668,7 @@
       "uid": "fiber (Fresno \u2192 Los_Angeles)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 35.44500085,
           "longitude": -119.100002
         }
@@ -3492,6 +2686,7 @@
       "uid": "fiber (Fresno \u2192 Oakland)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 37.275000705,
           "longitude": -121.0050018
         }
@@ -3509,6 +2704,7 @@
       "uid": "fiber (Greensboro \u2192 Louisville)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 37.15000165,
           "longitude": -82.78499985
         }
@@ -3526,6 +2722,7 @@
       "uid": "fiber (Greensboro \u2192 Raleigh)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 35.95000095,
           "longitude": -79.24500259999999
         }
@@ -3543,6 +2740,7 @@
       "uid": "fiber (Greensboro \u2192 Richmond)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 36.8050005,
           "longitude": -78.65000165000001
         }
@@ -3560,6 +2758,7 @@
       "uid": "fiber (Hartford \u2192 Long_Island)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 41.18000015,
           "longitude": -73.1749998
         }
@@ -3577,6 +2776,7 @@
       "uid": "fiber (Hartford \u2192 Providence)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 41.795000200000004,
           "longitude": -72.05000015
         }
@@ -3591,128 +2791,10 @@
       }
     },
     {
-      "uid": "fiber (Hong_Kong \u2192 Shanghai)",
-      "metadata": {
-        "location": {
-          "latitude": 26.7485,
-          "longitude": 117.805
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 1480.406,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Hong_Kong \u2192 Sydney)",
-      "metadata": {
-        "location": {
-          "latitude": -5.801499479999999,
-          "longitude": 132.67500330000001
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 8856.6,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Hong_Kong \u2192 Taipei)",
-      "metadata": {
-        "location": {
-          "latitude": 23.64350025,
-          "longitude": 117.79499849999999
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 966.177,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Honolulu \u2192 Los_Angeles)",
-      "metadata": {
-        "location": {
-          "latitude": 27.7150003,
-          "longitude": -138.1050025
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 4921.459,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Honolulu \u2192 Sydney)",
-      "metadata": {
-        "location": {
-          "latitude": -6.274999679999999,
-          "longitude": -3.294998199999995
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 9808.616,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Honolulu \u2192 Taipei)",
-      "metadata": {
-        "location": {
-          "latitude": 23.17000005,
-          "longitude": -18.175003000000004
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 9767.013,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Istanbul \u2192 Rome)",
-      "metadata": {
-        "location": {
-          "latitude": 41.4949998,
-          "longitude": 20.7500002
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 1650.406,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
       "uid": "fiber (Jacksonville \u2192 Orlando)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 29.4150012,
           "longitude": -81.51500250000001
         }
@@ -3730,6 +2812,7 @@
       "uid": "fiber (Kansas_City \u2192 Omaha)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 40.1899988,
           "longitude": -95.370003
         }
@@ -3747,6 +2830,7 @@
       "uid": "fiber (Kansas_City \u2192 St_Louis)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 38.879999600000005,
           "longitude": -92.4850019
         }
@@ -3764,6 +2848,7 @@
       "uid": "fiber (Kansas_City \u2192 Tulsa)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 37.6249996,
           "longitude": -95.3250019
         }
@@ -3781,6 +2866,7 @@
       "uid": "fiber (Las_Vegas \u2192 Phoenix)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 34.87499529,
           "longitude": -113.6449498
         }
@@ -3798,6 +2884,7 @@
       "uid": "fiber (Las_Vegas \u2192 Salt_Lake_City)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 38.494994315,
           "longitude": -113.57495035
         }
@@ -3815,6 +2902,7 @@
       "uid": "fiber (Little_Rock \u2192 Memphis)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 34.9150005,
           "longitude": -91.180002
         }
@@ -3829,43 +2917,10 @@
       }
     },
     {
-      "uid": "fiber (London \u2192 Paris)",
-      "metadata": {
-        "location": {
-          "latitude": 50.19000025,
-          "longitude": 1.1199996019999998
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 411.692,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (London \u2192 Washington_DC)",
-      "metadata": {
-        "location": {
-          "latitude": 45.2150004,
-          "longitude": -38.559998398000005
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 7079.447,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
       "uid": "fiber (Long_Island \u2192 New_York)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 40.629999100000006,
           "longitude": -73.80500140000001
         }
@@ -3883,6 +2938,7 @@
       "uid": "fiber (Los_Angeles \u2192 San_Diego)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 33.46000135,
           "longitude": -117.7750005
         }
@@ -3900,6 +2956,7 @@
       "uid": "fiber (Los_Angeles \u2192 Santa_Barbara)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 34.270000605,
           "longitude": -119.06500170000001
         }
@@ -3917,6 +2974,7 @@
       "uid": "fiber (Louisville \u2192 Nashville)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 37.19499965,
           "longitude": -86.2599984
         }
@@ -3934,6 +2992,7 @@
       "uid": "fiber (Louisville \u2192 St_Louis)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 38.43000045,
           "longitude": -87.98999895
         }
@@ -3948,43 +3007,10 @@
       }
     },
     {
-      "uid": "fiber (Madrid \u2192 Paris)",
-      "metadata": {
-        "location": {
-          "latitude": 44.639999,
-          "longitude": -0.6850003500000001
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 1263.619,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Madrid \u2192 Zurich)",
-      "metadata": {
-        "location": {
-          "latitude": 43.89999975,
-          "longitude": 2.4149997
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 1497.358,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
       "uid": "fiber (Memphis \u2192 Nashville)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 35.6399997,
           "longitude": -88.39500145
         }
@@ -3999,26 +3025,10 @@
       }
     },
     {
-      "uid": "fiber (Miami \u2192 Paris)",
-      "metadata": {
-        "location": {
-          "latitude": 37.320000300000004,
-          "longitude": -38.935000099999996
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 8829.358,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
       "uid": "fiber (Miami \u2192 Tampa)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 26.8699997,
           "longitude": -81.34500159999999
         }
@@ -4036,6 +3046,7 @@
       "uid": "fiber (Miami \u2192 West_Palm_Beach)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 26.26500015,
           "longitude": -80.1699986
         }
@@ -4053,6 +3064,7 @@
       "uid": "fiber (Milwaukee \u2192 Minneapolis)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 44.01000005,
           "longitude": -90.6199989
         }
@@ -4070,6 +3082,7 @@
       "uid": "fiber (Minneapolis \u2192 Omaha)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 43.1099986,
           "longitude": -94.63999975
         }
@@ -4084,43 +3097,10 @@
       }
     },
     {
-      "uid": "fiber (Mumbai \u2192 Rome)",
-      "metadata": {
-        "location": {
-          "latitude": 30.42499915,
-          "longitude": 42.66000015
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 7415.841,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Mumbai \u2192 Singapore)",
-      "metadata": {
-        "location": {
-          "latitude": 10.1299993035,
-          "longitude": 88.33499954999999
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 4692.708,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
       "uid": "fiber (New_Orleans \u2192 Tallahassee)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 30.265,
           "longitude": -87.105
         }
@@ -4138,6 +3118,7 @@
       "uid": "fiber (New_York \u2192 Newark)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 40.69499975,
           "longitude": -74.05500105
         }
@@ -4155,6 +3136,7 @@
       "uid": "fiber (New_York \u2192 Scranton)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 41.034999150000004,
           "longitude": -74.80500175
         }
@@ -4172,6 +3154,7 @@
       "uid": "fiber (New_York \u2192 Wilmington)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 40.20500005,
           "longitude": -74.7350012
         }
@@ -4189,6 +3172,7 @@
       "uid": "fiber (Newark \u2192 Philadelphia)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 40.364999850000004,
           "longitude": -74.6499975
         }
@@ -4206,6 +3190,7 @@
       "uid": "fiber (Norfolk \u2192 Raleigh)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 36.36999885,
           "longitude": -77.4500006
         }
@@ -4223,6 +3208,7 @@
       "uid": "fiber (Norfolk \u2192 Wilmington)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 38.33,
           "longitude": -75.88499834999999
         }
@@ -4240,6 +3226,7 @@
       "uid": "fiber (Oakland \u2192 Sacramento)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 38.170000085,
           "longitude": -121.8450016
         }
@@ -4257,6 +3244,7 @@
       "uid": "fiber (Oakland \u2192 Salt_Lake_City)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 39.27499967,
           "longitude": -117.07500114999999
         }
@@ -4274,6 +3262,7 @@
       "uid": "fiber (Oakland \u2192 San_Francisco)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 37.715000065,
           "longitude": -122.32000015
         }
@@ -4288,43 +3277,10 @@
       }
     },
     {
-      "uid": "fiber (Oakland \u2192 Taipei)",
-      "metadata": {
-        "location": {
-          "latitude": 31.395000605,
-          "longitude": -0.38500230000000357
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 12461.707,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Oklahoma_City \u2192 Tulsa)",
-      "metadata": {
-        "location": {
-          "latitude": 35.80000075,
-          "longitude": -96.7150014
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 193.359,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
       "uid": "fiber (Orlando \u2192 West_Palm_Beach)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 27.62499955,
           "longitude": -80.75000025
         }
@@ -4342,6 +3298,7 @@
       "uid": "fiber (Philadelphia \u2192 Scranton)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 40.70499925,
           "longitude": -75.3999982
         }
@@ -4359,6 +3316,7 @@
       "uid": "fiber (Phoenix \u2192 San_Diego)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 33.17500114,
           "longitude": -114.6049993
         }
@@ -4376,6 +3334,7 @@
       "uid": "fiber (Phoenix \u2192 Tucson)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 32.87000029,
           "longitude": -111.4799998
         }
@@ -4393,6 +3352,7 @@
       "uid": "fiber (Pittsburgh \u2192 Scranton)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 40.849999999999994,
           "longitude": -77.9
         }
@@ -4410,6 +3370,7 @@
       "uid": "fiber (Portland \u2192 Sacramento)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 42.05500009,
           "longitude": -122.06500255
         }
@@ -4427,6 +3388,7 @@
       "uid": "fiber (Portland \u2192 Salt_Lake_City)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 43.159999675,
           "longitude": -117.2950021
         }
@@ -4444,6 +3406,7 @@
       "uid": "fiber (Portland \u2192 Seattle)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 46.57999994,
           "longitude": -122.505001
         }
@@ -4458,26 +3421,10 @@
       }
     },
     {
-      "uid": "fiber (Portland \u2192 Tokyo)",
-      "metadata": {
-        "location": {
-          "latitude": 40.604999660000004,
-          "longitude": 8.555000249999999
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 9349.706,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
       "uid": "fiber (Richmond \u2192 Washington_DC)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 38.21999945,
           "longitude": -77.244999
         }
@@ -4495,6 +3442,7 @@
       "uid": "fiber (Rochester \u2192 Syracuse)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 43.10499975,
           "longitude": -76.88000115
         }
@@ -4509,43 +3457,10 @@
       }
     },
     {
-      "uid": "fiber (Rome \u2192 Vienna)",
-      "metadata": {
-        "location": {
-          "latitude": 45.055001000000004,
-          "longitude": 14.43500045
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 920.026,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Rome \u2192 Zurich)",
-      "metadata": {
-        "location": {
-          "latitude": 44.63500055,
-          "longitude": 10.52
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 823.4,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
       "uid": "fiber (San_Francisco \u2192 San_Jose)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 37.479999445000004,
           "longitude": -122.13499859999999
         }
@@ -4563,6 +3478,7 @@
       "uid": "fiber (San_Jose \u2192 Santa_Barbara)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 35.86499984,
           "longitude": -120.78499995
         }
@@ -4580,6 +3496,7 @@
       "uid": "fiber (Scranton \u2192 Syracuse)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 42.2200005,
           "longitude": -75.90499965000001
         }
@@ -4597,6 +3514,7 @@
       "uid": "fiber (Seattle \u2192 Spokane)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 47.644998605,
           "longitude": -119.88000115
         }
@@ -4611,43 +3529,10 @@
       }
     },
     {
-      "uid": "fiber (Seoul \u2192 Tokyo)",
-      "metadata": {
-        "location": {
-          "latitude": 36.614999839999996,
-          "longitude": 133.3800014
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 1391.085,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Singapore \u2192 Sydney)",
-      "metadata": {
-        "location": {
-          "latitude": -16.2849995265,
-          "longitude": 127.5300029
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 7562.331,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
       "uid": "fiber (Springfield \u2192 St_Louis)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 39.07,
           "longitude": -89.82
         }
@@ -4662,26 +3547,10 @@
       }
     },
     {
-      "uid": "fiber (Taipei \u2192 Tokyo)",
-      "metadata": {
-        "location": {
-          "latitude": 30.344999549999997,
-          "longitude": 130.6100005
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 2537.345,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
       "uid": "fiber (Tallahassee \u2192 Tampa)",
       "metadata": {
         "location": {
+          "region": "CONUS",
           "latitude": 29.2099994,
           "longitude": -83.38000174999999
         }
@@ -4689,23 +3558,6 @@
       "type": "Fiber",
       "params": {
         "length": 394.094,
-        "length_units": "km",
-        "loss_coef": 0.2,
-        "dispersion": 1.67e-05,
-        "gamma": 0.00127
-      }
-    },
-    {
-      "uid": "fiber (Vienna \u2192 Warsaw)",
-      "metadata": {
-        "location": {
-          "latitude": 50.24000055,
-          "longitude": 18.6950005
-        }
-      },
-      "type": "Fiber",
-      "params": {
-        "length": 669.297,
         "length_units": "km",
         "loss_coef": 0.2,
         "dispersion": 1.67e-05,
@@ -4779,38 +3631,6 @@
       "to_node": "roadm Albuquerque"
     },
     {
-      "from_node": "roadm Amsterdam",
-      "to_node": "fiber (Amsterdam \u2192 Berlin)"
-    },
-    {
-      "from_node": "fiber (Amsterdam \u2192 Berlin)",
-      "to_node": "roadm Amsterdam"
-    },
-    {
-      "from_node": "roadm Amsterdam",
-      "to_node": "fiber (Amsterdam \u2192 Brussels)"
-    },
-    {
-      "from_node": "fiber (Amsterdam \u2192 Brussels)",
-      "to_node": "roadm Amsterdam"
-    },
-    {
-      "from_node": "roadm Amsterdam",
-      "to_node": "fiber (Amsterdam \u2192 Frankfurt)"
-    },
-    {
-      "from_node": "fiber (Amsterdam \u2192 Frankfurt)",
-      "to_node": "roadm Amsterdam"
-    },
-    {
-      "from_node": "roadm Amsterdam",
-      "to_node": "fiber (Amsterdam \u2192 New_York)"
-    },
-    {
-      "from_node": "fiber (Amsterdam \u2192 New_York)",
-      "to_node": "roadm Amsterdam"
-    },
-    {
       "from_node": "roadm Atlanta",
       "to_node": "fiber (Atlanta \u2192 Birmingham)"
     },
@@ -4875,22 +3695,6 @@
       "to_node": "roadm Baltimore"
     },
     {
-      "from_node": "roadm Bangkok",
-      "to_node": "fiber (Bangkok \u2192 Delhi)"
-    },
-    {
-      "from_node": "fiber (Bangkok \u2192 Delhi)",
-      "to_node": "roadm Bangkok"
-    },
-    {
-      "from_node": "roadm Bangkok",
-      "to_node": "fiber (Bangkok \u2192 Hong_Kong)"
-    },
-    {
-      "from_node": "fiber (Bangkok \u2192 Hong_Kong)",
-      "to_node": "roadm Bangkok"
-    },
-    {
       "from_node": "roadm Baton_Rouge",
       "to_node": "fiber (Baton_Rouge \u2192 Houston)"
     },
@@ -4905,30 +3709,6 @@
     {
       "from_node": "fiber (Baton_Rouge \u2192 New_Orleans)",
       "to_node": "roadm Baton_Rouge"
-    },
-    {
-      "from_node": "roadm Beijing",
-      "to_node": "fiber (Beijing \u2192 Seoul)"
-    },
-    {
-      "from_node": "fiber (Beijing \u2192 Seoul)",
-      "to_node": "roadm Beijing"
-    },
-    {
-      "from_node": "roadm Beijing",
-      "to_node": "fiber (Beijing \u2192 Shanghai)"
-    },
-    {
-      "from_node": "fiber (Beijing \u2192 Shanghai)",
-      "to_node": "roadm Beijing"
-    },
-    {
-      "from_node": "roadm Berlin",
-      "to_node": "fiber (Berlin \u2192 Warsaw)"
-    },
-    {
-      "from_node": "fiber (Berlin \u2192 Warsaw)",
-      "to_node": "roadm Berlin"
     },
     {
       "from_node": "roadm Billings",
@@ -4985,30 +3765,6 @@
     {
       "from_node": "fiber (Boston \u2192 Providence)",
       "to_node": "roadm Boston"
-    },
-    {
-      "from_node": "roadm Brussels",
-      "to_node": "fiber (Brussels \u2192 London)"
-    },
-    {
-      "from_node": "fiber (Brussels \u2192 London)",
-      "to_node": "roadm Brussels"
-    },
-    {
-      "from_node": "roadm Bucharest",
-      "to_node": "fiber (Bucharest \u2192 Istanbul)"
-    },
-    {
-      "from_node": "fiber (Bucharest \u2192 Istanbul)",
-      "to_node": "roadm Bucharest"
-    },
-    {
-      "from_node": "roadm Bucharest",
-      "to_node": "fiber (Bucharest \u2192 Warsaw)"
-    },
-    {
-      "from_node": "fiber (Bucharest \u2192 Warsaw)",
-      "to_node": "roadm Bucharest"
     },
     {
       "from_node": "roadm Buffalo",
@@ -5147,22 +3903,6 @@
       "to_node": "roadm Dallas"
     },
     {
-      "from_node": "roadm Delhi",
-      "to_node": "fiber (Delhi \u2192 Istanbul)"
-    },
-    {
-      "from_node": "fiber (Delhi \u2192 Istanbul)",
-      "to_node": "roadm Delhi"
-    },
-    {
-      "from_node": "roadm Delhi",
-      "to_node": "fiber (Delhi \u2192 Mumbai)"
-    },
-    {
-      "from_node": "fiber (Delhi \u2192 Mumbai)",
-      "to_node": "roadm Delhi"
-    },
-    {
       "from_node": "roadm Denver",
       "to_node": "fiber (Denver \u2192 Omaha)"
     },
@@ -5201,14 +3941,6 @@
     {
       "from_node": "fiber (El_Paso \u2192 Tucson)",
       "to_node": "roadm El_Paso"
-    },
-    {
-      "from_node": "roadm Frankfurt",
-      "to_node": "fiber (Frankfurt \u2192 Vienna)"
-    },
-    {
-      "from_node": "fiber (Frankfurt \u2192 Vienna)",
-      "to_node": "roadm Frankfurt"
     },
     {
       "from_node": "roadm Fresno",
@@ -5275,62 +4007,6 @@
       "to_node": "roadm Hartford"
     },
     {
-      "from_node": "roadm Hong_Kong",
-      "to_node": "fiber (Hong_Kong \u2192 Shanghai)"
-    },
-    {
-      "from_node": "fiber (Hong_Kong \u2192 Shanghai)",
-      "to_node": "roadm Hong_Kong"
-    },
-    {
-      "from_node": "roadm Hong_Kong",
-      "to_node": "fiber (Hong_Kong \u2192 Sydney)"
-    },
-    {
-      "from_node": "fiber (Hong_Kong \u2192 Sydney)",
-      "to_node": "roadm Hong_Kong"
-    },
-    {
-      "from_node": "roadm Hong_Kong",
-      "to_node": "fiber (Hong_Kong \u2192 Taipei)"
-    },
-    {
-      "from_node": "fiber (Hong_Kong \u2192 Taipei)",
-      "to_node": "roadm Hong_Kong"
-    },
-    {
-      "from_node": "roadm Honolulu",
-      "to_node": "fiber (Honolulu \u2192 Los_Angeles)"
-    },
-    {
-      "from_node": "fiber (Honolulu \u2192 Los_Angeles)",
-      "to_node": "roadm Honolulu"
-    },
-    {
-      "from_node": "roadm Honolulu",
-      "to_node": "fiber (Honolulu \u2192 Sydney)"
-    },
-    {
-      "from_node": "fiber (Honolulu \u2192 Sydney)",
-      "to_node": "roadm Honolulu"
-    },
-    {
-      "from_node": "roadm Honolulu",
-      "to_node": "fiber (Honolulu \u2192 Taipei)"
-    },
-    {
-      "from_node": "fiber (Honolulu \u2192 Taipei)",
-      "to_node": "roadm Honolulu"
-    },
-    {
-      "from_node": "roadm Istanbul",
-      "to_node": "fiber (Istanbul \u2192 Rome)"
-    },
-    {
-      "from_node": "fiber (Istanbul \u2192 Rome)",
-      "to_node": "roadm Istanbul"
-    },
-    {
       "from_node": "roadm Jacksonville",
       "to_node": "fiber (Jacksonville \u2192 Orlando)"
     },
@@ -5387,22 +4063,6 @@
       "to_node": "roadm Little_Rock"
     },
     {
-      "from_node": "roadm London",
-      "to_node": "fiber (London \u2192 Paris)"
-    },
-    {
-      "from_node": "fiber (London \u2192 Paris)",
-      "to_node": "roadm London"
-    },
-    {
-      "from_node": "roadm London",
-      "to_node": "fiber (London \u2192 Washington_DC)"
-    },
-    {
-      "from_node": "fiber (London \u2192 Washington_DC)",
-      "to_node": "roadm London"
-    },
-    {
       "from_node": "roadm Long_Island",
       "to_node": "fiber (Long_Island \u2192 New_York)"
     },
@@ -5443,36 +4103,12 @@
       "to_node": "roadm Louisville"
     },
     {
-      "from_node": "roadm Madrid",
-      "to_node": "fiber (Madrid \u2192 Paris)"
-    },
-    {
-      "from_node": "fiber (Madrid \u2192 Paris)",
-      "to_node": "roadm Madrid"
-    },
-    {
-      "from_node": "roadm Madrid",
-      "to_node": "fiber (Madrid \u2192 Zurich)"
-    },
-    {
-      "from_node": "fiber (Madrid \u2192 Zurich)",
-      "to_node": "roadm Madrid"
-    },
-    {
       "from_node": "roadm Memphis",
       "to_node": "fiber (Memphis \u2192 Nashville)"
     },
     {
       "from_node": "fiber (Memphis \u2192 Nashville)",
       "to_node": "roadm Memphis"
-    },
-    {
-      "from_node": "roadm Miami",
-      "to_node": "fiber (Miami \u2192 Paris)"
-    },
-    {
-      "from_node": "fiber (Miami \u2192 Paris)",
-      "to_node": "roadm Miami"
     },
     {
       "from_node": "roadm Miami",
@@ -5505,22 +4141,6 @@
     {
       "from_node": "fiber (Minneapolis \u2192 Omaha)",
       "to_node": "roadm Minneapolis"
-    },
-    {
-      "from_node": "roadm Mumbai",
-      "to_node": "fiber (Mumbai \u2192 Rome)"
-    },
-    {
-      "from_node": "fiber (Mumbai \u2192 Rome)",
-      "to_node": "roadm Mumbai"
-    },
-    {
-      "from_node": "roadm Mumbai",
-      "to_node": "fiber (Mumbai \u2192 Singapore)"
-    },
-    {
-      "from_node": "fiber (Mumbai \u2192 Singapore)",
-      "to_node": "roadm Mumbai"
     },
     {
       "from_node": "roadm New_Orleans",
@@ -5603,22 +4223,6 @@
       "to_node": "roadm Oakland"
     },
     {
-      "from_node": "roadm Oakland",
-      "to_node": "fiber (Oakland \u2192 Taipei)"
-    },
-    {
-      "from_node": "fiber (Oakland \u2192 Taipei)",
-      "to_node": "roadm Oakland"
-    },
-    {
-      "from_node": "roadm Oklahoma_City",
-      "to_node": "fiber (Oklahoma_City \u2192 Tulsa)"
-    },
-    {
-      "from_node": "fiber (Oklahoma_City \u2192 Tulsa)",
-      "to_node": "roadm Oklahoma_City"
-    },
-    {
       "from_node": "roadm Orlando",
       "to_node": "fiber (Orlando \u2192 West_Palm_Beach)"
     },
@@ -5683,14 +4287,6 @@
       "to_node": "roadm Portland"
     },
     {
-      "from_node": "roadm Portland",
-      "to_node": "fiber (Portland \u2192 Tokyo)"
-    },
-    {
-      "from_node": "fiber (Portland \u2192 Tokyo)",
-      "to_node": "roadm Portland"
-    },
-    {
       "from_node": "roadm Richmond",
       "to_node": "fiber (Richmond \u2192 Washington_DC)"
     },
@@ -5705,22 +4301,6 @@
     {
       "from_node": "fiber (Rochester \u2192 Syracuse)",
       "to_node": "roadm Rochester"
-    },
-    {
-      "from_node": "roadm Rome",
-      "to_node": "fiber (Rome \u2192 Vienna)"
-    },
-    {
-      "from_node": "fiber (Rome \u2192 Vienna)",
-      "to_node": "roadm Rome"
-    },
-    {
-      "from_node": "roadm Rome",
-      "to_node": "fiber (Rome \u2192 Zurich)"
-    },
-    {
-      "from_node": "fiber (Rome \u2192 Zurich)",
-      "to_node": "roadm Rome"
     },
     {
       "from_node": "roadm San_Francisco",
@@ -5755,22 +4335,6 @@
       "to_node": "roadm Seattle"
     },
     {
-      "from_node": "roadm Seoul",
-      "to_node": "fiber (Seoul \u2192 Tokyo)"
-    },
-    {
-      "from_node": "fiber (Seoul \u2192 Tokyo)",
-      "to_node": "roadm Seoul"
-    },
-    {
-      "from_node": "roadm Singapore",
-      "to_node": "fiber (Singapore \u2192 Sydney)"
-    },
-    {
-      "from_node": "fiber (Singapore \u2192 Sydney)",
-      "to_node": "roadm Singapore"
-    },
-    {
       "from_node": "roadm Springfield",
       "to_node": "fiber (Springfield \u2192 St_Louis)"
     },
@@ -5779,28 +4343,12 @@
       "to_node": "roadm Springfield"
     },
     {
-      "from_node": "roadm Taipei",
-      "to_node": "fiber (Taipei \u2192 Tokyo)"
-    },
-    {
-      "from_node": "fiber (Taipei \u2192 Tokyo)",
-      "to_node": "roadm Taipei"
-    },
-    {
       "from_node": "roadm Tallahassee",
       "to_node": "fiber (Tallahassee \u2192 Tampa)"
     },
     {
       "from_node": "fiber (Tallahassee \u2192 Tampa)",
       "to_node": "roadm Tallahassee"
-    },
-    {
-      "from_node": "roadm Vienna",
-      "to_node": "fiber (Vienna \u2192 Warsaw)"
-    },
-    {
-      "from_node": "fiber (Vienna \u2192 Warsaw)",
-      "to_node": "roadm Vienna"
     },
     {
       "from_node": "fiber (Abilene \u2192 Dallas)",
@@ -5867,38 +4415,6 @@
       "to_node": "fiber (Albuquerque \u2192 Las_Vegas)"
     },
     {
-      "from_node": "fiber (Amsterdam \u2192 Berlin)",
-      "to_node": "roadm Berlin"
-    },
-    {
-      "from_node": "roadm Berlin",
-      "to_node": "fiber (Amsterdam \u2192 Berlin)"
-    },
-    {
-      "from_node": "fiber (Amsterdam \u2192 Brussels)",
-      "to_node": "roadm Brussels"
-    },
-    {
-      "from_node": "roadm Brussels",
-      "to_node": "fiber (Amsterdam \u2192 Brussels)"
-    },
-    {
-      "from_node": "fiber (Amsterdam \u2192 Frankfurt)",
-      "to_node": "roadm Frankfurt"
-    },
-    {
-      "from_node": "roadm Frankfurt",
-      "to_node": "fiber (Amsterdam \u2192 Frankfurt)"
-    },
-    {
-      "from_node": "fiber (Amsterdam \u2192 New_York)",
-      "to_node": "roadm New_York"
-    },
-    {
-      "from_node": "roadm New_York",
-      "to_node": "fiber (Amsterdam \u2192 New_York)"
-    },
-    {
       "from_node": "fiber (Atlanta \u2192 Birmingham)",
       "to_node": "roadm Birmingham"
     },
@@ -5963,22 +4479,6 @@
       "to_node": "fiber (Baltimore \u2192 Washington_DC)"
     },
     {
-      "from_node": "fiber (Bangkok \u2192 Delhi)",
-      "to_node": "roadm Delhi"
-    },
-    {
-      "from_node": "roadm Delhi",
-      "to_node": "fiber (Bangkok \u2192 Delhi)"
-    },
-    {
-      "from_node": "fiber (Bangkok \u2192 Hong_Kong)",
-      "to_node": "roadm Hong_Kong"
-    },
-    {
-      "from_node": "roadm Hong_Kong",
-      "to_node": "fiber (Bangkok \u2192 Hong_Kong)"
-    },
-    {
       "from_node": "fiber (Baton_Rouge \u2192 Houston)",
       "to_node": "roadm Houston"
     },
@@ -5993,30 +4493,6 @@
     {
       "from_node": "roadm New_Orleans",
       "to_node": "fiber (Baton_Rouge \u2192 New_Orleans)"
-    },
-    {
-      "from_node": "fiber (Beijing \u2192 Seoul)",
-      "to_node": "roadm Seoul"
-    },
-    {
-      "from_node": "roadm Seoul",
-      "to_node": "fiber (Beijing \u2192 Seoul)"
-    },
-    {
-      "from_node": "fiber (Beijing \u2192 Shanghai)",
-      "to_node": "roadm Shanghai"
-    },
-    {
-      "from_node": "roadm Shanghai",
-      "to_node": "fiber (Beijing \u2192 Shanghai)"
-    },
-    {
-      "from_node": "fiber (Berlin \u2192 Warsaw)",
-      "to_node": "roadm Warsaw"
-    },
-    {
-      "from_node": "roadm Warsaw",
-      "to_node": "fiber (Berlin \u2192 Warsaw)"
     },
     {
       "from_node": "fiber (Billings \u2192 Bismarck)",
@@ -6073,30 +4549,6 @@
     {
       "from_node": "roadm Providence",
       "to_node": "fiber (Boston \u2192 Providence)"
-    },
-    {
-      "from_node": "fiber (Brussels \u2192 London)",
-      "to_node": "roadm London"
-    },
-    {
-      "from_node": "roadm London",
-      "to_node": "fiber (Brussels \u2192 London)"
-    },
-    {
-      "from_node": "fiber (Bucharest \u2192 Istanbul)",
-      "to_node": "roadm Istanbul"
-    },
-    {
-      "from_node": "roadm Istanbul",
-      "to_node": "fiber (Bucharest \u2192 Istanbul)"
-    },
-    {
-      "from_node": "fiber (Bucharest \u2192 Warsaw)",
-      "to_node": "roadm Warsaw"
-    },
-    {
-      "from_node": "roadm Warsaw",
-      "to_node": "fiber (Bucharest \u2192 Warsaw)"
     },
     {
       "from_node": "fiber (Buffalo \u2192 Cleveland)",
@@ -6235,22 +4687,6 @@
       "to_node": "fiber (Dallas \u2192 Oklahoma_City)"
     },
     {
-      "from_node": "fiber (Delhi \u2192 Istanbul)",
-      "to_node": "roadm Istanbul"
-    },
-    {
-      "from_node": "roadm Istanbul",
-      "to_node": "fiber (Delhi \u2192 Istanbul)"
-    },
-    {
-      "from_node": "fiber (Delhi \u2192 Mumbai)",
-      "to_node": "roadm Mumbai"
-    },
-    {
-      "from_node": "roadm Mumbai",
-      "to_node": "fiber (Delhi \u2192 Mumbai)"
-    },
-    {
       "from_node": "fiber (Denver \u2192 Omaha)",
       "to_node": "roadm Omaha"
     },
@@ -6289,14 +4725,6 @@
     {
       "from_node": "roadm Tucson",
       "to_node": "fiber (El_Paso \u2192 Tucson)"
-    },
-    {
-      "from_node": "fiber (Frankfurt \u2192 Vienna)",
-      "to_node": "roadm Vienna"
-    },
-    {
-      "from_node": "roadm Vienna",
-      "to_node": "fiber (Frankfurt \u2192 Vienna)"
     },
     {
       "from_node": "fiber (Fresno \u2192 Las_Vegas)",
@@ -6363,62 +4791,6 @@
       "to_node": "fiber (Hartford \u2192 Providence)"
     },
     {
-      "from_node": "fiber (Hong_Kong \u2192 Shanghai)",
-      "to_node": "roadm Shanghai"
-    },
-    {
-      "from_node": "roadm Shanghai",
-      "to_node": "fiber (Hong_Kong \u2192 Shanghai)"
-    },
-    {
-      "from_node": "fiber (Hong_Kong \u2192 Sydney)",
-      "to_node": "roadm Sydney"
-    },
-    {
-      "from_node": "roadm Sydney",
-      "to_node": "fiber (Hong_Kong \u2192 Sydney)"
-    },
-    {
-      "from_node": "fiber (Hong_Kong \u2192 Taipei)",
-      "to_node": "roadm Taipei"
-    },
-    {
-      "from_node": "roadm Taipei",
-      "to_node": "fiber (Hong_Kong \u2192 Taipei)"
-    },
-    {
-      "from_node": "fiber (Honolulu \u2192 Los_Angeles)",
-      "to_node": "roadm Los_Angeles"
-    },
-    {
-      "from_node": "roadm Los_Angeles",
-      "to_node": "fiber (Honolulu \u2192 Los_Angeles)"
-    },
-    {
-      "from_node": "fiber (Honolulu \u2192 Sydney)",
-      "to_node": "roadm Sydney"
-    },
-    {
-      "from_node": "roadm Sydney",
-      "to_node": "fiber (Honolulu \u2192 Sydney)"
-    },
-    {
-      "from_node": "fiber (Honolulu \u2192 Taipei)",
-      "to_node": "roadm Taipei"
-    },
-    {
-      "from_node": "roadm Taipei",
-      "to_node": "fiber (Honolulu \u2192 Taipei)"
-    },
-    {
-      "from_node": "fiber (Istanbul \u2192 Rome)",
-      "to_node": "roadm Rome"
-    },
-    {
-      "from_node": "roadm Rome",
-      "to_node": "fiber (Istanbul \u2192 Rome)"
-    },
-    {
       "from_node": "fiber (Jacksonville \u2192 Orlando)",
       "to_node": "roadm Orlando"
     },
@@ -6475,22 +4847,6 @@
       "to_node": "fiber (Little_Rock \u2192 Memphis)"
     },
     {
-      "from_node": "fiber (London \u2192 Paris)",
-      "to_node": "roadm Paris"
-    },
-    {
-      "from_node": "roadm Paris",
-      "to_node": "fiber (London \u2192 Paris)"
-    },
-    {
-      "from_node": "fiber (London \u2192 Washington_DC)",
-      "to_node": "roadm Washington_DC"
-    },
-    {
-      "from_node": "roadm Washington_DC",
-      "to_node": "fiber (London \u2192 Washington_DC)"
-    },
-    {
       "from_node": "fiber (Long_Island \u2192 New_York)",
       "to_node": "roadm New_York"
     },
@@ -6531,36 +4887,12 @@
       "to_node": "fiber (Louisville \u2192 St_Louis)"
     },
     {
-      "from_node": "fiber (Madrid \u2192 Paris)",
-      "to_node": "roadm Paris"
-    },
-    {
-      "from_node": "roadm Paris",
-      "to_node": "fiber (Madrid \u2192 Paris)"
-    },
-    {
-      "from_node": "fiber (Madrid \u2192 Zurich)",
-      "to_node": "roadm Zurich"
-    },
-    {
-      "from_node": "roadm Zurich",
-      "to_node": "fiber (Madrid \u2192 Zurich)"
-    },
-    {
       "from_node": "fiber (Memphis \u2192 Nashville)",
       "to_node": "roadm Nashville"
     },
     {
       "from_node": "roadm Nashville",
       "to_node": "fiber (Memphis \u2192 Nashville)"
-    },
-    {
-      "from_node": "fiber (Miami \u2192 Paris)",
-      "to_node": "roadm Paris"
-    },
-    {
-      "from_node": "roadm Paris",
-      "to_node": "fiber (Miami \u2192 Paris)"
     },
     {
       "from_node": "fiber (Miami \u2192 Tampa)",
@@ -6593,22 +4925,6 @@
     {
       "from_node": "roadm Omaha",
       "to_node": "fiber (Minneapolis \u2192 Omaha)"
-    },
-    {
-      "from_node": "fiber (Mumbai \u2192 Rome)",
-      "to_node": "roadm Rome"
-    },
-    {
-      "from_node": "roadm Rome",
-      "to_node": "fiber (Mumbai \u2192 Rome)"
-    },
-    {
-      "from_node": "fiber (Mumbai \u2192 Singapore)",
-      "to_node": "roadm Singapore"
-    },
-    {
-      "from_node": "roadm Singapore",
-      "to_node": "fiber (Mumbai \u2192 Singapore)"
     },
     {
       "from_node": "fiber (New_Orleans \u2192 Tallahassee)",
@@ -6691,22 +5007,6 @@
       "to_node": "fiber (Oakland \u2192 San_Francisco)"
     },
     {
-      "from_node": "fiber (Oakland \u2192 Taipei)",
-      "to_node": "roadm Taipei"
-    },
-    {
-      "from_node": "roadm Taipei",
-      "to_node": "fiber (Oakland \u2192 Taipei)"
-    },
-    {
-      "from_node": "fiber (Oklahoma_City \u2192 Tulsa)",
-      "to_node": "roadm Tulsa"
-    },
-    {
-      "from_node": "roadm Tulsa",
-      "to_node": "fiber (Oklahoma_City \u2192 Tulsa)"
-    },
-    {
       "from_node": "fiber (Orlando \u2192 West_Palm_Beach)",
       "to_node": "roadm West_Palm_Beach"
     },
@@ -6771,14 +5071,6 @@
       "to_node": "fiber (Portland \u2192 Seattle)"
     },
     {
-      "from_node": "fiber (Portland \u2192 Tokyo)",
-      "to_node": "roadm Tokyo"
-    },
-    {
-      "from_node": "roadm Tokyo",
-      "to_node": "fiber (Portland \u2192 Tokyo)"
-    },
-    {
       "from_node": "fiber (Richmond \u2192 Washington_DC)",
       "to_node": "roadm Washington_DC"
     },
@@ -6793,22 +5085,6 @@
     {
       "from_node": "roadm Syracuse",
       "to_node": "fiber (Rochester \u2192 Syracuse)"
-    },
-    {
-      "from_node": "fiber (Rome \u2192 Vienna)",
-      "to_node": "roadm Vienna"
-    },
-    {
-      "from_node": "roadm Vienna",
-      "to_node": "fiber (Rome \u2192 Vienna)"
-    },
-    {
-      "from_node": "fiber (Rome \u2192 Zurich)",
-      "to_node": "roadm Zurich"
-    },
-    {
-      "from_node": "roadm Zurich",
-      "to_node": "fiber (Rome \u2192 Zurich)"
     },
     {
       "from_node": "fiber (San_Francisco \u2192 San_Jose)",
@@ -6843,22 +5119,6 @@
       "to_node": "fiber (Seattle \u2192 Spokane)"
     },
     {
-      "from_node": "fiber (Seoul \u2192 Tokyo)",
-      "to_node": "roadm Tokyo"
-    },
-    {
-      "from_node": "roadm Tokyo",
-      "to_node": "fiber (Seoul \u2192 Tokyo)"
-    },
-    {
-      "from_node": "fiber (Singapore \u2192 Sydney)",
-      "to_node": "roadm Sydney"
-    },
-    {
-      "from_node": "roadm Sydney",
-      "to_node": "fiber (Singapore \u2192 Sydney)"
-    },
-    {
       "from_node": "fiber (Springfield \u2192 St_Louis)",
       "to_node": "roadm St_Louis"
     },
@@ -6867,28 +5127,12 @@
       "to_node": "fiber (Springfield \u2192 St_Louis)"
     },
     {
-      "from_node": "fiber (Taipei \u2192 Tokyo)",
-      "to_node": "roadm Tokyo"
-    },
-    {
-      "from_node": "roadm Tokyo",
-      "to_node": "fiber (Taipei \u2192 Tokyo)"
-    },
-    {
       "from_node": "fiber (Tallahassee \u2192 Tampa)",
       "to_node": "roadm Tampa"
     },
     {
       "from_node": "roadm Tampa",
       "to_node": "fiber (Tallahassee \u2192 Tampa)"
-    },
-    {
-      "from_node": "fiber (Vienna \u2192 Warsaw)",
-      "to_node": "roadm Warsaw"
-    },
-    {
-      "from_node": "roadm Warsaw",
-      "to_node": "fiber (Vienna \u2192 Warsaw)"
     },
     {
       "from_node": "trx Abilene",
@@ -7489,206 +5733,6 @@
     {
       "from_node": "roadm Wilmington",
       "to_node": "trx Wilmington"
-    },
-    {
-      "from_node": "trx Amsterdam",
-      "to_node": "roadm Amsterdam"
-    },
-    {
-      "from_node": "roadm Amsterdam",
-      "to_node": "trx Amsterdam"
-    },
-    {
-      "from_node": "trx Berlin",
-      "to_node": "roadm Berlin"
-    },
-    {
-      "from_node": "roadm Berlin",
-      "to_node": "trx Berlin"
-    },
-    {
-      "from_node": "trx Brussels",
-      "to_node": "roadm Brussels"
-    },
-    {
-      "from_node": "roadm Brussels",
-      "to_node": "trx Brussels"
-    },
-    {
-      "from_node": "trx Bucharest",
-      "to_node": "roadm Bucharest"
-    },
-    {
-      "from_node": "roadm Bucharest",
-      "to_node": "trx Bucharest"
-    },
-    {
-      "from_node": "trx Frankfurt",
-      "to_node": "roadm Frankfurt"
-    },
-    {
-      "from_node": "roadm Frankfurt",
-      "to_node": "trx Frankfurt"
-    },
-    {
-      "from_node": "trx Istanbul",
-      "to_node": "roadm Istanbul"
-    },
-    {
-      "from_node": "roadm Istanbul",
-      "to_node": "trx Istanbul"
-    },
-    {
-      "from_node": "trx London",
-      "to_node": "roadm London"
-    },
-    {
-      "from_node": "roadm London",
-      "to_node": "trx London"
-    },
-    {
-      "from_node": "trx Madrid",
-      "to_node": "roadm Madrid"
-    },
-    {
-      "from_node": "roadm Madrid",
-      "to_node": "trx Madrid"
-    },
-    {
-      "from_node": "trx Paris",
-      "to_node": "roadm Paris"
-    },
-    {
-      "from_node": "roadm Paris",
-      "to_node": "trx Paris"
-    },
-    {
-      "from_node": "trx Rome",
-      "to_node": "roadm Rome"
-    },
-    {
-      "from_node": "roadm Rome",
-      "to_node": "trx Rome"
-    },
-    {
-      "from_node": "trx Vienna",
-      "to_node": "roadm Vienna"
-    },
-    {
-      "from_node": "roadm Vienna",
-      "to_node": "trx Vienna"
-    },
-    {
-      "from_node": "trx Warsaw",
-      "to_node": "roadm Warsaw"
-    },
-    {
-      "from_node": "roadm Warsaw",
-      "to_node": "trx Warsaw"
-    },
-    {
-      "from_node": "trx Zurich",
-      "to_node": "roadm Zurich"
-    },
-    {
-      "from_node": "roadm Zurich",
-      "to_node": "trx Zurich"
-    },
-    {
-      "from_node": "trx Bangkok",
-      "to_node": "roadm Bangkok"
-    },
-    {
-      "from_node": "roadm Bangkok",
-      "to_node": "trx Bangkok"
-    },
-    {
-      "from_node": "trx Beijing",
-      "to_node": "roadm Beijing"
-    },
-    {
-      "from_node": "roadm Beijing",
-      "to_node": "trx Beijing"
-    },
-    {
-      "from_node": "trx Delhi",
-      "to_node": "roadm Delhi"
-    },
-    {
-      "from_node": "roadm Delhi",
-      "to_node": "trx Delhi"
-    },
-    {
-      "from_node": "trx Hong_Kong",
-      "to_node": "roadm Hong_Kong"
-    },
-    {
-      "from_node": "roadm Hong_Kong",
-      "to_node": "trx Hong_Kong"
-    },
-    {
-      "from_node": "trx Honolulu",
-      "to_node": "roadm Honolulu"
-    },
-    {
-      "from_node": "roadm Honolulu",
-      "to_node": "trx Honolulu"
-    },
-    {
-      "from_node": "trx Mumbai",
-      "to_node": "roadm Mumbai"
-    },
-    {
-      "from_node": "roadm Mumbai",
-      "to_node": "trx Mumbai"
-    },
-    {
-      "from_node": "trx Seoul",
-      "to_node": "roadm Seoul"
-    },
-    {
-      "from_node": "roadm Seoul",
-      "to_node": "trx Seoul"
-    },
-    {
-      "from_node": "trx Shanghai",
-      "to_node": "roadm Shanghai"
-    },
-    {
-      "from_node": "roadm Shanghai",
-      "to_node": "trx Shanghai"
-    },
-    {
-      "from_node": "trx Singapore",
-      "to_node": "roadm Singapore"
-    },
-    {
-      "from_node": "roadm Singapore",
-      "to_node": "trx Singapore"
-    },
-    {
-      "from_node": "trx Sydney",
-      "to_node": "roadm Sydney"
-    },
-    {
-      "from_node": "roadm Sydney",
-      "to_node": "trx Sydney"
-    },
-    {
-      "from_node": "trx Taipei",
-      "to_node": "roadm Taipei"
-    },
-    {
-      "from_node": "roadm Taipei",
-      "to_node": "trx Taipei"
-    },
-    {
-      "from_node": "trx Tokyo",
-      "to_node": "roadm Tokyo"
-    },
-    {
-      "from_node": "roadm Tokyo",
-      "to_node": "trx Tokyo"
     }
   ]
 }
