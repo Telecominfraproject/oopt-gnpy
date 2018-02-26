@@ -187,7 +187,6 @@ class Edfa(Node):
         #gain_min > gain_target TBD:
         pad = max(self.params.gain_min - self.operational.gain_target, 0)
         gain_target = self.operational.gain_target + pad
-
         dg = gain_target - self.params.gain_flatmax # ! <0
         if self.params.nf_model.enabled:
             g1a = gain_target - self.params.nf_model.delta_p + dg
@@ -295,7 +294,10 @@ class Edfa(Node):
         targ_slope = self.operational.tilt_target / (len(nchan) - 1)
 
         # 1st estimate of DGT scaling
-        dgts1 = targ_slope / dgt_slope
+        if abs(dgt_slope) > 0.001: # add check for div 0 due to flat dgt
+            dgts1 = targ_slope / dgt_slope
+        else:
+            dgts1 = 0
         # when simple_opt is true code makes 2 attempts to compute gain and
         # the internal voa value.  This is currently here to provide direct
         # comparison with original Matlab code.  Will be removed.
@@ -310,6 +312,7 @@ class Edfa(Node):
 
             # 2nd estimate of Amp ch gain using the channel input profile
             g2nd = g1st - voa
+
             pout_db = lin2db(np.sum(pin*1e3*db2lin(g2nd)))
             dgts2 = self.operational.gain_target - (pout_db - tot_in_power_db)
 
@@ -321,31 +324,35 @@ class Edfa(Node):
 
             # Lower estimate of Amp ch gain
             deltax = np.max(g1st) - np.min(g1st)
-            xlow = dgts2 - deltax
-            glow = g1st - voa + np.array(self.interpol_dgt) * xlow
-            pout_db = lin2db(np.sum(pin*1e3*db2lin(glow)))
-            gavg_low = pout_db - tot_in_power_db
+            # ! if no ripple deltax = 0 => xlow = xcent: div 0
+            # add check for flat gain response :
+            if abs(deltax) > 0.05: #enough ripple to consider calculation and avoid div 0
+                xlow = dgts2 - deltax
+                glow = g1st - voa + np.array(self.interpol_dgt) * xlow
+                pout_db = lin2db(np.sum(pin*1e3*db2lin(glow)))
+                gavg_low = pout_db - tot_in_power_db
 
-            # Upper gain estimate
-            xhigh = dgts2 + deltax
-            ghigh = g1st - voa + np.array(self.interpol_dgt) * xhigh
-            pout_db = lin2db(np.sum(pin*1e3*db2lin(ghigh)))        
-            gavg_high = pout_db - tot_in_power_db
+                # Upper gain estimate
+                xhigh = dgts2 + deltax
+                ghigh = g1st - voa + np.array(self.interpol_dgt) * xhigh
+                pout_db = lin2db(np.sum(pin*1e3*db2lin(ghigh)))        
+                gavg_high = pout_db - tot_in_power_db
 
-            # compute slope
-            slope1 = (gavg_low - gavg_cent) / (xlow - xcent)
-            slope2 = (gavg_cent - gavg_high) / (xcent - xhigh)
+                # compute slope
+                slope1 = (gavg_low - gavg_cent) / (xlow - xcent)
+                slope2 = (gavg_cent - gavg_high) / (xcent - xhigh)
 
-            if np.abs(self.operational.gain_target - gavg_cent) <= err_tolerance:
-                dgts3 = xcent
-            elif self.operational.gain_target < gavg_cent:
-                dgts3 = xcent - (gavg_cent - self.operational.gain_target) / slope1
-            else:
-                dgts3 = xcent + (-gavg_cent + self.operational.gain_target) / slope2
+                if np.abs(self.operational.gain_target - gavg_cent) <= err_tolerance:
+                    dgts3 = xcent
+                elif self.operational.gain_target < gavg_cent:
+                    dgts3 = xcent - (gavg_cent - self.operational.gain_target) / slope1
+                else:
+                    dgts3 = xcent + (-gavg_cent + self.operational.gain_target) / slope2
 
-            gprofile = g1st - voa + np.array(self.interpol_dgt) * dgts3
-            #print(gprofile[0])
-        else:
+                gprofile = g1st - voa + np.array(self.interpol_dgt) * dgts3
+            else: #not enough ripple
+                gprofile = g1st - voa
+        else: #simple_opt
             gprofile = None
 
         self.gprofile = gprofile
