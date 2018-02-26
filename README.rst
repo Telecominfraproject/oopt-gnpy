@@ -3,8 +3,7 @@ gnpy
 ====
 
 
-|docs|
-                
+|docs| |build|                
 
 Gaussian Noise (GN) modeling library
 
@@ -51,4 +50,9 @@ The key to unbundling is the ability to accurately plan and predict the performa
 .. |docs| image:: https://readthedocs.org/projects/gnpy/badge/?version=develop
   :target: http://gnpy.readthedocs.io/en/develop/?badge=develop
   :alt: Documentation Status
+  :scale: 100%
+
+.. |build| image:: https://travis-ci.org/mcantono/gnpy.svg?branch=develop
+  :target: https://travis-ci.org/mcantono/gnpy
+  :alt: Build Status
   :scale: 100%

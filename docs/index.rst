@@ -22,14 +22,16 @@ PSE WG Charter
 - The PSE will influence and benefit from the innovation of the DTC, API, and OLS working groups.
 - The PSE represents a step along the journey towards multi-layer optimization.
 
-Features
---------
 
-* GNPY simulation of an amplified optical link
+Documentation
+=============
+
+The following pages are meant to describe specific implementation details and modeling assumptions behind GNpy. 
 
 .. toctree::
    :maxdepth: 2
 
+   gn_model
 
 Indices and tables
 ==================
@@ -38,10 +40,31 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-Contributors
-============
-Mattia Cantono, Alessio Ferrari, Vittorio Curri - Politecnico di Torino - Italy
-Gilad Goldfarb, Brian Taylor - Facebook Inc.
-James Powell
-Gert Grammel - Juniper Inc.
+Contributors in alphabetical order
+==================================
++----------+------------+-----------------------+----------------------------+
+| Name     | Surname    | Affiliation           | Contact                    |
++==========+============+=======================+============================+
+| Alessio  | Ferrari    | Politecnico di Torino | alessio.ferrari@polito.it  |
++----------+------------+-----------------------+----------------------------+
+| Brian    | Taylor     | Facebook              | briantaylor@fb.com         |
++----------+------------+-----------------------+----------------------------+
+| David    | Boertjes   | Ciena                 | dboertje@ciena.com         |
++----------+------------+-----------------------+----------------------------+
+| Esther   | Le Rouzic  | Orange                | esther.lerouzic@orange.com |
++----------+------------+-----------------------+----------------------------+
+| Gabriele | Galimberti | Cisco                 | ggalimbe@cisco.com         |
++----------+------------+-----------------------+----------------------------+
+| Gert     | Grammel    | Juniper Networks      | ggrammel@juniper.net       |
++----------+------------+-----------------------+----------------------------+
+| Gilad    | Goldfarb   | Facebook              | giladg@fb.com              |
++----------+------------+-----------------------+----------------------------+
+| James    | Powell     | Consultant            | james@dontusethiscode.com  |
++----------+------------+-----------------------+----------------------------+
+| Jeanluc  | Auge       | Orange                | jeanluc.auge@orange.com    |
++----------+------------+-----------------------+----------------------------+
+| Mattia   | Cantono    | Politecnico di Torino | mattia.cantono@polito.it   |
++----------+------------+-----------------------+----------------------------+
+| Vittorio | Curri      | Politecnico di Torino | vittorio.curri@polito.it   |
++----------+------------+-----------------------+----------------------------+
 
