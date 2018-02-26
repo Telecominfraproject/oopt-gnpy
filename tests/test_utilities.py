@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import pytest
-from utilities import db2lin
+from gnpy.core.utils import db2lin
 def test_db2lin():
     assert pytest.approx(10.0)==db2lin(10.0)
 
