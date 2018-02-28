@@ -14,7 +14,9 @@
             "params": {
                 "length": 80,
                 "loss_coef": 0.2,
-                "length_units": "km"
+                "length_units": "km",
+		"dispersion": 16.7E-6,
+		"gamma": 1.27E-3
             },
             "metadata": {
                 "latitude": 1,

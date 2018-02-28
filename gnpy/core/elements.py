@@ -4,6 +4,9 @@
 """
 Network elements class with SpectralInformation propagation using 
 __call__ and propagate methods
+@author: Alessio Ferrari
+@author: Mattia Cantono
+@author: Vittorio Curri
 @author: giladgoldfarb
 @author: briantaylor
 @author: jeanluc-auge
@@ -30,7 +33,7 @@ class Transceiver(Node):
         osnr_nli = [lin2db(c.power.signal/c.power.nli) for c in spectral_info.carriers]
         snr = [lin2db(c.power.signal/(c.power.nli+c.power.ase)) for c in spectral_info.carriers]
         print('OSNR in signal bandwidth={}dB and in 0.1nm={}dB'.format(osnr_ase[0], osnr_ase_01nm[0]))
-        return snr 
+        return snr
 
     def __call__(self, spectral_info):
         return spectral_info
@@ -39,9 +42,11 @@ class Fiber(Node):
     def __init__(self, config):
         super().__init__(config)
         self.length = self.params.length * \
-            UNITS[self.params.length_units]    #length in km
-        self.loss_coef = self.params.loss_coef #lineic loss dB/km
-        self.lin_loss_coef = self.params.loss_coef / 4.3429448190325184
+            UNITS[self.params.length_units]    #length in m
+        self.loss_coef = self.params.loss_coef*1e-3 #lineic loss dB/m
+        self.lin_loss_coef = self.params.loss_coef / (20*np.log10(np.exp(1)))
+        self.dispersion = self.params.dispersion  #s/m/m
+        self.gamma = self.params.gamma   #1/W/m
         #TODO discuss factor 2 in the linear lineic attenuation
 
     def __repr__(self):
@@ -51,48 +56,87 @@ class Fiber(Node):
         attenuation = self.length * self.loss_coef
         return db2lin(attenuation)
 
-    def effective_length(self, loss_coef):
-        alpha_dict = self.dbkm_2_lin(loss_coef)
+    @property
+    def effective_length(self):
+        alpha_dict = self.dbkm_2_lin()
         alpha = alpha_dict['alpha_acoef']
-        leff = 1 - np.exp(-2 * alpha * self.span_length)
+        leff = (1 - np.exp(-2 * alpha * self.length)) / (2*alpha)
         return leff
 
-    def asymptotic_length(self, loss_coef):
-        alpha_dict = self.dbkm_2_lin(loss_coef)
+    @property
+    def asymptotic_length(self):
+        alpha_dict = self.dbkm_2_lin()
         alpha = alpha_dict['alpha_acoef']
         aleff = 1 / (2 * alpha)
         return aleff
 
-    def dbkm_2_lin(self, loss_coef):
+    def beta2(self, ref_wavelength=None):
+        """ Returns beta2 from dispersion parameter.
+        Dispersion is entered in ps/nm/km.
+        Disperion can be a numpy array or a single value.  If a
+        value ref_wavelength is not entered 1550e-9m will be assumed.
+        ref_wavelength can be a numpy array.
+        """
+        #TODO: discuss beta2 as method or attribute
+        wl = 1550e-9 if ref_wavelength is None else ref_wavelength
+        D = np.abs(self.dispersion)
+        b2 = (wl**2) * D / (2 * np.pi * c)  # 10^21 scales [ps^2/km]
+        return b2 # s/Hz/m
+
+    def dbkm_2_lin(self):
         """ calculates the linear loss coefficient
         """
-        alpha_pcoef = loss_coef
-        alpha_acoef = alpha_pcoef / (2 * 4.3429448190325184)
+        alpha_pcoef = self.loss_coef
+        alpha_acoef = alpha_pcoef / (2 * 10*np.log10(np.exp(1)))
         s = 'alpha_pcoef is linear loss coefficient in [dB/km^-1] units'
         s = ''.join([s, "alpha_acoef is linear loss field amplitude \
-                     coefficient in [km^-1] units"])
+                     coefficient in [m^-1] units"])
         d = {'alpha_pcoef': alpha_pcoef,
              'alpha_acoef': alpha_acoef,
              'description:': s}
         return d
-
-    def beta2(self, dispersion, ref_wavelength=None):
-        """ Returns beta2 from dispersion parameter.  Dispersion is entered in
-        ps/nm/km.  Disperion can be a numpy array or a single value.  If a
-        value ref_wavelength is not entered 1550e-9m will be assumed.
-        ref_wavelength can be a numpy array.
+    
+    def _psi(self, carrier, interfering_carrier):
+        """ Calculates eq. 123 from	arXiv:1209.0394.
         """
-        wl = 1550e-9 if ref_wavelength is None else ref_wavelength
-        D = np.abs(dispersion)
-        b2 = (10**21) * (wl**2) * D / (2 * np.pi * c)  # 10^21 scales [ps^2/km]
-        return b2
+        if carrier.num_chan == interfering_carrier.num_chan:  # SCI
+            psi = np.arcsinh(0.5 * np.pi**2 * self.asymptotic_length
+                         * abs(self.beta2()) * carrier.baud_rate**2)
+        else:   # XCI
+            delta_f = carrier.freq - interfering_carrier.freq
+            psi = np.arcsinh(np.pi**2 * self.asymptotic_length * abs(self.beta2()) *
+                             carrier.baud_rate * (delta_f + 0.5 * interfering_carrier.baud_rate))
+            psi -= np.arcsinh(np.pi**2 * self.asymptotic_length * abs(self.beta2()) *
+                              carrier.baud_rate * (delta_f - 0.5 * interfering_carrier.baud_rate))
+
+        return psi
+    
+    def _gn_analytic(self, carrier, *carriers):
+        """ Computes the nonlinear interference power on a single carrier.
+        The method uses eq. 120 from arXiv:1209.0394.
+        :param carrier: the signal under analysis
+        :param carriers: the full WDM comb
+        :return: carrier_nli: the amount of nonlinear interference in W on the under analysis
+        """
+
+        g_nli = 0
+        for interfering_carrier in carriers:
+            psi = self._psi(carrier, interfering_carrier)
+            g_nli += (interfering_carrier.power.signal/interfering_carrier.baud_rate)**2 *\
+                     (carrier.power.signal/carrier.baud_rate) * psi
+
+        g_nli *= (16 / 27) * (self.gamma * self.effective_length)**2 /\
+                 (2 * np.pi * abs(self.beta2()) * self.asymptotic_length)
+
+        carrier_nli = carrier.baud_rate*g_nli
+        return carrier_nli
 
     def propagate(self, *carriers):
-        #TODO integrate and call the gn.ole module to calculate carrier nli noise in fiber
-        carrier_nli = db2lin(-28)*1e-3 #temporary Cte nli noise is added for debug
+
         i=0
         for carrier in carriers:
             pwr = carrier.power
+            carrier_nli = self._gn_analytic(carrier, *carriers)
             pwr = pwr._replace(signal=pwr.signal/self.lin_attenuation(),
                                nonlinear_interference=(pwr.nli+carrier_nli)/self.lin_attenuation(),
                                amplified_spontaneous_emission=pwr.ase/self.lin_attenuation())
