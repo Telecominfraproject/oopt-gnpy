@@ -23,19 +23,38 @@ from gnpy.core.utils import lin2db, db2lin, itufs
 class Transceiver(Node):
     def __init__(self, config):
         super().__init__(config)
+        self.osnr_ase_01nm = None
+        self.osnr_ase = None
+        self.osnr_nli = None
+        self.snr = None
 
-    def snr(self, spectral_info):
-        osnr_ase = [lin2db(c.power.signal/c.power.ase)
-                for c in spectral_info.carriers 
-                        if c.power.ase>1e-13]
-        ratio_01nm = [lin2db(12.5e9/c.baud_rate) for c in spectral_info.carriers]
-        osnr_ase_01nm = [ase - ratio for ase, ratio in zip(osnr_ase, ratio_01nm)]
-        osnr_nli = [lin2db(c.power.signal/c.power.nli) for c in spectral_info.carriers]
-        snr = [lin2db(c.power.signal/(c.power.nli+c.power.ase)) for c in spectral_info.carriers]
-        print('OSNR in signal bandwidth={}dB and in 0.1nm={}dB'.format(osnr_ase[0], osnr_ase_01nm[0]))
-        return snr
+    def _calc_snr(self, spectral_info):
+        ase = [c.power.ase for c in spectral_info.carriers]
+        nli = [c.power.nli for c in spectral_info.carriers]
+        if min(ase)>1e-20 and min(nli)>1e-20:
+            self.osnr_ase = [lin2db(c.power.signal/c.power.ase)
+                    for c in spectral_info.carriers]
+            ratio_01nm = [lin2db(12.5e9/c.baud_rate) for c in spectral_info.carriers]
+            self.osnr_ase_01nm = [ase - ratio for ase, ratio 
+                    in zip(self.osnr_ase, ratio_01nm)]
+            self.osnr_nli = [lin2db(c.power.signal/c.power.nli) 
+                    for c in spectral_info.carriers]
+            self.snr = [lin2db(c.power.signal/(c.power.nli+c.power.ase)) 
+                    for c in spectral_info.carriers]
+
+    def __repr__(self):
+        if self.snr != None and self.osnr_ase != None:
+            snr = round(np.mean(self.snr),2)
+            osnr_ase = round(np.mean(self.osnr_ase),2)
+            osnr_ase_01nm = round(np.mean(self.osnr_ase_01nm), 2)
+            return f'{type(self).__name__}(uid={self.uid}, \
+osnr_ase(in 0.1nm)={osnr_ase_01nm}dB, osnr_ase(in signal bw)={osnr_ase}dB, \
+snr total(in signal bw)={snr})'
+        else:
+            return f'{type(self).__name__}(uid={self.uid})'
 
     def __call__(self, spectral_info):
+        self._calc_snr(spectral_info)
         return spectral_info
 
 class Fiber(Node):
@@ -47,10 +66,13 @@ class Fiber(Node):
         self.lin_loss_coef = self.params.loss_coef / (20*np.log10(np.exp(1)))
         self.dispersion = self.params.dispersion  #s/m/m
         self.gamma = self.params.gamma   #1/W/m
+        self.loss = self.loss_coef * self.length #dB loss: useful for polymorphism (roadm, fiber, att)
         #TODO discuss factor 2 in the linear lineic attenuation
 
     def __repr__(self):
-        return f'{type(self).__name__}(uid={self.uid}, length={self.length})'
+        k = UNITS['km']
+        return f'{type(self).__name__}(uid={self.uid}, \
+length={round(self.length/k, 1)}km, loss={round(self.loss,1)}dB)'
 
     def lin_attenuation(self):
         attenuation = self.length * self.loss_coef
@@ -156,8 +178,20 @@ class Edfa(Node):
         self.interpol_nf_ripple = None #nf_ripple: N numpy array
         self.channel_freq = None #SI channel frequencies: N numpy array
         """nf and gprofile attributs are set by interpol_params"""
-        self.nf = None #edfa nf @ operational.gain_target: N numpy array 
+        self.nf = None #dB edfa nf at operational.gain_target: N numpy array 
         self.gprofile = None
+        self.pin_db = None
+        self.pout_db = None
+
+    def __repr__(self):
+        if self.pin_db != None and self.pout_db != None :
+            nf_avg = round(np.mean(self.nf),1)
+            return f'{type(self).__name__}(uid={self.uid}, \
+gain={round(self.operational.gain_target,1)}dB, NF={nf_avg}dB, \
+Pin={round(self.pin_db, 1)}dBm, Pout={round(self.pout_db,1)}dBm)'
+        else:
+            return f'{type(self).__name__}(uid={self.uid}, \
+                gain={self.operational.gain_target})'
 
     def interpol_params(self, frequencies, pin):
         """interpolate SI channel frequencies with the edfa dgt and gain_ripple frquencies from json
@@ -171,13 +205,14 @@ class Edfa(Node):
         self.interpol_gain_ripple = np.interp(self.channel_freq, amplifier_freq, self.params.gain_ripple)
         self.interpol_nf_ripple = np.interp(self.channel_freq, amplifier_freq, self.params.nf_ripple)
 
+        self.pin_db = lin2db(np.sum(pin*1e3))
         """check power saturation and correct target_gain accordingly:"""
-        tot_in_power_db = lin2db(np.sum(pin*1e3))
-        gain_target = min(self.operational.gain_target, self.params.p_max-tot_in_power_db)
+        gain_target = min(self.operational.gain_target, self.params.p_max-self.pin_db)
         self.operational.gain_target = gain_target
 
-        self._calc_nf()
-        self._gain_profile(pin)
+        self.nf = self._calc_nf()
+        self.gprofile = self._gain_profile(pin)
+        self.pout_db = lin2db(np.sum(pin*1e3*db2lin(self.gprofile)))
 
     def _calc_nf(self):
         """nf calculation based on 2 models: self.params.nf_model.enabled from json import:
@@ -193,7 +228,9 @@ class Edfa(Node):
             nf_avg = lin2db(db2lin(self.params.nf_model.nf1) + db2lin(self.params.nf_model.nf2)/db2lin(g1a))
         else:
             nf_avg = np.polyval(self.params.nf_fit_coeff, dg)
-        self.nf = self.interpol_nf_ripple + nf_avg + pad #input VOA = 1 for 1 NF degradation
+
+        nf_array = self.interpol_nf_ripple + nf_avg + pad #input VOA = 1 for 1 NF degradation
+        return nf_array
 
     def noise_profile(self, bw):
         """ noise_profile(bw) computes amplifier ase (W) in signal bw (Hz) 
@@ -355,7 +392,7 @@ class Edfa(Node):
         else: #simple_opt
             gprofile = None
 
-        self.gprofile = gprofile
+        return gprofile
 
     def propagate(self, *carriers):
         """add ase noise to the propagating carriers of SpectralInformation"""

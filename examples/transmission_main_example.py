@@ -18,7 +18,7 @@ from matplotlib.pyplot import show, axis
 from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels, dijkstra_path)
 
-from gnpy.core import network_from_json
+from gnpy.core import network_from_json, build_network
 from gnpy.core.elements import Transceiver, Fiber, Edfa
 from gnpy.core.info import SpectralInformation, Channel, Power
 #from gnpy.core.algorithms import closed_paths
@@ -39,6 +39,8 @@ def main(args):
         json_data = load(f)
 
     network = network_from_json(json_data)
+    build_network(network)
+
     """jla put in comment
     pos    = {n: (n.lng, n.lat) for n in network.nodes()}
     labels_pos = {n: (long-.5, lat-.5) for n, (long, lat) in pos.items()}
@@ -49,21 +51,31 @@ def main(args):
               for n in network.nodes()}
     """
 
-    spacing = 0.05 #THz
+    spacing = 0.075 #THz
     si = SpectralInformation() # !! SI units W, Hz
     si = si.update(carriers=tuple(Channel(f+1, (191.3+spacing*(f+1))*1e12, 
-            32e9, 0.15, Power(1e-3, 0, 0)) for f in range(96)))
+            45e9, 0.15, Power(1e-3, 0, 0)) for f in range(50)))
 
     nodes = [n for n in network.nodes() if isinstance(n, Transceiver)]
     source, sink = nodes[0], nodes[1]
+    current_node = source
+    """    
+    successors = [_ for _ in network.successors(current_node)]
+    print(current_node)
+    print(successors)
+    while len(successors) > 0:
+        print(successors[0])
+        current_node = successors[0]
+        successors = [_ for _ in network.successors(current_node)]
+    """
     results = dijkstra_path(network, source, sink)
-    print('dijkstra path:', results)
+    nodes = [n for n in results]
+    print(len(nodes))
 
     for ne in results:
         si = ne(si)
-
-    print('total SNR comb in signal bandwidth', sink.snr(si))
-
+        print(ne)
+    
     #print(Rx_signal_power[0])
     #p.array([c.power.signal+c.power.nli+c.power.ase for c in carriers]) 
 
