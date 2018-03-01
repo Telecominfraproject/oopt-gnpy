@@ -31,12 +31,13 @@ class Transceiver(Node):
     def _calc_snr(self, spectral_info):
         ase = [c.power.ase for c in spectral_info.carriers]
         nli = [c.power.nli for c in spectral_info.carriers]
-        if min(ase)>1e-20 and min(nli)>1e-20:
+        if min(ase)>1e-20: 
             self.osnr_ase = [lin2db(c.power.signal/c.power.ase)
                     for c in spectral_info.carriers]
             ratio_01nm = [lin2db(12.5e9/c.baud_rate) for c in spectral_info.carriers]
             self.osnr_ase_01nm = [ase - ratio for ase, ratio 
                     in zip(self.osnr_ase, ratio_01nm)]
+        if min(nli)>1e-20:
             self.osnr_nli = [lin2db(c.power.signal/c.power.nli) 
                     for c in spectral_info.carriers]
             self.snr = [lin2db(c.power.signal/(c.power.nli+c.power.ase)) 
@@ -177,14 +178,14 @@ class Edfa(Node):
         self.interpol_gain_ripple = None #gain ripple: N numpy array
         self.interpol_nf_ripple = None #nf_ripple: N numpy array
         self.channel_freq = None #SI channel frequencies: N numpy array
-        """nf and gprofile attributs are set by interpol_params"""
+        """nf, gprofile, pin and pout attributs are set by interpol_params"""
         self.nf = None #dB edfa nf at operational.gain_target: N numpy array 
         self.gprofile = None
         self.pin_db = None
         self.pout_db = None
 
     def __repr__(self):
-        if self.pin_db != None and self.pout_db != None :
+        if self.pin_db != None and self.pout_db != None:
             nf_avg = round(np.mean(self.nf),1)
             return f'{type(self).__name__}(uid={self.uid}, \
 gain={round(self.operational.gain_target,1)}dB, NF={nf_avg}dB, \
@@ -193,7 +194,7 @@ Pin={round(self.pin_db, 1)}dBm, Pout={round(self.pout_db,1)}dBm)'
             return f'{type(self).__name__}(uid={self.uid}, \
                 gain={self.operational.gain_target})'
 
-    def interpol_params(self, frequencies, pin):
+    def interpol_params(self, frequencies, pin, baud_rates):
         """interpolate SI channel frequencies with the edfa dgt and gain_ripple frquencies from json
         set the edfa class __init__ None parameters :
                 self.channel_freq, self.nf, self.interpol_dgt and self.interpol_gain_ripple
@@ -212,7 +213,11 @@ Pin={round(self.pin_db, 1)}dBm, Pout={round(self.pout_db,1)}dBm)'
 
         self.nf = self._calc_nf()
         self.gprofile = self._gain_profile(pin)
-        self.pout_db = lin2db(np.sum(pin*1e3*db2lin(self.gprofile)))
+
+        pout = (pin + self.noise_profile(baud_rates))*db2lin(self.gprofile)
+        self.pout_db = lin2db(np.sum(pout*1e3))
+        # ! ase & nli are only calculated in signal bandwidth
+        # => pout_db is not the absolute full ouput power (negligible if sufficient channels)
 
     def _calc_nf(self):
         """nf calculation based on 2 models: self.params.nf_model.enabled from json import:
@@ -232,7 +237,7 @@ Pin={round(self.pin_db, 1)}dBm, Pout={round(self.pout_db,1)}dBm)'
         nf_array = self.interpol_nf_ripple + nf_avg + pad #input VOA = 1 for 1 NF degradation
         return nf_array
 
-    def noise_profile(self, bw):
+    def noise_profile(self, df):
         """ noise_profile(bw) computes amplifier ase (W) in signal bw (Hz) 
         noise is calculated at amplifier input
 
@@ -268,11 +273,8 @@ Pin={round(self.pin_db, 1)}dBm, Pout={round(self.pout_db,1)}dBm)'
         quoting power spectral density in the same BW for both signal and ASE,
         e.g. 12.5GHz."""
 
-        nchan = list(range(len(self.channel_freq)))
-        df = np.array([bw]*(nchan[-1] + 1)) #Hz
         ase = h * df * self.channel_freq * db2lin(self.nf)  #W
         return ase #in W, @amplifier input 
-        #checked 02/15/2018 @ 02:00pm -45dBm @ nf = 8.8dB in 32GHz
 
     def _gain_profile(self, pin):
         """
@@ -399,19 +401,19 @@ Pin={round(self.pin_db, 1)}dBm, Pout={round(self.pout_db,1)}dBm)'
         i = 0
         pin = np.array([c.power.signal+c.power.nli+c.power.ase for c in carriers]) #pin in W
         freq = np.array([c.frequency for c in carriers])
+        brate = np.array([c.baud_rate for c in carriers])
         #interpolate the amplifier vectors with the carriers freq, calculate nf & gain profile
-        self.interpol_params(freq, pin) 
+        self.interpol_params(freq, pin, brate) 
         gain = db2lin(self.gprofile)
+        carrier_ase = self.noise_profile(brate)
 
         for carrier in carriers:
 
             pwr = carrier.power
             bw = carrier.baud_rate            
-            carrier_ase = self.noise_profile(bw)[i]
-
             pwr = pwr._replace(signal=pwr.signal*gain[i],
                                nonlinear_interference=pwr.nli*gain[i],
-                               amplified_spontaneous_emission=(pwr.ase+carrier_ase)*gain[i])
+                               amplified_spontaneous_emission=(pwr.ase+carrier_ase[i])*gain[i])
             i += 1
             yield carrier._replace(power=pwr)
 

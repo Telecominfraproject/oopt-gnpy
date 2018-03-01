@@ -51,10 +51,10 @@ def main(args):
               for n in network.nodes()}
     """
 
-    spacing = 0.075 #THz
+    spacing = 0.05 #THz
     si = SpectralInformation() # !! SI units W, Hz
     si = si.update(carriers=tuple(Channel(f+1, (191.3+spacing*(f+1))*1e12, 
-            45e9, 0.15, Power(1e-3, 0, 0)) for f in range(50)))
+            32e9, 0.15, Power(1e-3, 0, 0)) for f in range(96)))
 
     nodes = [n for n in network.nodes() if isinstance(n, Transceiver)]
     source, sink = nodes[0], nodes[1]
@@ -70,7 +70,7 @@ def main(args):
     """
     results = dijkstra_path(network, source, sink)
     nodes = [n for n in results]
-    print(len(nodes))
+    print(f'There are {len(nodes)} network elements between {source} and {sink}')
 
     for ne in results:
         si = ne(si)
