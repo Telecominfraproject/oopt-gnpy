@@ -3,7 +3,7 @@
 from networkx import DiGraph
 
 from gnpy.core import elements
-from gnpy.core.elements import Fiber, Edfa
+from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm
 from gnpy.core.units import UNITS
 
 MAX_SPAN_LENGTH = 125000
@@ -83,7 +83,8 @@ def split_fiber(network, fiber):
     return network
 
 def add_egress_amplifier(network, node):
-    next_nodes = [n for n in network.successors(node) if not isinstance(n, Edfa)]
+    next_nodes = [n for n in network.successors(node) 
+        if not (isinstance(n, Edfa) or isinstance(n, Transceiver))]
     i = 1
     for next_node in next_nodes:
         network.remove_edge(node, next_node)
@@ -106,4 +107,8 @@ def build_network(network):
     fibers = [f for f in network.nodes() if isinstance(f, Fiber)]
     for fiber in fibers:
         network = split_fiber(network, fiber)
+
+    roadms = [r for r in network.nodes() if isinstance(r, Roadm)]
+    for roadm in roadms:
+        add_egress_amplifier(network, roadm)
 

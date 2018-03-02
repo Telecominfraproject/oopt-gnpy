@@ -58,6 +58,29 @@ snr total(in signal bw)={snr})'
         self._calc_snr(spectral_info)
         return spectral_info
 
+class Roadm(Node):
+    def __init__(self, config):
+        super().__init__(config)
+        self.loss = 20 #dB
+
+    def __repr__(self):
+        return f'{type(self).__name__}(uid={self.uid}, \
+loss={round(self.loss,1)}dB)'        
+
+    def propagate(self, *carriers):
+        attenuation = db2lin(self.loss)
+
+        for carrier in carriers:
+            pwr = carrier.power           
+            pwr = pwr._replace(signal=pwr.signal/attenuation,
+                               nonlinear_interference=pwr.nli/attenuation,
+                               amplified_spontaneous_emission=pwr.ase/attenuation)
+            yield carrier._replace(power=pwr)
+
+    def __call__(self, spectral_info):
+        carriers = tuple(self.propagate(*spectral_info.carriers))
+        return spectral_info.update(carriers=carriers)
+
 class Fiber(Node):
     def __init__(self, config):
         super().__init__(config)

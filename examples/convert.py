@@ -106,13 +106,20 @@ if __name__ == '__main__':
 
     data = {
         'elements':
-            [{'uid': x.city,
+            [{'uid': f'trx {x.city}',
               'metadata': {'location': {'city':      x.city,
                                         'region':    x.region,
                                         'latitude':  x.latitude,
                                         'longitude': x.longitude}},
               'type': 'Transceiver'}
              for x in nodes] +
+            [{'uid': f'roadm {x.city}',
+              'metadata': {'location': {'city':      x.city,
+                                        'region':    x.region,
+                                        'latitude':  x.latitude,
+                                        'longitude': x.longitude}},
+              'type': 'Roadm'}
+             for x in nodes] +             
             [{'uid': f'fiber ({x.from_city} → {x.to_city})',
               'metadata': {'location': midpoint(nodes_by_city[x.from_city],
                                                 nodes_by_city[x.to_city])},
@@ -126,20 +133,28 @@ if __name__ == '__main__':
              for x in links],
         'connections':
             list(chain.from_iterable(zip( # put bidi next to each other
-            [{'from_node': x.from_city,
+            [{'from_node': f'roadm {x.from_city}',
               'to_node':   f'fiber ({x.from_city} → {x.to_city})'}
              for x in links],
             [{'from_node': f'fiber ({x.from_city} → {x.to_city})',
-              'to_node':   x.from_city}
+              'to_node':   f'roadm {x.from_city}'}
              for x in links])))
             +
             list(chain.from_iterable(zip(
             [{'from_node': f'fiber ({x.from_city} → {x.to_city})',
-              'to_node':   x.to_city}
+              'to_node':   f'roadm {x.to_city}'}
              for x in links],
-            [{'from_node': x.to_city,
+            [{'from_node': f'roadm {x.to_city}',
               'to_node':   f'fiber ({x.from_city} → {x.to_city})'}
              for x in links])))
+            +
+            list(chain.from_iterable(zip(
+            [{'from_node': f'trx {x.city}',
+              'to_node':   f'roadm {x.city}'}
+             for x in nodes],
+            [{'from_node': f'roadm {x.city}',
+              'to_node':   f'trx {x.city}'}
+             for x in nodes])))            
     }
 
     print(dumps(data, indent=2))
