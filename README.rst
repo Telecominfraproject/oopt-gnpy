@@ -31,6 +31,13 @@ Features
 
 * GNPY simulation of an amplified optical link
 
+Instructions
+------------
+
+- To get started, use the transmission example file: python3 gnpy/examples/transmission_main_example.py. By default it will open a single span json file: examples/edfa/edfa_example_network.json and calculate the average signal OSNR=Pch/Pase and SNR=Pch/(Pnli+Pase). Pase is the amplified spontaneous emission noise and Pnli the non linear interference noise.
+- The transmission example can also be run over the coronet conus reference network by specifying in option the corresponding json file: python3 gnpy/examples/transmission_main_example.py coronet_conus_example.json. This will calculate the average signal osnr and snr across 93 network elements (transceiver, roadms, fibers and amplifiers) betwen Abilene (Texas) and Albany (New-York).
+- The transmission_main_example.py script propagates a specrum of 96 channels @32Gbaud, 50GHz spacing and 0dBm/channel that is not yet parametrized but can be modified directly in the script (with the SpectralInformation tupple) to accomodate any baud rate, spacing, power or channel count demand.
+- Amplifiers gain is set to compensate exactly each network elements loss. A single type of amplifier is currently defined with gain range of 15dB to 25dB and 21dBm max output power. Ripple and nf models are defined in gnpy/examples/edfa_config.json
 
 ============
 Background
