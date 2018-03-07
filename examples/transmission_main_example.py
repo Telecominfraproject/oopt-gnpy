@@ -53,31 +53,18 @@ def main(args):
 
     spacing = 0.05 #THz
     si = SpectralInformation() # !! SI units W, Hz
-    si = si.update(carriers=tuple(Channel(f+1, (191.3+spacing*(f+1))*1e12, 
-            32e9, 0.15, Power(1e-3, 0, 0)) for f in range(96)))
+    si = si.update(carriers=tuple(Channel(f, (191.3+spacing*f)*1e12, 
+            32e9, 0.15, Power(1e-3, 0, 0)) for f in range(1,97)))
 
-    nodes = [n for n in network.nodes() if isinstance(n, Transceiver)]
-    source, sink = nodes[0], nodes[1]
-    current_node = source
-    """    
-    successors = [_ for _ in network.successors(current_node)]
-    print(current_node)
-    print(successors)
-    while len(successors) > 0:
-        print(successors[0])
-        current_node = successors[0]
-        successors = [_ for _ in network.successors(current_node)]
-    """
+    trx = [n for n in network.nodes() if isinstance(n, Transceiver)]
+    source, sink = trx[0], trx[1]
+ 
     results = dijkstra_path(network, source, sink)
-    nodes = [n for n in results]
-    print(f'There are {len(nodes)} network elements between {source} and {sink}')
+    print(f'There are {len(results)} network elements between {source} and {sink}')
 
     for ne in results:
         si = ne(si)
         print(ne)
-    
-    #print(Rx_signal_power[0])
-    #p.array([c.power.signal+c.power.nli+c.power.ase for c in carriers]) 
 
     """jla put in comment 
     results = list(islice(closed_paths(network, source, sink, si), 3))
