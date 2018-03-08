@@ -30,7 +30,7 @@
                 "gain_target": 16,
                 "tilt_target": 0
             },
-            "config_from_json": "edfa_config.json",
+            "config_from_json": "tests/edfa_config.json",
             "metadata": {
                 "latitude": 2,
                 "longitude": 0
