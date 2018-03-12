@@ -123,7 +123,7 @@ Data Centers are built upon interchangeable, highly standardized node and
 network architectures rather than a sum of isolated solutions. This also
 translates to optical networking. It leads to a push in enabling multi-vendor
 optical network by disaggregating HW and SW functions and focussing on
-interoperability. In this paradigm, the burden of responsability for ensuring
+interoperability. In this paradigm, the burden of responsibility for ensuring
 the performance of such disaggregated open optical systems falls on the
 operators. Consequently, operators and vendors are collaborating in defining
 control models that can be readily used by off-the-shelf controllers. However,
@@ -133,13 +133,14 @@ performance. Hence, a vendor-independent optical quality estimator is required.
 Given its vendor-agnostic nature, such an estimator needs to be driven by a
 consortium of operators, system and component suppliers.
 
-Founded in February 2016, the Telcominfraproject (TIP)is an engineering-focused
-initiative which is operator driven, but features collaboration across
-operators, suppliers, developers, integrators, and startups with the goal of
-disaggregating the traditional network deployment approach. The group’s
-ultimate goal is to help provide better connectivity for communities all over
-the world as more people come on-line and demand more bandwidth- intensive
-experiences like video, virtual reality and augmented reality.
+Founded in February 2016, the Telecom Infra Project (TIP) is an
+engineering-focused initiative which is operator driven, but features
+collaboration across operators, suppliers, developers, integrators, and
+startups with the goal of disaggregating the traditional network deployment
+approach. The group’s ultimate goal is to help provide better connectivity for
+communities all over the world as more people come on-line and demand more
+bandwidth- intensive experiences like video, virtual reality and augmented
+reality.
 
 Within TIP, the Open Optical Packet Transport (OOPT) project group is chartered
 with unbundling monolithic packet-optical network technologies in order to
