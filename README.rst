@@ -114,7 +114,7 @@ See the `Onboarding Guide
 <https://github.com/Telecominfraproject/gnpy/wiki/Onboarding-Guide>`_ for
 specific details on code contribtions.
 
-See `AUTHORS.Md <AUTHORS.Md>`_ for past and present contributors.
+See `AUTHORS.rst <AUTHORS.rst>`_ for past and present contributors.
 
 Project Background
 ------------------
