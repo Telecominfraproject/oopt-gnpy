@@ -44,12 +44,21 @@ class Transceiver(Node):
                     for c in spectral_info.carriers]
 
     def __repr__(self):
+        return (f'{type(self).__name__}('
+                 'uid={self.uid!r}, '
+                 'config={self.config!r}, '
+                 'osnr_ase_01nm={osnr_ase_01nm!r}, '
+                 'osnr_ase={osnr_ase!r}, '
+                 'osnr_ase_nli={osnr_ase_nli!r}, '
+                 'snr={snr!r})')
+
+    def __str__(self):
         if self.snr != None and self.osnr_ase != None:
             snr = round(np.mean(self.snr),2)
             osnr_ase = round(np.mean(self.osnr_ase),2)
             osnr_ase_01nm = round(np.mean(self.osnr_ase_01nm), 2)
-            return f'{type(self).__name__}(uid={self.uid}, \
-osnr_ase(in 0.1nm)={osnr_ase_01nm}dB, osnr_ase(in signal bw)={osnr_ase}dB, \
+            return f'{type(self).__name__}(uid={self.uid!r}, \
+osnr_ase_01nm={osnr_ase_01nm}dB, osnr_ase(in signal bw)={osnr_ase}dB, \
 snr total(in signal bw)={snr})'
         else:
             return f'{type(self).__name__}(uid={self.uid})'
@@ -64,8 +73,7 @@ class Roadm(Node):
         self.loss = 20 #dB
 
     def __repr__(self):
-        return f'{type(self).__name__}(uid={self.uid}, \
-loss={round(self.loss,1)}dB)'        
+        return f'{type(self).__name__}(uid={self.uid!r}, loss={self.loss!r})'
 
     def propagate(self, *carriers):
         attenuation = db2lin(self.loss)
@@ -94,9 +102,7 @@ class Fiber(Node):
         #TODO discuss factor 2 in the linear lineic attenuation
 
     def __repr__(self):
-        k = UNITS['km']
-        return f'{type(self).__name__}(uid={self.uid}, \
-length={round(self.length/k, 1)}km, loss={round(self.loss,1)}dB)'
+        return f'{type(self).__name__}(uid={self.uid!r}, length={self.length!r}, loss={self.loss!r})'
 
     def lin_attenuation(self):
         attenuation = self.length * self.loss_coef
@@ -208,6 +214,17 @@ class Edfa(Node):
         self.pout_db = None
 
     def __repr__(self):
+        return (f'{type(self).__name__}(uid={self.uid!r}, '
+                f'interpol_dgt={self.interpol_dgt!r}, '
+                f'interpol_gain_ripple={self.interpol_gain_ripple!r}, '
+                f'interpol_nf_ripple={self.interpol_nf_ripple!r}, '
+                f'channel_freq={self.channel_freq!r}, '
+                f'nf={self.nf!r}, '
+                f'gprofile={self.gprofile!r}, '
+                f'pin_db={self.pin_db!r}, '
+                f'pout_db={self.pout_db!r})')
+
+    def __str__(self):
         if self.pin_db != None and self.pout_db != None:
             nf_avg = round(np.mean(self.nf),1)
             return f'{type(self).__name__}(uid={self.uid}, \
