@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# GNpy documentation build configuration file, created by
+# gnpy documentation build configuration file, created by
 # sphinx-quickstart on Mon Dec 18 14:41:01 2017.
 #
 # This file is execfile()d with the current directory set to its
@@ -47,8 +47,8 @@ source_suffix = ['.rst', '.md']
 master_doc = 'index'
 
 # General information about the project.
-project = 'GNpy'
-copyright = '2017, Telecom InfraProject - OOPT PSE Group'
+project = 'gnpy'
+copyright = '2018, Telecom InfraProject - OOPT PSE Group'
 author = 'Telecom InfraProject - OOPT PSE Group'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -120,7 +120,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'GNpydoc'
+htmlhelp_basename = 'gnpydoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -147,7 +147,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'GNpy.tex', 'GNpy Documentation',
+    (master_doc, 'gnpy.tex', 'gnpy Documentation',
      'Telecom InfraProject - OOPT PSE Group', 'manual'),
 ]
 
@@ -157,7 +157,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'gnpy', 'GNpy Documentation',
+    (master_doc, 'gnpy', 'gnpy Documentation',
      [author], 1)
 ]
 
@@ -168,8 +168,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'GNpy', 'GNpy Documentation',
-     author, 'GNpy', 'One line description of project.',
+    (master_doc, 'gnpy', 'gnpy Documentation',
+     author, 'gnpy', 'One line description of project.',
      'Miscellaneous'),
 ]
 
