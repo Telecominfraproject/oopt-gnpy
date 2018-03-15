@@ -53,15 +53,16 @@ class Transceiver(Node):
                  'snr={snr!r})')
 
     def __str__(self):
-        if self.snr != None and self.osnr_ase != None:
-            snr = round(np.mean(self.snr),2)
-            osnr_ase = round(np.mean(self.osnr_ase),2)
-            osnr_ase_01nm = round(np.mean(self.osnr_ase_01nm), 2)
-            return f'{type(self).__name__}(uid={self.uid!r}, \
-osnr_ase_01nm={osnr_ase_01nm}dB, osnr_ase(in signal bw)={osnr_ase}dB, \
-snr total(in signal bw)={snr})'
-        else:
-            return f'{type(self).__name__}(uid={self.uid})'
+        if self.snr is None or self.osnr_ase is None:
+            return f'{type(self).__name__} {self.uid}'
+        snr = round(np.mean(self.snr),2)
+        osnr_ase = round(np.mean(self.osnr_ase),2)
+        osnr_ase_01nm = round(np.mean(self.osnr_ase_01nm), 2)
+
+        return '\n'.join([f'{type(self).__name__} {self.uid}',
+                          f'  OSNR ASE (1nm): {np.mean(self.osnr_ase_01nm):.2f}',
+                          f'  OSNR ASE (signal bw): {np.mean(self.osnr_ase):.2f}',
+                          f'  SNR total (signal bw): {np.mean(snr):.2f}'])
 
     def __call__(self, spectral_info):
         self._calc_snr(spectral_info)
@@ -74,6 +75,10 @@ class Roadm(Node):
 
     def __repr__(self):
         return f'{type(self).__name__}(uid={self.uid!r}, loss={self.loss!r})'
+
+    def __str__(self):
+        return '\n'.join([f'{type(self).__name__} {self.uid}',
+                          f'  loss: {self.loss:.2f}'])
 
     def propagate(self, *carriers):
         attenuation = db2lin(self.loss)
@@ -103,6 +108,11 @@ class Fiber(Node):
 
     def __repr__(self):
         return f'{type(self).__name__}(uid={self.uid!r}, length={self.length!r}, loss={self.loss!r})'
+
+    def __str__(self):
+        return '\n'.join([f'{type(self).__name__} {self.uid}',
+                          f'  length: {self.length:.2f}',
+                          f'  loss: {self.loss:.2f}'])
 
     def lin_attenuation(self):
         attenuation = self.length * self.loss_coef
@@ -225,14 +235,14 @@ class Edfa(Node):
                 f'pout_db={self.pout_db!r})')
 
     def __str__(self):
-        if self.pin_db != None and self.pout_db != None:
-            nf_avg = round(np.mean(self.nf),1)
-            return f'{type(self).__name__}(uid={self.uid}, \
-gain={round(self.operational.gain_target,1)}dB, NF={nf_avg}dB, \
-Pin={round(self.pin_db, 1)}dBm, Pout={round(self.pout_db,1)}dBm)'
-        else:
-            return f'{type(self).__name__}(uid={self.uid}, \
-                gain={self.operational.gain_target})'
+        if self.pin_db is None or self.pout_db is None:
+            return f'{type(self).__name__} {self.uid}'
+
+        return '\n'.join([f'{type(self).__name__} {self.uid}',
+                          f'  gain (dB): {self.operational.gain_target:.2f}',
+                          f'  noise figure (dB): {np.mean(self.nf):.2f}',
+                          f'  Power In (dBm):  {self.pin_db:.2f}',
+                          f'  Power Out (dBm): {self.pout_db:.2f}'])
 
     def interpol_params(self, frequencies, pin, baud_rates):
         """interpolate SI channel frequencies with the edfa dgt and gain_ripple frquencies from json
