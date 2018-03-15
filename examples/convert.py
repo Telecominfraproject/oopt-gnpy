@@ -7,12 +7,39 @@ except ModuleNotFoundError:
     exit('Required: `pip install xlrd`')
 from argparse import ArgumentParser
 from collections import namedtuple, Counter
+from itertools import chain
 from json import dumps
+from uuid import uuid4
+import math
+import numpy as np
 
+output_json_file_name = 'coronet_conus_example.json'
 Node = namedtuple('Node', 'city state country region latitude longitude')
 class Link(namedtuple('Link', 'from_city to_city distance distance_units')):
     def __new__(cls, from_city, to_city, distance, distance_units='km'):
         return super().__new__(cls, from_city, to_city, distance, distance_units)
+
+def define_span_range(min_span, max_span, nspans):
+    srange = (max_span - min_span) + min_span*np.random.rand(nspans)
+    return srange
+
+def amp_spacings(min_span,max_span,length):
+    nspans =  math.ceil(length/100)
+    spans = define_span_range(min_span, max_span, nspans)
+    tot = spans.sum()
+    delta = length -tot
+    if delta > 0 and delta < 25:
+        ind  = np.where(np.min(spans))
+        spans[ind] = spans[ind] + delta
+    elif delta >= 25 and delta < 40:
+        spans = spans + delta/float(nspans)
+    elif delta > 40 and delta < 100:
+        spans = np.append(spans,delta)
+    elif delta > 100:
+        spans  = np.append(spans, [delta/2, delta/2])
+    elif delta < 0:
+        spans = spans + delta/float(nspans)
+    return list(spans)
 
 def parse_excel(args):
     with open_workbook(args.workbook) as wb:
@@ -68,7 +95,7 @@ if __name__ == '__main__':
     nodes, links = parse_excel(args)
 
     if args.filter_region:
-        nodes = [n for n in nodes if n.region in args.filter_region]
+        nodes = [n for n in nodes if n.region.lower() in args.filter_region]
         cities = {n.city for n in nodes}
         links = [lnk for lnk in links if lnk.from_city in cities and
                                          lnk.to_city in cities]
@@ -79,25 +106,57 @@ if __name__ == '__main__':
 
     data = {
         'elements':
-            [{'id': x.city,
-              'metadata': {'city': x.city, 'region': x.region,
-                           'latitude': x.latitude,
-                           'longitude': x.longitude},
-              'type': 'City'}
+            [{'uid': f'trx {x.city}',
+              'metadata': {'location': {'city':      x.city,
+                                        'region':    x.region,
+                                        'latitude':  x.latitude,
+                                        'longitude': x.longitude}},
+              'type': 'Transceiver'}
              for x in nodes] +
-            [{'id': f'fiber ({x.from_city} → {x.to_city})',
-              'metadata': {'length': x.distance, 'units': x.distance_units,
-                            **midpoint(nodes_by_city[x.from_city],
-                                       nodes_by_city[x.to_city])},
-              'type': 'Fiber'}
+            [{'uid': f'roadm {x.city}',
+              'metadata': {'location': {'city':      x.city,
+                                        'region':    x.region,
+                                        'latitude':  x.latitude,
+                                        'longitude': x.longitude}},
+              'type': 'Roadm'}
+             for x in nodes] +             
+            [{'uid': f'fiber ({x.from_city} → {x.to_city})',
+              'metadata': {'location': midpoint(nodes_by_city[x.from_city],
+                                                nodes_by_city[x.to_city])},
+              'type': 'Fiber',
+              'params': {'length':   round(x.distance, 3),
+                         'length_units':    x.distance_units,
+                         'loss_coef': 0.2,
+                         'dispersion': 16.7E-6,
+                         'gamma': 1.27E-3}
+              }
              for x in links],
         'connections':
-            [{'from_node': x.from_city,
+            list(chain.from_iterable(zip( # put bidi next to each other
+            [{'from_node': f'roadm {x.from_city}',
               'to_node':   f'fiber ({x.from_city} → {x.to_city})'}
-             for x in links] +
+             for x in links],
             [{'from_node': f'fiber ({x.from_city} → {x.to_city})',
-              'to_node':   x.to_city}
-             for x in links]
+              'to_node':   f'roadm {x.from_city}'}
+             for x in links])))
+            +
+            list(chain.from_iterable(zip(
+            [{'from_node': f'fiber ({x.from_city} → {x.to_city})',
+              'to_node':   f'roadm {x.to_city}'}
+             for x in links],
+            [{'from_node': f'roadm {x.to_city}',
+              'to_node':   f'fiber ({x.from_city} → {x.to_city})'}
+             for x in links])))
+            +
+            list(chain.from_iterable(zip(
+            [{'from_node': f'trx {x.city}',
+              'to_node':   f'roadm {x.city}'}
+             for x in nodes],
+            [{'from_node': f'roadm {x.city}',
+              'to_node':   f'trx {x.city}'}
+             for x in nodes])))            
     }
 
     print(dumps(data, indent=2))
+    with  open(output_json_file_name,'w') as edfa_json_file:
+        edfa_json_file.write(dumps(data, indent=2))

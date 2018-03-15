@@ -1,1742 +1,2090 @@
 {
   "elements": [
     {
-      "id": "Abilene",
+      "uid": "Abilene",
       "metadata": {
-        "city": "Abilene",
-        "region": "CONUS",
-        "latitude": 32.45,
-        "longitude": -99.739998
+        "location": {
+          "city": "Abilene",
+          "region": "CONUS",
+          "latitude": 32.45,
+          "longitude": -99.739998
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Albany",
+      "uid": "Albany",
       "metadata": {
-        "city": "Albany",
-        "region": "CONUS",
-        "latitude": 42.6699982,
-        "longitude": -73.8000029
+        "location": {
+          "city": "Albany",
+          "region": "CONUS",
+          "latitude": 42.6699982,
+          "longitude": -73.8000029
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Albuquerque",
+      "uid": "Albuquerque",
       "metadata": {
-        "city": "Albuquerque",
-        "region": "CONUS",
-        "latitude": 35.119977,
-        "longitude": -106.61997
+        "location": {
+          "city": "Albuquerque",
+          "region": "CONUS",
+          "latitude": 35.119977,
+          "longitude": -106.61997
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Atlanta",
+      "uid": "Atlanta",
       "metadata": {
-        "city": "Atlanta",
-        "region": "CONUS",
-        "latitude": 33.7599982,
-        "longitude": -84.4199987
+        "location": {
+          "city": "Atlanta",
+          "region": "CONUS",
+          "latitude": 33.7599982,
+          "longitude": -84.4199987
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Austin",
+      "uid": "Austin",
       "metadata": {
-        "city": "Austin",
-        "region": "CONUS",
-        "latitude": 30.3099988,
-        "longitude": -97.7500018
+        "location": {
+          "city": "Austin",
+          "region": "CONUS",
+          "latitude": 30.3099988,
+          "longitude": -97.7500018
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Baltimore",
+      "uid": "Baltimore",
       "metadata": {
-        "city": "Baltimore",
-        "region": "CONUS",
-        "latitude": 39.2999992,
-        "longitude": -76.6100008
+        "location": {
+          "city": "Baltimore",
+          "region": "CONUS",
+          "latitude": 39.2999992,
+          "longitude": -76.6100008
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Baton_Rouge",
+      "uid": "Baton_Rouge",
       "metadata": {
-        "city": "Baton_Rouge",
-        "region": "CONUS",
-        "latitude": 30.4499996,
-        "longitude": -91.1299968
+        "location": {
+          "city": "Baton_Rouge",
+          "region": "CONUS",
+          "latitude": 30.4499996,
+          "longitude": -91.1299968
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Billings",
+      "uid": "Billings",
       "metadata": {
-        "city": "Billings",
-        "region": "CONUS",
-        "latitude": 45.79000104,
-        "longitude": -108.5400006
+        "location": {
+          "city": "Billings",
+          "region": "CONUS",
+          "latitude": 45.79000104,
+          "longitude": -108.5400006
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Birmingham",
+      "uid": "Birmingham",
       "metadata": {
-        "city": "Birmingham",
-        "region": "CONUS",
-        "latitude": 33.5299985,
-        "longitude": -86.8000029
+        "location": {
+          "city": "Birmingham",
+          "region": "CONUS",
+          "latitude": 33.5299985,
+          "longitude": -86.8000029
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Bismarck",
+      "uid": "Bismarck",
       "metadata": {
-        "city": "Bismarck",
-        "region": "CONUS",
-        "latitude": 46.81000154,
-        "longitude": -100.7699965
+        "location": {
+          "city": "Bismarck",
+          "region": "CONUS",
+          "latitude": 46.81000154,
+          "longitude": -100.7699965
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Boston",
+      "uid": "Boston",
       "metadata": {
-        "city": "Boston",
-        "region": "CONUS",
-        "latitude": 42.3400005,
-        "longitude": -71.0199959
+        "location": {
+          "city": "Boston",
+          "region": "CONUS",
+          "latitude": 42.3400005,
+          "longitude": -71.0199959
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Buffalo",
+      "uid": "Buffalo",
       "metadata": {
-        "city": "Buffalo",
-        "region": "CONUS",
-        "latitude": 42.8899993,
-        "longitude": -78.860001
+        "location": {
+          "city": "Buffalo",
+          "region": "CONUS",
+          "latitude": 42.8899993,
+          "longitude": -78.860001
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Charleston",
+      "uid": "Charleston",
       "metadata": {
-        "city": "Charleston",
-        "region": "CONUS",
-        "latitude": 32.7900008,
-        "longitude": -79.9899982
+        "location": {
+          "city": "Charleston",
+          "region": "CONUS",
+          "latitude": 32.7900008,
+          "longitude": -79.9899982
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Charlotte",
+      "uid": "Charlotte",
       "metadata": {
-        "city": "Charlotte",
-        "region": "CONUS",
-        "latitude": 35.2,
-        "longitude": -80.83
+        "location": {
+          "city": "Charlotte",
+          "region": "CONUS",
+          "latitude": 35.2,
+          "longitude": -80.83
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Chicago",
+      "uid": "Chicago",
       "metadata": {
-        "city": "Chicago",
-        "region": "CONUS",
-        "latitude": 41.839997,
-        "longitude": -87.680001
+        "location": {
+          "city": "Chicago",
+          "region": "CONUS",
+          "latitude": 41.839997,
+          "longitude": -87.680001
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Cincinnati",
+      "uid": "Cincinnati",
       "metadata": {
-        "city": "Cincinnati",
-        "region": "CONUS",
-        "latitude": 39.1399991,
-        "longitude": -84.5100027
+        "location": {
+          "city": "Cincinnati",
+          "region": "CONUS",
+          "latitude": 39.1399991,
+          "longitude": -84.5100027
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Cleveland",
+      "uid": "Cleveland",
       "metadata": {
-        "city": "Cleveland",
-        "region": "CONUS",
-        "latitude": 41.4799992,
-        "longitude": -81.6800014
+        "location": {
+          "city": "Cleveland",
+          "region": "CONUS",
+          "latitude": 41.4799992,
+          "longitude": -81.6800014
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Columbus",
+      "uid": "Columbus",
       "metadata": {
-        "city": "Columbus",
-        "region": "CONUS",
-        "latitude": 39.990002,
-        "longitude": -82.989997
+        "location": {
+          "city": "Columbus",
+          "region": "CONUS",
+          "latitude": 39.990002,
+          "longitude": -82.989997
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Dallas",
+      "uid": "Dallas",
       "metadata": {
-        "city": "Dallas",
-        "region": "CONUS",
-        "latitude": 32.79,
-        "longitude": -96.77
+        "location": {
+          "city": "Dallas",
+          "region": "CONUS",
+          "latitude": 32.79,
+          "longitude": -96.77
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Denver",
+      "uid": "Denver",
       "metadata": {
-        "city": "Denver",
-        "region": "CONUS",
-        "latitude": 39.77000271,
-        "longitude": -104.8700036
+        "location": {
+          "city": "Denver",
+          "region": "CONUS",
+          "latitude": 39.77000271,
+          "longitude": -104.8700036
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Detroit",
+      "uid": "Detroit",
       "metadata": {
-        "city": "Detroit",
-        "region": "CONUS",
-        "latitude": 42.3800019,
-        "longitude": -83.0999998
+        "location": {
+          "city": "Detroit",
+          "region": "CONUS",
+          "latitude": 42.3800019,
+          "longitude": -83.0999998
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "El_Paso",
+      "uid": "El_Paso",
       "metadata": {
-        "city": "El_Paso",
-        "region": "CONUS",
-        "latitude": 31.84981,
-        "longitude": -106.4396
+        "location": {
+          "city": "El_Paso",
+          "region": "CONUS",
+          "latitude": 31.84981,
+          "longitude": -106.4396
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Fresno",
+      "uid": "Fresno",
       "metadata": {
-        "city": "Fresno",
-        "region": "CONUS",
-        "latitude": 36.7800007,
-        "longitude": -119.790002
+        "location": {
+          "city": "Fresno",
+          "region": "CONUS",
+          "latitude": 36.7800007,
+          "longitude": -119.790002
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Greensboro",
+      "uid": "Greensboro",
       "metadata": {
-        "city": "Greensboro",
-        "region": "CONUS",
-        "latitude": 36.0800024,
-        "longitude": -79.8300018
+        "location": {
+          "city": "Greensboro",
+          "region": "CONUS",
+          "latitude": 36.0800024,
+          "longitude": -79.8300018
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Hartford",
+      "uid": "Hartford",
       "metadata": {
-        "city": "Hartford",
-        "region": "CONUS",
-        "latitude": 41.7700004,
-        "longitude": -72.6800003
+        "location": {
+          "city": "Hartford",
+          "region": "CONUS",
+          "latitude": 41.7700004,
+          "longitude": -72.6800003
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Houston",
+      "uid": "Houston",
       "metadata": {
-        "city": "Houston",
-        "region": "CONUS",
-        "latitude": 29.77,
-        "longitude": -95.39
+        "location": {
+          "city": "Houston",
+          "region": "CONUS",
+          "latitude": 29.77,
+          "longitude": -95.39
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Jacksonville",
+      "uid": "Jacksonville",
       "metadata": {
-        "city": "Jacksonville",
-        "region": "CONUS",
-        "latitude": 30.330003,
-        "longitude": -81.660002
+        "location": {
+          "city": "Jacksonville",
+          "region": "CONUS",
+          "latitude": 30.330003,
+          "longitude": -81.660002
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Kansas_City",
+      "uid": "Kansas_City",
       "metadata": {
-        "city": "Kansas_City",
-        "region": "CONUS",
-        "latitude": 39.1199992,
-        "longitude": -94.7300038
+        "location": {
+          "city": "Kansas_City",
+          "region": "CONUS",
+          "latitude": 39.1199992,
+          "longitude": -94.7300038
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Las_Vegas",
+      "uid": "Las_Vegas",
       "metadata": {
-        "city": "Las_Vegas",
-        "region": "CONUS",
-        "latitude": 36.20999,
-        "longitude": -115.2199
+        "location": {
+          "city": "Las_Vegas",
+          "region": "CONUS",
+          "latitude": 36.20999,
+          "longitude": -115.2199
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Little_Rock",
+      "uid": "Little_Rock",
       "metadata": {
-        "city": "Little_Rock",
-        "region": "CONUS",
-        "latitude": 34.72,
-        "longitude": -92.35
+        "location": {
+          "city": "Little_Rock",
+          "region": "CONUS",
+          "latitude": 34.72,
+          "longitude": -92.35
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Long_Island",
+      "uid": "Long_Island",
       "metadata": {
-        "city": "Long_Island",
-        "region": "CONUS",
-        "latitude": 40.5899999,
-        "longitude": -73.6699993
+        "location": {
+          "city": "Long_Island",
+          "region": "CONUS",
+          "latitude": 40.5899999,
+          "longitude": -73.6699993
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Los_Angeles",
+      "uid": "Los_Angeles",
       "metadata": {
-        "city": "Los_Angeles",
-        "region": "CONUS",
-        "latitude": 34.110001,
-        "longitude": -118.410002
+        "location": {
+          "city": "Los_Angeles",
+          "region": "CONUS",
+          "latitude": 34.110001,
+          "longitude": -118.410002
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Louisville",
+      "uid": "Louisville",
       "metadata": {
-        "city": "Louisville",
-        "region": "CONUS",
-        "latitude": 38.2200009,
-        "longitude": -85.7399979
+        "location": {
+          "city": "Louisville",
+          "region": "CONUS",
+          "latitude": 38.2200009,
+          "longitude": -85.7399979
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Memphis",
+      "uid": "Memphis",
       "metadata": {
-        "city": "Memphis",
-        "region": "CONUS",
-        "latitude": 35.110001,
-        "longitude": -90.010004
+        "location": {
+          "city": "Memphis",
+          "region": "CONUS",
+          "latitude": 35.110001,
+          "longitude": -90.010004
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Miami",
+      "uid": "Miami",
       "metadata": {
-        "city": "Miami",
-        "region": "CONUS",
-        "latitude": 25.7800006,
-        "longitude": -80.2099997
+        "location": {
+          "city": "Miami",
+          "region": "CONUS",
+          "latitude": 25.7800006,
+          "longitude": -80.2099997
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Milwaukee",
+      "uid": "Milwaukee",
       "metadata": {
-        "city": "Milwaukee",
-        "region": "CONUS",
-        "latitude": 43.0600013,
-        "longitude": -87.9700005
+        "location": {
+          "city": "Milwaukee",
+          "region": "CONUS",
+          "latitude": 43.0600013,
+          "longitude": -87.9700005
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Minneapolis",
+      "uid": "Minneapolis",
       "metadata": {
-        "city": "Minneapolis",
-        "region": "CONUS",
-        "latitude": 44.9599988,
-        "longitude": -93.2699973
+        "location": {
+          "city": "Minneapolis",
+          "region": "CONUS",
+          "latitude": 44.9599988,
+          "longitude": -93.2699973
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Nashville",
+      "uid": "Nashville",
       "metadata": {
-        "city": "Nashville",
-        "region": "CONUS",
-        "latitude": 36.1699984,
-        "longitude": -86.7799989
+        "location": {
+          "city": "Nashville",
+          "region": "CONUS",
+          "latitude": 36.1699984,
+          "longitude": -86.7799989
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "New_Orleans",
+      "uid": "New_Orleans",
       "metadata": {
-        "city": "New_Orleans",
-        "region": "CONUS",
-        "latitude": 30.07,
-        "longitude": -89.93
+        "location": {
+          "city": "New_Orleans",
+          "region": "CONUS",
+          "latitude": 30.07,
+          "longitude": -89.93
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "New_York",
+      "uid": "New_York",
       "metadata": {
-        "city": "New_York",
-        "region": "CONUS",
-        "latitude": 40.6699983,
-        "longitude": -73.9400035
+        "location": {
+          "city": "New_York",
+          "region": "CONUS",
+          "latitude": 40.6699983,
+          "longitude": -73.9400035
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Newark",
+      "uid": "Newark",
       "metadata": {
-        "city": "Newark",
-        "region": "CONUS",
-        "latitude": 40.7200012,
-        "longitude": -74.1699986
+        "location": {
+          "city": "Newark",
+          "region": "CONUS",
+          "latitude": 40.7200012,
+          "longitude": -74.1699986
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Norfolk",
+      "uid": "Norfolk",
       "metadata": {
-        "city": "Norfolk",
-        "region": "CONUS",
-        "latitude": 36.9199982,
-        "longitude": -76.2399978
+        "location": {
+          "city": "Norfolk",
+          "region": "CONUS",
+          "latitude": 36.9199982,
+          "longitude": -76.2399978
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Oakland",
+      "uid": "Oakland",
       "metadata": {
-        "city": "Oakland",
-        "region": "CONUS",
-        "latitude": 37.77000071,
-        "longitude": -122.2200016
+        "location": {
+          "city": "Oakland",
+          "region": "CONUS",
+          "latitude": 37.77000071,
+          "longitude": -122.2200016
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Oklahoma_City",
+      "uid": "Oklahoma_City",
       "metadata": {
-        "city": "Oklahoma_City",
-        "region": "CONUS",
-        "latitude": 35.4700015,
-        "longitude": -97.5100028
+        "location": {
+          "city": "Oklahoma_City",
+          "region": "CONUS",
+          "latitude": 35.4700015,
+          "longitude": -97.5100028
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Omaha",
+      "uid": "Omaha",
       "metadata": {
-        "city": "Omaha",
-        "region": "CONUS",
-        "latitude": 41.2599984,
-        "longitude": -96.0100022
+        "location": {
+          "city": "Omaha",
+          "region": "CONUS",
+          "latitude": 41.2599984,
+          "longitude": -96.0100022
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Orlando",
+      "uid": "Orlando",
       "metadata": {
-        "city": "Orlando",
-        "region": "CONUS",
-        "latitude": 28.4999994,
-        "longitude": -81.370003
+        "location": {
+          "city": "Orlando",
+          "region": "CONUS",
+          "latitude": 28.4999994,
+          "longitude": -81.370003
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Philadelphia",
+      "uid": "Philadelphia",
       "metadata": {
-        "city": "Philadelphia",
-        "region": "CONUS",
-        "latitude": 40.0099985,
-        "longitude": -75.1299964
+        "location": {
+          "city": "Philadelphia",
+          "region": "CONUS",
+          "latitude": 40.0099985,
+          "longitude": -75.1299964
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Phoenix",
+      "uid": "Phoenix",
       "metadata": {
-        "city": "Phoenix",
-        "region": "CONUS",
-        "latitude": 33.54000058,
-        "longitude": -112.0699996
+        "location": {
+          "city": "Phoenix",
+          "region": "CONUS",
+          "latitude": 33.54000058,
+          "longitude": -112.0699996
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Pittsburgh",
+      "uid": "Pittsburgh",
       "metadata": {
-        "city": "Pittsburgh",
-        "region": "CONUS",
-        "latitude": 40.3,
-        "longitude": -80.13
+        "location": {
+          "city": "Pittsburgh",
+          "region": "CONUS",
+          "latitude": 40.3,
+          "longitude": -80.13
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Portland",
+      "uid": "Portland",
       "metadata": {
-        "city": "Portland",
-        "region": "CONUS",
-        "latitude": 45.54000072,
-        "longitude": -122.6600035
+        "location": {
+          "city": "Portland",
+          "region": "CONUS",
+          "latitude": 45.54000072,
+          "longitude": -122.6600035
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Providence",
+      "uid": "Providence",
       "metadata": {
-        "city": "Providence",
-        "region": "CONUS",
-        "latitude": 41.82,
-        "longitude": -71.42
+        "location": {
+          "city": "Providence",
+          "region": "CONUS",
+          "latitude": 41.82,
+          "longitude": -71.42
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Raleigh",
+      "uid": "Raleigh",
       "metadata": {
-        "city": "Raleigh",
-        "region": "CONUS",
-        "latitude": 35.8199995,
-        "longitude": -78.6600034
+        "location": {
+          "city": "Raleigh",
+          "region": "CONUS",
+          "latitude": 35.8199995,
+          "longitude": -78.6600034
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Richmond",
+      "uid": "Richmond",
       "metadata": {
-        "city": "Richmond",
-        "region": "CONUS",
-        "latitude": 37.5299986,
-        "longitude": -77.4700015
+        "location": {
+          "city": "Richmond",
+          "region": "CONUS",
+          "latitude": 37.5299986,
+          "longitude": -77.4700015
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Rochester",
+      "uid": "Rochester",
       "metadata": {
-        "city": "Rochester",
-        "region": "CONUS",
-        "latitude": 43.1699985,
-        "longitude": -77.620003
+        "location": {
+          "city": "Rochester",
+          "region": "CONUS",
+          "latitude": 43.1699985,
+          "longitude": -77.620003
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Sacramento",
+      "uid": "Sacramento",
       "metadata": {
-        "city": "Sacramento",
-        "region": "CONUS",
-        "latitude": 38.56999946,
-        "longitude": -121.4700016
+        "location": {
+          "city": "Sacramento",
+          "region": "CONUS",
+          "latitude": 38.56999946,
+          "longitude": -121.4700016
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Salt_Lake_City",
+      "uid": "Salt_Lake_City",
       "metadata": {
-        "city": "Salt_Lake_City",
-        "region": "CONUS",
-        "latitude": 40.77999863,
-        "longitude": -111.9300007
+        "location": {
+          "city": "Salt_Lake_City",
+          "region": "CONUS",
+          "latitude": 40.77999863,
+          "longitude": -111.9300007
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "San_Antonio",
+      "uid": "San_Antonio",
       "metadata": {
-        "city": "San_Antonio",
-        "region": "CONUS",
-        "latitude": 29.459997,
-        "longitude": -98.510002
+        "location": {
+          "city": "San_Antonio",
+          "region": "CONUS",
+          "latitude": 29.459997,
+          "longitude": -98.510002
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "San_Diego",
+      "uid": "San_Diego",
       "metadata": {
-        "city": "San_Diego",
-        "region": "CONUS",
-        "latitude": 32.8100017,
-        "longitude": -117.139999
+        "location": {
+          "city": "San_Diego",
+          "region": "CONUS",
+          "latitude": 32.8100017,
+          "longitude": -117.139999
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "San_Francisco",
+      "uid": "San_Francisco",
       "metadata": {
-        "city": "San_Francisco",
-        "region": "CONUS",
-        "latitude": 37.65999942,
-        "longitude": -122.4199987
+        "location": {
+          "city": "San_Francisco",
+          "region": "CONUS",
+          "latitude": 37.65999942,
+          "longitude": -122.4199987
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "San_Jose",
+      "uid": "San_Jose",
       "metadata": {
-        "city": "San_Jose",
-        "region": "CONUS",
-        "latitude": 37.29999947,
-        "longitude": -121.8499985
+        "location": {
+          "city": "San_Jose",
+          "region": "CONUS",
+          "latitude": 37.29999947,
+          "longitude": -121.8499985
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Santa_Barbara",
+      "uid": "Santa_Barbara",
       "metadata": {
-        "city": "Santa_Barbara",
-        "region": "CONUS",
-        "latitude": 34.43000021,
-        "longitude": -119.7200014
+        "location": {
+          "city": "Santa_Barbara",
+          "region": "CONUS",
+          "latitude": 34.43000021,
+          "longitude": -119.7200014
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Scranton",
+      "uid": "Scranton",
       "metadata": {
-        "city": "Scranton",
-        "region": "CONUS",
-        "latitude": 41.4,
-        "longitude": -75.67
+        "location": {
+          "city": "Scranton",
+          "region": "CONUS",
+          "latitude": 41.4,
+          "longitude": -75.67
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Seattle",
+      "uid": "Seattle",
       "metadata": {
-        "city": "Seattle",
-        "region": "CONUS",
-        "latitude": 47.61999916,
-        "longitude": -122.3499985
+        "location": {
+          "city": "Seattle",
+          "region": "CONUS",
+          "latitude": 47.61999916,
+          "longitude": -122.3499985
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Spokane",
+      "uid": "Spokane",
       "metadata": {
-        "city": "Spokane",
-        "region": "CONUS",
-        "latitude": 47.66999805,
-        "longitude": -117.4100038
+        "location": {
+          "city": "Spokane",
+          "region": "CONUS",
+          "latitude": 47.66999805,
+          "longitude": -117.4100038
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Springfield",
+      "uid": "Springfield",
       "metadata": {
-        "city": "Springfield",
-        "region": "CONUS",
-        "latitude": 39.5,
-        "longitude": -89.4
+        "location": {
+          "city": "Springfield",
+          "region": "CONUS",
+          "latitude": 39.5,
+          "longitude": -89.4
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "St_Louis",
+      "uid": "St_Louis",
       "metadata": {
-        "city": "St_Louis",
-        "region": "CONUS",
-        "latitude": 38.64,
-        "longitude": -90.24
+        "location": {
+          "city": "St_Louis",
+          "region": "CONUS",
+          "latitude": 38.64,
+          "longitude": -90.24
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Syracuse",
+      "uid": "Syracuse",
       "metadata": {
-        "city": "Syracuse",
-        "region": "CONUS",
-        "latitude": 43.040001,
-        "longitude": -76.1399993
+        "location": {
+          "city": "Syracuse",
+          "region": "CONUS",
+          "latitude": 43.040001,
+          "longitude": -76.1399993
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Tallahassee",
+      "uid": "Tallahassee",
       "metadata": {
-        "city": "Tallahassee",
-        "region": "CONUS",
-        "latitude": 30.46,
-        "longitude": -84.28
+        "location": {
+          "city": "Tallahassee",
+          "region": "CONUS",
+          "latitude": 30.46,
+          "longitude": -84.28
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Tampa",
+      "uid": "Tampa",
       "metadata": {
-        "city": "Tampa",
-        "region": "CONUS",
-        "latitude": 27.9599988,
-        "longitude": -82.4800035
+        "location": {
+          "city": "Tampa",
+          "region": "CONUS",
+          "latitude": 27.9599988,
+          "longitude": -82.4800035
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Toledo",
+      "uid": "Toledo",
       "metadata": {
-        "city": "Toledo",
-        "region": "CONUS",
-        "latitude": 41.659997,
-        "longitude": -83.58
+        "location": {
+          "city": "Toledo",
+          "region": "CONUS",
+          "latitude": 41.659997,
+          "longitude": -83.58
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Tucson",
+      "uid": "Tucson",
       "metadata": {
-        "city": "Tucson",
-        "region": "CONUS",
-        "latitude": 32.2,
-        "longitude": -110.89
+        "location": {
+          "city": "Tucson",
+          "region": "CONUS",
+          "latitude": 32.2,
+          "longitude": -110.89
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Tulsa",
+      "uid": "Tulsa",
       "metadata": {
-        "city": "Tulsa",
-        "region": "CONUS",
-        "latitude": 36.13,
-        "longitude": -95.92
+        "location": {
+          "city": "Tulsa",
+          "region": "CONUS",
+          "latitude": 36.13,
+          "longitude": -95.92
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Washington_DC",
+      "uid": "Washington_DC",
       "metadata": {
-        "city": "Washington_DC",
-        "region": "CONUS",
-        "latitude": 38.9100003,
-        "longitude": -77.0199965
+        "location": {
+          "city": "Washington_DC",
+          "region": "CONUS",
+          "latitude": 38.9100003,
+          "longitude": -77.0199965
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "West_Palm_Beach",
+      "uid": "West_Palm_Beach",
       "metadata": {
-        "city": "West_Palm_Beach",
-        "region": "CONUS",
-        "latitude": 26.7499997,
-        "longitude": -80.1299975
+        "location": {
+          "city": "West_Palm_Beach",
+          "region": "CONUS",
+          "latitude": 26.7499997,
+          "longitude": -80.1299975
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "Wilmington",
+      "uid": "Wilmington",
       "metadata": {
-        "city": "Wilmington",
-        "region": "CONUS",
-        "latitude": 39.7400018,
-        "longitude": -75.5299989
+        "location": {
+          "city": "Wilmington",
+          "region": "CONUS",
+          "latitude": 39.7400018,
+          "longitude": -75.5299989
+        }
       },
-      "type": "City"
+      "type": "Transceiver"
     },
     {
-      "id": "fiber (Abilene \u2192 Dallas)",
+      "uid": "fiber (Abilene \u2192 Dallas)",
       "metadata": {
-        "length": 336.950933442355,
+        "length": 336.951,
         "units": "km",
-        "latitude": 32.620000000000005,
-        "longitude": -98.254999
+        "location": {
+          "latitude": 32.620000000000005,
+          "longitude": -98.254999
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Abilene \u2192 El_Paso)",
+      "uid": "fiber (Abilene \u2192 El_Paso)",
       "metadata": {
-        "length": 761.2090776328612,
+        "length": 761.209,
         "units": "km",
-        "latitude": 32.149905000000004,
-        "longitude": -103.089799
+        "location": {
+          "latitude": 32.149905000000004,
+          "longitude": -103.089799
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Albany \u2192 Boston)",
+      "uid": "fiber (Albany \u2192 Boston)",
       "metadata": {
-        "length": 277.0649612527358,
+        "length": 277.065,
         "units": "km",
-        "latitude": 42.504999350000006,
-        "longitude": -72.4099994
+        "location": {
+          "latitude": 42.504999350000006,
+          "longitude": -72.4099994
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Albany \u2192 Syracuse)",
+      "uid": "fiber (Albany \u2192 Syracuse)",
       "metadata": {
-        "length": 234.2212200660136,
+        "length": 234.221,
         "units": "km",
-        "latitude": 42.8549996,
-        "longitude": -74.97000109999999
+        "location": {
+          "latitude": 42.8549996,
+          "longitude": -74.97000109999999
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Albuquerque \u2192 Dallas)",
+      "uid": "fiber (Albuquerque \u2192 Dallas)",
       "metadata": {
-        "length": 1133.4431193705666,
+        "length": 1133.443,
         "units": "km",
-        "latitude": 33.9549885,
-        "longitude": -101.694985
+        "location": {
+          "latitude": 33.9549885,
+          "longitude": -101.694985
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Albuquerque \u2192 Denver)",
+      "uid": "fiber (Albuquerque \u2192 Denver)",
       "metadata": {
-        "length": 647.7371779491205,
+        "length": 647.737,
         "units": "km",
-        "latitude": 37.444989855,
-        "longitude": -105.74498679999999
+        "location": {
+          "latitude": 37.444989855,
+          "longitude": -105.74498679999999
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Albuquerque \u2192 El_Paso)",
+      "uid": "fiber (Albuquerque \u2192 El_Paso)",
       "metadata": {
-        "length": 436.94946681294743,
+        "length": 436.949,
         "units": "km",
-        "latitude": 33.4848935,
-        "longitude": -106.529785
+        "location": {
+          "latitude": 33.4848935,
+          "longitude": -106.529785
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Albuquerque \u2192 Las_Vegas)",
+      "uid": "fiber (Albuquerque \u2192 Las_Vegas)",
       "metadata": {
-        "length": 943.5364332586244,
+        "length": 943.536,
         "units": "km",
-        "latitude": 35.6649835,
-        "longitude": -110.919935
+        "location": {
+          "latitude": 35.6649835,
+          "longitude": -110.919935
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Atlanta \u2192 Birmingham)",
+      "uid": "fiber (Atlanta \u2192 Birmingham)",
       "metadata": {
-        "length": 266.22809475544994,
+        "length": 266.228,
         "units": "km",
-        "latitude": 33.644998349999995,
-        "longitude": -85.6100008
+        "location": {
+          "latitude": 33.644998349999995,
+          "longitude": -85.6100008
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Atlanta \u2192 Charlotte)",
+      "uid": "fiber (Atlanta \u2192 Charlotte)",
       "metadata": {
-        "length": 439.23796438878986,
+        "length": 439.238,
         "units": "km",
-        "latitude": 34.4799991,
-        "longitude": -82.62499935
+        "location": {
+          "latitude": 34.4799991,
+          "longitude": -82.62499935
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Atlanta \u2192 Jacksonville)",
+      "uid": "fiber (Atlanta \u2192 Jacksonville)",
       "metadata": {
-        "length": 554.1108875028704,
+        "length": 554.111,
         "units": "km",
-        "latitude": 32.0450006,
-        "longitude": -83.04000035
+        "location": {
+          "latitude": 32.0450006,
+          "longitude": -83.04000035
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Austin \u2192 Houston)",
+      "uid": "fiber (Austin \u2192 Houston)",
       "metadata": {
-        "length": 282.0488175552249,
+        "length": 282.049,
         "units": "km",
-        "latitude": 30.0399994,
-        "longitude": -96.5700009
+        "location": {
+          "latitude": 30.0399994,
+          "longitude": -96.5700009
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Austin \u2192 San_Antonio)",
+      "uid": "fiber (Austin \u2192 San_Antonio)",
       "metadata": {
-        "length": 143.55250635083038,
+        "length": 143.553,
         "units": "km",
-        "latitude": 29.884997900000002,
-        "longitude": -98.1300019
+        "location": {
+          "latitude": 29.884997900000002,
+          "longitude": -98.1300019
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Baltimore \u2192 Philadelphia)",
+      "uid": "fiber (Baltimore \u2192 Philadelphia)",
       "metadata": {
-        "length": 179.19496513094114,
+        "length": 179.195,
         "units": "km",
-        "latitude": 39.65499885,
-        "longitude": -75.8699986
+        "location": {
+          "latitude": 39.65499885,
+          "longitude": -75.8699986
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Baltimore \u2192 Pittsburgh)",
+      "uid": "fiber (Baltimore \u2192 Pittsburgh)",
       "metadata": {
-        "length": 384.81875394461014,
+        "length": 384.819,
         "units": "km",
-        "latitude": 39.7999996,
-        "longitude": -78.3700004
+        "location": {
+          "latitude": 39.7999996,
+          "longitude": -78.3700004
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Baltimore \u2192 Washington_DC)",
+      "uid": "fiber (Baltimore \u2192 Washington_DC)",
       "metadata": {
-        "length": 67.17947405391949,
+        "length": 67.179,
         "units": "km",
-        "latitude": 39.104999750000005,
-        "longitude": -76.81499865
+        "location": {
+          "latitude": 39.104999750000005,
+          "longitude": -76.81499865
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Baton_Rouge \u2192 Houston)",
+      "uid": "fiber (Baton_Rouge \u2192 Houston)",
       "metadata": {
-        "length": 500.1517957127779,
+        "length": 500.152,
         "units": "km",
-        "latitude": 30.1099998,
-        "longitude": -93.2599984
+        "location": {
+          "latitude": 30.1099998,
+          "longitude": -93.2599984
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Baton_Rouge \u2192 New_Orleans)",
+      "uid": "fiber (Baton_Rouge \u2192 New_Orleans)",
       "metadata": {
-        "length": 147.35040576584402,
+        "length": 147.35,
         "units": "km",
-        "latitude": 30.259999800000003,
-        "longitude": -90.52999840000001
+        "location": {
+          "latitude": 30.259999800000003,
+          "longitude": -90.52999840000001
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Billings \u2192 Bismarck)",
+      "uid": "fiber (Billings \u2192 Bismarck)",
       "metadata": {
-        "length": 729.0170987051496,
+        "length": 729.017,
         "units": "km",
-        "latitude": 46.30000129,
-        "longitude": -104.65499855
+        "location": {
+          "latitude": 46.30000129,
+          "longitude": -104.65499855
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Billings \u2192 Denver)",
+      "uid": "fiber (Billings \u2192 Denver)",
       "metadata": {
-        "length": 880.0417120055628,
+        "length": 880.042,
         "units": "km",
-        "latitude": 42.780001874999996,
-        "longitude": -106.7050021
+        "location": {
+          "latitude": 42.780001874999996,
+          "longitude": -106.7050021
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Billings \u2192 Spokane)",
+      "uid": "fiber (Billings \u2192 Spokane)",
       "metadata": {
-        "length": 848.8579798603198,
+        "length": 848.858,
         "units": "km",
-        "latitude": 46.729999545,
-        "longitude": -112.9750022
+        "location": {
+          "latitude": 46.729999545,
+          "longitude": -112.9750022
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Birmingham \u2192 Nashville)",
+      "uid": "fiber (Birmingham \u2192 Nashville)",
       "metadata": {
-        "length": 352.3829079978737,
+        "length": 352.383,
         "units": "km",
-        "latitude": 34.84999845,
-        "longitude": -86.7900009
+        "location": {
+          "latitude": 34.84999845,
+          "longitude": -86.7900009
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Birmingham \u2192 New_Orleans)",
+      "uid": "fiber (Birmingham \u2192 New_Orleans)",
       "metadata": {
-        "length": 582.4644303930057,
+        "length": 582.464,
         "units": "km",
-        "latitude": 31.79999925,
-        "longitude": -88.36500145
+        "location": {
+          "latitude": 31.79999925,
+          "longitude": -88.36500145
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Bismarck \u2192 Minneapolis)",
+      "uid": "fiber (Bismarck \u2192 Minneapolis)",
       "metadata": {
-        "length": 738.940164214936,
+        "length": 738.94,
         "units": "km",
-        "latitude": 45.88500017,
-        "longitude": -97.0199969
+        "location": {
+          "latitude": 45.88500017,
+          "longitude": -97.0199969
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Boston \u2192 Providence)",
+      "uid": "fiber (Boston \u2192 Providence)",
       "metadata": {
-        "length": 79.92293576874546,
+        "length": 79.923,
         "units": "km",
-        "latitude": 42.08000025,
-        "longitude": -71.21999794999999
+        "location": {
+          "latitude": 42.08000025,
+          "longitude": -71.21999794999999
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Buffalo \u2192 Cleveland)",
+      "uid": "fiber (Buffalo \u2192 Cleveland)",
       "metadata": {
-        "length": 336.4337393351862,
+        "length": 336.434,
         "units": "km",
-        "latitude": 42.184999250000004,
-        "longitude": -80.2700012
+        "location": {
+          "latitude": 42.184999250000004,
+          "longitude": -80.2700012
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Buffalo \u2192 Rochester)",
+      "uid": "fiber (Buffalo \u2192 Rochester)",
       "metadata": {
-        "length": 126.62638243870728,
+        "length": 126.626,
         "units": "km",
-        "latitude": 43.029998899999995,
-        "longitude": -78.240002
+        "location": {
+          "latitude": 43.029998899999995,
+          "longitude": -78.240002
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Charleston \u2192 Jacksonville)",
+      "uid": "fiber (Charleston \u2192 Jacksonville)",
       "metadata": {
-        "length": 379.31110595847014,
+        "length": 379.311,
         "units": "km",
-        "latitude": 31.560001900000003,
-        "longitude": -80.82500010000001
+        "location": {
+          "latitude": 31.560001900000003,
+          "longitude": -80.82500010000001
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Charleston \u2192 Raleigh)",
+      "uid": "fiber (Charleston \u2192 Raleigh)",
       "metadata": {
-        "length": 430.1818131120458,
+        "length": 430.182,
         "units": "km",
-        "latitude": 34.30500015,
-        "longitude": -79.3250008
+        "location": {
+          "latitude": 34.30500015,
+          "longitude": -79.3250008
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Charlotte \u2192 Greensboro)",
+      "uid": "fiber (Charlotte \u2192 Greensboro)",
       "metadata": {
-        "length": 159.88344694071537,
+        "length": 159.883,
         "units": "km",
-        "latitude": 35.6400012,
-        "longitude": -80.3300009
+        "location": {
+          "latitude": 35.6400012,
+          "longitude": -80.3300009
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Chicago \u2192 Detroit)",
+      "uid": "fiber (Chicago \u2192 Detroit)",
       "metadata": {
-        "length": 459.14526862004817,
+        "length": 459.145,
         "units": "km",
-        "latitude": 42.109999450000004,
-        "longitude": -85.3900004
+        "location": {
+          "latitude": 42.109999450000004,
+          "longitude": -85.3900004
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Chicago \u2192 Milwaukee)",
+      "uid": "fiber (Chicago \u2192 Milwaukee)",
       "metadata": {
-        "length": 165.32648054217967,
+        "length": 165.326,
         "units": "km",
-        "latitude": 42.44999915,
-        "longitude": -87.82500075
+        "location": {
+          "latitude": 42.44999915,
+          "longitude": -87.82500075
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Chicago \u2192 Springfield)",
+      "uid": "fiber (Chicago \u2192 Springfield)",
       "metadata": {
-        "length": 357.57300729462565,
+        "length": 357.573,
         "units": "km",
-        "latitude": 40.6699985,
-        "longitude": -88.5400005
+        "location": {
+          "latitude": 40.6699985,
+          "longitude": -88.5400005
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Cincinnati \u2192 Columbus)",
+      "uid": "fiber (Cincinnati \u2192 Columbus)",
       "metadata": {
-        "length": 193.2153767474445,
+        "length": 193.215,
         "units": "km",
-        "latitude": 39.56500054999999,
-        "longitude": -83.74999985
+        "location": {
+          "latitude": 39.56500054999999,
+          "longitude": -83.74999985
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Cincinnati \u2192 Louisville)",
+      "uid": "fiber (Cincinnati \u2192 Louisville)",
       "metadata": {
-        "length": 177.49258156502208,
+        "length": 177.493,
         "units": "km",
-        "latitude": 38.68,
-        "longitude": -85.12500030000001
+        "location": {
+          "latitude": 38.68,
+          "longitude": -85.12500030000001
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Cincinnati \u2192 Washington_DC)",
+      "uid": "fiber (Cincinnati \u2192 Washington_DC)",
       "metadata": {
-        "length": 777.0507391959417,
+        "length": 777.051,
         "units": "km",
-        "latitude": 39.024999699999995,
-        "longitude": -80.76499960000001
+        "location": {
+          "latitude": 39.024999699999995,
+          "longitude": -80.76499960000001
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Cleveland \u2192 Columbus)",
+      "uid": "fiber (Cleveland \u2192 Columbus)",
       "metadata": {
-        "length": 238.96305716464266,
+        "length": 238.963,
         "units": "km",
-        "latitude": 40.7350006,
-        "longitude": -82.3349992
+        "location": {
+          "latitude": 40.7350006,
+          "longitude": -82.3349992
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Cleveland \u2192 Toledo)",
+      "uid": "fiber (Cleveland \u2192 Toledo)",
       "metadata": {
-        "length": 191.24362944993825,
+        "length": 191.244,
         "units": "km",
-        "latitude": 41.5699981,
-        "longitude": -82.6300007
+        "location": {
+          "latitude": 41.5699981,
+          "longitude": -82.6300007
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Columbus \u2192 Pittsburgh)",
+      "uid": "fiber (Columbus \u2192 Pittsburgh)",
       "metadata": {
-        "length": 294.7135668849075,
+        "length": 294.714,
         "units": "km",
-        "latitude": 40.14500099999999,
-        "longitude": -81.5599985
+        "location": {
+          "latitude": 40.14500099999999,
+          "longitude": -81.5599985
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Dallas \u2192 Houston)",
+      "uid": "fiber (Dallas \u2192 Houston)",
       "metadata": {
-        "length": 432.7312490876279,
+        "length": 432.731,
         "units": "km",
-        "latitude": 31.28,
-        "longitude": -96.08
+        "location": {
+          "latitude": 31.28,
+          "longitude": -96.08
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Dallas \u2192 Little_Rock)",
+      "uid": "fiber (Dallas \u2192 Little_Rock)",
       "metadata": {
-        "length": 553.9582807348323,
+        "length": 553.958,
         "units": "km",
-        "latitude": 33.754999999999995,
-        "longitude": -94.56
+        "location": {
+          "latitude": 33.754999999999995,
+          "longitude": -94.56
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Dallas \u2192 Oklahoma_City)",
+      "uid": "fiber (Dallas \u2192 Oklahoma_City)",
       "metadata": {
-        "length": 366.936135078018,
+        "length": 366.936,
         "units": "km",
-        "latitude": 34.13000075,
-        "longitude": -97.14000139999999
+        "location": {
+          "latitude": 34.13000075,
+          "longitude": -97.14000139999999
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Denver \u2192 Omaha)",
+      "uid": "fiber (Denver \u2192 Omaha)",
       "metadata": {
-        "length": 920.3373587581345,
+        "length": 920.337,
         "units": "km",
-        "latitude": 40.515000555,
-        "longitude": -100.4400029
+        "location": {
+          "latitude": 40.515000555,
+          "longitude": -100.4400029
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Denver \u2192 Salt_Lake_City)",
+      "uid": "fiber (Denver \u2192 Salt_Lake_City)",
       "metadata": {
-        "length": 731.2717231491926,
+        "length": 731.272,
         "units": "km",
-        "latitude": 40.27500067,
-        "longitude": -108.40000215
+        "location": {
+          "latitude": 40.27500067,
+          "longitude": -108.40000215
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Detroit \u2192 Toledo)",
+      "uid": "fiber (Detroit \u2192 Toledo)",
       "metadata": {
-        "length": 107.24369565949208,
+        "length": 107.244,
         "units": "km",
-        "latitude": 42.01999945,
-        "longitude": -83.33999990000001
+        "location": {
+          "latitude": 42.01999945,
+          "longitude": -83.33999990000001
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (El_Paso \u2192 San_Antonio)",
+      "uid": "fiber (El_Paso \u2192 San_Antonio)",
       "metadata": {
-        "length": 964.4531908086437,
+        "length": 964.453,
         "units": "km",
-        "latitude": 30.654903500000003,
-        "longitude": -102.474801
+        "location": {
+          "latitude": 30.654903500000003,
+          "longitude": -102.474801
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (El_Paso \u2192 Tucson)",
+      "uid": "fiber (El_Paso \u2192 Tucson)",
       "metadata": {
-        "length": 505.74853067973146,
+        "length": 505.749,
         "units": "km",
-        "latitude": 32.024905000000004,
-        "longitude": -108.6648
+        "location": {
+          "latitude": 32.024905000000004,
+          "longitude": -108.6648
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Fresno \u2192 Las_Vegas)",
+      "uid": "fiber (Fresno \u2192 Las_Vegas)",
       "metadata": {
-        "length": 496.1990406606754,
+        "length": 496.199,
         "units": "km",
-        "latitude": 36.494995349999996,
-        "longitude": -117.504951
+        "location": {
+          "latitude": 36.494995349999996,
+          "longitude": -117.504951
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Fresno \u2192 Los_Angeles)",
+      "uid": "fiber (Fresno \u2192 Los_Angeles)",
       "metadata": {
-        "length": 386.6707816777065,
+        "length": 386.671,
         "units": "km",
-        "latitude": 35.44500085,
-        "longitude": -119.100002
+        "location": {
+          "latitude": 35.44500085,
+          "longitude": -119.100002
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Fresno \u2192 Oakland)",
+      "uid": "fiber (Fresno \u2192 Oakland)",
       "metadata": {
-        "length": 289.94106181541014,
+        "length": 289.941,
         "units": "km",
-        "latitude": 37.275000705,
-        "longitude": -121.0050018
+        "location": {
+          "latitude": 37.275000705,
+          "longitude": -121.0050018
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Greensboro \u2192 Louisville)",
+      "uid": "fiber (Greensboro \u2192 Louisville)",
       "metadata": {
-        "length": 690.4091793568647,
+        "length": 690.409,
         "units": "km",
-        "latitude": 37.15000165,
-        "longitude": -82.78499985
+        "location": {
+          "latitude": 37.15000165,
+          "longitude": -82.78499985
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Greensboro \u2192 Raleigh)",
+      "uid": "fiber (Greensboro \u2192 Raleigh)",
       "metadata": {
-        "length": 131.09721015274965,
+        "length": 131.097,
         "units": "km",
-        "latitude": 35.95000095,
-        "longitude": -79.24500259999999
+        "location": {
+          "latitude": 35.95000095,
+          "longitude": -79.24500259999999
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Greensboro \u2192 Richmond)",
+      "uid": "fiber (Greensboro \u2192 Richmond)",
       "metadata": {
-        "length": 317.89654686597964,
+        "length": 317.897,
         "units": "km",
-        "latitude": 36.8050005,
-        "longitude": -78.65000165000001
+        "location": {
+          "latitude": 36.8050005,
+          "longitude": -78.65000165000001
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Hartford \u2192 Long_Island)",
+      "uid": "fiber (Hartford \u2192 Long_Island)",
       "metadata": {
-        "length": 186.27076215771865,
+        "length": 186.271,
         "units": "km",
-        "latitude": 41.18000015,
-        "longitude": -73.1749998
+        "location": {
+          "latitude": 41.18000015,
+          "longitude": -73.1749998
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Hartford \u2192 Providence)",
+      "uid": "fiber (Hartford \u2192 Providence)",
       "metadata": {
-        "length": 125.5599482424726,
+        "length": 125.56,
         "units": "km",
-        "latitude": 41.795000200000004,
-        "longitude": -72.05000015
+        "location": {
+          "latitude": 41.795000200000004,
+          "longitude": -72.05000015
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Jacksonville \u2192 Orlando)",
+      "uid": "fiber (Jacksonville \u2192 Orlando)",
       "metadata": {
-        "length": 246.57703478271543,
+        "length": 246.577,
         "units": "km",
-        "latitude": 29.4150012,
-        "longitude": -81.51500250000001
+        "location": {
+          "latitude": 29.4150012,
+          "longitude": -81.51500250000001
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Kansas_City \u2192 Omaha)",
+      "uid": "fiber (Kansas_City \u2192 Omaha)",
       "metadata": {
-        "length": 314.03220579234693,
+        "length": 314.032,
         "units": "km",
-        "latitude": 40.1899988,
-        "longitude": -95.370003
+        "location": {
+          "latitude": 40.1899988,
+          "longitude": -95.370003
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Kansas_City \u2192 St_Louis)",
+      "uid": "fiber (Kansas_City \u2192 St_Louis)",
       "metadata": {
-        "length": 470.8657976302973,
+        "length": 470.866,
         "units": "km",
-        "latitude": 38.879999600000005,
-        "longitude": -92.4850019
+        "location": {
+          "latitude": 38.879999600000005,
+          "longitude": -92.4850019
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Kansas_City \u2192 Tulsa)",
+      "uid": "fiber (Kansas_City \u2192 Tulsa)",
       "metadata": {
-        "length": 418.43838443924415,
+        "length": 418.438,
         "units": "km",
-        "latitude": 37.6249996,
-        "longitude": -95.3250019
+        "location": {
+          "latitude": 37.6249996,
+          "longitude": -95.3250019
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Las_Vegas \u2192 Phoenix)",
+      "uid": "fiber (Las_Vegas \u2192 Phoenix)",
       "metadata": {
-        "length": 495.90032385130826,
+        "length": 495.9,
         "units": "km",
-        "latitude": 34.87499529,
-        "longitude": -113.6449498
+        "location": {
+          "latitude": 34.87499529,
+          "longitude": -113.6449498
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Las_Vegas \u2192 Salt_Lake_City)",
+      "uid": "fiber (Las_Vegas \u2192 Salt_Lake_City)",
       "metadata": {
-        "length": 700.0051285708123,
+        "length": 700.005,
         "units": "km",
-        "latitude": 38.494994315,
-        "longitude": -113.57495035
+        "location": {
+          "latitude": 38.494994315,
+          "longitude": -113.57495035
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Little_Rock \u2192 Memphis)",
+      "uid": "fiber (Little_Rock \u2192 Memphis)",
       "metadata": {
-        "length": 261.34334712478204,
+        "length": 261.343,
         "units": "km",
-        "latitude": 34.9150005,
-        "longitude": -91.180002
+        "location": {
+          "latitude": 34.9150005,
+          "longitude": -91.180002
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Long_Island \u2192 New_York)",
+      "uid": "fiber (Long_Island \u2192 New_York)",
       "metadata": {
-        "length": 29.361522825216678,
+        "length": 29.362,
         "units": "km",
-        "latitude": 40.629999100000006,
-        "longitude": -73.80500140000001
+        "location": {
+          "latitude": 40.629999100000006,
+          "longitude": -73.80500140000001
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Los_Angeles \u2192 San_Diego)",
+      "uid": "fiber (Los_Angeles \u2192 San_Diego)",
       "metadata": {
-        "length": 223.84450861005277,
+        "length": 223.845,
         "units": "km",
-        "latitude": 33.46000135,
-        "longitude": -117.7750005
+        "location": {
+          "latitude": 33.46000135,
+          "longitude": -117.7750005
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Los_Angeles \u2192 Santa_Barbara)",
+      "uid": "fiber (Los_Angeles \u2192 Santa_Barbara)",
       "metadata": {
-        "length": 150.67661338412543,
+        "length": 150.677,
         "units": "km",
-        "latitude": 34.270000605,
-        "longitude": -119.06500170000001
+        "location": {
+          "latitude": 34.270000605,
+          "longitude": -119.06500170000001
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Louisville \u2192 Nashville)",
+      "uid": "fiber (Louisville \u2192 Nashville)",
       "metadata": {
-        "length": 295.1182141824404,
+        "length": 295.118,
         "units": "km",
-        "latitude": 37.19499965,
-        "longitude": -86.2599984
+        "location": {
+          "latitude": 37.19499965,
+          "longitude": -86.2599984
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Louisville \u2192 St_Louis)",
+      "uid": "fiber (Louisville \u2192 St_Louis)",
       "metadata": {
-        "length": 473.8016755339763,
+        "length": 473.802,
         "units": "km",
-        "latitude": 38.43000045,
-        "longitude": -87.98999895
+        "location": {
+          "latitude": 38.43000045,
+          "longitude": -87.98999895
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Memphis \u2192 Nashville)",
+      "uid": "fiber (Memphis \u2192 Nashville)",
       "metadata": {
-        "length": 377.8363294188946,
+        "length": 377.836,
         "units": "km",
-        "latitude": 35.6399997,
-        "longitude": -88.39500145
+        "location": {
+          "latitude": 35.6399997,
+          "longitude": -88.39500145
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Miami \u2192 Tampa)",
+      "uid": "fiber (Miami \u2192 Tampa)",
       "metadata": {
-        "length": 397.11491068285886,
+        "length": 397.115,
         "units": "km",
-        "latitude": 26.8699997,
-        "longitude": -81.34500159999999
+        "location": {
+          "latitude": 26.8699997,
+          "longitude": -81.34500159999999
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Miami \u2192 West_Palm_Beach)",
+      "uid": "fiber (Miami \u2192 West_Palm_Beach)",
       "metadata": {
-        "length": 129.8250315009734,
+        "length": 129.825,
         "units": "km",
-        "latitude": 26.26500015,
-        "longitude": -80.1699986
+        "location": {
+          "latitude": 26.26500015,
+          "longitude": -80.1699986
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Milwaukee \u2192 Minneapolis)",
+      "uid": "fiber (Milwaukee \u2192 Minneapolis)",
       "metadata": {
-        "length": 568.3338474875162,
+        "length": 568.334,
         "units": "km",
-        "latitude": 44.01000005,
-        "longitude": -90.6199989
+        "location": {
+          "latitude": 44.01000005,
+          "longitude": -90.6199989
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Minneapolis \u2192 Omaha)",
+      "uid": "fiber (Minneapolis \u2192 Omaha)",
       "metadata": {
-        "length": 561.3270039343047,
+        "length": 561.327,
         "units": "km",
-        "latitude": 43.1099986,
-        "longitude": -94.63999975
+        "location": {
+          "latitude": 43.1099986,
+          "longitude": -94.63999975
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (New_Orleans \u2192 Tallahassee)",
+      "uid": "fiber (New_Orleans \u2192 Tallahassee)",
       "metadata": {
-        "length": 653.3593336046304,
+        "length": 653.359,
         "units": "km",
-        "latitude": 30.265,
-        "longitude": -87.105
+        "location": {
+          "latitude": 30.265,
+          "longitude": -87.105
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (New_York \u2192 Newark)",
+      "uid": "fiber (New_York \u2192 Newark)",
       "metadata": {
-        "length": 24.213534771953015,
+        "length": 24.214,
         "units": "km",
-        "latitude": 40.69499975,
-        "longitude": -74.05500105
+        "location": {
+          "latitude": 40.69499975,
+          "longitude": -74.05500105
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (New_York \u2192 Scranton)",
+      "uid": "fiber (New_York \u2192 Scranton)",
       "metadata": {
-        "length": 199.57508735810458,
+        "length": 199.575,
         "units": "km",
-        "latitude": 41.034999150000004,
-        "longitude": -74.80500175
+        "location": {
+          "latitude": 41.034999150000004,
+          "longitude": -74.80500175
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (New_York \u2192 Wilmington)",
+      "uid": "fiber (New_York \u2192 Wilmington)",
       "metadata": {
-        "length": 204.1516726069126,
+        "length": 204.152,
         "units": "km",
-        "latitude": 40.20500005,
-        "longitude": -74.7350012
+        "location": {
+          "latitude": 40.20500005,
+          "longitude": -74.7350012
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Newark \u2192 Philadelphia)",
+      "uid": "fiber (Newark \u2192 Philadelphia)",
       "metadata": {
-        "length": 136.06045210990413,
+        "length": 136.06,
         "units": "km",
-        "latitude": 40.364999850000004,
-        "longitude": -74.6499975
+        "location": {
+          "latitude": 40.364999850000004,
+          "longitude": -74.6499975
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Norfolk \u2192 Raleigh)",
+      "uid": "fiber (Norfolk \u2192 Raleigh)",
       "metadata": {
-        "length": 298.6558234036971,
+        "length": 298.656,
         "units": "km",
-        "latitude": 36.36999885,
-        "longitude": -77.4500006
+        "location": {
+          "latitude": 36.36999885,
+          "longitude": -77.4500006
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Norfolk \u2192 Wilmington)",
+      "uid": "fiber (Norfolk \u2192 Wilmington)",
       "metadata": {
-        "length": 383.66905343266836,
+        "length": 383.669,
         "units": "km",
-        "latitude": 38.33,
-        "longitude": -75.88499834999999
+        "location": {
+          "latitude": 38.33,
+          "longitude": -75.88499834999999
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Oakland \u2192 Sacramento)",
+      "uid": "fiber (Oakland \u2192 Sacramento)",
       "metadata": {
-        "length": 132.64902173675702,
+        "length": 132.649,
         "units": "km",
-        "latitude": 38.170000085,
-        "longitude": -121.8450016
+        "location": {
+          "latitude": 38.170000085,
+          "longitude": -121.8450016
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Oakland \u2192 Salt_Lake_City)",
+      "uid": "fiber (Oakland \u2192 Salt_Lake_City)",
       "metadata": {
-        "length": 1135.717402335523,
+        "length": 1135.717,
         "units": "km",
-        "latitude": 39.27499967,
-        "longitude": -117.07500114999999
+        "location": {
+          "latitude": 39.27499967,
+          "longitude": -117.07500114999999
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Oakland \u2192 San_Francisco)",
+      "uid": "fiber (Oakland \u2192 San_Francisco)",
       "metadata": {
-        "length": 25.719917162524546,
+        "length": 25.72,
         "units": "km",
-        "latitude": 37.715000065,
-        "longitude": -122.32000015
+        "location": {
+          "latitude": 37.715000065,
+          "longitude": -122.32000015
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Oklahoma_City \u2192 Tulsa)",
+      "uid": "fiber (Oklahoma_City \u2192 Tulsa)",
       "metadata": {
-        "length": 193.3587768184288,
+        "length": 193.359,
         "units": "km",
-        "latitude": 35.80000075,
-        "longitude": -96.7150014
+        "location": {
+          "latitude": 35.80000075,
+          "longitude": -96.7150014
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Orlando \u2192 West_Palm_Beach)",
+      "uid": "fiber (Orlando \u2192 West_Palm_Beach)",
       "metadata": {
-        "length": 275.7928547669195,
+        "length": 275.793,
         "units": "km",
-        "latitude": 27.62499955,
-        "longitude": -80.75000025
+        "location": {
+          "latitude": 27.62499955,
+          "longitude": -80.75000025
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Philadelphia \u2192 Scranton)",
+      "uid": "fiber (Philadelphia \u2192 Scranton)",
       "metadata": {
-        "length": 193.40899038575066,
+        "length": 193.409,
         "units": "km",
-        "latitude": 40.70499925,
-        "longitude": -75.3999982
+        "location": {
+          "latitude": 40.70499925,
+          "longitude": -75.3999982
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Phoenix \u2192 San_Diego)",
+      "uid": "fiber (Phoenix \u2192 San_Diego)",
       "metadata": {
-        "length": 574.6750815615965,
+        "length": 574.675,
         "units": "km",
-        "latitude": 33.17500114,
-        "longitude": -114.6049993
+        "location": {
+          "latitude": 33.17500114,
+          "longitude": -114.6049993
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Phoenix \u2192 Tucson)",
+      "uid": "fiber (Phoenix \u2192 Tucson)",
       "metadata": {
-        "length": 222.4582756108501,
+        "length": 222.458,
         "units": "km",
-        "latitude": 32.87000029,
-        "longitude": -111.4799998
+        "location": {
+          "latitude": 32.87000029,
+          "longitude": -111.4799998
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Pittsburgh \u2192 Scranton)",
+      "uid": "fiber (Pittsburgh \u2192 Scranton)",
       "metadata": {
-        "length": 473.5653806283656,
+        "length": 473.565,
         "units": "km",
-        "latitude": 40.849999999999994,
-        "longitude": -77.9
+        "location": {
+          "latitude": 40.849999999999994,
+          "longitude": -77.9
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Portland \u2192 Sacramento)",
+      "uid": "fiber (Portland \u2192 Sacramento)",
       "metadata": {
-        "length": 937.7404055592439,
+        "length": 937.74,
         "units": "km",
-        "latitude": 42.05500009,
-        "longitude": -122.06500255
+        "location": {
+          "latitude": 42.05500009,
+          "longitude": -122.06500255
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Portland \u2192 Salt_Lake_City)",
+      "uid": "fiber (Portland \u2192 Salt_Lake_City)",
       "metadata": {
-        "length": 1221.1892893718134,
+        "length": 1221.189,
         "units": "km",
-        "latitude": 43.159999675,
-        "longitude": -117.2950021
+        "location": {
+          "latitude": 43.159999675,
+          "longitude": -117.2950021
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Portland \u2192 Seattle)",
+      "uid": "fiber (Portland \u2192 Seattle)",
       "metadata": {
-        "length": 279.08173105798045,
+        "length": 279.082,
         "units": "km",
-        "latitude": 46.57999994,
-        "longitude": -122.505001
+        "location": {
+          "latitude": 46.57999994,
+          "longitude": -122.505001
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Richmond \u2192 Washington_DC)",
+      "uid": "fiber (Richmond \u2192 Washington_DC)",
       "metadata": {
-        "length": 190.14466852785256,
+        "length": 190.145,
         "units": "km",
-        "latitude": 38.21999945,
-        "longitude": -77.244999
+        "location": {
+          "latitude": 38.21999945,
+          "longitude": -77.244999
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Rochester \u2192 Syracuse)",
+      "uid": "fiber (Rochester \u2192 Syracuse)",
       "metadata": {
-        "length": 145.26592096779268,
+        "length": 145.266,
         "units": "km",
-        "latitude": 43.10499975,
-        "longitude": -76.88000115
+        "location": {
+          "latitude": 43.10499975,
+          "longitude": -76.88000115
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (San_Francisco \u2192 San_Jose)",
+      "uid": "fiber (San_Francisco \u2192 San_Jose)",
       "metadata": {
-        "length": 77.16267231374907,
+        "length": 77.163,
         "units": "km",
-        "latitude": 37.479999445000004,
-        "longitude": -122.13499859999999
+        "location": {
+          "latitude": 37.479999445000004,
+          "longitude": -122.13499859999999
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (San_Jose \u2192 Santa_Barbara)",
+      "uid": "fiber (San_Jose \u2192 Santa_Barbara)",
       "metadata": {
-        "length": 446.98987083411544,
+        "length": 446.99,
         "units": "km",
-        "latitude": 35.86499984,
-        "longitude": -120.78499995
+        "location": {
+          "latitude": 35.86499984,
+          "longitude": -120.78499995
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Scranton \u2192 Syracuse)",
+      "uid": "fiber (Scranton \u2192 Syracuse)",
       "metadata": {
-        "length": 223.7750822342436,
+        "length": 223.775,
         "units": "km",
-        "latitude": 42.2200005,
-        "longitude": -75.90499965000001
+        "location": {
+          "latitude": 42.2200005,
+          "longitude": -75.90499965000001
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Seattle \u2192 Spokane)",
+      "uid": "fiber (Seattle \u2192 Spokane)",
       "metadata": {
-        "length": 444.2069519329237,
+        "length": 444.207,
         "units": "km",
-        "latitude": 47.644998605,
-        "longitude": -119.88000115
+        "location": {
+          "latitude": 47.644998605,
+          "longitude": -119.88000115
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Springfield \u2192 St_Louis)",
+      "uid": "fiber (Springfield \u2192 St_Louis)",
       "metadata": {
-        "length": 144.05996844998273,
+        "length": 144.06,
         "units": "km",
-        "latitude": 39.07,
-        "longitude": -89.82
+        "location": {
+          "latitude": 39.07,
+          "longitude": -89.82
+        }
       },
       "type": "Fiber"
     },
     {
-      "id": "fiber (Tallahassee \u2192 Tampa)",
+      "uid": "fiber (Tallahassee \u2192 Tampa)",
       "metadata": {
-        "length": 394.0942686484811,
+        "length": 394.094,
         "units": "km",
-        "latitude": 29.2099994,
-        "longitude": -83.38000174999999
+        "location": {
+          "latitude": 29.2099994,
+          "longitude": -83.38000174999999
+        }
       },
       "type": "Fiber"
     }
@@ -1747,792 +2095,1584 @@
       "to_node": "fiber (Abilene \u2192 Dallas)"
     },
     {
+      "from_node": "fiber (Abilene \u2192 Dallas)",
+      "to_node": "Abilene"
+    },
+    {
       "from_node": "Abilene",
       "to_node": "fiber (Abilene \u2192 El_Paso)"
+    },
+    {
+      "from_node": "fiber (Abilene \u2192 El_Paso)",
+      "to_node": "Abilene"
     },
     {
       "from_node": "Albany",
       "to_node": "fiber (Albany \u2192 Boston)"
     },
     {
+      "from_node": "fiber (Albany \u2192 Boston)",
+      "to_node": "Albany"
+    },
+    {
       "from_node": "Albany",
       "to_node": "fiber (Albany \u2192 Syracuse)"
+    },
+    {
+      "from_node": "fiber (Albany \u2192 Syracuse)",
+      "to_node": "Albany"
     },
     {
       "from_node": "Albuquerque",
       "to_node": "fiber (Albuquerque \u2192 Dallas)"
     },
     {
+      "from_node": "fiber (Albuquerque \u2192 Dallas)",
+      "to_node": "Albuquerque"
+    },
+    {
       "from_node": "Albuquerque",
       "to_node": "fiber (Albuquerque \u2192 Denver)"
+    },
+    {
+      "from_node": "fiber (Albuquerque \u2192 Denver)",
+      "to_node": "Albuquerque"
     },
     {
       "from_node": "Albuquerque",
       "to_node": "fiber (Albuquerque \u2192 El_Paso)"
     },
     {
+      "from_node": "fiber (Albuquerque \u2192 El_Paso)",
+      "to_node": "Albuquerque"
+    },
+    {
       "from_node": "Albuquerque",
       "to_node": "fiber (Albuquerque \u2192 Las_Vegas)"
+    },
+    {
+      "from_node": "fiber (Albuquerque \u2192 Las_Vegas)",
+      "to_node": "Albuquerque"
     },
     {
       "from_node": "Atlanta",
       "to_node": "fiber (Atlanta \u2192 Birmingham)"
     },
     {
+      "from_node": "fiber (Atlanta \u2192 Birmingham)",
+      "to_node": "Atlanta"
+    },
+    {
       "from_node": "Atlanta",
       "to_node": "fiber (Atlanta \u2192 Charlotte)"
+    },
+    {
+      "from_node": "fiber (Atlanta \u2192 Charlotte)",
+      "to_node": "Atlanta"
     },
     {
       "from_node": "Atlanta",
       "to_node": "fiber (Atlanta \u2192 Jacksonville)"
     },
     {
+      "from_node": "fiber (Atlanta \u2192 Jacksonville)",
+      "to_node": "Atlanta"
+    },
+    {
       "from_node": "Austin",
       "to_node": "fiber (Austin \u2192 Houston)"
+    },
+    {
+      "from_node": "fiber (Austin \u2192 Houston)",
+      "to_node": "Austin"
     },
     {
       "from_node": "Austin",
       "to_node": "fiber (Austin \u2192 San_Antonio)"
     },
     {
+      "from_node": "fiber (Austin \u2192 San_Antonio)",
+      "to_node": "Austin"
+    },
+    {
       "from_node": "Baltimore",
       "to_node": "fiber (Baltimore \u2192 Philadelphia)"
+    },
+    {
+      "from_node": "fiber (Baltimore \u2192 Philadelphia)",
+      "to_node": "Baltimore"
     },
     {
       "from_node": "Baltimore",
       "to_node": "fiber (Baltimore \u2192 Pittsburgh)"
     },
     {
+      "from_node": "fiber (Baltimore \u2192 Pittsburgh)",
+      "to_node": "Baltimore"
+    },
+    {
       "from_node": "Baltimore",
       "to_node": "fiber (Baltimore \u2192 Washington_DC)"
+    },
+    {
+      "from_node": "fiber (Baltimore \u2192 Washington_DC)",
+      "to_node": "Baltimore"
     },
     {
       "from_node": "Baton_Rouge",
       "to_node": "fiber (Baton_Rouge \u2192 Houston)"
     },
     {
+      "from_node": "fiber (Baton_Rouge \u2192 Houston)",
+      "to_node": "Baton_Rouge"
+    },
+    {
       "from_node": "Baton_Rouge",
       "to_node": "fiber (Baton_Rouge \u2192 New_Orleans)"
+    },
+    {
+      "from_node": "fiber (Baton_Rouge \u2192 New_Orleans)",
+      "to_node": "Baton_Rouge"
     },
     {
       "from_node": "Billings",
       "to_node": "fiber (Billings \u2192 Bismarck)"
     },
     {
+      "from_node": "fiber (Billings \u2192 Bismarck)",
+      "to_node": "Billings"
+    },
+    {
       "from_node": "Billings",
       "to_node": "fiber (Billings \u2192 Denver)"
+    },
+    {
+      "from_node": "fiber (Billings \u2192 Denver)",
+      "to_node": "Billings"
     },
     {
       "from_node": "Billings",
       "to_node": "fiber (Billings \u2192 Spokane)"
     },
     {
+      "from_node": "fiber (Billings \u2192 Spokane)",
+      "to_node": "Billings"
+    },
+    {
       "from_node": "Birmingham",
       "to_node": "fiber (Birmingham \u2192 Nashville)"
+    },
+    {
+      "from_node": "fiber (Birmingham \u2192 Nashville)",
+      "to_node": "Birmingham"
     },
     {
       "from_node": "Birmingham",
       "to_node": "fiber (Birmingham \u2192 New_Orleans)"
     },
     {
+      "from_node": "fiber (Birmingham \u2192 New_Orleans)",
+      "to_node": "Birmingham"
+    },
+    {
       "from_node": "Bismarck",
       "to_node": "fiber (Bismarck \u2192 Minneapolis)"
+    },
+    {
+      "from_node": "fiber (Bismarck \u2192 Minneapolis)",
+      "to_node": "Bismarck"
     },
     {
       "from_node": "Boston",
       "to_node": "fiber (Boston \u2192 Providence)"
     },
     {
+      "from_node": "fiber (Boston \u2192 Providence)",
+      "to_node": "Boston"
+    },
+    {
       "from_node": "Buffalo",
       "to_node": "fiber (Buffalo \u2192 Cleveland)"
+    },
+    {
+      "from_node": "fiber (Buffalo \u2192 Cleveland)",
+      "to_node": "Buffalo"
     },
     {
       "from_node": "Buffalo",
       "to_node": "fiber (Buffalo \u2192 Rochester)"
     },
     {
+      "from_node": "fiber (Buffalo \u2192 Rochester)",
+      "to_node": "Buffalo"
+    },
+    {
       "from_node": "Charleston",
       "to_node": "fiber (Charleston \u2192 Jacksonville)"
+    },
+    {
+      "from_node": "fiber (Charleston \u2192 Jacksonville)",
+      "to_node": "Charleston"
     },
     {
       "from_node": "Charleston",
       "to_node": "fiber (Charleston \u2192 Raleigh)"
     },
     {
+      "from_node": "fiber (Charleston \u2192 Raleigh)",
+      "to_node": "Charleston"
+    },
+    {
       "from_node": "Charlotte",
       "to_node": "fiber (Charlotte \u2192 Greensboro)"
+    },
+    {
+      "from_node": "fiber (Charlotte \u2192 Greensboro)",
+      "to_node": "Charlotte"
     },
     {
       "from_node": "Chicago",
       "to_node": "fiber (Chicago \u2192 Detroit)"
     },
     {
+      "from_node": "fiber (Chicago \u2192 Detroit)",
+      "to_node": "Chicago"
+    },
+    {
       "from_node": "Chicago",
       "to_node": "fiber (Chicago \u2192 Milwaukee)"
+    },
+    {
+      "from_node": "fiber (Chicago \u2192 Milwaukee)",
+      "to_node": "Chicago"
     },
     {
       "from_node": "Chicago",
       "to_node": "fiber (Chicago \u2192 Springfield)"
     },
     {
+      "from_node": "fiber (Chicago \u2192 Springfield)",
+      "to_node": "Chicago"
+    },
+    {
       "from_node": "Cincinnati",
       "to_node": "fiber (Cincinnati \u2192 Columbus)"
+    },
+    {
+      "from_node": "fiber (Cincinnati \u2192 Columbus)",
+      "to_node": "Cincinnati"
     },
     {
       "from_node": "Cincinnati",
       "to_node": "fiber (Cincinnati \u2192 Louisville)"
     },
     {
+      "from_node": "fiber (Cincinnati \u2192 Louisville)",
+      "to_node": "Cincinnati"
+    },
+    {
       "from_node": "Cincinnati",
       "to_node": "fiber (Cincinnati \u2192 Washington_DC)"
+    },
+    {
+      "from_node": "fiber (Cincinnati \u2192 Washington_DC)",
+      "to_node": "Cincinnati"
     },
     {
       "from_node": "Cleveland",
       "to_node": "fiber (Cleveland \u2192 Columbus)"
     },
     {
+      "from_node": "fiber (Cleveland \u2192 Columbus)",
+      "to_node": "Cleveland"
+    },
+    {
       "from_node": "Cleveland",
       "to_node": "fiber (Cleveland \u2192 Toledo)"
+    },
+    {
+      "from_node": "fiber (Cleveland \u2192 Toledo)",
+      "to_node": "Cleveland"
     },
     {
       "from_node": "Columbus",
       "to_node": "fiber (Columbus \u2192 Pittsburgh)"
     },
     {
+      "from_node": "fiber (Columbus \u2192 Pittsburgh)",
+      "to_node": "Columbus"
+    },
+    {
       "from_node": "Dallas",
       "to_node": "fiber (Dallas \u2192 Houston)"
+    },
+    {
+      "from_node": "fiber (Dallas \u2192 Houston)",
+      "to_node": "Dallas"
     },
     {
       "from_node": "Dallas",
       "to_node": "fiber (Dallas \u2192 Little_Rock)"
     },
     {
+      "from_node": "fiber (Dallas \u2192 Little_Rock)",
+      "to_node": "Dallas"
+    },
+    {
       "from_node": "Dallas",
       "to_node": "fiber (Dallas \u2192 Oklahoma_City)"
+    },
+    {
+      "from_node": "fiber (Dallas \u2192 Oklahoma_City)",
+      "to_node": "Dallas"
     },
     {
       "from_node": "Denver",
       "to_node": "fiber (Denver \u2192 Omaha)"
     },
     {
+      "from_node": "fiber (Denver \u2192 Omaha)",
+      "to_node": "Denver"
+    },
+    {
       "from_node": "Denver",
       "to_node": "fiber (Denver \u2192 Salt_Lake_City)"
+    },
+    {
+      "from_node": "fiber (Denver \u2192 Salt_Lake_City)",
+      "to_node": "Denver"
     },
     {
       "from_node": "Detroit",
       "to_node": "fiber (Detroit \u2192 Toledo)"
     },
     {
+      "from_node": "fiber (Detroit \u2192 Toledo)",
+      "to_node": "Detroit"
+    },
+    {
       "from_node": "El_Paso",
       "to_node": "fiber (El_Paso \u2192 San_Antonio)"
+    },
+    {
+      "from_node": "fiber (El_Paso \u2192 San_Antonio)",
+      "to_node": "El_Paso"
     },
     {
       "from_node": "El_Paso",
       "to_node": "fiber (El_Paso \u2192 Tucson)"
     },
     {
+      "from_node": "fiber (El_Paso \u2192 Tucson)",
+      "to_node": "El_Paso"
+    },
+    {
       "from_node": "Fresno",
       "to_node": "fiber (Fresno \u2192 Las_Vegas)"
+    },
+    {
+      "from_node": "fiber (Fresno \u2192 Las_Vegas)",
+      "to_node": "Fresno"
     },
     {
       "from_node": "Fresno",
       "to_node": "fiber (Fresno \u2192 Los_Angeles)"
     },
     {
+      "from_node": "fiber (Fresno \u2192 Los_Angeles)",
+      "to_node": "Fresno"
+    },
+    {
       "from_node": "Fresno",
       "to_node": "fiber (Fresno \u2192 Oakland)"
+    },
+    {
+      "from_node": "fiber (Fresno \u2192 Oakland)",
+      "to_node": "Fresno"
     },
     {
       "from_node": "Greensboro",
       "to_node": "fiber (Greensboro \u2192 Louisville)"
     },
     {
+      "from_node": "fiber (Greensboro \u2192 Louisville)",
+      "to_node": "Greensboro"
+    },
+    {
       "from_node": "Greensboro",
       "to_node": "fiber (Greensboro \u2192 Raleigh)"
+    },
+    {
+      "from_node": "fiber (Greensboro \u2192 Raleigh)",
+      "to_node": "Greensboro"
     },
     {
       "from_node": "Greensboro",
       "to_node": "fiber (Greensboro \u2192 Richmond)"
     },
     {
+      "from_node": "fiber (Greensboro \u2192 Richmond)",
+      "to_node": "Greensboro"
+    },
+    {
       "from_node": "Hartford",
       "to_node": "fiber (Hartford \u2192 Long_Island)"
+    },
+    {
+      "from_node": "fiber (Hartford \u2192 Long_Island)",
+      "to_node": "Hartford"
     },
     {
       "from_node": "Hartford",
       "to_node": "fiber (Hartford \u2192 Providence)"
     },
     {
+      "from_node": "fiber (Hartford \u2192 Providence)",
+      "to_node": "Hartford"
+    },
+    {
       "from_node": "Jacksonville",
       "to_node": "fiber (Jacksonville \u2192 Orlando)"
+    },
+    {
+      "from_node": "fiber (Jacksonville \u2192 Orlando)",
+      "to_node": "Jacksonville"
     },
     {
       "from_node": "Kansas_City",
       "to_node": "fiber (Kansas_City \u2192 Omaha)"
     },
     {
+      "from_node": "fiber (Kansas_City \u2192 Omaha)",
+      "to_node": "Kansas_City"
+    },
+    {
       "from_node": "Kansas_City",
       "to_node": "fiber (Kansas_City \u2192 St_Louis)"
+    },
+    {
+      "from_node": "fiber (Kansas_City \u2192 St_Louis)",
+      "to_node": "Kansas_City"
     },
     {
       "from_node": "Kansas_City",
       "to_node": "fiber (Kansas_City \u2192 Tulsa)"
     },
     {
+      "from_node": "fiber (Kansas_City \u2192 Tulsa)",
+      "to_node": "Kansas_City"
+    },
+    {
       "from_node": "Las_Vegas",
       "to_node": "fiber (Las_Vegas \u2192 Phoenix)"
+    },
+    {
+      "from_node": "fiber (Las_Vegas \u2192 Phoenix)",
+      "to_node": "Las_Vegas"
     },
     {
       "from_node": "Las_Vegas",
       "to_node": "fiber (Las_Vegas \u2192 Salt_Lake_City)"
     },
     {
+      "from_node": "fiber (Las_Vegas \u2192 Salt_Lake_City)",
+      "to_node": "Las_Vegas"
+    },
+    {
       "from_node": "Little_Rock",
       "to_node": "fiber (Little_Rock \u2192 Memphis)"
+    },
+    {
+      "from_node": "fiber (Little_Rock \u2192 Memphis)",
+      "to_node": "Little_Rock"
     },
     {
       "from_node": "Long_Island",
       "to_node": "fiber (Long_Island \u2192 New_York)"
     },
     {
+      "from_node": "fiber (Long_Island \u2192 New_York)",
+      "to_node": "Long_Island"
+    },
+    {
       "from_node": "Los_Angeles",
       "to_node": "fiber (Los_Angeles \u2192 San_Diego)"
+    },
+    {
+      "from_node": "fiber (Los_Angeles \u2192 San_Diego)",
+      "to_node": "Los_Angeles"
     },
     {
       "from_node": "Los_Angeles",
       "to_node": "fiber (Los_Angeles \u2192 Santa_Barbara)"
     },
     {
+      "from_node": "fiber (Los_Angeles \u2192 Santa_Barbara)",
+      "to_node": "Los_Angeles"
+    },
+    {
       "from_node": "Louisville",
       "to_node": "fiber (Louisville \u2192 Nashville)"
+    },
+    {
+      "from_node": "fiber (Louisville \u2192 Nashville)",
+      "to_node": "Louisville"
     },
     {
       "from_node": "Louisville",
       "to_node": "fiber (Louisville \u2192 St_Louis)"
     },
     {
+      "from_node": "fiber (Louisville \u2192 St_Louis)",
+      "to_node": "Louisville"
+    },
+    {
       "from_node": "Memphis",
       "to_node": "fiber (Memphis \u2192 Nashville)"
+    },
+    {
+      "from_node": "fiber (Memphis \u2192 Nashville)",
+      "to_node": "Memphis"
     },
     {
       "from_node": "Miami",
       "to_node": "fiber (Miami \u2192 Tampa)"
     },
     {
+      "from_node": "fiber (Miami \u2192 Tampa)",
+      "to_node": "Miami"
+    },
+    {
       "from_node": "Miami",
       "to_node": "fiber (Miami \u2192 West_Palm_Beach)"
+    },
+    {
+      "from_node": "fiber (Miami \u2192 West_Palm_Beach)",
+      "to_node": "Miami"
     },
     {
       "from_node": "Milwaukee",
       "to_node": "fiber (Milwaukee \u2192 Minneapolis)"
     },
     {
+      "from_node": "fiber (Milwaukee \u2192 Minneapolis)",
+      "to_node": "Milwaukee"
+    },
+    {
       "from_node": "Minneapolis",
       "to_node": "fiber (Minneapolis \u2192 Omaha)"
+    },
+    {
+      "from_node": "fiber (Minneapolis \u2192 Omaha)",
+      "to_node": "Minneapolis"
     },
     {
       "from_node": "New_Orleans",
       "to_node": "fiber (New_Orleans \u2192 Tallahassee)"
     },
     {
+      "from_node": "fiber (New_Orleans \u2192 Tallahassee)",
+      "to_node": "New_Orleans"
+    },
+    {
       "from_node": "New_York",
       "to_node": "fiber (New_York \u2192 Newark)"
+    },
+    {
+      "from_node": "fiber (New_York \u2192 Newark)",
+      "to_node": "New_York"
     },
     {
       "from_node": "New_York",
       "to_node": "fiber (New_York \u2192 Scranton)"
     },
     {
+      "from_node": "fiber (New_York \u2192 Scranton)",
+      "to_node": "New_York"
+    },
+    {
       "from_node": "New_York",
       "to_node": "fiber (New_York \u2192 Wilmington)"
+    },
+    {
+      "from_node": "fiber (New_York \u2192 Wilmington)",
+      "to_node": "New_York"
     },
     {
       "from_node": "Newark",
       "to_node": "fiber (Newark \u2192 Philadelphia)"
     },
     {
+      "from_node": "fiber (Newark \u2192 Philadelphia)",
+      "to_node": "Newark"
+    },
+    {
       "from_node": "Norfolk",
       "to_node": "fiber (Norfolk \u2192 Raleigh)"
+    },
+    {
+      "from_node": "fiber (Norfolk \u2192 Raleigh)",
+      "to_node": "Norfolk"
     },
     {
       "from_node": "Norfolk",
       "to_node": "fiber (Norfolk \u2192 Wilmington)"
     },
     {
+      "from_node": "fiber (Norfolk \u2192 Wilmington)",
+      "to_node": "Norfolk"
+    },
+    {
       "from_node": "Oakland",
       "to_node": "fiber (Oakland \u2192 Sacramento)"
+    },
+    {
+      "from_node": "fiber (Oakland \u2192 Sacramento)",
+      "to_node": "Oakland"
     },
     {
       "from_node": "Oakland",
       "to_node": "fiber (Oakland \u2192 Salt_Lake_City)"
     },
     {
+      "from_node": "fiber (Oakland \u2192 Salt_Lake_City)",
+      "to_node": "Oakland"
+    },
+    {
       "from_node": "Oakland",
       "to_node": "fiber (Oakland \u2192 San_Francisco)"
+    },
+    {
+      "from_node": "fiber (Oakland \u2192 San_Francisco)",
+      "to_node": "Oakland"
     },
     {
       "from_node": "Oklahoma_City",
       "to_node": "fiber (Oklahoma_City \u2192 Tulsa)"
     },
     {
+      "from_node": "fiber (Oklahoma_City \u2192 Tulsa)",
+      "to_node": "Oklahoma_City"
+    },
+    {
       "from_node": "Orlando",
       "to_node": "fiber (Orlando \u2192 West_Palm_Beach)"
+    },
+    {
+      "from_node": "fiber (Orlando \u2192 West_Palm_Beach)",
+      "to_node": "Orlando"
     },
     {
       "from_node": "Philadelphia",
       "to_node": "fiber (Philadelphia \u2192 Scranton)"
     },
     {
+      "from_node": "fiber (Philadelphia \u2192 Scranton)",
+      "to_node": "Philadelphia"
+    },
+    {
       "from_node": "Phoenix",
       "to_node": "fiber (Phoenix \u2192 San_Diego)"
+    },
+    {
+      "from_node": "fiber (Phoenix \u2192 San_Diego)",
+      "to_node": "Phoenix"
     },
     {
       "from_node": "Phoenix",
       "to_node": "fiber (Phoenix \u2192 Tucson)"
     },
     {
+      "from_node": "fiber (Phoenix \u2192 Tucson)",
+      "to_node": "Phoenix"
+    },
+    {
       "from_node": "Pittsburgh",
       "to_node": "fiber (Pittsburgh \u2192 Scranton)"
+    },
+    {
+      "from_node": "fiber (Pittsburgh \u2192 Scranton)",
+      "to_node": "Pittsburgh"
     },
     {
       "from_node": "Portland",
       "to_node": "fiber (Portland \u2192 Sacramento)"
     },
     {
+      "from_node": "fiber (Portland \u2192 Sacramento)",
+      "to_node": "Portland"
+    },
+    {
       "from_node": "Portland",
       "to_node": "fiber (Portland \u2192 Salt_Lake_City)"
+    },
+    {
+      "from_node": "fiber (Portland \u2192 Salt_Lake_City)",
+      "to_node": "Portland"
     },
     {
       "from_node": "Portland",
       "to_node": "fiber (Portland \u2192 Seattle)"
     },
     {
+      "from_node": "fiber (Portland \u2192 Seattle)",
+      "to_node": "Portland"
+    },
+    {
       "from_node": "Richmond",
       "to_node": "fiber (Richmond \u2192 Washington_DC)"
+    },
+    {
+      "from_node": "fiber (Richmond \u2192 Washington_DC)",
+      "to_node": "Richmond"
     },
     {
       "from_node": "Rochester",
       "to_node": "fiber (Rochester \u2192 Syracuse)"
     },
     {
+      "from_node": "fiber (Rochester \u2192 Syracuse)",
+      "to_node": "Rochester"
+    },
+    {
       "from_node": "San_Francisco",
       "to_node": "fiber (San_Francisco \u2192 San_Jose)"
+    },
+    {
+      "from_node": "fiber (San_Francisco \u2192 San_Jose)",
+      "to_node": "San_Francisco"
     },
     {
       "from_node": "San_Jose",
       "to_node": "fiber (San_Jose \u2192 Santa_Barbara)"
     },
     {
+      "from_node": "fiber (San_Jose \u2192 Santa_Barbara)",
+      "to_node": "San_Jose"
+    },
+    {
       "from_node": "Scranton",
       "to_node": "fiber (Scranton \u2192 Syracuse)"
+    },
+    {
+      "from_node": "fiber (Scranton \u2192 Syracuse)",
+      "to_node": "Scranton"
     },
     {
       "from_node": "Seattle",
       "to_node": "fiber (Seattle \u2192 Spokane)"
     },
     {
+      "from_node": "fiber (Seattle \u2192 Spokane)",
+      "to_node": "Seattle"
+    },
+    {
       "from_node": "Springfield",
       "to_node": "fiber (Springfield \u2192 St_Louis)"
+    },
+    {
+      "from_node": "fiber (Springfield \u2192 St_Louis)",
+      "to_node": "Springfield"
     },
     {
       "from_node": "Tallahassee",
       "to_node": "fiber (Tallahassee \u2192 Tampa)"
     },
     {
+      "from_node": "fiber (Tallahassee \u2192 Tampa)",
+      "to_node": "Tallahassee"
+    },
+    {
       "from_node": "fiber (Abilene \u2192 Dallas)",
       "to_node": "Dallas"
+    },
+    {
+      "from_node": "Dallas",
+      "to_node": "fiber (Abilene \u2192 Dallas)"
     },
     {
       "from_node": "fiber (Abilene \u2192 El_Paso)",
       "to_node": "El_Paso"
     },
     {
+      "from_node": "El_Paso",
+      "to_node": "fiber (Abilene \u2192 El_Paso)"
+    },
+    {
       "from_node": "fiber (Albany \u2192 Boston)",
       "to_node": "Boston"
+    },
+    {
+      "from_node": "Boston",
+      "to_node": "fiber (Albany \u2192 Boston)"
     },
     {
       "from_node": "fiber (Albany \u2192 Syracuse)",
       "to_node": "Syracuse"
     },
     {
+      "from_node": "Syracuse",
+      "to_node": "fiber (Albany \u2192 Syracuse)"
+    },
+    {
       "from_node": "fiber (Albuquerque \u2192 Dallas)",
       "to_node": "Dallas"
+    },
+    {
+      "from_node": "Dallas",
+      "to_node": "fiber (Albuquerque \u2192 Dallas)"
     },
     {
       "from_node": "fiber (Albuquerque \u2192 Denver)",
       "to_node": "Denver"
     },
     {
+      "from_node": "Denver",
+      "to_node": "fiber (Albuquerque \u2192 Denver)"
+    },
+    {
       "from_node": "fiber (Albuquerque \u2192 El_Paso)",
       "to_node": "El_Paso"
+    },
+    {
+      "from_node": "El_Paso",
+      "to_node": "fiber (Albuquerque \u2192 El_Paso)"
     },
     {
       "from_node": "fiber (Albuquerque \u2192 Las_Vegas)",
       "to_node": "Las_Vegas"
     },
     {
+      "from_node": "Las_Vegas",
+      "to_node": "fiber (Albuquerque \u2192 Las_Vegas)"
+    },
+    {
       "from_node": "fiber (Atlanta \u2192 Birmingham)",
       "to_node": "Birmingham"
+    },
+    {
+      "from_node": "Birmingham",
+      "to_node": "fiber (Atlanta \u2192 Birmingham)"
     },
     {
       "from_node": "fiber (Atlanta \u2192 Charlotte)",
       "to_node": "Charlotte"
     },
     {
+      "from_node": "Charlotte",
+      "to_node": "fiber (Atlanta \u2192 Charlotte)"
+    },
+    {
       "from_node": "fiber (Atlanta \u2192 Jacksonville)",
       "to_node": "Jacksonville"
+    },
+    {
+      "from_node": "Jacksonville",
+      "to_node": "fiber (Atlanta \u2192 Jacksonville)"
     },
     {
       "from_node": "fiber (Austin \u2192 Houston)",
       "to_node": "Houston"
     },
     {
+      "from_node": "Houston",
+      "to_node": "fiber (Austin \u2192 Houston)"
+    },
+    {
       "from_node": "fiber (Austin \u2192 San_Antonio)",
       "to_node": "San_Antonio"
+    },
+    {
+      "from_node": "San_Antonio",
+      "to_node": "fiber (Austin \u2192 San_Antonio)"
     },
     {
       "from_node": "fiber (Baltimore \u2192 Philadelphia)",
       "to_node": "Philadelphia"
     },
     {
+      "from_node": "Philadelphia",
+      "to_node": "fiber (Baltimore \u2192 Philadelphia)"
+    },
+    {
       "from_node": "fiber (Baltimore \u2192 Pittsburgh)",
       "to_node": "Pittsburgh"
+    },
+    {
+      "from_node": "Pittsburgh",
+      "to_node": "fiber (Baltimore \u2192 Pittsburgh)"
     },
     {
       "from_node": "fiber (Baltimore \u2192 Washington_DC)",
       "to_node": "Washington_DC"
     },
     {
+      "from_node": "Washington_DC",
+      "to_node": "fiber (Baltimore \u2192 Washington_DC)"
+    },
+    {
       "from_node": "fiber (Baton_Rouge \u2192 Houston)",
       "to_node": "Houston"
+    },
+    {
+      "from_node": "Houston",
+      "to_node": "fiber (Baton_Rouge \u2192 Houston)"
     },
     {
       "from_node": "fiber (Baton_Rouge \u2192 New_Orleans)",
       "to_node": "New_Orleans"
     },
     {
+      "from_node": "New_Orleans",
+      "to_node": "fiber (Baton_Rouge \u2192 New_Orleans)"
+    },
+    {
       "from_node": "fiber (Billings \u2192 Bismarck)",
       "to_node": "Bismarck"
+    },
+    {
+      "from_node": "Bismarck",
+      "to_node": "fiber (Billings \u2192 Bismarck)"
     },
     {
       "from_node": "fiber (Billings \u2192 Denver)",
       "to_node": "Denver"
     },
     {
+      "from_node": "Denver",
+      "to_node": "fiber (Billings \u2192 Denver)"
+    },
+    {
       "from_node": "fiber (Billings \u2192 Spokane)",
       "to_node": "Spokane"
+    },
+    {
+      "from_node": "Spokane",
+      "to_node": "fiber (Billings \u2192 Spokane)"
     },
     {
       "from_node": "fiber (Birmingham \u2192 Nashville)",
       "to_node": "Nashville"
     },
     {
+      "from_node": "Nashville",
+      "to_node": "fiber (Birmingham \u2192 Nashville)"
+    },
+    {
       "from_node": "fiber (Birmingham \u2192 New_Orleans)",
       "to_node": "New_Orleans"
+    },
+    {
+      "from_node": "New_Orleans",
+      "to_node": "fiber (Birmingham \u2192 New_Orleans)"
     },
     {
       "from_node": "fiber (Bismarck \u2192 Minneapolis)",
       "to_node": "Minneapolis"
     },
     {
+      "from_node": "Minneapolis",
+      "to_node": "fiber (Bismarck \u2192 Minneapolis)"
+    },
+    {
       "from_node": "fiber (Boston \u2192 Providence)",
       "to_node": "Providence"
+    },
+    {
+      "from_node": "Providence",
+      "to_node": "fiber (Boston \u2192 Providence)"
     },
     {
       "from_node": "fiber (Buffalo \u2192 Cleveland)",
       "to_node": "Cleveland"
     },
     {
+      "from_node": "Cleveland",
+      "to_node": "fiber (Buffalo \u2192 Cleveland)"
+    },
+    {
       "from_node": "fiber (Buffalo \u2192 Rochester)",
       "to_node": "Rochester"
+    },
+    {
+      "from_node": "Rochester",
+      "to_node": "fiber (Buffalo \u2192 Rochester)"
     },
     {
       "from_node": "fiber (Charleston \u2192 Jacksonville)",
       "to_node": "Jacksonville"
     },
     {
+      "from_node": "Jacksonville",
+      "to_node": "fiber (Charleston \u2192 Jacksonville)"
+    },
+    {
       "from_node": "fiber (Charleston \u2192 Raleigh)",
       "to_node": "Raleigh"
+    },
+    {
+      "from_node": "Raleigh",
+      "to_node": "fiber (Charleston \u2192 Raleigh)"
     },
     {
       "from_node": "fiber (Charlotte \u2192 Greensboro)",
       "to_node": "Greensboro"
     },
     {
+      "from_node": "Greensboro",
+      "to_node": "fiber (Charlotte \u2192 Greensboro)"
+    },
+    {
       "from_node": "fiber (Chicago \u2192 Detroit)",
       "to_node": "Detroit"
+    },
+    {
+      "from_node": "Detroit",
+      "to_node": "fiber (Chicago \u2192 Detroit)"
     },
     {
       "from_node": "fiber (Chicago \u2192 Milwaukee)",
       "to_node": "Milwaukee"
     },
     {
+      "from_node": "Milwaukee",
+      "to_node": "fiber (Chicago \u2192 Milwaukee)"
+    },
+    {
       "from_node": "fiber (Chicago \u2192 Springfield)",
       "to_node": "Springfield"
+    },
+    {
+      "from_node": "Springfield",
+      "to_node": "fiber (Chicago \u2192 Springfield)"
     },
     {
       "from_node": "fiber (Cincinnati \u2192 Columbus)",
       "to_node": "Columbus"
     },
     {
+      "from_node": "Columbus",
+      "to_node": "fiber (Cincinnati \u2192 Columbus)"
+    },
+    {
       "from_node": "fiber (Cincinnati \u2192 Louisville)",
       "to_node": "Louisville"
+    },
+    {
+      "from_node": "Louisville",
+      "to_node": "fiber (Cincinnati \u2192 Louisville)"
     },
     {
       "from_node": "fiber (Cincinnati \u2192 Washington_DC)",
       "to_node": "Washington_DC"
     },
     {
+      "from_node": "Washington_DC",
+      "to_node": "fiber (Cincinnati \u2192 Washington_DC)"
+    },
+    {
       "from_node": "fiber (Cleveland \u2192 Columbus)",
       "to_node": "Columbus"
+    },
+    {
+      "from_node": "Columbus",
+      "to_node": "fiber (Cleveland \u2192 Columbus)"
     },
     {
       "from_node": "fiber (Cleveland \u2192 Toledo)",
       "to_node": "Toledo"
     },
     {
+      "from_node": "Toledo",
+      "to_node": "fiber (Cleveland \u2192 Toledo)"
+    },
+    {
       "from_node": "fiber (Columbus \u2192 Pittsburgh)",
       "to_node": "Pittsburgh"
+    },
+    {
+      "from_node": "Pittsburgh",
+      "to_node": "fiber (Columbus \u2192 Pittsburgh)"
     },
     {
       "from_node": "fiber (Dallas \u2192 Houston)",
       "to_node": "Houston"
     },
     {
+      "from_node": "Houston",
+      "to_node": "fiber (Dallas \u2192 Houston)"
+    },
+    {
       "from_node": "fiber (Dallas \u2192 Little_Rock)",
       "to_node": "Little_Rock"
+    },
+    {
+      "from_node": "Little_Rock",
+      "to_node": "fiber (Dallas \u2192 Little_Rock)"
     },
     {
       "from_node": "fiber (Dallas \u2192 Oklahoma_City)",
       "to_node": "Oklahoma_City"
     },
     {
+      "from_node": "Oklahoma_City",
+      "to_node": "fiber (Dallas \u2192 Oklahoma_City)"
+    },
+    {
       "from_node": "fiber (Denver \u2192 Omaha)",
       "to_node": "Omaha"
+    },
+    {
+      "from_node": "Omaha",
+      "to_node": "fiber (Denver \u2192 Omaha)"
     },
     {
       "from_node": "fiber (Denver \u2192 Salt_Lake_City)",
       "to_node": "Salt_Lake_City"
     },
     {
+      "from_node": "Salt_Lake_City",
+      "to_node": "fiber (Denver \u2192 Salt_Lake_City)"
+    },
+    {
       "from_node": "fiber (Detroit \u2192 Toledo)",
       "to_node": "Toledo"
+    },
+    {
+      "from_node": "Toledo",
+      "to_node": "fiber (Detroit \u2192 Toledo)"
     },
     {
       "from_node": "fiber (El_Paso \u2192 San_Antonio)",
       "to_node": "San_Antonio"
     },
     {
+      "from_node": "San_Antonio",
+      "to_node": "fiber (El_Paso \u2192 San_Antonio)"
+    },
+    {
       "from_node": "fiber (El_Paso \u2192 Tucson)",
       "to_node": "Tucson"
+    },
+    {
+      "from_node": "Tucson",
+      "to_node": "fiber (El_Paso \u2192 Tucson)"
     },
     {
       "from_node": "fiber (Fresno \u2192 Las_Vegas)",
       "to_node": "Las_Vegas"
     },
     {
+      "from_node": "Las_Vegas",
+      "to_node": "fiber (Fresno \u2192 Las_Vegas)"
+    },
+    {
       "from_node": "fiber (Fresno \u2192 Los_Angeles)",
       "to_node": "Los_Angeles"
+    },
+    {
+      "from_node": "Los_Angeles",
+      "to_node": "fiber (Fresno \u2192 Los_Angeles)"
     },
     {
       "from_node": "fiber (Fresno \u2192 Oakland)",
       "to_node": "Oakland"
     },
     {
+      "from_node": "Oakland",
+      "to_node": "fiber (Fresno \u2192 Oakland)"
+    },
+    {
       "from_node": "fiber (Greensboro \u2192 Louisville)",
       "to_node": "Louisville"
+    },
+    {
+      "from_node": "Louisville",
+      "to_node": "fiber (Greensboro \u2192 Louisville)"
     },
     {
       "from_node": "fiber (Greensboro \u2192 Raleigh)",
       "to_node": "Raleigh"
     },
     {
+      "from_node": "Raleigh",
+      "to_node": "fiber (Greensboro \u2192 Raleigh)"
+    },
+    {
       "from_node": "fiber (Greensboro \u2192 Richmond)",
       "to_node": "Richmond"
+    },
+    {
+      "from_node": "Richmond",
+      "to_node": "fiber (Greensboro \u2192 Richmond)"
     },
     {
       "from_node": "fiber (Hartford \u2192 Long_Island)",
       "to_node": "Long_Island"
     },
     {
+      "from_node": "Long_Island",
+      "to_node": "fiber (Hartford \u2192 Long_Island)"
+    },
+    {
       "from_node": "fiber (Hartford \u2192 Providence)",
       "to_node": "Providence"
+    },
+    {
+      "from_node": "Providence",
+      "to_node": "fiber (Hartford \u2192 Providence)"
     },
     {
       "from_node": "fiber (Jacksonville \u2192 Orlando)",
       "to_node": "Orlando"
     },
     {
+      "from_node": "Orlando",
+      "to_node": "fiber (Jacksonville \u2192 Orlando)"
+    },
+    {
       "from_node": "fiber (Kansas_City \u2192 Omaha)",
       "to_node": "Omaha"
+    },
+    {
+      "from_node": "Omaha",
+      "to_node": "fiber (Kansas_City \u2192 Omaha)"
     },
     {
       "from_node": "fiber (Kansas_City \u2192 St_Louis)",
       "to_node": "St_Louis"
     },
     {
+      "from_node": "St_Louis",
+      "to_node": "fiber (Kansas_City \u2192 St_Louis)"
+    },
+    {
       "from_node": "fiber (Kansas_City \u2192 Tulsa)",
       "to_node": "Tulsa"
+    },
+    {
+      "from_node": "Tulsa",
+      "to_node": "fiber (Kansas_City \u2192 Tulsa)"
     },
     {
       "from_node": "fiber (Las_Vegas \u2192 Phoenix)",
       "to_node": "Phoenix"
     },
     {
+      "from_node": "Phoenix",
+      "to_node": "fiber (Las_Vegas \u2192 Phoenix)"
+    },
+    {
       "from_node": "fiber (Las_Vegas \u2192 Salt_Lake_City)",
       "to_node": "Salt_Lake_City"
+    },
+    {
+      "from_node": "Salt_Lake_City",
+      "to_node": "fiber (Las_Vegas \u2192 Salt_Lake_City)"
     },
     {
       "from_node": "fiber (Little_Rock \u2192 Memphis)",
       "to_node": "Memphis"
     },
     {
+      "from_node": "Memphis",
+      "to_node": "fiber (Little_Rock \u2192 Memphis)"
+    },
+    {
       "from_node": "fiber (Long_Island \u2192 New_York)",
       "to_node": "New_York"
+    },
+    {
+      "from_node": "New_York",
+      "to_node": "fiber (Long_Island \u2192 New_York)"
     },
     {
       "from_node": "fiber (Los_Angeles \u2192 San_Diego)",
       "to_node": "San_Diego"
     },
     {
+      "from_node": "San_Diego",
+      "to_node": "fiber (Los_Angeles \u2192 San_Diego)"
+    },
+    {
       "from_node": "fiber (Los_Angeles \u2192 Santa_Barbara)",
       "to_node": "Santa_Barbara"
+    },
+    {
+      "from_node": "Santa_Barbara",
+      "to_node": "fiber (Los_Angeles \u2192 Santa_Barbara)"
     },
     {
       "from_node": "fiber (Louisville \u2192 Nashville)",
       "to_node": "Nashville"
     },
     {
+      "from_node": "Nashville",
+      "to_node": "fiber (Louisville \u2192 Nashville)"
+    },
+    {
       "from_node": "fiber (Louisville \u2192 St_Louis)",
       "to_node": "St_Louis"
+    },
+    {
+      "from_node": "St_Louis",
+      "to_node": "fiber (Louisville \u2192 St_Louis)"
     },
     {
       "from_node": "fiber (Memphis \u2192 Nashville)",
       "to_node": "Nashville"
     },
     {
+      "from_node": "Nashville",
+      "to_node": "fiber (Memphis \u2192 Nashville)"
+    },
+    {
       "from_node": "fiber (Miami \u2192 Tampa)",
       "to_node": "Tampa"
+    },
+    {
+      "from_node": "Tampa",
+      "to_node": "fiber (Miami \u2192 Tampa)"
     },
     {
       "from_node": "fiber (Miami \u2192 West_Palm_Beach)",
       "to_node": "West_Palm_Beach"
     },
     {
+      "from_node": "West_Palm_Beach",
+      "to_node": "fiber (Miami \u2192 West_Palm_Beach)"
+    },
+    {
       "from_node": "fiber (Milwaukee \u2192 Minneapolis)",
       "to_node": "Minneapolis"
+    },
+    {
+      "from_node": "Minneapolis",
+      "to_node": "fiber (Milwaukee \u2192 Minneapolis)"
     },
     {
       "from_node": "fiber (Minneapolis \u2192 Omaha)",
       "to_node": "Omaha"
     },
     {
+      "from_node": "Omaha",
+      "to_node": "fiber (Minneapolis \u2192 Omaha)"
+    },
+    {
       "from_node": "fiber (New_Orleans \u2192 Tallahassee)",
       "to_node": "Tallahassee"
+    },
+    {
+      "from_node": "Tallahassee",
+      "to_node": "fiber (New_Orleans \u2192 Tallahassee)"
     },
     {
       "from_node": "fiber (New_York \u2192 Newark)",
       "to_node": "Newark"
     },
     {
+      "from_node": "Newark",
+      "to_node": "fiber (New_York \u2192 Newark)"
+    },
+    {
       "from_node": "fiber (New_York \u2192 Scranton)",
       "to_node": "Scranton"
+    },
+    {
+      "from_node": "Scranton",
+      "to_node": "fiber (New_York \u2192 Scranton)"
     },
     {
       "from_node": "fiber (New_York \u2192 Wilmington)",
       "to_node": "Wilmington"
     },
     {
+      "from_node": "Wilmington",
+      "to_node": "fiber (New_York \u2192 Wilmington)"
+    },
+    {
       "from_node": "fiber (Newark \u2192 Philadelphia)",
       "to_node": "Philadelphia"
+    },
+    {
+      "from_node": "Philadelphia",
+      "to_node": "fiber (Newark \u2192 Philadelphia)"
     },
     {
       "from_node": "fiber (Norfolk \u2192 Raleigh)",
       "to_node": "Raleigh"
     },
     {
+      "from_node": "Raleigh",
+      "to_node": "fiber (Norfolk \u2192 Raleigh)"
+    },
+    {
       "from_node": "fiber (Norfolk \u2192 Wilmington)",
       "to_node": "Wilmington"
+    },
+    {
+      "from_node": "Wilmington",
+      "to_node": "fiber (Norfolk \u2192 Wilmington)"
     },
     {
       "from_node": "fiber (Oakland \u2192 Sacramento)",
       "to_node": "Sacramento"
     },
     {
+      "from_node": "Sacramento",
+      "to_node": "fiber (Oakland \u2192 Sacramento)"
+    },
+    {
       "from_node": "fiber (Oakland \u2192 Salt_Lake_City)",
       "to_node": "Salt_Lake_City"
+    },
+    {
+      "from_node": "Salt_Lake_City",
+      "to_node": "fiber (Oakland \u2192 Salt_Lake_City)"
     },
     {
       "from_node": "fiber (Oakland \u2192 San_Francisco)",
       "to_node": "San_Francisco"
     },
     {
+      "from_node": "San_Francisco",
+      "to_node": "fiber (Oakland \u2192 San_Francisco)"
+    },
+    {
       "from_node": "fiber (Oklahoma_City \u2192 Tulsa)",
       "to_node": "Tulsa"
+    },
+    {
+      "from_node": "Tulsa",
+      "to_node": "fiber (Oklahoma_City \u2192 Tulsa)"
     },
     {
       "from_node": "fiber (Orlando \u2192 West_Palm_Beach)",
       "to_node": "West_Palm_Beach"
     },
     {
+      "from_node": "West_Palm_Beach",
+      "to_node": "fiber (Orlando \u2192 West_Palm_Beach)"
+    },
+    {
       "from_node": "fiber (Philadelphia \u2192 Scranton)",
       "to_node": "Scranton"
+    },
+    {
+      "from_node": "Scranton",
+      "to_node": "fiber (Philadelphia \u2192 Scranton)"
     },
     {
       "from_node": "fiber (Phoenix \u2192 San_Diego)",
       "to_node": "San_Diego"
     },
     {
+      "from_node": "San_Diego",
+      "to_node": "fiber (Phoenix \u2192 San_Diego)"
+    },
+    {
       "from_node": "fiber (Phoenix \u2192 Tucson)",
       "to_node": "Tucson"
+    },
+    {
+      "from_node": "Tucson",
+      "to_node": "fiber (Phoenix \u2192 Tucson)"
     },
     {
       "from_node": "fiber (Pittsburgh \u2192 Scranton)",
       "to_node": "Scranton"
     },
     {
+      "from_node": "Scranton",
+      "to_node": "fiber (Pittsburgh \u2192 Scranton)"
+    },
+    {
       "from_node": "fiber (Portland \u2192 Sacramento)",
       "to_node": "Sacramento"
+    },
+    {
+      "from_node": "Sacramento",
+      "to_node": "fiber (Portland \u2192 Sacramento)"
     },
     {
       "from_node": "fiber (Portland \u2192 Salt_Lake_City)",
       "to_node": "Salt_Lake_City"
     },
     {
+      "from_node": "Salt_Lake_City",
+      "to_node": "fiber (Portland \u2192 Salt_Lake_City)"
+    },
+    {
       "from_node": "fiber (Portland \u2192 Seattle)",
       "to_node": "Seattle"
+    },
+    {
+      "from_node": "Seattle",
+      "to_node": "fiber (Portland \u2192 Seattle)"
     },
     {
       "from_node": "fiber (Richmond \u2192 Washington_DC)",
       "to_node": "Washington_DC"
     },
     {
+      "from_node": "Washington_DC",
+      "to_node": "fiber (Richmond \u2192 Washington_DC)"
+    },
+    {
       "from_node": "fiber (Rochester \u2192 Syracuse)",
       "to_node": "Syracuse"
+    },
+    {
+      "from_node": "Syracuse",
+      "to_node": "fiber (Rochester \u2192 Syracuse)"
     },
     {
       "from_node": "fiber (San_Francisco \u2192 San_Jose)",
       "to_node": "San_Jose"
     },
     {
+      "from_node": "San_Jose",
+      "to_node": "fiber (San_Francisco \u2192 San_Jose)"
+    },
+    {
       "from_node": "fiber (San_Jose \u2192 Santa_Barbara)",
       "to_node": "Santa_Barbara"
+    },
+    {
+      "from_node": "Santa_Barbara",
+      "to_node": "fiber (San_Jose \u2192 Santa_Barbara)"
     },
     {
       "from_node": "fiber (Scranton \u2192 Syracuse)",
       "to_node": "Syracuse"
     },
     {
+      "from_node": "Syracuse",
+      "to_node": "fiber (Scranton \u2192 Syracuse)"
+    },
+    {
       "from_node": "fiber (Seattle \u2192 Spokane)",
       "to_node": "Spokane"
+    },
+    {
+      "from_node": "Spokane",
+      "to_node": "fiber (Seattle \u2192 Spokane)"
     },
     {
       "from_node": "fiber (Springfield \u2192 St_Louis)",
       "to_node": "St_Louis"
     },
     {
+      "from_node": "St_Louis",
+      "to_node": "fiber (Springfield \u2192 St_Louis)"
+    },
+    {
       "from_node": "fiber (Tallahassee \u2192 Tampa)",
       "to_node": "Tampa"
+    },
+    {
+      "from_node": "Tampa",
+      "to_node": "fiber (Tallahassee \u2192 Tampa)"
     }
   ]
 }
