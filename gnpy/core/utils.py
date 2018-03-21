@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+'''
+gnpy.core.utils
+===============
+
+This module contains utility functions that are used with gnpy.
+'''
+
+
 import json
 
 import numpy as np

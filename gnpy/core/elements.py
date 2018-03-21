@@ -1,17 +1,24 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-Network elements class with SpectralInformation propagation using 
-__call__ and propagate methods
-@author: Alessio Ferrari
-@author: Mattia Cantono
-@author: Vittorio Curri
-@author: giladgoldfarb
-@author: briantaylor
-@author: jeanluc-auge
-@acknowledgement : Dave Boertjes
-"""
+'''
+gnpy.core.elements
+==================
+
+This module contains standard network elements.
+
+A network element is a Python callable. It takes a .info.SpectralInformation
+object and returns a copy with appropriate fields affected. This structure
+represents spectral information that is "propogated" by this network element.
+Network elements must have only a local "view" of the network and propogate
+SpectralInformation using only this information. They should be independent and
+self-contained.
+
+Network elements MUST implement two attributes .uid and .name representing a
+unique identifier and a printable name.
+'''
+
+
 import numpy as np
 from scipy.constants import c, h
 
@@ -31,16 +38,16 @@ class Transceiver(Node):
     def _calc_snr(self, spectral_info):
         ase = [c.power.ase for c in spectral_info.carriers]
         nli = [c.power.nli for c in spectral_info.carriers]
-        if min(ase)>1e-20: 
+        if min(ase)>1e-20:
             self.osnr_ase = [lin2db(c.power.signal/c.power.ase)
                     for c in spectral_info.carriers]
             ratio_01nm = [lin2db(12.5e9/c.baud_rate) for c in spectral_info.carriers]
-            self.osnr_ase_01nm = [ase - ratio for ase, ratio 
+            self.osnr_ase_01nm = [ase - ratio for ase, ratio
                     in zip(self.osnr_ase, ratio_01nm)]
         if min(nli)>1e-20:
-            self.osnr_nli = [lin2db(c.power.signal/c.power.nli) 
+            self.osnr_nli = [lin2db(c.power.signal/c.power.nli)
                     for c in spectral_info.carriers]
-            self.snr = [lin2db(c.power.signal/(c.power.nli+c.power.ase)) 
+            self.snr = [lin2db(c.power.signal/(c.power.nli+c.power.ase))
                     for c in spectral_info.carriers]
 
     def __repr__(self):
@@ -84,7 +91,7 @@ class Roadm(Node):
         attenuation = db2lin(self.loss)
 
         for carrier in carriers:
-            pwr = carrier.power           
+            pwr = carrier.power
             pwr = pwr._replace(signal=pwr.signal/attenuation,
                                nonlinear_interference=pwr.nli/attenuation,
                                amplified_spontaneous_emission=pwr.ase/attenuation)
@@ -157,7 +164,7 @@ class Fiber(Node):
              'alpha_acoef': alpha_acoef,
              'description:': s}
         return d
-    
+
     def _psi(self, carrier, interfering_carrier):
         """ Calculates eq. 123 from	arXiv:1209.0394.
         """
@@ -172,7 +179,7 @@ class Fiber(Node):
                               carrier.baud_rate * (delta_f - 0.5 * interfering_carrier.baud_rate))
 
         return psi
-    
+
     def _gn_analytic(self, carrier, *carriers):
         """ Computes the nonlinear interference power on a single carrier.
         The method uses eq. 120 from arXiv:1209.0394.
@@ -218,7 +225,7 @@ class Edfa(Node):
         self.interpol_nf_ripple = None #nf_ripple: N numpy array
         self.channel_freq = None #SI channel frequencies: N numpy array
         """nf, gprofile, pin and pout attributs are set by interpol_params"""
-        self.nf = None #dB edfa nf at operational.gain_target: N numpy array 
+        self.nf = None #dB edfa nf at operational.gain_target: N numpy array
         self.gprofile = None
         self.pin_db = None
         self.pout_db = None
@@ -288,7 +295,7 @@ class Edfa(Node):
         return nf_array
 
     def noise_profile(self, df):
-        """ noise_profile(bw) computes amplifier ase (W) in signal bw (Hz) 
+        """ noise_profile(bw) computes amplifier ase (W) in signal bw (Hz)
         noise is calculated at amplifier input
 
         :bw: signal bandwidth = baud rate in Hz
@@ -324,7 +331,7 @@ class Edfa(Node):
         e.g. 12.5GHz."""
 
         ase = h * df * self.channel_freq * db2lin(self.nf)  #W
-        return ase #in W, @amplifier input 
+        return ase #in W, @amplifier input
 
     def _gain_profile(self, pin):
         """
@@ -424,7 +431,7 @@ class Edfa(Node):
                 # Upper gain estimate
                 xhigh = dgts2 + deltax
                 ghigh = g1st - voa + np.array(self.interpol_dgt) * xhigh
-                pout_db = lin2db(np.sum(pin*1e3*db2lin(ghigh)))        
+                pout_db = lin2db(np.sum(pin*1e3*db2lin(ghigh)))
                 gavg_high = pout_db - tot_in_power_db
 
                 # compute slope
@@ -453,14 +460,14 @@ class Edfa(Node):
         freq = np.array([c.frequency for c in carriers])
         brate = np.array([c.baud_rate for c in carriers])
         #interpolate the amplifier vectors with the carriers freq, calculate nf & gain profile
-        self.interpol_params(freq, pin, brate) 
+        self.interpol_params(freq, pin, brate)
         gain = db2lin(self.gprofile)
         carrier_ase = self.noise_profile(brate)
 
         for carrier in carriers:
 
             pwr = carrier.power
-            bw = carrier.baud_rate            
+            bw = carrier.baud_rate
             pwr = pwr._replace(signal=pwr.signal*gain[i],
                                nonlinear_interference=pwr.nli*gain[i],
                                amplified_spontaneous_emission=(pwr.ase+carrier_ase[i])*gain[i])

@@ -1,5 +1,23 @@
 #! /bin/usr/python3
 
+'''
+gnpy.core.node
+==============
+
+This module contains the base class for a network element.
+
+Strictly, a network element is any callable which accepts an immutable
+.info.SpectralInformation object and returns a .info.SpectralInformation object
+(a copy.)
+
+Network elements MUST implement two attributes .uid and .name representing a
+unique identifier and a printable name.
+
+This base class provides a mode convenient way to define a network element
+via subclassing.
+'''
+
+
 from uuid import uuid4
 from gnpy.core.utils import load_json
 
@@ -33,11 +51,11 @@ class Node:
         else:
             self.uid = self.config.uid
         if hasattr(self.config, 'params'):
-            self.params = self.config.params     
+            self.params = self.config.params
         if hasattr(self.config, 'metadata'):
             self.metadata = self.config.metadata
         if hasattr(self.config, 'operational'):
-            self.operational = self.config.operational            
+            self.operational = self.config.operational
 
     @property
     def coords(self):

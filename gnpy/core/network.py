@@ -1,14 +1,24 @@
 #!/usr/bin/env python3
 
+'''
+gnpy.core.network
+=================
+
+This module contains functions for constructing networks of network elements.
+'''
+
+
 from networkx import DiGraph
 
 from gnpy.core import elements
 from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm
 from gnpy.core.units import UNITS
 
+
 MAX_SPAN_LENGTH = 125000
 TARGET_SPAN_LENGTH = 100000
 MIN_SPAN_LENGTH = 75000
+
 
 def network_from_json(json_data):
     # NOTE|dutc: we could use the following, but it would tie our data format
@@ -30,21 +40,21 @@ def calculate_new_length(fiber_length):
     result = (fiber_length, 1)
     if fiber_length > MAX_SPAN_LENGTH:
         n_spans = int(fiber_length // TARGET_SPAN_LENGTH)
-        
+
         length1 = fiber_length / (n_spans+1)
         result1 = (length1, n_spans+1)
         delta1 = TARGET_SPAN_LENGTH-length1
-        
+
         length2 = fiber_length / n_spans
         delta2 = length2-TARGET_SPAN_LENGTH
         result2 = (length2, n_spans)
-        
+
         if length1<MIN_SPAN_LENGTH and length2<MAX_SPAN_LENGTH:
             result = result2
         elif length2>MAX_SPAN_LENGTH and length1>MIN_SPAN_LENGTH:
             result = result1
         else:
-            if delta1 < delta2: 
+            if delta1 < delta2:
                 result = result1
             else:
                 result = result2
@@ -78,17 +88,17 @@ def split_fiber(network, fiber):
 
         for next_node in next_nodes:
             network.add_edge(prev_node, next_node)
-        
+
     network = add_egress_amplifier(network, prev_node)
     return network
 
 def add_egress_amplifier(network, node):
-    next_nodes = [n for n in network.successors(node) 
+    next_nodes = [n for n in network.successors(node)
         if not (isinstance(n, Edfa) or isinstance(n, Transceiver))]
     i = 1
     for next_node in next_nodes:
         network.remove_edge(node, next_node)
-        
+
         uid = 'Edfa' + str(i)+ '_' + str(node.uid)
         metadata = next_node.metadata
         operational = {'gain_target': node.loss, 'tilt_target': 0}
