@@ -13,6 +13,7 @@ import json
 
 import numpy as np
 from numpy import pi, cos, sqrt, log10
+from scipy import constants
 
 
 def load_json(filename):
@@ -30,7 +31,7 @@ def c():
     """
     Returns the speed of light in meters per second
     """
-    return 299792458.0
+    return constants.c
 
 
 def itufs(spacing, startf=191.35, stopf=196.10):
@@ -53,7 +54,7 @@ def h():
     """
     Returns plank's constant in J*s
     """
-    return 6.62607004e-34
+    return constants.h
 
 
 def lin2db(value):
@@ -64,11 +65,8 @@ def db2lin(value):
     return 10**(value / 10)
 
 
-def wavelength2freq(value):
-    """ Converts wavelength units to frequeuncy units.
-    """
-    return c() / value
-
+wavelength2freq = constants.lambda2nu
+freq2wavelength = constants.nu2lambda
 
 def freq2wavelength(value):
     """ Converts frequency units to wavelength units.
