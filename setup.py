@@ -14,6 +14,7 @@ setup(
     version='0.1.0',
     description='route planning and optimization tool for mesh optical networks',
     long_description=long_description,
+    long_description_content_type='text/x-rst',
     url='https://github.com/Telecominfraproject/gnpy',
     author='Telecom Infra Project',
     classifiers=[
