@@ -11,12 +11,13 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='gnpy',
-    version='0.1.2',
+    version='0.1.3',
     description='route planning and optimization tool for mesh optical networks',
     long_description=long_description,
-    long_description_content_type='text/x-rst',
+    long_description_content_type='text/x-rst; charset=UTF-8',
     url='https://github.com/Telecominfraproject/gnpy',
     author='Telecom Infra Project',
+    author_email='james.powell@telecominfraproject.com',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',

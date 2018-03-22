@@ -1,13 +1,13 @@
-====
+====================================================================
 `gnpy`: mesh optical network route planning and optimization library
-====
+====================================================================
 
 |docs| |build|
 
 **gnpy is an open-source, community-developed library for building route planning
 and optimization tools in real-world mesh optical networks.**
 
-`gnpy <http://github.com/telecominfraproject/gnpy>`_ is:
+`gnpy <http://github.com/telecominfraproject/gnpy>`__ is:
 
 - a sponsored project of the `OOPT/PSE <http://telecominfraproject.com/project-groups-2/backhaul-projects/open-optical-packet-transport/>`_ working group of the `Telecom Infra Project <http://telecominfraproject.com>`_.
 - fully community-driven, fully open source library
@@ -21,7 +21,7 @@ Documentation: https://gnpy.readthedocs.io
 Installation
 ------------
 
-``gnpy`` is hosted in the `Python Package Index <http://pypi.org/>`_ (`gnpy <https://pypi.org/project/gnpy/>`_). It can be installed via:
+``gnpy`` is hosted in the `Python Package Index <http://pypi.org/>`_ (`gnpy <https://pypi.org/project/gnpy/>`__). It can be installed via:
 
 .. code-block:: shell
 
@@ -187,5 +187,5 @@ License
 
 ``gnpy`` is distributed under a standard BSD 3-Clause License.
 
-See `LICENSE <LICENSE>`_ for more details.
+See `LICENSE <LICENSE>`__ for more details.
 
