@@ -47,40 +47,53 @@ def main(args):
             32e9, 0.15, Power(1e-3, 0, 0)) for f in range(1,97)))
 
     trx = [n for n in network.nodes() if isinstance(n, Transceiver)]
-    source, sink = trx[0], trx[1]
- 
-    path = dijkstra_path(network, source, sink)
-    print(f'There are {len(path)} network elements between {source} and {sink}')
+    if args.list>=1:
+        print(*[el.uid[4:] for el in trx], sep='\n')
+    else:
+        try:
+            source = next(el for el in trx if el.uid[4:] == args.source)
+        except StopIteration as e:
+            raise ValueError(f'invalid souce node specified: {args.source!r}') from e
+        try:
+            sink = next(el for el in trx if el.uid[4:] == args.sink)
+        except StopIteration as e:
+            raise ValueError(f'invalid souce node specified: {args.sink!r}') from e            
 
-    for el in path:
-        si = el(si)
-        print(el)
+        path = dijkstra_path(network, source, sink)
+        print(f'There are {len(path)} network elements between {source} and {sink}')
 
-    nodelist = [n for n in network.nodes() if isinstance(n, (Transceiver, Fiber))]
-    pathnodes = [n for n in path if isinstance(n, (Transceiver, Fiber))]
-    edgelist = [(u, v) for u, v in zip(pathnodes, pathnodes[1:])]
-    node_color = ['#ff0000' if n is source or n is sink else
-                  '#900000' if n in path else '#ffdfdf'
-                  for n in nodelist]
-    edge_color = ['#ff9090' if u in path and v in path else '#ababab'
-                  for u, v in edgelist]
-    labels = {n: n.location.city if isinstance(n, Transceiver) else ''
-              for n in pathnodes}
+        for el in path:
+            si = el(si)
+            print(el)
 
-    fig = figure()
-    pos = {n: (n.lng, n.lat) for n in nodelist}
-    kwargs = {'figure': fig, 'pos': pos}
-    plot = draw_networkx_nodes(network, nodelist=nodelist, node_color=node_color, **kwargs)
-    draw_networkx_edges(network, edgelist=edgelist, edge_color=edge_color, **kwargs)
-    draw_networkx_labels(network, labels=labels, font_size=14, **kwargs)
-    title(f'Propagating from {source.loc.city} to {sink.loc.city}')
-    axis('off')
-    show()
+        nodelist = [n for n in network.nodes() if isinstance(n, (Transceiver, Fiber))]
+        pathnodes = [n for n in path if isinstance(n, (Transceiver, Fiber))]
+        edgelist = [(u, v) for u, v in zip(pathnodes, pathnodes[1:])]
+        node_color = ['#ff0000' if n is source or n is sink else
+                      '#900000' if n in path else '#ffdfdf'
+                      for n in nodelist]
+        edge_color = ['#ff9090' if u in path and v in path else '#ababab'
+                      for u, v in edgelist]
+        labels = {n: n.location.city if isinstance(n, Transceiver) else ''
+                  for n in pathnodes}
+
+        fig = figure()
+        pos = {n: (n.lng, n.lat) for n in nodelist}
+        kwargs = {'figure': fig, 'pos': pos}
+        plot = draw_networkx_nodes(network, nodelist=nodelist, node_color=node_color, **kwargs)
+        draw_networkx_edges(network, edgelist=edgelist, edge_color=edge_color, **kwargs)
+        draw_networkx_labels(network, labels=labels, font_size=14, **kwargs)
+        title(f'Propagating from {source.loc.city} to {sink.loc.city}')
+        axis('off')
+        show()
 
 parser = ArgumentParser()
 parser.add_argument('filename', nargs='?', type=Path,
   default= Path(__file__).parent / 'edfa/edfa_example_network.json')
+parser.add_argument('source', type=str, nargs='?', default="", help='source node')
+parser.add_argument('sink', type=str, nargs='?', default="", help='sink node')
 parser.add_argument('-v', '--verbose', action='count')
+parser.add_argument('-l', '--list', action='count', default=0, help='list all network nodes')
 
 if __name__ == '__main__':
     args = parser.parse_args()
