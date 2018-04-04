@@ -13,6 +13,7 @@ from networkx import DiGraph
 from gnpy.core import elements
 from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm
 from gnpy.core.units import UNITS
+from gnpy.core.equipment import *
 
 
 MAX_SPAN_LENGTH = 125000
@@ -54,10 +55,7 @@ def calculate_new_length(fiber_length):
         elif length2>MAX_SPAN_LENGTH and length1>MIN_SPAN_LENGTH:
             result = result1
         else:
-            if delta1 < delta2:
-                result = result1
-            else:
-                result = result2
+            result = result1 if delta1 < delta2 else result2
 
     return result
 
@@ -92,6 +90,9 @@ def split_fiber(network, fiber):
     network = add_egress_amplifier(network, prev_node)
     return network
 
+def select_edfa(ingress_span_loss):
+    return "std_medium_gain"
+
 def add_egress_amplifier(network, node):
     next_nodes = [n for n in network.successors(node)
         if not (isinstance(n, Edfa) or isinstance(n, Transceiver))]
@@ -102,9 +103,9 @@ def add_egress_amplifier(network, node):
         uid = 'Edfa' + str(i)+ '_' + str(node.uid)
         metadata = next_node.metadata
         operational = {'gain_target': node.loss, 'tilt_target': 0}
-        edfa_config_json = 'edfa_config.json'
+        edfa_variety_type = select_edfa(node.loss)
         config = {'uid':uid, 'type': 'Edfa', 'metadata': metadata, \
-                    'config_from_json': edfa_config_json, 'operational': operational}
+                    'type_variety': edfa_variety_type, 'operational': operational}
         new_edfa = Edfa(config)
         network.add_node(new_edfa)
         network.add_edge(node,new_edfa)

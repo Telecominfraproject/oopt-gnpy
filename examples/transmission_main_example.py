@@ -8,8 +8,10 @@ Transmission setup example:
 reads from network json (default = examples/edfa/edfa_example_network.json)
 propagates a 96 channels comb 
 """
+
+from gnpy.core.utils import load_json
+from gnpy.core.equipment import *
 from argparse import ArgumentParser
-from json import load
 from sys import exit
 from pathlib import Path
 from logging import getLogger, basicConfig, INFO, ERROR, DEBUG
@@ -24,6 +26,8 @@ from gnpy.core.info import SpectralInformation, Channel, Power
 #from gnpy.core.algorithms import closed_paths
 
 logger = getLogger(__package__ or __file__)
+eqpt_library = {}
+EQPT_LIBRARY_FILENAME = 'eqpt_config.json'
 
 def format_si(spectral_infos):
     return '\n'.join([
@@ -35,8 +39,8 @@ def format_si(spectral_infos):
 logger = getLogger('gnpy.core')
 
 def main(args):
-    with open(args.filename) as f:
-        json_data = load(f)
+    json_data = load_json(args.filename)
+    read_eqpt_library(EQPT_LIBRARY_FILENAME)
 
     network = network_from_json(json_data)
     build_network(network)
@@ -48,16 +52,19 @@ def main(args):
 
     trx = [n for n in network.nodes() if isinstance(n, Transceiver)]
     if args.list>=1:
-        print(*[el.uid[4:] for el in trx], sep='\n')
+        print(*[el.uid for el in trx], sep='\n')
     else:
         try:
-            source = next(el for el in trx if el.uid[4:] == args.source)
+            source = next(el for el in trx if el.uid == args.source)
         except StopIteration as e:
-            raise ValueError(f'invalid souce node specified: {args.source!r}') from e
+            source = trx[0]
+            print(f'invalid souce node specified: {args.source!r}, replaced with {source}')
+
         try:
-            sink = next(el for el in trx if el.uid[4:] == args.sink)
+            sink = next(el for el in trx if el.uid == args.sink)
         except StopIteration as e:
-            raise ValueError(f'invalid souce node specified: {args.sink!r}') from e            
+            sink = trx[1]
+            print(f'invalid destination node specified: {args.sink!r}, replaced with {sink}')
 
         path = dijkstra_path(network, source, sink)
         print(f'There are {len(path)} network elements between {source} and {sink}')
@@ -89,7 +96,7 @@ def main(args):
 
 parser = ArgumentParser()
 parser.add_argument('filename', nargs='?', type=Path,
-  default= Path(__file__).parent / 'edfa/edfa_example_network.json')
+  default= Path(__file__).parent / 'edfa_example_network.json')
 parser.add_argument('source', type=str, nargs='?', default="", help='source node')
 parser.add_argument('sink', type=str, nargs='?', default="", help='sink node')
 parser.add_argument('-v', '--verbose', action='count')
