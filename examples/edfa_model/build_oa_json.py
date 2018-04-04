@@ -47,7 +47,7 @@ nf_fit = boolean (True, False) :
 """
 
 input_json_file_name = "OA.json" #default path
-output_json_file_name = "edfa_config.json"
+output_json_file_name = "default_edfa_config.json"
 param_field  ="params"
 gain_min_field = "gain_min"
 gain_max_field = "gain_flatmax"
@@ -71,6 +71,7 @@ def read_file(field, file_name):
     #data = list(data.split(","))
     #data = [float(x) for x in data]
     data = np.loadtxt(file_name)
+    print(len(data), file_name)
     if field == gain_ripple_field or field == nf_ripple_field:
         #consider ripple excursion only to avoid redundant information
         #because the max flat_gain is already given by the 'gain_flat' field in json
@@ -78,54 +79,6 @@ def read_file(field, file_name):
         data = data - data.mean()
     data = data.tolist()
     return data
-
-def nf_model(amp_dict):
-    if amp_dict[nf_model_field][nf_model_enabled_field] == True:
-        gain_min = amp_dict[gain_min_field]
-        gain_max = amp_dict[gain_max_field]
-        nf_min = amp_dict[nf_model_field][nf_min_field]
-        nf_max = amp_dict[nf_model_field][nf_max_field]
-        #use NF estimation model based on NFmin and NFmax in json OA file
-        delta_p = 5 #max power dB difference between 1st and 2nd stage coils
-        #dB g1a = (1st stage gain) - (internal voa attenuation)
-        g1a_min = gain_min - (gain_max-gain_min) - delta_p
-        g1a_max = gain_max - delta_p
-        #nf1 and nf2 are the nf of the 1st and 2nd stage coils
-        #calculate nf1 and nf2 values that solve nf_[min/max] = nf1 + nf2 / g1a[min/max]
-        nf2 = lin2db((db2lin(nf_min) - db2lin(nf_max)) / (1/db2lin(g1a_max)-1/db2lin(g1a_min)))
-        nf1 = lin2db(db2lin(nf_min)- db2lin(nf2)/db2lin(g1a_max)) #expression (1)
-
-        """ now checking and recalculating the results:
-        recalculate delta_p to check it is within [1-6] boundaries
-        This is to check that the nf_min and nf_max values from the json file
-        make sense. If not a warning is printed """
-        if nf1 < 4:
-            print('1st coil nf calculated value {} is too low: revise inputs'.format(nf1))
-        if nf2 < nf1 + 0.3 or nf2 > nf1 + 2: 
-            """nf2 should be with [nf1+0.5 - nf1 +2] boundaries
-            there shouldn't be very high nf differences between 2 coils
-            => recalculate delta_p 
-            """            
-            nf2 = max(nf2, nf1+0.3)
-            nf2 = min(nf2, nf1+2)
-            g1a_max = lin2db(db2lin(nf2) / (db2lin(nf_min) - db2lin(nf1))) #use expression (1)
-            delta_p = gain_max - g1a_max
-            g1a_min = gain_min - (gain_max-gain_min) - delta_p
-            if delta_p < 1 or delta_p > 6:
-                #delta_p should be > 1dB and < 6dB => consider user warning if not
-                print('1st coil vs 2nd coil calculated DeltaP {} is not valid: revise inputs'
-                            .format(delta_p))
-        #check the calculated values for nf1 & nf2:
-        nf_min_calc = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_max))
-        nf_max_calc = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_min))
-        if (abs(nf_min_calc-nf_min) > 0.01) or (abs(nf_max_calc-nf_max) > 0.01):
-            print('nf model calculation failed with nf_min {} and nf_max {} calculated'
-                    .format(nf_min_calc, nf_max_calc))
-            print('do not use the generated edfa_config.json file')
-    else :
-        (nf1, nf2, delta_p) = (0, 0, 0)
-
-    return (nf1, nf2, delta_p)
 
 def input_json(path):
     """read the json input file and add all the 96 channels txt files
@@ -138,20 +91,7 @@ def input_json(path):
         if re.search(r'.txt$',str(v)) :
             amp_dict[k] = read_file(k, v)
 
-    #calculate nf of 1st and 2nd coil for the nf_model if 'enabled'==true
-    (nf1, nf2, delta_p) = nf_model(amp_dict)
-    #rename nf_min and nf_max in nf1 and nf2 after the nf model calculation:
-    del amp_dict[nf_model_field][nf_min_field]
-    del amp_dict[nf_model_field][nf_max_field]
-    amp_dict[nf_model_field]['nf1'] = nf1
-    amp_dict[nf_model_field]['nf2'] = nf2
-    amp_dict[nf_model_field]['delta_p'] = delta_p
-    #rename dfg into gain_ripple after removing the average part:
-    amp_dict['gain_ripple'] = amp_dict.pop(gain_ripple_field)
-
-    new_amp_dict = {}
-    new_amp_dict[param_field] = amp_dict
-    amp_text = json.dumps(new_amp_dict, indent=4)
+    amp_text = json.dumps(amp_dict, indent=4)
     #print(amp_text)
     with  open(output_json_file_name,'w') as edfa_json_file:
         edfa_json_file.write(amp_text)
