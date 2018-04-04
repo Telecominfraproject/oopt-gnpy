@@ -126,9 +126,7 @@ if __name__ == '__main__':
               'type': 'Fiber',
               'params': {'length':   round(x.distance, 3),
                          'length_units':    x.distance_units,
-                         'loss_coef': 0.2,
-                         'dispersion': 16.7E-6,
-                         'gamma': 1.27E-3}
+                         'type_variety': "SSMF"}
               }
              for x in links],
         'connections':

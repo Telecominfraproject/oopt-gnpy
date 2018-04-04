@@ -232,6 +232,7 @@ class Edfa(Node):
 
     def __repr__(self):
         return (f'{type(self).__name__}(uid={self.uid!r}, '
+                f'type_variety={self.type_variety!r}, '
                 f'interpol_dgt={self.interpol_dgt!r}, '
                 f'interpol_gain_ripple={self.interpol_gain_ripple!r}, '
                 f'interpol_nf_ripple={self.interpol_nf_ripple!r}, '
@@ -246,6 +247,7 @@ class Edfa(Node):
             return f'{type(self).__name__} {self.uid}'
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
+                          f'  type_variety:      {self.config.type_variety}',
                           f'  gain (dB):         {self.operational.gain_target:.2f}',
                           f'  noise figure (dB): {np.mean(self.nf):.2f}',
                           f'  Power In (dBm):    {self.pin_db:.2f}',
