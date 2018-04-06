@@ -9,28 +9,27 @@ from nf_min and nf_max inputs
 import numpy as np
 from gnpy.core.utils import lin2db, db2lin, load_json
 
-gain_min_field = "gain_min"
-gain_max_field = "gain_flatmax"
-nf_min_field  ="nf_min"
-nf_max_field = "nf_max"
+GAIN_MIN_FIELD = "gain_min"
+GAIN_MAX_FIELD = "gain_flatmax"
+NF_MIN_FIELD  ="nf_min"
+NF_MAX_FIELD = "nf_max"
 
-gain_ripple_field = "dfg"
-nf_ripple_field = "nf_ripple"
-nf_fit_coeff = "nf_fit_coeff"
+DEFAULT_CONFIG_JSON_FILENAME = 'default_edfa_config.json'
+ADVANCED_CONFIG_JSON_FILENAME = 'advanced_config_from_json'
 
 
 def nf_model(amp_dict):
-    gain_min = amp_dict[gain_min_field]
-    gain_max = amp_dict[gain_max_field]
+    gain_min = amp_dict[GAIN_MIN_FIELD]
+    gain_max = amp_dict[GAIN_MAX_FIELD]
     try:
-        nf_min = amp_dict.get(nf_min_field,-100)
-        nf_max = amp_dict.get(nf_max_field,-100)
+        nf_min = amp_dict.get(NF_MIN_FIELD,-100)
+        nf_max = amp_dict.get(NF_MAX_FIELD,-100)
         if nf_min<-10 or nf_max<-10:
             raise ValueError
     except ValueError:
         print(f'invalid or missing nf_min or nf_max values in eqpt_config.json for {amp_dict["type_variety"]}')
-    nf_min = amp_dict.get(nf_min_field,-100)
-    nf_max = amp_dict.get(nf_max_field,-100)
+    nf_min = amp_dict.get(NF_MIN_FIELD,-100)
+    nf_max = amp_dict.get(NF_MAX_FIELD,-100)
     #use NF estimation model based on NFmin and NFmax in json OA file
     delta_p = 5 #max power dB difference between 1st and 2nd stage coils
     #dB g1a = (1st stage gain) - (internal voa attenuation)
@@ -86,18 +85,18 @@ def read_eqpt_library(filename):
         dict_nf_model = {}
         if 'advanced_config_from_json' in el:
             #use advanced amplifier model with full ripple characterization
-            config_json_file_name = el.pop('advanced_config_from_json')
+            config_json_filename = el.pop(ADVANCED_CONFIG_JSON_FILENAME)
             dict_nf_model['nf_model'] = {'enabled': False}
         else:
             #use a default ripple model (only default dgt is defined)
-            config_json_file_name = 'default_edfa_config.json'
+            config_json_filename = DEFAULT_CONFIG_JSON_FILENAME
             (nf1, nf2, delta_p) = nf_model(el)
             #remove nf_min and nf_max field and replace by nf1, nf2 & delta_p
             nf_min = el.pop('nf_min','')
             nf_max = el.pop('nf_max','')
             dict_nf_model['nf_model'] = dict(zip(["enabled","nf1","nf2","delta_p"],[True,nf1,nf2,delta_p]))
 
-        json_data = load_json(config_json_file_name)
+        json_data = load_json(config_json_filename)
         eqpt_library['Edfa'][i] = {**el, **json_data, **dict_nf_model}
 
 
