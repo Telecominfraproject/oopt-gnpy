@@ -10,6 +10,7 @@ propagates a 96 channels comb
 """
 
 from gnpy.core.utils import load_json
+from convert import convert_file
 from gnpy.core.equipment import *
 from argparse import ArgumentParser
 from sys import exit
@@ -38,8 +39,43 @@ def format_si(spectral_infos):
 
 logger = getLogger('gnpy.core')
 
+def plot_network_graph(network, path, source, sink):
+    nodelist = [n for n in network.nodes() if isinstance(n, (Transceiver, Fiber))]
+    pathnodes = [n for n in path if isinstance(n, (Transceiver, Fiber))]
+    edgelist = [(u, v) for u, v in zip(pathnodes, pathnodes[1:])]
+    node_color = ['#ff0000' if n is source or n is sink else
+                  '#900000' if n in path else '#ffdfdf'
+                  for n in nodelist]
+    edge_color = ['#ff9090' if u in path and v in path else '#ababab'
+                  for u, v in edgelist]
+    labels = {n: n.location.city if isinstance(n, Transceiver) else ''
+              for n in pathnodes}
+
+    fig = figure()
+    pos = {n: (n.lng, n.lat) for n in nodelist}
+    kwargs = {'figure': fig, 'pos': pos}
+    plot = draw_networkx_nodes(network, nodelist=nodelist, node_color=node_color, **kwargs)
+    draw_networkx_edges(network, edgelist=edgelist, edge_color=edge_color, **kwargs)
+    draw_networkx_labels(network, labels=labels, font_size=14, **kwargs)
+    title(f'Propagating from {source.loc.city} to {sink.loc.city}')
+    axis('off')
+    show()
+
+
 def main(args):
-    json_data = load_json(args.filename)
+    input_filename = str(args.filename)
+    split_filename = input_filename.split(".")
+    json_filename = split_filename[0]+'.json'
+    try:
+        assert split_filename[1] in ('json','xls','csv','xlsm')
+    except AssertionError as e:
+        print(f'invalid file extension .{split_filename[1]}')
+        raise e
+    if split_filename[1] != 'json':
+        print(f'parse excel input to {json_filename}')
+        convert_file(input_filename)
+
+    json_data = load_json(json_filename)
     read_eqpt_library(EQPT_LIBRARY_FILENAME)
 
     network = network_from_json(json_data)
@@ -73,26 +109,7 @@ def main(args):
             si = el(si)
             print(el)
 
-        nodelist = [n for n in network.nodes() if isinstance(n, (Transceiver, Fiber))]
-        pathnodes = [n for n in path if isinstance(n, (Transceiver, Fiber))]
-        edgelist = [(u, v) for u, v in zip(pathnodes, pathnodes[1:])]
-        node_color = ['#ff0000' if n is source or n is sink else
-                      '#900000' if n in path else '#ffdfdf'
-                      for n in nodelist]
-        edge_color = ['#ff9090' if u in path and v in path else '#ababab'
-                      for u, v in edgelist]
-        labels = {n: n.location.city if isinstance(n, Transceiver) else ''
-                  for n in pathnodes}
-
-        fig = figure()
-        pos = {n: (n.lng, n.lat) for n in nodelist}
-        kwargs = {'figure': fig, 'pos': pos}
-        plot = draw_networkx_nodes(network, nodelist=nodelist, node_color=node_color, **kwargs)
-        draw_networkx_edges(network, edgelist=edgelist, edge_color=edge_color, **kwargs)
-        draw_networkx_labels(network, labels=labels, font_size=14, **kwargs)
-        title(f'Propagating from {source.loc.city} to {sink.loc.city}')
-        axis('off')
-        show()
+        #plot_network_graph(network, path, source, sink)
 
 parser = ArgumentParser()
 parser.add_argument('filename', nargs='?', type=Path,
