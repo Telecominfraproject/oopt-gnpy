@@ -20,7 +20,11 @@ parser.add_argument('-f', '--filter-region', action='append', default=[])
 all_rows = lambda sh, start=0: (sh.row(x) for x in range(start, sh.nrows))
 
 class Node(namedtuple('Node', 'city state country region latitude longitude node_type')):
-    def __new__(cls, city, state, country, region, latitude, longitude, node_type='ROADM'):
+    def __new__(cls, city, state='', country='', region='', latitude=0, longitude=0, node_type='ILA'):
+        values = [latitude, longitude, node_type]
+        default_values = [0, 0, 'ILA']
+        [latitude, longitude, node_type] \
+            = [x[0] if x[0] != '' else x[1] for x in zip(values,default_values)]
         return super().__new__(cls, city, state, country, region, latitude, longitude, node_type)
 
 class Link(namedtuple('Link', 'from_city to_city \
@@ -33,8 +37,17 @@ class Link(namedtuple('Link', 'from_city to_city \
       west_distance=-100, west_fiber='SSMF', west_lineic=0.2, 
       west_con_in=0.5, west_con_out=0.5, west_pmd=0.1, west_cable='',
       distance_units='km'):
-        if west_distance == -100:
-            west_distance = east_distance
+        values = [from_city, to_city, 
+            east_distance, east_fiber, east_lineic, east_con_in, east_con_out, east_pmd, east_cable,
+            west_distance, west_fiber, west_lineic, west_con_in, west_con_out, west_pmd, west_cable]
+        default_values = ['','',0,'SSMF',0.2,0.5,0.5,0.1,'',-100,'SSMF',0.2,0.5,0.5,0.1,'']
+        [from_city, to_city, 
+            east_distance, east_fiber, east_lineic, east_con_in, east_con_out, east_pmd, east_cable,
+            west_distance, west_fiber, west_lineic, west_con_in, west_con_out, west_pmd, west_cable]\
+            = [x[0] if x[0] != '' else x[1] for x in zip(values,default_values)]
+
+        west_distance = east_distance if west_distance == -100 else west_distance
+
         return super().__new__(cls, from_city, to_city,
           east_distance, east_fiber, east_lineic, east_con_in, east_con_out, east_pmd, east_cable,
           west_distance, west_fiber, west_lineic, west_con_in, west_con_out, west_pmd, west_cable,
@@ -60,13 +73,17 @@ def convert_file(input_filename, filter_region=[]):
         if nodes_by_city[l.to_city].node_type.lower() == 'ila':
             links_by_city[f'{l.to_city}'].append(l)
     repeat = False
-    for city,link in links_by_city.items():
+
+    for city,link in list(links_by_city.items()):
         if len(link) != 2:
             #wrong input: ILA sites can only be Degree 2 
             # => correct to make it a ROADM and remove entry in links_by_city
-            nodes_by_city[city].node_type = 'ROADM'
+            #TODO : put in log rather than print
+            print(f'invalid node type ({nodes_by_city[city].node_type})\
+ specified in {city}, replaced by ROADM')
+            nodes_by_city[city] = nodes_by_city[city]._replace(node_type='ROADM')
+            nodes = [n._replace(node_type='ROADM') if n.city==city else n for n in nodes]
             del links_by_city[city]
-
 
     data = {
         'elements':
@@ -143,17 +160,21 @@ def parse_excel(input_filename):
         nodes_sheet = wb.sheet_by_name('Nodes')
         links_sheet = wb.sheet_by_name('Links')
 
-        """
         # sanity check
+        """
         header = [x.value.strip() for x in nodes_sheet.row(4)]
         expected = ['City', 'State', 'Country', 'Region', 'Latitude', 'Longitude']
         if header != expected:
             raise ValueError(f'Malformed header on Nodes sheet: {header} != {expected}')
         """ 
-        
+
         nodes = []
         for row in all_rows(nodes_sheet, start=5):
             nodes.append(Node(*(x.value for x in row)))
+        #check input
+        expected_node_types = ('ROADM', 'ILA', 'FUSED')
+        nodes = [n._replace(node_type='ILA') 
+                if not (n.node_type in expected_node_types) else n for n in nodes]
 
         # sanity check
         """

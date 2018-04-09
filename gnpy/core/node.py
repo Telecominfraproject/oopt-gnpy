@@ -20,7 +20,7 @@ via subclassing.
 
 from uuid import uuid4
 from gnpy.core.utils import load_json
-from gnpy.core.equipment import get_eqpt_config
+from gnpy.core.equipment import get_eqpt_params
 
 
 class ConfigStruct:
@@ -31,7 +31,7 @@ class ConfigStruct:
         if 'type_variety' in config:
             #print('avant',config['type_variety'], config)
             config['params'] = {**config.get('params',{}),
-                                **get_eqpt_config(config['type_variety'])}
+                                **get_eqpt_params(config['type_variety'])}
             #print('apres', config)
 
         self.set_config_attr(config)
