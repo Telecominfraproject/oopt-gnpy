@@ -100,8 +100,8 @@ def read_eqpt_library(filename):
         eqpt_library['Edfa'][i] = {**el, **json_data, **dict_nf_model}
 
 
-def get_eqpt_config(eqpt_name):
-    """returns the config of an Edfa or Fiber 
+def get_eqpt_params(eqpt_name):
+    """returns the params attributs of an Edfa or Fiber 
     by finding it in the eqpt_library
     input parameter eqpt_name = type_variety of the eqpt
     """
@@ -113,7 +113,7 @@ def get_eqpt_config(eqpt_name):
                     if eqpt.get('type_variety','') == eqpt_name)
         eqpt_config = dict(eqpt)
         del eqpt_config['type_variety']
-    except:
-        pass
+    except StopIteration as e:
+        print(f'cannot find eqpt {eqpt_name} in eqpt library')
+        #TODO log it
     return eqpt_config
-
