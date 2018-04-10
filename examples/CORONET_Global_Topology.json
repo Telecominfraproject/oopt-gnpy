@@ -1,30 +1,6 @@
 {
   "elements": [
     {
-      "uid": "trx Abilene",
-      "metadata": {
-        "location": {
-          "city": "Abilene",
-          "region": "CONUS",
-          "latitude": 32.45,
-          "longitude": -99.739998
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Albany",
-      "metadata": {
-        "location": {
-          "city": "Albany",
-          "region": "CONUS",
-          "latitude": 42.6699982,
-          "longitude": -73.8000029
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
       "uid": "trx Albuquerque",
       "metadata": {
         "location": {
@@ -49,18 +25,6 @@
       "type": "Transceiver"
     },
     {
-      "uid": "trx Austin",
-      "metadata": {
-        "location": {
-          "city": "Austin",
-          "region": "CONUS",
-          "latitude": 30.3099988,
-          "longitude": -97.7500018
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
       "uid": "trx Baltimore",
       "metadata": {
         "location": {
@@ -68,18 +32,6 @@
           "region": "CONUS",
           "latitude": 39.2999992,
           "longitude": -76.6100008
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Baton_Rouge",
-      "metadata": {
-        "location": {
-          "city": "Baton_Rouge",
-          "region": "CONUS",
-          "latitude": 30.4499996,
-          "longitude": -91.1299968
         }
       },
       "type": "Transceiver"
@@ -104,66 +56,6 @@
           "region": "CONUS",
           "latitude": 33.5299985,
           "longitude": -86.8000029
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Bismarck",
-      "metadata": {
-        "location": {
-          "city": "Bismarck",
-          "region": "CONUS",
-          "latitude": 46.81000154,
-          "longitude": -100.7699965
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Boston",
-      "metadata": {
-        "location": {
-          "city": "Boston",
-          "region": "CONUS",
-          "latitude": 42.3400005,
-          "longitude": -71.0199959
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Buffalo",
-      "metadata": {
-        "location": {
-          "city": "Buffalo",
-          "region": "CONUS",
-          "latitude": 42.8899993,
-          "longitude": -78.860001
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Charleston",
-      "metadata": {
-        "location": {
-          "city": "Charleston",
-          "region": "CONUS",
-          "latitude": 32.7900008,
-          "longitude": -79.9899982
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Charlotte",
-      "metadata": {
-        "location": {
-          "city": "Charlotte",
-          "region": "CONUS",
-          "latitude": 35.2,
-          "longitude": -80.83
         }
       },
       "type": "Transceiver"
@@ -241,18 +133,6 @@
       "type": "Transceiver"
     },
     {
-      "uid": "trx Detroit",
-      "metadata": {
-        "location": {
-          "city": "Detroit",
-          "region": "CONUS",
-          "latitude": 42.3800019,
-          "longitude": -83.0999998
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
       "uid": "trx El_Paso",
       "metadata": {
         "location": {
@@ -284,18 +164,6 @@
           "region": "CONUS",
           "latitude": 36.0800024,
           "longitude": -79.8300018
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Hartford",
-      "metadata": {
-        "location": {
-          "city": "Hartford",
-          "region": "CONUS",
-          "latitude": 41.7700004,
-          "longitude": -72.6800003
         }
       },
       "type": "Transceiver"
@@ -349,30 +217,6 @@
       "type": "Transceiver"
     },
     {
-      "uid": "trx Little_Rock",
-      "metadata": {
-        "location": {
-          "city": "Little_Rock",
-          "region": "CONUS",
-          "latitude": 34.72,
-          "longitude": -92.35
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Long_Island",
-      "metadata": {
-        "location": {
-          "city": "Long_Island",
-          "region": "CONUS",
-          "latitude": 40.5899999,
-          "longitude": -73.6699993
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
       "uid": "trx Los_Angeles",
       "metadata": {
         "location": {
@@ -397,18 +241,6 @@
       "type": "Transceiver"
     },
     {
-      "uid": "trx Memphis",
-      "metadata": {
-        "location": {
-          "city": "Memphis",
-          "region": "CONUS",
-          "latitude": 35.110001,
-          "longitude": -90.010004
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
       "uid": "trx Miami",
       "metadata": {
         "location": {
@@ -416,18 +248,6 @@
           "region": "CONUS",
           "latitude": 25.7800006,
           "longitude": -80.2099997
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Milwaukee",
-      "metadata": {
-        "location": {
-          "city": "Milwaukee",
-          "region": "CONUS",
-          "latitude": 43.0600013,
-          "longitude": -87.9700005
         }
       },
       "type": "Transceiver"
@@ -481,30 +301,6 @@
       "type": "Transceiver"
     },
     {
-      "uid": "trx Newark",
-      "metadata": {
-        "location": {
-          "city": "Newark",
-          "region": "CONUS",
-          "latitude": 40.7200012,
-          "longitude": -74.1699986
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Norfolk",
-      "metadata": {
-        "location": {
-          "city": "Norfolk",
-          "region": "CONUS",
-          "latitude": 36.9199982,
-          "longitude": -76.2399978
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
       "uid": "trx Oakland",
       "metadata": {
         "location": {
@@ -517,18 +313,6 @@
       "type": "Transceiver"
     },
     {
-      "uid": "trx Oklahoma_City",
-      "metadata": {
-        "location": {
-          "city": "Oklahoma_City",
-          "region": "CONUS",
-          "latitude": 35.4700015,
-          "longitude": -97.5100028
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
       "uid": "trx Omaha",
       "metadata": {
         "location": {
@@ -536,18 +320,6 @@
           "region": "CONUS",
           "latitude": 41.2599984,
           "longitude": -96.0100022
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Orlando",
-      "metadata": {
-        "location": {
-          "city": "Orlando",
-          "region": "CONUS",
-          "latitude": 28.4999994,
-          "longitude": -81.370003
         }
       },
       "type": "Transceiver"
@@ -601,18 +373,6 @@
       "type": "Transceiver"
     },
     {
-      "uid": "trx Providence",
-      "metadata": {
-        "location": {
-          "city": "Providence",
-          "region": "CONUS",
-          "latitude": 41.82,
-          "longitude": -71.42
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
       "uid": "trx Raleigh",
       "metadata": {
         "location": {
@@ -620,42 +380,6 @@
           "region": "CONUS",
           "latitude": 35.8199995,
           "longitude": -78.6600034
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Richmond",
-      "metadata": {
-        "location": {
-          "city": "Richmond",
-          "region": "CONUS",
-          "latitude": 37.5299986,
-          "longitude": -77.4700015
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Rochester",
-      "metadata": {
-        "location": {
-          "city": "Rochester",
-          "region": "CONUS",
-          "latitude": 43.1699985,
-          "longitude": -77.620003
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Sacramento",
-      "metadata": {
-        "location": {
-          "city": "Sacramento",
-          "region": "CONUS",
-          "latitude": 38.56999946,
-          "longitude": -121.4700016
         }
       },
       "type": "Transceiver"
@@ -673,66 +397,6 @@
       "type": "Transceiver"
     },
     {
-      "uid": "trx San_Antonio",
-      "metadata": {
-        "location": {
-          "city": "San_Antonio",
-          "region": "CONUS",
-          "latitude": 29.459997,
-          "longitude": -98.510002
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx San_Diego",
-      "metadata": {
-        "location": {
-          "city": "San_Diego",
-          "region": "CONUS",
-          "latitude": 32.8100017,
-          "longitude": -117.139999
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx San_Francisco",
-      "metadata": {
-        "location": {
-          "city": "San_Francisco",
-          "region": "CONUS",
-          "latitude": 37.65999942,
-          "longitude": -122.4199987
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx San_Jose",
-      "metadata": {
-        "location": {
-          "city": "San_Jose",
-          "region": "CONUS",
-          "latitude": 37.29999947,
-          "longitude": -121.8499985
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Santa_Barbara",
-      "metadata": {
-        "location": {
-          "city": "Santa_Barbara",
-          "region": "CONUS",
-          "latitude": 34.43000021,
-          "longitude": -119.7200014
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
       "uid": "trx Scranton",
       "metadata": {
         "location": {
@@ -740,42 +404,6 @@
           "region": "CONUS",
           "latitude": 41.4,
           "longitude": -75.67
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Seattle",
-      "metadata": {
-        "location": {
-          "city": "Seattle",
-          "region": "CONUS",
-          "latitude": 47.61999916,
-          "longitude": -122.3499985
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Spokane",
-      "metadata": {
-        "location": {
-          "city": "Spokane",
-          "region": "CONUS",
-          "latitude": 47.66999805,
-          "longitude": -117.4100038
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Springfield",
-      "metadata": {
-        "location": {
-          "city": "Springfield",
-          "region": "CONUS",
-          "latitude": 39.5,
-          "longitude": -89.4
         }
       },
       "type": "Transceiver"
@@ -805,66 +433,6 @@
       "type": "Transceiver"
     },
     {
-      "uid": "trx Tallahassee",
-      "metadata": {
-        "location": {
-          "city": "Tallahassee",
-          "region": "CONUS",
-          "latitude": 30.46,
-          "longitude": -84.28
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Tampa",
-      "metadata": {
-        "location": {
-          "city": "Tampa",
-          "region": "CONUS",
-          "latitude": 27.9599988,
-          "longitude": -82.4800035
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Toledo",
-      "metadata": {
-        "location": {
-          "city": "Toledo",
-          "region": "CONUS",
-          "latitude": 41.659997,
-          "longitude": -83.58
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Tucson",
-      "metadata": {
-        "location": {
-          "city": "Tucson",
-          "region": "CONUS",
-          "latitude": 32.2,
-          "longitude": -110.89
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Tulsa",
-      "metadata": {
-        "location": {
-          "city": "Tulsa",
-          "region": "CONUS",
-          "latitude": 36.13,
-          "longitude": -95.92
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
       "uid": "trx Washington_DC",
       "metadata": {
         "location": {
@@ -877,30 +445,6 @@
       "type": "Transceiver"
     },
     {
-      "uid": "trx West_Palm_Beach",
-      "metadata": {
-        "location": {
-          "city": "West_Palm_Beach",
-          "region": "CONUS",
-          "latitude": 26.7499997,
-          "longitude": -80.1299975
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Wilmington",
-      "metadata": {
-        "location": {
-          "city": "Wilmington",
-          "region": "CONUS",
-          "latitude": 39.7400018,
-          "longitude": -75.5299989
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
       "uid": "trx Amsterdam",
       "metadata": {
         "location": {
@@ -908,54 +452,6 @@
           "region": "Europe",
           "latitude": 52.3699996,
           "longitude": 4.88999915
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Berlin",
-      "metadata": {
-        "location": {
-          "city": "Berlin",
-          "region": "Europe",
-          "latitude": 52.520002,
-          "longitude": 13.379995
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Brussels",
-      "metadata": {
-        "location": {
-          "city": "Brussels",
-          "region": "Europe",
-          "latitude": 50.830002,
-          "longitude": 4.330002
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Bucharest",
-      "metadata": {
-        "location": {
-          "city": "Bucharest",
-          "region": "Europe",
-          "latitude": 44.44,
-          "longitude": 26.1
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Frankfurt",
-      "metadata": {
-        "location": {
-          "city": "Frankfurt",
-          "region": "Europe",
-          "latitude": 50.1199992,
-          "longitude": 8.68000104
         }
       },
       "type": "Transceiver"
@@ -980,18 +476,6 @@
           "region": "Europe",
           "latitude": 51.5200005,
           "longitude": -0.100000296
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Madrid",
-      "metadata": {
-        "location": {
-          "city": "Madrid",
-          "region": "Europe",
-          "latitude": 40.419998,
-          "longitude": -3.7100002
         }
       },
       "type": "Transceiver"
@@ -1045,42 +529,6 @@
       "type": "Transceiver"
     },
     {
-      "uid": "trx Zurich",
-      "metadata": {
-        "location": {
-          "city": "Zurich",
-          "region": "Europe",
-          "latitude": 47.3800015,
-          "longitude": 8.5399996
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Bangkok",
-      "metadata": {
-        "location": {
-          "city": "Bangkok",
-          "region": "Asia",
-          "latitude": 13.73,
-          "longitude": 100.5
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Beijing",
-      "metadata": {
-        "location": {
-          "city": "Beijing",
-          "region": "Asia",
-          "latitude": 39.92999979,
-          "longitude": 116.4000013
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
       "uid": "trx Delhi",
       "metadata": {
         "location": {
@@ -1129,42 +577,6 @@
       "type": "Transceiver"
     },
     {
-      "uid": "trx Seoul",
-      "metadata": {
-        "location": {
-          "city": "Seoul",
-          "region": "Asia",
-          "latitude": 37.56000108,
-          "longitude": 126.9899988
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Shanghai",
-      "metadata": {
-        "location": {
-          "city": "Shanghai",
-          "region": "Asia",
-          "latitude": 31.23,
-          "longitude": 121.47
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
-      "uid": "trx Singapore",
-      "metadata": {
-        "location": {
-          "city": "Singapore",
-          "region": "Asia",
-          "latitude": 1.299999907,
-          "longitude": 103.8499992
-        }
-      },
-      "type": "Transceiver"
-    },
-    {
       "uid": "trx Sydney",
       "metadata": {
         "location": {
@@ -1201,30 +613,6 @@
       "type": "Transceiver"
     },
     {
-      "uid": "roadm Abilene",
-      "metadata": {
-        "location": {
-          "city": "Abilene",
-          "region": "CONUS",
-          "latitude": 32.45,
-          "longitude": -99.739998
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Albany",
-      "metadata": {
-        "location": {
-          "city": "Albany",
-          "region": "CONUS",
-          "latitude": 42.6699982,
-          "longitude": -73.8000029
-        }
-      },
-      "type": "Roadm"
-    },
-    {
       "uid": "roadm Albuquerque",
       "metadata": {
         "location": {
@@ -1249,18 +637,6 @@
       "type": "Roadm"
     },
     {
-      "uid": "roadm Austin",
-      "metadata": {
-        "location": {
-          "city": "Austin",
-          "region": "CONUS",
-          "latitude": 30.3099988,
-          "longitude": -97.7500018
-        }
-      },
-      "type": "Roadm"
-    },
-    {
       "uid": "roadm Baltimore",
       "metadata": {
         "location": {
@@ -1268,18 +644,6 @@
           "region": "CONUS",
           "latitude": 39.2999992,
           "longitude": -76.6100008
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Baton_Rouge",
-      "metadata": {
-        "location": {
-          "city": "Baton_Rouge",
-          "region": "CONUS",
-          "latitude": 30.4499996,
-          "longitude": -91.1299968
         }
       },
       "type": "Roadm"
@@ -1304,66 +668,6 @@
           "region": "CONUS",
           "latitude": 33.5299985,
           "longitude": -86.8000029
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Bismarck",
-      "metadata": {
-        "location": {
-          "city": "Bismarck",
-          "region": "CONUS",
-          "latitude": 46.81000154,
-          "longitude": -100.7699965
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Boston",
-      "metadata": {
-        "location": {
-          "city": "Boston",
-          "region": "CONUS",
-          "latitude": 42.3400005,
-          "longitude": -71.0199959
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Buffalo",
-      "metadata": {
-        "location": {
-          "city": "Buffalo",
-          "region": "CONUS",
-          "latitude": 42.8899993,
-          "longitude": -78.860001
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Charleston",
-      "metadata": {
-        "location": {
-          "city": "Charleston",
-          "region": "CONUS",
-          "latitude": 32.7900008,
-          "longitude": -79.9899982
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Charlotte",
-      "metadata": {
-        "location": {
-          "city": "Charlotte",
-          "region": "CONUS",
-          "latitude": 35.2,
-          "longitude": -80.83
         }
       },
       "type": "Roadm"
@@ -1441,18 +745,6 @@
       "type": "Roadm"
     },
     {
-      "uid": "roadm Detroit",
-      "metadata": {
-        "location": {
-          "city": "Detroit",
-          "region": "CONUS",
-          "latitude": 42.3800019,
-          "longitude": -83.0999998
-        }
-      },
-      "type": "Roadm"
-    },
-    {
       "uid": "roadm El_Paso",
       "metadata": {
         "location": {
@@ -1484,18 +776,6 @@
           "region": "CONUS",
           "latitude": 36.0800024,
           "longitude": -79.8300018
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Hartford",
-      "metadata": {
-        "location": {
-          "city": "Hartford",
-          "region": "CONUS",
-          "latitude": 41.7700004,
-          "longitude": -72.6800003
         }
       },
       "type": "Roadm"
@@ -1549,30 +829,6 @@
       "type": "Roadm"
     },
     {
-      "uid": "roadm Little_Rock",
-      "metadata": {
-        "location": {
-          "city": "Little_Rock",
-          "region": "CONUS",
-          "latitude": 34.72,
-          "longitude": -92.35
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Long_Island",
-      "metadata": {
-        "location": {
-          "city": "Long_Island",
-          "region": "CONUS",
-          "latitude": 40.5899999,
-          "longitude": -73.6699993
-        }
-      },
-      "type": "Roadm"
-    },
-    {
       "uid": "roadm Los_Angeles",
       "metadata": {
         "location": {
@@ -1597,18 +853,6 @@
       "type": "Roadm"
     },
     {
-      "uid": "roadm Memphis",
-      "metadata": {
-        "location": {
-          "city": "Memphis",
-          "region": "CONUS",
-          "latitude": 35.110001,
-          "longitude": -90.010004
-        }
-      },
-      "type": "Roadm"
-    },
-    {
       "uid": "roadm Miami",
       "metadata": {
         "location": {
@@ -1616,18 +860,6 @@
           "region": "CONUS",
           "latitude": 25.7800006,
           "longitude": -80.2099997
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Milwaukee",
-      "metadata": {
-        "location": {
-          "city": "Milwaukee",
-          "region": "CONUS",
-          "latitude": 43.0600013,
-          "longitude": -87.9700005
         }
       },
       "type": "Roadm"
@@ -1681,30 +913,6 @@
       "type": "Roadm"
     },
     {
-      "uid": "roadm Newark",
-      "metadata": {
-        "location": {
-          "city": "Newark",
-          "region": "CONUS",
-          "latitude": 40.7200012,
-          "longitude": -74.1699986
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Norfolk",
-      "metadata": {
-        "location": {
-          "city": "Norfolk",
-          "region": "CONUS",
-          "latitude": 36.9199982,
-          "longitude": -76.2399978
-        }
-      },
-      "type": "Roadm"
-    },
-    {
       "uid": "roadm Oakland",
       "metadata": {
         "location": {
@@ -1717,18 +925,6 @@
       "type": "Roadm"
     },
     {
-      "uid": "roadm Oklahoma_City",
-      "metadata": {
-        "location": {
-          "city": "Oklahoma_City",
-          "region": "CONUS",
-          "latitude": 35.4700015,
-          "longitude": -97.5100028
-        }
-      },
-      "type": "Roadm"
-    },
-    {
       "uid": "roadm Omaha",
       "metadata": {
         "location": {
@@ -1736,18 +932,6 @@
           "region": "CONUS",
           "latitude": 41.2599984,
           "longitude": -96.0100022
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Orlando",
-      "metadata": {
-        "location": {
-          "city": "Orlando",
-          "region": "CONUS",
-          "latitude": 28.4999994,
-          "longitude": -81.370003
         }
       },
       "type": "Roadm"
@@ -1801,18 +985,6 @@
       "type": "Roadm"
     },
     {
-      "uid": "roadm Providence",
-      "metadata": {
-        "location": {
-          "city": "Providence",
-          "region": "CONUS",
-          "latitude": 41.82,
-          "longitude": -71.42
-        }
-      },
-      "type": "Roadm"
-    },
-    {
       "uid": "roadm Raleigh",
       "metadata": {
         "location": {
@@ -1820,42 +992,6 @@
           "region": "CONUS",
           "latitude": 35.8199995,
           "longitude": -78.6600034
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Richmond",
-      "metadata": {
-        "location": {
-          "city": "Richmond",
-          "region": "CONUS",
-          "latitude": 37.5299986,
-          "longitude": -77.4700015
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Rochester",
-      "metadata": {
-        "location": {
-          "city": "Rochester",
-          "region": "CONUS",
-          "latitude": 43.1699985,
-          "longitude": -77.620003
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Sacramento",
-      "metadata": {
-        "location": {
-          "city": "Sacramento",
-          "region": "CONUS",
-          "latitude": 38.56999946,
-          "longitude": -121.4700016
         }
       },
       "type": "Roadm"
@@ -1873,66 +1009,6 @@
       "type": "Roadm"
     },
     {
-      "uid": "roadm San_Antonio",
-      "metadata": {
-        "location": {
-          "city": "San_Antonio",
-          "region": "CONUS",
-          "latitude": 29.459997,
-          "longitude": -98.510002
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm San_Diego",
-      "metadata": {
-        "location": {
-          "city": "San_Diego",
-          "region": "CONUS",
-          "latitude": 32.8100017,
-          "longitude": -117.139999
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm San_Francisco",
-      "metadata": {
-        "location": {
-          "city": "San_Francisco",
-          "region": "CONUS",
-          "latitude": 37.65999942,
-          "longitude": -122.4199987
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm San_Jose",
-      "metadata": {
-        "location": {
-          "city": "San_Jose",
-          "region": "CONUS",
-          "latitude": 37.29999947,
-          "longitude": -121.8499985
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Santa_Barbara",
-      "metadata": {
-        "location": {
-          "city": "Santa_Barbara",
-          "region": "CONUS",
-          "latitude": 34.43000021,
-          "longitude": -119.7200014
-        }
-      },
-      "type": "Roadm"
-    },
-    {
       "uid": "roadm Scranton",
       "metadata": {
         "location": {
@@ -1940,42 +1016,6 @@
           "region": "CONUS",
           "latitude": 41.4,
           "longitude": -75.67
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Seattle",
-      "metadata": {
-        "location": {
-          "city": "Seattle",
-          "region": "CONUS",
-          "latitude": 47.61999916,
-          "longitude": -122.3499985
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Spokane",
-      "metadata": {
-        "location": {
-          "city": "Spokane",
-          "region": "CONUS",
-          "latitude": 47.66999805,
-          "longitude": -117.4100038
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Springfield",
-      "metadata": {
-        "location": {
-          "city": "Springfield",
-          "region": "CONUS",
-          "latitude": 39.5,
-          "longitude": -89.4
         }
       },
       "type": "Roadm"
@@ -2005,66 +1045,6 @@
       "type": "Roadm"
     },
     {
-      "uid": "roadm Tallahassee",
-      "metadata": {
-        "location": {
-          "city": "Tallahassee",
-          "region": "CONUS",
-          "latitude": 30.46,
-          "longitude": -84.28
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Tampa",
-      "metadata": {
-        "location": {
-          "city": "Tampa",
-          "region": "CONUS",
-          "latitude": 27.9599988,
-          "longitude": -82.4800035
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Toledo",
-      "metadata": {
-        "location": {
-          "city": "Toledo",
-          "region": "CONUS",
-          "latitude": 41.659997,
-          "longitude": -83.58
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Tucson",
-      "metadata": {
-        "location": {
-          "city": "Tucson",
-          "region": "CONUS",
-          "latitude": 32.2,
-          "longitude": -110.89
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Tulsa",
-      "metadata": {
-        "location": {
-          "city": "Tulsa",
-          "region": "CONUS",
-          "latitude": 36.13,
-          "longitude": -95.92
-        }
-      },
-      "type": "Roadm"
-    },
-    {
       "uid": "roadm Washington_DC",
       "metadata": {
         "location": {
@@ -2077,30 +1057,6 @@
       "type": "Roadm"
     },
     {
-      "uid": "roadm West_Palm_Beach",
-      "metadata": {
-        "location": {
-          "city": "West_Palm_Beach",
-          "region": "CONUS",
-          "latitude": 26.7499997,
-          "longitude": -80.1299975
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Wilmington",
-      "metadata": {
-        "location": {
-          "city": "Wilmington",
-          "region": "CONUS",
-          "latitude": 39.7400018,
-          "longitude": -75.5299989
-        }
-      },
-      "type": "Roadm"
-    },
-    {
       "uid": "roadm Amsterdam",
       "metadata": {
         "location": {
@@ -2108,54 +1064,6 @@
           "region": "Europe",
           "latitude": 52.3699996,
           "longitude": 4.88999915
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Berlin",
-      "metadata": {
-        "location": {
-          "city": "Berlin",
-          "region": "Europe",
-          "latitude": 52.520002,
-          "longitude": 13.379995
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Brussels",
-      "metadata": {
-        "location": {
-          "city": "Brussels",
-          "region": "Europe",
-          "latitude": 50.830002,
-          "longitude": 4.330002
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Bucharest",
-      "metadata": {
-        "location": {
-          "city": "Bucharest",
-          "region": "Europe",
-          "latitude": 44.44,
-          "longitude": 26.1
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Frankfurt",
-      "metadata": {
-        "location": {
-          "city": "Frankfurt",
-          "region": "Europe",
-          "latitude": 50.1199992,
-          "longitude": 8.68000104
         }
       },
       "type": "Roadm"
@@ -2180,18 +1088,6 @@
           "region": "Europe",
           "latitude": 51.5200005,
           "longitude": -0.100000296
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Madrid",
-      "metadata": {
-        "location": {
-          "city": "Madrid",
-          "region": "Europe",
-          "latitude": 40.419998,
-          "longitude": -3.7100002
         }
       },
       "type": "Roadm"
@@ -2245,42 +1141,6 @@
       "type": "Roadm"
     },
     {
-      "uid": "roadm Zurich",
-      "metadata": {
-        "location": {
-          "city": "Zurich",
-          "region": "Europe",
-          "latitude": 47.3800015,
-          "longitude": 8.5399996
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Bangkok",
-      "metadata": {
-        "location": {
-          "city": "Bangkok",
-          "region": "Asia",
-          "latitude": 13.73,
-          "longitude": 100.5
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Beijing",
-      "metadata": {
-        "location": {
-          "city": "Beijing",
-          "region": "Asia",
-          "latitude": 39.92999979,
-          "longitude": 116.4000013
-        }
-      },
-      "type": "Roadm"
-    },
-    {
       "uid": "roadm Delhi",
       "metadata": {
         "location": {
@@ -2324,42 +1184,6 @@
           "region": "Asia",
           "latitude": 18.9599987,
           "longitude": 72.8199999
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Seoul",
-      "metadata": {
-        "location": {
-          "city": "Seoul",
-          "region": "Asia",
-          "latitude": 37.56000108,
-          "longitude": 126.9899988
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Shanghai",
-      "metadata": {
-        "location": {
-          "city": "Shanghai",
-          "region": "Asia",
-          "latitude": 31.23,
-          "longitude": 121.47
-        }
-      },
-      "type": "Roadm"
-    },
-    {
-      "uid": "roadm Singapore",
-      "metadata": {
-        "location": {
-          "city": "Singapore",
-          "region": "Asia",
-          "latitude": 1.299999907,
-          "longitude": 103.8499992
         }
       },
       "type": "Roadm"
@@ -6755,36 +5579,20 @@
   ],
   "connections": [
     {
-      "from_node": "roadm Abilene",
-      "to_node": "fiber (Abilene \u2192 Dallas)-"
-    },
-    {
       "from_node": "fiber (Dallas \u2192 Abilene)-",
-      "to_node": "roadm Abilene"
-    },
-    {
-      "from_node": "roadm Abilene",
       "to_node": "fiber (Abilene \u2192 El_Paso)-"
     },
     {
       "from_node": "fiber (El_Paso \u2192 Abilene)-",
-      "to_node": "roadm Abilene"
-    },
-    {
-      "from_node": "roadm Albany",
-      "to_node": "fiber (Albany \u2192 Boston)-"
+      "to_node": "fiber (Abilene \u2192 Dallas)-"
     },
     {
       "from_node": "fiber (Boston \u2192 Albany)-",
-      "to_node": "roadm Albany"
-    },
-    {
-      "from_node": "roadm Albany",
       "to_node": "fiber (Albany \u2192 Syracuse)-"
     },
     {
       "from_node": "fiber (Syracuse \u2192 Albany)-",
-      "to_node": "roadm Albany"
+      "to_node": "fiber (Albany \u2192 Boston)-"
     },
     {
       "from_node": "roadm Albuquerque",
@@ -6819,38 +5627,6 @@
       "to_node": "roadm Albuquerque"
     },
     {
-      "from_node": "roadm Amsterdam",
-      "to_node": "fiber (Amsterdam \u2192 Berlin)-"
-    },
-    {
-      "from_node": "fiber (Berlin \u2192 Amsterdam)-",
-      "to_node": "roadm Amsterdam"
-    },
-    {
-      "from_node": "roadm Amsterdam",
-      "to_node": "fiber (Amsterdam \u2192 Brussels)-"
-    },
-    {
-      "from_node": "fiber (Brussels \u2192 Amsterdam)-",
-      "to_node": "roadm Amsterdam"
-    },
-    {
-      "from_node": "roadm Amsterdam",
-      "to_node": "fiber (Amsterdam \u2192 Frankfurt)-"
-    },
-    {
-      "from_node": "fiber (Frankfurt \u2192 Amsterdam)-",
-      "to_node": "roadm Amsterdam"
-    },
-    {
-      "from_node": "roadm Amsterdam",
-      "to_node": "fiber (Amsterdam \u2192 New_York)-"
-    },
-    {
-      "from_node": "fiber (New_York \u2192 Amsterdam)-",
-      "to_node": "roadm Amsterdam"
-    },
-    {
       "from_node": "roadm Atlanta",
       "to_node": "fiber (Atlanta \u2192 Birmingham)-"
     },
@@ -6875,20 +5651,12 @@
       "to_node": "roadm Atlanta"
     },
     {
-      "from_node": "roadm Austin",
-      "to_node": "fiber (Austin \u2192 Houston)-"
-    },
-    {
       "from_node": "fiber (Houston \u2192 Austin)-",
-      "to_node": "roadm Austin"
-    },
-    {
-      "from_node": "roadm Austin",
       "to_node": "fiber (Austin \u2192 San_Antonio)-"
     },
     {
       "from_node": "fiber (San_Antonio \u2192 Austin)-",
-      "to_node": "roadm Austin"
+      "to_node": "fiber (Austin \u2192 Houston)-"
     },
     {
       "from_node": "roadm Baltimore",
@@ -6915,60 +5683,12 @@
       "to_node": "roadm Baltimore"
     },
     {
-      "from_node": "roadm Bangkok",
-      "to_node": "fiber (Bangkok \u2192 Delhi)-"
-    },
-    {
-      "from_node": "fiber (Delhi \u2192 Bangkok)-",
-      "to_node": "roadm Bangkok"
-    },
-    {
-      "from_node": "roadm Bangkok",
-      "to_node": "fiber (Bangkok \u2192 Hong_Kong)-"
-    },
-    {
-      "from_node": "fiber (Hong_Kong \u2192 Bangkok)-",
-      "to_node": "roadm Bangkok"
-    },
-    {
-      "from_node": "roadm Baton_Rouge",
-      "to_node": "fiber (Baton_Rouge \u2192 Houston)-"
-    },
-    {
       "from_node": "fiber (Houston \u2192 Baton_Rouge)-",
-      "to_node": "roadm Baton_Rouge"
-    },
-    {
-      "from_node": "roadm Baton_Rouge",
       "to_node": "fiber (Baton_Rouge \u2192 New_Orleans)-"
     },
     {
       "from_node": "fiber (New_Orleans \u2192 Baton_Rouge)-",
-      "to_node": "roadm Baton_Rouge"
-    },
-    {
-      "from_node": "roadm Beijing",
-      "to_node": "fiber (Beijing \u2192 Seoul)-"
-    },
-    {
-      "from_node": "fiber (Seoul \u2192 Beijing)-",
-      "to_node": "roadm Beijing"
-    },
-    {
-      "from_node": "roadm Beijing",
-      "to_node": "fiber (Beijing \u2192 Shanghai)-"
-    },
-    {
-      "from_node": "fiber (Shanghai \u2192 Beijing)-",
-      "to_node": "roadm Beijing"
-    },
-    {
-      "from_node": "roadm Berlin",
-      "to_node": "fiber (Berlin \u2192 Warsaw)-"
-    },
-    {
-      "from_node": "fiber (Warsaw \u2192 Berlin)-",
-      "to_node": "roadm Berlin"
+      "to_node": "fiber (Baton_Rouge \u2192 Houston)-"
     },
     {
       "from_node": "roadm Billings",
@@ -6996,6 +5716,14 @@
     },
     {
       "from_node": "roadm Birmingham",
+      "to_node": "fiber (Birmingham \u2192 Atlanta)-"
+    },
+    {
+      "from_node": "fiber (Atlanta \u2192 Birmingham)-",
+      "to_node": "roadm Birmingham"
+    },
+    {
+      "from_node": "roadm Birmingham",
       "to_node": "fiber (Birmingham \u2192 Nashville)-"
     },
     {
@@ -7011,84 +5739,44 @@
       "to_node": "roadm Birmingham"
     },
     {
-      "from_node": "roadm Bismarck",
+      "from_node": "fiber (Billings \u2192 Bismarck)-",
       "to_node": "fiber (Bismarck \u2192 Minneapolis)-"
     },
     {
       "from_node": "fiber (Minneapolis \u2192 Bismarck)-",
-      "to_node": "roadm Bismarck"
+      "to_node": "fiber (Bismarck \u2192 Billings)-"
     },
     {
-      "from_node": "roadm Boston",
+      "from_node": "fiber (Albany \u2192 Boston)-",
       "to_node": "fiber (Boston \u2192 Providence)-"
     },
     {
       "from_node": "fiber (Providence \u2192 Boston)-",
-      "to_node": "roadm Boston"
-    },
-    {
-      "from_node": "roadm Brussels",
-      "to_node": "fiber (Brussels \u2192 London)-"
-    },
-    {
-      "from_node": "fiber (London \u2192 Brussels)-",
-      "to_node": "roadm Brussels"
-    },
-    {
-      "from_node": "roadm Bucharest",
-      "to_node": "fiber (Bucharest \u2192 Istanbul)-"
-    },
-    {
-      "from_node": "fiber (Istanbul \u2192 Bucharest)-",
-      "to_node": "roadm Bucharest"
-    },
-    {
-      "from_node": "roadm Bucharest",
-      "to_node": "fiber (Bucharest \u2192 Warsaw)-"
-    },
-    {
-      "from_node": "fiber (Warsaw \u2192 Bucharest)-",
-      "to_node": "roadm Bucharest"
-    },
-    {
-      "from_node": "roadm Buffalo",
-      "to_node": "fiber (Buffalo \u2192 Cleveland)-"
+      "to_node": "fiber (Boston \u2192 Albany)-"
     },
     {
       "from_node": "fiber (Cleveland \u2192 Buffalo)-",
-      "to_node": "roadm Buffalo"
-    },
-    {
-      "from_node": "roadm Buffalo",
       "to_node": "fiber (Buffalo \u2192 Rochester)-"
     },
     {
       "from_node": "fiber (Rochester \u2192 Buffalo)-",
-      "to_node": "roadm Buffalo"
-    },
-    {
-      "from_node": "roadm Charleston",
-      "to_node": "fiber (Charleston \u2192 Jacksonville)-"
+      "to_node": "fiber (Buffalo \u2192 Cleveland)-"
     },
     {
       "from_node": "fiber (Jacksonville \u2192 Charleston)-",
-      "to_node": "roadm Charleston"
-    },
-    {
-      "from_node": "roadm Charleston",
       "to_node": "fiber (Charleston \u2192 Raleigh)-"
     },
     {
       "from_node": "fiber (Raleigh \u2192 Charleston)-",
-      "to_node": "roadm Charleston"
+      "to_node": "fiber (Charleston \u2192 Jacksonville)-"
     },
     {
-      "from_node": "roadm Charlotte",
+      "from_node": "fiber (Atlanta \u2192 Charlotte)-",
       "to_node": "fiber (Charlotte \u2192 Greensboro)-"
     },
     {
       "from_node": "fiber (Greensboro \u2192 Charlotte)-",
-      "to_node": "roadm Charlotte"
+      "to_node": "fiber (Charlotte \u2192 Atlanta)-"
     },
     {
       "from_node": "roadm Chicago",
@@ -7140,6 +5828,14 @@
     },
     {
       "from_node": "roadm Cleveland",
+      "to_node": "fiber (Cleveland \u2192 Buffalo)-"
+    },
+    {
+      "from_node": "fiber (Buffalo \u2192 Cleveland)-",
+      "to_node": "roadm Cleveland"
+    },
+    {
+      "from_node": "roadm Cleveland",
       "to_node": "fiber (Cleveland \u2192 Columbus)-"
     },
     {
@@ -7156,11 +5852,43 @@
     },
     {
       "from_node": "roadm Columbus",
+      "to_node": "fiber (Columbus \u2192 Cincinnati)-"
+    },
+    {
+      "from_node": "fiber (Cincinnati \u2192 Columbus)-",
+      "to_node": "roadm Columbus"
+    },
+    {
+      "from_node": "roadm Columbus",
+      "to_node": "fiber (Columbus \u2192 Cleveland)-"
+    },
+    {
+      "from_node": "fiber (Cleveland \u2192 Columbus)-",
+      "to_node": "roadm Columbus"
+    },
+    {
+      "from_node": "roadm Columbus",
       "to_node": "fiber (Columbus \u2192 Pittsburgh)-"
     },
     {
       "from_node": "fiber (Pittsburgh \u2192 Columbus)-",
       "to_node": "roadm Columbus"
+    },
+    {
+      "from_node": "roadm Dallas",
+      "to_node": "fiber (Dallas \u2192 Abilene)-"
+    },
+    {
+      "from_node": "fiber (Abilene \u2192 Dallas)-",
+      "to_node": "roadm Dallas"
+    },
+    {
+      "from_node": "roadm Dallas",
+      "to_node": "fiber (Dallas \u2192 Albuquerque)-"
+    },
+    {
+      "from_node": "fiber (Albuquerque \u2192 Dallas)-",
+      "to_node": "roadm Dallas"
     },
     {
       "from_node": "roadm Dallas",
@@ -7187,20 +5915,20 @@
       "to_node": "roadm Dallas"
     },
     {
-      "from_node": "roadm Delhi",
-      "to_node": "fiber (Delhi \u2192 Istanbul)-"
+      "from_node": "roadm Denver",
+      "to_node": "fiber (Denver \u2192 Albuquerque)-"
     },
     {
-      "from_node": "fiber (Istanbul \u2192 Delhi)-",
-      "to_node": "roadm Delhi"
+      "from_node": "fiber (Albuquerque \u2192 Denver)-",
+      "to_node": "roadm Denver"
     },
     {
-      "from_node": "roadm Delhi",
-      "to_node": "fiber (Delhi \u2192 Mumbai)-"
+      "from_node": "roadm Denver",
+      "to_node": "fiber (Denver \u2192 Billings)-"
     },
     {
-      "from_node": "fiber (Mumbai \u2192 Delhi)-",
-      "to_node": "roadm Delhi"
+      "from_node": "fiber (Billings \u2192 Denver)-",
+      "to_node": "roadm Denver"
     },
     {
       "from_node": "roadm Denver",
@@ -7219,12 +5947,28 @@
       "to_node": "roadm Denver"
     },
     {
-      "from_node": "roadm Detroit",
+      "from_node": "fiber (Chicago \u2192 Detroit)-",
       "to_node": "fiber (Detroit \u2192 Toledo)-"
     },
     {
       "from_node": "fiber (Toledo \u2192 Detroit)-",
-      "to_node": "roadm Detroit"
+      "to_node": "fiber (Detroit \u2192 Chicago)-"
+    },
+    {
+      "from_node": "roadm El_Paso",
+      "to_node": "fiber (El_Paso \u2192 Abilene)-"
+    },
+    {
+      "from_node": "fiber (Abilene \u2192 El_Paso)-",
+      "to_node": "roadm El_Paso"
+    },
+    {
+      "from_node": "roadm El_Paso",
+      "to_node": "fiber (El_Paso \u2192 Albuquerque)-"
+    },
+    {
+      "from_node": "fiber (Albuquerque \u2192 El_Paso)-",
+      "to_node": "roadm El_Paso"
     },
     {
       "from_node": "roadm El_Paso",
@@ -7241,14 +5985,6 @@
     {
       "from_node": "fiber (Tucson \u2192 El_Paso)-",
       "to_node": "roadm El_Paso"
-    },
-    {
-      "from_node": "roadm Frankfurt",
-      "to_node": "fiber (Frankfurt \u2192 Vienna)-"
-    },
-    {
-      "from_node": "fiber (Vienna \u2192 Frankfurt)-",
-      "to_node": "roadm Frankfurt"
     },
     {
       "from_node": "roadm Fresno",
@@ -7276,6 +6012,14 @@
     },
     {
       "from_node": "roadm Greensboro",
+      "to_node": "fiber (Greensboro \u2192 Charlotte)-"
+    },
+    {
+      "from_node": "fiber (Charlotte \u2192 Greensboro)-",
+      "to_node": "roadm Greensboro"
+    },
+    {
+      "from_node": "roadm Greensboro",
       "to_node": "fiber (Greensboro \u2192 Louisville)-"
     },
     {
@@ -7299,20 +6043,1148 @@
       "to_node": "roadm Greensboro"
     },
     {
-      "from_node": "roadm Hartford",
-      "to_node": "fiber (Hartford \u2192 Long_Island)-"
-    },
-    {
       "from_node": "fiber (Long_Island \u2192 Hartford)-",
-      "to_node": "roadm Hartford"
-    },
-    {
-      "from_node": "roadm Hartford",
       "to_node": "fiber (Hartford \u2192 Providence)-"
     },
     {
       "from_node": "fiber (Providence \u2192 Hartford)-",
-      "to_node": "roadm Hartford"
+      "to_node": "fiber (Hartford \u2192 Long_Island)-"
+    },
+    {
+      "from_node": "roadm Houston",
+      "to_node": "fiber (Houston \u2192 Austin)-"
+    },
+    {
+      "from_node": "fiber (Austin \u2192 Houston)-",
+      "to_node": "roadm Houston"
+    },
+    {
+      "from_node": "roadm Houston",
+      "to_node": "fiber (Houston \u2192 Baton_Rouge)-"
+    },
+    {
+      "from_node": "fiber (Baton_Rouge \u2192 Houston)-",
+      "to_node": "roadm Houston"
+    },
+    {
+      "from_node": "roadm Houston",
+      "to_node": "fiber (Houston \u2192 Dallas)-"
+    },
+    {
+      "from_node": "fiber (Dallas \u2192 Houston)-",
+      "to_node": "roadm Houston"
+    },
+    {
+      "from_node": "roadm Jacksonville",
+      "to_node": "fiber (Jacksonville \u2192 Atlanta)-"
+    },
+    {
+      "from_node": "fiber (Atlanta \u2192 Jacksonville)-",
+      "to_node": "roadm Jacksonville"
+    },
+    {
+      "from_node": "roadm Jacksonville",
+      "to_node": "fiber (Jacksonville \u2192 Charleston)-"
+    },
+    {
+      "from_node": "fiber (Charleston \u2192 Jacksonville)-",
+      "to_node": "roadm Jacksonville"
+    },
+    {
+      "from_node": "roadm Jacksonville",
+      "to_node": "fiber (Jacksonville \u2192 Orlando)-"
+    },
+    {
+      "from_node": "fiber (Orlando \u2192 Jacksonville)-",
+      "to_node": "roadm Jacksonville"
+    },
+    {
+      "from_node": "roadm Kansas_City",
+      "to_node": "fiber (Kansas_City \u2192 Omaha)-"
+    },
+    {
+      "from_node": "fiber (Omaha \u2192 Kansas_City)-",
+      "to_node": "roadm Kansas_City"
+    },
+    {
+      "from_node": "roadm Kansas_City",
+      "to_node": "fiber (Kansas_City \u2192 St_Louis)-"
+    },
+    {
+      "from_node": "fiber (St_Louis \u2192 Kansas_City)-",
+      "to_node": "roadm Kansas_City"
+    },
+    {
+      "from_node": "roadm Kansas_City",
+      "to_node": "fiber (Kansas_City \u2192 Tulsa)-"
+    },
+    {
+      "from_node": "fiber (Tulsa \u2192 Kansas_City)-",
+      "to_node": "roadm Kansas_City"
+    },
+    {
+      "from_node": "roadm Las_Vegas",
+      "to_node": "fiber (Las_Vegas \u2192 Albuquerque)-"
+    },
+    {
+      "from_node": "fiber (Albuquerque \u2192 Las_Vegas)-",
+      "to_node": "roadm Las_Vegas"
+    },
+    {
+      "from_node": "roadm Las_Vegas",
+      "to_node": "fiber (Las_Vegas \u2192 Fresno)-"
+    },
+    {
+      "from_node": "fiber (Fresno \u2192 Las_Vegas)-",
+      "to_node": "roadm Las_Vegas"
+    },
+    {
+      "from_node": "roadm Las_Vegas",
+      "to_node": "fiber (Las_Vegas \u2192 Phoenix)-"
+    },
+    {
+      "from_node": "fiber (Phoenix \u2192 Las_Vegas)-",
+      "to_node": "roadm Las_Vegas"
+    },
+    {
+      "from_node": "roadm Las_Vegas",
+      "to_node": "fiber (Las_Vegas \u2192 Salt_Lake_City)-"
+    },
+    {
+      "from_node": "fiber (Salt_Lake_City \u2192 Las_Vegas)-",
+      "to_node": "roadm Las_Vegas"
+    },
+    {
+      "from_node": "fiber (Dallas \u2192 Little_Rock)-",
+      "to_node": "fiber (Little_Rock \u2192 Memphis)-"
+    },
+    {
+      "from_node": "fiber (Memphis \u2192 Little_Rock)-",
+      "to_node": "fiber (Little_Rock \u2192 Dallas)-"
+    },
+    {
+      "from_node": "fiber (Hartford \u2192 Long_Island)-",
+      "to_node": "fiber (Long_Island \u2192 New_York)-"
+    },
+    {
+      "from_node": "fiber (New_York \u2192 Long_Island)-",
+      "to_node": "fiber (Long_Island \u2192 Hartford)-"
+    },
+    {
+      "from_node": "roadm Los_Angeles",
+      "to_node": "fiber (Los_Angeles \u2192 Fresno)-"
+    },
+    {
+      "from_node": "fiber (Fresno \u2192 Los_Angeles)-",
+      "to_node": "roadm Los_Angeles"
+    },
+    {
+      "from_node": "roadm Los_Angeles",
+      "to_node": "fiber (Los_Angeles \u2192 Honolulu)-"
+    },
+    {
+      "from_node": "fiber (Honolulu \u2192 Los_Angeles)-",
+      "to_node": "roadm Los_Angeles"
+    },
+    {
+      "from_node": "roadm Los_Angeles",
+      "to_node": "fiber (Los_Angeles \u2192 San_Diego)-"
+    },
+    {
+      "from_node": "fiber (San_Diego \u2192 Los_Angeles)-",
+      "to_node": "roadm Los_Angeles"
+    },
+    {
+      "from_node": "roadm Los_Angeles",
+      "to_node": "fiber (Los_Angeles \u2192 Santa_Barbara)-"
+    },
+    {
+      "from_node": "fiber (Santa_Barbara \u2192 Los_Angeles)-",
+      "to_node": "roadm Los_Angeles"
+    },
+    {
+      "from_node": "roadm Louisville",
+      "to_node": "fiber (Louisville \u2192 Cincinnati)-"
+    },
+    {
+      "from_node": "fiber (Cincinnati \u2192 Louisville)-",
+      "to_node": "roadm Louisville"
+    },
+    {
+      "from_node": "roadm Louisville",
+      "to_node": "fiber (Louisville \u2192 Greensboro)-"
+    },
+    {
+      "from_node": "fiber (Greensboro \u2192 Louisville)-",
+      "to_node": "roadm Louisville"
+    },
+    {
+      "from_node": "roadm Louisville",
+      "to_node": "fiber (Louisville \u2192 Nashville)-"
+    },
+    {
+      "from_node": "fiber (Nashville \u2192 Louisville)-",
+      "to_node": "roadm Louisville"
+    },
+    {
+      "from_node": "roadm Louisville",
+      "to_node": "fiber (Louisville \u2192 St_Louis)-"
+    },
+    {
+      "from_node": "fiber (St_Louis \u2192 Louisville)-",
+      "to_node": "roadm Louisville"
+    },
+    {
+      "from_node": "fiber (Little_Rock \u2192 Memphis)-",
+      "to_node": "fiber (Memphis \u2192 Nashville)-"
+    },
+    {
+      "from_node": "fiber (Nashville \u2192 Memphis)-",
+      "to_node": "fiber (Memphis \u2192 Little_Rock)-"
+    },
+    {
+      "from_node": "roadm Miami",
+      "to_node": "fiber (Miami \u2192 Paris)-"
+    },
+    {
+      "from_node": "fiber (Paris \u2192 Miami)-",
+      "to_node": "roadm Miami"
+    },
+    {
+      "from_node": "roadm Miami",
+      "to_node": "fiber (Miami \u2192 Tampa)-"
+    },
+    {
+      "from_node": "fiber (Tampa \u2192 Miami)-",
+      "to_node": "roadm Miami"
+    },
+    {
+      "from_node": "roadm Miami",
+      "to_node": "fiber (Miami \u2192 West_Palm_Beach)-"
+    },
+    {
+      "from_node": "fiber (West_Palm_Beach \u2192 Miami)-",
+      "to_node": "roadm Miami"
+    },
+    {
+      "from_node": "fiber (Chicago \u2192 Milwaukee)-",
+      "to_node": "fiber (Milwaukee \u2192 Minneapolis)-"
+    },
+    {
+      "from_node": "fiber (Minneapolis \u2192 Milwaukee)-",
+      "to_node": "fiber (Milwaukee \u2192 Chicago)-"
+    },
+    {
+      "from_node": "roadm Minneapolis",
+      "to_node": "fiber (Minneapolis \u2192 Bismarck)-"
+    },
+    {
+      "from_node": "fiber (Bismarck \u2192 Minneapolis)-",
+      "to_node": "roadm Minneapolis"
+    },
+    {
+      "from_node": "roadm Minneapolis",
+      "to_node": "fiber (Minneapolis \u2192 Milwaukee)-"
+    },
+    {
+      "from_node": "fiber (Milwaukee \u2192 Minneapolis)-",
+      "to_node": "roadm Minneapolis"
+    },
+    {
+      "from_node": "roadm Minneapolis",
+      "to_node": "fiber (Minneapolis \u2192 Omaha)-"
+    },
+    {
+      "from_node": "fiber (Omaha \u2192 Minneapolis)-",
+      "to_node": "roadm Minneapolis"
+    },
+    {
+      "from_node": "roadm Nashville",
+      "to_node": "fiber (Nashville \u2192 Birmingham)-"
+    },
+    {
+      "from_node": "fiber (Birmingham \u2192 Nashville)-",
+      "to_node": "roadm Nashville"
+    },
+    {
+      "from_node": "roadm Nashville",
+      "to_node": "fiber (Nashville \u2192 Louisville)-"
+    },
+    {
+      "from_node": "fiber (Louisville \u2192 Nashville)-",
+      "to_node": "roadm Nashville"
+    },
+    {
+      "from_node": "roadm Nashville",
+      "to_node": "fiber (Nashville \u2192 Memphis)-"
+    },
+    {
+      "from_node": "fiber (Memphis \u2192 Nashville)-",
+      "to_node": "roadm Nashville"
+    },
+    {
+      "from_node": "roadm New_Orleans",
+      "to_node": "fiber (New_Orleans \u2192 Baton_Rouge)-"
+    },
+    {
+      "from_node": "fiber (Baton_Rouge \u2192 New_Orleans)-",
+      "to_node": "roadm New_Orleans"
+    },
+    {
+      "from_node": "roadm New_Orleans",
+      "to_node": "fiber (New_Orleans \u2192 Birmingham)-"
+    },
+    {
+      "from_node": "fiber (Birmingham \u2192 New_Orleans)-",
+      "to_node": "roadm New_Orleans"
+    },
+    {
+      "from_node": "roadm New_Orleans",
+      "to_node": "fiber (New_Orleans \u2192 Tallahassee)-"
+    },
+    {
+      "from_node": "fiber (Tallahassee \u2192 New_Orleans)-",
+      "to_node": "roadm New_Orleans"
+    },
+    {
+      "from_node": "roadm New_York",
+      "to_node": "fiber (New_York \u2192 Amsterdam)-"
+    },
+    {
+      "from_node": "fiber (Amsterdam \u2192 New_York)-",
+      "to_node": "roadm New_York"
+    },
+    {
+      "from_node": "roadm New_York",
+      "to_node": "fiber (New_York \u2192 Long_Island)-"
+    },
+    {
+      "from_node": "fiber (Long_Island \u2192 New_York)-",
+      "to_node": "roadm New_York"
+    },
+    {
+      "from_node": "roadm New_York",
+      "to_node": "fiber (New_York \u2192 Newark)-"
+    },
+    {
+      "from_node": "fiber (Newark \u2192 New_York)-",
+      "to_node": "roadm New_York"
+    },
+    {
+      "from_node": "roadm New_York",
+      "to_node": "fiber (New_York \u2192 Scranton)-"
+    },
+    {
+      "from_node": "fiber (Scranton \u2192 New_York)-",
+      "to_node": "roadm New_York"
+    },
+    {
+      "from_node": "roadm New_York",
+      "to_node": "fiber (New_York \u2192 Wilmington)-"
+    },
+    {
+      "from_node": "fiber (Wilmington \u2192 New_York)-",
+      "to_node": "roadm New_York"
+    },
+    {
+      "from_node": "fiber (New_York \u2192 Newark)-",
+      "to_node": "fiber (Newark \u2192 Philadelphia)-"
+    },
+    {
+      "from_node": "fiber (Philadelphia \u2192 Newark)-",
+      "to_node": "fiber (Newark \u2192 New_York)-"
+    },
+    {
+      "from_node": "fiber (Raleigh \u2192 Norfolk)-",
+      "to_node": "fiber (Norfolk \u2192 Wilmington)-"
+    },
+    {
+      "from_node": "fiber (Wilmington \u2192 Norfolk)-",
+      "to_node": "fiber (Norfolk \u2192 Raleigh)-"
+    },
+    {
+      "from_node": "roadm Oakland",
+      "to_node": "fiber (Oakland \u2192 Fresno)-"
+    },
+    {
+      "from_node": "fiber (Fresno \u2192 Oakland)-",
+      "to_node": "roadm Oakland"
+    },
+    {
+      "from_node": "roadm Oakland",
+      "to_node": "fiber (Oakland \u2192 Sacramento)-"
+    },
+    {
+      "from_node": "fiber (Sacramento \u2192 Oakland)-",
+      "to_node": "roadm Oakland"
+    },
+    {
+      "from_node": "roadm Oakland",
+      "to_node": "fiber (Oakland \u2192 Salt_Lake_City)-"
+    },
+    {
+      "from_node": "fiber (Salt_Lake_City \u2192 Oakland)-",
+      "to_node": "roadm Oakland"
+    },
+    {
+      "from_node": "roadm Oakland",
+      "to_node": "fiber (Oakland \u2192 San_Francisco)-"
+    },
+    {
+      "from_node": "fiber (San_Francisco \u2192 Oakland)-",
+      "to_node": "roadm Oakland"
+    },
+    {
+      "from_node": "roadm Oakland",
+      "to_node": "fiber (Oakland \u2192 Taipei)-"
+    },
+    {
+      "from_node": "fiber (Taipei \u2192 Oakland)-",
+      "to_node": "roadm Oakland"
+    },
+    {
+      "from_node": "fiber (Dallas \u2192 Oklahoma_City)-",
+      "to_node": "fiber (Oklahoma_City \u2192 Tulsa)-"
+    },
+    {
+      "from_node": "fiber (Tulsa \u2192 Oklahoma_City)-",
+      "to_node": "fiber (Oklahoma_City \u2192 Dallas)-"
+    },
+    {
+      "from_node": "roadm Omaha",
+      "to_node": "fiber (Omaha \u2192 Denver)-"
+    },
+    {
+      "from_node": "fiber (Denver \u2192 Omaha)-",
+      "to_node": "roadm Omaha"
+    },
+    {
+      "from_node": "roadm Omaha",
+      "to_node": "fiber (Omaha \u2192 Kansas_City)-"
+    },
+    {
+      "from_node": "fiber (Kansas_City \u2192 Omaha)-",
+      "to_node": "roadm Omaha"
+    },
+    {
+      "from_node": "roadm Omaha",
+      "to_node": "fiber (Omaha \u2192 Minneapolis)-"
+    },
+    {
+      "from_node": "fiber (Minneapolis \u2192 Omaha)-",
+      "to_node": "roadm Omaha"
+    },
+    {
+      "from_node": "fiber (Jacksonville \u2192 Orlando)-",
+      "to_node": "fiber (Orlando \u2192 West_Palm_Beach)-"
+    },
+    {
+      "from_node": "fiber (West_Palm_Beach \u2192 Orlando)-",
+      "to_node": "fiber (Orlando \u2192 Jacksonville)-"
+    },
+    {
+      "from_node": "roadm Philadelphia",
+      "to_node": "fiber (Philadelphia \u2192 Baltimore)-"
+    },
+    {
+      "from_node": "fiber (Baltimore \u2192 Philadelphia)-",
+      "to_node": "roadm Philadelphia"
+    },
+    {
+      "from_node": "roadm Philadelphia",
+      "to_node": "fiber (Philadelphia \u2192 Newark)-"
+    },
+    {
+      "from_node": "fiber (Newark \u2192 Philadelphia)-",
+      "to_node": "roadm Philadelphia"
+    },
+    {
+      "from_node": "roadm Philadelphia",
+      "to_node": "fiber (Philadelphia \u2192 Scranton)-"
+    },
+    {
+      "from_node": "fiber (Scranton \u2192 Philadelphia)-",
+      "to_node": "roadm Philadelphia"
+    },
+    {
+      "from_node": "roadm Phoenix",
+      "to_node": "fiber (Phoenix \u2192 Las_Vegas)-"
+    },
+    {
+      "from_node": "fiber (Las_Vegas \u2192 Phoenix)-",
+      "to_node": "roadm Phoenix"
+    },
+    {
+      "from_node": "roadm Phoenix",
+      "to_node": "fiber (Phoenix \u2192 San_Diego)-"
+    },
+    {
+      "from_node": "fiber (San_Diego \u2192 Phoenix)-",
+      "to_node": "roadm Phoenix"
+    },
+    {
+      "from_node": "roadm Phoenix",
+      "to_node": "fiber (Phoenix \u2192 Tucson)-"
+    },
+    {
+      "from_node": "fiber (Tucson \u2192 Phoenix)-",
+      "to_node": "roadm Phoenix"
+    },
+    {
+      "from_node": "roadm Pittsburgh",
+      "to_node": "fiber (Pittsburgh \u2192 Baltimore)-"
+    },
+    {
+      "from_node": "fiber (Baltimore \u2192 Pittsburgh)-",
+      "to_node": "roadm Pittsburgh"
+    },
+    {
+      "from_node": "roadm Pittsburgh",
+      "to_node": "fiber (Pittsburgh \u2192 Columbus)-"
+    },
+    {
+      "from_node": "fiber (Columbus \u2192 Pittsburgh)-",
+      "to_node": "roadm Pittsburgh"
+    },
+    {
+      "from_node": "roadm Pittsburgh",
+      "to_node": "fiber (Pittsburgh \u2192 Scranton)-"
+    },
+    {
+      "from_node": "fiber (Scranton \u2192 Pittsburgh)-",
+      "to_node": "roadm Pittsburgh"
+    },
+    {
+      "from_node": "roadm Portland",
+      "to_node": "fiber (Portland \u2192 Sacramento)-"
+    },
+    {
+      "from_node": "fiber (Sacramento \u2192 Portland)-",
+      "to_node": "roadm Portland"
+    },
+    {
+      "from_node": "roadm Portland",
+      "to_node": "fiber (Portland \u2192 Salt_Lake_City)-"
+    },
+    {
+      "from_node": "fiber (Salt_Lake_City \u2192 Portland)-",
+      "to_node": "roadm Portland"
+    },
+    {
+      "from_node": "roadm Portland",
+      "to_node": "fiber (Portland \u2192 Seattle)-"
+    },
+    {
+      "from_node": "fiber (Seattle \u2192 Portland)-",
+      "to_node": "roadm Portland"
+    },
+    {
+      "from_node": "roadm Portland",
+      "to_node": "fiber (Portland \u2192 Tokyo)-"
+    },
+    {
+      "from_node": "fiber (Tokyo \u2192 Portland)-",
+      "to_node": "roadm Portland"
+    },
+    {
+      "from_node": "fiber (Boston \u2192 Providence)-",
+      "to_node": "fiber (Providence \u2192 Hartford)-"
+    },
+    {
+      "from_node": "fiber (Hartford \u2192 Providence)-",
+      "to_node": "fiber (Providence \u2192 Boston)-"
+    },
+    {
+      "from_node": "roadm Raleigh",
+      "to_node": "fiber (Raleigh \u2192 Charleston)-"
+    },
+    {
+      "from_node": "fiber (Charleston \u2192 Raleigh)-",
+      "to_node": "roadm Raleigh"
+    },
+    {
+      "from_node": "roadm Raleigh",
+      "to_node": "fiber (Raleigh \u2192 Greensboro)-"
+    },
+    {
+      "from_node": "fiber (Greensboro \u2192 Raleigh)-",
+      "to_node": "roadm Raleigh"
+    },
+    {
+      "from_node": "roadm Raleigh",
+      "to_node": "fiber (Raleigh \u2192 Norfolk)-"
+    },
+    {
+      "from_node": "fiber (Norfolk \u2192 Raleigh)-",
+      "to_node": "roadm Raleigh"
+    },
+    {
+      "from_node": "fiber (Greensboro \u2192 Richmond)-",
+      "to_node": "fiber (Richmond \u2192 Washington_DC)-"
+    },
+    {
+      "from_node": "fiber (Washington_DC \u2192 Richmond)-",
+      "to_node": "fiber (Richmond \u2192 Greensboro)-"
+    },
+    {
+      "from_node": "fiber (Buffalo \u2192 Rochester)-",
+      "to_node": "fiber (Rochester \u2192 Syracuse)-"
+    },
+    {
+      "from_node": "fiber (Syracuse \u2192 Rochester)-",
+      "to_node": "fiber (Rochester \u2192 Buffalo)-"
+    },
+    {
+      "from_node": "fiber (Oakland \u2192 Sacramento)-",
+      "to_node": "fiber (Sacramento \u2192 Portland)-"
+    },
+    {
+      "from_node": "fiber (Portland \u2192 Sacramento)-",
+      "to_node": "fiber (Sacramento \u2192 Oakland)-"
+    },
+    {
+      "from_node": "roadm Salt_Lake_City",
+      "to_node": "fiber (Salt_Lake_City \u2192 Denver)-"
+    },
+    {
+      "from_node": "fiber (Denver \u2192 Salt_Lake_City)-",
+      "to_node": "roadm Salt_Lake_City"
+    },
+    {
+      "from_node": "roadm Salt_Lake_City",
+      "to_node": "fiber (Salt_Lake_City \u2192 Las_Vegas)-"
+    },
+    {
+      "from_node": "fiber (Las_Vegas \u2192 Salt_Lake_City)-",
+      "to_node": "roadm Salt_Lake_City"
+    },
+    {
+      "from_node": "roadm Salt_Lake_City",
+      "to_node": "fiber (Salt_Lake_City \u2192 Oakland)-"
+    },
+    {
+      "from_node": "fiber (Oakland \u2192 Salt_Lake_City)-",
+      "to_node": "roadm Salt_Lake_City"
+    },
+    {
+      "from_node": "roadm Salt_Lake_City",
+      "to_node": "fiber (Salt_Lake_City \u2192 Portland)-"
+    },
+    {
+      "from_node": "fiber (Portland \u2192 Salt_Lake_City)-",
+      "to_node": "roadm Salt_Lake_City"
+    },
+    {
+      "from_node": "fiber (Austin \u2192 San_Antonio)-",
+      "to_node": "fiber (San_Antonio \u2192 El_Paso)-"
+    },
+    {
+      "from_node": "fiber (El_Paso \u2192 San_Antonio)-",
+      "to_node": "fiber (San_Antonio \u2192 Austin)-"
+    },
+    {
+      "from_node": "fiber (Los_Angeles \u2192 San_Diego)-",
+      "to_node": "fiber (San_Diego \u2192 Phoenix)-"
+    },
+    {
+      "from_node": "fiber (Phoenix \u2192 San_Diego)-",
+      "to_node": "fiber (San_Diego \u2192 Los_Angeles)-"
+    },
+    {
+      "from_node": "fiber (Oakland \u2192 San_Francisco)-",
+      "to_node": "fiber (San_Francisco \u2192 San_Jose)-"
+    },
+    {
+      "from_node": "fiber (San_Jose \u2192 San_Francisco)-",
+      "to_node": "fiber (San_Francisco \u2192 Oakland)-"
+    },
+    {
+      "from_node": "fiber (San_Francisco \u2192 San_Jose)-",
+      "to_node": "fiber (San_Jose \u2192 Santa_Barbara)-"
+    },
+    {
+      "from_node": "fiber (Santa_Barbara \u2192 San_Jose)-",
+      "to_node": "fiber (San_Jose \u2192 San_Francisco)-"
+    },
+    {
+      "from_node": "fiber (Los_Angeles \u2192 Santa_Barbara)-",
+      "to_node": "fiber (Santa_Barbara \u2192 San_Jose)-"
+    },
+    {
+      "from_node": "fiber (San_Jose \u2192 Santa_Barbara)-",
+      "to_node": "fiber (Santa_Barbara \u2192 Los_Angeles)-"
+    },
+    {
+      "from_node": "roadm Scranton",
+      "to_node": "fiber (Scranton \u2192 New_York)-"
+    },
+    {
+      "from_node": "fiber (New_York \u2192 Scranton)-",
+      "to_node": "roadm Scranton"
+    },
+    {
+      "from_node": "roadm Scranton",
+      "to_node": "fiber (Scranton \u2192 Philadelphia)-"
+    },
+    {
+      "from_node": "fiber (Philadelphia \u2192 Scranton)-",
+      "to_node": "roadm Scranton"
+    },
+    {
+      "from_node": "roadm Scranton",
+      "to_node": "fiber (Scranton \u2192 Pittsburgh)-"
+    },
+    {
+      "from_node": "fiber (Pittsburgh \u2192 Scranton)-",
+      "to_node": "roadm Scranton"
+    },
+    {
+      "from_node": "roadm Scranton",
+      "to_node": "fiber (Scranton \u2192 Syracuse)-"
+    },
+    {
+      "from_node": "fiber (Syracuse \u2192 Scranton)-",
+      "to_node": "roadm Scranton"
+    },
+    {
+      "from_node": "fiber (Portland \u2192 Seattle)-",
+      "to_node": "fiber (Seattle \u2192 Spokane)-"
+    },
+    {
+      "from_node": "fiber (Spokane \u2192 Seattle)-",
+      "to_node": "fiber (Seattle \u2192 Portland)-"
+    },
+    {
+      "from_node": "fiber (Billings \u2192 Spokane)-",
+      "to_node": "fiber (Spokane \u2192 Seattle)-"
+    },
+    {
+      "from_node": "fiber (Seattle \u2192 Spokane)-",
+      "to_node": "fiber (Spokane \u2192 Billings)-"
+    },
+    {
+      "from_node": "fiber (Chicago \u2192 Springfield)-",
+      "to_node": "fiber (Springfield \u2192 St_Louis)-"
+    },
+    {
+      "from_node": "fiber (St_Louis \u2192 Springfield)-",
+      "to_node": "fiber (Springfield \u2192 Chicago)-"
+    },
+    {
+      "from_node": "roadm St_Louis",
+      "to_node": "fiber (St_Louis \u2192 Kansas_City)-"
+    },
+    {
+      "from_node": "fiber (Kansas_City \u2192 St_Louis)-",
+      "to_node": "roadm St_Louis"
+    },
+    {
+      "from_node": "roadm St_Louis",
+      "to_node": "fiber (St_Louis \u2192 Louisville)-"
+    },
+    {
+      "from_node": "fiber (Louisville \u2192 St_Louis)-",
+      "to_node": "roadm St_Louis"
+    },
+    {
+      "from_node": "roadm St_Louis",
+      "to_node": "fiber (St_Louis \u2192 Springfield)-"
+    },
+    {
+      "from_node": "fiber (Springfield \u2192 St_Louis)-",
+      "to_node": "roadm St_Louis"
+    },
+    {
+      "from_node": "roadm Syracuse",
+      "to_node": "fiber (Syracuse \u2192 Albany)-"
+    },
+    {
+      "from_node": "fiber (Albany \u2192 Syracuse)-",
+      "to_node": "roadm Syracuse"
+    },
+    {
+      "from_node": "roadm Syracuse",
+      "to_node": "fiber (Syracuse \u2192 Rochester)-"
+    },
+    {
+      "from_node": "fiber (Rochester \u2192 Syracuse)-",
+      "to_node": "roadm Syracuse"
+    },
+    {
+      "from_node": "roadm Syracuse",
+      "to_node": "fiber (Syracuse \u2192 Scranton)-"
+    },
+    {
+      "from_node": "fiber (Scranton \u2192 Syracuse)-",
+      "to_node": "roadm Syracuse"
+    },
+    {
+      "from_node": "fiber (New_Orleans \u2192 Tallahassee)-",
+      "to_node": "fiber (Tallahassee \u2192 Tampa)-"
+    },
+    {
+      "from_node": "fiber (Tampa \u2192 Tallahassee)-",
+      "to_node": "fiber (Tallahassee \u2192 New_Orleans)-"
+    },
+    {
+      "from_node": "fiber (Miami \u2192 Tampa)-",
+      "to_node": "fiber (Tampa \u2192 Tallahassee)-"
+    },
+    {
+      "from_node": "fiber (Tallahassee \u2192 Tampa)-",
+      "to_node": "fiber (Tampa \u2192 Miami)-"
+    },
+    {
+      "from_node": "fiber (Cleveland \u2192 Toledo)-",
+      "to_node": "fiber (Toledo \u2192 Detroit)-"
+    },
+    {
+      "from_node": "fiber (Detroit \u2192 Toledo)-",
+      "to_node": "fiber (Toledo \u2192 Cleveland)-"
+    },
+    {
+      "from_node": "fiber (El_Paso \u2192 Tucson)-",
+      "to_node": "fiber (Tucson \u2192 Phoenix)-"
+    },
+    {
+      "from_node": "fiber (Phoenix \u2192 Tucson)-",
+      "to_node": "fiber (Tucson \u2192 El_Paso)-"
+    },
+    {
+      "from_node": "fiber (Kansas_City \u2192 Tulsa)-",
+      "to_node": "fiber (Tulsa \u2192 Oklahoma_City)-"
+    },
+    {
+      "from_node": "fiber (Oklahoma_City \u2192 Tulsa)-",
+      "to_node": "fiber (Tulsa \u2192 Kansas_City)-"
+    },
+    {
+      "from_node": "roadm Washington_DC",
+      "to_node": "fiber (Washington_DC \u2192 Baltimore)-"
+    },
+    {
+      "from_node": "fiber (Baltimore \u2192 Washington_DC)-",
+      "to_node": "roadm Washington_DC"
+    },
+    {
+      "from_node": "roadm Washington_DC",
+      "to_node": "fiber (Washington_DC \u2192 Cincinnati)-"
+    },
+    {
+      "from_node": "fiber (Cincinnati \u2192 Washington_DC)-",
+      "to_node": "roadm Washington_DC"
+    },
+    {
+      "from_node": "roadm Washington_DC",
+      "to_node": "fiber (Washington_DC \u2192 London)-"
+    },
+    {
+      "from_node": "fiber (London \u2192 Washington_DC)-",
+      "to_node": "roadm Washington_DC"
+    },
+    {
+      "from_node": "roadm Washington_DC",
+      "to_node": "fiber (Washington_DC \u2192 Richmond)-"
+    },
+    {
+      "from_node": "fiber (Richmond \u2192 Washington_DC)-",
+      "to_node": "roadm Washington_DC"
+    },
+    {
+      "from_node": "fiber (Miami \u2192 West_Palm_Beach)-",
+      "to_node": "fiber (West_Palm_Beach \u2192 Orlando)-"
+    },
+    {
+      "from_node": "fiber (Orlando \u2192 West_Palm_Beach)-",
+      "to_node": "fiber (West_Palm_Beach \u2192 Miami)-"
+    },
+    {
+      "from_node": "fiber (New_York \u2192 Wilmington)-",
+      "to_node": "fiber (Wilmington \u2192 Norfolk)-"
+    },
+    {
+      "from_node": "fiber (Norfolk \u2192 Wilmington)-",
+      "to_node": "fiber (Wilmington \u2192 New_York)-"
+    },
+    {
+      "from_node": "roadm Amsterdam",
+      "to_node": "fiber (Amsterdam \u2192 Berlin)-"
+    },
+    {
+      "from_node": "fiber (Berlin \u2192 Amsterdam)-",
+      "to_node": "roadm Amsterdam"
+    },
+    {
+      "from_node": "roadm Amsterdam",
+      "to_node": "fiber (Amsterdam \u2192 Brussels)-"
+    },
+    {
+      "from_node": "fiber (Brussels \u2192 Amsterdam)-",
+      "to_node": "roadm Amsterdam"
+    },
+    {
+      "from_node": "roadm Amsterdam",
+      "to_node": "fiber (Amsterdam \u2192 Frankfurt)-"
+    },
+    {
+      "from_node": "fiber (Frankfurt \u2192 Amsterdam)-",
+      "to_node": "roadm Amsterdam"
+    },
+    {
+      "from_node": "roadm Amsterdam",
+      "to_node": "fiber (Amsterdam \u2192 New_York)-"
+    },
+    {
+      "from_node": "fiber (New_York \u2192 Amsterdam)-",
+      "to_node": "roadm Amsterdam"
+    },
+    {
+      "from_node": "fiber (Amsterdam \u2192 Berlin)-",
+      "to_node": "fiber (Berlin \u2192 Warsaw)-"
+    },
+    {
+      "from_node": "fiber (Warsaw \u2192 Berlin)-",
+      "to_node": "fiber (Berlin \u2192 Amsterdam)-"
+    },
+    {
+      "from_node": "fiber (Amsterdam \u2192 Brussels)-",
+      "to_node": "fiber (Brussels \u2192 London)-"
+    },
+    {
+      "from_node": "fiber (London \u2192 Brussels)-",
+      "to_node": "fiber (Brussels \u2192 Amsterdam)-"
+    },
+    {
+      "from_node": "fiber (Istanbul \u2192 Bucharest)-",
+      "to_node": "fiber (Bucharest \u2192 Warsaw)-"
+    },
+    {
+      "from_node": "fiber (Warsaw \u2192 Bucharest)-",
+      "to_node": "fiber (Bucharest \u2192 Istanbul)-"
+    },
+    {
+      "from_node": "fiber (Amsterdam \u2192 Frankfurt)-",
+      "to_node": "fiber (Frankfurt \u2192 Vienna)-"
+    },
+    {
+      "from_node": "fiber (Vienna \u2192 Frankfurt)-",
+      "to_node": "fiber (Frankfurt \u2192 Amsterdam)-"
+    },
+    {
+      "from_node": "roadm Istanbul",
+      "to_node": "fiber (Istanbul \u2192 Bucharest)-"
+    },
+    {
+      "from_node": "fiber (Bucharest \u2192 Istanbul)-",
+      "to_node": "roadm Istanbul"
+    },
+    {
+      "from_node": "roadm Istanbul",
+      "to_node": "fiber (Istanbul \u2192 Delhi)-"
+    },
+    {
+      "from_node": "fiber (Delhi \u2192 Istanbul)-",
+      "to_node": "roadm Istanbul"
+    },
+    {
+      "from_node": "roadm Istanbul",
+      "to_node": "fiber (Istanbul \u2192 Rome)-"
+    },
+    {
+      "from_node": "fiber (Rome \u2192 Istanbul)-",
+      "to_node": "roadm Istanbul"
+    },
+    {
+      "from_node": "roadm London",
+      "to_node": "fiber (London \u2192 Brussels)-"
+    },
+    {
+      "from_node": "fiber (Brussels \u2192 London)-",
+      "to_node": "roadm London"
+    },
+    {
+      "from_node": "roadm London",
+      "to_node": "fiber (London \u2192 Paris)-"
+    },
+    {
+      "from_node": "fiber (Paris \u2192 London)-",
+      "to_node": "roadm London"
+    },
+    {
+      "from_node": "roadm London",
+      "to_node": "fiber (London \u2192 Washington_DC)-"
+    },
+    {
+      "from_node": "fiber (Washington_DC \u2192 London)-",
+      "to_node": "roadm London"
+    },
+    {
+      "from_node": "fiber (Paris \u2192 Madrid)-",
+      "to_node": "fiber (Madrid \u2192 Zurich)-"
+    },
+    {
+      "from_node": "fiber (Zurich \u2192 Madrid)-",
+      "to_node": "fiber (Madrid \u2192 Paris)-"
+    },
+    {
+      "from_node": "roadm Paris",
+      "to_node": "fiber (Paris \u2192 London)-"
+    },
+    {
+      "from_node": "fiber (London \u2192 Paris)-",
+      "to_node": "roadm Paris"
+    },
+    {
+      "from_node": "roadm Paris",
+      "to_node": "fiber (Paris \u2192 Madrid)-"
+    },
+    {
+      "from_node": "fiber (Madrid \u2192 Paris)-",
+      "to_node": "roadm Paris"
+    },
+    {
+      "from_node": "roadm Paris",
+      "to_node": "fiber (Paris \u2192 Miami)-"
+    },
+    {
+      "from_node": "fiber (Miami \u2192 Paris)-",
+      "to_node": "roadm Paris"
+    },
+    {
+      "from_node": "roadm Rome",
+      "to_node": "fiber (Rome \u2192 Istanbul)-"
+    },
+    {
+      "from_node": "fiber (Istanbul \u2192 Rome)-",
+      "to_node": "roadm Rome"
+    },
+    {
+      "from_node": "roadm Rome",
+      "to_node": "fiber (Rome \u2192 Mumbai)-"
+    },
+    {
+      "from_node": "fiber (Mumbai \u2192 Rome)-",
+      "to_node": "roadm Rome"
+    },
+    {
+      "from_node": "roadm Rome",
+      "to_node": "fiber (Rome \u2192 Vienna)-"
+    },
+    {
+      "from_node": "fiber (Vienna \u2192 Rome)-",
+      "to_node": "roadm Rome"
+    },
+    {
+      "from_node": "roadm Rome",
+      "to_node": "fiber (Rome \u2192 Zurich)-"
+    },
+    {
+      "from_node": "fiber (Zurich \u2192 Rome)-",
+      "to_node": "roadm Rome"
+    },
+    {
+      "from_node": "roadm Vienna",
+      "to_node": "fiber (Vienna \u2192 Frankfurt)-"
+    },
+    {
+      "from_node": "fiber (Frankfurt \u2192 Vienna)-",
+      "to_node": "roadm Vienna"
+    },
+    {
+      "from_node": "roadm Vienna",
+      "to_node": "fiber (Vienna \u2192 Rome)-"
+    },
+    {
+      "from_node": "fiber (Rome \u2192 Vienna)-",
+      "to_node": "roadm Vienna"
+    },
+    {
+      "from_node": "roadm Vienna",
+      "to_node": "fiber (Vienna \u2192 Warsaw)-"
+    },
+    {
+      "from_node": "fiber (Warsaw \u2192 Vienna)-",
+      "to_node": "roadm Vienna"
+    },
+    {
+      "from_node": "roadm Warsaw",
+      "to_node": "fiber (Warsaw \u2192 Berlin)-"
+    },
+    {
+      "from_node": "fiber (Berlin \u2192 Warsaw)-",
+      "to_node": "roadm Warsaw"
+    },
+    {
+      "from_node": "roadm Warsaw",
+      "to_node": "fiber (Warsaw \u2192 Bucharest)-"
+    },
+    {
+      "from_node": "fiber (Bucharest \u2192 Warsaw)-",
+      "to_node": "roadm Warsaw"
+    },
+    {
+      "from_node": "roadm Warsaw",
+      "to_node": "fiber (Warsaw \u2192 Vienna)-"
+    },
+    {
+      "from_node": "fiber (Vienna \u2192 Warsaw)-",
+      "to_node": "roadm Warsaw"
+    },
+    {
+      "from_node": "fiber (Madrid \u2192 Zurich)-",
+      "to_node": "fiber (Zurich \u2192 Rome)-"
+    },
+    {
+      "from_node": "fiber (Rome \u2192 Zurich)-",
+      "to_node": "fiber (Zurich \u2192 Madrid)-"
+    },
+    {
+      "from_node": "fiber (Delhi \u2192 Bangkok)-",
+      "to_node": "fiber (Bangkok \u2192 Hong_Kong)-"
+    },
+    {
+      "from_node": "fiber (Hong_Kong \u2192 Bangkok)-",
+      "to_node": "fiber (Bangkok \u2192 Delhi)-"
+    },
+    {
+      "from_node": "fiber (Seoul \u2192 Beijing)-",
+      "to_node": "fiber (Beijing \u2192 Shanghai)-"
+    },
+    {
+      "from_node": "fiber (Shanghai \u2192 Beijing)-",
+      "to_node": "fiber (Beijing \u2192 Seoul)-"
+    },
+    {
+      "from_node": "roadm Delhi",
+      "to_node": "fiber (Delhi \u2192 Bangkok)-"
+    },
+    {
+      "from_node": "fiber (Bangkok \u2192 Delhi)-",
+      "to_node": "roadm Delhi"
+    },
+    {
+      "from_node": "roadm Delhi",
+      "to_node": "fiber (Delhi \u2192 Istanbul)-"
+    },
+    {
+      "from_node": "fiber (Istanbul \u2192 Delhi)-",
+      "to_node": "roadm Delhi"
+    },
+    {
+      "from_node": "roadm Delhi",
+      "to_node": "fiber (Delhi \u2192 Mumbai)-"
+    },
+    {
+      "from_node": "fiber (Mumbai \u2192 Delhi)-",
+      "to_node": "roadm Delhi"
+    },
+    {
+      "from_node": "roadm Hong_Kong",
+      "to_node": "fiber (Hong_Kong \u2192 Bangkok)-"
+    },
+    {
+      "from_node": "fiber (Bangkok \u2192 Hong_Kong)-",
+      "to_node": "roadm Hong_Kong"
     },
     {
       "from_node": "roadm Hong_Kong",
@@ -7363,188 +7235,12 @@
       "to_node": "roadm Honolulu"
     },
     {
-      "from_node": "roadm Istanbul",
-      "to_node": "fiber (Istanbul \u2192 Rome)-"
+      "from_node": "roadm Mumbai",
+      "to_node": "fiber (Mumbai \u2192 Delhi)-"
     },
     {
-      "from_node": "fiber (Rome \u2192 Istanbul)-",
-      "to_node": "roadm Istanbul"
-    },
-    {
-      "from_node": "roadm Jacksonville",
-      "to_node": "fiber (Jacksonville \u2192 Orlando)-"
-    },
-    {
-      "from_node": "fiber (Orlando \u2192 Jacksonville)-",
-      "to_node": "roadm Jacksonville"
-    },
-    {
-      "from_node": "roadm Kansas_City",
-      "to_node": "fiber (Kansas_City \u2192 Omaha)-"
-    },
-    {
-      "from_node": "fiber (Omaha \u2192 Kansas_City)-",
-      "to_node": "roadm Kansas_City"
-    },
-    {
-      "from_node": "roadm Kansas_City",
-      "to_node": "fiber (Kansas_City \u2192 St_Louis)-"
-    },
-    {
-      "from_node": "fiber (St_Louis \u2192 Kansas_City)-",
-      "to_node": "roadm Kansas_City"
-    },
-    {
-      "from_node": "roadm Kansas_City",
-      "to_node": "fiber (Kansas_City \u2192 Tulsa)-"
-    },
-    {
-      "from_node": "fiber (Tulsa \u2192 Kansas_City)-",
-      "to_node": "roadm Kansas_City"
-    },
-    {
-      "from_node": "roadm Las_Vegas",
-      "to_node": "fiber (Las_Vegas \u2192 Phoenix)-"
-    },
-    {
-      "from_node": "fiber (Phoenix \u2192 Las_Vegas)-",
-      "to_node": "roadm Las_Vegas"
-    },
-    {
-      "from_node": "roadm Las_Vegas",
-      "to_node": "fiber (Las_Vegas \u2192 Salt_Lake_City)-"
-    },
-    {
-      "from_node": "fiber (Salt_Lake_City \u2192 Las_Vegas)-",
-      "to_node": "roadm Las_Vegas"
-    },
-    {
-      "from_node": "roadm Little_Rock",
-      "to_node": "fiber (Little_Rock \u2192 Memphis)-"
-    },
-    {
-      "from_node": "fiber (Memphis \u2192 Little_Rock)-",
-      "to_node": "roadm Little_Rock"
-    },
-    {
-      "from_node": "roadm London",
-      "to_node": "fiber (London \u2192 Paris)-"
-    },
-    {
-      "from_node": "fiber (Paris \u2192 London)-",
-      "to_node": "roadm London"
-    },
-    {
-      "from_node": "roadm London",
-      "to_node": "fiber (London \u2192 Washington_DC)-"
-    },
-    {
-      "from_node": "fiber (Washington_DC \u2192 London)-",
-      "to_node": "roadm London"
-    },
-    {
-      "from_node": "roadm Long_Island",
-      "to_node": "fiber (Long_Island \u2192 New_York)-"
-    },
-    {
-      "from_node": "fiber (New_York \u2192 Long_Island)-",
-      "to_node": "roadm Long_Island"
-    },
-    {
-      "from_node": "roadm Los_Angeles",
-      "to_node": "fiber (Los_Angeles \u2192 San_Diego)-"
-    },
-    {
-      "from_node": "fiber (San_Diego \u2192 Los_Angeles)-",
-      "to_node": "roadm Los_Angeles"
-    },
-    {
-      "from_node": "roadm Los_Angeles",
-      "to_node": "fiber (Los_Angeles \u2192 Santa_Barbara)-"
-    },
-    {
-      "from_node": "fiber (Santa_Barbara \u2192 Los_Angeles)-",
-      "to_node": "roadm Los_Angeles"
-    },
-    {
-      "from_node": "roadm Louisville",
-      "to_node": "fiber (Louisville \u2192 Nashville)-"
-    },
-    {
-      "from_node": "fiber (Nashville \u2192 Louisville)-",
-      "to_node": "roadm Louisville"
-    },
-    {
-      "from_node": "roadm Louisville",
-      "to_node": "fiber (Louisville \u2192 St_Louis)-"
-    },
-    {
-      "from_node": "fiber (St_Louis \u2192 Louisville)-",
-      "to_node": "roadm Louisville"
-    },
-    {
-      "from_node": "roadm Madrid",
-      "to_node": "fiber (Madrid \u2192 Paris)-"
-    },
-    {
-      "from_node": "fiber (Paris \u2192 Madrid)-",
-      "to_node": "roadm Madrid"
-    },
-    {
-      "from_node": "roadm Madrid",
-      "to_node": "fiber (Madrid \u2192 Zurich)-"
-    },
-    {
-      "from_node": "fiber (Zurich \u2192 Madrid)-",
-      "to_node": "roadm Madrid"
-    },
-    {
-      "from_node": "roadm Memphis",
-      "to_node": "fiber (Memphis \u2192 Nashville)-"
-    },
-    {
-      "from_node": "fiber (Nashville \u2192 Memphis)-",
-      "to_node": "roadm Memphis"
-    },
-    {
-      "from_node": "roadm Miami",
-      "to_node": "fiber (Miami \u2192 Paris)-"
-    },
-    {
-      "from_node": "fiber (Paris \u2192 Miami)-",
-      "to_node": "roadm Miami"
-    },
-    {
-      "from_node": "roadm Miami",
-      "to_node": "fiber (Miami \u2192 Tampa)-"
-    },
-    {
-      "from_node": "fiber (Tampa \u2192 Miami)-",
-      "to_node": "roadm Miami"
-    },
-    {
-      "from_node": "roadm Miami",
-      "to_node": "fiber (Miami \u2192 West_Palm_Beach)-"
-    },
-    {
-      "from_node": "fiber (West_Palm_Beach \u2192 Miami)-",
-      "to_node": "roadm Miami"
-    },
-    {
-      "from_node": "roadm Milwaukee",
-      "to_node": "fiber (Milwaukee \u2192 Minneapolis)-"
-    },
-    {
-      "from_node": "fiber (Minneapolis \u2192 Milwaukee)-",
-      "to_node": "roadm Milwaukee"
-    },
-    {
-      "from_node": "roadm Minneapolis",
-      "to_node": "fiber (Minneapolis \u2192 Omaha)-"
-    },
-    {
-      "from_node": "fiber (Omaha \u2192 Minneapolis)-",
-      "to_node": "roadm Minneapolis"
+      "from_node": "fiber (Delhi \u2192 Mumbai)-",
+      "to_node": "roadm Mumbai"
     },
     {
       "from_node": "roadm Mumbai",
@@ -7563,852 +7259,28 @@
       "to_node": "roadm Mumbai"
     },
     {
-      "from_node": "roadm New_Orleans",
-      "to_node": "fiber (New_Orleans \u2192 Tallahassee)-"
-    },
-    {
-      "from_node": "fiber (Tallahassee \u2192 New_Orleans)-",
-      "to_node": "roadm New_Orleans"
-    },
-    {
-      "from_node": "roadm New_York",
-      "to_node": "fiber (New_York \u2192 Newark)-"
-    },
-    {
-      "from_node": "fiber (Newark \u2192 New_York)-",
-      "to_node": "roadm New_York"
-    },
-    {
-      "from_node": "roadm New_York",
-      "to_node": "fiber (New_York \u2192 Scranton)-"
-    },
-    {
-      "from_node": "fiber (Scranton \u2192 New_York)-",
-      "to_node": "roadm New_York"
-    },
-    {
-      "from_node": "roadm New_York",
-      "to_node": "fiber (New_York \u2192 Wilmington)-"
-    },
-    {
-      "from_node": "fiber (Wilmington \u2192 New_York)-",
-      "to_node": "roadm New_York"
-    },
-    {
-      "from_node": "roadm Newark",
-      "to_node": "fiber (Newark \u2192 Philadelphia)-"
-    },
-    {
-      "from_node": "fiber (Philadelphia \u2192 Newark)-",
-      "to_node": "roadm Newark"
-    },
-    {
-      "from_node": "roadm Norfolk",
-      "to_node": "fiber (Norfolk \u2192 Raleigh)-"
-    },
-    {
-      "from_node": "fiber (Raleigh \u2192 Norfolk)-",
-      "to_node": "roadm Norfolk"
-    },
-    {
-      "from_node": "roadm Norfolk",
-      "to_node": "fiber (Norfolk \u2192 Wilmington)-"
-    },
-    {
-      "from_node": "fiber (Wilmington \u2192 Norfolk)-",
-      "to_node": "roadm Norfolk"
-    },
-    {
-      "from_node": "roadm Oakland",
-      "to_node": "fiber (Oakland \u2192 Sacramento)-"
-    },
-    {
-      "from_node": "fiber (Sacramento \u2192 Oakland)-",
-      "to_node": "roadm Oakland"
-    },
-    {
-      "from_node": "roadm Oakland",
-      "to_node": "fiber (Oakland \u2192 Salt_Lake_City)-"
-    },
-    {
-      "from_node": "fiber (Salt_Lake_City \u2192 Oakland)-",
-      "to_node": "roadm Oakland"
-    },
-    {
-      "from_node": "roadm Oakland",
-      "to_node": "fiber (Oakland \u2192 San_Francisco)-"
-    },
-    {
-      "from_node": "fiber (San_Francisco \u2192 Oakland)-",
-      "to_node": "roadm Oakland"
-    },
-    {
-      "from_node": "roadm Oakland",
-      "to_node": "fiber (Oakland \u2192 Taipei)-"
-    },
-    {
-      "from_node": "fiber (Taipei \u2192 Oakland)-",
-      "to_node": "roadm Oakland"
-    },
-    {
-      "from_node": "roadm Oklahoma_City",
-      "to_node": "fiber (Oklahoma_City \u2192 Tulsa)-"
-    },
-    {
-      "from_node": "fiber (Tulsa \u2192 Oklahoma_City)-",
-      "to_node": "roadm Oklahoma_City"
-    },
-    {
-      "from_node": "roadm Orlando",
-      "to_node": "fiber (Orlando \u2192 West_Palm_Beach)-"
-    },
-    {
-      "from_node": "fiber (West_Palm_Beach \u2192 Orlando)-",
-      "to_node": "roadm Orlando"
-    },
-    {
-      "from_node": "roadm Philadelphia",
-      "to_node": "fiber (Philadelphia \u2192 Scranton)-"
-    },
-    {
-      "from_node": "fiber (Scranton \u2192 Philadelphia)-",
-      "to_node": "roadm Philadelphia"
-    },
-    {
-      "from_node": "roadm Phoenix",
-      "to_node": "fiber (Phoenix \u2192 San_Diego)-"
-    },
-    {
-      "from_node": "fiber (San_Diego \u2192 Phoenix)-",
-      "to_node": "roadm Phoenix"
-    },
-    {
-      "from_node": "roadm Phoenix",
-      "to_node": "fiber (Phoenix \u2192 Tucson)-"
-    },
-    {
-      "from_node": "fiber (Tucson \u2192 Phoenix)-",
-      "to_node": "roadm Phoenix"
-    },
-    {
-      "from_node": "roadm Pittsburgh",
-      "to_node": "fiber (Pittsburgh \u2192 Scranton)-"
-    },
-    {
-      "from_node": "fiber (Scranton \u2192 Pittsburgh)-",
-      "to_node": "roadm Pittsburgh"
-    },
-    {
-      "from_node": "roadm Portland",
-      "to_node": "fiber (Portland \u2192 Sacramento)-"
-    },
-    {
-      "from_node": "fiber (Sacramento \u2192 Portland)-",
-      "to_node": "roadm Portland"
-    },
-    {
-      "from_node": "roadm Portland",
-      "to_node": "fiber (Portland \u2192 Salt_Lake_City)-"
-    },
-    {
-      "from_node": "fiber (Salt_Lake_City \u2192 Portland)-",
-      "to_node": "roadm Portland"
-    },
-    {
-      "from_node": "roadm Portland",
-      "to_node": "fiber (Portland \u2192 Seattle)-"
-    },
-    {
-      "from_node": "fiber (Seattle \u2192 Portland)-",
-      "to_node": "roadm Portland"
-    },
-    {
-      "from_node": "roadm Portland",
-      "to_node": "fiber (Portland \u2192 Tokyo)-"
-    },
-    {
-      "from_node": "fiber (Tokyo \u2192 Portland)-",
-      "to_node": "roadm Portland"
-    },
-    {
-      "from_node": "roadm Richmond",
-      "to_node": "fiber (Richmond \u2192 Washington_DC)-"
-    },
-    {
-      "from_node": "fiber (Washington_DC \u2192 Richmond)-",
-      "to_node": "roadm Richmond"
-    },
-    {
-      "from_node": "roadm Rochester",
-      "to_node": "fiber (Rochester \u2192 Syracuse)-"
-    },
-    {
-      "from_node": "fiber (Syracuse \u2192 Rochester)-",
-      "to_node": "roadm Rochester"
-    },
-    {
-      "from_node": "roadm Rome",
-      "to_node": "fiber (Rome \u2192 Vienna)-"
-    },
-    {
-      "from_node": "fiber (Vienna \u2192 Rome)-",
-      "to_node": "roadm Rome"
-    },
-    {
-      "from_node": "roadm Rome",
-      "to_node": "fiber (Rome \u2192 Zurich)-"
-    },
-    {
-      "from_node": "fiber (Zurich \u2192 Rome)-",
-      "to_node": "roadm Rome"
-    },
-    {
-      "from_node": "roadm San_Francisco",
-      "to_node": "fiber (San_Francisco \u2192 San_Jose)-"
-    },
-    {
-      "from_node": "fiber (San_Jose \u2192 San_Francisco)-",
-      "to_node": "roadm San_Francisco"
-    },
-    {
-      "from_node": "roadm San_Jose",
-      "to_node": "fiber (San_Jose \u2192 Santa_Barbara)-"
-    },
-    {
-      "from_node": "fiber (Santa_Barbara \u2192 San_Jose)-",
-      "to_node": "roadm San_Jose"
-    },
-    {
-      "from_node": "roadm Scranton",
-      "to_node": "fiber (Scranton \u2192 Syracuse)-"
-    },
-    {
-      "from_node": "fiber (Syracuse \u2192 Scranton)-",
-      "to_node": "roadm Scranton"
-    },
-    {
-      "from_node": "roadm Seattle",
-      "to_node": "fiber (Seattle \u2192 Spokane)-"
-    },
-    {
-      "from_node": "fiber (Spokane \u2192 Seattle)-",
-      "to_node": "roadm Seattle"
-    },
-    {
-      "from_node": "roadm Seoul",
+      "from_node": "fiber (Beijing \u2192 Seoul)-",
       "to_node": "fiber (Seoul \u2192 Tokyo)-"
     },
     {
       "from_node": "fiber (Tokyo \u2192 Seoul)-",
-      "to_node": "roadm Seoul"
-    },
-    {
-      "from_node": "roadm Singapore",
-      "to_node": "fiber (Singapore \u2192 Sydney)-"
-    },
-    {
-      "from_node": "fiber (Sydney \u2192 Singapore)-",
-      "to_node": "roadm Singapore"
-    },
-    {
-      "from_node": "roadm Springfield",
-      "to_node": "fiber (Springfield \u2192 St_Louis)-"
-    },
-    {
-      "from_node": "fiber (St_Louis \u2192 Springfield)-",
-      "to_node": "roadm Springfield"
-    },
-    {
-      "from_node": "roadm Taipei",
-      "to_node": "fiber (Taipei \u2192 Tokyo)-"
-    },
-    {
-      "from_node": "fiber (Tokyo \u2192 Taipei)-",
-      "to_node": "roadm Taipei"
-    },
-    {
-      "from_node": "roadm Tallahassee",
-      "to_node": "fiber (Tallahassee \u2192 Tampa)-"
-    },
-    {
-      "from_node": "fiber (Tampa \u2192 Tallahassee)-",
-      "to_node": "roadm Tallahassee"
-    },
-    {
-      "from_node": "roadm Vienna",
-      "to_node": "fiber (Vienna \u2192 Warsaw)-"
-    },
-    {
-      "from_node": "fiber (Warsaw \u2192 Vienna)-",
-      "to_node": "roadm Vienna"
-    },
-    {
-      "from_node": "roadm Dallas",
-      "to_node": "fiber (Dallas \u2192 Abilene)-"
-    },
-    {
-      "from_node": "fiber (Abilene \u2192 Dallas)-",
-      "to_node": "roadm Dallas"
-    },
-    {
-      "from_node": "roadm El_Paso",
-      "to_node": "fiber (El_Paso \u2192 Abilene)-"
-    },
-    {
-      "from_node": "fiber (Abilene \u2192 El_Paso)-",
-      "to_node": "roadm El_Paso"
-    },
-    {
-      "from_node": "roadm Boston",
-      "to_node": "fiber (Boston \u2192 Albany)-"
-    },
-    {
-      "from_node": "fiber (Albany \u2192 Boston)-",
-      "to_node": "roadm Boston"
-    },
-    {
-      "from_node": "roadm Syracuse",
-      "to_node": "fiber (Syracuse \u2192 Albany)-"
-    },
-    {
-      "from_node": "fiber (Albany \u2192 Syracuse)-",
-      "to_node": "roadm Syracuse"
-    },
-    {
-      "from_node": "roadm Dallas",
-      "to_node": "fiber (Dallas \u2192 Albuquerque)-"
-    },
-    {
-      "from_node": "fiber (Albuquerque \u2192 Dallas)-",
-      "to_node": "roadm Dallas"
-    },
-    {
-      "from_node": "roadm Denver",
-      "to_node": "fiber (Denver \u2192 Albuquerque)-"
-    },
-    {
-      "from_node": "fiber (Albuquerque \u2192 Denver)-",
-      "to_node": "roadm Denver"
-    },
-    {
-      "from_node": "roadm El_Paso",
-      "to_node": "fiber (El_Paso \u2192 Albuquerque)-"
-    },
-    {
-      "from_node": "fiber (Albuquerque \u2192 El_Paso)-",
-      "to_node": "roadm El_Paso"
-    },
-    {
-      "from_node": "roadm Las_Vegas",
-      "to_node": "fiber (Las_Vegas \u2192 Albuquerque)-"
-    },
-    {
-      "from_node": "fiber (Albuquerque \u2192 Las_Vegas)-",
-      "to_node": "roadm Las_Vegas"
-    },
-    {
-      "from_node": "roadm Berlin",
-      "to_node": "fiber (Berlin \u2192 Amsterdam)-"
-    },
-    {
-      "from_node": "fiber (Amsterdam \u2192 Berlin)-",
-      "to_node": "roadm Berlin"
-    },
-    {
-      "from_node": "roadm Brussels",
-      "to_node": "fiber (Brussels \u2192 Amsterdam)-"
-    },
-    {
-      "from_node": "fiber (Amsterdam \u2192 Brussels)-",
-      "to_node": "roadm Brussels"
-    },
-    {
-      "from_node": "roadm Frankfurt",
-      "to_node": "fiber (Frankfurt \u2192 Amsterdam)-"
-    },
-    {
-      "from_node": "fiber (Amsterdam \u2192 Frankfurt)-",
-      "to_node": "roadm Frankfurt"
-    },
-    {
-      "from_node": "roadm New_York",
-      "to_node": "fiber (New_York \u2192 Amsterdam)-"
-    },
-    {
-      "from_node": "fiber (Amsterdam \u2192 New_York)-",
-      "to_node": "roadm New_York"
-    },
-    {
-      "from_node": "roadm Birmingham",
-      "to_node": "fiber (Birmingham \u2192 Atlanta)-"
-    },
-    {
-      "from_node": "fiber (Atlanta \u2192 Birmingham)-",
-      "to_node": "roadm Birmingham"
-    },
-    {
-      "from_node": "roadm Charlotte",
-      "to_node": "fiber (Charlotte \u2192 Atlanta)-"
-    },
-    {
-      "from_node": "fiber (Atlanta \u2192 Charlotte)-",
-      "to_node": "roadm Charlotte"
-    },
-    {
-      "from_node": "roadm Jacksonville",
-      "to_node": "fiber (Jacksonville \u2192 Atlanta)-"
-    },
-    {
-      "from_node": "fiber (Atlanta \u2192 Jacksonville)-",
-      "to_node": "roadm Jacksonville"
-    },
-    {
-      "from_node": "roadm Houston",
-      "to_node": "fiber (Houston \u2192 Austin)-"
-    },
-    {
-      "from_node": "fiber (Austin \u2192 Houston)-",
-      "to_node": "roadm Houston"
-    },
-    {
-      "from_node": "roadm San_Antonio",
-      "to_node": "fiber (San_Antonio \u2192 Austin)-"
-    },
-    {
-      "from_node": "fiber (Austin \u2192 San_Antonio)-",
-      "to_node": "roadm San_Antonio"
-    },
-    {
-      "from_node": "roadm Philadelphia",
-      "to_node": "fiber (Philadelphia \u2192 Baltimore)-"
-    },
-    {
-      "from_node": "fiber (Baltimore \u2192 Philadelphia)-",
-      "to_node": "roadm Philadelphia"
-    },
-    {
-      "from_node": "roadm Pittsburgh",
-      "to_node": "fiber (Pittsburgh \u2192 Baltimore)-"
-    },
-    {
-      "from_node": "fiber (Baltimore \u2192 Pittsburgh)-",
-      "to_node": "roadm Pittsburgh"
-    },
-    {
-      "from_node": "roadm Washington_DC",
-      "to_node": "fiber (Washington_DC \u2192 Baltimore)-"
-    },
-    {
-      "from_node": "fiber (Baltimore \u2192 Washington_DC)-",
-      "to_node": "roadm Washington_DC"
-    },
-    {
-      "from_node": "roadm Delhi",
-      "to_node": "fiber (Delhi \u2192 Bangkok)-"
-    },
-    {
-      "from_node": "fiber (Bangkok \u2192 Delhi)-",
-      "to_node": "roadm Delhi"
-    },
-    {
-      "from_node": "roadm Hong_Kong",
-      "to_node": "fiber (Hong_Kong \u2192 Bangkok)-"
-    },
-    {
-      "from_node": "fiber (Bangkok \u2192 Hong_Kong)-",
-      "to_node": "roadm Hong_Kong"
-    },
-    {
-      "from_node": "roadm Houston",
-      "to_node": "fiber (Houston \u2192 Baton_Rouge)-"
-    },
-    {
-      "from_node": "fiber (Baton_Rouge \u2192 Houston)-",
-      "to_node": "roadm Houston"
-    },
-    {
-      "from_node": "roadm New_Orleans",
-      "to_node": "fiber (New_Orleans \u2192 Baton_Rouge)-"
-    },
-    {
-      "from_node": "fiber (Baton_Rouge \u2192 New_Orleans)-",
-      "to_node": "roadm New_Orleans"
-    },
-    {
-      "from_node": "roadm Seoul",
       "to_node": "fiber (Seoul \u2192 Beijing)-"
     },
     {
-      "from_node": "fiber (Beijing \u2192 Seoul)-",
-      "to_node": "roadm Seoul"
-    },
-    {
-      "from_node": "roadm Shanghai",
-      "to_node": "fiber (Shanghai \u2192 Beijing)-"
-    },
-    {
       "from_node": "fiber (Beijing \u2192 Shanghai)-",
-      "to_node": "roadm Shanghai"
-    },
-    {
-      "from_node": "roadm Warsaw",
-      "to_node": "fiber (Warsaw \u2192 Berlin)-"
-    },
-    {
-      "from_node": "fiber (Berlin \u2192 Warsaw)-",
-      "to_node": "roadm Warsaw"
-    },
-    {
-      "from_node": "roadm Bismarck",
-      "to_node": "fiber (Bismarck \u2192 Billings)-"
-    },
-    {
-      "from_node": "fiber (Billings \u2192 Bismarck)-",
-      "to_node": "roadm Bismarck"
-    },
-    {
-      "from_node": "roadm Denver",
-      "to_node": "fiber (Denver \u2192 Billings)-"
-    },
-    {
-      "from_node": "fiber (Billings \u2192 Denver)-",
-      "to_node": "roadm Denver"
-    },
-    {
-      "from_node": "roadm Spokane",
-      "to_node": "fiber (Spokane \u2192 Billings)-"
-    },
-    {
-      "from_node": "fiber (Billings \u2192 Spokane)-",
-      "to_node": "roadm Spokane"
-    },
-    {
-      "from_node": "roadm Nashville",
-      "to_node": "fiber (Nashville \u2192 Birmingham)-"
-    },
-    {
-      "from_node": "fiber (Birmingham \u2192 Nashville)-",
-      "to_node": "roadm Nashville"
-    },
-    {
-      "from_node": "roadm New_Orleans",
-      "to_node": "fiber (New_Orleans \u2192 Birmingham)-"
-    },
-    {
-      "from_node": "fiber (Birmingham \u2192 New_Orleans)-",
-      "to_node": "roadm New_Orleans"
-    },
-    {
-      "from_node": "roadm Minneapolis",
-      "to_node": "fiber (Minneapolis \u2192 Bismarck)-"
-    },
-    {
-      "from_node": "fiber (Bismarck \u2192 Minneapolis)-",
-      "to_node": "roadm Minneapolis"
-    },
-    {
-      "from_node": "roadm Providence",
-      "to_node": "fiber (Providence \u2192 Boston)-"
-    },
-    {
-      "from_node": "fiber (Boston \u2192 Providence)-",
-      "to_node": "roadm Providence"
-    },
-    {
-      "from_node": "roadm London",
-      "to_node": "fiber (London \u2192 Brussels)-"
-    },
-    {
-      "from_node": "fiber (Brussels \u2192 London)-",
-      "to_node": "roadm London"
-    },
-    {
-      "from_node": "roadm Istanbul",
-      "to_node": "fiber (Istanbul \u2192 Bucharest)-"
-    },
-    {
-      "from_node": "fiber (Bucharest \u2192 Istanbul)-",
-      "to_node": "roadm Istanbul"
-    },
-    {
-      "from_node": "roadm Warsaw",
-      "to_node": "fiber (Warsaw \u2192 Bucharest)-"
-    },
-    {
-      "from_node": "fiber (Bucharest \u2192 Warsaw)-",
-      "to_node": "roadm Warsaw"
-    },
-    {
-      "from_node": "roadm Cleveland",
-      "to_node": "fiber (Cleveland \u2192 Buffalo)-"
-    },
-    {
-      "from_node": "fiber (Buffalo \u2192 Cleveland)-",
-      "to_node": "roadm Cleveland"
-    },
-    {
-      "from_node": "roadm Rochester",
-      "to_node": "fiber (Rochester \u2192 Buffalo)-"
-    },
-    {
-      "from_node": "fiber (Buffalo \u2192 Rochester)-",
-      "to_node": "roadm Rochester"
-    },
-    {
-      "from_node": "roadm Jacksonville",
-      "to_node": "fiber (Jacksonville \u2192 Charleston)-"
-    },
-    {
-      "from_node": "fiber (Charleston \u2192 Jacksonville)-",
-      "to_node": "roadm Jacksonville"
-    },
-    {
-      "from_node": "roadm Raleigh",
-      "to_node": "fiber (Raleigh \u2192 Charleston)-"
-    },
-    {
-      "from_node": "fiber (Charleston \u2192 Raleigh)-",
-      "to_node": "roadm Raleigh"
-    },
-    {
-      "from_node": "roadm Greensboro",
-      "to_node": "fiber (Greensboro \u2192 Charlotte)-"
-    },
-    {
-      "from_node": "fiber (Charlotte \u2192 Greensboro)-",
-      "to_node": "roadm Greensboro"
-    },
-    {
-      "from_node": "roadm Detroit",
-      "to_node": "fiber (Detroit \u2192 Chicago)-"
-    },
-    {
-      "from_node": "fiber (Chicago \u2192 Detroit)-",
-      "to_node": "roadm Detroit"
-    },
-    {
-      "from_node": "roadm Milwaukee",
-      "to_node": "fiber (Milwaukee \u2192 Chicago)-"
-    },
-    {
-      "from_node": "fiber (Chicago \u2192 Milwaukee)-",
-      "to_node": "roadm Milwaukee"
-    },
-    {
-      "from_node": "roadm Springfield",
-      "to_node": "fiber (Springfield \u2192 Chicago)-"
-    },
-    {
-      "from_node": "fiber (Chicago \u2192 Springfield)-",
-      "to_node": "roadm Springfield"
-    },
-    {
-      "from_node": "roadm Columbus",
-      "to_node": "fiber (Columbus \u2192 Cincinnati)-"
-    },
-    {
-      "from_node": "fiber (Cincinnati \u2192 Columbus)-",
-      "to_node": "roadm Columbus"
-    },
-    {
-      "from_node": "roadm Louisville",
-      "to_node": "fiber (Louisville \u2192 Cincinnati)-"
-    },
-    {
-      "from_node": "fiber (Cincinnati \u2192 Louisville)-",
-      "to_node": "roadm Louisville"
-    },
-    {
-      "from_node": "roadm Washington_DC",
-      "to_node": "fiber (Washington_DC \u2192 Cincinnati)-"
-    },
-    {
-      "from_node": "fiber (Cincinnati \u2192 Washington_DC)-",
-      "to_node": "roadm Washington_DC"
-    },
-    {
-      "from_node": "roadm Columbus",
-      "to_node": "fiber (Columbus \u2192 Cleveland)-"
-    },
-    {
-      "from_node": "fiber (Cleveland \u2192 Columbus)-",
-      "to_node": "roadm Columbus"
-    },
-    {
-      "from_node": "roadm Toledo",
-      "to_node": "fiber (Toledo \u2192 Cleveland)-"
-    },
-    {
-      "from_node": "fiber (Cleveland \u2192 Toledo)-",
-      "to_node": "roadm Toledo"
-    },
-    {
-      "from_node": "roadm Pittsburgh",
-      "to_node": "fiber (Pittsburgh \u2192 Columbus)-"
-    },
-    {
-      "from_node": "fiber (Columbus \u2192 Pittsburgh)-",
-      "to_node": "roadm Pittsburgh"
-    },
-    {
-      "from_node": "roadm Houston",
-      "to_node": "fiber (Houston \u2192 Dallas)-"
-    },
-    {
-      "from_node": "fiber (Dallas \u2192 Houston)-",
-      "to_node": "roadm Houston"
-    },
-    {
-      "from_node": "roadm Little_Rock",
-      "to_node": "fiber (Little_Rock \u2192 Dallas)-"
-    },
-    {
-      "from_node": "fiber (Dallas \u2192 Little_Rock)-",
-      "to_node": "roadm Little_Rock"
-    },
-    {
-      "from_node": "roadm Oklahoma_City",
-      "to_node": "fiber (Oklahoma_City \u2192 Dallas)-"
-    },
-    {
-      "from_node": "fiber (Dallas \u2192 Oklahoma_City)-",
-      "to_node": "roadm Oklahoma_City"
-    },
-    {
-      "from_node": "roadm Istanbul",
-      "to_node": "fiber (Istanbul \u2192 Delhi)-"
-    },
-    {
-      "from_node": "fiber (Delhi \u2192 Istanbul)-",
-      "to_node": "roadm Istanbul"
-    },
-    {
-      "from_node": "roadm Mumbai",
-      "to_node": "fiber (Mumbai \u2192 Delhi)-"
-    },
-    {
-      "from_node": "fiber (Delhi \u2192 Mumbai)-",
-      "to_node": "roadm Mumbai"
-    },
-    {
-      "from_node": "roadm Omaha",
-      "to_node": "fiber (Omaha \u2192 Denver)-"
-    },
-    {
-      "from_node": "fiber (Denver \u2192 Omaha)-",
-      "to_node": "roadm Omaha"
-    },
-    {
-      "from_node": "roadm Salt_Lake_City",
-      "to_node": "fiber (Salt_Lake_City \u2192 Denver)-"
-    },
-    {
-      "from_node": "fiber (Denver \u2192 Salt_Lake_City)-",
-      "to_node": "roadm Salt_Lake_City"
-    },
-    {
-      "from_node": "roadm Toledo",
-      "to_node": "fiber (Toledo \u2192 Detroit)-"
-    },
-    {
-      "from_node": "fiber (Detroit \u2192 Toledo)-",
-      "to_node": "roadm Toledo"
-    },
-    {
-      "from_node": "roadm San_Antonio",
-      "to_node": "fiber (San_Antonio \u2192 El_Paso)-"
-    },
-    {
-      "from_node": "fiber (El_Paso \u2192 San_Antonio)-",
-      "to_node": "roadm San_Antonio"
-    },
-    {
-      "from_node": "roadm Tucson",
-      "to_node": "fiber (Tucson \u2192 El_Paso)-"
-    },
-    {
-      "from_node": "fiber (El_Paso \u2192 Tucson)-",
-      "to_node": "roadm Tucson"
-    },
-    {
-      "from_node": "roadm Vienna",
-      "to_node": "fiber (Vienna \u2192 Frankfurt)-"
-    },
-    {
-      "from_node": "fiber (Frankfurt \u2192 Vienna)-",
-      "to_node": "roadm Vienna"
-    },
-    {
-      "from_node": "roadm Las_Vegas",
-      "to_node": "fiber (Las_Vegas \u2192 Fresno)-"
-    },
-    {
-      "from_node": "fiber (Fresno \u2192 Las_Vegas)-",
-      "to_node": "roadm Las_Vegas"
-    },
-    {
-      "from_node": "roadm Los_Angeles",
-      "to_node": "fiber (Los_Angeles \u2192 Fresno)-"
-    },
-    {
-      "from_node": "fiber (Fresno \u2192 Los_Angeles)-",
-      "to_node": "roadm Los_Angeles"
-    },
-    {
-      "from_node": "roadm Oakland",
-      "to_node": "fiber (Oakland \u2192 Fresno)-"
-    },
-    {
-      "from_node": "fiber (Fresno \u2192 Oakland)-",
-      "to_node": "roadm Oakland"
-    },
-    {
-      "from_node": "roadm Louisville",
-      "to_node": "fiber (Louisville \u2192 Greensboro)-"
-    },
-    {
-      "from_node": "fiber (Greensboro \u2192 Louisville)-",
-      "to_node": "roadm Louisville"
-    },
-    {
-      "from_node": "roadm Raleigh",
-      "to_node": "fiber (Raleigh \u2192 Greensboro)-"
-    },
-    {
-      "from_node": "fiber (Greensboro \u2192 Raleigh)-",
-      "to_node": "roadm Raleigh"
-    },
-    {
-      "from_node": "roadm Richmond",
-      "to_node": "fiber (Richmond \u2192 Greensboro)-"
-    },
-    {
-      "from_node": "fiber (Greensboro \u2192 Richmond)-",
-      "to_node": "roadm Richmond"
-    },
-    {
-      "from_node": "roadm Long_Island",
-      "to_node": "fiber (Long_Island \u2192 Hartford)-"
-    },
-    {
-      "from_node": "fiber (Hartford \u2192 Long_Island)-",
-      "to_node": "roadm Long_Island"
-    },
-    {
-      "from_node": "roadm Providence",
-      "to_node": "fiber (Providence \u2192 Hartford)-"
-    },
-    {
-      "from_node": "fiber (Hartford \u2192 Providence)-",
-      "to_node": "roadm Providence"
-    },
-    {
-      "from_node": "roadm Shanghai",
       "to_node": "fiber (Shanghai \u2192 Hong_Kong)-"
     },
     {
       "from_node": "fiber (Hong_Kong \u2192 Shanghai)-",
-      "to_node": "roadm Shanghai"
+      "to_node": "fiber (Shanghai \u2192 Beijing)-"
+    },
+    {
+      "from_node": "fiber (Mumbai \u2192 Singapore)-",
+      "to_node": "fiber (Singapore \u2192 Sydney)-"
+    },
+    {
+      "from_node": "fiber (Sydney \u2192 Singapore)-",
+      "to_node": "fiber (Singapore \u2192 Mumbai)-"
     },
     {
       "from_node": "roadm Sydney",
@@ -8416,6 +7288,22 @@
     },
     {
       "from_node": "fiber (Hong_Kong \u2192 Sydney)-",
+      "to_node": "roadm Sydney"
+    },
+    {
+      "from_node": "roadm Sydney",
+      "to_node": "fiber (Sydney \u2192 Honolulu)-"
+    },
+    {
+      "from_node": "fiber (Honolulu \u2192 Sydney)-",
+      "to_node": "roadm Sydney"
+    },
+    {
+      "from_node": "roadm Sydney",
+      "to_node": "fiber (Sydney \u2192 Singapore)-"
+    },
+    {
+      "from_node": "fiber (Singapore \u2192 Sydney)-",
       "to_node": "roadm Sydney"
     },
     {
@@ -8427,308 +7315,12 @@
       "to_node": "roadm Taipei"
     },
     {
-      "from_node": "roadm Los_Angeles",
-      "to_node": "fiber (Los_Angeles \u2192 Honolulu)-"
-    },
-    {
-      "from_node": "fiber (Honolulu \u2192 Los_Angeles)-",
-      "to_node": "roadm Los_Angeles"
-    },
-    {
-      "from_node": "roadm Sydney",
-      "to_node": "fiber (Sydney \u2192 Honolulu)-"
-    },
-    {
-      "from_node": "fiber (Honolulu \u2192 Sydney)-",
-      "to_node": "roadm Sydney"
-    },
-    {
       "from_node": "roadm Taipei",
       "to_node": "fiber (Taipei \u2192 Honolulu)-"
     },
     {
       "from_node": "fiber (Honolulu \u2192 Taipei)-",
       "to_node": "roadm Taipei"
-    },
-    {
-      "from_node": "roadm Rome",
-      "to_node": "fiber (Rome \u2192 Istanbul)-"
-    },
-    {
-      "from_node": "fiber (Istanbul \u2192 Rome)-",
-      "to_node": "roadm Rome"
-    },
-    {
-      "from_node": "roadm Orlando",
-      "to_node": "fiber (Orlando \u2192 Jacksonville)-"
-    },
-    {
-      "from_node": "fiber (Jacksonville \u2192 Orlando)-",
-      "to_node": "roadm Orlando"
-    },
-    {
-      "from_node": "roadm Omaha",
-      "to_node": "fiber (Omaha \u2192 Kansas_City)-"
-    },
-    {
-      "from_node": "fiber (Kansas_City \u2192 Omaha)-",
-      "to_node": "roadm Omaha"
-    },
-    {
-      "from_node": "roadm St_Louis",
-      "to_node": "fiber (St_Louis \u2192 Kansas_City)-"
-    },
-    {
-      "from_node": "fiber (Kansas_City \u2192 St_Louis)-",
-      "to_node": "roadm St_Louis"
-    },
-    {
-      "from_node": "roadm Tulsa",
-      "to_node": "fiber (Tulsa \u2192 Kansas_City)-"
-    },
-    {
-      "from_node": "fiber (Kansas_City \u2192 Tulsa)-",
-      "to_node": "roadm Tulsa"
-    },
-    {
-      "from_node": "roadm Phoenix",
-      "to_node": "fiber (Phoenix \u2192 Las_Vegas)-"
-    },
-    {
-      "from_node": "fiber (Las_Vegas \u2192 Phoenix)-",
-      "to_node": "roadm Phoenix"
-    },
-    {
-      "from_node": "roadm Salt_Lake_City",
-      "to_node": "fiber (Salt_Lake_City \u2192 Las_Vegas)-"
-    },
-    {
-      "from_node": "fiber (Las_Vegas \u2192 Salt_Lake_City)-",
-      "to_node": "roadm Salt_Lake_City"
-    },
-    {
-      "from_node": "roadm Memphis",
-      "to_node": "fiber (Memphis \u2192 Little_Rock)-"
-    },
-    {
-      "from_node": "fiber (Little_Rock \u2192 Memphis)-",
-      "to_node": "roadm Memphis"
-    },
-    {
-      "from_node": "roadm Paris",
-      "to_node": "fiber (Paris \u2192 London)-"
-    },
-    {
-      "from_node": "fiber (London \u2192 Paris)-",
-      "to_node": "roadm Paris"
-    },
-    {
-      "from_node": "roadm Washington_DC",
-      "to_node": "fiber (Washington_DC \u2192 London)-"
-    },
-    {
-      "from_node": "fiber (London \u2192 Washington_DC)-",
-      "to_node": "roadm Washington_DC"
-    },
-    {
-      "from_node": "roadm New_York",
-      "to_node": "fiber (New_York \u2192 Long_Island)-"
-    },
-    {
-      "from_node": "fiber (Long_Island \u2192 New_York)-",
-      "to_node": "roadm New_York"
-    },
-    {
-      "from_node": "roadm San_Diego",
-      "to_node": "fiber (San_Diego \u2192 Los_Angeles)-"
-    },
-    {
-      "from_node": "fiber (Los_Angeles \u2192 San_Diego)-",
-      "to_node": "roadm San_Diego"
-    },
-    {
-      "from_node": "roadm Santa_Barbara",
-      "to_node": "fiber (Santa_Barbara \u2192 Los_Angeles)-"
-    },
-    {
-      "from_node": "fiber (Los_Angeles \u2192 Santa_Barbara)-",
-      "to_node": "roadm Santa_Barbara"
-    },
-    {
-      "from_node": "roadm Nashville",
-      "to_node": "fiber (Nashville \u2192 Louisville)-"
-    },
-    {
-      "from_node": "fiber (Louisville \u2192 Nashville)-",
-      "to_node": "roadm Nashville"
-    },
-    {
-      "from_node": "roadm St_Louis",
-      "to_node": "fiber (St_Louis \u2192 Louisville)-"
-    },
-    {
-      "from_node": "fiber (Louisville \u2192 St_Louis)-",
-      "to_node": "roadm St_Louis"
-    },
-    {
-      "from_node": "roadm Paris",
-      "to_node": "fiber (Paris \u2192 Madrid)-"
-    },
-    {
-      "from_node": "fiber (Madrid \u2192 Paris)-",
-      "to_node": "roadm Paris"
-    },
-    {
-      "from_node": "roadm Zurich",
-      "to_node": "fiber (Zurich \u2192 Madrid)-"
-    },
-    {
-      "from_node": "fiber (Madrid \u2192 Zurich)-",
-      "to_node": "roadm Zurich"
-    },
-    {
-      "from_node": "roadm Nashville",
-      "to_node": "fiber (Nashville \u2192 Memphis)-"
-    },
-    {
-      "from_node": "fiber (Memphis \u2192 Nashville)-",
-      "to_node": "roadm Nashville"
-    },
-    {
-      "from_node": "roadm Paris",
-      "to_node": "fiber (Paris \u2192 Miami)-"
-    },
-    {
-      "from_node": "fiber (Miami \u2192 Paris)-",
-      "to_node": "roadm Paris"
-    },
-    {
-      "from_node": "roadm Tampa",
-      "to_node": "fiber (Tampa \u2192 Miami)-"
-    },
-    {
-      "from_node": "fiber (Miami \u2192 Tampa)-",
-      "to_node": "roadm Tampa"
-    },
-    {
-      "from_node": "roadm West_Palm_Beach",
-      "to_node": "fiber (West_Palm_Beach \u2192 Miami)-"
-    },
-    {
-      "from_node": "fiber (Miami \u2192 West_Palm_Beach)-",
-      "to_node": "roadm West_Palm_Beach"
-    },
-    {
-      "from_node": "roadm Minneapolis",
-      "to_node": "fiber (Minneapolis \u2192 Milwaukee)-"
-    },
-    {
-      "from_node": "fiber (Milwaukee \u2192 Minneapolis)-",
-      "to_node": "roadm Minneapolis"
-    },
-    {
-      "from_node": "roadm Omaha",
-      "to_node": "fiber (Omaha \u2192 Minneapolis)-"
-    },
-    {
-      "from_node": "fiber (Minneapolis \u2192 Omaha)-",
-      "to_node": "roadm Omaha"
-    },
-    {
-      "from_node": "roadm Rome",
-      "to_node": "fiber (Rome \u2192 Mumbai)-"
-    },
-    {
-      "from_node": "fiber (Mumbai \u2192 Rome)-",
-      "to_node": "roadm Rome"
-    },
-    {
-      "from_node": "roadm Singapore",
-      "to_node": "fiber (Singapore \u2192 Mumbai)-"
-    },
-    {
-      "from_node": "fiber (Mumbai \u2192 Singapore)-",
-      "to_node": "roadm Singapore"
-    },
-    {
-      "from_node": "roadm Tallahassee",
-      "to_node": "fiber (Tallahassee \u2192 New_Orleans)-"
-    },
-    {
-      "from_node": "fiber (New_Orleans \u2192 Tallahassee)-",
-      "to_node": "roadm Tallahassee"
-    },
-    {
-      "from_node": "roadm Newark",
-      "to_node": "fiber (Newark \u2192 New_York)-"
-    },
-    {
-      "from_node": "fiber (New_York \u2192 Newark)-",
-      "to_node": "roadm Newark"
-    },
-    {
-      "from_node": "roadm Scranton",
-      "to_node": "fiber (Scranton \u2192 New_York)-"
-    },
-    {
-      "from_node": "fiber (New_York \u2192 Scranton)-",
-      "to_node": "roadm Scranton"
-    },
-    {
-      "from_node": "roadm Wilmington",
-      "to_node": "fiber (Wilmington \u2192 New_York)-"
-    },
-    {
-      "from_node": "fiber (New_York \u2192 Wilmington)-",
-      "to_node": "roadm Wilmington"
-    },
-    {
-      "from_node": "roadm Philadelphia",
-      "to_node": "fiber (Philadelphia \u2192 Newark)-"
-    },
-    {
-      "from_node": "fiber (Newark \u2192 Philadelphia)-",
-      "to_node": "roadm Philadelphia"
-    },
-    {
-      "from_node": "roadm Raleigh",
-      "to_node": "fiber (Raleigh \u2192 Norfolk)-"
-    },
-    {
-      "from_node": "fiber (Norfolk \u2192 Raleigh)-",
-      "to_node": "roadm Raleigh"
-    },
-    {
-      "from_node": "roadm Wilmington",
-      "to_node": "fiber (Wilmington \u2192 Norfolk)-"
-    },
-    {
-      "from_node": "fiber (Norfolk \u2192 Wilmington)-",
-      "to_node": "roadm Wilmington"
-    },
-    {
-      "from_node": "roadm Sacramento",
-      "to_node": "fiber (Sacramento \u2192 Oakland)-"
-    },
-    {
-      "from_node": "fiber (Oakland \u2192 Sacramento)-",
-      "to_node": "roadm Sacramento"
-    },
-    {
-      "from_node": "roadm Salt_Lake_City",
-      "to_node": "fiber (Salt_Lake_City \u2192 Oakland)-"
-    },
-    {
-      "from_node": "fiber (Oakland \u2192 Salt_Lake_City)-",
-      "to_node": "roadm Salt_Lake_City"
-    },
-    {
-      "from_node": "roadm San_Francisco",
-      "to_node": "fiber (San_Francisco \u2192 Oakland)-"
-    },
-    {
-      "from_node": "fiber (Oakland \u2192 San_Francisco)-",
-      "to_node": "roadm San_Francisco"
     },
     {
       "from_node": "roadm Taipei",
@@ -8739,76 +7331,12 @@
       "to_node": "roadm Taipei"
     },
     {
-      "from_node": "roadm Tulsa",
-      "to_node": "fiber (Tulsa \u2192 Oklahoma_City)-"
+      "from_node": "roadm Taipei",
+      "to_node": "fiber (Taipei \u2192 Tokyo)-"
     },
     {
-      "from_node": "fiber (Oklahoma_City \u2192 Tulsa)-",
-      "to_node": "roadm Tulsa"
-    },
-    {
-      "from_node": "roadm West_Palm_Beach",
-      "to_node": "fiber (West_Palm_Beach \u2192 Orlando)-"
-    },
-    {
-      "from_node": "fiber (Orlando \u2192 West_Palm_Beach)-",
-      "to_node": "roadm West_Palm_Beach"
-    },
-    {
-      "from_node": "roadm Scranton",
-      "to_node": "fiber (Scranton \u2192 Philadelphia)-"
-    },
-    {
-      "from_node": "fiber (Philadelphia \u2192 Scranton)-",
-      "to_node": "roadm Scranton"
-    },
-    {
-      "from_node": "roadm San_Diego",
-      "to_node": "fiber (San_Diego \u2192 Phoenix)-"
-    },
-    {
-      "from_node": "fiber (Phoenix \u2192 San_Diego)-",
-      "to_node": "roadm San_Diego"
-    },
-    {
-      "from_node": "roadm Tucson",
-      "to_node": "fiber (Tucson \u2192 Phoenix)-"
-    },
-    {
-      "from_node": "fiber (Phoenix \u2192 Tucson)-",
-      "to_node": "roadm Tucson"
-    },
-    {
-      "from_node": "roadm Scranton",
-      "to_node": "fiber (Scranton \u2192 Pittsburgh)-"
-    },
-    {
-      "from_node": "fiber (Pittsburgh \u2192 Scranton)-",
-      "to_node": "roadm Scranton"
-    },
-    {
-      "from_node": "roadm Sacramento",
-      "to_node": "fiber (Sacramento \u2192 Portland)-"
-    },
-    {
-      "from_node": "fiber (Portland \u2192 Sacramento)-",
-      "to_node": "roadm Sacramento"
-    },
-    {
-      "from_node": "roadm Salt_Lake_City",
-      "to_node": "fiber (Salt_Lake_City \u2192 Portland)-"
-    },
-    {
-      "from_node": "fiber (Portland \u2192 Salt_Lake_City)-",
-      "to_node": "roadm Salt_Lake_City"
-    },
-    {
-      "from_node": "roadm Seattle",
-      "to_node": "fiber (Seattle \u2192 Portland)-"
-    },
-    {
-      "from_node": "fiber (Portland \u2192 Seattle)-",
-      "to_node": "roadm Seattle"
+      "from_node": "fiber (Tokyo \u2192 Taipei)-",
+      "to_node": "roadm Taipei"
     },
     {
       "from_node": "roadm Tokyo",
@@ -8819,70 +7347,6 @@
       "to_node": "roadm Tokyo"
     },
     {
-      "from_node": "roadm Washington_DC",
-      "to_node": "fiber (Washington_DC \u2192 Richmond)-"
-    },
-    {
-      "from_node": "fiber (Richmond \u2192 Washington_DC)-",
-      "to_node": "roadm Washington_DC"
-    },
-    {
-      "from_node": "roadm Syracuse",
-      "to_node": "fiber (Syracuse \u2192 Rochester)-"
-    },
-    {
-      "from_node": "fiber (Rochester \u2192 Syracuse)-",
-      "to_node": "roadm Syracuse"
-    },
-    {
-      "from_node": "roadm Vienna",
-      "to_node": "fiber (Vienna \u2192 Rome)-"
-    },
-    {
-      "from_node": "fiber (Rome \u2192 Vienna)-",
-      "to_node": "roadm Vienna"
-    },
-    {
-      "from_node": "roadm Zurich",
-      "to_node": "fiber (Zurich \u2192 Rome)-"
-    },
-    {
-      "from_node": "fiber (Rome \u2192 Zurich)-",
-      "to_node": "roadm Zurich"
-    },
-    {
-      "from_node": "roadm San_Jose",
-      "to_node": "fiber (San_Jose \u2192 San_Francisco)-"
-    },
-    {
-      "from_node": "fiber (San_Francisco \u2192 San_Jose)-",
-      "to_node": "roadm San_Jose"
-    },
-    {
-      "from_node": "roadm Santa_Barbara",
-      "to_node": "fiber (Santa_Barbara \u2192 San_Jose)-"
-    },
-    {
-      "from_node": "fiber (San_Jose \u2192 Santa_Barbara)-",
-      "to_node": "roadm Santa_Barbara"
-    },
-    {
-      "from_node": "roadm Syracuse",
-      "to_node": "fiber (Syracuse \u2192 Scranton)-"
-    },
-    {
-      "from_node": "fiber (Scranton \u2192 Syracuse)-",
-      "to_node": "roadm Syracuse"
-    },
-    {
-      "from_node": "roadm Spokane",
-      "to_node": "fiber (Spokane \u2192 Seattle)-"
-    },
-    {
-      "from_node": "fiber (Seattle \u2192 Spokane)-",
-      "to_node": "roadm Spokane"
-    },
-    {
       "from_node": "roadm Tokyo",
       "to_node": "fiber (Tokyo \u2192 Seoul)-"
     },
@@ -8891,60 +7355,12 @@
       "to_node": "roadm Tokyo"
     },
     {
-      "from_node": "roadm Sydney",
-      "to_node": "fiber (Sydney \u2192 Singapore)-"
-    },
-    {
-      "from_node": "fiber (Singapore \u2192 Sydney)-",
-      "to_node": "roadm Sydney"
-    },
-    {
-      "from_node": "roadm St_Louis",
-      "to_node": "fiber (St_Louis \u2192 Springfield)-"
-    },
-    {
-      "from_node": "fiber (Springfield \u2192 St_Louis)-",
-      "to_node": "roadm St_Louis"
-    },
-    {
       "from_node": "roadm Tokyo",
       "to_node": "fiber (Tokyo \u2192 Taipei)-"
     },
     {
       "from_node": "fiber (Taipei \u2192 Tokyo)-",
       "to_node": "roadm Tokyo"
-    },
-    {
-      "from_node": "roadm Tampa",
-      "to_node": "fiber (Tampa \u2192 Tallahassee)-"
-    },
-    {
-      "from_node": "fiber (Tallahassee \u2192 Tampa)-",
-      "to_node": "roadm Tampa"
-    },
-    {
-      "from_node": "roadm Warsaw",
-      "to_node": "fiber (Warsaw \u2192 Vienna)-"
-    },
-    {
-      "from_node": "fiber (Vienna \u2192 Warsaw)-",
-      "to_node": "roadm Warsaw"
-    },
-    {
-      "from_node": "trx Abilene",
-      "to_node": "roadm Abilene"
-    },
-    {
-      "from_node": "roadm Abilene",
-      "to_node": "trx Abilene"
-    },
-    {
-      "from_node": "trx Albany",
-      "to_node": "roadm Albany"
-    },
-    {
-      "from_node": "roadm Albany",
-      "to_node": "trx Albany"
     },
     {
       "from_node": "trx Albuquerque",
@@ -8963,28 +7379,12 @@
       "to_node": "trx Atlanta"
     },
     {
-      "from_node": "trx Austin",
-      "to_node": "roadm Austin"
-    },
-    {
-      "from_node": "roadm Austin",
-      "to_node": "trx Austin"
-    },
-    {
       "from_node": "trx Baltimore",
       "to_node": "roadm Baltimore"
     },
     {
       "from_node": "roadm Baltimore",
       "to_node": "trx Baltimore"
-    },
-    {
-      "from_node": "trx Baton_Rouge",
-      "to_node": "roadm Baton_Rouge"
-    },
-    {
-      "from_node": "roadm Baton_Rouge",
-      "to_node": "trx Baton_Rouge"
     },
     {
       "from_node": "trx Billings",
@@ -9001,46 +7401,6 @@
     {
       "from_node": "roadm Birmingham",
       "to_node": "trx Birmingham"
-    },
-    {
-      "from_node": "trx Bismarck",
-      "to_node": "roadm Bismarck"
-    },
-    {
-      "from_node": "roadm Bismarck",
-      "to_node": "trx Bismarck"
-    },
-    {
-      "from_node": "trx Boston",
-      "to_node": "roadm Boston"
-    },
-    {
-      "from_node": "roadm Boston",
-      "to_node": "trx Boston"
-    },
-    {
-      "from_node": "trx Buffalo",
-      "to_node": "roadm Buffalo"
-    },
-    {
-      "from_node": "roadm Buffalo",
-      "to_node": "trx Buffalo"
-    },
-    {
-      "from_node": "trx Charleston",
-      "to_node": "roadm Charleston"
-    },
-    {
-      "from_node": "roadm Charleston",
-      "to_node": "trx Charleston"
-    },
-    {
-      "from_node": "trx Charlotte",
-      "to_node": "roadm Charlotte"
-    },
-    {
-      "from_node": "roadm Charlotte",
-      "to_node": "trx Charlotte"
     },
     {
       "from_node": "trx Chicago",
@@ -9091,14 +7451,6 @@
       "to_node": "trx Denver"
     },
     {
-      "from_node": "trx Detroit",
-      "to_node": "roadm Detroit"
-    },
-    {
-      "from_node": "roadm Detroit",
-      "to_node": "trx Detroit"
-    },
-    {
       "from_node": "trx El_Paso",
       "to_node": "roadm El_Paso"
     },
@@ -9121,14 +7473,6 @@
     {
       "from_node": "roadm Greensboro",
       "to_node": "trx Greensboro"
-    },
-    {
-      "from_node": "trx Hartford",
-      "to_node": "roadm Hartford"
-    },
-    {
-      "from_node": "roadm Hartford",
-      "to_node": "trx Hartford"
     },
     {
       "from_node": "trx Houston",
@@ -9163,22 +7507,6 @@
       "to_node": "trx Las_Vegas"
     },
     {
-      "from_node": "trx Little_Rock",
-      "to_node": "roadm Little_Rock"
-    },
-    {
-      "from_node": "roadm Little_Rock",
-      "to_node": "trx Little_Rock"
-    },
-    {
-      "from_node": "trx Long_Island",
-      "to_node": "roadm Long_Island"
-    },
-    {
-      "from_node": "roadm Long_Island",
-      "to_node": "trx Long_Island"
-    },
-    {
       "from_node": "trx Los_Angeles",
       "to_node": "roadm Los_Angeles"
     },
@@ -9195,28 +7523,12 @@
       "to_node": "trx Louisville"
     },
     {
-      "from_node": "trx Memphis",
-      "to_node": "roadm Memphis"
-    },
-    {
-      "from_node": "roadm Memphis",
-      "to_node": "trx Memphis"
-    },
-    {
       "from_node": "trx Miami",
       "to_node": "roadm Miami"
     },
     {
       "from_node": "roadm Miami",
       "to_node": "trx Miami"
-    },
-    {
-      "from_node": "trx Milwaukee",
-      "to_node": "roadm Milwaukee"
-    },
-    {
-      "from_node": "roadm Milwaukee",
-      "to_node": "trx Milwaukee"
     },
     {
       "from_node": "trx Minneapolis",
@@ -9251,22 +7563,6 @@
       "to_node": "trx New_York"
     },
     {
-      "from_node": "trx Newark",
-      "to_node": "roadm Newark"
-    },
-    {
-      "from_node": "roadm Newark",
-      "to_node": "trx Newark"
-    },
-    {
-      "from_node": "trx Norfolk",
-      "to_node": "roadm Norfolk"
-    },
-    {
-      "from_node": "roadm Norfolk",
-      "to_node": "trx Norfolk"
-    },
-    {
       "from_node": "trx Oakland",
       "to_node": "roadm Oakland"
     },
@@ -9275,28 +7571,12 @@
       "to_node": "trx Oakland"
     },
     {
-      "from_node": "trx Oklahoma_City",
-      "to_node": "roadm Oklahoma_City"
-    },
-    {
-      "from_node": "roadm Oklahoma_City",
-      "to_node": "trx Oklahoma_City"
-    },
-    {
       "from_node": "trx Omaha",
       "to_node": "roadm Omaha"
     },
     {
       "from_node": "roadm Omaha",
       "to_node": "trx Omaha"
-    },
-    {
-      "from_node": "trx Orlando",
-      "to_node": "roadm Orlando"
-    },
-    {
-      "from_node": "roadm Orlando",
-      "to_node": "trx Orlando"
     },
     {
       "from_node": "trx Philadelphia",
@@ -9331,44 +7611,12 @@
       "to_node": "trx Portland"
     },
     {
-      "from_node": "trx Providence",
-      "to_node": "roadm Providence"
-    },
-    {
-      "from_node": "roadm Providence",
-      "to_node": "trx Providence"
-    },
-    {
       "from_node": "trx Raleigh",
       "to_node": "roadm Raleigh"
     },
     {
       "from_node": "roadm Raleigh",
       "to_node": "trx Raleigh"
-    },
-    {
-      "from_node": "trx Richmond",
-      "to_node": "roadm Richmond"
-    },
-    {
-      "from_node": "roadm Richmond",
-      "to_node": "trx Richmond"
-    },
-    {
-      "from_node": "trx Rochester",
-      "to_node": "roadm Rochester"
-    },
-    {
-      "from_node": "roadm Rochester",
-      "to_node": "trx Rochester"
-    },
-    {
-      "from_node": "trx Sacramento",
-      "to_node": "roadm Sacramento"
-    },
-    {
-      "from_node": "roadm Sacramento",
-      "to_node": "trx Sacramento"
     },
     {
       "from_node": "trx Salt_Lake_City",
@@ -9379,76 +7627,12 @@
       "to_node": "trx Salt_Lake_City"
     },
     {
-      "from_node": "trx San_Antonio",
-      "to_node": "roadm San_Antonio"
-    },
-    {
-      "from_node": "roadm San_Antonio",
-      "to_node": "trx San_Antonio"
-    },
-    {
-      "from_node": "trx San_Diego",
-      "to_node": "roadm San_Diego"
-    },
-    {
-      "from_node": "roadm San_Diego",
-      "to_node": "trx San_Diego"
-    },
-    {
-      "from_node": "trx San_Francisco",
-      "to_node": "roadm San_Francisco"
-    },
-    {
-      "from_node": "roadm San_Francisco",
-      "to_node": "trx San_Francisco"
-    },
-    {
-      "from_node": "trx San_Jose",
-      "to_node": "roadm San_Jose"
-    },
-    {
-      "from_node": "roadm San_Jose",
-      "to_node": "trx San_Jose"
-    },
-    {
-      "from_node": "trx Santa_Barbara",
-      "to_node": "roadm Santa_Barbara"
-    },
-    {
-      "from_node": "roadm Santa_Barbara",
-      "to_node": "trx Santa_Barbara"
-    },
-    {
       "from_node": "trx Scranton",
       "to_node": "roadm Scranton"
     },
     {
       "from_node": "roadm Scranton",
       "to_node": "trx Scranton"
-    },
-    {
-      "from_node": "trx Seattle",
-      "to_node": "roadm Seattle"
-    },
-    {
-      "from_node": "roadm Seattle",
-      "to_node": "trx Seattle"
-    },
-    {
-      "from_node": "trx Spokane",
-      "to_node": "roadm Spokane"
-    },
-    {
-      "from_node": "roadm Spokane",
-      "to_node": "trx Spokane"
-    },
-    {
-      "from_node": "trx Springfield",
-      "to_node": "roadm Springfield"
-    },
-    {
-      "from_node": "roadm Springfield",
-      "to_node": "trx Springfield"
     },
     {
       "from_node": "trx St_Louis",
@@ -9467,46 +7651,6 @@
       "to_node": "trx Syracuse"
     },
     {
-      "from_node": "trx Tallahassee",
-      "to_node": "roadm Tallahassee"
-    },
-    {
-      "from_node": "roadm Tallahassee",
-      "to_node": "trx Tallahassee"
-    },
-    {
-      "from_node": "trx Tampa",
-      "to_node": "roadm Tampa"
-    },
-    {
-      "from_node": "roadm Tampa",
-      "to_node": "trx Tampa"
-    },
-    {
-      "from_node": "trx Toledo",
-      "to_node": "roadm Toledo"
-    },
-    {
-      "from_node": "roadm Toledo",
-      "to_node": "trx Toledo"
-    },
-    {
-      "from_node": "trx Tucson",
-      "to_node": "roadm Tucson"
-    },
-    {
-      "from_node": "roadm Tucson",
-      "to_node": "trx Tucson"
-    },
-    {
-      "from_node": "trx Tulsa",
-      "to_node": "roadm Tulsa"
-    },
-    {
-      "from_node": "roadm Tulsa",
-      "to_node": "trx Tulsa"
-    },
-    {
       "from_node": "trx Washington_DC",
       "to_node": "roadm Washington_DC"
     },
@@ -9515,60 +7659,12 @@
       "to_node": "trx Washington_DC"
     },
     {
-      "from_node": "trx West_Palm_Beach",
-      "to_node": "roadm West_Palm_Beach"
-    },
-    {
-      "from_node": "roadm West_Palm_Beach",
-      "to_node": "trx West_Palm_Beach"
-    },
-    {
-      "from_node": "trx Wilmington",
-      "to_node": "roadm Wilmington"
-    },
-    {
-      "from_node": "roadm Wilmington",
-      "to_node": "trx Wilmington"
-    },
-    {
       "from_node": "trx Amsterdam",
       "to_node": "roadm Amsterdam"
     },
     {
       "from_node": "roadm Amsterdam",
       "to_node": "trx Amsterdam"
-    },
-    {
-      "from_node": "trx Berlin",
-      "to_node": "roadm Berlin"
-    },
-    {
-      "from_node": "roadm Berlin",
-      "to_node": "trx Berlin"
-    },
-    {
-      "from_node": "trx Brussels",
-      "to_node": "roadm Brussels"
-    },
-    {
-      "from_node": "roadm Brussels",
-      "to_node": "trx Brussels"
-    },
-    {
-      "from_node": "trx Bucharest",
-      "to_node": "roadm Bucharest"
-    },
-    {
-      "from_node": "roadm Bucharest",
-      "to_node": "trx Bucharest"
-    },
-    {
-      "from_node": "trx Frankfurt",
-      "to_node": "roadm Frankfurt"
-    },
-    {
-      "from_node": "roadm Frankfurt",
-      "to_node": "trx Frankfurt"
     },
     {
       "from_node": "trx Istanbul",
@@ -9585,14 +7681,6 @@
     {
       "from_node": "roadm London",
       "to_node": "trx London"
-    },
-    {
-      "from_node": "trx Madrid",
-      "to_node": "roadm Madrid"
-    },
-    {
-      "from_node": "roadm Madrid",
-      "to_node": "trx Madrid"
     },
     {
       "from_node": "trx Paris",
@@ -9627,30 +7715,6 @@
       "to_node": "trx Warsaw"
     },
     {
-      "from_node": "trx Zurich",
-      "to_node": "roadm Zurich"
-    },
-    {
-      "from_node": "roadm Zurich",
-      "to_node": "trx Zurich"
-    },
-    {
-      "from_node": "trx Bangkok",
-      "to_node": "roadm Bangkok"
-    },
-    {
-      "from_node": "roadm Bangkok",
-      "to_node": "trx Bangkok"
-    },
-    {
-      "from_node": "trx Beijing",
-      "to_node": "roadm Beijing"
-    },
-    {
-      "from_node": "roadm Beijing",
-      "to_node": "trx Beijing"
-    },
-    {
       "from_node": "trx Delhi",
       "to_node": "roadm Delhi"
     },
@@ -9681,30 +7745,6 @@
     {
       "from_node": "roadm Mumbai",
       "to_node": "trx Mumbai"
-    },
-    {
-      "from_node": "trx Seoul",
-      "to_node": "roadm Seoul"
-    },
-    {
-      "from_node": "roadm Seoul",
-      "to_node": "trx Seoul"
-    },
-    {
-      "from_node": "trx Shanghai",
-      "to_node": "roadm Shanghai"
-    },
-    {
-      "from_node": "roadm Shanghai",
-      "to_node": "trx Shanghai"
-    },
-    {
-      "from_node": "trx Singapore",
-      "to_node": "roadm Singapore"
-    },
-    {
-      "from_node": "roadm Singapore",
-      "to_node": "trx Singapore"
     },
     {
       "from_node": "trx Sydney",
