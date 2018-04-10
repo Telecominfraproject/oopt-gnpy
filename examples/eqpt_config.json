@@ -1,0 +1,43 @@
+{     "Edfa":[{
+            "type_variety": "std_medium_gain",
+            "gain_flatmax": 25,
+            "gain_min": 15,
+            "p_max": 21,
+            "advanced_config_from_json": "std_medium_gain_advanced_config.json"
+            },
+            {
+            "type_variety": "std_low_gain",
+            "gain_flatmax": 19,
+            "gain_min": 12,
+            "p_max": 22,
+            "nf_min": 6.5,
+            "nf_max": 10
+            }
+      ],
+      "Fiber":[{
+            "type_variety": "SSMF",
+            "dispersion": 1.67e-05,
+            "gamma": 0.00127
+            }
+      ],
+      "Spans":[{
+            "max_length": 150,
+            "length_units": "km",
+            "max_loss": 28,
+            "padding": 10,
+            "EOL": 1,
+            "con_loss": 0.5
+            }
+      ],
+      "Roadms":[{
+            "loss": 20
+            }],
+      "SI":[{
+            "f_min": 193.1e12,
+            "Nch": 96,
+            "baud_rate": 32e9,
+            "spacing": 50e9,
+            "roll_off": 0.15,
+            "power": 1e-3
+            }]
+}
