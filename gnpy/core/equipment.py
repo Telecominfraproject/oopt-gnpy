@@ -21,13 +21,10 @@ ADVANCED_CONFIG_JSON_FILENAME = 'advanced_config_from_json'
 def nf_model(amp_dict):
     gain_min = amp_dict[GAIN_MIN_FIELD]
     gain_max = amp_dict[GAIN_MAX_FIELD]
-    try:
-        nf_min = amp_dict.get(NF_MIN_FIELD,-100)
-        nf_max = amp_dict.get(NF_MAX_FIELD,-100)
-        if nf_min<-10 or nf_max<-10:
-            raise ValueError
-    except ValueError:
-        print(f'invalid or missing nf_min or nf_max values in eqpt_config.json for {amp_dict["type_variety"]}')
+    nf_min = amp_dict.get(NF_MIN_FIELD,-100)
+    nf_max = amp_dict.get(NF_MAX_FIELD,-100)
+    if nf_min<-10 or nf_max<-10:
+        raise ValueError(f'invalid or missing nf_min or nf_max values in eqpt_config.json for {amp_dict["type_variety"]}')
     nf_min = amp_dict.get(NF_MIN_FIELD,-100)
     nf_max = amp_dict.get(NF_MAX_FIELD,-100)
     #use NF estimation model based on NFmin and NFmax in json OA file
@@ -40,17 +37,16 @@ def nf_model(amp_dict):
     nf2 = lin2db((db2lin(nf_min) - db2lin(nf_max)) / (1/db2lin(g1a_max)-1/db2lin(g1a_min)))
     nf1 = lin2db(db2lin(nf_min)- db2lin(nf2)/db2lin(g1a_max)) #expression (1)
 
-    """ now checking and recalculating the results:
-    recalculate delta_p to check it is within [1-6] boundaries
-    This is to check that the nf_min and nf_max values from the json file
-    make sense. If not a warning is printed """
+    #now checking and recalculating the results:
+    #recalculate delta_p to check it is within [1-6] boundaries
+    #This is to check that the nf_min and nf_max values from the json file
+    #make sense. If not a warning is printed 
     if nf1 < 4:
         print('1st coil nf calculated value {} is too low: revise inputs'.format(nf1))
     if nf2 < nf1 + 0.3 or nf2 > nf1 + 2: 
-        """nf2 should be with [nf1+0.5 - nf1 +2] boundaries
-        there shouldn't be very high nf differences between 2 coils
-        => recalculate delta_p 
-        """            
+        #nf2 should be with [nf1+0.5 - nf1 +2] boundaries
+        #there shouldn't be very high nf differences between 2 coils
+        #=> recalculate delta_p            
         nf2 = max(nf2, nf1+0.3)
         nf2 = min(nf2, nf1+2)
         g1a_max = lin2db(db2lin(nf2) / (db2lin(nf_min) - db2lin(nf1))) #use expression (1)
@@ -58,16 +54,14 @@ def nf_model(amp_dict):
         g1a_min = gain_min - (gain_max-gain_min) - delta_p
         if delta_p < 1 or delta_p > 6:
             #delta_p should be > 1dB and < 6dB => consider user warning if not
-            print('1st coil vs 2nd coil calculated DeltaP {} is not valid: revise inputs'
+            print('!WARNING!: 1st coil vs 2nd coil calculated DeltaP {} is not valid: revise inputs'
                         .format(delta_p))
     #check the calculated values for nf1 & nf2:
     nf_min_calc = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_max))
     nf_max_calc = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_min))
     if (abs(nf_min_calc-nf_min) > 0.01) or (abs(nf_max_calc-nf_max) > 0.01):
-        print('nf model calculation failed with nf_min {} and nf_max {} calculated'
-                .format(nf_min_calc, nf_max_calc))
-
-    return (nf1, nf2, delta_p)
+        raise ValueError(f'nf model calculation failed with nf_min {nf_min_calc} and nf_max {nf_max_calc} calculated')
+    return nf1, nf2, delta_p
 
 
 def read_eqpt_library(filename):
@@ -94,7 +88,7 @@ def read_eqpt_library(filename):
             #remove nf_min and nf_max field and replace by nf1, nf2 & delta_p
             nf_min = el.pop('nf_min','')
             nf_max = el.pop('nf_max','')
-            dict_nf_model['nf_model'] = dict(zip(["enabled","nf1","nf2","delta_p"],[True,nf1,nf2,delta_p]))
+            dict_nf_model['nf_model'] = {"enabled": True, "nf1": nf1, "nf2": nf2, "delta_p": delta_p}
 
         json_data = load_json(config_json_filename)
         eqpt_library['Edfa'][i] = {**el, **json_data, **dict_nf_model}

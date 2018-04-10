@@ -13,7 +13,6 @@ from networkx import DiGraph
 from gnpy.core import elements
 from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm
 from gnpy.core.units import UNITS
-from gnpy.core.equipment import *
 
 
 MAX_SPAN_LENGTH = 125000
