@@ -51,7 +51,7 @@ class Link(namedtuple('Link', 'from_city to_city \
         return super().__new__(cls, from_city, to_city,
           east_distance, east_fiber, east_lineic, east_con_in, east_con_out, east_pmd, east_cable,
           west_distance, west_fiber, west_lineic, west_con_in, west_con_out, west_pmd, west_cable,
-          distance_units)
+          distance_units)     
 
 def convert_file(input_filename, filter_region=[]):
     nodes, links = parse_excel(input_filename)
@@ -64,18 +64,17 @@ def convert_file(input_filename, filter_region=[]):
         cities = {lnk.from_city for lnk in links} | {lnk.to_city for lnk in links}
         nodes = [n for n in nodes if n.city in cities]
 
+    global nodes_by_city
     nodes_by_city = {n.city: n for n in nodes}
 
+    global links_by_city
     links_by_city = defaultdict(list)
-    for l in links:
-        if nodes_by_city[l.from_city].node_type.lower() == 'ila':
-            links_by_city[f'{l.from_city}'].append(l)
-        if nodes_by_city[l.to_city].node_type.lower() == 'ila':
-            links_by_city[f'{l.to_city}'].append(l)
-    repeat = False
+    for link in links:
+        links_by_city[link.from_city].append(link)
+        links_by_city[link.to_city].append(link)
 
-    for city,link in list(links_by_city.items()):
-        if len(link) != 2:
+    for city,link in links_by_city.items():
+        if nodes_by_city[city].node_type.lower()=='ila' and len(link) != 2:
             #wrong input: ILA sites can only be Degree 2 
             # => correct to make it a ROADM and remove entry in links_by_city
             #TODO : put in log rather than print
@@ -83,7 +82,6 @@ def convert_file(input_filename, filter_region=[]):
  specified in {city}, replaced by ROADM')
             nodes_by_city[city] = nodes_by_city[city]._replace(node_type='ROADM')
             nodes = [n._replace(node_type='ROADM') if n.city==city else n for n in nodes]
-            del links_by_city[city]
 
     data = {
         'elements':
@@ -122,24 +120,8 @@ def convert_file(input_filename, filter_region=[]):
               }
               for x in links],             
         'connections':
-            list(chain.from_iterable(zip( # put bidi next to each other
-            [{'from_node': f'roadm {x.from_city}',
-              'to_node':   f'fiber ({x.from_city} → {x.to_city})-{x.east_cable}'}
-             for x in links if nodes_by_city[x.from_city].node_type.lower()=='roadm'],
-            [{'from_node': f'fiber ({x.to_city} → {x.from_city})-{x.west_cable}',
-              'to_node':   f'roadm {x.from_city}'}
-             for x in links if nodes_by_city[x.from_city].node_type.lower()=='roadm'])))
-            +
-            list(chain.from_iterable(zip( # put bidi next to each other
-            [{'from_node': f'roadm {x.to_city}',
-              'to_node':   f'fiber ({x.to_city} → {x.from_city})-{x.west_cable}'}
-             for x in links if nodes_by_city[x.to_city].node_type.lower()=='roadm'],
-            [{'from_node': f'fiber ({x.from_city} → {x.to_city})-{x.east_cable}',
-              'to_node':   f'roadm {x.to_city}'}
-             for x in links if nodes_by_city[x.to_city].node_type.lower()=='roadm'])))
-            +
-            list(chain.from_iterable([fiber_connection_by_node(links_by_city[n.city], f'{n.city}')
-            for n in nodes if n.node_type.lower() == 'ila']))
+            list(chain.from_iterable([fiber_connection_by_city(n.city)
+            for n in nodes]))
             +
             list(chain.from_iterable(zip(
             [{'from_node': f'trx {x.city}',
@@ -189,6 +171,7 @@ def parse_excel(input_filename):
         for row in all_rows(links_sheet, start=5):
             links.append(Link(*(x.value for x in row)))
 
+
     # sanity check
     all_cities = Counter(n.city for n in nodes)
     if len(all_cities) != len(nodes):
@@ -200,28 +183,45 @@ def parse_excel(input_filename):
     return nodes, links
 
 
-def fiber_connection_by_node(link, node_name):
-    subdata = [{'from_node': fiber_link_by_dest(link[0], node_name), 
-              'to_node': fiber_link_by_source(link[1], node_name)},
-              {'from_node': fiber_link_by_dest(link[1], node_name), 
-              'to_node': fiber_link_by_source(link[0], node_name)}]
+def fiber_connection_by_city(city_name):
+    other_cities = fiber_dest_from_source(city_name)
+    subdata = []
+    if nodes_by_city[city_name].node_type.lower() in ('ila', 'fused'):
+        # Then len(other_cities) == 2
+        subdata = [{'from_node': fiber_link(other_cities[0], city_name), 
+                  'to_node': fiber_link(city_name, other_cities[1])},
+                  {'from_node': fiber_link(other_cities[1], city_name), 
+                  'to_node': fiber_link(city_name, other_cities[0])}]
+    elif nodes_by_city[city_name].node_type.lower() == 'roadm':
+        subdata = list(chain.from_iterable(zip(
+                  [{'from_node': f'roadm {city_name}',
+                  'to_node': fiber_link(city_name, other_city)} 
+                  for other_city in other_cities],
+                  [{'from_node': fiber_link(other_city, city_name),
+                  'to_node': f'roadm {city_name}'}
+                  for other_city in other_cities])))
     return subdata
 
-def fiber_link_by_dest(link, dest_node):
-    fiber_link_name = ''
-    if dest_node == link.to_city:
-        fiber_link_name = f'fiber ({link.from_city} → {link.to_city})-{link.east_cable}'
-    elif dest_node == link.from_city:
-        fiber_link_name = f'fiber ({link.to_city} → {link.from_city})-{link.west_cable}'
-    return fiber_link_name
+def fiber_dest_from_source(city_name):
+    destinations = []
+    links_from_city = links_by_city[city_name]
+    for l in links_from_city:
+        if l.from_city == city_name: 
+            destinations.append(l.to_city)
+        else:
+            destinations.append(l.from_city)
+    return destinations
 
-def fiber_link_by_source(link, source_node):
-    fiber_link_name = ''
-    if source_node == link.from_city:
-        fiber_link_name = f'fiber ({link.from_city} → {link.to_city})-{link.east_cable}'
-    elif source_node == link.to_city :
-        fiber_link_name = f'fiber ({link.to_city} → {link.from_city})-{link.west_cable}'
-    return fiber_link_name
+
+def fiber_link(from_city, to_city):
+    link = links_by_city[from_city]
+    source_dest = (from_city, to_city)
+    l = next(l for l in link if l.from_city in source_dest and l.to_city in source_dest)
+    if l.from_city == from_city:
+        fiber = f'fiber ({l.from_city} → {l.to_city})-{l.east_cable}'
+    else:
+        fiber = f'fiber ({l.to_city} → {l.from_city})-{l.west_cable}'
+    return fiber
 
 def midpoint(city_a, city_b):
     lats  = city_a.latitude, city_b.latitude
