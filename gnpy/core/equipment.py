@@ -111,3 +111,14 @@ def get_eqpt_params(eqpt_name):
         print(f'cannot find eqpt {eqpt_name} in eqpt library')
         #TODO log it
     return eqpt_config
+
+def generate_edfa_config(eqpt_name, gain, tilt):
+    """returns the full config
+    """
+    config = dict(zip(
+            ['params','operational'],
+            [get_eqpt_config(eqpt_name),
+            {
+                "gain_target": gain,
+                "tilt_target": tilt
+            }]))

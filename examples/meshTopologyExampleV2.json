@@ -407,39 +407,207 @@
         "length_units": "km",
         "loss_coef": 0.2
       }
+    },
+    {
+      "uid": "egress edfa in Lannion_CAS",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 20.0,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "egress edfa in Lannion_CAS",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 20.0,
+        "tilt_target": 0.0
+      }
+    },
+    {
+      "uid": "egress edfa in Lannion_CAS",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 20.0,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "egress edfa in Corlay",
+      "metadata": {
+        "location": {
+          "city": "Corlay",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 12.0,
+        "tilt_target": 0.0
+      }
+    },
+    {
+      "uid": "ingress edfa in Lannion_CAS",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 20.0,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "ingress edfa in Lannion_CAS",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 12.0,
+        "tilt_target": 0.0
+      }
+    },
+    {
+      "uid": "ingress edfa in Lannion_CAS",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 20.0,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "ingress edfa in Corlay",
+      "metadata": {
+        "location": {
+          "city": "Corlay",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 11.0,
+        "tilt_target": 0.0
+      }
     }
   ],
   "connections": [
     {
       "from_node": "roadm Lannion_CAS",
+      "to_node": "egress edfa in Lannion_CAS"
+    },
+    {
+      "from_node": "egress edfa in Lannion_CAS",
       "to_node": "fiber (Lannion_CAS \u2192 Corlay)-F061"
     },
     {
       "from_node": "fiber (Corlay \u2192 Lannion_CAS)-F061",
+      "to_node": "ingress edfa in Lannion_CAS"
+    },
+    {
+      "from_node": "ingress edfa in Lannion_CAS",
       "to_node": "roadm Lannion_CAS"
     },
     {
       "from_node": "roadm Lannion_CAS",
+      "to_node": "egress edfa in Lannion_CAS"
+    },
+    {
+      "from_node": "egress edfa in Lannion_CAS",
       "to_node": "fiber (Lannion_CAS \u2192 Stbrieuc)-F056"
     },
     {
       "from_node": "fiber (Stbrieuc \u2192 Lannion_CAS)-F056",
+      "to_node": "ingress edfa in Lannion_CAS"
+    },
+    {
+      "from_node": "ingress edfa in Lannion_CAS",
       "to_node": "roadm Lannion_CAS"
     },
     {
       "from_node": "roadm Lannion_CAS",
+      "to_node": "egress edfa in Lannion_CAS"
+    },
+    {
+      "from_node": "egress edfa in Lannion_CAS",
       "to_node": "fiber (Lannion_CAS \u2192 Morlaix)-F059"
     },
     {
       "from_node": "fiber (Morlaix \u2192 Lannion_CAS)-F059",
+      "to_node": "ingress edfa in Lannion_CAS"
+    },
+    {
+      "from_node": "ingress edfa in Lannion_CAS",
       "to_node": "roadm Lannion_CAS"
     },
     {
       "from_node": "fiber (Lannion_CAS \u2192 Corlay)-F061",
+      "to_node": "egress edfa in Corlay"
+    },
+    {
+      "from_node": "egress edfa in Corlay",
       "to_node": "fiber (Corlay \u2192 Loudeac)-F010"
     },
     {
       "from_node": "fiber (Loudeac \u2192 Corlay)-F010",
+      "to_node": "ingress edfa in Corlay"
+    },
+    {
+      "from_node": "ingress edfa in Corlay",
       "to_node": "fiber (Corlay \u2192 Lannion_CAS)-F061"
     },
     {
