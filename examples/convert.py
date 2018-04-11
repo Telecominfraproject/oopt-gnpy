@@ -1,5 +1,19 @@
 #!/usr/bin/env python3
+"""
+@author: briantaylor
+@author: giladgoldfarb
+@author: jeanluc-auge
+xls to json parser, that can be called directly from the transmission_main_example
+xls examples are meshTopologyExampleV2.xls and CORONET_Global_Topology.xls
+Require Nodes and Links sheets, Eqpt sheet is optional
+*in Nodes sheet, only the 'City' column is mandatory. The column 'Type' is discovered based
+on the topology: degree 2 = ILA, other degrees = ROADM. The value is also corrected if the user 
+specifies an ILA of degree != 2.
+*In Links sheet only the 3 first columns (Node A, Node Z and east Distance (km)) are mandatory. 
+Missing west information are copied from east information so it is possible to input undir data
+*in Eqpt sheet 
 
+"""
 from sys import exit
 try:
     from xlrd import open_workbook
@@ -23,9 +37,8 @@ class Node(namedtuple('Node', 'city state country region latitude longitude node
     def __new__(cls, city, state='', country='', region='', latitude=0, longitude=0, node_type='ILA'):
         values = [latitude, longitude, node_type]
         default_values = [0, 0, 'ILA']
-        [latitude, longitude, node_type] \
-            = [x[0] if x[0] != '' else x[1] for x in zip(values,default_values)]
-        return super().__new__(cls, city, state, country, region, latitude, longitude, node_type)
+        values = [x[0] if x[0] != '' else x[1] for x in zip(values,default_values)]
+        return super().__new__(cls, city, state, country, region, *values)
 
 class Link(namedtuple('Link', 'from_city to_city \
     east_distance east_fiber east_lineic east_con_in east_con_out east_pmd east_cable \
@@ -34,27 +47,33 @@ class Link(namedtuple('Link', 'from_city to_city \
     def __new__(cls, from_city, to_city,
       east_distance, east_fiber='SSMF', east_lineic=0.2, 
       east_con_in=0.5, east_con_out=0.5, east_pmd=0.1, east_cable='', 
-      west_distance=-100, west_fiber='SSMF', west_lineic=0.2, 
-      west_con_in=0.5, west_con_out=0.5, west_pmd=0.1, west_cable='',
+      west_distance='', west_fiber='', west_lineic='', 
+      west_con_in='', west_con_out='', west_pmd='', west_cable='',
       distance_units='km'):
-        values = [from_city, to_city, 
-            east_distance, east_fiber, east_lineic, east_con_in, east_con_out, east_pmd, east_cable,
-            west_distance, west_fiber, west_lineic, west_con_in, west_con_out, west_pmd, west_cable]
-        default_values = ['','',0,'SSMF',0.2,0.5,0.5,0.1,'',-100,'SSMF',0.2,0.5,0.5,0.1,'']
-        [from_city, to_city, 
-            east_distance, east_fiber, east_lineic, east_con_in, east_con_out, east_pmd, east_cable,
-            west_distance, west_fiber, west_lineic, west_con_in, west_con_out, west_pmd, west_cable]\
-            = [x[0] if x[0] != '' else x[1] for x in zip(values,default_values)]
+        east_values = [east_distance, east_fiber, east_lineic, east_con_in, east_con_out, 
+                        east_pmd, east_cable]
+        west_values = [west_distance, west_fiber, west_lineic, west_con_in, west_con_out, 
+                        west_pmd, west_cable]
+        default_values = [80,'SSMF',0.2,0.5,0.5,0.1,'']
+        east_values = [x[0] if x[0] != '' else x[1] for x in zip(east_values,default_values)]
+        west_values = [x[0] if x[0] != '' else x[1] for x in zip(west_values,east_values)]
+        return super().__new__(cls, from_city, to_city, *east_values, *west_values, distance_units)     
 
-        west_distance = east_distance if west_distance == -100 else west_distance
-
-        return super().__new__(cls, from_city, to_city,
-          east_distance, east_fiber, east_lineic, east_con_in, east_con_out, east_pmd, east_cable,
-          west_distance, west_fiber, west_lineic, west_con_in, west_con_out, west_pmd, west_cable,
-          distance_units)     
+class Eqpt(namedtuple('Eqpt', 'from_city to_city \
+    egress_amp_type egress_att_in egress_amp_gain egress_amp_tilt egress_amp_att_out\
+    ingress_amp_type ingress_att_in ingress_amp_gain ingress_amp_tilt ingress_amp_att_out')):
+    def __new__(cls, from_city='', to_city='',
+    egress_amp_type='', egress_att_in=0, egress_amp_gain=0, egress_amp_tilt=0, egress_amp_att_out=0,
+    ingress_amp_type='', ingress_att_in=0, ingress_amp_gain=0, ingress_amp_tilt=0, ingress_amp_att_out=0):
+        values = [from_city, to_city,
+            egress_amp_type, egress_att_in, egress_amp_gain, egress_amp_tilt, egress_amp_att_out,
+            ingress_amp_type, ingress_att_in, ingress_amp_gain, ingress_amp_tilt, ingress_amp_att_out]
+        default_values = ['','','',0,0,0,0,'',0,0,0,0]
+        values = [x[0] if x[0] != '' else x[1] for x in zip(values,default_values)]
+        return super().__new__(cls, *values)        
 
 def convert_file(input_filename, filter_region=[]):
-    nodes, links = parse_excel(input_filename)
+    nodes, links, eqpts = parse_excel(input_filename)
 
     if filter_region:
         nodes = [n for n in nodes if n.region.lower() in filter_region]
@@ -72,6 +91,11 @@ def convert_file(input_filename, filter_region=[]):
     for link in links:
         links_by_city[link.from_city].append(link)
         links_by_city[link.to_city].append(link)
+
+    global eqpts_by_city
+    eqpts_by_city = defaultdict(list)
+    for eqpt in eqpts:
+        eqpts_by_city[eqpt.from_city].append(eqpt)        
 
     for city,link in links_by_city.items():
         if nodes_by_city[city].node_type.lower()=='ila' and len(link) != 2:
@@ -107,8 +131,8 @@ def convert_file(input_filename, filter_region=[]):
               'params': {'length':   round(x.east_distance, 3),
                          'length_units':    x.distance_units,
                          'loss_coef': x.east_lineic}
-              }
-             for x in links]+
+            }
+              for x in links] +
             [{'uid': f'fiber ({x.to_city} → {x.from_city})-{x.west_cable}',
               'metadata': {'location': midpoint(nodes_by_city[x.from_city],
                                                 nodes_by_city[x.to_city])},
@@ -117,10 +141,32 @@ def convert_file(input_filename, filter_region=[]):
               'params': {'length':   round(x.west_distance, 3),
                          'length_units':    x.distance_units,
                          'loss_coef': x.west_lineic}
-              }
-              for x in links],             
+            } 
+              for x in links] +
+            [{'uid': f'egress edfa in {e.from_city}',
+              'metadata': {'location': {'city':      nodes_by_city[e.from_city].city,
+                                        'region':    nodes_by_city[e.from_city].region,
+                                        'latitude':  nodes_by_city[e.from_city].latitude,
+                                        'longitude': nodes_by_city[e.from_city].longitude}},
+              'type': 'Edfa',
+              'type_variety': e.egress_amp_type,
+              'operational': {'gain_target': e.egress_amp_gain,
+                              'tilt_target': e.egress_amp_tilt}
+            }
+             for e in eqpts if e.egress_amp_type.lower() != ''] +
+            [{'uid': f'ingress edfa in {e.from_city}',
+              'metadata': {'location': {'city':      nodes_by_city[e.from_city].city,
+                                        'region':    nodes_by_city[e.from_city].region,
+                                        'latitude':  nodes_by_city[e.from_city].latitude,
+                                        'longitude': nodes_by_city[e.from_city].longitude}},
+              'type': 'Edfa',
+              'type_variety': e.ingress_amp_type,
+              'operational': {'gain_target': e.ingress_amp_gain,
+                              'tilt_target': e.ingress_amp_tilt}
+              }              
+             for e in eqpts if e.ingress_amp_type.lower() != ''],
         'connections':
-            list(chain.from_iterable([fiber_connection_by_city(n.city)
+            list(chain.from_iterable([eqpt_connection_by_city(n.city)
             for n in nodes]))
             +
             list(chain.from_iterable(zip(
@@ -141,6 +187,12 @@ def parse_excel(input_filename):
     with open_workbook(input_filename) as wb:
         nodes_sheet = wb.sheet_by_name('Nodes')
         links_sheet = wb.sheet_by_name('Links')
+        try:
+            eqpt_sheet = wb.sheet_by_name('Eqpt')
+        except:
+            #eqpt_sheet is optional
+            eqpt_sheet = None
+
 
         # sanity check
         """
@@ -171,6 +223,10 @@ def parse_excel(input_filename):
         for row in all_rows(links_sheet, start=5):
             links.append(Link(*(x.value for x in row)))
 
+        eqpts = []
+        if eqpt_sheet != None:
+            for row in all_rows(eqpt_sheet, start=5):
+                eqpts.append(Eqpt(*(x.value for x in row)))            
 
     # sanity check
     all_cities = Counter(n.city for n in nodes)
@@ -180,27 +236,66 @@ def parse_excel(input_filename):
            ln.to_city   not in all_cities for ln in links):
         ValueError(f'Bad link.')
 
-    return nodes, links
+    return nodes, links, eqpts
 
 
-def fiber_connection_by_city(city_name):
+def eqpt_connection_by_city(city_name):
     other_cities = fiber_dest_from_source(city_name)
     subdata = []
     if nodes_by_city[city_name].node_type.lower() in ('ila', 'fused'):
         # Then len(other_cities) == 2
-        subdata = [{'from_node': fiber_link(other_cities[0], city_name), 
-                  'to_node': fiber_link(city_name, other_cities[1])},
-                  {'from_node': fiber_link(other_cities[1], city_name), 
-                  'to_node': fiber_link(city_name, other_cities[0])}]
+        for i in range(2):
+            from_ = fiber_link(other_cities[i], city_name)
+            in_ = eqpt_in_city_from_city(city_name, other_cities[i])
+            to_ = fiber_link(city_name, other_cities[1-i])
+            subdata += connect_eqpt(from_, in_, to_)
     elif nodes_by_city[city_name].node_type.lower() == 'roadm':
-        subdata = list(chain.from_iterable(zip(
-                  [{'from_node': f'roadm {city_name}',
-                  'to_node': fiber_link(city_name, other_city)} 
-                  for other_city in other_cities],
-                  [{'from_node': fiber_link(other_city, city_name),
-                  'to_node': f'roadm {city_name}'}
-                  for other_city in other_cities])))
+        for other_city in other_cities:
+            from_ = f'roadm {city_name}'
+            in_ = eqpt_in_city_to_city(city_name, other_city)
+            to_ = fiber_link(city_name, other_city)
+            subdata += connect_eqpt(from_, in_, to_)
+
+            from_ = fiber_link(other_city, city_name)
+            in_ = eqpt_in_city_from_city(city_name, other_city)
+            to_ = f'roadm {city_name}'
+            subdata += connect_eqpt(from_, in_, to_)
     return subdata
+
+
+def connect_eqpt(from_, in_, to_):
+    connections = []
+    if in_ !='':
+        connections = [{'from_node': from_, 'to_node': in_},
+                      {'from_node': in_, 'to_node': to_}]
+    else:
+        connections = [{'from_node': from_, 'to_node': to_}]
+    return connections
+
+
+def eqpt_in_city_from_city(in_city, from_city):
+    eqpt = eqpts_by_city.get(in_city)
+    return_eqpt = ''
+    if eqpt != None:
+        for e in eqpt:
+            if e.to_city == from_city and e.ingress_amp_type != '':
+                return_eqpt = f'ingress edfa in {in_city}'
+            elif nodes_by_city[in_city].node_type.lower() == 'ila' and e.egress_amp_type != '':
+                return_eqpt = f'egress edfa in {in_city}'
+    return return_eqpt
+
+
+def eqpt_in_city_to_city(in_city, to_city):
+    eqpt = eqpts_by_city.get(in_city)
+    return_eqpt = ''
+    if eqpt != None:
+      for e in eqpt:
+          if e.to_city == to_city and e.ingress_amp_type != '':
+              return_eqpt = f'egress edfa in {in_city}'
+          elif nodes_by_city[in_city].node_type == 'ila' and e.egress_amp_type != '':
+              return_eqpt = f'ingress edfa in {in_city}'
+    return return_eqpt
+
 
 def fiber_dest_from_source(city_name):
     destinations = []
@@ -222,6 +317,7 @@ def fiber_link(from_city, to_city):
     else:
         fiber = f'fiber ({l.to_city} → {l.from_city})-{l.west_cable}'
     return fiber
+
 
 def midpoint(city_a, city_b):
     lats  = city_a.latitude, city_b.latitude
