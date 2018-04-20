@@ -21,13 +21,7 @@ Documentation: https://gnpy.readthedocs.io
 Installation
 ------------
 
-``gnpy`` is hosted in the `Python Package Index <http://pypi.org/>`_ (`gnpy <https://pypi.org/project/gnpy/>`__). It can be installed via:
-
-.. code-block:: shell
-
-    $ pip install gnpy
-
-It can also be installed directly from the repo.
+``gnpy`` should be installed directly from the repo.
 
 .. code-block:: shell
 
@@ -35,7 +29,7 @@ It can also be installed directly from the repo.
     $ cd gnpy
     $ python setup.py install
 
-Both approaches above will handle installing any additional software dependencies.
+This will handle installing any additional software dependencies.
 
     **Note**: *We recommend the use of the Anaconda Python distribution
     (https://www.anaconda.com/download) which comes with many scientific
@@ -51,17 +45,22 @@ fully-functional programs.
 
 
     **Note**: *If you are a network operator or involved in route planning and
-    optimization for your organization, please contact project maintainer James
-    Powell <james.powell@telecominfraproject>. gnpy is looking for users with
-    specific, delineated use cases to drive requirements for future
-    development.*
+    optimization for your organization, please contact project chairs and 
+    maintainer James  Powell <james.powell@telecominfraproject>. gnpy is 
+    looking for users with specific, delineated use cases to drive 
+    requirements for future development.*
 
 
 **To get started, run the transmission example:**
+  **Note**: *examples need to be launched from the examples folder. Earlier 
+   versions of this README were unfortunately not explicit about this 
+   requirement*
+
 
 .. code-block:: shell
 
-    $ python examples/transmission_main_example.py
+    $ cd examples
+    $ python transmission_main_example.py
 
 By default, this script operates on a single span network defined in `examples/edfa/edfa_example_network.json <examples/edfa/edfa_example_network.json>`_
 
@@ -69,8 +68,7 @@ You can specify a different network at the command line as follows. For
 example, to use the CORONET Continental US (CONUS) network defined in `examples/coronet_conus_example.json <examples/coronet_conus_example.json>`_:
 
 .. code-block:: shell
-
-    $ python examples/transmission_main_example.py examples/coronet_conus_example.json
+    $ python transmission_main_example.py coronet_conus_example.json
 
 This script will calculate the average signal osnr and snr across 93 network
 elements (transceiver, ROADMs, fibers, and amplifiers) between Abilene, Texas
@@ -100,6 +98,10 @@ and 21 dBm max output power. Ripple and NF models are defined in
 
 Contributing
 ------------
+``gnpy`` is currently chaired by 
+Domenico Di Mola <domenico@juniper.net> / Gert Grammel <ggrammel@juniper.net> 
+Walid Wakim (wwakim) <wwakim@cisco.com> / Gabriele Galimberti <ggalimbe@cisco.com> and 
+
 
 ``gnpy`` is looking for additional contributors, especially those with experience
 planning and maintaining large-scale, real-world mesh optical networks.
@@ -188,4 +190,3 @@ License
 ``gnpy`` is distributed under a standard BSD 3-Clause License.
 
 See `LICENSE <LICENSE>`__ for more details.
-
