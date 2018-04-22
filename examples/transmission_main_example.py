@@ -28,7 +28,7 @@ from gnpy.core.info import SpectralInformation, Channel, Power
 
 logger = getLogger(__package__ or __file__)
 eqpt_library = {}
-EQPT_LIBRARY_FILENAME = 'eqpt_config.json'
+EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
 
 def format_si(spectral_infos):
     return '\n'.join([

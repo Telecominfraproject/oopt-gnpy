@@ -7,6 +7,7 @@ calculate nf1, nf2 and Delta_P of a 2 coils edfa with internal VOA
 from nf_min and nf_max inputs 
 '''
 import numpy as np
+from pathlib import Path
 from gnpy.core.utils import lin2db, db2lin, load_json
 
 GAIN_MIN_FIELD = "gain_min"
@@ -89,8 +90,7 @@ def read_eqpt_library(filename):
             nf_min = el.pop('nf_min','')
             nf_max = el.pop('nf_max','')
             dict_nf_model['nf_model'] = {"enabled": True, "nf1": nf1, "nf2": nf2, "delta_p": delta_p}
-
-        json_data = load_json(config_json_filename)
+        json_data = load_json(Path(filename).parent / config_json_filename)
         eqpt_library['Edfa'][i] = {**el, **json_data, **dict_nf_model}
 
 
