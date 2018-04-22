@@ -59,9 +59,12 @@ fully-functional programs.
 
 **To get started, run the transmission example:**
 
+    **Note**: *Examples should be run from the examples/ folder.*
+
 .. code-block:: shell
 
-    $ python examples/transmission_main_example.py
+    $ cd examples
+    $ python transmission_main_example.py
 
 By default, this script operates on a single span network defined in `examples/edfa/edfa_example_network.json <examples/edfa/edfa_example_network.json>`_
 
@@ -70,7 +73,8 @@ example, to use the CORONET Continental US (CONUS) network defined in `examples/
 
 .. code-block:: shell
 
-    $ python examples/transmission_main_example.py examples/coronet_conus_example.json
+    $ cd examples
+    $ python transmission_main_example.py coronet_conus_example.json
 
 This script will calculate the average signal osnr and snr across 93 network
 elements (transceiver, ROADMs, fibers, and amplifiers) between Abilene, Texas
