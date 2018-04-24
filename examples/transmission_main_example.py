@@ -11,7 +11,8 @@ propagates a 96 channels comb
 
 from gnpy.core.utils import load_json
 from convert import convert_file
-from gnpy.core.equipment import *
+from gnpy.core.equipment import read_eqpt_library
+from gnpy.core.utils import db2lin, lin2db
 from argparse import ArgumentParser
 from sys import exit
 from pathlib import Path
@@ -81,11 +82,6 @@ def main(args):
     network = network_from_json(json_data)
     build_network(network)
 
-    spacing = 0.05 #THz
-    si = SpectralInformation() # !! SI units W, Hz
-    si = si.update(carriers=tuple(Channel(f, (191.3+spacing*f)*1e12, 
-            32e9, 0.15, Power(1e-3, 0, 0)) for f in range(1,97)))
-
     trx = [n for n in network.nodes() if isinstance(n, Transceiver)]
     if args.list>=1:
         print(*[el.uid for el in trx], sep='\n')
@@ -104,10 +100,17 @@ def main(args):
 
         path = dijkstra_path(network, source, sink)
         print(f'There are {len(path)} network elements between {source} and {sink}')
-
-        for el in path:
-            si = el(si)
-            print(el)
+        for p in range(0,1): #change range to sweep results across several powers
+            p=db2lin(p)*1e-3
+            spacing = 0.05 #THz
+            si = SpectralInformation() # !! SI units W, Hz
+            si = si.update(carriers=tuple(Channel(f, (191.3+spacing*f)*1e12, 
+                    32e9, 0.15, Power(p, 0, 0)) for f in range(1,80)))
+            for el in path:
+                si = el(si)
+                print(el) #remove this line when sweeping across several powers
+            print(f'\n      Transmission result for input power = {lin2db(p*1e3)}dBm :')
+            print(sink)
 
         #plot_network_graph(network, path, source, sink)
 

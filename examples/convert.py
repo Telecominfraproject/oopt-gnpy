@@ -115,14 +115,21 @@ def convert_file(input_filename, filter_region=[]):
                                         'latitude':  x.latitude,
                                         'longitude': x.longitude}},
               'type': 'Transceiver'}
-             for x in nodes if x.node_type.lower() == 'roadm'] +
+             for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'] +
             [{'uid': f'roadm {x.city}',
               'metadata': {'location': {'city':      x.city,
                                         'region':    x.region,
                                         'latitude':  x.latitude,
                                         'longitude': x.longitude}},
               'type': 'Roadm'}
-             for x in nodes if x.node_type.lower() == 'roadm'] +             
+             for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'] +
+            [{'uid': f'fused spans in {x.city}',
+              'metadata': {'location': {'city':      x.city,
+                                        'region':    x.region,
+                                        'latitude':  x.latitude,
+                                        'longitude': x.longitude}},
+              'type': 'Fused'}
+             for x in nodes_by_city.values() if x.node_type.lower() == 'fused'] +                       
             [{'uid': f'fiber ({x.from_city} → {x.to_city})-{x.east_cable}',
               'metadata': {'location': midpoint(nodes_by_city[x.from_city],
                                                 nodes_by_city[x.to_city])},
@@ -143,7 +150,7 @@ def convert_file(input_filename, filter_region=[]):
                          'loss_coef': x.west_lineic}
             } 
               for x in links] +
-            [{'uid': f'egress edfa in {e.from_city}',
+            [{'uid': f'egress edfa in {e.from_city} to {e.to_city}',
               'metadata': {'location': {'city':      nodes_by_city[e.from_city].city,
                                         'region':    nodes_by_city[e.from_city].region,
                                         'latitude':  nodes_by_city[e.from_city].latitude,
@@ -154,7 +161,7 @@ def convert_file(input_filename, filter_region=[]):
                               'tilt_target': e.egress_amp_tilt}
             }
              for e in eqpts if e.egress_amp_type.lower() != ''] +
-            [{'uid': f'ingress edfa in {e.from_city}',
+            [{'uid': f'ingress edfa in {e.from_city} to {e.to_city}',
               'metadata': {'location': {'city':      nodes_by_city[e.from_city].city,
                                         'region':    nodes_by_city[e.from_city].region,
                                         'latitude':  nodes_by_city[e.from_city].latitude,
@@ -172,10 +179,10 @@ def convert_file(input_filename, filter_region=[]):
             list(chain.from_iterable(zip(
             [{'from_node': f'trx {x.city}',
               'to_node':   f'roadm {x.city}'}
-             for x in nodes if x.node_type.lower()=='roadm'],
+             for x in nodes_by_city.values() if x.node_type.lower()=='roadm'],
             [{'from_node': f'roadm {x.city}',
               'to_node':   f'trx {x.city}'}
-             for x in nodes if x.node_type.lower()=='roadm'])))            
+             for x in nodes_by_city.values() if x.node_type.lower()=='roadm'])))            
     }
 
     #print(dumps(data, indent=2))
@@ -246,7 +253,7 @@ def eqpt_connection_by_city(city_name):
         # Then len(other_cities) == 2
         for i in range(2):
             from_ = fiber_link(other_cities[i], city_name)
-            in_ = eqpt_in_city_from_city(city_name, other_cities[i])
+            in_ = eqpt_in_city_to_city(city_name, other_cities[i],"ingress")
             to_ = fiber_link(city_name, other_cities[1-i])
             subdata += connect_eqpt(from_, in_, to_)
     elif nodes_by_city[city_name].node_type.lower() == 'roadm':
@@ -257,7 +264,7 @@ def eqpt_connection_by_city(city_name):
             subdata += connect_eqpt(from_, in_, to_)
 
             from_ = fiber_link(other_city, city_name)
-            in_ = eqpt_in_city_from_city(city_name, other_city)
+            in_ = eqpt_in_city_to_city(city_name, other_city, "ingress")
             to_ = f'roadm {city_name}'
             subdata += connect_eqpt(from_, in_, to_)
     return subdata
@@ -273,27 +280,24 @@ def connect_eqpt(from_, in_, to_):
     return connections
 
 
-def eqpt_in_city_from_city(in_city, from_city):
-    eqpt = eqpts_by_city.get(in_city)
+def eqpt_in_city_to_city(in_city, to_city, direction ="egress"):
+    rev_direction = "ingress" if direction == "egress" else "egress"
+    amp_direction = direction + "_amp_type"
+    amp_rev_direction = rev_direction + "_amp_type"
     return_eqpt = ''
-    if eqpt != None:
-        for e in eqpt:
-            if e.to_city == from_city and e.ingress_amp_type != '':
-                return_eqpt = f'ingress edfa in {in_city}'
-            elif nodes_by_city[in_city].node_type.lower() == 'ila' and e.egress_amp_type != '':
-                return_eqpt = f'egress edfa in {in_city}'
-    return return_eqpt
-
-
-def eqpt_in_city_to_city(in_city, to_city):
-    eqpt = eqpts_by_city.get(in_city)
-    return_eqpt = ''
-    if eqpt != None:
-      for e in eqpt:
-          if e.to_city == to_city and e.ingress_amp_type != '':
-              return_eqpt = f'egress edfa in {in_city}'
-          elif nodes_by_city[in_city].node_type == 'ila' and e.egress_amp_type != '':
-              return_eqpt = f'ingress edfa in {in_city}'
+    eqpt = (e for e in eqpts_by_city.get(in_city) if e!=None)
+    for e in eqpt:
+        if nodes_by_city[in_city].node_type.lower() == 'roadm':
+            if e.to_city == to_city and getattr(e, amp_direction) != '':
+                return_eqpt = f'{direction} edfa in {e.from_city} to {e.to_city}'
+        elif nodes_by_city[in_city].node_type.lower() == 'ila':
+            if e.to_city != to_city:
+                direction = rev_direction
+                amp_direction = amp_rev_direction
+            if getattr(e, amp_direction) != '':
+                return_eqpt = f'{direction} edfa in {e.from_city} to {e.to_city}'
+    if nodes_by_city[in_city].node_type.lower() == 'fused':
+        return_eqpt = f'fused spans in {in_city}'
     return return_eqpt
 
 
@@ -309,8 +313,8 @@ def fiber_dest_from_source(city_name):
 
 
 def fiber_link(from_city, to_city):
-    link = links_by_city[from_city]
     source_dest = (from_city, to_city)
+    link = links_by_city[from_city]
     l = next(l for l in link if l.from_city in source_dest and l.to_city in source_dest)
     if l.from_city == from_city:
         fiber = f'fiber ({l.from_city} → {l.to_city})-{l.east_cable}'

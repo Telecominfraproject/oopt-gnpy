@@ -34,6 +34,7 @@ class Transceiver(Node):
         self.osnr_ase = None
         self.osnr_nli = None
         self.snr = None
+        self.passive = False
 
     def _calc_snr(self, spectral_info):
         ase = [c.power.ase for c in spectral_info.carriers]
@@ -67,7 +68,7 @@ class Transceiver(Node):
         osnr_ase_01nm = round(np.mean(self.osnr_ase_01nm), 2)
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
-                          f'  OSNR ASE (1nm):        {np.mean(self.osnr_ase_01nm):.2f}',
+                          f'  OSNR ASE (0.1nm):        {np.mean(self.osnr_ase_01nm):.2f}',
                           f'  OSNR ASE (signal bw):  {np.mean(self.osnr_ase):.2f}',
                           f'  SNR total (signal bw): {np.mean(snr):.2f}'])
 
@@ -79,6 +80,34 @@ class Roadm(Node):
     def __init__(self, config):
         super().__init__(config)
         self.loss = 20 #dB
+        self.passive = True
+
+    def __repr__(self):
+        return f'{type(self).__name__}(uid={self.uid!r}, loss={self.loss!r})'
+
+    def __str__(self):
+        return '\n'.join([f'{type(self).__name__} {self.uid}',
+                          f'  loss (dB): {self.loss:.2f}'])
+
+    def propagate(self, *carriers):
+        attenuation = db2lin(self.loss)
+
+        for carrier in carriers:
+            pwr = carrier.power
+            pwr = pwr._replace(signal=pwr.signal/attenuation,
+                               nonlinear_interference=pwr.nli/attenuation,
+                               amplified_spontaneous_emission=pwr.ase/attenuation)
+            yield carrier._replace(power=pwr)
+
+    def __call__(self, spectral_info):
+        carriers = tuple(self.propagate(*spectral_info.carriers))
+        return spectral_info.update(carriers=carriers)
+
+class Fused(Node):
+    def __init__(self, config):
+        super().__init__(config)
+        self.loss = 1 #dB
+        self.passive = True
 
     def __repr__(self):
         return f'{type(self).__name__}(uid={self.uid!r}, loss={self.loss!r})'
@@ -111,6 +140,7 @@ class Fiber(Node):
         self.dispersion = self.params.dispersion  #s/m/m
         self.gamma = self.params.gamma   #1/W/m
         self.loss = self.loss_coef * self.length #dB loss: useful for polymorphism (roadm, fiber, att)
+        self.passive = True
         #TODO discuss factor 2 in the linear lineic attenuation
 
     def __repr__(self):
@@ -229,10 +259,11 @@ class Edfa(Node):
         self.gprofile = None
         self.pin_db = None
         self.pout_db = None
+        self.passive = False
 
     def __repr__(self):
         return (f'{type(self).__name__}(uid={self.uid!r}, '
-                f'type_variety={self.type_variety!r}, '
+                f'type_variety={self.config.type_variety!r}, '
                 f'interpol_dgt={self.interpol_dgt!r}, '
                 f'interpol_gain_ripple={self.interpol_gain_ripple!r}, '
                 f'interpol_nf_ripple={self.interpol_nf_ripple!r}, '

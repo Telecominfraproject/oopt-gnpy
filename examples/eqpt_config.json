@@ -1,18 +1,26 @@
 {     "Edfa":[{
-            "type_variety": "std_medium_gain",
+            "type_variety": "CienaDB_medium_gain",
             "gain_flatmax": 25,
             "gain_min": 15,
             "p_max": 21,
             "advanced_config_from_json": "std_medium_gain_advanced_config.json"
             },
             {
+            "type_variety": "std_medium_gain",
+            "gain_flatmax": 23,
+            "gain_min": 13,
+            "p_max": 23,
+            "nf_min": 6,
+            "nf_max": 9
+            },
+            {
             "type_variety": "std_low_gain",
-            "gain_flatmax": 19,
-            "gain_min": 12,
-            "p_max": 22,
+            "gain_flatmax": 17,
+            "gain_min": 6,
+            "p_max": 23,
             "nf_min": 6.5,
             "nf_max": 10
-            }
+            }  
       ],
       "Fiber":[{
             "type_variety": "SSMF",

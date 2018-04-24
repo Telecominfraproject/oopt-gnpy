@@ -11,13 +11,13 @@ This module contains functions for constructing networks of network elements.
 from networkx import DiGraph
 
 from gnpy.core import elements
-from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm
+from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm, Fused
 from gnpy.core.units import UNITS
 
 
-MAX_SPAN_LENGTH = 125000
+MAX_SPAN_LENGTH = 150000
 TARGET_SPAN_LENGTH = 100000
-MIN_SPAN_LENGTH = 75000
+MIN_SPAN_LENGTH = 30000
 
 
 def network_from_json(json_data):
@@ -90,26 +90,53 @@ def split_fiber(network, fiber):
     return network
 
 def select_edfa(ingress_span_loss):
+    #TODO select amplifier in eqpt_library based on gain, NF and power requirement
     return "std_medium_gain"
+
+def prev_fiber_node_generator(network, node):
+    """fused spans interest:
+    iterate over all predecessors while they are Fiber type"""
+    prev_node = [n for n in network.predecessors(node)]
+    #fibers or fused spans so there is only 1 predecessor
+    iterate = len(prev_node) == 1 and (isinstance(prev_node, Fused) or isinstance(node, Fused))
+    if iterate:
+        yield prev_node[0]
+        yield from prev_fiber_node_generator(network, prev_node[0])
+    else:
+        StopIteration
+
+def span_loss(network, node):
+    total_loss = node.loss if node.passive else 0
+    for n in prev_fiber_node_generator(network, node):
+        total_loss += n.loss
+    return total_loss
 
 def add_egress_amplifier(network, node):
     next_nodes = [n for n in network.successors(node)
-        if not (isinstance(n, Edfa) or isinstance(n, Transceiver))]
+        if not (isinstance(n, Transceiver) or isinstance(n, Fused))]
+        #no amplification for fused spans or TRX
     i = 1
-    for next_node in next_nodes:
-        network.remove_edge(node, next_node)
 
-        uid = 'Edfa' + str(i)+ '_' + str(node.uid)
-        metadata = next_node.metadata
-        operational = {'gain_target': node.loss, 'tilt_target': 0}
-        edfa_variety_type = select_edfa(node.loss)
-        config = {'uid':uid, 'type': 'Edfa', 'metadata': metadata, \
-                    'type_variety': edfa_variety_type, 'operational': operational}
-        new_edfa = Edfa(config)
-        network.add_node(new_edfa)
-        network.add_edge(node,new_edfa)
-        network.add_edge(new_edfa, next_node)
-        i +=1
+    for next_node in next_nodes:
+        if isinstance(next_node, Edfa):
+            if next_node.operational.gain_target == 0:
+                total_loss = span_loss(network, node)
+                next_node.operational.gain_target = total_loss
+        else:
+            network.remove_edge(node, next_node)
+            total_loss = span_loss(network, node)
+            print('loss', total_loss)
+            uid = 'Edfa' + str(i)+ '_' + str(node.uid)
+            metadata = next_node.metadata
+            operational = {'gain_target': total_loss, 'tilt_target': 0}
+            edfa_variety_type = select_edfa(total_loss)
+            config = {'uid':uid, 'type': 'Edfa', 'metadata': metadata, \
+                        'type_variety': edfa_variety_type, 'operational': operational}
+            new_edfa = Edfa(config)
+            network.add_node(new_edfa)
+            network.add_edge(node,new_edfa)
+            network.add_edge(new_edfa, next_node)
+            i +=1
 
     return network
 

@@ -109,6 +109,7 @@ def get_eqpt_params(eqpt_name):
         del eqpt_config['type_variety']
     except StopIteration as e:
         print(f'cannot find eqpt {eqpt_name} in eqpt library')
+        sys.exit(1)
         #TODO log it
     return eqpt_config
 
