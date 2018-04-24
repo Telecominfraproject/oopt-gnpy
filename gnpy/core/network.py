@@ -13,6 +13,7 @@ from networkx import DiGraph
 from gnpy.core import elements
 from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm, Fused
 from gnpy.core.units import UNITS
+from gnpy.core.equipment import get_eqpt_params
 
 
 MAX_SPAN_LENGTH = 150000
@@ -97,13 +98,14 @@ def prev_fiber_node_generator(network, node):
     """fused spans interest:
     iterate over all predecessors while they are Fiber type"""
     prev_node = [n for n in network.predecessors(node)]
-    #fibers or fused spans so there is only 1 predecessor
-    iterate = len(prev_node) == 1 and (isinstance(prev_node, Fused) or isinstance(node, Fused))
-    if iterate:
-        yield prev_node[0]
-        yield from prev_fiber_node_generator(network, prev_node[0])
-    else:
-        StopIteration
+    if len(prev_node) == 1:
+        #fibers or fused spans so there is only 1 predecessor
+        if isinstance(prev_node[0], Fused) or isinstance(node, Fused):
+            # yield and re-iterate
+            yield prev_node[0]
+            yield from prev_fiber_node_generator(network, prev_node[0])
+        else:
+            StopIteration
 
 def span_loss(network, node):
     total_loss = node.loss if node.passive else 0
@@ -115,8 +117,8 @@ def add_egress_amplifier(network, node):
     next_nodes = [n for n in network.successors(node)
         if not (isinstance(n, Transceiver) or isinstance(n, Fused))]
         #no amplification for fused spans or TRX
-    i = 1
 
+    i = 1
     for next_node in next_nodes:
         if isinstance(next_node, Edfa):
             if next_node.operational.gain_target == 0:
@@ -125,7 +127,6 @@ def add_egress_amplifier(network, node):
         else:
             network.remove_edge(node, next_node)
             total_loss = span_loss(network, node)
-            print('loss', total_loss)
             uid = 'Edfa' + str(i)+ '_' + str(node.uid)
             metadata = next_node.metadata
             operational = {'gain_target': total_loss, 'tilt_target': 0}

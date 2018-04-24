@@ -89,15 +89,21 @@ def main(args):
         try:
             source = next(el for el in trx if el.uid == args.source)
         except StopIteration as e:
-            source = trx[0]
-            print(f'invalid souce node specified: {args.source!r}, replaced with {source}')
+            nodes_suggestion = [el for el in trx if args.source in el.uid]
+            source = nodes_suggestion[0] if len(nodes_suggestion)>0 else trx[0]
+            print(f'invalid souce node specified: did you mean \
+                \n{[n.uid for n in nodes_suggestion]}?\
+                \n{args.source!r}, replaced with {source.uid}')
 
         try:
             sink = next(el for el in trx if el.uid == args.sink)
         except StopIteration as e:
-            sink = trx[1]
-            print(f'invalid destination node specified: {args.sink!r}, replaced with {sink}')
-
+            nodes_suggestion = [el for el in trx if args.sink in el.uid and el.uid != source.uid]
+            trx = [el for el in trx if el.uid != source.uid]
+            sink = nodes_suggestion[0] if len(nodes_suggestion)>0 else trx[0]
+            print(f'invalid destination node specified: \
+                \ndid you mean {[n.uid for n in nodes_suggestion]}?\
+                \n{args.sink!r}, replaced with {sink.uid}')
         path = dijkstra_path(network, source, sink)
         print(f'There are {len(path)} network elements between {source} and {sink}')
         for p in range(0,1): #change range to sweep results across several powers

@@ -10,6 +10,7 @@ import numpy as np
 from pathlib import Path
 from gnpy.core.utils import lin2db, db2lin, load_json
 
+TYPE_VARIETY_FIELD = "type_variety"
 GAIN_MIN_FIELD = "gain_min"
 GAIN_MAX_FIELD = "gain_flatmax"
 NF_MIN_FIELD  ="nf_min"
@@ -20,6 +21,7 @@ ADVANCED_CONFIG_JSON_FILENAME = 'advanced_config_from_json'
 
 
 def nf_model(amp_dict):
+    amp_type_variety = amp_dict[TYPE_VARIETY_FIELD]
     gain_min = amp_dict[GAIN_MIN_FIELD]
     gain_max = amp_dict[GAIN_MAX_FIELD]
     nf_min = amp_dict.get(NF_MIN_FIELD,-100)
@@ -53,10 +55,11 @@ def nf_model(amp_dict):
         g1a_max = lin2db(db2lin(nf2) / (db2lin(nf_min) - db2lin(nf1))) #use expression (1)
         delta_p = gain_max - g1a_max
         g1a_min = gain_min - (gain_max-gain_min) - delta_p
-        if delta_p < 1 or delta_p > 6:
-            #delta_p should be > 1dB and < 6dB => consider user warning if not
-            print('!WARNING!: 1st coil vs 2nd coil calculated DeltaP {} is not valid: revise inputs'
-                        .format(delta_p))
+        if delta_p < 1 or delta_p > 7:
+            #delta_p should be > 0dB and < 7dB => consider user warning if not
+            print(f'!WARNING!: 1st coil vs 2nd coil calculated DeltaP {delta_p:.2f} for \
+                \n              amp {amp_type_variety} is not valid: revise inputs')
+            print(f'            calculated 1st coil NF = {nf1:.2f}, 2nd coil NF = {nf2:.2f}')
     #check the calculated values for nf1 & nf2:
     nf_min_calc = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_max))
     nf_max_calc = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_min))
@@ -116,6 +119,7 @@ def get_eqpt_params(eqpt_name):
 def generate_edfa_config(eqpt_name, gain, tilt):
     """returns the full config
     """
+    #TODO ...work in progress...
     config = dict(zip(
             ['params','operational'],
             [get_eqpt_config(eqpt_name),

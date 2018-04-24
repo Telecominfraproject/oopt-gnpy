@@ -7,19 +7,19 @@
             },
             {
             "type_variety": "std_medium_gain",
-            "gain_flatmax": 23,
-            "gain_min": 13,
-            "p_max": 23,
+            "gain_flatmax": 26,
+            "gain_min": 15,
+            "p_max": 21,
             "nf_min": 6,
-            "nf_max": 9
+            "nf_max": 10
             },
             {
             "type_variety": "std_low_gain",
-            "gain_flatmax": 17,
-            "gain_min": 6,
-            "p_max": 23,
-            "nf_min": 6.5,
-            "nf_max": 10
+            "gain_flatmax": 16,
+            "gain_min": 8,
+            "p_max": 21,
+            "nf_min": 7,
+            "nf_max": 11
             }  
       ],
       "Fiber":[{

@@ -79,6 +79,7 @@ class Transceiver(Node):
 class Roadm(Node):
     def __init__(self, config):
         super().__init__(config)
+        #TODO read loss from json
         self.loss = 20 #dB
         self.passive = True
 
@@ -106,7 +107,8 @@ class Roadm(Node):
 class Fused(Node):
     def __init__(self, config):
         super().__init__(config)
-        self.loss = 1 #dB
+        #TODO read loss from json
+        self.loss = 1 #dB 
         self.passive = True
 
     def __repr__(self):
