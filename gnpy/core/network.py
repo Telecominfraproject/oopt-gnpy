@@ -16,9 +16,9 @@ from gnpy.core.units import UNITS
 from gnpy.core.equipment import get_eqpt_params
 
 
-MAX_SPAN_LENGTH = 150000
-TARGET_SPAN_LENGTH = 100000
-MIN_SPAN_LENGTH = 30000
+MAX_SPAN_LENGTH = 150_000
+TARGET_SPAN_LENGTH = 100_000
+MIN_SPAN_LENGTH = 30_000
 
 
 def network_from_json(json_data):
@@ -108,10 +108,8 @@ def prev_fiber_node_generator(network, node):
             StopIteration
 
 def span_loss(network, node):
-    total_loss = node.loss if node.passive else 0
-    for n in prev_fiber_node_generator(network, node):
-        total_loss += n.loss
-    return total_loss
+    loss = node.loss if node.passive else 0
+    return loss + sum(n.loss for n in prev_fiber_node_generator(network, node))
 
 def add_egress_amplifier(network, node):
     next_nodes = [n for n in network.successors(node)
@@ -127,17 +125,17 @@ def add_egress_amplifier(network, node):
         else:
             network.remove_edge(node, next_node)
             total_loss = span_loss(network, node)
-            uid = 'Edfa' + str(i)+ '_' + str(node.uid)
+            uid = f'Edfa{i}_{node.uid}'
             metadata = next_node.metadata
             operational = {'gain_target': total_loss, 'tilt_target': 0}
             edfa_variety_type = select_edfa(total_loss)
-            config = {'uid':uid, 'type': 'Edfa', 'metadata': metadata, \
-                        'type_variety': edfa_variety_type, 'operational': operational}
+            config = {'uid': uid, 'type': 'Edfa', 'metadata': metadata,
+                      'type_variety': edfa_variety_type, 'operational': operational}
             new_edfa = Edfa(config)
             network.add_node(new_edfa)
             network.add_edge(node,new_edfa)
             network.add_edge(new_edfa, next_node)
-            i +=1
+            i += 1
 
     return network
 

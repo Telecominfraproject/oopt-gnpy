@@ -91,9 +91,9 @@ def main(args):
         except StopIteration as e:
             nodes_suggestion = [el for el in trx if args.source in el.uid]
             source = nodes_suggestion[0] if len(nodes_suggestion)>0 else trx[0]
-            print(f'invalid souce node specified: did you mean \
-                \n{[n.uid for n in nodes_suggestion]}?\
-                \n{args.source!r}, replaced with {source.uid}')
+            print(f'invalid souce node specified: did you mean'
+                  f'\n{[n.uid for n in nodes_suggestion]}?'
+                  f'\n{args.source!r}, replaced with {source.uid}')
 
         try:
             sink = next(el for el in trx if el.uid == args.sink)
@@ -101,13 +101,14 @@ def main(args):
             nodes_suggestion = [el for el in trx if args.sink in el.uid and el.uid != source.uid]
             trx = [el for el in trx if el.uid != source.uid]
             sink = nodes_suggestion[0] if len(nodes_suggestion)>0 else trx[0]
-            print(f'invalid destination node specified: \
-                \ndid you mean {[n.uid for n in nodes_suggestion]}?\
-                \n{args.sink!r}, replaced with {sink.uid}')
+            print(f'invalid destination node specified:'
+                  f'\ndid you mean {[n.uid for n in nodes_suggestion]}?'
+                  f'\n{args.sink!r}, replaced with {sink.uid}')
         path = dijkstra_path(network, source, sink)
         print(f'There are {len(path)} network elements between {source} and {sink}')
-        for p in range(0,1): #change range to sweep results across several powers
-            p=db2lin(p)*1e-3
+
+        for p in range(0, 1): # change range to sweep results across several powers
+            p = db2lin(p)*1e-3
             spacing = 0.05 #THz
             si = SpectralInformation() # !! SI units W, Hz
             si = si.update(carriers=tuple(Channel(f, (191.3+spacing*f)*1e12, 
