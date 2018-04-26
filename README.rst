@@ -71,6 +71,14 @@ fully-functional programs.
 
 By default, this script operates on a single span network defined in `examples/edfa/edfa_example_network.json <examples/edfa/edfa_example_network.json>`_
 
+(you may need to set PYTHONPATH variable. For example on Ubuntu, add your workspace path to PYTHONPATH in your .bashrc file :
+
+.. code-block:: shell
+
+    export PYTHONPATH=$PYTHONPATH:~/<workspace path>/gnpy/
+
+)
+
 You can specify a different network at the command line as follows. For
 example, to use the CORONET Continental US (CONUS) network defined in `examples/coronet_conus_example.json <examples/coronet_conus_example.json>`_:
 
@@ -100,12 +108,12 @@ dBm/channel. These are not yet parametrized but can be modified directly in the
 script (via the SpectralInformation tuple) to accomodate any baud rate,
 spacing, power or channel count demand.
 
-The amplifier's gain is set to exactly compsenate for the loss in each network
+The amplifier's gain is set to exactly compensate for the loss in each network
 element. The amplifier is currently defined with gain range of 15 dB to 25 dB
 and 21 dBm max output power. Ripple and NF models are defined in
 `examples/edfa_config.json <examples/edfa_config.json>`_
 
-It is possible to use an excell file input. this will generate the json topology entry. How to prepare the Excel input file is explined `here <Escel_userguide.rst>`_.
+It is possible to use an excell file input. this will generate the json topology entry. How to prepare the Excel input file is explained `here <Excel_userguide.rst>`_.
 
 Contributing
 ------------
