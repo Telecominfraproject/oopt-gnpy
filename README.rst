@@ -105,6 +105,8 @@ element. The amplifier is currently defined with gain range of 15 dB to 25 dB
 and 21 dBm max output power. Ripple and NF models are defined in
 `examples/edfa_config.json <examples/edfa_config.json>`_
 
+It is possible to use an excell file input. this will generate the json topology entry. How to prepare the Excel input file is explined `here <Escel_userguide.rst>`_.
+
 Contributing
 ------------
 
