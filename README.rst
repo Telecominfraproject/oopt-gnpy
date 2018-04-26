@@ -18,14 +18,29 @@ and optimization tools in real-world mesh optical networks.**
 
 Documentation: https://gnpy.readthedocs.io
 
+Quick Demo
+----------
+
+**For a quick demo, run the transmission example via Binder.**
+
+`Transmission Main Example.ipynb (mybinder.org) <https://mybinder.org/v2/gh/Telecominfraproject/gnpy/develop?filepath=examples%2FTransmission%20Main%20Example.ipynb>`_
+
+    **Note**: *The Binder service is occasionally unavailable. Please file an
+    issue on Github if you run into issues using the quick demo. As an
+    alternative, you can use Microsoft's Azure Notebook service (free):
+    https://notebooks.azure.com/help/libraries/creating/import-from-github*
+
 Installation
 ------------
 
-``gnpy`` is hosted in the `Python Package Index <http://pypi.org/>`_ (`gnpy <https://pypi.org/project/gnpy/>`__). It can be installed via:
+``gnpy`` is hosted in the `Python Package Index <http://pypi.org/>`_ (`gnpy
+<https://pypi.org/project/gnpy/>`__). It can be installed via:
 
 .. code-block:: shell
 
-    $ pip install gnpy
+    $ pip3 install gnpy
+
+This will install the current (tagged) release version.
 
 It can also be installed directly from the repo.
 
@@ -33,13 +48,16 @@ It can also be installed directly from the repo.
 
     $ git clone https://github.com/telecominfraproject/gnpy
     $ cd gnpy
-    $ python setup.py install
+    $ python3 setup.py install
 
 Both approaches above will handle installing any additional software dependencies.
 
-    **Note**: *We recommend the use of the Anaconda Python distribution
-    (https://www.anaconda.com/download) which comes with many scientific
-    computing dependencies pre-installed.*
+It is recommended that you use a virtual environment when installing from the
+repo.  In Python 3, you can use the `venv module <https://docs.python.org/3/library/venv.html>`_.
+
+    **Note**: *Alternatively, we recommend the use of the Anaconda Python
+    distribution (https://www.anaconda.com/download) which comes with many
+    scientific computing dependencies pre-installed.*
 
 Instructions for Use
 --------------------
@@ -56,10 +74,6 @@ fully-functional programs.
     specific, delineated use cases to drive requirements for future
     development.*
 
-**For a quick demo, run the transmission example via Binder.**
-
-`Transmission Main Example.ipynb (mybinder.org) <https://mybinder.org/v2/gh/Telecominfraproject/gnpy/develop?filepath=examples%2FTransmission%20Main%20Example.ipynb>`_
-
 **To get started, run the transmission example:**
 
     **Note**: *Examples should be run from the examples/ folder.*
@@ -67,7 +81,7 @@ fully-functional programs.
 .. code-block:: shell
 
     $ cd examples
-    $ python transmission_main_example.py
+    $ python3 transmission_main_example.py
 
 By default, this script operates on a single span network defined in `examples/edfa/edfa_example_network.json <examples/edfa/edfa_example_network.json>`_
 
@@ -77,7 +91,7 @@ example, to use the CORONET Continental US (CONUS) network defined in `examples/
 .. code-block:: shell
 
     $ cd examples
-    $ python transmission_main_example.py coronet_conus_example.json
+    $ python3 transmission_main_example.py coronet_conus_example.json
 
 This script will calculate the average signal osnr and snr across 93 network
 elements (transceiver, ROADMs, fibers, and amplifiers) between Abilene, Texas
@@ -200,4 +214,3 @@ License
 ``gnpy`` is distributed under a standard BSD 3-Clause License.
 
 See `LICENSE <LICENSE>`__ for more details.
-

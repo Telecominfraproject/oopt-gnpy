@@ -109,15 +109,17 @@ def main(args):
             si = el(si)
             print(el)
 
-        #plot_network_graph(network, path, source, sink)
+        if args.plot:
+            plot_network_graph(network, path, source, sink)
 
 parser = ArgumentParser()
 parser.add_argument('filename', nargs='?', type=Path,
   default= Path(__file__).parent / 'edfa_example_network.json')
 parser.add_argument('source', type=str, nargs='?', default="", help='source node')
 parser.add_argument('sink', type=str, nargs='?', default="", help='sink node')
-parser.add_argument('-v', '--verbose', action='count')
+parser.add_argument('-p', '--plot', action='store_true')
 parser.add_argument('-l', '--list', action='count', default=0, help='list all network nodes')
+parser.add_argument('-v', '--verbose', action='count')
 
 if __name__ == '__main__':
     args = parser.parse_args()
