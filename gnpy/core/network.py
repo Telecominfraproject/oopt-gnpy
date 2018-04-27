@@ -13,7 +13,7 @@ from networkx import DiGraph
 from gnpy.core import elements
 from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm, Fused
 from gnpy.core.units import UNITS
-from gnpy.core.equipment import get_eqpt_params
+from gnpy.core.equipment import get_eqpt_params, eqpt_exists
 
 
 MAX_SPAN_LENGTH = 150000
@@ -89,10 +89,17 @@ def split_fiber(network, fiber):
 
     network = add_egress_amplifier(network, prev_node)
     return network
+    
 
 def select_edfa(ingress_span_loss):
     #TODO select amplifier in eqpt_library based on gain, NF and power requirement
-    return "std_medium_gain"
+    #temporary hack : ***to be fixed by May 2018***
+    if eqpt_exists('std_low_gain'):
+        amp_type = 'std_low_gain' if ingress_span_loss < 18.5 else 'std_medium_gain'
+    else:
+        amp_type = 'std_medium_gain'
+    return amp_type
+
 
 def prev_fiber_node_generator(network, node):
     """fused spans interest:

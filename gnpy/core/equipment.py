@@ -64,7 +64,10 @@ def nf_model(amp_dict):
     nf_min_calc = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_max))
     nf_max_calc = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_min))
     if (abs(nf_min_calc-nf_min) > 0.01) or (abs(nf_max_calc-nf_max) > 0.01):
-        raise ValueError(f'nf model calculation failed with nf_min {nf_min_calc} and nf_max {nf_max_calc} calculated')
+        raise ValueError(f'nf model calculation failed with \
+            \nnf_min {nf_min_calc} and nf_max {nf_max_calc} calculated for \
+            \n amplifier type {amp_type_variety}')
+    #print(f'amp:{amp_type_variety} nf1={nf1:.2f} nf2={nf2:.2f} dp={delta_p:.2f}')
     return nf1, nf2, delta_p
 
 
@@ -95,6 +98,15 @@ def read_eqpt_library(filename):
             dict_nf_model['nf_model'] = {"enabled": True, "nf1": nf1, "nf2": nf2, "delta_p": delta_p}
         json_data = load_json(Path(filename).parent / config_json_filename)
         eqpt_library['Edfa'][i] = {**el, **json_data, **dict_nf_model}
+
+
+def eqpt_exists(eqpt_name):
+    eqpt = (eqpt for eqpt_type in eqpt_library for eqpt in eqpt_library[eqpt_type])
+    exist = False
+    for e in eqpt:
+        if e.get('type_variety','') == eqpt_name:
+            exist = True
+    return exist
 
 
 def get_eqpt_params(eqpt_name):

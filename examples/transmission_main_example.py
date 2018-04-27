@@ -89,33 +89,35 @@ def main(args):
         try:
             source = next(el for el in trx if el.uid == args.source)
         except StopIteration as e:
-            nodes_suggestion = [el for el in trx if args.source in el.uid]
+            #TODO code a more advanced regex to find nodes match
+            nodes_suggestion = [el for el in trx if args.source.lower() in el.uid.lower()]
             source = nodes_suggestion[0] if len(nodes_suggestion)>0 else trx[0]
-            print(f'invalid souce node specified: did you mean \
-                \n{[n.uid for n in nodes_suggestion]}?\
+            print(f'invalid souce node specified,\
+                \ndid you mean: {[n.uid for n in nodes_suggestion]}?\
                 \n{args.source!r}, replaced with {source.uid}')
 
         try:
             sink = next(el for el in trx if el.uid == args.sink)
         except StopIteration as e:
-            nodes_suggestion = [el for el in trx if args.sink in el.uid and el.uid != source.uid]
+            nodes_suggestion = [el for el in trx if args.sink.lower() in el.uid.lower() and el.uid != source.uid]
             trx = [el for el in trx if el.uid != source.uid]
             sink = nodes_suggestion[0] if len(nodes_suggestion)>0 else trx[0]
-            print(f'invalid destination node specified: \
-                \ndid you mean {[n.uid for n in nodes_suggestion]}?\
+            print(f'invalid destination node specified,\
+                \ndid you mean: {[n.uid for n in nodes_suggestion]}?\
                 \n{args.sink!r}, replaced with {sink.uid}')
+            
         path = dijkstra_path(network, source, sink)
         print(f'There are {len(path)} network elements between {source} and {sink}')
-        for p in range(0,1): #change range to sweep results across several powers
+        for p in range(3,4): #change range to sweep results across several powers
             p=db2lin(p)*1e-3
             spacing = 0.05 #THz
             si = SpectralInformation() # !! SI units W, Hz
             si = si.update(carriers=tuple(Channel(f, (191.3+spacing*f)*1e12, 
-                    32e9, 0.15, Power(p, 0, 0)) for f in range(1,80)))
+                    32e9, 0.15, Power(p, 0, 0)) for f in range(1,60)))
             for el in path:
                 si = el(si)
                 print(el) #remove this line when sweeping across several powers
-            print(f'\n      Transmission result for input power = {lin2db(p*1e3)}dBm :')
+            print(f'\n      Transmission result for input power = {lin2db(p*1e3):.2f}dBm :')
             print(sink)
 
         #plot_network_graph(network, path, source, sink)

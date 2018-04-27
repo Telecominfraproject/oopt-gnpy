@@ -28,6 +28,10 @@ import math
 import numpy as np
 
 #output_json_file_name = 'coronet_conus_example.json'
+#TODO get column size automatically from tupple size
+NODES_COLUMN = 7
+LINKS_COLUMN = 16
+EQPTS_COLUMN = 12
 parser = ArgumentParser()
 parser.add_argument('workbook', nargs='?', default='meshTopologyExampleV2.xls')
 parser.add_argument('-f', '--filter-region', action='append', default=[])
@@ -72,6 +76,32 @@ class Eqpt(namedtuple('Eqpt', 'from_city to_city \
         values = [x[0] if x[0] != '' else x[1] for x in zip(values,default_values)]
         return super().__new__(cls, *values)        
 
+def sanity_check(nodes, nodes_by_city, links_by_city, eqpts_by_city):
+    try :
+        test_nodes = [n for n in nodes_by_city if not n in links_by_city]
+        test_links = [n for n in links_by_city if not n in nodes_by_city]
+        test_eqpts = [n for n in eqpts_by_city if not n in nodes_by_city]
+        assert (test_nodes == [] or test_nodes == [''])\
+                and (test_links == [] or test_links ==[''])\
+                and (test_eqpts == [] or test_eqpts ==[''])
+    except AssertionError:
+        print(f'!names in Nodes and Links sheets do no match, check:\
+            \n{test_nodes} in Nodes sheet\
+            \n{test_links} in Links sheet\
+            \n{test_eqpts} in Eqpt sheet')
+        exit(1)
+
+    for city,link in links_by_city.items():
+        if nodes_by_city[city].node_type.lower()=='ila' and len(link) != 2:
+            #wrong input: ILA sites can only be Degree 2 
+            # => correct to make it a ROADM and remove entry in links_by_city
+            #TODO : put in log rather than print
+            print(f'invalid node type ({nodes_by_city[city].node_type})\
+ specified in {city}, replaced by ROADM')
+            nodes_by_city[city] = nodes_by_city[city]._replace(node_type='ROADM')
+            nodes = [n._replace(node_type='ROADM') if n.city==city else n for n in nodes]
+    return nodes
+
 def convert_file(input_filename, filter_region=[]):
     nodes, links, eqpts = parse_excel(input_filename)
 
@@ -95,17 +125,9 @@ def convert_file(input_filename, filter_region=[]):
     global eqpts_by_city
     eqpts_by_city = defaultdict(list)
     for eqpt in eqpts:
-        eqpts_by_city[eqpt.from_city].append(eqpt)        
+        eqpts_by_city[eqpt.from_city].append(eqpt) 
 
-    for city,link in links_by_city.items():
-        if nodes_by_city[city].node_type.lower()=='ila' and len(link) != 2:
-            #wrong input: ILA sites can only be Degree 2 
-            # => correct to make it a ROADM and remove entry in links_by_city
-            #TODO : put in log rather than print
-            print(f'invalid node type ({nodes_by_city[city].node_type})\
- specified in {city}, replaced by ROADM')
-            nodes_by_city[city] = nodes_by_city[city]._replace(node_type='ROADM')
-            nodes = [n._replace(node_type='ROADM') if n.city==city else n for n in nodes]
+    nodes = sanity_check(nodes, nodes_by_city, links_by_city, eqpts_by_city)
 
     data = {
         'elements':
@@ -218,7 +240,7 @@ def parse_excel(input_filename):
 
         nodes = []
         for row in all_rows(nodes_sheet, start=5):
-            nodes.append(Node(*(x.value for x in row)))
+            nodes.append(Node(*(x.value for x in row[0:NODES_COLUMN])))
         #check input
         expected_node_types = ('ROADM', 'ILA', 'FUSED')
         nodes = [n._replace(node_type='ILA') 
@@ -235,12 +257,12 @@ def parse_excel(input_filename):
         """
         links = []
         for row in all_rows(links_sheet, start=5):
-            links.append(Link(*(x.value for x in row)))
+            links.append(Link(*(x.value for x in row[0:LINKS_COLUMN])))
 
         eqpts = []
         if eqpt_sheet != None:
             for row in all_rows(eqpt_sheet, start=5):
-                eqpts.append(Eqpt(*(x.value for x in row)))            
+                eqpts.append(Eqpt(*(x.value for x in row[0:EQPTS_COLUMN])))
 
     # sanity check
     all_cities = Counter(n.city for n in nodes)
