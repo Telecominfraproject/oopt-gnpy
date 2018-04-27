@@ -310,13 +310,13 @@ def connect_eqpt(from_, in_, to_):
     return connections
 
 
-def eqpt_in_city_to_city(in_city, to_city, direction ="egress"):
-    rev_direction = "ingress" if direction == "egress" else "egress"
-    amp_direction = direction + "_amp_type"
-    amp_rev_direction = rev_direction + "_amp_type"
+def eqpt_in_city_to_city(in_city, to_city, direction='egress'):
+    rev_direction = 'ingress' if direction == 'egress' else 'egress'
+    amp_direction = f'{direction}_amp_type'
+    amp_rev_direction = '{rev_direction}_amp_type'
     return_eqpt = ''
-    if eqpts_by_city.get(in_city) != None:
-        for e in eqpts_by_city.get(in_city):
+    if in_city in eqpts_by_city:
+        for e in eqpts_by_city[in_city]:
             if nodes_by_city[in_city].node_type.lower() == 'roadm':
                 if e.to_city == to_city and getattr(e, amp_direction) != '':
                     return_eqpt = f'{direction} edfa in {e.from_city} to {e.to_city}'

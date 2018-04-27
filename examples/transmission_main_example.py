@@ -92,9 +92,9 @@ def main(args):
             #TODO code a more advanced regex to find nodes match
             nodes_suggestion = [el for el in trx if args.source.lower() in el.uid.lower()]
             source = nodes_suggestion[0] if len(nodes_suggestion)>0 else trx[0]
-            print(f'invalid souce node specified,\
-                \ndid you mean: {[n.uid for n in nodes_suggestion]}?\
-                \n{args.source!r}, replaced with {source.uid}')
+            print(f'invalid souce node specified: did you mean'
+                  f'\n{[n.uid for n in nodes_suggestion]}?'
+                  f'\n{args.source!r}, replaced with {source.uid}')
 
         try:
             sink = next(el for el in trx if el.uid == args.sink)
@@ -113,7 +113,7 @@ def main(args):
             spacing = 0.05 #THz
             si = SpectralInformation() # !! SI units W, Hz
             si = si.update(carriers=tuple(Channel(f, (191.3+spacing*f)*1e12, 
-                    32e9, 0.15, Power(p, 0, 0)) for f in range(1,60)))
+                    32e9, 0.15, Power(p, 0, 0)) for f in range(1,80)))
             for el in path:
                 si = el(si)
                 print(el) #remove this line when sweeping across several powers
