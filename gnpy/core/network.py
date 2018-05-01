@@ -9,25 +9,30 @@ This module contains functions for constructing networks of network elements.
 
 
 from networkx import DiGraph
+from logging import getLogger
 
 from gnpy.core import elements
 from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm, Fused
 from gnpy.core.units import UNITS
 from gnpy.core.equipment import get_eqpt_params, eqpt_exists
 
-
-MAX_SPAN_LENGTH = 150_000
-TARGET_SPAN_LENGTH = 100_000
-MIN_SPAN_LENGTH = 30_000
+logger = getLogger(__name__)
 
 
-def network_from_json(json_data):
+def network_from_json(json_data, equipment):
     # NOTE|dutc: we could use the following, but it would tie our data format
     #            too closely to the graph library
     # from networkx import node_link_graph
     g = DiGraph()
     for el_config in json_data['elements']:
-        g.add_node(getattr(elements, el_config['type'])(el_config))
+        typ = el_config.pop('type')
+        variety = el_config.pop('type_variety', 'default')
+        if typ in equipment and variety in equipment[typ]:
+            extra_params = equipment[typ][variety]
+            el_config.setdefault('params', {}).update(extra_params._asdict())
+        cls = getattr(elements, typ)
+        el = cls(**el_config)
+        g.add_node(el)
 
     nodes = {k.uid: k for k in g.nodes()}
 
@@ -37,65 +42,13 @@ def network_from_json(json_data):
 
     return g
 
-def calculate_new_length(fiber_length):
-    result = (fiber_length, 1)
-    if fiber_length > MAX_SPAN_LENGTH:
-        n_spans = int(fiber_length // TARGET_SPAN_LENGTH)
-
-        length1 = fiber_length / (n_spans+1)
-        result1 = (length1, n_spans+1)
-        delta1 = TARGET_SPAN_LENGTH-length1
-
-        length2 = fiber_length / n_spans
-        delta2 = length2-TARGET_SPAN_LENGTH
-        result2 = (length2, n_spans)
-
-        if length1<MIN_SPAN_LENGTH and length2<MAX_SPAN_LENGTH:
-            result = result2
-        elif length2>MAX_SPAN_LENGTH and length1>MIN_SPAN_LENGTH:
-            result = result1
-        else:
-            result = result1 if delta1 < delta2 else result2
-
-    return result
-
-def split_fiber(network, fiber):
-    new_length, n_spans = calculate_new_length(fiber.length)
-    prev_node = fiber
-    if n_spans > 1:
-        next_nodes = [_ for _ in network.successors(fiber)]
-        for next_node in next_nodes:
-            network.remove_edge(fiber, next_node)
-
-        new_params_length = new_length / UNITS[fiber.params.length_units]
-        config = {'uid':fiber.uid, 'type': 'Fiber', 'metadata': fiber.__dict__['metadata'], \
-            'params': fiber.__dict__['params']}
-        fiber.uid = config['uid'] + '_1'
-        fiber.length = new_length
-        fiber.loss = fiber.loss_coef * fiber.length
-
-        for i in range(2, n_spans+1):
-            new_config = dict(config)
-            new_config['uid'] = new_config['uid'] + '_' + str(i)
-            new_config['params'].length = new_params_length
-            new_node = Fiber(new_config)
-            network.add_node(new_node)
-            network.add_edge(prev_node, new_node)
-            network = add_egress_amplifier(network, prev_node)
-            prev_node = new_node
-
-        for next_node in next_nodes:
-            network.add_edge(prev_node, next_node)
-
-    network = add_egress_amplifier(network, prev_node)
-    return network
-    
 
 def select_edfa(ingress_span_loss):
     #TODO select amplifier in eqpt_library based on gain, NF and power requirement
     #temporary hack : ***to be fixed by May 2018***
-    if eqpt_exists('std_low_gain'):
-        amp_type = 'std_low_gain' if ingress_span_loss < 18.5 else 'std_medium_gain'
+
+    if 'std_low_gain' in equipment['Edfa'] and ingress_span_loss < 18.5:
+        amp_type = 'std_low_gain'
     else:
         amp_type = 'std_medium_gain'
     return amp_type
@@ -118,13 +71,15 @@ def span_loss(network, node):
     loss = node.loss if node.passive else 0
     return loss + sum(n.loss for n in prev_fiber_node_generator(network, node))
 
-def add_egress_amplifier(network, node):
+def add_egress_amplifier(network, node, equipment):
+    if isinstance(node, Edfa):
+        return
+
     next_nodes = [n for n in network.successors(node)
         if not (isinstance(n, Transceiver) or isinstance(n, Fused))]
         #no amplification for fused spans or TRX
 
-    i = 1
-    for next_node in next_nodes:
+    for i, next_node in enumerate(next_nodes):
         if isinstance(next_node, Edfa):
             if next_node.operational.gain_target == 0:
                 total_loss = span_loss(network, node)
@@ -132,26 +87,72 @@ def add_egress_amplifier(network, node):
         else:
             network.remove_edge(node, next_node)
             total_loss = span_loss(network, node)
-            uid = f'Edfa{i}_{node.uid}'
-            metadata = next_node.metadata
-            operational = {'gain_target': total_loss, 'tilt_target': 0}
-            edfa_variety_type = select_edfa(total_loss)
-            config = {'uid': uid, 'type': 'Edfa', 'metadata': metadata,
-                      'type_variety': edfa_variety_type, 'operational': operational}
-            new_edfa = Edfa(config)
-            network.add_node(new_edfa)
-            network.add_edge(node,new_edfa)
-            network.add_edge(new_edfa, next_node)
-            i += 1
+            edfa_variety = select_edfa(total_loss)
+            extra_params = equipment['Edfa'][variety]
+            amp = Edfa(
+                        uid = f'Edfa{i}_{node.uid}',
+                        operational = {
+                            'gain_target': total_loss,
+                            'tilt_target': 0,
+                        },
+                        **extra_params)            
+            network.add_node(amp)
+            network.add_edge(node,amp)
+            network.add_edge(amp, next_node)
 
-    return network
 
-def build_network(network):
-    fibers = [f for f in network.nodes() if isinstance(f, Fiber)]
-    for fiber in fibers:
-        network = split_fiber(network, fiber)
+def calculate_new_length(fiber_length, bounds, target):
+    if fiber_length < bounds.stop:
+        return fiber_length, 1
 
-    roadms = [r for r in network.nodes() if isinstance(r, Roadm)]
-    for roadm in roadms:
-        add_egress_amplifier(network, roadm)
+    n_spans = int(fiber_length // TARGET_SPAN_LENGTH)
 
+    length1 = fiber_length / (n_spans+1)
+    delta1 = target-length1
+    result1 = (length1, n_spans+1)
+
+    length2 = fiber_length / n_spans
+    delta2 = length2-target
+    result2 = (length2, n_spans)
+
+    if length1 in bounds and length2 not in bounds:
+        result = result1
+    elif length2 in bounds and length1 not in bounds:
+        result = result2
+    else
+        result = result1 if delta1 < delta2 else result2
+
+    return result
+
+
+def split_fiber(network, fiber, bounds, target, equipment):
+    new_length, n_spans = calculate_new_length(fiber.length, bounds, target)
+    if n_spans == 1:
+        add_egress_amplifier(network, fiber, equipment)
+        return
+
+    next_node = [n for n in network.successors(fiber)][0]
+    prev_node = [n for n in network.predecessors(fiber)][0]
+    network.remove_edge(fiber, next_node)
+    network.remove_edge(fiber, prev_node)
+    new_spans = [
+        Fiber(
+            uid =      f'{fiber.uid}_({span}/{n_spans})',
+            metadata = fiber.metadata,
+            params =   fiber.params,
+            length =   new_length / UNITS[fiber.params.length_units], 
+        ) for span in range(n_spans)
+    ]
+    for new_span in new_spans:
+        network.add_node(new_span)
+        network.add_edge(prev_node, new_span)
+        network = add_egress_amplifier(network, new_span, equipment)
+        prev_node = new_span
+    network.add_edge(prev_node, next_node)
+
+def build_network(network, equipment, bounds=range(75_000, 125_000), target=100_000):
+    for fiber in (f for f in network.nodes() if isinstance(f, Fiber)):
+        split_fiber(network, fiber, bounds, target, equipment)
+
+    for roadm in (r for r in network.nodes() if isinstance(r, Roadm)):
+        add_egress_amplifier(network, roadm, equipment)
