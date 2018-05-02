@@ -9,10 +9,14 @@ from json import load
 import pytest
 from gnpy.core import network_from_json
 from gnpy.core.elements import Transceiver, Fiber, Edfa
-from gnpy.core.utils import lin2db, db2lin
+from gnpy.core.utils import lin2db, db2lin , load_json
 from gnpy.core.info import SpectralInformation, Channel, Power
+from gnpy.core.equipment import read_eqpt_library
+from pathlib import Path
 
-network_file_name = 'tests/test_network.json'
+#network_file_name = 'tests/test_network.json'
+network_file_name = 'test_network.json'
+eqpt_library_name = 'eqpt_config_test.json'
 
 @pytest.fixture(params=[(96, 0.05e12), (60, 0.075e12), (45, 0.1e12), (2, 0.1e12)], 
     ids=['50GHz spacing', '75GHz spacing', '100GHz spacing', '2 channels'])
@@ -30,6 +34,8 @@ def bw():
 def setup_edfa():
     """init edfa class by reading test_network.json file
     remove all gain and nf ripple"""
+    # eqpt_library = pytest_eqpt_library() 
+    read_eqpt_library(eqpt_library_name)
     with open(network_file_name) as network_file:
         network_json = load(network_file)
     network = network_from_json(network_json)
@@ -65,6 +71,7 @@ def test_nf_calc(gain, nf_expected, enabled, setup_edfa, si):
      => nf_model vs nf_poly_fit for boundary gain values: gain_min (and below) & gain_flatmax
     same values are expected between the 2 models
     => unitary test for Edfa._calc_nf() (and Edfa.interpol_params)"""
+    # eqpt_lib()
     edfa = setup_edfa
     frequencies = np.array([c.frequency for c in si.carriers])
     pin = np.array([c.power.signal+c.power.nli+c.power.ase for c in si.carriers])
@@ -74,6 +81,7 @@ def test_nf_calc(gain, nf_expected, enabled, setup_edfa, si):
     edfa.interpol_params(frequencies, pin, baud_rates)
 
     nf = edfa.nf
+    print(nf)
     dif = abs(nf[0] - nf_expected)
     assert dif < 0.01
 

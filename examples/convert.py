@@ -26,6 +26,7 @@ from json import dumps
 from uuid import uuid4
 import math
 import numpy as np
+from pathlib import Path
 
 #output_json_file_name = 'coronet_conus_example.json'
 #TODO get column size automatically from tupple size
@@ -33,7 +34,7 @@ NODES_COLUMN = 7
 LINKS_COLUMN = 16
 EQPTS_COLUMN = 12
 parser = ArgumentParser()
-parser.add_argument('workbook', nargs='?', default='meshTopologyExampleV2.xls')
+parser.add_argument('workbook', nargs='?', type=Path , default='meshTopologyExampleV2.xls')
 parser.add_argument('-f', '--filter-region', action='append', default=[])
 all_rows = lambda sh, start=0: (sh.row(x) for x in range(start, sh.nrows))
 
@@ -215,7 +216,11 @@ def convert_file(input_filename, filter_region=[]):
     }
 
     #print(dumps(data, indent=2))
-    output_json_file_name = input_filename.split(".")[0]+".json"
+    # output_json_file_name = input_filename.split(".")[0]+".json"
+    suffix_filename = str(input_filename.suffixes[0])
+    full_input_filename = str(input_filename)
+    split_filename = [full_input_filename[0:len(full_input_filename)-len(suffix_filename)] , suffix_filename[1:]]
+    output_json_file_name = split_filename[0]+'.json'
     with  open(output_json_file_name,'w') as edfa_json_file:
         edfa_json_file.write(dumps(data, indent=2))
 
@@ -313,7 +318,7 @@ def connect_eqpt(from_, in_, to_):
 def eqpt_in_city_to_city(in_city, to_city, direction='egress'):
     rev_direction = 'ingress' if direction == 'egress' else 'egress'
     amp_direction = f'{direction}_amp_type'
-    amp_rev_direction = '{rev_direction}_amp_type'
+    amp_rev_direction = f'{rev_direction}_amp_type'
     return_eqpt = ''
     if in_city in eqpts_by_city:
         for e in eqpts_by_city[in_city]:
