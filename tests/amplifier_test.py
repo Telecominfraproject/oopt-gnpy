@@ -12,7 +12,9 @@ from gnpy.core.elements import Transceiver, Fiber, Edfa
 from gnpy.core.utils import lin2db, db2lin , load_json
 from gnpy.core.info import SpectralInformation, Channel, Power
 from gnpy.core.equipment import read_eqpt_library
+from examples.convert import convert_file
 from pathlib import Path
+import filecmp 
 
 #network_file_name = 'tests/test_network.json'
 network_file_name = 'tests/test_network.json'
@@ -145,3 +147,24 @@ def test_ase_noise(gain, si, setup_edfa, setup_trx, bw):
     dif = dif + abs(osnr - osnr_expected)
 
     assert dif < 0.01
+
+
+# adding tests to check the parser non regression
+# convention of naming of test files:
+#    - excelTest... .xls for the xls undertest
+#    - test...  .json for the reference output
+excel_filename = ['tests/excelTestFileFusedandEqt.xls',
+ 'tests/excelTestFileFused.xls',
+ 'tests/excelTestFilenoILA.xls',
+ 'tests/excelTestFileallILA.xls',
+ 'tests/excelTestFileallILAandEqt.xls',
+ 'tests/excelTestFileCORONET_Global_Topology.xls']
+@pytest.mark.parametrize("inputfile",excel_filename)
+def test_excel_with_fuse(inputfile) :
+     convert_file(Path(inputfile)) 
+     json_filename = f'{inputfile[:-3]}json'
+     test_filename = f'tests/t{json_filename[12:]}'
+     print(json_filename)
+     print(test_filename)
+     
+     assert filecmp.cmp(json_filename,test_filename) is True

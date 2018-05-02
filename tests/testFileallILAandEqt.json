@@ -1,0 +1,602 @@
+{
+  "elements": [
+    {
+      "uid": "trx Lannion_CAS",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx Lorient_KMA",
+      "metadata": {
+        "location": {
+          "city": "Lorient_KMA",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx Vannes_KBE",
+      "metadata": {
+        "location": {
+          "city": "Vannes_KBE",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx Rennes_STA",
+      "metadata": {
+        "location": {
+          "city": "Rennes_STA",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx Brest_KLA",
+      "metadata": {
+        "location": {
+          "city": "Brest_KLA",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "roadm Lannion_CAS",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "roadm Lorient_KMA",
+      "metadata": {
+        "location": {
+          "city": "Lorient_KMA",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "roadm Vannes_KBE",
+      "metadata": {
+        "location": {
+          "city": "Vannes_KBE",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "roadm Rennes_STA",
+      "metadata": {
+        "location": {
+          "city": "Rennes_STA",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "roadm Brest_KLA",
+      "metadata": {
+        "location": {
+          "city": "Brest_KLA",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "fiber (Lannion_CAS \u2192 Corlay)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 20.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    },
+    {
+      "uid": "fiber (Corlay \u2192 Loudeac)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    },
+    {
+      "uid": "fiber (Loudeac \u2192 Lorient_KMA)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 60.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    },
+    {
+      "uid": "fiber (Lorient_KMA \u2192 Vannes_KBE)-F01",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 10.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    },
+    {
+      "uid": "fiber (Lannion_CAS \u2192 Stbrieuc)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 60.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    },
+    {
+      "uid": "fiber (Stbrieuc \u2192 Rennes_STA)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 65.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    },
+    {
+      "uid": "fiber (Lannion_CAS \u2192 Morlaix)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 40.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    },
+    {
+      "uid": "fiber (Morlaix \u2192 Brest_KLA)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 35.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    },
+    {
+      "uid": "fiber (Corlay \u2192 Lannion_CAS)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 20.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    },
+    {
+      "uid": "fiber (Loudeac \u2192 Corlay)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    },
+    {
+      "uid": "fiber (Lorient_KMA \u2192 Loudeac)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 60.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    },
+    {
+      "uid": "fiber (Vannes_KBE \u2192 Lorient_KMA)-F01",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 10.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    },
+    {
+      "uid": "fiber (Stbrieuc \u2192 Lannion_CAS)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 60.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    },
+    {
+      "uid": "fiber (Rennes_STA \u2192 Stbrieuc)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 65.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    },
+    {
+      "uid": "fiber (Morlaix \u2192 Lannion_CAS)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 40.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    },
+    {
+      "uid": "fiber (Brest_KLA \u2192 Morlaix)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 35.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    },
+    {
+      "uid": "egress edfa in Lannion_CAS to Morlaix",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 0,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "egress edfa in Lannion_CAS to Corlay",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 0,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "egress edfa in Lannion_CAS to Stbrieuc",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 0,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "egress edfa in Corlay to Loudeac",
+      "metadata": {
+        "location": {
+          "city": "Corlay",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 0,
+        "tilt_target": 0
+      }
+    }
+  ],
+  "connections": [
+    {
+      "from_node": "roadm Lannion_CAS",
+      "to_node": "egress edfa in Lannion_CAS to Corlay"
+    },
+    {
+      "from_node": "egress edfa in Lannion_CAS to Corlay",
+      "to_node": "fiber (Lannion_CAS \u2192 Corlay)-"
+    },
+    {
+      "from_node": "fiber (Corlay \u2192 Lannion_CAS)-",
+      "to_node": "roadm Lannion_CAS"
+    },
+    {
+      "from_node": "roadm Lannion_CAS",
+      "to_node": "egress edfa in Lannion_CAS to Stbrieuc"
+    },
+    {
+      "from_node": "egress edfa in Lannion_CAS to Stbrieuc",
+      "to_node": "fiber (Lannion_CAS \u2192 Stbrieuc)-"
+    },
+    {
+      "from_node": "fiber (Stbrieuc \u2192 Lannion_CAS)-",
+      "to_node": "roadm Lannion_CAS"
+    },
+    {
+      "from_node": "roadm Lannion_CAS",
+      "to_node": "egress edfa in Lannion_CAS to Morlaix"
+    },
+    {
+      "from_node": "egress edfa in Lannion_CAS to Morlaix",
+      "to_node": "fiber (Lannion_CAS \u2192 Morlaix)-"
+    },
+    {
+      "from_node": "fiber (Morlaix \u2192 Lannion_CAS)-",
+      "to_node": "roadm Lannion_CAS"
+    },
+    {
+      "from_node": "fiber (Lannion_CAS \u2192 Corlay)-",
+      "to_node": "egress edfa in Corlay to Loudeac"
+    },
+    {
+      "from_node": "egress edfa in Corlay to Loudeac",
+      "to_node": "fiber (Corlay \u2192 Loudeac)-"
+    },
+    {
+      "from_node": "fiber (Loudeac \u2192 Corlay)-",
+      "to_node": "fiber (Corlay \u2192 Lannion_CAS)-"
+    },
+    {
+      "from_node": "fiber (Corlay \u2192 Loudeac)-",
+      "to_node": "fiber (Loudeac \u2192 Lorient_KMA)-"
+    },
+    {
+      "from_node": "fiber (Lorient_KMA \u2192 Loudeac)-",
+      "to_node": "fiber (Loudeac \u2192 Corlay)-"
+    },
+    {
+      "from_node": "roadm Lorient_KMA",
+      "to_node": "fiber (Lorient_KMA \u2192 Loudeac)-"
+    },
+    {
+      "from_node": "fiber (Loudeac \u2192 Lorient_KMA)-",
+      "to_node": "roadm Lorient_KMA"
+    },
+    {
+      "from_node": "roadm Lorient_KMA",
+      "to_node": "fiber (Lorient_KMA \u2192 Vannes_KBE)-F01"
+    },
+    {
+      "from_node": "fiber (Vannes_KBE \u2192 Lorient_KMA)-F01",
+      "to_node": "roadm Lorient_KMA"
+    },
+    {
+      "from_node": "roadm Vannes_KBE",
+      "to_node": "fiber (Vannes_KBE \u2192 Lorient_KMA)-F01"
+    },
+    {
+      "from_node": "fiber (Lorient_KMA \u2192 Vannes_KBE)-F01",
+      "to_node": "roadm Vannes_KBE"
+    },
+    {
+      "from_node": "fiber (Lannion_CAS \u2192 Stbrieuc)-",
+      "to_node": "fiber (Stbrieuc \u2192 Rennes_STA)-"
+    },
+    {
+      "from_node": "fiber (Rennes_STA \u2192 Stbrieuc)-",
+      "to_node": "fiber (Stbrieuc \u2192 Lannion_CAS)-"
+    },
+    {
+      "from_node": "roadm Rennes_STA",
+      "to_node": "fiber (Rennes_STA \u2192 Stbrieuc)-"
+    },
+    {
+      "from_node": "fiber (Stbrieuc \u2192 Rennes_STA)-",
+      "to_node": "roadm Rennes_STA"
+    },
+    {
+      "from_node": "fiber (Lannion_CAS \u2192 Morlaix)-",
+      "to_node": "fiber (Morlaix \u2192 Brest_KLA)-"
+    },
+    {
+      "from_node": "fiber (Brest_KLA \u2192 Morlaix)-",
+      "to_node": "fiber (Morlaix \u2192 Lannion_CAS)-"
+    },
+    {
+      "from_node": "roadm Brest_KLA",
+      "to_node": "fiber (Brest_KLA \u2192 Morlaix)-"
+    },
+    {
+      "from_node": "fiber (Morlaix \u2192 Brest_KLA)-",
+      "to_node": "roadm Brest_KLA"
+    },
+    {
+      "from_node": "trx Lannion_CAS",
+      "to_node": "roadm Lannion_CAS"
+    },
+    {
+      "from_node": "roadm Lannion_CAS",
+      "to_node": "trx Lannion_CAS"
+    },
+    {
+      "from_node": "trx Lorient_KMA",
+      "to_node": "roadm Lorient_KMA"
+    },
+    {
+      "from_node": "roadm Lorient_KMA",
+      "to_node": "trx Lorient_KMA"
+    },
+    {
+      "from_node": "trx Vannes_KBE",
+      "to_node": "roadm Vannes_KBE"
+    },
+    {
+      "from_node": "roadm Vannes_KBE",
+      "to_node": "trx Vannes_KBE"
+    },
+    {
+      "from_node": "trx Rennes_STA",
+      "to_node": "roadm Rennes_STA"
+    },
+    {
+      "from_node": "roadm Rennes_STA",
+      "to_node": "trx Rennes_STA"
+    },
+    {
+      "from_node": "trx Brest_KLA",
+      "to_node": "roadm Brest_KLA"
+    },
+    {
+      "from_node": "roadm Brest_KLA",
+      "to_node": "trx Brest_KLA"
+    }
+  ]
+}
