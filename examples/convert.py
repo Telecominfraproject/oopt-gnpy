@@ -28,6 +28,10 @@ import math
 import numpy as np
 
 #output_json_file_name = 'coronet_conus_example.json'
+#TODO get column size automatically from tupple size
+NODES_COLUMN = 7
+LINKS_COLUMN = 16
+EQPTS_COLUMN = 12
 parser = ArgumentParser()
 parser.add_argument('workbook', nargs='?', default='meshTopologyExampleV2.xls')
 parser.add_argument('-f', '--filter-region', action='append', default=[])
@@ -72,6 +76,32 @@ class Eqpt(namedtuple('Eqpt', 'from_city to_city \
         values = [x[0] if x[0] != '' else x[1] for x in zip(values,default_values)]
         return super().__new__(cls, *values)        
 
+def sanity_check(nodes, nodes_by_city, links_by_city, eqpts_by_city):
+    try :
+        test_nodes = [n for n in nodes_by_city if not n in links_by_city]
+        test_links = [n for n in links_by_city if not n in nodes_by_city]
+        test_eqpts = [n for n in eqpts_by_city if not n in nodes_by_city]
+        assert (test_nodes == [] or test_nodes == [''])\
+                and (test_links == [] or test_links ==[''])\
+                and (test_eqpts == [] or test_eqpts ==[''])
+    except AssertionError:
+        print(f'!names in Nodes and Links sheets do no match, check:\
+            \n{test_nodes} in Nodes sheet\
+            \n{test_links} in Links sheet\
+            \n{test_eqpts} in Eqpt sheet')
+        exit(1)
+
+    for city,link in links_by_city.items():
+        if nodes_by_city[city].node_type.lower()=='ila' and len(link) != 2:
+            #wrong input: ILA sites can only be Degree 2 
+            # => correct to make it a ROADM and remove entry in links_by_city
+            #TODO : put in log rather than print
+            print(f'invalid node type ({nodes_by_city[city].node_type})\
+ specified in {city}, replaced by ROADM')
+            nodes_by_city[city] = nodes_by_city[city]._replace(node_type='ROADM')
+            nodes = [n._replace(node_type='ROADM') if n.city==city else n for n in nodes]
+    return nodes
+
 def convert_file(input_filename, filter_region=[]):
     nodes, links, eqpts = parse_excel(input_filename)
 
@@ -95,17 +125,9 @@ def convert_file(input_filename, filter_region=[]):
     global eqpts_by_city
     eqpts_by_city = defaultdict(list)
     for eqpt in eqpts:
-        eqpts_by_city[eqpt.from_city].append(eqpt)        
+        eqpts_by_city[eqpt.from_city].append(eqpt) 
 
-    for city,link in links_by_city.items():
-        if nodes_by_city[city].node_type.lower()=='ila' and len(link) != 2:
-            #wrong input: ILA sites can only be Degree 2 
-            # => correct to make it a ROADM and remove entry in links_by_city
-            #TODO : put in log rather than print
-            print(f'invalid node type ({nodes_by_city[city].node_type})\
- specified in {city}, replaced by ROADM')
-            nodes_by_city[city] = nodes_by_city[city]._replace(node_type='ROADM')
-            nodes = [n._replace(node_type='ROADM') if n.city==city else n for n in nodes]
+    nodes = sanity_check(nodes, nodes_by_city, links_by_city, eqpts_by_city)
 
     data = {
         'elements':
@@ -115,14 +137,28 @@ def convert_file(input_filename, filter_region=[]):
                                         'latitude':  x.latitude,
                                         'longitude': x.longitude}},
               'type': 'Transceiver'}
-             for x in nodes if x.node_type.lower() == 'roadm'] +
+             for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'] +
             [{'uid': f'roadm {x.city}',
               'metadata': {'location': {'city':      x.city,
                                         'region':    x.region,
                                         'latitude':  x.latitude,
                                         'longitude': x.longitude}},
               'type': 'Roadm'}
-             for x in nodes if x.node_type.lower() == 'roadm'] +             
+             for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'] +
+            [{'uid': f'ingress fused spans in {x.city}',
+              'metadata': {'location': {'city':      x.city,
+                                        'region':    x.region,
+                                        'latitude':  x.latitude,
+                                        'longitude': x.longitude}},
+              'type': 'Fused'}
+             for x in nodes_by_city.values() if x.node_type.lower() == 'fused'] +
+            [{'uid': f'egress fused spans in {x.city}',
+              'metadata': {'location': {'city':      x.city,
+                                        'region':    x.region,
+                                        'latitude':  x.latitude,
+                                        'longitude': x.longitude}},
+              'type': 'Fused'}
+             for x in nodes_by_city.values() if x.node_type.lower() == 'fused'] +                                    
             [{'uid': f'fiber ({x.from_city} → {x.to_city})-{x.east_cable}',
               'metadata': {'location': midpoint(nodes_by_city[x.from_city],
                                                 nodes_by_city[x.to_city])},
@@ -143,7 +179,7 @@ def convert_file(input_filename, filter_region=[]):
                          'loss_coef': x.west_lineic}
             } 
               for x in links] +
-            [{'uid': f'egress edfa in {e.from_city}',
+            [{'uid': f'egress edfa in {e.from_city} to {e.to_city}',
               'metadata': {'location': {'city':      nodes_by_city[e.from_city].city,
                                         'region':    nodes_by_city[e.from_city].region,
                                         'latitude':  nodes_by_city[e.from_city].latitude,
@@ -154,7 +190,7 @@ def convert_file(input_filename, filter_region=[]):
                               'tilt_target': e.egress_amp_tilt}
             }
              for e in eqpts if e.egress_amp_type.lower() != ''] +
-            [{'uid': f'ingress edfa in {e.from_city}',
+            [{'uid': f'ingress edfa in {e.from_city} to {e.to_city}',
               'metadata': {'location': {'city':      nodes_by_city[e.from_city].city,
                                         'region':    nodes_by_city[e.from_city].region,
                                         'latitude':  nodes_by_city[e.from_city].latitude,
@@ -172,10 +208,10 @@ def convert_file(input_filename, filter_region=[]):
             list(chain.from_iterable(zip(
             [{'from_node': f'trx {x.city}',
               'to_node':   f'roadm {x.city}'}
-             for x in nodes if x.node_type.lower()=='roadm'],
+             for x in nodes_by_city.values() if x.node_type.lower()=='roadm'],
             [{'from_node': f'roadm {x.city}',
               'to_node':   f'trx {x.city}'}
-             for x in nodes if x.node_type.lower()=='roadm'])))            
+             for x in nodes_by_city.values() if x.node_type.lower()=='roadm'])))            
     }
 
     #print(dumps(data, indent=2))
@@ -204,7 +240,7 @@ def parse_excel(input_filename):
 
         nodes = []
         for row in all_rows(nodes_sheet, start=5):
-            nodes.append(Node(*(x.value for x in row)))
+            nodes.append(Node(*(x.value for x in row[0:NODES_COLUMN])))
         #check input
         expected_node_types = ('ROADM', 'ILA', 'FUSED')
         nodes = [n._replace(node_type='ILA') 
@@ -221,12 +257,12 @@ def parse_excel(input_filename):
         """
         links = []
         for row in all_rows(links_sheet, start=5):
-            links.append(Link(*(x.value for x in row)))
+            links.append(Link(*(x.value for x in row[0:LINKS_COLUMN])))
 
         eqpts = []
         if eqpt_sheet != None:
             for row in all_rows(eqpt_sheet, start=5):
-                eqpts.append(Eqpt(*(x.value for x in row)))            
+                eqpts.append(Eqpt(*(x.value for x in row[0:EQPTS_COLUMN])))
 
     # sanity check
     all_cities = Counter(n.city for n in nodes)
@@ -244,9 +280,10 @@ def eqpt_connection_by_city(city_name):
     subdata = []
     if nodes_by_city[city_name].node_type.lower() in ('ila', 'fused'):
         # Then len(other_cities) == 2
-        for i in range(2):
+        direction = ['ingress', 'egress']
+        for i in range(2):     
             from_ = fiber_link(other_cities[i], city_name)
-            in_ = eqpt_in_city_from_city(city_name, other_cities[i])
+            in_ = eqpt_in_city_to_city(city_name, other_cities[0],direction[i])
             to_ = fiber_link(city_name, other_cities[1-i])
             subdata += connect_eqpt(from_, in_, to_)
     elif nodes_by_city[city_name].node_type.lower() == 'roadm':
@@ -257,7 +294,7 @@ def eqpt_connection_by_city(city_name):
             subdata += connect_eqpt(from_, in_, to_)
 
             from_ = fiber_link(other_city, city_name)
-            in_ = eqpt_in_city_from_city(city_name, other_city)
+            in_ = eqpt_in_city_to_city(city_name, other_city, "ingress")
             to_ = f'roadm {city_name}'
             subdata += connect_eqpt(from_, in_, to_)
     return subdata
@@ -273,27 +310,24 @@ def connect_eqpt(from_, in_, to_):
     return connections
 
 
-def eqpt_in_city_from_city(in_city, from_city):
-    eqpt = eqpts_by_city.get(in_city)
+def eqpt_in_city_to_city(in_city, to_city, direction='egress'):
+    rev_direction = 'ingress' if direction == 'egress' else 'egress'
+    amp_direction = f'{direction}_amp_type'
+    amp_rev_direction = '{rev_direction}_amp_type'
     return_eqpt = ''
-    if eqpt != None:
-        for e in eqpt:
-            if e.to_city == from_city and e.ingress_amp_type != '':
-                return_eqpt = f'ingress edfa in {in_city}'
-            elif nodes_by_city[in_city].node_type.lower() == 'ila' and e.egress_amp_type != '':
-                return_eqpt = f'egress edfa in {in_city}'
-    return return_eqpt
-
-
-def eqpt_in_city_to_city(in_city, to_city):
-    eqpt = eqpts_by_city.get(in_city)
-    return_eqpt = ''
-    if eqpt != None:
-      for e in eqpt:
-          if e.to_city == to_city and e.ingress_amp_type != '':
-              return_eqpt = f'egress edfa in {in_city}'
-          elif nodes_by_city[in_city].node_type == 'ila' and e.egress_amp_type != '':
-              return_eqpt = f'ingress edfa in {in_city}'
+    if in_city in eqpts_by_city:
+        for e in eqpts_by_city[in_city]:
+            if nodes_by_city[in_city].node_type.lower() == 'roadm':
+                if e.to_city == to_city and getattr(e, amp_direction) != '':
+                    return_eqpt = f'{direction} edfa in {e.from_city} to {e.to_city}'
+            elif nodes_by_city[in_city].node_type.lower() == 'ila':
+                if e.to_city != to_city:
+                    direction = rev_direction
+                    amp_direction = amp_rev_direction
+                if getattr(e, amp_direction) != '':
+                    return_eqpt = f'{direction} edfa in {e.from_city} to {e.to_city}'
+    if nodes_by_city[in_city].node_type.lower() == 'fused':
+        return_eqpt = f'{direction} fused spans in {in_city}'
     return return_eqpt
 
 
@@ -309,8 +343,8 @@ def fiber_dest_from_source(city_name):
 
 
 def fiber_link(from_city, to_city):
-    link = links_by_city[from_city]
     source_dest = (from_city, to_city)
+    link = links_by_city[from_city]
     l = next(l for l in link if l.from_city in source_dest and l.to_city in source_dest)
     if l.from_city == from_city:
         fiber = f'fiber ({l.from_city} → {l.to_city})-{l.east_cable}'

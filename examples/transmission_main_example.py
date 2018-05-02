@@ -11,7 +11,8 @@ propagates a 96 channels comb
 
 from gnpy.core.utils import load_json
 from convert import convert_file
-from gnpy.core.equipment import *
+from gnpy.core.equipment import read_eqpt_library
+from gnpy.core.utils import db2lin, lin2db
 from argparse import ArgumentParser
 from sys import exit
 from pathlib import Path
@@ -81,11 +82,6 @@ def main(args):
     network = network_from_json(json_data)
     build_network(network)
 
-    spacing = 0.05 #THz
-    si = SpectralInformation() # !! SI units W, Hz
-    si = si.update(carriers=tuple(Channel(f, (191.3+spacing*f)*1e12, 
-            32e9, 0.15, Power(1e-3, 0, 0)) for f in range(1,97)))
-
     trx = [n for n in network.nodes() if isinstance(n, Transceiver)]
     if args.list>=1:
         print(*[el.uid for el in trx], sep='\n')
@@ -93,21 +89,36 @@ def main(args):
         try:
             source = next(el for el in trx if el.uid == args.source)
         except StopIteration as e:
-            source = trx[0]
-            print(f'invalid souce node specified: {args.source!r}, replaced with {source}')
+            #TODO code a more advanced regex to find nodes match
+            nodes_suggestion = [el for el in trx if args.source.lower() in el.uid.lower()]
+            source = nodes_suggestion[0] if len(nodes_suggestion)>0 else trx[0]
+            print(f'invalid souce node specified: did you mean'
+                  f'\n{[n.uid for n in nodes_suggestion]}?'
+                  f'\n{args.source!r}, replaced with {source.uid}')
 
         try:
             sink = next(el for el in trx if el.uid == args.sink)
         except StopIteration as e:
-            sink = trx[1]
-            print(f'invalid destination node specified: {args.sink!r}, replaced with {sink}')
-
+            nodes_suggestion = [el for el in trx if args.sink.lower() in el.uid.lower() and el.uid != source.uid]
+            trx = [el for el in trx if el.uid != source.uid]
+            sink = nodes_suggestion[0] if len(nodes_suggestion)>0 else trx[0]
+            print(f'invalid destination node specified,\
+                \ndid you mean: {[n.uid for n in nodes_suggestion]}?\
+                \n{args.sink!r}, replaced with {sink.uid}')
+            
         path = dijkstra_path(network, source, sink)
         print(f'There are {len(path)} network elements between {source} and {sink}')
-
-        for el in path:
-            si = el(si)
-            print(el)
+        for p in range(3,4): #change range to sweep results across several powers
+            p=db2lin(p)*1e-3
+            spacing = 0.05 #THz
+            si = SpectralInformation() # !! SI units W, Hz
+            si = si.update(carriers=tuple(Channel(f, (191.3+spacing*f)*1e12, 
+                    32e9, 0.15, Power(p, 0, 0)) for f in range(1,80)))
+            for el in path:
+                si = el(si)
+                print(el) #remove this line when sweeping across several powers
+            print(f'\n      Transmission result for input power = {lin2db(p*1e3):.2f}dBm :')
+            print(sink)
 
         if args.plot:
             plot_network_graph(network, path, source, sink)
