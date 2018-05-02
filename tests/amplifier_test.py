@@ -15,8 +15,8 @@ from gnpy.core.equipment import read_eqpt_library
 from pathlib import Path
 
 #network_file_name = 'tests/test_network.json'
-network_file_name = 'test_network.json'
-eqpt_library_name = 'eqpt_config_test.json'
+network_file_name = 'tests/test_network.json'
+eqpt_library_name = 'tests/eqpt_config_test.json'
 
 @pytest.fixture(params=[(96, 0.05e12), (60, 0.075e12), (45, 0.1e12), (2, 0.1e12)], 
     ids=['50GHz spacing', '75GHz spacing', '100GHz spacing', '2 channels'])
