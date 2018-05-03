@@ -18,7 +18,7 @@ import filecmp
 
 #network_file_name = 'tests/test_network.json'
 network_file_name = 'tests/test_network.json'
-eqpt_library_name = 'tests/eqpt_config_test.json'
+eqpt_library_name = 'examples/eqpt_config.json'
 
 @pytest.fixture(params=[(96, 0.05e12), (60, 0.075e12), (45, 0.1e12), (2, 0.1e12)], 
     ids=['50GHz spacing', '75GHz spacing', '100GHz spacing', '2 channels'])
@@ -153,17 +153,15 @@ def test_ase_noise(gain, si, setup_edfa, setup_trx, bw):
 # convention of naming of test files:
 #    - excelTest... .xls for the xls undertest
 #    - test...  .json for the reference output
-excel_filename = ['tests/excelTestFileFusedandEqt.xls',
- 'tests/excelTestFileFused.xls',
- 'tests/excelTestFilenoILA.xls',
- 'tests/excelTestFileallILA.xls',
- 'tests/excelTestFileallILAandEqt.xls',
- 'tests/excelTestFileCORONET_Global_Topology.xls']
+excel_filename = ['tests/excelTestFile.xls',
+ 'examples/CORONET_Global_Topology.xls']
+test_filenames = {'tests/excelTestFile.xls':'tests/testFile.json',
+ 'examples/CORONET_Global_Topology.xls':'examples/CORONET_Global_Topology.json'}
 @pytest.mark.parametrize("inputfile",excel_filename)
-def test_excel_with_fuse(inputfile) :
+def test_excel_json_generation(inputfile) :
      convert_file(Path(inputfile)) 
      json_filename = f'{inputfile[:-3]}json'
-     test_filename = f'tests/t{json_filename[12:]}'
+     test_filename = test_filenames[inputfile]
      print(json_filename)
      print(test_filename)
      
