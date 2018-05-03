@@ -5,13 +5,14 @@
 
 from gnpy.core.elements import Edfa
 import numpy as np
-from json import load
+from json import load, dumps
 import pytest
 from gnpy.core import network_from_json
 from gnpy.core.elements import Transceiver, Fiber, Edfa
 from gnpy.core.utils import lin2db, db2lin , load_json
 from gnpy.core.info import SpectralInformation, Channel, Power
 from gnpy.core.equipment import read_eqpt_library
+from gnpy.core.network import build_network
 from examples.convert import convert_file
 from pathlib import Path
 import filecmp 
@@ -166,3 +167,22 @@ def test_excel_json_generation(inputfile) :
      print(test_filename)
      
      assert filecmp.cmp(json_filename,test_filename) is True
+
+# assume json entries
+# test that the build network gives correct results     
+json_filename = ['tests/testFile.json',
+ 'examples/CORONET_Global_Topology.json']
+@pytest.mark.parametrize("inputfile",json_filename)
+def test_network_generation(inputfile) :
+    json_data = load_json(inputfile)
+    read_eqpt_library(Path(eqpt_library_name))
+
+    network = network_from_json(json_data)
+    build_network(network)
+    for n in network.nodes():
+        print(f'elements: {n},\n')
+    print(',connections: [\n')
+    for u, v in network.edges():
+        print(f'[from_node: {u.uid}, to_node: {v.uid} ]')
+
+    assert False
