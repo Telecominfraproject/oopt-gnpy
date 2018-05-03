@@ -20,6 +20,14 @@
             "p_max": 21,
             "nf_min": 7,
             "nf_max": 11
+            },
+            {
+            "type_variety": "test",
+            "gain_flatmax": 25,
+            "gain_min": 15,
+            "p_max": 21,
+            "nf_min": 5.8,
+            "nf_max": 10
             }
       ],
       "Fiber":[{

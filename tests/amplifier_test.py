@@ -5,14 +5,21 @@
 
 from gnpy.core.elements import Edfa
 import numpy as np
-from json import load
+from json import load, dumps
 import pytest
 from gnpy.core import network_from_json
 from gnpy.core.elements import Transceiver, Fiber, Edfa
-from gnpy.core.utils import lin2db, db2lin
+from gnpy.core.utils import lin2db, db2lin , load_json
 from gnpy.core.info import SpectralInformation, Channel, Power
+from gnpy.core.equipment import read_eqpt_library
+from gnpy.core.network import build_network
+from examples.convert import convert_file
+from pathlib import Path
+import filecmp 
 
+#network_file_name = 'tests/test_network.json'
 network_file_name = 'tests/test_network.json'
+eqpt_library_name = 'examples/eqpt_config.json'
 
 @pytest.fixture(params=[(96, 0.05e12), (60, 0.075e12), (45, 0.1e12), (2, 0.1e12)], 
     ids=['50GHz spacing', '75GHz spacing', '100GHz spacing', '2 channels'])
@@ -30,6 +37,8 @@ def bw():
 def setup_edfa():
     """init edfa class by reading test_network.json file
     remove all gain and nf ripple"""
+    # eqpt_library = pytest_eqpt_library() 
+    read_eqpt_library(eqpt_library_name)
     with open(network_file_name) as network_file:
         network_json = load(network_file)
     network = network_from_json(network_json)
@@ -65,6 +74,7 @@ def test_nf_calc(gain, nf_expected, enabled, setup_edfa, si):
      => nf_model vs nf_poly_fit for boundary gain values: gain_min (and below) & gain_flatmax
     same values are expected between the 2 models
     => unitary test for Edfa._calc_nf() (and Edfa.interpol_params)"""
+    # eqpt_lib()
     edfa = setup_edfa
     frequencies = np.array([c.frequency for c in si.carriers])
     pin = np.array([c.power.signal+c.power.nli+c.power.ase for c in si.carriers])
@@ -74,6 +84,7 @@ def test_nf_calc(gain, nf_expected, enabled, setup_edfa, si):
     edfa.interpol_params(frequencies, pin, baud_rates)
 
     nf = edfa.nf
+    print(nf)
     dif = abs(nf[0] - nf_expected)
     assert dif < 0.01
 
@@ -137,3 +148,41 @@ def test_ase_noise(gain, si, setup_edfa, setup_trx, bw):
     dif = dif + abs(osnr - osnr_expected)
 
     assert dif < 0.01
+
+
+# adding tests to check the parser non regression
+# convention of naming of test files:
+#    - excelTest... .xls for the xls undertest
+#    - test...  .json for the reference output
+excel_filename = ['tests/excelTestFile.xls',
+ 'examples/CORONET_Global_Topology.xls']
+test_filenames = {'tests/excelTestFile.xls':'tests/testFile.json',
+ 'examples/CORONET_Global_Topology.xls':'tests/CORONET_Global_Topology.json'}
+@pytest.mark.parametrize("inputfile",excel_filename)
+def test_excel_json_generation(inputfile) :
+     convert_file(Path(inputfile)) 
+     json_filename = f'{inputfile[:-3]}json'
+     test_filename = test_filenames[inputfile]
+     print(json_filename)
+     print(test_filename)
+     
+     assert filecmp.cmp(json_filename,test_filename) is True
+
+# assume json entries
+# test that the build network gives correct results     
+# json_filename = ['tests/testFile.json',
+#  'examples/CORONET_Global_Topology.json']
+# @pytest.mark.parametrize("inputfile",json_filename)
+# def test_network_generation(inputfile) :
+#     json_data = load_json(inputfile)
+#     read_eqpt_library(Path(eqpt_library_name))
+
+#     network = network_from_json(json_data)
+#     build_network(network)
+#     for n in network.nodes():
+#         print(f'elements: {n},\n')
+#     print(',connections: [\n')
+#     for u, v in network.edges():
+#         print(f'[from_node: {u.uid}, to_node: {v.uid} ]')
+
+#     assert False

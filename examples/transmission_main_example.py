@@ -65,7 +65,8 @@ def plot_network_graph(network, path, source, sink):
 
 def main(args):
     input_filename = str(args.filename)
-    split_filename = input_filename.split(".")
+    suffix_filename = str(args.filename.suffixes[0])
+    split_filename = [input_filename[0:len(input_filename)-len(suffix_filename)] , suffix_filename[1:]]
     json_filename = split_filename[0]+'.json'
     try:
         assert split_filename[1] in ('json','xls','csv','xlsm')
@@ -74,7 +75,7 @@ def main(args):
         raise e
     if split_filename[1] != 'json':
         print(f'parse excel input to {json_filename}')
-        convert_file(input_filename)
+        convert_file(args.filename)
 
     json_data = load_json(json_filename)
     read_eqpt_library(EQPT_LIBRARY_FILENAME)
