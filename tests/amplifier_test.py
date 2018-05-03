@@ -157,7 +157,7 @@ def test_ase_noise(gain, si, setup_edfa, setup_trx, bw):
 excel_filename = ['tests/excelTestFile.xls',
  'examples/CORONET_Global_Topology.xls']
 test_filenames = {'tests/excelTestFile.xls':'tests/testFile.json',
- 'examples/CORONET_Global_Topology.xls':'examples/CORONET_Global_Topology.json'}
+ 'examples/CORONET_Global_Topology.xls':'tests/CORONET_Global_Topology.json'}
 @pytest.mark.parametrize("inputfile",excel_filename)
 def test_excel_json_generation(inputfile) :
      convert_file(Path(inputfile)) 
@@ -170,19 +170,19 @@ def test_excel_json_generation(inputfile) :
 
 # assume json entries
 # test that the build network gives correct results     
-json_filename = ['tests/testFile.json',
- 'examples/CORONET_Global_Topology.json']
-@pytest.mark.parametrize("inputfile",json_filename)
-def test_network_generation(inputfile) :
-    json_data = load_json(inputfile)
-    read_eqpt_library(Path(eqpt_library_name))
+# json_filename = ['tests/testFile.json',
+#  'examples/CORONET_Global_Topology.json']
+# @pytest.mark.parametrize("inputfile",json_filename)
+# def test_network_generation(inputfile) :
+#     json_data = load_json(inputfile)
+#     read_eqpt_library(Path(eqpt_library_name))
 
-    network = network_from_json(json_data)
-    build_network(network)
-    for n in network.nodes():
-        print(f'elements: {n},\n')
-    print(',connections: [\n')
-    for u, v in network.edges():
-        print(f'[from_node: {u.uid}, to_node: {v.uid} ]')
+#     network = network_from_json(json_data)
+#     build_network(network)
+#     for n in network.nodes():
+#         print(f'elements: {n},\n')
+#     print(',connections: [\n')
+#     for u, v in network.edges():
+#         print(f'[from_node: {u.uid}, to_node: {v.uid} ]')
 
-    assert False
+#     assert False
