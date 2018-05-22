@@ -41,12 +41,12 @@
             "loss": 20
             }],
       "SI":[{
-            "f_min": 193.1e12,
-            "Nch": 96,
+            "f_min": 191.3e12,
+            "Nch": 80,
             "baud_rate": 32e9,
-            "spacing": 50e9,
+            "spacing": 75e9,
             "roll_off": 0.15,
-            "power": 1e-3
+            "power": 1.2589e-3
             }],
       "Transceiver":[
             {

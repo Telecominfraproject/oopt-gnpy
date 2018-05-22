@@ -23,8 +23,12 @@ from argparse import ArgumentParser
 from collections import namedtuple
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
 from json import dumps
+from pathlib import Path
+from gnpy.core.equipment import get_eqpt_params, eqpt_exists, read_eqpt_library
 
-SERVICES_COLUMN = 5
+SERVICES_COLUMN = 11
+#EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
+
 all_rows = lambda sheet, start=0: (sheet.row(x) for x in range(start, sheet.nrows))
 logger = getLogger(__name__)
 
@@ -34,9 +38,10 @@ parser.add_argument('-v', '--verbose', action='count')
 parser.add_argument('-o', '--output', default=None)
 
 # Type for input data
-class Request(namedtuple('Request', 'request_id source destination trx_type disjoint_from')):
-    def __new__(cls, request_id, source, destination, trx_type, disjoint_from = ''):
-        return super().__new__(cls, request_id, source, destination, trx_type, disjoint_from)
+class Request(namedtuple('Request', 'request_id source destination trx_type mode \
+    spacing power nb_channel disjoint_from nodes_list is_loose')):
+    def __new__(cls, request_id, source, destination, trx_type,  mode , spacing , power , nb_channel , disjoint_from ='' ,  nodes_list = '', is_loose = ''):
+        return super().__new__(cls, request_id, source, destination, trx_type, mode, spacing, power, nb_channel, disjoint_from,  nodes_list, is_loose)
 
 # Type for output data:  // from dutc
 class Element:
@@ -46,13 +51,24 @@ class Element:
         return hash((type(self), self.uid))
 
 class Request_element(Element):
-    def __init__(self,Request):
+    def __init__(self,Request,eqpt_filename):
         self.request_id = int(Request.request_id)
         self.source = Request.source
         self.destination = Request.destination
         self.srctpid = f'trx {Request.source}'
         self.dsttpid = f'trx {Request.destination}'
-        self.trx_type = Request.trx_type
+        # test that trx_type belongs to eqpt_config.json
+        # if not replace it with a default 
+        read_eqpt_library(eqpt_filename)
+        if eqpt_exists(Request.trx_type):
+            self.trx_type = Request.trx_type
+            self.mode = Request.mode
+        else:
+            #TODO : this case must raise an error instead of using Voyager
+            self.trx_type = 'Voyager_16QAM'
+            print(f'Transceiver type {Request.trx_type} is not defined in {eqpt_filename}')
+            print('replaced by Voyager_16QAM')
+
         if isinstance(Request.disjoint_from,str):
             self.disjoint_from = [int(n) for n in Request.disjoint_from.split()]
         else:
@@ -70,6 +86,7 @@ class Request_element(Element):
                     'te-bandwidth': {
                         'technology': 'flexi-grid',
                         'trx_type'  : self.trx_type,
+                        'trx_mode'  : self.mode,
                         'effective-freq-slot':[{'n': 'null','m': 'null'}]
                     }
                 }
@@ -90,12 +107,14 @@ class Request_element(Element):
     def json(self):
         return self.pathrequest , self.pathsync
 
-def convert_service_sheet(input_filename, filter_region=[]):
+def convert_service_sheet(input_filename, eqpt_filename, filter_region=[]):
     service = parse_excel(input_filename)
-
+    req = [Request_element(n,eqpt_filename) for n in service]
+    # todo : maybe dumps the output into a json file ?
     return {
-        'path-request': [Request_element(n).json[0] for n in service],
-        'synchronisation': [Request_element(n).json[1] for n in service if Request_element(n).json[1] is not None]
+        'path-request': [n.json[0] for n in req],
+        'synchronisation': [n.json[1] for n in req 
+        if n.json[1] is not None]
     }
 
 # to be used from dutc
@@ -113,13 +132,15 @@ def parse_excel(input_filename):
 def parse_service_sheet(service_sheet):
         logger.info(f'Validating headers on {service_sheet.name!r}')
         header = [x.value.strip() for x in service_sheet.row(4)[0:SERVICES_COLUMN]]
-        expected = ['route id', 'Source', 'Destination', 'TRX type', 'routing: disjoint from']
+        expected = ['route id', 'Source', 'Destination', 'TRX type', \
+         'Mode', 'System: spacing', 'System: input power (dBm)', 'System: nb of channels',\
+         'routing: disjoint from', 'routing : path', 'routing : is loose ?']
         if header != expected:
             msg = f'Malformed header on Service sheet: {header} != {expected}'
             logger.critical(msg)
             raise ValueError(msg)
 
-        service_fieldnames = 'request_id source destination trx_type disjoint_from'.split()
+        service_fieldnames = 'request_id source destination trx_type mode spacing power nb_channel disjoint_from nodes_list is_loose'.split()
         # Important Note: it reads all colum on each row so that
         # it is not possible to write annotation in the excel sheet
         # outside the SERVICES_COLUMN ...  TO BE IMPROVED
@@ -131,7 +152,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(args.verbose, CRITICAL))
     logger.info(f'Converting Service sheet {args.workbook!r} into gnpy JSON format')
-    data = convert_service_sheet(args.workbook)
+    data = convert_service_sheet(args.workbook,'eqpt_config.json')
     if args.output is None:
         print(dumps(data, indent=2))
     else:

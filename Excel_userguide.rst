@@ -115,7 +115,7 @@ Eqpt sheet
 Eqt sheet is optional. It lists the amplifiers types and characteristics on each degree of the *Node A* line.
 Links sheet must contain sixteen columns::
 
-                   <--           east cable from a to z        --> <--        west from z to                  -->
+                   <--           east cable from a to z        --> <--        west from z to a                 -->
   Node A ; Node Z ; amp type ; att_in ; amp gain ; tilt ; att_out ; amp type ; att_in ; amp gain ; tilt ; att_out
 
 If the sheet is present, it MUST have as many lines as egress directions of ROADMs defined in Links Sheet. 
@@ -172,9 +172,20 @@ then Eqpt sheet should contain:
 
 # to be completed #
 
- 
+(in progress)
+
+Service sheet 
+-------------
+
+Service sheet is optional. It lists the services for which path and feasibility must me computed.
+Service sheet must contain 11 columns::  
+
+   route id ; Source ; Destination ; TRX type ; Mode ; System: spacing ; System: input power (dBm) ; System: nb of channels ; routing: disjoint from ; routing : path ; routing : is loose ?
 
 
 
+# to be completed #
+
+(in progress)
 
 
