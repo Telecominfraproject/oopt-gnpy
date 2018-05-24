@@ -134,13 +134,14 @@ class Fused(Node):
         carriers = tuple(self.propagate(*spectral_info.carriers))
         return spectral_info.update(carriers=carriers)
 
-FiberParams = namedtuple('FiberParams', 'length loss_coef length_units dispersion gamma')
+FiberParams = namedtuple('FiberParams', 'type_variety length loss_coef length_units dispersion gamma')
 
 class Fiber(Node):
     def __init__(self, *args, params=None, **kwargs):
         if params is None:
             params = {}
         super().__init__(*args, params=FiberParams(**params), **kwargs)
+        self.type_variety = self.params.type_variety
         self.length = self.params.length * UNITS[self.params.length_units] # in m
         self.loss_coef = self.params.loss_coef * 1e-3 # lineic loss dB/m
         self.lin_loss_coef = self.params.loss_coef / (20 * log10(exp(1)))
@@ -154,8 +155,9 @@ class Fiber(Node):
 
     def __str__(self):
         return '\n'.join([f'{type(self).__name__} {self.uid}',
-                          f'  length (m): {self.length:.2f}',
-                          f'  loss (dB):  {self.loss:.2f}'])
+                          f'  type_variety: {self.type_variety}',
+                          f'  length (m):   {self.length:.2f}',
+                          f'  loss (dB):    {self.loss:.2f}'])
 
     @property
     def loss(self):
@@ -290,6 +292,7 @@ class Edfa(Node):
 
     def __repr__(self):
         return (f'{type(self).__name__}(uid={self.uid!r}, '
+                f'type_variety={self.params.type_variety!r}'
                 f'interpol_dgt={self.interpol_dgt!r}, '
                 f'interpol_gain_ripple={self.interpol_gain_ripple!r}, '
                 f'interpol_nf_ripple={self.interpol_nf_ripple!r}, '
@@ -303,7 +306,8 @@ class Edfa(Node):
         if self.pin_db is None or self.pout_db is None:
             return f'{type(self).__name__} {self.uid}'
         nf = mean(self.nf)
-        return '\n'.join([f'{type(self).__name__} {self.uid}',
+        return '\n'.join([f'{type(self).__name__} {self.uid}', 
+                          f'  type_variety:      {self.params.type_variety}',
                           f'  gain (dB):         {self.operational.gain_target:.2f}',
                           f'  noise figure (dB): {nf:.2f}',
                           f'  Power In (dBm):    {self.pin_db:.2f}',

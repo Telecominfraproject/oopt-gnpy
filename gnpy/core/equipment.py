@@ -14,7 +14,7 @@ from gnpy.core.utils import lin2db, db2lin
 from collections import namedtuple
 
 Model = namedtuple('Model', 'nf1 nf2 delta_p')
-Fiber = namedtuple('Fiber', 'dispersion gamma')
+Fiber = namedtuple('Fiber', 'type_variety dispersion gamma')
 Spans = namedtuple('Spans', 'max_length length_units max_loss padding EOL con_loss')
 Roadms = namedtuple('Roadms', 'loss')
 SI = namedtuple('SI', 'f_min Nch baud_rate spacing roll_off power')
@@ -27,7 +27,7 @@ class Edfa(EdfaBase):
             type_variety, gain_flatmax, gain_min, p_max, nf_min=None, nf_max=None,
             nf_model=None, nf_fit_coeff=None, nf_ripple=None, dgt=None, gain_ripple=None):
         return super().__new__(cls,
-            gain_flatmax, gain_min, p_max, nf_min, nf_max,
+            type_variety, gain_flatmax, gain_min, p_max, nf_min, nf_max,
             nf_model, nf_fit_coeff, nf_ripple, dgt, gain_ripple)
 
     @classmethod
@@ -40,13 +40,14 @@ class Edfa(EdfaBase):
     def from_default_json(cls, filename, **kwargs):
         with open(filename) as f:
             json_data = loads(f.read())
+        type_variety = kwargs['type_variety']
         gain_min, gain_max = kwargs['gain_min'], kwargs['gain_flatmax']
         nf_min, nf_max = kwargs['nf_min'], kwargs['nf_max']
-        nf1, nf2, delta_p = nf_model(gain_min, gain_max, nf_min, nf_max)
+        nf1, nf2, delta_p = nf_model(type_variety, gain_min, gain_max, nf_min, nf_max)
         return cls(**{**kwargs, **json_data, 'nf_model': Model(nf1, nf2, delta_p)})
 
 
-def nf_model(gain_min, gain_max, nf_min, nf_max):
+def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
     if nf_min < -10:
         raise ValueError(f'Invalid nf_min value {nf_min!r}')
     if nf_max < -10:
@@ -77,15 +78,17 @@ def nf_model(gain_min, gain_max, nf_min, nf_max):
         delta_p = gain_max - g1a_max
         g1a_min = gain_min - (gain_max-gain_min) - delta_p
         if not 1 < delta_p < 6:
-            raise ValueError('Computed \N{greek capital letter delta}P invalid')
-
+            raise ValueError(f'Computed \N{greek capital letter delta}P invalid \
+                \n 1st coil vs 2nd coil calculated DeltaP {delta_p:.2f} for \
+                \n amp {type_variety} is not valid: revise inputs \
+                \n calculated 1st coil NF = {nf1:.2f}, 2nd coil NF = {nf2:.2f}')
     # Check calculated values for nf1 and nf2
     calc_nf_min = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_max))
     if not isclose(nf_min, calc_nf_min, abs_tol=0.01):
-        raise ValueError(f'nf_min does not match calc_nf_min, {nf_min} vs {calc_nf_min}')
+        raise ValueError(f'nf_min does not match calc_nf_min, {nf_min} vs {calc_nf_min} for amp {type_variety}')
     calc_nf_max = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_min))
     if not isclose(nf_max, calc_nf_max, abs_tol=0.01):
-        raise ValueError(f'nf_max does not match calc_nf_max, {nf_max} vs {calc_nf_max}')
+        raise ValueError(f'nf_max does not match calc_nf_max, {nf_max} vs {calc_nf_max} for amp {type_variety}')
 
     return nf1, nf2, delta_p
 
