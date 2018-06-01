@@ -6,7 +6,8 @@ nf model parameters calculation
 calculate nf1, nf2 and Delta_P of a 2 coils edfa with internal VOA
 from nf_min and nf_max inputs 
 '''
-from numpy import clip
+from numpy import clip, polyval
+from operator import itemgetter
 from math import isclose
 from pathlib import Path
 from json import loads
@@ -91,6 +92,20 @@ def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
         raise ValueError(f'nf_max does not match calc_nf_max, {nf_max} vs {calc_nf_max} for amp {type_variety}')
 
     return nf1, nf2, delta_p
+
+def edfa_nf(gain, variety_type, equipment):
+    edfa = equipment['Edfa'][variety_type]
+    'input VOA padding at low gain = worst case strategy'
+    'not necessary when output VOA/att padding strategy will be implemented'
+    pad = max(edfa.gain_min - gain, 0)
+    gain = gain + pad
+    dg = gain - edfa.gain_flatmax
+    if edfa.nf_model:
+        g1a = gain - edfa.nf_model.delta_p + dg
+        nf_avg = lin2db(db2lin(edfa.nf_model.nf1) + db2lin(edfa.nf_model.nf2)/db2lin(g1a))
+    else:
+        nf_avg = polyval(edfa.nf_fit_coeff, dg)
+    return nf_avg + pad # input VOA = 1 for 1 NF degradation
 
 def equipment_from_json(json_data, filename):
     """build global dictionnary eqpt_library that stores all eqpt characteristics:
