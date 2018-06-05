@@ -9,7 +9,7 @@ and optimization tools in real-world mesh optical networks.**
 
 `gnpy <http://github.com/telecominfraproject/gnpy>`__ is:
 
-- a sponsored project of the `OOPT/PSE <http://telecominfraproject.com/project-groups-2/backhaul-projects/open-optical-packet-transport/>`_ working group of the `Telecom Infra Project <http://telecominfraproject.com>`_.
+- a sponsored project of the `OOPT/PSE <https://telecominfraproject.com/open-optical-packet-transport/>`_ working group of the `Telecom Infra Project <http://telecominfraproject.com>`_.
 - fully community-driven, fully open source library
 - driven by a consortium of operators, vendors, and academic researchers
 - intended for rapid development of production-grade route planning tools
@@ -83,7 +83,7 @@ fully-functional programs.
     $ cd examples
     $ python3 transmission_main_example.py
 
-By default, this script operates on a single span network defined in `examples/edfa/edfa_example_network.json <examples/edfa/edfa_example_network.json>`_
+By default, this script operates on a single span network defined in `examples/edfa_example_network.json <examples/edfa_example_network.json>`_
 
 You may need to set PYTHONPATH variable. For example on Ubuntu, add your workspace path to PYTHONPATH in your .bashrc file:
 
@@ -123,7 +123,7 @@ spacing, power or channel count demand.
 The amplifier's gain is set to exactly compensate for the loss in each network
 element. The amplifier is currently defined with gain range of 15 dB to 25 dB
 and 21 dBm max output power. Ripple and NF models are defined in
-`examples/edfa_config.json <examples/edfa_config.json>`_
+`examples/std_medium_gain_advanced_config.json <examples/std_medium_gain_advanced_config.json>`_
 
 It is possible to use an excell file input. this will generate the json topology entry. How to prepare the Excel input file is explained `here <Excel_userguide.rst>`_.
 
