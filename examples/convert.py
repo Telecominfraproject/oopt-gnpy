@@ -23,19 +23,8 @@ from argparse import ArgumentParser
 from collections import namedtuple, Counter, defaultdict
 from itertools import chain
 from json import dumps
-from uuid import uuid4
-import math
-import numpy as np
 from pathlib import Path
 
-#output_json_file_name = 'coronet_conus_example.json'
-#TODO get column size automatically from tupple size
-NODES_COLUMN = 7
-LINKS_COLUMN = 16
-EQPTS_COLUMN = 12
-parser = ArgumentParser()
-parser.add_argument('workbook', nargs='?', type=Path , default='meshTopologyExampleV2.xls')
-parser.add_argument('-f', '--filter-region', action='append', default=[])
 all_rows = lambda sh, start=0: (sh.row(x) for x in range(start, sh.nrows))
 
 class Node(namedtuple('Node', 'city state country region latitude longitude node_type')):
@@ -372,6 +361,15 @@ def midpoint(city_a, city_b):
         'longitude': 0
                 }
     return result
+
+#output_json_file_name = 'coronet_conus_example.json'
+#TODO get column size automatically from tupple size
+NODES_COLUMN = 7
+LINKS_COLUMN = 16
+EQPTS_COLUMN = 12
+parser = ArgumentParser()
+parser.add_argument('workbook', nargs='?', type=Path , default='meshTopologyExampleV2.xls')
+parser.add_argument('-f', '--filter-region', action='append', default=[])
 
 if __name__ == '__main__':
     args = parser.parse_args()
