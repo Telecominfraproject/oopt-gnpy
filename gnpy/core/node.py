@@ -29,7 +29,8 @@ class Node:
         if name is None:
             name = uid
         self.uid, self.name = uid, name
-        metadata['location'] = Location(**metadata.pop('location', {}))
+        if metadata and not isinstance(metadata.get('location'), Location):
+            metadata['location'] = Location(**metadata.pop('location', {}))
         self.params, self.metadata, self.operational = params, metadata, operational
 
     @property
