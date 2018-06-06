@@ -447,11 +447,202 @@
         "length_units": "km",
         "loss_coef": 0.2
       }
+    },
+    {
+      "uid": "egress edfa in Lannion_CAS to Corlay",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "test",
+      "operational": {
+        "gain_target": 0,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "egress edfa in Loudeac to Lorient_KMA",
+      "metadata": {
+        "location": {
+          "city": "Loudeac",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "test",
+      "operational": {
+        "gain_target": 0,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "egress edfa in Lorient_KMA to Vannes_KBE",
+      "metadata": {
+        "location": {
+          "city": "Lorient_KMA",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "test",
+      "operational": {
+        "gain_target": 0,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "egress edfa in Lannion_CAS to Stbrieuc",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "test",
+      "operational": {
+        "gain_target": 0,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "egress edfa in Stbrieuc to Rennes_STA",
+      "metadata": {
+        "location": {
+          "city": "Stbrieuc",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "test",
+      "operational": {
+        "gain_target": 0,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "egress edfa in Lannion_CAS to Morlaix",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "test",
+      "operational": {
+        "gain_target": 0,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "egress edfa in Morlaix to Brest_KLA",
+      "metadata": {
+        "location": {
+          "city": "Morlaix",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "test",
+      "operational": {
+        "gain_target": 0,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "egress edfa in Lorient_KMA to Loudeac",
+      "metadata": {
+        "location": {
+          "city": "Lorient_KMA",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "test",
+      "operational": {
+        "gain_target": 0,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "egress edfa in Vannes_KBE to Lorient_KMA",
+      "metadata": {
+        "location": {
+          "city": "Vannes_KBE",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "test",
+      "operational": {
+        "gain_target": 0,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "egress edfa in Rennes_STA to Stbrieuc",
+      "metadata": {
+        "location": {
+          "city": "Rennes_STA",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "test",
+      "operational": {
+        "gain_target": 0,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "egress edfa in Brest_KLA to Morlaix",
+      "metadata": {
+        "location": {
+          "city": "Brest_KLA",
+          "region": "RLD",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "test",
+      "operational": {
+        "gain_target": 0,
+        "tilt_target": 0
+      }
     }
   ],
   "connections": [
     {
       "from_node": "roadm Lannion_CAS",
+      "to_node": "egress edfa in Lannion_CAS to Corlay"
+    },
+    {
+      "from_node": "egress edfa in Lannion_CAS to Corlay",
       "to_node": "fiber (Lannion_CAS \u2192 Corlay)-"
     },
     {
@@ -460,6 +651,10 @@
     },
     {
       "from_node": "roadm Lannion_CAS",
+      "to_node": "egress edfa in Lannion_CAS to Stbrieuc"
+    },
+    {
+      "from_node": "egress edfa in Lannion_CAS to Stbrieuc",
       "to_node": "fiber (Lannion_CAS \u2192 Stbrieuc)-"
     },
     {
@@ -468,6 +663,10 @@
     },
     {
       "from_node": "roadm Lannion_CAS",
+      "to_node": "egress edfa in Lannion_CAS to Morlaix"
+    },
+    {
+      "from_node": "egress edfa in Lannion_CAS to Morlaix",
       "to_node": "fiber (Lannion_CAS \u2192 Morlaix)-"
     },
     {
@@ -508,6 +707,10 @@
     },
     {
       "from_node": "roadm Lorient_KMA",
+      "to_node": "egress edfa in Lorient_KMA to Loudeac"
+    },
+    {
+      "from_node": "egress edfa in Lorient_KMA to Loudeac",
       "to_node": "fiber (Lorient_KMA \u2192 Loudeac)-"
     },
     {
@@ -516,6 +719,10 @@
     },
     {
       "from_node": "roadm Lorient_KMA",
+      "to_node": "egress edfa in Lorient_KMA to Vannes_KBE"
+    },
+    {
+      "from_node": "egress edfa in Lorient_KMA to Vannes_KBE",
       "to_node": "fiber (Lorient_KMA \u2192 Vannes_KBE)-F01"
     },
     {
@@ -524,6 +731,10 @@
     },
     {
       "from_node": "roadm Vannes_KBE",
+      "to_node": "egress edfa in Vannes_KBE to Lorient_KMA"
+    },
+    {
+      "from_node": "egress edfa in Vannes_KBE to Lorient_KMA",
       "to_node": "fiber (Vannes_KBE \u2192 Lorient_KMA)-F01"
     },
     {
@@ -532,6 +743,10 @@
     },
     {
       "from_node": "fiber (Lannion_CAS \u2192 Stbrieuc)-",
+      "to_node": "egress edfa in Stbrieuc to Rennes_STA"
+    },
+    {
+      "from_node": "egress edfa in Stbrieuc to Rennes_STA",
       "to_node": "fiber (Stbrieuc \u2192 Rennes_STA)-"
     },
     {
@@ -540,6 +755,10 @@
     },
     {
       "from_node": "roadm Rennes_STA",
+      "to_node": "egress edfa in Rennes_STA to Stbrieuc"
+    },
+    {
+      "from_node": "egress edfa in Rennes_STA to Stbrieuc",
       "to_node": "fiber (Rennes_STA \u2192 Stbrieuc)-"
     },
     {
@@ -564,6 +783,10 @@
     },
     {
       "from_node": "roadm Brest_KLA",
+      "to_node": "egress edfa in Brest_KLA to Morlaix"
+    },
+    {
+      "from_node": "egress edfa in Brest_KLA to Morlaix",
       "to_node": "fiber (Brest_KLA \u2192 Morlaix)-"
     },
     {
