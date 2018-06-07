@@ -212,6 +212,7 @@ def convert_file(input_filename, filter_region=[]):
     output_json_file_name = split_filename[0]+'.json'
     with  open(output_json_file_name,'w') as edfa_json_file:
         edfa_json_file.write(dumps(data, indent=2))
+    return output_json_file_name
 
 def parse_excel(input_filename):
     with open_workbook(input_filename) as wb:

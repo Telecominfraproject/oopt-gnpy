@@ -49,11 +49,15 @@ def plot_results(network, path, source, sink):
 
 
 def load_network(filename, equipment):
+    json_filename = ''
     if args.filename.suffix.lower() == '.xls':
-        logger.info('Automatically converting from XLS to gnpy JSON')
-        json_data = convert_file(args.filename)
+        logger.info('Automatically generating topology JSON file')        
+        json_filename = convert_file(args.filename)
+    elif args.filename.suffix.lower() == '.json':
+        json_filename = args.filename
     else:
-        with open(args.filename) as f:
+        raise ValueError(f'unsuported topology filename extension {args.filename.suffix.lower()}')
+    with open(json_filename) as f:
             json_data = loads(f.read())
     return network_from_json(json_data, equipment)
 
@@ -134,7 +138,7 @@ if __name__ == '__main__':
             sink = next(transceivers[uid] for uid in transceivers if uid == args.sink)
         except StopIteration as e:
             nodes_suggestion = [uid for uid in transceivers if args.sink.lower() in uid.lower()]
-            sink = transceiver[nodes_suggestion[0]] if len(nodes_suggestion)>0 else tansceivers[-1]
+            sink = transceivers[nodes_suggestion[0]] if len(nodes_suggestion)>0 else tansceivers[-1]
             print(f'invalid destination node specified, did you mean:\
                 \n{nodes_suggestion}?\
                 \n{args.sink!r}, replaced with {sink.uid}')
