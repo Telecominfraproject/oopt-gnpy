@@ -9,7 +9,8 @@ This module contains classes for modelling SpectralInformation.
 
 
 from collections import namedtuple
-
+from numpy import array
+from gnpy.core.utils import lin2db
 
 class ConvenienceAccess:
 
@@ -22,6 +23,10 @@ class ConvenienceAccess:
             if abbrev in kwargs:
                 kwargs[field] = kwargs.pop(abbrev)
         return self._replace(**kwargs)
+        
+    def ptot_dbm(self):
+        p = array([c.power.signal+c.power.nli+c.power.ase for c in self.carriers])
+        return lin2db(sum(p*1e3))
 
 
 class Power(namedtuple('Power', 'signal nonlinear_interference amplified_spontaneous_emission'), ConvenienceAccess):

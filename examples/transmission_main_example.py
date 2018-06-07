@@ -6,6 +6,7 @@ propagates a 96 channels comb
 '''
 
 from gnpy.core.equipment import equipment_from_json
+from gnpy.core.utils import db2lin, lin2db, load_json
 from argparse import ArgumentParser
 from sys import exit
 from pathlib import Path
@@ -49,36 +50,42 @@ def plot_results(network, path, source, sink):
 
 
 def load_network(filename, equipment):
+    json_filename = ''
     if args.filename.suffix.lower() == '.xls':
-        logger.info('Automatically converting from XLS to gnpy JSON')
-        json_data = convert_file(args.filename)
+        logger.info('Automatically generating topology JSON file')        
+        json_filename = convert_file(args.filename)
+    elif args.filename.suffix.lower() == '.json':
+        json_filename = args.filename
     else:
-        with open(args.filename) as f:
-            json_data = loads(f.read())
+        raise ValueError(f'unsuported topology filename extension {args.filename.suffix.lower()}')
+    json_data = load_json(json_filename)
     return network_from_json(json_data, equipment)
 
 def load_equipment(filename):
-    with open(filename) as f:
-        json_data = loads(f.read())
+    json_data = load_json(filename)
     return equipment_from_json(json_data, filename)
 
 def main(network, equipment, source, sink):
     build_network(network, equipment=equipment)
-
-    spacing = 0.05 # THz
-    si = SpectralInformation() # SI units: W, Hz
-    si = si.update(carriers=[
-        Channel(f, (191.3 + spacing * f) * 1e12, 32e9, 0.15, Power(1e-3, 0, 0))
-        for f in range(1,97)
-    ])
-
     path = dijkstra_path(network, source, sink)
-    logger.info(f'There are {len(path)} network elements between {source!r} and {sink!r}')
+    spans = [s.length for s in path if isinstance(s, Fiber)]
+    print(f'\nThere are {len(spans)} fiber spans over {sum(spans):.0f}m between {source.uid} and {sink.uid}')
+    print(f'\nNow propagating between {source.uid} and {sink.uid}:')
 
-    logger.info('Propagating')
-    for el in path:
-        si = el(si)
-        print(el)
+    for p in range(0, 1): #change range to sweep results across several powers in dBm
+        p=db2lin(p)*1e-3
+        spacing = 0.05 # THz
+        si = SpectralInformation() # SI units: W, Hz
+        si = si.update(carriers=[
+            Channel(f, (191.3 + spacing * f) * 1e12, 32e9, 0.15, Power(p, 0, 0))
+            for f in range(1,97)
+        ])
+        print(f'\nPorpagating with input power = {lin2db(p*1e3):.2f}dBm :')
+        for el in path:
+            si = el(si)
+            print(el) #remove this line when sweeping across several powers
+        print(f'\nTransmission result for input power = {lin2db(p*1e3):.2f}dBm :')
+        print(sink)
 
     return path
 
@@ -134,7 +141,7 @@ if __name__ == '__main__':
             sink = next(transceivers[uid] for uid in transceivers if uid == args.sink)
         except StopIteration as e:
             nodes_suggestion = [uid for uid in transceivers if args.sink.lower() in uid.lower()]
-            sink = transceiver[nodes_suggestion[0]] if len(nodes_suggestion)>0 else tansceivers[-1]
+            sink = transceivers[nodes_suggestion[0]] if len(nodes_suggestion)>0 else tansceivers[-1]
             print(f'invalid destination node specified, did you mean:\
                 \n{nodes_suggestion}?\
                 \n{args.sink!r}, replaced with {sink.uid}')

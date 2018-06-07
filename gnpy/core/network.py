@@ -10,9 +10,10 @@ This module contains functions for constructing networks of network elements.
 
 from networkx import DiGraph
 from logging import getLogger
-
+from operator import itemgetter
 from gnpy.core import elements
 from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm, Fused
+from gnpy.core.equipment import edfa_nf
 from gnpy.core.units import UNITS
 
 logger = getLogger(__name__)
@@ -41,17 +42,27 @@ def network_from_json(json_data, equipment):
 
     return g
 
-
 def select_edfa(ingress_span_loss, equipment):
-    #TODO select amplifier in eqpt_library based on gain, NF and power requirement
-    #temporary hack : ***to be fixed by May 2018***
-
-    if 'std_low_gain' in equipment['Edfa'] and ingress_span_loss < 18.5:
-        amp_type = 'std_low_gain'
+    """amplifer selection algorithm
+    @Orange Jean-Luc Augé
+    """
+    #TODO |jla add power requirement in the selection criteria
+    TARGET_EXTENDED_GAIN = 2.1
+    #MAX_EXTENDED_GAIN = 5
+    edfa_dict = equipment['Edfa']
+    edfa_list = [(edfa_variety, 
+                edfa_dict[edfa_variety].gain_flatmax-ingress_span_loss,
+                edfa_nf(ingress_span_loss, edfa_variety, equipment)) \
+                for edfa_variety in edfa_dict]
+    acceptable_edfa_list = list(filter(lambda x : x[1]>-TARGET_EXTENDED_GAIN, edfa_list))
+    #print(acceptable_edfa_list)
+    #print(ingress_span_loss)
+    if len(acceptable_edfa_list) < 1: 
+        #no amplifier satisfies the required gain, so pick the highest gain one:
+        return max(edfa_list, key=itemgetter(1))[0]
     else:
-        amp_type = 'std_medium_gain'
-    return amp_type
-
+        #chose the amp with the best NF among the acceptable ones:
+        return min(acceptable_edfa_list, key=itemgetter(2))[0]
 
 def prev_fiber_node_generator(network, node):
     """fused spans interest:
