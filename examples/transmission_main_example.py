@@ -6,6 +6,7 @@ propagates a 96 channels comb
 '''
 
 from gnpy.core.equipment import equipment_from_json
+from gnpy.core.utils import db2lin, lin2db
 from argparse import ArgumentParser
 from sys import exit
 from pathlib import Path
@@ -68,21 +69,25 @@ def load_equipment(filename):
 
 def main(network, equipment, source, sink):
     build_network(network, equipment=equipment)
-
-    spacing = 0.05 # THz
-    si = SpectralInformation() # SI units: W, Hz
-    si = si.update(carriers=[
-        Channel(f, (191.3 + spacing * f) * 1e12, 32e9, 0.15, Power(1e-3, 0, 0))
-        for f in range(1,97)
-    ])
-
     path = dijkstra_path(network, source, sink)
-    logger.info(f'There are {len(path)} network elements between {source!r} and {sink!r}')
+    spans = [s.length for s in path if isinstance(s, Fiber)]
+    print(f'\nThere are {len(spans)} fiber spans over {sum(spans):.0f}m between {source.uid} and {sink.uid}')
+    print(f'\nNow propagating between {source.uid} and {sink.uid}:')
 
-    logger.info('Propagating')
-    for el in path:
-        si = el(si)
-        print(el)
+    for p in range(0, 1): #change range to sweep results across several powers in dBm
+        p=db2lin(p)*1e-3
+        spacing = 0.05 # THz
+        si = SpectralInformation() # SI units: W, Hz
+        si = si.update(carriers=[
+            Channel(f, (191.3 + spacing * f) * 1e12, 32e9, 0.15, Power(p, 0, 0))
+            for f in range(1,97)
+        ])
+        print(f'\nPorpagating with input power = {lin2db(p*1e3):.2f}dBm :')
+        for el in path:
+            si = el(si)
+            print(el) #remove this line when sweeping across several powers
+        print(f'\nTransmission result for input power = {lin2db(p*1e3):.2f}dBm :')
+        print(sink)
 
     return path
 
