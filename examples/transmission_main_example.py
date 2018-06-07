@@ -6,7 +6,7 @@ propagates a 96 channels comb
 '''
 
 from gnpy.core.equipment import equipment_from_json
-from gnpy.core.utils import db2lin, lin2db
+from gnpy.core.utils import db2lin, lin2db, load_json
 from argparse import ArgumentParser
 from sys import exit
 from pathlib import Path
@@ -58,13 +58,11 @@ def load_network(filename, equipment):
         json_filename = args.filename
     else:
         raise ValueError(f'unsuported topology filename extension {args.filename.suffix.lower()}')
-    with open(json_filename) as f:
-            json_data = loads(f.read())
+    json_data = load_json(json_filename)
     return network_from_json(json_data, equipment)
 
 def load_equipment(filename):
-    with open(filename) as f:
-        json_data = loads(f.read())
+    json_data = load_json(filename)
     return equipment_from_json(json_data, filename)
 
 def main(network, equipment, source, sink):
