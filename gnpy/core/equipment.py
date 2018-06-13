@@ -18,6 +18,7 @@ Model = namedtuple('Model', 'nf1 nf2 delta_p')
 Fiber = namedtuple('Fiber', 'type_variety dispersion gamma')
 Spans = namedtuple('Spans', 'max_length length_units max_loss padding EOL con_loss')
 Roadms = namedtuple('Roadms', 'loss')
+Transceiver = namedtuple('Transceiver', 'type_variety frequency mode')
 SI = namedtuple('SI', 'f_min Nch baud_rate spacing roll_off power')
 EdfaBase = namedtuple(
     'EdfaBase',
