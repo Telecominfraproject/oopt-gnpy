@@ -51,13 +51,13 @@ def plot_results(network, path, source, sink):
 
 def load_network(filename, equipment):
     json_filename = ''
-    if args.filename.suffix.lower() == '.xls':
+    if filename.suffix.lower() == '.xls':
         logger.info('Automatically generating topology JSON file')        
-        json_filename = convert_file(args.filename)
-    elif args.filename.suffix.lower() == '.json':
-        json_filename = args.filename
+        json_filename = convert_file(filename)
+    elif filename.suffix.lower() == '.json':
+        json_filename = filename
     else:
-        raise ValueError(f'unsuported topology filename extension {args.filename.suffix.lower()}')
+        raise ValueError(f'unsuported topology filename extension {filename.suffix.lower()}')
     json_data = load_json(json_filename)
     return network_from_json(json_data, equipment)
 

@@ -24,7 +24,7 @@ from collections import namedtuple
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
 from json import dumps
 from pathlib import Path
-from gnpy.core.equipment import get_eqpt_params, eqpt_exists, read_eqpt_library
+from examples.transmission_main_example import load_equipment
 from gnpy.core.utils import db2lin, lin2db
 
 SERVICES_COLUMN = 11
@@ -60,8 +60,8 @@ class Request_element(Element):
         self.dsttpid = f'trx {Request.destination}'
         # test that trx_type belongs to eqpt_config.json
         # if not replace it with a default 
-        read_eqpt_library(eqpt_filename)
-        if eqpt_exists(Request.trx_type):
+        equipment = load_equipment(eqpt_filename)
+        if equipment['Transceiver'][Request.trx_type]:
             self.trx_type = Request.trx_type
             self.mode = Request.mode
         else:

@@ -27,7 +27,7 @@ from numpy import mean
 from examples.convert_service_sheet import convert_service_sheet, Request_element, Element
 from gnpy.core.utils import load_json
 from gnpy.core import network_from_json, build_network
-from gnpy.core.equipment import read_eqpt_library
+from examples.transmission_main_example import load_equipment, load_network
 from examples.convert import convert_file
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
@@ -198,37 +198,37 @@ def load_requests(filename,eqpt_filename):
             json_data = loads(f.read())
     return json_data
 
-def load_network(filename,eqpt_filename):
-    # to be replaced with the good load_network
-    # important note: network should be created only once for a given 
-    # simulation. Note that it only generates infrastructure information. 
-    # Only one transceiver element is attached per roadm: it represents the 
-    # logical starting point / stopping point for the propagation of 
-    # the spectral information to be prpagated along a path. 
-    # at that point it is not meant to represent the capacity of add drop ports
-    # As a result transponder type is not part of the network info. it is related to 
-    # the list of services requests
+# def load_network(filename,eqpt_filename):
+#     # to be replaced with the good load_network
+#     # important note: network should be created only once for a given 
+#     # simulation. Note that it only generates infrastructure information. 
+#     # Only one transceiver element is attached per roadm: it represents the 
+#     # logical starting point / stopping point for the propagation of 
+#     # the spectral information to be prpagated along a path. 
+#     # at that point it is not meant to represent the capacity of add drop ports
+#     # As a result transponder type is not part of the network info. it is related to 
+#     # the list of services requests
 
-    input_filename = str(filename)
-    suffix_filename = str(filename.suffixes[0])
-    split_filename = [input_filename[0:len(input_filename)-len(suffix_filename)] , suffix_filename[1:]]
-    json_filename = split_filename[0]+'.json'
-    try:
-        assert split_filename[1] in ('json','xls','csv','xlsm')
-    except AssertionError as e:
-        print(f'invalid file extension .{split_filename[1]}')
-        raise e
-    if split_filename[1] != 'json':
-        print(f'parse excel input to {json_filename}')
-        convert_file(filename)
+#     input_filename = str(filename)
+#     suffix_filename = str(filename.suffixes[0])
+#     split_filename = [input_filename[0:len(input_filename)-len(suffix_filename)] , suffix_filename[1:]]
+#     json_filename = split_filename[0]+'.json'
+#     try:
+#         assert split_filename[1] in ('json','xls','csv','xlsm')
+#     except AssertionError as e:
+#         print(f'invalid file extension .{split_filename[1]}')
+#         raise e
+#     if split_filename[1] != 'json':
+#         print(f'parse excel input to {json_filename}')
+#         convert_file(filename)
 
-    json_data = load_json(json_filename)
-    read_eqpt_library(eqpt_filename)
-    #print(json_data)
+#     json_data = load_json(json_filename)
+#     read_eqpt_library(eqpt_filename)
+#     #print(json_data)
 
-    network = network_from_json(json_data)
-    build_network(network)
-    return network
+#     network = network_from_json(json_data)
+#     build_network(network)
+#     return network
 
 def compute_path(network, pathreqlist):
     # temporary : repeats calls from transmission_main_example
@@ -320,7 +320,9 @@ if __name__ == '__main__':
     # for debug
     # print( args.eqpt_filename)
     data = load_requests(args.service_filename,args.eqpt_filename)
-    network = load_network(args.network_filename,args.eqpt_filename)
+    equipment = load_equipment(args.eqpt_filename)
+    network = load_network(args.network_filename,equipment)
+    build_network(network, equipment=equipment)
     pths = requests_from_json(data, args.eqpt_filename)
     test = compute_path(network,pths)
 
