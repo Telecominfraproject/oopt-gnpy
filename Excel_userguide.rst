@@ -115,7 +115,7 @@ Eqpt sheet
 Eqt sheet is optional. It lists the amplifiers types and characteristics on each degree of the *Node A* line.
 Links sheet must contain sixteen columns::
 
-                   <--           east cable from a to z        --> <--        west from z to                  -->
+                   <--           east cable from a to z        --> <--        west from z to a                 -->
   Node A ; Node Z ; amp type ; att_in ; amp gain ; tilt ; att_out ; amp type ; att_in ; amp gain ; tilt ; att_out
 
 If the sheet is present, it MUST have as many lines as egress directions of ROADMs defined in Links Sheet. 
@@ -172,9 +172,80 @@ then Eqpt sheet should contain:
 
 # to be completed #
 
- 
+(in progress)
+
+Service sheet 
+-------------
+
+Service sheet is optional. It lists the services for which path and feasibility must be computed with path_requests_run.py.
+
+Service sheet must contain 11 columns::  
+
+   route id ; Source ; Destination ; TRX type ; Mode ; System: spacing ; System: input power (dBm) ; System: nb of channels ;  routing: disjoint from ; routing: path ; routing: is loose?
+
+- **route id** is mandatory. It must be unique. It is the identifier of the request. It must be an integer value (TODO: relax this format in future development to accept any strings)
+
+- **Source** is mandatory. It is the name of the source node (as listed in Nodes sheet). Source MUST be a ROADM node. (TODO: relax this and accept trx entries)
+
+- **Destination** is mandatory. It is the name of the destination node (as listed in Nodes sheet). Source MUST be a ROADM node. (TODO: relax this and accept trx entries)
+
+- **TRX type and mode** are mandatory. They are the variety type and selected mode of the transceiver to be used for the propagation simulation. These modes MUST be defined in the equipment library. The format of the mode is used as the name of the mode. (TODO: maybe add another  mode id on Transceiver library ?). In particular the mode selection defines the channel baudrate to be used for the propagation simulation. 
+
+- **System: spacing ; System: input power (dBm) ; System: nb of channels** are mandatory input defining the system parameters for the propagation simulation.
+
+  - spacing is the channel spacing defined in GHz
+  - input power is the channel optical input power in dBm
+  - nb of channels is the number of channels to be used for the simulation.
+
+- **routing: disjoint from ; routing: path ; routing: is loose?** are optional.
+
+  - disjoint from: (work not started) identifies the requests from which this request must be disjoint. It is not used yet 
+  - path: is the set of ROADM nodes that must be used by the path. It must contain the list of ROADM names that the path must cross. TODO : only ROADM nodes are accepted in this release. Relax this with any type of nodes.
+  - is loose?  (in progress) 'no' value means that the list of nodes should be strictly followed, while any other value means that the constraint may be relaxed if the node is not reachable. 
+
+# to be completed #
+
+convert_service_sheet.py
+------------------------
 
 
+`convert_service_sheet.py <examples/convert_service_sheet.py>`_ converts the service sheet to a json file following the Yang model for requesting Path Computation defined in `draft-ietf-teas-yang-path-computation-01.txt <https://www.ietf.org/id/draft-ietf-teas-yang-path-computation-01.pdf>`_. TODO: verify that this implementation is correct + give feedback to ietf on what is missing for our specific application.
+For PSE use, additional fields with trx type and mode have been added to the te-bandwidth field.
 
+**Usage**: convert_service_sheet.py [-h] [-v] [-o OUTPUT] [workbook_name.xls]
+
+.. code-block:: shell
+
+    $ cd examples
+    $ python convert_service_sheet.py meshTopologyExampleV2.xls -o service_file.json
+
+-o output_file.json is an optional parameter: 
+
+  - if not used, the program output the json data on  standard output and on a json file with name 'workbook_name_services.json'.
+
+A template for the json file can be found here: `service_template.json <service_template.json>`_
+
+path_requests_run.py
+------------------------
+
+**Usage**: path_requests_run.py [-h] [-v] [-o OUTPUT]
+                            [network_filename xls or json] [service_filename xls or json] [eqpt_filename json]
+
+.. code-block:: shell
+
+    $ cd examples
+    $ python path_requests_run.py meshTopologyExampleV2.xls service_file.json eqpt_file -o output_file.json
+
+A function that computes performances for a list of services provided in the service file (accepts json or excel format.
+
+If no output file is given, the computation is shown on standard output for demo.
+If a file is specified with the optional -o argument, the result of the computation is converted into a json format following  the Yang model for requesting Path Computation defined in `draft-ietf-teas-yang-path-computation-01.txt <https://www.ietf.org/id/draft-ietf-teas-yang-path-computation-01.pdf>`_. TODO: verify that this implementation is correct + give feedback to ietf on what is missing for our specific application.
+
+A template for the result of computation json file can be found here: `path_result_template.json <path_result_template.json>`_
+
+Important note: path_requests_run.py is not a dimensionning tool, it only computes path feasibility assuming full load with system parameters input in the service file. The network topology is created only once for the set of requests. As a result the transceiver element acts as a "logical starting/stopping point" for the spectral information propagation. At that point it is not meant to represent the capacity of add drop ports
+As a result transponder type is not part of the network info. it is related to the list of services requests.
+
+(in progress)
 
 

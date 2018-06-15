@@ -41,11 +41,50 @@
             "loss": 20
             }],
       "SI":[{
-            "f_min": 193.1e12,
-            "Nch": 96,
+            "f_min": 191.3e12,
+            "Nch": 80,
             "baud_rate": 32e9,
-            "spacing": 50e9,
+            "spacing": 75e9,
             "roll_off": 0.15,
-            "power": 1e-3
-            }]
+            "power": 1.2589e-3
+            }],
+      "Transceiver":[
+            {
+            "type_variety": "vendorA_trx-type1",
+            "frequency":{
+                        "min": 191.35,
+                        "max": 196.1
+                        },
+            "mode":[
+                       {
+                       "format": "PS_SP64_1",
+                       "baudrate": 32,
+                       "OSNR": 9,
+                       "bit_rate": 100
+                       },
+                       {
+                       "format": "PS_SP64_2",
+                       "baudrate": 66,
+                       "OSNR": 10,
+                       "bit_rate": 200
+                       }
+                   ]
+            },
+            {
+            "type_variety": "Voyager_16QAM",
+            "frequency":{
+                        "min": 191.35,
+                        "max": 196.1
+                        },
+            "mode":[
+                       {
+                       "format": "16QAM",
+                       "baudrate": 32,
+                       "OSNR": 15,
+                       "bit_rate": 200
+                       }
+                   ]
+            }
+      ]
+
 }
