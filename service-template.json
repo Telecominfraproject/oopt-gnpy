@@ -1,0 +1,59 @@
+{
+  "path-request": [
+    {
+      "request-id": null,
+      "source": null,
+      "destination": null,
+      "src-tp-id": null,
+      "dst-tp-id": null,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": null,
+          "trx_mode": null,
+          "effective-freq-slot": [
+            {
+              "n": "null",
+              "m": "null"
+            }
+          ],
+          "spacing": null,
+          "max-nb-of-channel": null,
+          "output-power": null
+          }
+      },
+      "optimizations": {
+        "explicit-route-include-objects": {
+          "route-object-include-object": [ 
+          {
+            "index": null,
+            "unnumbered-hop": {
+              "node-id": null,
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": null,
+              "direction": "direction is not used"
+            },
+            "label-hop": {
+              "te-label": {
+                "generic": "generic is not used",
+                "direction": "direction is not used"
+              }
+            }
+          }
+          ]
+        }
+      }
+    }],
+  "synchronization": [
+    {
+      "synchronization-id": null,
+      "svec": {
+        "relaxable": "True",
+        "link-diverse": "False",
+        "node-diverse": "False",
+        "request-id-number": [
+         null ]
+        },
+    }
+    ]
+}

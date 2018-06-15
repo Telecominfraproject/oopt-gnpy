@@ -57,20 +57,6 @@ class Path_request():
         self.tsp_mode = jsondata['path-constraints']['te-bandwidth']['trx_mode']
         # for debug
         # print(tsp)
-        # refactoring into a simple expression
-        # tsp_found = False
-        # mode_found = False
-        # for t in tspjsondata:
-        #     if t['type_variety']== tsp :
-        #         #    print('coucou')
-        #         tsp_found = True
-        #         for m in t['mode']:
-        #             if m['format']==tsp_mode:
-        #                 mode_found = True
-        #                 b = m['baudrate']
-        #                 # for debug
-        #                 print(b)
-        #                 self.baudrate = b 
         try:
             baudrate = [m['baudrate'] 
                 for t in  tspjsondata if t['type_variety']== self.tsp
@@ -85,7 +71,8 @@ class Path_request():
 
         nodes_list = jsondata['optimizations']['explicit-route-include-objects']
         self.nodes_list = [n['unnumbered-hop']['node-id'] for n in nodes_list]
-        # create a list for individual loose capability for each node ... even if convert_service_sheet fills with the same value
+        # create a list for individual loose capability for each node ... 
+        # even if convert_service_sheet fills it with the same value
         self.loose_list = [n['unnumbered-hop']['hop-type'] for n in nodes_list]
 
         self.spacing = jsondata['path-constraints']['te-bandwidth']['spacing']
@@ -177,12 +164,6 @@ def requests_from_json(json_data,eqpt_filename):
 
     return requests_list
 
-# def create_input_spectral_information(sidata,baudrate):
-#     si = SpectralInformation() # !! SI units W, Hz
-#     si = si.update(carriers=tuple(Channel(f, (sidata['f_min']+sidata['spacing']*f), 
-#             baudrate*1e9, sidata['roll_off'], Power(sidata['power'], 0, 0)) for f in range(1,sidata['Nch'])))
-#     return si
-
 def create_input_spectral_information(sidata,baudrate,power,spacing,nb_channel):
     si = SpectralInformation() # !! SI units W, Hz
     si = si.update(carriers=tuple(Channel(f, (sidata['f_min']+spacing*f), 
@@ -198,42 +179,9 @@ def load_requests(filename,eqpt_filename):
             json_data = loads(f.read())
     return json_data
 
-# def load_network(filename,eqpt_filename):
-#     # to be replaced with the good load_network
-#     # important note: network should be created only once for a given 
-#     # simulation. Note that it only generates infrastructure information. 
-#     # Only one transceiver element is attached per roadm: it represents the 
-#     # logical starting point / stopping point for the propagation of 
-#     # the spectral information to be prpagated along a path. 
-#     # at that point it is not meant to represent the capacity of add drop ports
-#     # As a result transponder type is not part of the network info. it is related to 
-#     # the list of services requests
-
-#     input_filename = str(filename)
-#     suffix_filename = str(filename.suffixes[0])
-#     split_filename = [input_filename[0:len(input_filename)-len(suffix_filename)] , suffix_filename[1:]]
-#     json_filename = split_filename[0]+'.json'
-#     try:
-#         assert split_filename[1] in ('json','xls','csv','xlsm')
-#     except AssertionError as e:
-#         print(f'invalid file extension .{split_filename[1]}')
-#         raise e
-#     if split_filename[1] != 'json':
-#         print(f'parse excel input to {json_filename}')
-#         convert_file(filename)
-
-#     json_data = load_json(json_filename)
-#     read_eqpt_library(eqpt_filename)
-#     #print(json_data)
-
-#     network = network_from_json(json_data)
-#     build_network(network)
-#     return network
-
 def compute_path(network, pathreqlist):
     # temporary : repeats calls from transmission_main_example
     # to be merged when ready
-    # final function should only be compute_path(network,pathreqlist)
     
     path_res_list = []
     trx = [n for n in network.nodes() if isinstance(n, Transceiver)]
@@ -246,13 +194,10 @@ def compute_path(network, pathreqlist):
         pathreq.nodes_list.append(pathreq.destination)
         #we assume that the destination is a strict constraint
         pathreq.loose_list.append('strict')
-        #pathreq.nodes_list.insert(0,pathreq.source)
         print(f'Computing path from {pathreq.source} to {pathreq.destination}')
         print(f'with explicit path: {pathreq.nodes_list}')
 
         source = next(el for el in trx if el.uid == pathreq.source)
-        # print(source.uid)
-        # destination = next(el for el in trx if el.uid == pathreq.destination)
         # start the path with its source
         total_path = [source]
         for n in pathreq.nodes_list:
@@ -286,8 +231,6 @@ def compute_path(network, pathreqlist):
                     msg = f'could not find a path from {source.uid} to node : {n} in network topology'
                     logger.critical(msg)
                     raise ValueError(msg)
-        
-        # si = create_input_spectral_information(sidata,pathreq.baudrate)
         # for debug
         # print(f'{pathreq.baudrate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
         si = create_input_spectral_information(sidata,pathreq.baudrate,pathreq.power,pathreq.spacing,pathreq.nb_channel)

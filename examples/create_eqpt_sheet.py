@@ -93,10 +93,10 @@ def create_eqt_template(links,nodes, links_by_src , links_by_dest, input_filenam
         temp = []
         i = 0
         for lk in links:
-            temp = [lk.src , lk.dest]
-            tab.append(temp)
-            # print(temp)
-            my_file.write(f'{temp[0]}\t{temp[1]}\n')
+            if [e for n,e in nodes if n==lk.src][0] != 'FUSED' :
+                temp = [lk.src , lk.dest]
+                tab.append(temp)
+                my_file.write(f'{temp[0]}\t{temp[1]}\n')
         for n in nodes :
             if n.eqt.lower() == 'roadm' :
                 for src in  links_by_dest[n.nodename] :

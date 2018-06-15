@@ -1,0 +1,40 @@
+{
+  "paths": [
+    {
+      "path": {
+        "path-id": null,
+        "path-properties": {
+          "path-metric": [
+            {
+              "metric-type": null,
+              "accumulative-value": null
+            }
+          ],
+          "path-srlgs": {
+            "usage": "not used yet",
+            "values": ["not used yet"]
+          },
+          "path-route-objects": [
+            {
+              "path-route-object": {
+                "index": null,
+                "unnumbered-hop": {
+                  "node-id": null,
+                  "link-tp-id": null,
+                  "hop-type": null,
+                  "direction": "not used"
+                },
+                "label-hop": {
+                  "te-label": {
+                    "generic": "not used yet",
+                    "direction": "not used yet"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

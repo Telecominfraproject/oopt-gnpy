@@ -160,12 +160,13 @@ class Request_element(Element):
     def json(self):
         return self.pathrequest , self.pathsync
 
-def convert_service_sheet(input_filename, eqpt_filename, filter_region=[]):
+def convert_service_sheet(input_filename, eqpt_filename, output_filename='', filter_region=[]):
     service = parse_excel(input_filename)
     req = [Request_element(n,eqpt_filename) for n in service]
     # dumps the output into a json file with name
     # split_filename = [input_filename[0:len(input_filename)-len(suffix_filename)] , suffix_filename[1:]]
-    json_filename = f'{str(input_filename)[0:len(str(input_filename))-len(str(input_filename.suffixes[0]))]}_services.json'
+    if output_filename=='':
+        output_filename = f'{str(input_filename)[0:len(str(input_filename))-len(str(input_filename.suffixes[0]))]}_services.json'
     # for debug
     # print(json_filename)
     data = {
@@ -173,7 +174,7 @@ def convert_service_sheet(input_filename, eqpt_filename, filter_region=[]):
         'synchronisation': [n.json[1] for n in req 
         if n.json[1] is not None]
     }
-    with open(json_filename, 'w') as f:
+    with open(output_filename, 'w') as f:
             f.write(dumps(data, indent=2))
     return data
 
@@ -212,9 +213,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
     basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(args.verbose, CRITICAL))
     logger.info(f'Converting Service sheet {args.workbook!r} into gnpy JSON format')
-    data = convert_service_sheet(args.workbook,'eqpt_config.json')
     if args.output is None:
+        data = convert_service_sheet(args.workbook,'eqpt_config.json')
         print(dumps(data, indent=2))
     else:
-        with open(args.output, 'w') as f:
-            f.write(dumps(data, indent=2))
+        data = convert_service_sheet(args.workbook,'eqpt_config.json',args.output)
