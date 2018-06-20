@@ -24,9 +24,9 @@ class ConvenienceAccess:
                 kwargs[field] = kwargs.pop(abbrev)
         return self._replace(**kwargs)
         
-    def ptot_dbm(self):
-        p = array([c.power.signal+c.power.nli+c.power.ase for c in self.carriers])
-        return lin2db(sum(p*1e3))
+    #def ptot_dbm(self):
+    #    p = array([c.power.signal+c.power.nli+c.power.ase for c in self.carriers])
+    #    return lin2db(sum(p*1e3))
 
 
 class Power(namedtuple('Power', 'signal nonlinear_interference amplified_spontaneous_emission'), ConvenienceAccess):
@@ -42,11 +42,15 @@ class Channel(namedtuple('Channel', 'channel_number frequency baud_rate roll_off
                 'ffs':      'frequency',
                 'freq':     'frequency',}
 
+class Pref(namedtuple('Pref', 'p_span0, p_spani'), ConvenienceAccess):
 
-class SpectralInformation(namedtuple('SpectralInformation', 'carriers'), ConvenienceAccess):
+    _ABBREVS = {'p0' :  'p_span0',
+                'pi' :  'p_spani'}
 
-    def __new__(cls, *carriers):
-        return super().__new__(cls, carriers)
+class SpectralInformation(namedtuple('SpectralInformation', 'pref, carriers'), ConvenienceAccess):
+
+    def __new__(cls, pref, *carriers):
+        return super().__new__(cls, pref, carriers)
 
 
 def create_input_spectral_information(f_min, roll_off, baudrate, power, spacing, nb_channel):

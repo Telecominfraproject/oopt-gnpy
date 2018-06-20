@@ -17,10 +17,9 @@ from logging import getLogger, basicConfig, INFO, ERROR, DEBUG
 from matplotlib.pyplot import show, axis, figure, title
 from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels, dijkstra_path)
-
-from gnpy.core import load_network, build_network
+from gnpy.core.network import load_network, build_network, set_roadm_loss, set_edfa_dp
 from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
-from gnpy.core.info import SpectralInformation, Channel, Power
+from gnpy.core.info import SpectralInformation, Channel, Power, Pref
 
 logger = getLogger(__name__)
 
@@ -51,14 +50,26 @@ def plot_results(network, path, source, sink):
 def main(network, equipment, source, sink):
     build_network(network, equipment=equipment)
     path = dijkstra_path(network, source, sink)
+    gain_mode = False
+    if gain_mode:
+        path_amps = [amp for amp in path if isinstance(amp, Edfa)]
+        set_edfa_dp(network, path_amps)
     spans = [s.length for s in path if isinstance(s, Fiber)]
     print(f'\nThere are {len(spans)} fiber spans over {sum(spans):.0f}m between {source.uid} and {sink.uid}')
     print(f'\nNow propagating between {source.uid} and {sink.uid}:')
 
-    for p in range(0, 1): #change range to sweep results across several powers in dBm
-        p=db2lin(p)*1e-3
+    pref_span0_db = 2
+    bounds = range(1, 2) #power sweep
+    pref_roadm_db = -20
+    pref_span0 = db2lin(pref_span0_db)*1e-3
+    pref_roadm = db2lin(pref_roadm_db)*1e-3
+    for p_db in range(pref_span0_db+bounds.start, pref_span0_db+bounds.stop): #change range to sweep results across several powers in dBm
+        p = db2lin(p_db)*1e-3
+        roadm_loss = pref_span0_db - pref_roadm_db
+        path_roadms = [roadm for roadm in path if isinstance(roadm, Roadm)]
+        set_roadm_loss(path_roadms, roadm_loss)
         spacing = 0.05 # THz
-        si = SpectralInformation() # SI units: W, Hz
+        si = SpectralInformation(pref=Pref(pref_span0_db, pref_span0_db))
         si = si.update(carriers=[
             Channel(f, (191.3 + spacing * f) * 1e12, 32e9, 0.15, Power(p, 0, 0))
             for f in range(1,97)

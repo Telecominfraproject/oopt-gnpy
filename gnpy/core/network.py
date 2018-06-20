@@ -76,6 +76,28 @@ def select_edfa(ingress_span_loss, equipment):
         #chose the amp with the best NF among the acceptable ones:
         return min(acceptable_edfa_list, key=itemgetter(2))[0]
 
+def set_roadm_loss(path_roadms, roadm_loss):
+    for roadm in path_roadms:
+        roadm.loss = roadm_loss
+
+def set_edfa_dp(network, amps):
+    prev_dp = 0
+    for amp in amps:
+        next_node = [n for n in network.successors(amp)][0]
+        prev_node = [n for n in network.predecessors(amp)][0]
+        prev_node_loss = span_loss(network, prev_node)
+        if isinstance(next_node, Roadm): #ingress amp: set dp = 0
+            dp = 0
+        else:
+            dp = prev_dp + amp.operational.gain_target - prev_node_loss
+            #print('prev_node', prev_node, prev_node_loss)
+            #print('amp',amp)
+            #print('next node', next_node)
+            #print('gain', amp.operational.gain_target)
+            #print('edfa dp',prev_dp,dp)
+        amp.dp_db = dp
+        prev_dp = dp
+
 def prev_fiber_node_generator(network, node):
     """fused spans interest:
     iterate over all predecessors while they are Fiber type"""
