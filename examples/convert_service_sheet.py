@@ -24,7 +24,7 @@ from collections import namedtuple
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
 from json import dumps
 from pathlib import Path
-from examples.transmission_main_example import load_equipment
+from gnpy.core.equipment import load_equipment
 from gnpy.core.utils import db2lin, lin2db
 
 SERVICES_COLUMN = 11

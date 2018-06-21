@@ -26,12 +26,11 @@ from networkx import (draw_networkx_nodes, draw_networkx_edges,
 from numpy import mean
 from examples.convert_service_sheet import convert_service_sheet, Request_element, Element
 from gnpy.core.utils import load_json
-from gnpy.core import network_from_json, build_network
-from examples.transmission_main_example import load_equipment, load_network
-from examples.convert import convert_file
+from gnpy.core.network import load_network, build_network
+from gnpy.core.equipment import load_equipment
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
-from gnpy.core.info import SpectralInformation, Channel, Power
+from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
 from copy import copy, deepcopy
 from numpy import log10
 
@@ -58,12 +57,10 @@ class Path_request():
         # for debug
         # print(tsp)
         try:
-            baudrate = [m['baudrate'] 
-                for t in  tspjsondata if t['type_variety']== self.tsp
-                for m in t['mode']  if  m['format']==self.tsp_mode][0]
-            # for debug
-            # print(f'coucou {baudrate}')
-        except IndexError:
+            baudrate = next(m['baudrate'] 
+                for t in  tspjsondata if t['type_variety'] == self.tsp
+                for m in t['mode']  if  m['format'] == self.tsp_mode)
+        except StopIteration:
             msg = f'could not find tsp : {self.tsp} with mode: {self.tsp_mode} in eqpt library'
             logger.critical(msg)
             raise ValueError(msg)
@@ -80,12 +77,19 @@ class Path_request():
         self.nb_channel = jsondata['path-constraints']['te-bandwidth']['max-nb-of-channel']
 
     def __str__(self):
-        return '\t'.join([f'{self.source}',
-            f'{self.destination}'])
+        return '\n\t'.join([  f'{type(self).__name__} {self.request_id}',
+                            f'source:       {self.source}',
+                            f'destination:  {self.destination}'])
     def __repr__(self):
-        return '\t'.join([f'{self.source}',
-            f'{self.destination}',
-            '\n'])
+        return '\n\t'.join([  f'{type(self).__name__} {self.request_id}',
+                            f'source:       {self.source}',
+                            f'destination:  {self.destination}',
+                            f'trx type:     {self.tsp}',
+                            f'baudrate:     {self.baudrate}',
+                            f'spacing:      {self.spacing}',
+                            f'power:        {self.power}'
+                            '\n'])
+
 
 class Result_element(Element):
     def __init__(self,path_request,computed_path):
@@ -164,11 +168,6 @@ def requests_from_json(json_data,eqpt_filename):
 
     return requests_list
 
-def create_input_spectral_information(sidata,baudrate,power,spacing,nb_channel):
-    si = SpectralInformation() # !! SI units W, Hz
-    si = si.update(carriers=tuple(Channel(f, (sidata['f_min']+spacing*f), 
-            baudrate*1e9, sidata['roll_off'], Power(power, 0, 0)) for f in range(1,nb_channel)))
-    return si
 
 def load_requests(filename,eqpt_filename):
     if filename.suffix.lower() == '.xls':
@@ -233,7 +232,9 @@ def compute_path(network, pathreqlist):
                     raise ValueError(msg)
         # for debug
         # print(f'{pathreq.baudrate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
-        si = create_input_spectral_information(sidata,pathreq.baudrate,pathreq.power,pathreq.spacing,pathreq.nb_channel)
+        si = create_input_spectral_information(
+            sidata['f_min'], sidata['roll_off'],
+            pathreq.baudrate, pathreq.power, pathreq.spacing, pathreq.nb_channel)
         for el in total_path:
             si = el(si)
             # print(el)
@@ -267,17 +268,16 @@ if __name__ == '__main__':
     network = load_network(args.network_filename,equipment)
     build_network(network, equipment=equipment)
     pths = requests_from_json(data, args.eqpt_filename)
+    print(pths)
     test = compute_path(network,pths)
 
     if args.output is None:
-        print("todo write results")
+        #TODO write results
         print("demand\t\t\t\tsnr@bandwidth\tsnr@0.1nm")
-        i = 0
         
-        for p in test:
+        for i, p in enumerate(test):
             print(f'{pths[i].source} to {pths[i].destination} : {round(mean(p[-1].snr),2)} ,\
-                {round(mean(p[-1].snr+10*log10(pths[i].baudrate/12.5)),2)}')
-            i = i+1
+                {round(mean(p[-1].snr+10*log10(pths[i].baudrate/(12.5e9))),2)}')
     else:
         result = []
         for p in test:

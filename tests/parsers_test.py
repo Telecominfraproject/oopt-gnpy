@@ -9,12 +9,10 @@ from json import load, dumps
 import pytest
 from gnpy.core import network_from_json
 from gnpy.core.elements import Transceiver, Fiber, Edfa
-from gnpy.core.utils import lin2db, db2lin , load_json
+from gnpy.core.utils import lin2db, db2lin
 from gnpy.core.info import SpectralInformation, Channel, Power
-from examples.transmission_main_example import load_equipment, load_network
 from examples.compare_json import compare_network_file, compare_service_file, compare_result_file
-from gnpy.core.network import build_network
-from examples.convert import convert_file
+from gnpy.core.convert import convert_file
 from examples.convert_service_sheet import convert_service_sheet
 from pathlib import Path
 import filecmp 

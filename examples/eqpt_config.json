@@ -60,36 +60,36 @@
             {
             "type_variety": "vendorA_trx-type1",
             "frequency":{
-                        "min": 191.35,
-                        "max": 196.1
+                        "min": 191.35e12,
+                        "max": 196.1e12
                         },
             "mode":[
                        {
                        "format": "PS_SP64_1",
-                       "baudrate": 32,
+                       "baudrate": 32e9,
                        "OSNR": 9,
-                       "bit_rate": 100
+                       "bit_rate": 100e9
                        },
                        {
                        "format": "PS_SP64_2",
-                       "baudrate": 66,
+                       "baudrate": 66e9,
                        "OSNR": 10,
-                       "bit_rate": 200
+                       "bit_rate": 200e9
                        }
                    ]
             },
             {
             "type_variety": "Voyager_16QAM",
             "frequency":{
-                        "min": 191.35,
-                        "max": 196.1
+                        "min": 191.35e12,
+                        "max": 196.1e12
                         },
             "mode":[
                        {
                        "format": "16QAM",
-                       "baudrate": 32,
+                       "baudrate": 32e9,
                        "OSNR": 15,
-                       "bit_rate": 200
+                       "bit_rate": 200e9
                        }
                    ]
             }

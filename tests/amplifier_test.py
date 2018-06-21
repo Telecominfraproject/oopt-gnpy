@@ -7,13 +7,11 @@ from gnpy.core.elements import Edfa
 import numpy as np
 from json import load, dumps
 import pytest
-from gnpy.core import network_from_json
 from gnpy.core.elements import Transceiver, Fiber, Edfa
-from gnpy.core.utils import lin2db, db2lin , load_json
-from gnpy.core.info import SpectralInformation, Channel, Power
-from examples.transmission_main_example import load_equipment, load_network
-from gnpy.core.network import build_network
-from examples.convert import convert_file
+from gnpy.core.utils import lin2db, db2lin
+from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
+from gnpy.core.equipment import load_equipment 
+from gnpy.core.network import build_network, load_network
 from pathlib import Path
 import filecmp 
 
@@ -64,10 +62,7 @@ def setup_trx():
 def si(nch_and_spacing, bw):
     """parametrize a channel comb with nch, spacing and signal bw"""
     nch, spacing = nch_and_spacing
-    si = SpectralInformation()
-    si = si.update(carriers=tuple(Channel(f, 191.3e12+spacing*f, 
-            bw, 0.15, Power(1e-6, 0, 0)) for f in range(1,nch+1)))
-    return si
+    return create_input_spectral_information(191.3e12, 0.15, bw, 1e-6, spacing, nch)    
 
 @pytest.mark.parametrize("enabled", [True, False])
 @pytest.mark.parametrize("gain, nf_expected", [(10, 15), (15, 10), (25, 5.8)])              

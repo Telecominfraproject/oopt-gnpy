@@ -49,6 +49,13 @@ class SpectralInformation(namedtuple('SpectralInformation', 'carriers'), Conveni
         return super().__new__(cls, carriers)
 
 
+def create_input_spectral_information(f_min, roll_off, baudrate, power, spacing, nb_channel):
+    si = SpectralInformation() # !! SI units W, Hz  
+    si = si.update(carriers=tuple(
+            Channel(f, (f_min+spacing*f), 
+            baudrate, roll_off, Power(power, 0, 0)) for f in range(1,nb_channel+1)))
+    return si
+
 if __name__ == '__main__':
     si = SpectralInformation(
         Channel(1, 193.95e12, 32e9, 0.15,  # 193.95 THz, 32 Gbaud
