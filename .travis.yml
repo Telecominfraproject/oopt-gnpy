@@ -3,9 +3,8 @@ python:
   - "3.6"
 # command to install dependencies
 install:
-  - pip install -r requirements.txt
+  - python setup.py install
 # command to run tests
 before_script:
-  - export PYTHONPATH=$PYTHONPATH:/home/travis/build/Orange-OpenSource/gnpy/examples 
 script:
   - pytest

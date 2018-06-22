@@ -15,7 +15,8 @@ from examples.compare_json import compare_network_file, compare_service_file, co
 from gnpy.core.convert import convert_file
 from examples.convert_service_sheet import convert_service_sheet
 from pathlib import Path
-import filecmp 
+import filecmp
+from os import unlink
 
 
 network_file_name = 'tests/test_network.json'
@@ -23,30 +24,32 @@ eqpt_library_name = 'examples/eqpt_config.json'
 
 # adding tests to check the parser non regression
 # convention of naming of test files:
-# 
+#
 #    - ..._expected.json for the reference output
 
 excel_filename = ['tests/excelTestFile.xls',
- 'examples/CORONET_Global_Topology.xls',
+ 'tests/CORONET_Global_Topology.xls',
  'tests/meshTopologyExampleV2.xls',
  'tests/meshTopologyExampleV2Eqpt.xls']
 network_test_filenames = {
  'tests/excelTestFile.xls'             : 'tests/excelTestFile_expected.json',
- 'examples/CORONET_Global_Topology.xls': 'tests/CORONET_Global_Topology_expected.json',
+ 'tests/CORONET_Global_Topology.xls'   : 'tests/CORONET_Global_Topology_expected.json',
  'tests/meshTopologyExampleV2.xls'     : 'tests/meshTopologyExampleV2_expected.json',
  'tests/meshTopologyExampleV2Eqpt.xls' : 'tests/meshTopologyExampleV2Eqpt_expected.json'}
 @pytest.mark.parametrize("inputfile",excel_filename)
 def test_excel_json_generation(inputfile) :
-    convert_file(Path(inputfile)) 
+    convert_file(Path(inputfile))
     # actual
     json_filename = f'{inputfile[:-3]}json'
     # expected
     expected_filename = network_test_filenames[inputfile]
-     
-    assert compare_network_file(expected_filename,json_filename)[0] is True
+
+    result, _ = compare_network_file(expected_filename, json_filename)
+    unlink(json_filename)
+    assert result
 
 # assume json entries
-# test that the build network gives correct results     
+# test that the build network gives correct results
 # TODO !!
 
 excel_filename = ['tests/excelTestFile.xls',
@@ -58,10 +61,12 @@ service_test_filenames = {
  'tests/meshTopologyExampleV2Eqpt.xls' : 'tests/meshTopologyExampleV2Eqpt_services_expected.json'}
 @pytest.mark.parametrize("inputfile",excel_filename)
 def test_excel_service_json_generation(inputfile) :
-    convert_service_sheet(Path(inputfile),eqpt_library_name) 
+    convert_service_sheet(Path(inputfile),eqpt_library_name)
     # actual
     json_filename = f'{inputfile[:-4]}_services.json'
     # expected
     test_filename = service_test_filenames[inputfile]
-     
-    assert compare_service_file(test_filename,json_filename)[0] is True
+
+    result, _ = compare_service_file(test_filename, json_filename)
+    unlink(json_filename)
+    assert result
