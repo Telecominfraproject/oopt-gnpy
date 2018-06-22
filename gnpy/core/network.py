@@ -7,7 +7,7 @@ gnpy.core.network
 This module contains functions for constructing networks of network elements.
 '''
 
-
+from gnpy.core.convert import convert_file
 from networkx import DiGraph
 from logging import getLogger
 from operator import itemgetter
@@ -15,9 +15,21 @@ from gnpy.core import elements
 from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm, Fused
 from gnpy.core.equipment import edfa_nf
 from gnpy.core.units import UNITS
+from gnpy.core.utils import load_json
 
 logger = getLogger(__name__)
 
+def load_network(filename, equipment):
+    json_filename = ''
+    if filename.suffix.lower() == '.xls':
+        logger.info('Automatically generating topology JSON file')        
+        json_filename = convert_file(filename)
+    elif filename.suffix.lower() == '.json':
+        json_filename = filename
+    else:
+        raise ValueError(f'unsuported topology filename extension {filename.suffix.lower()}')
+    json_data = load_json(json_filename)
+    return network_from_json(json_data, equipment)
 
 def network_from_json(json_data, equipment):
     # NOTE|dutc: we could use the following, but it would tie our data format

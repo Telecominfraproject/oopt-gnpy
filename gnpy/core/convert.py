@@ -167,7 +167,7 @@ def convert_file(input_filename, filter_region=[]):
               'params': {'length':   round(x.west_distance, 3),
                          'length_units':    x.distance_units,
                          'loss_coef': x.west_lineic}
-            } 
+            } # missing ILA construction 
               for x in links] +
             [{'uid': f'egress edfa in {e.from_city} to {e.to_city}',
               'metadata': {'location': {'city':      nodes_by_city[e.from_city].city,

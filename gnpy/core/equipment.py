@@ -11,13 +11,14 @@ from operator import itemgetter
 from math import isclose
 from pathlib import Path
 from json import loads
-from gnpy.core.utils import lin2db, db2lin
+from gnpy.core.utils import lin2db, db2lin, load_json
 from collections import namedtuple
 
 Model = namedtuple('Model', 'nf1 nf2 delta_p')
 Fiber = namedtuple('Fiber', 'type_variety dispersion gamma')
 Spans = namedtuple('Spans', 'max_length length_units max_loss padding EOL con_loss')
 Roadms = namedtuple('Roadms', 'loss')
+Transceiver = namedtuple('Transceiver', 'type_variety frequency mode')
 SI = namedtuple('SI', 'f_min Nch baud_rate spacing roll_off power')
 EdfaBase = namedtuple(
     'EdfaBase',
@@ -106,6 +107,11 @@ def edfa_nf(gain, variety_type, equipment):
     else:
         nf_avg = polyval(edfa.nf_fit_coeff, dg)
     return nf_avg + pad # input VOA = 1 for 1 NF degradation
+
+
+def load_equipment(filename):
+    json_data = load_json(filename)
+    return equipment_from_json(json_data, filename)
 
 def equipment_from_json(json_data, filename):
     """build global dictionnary eqpt_library that stores all eqpt characteristics:

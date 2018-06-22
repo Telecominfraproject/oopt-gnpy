@@ -5,8 +5,8 @@ reads from network json (default = examples/edfa/edfa_example_network.json)
 propagates a 96 channels comb 
 '''
 
-from gnpy.core.equipment import equipment_from_json
-from gnpy.core.utils import db2lin, lin2db, load_json
+from gnpy.core.equipment import load_equipment
+from gnpy.core.utils import db2lin, lin2db
 from argparse import ArgumentParser
 from sys import exit
 from pathlib import Path
@@ -18,8 +18,7 @@ from matplotlib.pyplot import show, axis, figure, title
 from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels, dijkstra_path)
 
-from convert import convert_file
-from gnpy.core import network_from_json, build_network
+from gnpy.core import load_network, build_network
 from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
 from gnpy.core.info import SpectralInformation, Channel, Power
 
@@ -48,22 +47,6 @@ def plot_results(network, path, source, sink):
     axis('off')
     show()
 
-
-def load_network(filename, equipment):
-    json_filename = ''
-    if args.filename.suffix.lower() == '.xls':
-        logger.info('Automatically generating topology JSON file')        
-        json_filename = convert_file(args.filename)
-    elif args.filename.suffix.lower() == '.json':
-        json_filename = args.filename
-    else:
-        raise ValueError(f'unsuported topology filename extension {args.filename.suffix.lower()}')
-    json_data = load_json(json_filename)
-    return network_from_json(json_data, equipment)
-
-def load_equipment(filename):
-    json_data = load_json(filename)
-    return equipment_from_json(json_data, filename)
 
 def main(network, equipment, source, sink):
     build_network(network, equipment=equipment)
@@ -108,6 +91,7 @@ if __name__ == '__main__':
     # logger.info(equipment)
 
     network = load_network(args.filename, equipment)
+    print(network)
 
     transceivers = {n.uid: n for n in network.nodes() if isinstance(n, Transceiver)}
     
