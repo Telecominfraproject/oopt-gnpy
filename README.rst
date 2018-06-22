@@ -187,8 +187,8 @@ implementations.
   :alt: Documentation Status
   :scale: 100%
 
-.. |build| image:: https://travis-ci.org/Telecominfraproject/oopt-gnpy.svg?branch=develop
-  :target: https://travis-ci.org/Telecominfraproject/oopt-gnpy
+.. |build| image:: https://travis-ci.com/Telecominfraproject/oopt-gnpy.svg?branch=develop
+  :target: https://travis-ci.com/Telecominfraproject/oopt-gnpy
   :alt: Build Status
   :scale: 100%
 
