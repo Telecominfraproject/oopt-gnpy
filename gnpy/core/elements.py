@@ -79,11 +79,15 @@ class Transceiver(Node):
         self._calc_snr(spectral_info)
         return spectral_info
 
+RoadmParams = namedtuple('RoadmParams', 'loss')
+
 class Roadm(Node):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        #TODO read loss from json
-        self.loss = 20 #dB
+    def __init__(self, *args, params=None, **kwargs):
+        if params is None:
+            # default loss value if not mentioned in loaded network json
+            params = {'loss':20}
+        super().__init__(*args, params=RoadmParams(**params), **kwargs)
+        self.loss = self.params.loss
         self.passive = True
 
     def __repr__(self):
@@ -107,10 +111,15 @@ class Roadm(Node):
         carriers = tuple(self.propagate(*spectral_info.carriers))
         return spectral_info.update(carriers=carriers)
 
+FusedParams = namedtuple('FusedParams', 'loss')
+
 class Fused(Node):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.loss = 1 # dB
+    def __init__(self, *args, params=None, **kwargs):
+        if params is None:
+            # default loss value if not mentioned in loaded network json
+            params = {'loss':1}
+        super().__init__(*args, params=FusedParams(**params), **kwargs)
+        self.loss = self.params.loss
         self.passive = True
 
     def __repr__(self):
