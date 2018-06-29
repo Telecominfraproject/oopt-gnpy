@@ -85,7 +85,7 @@ class Roadm(Node):
     def __init__(self, *args, params=None, **kwargs):
         if params is None:
             # default loss value if not mentioned in loaded network json
-            params = {'loss':20}
+            params = {'loss': 10}
         super().__init__(*args, params=RoadmParams(**params), **kwargs)
         self.loss = self.params.loss
         self.passive = True
@@ -117,7 +117,7 @@ class Fused(Node):
     def __init__(self, *args, params=None, **kwargs):
         if params is None:
             # default loss value if not mentioned in loaded network json
-            params = {'loss':1}
+            params = {'loss': .5}
         super().__init__(*args, params=FusedParams(**params), **kwargs)
         self.loss = self.params.loss
         self.passive = True
