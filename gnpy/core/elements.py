@@ -165,12 +165,12 @@ class Fiber(Node):
                           f'  type_variety: {self.type_variety}',
                           f'  length (m):   {self.length:.2f}',
                           f'  loss (dB):    {self.loss:.2f}',
-                          f'  conn loss (dB) in: {self.connector_loss_in:.2f} out: {self.connector_loss_out:.2f}'])
+                          f'  (includes conn loss (dB) in: {self.connector_loss_in:.2f} out: {self.connector_loss_out:.2f})'])
 
     @property
     def loss(self):
         # dB loss: useful for polymorphism (roadm, fiber, att)
-        return self.loss_coef * self.length
+        return self.loss_coef * self.length + self.connector_loss_in + self.connector_loss_out
 
     @property
     def passive(self):
