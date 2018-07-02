@@ -10,19 +10,20 @@ import pytest
 from gnpy.core.elements import Transceiver, Fiber, Edfa
 from gnpy.core.utils import lin2db, db2lin
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
-from gnpy.core.equipment import load_equipment 
+from gnpy.core.equipment import load_equipment
 from gnpy.core.network import build_network, load_network
 from pathlib import Path
-import filecmp 
+import filecmp
 
-#network_file_name = 'tests/test_network.json'
-network_file_name = Path(__file__).parent.parent / 'tests/test_network.json'
-#network_file_name = Path(__file__).parent.parent / 'examples/edfa_example_network.json'
-eqpt_library_name = Path(__file__).parent.parent / 'examples/eqpt_config.json'
+TEST_DIR = Path(__file__).parent
+DATA_DIR = TEST_DIR / 'data'
+test_network = DATA_DIR / 'test_network.json'
+eqpt_library = DATA_DIR / 'eqpt_config.json'
 
-@pytest.fixture(params=[(96, 0.05e12), (60, 0.075e12), (45, 0.1e12), (2, 0.1e12)], 
-    ids=['50GHz spacing', '75GHz spacing', '100GHz spacing', '2 channels'])
 # TODO in elements.py code: pytests doesn't pass with 1 channel: interpolate fail
+@pytest.fixture(
+    params=[(96, 0.05e12), (60, 0.075e12), (45, 0.1e12), (2, 0.1e12)],
+    ids=['50GHz spacing', '75GHz spacing', '100GHz spacing', '2 channels'])
 def nch_and_spacing(request):
     """parametrize channel count vs channel spacing (Hz)"""
     yield request.param
@@ -36,9 +37,9 @@ def bw():
 def setup_edfa():
     """init edfa class by reading test_network.json file
     remove all gain and nf ripple"""
-    # eqpt_library = pytest_eqpt_library() 
-    equipment = load_equipment(eqpt_library_name)
-    network = load_network(network_file_name,equipment)
+    # eqpt_library = pytest_eqpt_library()
+    equipment = load_equipment(eqpt_library)
+    network = load_network(test_network, equipment)
     build_network(network, equipment=equipment)
     edfa = [n for n in network.nodes() if isinstance(n, Edfa)][0]
 
@@ -52,8 +53,8 @@ def setup_edfa():
 @pytest.fixture()
 def setup_trx():
     """init transceiver class to access snr and osnr calculations"""
-    equipment = load_equipment(eqpt_library_name)
-    network = load_network(network_file_name,equipment)
+    equipment = load_equipment(eqpt_library)
+    network = load_network(test_network, equipment)
     build_network(network, equipment=equipment)
     trx = [n for n in network.nodes() if isinstance(n, Transceiver)][0]
     return trx
@@ -62,10 +63,10 @@ def setup_trx():
 def si(nch_and_spacing, bw):
     """parametrize a channel comb with nch, spacing and signal bw"""
     nch, spacing = nch_and_spacing
-    return create_input_spectral_information(191.3e12, 0.15, bw, 1e-6, spacing, nch)    
+    return create_input_spectral_information(191.3e12, 0.15, bw, 1e-6, spacing, nch)
 
 @pytest.mark.parametrize("enabled", [True, False])
-@pytest.mark.parametrize("gain, nf_expected", [(10, 15), (15, 10), (25, 5.8)])              
+@pytest.mark.parametrize("gain, nf_expected", [(10, 15), (15, 10), (25, 5.8)])
 def test_nf_calc(gain, nf_expected, enabled, setup_edfa, si):
     """ compare the 2 amplifier models (polynomial and estimated from nf_min and max)
      => nf_model vs nf_poly_fit for boundary gain values: gain_min (and below) & gain_flatmax
@@ -118,7 +119,7 @@ def test_si(si, nch_and_spacing):
 @pytest.mark.parametrize("gain", [13, 15, 17, 19, 21, 23, 25, 27])
 def test_ase_noise(gain, si, setup_edfa, setup_trx, bw):
     """testing 3 different ways of calculating osnr:
-    1-pin-edfa.nf+58 vs 
+    1-pin-edfa.nf+58 vs
     2-pout/pase afet propagate
     3-Transceiver osnr_ase_01nm
     => unitary test for Edfa.noise_profile (Edfa.interpol_params, Edfa.propagate)"""
