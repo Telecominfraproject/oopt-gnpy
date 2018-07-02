@@ -81,10 +81,7 @@ def test_nf_calc(gain, nf_expected, enabled, setup_edfa, si):
     # edfa.params.nf_model_enabled = enabled
     edfa.interpol_params(frequencies, pin, baud_rates)
 
-    nf = edfa.nf
-    print(nf)
-    dif = abs(nf[0] - nf_expected)
-    assert dif < 0.01
+    assert pytest.approx(nf_expected) == edfa.nf[0]
 
 @pytest.mark.parametrize("gain", [17, 19, 21, 23])
 def test_compare_nf_models(gain, setup_edfa, si):
@@ -104,8 +101,7 @@ def test_compare_nf_models(gain, setup_edfa, si):
     # edfa.params.nf_model_enabled = False
     edfa.interpol_params(frequencies, pin, baud_rates)
     nf_poly = edfa.nf[0]
-    dif = abs(nf_model - nf_poly)
-    assert dif < 0.5
+    assert pytest.approx(nf_model, abs=0.5) == nf_poly
 
 def test_si(si, nch_and_spacing):
     """basic total power check of the channel comb generation"""
@@ -113,8 +109,7 @@ def test_si(si, nch_and_spacing):
     pin = np.array([c.power.signal+c.power.nli+c.power.ase for c in si.carriers])
     p_tot = np.sum(pin)
     expected_p_tot = si.carriers[0].power.signal * nch
-    dif = abs(lin2db(p_tot/expected_p_tot))
-    assert dif < 0.01
+    assert pytest.approx(expected_p_tot) == p_tot
 
 @pytest.mark.parametrize("gain", [13, 15, 17, 19, 21, 23, 25, 27])
 def test_ase_noise(gain, si, setup_edfa, setup_trx, bw):
@@ -138,13 +133,9 @@ def test_ase_noise(gain, si, setup_edfa, setup_trx, bw):
     pout = np.array([c.power.signal for c in si.carriers])
     pase = np.array([c.power.ase for c in si.carriers])
     osnr = lin2db(pout[0] / pase[0]) - lin2db(12.5e9/bw)
-    dif = abs(osnr - osnr_expected)
+    assert pytest.approx(osnr_expected, abs=0.01) == osnr
 
     trx = setup_trx
     si = trx(si)
     osnr = trx.osnr_ase_01nm[0]
-    dif = dif + abs(osnr - osnr_expected)
-
-    assert dif < 0.01
-
-
+    assert pytest.approx(osnr_expected, abs=0.01) == osnr
