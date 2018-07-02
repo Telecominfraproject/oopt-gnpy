@@ -63,7 +63,7 @@ def main(network, equipment, source, sink):
             Channel(f, (191.3 + spacing * f) * 1e12, 32e9, 0.15, Power(p, 0, 0))
             for f in range(1,97)
         ])
-        print(f'\nPorpagating with input power = {lin2db(p*1e3):.2f}dBm :')
+        print(f'\nPropagating with input power = {lin2db(p*1e3):.2f}dBm :')
         for el in path:
             si = el(si)
             print(el) #remove this line when sweeping across several powers
