@@ -5,13 +5,13 @@
 
 from gnpy.core.elements import Edfa
 import numpy as np
-from json import load, dumps
+from json import load
 import pytest
 from gnpy.core import network_from_json
 from gnpy.core.elements import Transceiver, Fiber, Edfa
 from gnpy.core.utils import lin2db, db2lin
 from gnpy.core.info import SpectralInformation, Channel, Power
-from examples.compare_json import compare_network_file, compare_service_file, compare_result_file
+from tests.compare import compare_networks, compare_services
 from gnpy.core.convert import convert_file
 from examples.convert_service_sheet import convert_service_sheet
 from pathlib import Path
@@ -35,10 +35,22 @@ eqpt_filename = DATA_DIR / 'eqpt_config.json'
  }.items())
 def test_excel_json_generation(xls_input, expected_json_output):
     convert_file(xls_input)
+
     actual_json_output = xls_input.with_suffix('.json')
-    result, _ = compare_network_file(expected_json_output, actual_json_output)
+    with open(actual_json_output) as f:
+        actual = load(f)
     unlink(actual_json_output)
-    assert result
+
+    with open(expected_json_output) as f:
+        expected = load(f)
+
+    results = compare_networks(expected, actual)
+    assert not results.elements.missing
+    assert not results.elements.extra
+    assert not results.elements.different
+    assert not results.connections.missing
+    assert not results.connections.extra
+    assert not results.connections.different
 
 # assume json entries
 # test that the build network gives correct results
@@ -51,7 +63,19 @@ def test_excel_json_generation(xls_input, expected_json_output):
 }.items())
 def test_excel_service_json_generation(xls_input, expected_json_output):
     convert_service_sheet(xls_input, eqpt_filename)
+
     actual_json_output = f'{str(xls_input)[:-4]}_services.json'
-    result, _ = compare_service_file(expected_json_output, actual_json_output)
+    with open(actual_json_output) as f:
+        actual = load(f)
     unlink(actual_json_output)
-    assert result
+
+    with open(expected_json_output) as f:
+        expected = load(f)
+
+    results = compare_services(expected, actual)
+    assert not results.requests.missing
+    assert not results.requests.extra
+    assert not results.requests.different
+    assert not results.synchronizations.missing
+    assert not results.synchronizations.extra
+    assert not results.synchronizations.different
