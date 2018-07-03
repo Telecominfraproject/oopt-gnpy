@@ -253,7 +253,9 @@
       "params": {
         "length": 20.0,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -269,7 +271,9 @@
       "params": {
         "length": 50.0,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -285,7 +289,9 @@
       "params": {
         "length": 60.0,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -301,7 +307,9 @@
       "params": {
         "length": 10.0,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -317,7 +325,9 @@
       "params": {
         "length": 60.0,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -333,7 +343,9 @@
       "params": {
         "length": 65.0,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -349,7 +361,9 @@
       "params": {
         "length": 40.0,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -365,7 +379,9 @@
       "params": {
         "length": 35.0,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -381,7 +397,9 @@
       "params": {
         "length": 80.0,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -397,7 +415,9 @@
       "params": {
         "length": 20.0,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -413,7 +433,9 @@
       "params": {
         "length": 50.0,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -429,7 +451,9 @@
       "params": {
         "length": 60.0,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -445,7 +469,9 @@
       "params": {
         "length": 10.0,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -461,7 +487,9 @@
       "params": {
         "length": 60.0,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -477,7 +505,9 @@
       "params": {
         "length": 65.0,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -493,7 +523,9 @@
       "params": {
         "length": 40.0,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -509,7 +541,9 @@
       "params": {
         "length": 35.0,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -525,7 +559,9 @@
       "params": {
         "length": 80.0,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {

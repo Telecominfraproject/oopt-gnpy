@@ -38,9 +38,10 @@ network_test_filenames = {
  'tests/meshTopologyExampleV2Eqpt.xls' : 'tests/meshTopologyExampleV2Eqpt_expected.json'}
 @pytest.mark.parametrize("inputfile",excel_filename)
 def test_excel_json_generation(inputfile) :
-    convert_file(Path(inputfile))
+    json_filename = convert_file(Path(inputfile))
+    print(json_filename)
     # actual
-    json_filename = f'{inputfile[:-3]}json'
+    # json_filename = f'{inputfile[:-3]}json'
     # expected
     expected_filename = network_test_filenames[inputfile]
 
