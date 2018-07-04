@@ -91,7 +91,7 @@ if __name__ == '__main__':
     # logger.info(equipment)
 
     network = load_network(args.filename, equipment)
-    print(network)
+    # print(network)
 
     transceivers = {n.uid: n for n in network.nodes() if isinstance(n, Transceiver)}
     

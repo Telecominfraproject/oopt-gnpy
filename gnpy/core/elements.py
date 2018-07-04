@@ -138,7 +138,6 @@ FiberParams = namedtuple('FiberParams', 'type_variety length loss_coef length_un
 
 class Fiber(Node):
     def __init__(self, *args, params=None, **kwargs):
-        print(params)
         if params is None:
             params = {}
         if 'connector_loss_in' not in params :
