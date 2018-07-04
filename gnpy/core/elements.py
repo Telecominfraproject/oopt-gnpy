@@ -383,12 +383,12 @@ class Edfa(Node):
         # gain_min > gain_target TBD:
         pad = max(self.params.gain_min - self.effective_gain, 0)
         gain_target = self.effective_gain + pad
-        dg = gain_target - self.params.gain_flatmax
+        dg = max(self.params.gain_flatmax - gain_target, 0)
         if self.params.nf_model:
-            g1a = gain_target - self.params.nf_model.delta_p + dg
+            g1a = gain_target - self.params.nf_model.delta_p - dg
             nf_avg = lin2db(db2lin(self.params.nf_model.nf1) + db2lin(self.params.nf_model.nf2)/db2lin(g1a))
         else:
-            nf_avg = polyval(self.params.nf_fit_coeff, dg)
+            nf_avg = polyval(self.params.nf_fit_coeff, -dg)
         return self.interpol_nf_ripple + nf_avg + pad # input VOA = 1 for 1 NF degradation
 
     def noise_profile(self, df):

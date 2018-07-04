@@ -100,9 +100,9 @@ def edfa_nf(gain, variety_type, equipment):
     'not necessary when output VOA/att padding strategy will be implemented'
     pad = max(edfa.gain_min - gain, 0)
     gain = gain + pad
-    dg = gain - edfa.gain_flatmax
+    dg = max(edfa.gain_flatmax - gain, 0)
     if edfa.nf_model:
-        g1a = gain - edfa.nf_model.delta_p + dg
+        g1a = gain - edfa.nf_model.delta_p - dg
         nf_avg = lin2db(db2lin(edfa.nf_model.nf1) + db2lin(edfa.nf_model.nf2)/db2lin(g1a))
     else:
         nf_avg = polyval(edfa.nf_fit_coeff, dg)
