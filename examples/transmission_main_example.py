@@ -121,8 +121,10 @@ if __name__ == '__main__':
             source = next(transceivers[uid] for uid in transceivers if uid == args.source)
         except StopIteration as e:
             #TODO code a more advanced regex to find nodes match
-            nodes_suggestion = [uid for uid in transceivers if args.source.lower() in uid.lower()]
-            source = transceivers[nodes_suggestion[0]] if len(nodes_suggestion)>0 else transceivers[0]
+            nodes_suggestion = [uid for uid in transceivers \
+                if args.source.lower() in uid.lower()]
+            source = transceivers[nodes_suggestion[0]] \
+                if len(nodes_suggestion)>0 else list(transceivers.values())[0]
             print(f'invalid souce node specified, did you mean:\
                   \n{nodes_suggestion}?\
                   \n{args.source!r}, replaced with {source.uid}')
@@ -135,14 +137,16 @@ if __name__ == '__main__':
         try:
             sink = next(transceivers[uid] for uid in transceivers if uid == args.sink)
         except StopIteration as e:
-            nodes_suggestion = [uid for uid in transceivers if args.sink.lower() in uid.lower()]
-            sink = transceivers[nodes_suggestion[0]] if len(nodes_suggestion)>0 else tansceivers[-1]
+            nodes_suggestion = [uid for uid in transceivers \
+                if args.sink.lower() in uid.lower()]
+            sink = transceivers[nodes_suggestion[0]] \
+                if len(nodes_suggestion)>0 else list(transceivers.values())[0]
             print(f'invalid destination node specified, did you mean:\
                 \n{nodes_suggestion}?\
                 \n{args.sink!r}, replaced with {sink.uid}')
     else:
         logger.info('No source node specified: picking random transceiver')
-        sink = list(transceivers.values())[-1]
+        sink = list(transceivers.values())[1]
 
     logger.info(f'source = {args.source!r}')
     logger.info(f'sink = {args.sink!r}')
