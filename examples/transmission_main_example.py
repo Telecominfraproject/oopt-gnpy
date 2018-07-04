@@ -51,7 +51,7 @@ def main(network, equipment, source, sink):
     build_network(network, equipment=equipment)
     path = dijkstra_path(network, source, sink)
     gain_mode = False
-    if gain_mode:
+    if not gain_mode:
         path_amps = [amp for amp in path if isinstance(amp, Edfa)]
         set_edfa_dp(network, path_amps)
     spans = [s.length for s in path if isinstance(s, Fiber)]

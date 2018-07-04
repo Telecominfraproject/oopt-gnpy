@@ -179,6 +179,7 @@ def split_fiber(network, fiber, bounds, target, equipment):
     prev_node = [n for n in network.predecessors(fiber)][0]
     network.remove_edge(fiber, next_node)
     network.remove_edge(prev_node, fiber)
+    network.remove_node(fiber)
     new_spans = [
         Fiber(
             uid =      f'{fiber.uid}_({span}/{n_spans})',
@@ -186,12 +187,18 @@ def split_fiber(network, fiber, bounds, target, equipment):
             params = fiber.params._asdict()
         ) for span in range(n_spans)
     ]
-    for new_span in new_spans:
+    new_spans[0].length = new_length
+    network.add_node(new_spans[0])
+    network.add_edge(prev_node, new_spans[0])
+    prev_node = new_spans[0]
+    for new_span in new_spans[1:]:
+        new_span.length = new_length
         network.add_node(new_span)
         network.add_edge(prev_node, new_span)
-        add_egress_amplifier(network, new_span, equipment)
+        add_egress_amplifier(network, prev_node, equipment)
         prev_node = new_span
     network.add_edge(prev_node, next_node)
+    add_egress_amplifier(network, prev_node, equipment)
 
 def build_network(network, equipment, bounds=range(75_000, 150_000), target=100_000):
     fibers = [f for f in network.nodes() if isinstance(f, Fiber)]

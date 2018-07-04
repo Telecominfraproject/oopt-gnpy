@@ -572,5 +572,5 @@ class Edfa(Node):
     def __call__(self, spectral_info):
         carriers = tuple(self.propagate(spectral_info.pref, *spectral_info.carriers))
         pref = self.update_pref(spectral_info.pref)
-        print('after edfa pi',pref.pi)
+        print('pch_i edfa output',pref.pi)
         return spectral_info.update(carriers=carriers, pref=pref)
