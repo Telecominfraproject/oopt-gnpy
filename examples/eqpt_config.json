@@ -37,6 +37,7 @@
             }
       ],
       "Spans":[{
+            "power_mode": false,
             "max_length": 150,
             "length_units": "km",
             "max_loss": 28,
@@ -45,6 +46,10 @@
             "con_loss": 0.5
             }
       ],
+      "Roadms":[{
+            "gain_mode_default_loss": 20,
+            "power_mode_pref": -20
+            }],
       "SI":[{
             "f_min": 191.3e12,
             "Nch": 80,

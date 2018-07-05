@@ -17,10 +17,9 @@ from logging import getLogger, basicConfig, INFO, ERROR, DEBUG
 from matplotlib.pyplot import show, axis, figure, title
 from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels, dijkstra_path)
-
-from gnpy.core import load_network, build_network
+from gnpy.core.network import load_network, build_network, set_roadm_loss, set_edfa_dp
 from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
-from gnpy.core.info import SpectralInformation, Channel, Power
+from gnpy.core.info import create_input_spectral_information, Channel, Power, Pref
 
 logger = getLogger(__name__)
 
@@ -49,20 +48,40 @@ def plot_results(network, path, source, sink):
 
 
 def main(network, equipment, source, sink):
+    roadms = [roadm for roadm in network if isinstance(roadm, Roadm)]
+    default_roadm_loss = equipment['Roadms']['default'].gain_mode_default_loss
+    power_mode = equipment['Spans']['default'].power_mode
+    print('\n'.join([f'Power mode is set to {power_mode}',
+                     f'=> it can be modified in eqpt_config.json - Spans']))
+    set_roadm_loss(roadms, False, 0, default_roadm_loss)
     build_network(network, equipment=equipment)
     path = dijkstra_path(network, source, sink)
+    if power_mode:
+        path_amps = [amp for amp in path if isinstance(amp, Edfa)]
+        set_edfa_dp(network, path_amps)     
+
     spans = [s.length for s in path if isinstance(s, Fiber)]
     print(f'\nThere are {len(spans)} fiber spans over {sum(spans):.0f}m between {source.uid} and {sink.uid}')
     print(f'\nNow propagating between {source.uid} and {sink.uid}:')
 
-    for p in range(0, 1): #change range to sweep results across several powers in dBm
-        p=db2lin(p)*1e-3
-        spacing = 0.05 # THz
-        si = SpectralInformation() # SI units: W, Hz
-        si = si.update(carriers=[
-            Channel(f, (191.3 + spacing * f) * 1e12, 32e9, 0.15, Power(p, 0, 0))
-            for f in range(1,97)
-        ])
+    pref_span_db = 0
+    bounds = range(0, 1) #power sweep
+
+    for p_db in range(pref_span_db+bounds.start, pref_span_db+bounds.stop): #change range to sweep results across several powers in dBm
+        p = db2lin(p_db)*1e-3
+
+        pref_roadm_db = equipment['Roadms']['default'].power_mode_pref #TODO parametrize in eqpt_json 
+        roadm_loss = p_db - pref_roadm_db #dynamic update the ROADM loss wrto power sweep to keep the same pref_roadm        
+        path_roadms = [roadm for roadm in path if isinstance(roadm, Roadm)]
+        set_roadm_loss(path_roadms, power_mode, roadm_loss, default_roadm_loss)
+            
+        spacing = 0.05e12 
+        bw = 32e9 #bandwidth Hz
+        frequency_start = 191.3e12
+        roll_off = 0.15
+        nch = 96
+        si = create_input_spectral_information(frequency_start, roll_off, bw, p, spacing, nch, p_db)
+
         print(f'\nPorpagating with input power = {lin2db(p*1e3):.2f}dBm :')
         for el in path:
             si = el(si)
@@ -83,13 +102,14 @@ parser.add_argument('filename', nargs='?', type=Path,
 parser.add_argument('source', nargs='?', help='source node')
 parser.add_argument('sink',   nargs='?', help='sink node')
 
+
 if __name__ == '__main__':
     args = parser.parse_args()
     basicConfig(level={0: ERROR, 1: INFO, 2: DEBUG}.get(args.verbose, ERROR))
 
     equipment = load_equipment(args.equipment)
     # logger.info(equipment)
-
+    print(args.filename)
     network = load_network(args.filename, equipment)
     print(network)
 
@@ -110,8 +130,10 @@ if __name__ == '__main__':
             source = next(transceivers[uid] for uid in transceivers if uid == args.source)
         except StopIteration as e:
             #TODO code a more advanced regex to find nodes match
-            nodes_suggestion = [uid for uid in transceivers if args.source.lower() in uid.lower()]
-            source = transceivers[nodes_suggestion[0]] if len(nodes_suggestion)>0 else transceivers[0]
+            nodes_suggestion = [uid for uid in transceivers \
+                if args.source.lower() in uid.lower()]
+            source = transceivers[nodes_suggestion[0]] \
+                if len(nodes_suggestion)>0 else list(transceivers.values())[0]
             print(f'invalid souce node specified, did you mean:\
                   \n{nodes_suggestion}?\
                   \n{args.source!r}, replaced with {source.uid}')
@@ -124,14 +146,16 @@ if __name__ == '__main__':
         try:
             sink = next(transceivers[uid] for uid in transceivers if uid == args.sink)
         except StopIteration as e:
-            nodes_suggestion = [uid for uid in transceivers if args.sink.lower() in uid.lower()]
-            sink = transceivers[nodes_suggestion[0]] if len(nodes_suggestion)>0 else tansceivers[-1]
+            nodes_suggestion = [uid for uid in transceivers \
+                if args.sink.lower() in uid.lower()]
+            sink = transceivers[nodes_suggestion[0]] \
+                if len(nodes_suggestion)>0 else list(transceivers.values())[0]
             print(f'invalid destination node specified, did you mean:\
                 \n{nodes_suggestion}?\
                 \n{args.sink!r}, replaced with {sink.uid}')
     else:
         logger.info('No source node specified: picking random transceiver')
-        sink = list(transceivers.values())[-1]
+        sink = list(transceivers.values())[1]
 
     logger.info(f'source = {args.source!r}')
     logger.info(f'sink = {args.sink!r}')

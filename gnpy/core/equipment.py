@@ -16,9 +16,9 @@ from collections import namedtuple
 
 Model = namedtuple('Model', 'nf1 nf2 delta_p')
 Fiber = namedtuple('Fiber', 'type_variety dispersion gamma')
-Spans = namedtuple('Spans', 'max_length length_units max_loss padding EOL con_loss')
-Roadms = namedtuple('Roadms', 'loss')
+Spans = namedtuple('Spans', 'power_mode max_length length_units max_loss padding EOL con_loss')
 Transceiver = namedtuple('Transceiver', 'type_variety frequency mode')
+Roadms = namedtuple('Roadms', 'gain_mode_default_loss power_mode_pref')
 SI = namedtuple('SI', 'f_min Nch baud_rate spacing roll_off power')
 EdfaBase = namedtuple(
     'EdfaBase',
@@ -100,9 +100,9 @@ def edfa_nf(gain, variety_type, equipment):
     'not necessary when output VOA/att padding strategy will be implemented'
     pad = max(edfa.gain_min - gain, 0)
     gain = gain + pad
-    dg = gain - edfa.gain_flatmax
+    dg = max(edfa.gain_flatmax - gain, 0)
     if edfa.nf_model:
-        g1a = gain - edfa.nf_model.delta_p + dg
+        g1a = gain - edfa.nf_model.delta_p - dg
         nf_avg = lin2db(db2lin(edfa.nf_model.nf1) + db2lin(edfa.nf_model.nf2)/db2lin(g1a))
     else:
         nf_avg = polyval(edfa.nf_fit_coeff, dg)
