@@ -30,7 +30,7 @@ from gnpy.core.network import load_network, build_network
 from gnpy.core.equipment import load_equipment
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
-from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, load_SI
+from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
 from gnpy.core.request import Path_request, Result_element
 from copy import copy, deepcopy
 from numpy import log10
@@ -47,14 +47,9 @@ parser.add_argument('-v', '--verbose', action='count')
 parser.add_argument('-o', '--output', default=None)
 
 
-def load_Transceiver(filename):
-    with open(filename) as f:
-        json_data = loads(f.read())
-        return json_data['Transceiver']
-
-def requests_from_json(json_data,eqpt_filename):
+def requests_from_json(json_data,equipment):
     requests_list = []
-    tspjsondata = load_Transceiver(eqpt_filename)
+    tsp_lib = equipment['Transceiver']
 
     for req in json_data['path-request']:
         #print(f'{req}')
@@ -66,8 +61,7 @@ def requests_from_json(json_data,eqpt_filename):
         params['trx_mode'] = req['path-constraints']['te-bandwidth']['trx_mode']
         try:
             extra_params = next(m 
-            for t in  tspjsondata if t['type_variety'] == params['trx_type']
-            for m in t['mode']  if  m['format'] == params['trx_mode'])
+                for m in tsp_lib[params['trx_type']].mode if  m['format'] == params['trx_mode'])
         except StopIteration :
             msg = f'could not find tsp : {params} with mode: {params} in eqpt library'
             raise ValueError(msg)
@@ -103,7 +97,8 @@ def compute_path(network, pathreqlist):
     edfa = [n for n in network.nodes() if isinstance(n, Edfa)]
     # TODO include also fused in the element check : too difficult because of direction
     # fused = [n for n in network.nodes() if isinstance(n, Fused)]
-    sidata = load_SI(args.eqpt_filename)
+    sidata = equipment['SI']['default']
+    
     for pathreq in pathreqlist:
         pathreq.nodes_list.append(pathreq.destination)
         #we assume that the destination is a strict constraint
@@ -148,7 +143,7 @@ def compute_path(network, pathreqlist):
         # for debug
         # print(f'{pathreq.baudrate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
         si = create_input_spectral_information(
-            sidata['f_min'], sidata['roll_off'],
+            sidata.f_min, sidata.roll_off,
             pathreq.baudrate, pathreq.power, pathreq.spacing, pathreq.nb_channel)
         for el in total_path:
             si = el(si)
@@ -182,7 +177,7 @@ if __name__ == '__main__':
     equipment = load_equipment(args.eqpt_filename)
     network = load_network(args.network_filename,equipment)
     build_network(network, equipment=equipment)
-    pths = requests_from_json(data, args.eqpt_filename)
+    pths = requests_from_json(data, equipment)
     print(pths)
     test = compute_path(network,pths)
 

@@ -58,11 +58,6 @@ def create_input_spectral_information(f_min, roll_off, baudrate, power, spacing,
             baudrate, roll_off, Power(power, 0, 0)) for f in range(1,nb_channel+1)))
     return si
 
-def load_SI(filename):
-    with open(filename) as f:
-        json_data = loads(f.read())
-        return next(m for m in json_data['SI'])
-
 if __name__ == '__main__':
     si = SpectralInformation(
         Channel(1, 193.95e12, 32e9, 0.15,  # 193.95 THz, 32 Gbaud

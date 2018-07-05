@@ -30,7 +30,7 @@ from gnpy.core.network import load_network, build_network
 from gnpy.core.equipment import load_equipment
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
-from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, load_SI
+from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
 from copy import copy, deepcopy
 from numpy import log10
 
@@ -54,12 +54,10 @@ class Path_request:
         self.spacing    = params.spacing
         self.power      = params.power
         self.nb_channel = params.nb_channel
-
-# class Path_request(Request):
-#     def __init__(self,*args, params=None, **kwargs):
-#         if params is None:
-#             params = {}
-#         super().__init__(*args, params=RequestParams(**params), **kwargs)    
+        self.format     = params.format
+        self.OSNR       = params.OSNR
+        self.bit_rate   = params.bit_rate
+        
 
     def __str__(self):
         return '\n\t'.join([  f'{type(self).__name__} {self.request_id}',
@@ -74,51 +72,6 @@ class Path_request:
                             f'spacing:      {self.spacing}',
                             f'power:        {self.power}'
                             '\n'])
-
-# class Path_request():
-#     def __init__(self,jsondata,tspjsondata):
-#         self.request_id = jsondata['request-id']
-#         self.source = jsondata['src-tp-id']
-#         self.destination = jsondata['dst-tp-id']
-#         # retrieving baudrate out of transponder type and mode (format)
-#         self.tsp = jsondata['path-constraints']['te-bandwidth']['trx_type']
-#         self.tsp_mode = jsondata['path-constraints']['te-bandwidth']['trx_mode']
-#         # for debug
-#         # print(tsp)
-#         try:
-#             baudrate = next(m['baudrate'] 
-#                 for t in  tspjsondata if t['type_variety'] == self.tsp
-#                 for m in t['mode']  if  m['format'] == self.tsp_mode)
-#         except StopIteration:
-#             msg = f'could not find tsp : {self.tsp} with mode: {self.tsp_mode} in eqpt library'
-#             logger.critical(msg)
-#             raise ValueError(msg)
-#         self.baudrate = baudrate
-
-#         nodes_list = jsondata['optimizations']['explicit-route-include-objects']
-#         self.nodes_list = [n['unnumbered-hop']['node-id'] for n in nodes_list]
-#         # create a list for individual loose capability for each node ... 
-#         # even if convert_service_sheet fills it with the same value
-#         self.loose_list = [n['unnumbered-hop']['hop-type'] for n in nodes_list]
-
-#         self.spacing = jsondata['path-constraints']['te-bandwidth']['spacing']
-#         self.power = jsondata['path-constraints']['te-bandwidth']['output-power']
-#         self.nb_channel = jsondata['path-constraints']['te-bandwidth']['max-nb-of-channel']
-
-#     def __str__(self):
-#         return '\n\t'.join([  f'{type(self).__name__} {self.request_id}',
-#                             f'source:       {self.source}',
-#                             f'destination:  {self.destination}'])
-#     def __repr__(self):
-#         return '\n\t'.join([  f'{type(self).__name__} {self.request_id}',
-#                             f'source:       {self.source}',
-#                             f'destination:  {self.destination}',
-#                             f'trx type:     {self.tsp}',
-#                             f'baudrate:     {self.baudrate}',
-#                             f'spacing:      {self.spacing}',
-#                             f'power:        {self.power}'
-#                             '\n'])
-
 
 class Result_element(Element):
     def __init__(self,path_request,computed_path):
