@@ -19,7 +19,7 @@ from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels, dijkstra_path)
 from gnpy.core.network import load_network, build_network, set_roadm_loss, set_edfa_dp
 from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
-from gnpy.core.info import SpectralInformation, Channel, Power, Pref
+from gnpy.core.info import create_input_spectral_information, Channel, Power, Pref
 
 logger = getLogger(__name__)
 
@@ -51,7 +51,7 @@ def main(network, equipment, source, sink):
     roadms = [roadm for roadm in network if isinstance(roadm, Roadm)]
     default_roadm_loss = equipment['Roadms']['default'].gain_mode_default_loss
     power_mode = equipment['Spans']['default'].power_mode
-    print('\n'.join([f'The power mode is {power_mode}',
+    print('\n'.join([f'Power mode is set to {power_mode}',
                      f'=> it can be modified in eqpt_config.json - Spans']))
     set_roadm_loss(roadms, False, 0, default_roadm_loss)
     build_network(network, equipment=equipment)
@@ -75,12 +75,13 @@ def main(network, equipment, source, sink):
         path_roadms = [roadm for roadm in path if isinstance(roadm, Roadm)]
         set_roadm_loss(path_roadms, power_mode, roadm_loss, default_roadm_loss)
             
-        spacing = 0.05 # THz
-        si = SpectralInformation(pref=Pref(p_db, p_db))
-        si = si.update(carriers=[
-            Channel(f, (191.3 + spacing * f) * 1e12, 32e9, 0.15, Power(p, 0, 0))
-            for f in range(1,97)
-        ])
+        spacing = 0.05e12 
+        bw = 32e9 #bandwidth Hz
+        frequency_start = 191.3e12
+        roll_off = 0.15
+        nch = 96
+        si = create_input_spectral_information(frequency_start, roll_off, bw, p, spacing, nch, p_db)
+
         print(f'\nPorpagating with input power = {lin2db(p*1e3):.2f}dBm :')
         for el in path:
             si = el(si)

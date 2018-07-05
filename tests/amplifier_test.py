@@ -9,7 +9,7 @@ from json import load, dumps
 import pytest
 from gnpy.core.elements import Transceiver, Fiber, Edfa
 from gnpy.core.utils import lin2db, db2lin
-from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
+from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
 from gnpy.core.equipment import load_equipment 
 from gnpy.core.network import build_network, load_network
 from pathlib import Path
@@ -62,7 +62,7 @@ def setup_trx():
 def si(nch_and_spacing, bw):
     """parametrize a channel comb with nch, spacing and signal bw"""
     nch, spacing = nch_and_spacing
-    return create_input_spectral_information(191.3e12, 0.15, bw, 1e-6, spacing, nch)    
+    return create_input_spectral_information(191.3e12, 0.15, bw, 1e-6, spacing, nch, 0)
 
 @pytest.mark.parametrize("enabled", [True, False])
 @pytest.mark.parametrize("gain, nf_expected", [(10, 15), (15, 10), (25, 5.8)])              
@@ -78,7 +78,8 @@ def test_nf_calc(gain, nf_expected, enabled, setup_edfa, si):
     baud_rates = np.array([c.baud_rate for c in si.carriers])
     edfa.operational.gain_target = gain
     # edfa.params.nf_model_enabled = enabled
-    edfa.interpol_params(frequencies, pin, baud_rates)
+    pref=Pref(0, 0)
+    edfa.interpol_params(frequencies, pin, baud_rates, pref)
 
     nf = edfa.nf
     print(nf)
@@ -97,11 +98,12 @@ def test_compare_nf_models(gain, setup_edfa, si):
     baud_rates = np.array([c.baud_rate for c in si.carriers])
     edfa.operational.gain_target = gain
     # edfa.params.nf_model_enabled = True
-    edfa.interpol_params(frequencies, pin, baud_rates)
+    pref=Pref(0, 0)
+    edfa.interpol_params(frequencies, pin, baud_rates, pref)
     nf_model = edfa.nf[0]
 
     # edfa.params.nf_model_enabled = False
-    edfa.interpol_params(frequencies, pin, baud_rates)
+    edfa.interpol_params(frequencies, pin, baud_rates, pref)
     nf_poly = edfa.nf[0]
     dif = abs(nf_model - nf_poly)
     assert dif < 0.5
@@ -115,7 +117,7 @@ def test_si(si, nch_and_spacing):
     dif = abs(lin2db(p_tot/expected_p_tot))
     assert dif < 0.01
 
-@pytest.mark.parametrize("gain", [13, 15, 17, 19, 21, 23, 25, 27])
+@pytest.mark.parametrize("gain", [13, 15, 17, 19, 21, 23, 25, 27]) 
 def test_ase_noise(gain, si, setup_edfa, setup_trx, bw):
     """testing 3 different ways of calculating osnr:
     1-pin-edfa.nf+58 vs 
@@ -128,7 +130,8 @@ def test_ase_noise(gain, si, setup_edfa, setup_trx, bw):
     baud_rates = np.array([c.baud_rate for c in si.carriers])
     edfa.operational.gain_target = gain
     # edfa.params.nf_model_enabled = False
-    edfa.interpol_params(frequencies, pin, baud_rates)
+    pref=Pref(0, 0)
+    edfa.interpol_params(frequencies, pin, baud_rates, pref)
     nf = edfa.nf
     pin = lin2db(pin[0]*1e3)
     osnr_expected = pin - nf[0] + 58

@@ -53,12 +53,14 @@ class SpectralInformation(namedtuple('SpectralInformation', 'pref, carriers'), C
         return super().__new__(cls, pref, carriers)
 
 
-def create_input_spectral_information(f_min, roll_off, baudrate, power, spacing, nb_channel):
-    si = SpectralInformation() # !! SI units W, Hz  
-    si = si.update(carriers=tuple(
+def create_input_spectral_information(f_min, roll_off, baudrate, power, spacing, nb_channel, pref):
+    si = SpectralInformation(pref=Pref(pref, pref))
+    si = si.update(carriers=[
             Channel(f, (f_min+spacing*f), 
-            baudrate, roll_off, Power(power, 0, 0)) for f in range(1,nb_channel+1)))
+            baudrate, roll_off, Power(power, 0, 0)) for f in range(1,nb_channel+1)
+            ])
     return si
+
 
 if __name__ == '__main__':
     si = SpectralInformation(
