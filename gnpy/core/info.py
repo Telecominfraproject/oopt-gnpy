@@ -11,6 +11,8 @@ This module contains classes for modelling SpectralInformation.
 from collections import namedtuple
 from numpy import array
 from gnpy.core.utils import lin2db
+from json import loads
+from gnpy.core.utils import load_json
 
 class ConvenienceAccess:
 
@@ -55,6 +57,11 @@ def create_input_spectral_information(f_min, roll_off, baudrate, power, spacing,
             Channel(f, (f_min+spacing*f), 
             baudrate, roll_off, Power(power, 0, 0)) for f in range(1,nb_channel+1)))
     return si
+
+def load_SI(filename):
+    with open(filename) as f:
+        json_data = loads(f.read())
+        return next(m for m in json_data['SI'])
 
 if __name__ == '__main__':
     si = SpectralInformation(
