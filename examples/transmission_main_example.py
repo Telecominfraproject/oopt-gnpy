@@ -48,28 +48,35 @@ def plot_results(network, path, source, sink):
 
 
 def main(network, equipment, source, sink):
+    roadms = [roadm for roadm in network if isinstance(roadm, Roadm)]
+    default_roadm_loss = equipment['Roadms']['default'].gain_mode_default_loss
+    power_mode = equipment['Spans']['default'].power_mode
+    print('\n'.join([f'The power mode is {power_mode}',
+                     f'=> it can be modified in eqpt_config.json - Spans']))
+    set_roadm_loss(roadms, False, 0, default_roadm_loss)
     build_network(network, equipment=equipment)
     path = dijkstra_path(network, source, sink)
-    gain_mode = False
-    if not gain_mode:
+    if power_mode:
         path_amps = [amp for amp in path if isinstance(amp, Edfa)]
-        set_edfa_dp(network, path_amps)
+        set_edfa_dp(network, path_amps)     
+
     spans = [s.length for s in path if isinstance(s, Fiber)]
     print(f'\nThere are {len(spans)} fiber spans over {sum(spans):.0f}m between {source.uid} and {sink.uid}')
     print(f'\nNow propagating between {source.uid} and {sink.uid}:')
 
-    pref_span0_db = 2
-    bounds = range(1, 2) #power sweep
-    pref_roadm_db = -20
-    pref_span0 = db2lin(pref_span0_db)*1e-3
-    pref_roadm = db2lin(pref_roadm_db)*1e-3
-    for p_db in range(pref_span0_db+bounds.start, pref_span0_db+bounds.stop): #change range to sweep results across several powers in dBm
+    pref_span_db = 0
+    bounds = range(0, 1) #power sweep
+
+    for p_db in range(pref_span_db+bounds.start, pref_span_db+bounds.stop): #change range to sweep results across several powers in dBm
         p = db2lin(p_db)*1e-3
-        roadm_loss = pref_span0_db - pref_roadm_db
+
+        pref_roadm_db = equipment['Roadms']['default'].power_mode_pref #TODO parametrize in eqpt_json 
+        roadm_loss = p_db - pref_roadm_db #dynamic update the ROADM loss wrto power sweep to keep the same pref_roadm        
         path_roadms = [roadm for roadm in path if isinstance(roadm, Roadm)]
-        set_roadm_loss(path_roadms, roadm_loss)
+        set_roadm_loss(path_roadms, power_mode, roadm_loss, default_roadm_loss)
+            
         spacing = 0.05 # THz
-        si = SpectralInformation(pref=Pref(pref_span0_db, pref_span0_db))
+        si = SpectralInformation(pref=Pref(p_db, p_db))
         si = si.update(carriers=[
             Channel(f, (191.3 + spacing * f) * 1e12, 32e9, 0.15, Power(p, 0, 0))
             for f in range(1,97)
@@ -94,13 +101,14 @@ parser.add_argument('filename', nargs='?', type=Path,
 parser.add_argument('source', nargs='?', help='source node')
 parser.add_argument('sink',   nargs='?', help='sink node')
 
+
 if __name__ == '__main__':
     args = parser.parse_args()
     basicConfig(level={0: ERROR, 1: INFO, 2: DEBUG}.get(args.verbose, ERROR))
 
     equipment = load_equipment(args.equipment)
     # logger.info(equipment)
-
+    print(args.filename)
     network = load_network(args.filename, equipment)
     print(network)
 
