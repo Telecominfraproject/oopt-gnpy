@@ -21,7 +21,7 @@ from networkx import (draw_networkx_nodes, draw_networkx_edges,
 from gnpy.core import load_network, build_network
 from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
-from gnpy.core.request import Path_request, RequestParams
+from gnpy.core.request import Path_request, RequestParams, compute_constrained_path, propagate
 
 logger = getLogger(__name__)
 
@@ -52,31 +52,16 @@ def plot_results(network, path, source, sink):
 def main(network, equipment, source, sink, req = None):
     build_network(network, equipment=equipment)
     
-    sidata = equipment['SI']['default']
-
-    print(sidata)
-    print('\n\n\n')
-    path = dijkstra_path(network, source, sink)
+    path = compute_constrained_path(network,req)
     spans = [s.length for s in path if isinstance(s, Fiber)]
     print(f'\nThere are {len(spans)} fiber spans over {sum(spans):.0f}m between {source.uid} and {sink.uid}')
     print(f'\nNow propagating between {source.uid} and {sink.uid}:')
     
     for p in range(0, 1): #change range to sweep results across several powers in dBm
-        p=db2lin(p)*1e-3
-        spacing = 0.05 # THz
-        # si = SpectralInformation() # SI units: W, Hz
-        si = create_input_spectral_information(
-            sidata.f_min, sidata.roll_off,
-            req.baudrate, p, req.spacing, req.nb_channel)
-        # si = si.update(carriers=[
-        #     Channel(f, (191.3 + spacing * f) * 1e12, 32e9, 0.15, Power(p, 0, 0))
-        #     for f in range(1,97)
-        # ])
-        print(f'\nPropagating with input power = {lin2db(p*1e3):.2f}dBm :')
-        for el in path:
-            si = el(si)
-            print(el) #remove this line when sweeping across several powers
-        print(f'\nTransmission result for input power = {lin2db(p*1e3):.2f}dBm :')
+        req.power = db2lin(p)*1e-3
+        print(f'\nPropagating with input power = {lin2db(req.power*1e3):.2f}dBm :')
+        propagate(path,req,equipment,show=True)
+        print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f}dBm :')
         print(sink)
 
     return path
@@ -147,15 +132,15 @@ if __name__ == '__main__':
 
     params = {}
     params['request_id'] = 0
-    params['source'] = args.source
-    params['destination'] = args.sink
+    params['source'] = source.uid
+    params['destination'] = sink.uid
     params['trx_type'] = 'vendorA_trx-type1'
     params['trx_mode'] = 'PS_SP64_1'
-    params['nodes_list'] = []
-    params['loose_list'] = []
+    params['nodes_list'] = [sink.uid]
+    params['loose_list'] = ['strict']
     params['spacing'] = 50e9
-    params['power'] = -1
-    params['nb_channel'] = 80
+    params['power'] = 0
+    params['nb_channel'] = 97
     try:
         extra_params = next(m 
             for m in equipment['Transceiver'][params['trx_type']].mode if  m['format'] == params['trx_mode'])

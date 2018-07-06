@@ -131,3 +131,55 @@ class Result_element(Element):
     def json(self):
         return self.pathresult 
 
+def compute_constrained_path(network, req):
+    trx = [n for n in network.nodes() if isinstance(n, Transceiver)]
+    roadm = [n for n in network.nodes() if isinstance(n, Roadm)]
+    edfa = [n for n in network.nodes() if isinstance(n, Edfa)]
+
+    source = next(el for el in trx if el.uid == req.source)
+    # start the path with its source
+    total_path = [source]
+    for n in req.nodes_list:
+        # print(n)
+        try :
+            node = next(el for el in trx if el.uid == n)
+        except StopIteration:
+            try:
+                node = next(el for el in roadm if el.uid == f'roadm {n}')
+            except StopIteration:
+                try:
+                    node = next(el for el in edfa 
+                        if el.uid.startswith(f'egress edfa in {n}'))
+                except StopIteration:
+                    msg = f'could not find node : {n} in network topology: \
+                        not a trx, roadm, edfa or fused element'
+                    logger.critical(msg)
+                    raise ValueError(msg)
+        # extend path list without repeating source -> skip first element in the list
+        try:
+            total_path.extend(dijkstra_path(network, source, node)[1:])
+            source = node
+        except NetworkXNoPath:
+            # for debug
+            # print(req.loose_list)
+            # print(req.nodes_list.index(n))
+            if req.loose_list[req.nodes_list.index(n)] == 'loose':
+                print(f'could not find a path from {source.uid} to loose node : {n} in network topology')
+                print(f'node  {n} is skipped')
+            else:
+                msg = f'could not find a path from {source.uid} to node : {n} in network topology'
+                logger.critical(msg)
+                raise ValueError(msg)
+    return total_path 
+
+def propagate(path,req,equipment, show=False):
+    default_si_data = equipment['SI']['default']
+    si = create_input_spectral_information(
+        default_si_data.f_min, default_si_data.roll_off,
+        req.baudrate, req.power, req.spacing, req.nb_channel)
+    # TODO :  use tsp f_min instead of default
+    for el in path:
+        si = el(si)
+        if show :
+            print(el)
+    return path    

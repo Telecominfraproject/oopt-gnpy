@@ -58,10 +58,13 @@ def propagation(input_power, connector_loss_in, connector_loss_out,dest):
     # print(f'\nPropagating with input power = {lin2db(p*1e3):.2f}dBm :')
     for el in path:
         si = el(si)
-        if isinstance(el, Edfa):
-            nf = mean(el.nf)
+        # if isinstance(el, Edfa):
+        #     nf = mean(el.nf)
         print(el) #remove this line when sweeping across several powers
     # print(f'\nTransmission result for input power = {lin2db(p*1e3):.2f}dBm :')
+    edfa_sample = next(el for el in path if isinstance(el, Edfa))
+    nf = mean(edfa_sample.nf)
+
     print(f'pw: {input_power} conn in: {connector_loss_in} con out: {connector_loss_out} ' +
         f'OSNR@0.1nm: {round(mean(sink.osnr_ase_01nm),2)}  SNR@bandwitdth: {round(mean(sink.snr),2)}')
     return sink , nf

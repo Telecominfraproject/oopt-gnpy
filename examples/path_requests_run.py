@@ -31,7 +31,7 @@ from gnpy.core.equipment import load_equipment
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
-from gnpy.core.request import Path_request, Result_element
+from gnpy.core.request import Path_request, Result_element, compute_constrained_path, propagate
 from copy import copy, deepcopy
 from numpy import log10
 
@@ -87,67 +87,66 @@ def load_requests(filename,eqpt_filename):
             json_data = loads(f.read())
     return json_data
 
+# def compute_constrained_path(network, req):
+#     trx = [n for n in network.nodes() if isinstance(n, Transceiver)]
+#     roadm = [n for n in network.nodes() if isinstance(n, Roadm)]
+#     edfa = [n for n in network.nodes() if isinstance(n, Edfa)]
+
+#     source = next(el for el in trx if el.uid == req.source)
+#     # start the path with its source
+#     total_path = [source]
+#     for n in req.nodes_list:
+#         # print(n)
+#         try :
+#             node = next(el for el in trx if el.uid == n)
+#         except StopIteration:
+#             try:
+#                 node = next(el for el in roadm if el.uid == f'roadm {n}')
+#             except StopIteration:
+#                 try:
+#                     node = next(el for el in edfa 
+#                         if el.uid.startswith(f'egress edfa in {n}'))
+#                 except StopIteration:
+#                     msg = f'could not find node : {n} in network topology: \
+#                         not a trx, roadm, edfa or fused element'
+#                     logger.critical(msg)
+#                     raise ValueError(msg)
+#         # extend path list without repeating source -> skip first element in the list
+#         try:
+#             total_path.extend(dijkstra_path(network, source, node)[1:])
+#             source = node
+#         except NetworkXNoPath:
+#             # for debug
+#             # print(req.loose_list)
+#             # print(req.nodes_list.index(n))
+#             if req.loose_list[req.nodes_list.index(n)] == 'loose':
+#                 print(f'could not find a path from {source.uid} to loose node : {n} in network topology')
+#                 print(f'node  {n} is skipped')
+#             else:
+#                 msg = f'could not find a path from {source.uid} to node : {n} in network topology'
+#                 logger.critical(msg)
+#                 raise ValueError(msg)
+#     return total_path 
+
 def compute_path(network, pathreqlist):
     # temporary : repeats calls from transmission_main_example
     # to be merged when ready
     
     path_res_list = []
-    trx = [n for n in network.nodes() if isinstance(n, Transceiver)]
-    roadm = [n for n in network.nodes() if isinstance(n, Roadm)]
-    edfa = [n for n in network.nodes() if isinstance(n, Edfa)]
-    # TODO include also fused in the element check : too difficult because of direction
-    # fused = [n for n in network.nodes() if isinstance(n, Fused)]
-    sidata = equipment['SI']['default']
-    
+
     for pathreq in pathreqlist:
         pathreq.nodes_list.append(pathreq.destination)
         #we assume that the destination is a strict constraint
         pathreq.loose_list.append('strict')
         print(f'Computing path from {pathreq.source} to {pathreq.destination}')
         print(f'with explicit path: {pathreq.nodes_list}')
-
-        source = next(el for el in trx if el.uid == pathreq.source)
-        # start the path with its source
-        total_path = [source]
-        for n in pathreq.nodes_list:
-            # print(n)
-            try :
-                node = next(el for el in trx if el.uid == n)
-            except StopIteration:
-                try:
-                    node = next(el for el in roadm if el.uid == f'roadm {n}')
-                except StopIteration:
-                    try:
-                        node = next(el for el in edfa 
-                            if el.uid.startswith(f'egress edfa in {n}'))
-                    except StopIteration:
-                        msg = f'could not find node : {n} in network topology: \
-                            not a trx, roadm, edfa or fused element'
-                        logger.critical(msg)
-                        raise ValueError(msg)
-            # extend path list without repeating source -> skip first element in the list
-            try:
-                total_path.extend(dijkstra_path(network, source, node)[1:])
-                source = node
-            except NetworkXNoPath:
-            	# for debug
-                # print(pathreq.loose_list)
-                # print(pathreq.nodes_list.index(n))
-                if pathreq.loose_list[pathreq.nodes_list.index(n)] == 'loose':
-                    print(f'could not find a path from {source.uid} to loose node : {n} in network topology')
-                    print(f'node  {n} is skipped')
-                else:
-                    msg = f'could not find a path from {source.uid} to node : {n} in network topology'
-                    logger.critical(msg)
-                    raise ValueError(msg)
+        total_path = compute_constrained_path(network, pathreq)
+        
         # for debug
         # print(f'{pathreq.baudrate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
-        si = create_input_spectral_information(
-            sidata.f_min, sidata.roll_off,
-            pathreq.baudrate, pathreq.power, pathreq.spacing, pathreq.nb_channel)
-        for el in total_path:
-            si = el(si)
-            # print(el)
+        
+        total_path = propagate(total_path,pathreq,equipment, show=False)
+
         # we record the last tranceiver object in order to have th whole 
         # information about spectrum. Important Note: since transceivers 
         # attached to roadms are actually logical elements to simulate
@@ -156,7 +155,6 @@ def compute_path(network, pathreqlist):
         # we use deepcopy: to ensure each propagation is recorded and not 
         # overwritten 
         
-        # path_res_list.append(deepcopy(destination))
         path_res_list.append(deepcopy(total_path))
     return path_res_list
 
