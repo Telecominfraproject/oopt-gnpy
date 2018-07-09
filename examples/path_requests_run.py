@@ -59,11 +59,12 @@ def requests_from_json(json_data,equipment):
         params['destination'] = req['dst-tp-id']
         params['trx_type'] = req['path-constraints']['te-bandwidth']['trx_type']
         params['trx_mode'] = req['path-constraints']['te-bandwidth']['trx_mode']
+        params['frequency'] = tsp_lib[params['trx_type']].frequency
         try:
-            extra_params = next(m 
+            extra_params =  next(m 
                 for m in tsp_lib[params['trx_type']].mode if  m['format'] == params['trx_mode'])
         except StopIteration :
-            msg = f'could not find tsp : {params} with mode: {params} in eqpt library'
+            msg = f'could not find tsp : {params["trx_type"]} with mode: {params["trx_mode"]} in eqpt library'
             raise ValueError(msg)
         nd_list = req['optimizations']['explicit-route-include-objects']
         params['nodes_list'] = [n['unnumbered-hop']['node-id'] for n in nd_list]
@@ -87,50 +88,7 @@ def load_requests(filename,eqpt_filename):
             json_data = loads(f.read())
     return json_data
 
-# def compute_constrained_path(network, req):
-#     trx = [n for n in network.nodes() if isinstance(n, Transceiver)]
-#     roadm = [n for n in network.nodes() if isinstance(n, Roadm)]
-#     edfa = [n for n in network.nodes() if isinstance(n, Edfa)]
-
-#     source = next(el for el in trx if el.uid == req.source)
-#     # start the path with its source
-#     total_path = [source]
-#     for n in req.nodes_list:
-#         # print(n)
-#         try :
-#             node = next(el for el in trx if el.uid == n)
-#         except StopIteration:
-#             try:
-#                 node = next(el for el in roadm if el.uid == f'roadm {n}')
-#             except StopIteration:
-#                 try:
-#                     node = next(el for el in edfa 
-#                         if el.uid.startswith(f'egress edfa in {n}'))
-#                 except StopIteration:
-#                     msg = f'could not find node : {n} in network topology: \
-#                         not a trx, roadm, edfa or fused element'
-#                     logger.critical(msg)
-#                     raise ValueError(msg)
-#         # extend path list without repeating source -> skip first element in the list
-#         try:
-#             total_path.extend(dijkstra_path(network, source, node)[1:])
-#             source = node
-#         except NetworkXNoPath:
-#             # for debug
-#             # print(req.loose_list)
-#             # print(req.nodes_list.index(n))
-#             if req.loose_list[req.nodes_list.index(n)] == 'loose':
-#                 print(f'could not find a path from {source.uid} to loose node : {n} in network topology')
-#                 print(f'node  {n} is skipped')
-#             else:
-#                 msg = f'could not find a path from {source.uid} to node : {n} in network topology'
-#                 logger.critical(msg)
-#                 raise ValueError(msg)
-#     return total_path 
-
 def compute_path(network, pathreqlist):
-    # temporary : repeats calls from transmission_main_example
-    # to be merged when ready
     
     path_res_list = []
 

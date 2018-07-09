@@ -141,9 +141,11 @@ if __name__ == '__main__':
     params['spacing'] = 50e9
     params['power'] = 0
     params['nb_channel'] = 97
+    params['frequency'] = equipment['Transceiver'][params['trx_type']].frequency
     try:
         extra_params = next(m 
-            for m in equipment['Transceiver'][params['trx_type']].mode if  m['format'] == params['trx_mode'])
+            for m in equipment['Transceiver'][params['trx_type']].mode 
+                if  m['format'] == params['trx_mode'])
     except StopIteration :
         msg = f'could not find tsp : {params} with mode: {params} in eqpt library'
         raise ValueError(msg)

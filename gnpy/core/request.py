@@ -36,24 +36,23 @@ from numpy import log10
 
 
 RequestParams = namedtuple('RequestParams','request_id source destination trx_type'+
-' trx_mode nodes_list loose_list spacing power nb_channel format baudrate OSNR bit_rate')
+' trx_mode nodes_list loose_list spacing power nb_channel frequency format baudrate OSNR bit_rate')
 
 class Path_request:
     def __init__(self, *args, **params):
         params = RequestParams(**params)
         self.request_id = params.request_id
-        self.source = params.source
+        self.source     = params.source
         self.destination = params.destination
         self.tsp        = params.trx_type
         self.tsp_mode   = params.trx_mode
-        # retrieve baudrate out of transponder type and mode (format)
-
-        self.baudrate = params.baudrate
+        self.baudrate   = params.baudrate
         self.nodes_list = params.nodes_list
         self.loose_list = params.loose_list
         self.spacing    = params.spacing
         self.power      = params.power
         self.nb_channel = params.nb_channel
+        self.frequency  = params.frequency
         self.format     = params.format
         self.OSNR       = params.OSNR
         self.bit_rate   = params.bit_rate
@@ -175,9 +174,8 @@ def compute_constrained_path(network, req):
 def propagate(path,req,equipment, show=False):
     default_si_data = equipment['SI']['default']
     si = create_input_spectral_information(
-        default_si_data.f_min, default_si_data.roll_off,
+        req.frequency['min'], default_si_data.roll_off,
         req.baudrate, req.power, req.spacing, req.nb_channel)
-    # TODO :  use tsp f_min instead of default
     for el in path:
         si = el(si)
         if show :
