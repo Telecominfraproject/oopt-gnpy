@@ -143,17 +143,23 @@ class Fused(Node):
         carriers = tuple(self.propagate(*spectral_info.carriers))
         return spectral_info.update(carriers=carriers)
 
-FiberParams = namedtuple('FiberParams', 'type_variety length loss_coef length_units dispersion gamma')
+FiberParams = namedtuple('FiberParams', 'type_variety length loss_coef length_units connector_loss_in connector_loss_out dispersion gamma')
 
 class Fiber(Node):
     def __init__(self, *args, params=None, **kwargs):
         if params is None:
             params = {}
+        if 'connector_loss_in' not in params :
+            # test added to ensure backward compatibility in case loss was not in the json
+            params['connector_loss_in'] = 0.0
+            params['connector_loss_out'] = 0.0
         super().__init__(*args, params=FiberParams(**params), **kwargs)
         self.type_variety = self.params.type_variety
         self.length = self.params.length * UNITS[self.params.length_units] # in m
         self.loss_coef = self.params.loss_coef * 1e-3 # lineic loss dB/m
         self.lin_loss_coef = self.params.loss_coef / (20 * log10(exp(1)))
+        self.connector_loss_in = self.params.connector_loss_in
+        self.connector_loss_out = self.params.connector_loss_out
         self.dispersion = self.params.dispersion  # s/m/m
         self.gamma = self.params.gamma # 1/W/m       
         # TODO|jla: discuss factor 2 in the linear lineic attenuation
@@ -166,12 +172,13 @@ class Fiber(Node):
         return '\n'.join([f'{type(self).__name__} {self.uid}',
                           f'  type_variety: {self.type_variety}',
                           f'  length (m):   {self.length:.2f}',
-                          f'  loss (dB):    {self.loss:.2f}'])
+                          f'  loss (dB):    {self.loss:.2f}',
+                          f'  (includes conn loss (dB) in: {self.connector_loss_in:.2f} out: {self.connector_loss_out:.2f})'])
 
     @property
     def loss(self):
         # dB loss: useful for polymorphism (roadm, fiber, att)
-        return self.loss_coef * self.length
+        return self.loss_coef * self.length + self.connector_loss_in + self.connector_loss_out
 
     @property
     def passive(self):
@@ -251,12 +258,29 @@ class Fiber(Node):
         return carrier_nli
 
     def propagate(self, *carriers):
+
+        # apply connector_att_in on all carriers before computing gn analytics  premiere partie pas bonne
+        attenuation = db2lin(self.connector_loss_in)
+
+        chan = []
+        for carrier in carriers:
+            pwr = carrier.power
+            pwr = pwr._replace(signal=pwr.signal/attenuation,
+                               nonlinear_interference=pwr.nli/attenuation,
+                               amplified_spontaneous_emission=pwr.ase/attenuation)
+            carrier = carrier._replace(power=pwr)
+            chan.append(carrier)
+
+        carriers = tuple(f for f in chan)
+
+        # propagate in the fiber and apply attenuation out
+        attenuation = db2lin(self.connector_loss_out)
         for carrier in carriers:
             pwr = carrier.power
             carrier_nli = self._gn_analytic(carrier, *carriers)
-            pwr = pwr._replace(signal=pwr.signal/self.lin_attenuation,
-                               nonlinear_interference=(pwr.nli+carrier_nli)/self.lin_attenuation,
-                               amplified_spontaneous_emission=pwr.ase/self.lin_attenuation)
+            pwr = pwr._replace(signal=pwr.signal/self.lin_attenuation/attenuation,
+                               nonlinear_interference=(pwr.nli+carrier_nli)/self.lin_attenuation/attenuation,
+                               amplified_spontaneous_emission=pwr.ase/self.lin_attenuation/attenuation)
             yield carrier._replace(power=pwr)
 
     def __call__(self, spectral_info):

@@ -156,7 +156,9 @@ def convert_file(input_filename, filter_region=[]):
               'type_variety': x.east_fiber,
               'params': {'length':   round(x.east_distance, 3),
                          'length_units':    x.distance_units,
-                         'loss_coef': x.east_lineic}
+                         'loss_coef': x.east_lineic,
+                         'connector_loss_in':x.east_con_in,
+                         'connector_loss_out':x.east_con_out}
             }
               for x in links] +
             [{'uid': f'fiber ({x.to_city} → {x.from_city})-{x.west_cable}',
@@ -166,7 +168,9 @@ def convert_file(input_filename, filter_region=[]):
               'type_variety': x.west_fiber,
               'params': {'length':   round(x.west_distance, 3),
                          'length_units':    x.distance_units,
-                         'loss_coef': x.west_lineic}
+                         'loss_coef': x.west_lineic,
+                         'connector_loss_in':x.west_con_in,
+                         'connector_loss_out':x.west_con_out}
             } # missing ILA construction 
               for x in links] +
             [{'uid': f'egress edfa in {e.from_city} to {e.to_city}',

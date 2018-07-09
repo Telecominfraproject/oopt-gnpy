@@ -11,6 +11,8 @@ This module contains classes for modelling SpectralInformation.
 from collections import namedtuple
 from numpy import array
 from gnpy.core.utils import lin2db
+from json import loads
+from gnpy.core.utils import load_json
 
 class ConvenienceAccess:
 

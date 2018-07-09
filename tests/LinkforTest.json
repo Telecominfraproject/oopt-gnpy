@@ -1,0 +1,261 @@
+{
+  "elements": [
+    {
+      "uid": "trx A",
+      "metadata": {
+        "location": {
+          "city": "A",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx B",
+      "metadata": {
+        "location": {
+          "city": "B",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx F",
+      "metadata": {
+        "location": {
+          "city": "F",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "fiber (A \u2192 B)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "connector_loss_in": 1.00,
+        "connector_loss_out": 1.00
+      }
+    },
+    {
+      "uid": "fiber (B \u2192 C)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "connector_loss_in": 1.00,
+        "connector_loss_out": 1.00
+      }
+    },
+    {
+      "uid": "fiber (C \u2192 D)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "connector_loss_in": 1.00,
+        "connector_loss_out": 1.00
+      }
+    },
+    {
+      "uid": "fiber (D \u2192 E)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "connector_loss_in": 1.00,
+        "connector_loss_out": 1.00
+      }
+    },
+    {
+      "uid": "fiber (E \u2192 F)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "connector_loss_in": 1.00,
+        "connector_loss_out": 1.00
+      }
+    },
+        {
+            "uid": "Edfa1",
+            "type": "Edfa",
+            "type_variety": "std_medium_gain",            
+            "operational": {
+                "gain_target": 18,
+                "tilt_target": 0
+            },
+            "metadata": {
+                "location": {
+                    "region": "",
+                    "latitude": 2,
+                    "longitude": 0
+                }
+            }
+        },
+        {
+            "uid": "Edfa2",
+            "type": "Edfa",
+            "type_variety": "std_medium_gain",            
+            "operational": {
+                "gain_target": 18,
+                "tilt_target": 0
+            },
+            "metadata": {
+                "location": {
+                    "region": "",
+                    "latitude": 2,
+                    "longitude": 0
+                }
+            }
+        },
+        {
+            "uid": "Edfa3",
+            "type": "Edfa",
+            "type_variety": "std_medium_gain",            
+            "operational": {
+                "gain_target": 18,
+                "tilt_target": 0
+            },
+            "metadata": {
+                "location": {
+                    "region": "",
+                    "latitude": 2,
+                    "longitude": 0
+                }
+            }
+        },
+        {
+            "uid": "Edfa4",
+            "type": "Edfa",
+            "type_variety": "std_medium_gain",            
+            "operational": {
+                "gain_target": 18,
+                "tilt_target": 0
+            },
+            "metadata": {
+                "location": {
+                    "region": "",
+                    "latitude": 2,
+                    "longitude": 0
+                }
+            }
+        },
+        {
+            "uid": "Edfa5",
+            "type": "Edfa",
+            "type_variety": "std_medium_gain",            
+            "operational": {
+                "gain_target": 18,
+                "tilt_target": 0
+            },
+            "metadata": {
+                "location": {
+                    "region": "",
+                    "latitude": 2,
+                    "longitude": 0
+                }
+            }
+        }
+
+  ],
+  "connections": [
+    {
+      "from_node": "fiber (A \u2192 B)-",
+      "to_node": "Edfa1"
+    },
+    {
+      "from_node": "Edfa1",
+      "to_node": "fiber (B \u2192 C)-"
+    },
+    {
+      "from_node": "fiber (B \u2192 C)-",
+      "to_node": "Edfa2"
+    },
+    {
+      "from_node": "Edfa2",
+      "to_node": "fiber (C \u2192 D)-"
+    },
+    {
+      "from_node": "fiber (C \u2192 D)-",
+      "to_node": "Edfa3"
+    },
+    {
+      "from_node": "Edfa3",
+      "to_node": "fiber (D \u2192 E)-"
+    },
+    {
+      "from_node": "fiber (D \u2192 E)-",
+      "to_node": "Edfa4"
+    },
+    {
+      "from_node": "Edfa4",
+      "to_node": "fiber (E \u2192 F)-"
+    },
+    {
+      "from_node": "fiber (E \u2192 F)-",
+      "to_node": "Edfa5"
+    },
+    {
+      "from_node": "Edfa5",
+      "to_node": "trx F"
+    },
+    {
+      "from_node": "trx A",
+      "to_node": "fiber (A \u2192 B)-"
+    },
+    {
+      "from_node": "Edfa1",
+      "to_node": "trx B"
+    }
+  ]
+}
