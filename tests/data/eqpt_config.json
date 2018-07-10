@@ -1,0 +1,95 @@
+{     "Edfa":[{
+            "type_variety": "CienaDB_medium_gain",
+            "gain_flatmax": 25,
+            "gain_min": 15,
+            "p_max": 21,
+            "advanced_config_from_json": "std_medium_gain_advanced_config.json"
+            },
+            {
+            "type_variety": "std_medium_gain",
+            "gain_flatmax": 26,
+            "gain_min": 15,
+            "p_max": 21,
+            "nf_min": 6,
+            "nf_max": 10
+            },
+            {
+            "type_variety": "std_low_gain",
+            "gain_flatmax": 16,
+            "gain_min": 8,
+            "p_max": 21,
+            "nf_min": 7,
+            "nf_max": 11
+            },
+            {
+            "type_variety": "test",
+            "gain_flatmax": 25,
+            "gain_min": 15,
+            "p_max": 21,
+            "nf_min": 5.8,
+            "nf_max": 10
+            }
+      ],
+      "Fiber":[{
+            "type_variety": "SSMF",
+            "dispersion": 1.67e-05,
+            "gamma": 0.00127
+            }
+      ],
+      "Spans":[{
+            "max_length": 150,
+            "length_units": "km",
+            "max_loss": 28,
+            "padding": 10,
+            "EOL": 1,
+            "con_loss": 0.5
+            }
+      ],
+      "SI":[{
+            "f_min": 191.3e12,
+            "Nch": 80,
+            "baud_rate": 32e9,
+            "spacing": 75e9,
+            "roll_off": 0.15,
+            "power": 1.2589e-3
+            }],
+      "Transceiver":[
+            {
+            "type_variety": "vendorA_trx-type1",
+            "frequency":{
+                        "min": 191.35e12,
+                        "max": 196.1e12
+                        },
+            "mode":[
+                       {
+                       "format": "PS_SP64_1",
+                       "baudrate": 32e9,
+                       "OSNR": 9,
+                       "bit_rate": 100e9
+                       },
+                       {
+                       "format": "PS_SP64_2",
+                       "baudrate": 66e9,
+                       "OSNR": 10,
+                       "bit_rate": 200e9
+                       }
+                   ]
+            },
+            {
+            "type_variety": "Voyager_16QAM",
+            "frequency":{
+                        "min": 191.35e12,
+                        "max": 196.1e12
+                        },
+            "mode":[
+                       {
+                       "format": "16QAM",
+                       "baudrate": 32e9,
+                       "OSNR": 15,
+                       "bit_rate": 200e9
+                       }
+                   ]
+            }
+      ]
+
+}
