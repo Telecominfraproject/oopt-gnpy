@@ -19,7 +19,8 @@ from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels, dijkstra_path)
 from gnpy.core.network import load_network, build_network, set_roadm_loss, set_edfa_dp
 from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
-from gnpy.core.info import create_input_spectral_information, Channel, Power, Pref
+from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
+from gnpy.core.request import Path_request, RequestParams, compute_constrained_path, propagate
 
 logger = getLogger(__name__)
 
@@ -47,47 +48,19 @@ def plot_results(network, path, source, sink):
     show()
 
 
-def main(network, equipment, source, sink):
-    roadms = [roadm for roadm in network if isinstance(roadm, Roadm)]
-    default_roadm_loss = equipment['Roadms']['default'].gain_mode_default_loss
-    power_mode = equipment['Spans']['default'].power_mode
-    print('\n'.join([f'Power mode is set to {power_mode}',
-                     f'=> it can be modified in eqpt_config.json - Spans']))
-    set_roadm_loss(roadms, False, 0, default_roadm_loss)
+def main(network, equipment, source, sink, req = None):
     build_network(network, equipment=equipment)
-    path = dijkstra_path(network, source, sink)
-    if power_mode:
-        path_amps = [amp for amp in path if isinstance(amp, Edfa)]
-        set_edfa_dp(network, path_amps)     
-
+    
+    path = compute_constrained_path(network,req)
     spans = [s.length for s in path if isinstance(s, Fiber)]
     print(f'\nThere are {len(spans)} fiber spans over {sum(spans):.0f}m between {source.uid} and {sink.uid}')
     print(f'\nNow propagating between {source.uid} and {sink.uid}:')
-
-    pref_span_db = 0
-    bounds = range(0, 1) #power sweep
-
-    for p_db in range(pref_span_db+bounds.start, pref_span_db+bounds.stop): #change range to sweep results across several powers in dBm
-        p = db2lin(p_db)*1e-3
-
-        pref_roadm_db = equipment['Roadms']['default'].power_mode_pref #TODO parametrize in eqpt_json 
-        roadm_loss = p_db - pref_roadm_db #dynamic update the ROADM loss wrto power sweep to keep the same pref_roadm        
-        path_roadms = [roadm for roadm in path if isinstance(roadm, Roadm)]
-        set_roadm_loss(path_roadms, power_mode, roadm_loss, default_roadm_loss)
-            
-        spacing = 0.05e12 
-        bw = 32e9 #bandwidth Hz
-        frequency_start = 191.3e12
-        roll_off = 0.15
-        nch = 96
-        si = create_input_spectral_information(frequency_start, roll_off, bw, p, spacing, nch, p_db)
-
-        print(f'\nPorpagating with input power = {lin2db(p*1e3):.2f}dBm :')
-        for el in path:
-            si = el(si)
-            print(el) #remove this line when sweeping across several powers
-        print(f'\nTransmission result for input power = {lin2db(p*1e3):.2f}dBm :')
-        print(sink)
+    
+    for p in range(0, 1): #change range to sweep results across several powers in dBm
+        req.power = db2lin(p)*1e-3
+        print(f'\nPropagating with input power = {lin2db(req.power*1e3):.2f}dBm :')
+        propagate(path,req,equipment,show=True)
+        print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f}dBm :')
 
     return path
 
@@ -111,7 +84,7 @@ if __name__ == '__main__':
     # logger.info(equipment)
     print(args.filename)
     network = load_network(args.filename, equipment)
-    print(network)
+    # print(network)
 
     transceivers = {n.uid: n for n in network.nodes() if isinstance(n, Transceiver)}
     
@@ -159,7 +132,29 @@ if __name__ == '__main__':
 
     logger.info(f'source = {args.source!r}')
     logger.info(f'sink = {args.sink!r}')
-    path = main(network, equipment, source, sink)
+
+    params = {}
+    params['request_id'] = 0
+    params['source'] = source.uid
+    params['destination'] = sink.uid
+    params['trx_type'] = 'vendorA_trx-type1'
+    params['trx_mode'] = 'PS_SP64_1'
+    params['nodes_list'] = [sink.uid]
+    params['loose_list'] = ['strict']
+    params['spacing'] = 50e9
+    params['power'] = 0
+    params['nb_channel'] = 97
+    params['frequency'] = equipment['Transceiver'][params['trx_type']].frequency
+    try:
+        extra_params = next(m 
+            for m in equipment['Transceiver'][params['trx_type']].mode 
+                if  m['format'] == params['trx_mode'])
+    except StopIteration :
+        msg = f'could not find tsp : {params} with mode: {params} in eqpt library'
+        raise ValueError(msg)
+    params.update(extra_params)
+    req = Path_request(**params)
+    path = main(network, equipment, source, sink,req)
 
     if args.plot:
         plot_results(network, path, source, sink)

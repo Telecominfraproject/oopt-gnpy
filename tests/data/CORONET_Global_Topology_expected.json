@@ -1237,7 +1237,9 @@
       "params": {
         "length": 336.951,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1253,7 +1255,9 @@
       "params": {
         "length": 761.209,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1269,7 +1273,9 @@
       "params": {
         "length": 277.065,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1285,7 +1291,9 @@
       "params": {
         "length": 234.221,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1301,7 +1309,9 @@
       "params": {
         "length": 1133.443,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1317,7 +1327,9 @@
       "params": {
         "length": 647.737,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1333,7 +1345,9 @@
       "params": {
         "length": 436.949,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1349,7 +1363,9 @@
       "params": {
         "length": 943.536,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1365,7 +1381,9 @@
       "params": {
         "length": 690.608,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1381,7 +1399,9 @@
       "params": {
         "length": 210.729,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1397,7 +1417,9 @@
       "params": {
         "length": 436.324,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1413,7 +1435,9 @@
       "params": {
         "length": 7035.611,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1429,7 +1453,9 @@
       "params": {
         "length": 266.228,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1445,7 +1471,9 @@
       "params": {
         "length": 439.238,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1461,7 +1489,9 @@
       "params": {
         "length": 554.111,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1477,7 +1507,9 @@
       "params": {
         "length": 282.049,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1493,7 +1525,9 @@
       "params": {
         "length": 143.553,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1509,7 +1543,9 @@
       "params": {
         "length": 179.195,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1525,7 +1561,9 @@
       "params": {
         "length": 384.819,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1541,7 +1579,9 @@
       "params": {
         "length": 67.179,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1557,7 +1597,9 @@
       "params": {
         "length": 3505.95,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1573,7 +1615,9 @@
       "params": {
         "length": 2070.724,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1589,7 +1633,9 @@
       "params": {
         "length": 500.152,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1605,7 +1651,9 @@
       "params": {
         "length": 147.35,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1621,7 +1669,9 @@
       "params": {
         "length": 1146.124,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1637,7 +1687,9 @@
       "params": {
         "length": 1284.465,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1653,7 +1705,9 @@
       "params": {
         "length": 623.015,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1669,7 +1723,9 @@
       "params": {
         "length": 729.017,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1685,7 +1741,9 @@
       "params": {
         "length": 880.042,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1701,7 +1759,9 @@
       "params": {
         "length": 848.858,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1717,7 +1777,9 @@
       "params": {
         "length": 352.383,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1733,7 +1795,9 @@
       "params": {
         "length": 582.464,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1749,7 +1813,9 @@
       "params": {
         "length": 738.94,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1765,7 +1831,9 @@
       "params": {
         "length": 79.923,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1781,7 +1849,9 @@
       "params": {
         "length": 381.913,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1797,7 +1867,9 @@
       "params": {
         "length": 528.58,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1813,7 +1885,9 @@
       "params": {
         "length": 1136.2,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1829,7 +1903,9 @@
       "params": {
         "length": 336.434,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1845,7 +1921,9 @@
       "params": {
         "length": 126.626,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1861,7 +1939,9 @@
       "params": {
         "length": 379.311,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1877,7 +1957,9 @@
       "params": {
         "length": 430.182,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1893,7 +1975,9 @@
       "params": {
         "length": 159.883,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1909,7 +1993,9 @@
       "params": {
         "length": 459.145,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1925,7 +2011,9 @@
       "params": {
         "length": 165.326,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1941,7 +2029,9 @@
       "params": {
         "length": 357.573,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1957,7 +2047,9 @@
       "params": {
         "length": 193.215,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1973,7 +2065,9 @@
       "params": {
         "length": 177.493,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -1989,7 +2083,9 @@
       "params": {
         "length": 777.051,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2005,7 +2101,9 @@
       "params": {
         "length": 238.963,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2021,7 +2119,9 @@
       "params": {
         "length": 191.244,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2037,7 +2137,9 @@
       "params": {
         "length": 294.714,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2053,7 +2155,9 @@
       "params": {
         "length": 432.731,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2069,7 +2173,9 @@
       "params": {
         "length": 553.958,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2085,7 +2191,9 @@
       "params": {
         "length": 366.936,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2101,7 +2209,9 @@
       "params": {
         "length": 5457.525,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2117,7 +2227,9 @@
       "params": {
         "length": 1402.141,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2133,7 +2245,9 @@
       "params": {
         "length": 920.337,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2149,7 +2263,9 @@
       "params": {
         "length": 731.272,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2165,7 +2281,9 @@
       "params": {
         "length": 107.244,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2181,7 +2299,9 @@
       "params": {
         "length": 964.453,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2197,7 +2317,9 @@
       "params": {
         "length": 505.749,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2213,7 +2335,9 @@
       "params": {
         "length": 717.001,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2229,7 +2353,9 @@
       "params": {
         "length": 496.199,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2245,7 +2371,9 @@
       "params": {
         "length": 386.671,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2261,7 +2389,9 @@
       "params": {
         "length": 289.941,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2277,7 +2407,9 @@
       "params": {
         "length": 690.409,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2293,7 +2425,9 @@
       "params": {
         "length": 131.097,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2309,7 +2443,9 @@
       "params": {
         "length": 317.897,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2325,7 +2461,9 @@
       "params": {
         "length": 186.271,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2341,7 +2479,9 @@
       "params": {
         "length": 125.56,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2357,7 +2497,9 @@
       "params": {
         "length": 1480.406,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2373,7 +2515,9 @@
       "params": {
         "length": 8856.6,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2389,7 +2533,9 @@
       "params": {
         "length": 966.177,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2405,7 +2551,9 @@
       "params": {
         "length": 4921.459,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2421,7 +2569,9 @@
       "params": {
         "length": 9808.616,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2437,7 +2587,9 @@
       "params": {
         "length": 9767.013,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2453,7 +2605,9 @@
       "params": {
         "length": 1650.406,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2469,7 +2623,9 @@
       "params": {
         "length": 246.577,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2485,7 +2641,9 @@
       "params": {
         "length": 314.032,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2501,7 +2659,9 @@
       "params": {
         "length": 470.866,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2517,7 +2677,9 @@
       "params": {
         "length": 418.438,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2533,7 +2695,9 @@
       "params": {
         "length": 495.9,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2549,7 +2713,9 @@
       "params": {
         "length": 700.005,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2565,7 +2731,9 @@
       "params": {
         "length": 261.343,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2581,7 +2749,9 @@
       "params": {
         "length": 411.692,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2597,7 +2767,9 @@
       "params": {
         "length": 7079.447,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2613,7 +2785,9 @@
       "params": {
         "length": 29.362,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2629,7 +2803,9 @@
       "params": {
         "length": 223.845,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2645,7 +2821,9 @@
       "params": {
         "length": 150.677,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2661,7 +2839,9 @@
       "params": {
         "length": 295.118,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2677,7 +2857,9 @@
       "params": {
         "length": 473.802,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2693,7 +2875,9 @@
       "params": {
         "length": 1263.619,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2709,7 +2893,9 @@
       "params": {
         "length": 1497.358,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2725,7 +2911,9 @@
       "params": {
         "length": 377.836,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2741,7 +2929,9 @@
       "params": {
         "length": 8829.358,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2757,7 +2947,9 @@
       "params": {
         "length": 397.115,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2773,7 +2965,9 @@
       "params": {
         "length": 129.825,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2789,7 +2983,9 @@
       "params": {
         "length": 568.334,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2805,7 +3001,9 @@
       "params": {
         "length": 561.327,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2821,7 +3019,9 @@
       "params": {
         "length": 7415.841,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2837,7 +3037,9 @@
       "params": {
         "length": 4692.708,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2853,7 +3055,9 @@
       "params": {
         "length": 653.359,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2869,7 +3073,9 @@
       "params": {
         "length": 24.214,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2885,7 +3091,9 @@
       "params": {
         "length": 199.575,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2901,7 +3109,9 @@
       "params": {
         "length": 204.152,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2917,7 +3127,9 @@
       "params": {
         "length": 136.06,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2933,7 +3145,9 @@
       "params": {
         "length": 298.656,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2949,7 +3163,9 @@
       "params": {
         "length": 383.669,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2965,7 +3181,9 @@
       "params": {
         "length": 132.649,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2981,7 +3199,9 @@
       "params": {
         "length": 1135.717,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -2997,7 +3217,9 @@
       "params": {
         "length": 25.72,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3013,7 +3235,9 @@
       "params": {
         "length": 12461.707,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3029,7 +3253,9 @@
       "params": {
         "length": 193.359,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3045,7 +3271,9 @@
       "params": {
         "length": 275.793,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3061,7 +3289,9 @@
       "params": {
         "length": 193.409,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3077,7 +3307,9 @@
       "params": {
         "length": 574.675,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3093,7 +3325,9 @@
       "params": {
         "length": 222.458,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3109,7 +3343,9 @@
       "params": {
         "length": 473.565,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3125,7 +3361,9 @@
       "params": {
         "length": 937.74,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3141,7 +3379,9 @@
       "params": {
         "length": 1221.189,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3157,7 +3397,9 @@
       "params": {
         "length": 279.082,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3173,7 +3415,9 @@
       "params": {
         "length": 9349.706,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3189,7 +3433,9 @@
       "params": {
         "length": 190.145,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3205,7 +3451,9 @@
       "params": {
         "length": 145.266,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3221,7 +3469,9 @@
       "params": {
         "length": 920.026,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3237,7 +3487,9 @@
       "params": {
         "length": 823.4,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3253,7 +3505,9 @@
       "params": {
         "length": 77.163,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3269,7 +3523,9 @@
       "params": {
         "length": 446.99,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3285,7 +3541,9 @@
       "params": {
         "length": 223.775,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3301,7 +3559,9 @@
       "params": {
         "length": 444.207,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3317,7 +3577,9 @@
       "params": {
         "length": 1391.085,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3333,7 +3595,9 @@
       "params": {
         "length": 7562.331,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3349,7 +3613,9 @@
       "params": {
         "length": 144.06,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3365,7 +3631,9 @@
       "params": {
         "length": 2537.345,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3381,7 +3649,9 @@
       "params": {
         "length": 394.094,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3397,7 +3667,9 @@
       "params": {
         "length": 669.297,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3413,7 +3685,9 @@
       "params": {
         "length": 336.951,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3429,7 +3703,9 @@
       "params": {
         "length": 761.209,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3445,7 +3721,9 @@
       "params": {
         "length": 277.065,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3461,7 +3739,9 @@
       "params": {
         "length": 234.221,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3477,7 +3757,9 @@
       "params": {
         "length": 1133.443,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3493,7 +3775,9 @@
       "params": {
         "length": 647.737,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3509,7 +3793,9 @@
       "params": {
         "length": 436.949,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3525,7 +3811,9 @@
       "params": {
         "length": 943.536,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3541,7 +3829,9 @@
       "params": {
         "length": 690.608,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3557,7 +3847,9 @@
       "params": {
         "length": 210.729,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3573,7 +3865,9 @@
       "params": {
         "length": 436.324,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3589,7 +3883,9 @@
       "params": {
         "length": 7035.611,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3605,7 +3901,9 @@
       "params": {
         "length": 266.228,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3621,7 +3919,9 @@
       "params": {
         "length": 439.238,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3637,7 +3937,9 @@
       "params": {
         "length": 554.111,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3653,7 +3955,9 @@
       "params": {
         "length": 282.049,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3669,7 +3973,9 @@
       "params": {
         "length": 143.553,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3685,7 +3991,9 @@
       "params": {
         "length": 179.195,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3701,7 +4009,9 @@
       "params": {
         "length": 384.819,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3717,7 +4027,9 @@
       "params": {
         "length": 67.179,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3733,7 +4045,9 @@
       "params": {
         "length": 3505.95,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3749,7 +4063,9 @@
       "params": {
         "length": 2070.724,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3765,7 +4081,9 @@
       "params": {
         "length": 500.152,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3781,7 +4099,9 @@
       "params": {
         "length": 147.35,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3797,7 +4117,9 @@
       "params": {
         "length": 1146.124,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3813,7 +4135,9 @@
       "params": {
         "length": 1284.465,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3829,7 +4153,9 @@
       "params": {
         "length": 623.015,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3845,7 +4171,9 @@
       "params": {
         "length": 729.017,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3861,7 +4189,9 @@
       "params": {
         "length": 880.042,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3877,7 +4207,9 @@
       "params": {
         "length": 848.858,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3893,7 +4225,9 @@
       "params": {
         "length": 352.383,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3909,7 +4243,9 @@
       "params": {
         "length": 582.464,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3925,7 +4261,9 @@
       "params": {
         "length": 738.94,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3941,7 +4279,9 @@
       "params": {
         "length": 79.923,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3957,7 +4297,9 @@
       "params": {
         "length": 381.913,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3973,7 +4315,9 @@
       "params": {
         "length": 528.58,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -3989,7 +4333,9 @@
       "params": {
         "length": 1136.2,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4005,7 +4351,9 @@
       "params": {
         "length": 336.434,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4021,7 +4369,9 @@
       "params": {
         "length": 126.626,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4037,7 +4387,9 @@
       "params": {
         "length": 379.311,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4053,7 +4405,9 @@
       "params": {
         "length": 430.182,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4069,7 +4423,9 @@
       "params": {
         "length": 159.883,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4085,7 +4441,9 @@
       "params": {
         "length": 459.145,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4101,7 +4459,9 @@
       "params": {
         "length": 165.326,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4117,7 +4477,9 @@
       "params": {
         "length": 357.573,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4133,7 +4495,9 @@
       "params": {
         "length": 193.215,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4149,7 +4513,9 @@
       "params": {
         "length": 177.493,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4165,7 +4531,9 @@
       "params": {
         "length": 777.051,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4181,7 +4549,9 @@
       "params": {
         "length": 238.963,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4197,7 +4567,9 @@
       "params": {
         "length": 191.244,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4213,7 +4585,9 @@
       "params": {
         "length": 294.714,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4229,7 +4603,9 @@
       "params": {
         "length": 432.731,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4245,7 +4621,9 @@
       "params": {
         "length": 553.958,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4261,7 +4639,9 @@
       "params": {
         "length": 366.936,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4277,7 +4657,9 @@
       "params": {
         "length": 5457.525,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4293,7 +4675,9 @@
       "params": {
         "length": 1402.141,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4309,7 +4693,9 @@
       "params": {
         "length": 920.337,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4325,7 +4711,9 @@
       "params": {
         "length": 731.272,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4341,7 +4729,9 @@
       "params": {
         "length": 107.244,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4357,7 +4747,9 @@
       "params": {
         "length": 964.453,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4373,7 +4765,9 @@
       "params": {
         "length": 505.749,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4389,7 +4783,9 @@
       "params": {
         "length": 717.001,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4405,7 +4801,9 @@
       "params": {
         "length": 496.199,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4421,7 +4819,9 @@
       "params": {
         "length": 386.671,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4437,7 +4837,9 @@
       "params": {
         "length": 289.941,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4453,7 +4855,9 @@
       "params": {
         "length": 690.409,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4469,7 +4873,9 @@
       "params": {
         "length": 131.097,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4485,7 +4891,9 @@
       "params": {
         "length": 317.897,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4501,7 +4909,9 @@
       "params": {
         "length": 186.271,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4517,7 +4927,9 @@
       "params": {
         "length": 125.56,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4533,7 +4945,9 @@
       "params": {
         "length": 1480.406,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4549,7 +4963,9 @@
       "params": {
         "length": 8856.6,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4565,7 +4981,9 @@
       "params": {
         "length": 966.177,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4581,7 +4999,9 @@
       "params": {
         "length": 4921.459,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4597,7 +5017,9 @@
       "params": {
         "length": 9808.616,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4613,7 +5035,9 @@
       "params": {
         "length": 9767.013,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4629,7 +5053,9 @@
       "params": {
         "length": 1650.406,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4645,7 +5071,9 @@
       "params": {
         "length": 246.577,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4661,7 +5089,9 @@
       "params": {
         "length": 314.032,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4677,7 +5107,9 @@
       "params": {
         "length": 470.866,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4693,7 +5125,9 @@
       "params": {
         "length": 418.438,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4709,7 +5143,9 @@
       "params": {
         "length": 495.9,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4725,7 +5161,9 @@
       "params": {
         "length": 700.005,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4741,7 +5179,9 @@
       "params": {
         "length": 261.343,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4757,7 +5197,9 @@
       "params": {
         "length": 411.692,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4773,7 +5215,9 @@
       "params": {
         "length": 7079.447,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4789,7 +5233,9 @@
       "params": {
         "length": 29.362,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4805,7 +5251,9 @@
       "params": {
         "length": 223.845,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4821,7 +5269,9 @@
       "params": {
         "length": 150.677,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4837,7 +5287,9 @@
       "params": {
         "length": 295.118,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4853,7 +5305,9 @@
       "params": {
         "length": 473.802,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4869,7 +5323,9 @@
       "params": {
         "length": 1263.619,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4885,7 +5341,9 @@
       "params": {
         "length": 1497.358,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4901,7 +5359,9 @@
       "params": {
         "length": 377.836,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4917,7 +5377,9 @@
       "params": {
         "length": 8829.358,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4933,7 +5395,9 @@
       "params": {
         "length": 397.115,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4949,7 +5413,9 @@
       "params": {
         "length": 129.825,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4965,7 +5431,9 @@
       "params": {
         "length": 568.334,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4981,7 +5449,9 @@
       "params": {
         "length": 561.327,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -4997,7 +5467,9 @@
       "params": {
         "length": 7415.841,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5013,7 +5485,9 @@
       "params": {
         "length": 4692.708,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5029,7 +5503,9 @@
       "params": {
         "length": 653.359,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5045,7 +5521,9 @@
       "params": {
         "length": 24.214,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5061,7 +5539,9 @@
       "params": {
         "length": 199.575,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5077,7 +5557,9 @@
       "params": {
         "length": 204.152,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5093,7 +5575,9 @@
       "params": {
         "length": 136.06,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5109,7 +5593,9 @@
       "params": {
         "length": 298.656,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5125,7 +5611,9 @@
       "params": {
         "length": 383.669,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5141,7 +5629,9 @@
       "params": {
         "length": 132.649,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5157,7 +5647,9 @@
       "params": {
         "length": 1135.717,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5173,7 +5665,9 @@
       "params": {
         "length": 25.72,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5189,7 +5683,9 @@
       "params": {
         "length": 12461.707,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5205,7 +5701,9 @@
       "params": {
         "length": 193.359,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5221,7 +5719,9 @@
       "params": {
         "length": 275.793,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5237,7 +5737,9 @@
       "params": {
         "length": 193.409,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5253,7 +5755,9 @@
       "params": {
         "length": 574.675,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5269,7 +5773,9 @@
       "params": {
         "length": 222.458,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5285,7 +5791,9 @@
       "params": {
         "length": 473.565,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5301,7 +5809,9 @@
       "params": {
         "length": 937.74,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5317,7 +5827,9 @@
       "params": {
         "length": 1221.189,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5333,7 +5845,9 @@
       "params": {
         "length": 279.082,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5349,7 +5863,9 @@
       "params": {
         "length": 9349.706,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5365,7 +5881,9 @@
       "params": {
         "length": 190.145,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5381,7 +5899,9 @@
       "params": {
         "length": 145.266,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5397,7 +5917,9 @@
       "params": {
         "length": 920.026,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5413,7 +5935,9 @@
       "params": {
         "length": 823.4,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5429,7 +5953,9 @@
       "params": {
         "length": 77.163,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5445,7 +5971,9 @@
       "params": {
         "length": 446.99,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5461,7 +5989,9 @@
       "params": {
         "length": 223.775,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5477,7 +6007,9 @@
       "params": {
         "length": 444.207,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5493,7 +6025,9 @@
       "params": {
         "length": 1391.085,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5509,7 +6043,9 @@
       "params": {
         "length": 7562.331,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5525,7 +6061,9 @@
       "params": {
         "length": 144.06,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5541,7 +6079,9 @@
       "params": {
         "length": 2537.345,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5557,7 +6097,9 @@
       "params": {
         "length": 394.094,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     },
     {
@@ -5573,7 +6115,9 @@
       "params": {
         "length": 669.297,
         "length_units": "km",
-        "loss_coef": 0.2
+        "loss_coef": 0.2,
+        "connector_loss_in": 0.5,
+        "connector_loss_out": 0.5
       }
     }
   ],

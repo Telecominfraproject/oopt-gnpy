@@ -11,6 +11,8 @@ This module contains classes for modelling SpectralInformation.
 from collections import namedtuple
 from numpy import array
 from gnpy.core.utils import lin2db
+from json import loads
+from gnpy.core.utils import load_json
 
 class ConvenienceAccess:
 
@@ -49,11 +51,11 @@ class Pref(namedtuple('Pref', 'p_span0, p_spani'), ConvenienceAccess):
 
 class SpectralInformation(namedtuple('SpectralInformation', 'pref, carriers'), ConvenienceAccess):
 
-    def __new__(cls, pref, *carriers):
+    def __new__(cls, pref=Pref(0, 0), *carriers):
         return super().__new__(cls, pref, carriers)
 
 
-def create_input_spectral_information(f_min, roll_off, baudrate, power, spacing, nb_channel, pref):
+def create_input_spectral_information(f_min, roll_off, baudrate, power, spacing, nb_channel, pref=0):
     si = SpectralInformation(pref=Pref(pref, pref))
     si = si.update(carriers=[
             Channel(f, (f_min+spacing*f), 
