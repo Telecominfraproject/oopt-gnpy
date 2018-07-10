@@ -76,6 +76,31 @@ def select_edfa(ingress_span_loss, equipment):
         #chose the amp with the best NF among the acceptable ones:
         return min(acceptable_edfa_list, key=itemgetter(2))[0]
 
+def set_roadm_loss(path_roadms, power_mode, roadm_loss, default_roadm_loss):
+    for roadm in path_roadms:
+        if power_mode:
+            roadm.loss = roadm_loss
+        elif roadm.loss == None:
+            roadm.loss = default_roadm_loss
+
+def set_edfa_dp(network, amps):
+    prev_dp = 0
+    for amp in amps:
+        next_node = [n for n in network.successors(amp)][0]
+        prev_node = [n for n in network.predecessors(amp)][0]
+        prev_node_loss = span_loss(network, prev_node)
+        if isinstance(next_node, Roadm): #ingress amp: set dp = 0
+            dp = 0
+        else:
+            dp = prev_dp + amp.operational.gain_target - prev_node_loss
+            #print('prev_node', prev_node, prev_node_loss)
+            #print('amp',amp)
+            #print('next node', next_node)
+            #print('gain', amp.operational.gain_target)
+            #print('edfa dp',prev_dp,dp)
+        amp.dp_db = dp
+        prev_dp = dp
+
 def prev_fiber_node_generator(network, node):
     """fused spans interest:
     iterate over all predecessors while they are Fiber type"""
@@ -157,6 +182,7 @@ def split_fiber(network, fiber, bounds, target, equipment):
     prev_node = [n for n in network.predecessors(fiber)][0]
     network.remove_edge(fiber, next_node)
     network.remove_edge(prev_node, fiber)
+    network.remove_node(fiber)
     new_spans = [
         Fiber(
             uid =      f'{fiber.uid}_({span}/{n_spans})',
@@ -164,12 +190,18 @@ def split_fiber(network, fiber, bounds, target, equipment):
             params = fiber.params._asdict()
         ) for span in range(n_spans)
     ]
-    for new_span in new_spans:
+    new_spans[0].length = new_length
+    network.add_node(new_spans[0])
+    network.add_edge(prev_node, new_spans[0])
+    prev_node = new_spans[0]
+    for new_span in new_spans[1:]:
+        new_span.length = new_length
         network.add_node(new_span)
         network.add_edge(prev_node, new_span)
-        add_egress_amplifier(network, new_span, equipment)
+        add_egress_amplifier(network, prev_node, equipment)
         prev_node = new_span
     network.add_edge(prev_node, next_node)
+    add_egress_amplifier(network, prev_node, equipment)
 
 def build_network(network, equipment, bounds=range(75_000, 150_000), target=100_000):
     fibers = [f for f in network.nodes() if isinstance(f, Fiber)]
