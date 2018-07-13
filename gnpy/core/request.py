@@ -34,29 +34,18 @@ from gnpy.core.info import create_input_spectral_information, SpectralInformatio
 from copy import copy, deepcopy
 from numpy import log10
 
+RequestParams = namedtuple('RequestParams','request_id source destination trx_type \
+                            trx_mode nodes_list loose_list spacing power nb_channel frequency \
+                            mode baudrate OSNR bit_rate')
 
-RequestParams = namedtuple('RequestParams','request_id source destination trx_type'+
-' trx_mode nodes_list loose_list spacing power nb_channel frequency format baudrate OSNR bit_rate')
-
-class Path_request:
-    def __init__(self, *args, **params):
-        params = RequestParams(**params)
-        self.request_id = params.request_id
-        self.source     = params.source
-        self.destination = params.destination
-        self.tsp        = params.trx_type
-        self.tsp_mode   = params.trx_mode
-        self.baudrate   = params.baudrate
-        self.nodes_list = params.nodes_list
-        self.loose_list = params.loose_list
-        self.spacing    = params.spacing
-        self.power      = params.power
-        self.nb_channel = params.nb_channel
-        self.frequency  = params.frequency
-        self.format     = params.format
-        self.OSNR       = params.OSNR
-        self.bit_rate   = params.bit_rate
-        
+class Path_request(RequestParams):
+    def __new__(cls, request_id=0, source='', destination='', trx_type='',
+                trx_mode='', nodes_list='', loose_list=['strict'],
+                spacing=50, power=1e-3, nb_channel=80, frequency={'min': 191.35e12, 'max': 196.10e12},
+                mode ='', baudrate=32, OSNR=15, bit_rate=100):
+        return super().__new__(cls, request_id, source, destination, trx_type,
+                trx_mode, nodes_list, loose_list, spacing, power, nb_channel, frequency,
+                mode, baudrate, OSNR, bit_rate)
 
     def __str__(self):
         return '\n\t'.join([  f'{type(self).__name__} {self.request_id}',
@@ -171,7 +160,7 @@ def compute_constrained_path(network, req):
                 raise ValueError(msg)
     return total_path 
 
-def propagate(path,req,equipment, show=False):
+def propagate(path, req, equipment, show=False):
     default_si_data = equipment['SI']['default']
     si = create_input_spectral_information(
         req.frequency['min'], default_si_data.roll_off,

@@ -5,7 +5,7 @@ reads from network json (default = examples/edfa/edfa_example_network.json)
 propagates a 96 channels comb 
 '''
 
-from gnpy.core.equipment import load_equipment
+from gnpy.core.equipment import load_equipment, trx_mode_params
 from gnpy.core.utils import db2lin, lin2db
 from argparse import ArgumentParser
 from sys import exit
@@ -67,9 +67,12 @@ def main(network, equipment, source, sink, req = None):
 parser = ArgumentParser()
 parser.add_argument('-e', '--equipment', type=Path,
                     default=Path(__file__).parent / 'eqpt_config.json')
-parser.add_argument('-p', '--plot', action='store_true', default=False)
+parser.add_argument('-pl', '--plot', action='store_true', default=False)
 parser.add_argument('-v', '--verbose', action='count')
 parser.add_argument('-l', '--list-nodes', action='store_true', default=False, help='list all transceiver nodes')
+parser.add_argument('-po', '--power', default=0, help='channel ref power in dBm')
+#parser.add_argument('-plb', '--power-lower-bound', default=0, help='power sweep lower bound')
+#parser.add_argument('-pub', '--power-upper-bound', default=1, help='power sweep upper bound')
 parser.add_argument('filename', nargs='?', type=Path,
                     default=Path(__file__).parent / 'edfa_example_network.json')
 parser.add_argument('source', nargs='?', help='source node')
@@ -134,27 +137,16 @@ if __name__ == '__main__':
     logger.info(f'sink = {args.sink!r}')
 
     params = {}
-    params['request_id'] = 0
+    default_trx_params = {}
     params['source'] = source.uid
     params['destination'] = sink.uid
-    params['trx_type'] = 'vendorA_trx-type1'
-    params['trx_mode'] = 'PS_SP64_1'
     params['nodes_list'] = [sink.uid]
-    params['loose_list'] = ['strict']
-    params['spacing'] = 50e9
-    params['power'] = 0
-    params['nb_channel'] = 97
-    params['frequency'] = equipment['Transceiver'][params['trx_type']].frequency
-    try:
-        extra_params = next(m 
-            for m in equipment['Transceiver'][params['trx_type']].mode 
-                if  m['format'] == params['trx_mode'])
-    except StopIteration :
-        msg = f'could not find tsp : {params} with mode: {params} in eqpt library'
-        raise ValueError(msg)
-    params.update(extra_params)
+    if args.power: params['power'] = db2lin(args.power)*1e-3
+    default_trx_params = {'baudrate'=33e9}
+    trx_params = trx_mode_params(equipment, '', '', default_trx_params)
+    params.update(trx_params)
     req = Path_request(**params)
-    path = main(network, equipment, source, sink,req)
+    path = main(network, equipment, source, sink, req)
 
     if args.plot:
         plot_results(network, path, source, sink)

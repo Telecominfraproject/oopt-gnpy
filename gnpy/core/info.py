@@ -54,8 +54,13 @@ class SpectralInformation(namedtuple('SpectralInformation', 'pref, carriers'), C
     def __new__(cls, pref=Pref(0, 0), *carriers):
         return super().__new__(cls, pref, carriers)
 
+def merge_input_spectral_information(*si):
+    """mix channel combs of different baud rates and power"""
+    #TODO
+    pass
 
-def create_input_spectral_information(f_min, roll_off, baudrate, power, spacing, nb_channel, pref=0):
+def create_input_spectral_information(f_min, roll_off, baudrate, power, spacing, nb_channel):
+    pref = lin2db(power * 1e3)
     si = SpectralInformation(pref=Pref(pref, pref))
     si = si.update(carriers=[
             Channel(f, (f_min+spacing*f), 

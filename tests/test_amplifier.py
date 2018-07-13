@@ -82,7 +82,7 @@ def test_nf_calc(gain, nf_expected, enabled, setup_edfa, si):
     pref=Pref(0, 0)
     edfa.interpol_params(frequencies, pin, baud_rates, pref)
 
-    assert pytest.approx(nf_expected) == edfa.nf[0]
+    assert pytest.approx(nf_expected, abs=0.01) == edfa.nf[0]
 
 @pytest.mark.parametrize("gain", [17, 19, 21, 23])
 def test_compare_nf_models(gain, setup_edfa, si):
@@ -111,7 +111,7 @@ def test_si(si, nch_and_spacing):
     pin = np.array([c.power.signal+c.power.nli+c.power.ase for c in si.carriers])
     p_tot = np.sum(pin)
     expected_p_tot = si.carriers[0].power.signal * nch
-    assert pytest.approx(expected_p_tot) == p_tot
+    assert pytest.approx(expected_p_tot, abs=0.01) == p_tot
 
 @pytest.mark.parametrize("gain", [13, 15, 17, 19, 21, 23, 25, 27]) 
 def test_ase_noise(gain, si, setup_edfa, setup_trx, bw):
