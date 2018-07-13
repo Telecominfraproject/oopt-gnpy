@@ -37,7 +37,7 @@
             }
       ],
       "Spans":[{
-            "power_mode": false,
+            "power_mode": true,
             "max_length": 150,
             "length_units": "km",
             "max_loss": 28,
@@ -52,11 +52,11 @@
             }],
       "SI":[{
             "f_min": 191.3e12,
-            "Nch": 80,
+            "f_max":196.1e12,
             "baud_rate": 32e9,
-            "spacing": 75e9,
-            "roll_off": 0.15,
-            "power": 1.2589e-3
+            "spacing": 50e9,
+            "power": 1e-3,
+            "roll_off": 0.15
             }],
       "Transceiver":[
             {

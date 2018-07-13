@@ -76,16 +76,19 @@ def select_edfa(ingress_span_loss, equipment):
         #chose the amp with the best NF among the acceptable ones:
         return min(acceptable_edfa_list, key=itemgetter(2))[0]
 
-def set_roadm_loss(path_roadms, power_mode, roadm_loss, default_roadm_loss):
-    for roadm in path_roadms:
+def set_roadm_loss(network, equipment, power_mode, roadm_loss):
+    roadms = [roadm for roadm in network if isinstance(roadm, Roadm)]
+    default_roadm_loss = equipment['Roadms']['default'].gain_mode_default_loss
+    for roadm in roadms:
         if power_mode:
             roadm.loss = roadm_loss
         elif roadm.loss == None:
             roadm.loss = default_roadm_loss
 
-def set_edfa_dp(network, amps):
+def set_edfa_dp(network, path):
+    path_amps = [amp for amp in path if isinstance(amp, Edfa)]
     prev_dp = 0
-    for amp in amps:
+    for amp in path_amps:
         next_node = [n for n in network.successors(amp)][0]
         prev_node = [n for n in network.predecessors(amp)][0]
         prev_node_loss = span_loss(network, prev_node)

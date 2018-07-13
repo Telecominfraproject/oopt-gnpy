@@ -60,6 +60,7 @@ def requests_from_json(json_data,equipment):
         params['trx_type'] = req['path-constraints']['te-bandwidth']['trx_type']
         params['trx_mode'] = req['path-constraints']['te-bandwidth']['trx_mode']
         params['frequency'] = tsp_lib[params['trx_type']].frequency
+        #TODO Esther
         try:
             extra_params =  next(m 
                 for m in tsp_lib[params['trx_type']].mode if  m['format'] == params['trx_mode'])

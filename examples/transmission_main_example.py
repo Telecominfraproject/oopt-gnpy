@@ -49,20 +49,33 @@ def plot_results(network, path, source, sink):
 
 
 def main(network, equipment, source, sink, req = None):
+    power_mode = equipment['Spans']['default'].power_mode
+    print('\n'.join([f'Power mode is set to {power_mode}',
+                     f'=> it can be modified in eqpt_config.json - Spans']))    
+
+    set_roadm_loss(network, equipment, False, 0)
     build_network(network, equipment=equipment)
-    
-    path = compute_constrained_path(network,req)
+    path = compute_constrained_path(network, req)
+    if power_mode: 
+        set_edfa_dp(network, path)
+
     spans = [s.length for s in path if isinstance(s, Fiber)]
     print(f'\nThere are {len(spans)} fiber spans over {sum(spans):.0f}m between {source.uid} and {sink.uid}')
     print(f'\nNow propagating between {source.uid} and {sink.uid}:')
-    
-    for p in range(0, 1): #change range to sweep results across several powers in dBm
-        req.power = db2lin(p)*1e-3
+
+    pref_span_db = lin2db(req.power*1e3)
+    bounds = range(0, 1) #power sweep
+
+    for dp_db in bounds:
+        p_db = pref_span_db + dp_db
+        p = db2lin(p_db)*1e-3
+        req.power = p
         print(f'\nPropagating with input power = {lin2db(req.power*1e3):.2f}dBm :')
-        propagate(path,req,equipment,show=True)
-        print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f}dBm :')
+        propagate(path, req, equipment, show=True)
+        print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f}dBm :')        
 
     return path
+
 
 parser = ArgumentParser()
 parser.add_argument('-e', '--equipment', type=Path,
@@ -137,13 +150,17 @@ if __name__ == '__main__':
     logger.info(f'sink = {args.sink!r}')
 
     params = {}
-    default_trx_params = {}
+    params['request_id'] = 0
+    params['trx_type'] = ''
+    params['trx_mode'] = ''
     params['source'] = source.uid
     params['destination'] = sink.uid
     params['nodes_list'] = [sink.uid]
-    if args.power: params['power'] = db2lin(args.power)*1e-3
-    default_trx_params = {'baudrate'=33e9}
-    trx_params = trx_mode_params(equipment, '', '', default_trx_params)
+    params['loose_list'] = ['strict']
+    params['format'] = ''
+    trx_params = trx_mode_params(equipment)
+    if args.power:
+        trx_params['power'] = db2lin(float(args.power))*1e-3
     params.update(trx_params)
     req = Path_request(**params)
     path = main(network, equipment, source, sink, req)
