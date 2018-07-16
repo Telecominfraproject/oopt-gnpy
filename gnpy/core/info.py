@@ -60,6 +60,7 @@ def merge_input_spectral_information(*si):
     pass
 
 def create_input_spectral_information(f_min, roll_off, baud_rate, power, spacing, nb_channel):
+    # pref in dB : convert power lin into power in dB
     pref = lin2db(power * 1e3)
     si = SpectralInformation(pref=Pref(pref, pref))
     si = si.update(carriers=[

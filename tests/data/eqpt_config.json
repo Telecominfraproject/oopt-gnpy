@@ -37,7 +37,7 @@
             }
       ],
       "Spans":[{
-            "power_mode": false,
+            "power_mode": true,
             "max_length": 150,
             "length_units": "km",
             "max_loss": 28,
@@ -54,9 +54,11 @@
             "f_min": 191.3e12,
             "f_max":196.1e12,
             "baud_rate": 32e9,
-            "spacing": 75e9,
+            "spacing": 50e9,
             "roll_off": 0.15,
-            "power": 1.2589e-3
+            "power": 1.2589e-3,
+            "OSNR": 15,
+            "bit_rate":100e9
             }],
       "Transceiver":[
             {
@@ -70,13 +72,15 @@
                        "format": "PS_SP64_1",
                        "baud_rate": 32e9,
                        "OSNR": 9,
-                       "bit_rate": 100e9
+                       "bit_rate": 100e9,
+                       "roll_off": 0.15
                        },
                        {
                        "format": "PS_SP64_2",
                        "baud_rate": 66e9,
                        "OSNR": 10,
-                       "bit_rate": 200e9
+                       "bit_rate": 200e9,
+                       "roll_off": 0.15
                        }
                    ]
             },
@@ -91,7 +95,8 @@
                        "format": "16QAM",
                        "baud_rate": 32e9,
                        "OSNR": 15,
-                       "bit_rate": 200e9
+                       "bit_rate": 200e9,
+                       "roll_off": 0.15
                        }
                    ]
             }

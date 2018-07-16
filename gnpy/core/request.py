@@ -35,7 +35,7 @@ from copy import copy, deepcopy
 from numpy import log10
 
 RequestParams = namedtuple('RequestParams','request_id source destination trx_type'+
-' trx_mode nodes_list loose_list spacing power nb_channel frequency format baud_rate OSNR bit_rate')
+' trx_mode nodes_list loose_list spacing power nb_channel frequency format baud_rate OSNR bit_rate roll_off')
 
 class Path_request:
     def __init__(self, *args, **params):
@@ -55,6 +55,7 @@ class Path_request:
         self.format     = params.format
         self.OSNR       = params.OSNR
         self.bit_rate   = params.bit_rate
+        self.roll_off   = params.roll_off
 
     def __str__(self):
         return '\n\t'.join([  f'{type(self).__name__} {self.request_id}',
@@ -169,9 +170,9 @@ def compute_constrained_path(network, req):
     return total_path 
 
 def propagate(path, req, equipment, show=False):
-    default_si_data = equipment['SI']['default']
+    
     si = create_input_spectral_information(
-        req.frequency['min'], default_si_data.roll_off,
+        req.frequency['min'], req.roll_off,
         req.baud_rate, req.power, req.spacing, req.nb_channel)
     for el in path:
         si = el(si)

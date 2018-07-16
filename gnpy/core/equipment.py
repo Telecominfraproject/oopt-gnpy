@@ -20,7 +20,7 @@ Fiber = namedtuple('Fiber', 'type_variety dispersion gamma')
 Spans = namedtuple('Spans', 'power_mode max_length length_units max_loss padding EOL con_loss')
 Transceiver = namedtuple('Transceiver', 'type_variety frequency mode')
 Roadms = namedtuple('Roadms', 'gain_mode_default_loss power_mode_pref')
-SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off power ')
+SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off power OSNR bit_rate')
 EdfaBase = namedtuple(
     'EdfaBase',
     'type_variety gain_flatmax gain_min p_max nf_min nf_max'
@@ -129,20 +129,19 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             print(f'could not find tsp : {trx_type_variety} with mode: {trx_mode} in eqpt library')
             print('Computation stopped.')
             exit()
-        else:                   
+        else:
+            # default transponder charcteristics 
             trx_params['frequency'] = {'min': default_si_data.f_min, 'max': default_si_data.f_max}
             trx_params['baud_rate'] = default_si_data.baud_rate
             trx_params['spacing'] = default_si_data.spacing
-            #TODO remove ugly hard coded defaults:
-            trx_params['OSNR'] = 15
-            trx_params['bit_rate'] = 100e9
-
+            trx_params['OSNR'] = default_si_data.OSNR
+            trx_params['bit_rate'] = default_si_data.bit_rate
+            trx_params['roll_off'] = default_si_data.roll_off
+            print(trx_params['roll_off'])
     trx_params['power'] =  default_si_data.power
     trx_params['nb_channel'] = automatic_nch(trx_params['frequency']['min'],
                                              trx_params['frequency']['max'],
                                              trx_params['spacing'])
-    print(trx_params['nb_channel'])
-    print(trx_params['power'])
     return trx_params
 
 def automatic_spacing(baud_rate):
