@@ -59,12 +59,12 @@ def merge_input_spectral_information(*si):
     #TODO
     pass
 
-def create_input_spectral_information(f_min, roll_off, baudrate, power, spacing, nb_channel):
+def create_input_spectral_information(f_min, roll_off, baud_rate, power, spacing, nb_channel):
     pref = lin2db(power * 1e3)
     si = SpectralInformation(pref=Pref(pref, pref))
     si = si.update(carriers=[
             Channel(f, (f_min+spacing*f), 
-            baudrate, roll_off, Power(power, 0, 0)) for f in range(1,nb_channel+1)
+            baud_rate, roll_off, Power(power, 0, 0)) for f in range(1,nb_channel+1)
             ])
     return si
 

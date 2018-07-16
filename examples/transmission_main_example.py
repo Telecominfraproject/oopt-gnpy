@@ -24,7 +24,7 @@ from gnpy.core.request import Path_request, RequestParams, compute_constrained_p
 
 logger = getLogger(__name__)
 
-def plot_results(network, path, source, sink):
+def plot_results(network, path, source, destination):
     path_edges = set(zip(path[:-1], path[1:]))
     edges = set(network.edges()) - path_edges
     pos = {n: (n.lng, n.lat) for n in network.nodes()}
@@ -43,12 +43,12 @@ def plot_results(network, path, source, sink):
     draw_networkx_edges(network, edgelist=edges, edge_color='#ababab', **kwargs)
     draw_networkx_edges(network, edgelist=path_edges, edge_color='#ff0000', **kwargs)
     draw_networkx_labels(network, labels=labels, font_size=14, **{**kwargs, 'pos': label_pos})
-    title(f'Propagating from {source.loc.city} to {sink.loc.city}')
+    title(f'Propagating from {source.loc.city} to {destination.loc.city}')
     axis('off')
     show()
 
 
-def main(network, equipment, source, sink, req = None):
+def main(network, equipment, source, destination, req = None):
     power_mode = equipment['Spans']['default'].power_mode
     print('\n'.join([f'Power mode is set to {power_mode}',
                      f'=> it can be modified in eqpt_config.json - Spans']))    
@@ -60,8 +60,8 @@ def main(network, equipment, source, sink, req = None):
         set_edfa_dp(network, path)
 
     spans = [s.length for s in path if isinstance(s, Fiber)]
-    print(f'\nThere are {len(spans)} fiber spans over {sum(spans):.0f}m between {source.uid} and {sink.uid}')
-    print(f'\nNow propagating between {source.uid} and {sink.uid}:')
+    print(f'\nThere are {len(spans)} fiber spans over {sum(spans):.0f}m between {source.uid} and {destination.uid}')
+    print(f'\nNow propagating between {source.uid} and {destination.uid}:')
 
     pref_span_db = lin2db(req.power*1e3)
     bounds = range(0, 1) #power sweep
@@ -89,7 +89,7 @@ parser.add_argument('-po', '--power', default=0, help='channel ref power in dBm'
 parser.add_argument('filename', nargs='?', type=Path,
                     default=Path(__file__).parent / 'edfa_example_network.json')
 parser.add_argument('source', nargs='?', help='source node')
-parser.add_argument('sink',   nargs='?', help='sink node')
+parser.add_argument('destination',   nargs='?', help='destination node')
 
 
 if __name__ == '__main__':
@@ -131,31 +131,31 @@ if __name__ == '__main__':
         logger.info('No source node specified: picking random transceiver')
         source = list(transceivers.values())[0]
 
-    if args.sink:
+    if args.destination:
         try:
-            sink = next(transceivers[uid] for uid in transceivers if uid == args.sink)
+            destination = next(transceivers[uid] for uid in transceivers if uid == args.destination)
         except StopIteration as e:
             nodes_suggestion = [uid for uid in transceivers \
-                if args.sink.lower() in uid.lower()]
-            sink = transceivers[nodes_suggestion[0]] \
+                if args.destination.lower() in uid.lower()]
+            destination = transceivers[nodes_suggestion[0]] \
                 if len(nodes_suggestion)>0 else list(transceivers.values())[0]
             print(f'invalid destination node specified, did you mean:\
                 \n{nodes_suggestion}?\
-                \n{args.sink!r}, replaced with {sink.uid}')
+                \n{args.destination!r}, replaced with {destination.uid}')
     else:
         logger.info('No source node specified: picking random transceiver')
-        sink = list(transceivers.values())[1]
+        destination = list(transceivers.values())[1]
 
     logger.info(f'source = {args.source!r}')
-    logger.info(f'sink = {args.sink!r}')
+    logger.info(f'destination = {args.destination!r}')
 
     params = {}
     params['request_id'] = 0
     params['trx_type'] = ''
     params['trx_mode'] = ''
     params['source'] = source.uid
-    params['destination'] = sink.uid
-    params['nodes_list'] = [sink.uid]
+    params['destination'] = destination.uid
+    params['nodes_list'] = [destination.uid]
     params['loose_list'] = ['strict']
     params['format'] = ''
     trx_params = trx_mode_params(equipment)
@@ -163,7 +163,7 @@ if __name__ == '__main__':
         trx_params['power'] = db2lin(float(args.power))*1e-3
     params.update(trx_params)
     req = Path_request(**params)
-    path = main(network, equipment, source, sink, req)
+    path = main(network, equipment, source, destination, req)
 
     if args.plot:
-        plot_results(network, path, source, sink)
+        plot_results(network, path, source, destination)

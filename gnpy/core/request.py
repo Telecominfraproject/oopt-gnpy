@@ -35,7 +35,7 @@ from copy import copy, deepcopy
 from numpy import log10
 
 RequestParams = namedtuple('RequestParams','request_id source destination trx_type'+
-' trx_mode nodes_list loose_list spacing power nb_channel frequency format baudrate OSNR bit_rate')
+' trx_mode nodes_list loose_list spacing power nb_channel frequency format baud_rate OSNR bit_rate')
 
 class Path_request:
     def __init__(self, *args, **params):
@@ -45,7 +45,7 @@ class Path_request:
         self.destination = params.destination
         self.tsp        = params.trx_type
         self.tsp_mode   = params.trx_mode
-        self.baudrate   = params.baudrate
+        self.baud_rate   = params.baud_rate
         self.nodes_list = params.nodes_list
         self.loose_list = params.loose_list
         self.spacing    = params.spacing
@@ -65,7 +65,7 @@ class Path_request:
                             f'source:       {self.source}',
                             f'destination:  {self.destination}',
                             f'trx type:     {self.tsp}',
-                            f'baudrate:     {self.baudrate}',
+                            f'baud_rate:     {self.baud_rate}',
                             f'spacing:      {self.spacing}',
                             f'power:        {self.power}'
                             '\n'])
@@ -95,7 +95,7 @@ class Result_element(Element):
                        },
                        {
                        'metric-type': 'SNR@0.1nm',
-                       'accumulative-value': round(mean(self.computed_path[-1].snr+10*log10(self.path_request.baudrate/12.5)),2)
+                       'accumulative-value': round(mean(self.computed_path[-1].snr+10*log10(self.path_request.baud_rate/12.5e9)),2)
                        }
                     ],
                     'path-srlgs': {
@@ -129,7 +129,6 @@ class Result_element(Element):
         return self.pathresult 
 
 def compute_constrained_path(network, req):
-    print('!!!!',req)
     trx = [n for n in network.nodes() if isinstance(n, Transceiver)]
     roadm = [n for n in network.nodes() if isinstance(n, Roadm)]
     edfa = [n for n in network.nodes() if isinstance(n, Edfa)]
@@ -173,7 +172,7 @@ def propagate(path, req, equipment, show=False):
     default_si_data = equipment['SI']['default']
     si = create_input_spectral_information(
         req.frequency['min'], default_si_data.roll_off,
-        req.baudrate, req.power, req.spacing, req.nb_channel)
+        req.baud_rate, req.power, req.spacing, req.nb_channel)
     for el in path:
         si = el(si)
         if show :

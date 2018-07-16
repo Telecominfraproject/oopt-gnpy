@@ -498,19 +498,19 @@ class Edfa(Node):
         """
 
         # TODO|jla: check what param should be used (currently length(dgt))
-        nchan = arange(len(self.interpol_dgt))
+        nb_channel = arange(len(self.interpol_dgt))
 
         # TODO|jla: find a way to use these or lose them. Primarily we should have
         # a way to determine if exceeding the gain or output power of the amp
         tot_in_power_db = lin2db(sum(pin*1e3)) # Pin in W
 
         # linear fit to get the
-        p = polyfit(nchan, self.interpol_dgt, 1)
+        p = polyfit(nb_channel, self.interpol_dgt, 1)
         dgt_slope = p[0]
 
         # Calculate the target slope - currently assumes equal spaced channels
         # TODO|jla: support arbitrary channel spacing
-        targ_slope = self.operational.tilt_target / (len(nchan) - 1)
+        targ_slope = self.operational.tilt_target / (len(nb_channel) - 1)
 
         # first estimate of DGT scaling
         if abs(dgt_slope) > 0.001: # check for zero value due to flat dgt

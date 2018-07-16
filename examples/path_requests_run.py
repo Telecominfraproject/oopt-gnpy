@@ -26,8 +26,8 @@ from networkx import (draw_networkx_nodes, draw_networkx_edges,
 from numpy import mean
 from examples.convert_service_sheet import convert_service_sheet, Request_element, Element
 from gnpy.core.utils import load_json
-from gnpy.core.network import load_network, build_network
-from gnpy.core.equipment import load_equipment
+from gnpy.core.network import load_network, build_network, set_roadm_loss
+from gnpy.core.equipment import load_equipment, trx_mode_params
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
@@ -49,7 +49,6 @@ parser.add_argument('-o', '--output', default=None)
 
 def requests_from_json(json_data,equipment):
     requests_list = []
-    tsp_lib = equipment['Transceiver']
 
     for req in json_data['path-request']:
         #print(f'{req}')
@@ -59,22 +58,17 @@ def requests_from_json(json_data,equipment):
         params['destination'] = req['dst-tp-id']
         params['trx_type'] = req['path-constraints']['te-bandwidth']['trx_type']
         params['trx_mode'] = req['path-constraints']['te-bandwidth']['trx_mode']
-        params['frequency'] = tsp_lib[params['trx_type']].frequency
-        #TODO Esther
-        try:
-            extra_params =  next(m 
-                for m in tsp_lib[params['trx_type']].mode if  m['format'] == params['trx_mode'])
-        except StopIteration :
-            msg = f'could not find tsp : {params["trx_type"]} with mode: {params["trx_mode"]} in eqpt library'
-            raise ValueError(msg)
+        params['format'] = params['trx_mode']
         nd_list = req['optimizations']['explicit-route-include-objects']
         params['nodes_list'] = [n['unnumbered-hop']['node-id'] for n in nd_list]
         params['loose_list'] = [n['unnumbered-hop']['hop-type'] for n in nd_list]
         params['spacing'] = req['path-constraints']['te-bandwidth']['spacing']
+        
+        trx_params = trx_mode_params(equipment,params['trx_type'],params['trx_mode'],True)
+        params.update(trx_params)
         params['power'] = req['path-constraints']['te-bandwidth']['output-power']
         params['nb_channel'] = req['path-constraints']['te-bandwidth']['max-nb-of-channel']
 
-        params.update(extra_params)
         requests_list.append(Path_request(**params))
 
     return requests_list
@@ -102,7 +96,7 @@ def compute_path(network, pathreqlist):
         total_path = compute_constrained_path(network, pathreq)
         
         # for debug
-        # print(f'{pathreq.baudrate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
+        # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
         
         total_path = propagate(total_path,pathreq,equipment, show=False)
 
@@ -133,6 +127,7 @@ if __name__ == '__main__':
     data = load_requests(args.service_filename,args.eqpt_filename)
     equipment = load_equipment(args.eqpt_filename)
     network = load_network(args.network_filename,equipment)
+    set_roadm_loss(network, equipment, False, 0)
     build_network(network, equipment=equipment)
     pths = requests_from_json(data, equipment)
     print(pths)
@@ -144,7 +139,7 @@ if __name__ == '__main__':
         
         for i, p in enumerate(test):
             print(f'{pths[i].source} to {pths[i].destination} : {round(mean(p[-1].snr),2)} ,\
-                {round(mean(p[-1].snr+10*log10(pths[i].baudrate/(12.5e9))),2)}')
+                {round(mean(p[-1].snr+10*log10(pths[i].baud_rate/(12.5e9))),2)}')
     else:
         result = []
         for p in test:

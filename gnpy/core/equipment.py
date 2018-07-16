@@ -113,38 +113,42 @@ def edfa_nf(gain, variety_type, equipment):
 def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=False):
     """return the trx and SI parameters from eqpt_config for a given type_variety and mode (ie format)"""
     trx_params = {}
+    default_si_data = equipment['SI']['default']
     try:
         trxs = equipment['Transceiver']
         mode_params = next(mode for trx in trxs \
                     if trx == trx_type_variety \
                     for mode in trxs[trx].mode \
                     if mode['format'] == trx_mode)
-        frequency_params = equipment['Transceiver'][trx_type_variety]['frequency']
-        trx_params = {**mode_params, **frequency_params}
-        trx_params['spacing'] = automatic_spacing(trx_params['baudrate'])
+        trx_params = {**mode_params}
+        trx_params['frequency'] = equipment['Transceiver'][trx_type_variety].frequency
+        # TODO: novel automatic feature maybe unwanted if spacing is specified
+        trx_params['spacing'] = automatic_spacing(trx_params['baud_rate'])
     except StopIteration :
         if error_message:
             print(f'could not find tsp : {trx_type_variety} with mode: {trx_mode} in eqpt library')
-            exit
-        else:       
-            default_si_data = equipment['SI']['default']
+            print('Computation stopped.')
+            exit()
+        else:                   
             trx_params['frequency'] = {'min': default_si_data.f_min, 'max': default_si_data.f_max}
-            trx_params['baudrate'] = default_si_data.baud_rate
+            trx_params['baud_rate'] = default_si_data.baud_rate
             trx_params['spacing'] = default_si_data.spacing
             #TODO remove ugly hard coded defaults:
             trx_params['OSNR'] = 15
-            trx_params['bit_rate'] = 100
+            trx_params['bit_rate'] = 100e9
 
     trx_params['power'] =  default_si_data.power
     trx_params['nb_channel'] = automatic_nch(trx_params['frequency']['min'],
                                              trx_params['frequency']['max'],
                                              trx_params['spacing'])
+    print(trx_params['nb_channel'])
+    print(trx_params['power'])
     return trx_params
 
 def automatic_spacing(baud_rate):
     """return the min possible channel spacing for a given baud rate"""
     spacing_list = [(38e9,50e9), (67e9,75e9), (92e9,100e9)] #list of possible tuples 
-                                                #[(max_baud_rate, spacing_for_this_baudrate)]
+                                                #[(max_baud_rate, spacing_for_this_baud_rate)]
     acceptable_spacing_list = list(filter(lambda x : x[0]>baud_rate, spacing_list))
     if len(acceptable_spacing_list) < 1: 
         #can't find an adequate spacing from the list, so default to:

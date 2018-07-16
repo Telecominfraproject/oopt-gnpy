@@ -10,8 +10,8 @@ import pytest
 from gnpy.core.elements import Transceiver, Fiber, Edfa
 from gnpy.core.utils import lin2db, db2lin
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
-from gnpy.core.equipment import load_equipment
-from gnpy.core.network import build_network, load_network
+from gnpy.core.equipment import load_equipment 
+from gnpy.core.network import build_network, load_network, set_roadm_loss
 from pathlib import Path
 import filecmp
 
@@ -41,6 +41,7 @@ def setup_edfa():
     equipment = load_equipment(eqpt_library)
     network = load_network(test_network, equipment)
     build_network(network, equipment=equipment)
+    set_roadm_loss(network, equipment, False, 0)
     edfa = [n for n in network.nodes() if isinstance(n, Edfa)][0]
 
     #edfa.params.dgt = np.zeros(96)
@@ -61,9 +62,9 @@ def setup_trx():
 
 @pytest.fixture()
 def si(nch_and_spacing, bw):
-    """parametrize a channel comb with nch, spacing and signal bw"""
-    nch, spacing = nch_and_spacing
-    return create_input_spectral_information(191.3e12, 0.15, bw, 1e-6, spacing, nch, 0)
+    """parametrize a channel comb with nb_channel, spacing and signal bw"""
+    nb_channel, spacing = nch_and_spacing
+    return create_input_spectral_information(191.3e12, 0.15, bw, 1e-6, spacing, nb_channel)
 
 @pytest.mark.parametrize("enabled", [True, False])
 @pytest.mark.parametrize("gain, nf_expected", [(10, 15), (15, 10), (25, 5.8)])
@@ -107,10 +108,10 @@ def test_compare_nf_models(gain, setup_edfa, si):
 
 def test_si(si, nch_and_spacing):
     """basic total power check of the channel comb generation"""
-    nch = nch_and_spacing[0]
+    nb_channel = nch_and_spacing[0]
     pin = np.array([c.power.signal+c.power.nli+c.power.ase for c in si.carriers])
     p_tot = np.sum(pin)
-    expected_p_tot = si.carriers[0].power.signal * nch
+    expected_p_tot = si.carriers[0].power.signal * nb_channel
     assert pytest.approx(expected_p_tot, abs=0.01) == p_tot
 
 @pytest.mark.parametrize("gain", [13, 15, 17, 19, 21, 23, 25, 27]) 
