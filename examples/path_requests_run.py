@@ -26,11 +26,12 @@ from networkx import (draw_networkx_nodes, draw_networkx_edges,
 from numpy import mean
 from examples.convert_service_sheet import convert_service_sheet, Request_element, Element
 from gnpy.core.utils import load_json
-from gnpy.core.network import load_network, build_network
-from gnpy.core.equipment import load_equipment
+from gnpy.core.network import load_network, build_network, set_roadm_loss
+from gnpy.core.equipment import load_equipment, trx_mode_params
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
+from gnpy.core.request import Path_request, Result_element, compute_constrained_path, propagate
 from copy import copy, deepcopy
 from numpy import log10
 
@@ -46,125 +47,29 @@ parser.add_argument('-v', '--verbose', action='count')
 parser.add_argument('-o', '--output', default=None)
 
 
-class Path_request():
-    def __init__(self,jsondata,tspjsondata):
-        self.request_id = jsondata['request-id']
-        self.source = jsondata['src-tp-id']
-        self.destination = jsondata['dst-tp-id']
-        # retrieving baudrate out of transponder type and mode (format)
-        self.tsp = jsondata['path-constraints']['te-bandwidth']['trx_type']
-        self.tsp_mode = jsondata['path-constraints']['te-bandwidth']['trx_mode']
-        # for debug
-        # print(tsp)
-        try:
-            baudrate = next(m['baudrate'] 
-                for t in  tspjsondata if t['type_variety'] == self.tsp
-                for m in t['mode']  if  m['format'] == self.tsp_mode)
-        except StopIteration:
-            msg = f'could not find tsp : {self.tsp} with mode: {self.tsp_mode} in eqpt library'
-            logger.critical(msg)
-            raise ValueError(msg)
-        self.baudrate = baudrate
-
-        nodes_list = jsondata['optimizations']['explicit-route-include-objects']
-        self.nodes_list = [n['unnumbered-hop']['node-id'] for n in nodes_list]
-        # create a list for individual loose capability for each node ... 
-        # even if convert_service_sheet fills it with the same value
-        self.loose_list = [n['unnumbered-hop']['hop-type'] for n in nodes_list]
-
-        self.spacing = jsondata['path-constraints']['te-bandwidth']['spacing']
-        self.power = jsondata['path-constraints']['te-bandwidth']['output-power']
-        self.nb_channel = jsondata['path-constraints']['te-bandwidth']['max-nb-of-channel']
-
-    def __str__(self):
-        return '\n\t'.join([  f'{type(self).__name__} {self.request_id}',
-                            f'source:       {self.source}',
-                            f'destination:  {self.destination}'])
-    def __repr__(self):
-        return '\n\t'.join([  f'{type(self).__name__} {self.request_id}',
-                            f'source:       {self.source}',
-                            f'destination:  {self.destination}',
-                            f'trx type:     {self.tsp}',
-                            f'baudrate:     {self.baudrate}',
-                            f'spacing:      {self.spacing}',
-                            f'power:        {self.power}'
-                            '\n'])
-
-
-class Result_element(Element):
-    def __init__(self,path_request,computed_path):
-        self.path_id = int(path_request.request_id)
-        self.path_request = path_request
-        self.computed_path = computed_path
-        hop_type = []
-        for e in computed_path :
-            if isinstance(e, Transceiver) : 
-                hop_type.append(' - '.join([path_request.tsp,path_request.tsp_mode])) 
-            else:
-                hop_type.append('not recorded')
-        self.hop_type = hop_type
-    uid = property(lambda self: repr(self))
-    @property
-    def pathresult(self):
-        return {
-               'path-id': self.path_id,
-               'path-properties':{
-                   'path-metric': [
-                       {
-                       'metric-type': 'SNR@bandwidth',
-                       'accumulative-value': round(mean(self.computed_path[-1].snr),2)
-                       },
-                       {
-                       'metric-type': 'SNR@0.1nm',
-                       'accumulative-value': round(mean(self.computed_path[-1].snr+10*log10(self.path_request.baudrate/12.5)),2)
-                       }
-                    ],
-                    'path-srlgs': {
-                        'usage': 'not used yet',
-                        'values': 'not used yet'
-                    },
-                    'path-route-objects': [
-                        {
-                        'path-route-object': {
-                            'index': self.computed_path.index(n),
-                            'unnumbered-hop': {
-                                'node-id': n.uid,
-                                'link-tp-id': n.uid,
-                                'hop-type': self.hop_type[self.computed_path.index(n)],
-                                'direction': 'not used'
-                            },
-                            'label-hop': {
-                                'te-label': {
-                                    'generic': 'not used yet',
-                                    'direction': 'not used yet'
-                                    }
-                                }
-                            }
-                        } for n in self.computed_path
-                        ]
-                }
-            }
-                    
-    @property
-    def json(self):
-        return self.pathresult 
-
-def load_SI(filename):
-    with open(filename) as f:
-        json_data = loads(f.read())
-        return json_data['SI'][0]
-
-def load_Transceiver(filename):
-    with open(filename) as f:
-        json_data = loads(f.read())
-        return json_data['Transceiver']
-
-def requests_from_json(json_data,eqpt_filename):
+def requests_from_json(json_data,equipment):
     requests_list = []
-    tspjsondata = load_Transceiver(eqpt_filename)
+
     for req in json_data['path-request']:
         #print(f'{req}')
-        requests_list.append(Path_request(req,tspjsondata))
+        params = {}
+        params['request_id'] = req['request-id']
+        params['source'] = req['src-tp-id']
+        params['destination'] = req['dst-tp-id']
+        params['trx_type'] = req['path-constraints']['te-bandwidth']['trx_type']
+        params['trx_mode'] = req['path-constraints']['te-bandwidth']['trx_mode']
+        params['format'] = params['trx_mode']
+        nd_list = req['optimizations']['explicit-route-include-objects']
+        params['nodes_list'] = [n['unnumbered-hop']['node-id'] for n in nd_list]
+        params['loose_list'] = [n['unnumbered-hop']['hop-type'] for n in nd_list]
+        params['spacing'] = req['path-constraints']['te-bandwidth']['spacing']
+        
+        trx_params = trx_mode_params(equipment,params['trx_type'],params['trx_mode'],True)
+        params.update(trx_params)
+        params['power'] = req['path-constraints']['te-bandwidth']['output-power']
+        params['nb_channel'] = req['path-constraints']['te-bandwidth']['max-nb-of-channel']
+
+        requests_list.append(Path_request(**params))
 
     return requests_list
 
@@ -179,65 +84,22 @@ def load_requests(filename,eqpt_filename):
     return json_data
 
 def compute_path(network, pathreqlist):
-    # temporary : repeats calls from transmission_main_example
-    # to be merged when ready
     
     path_res_list = []
-    trx = [n for n in network.nodes() if isinstance(n, Transceiver)]
-    roadm = [n for n in network.nodes() if isinstance(n, Roadm)]
-    edfa = [n for n in network.nodes() if isinstance(n, Edfa)]
-    # TODO include also fused in the element check : too difficult because of direction
-    # fused = [n for n in network.nodes() if isinstance(n, Fused)]
-    sidata = load_SI(args.eqpt_filename)
+
     for pathreq in pathreqlist:
         pathreq.nodes_list.append(pathreq.destination)
         #we assume that the destination is a strict constraint
         pathreq.loose_list.append('strict')
         print(f'Computing path from {pathreq.source} to {pathreq.destination}')
         print(f'with explicit path: {pathreq.nodes_list}')
-
-        source = next(el for el in trx if el.uid == pathreq.source)
-        # start the path with its source
-        total_path = [source]
-        for n in pathreq.nodes_list:
-            # print(n)
-            try :
-                node = next(el for el in trx if el.uid == n)
-            except StopIteration:
-                try:
-                    node = next(el for el in roadm if el.uid == f'roadm {n}')
-                except StopIteration:
-                    try:
-                        node = next(el for el in edfa 
-                            if el.uid.startswith(f'egress edfa in {n}'))
-                    except StopIteration:
-                        msg = f'could not find node : {n} in network topology: \
-                            not a trx, roadm, edfa or fused element'
-                        logger.critical(msg)
-                        raise ValueError(msg)
-            # extend path list without repeating source -> skip first element in the list
-            try:
-                total_path.extend(dijkstra_path(network, source, node)[1:])
-                source = node
-            except NetworkXNoPath:
-            	# for debug
-                # print(pathreq.loose_list)
-                # print(pathreq.nodes_list.index(n))
-                if pathreq.loose_list[pathreq.nodes_list.index(n)] == 'loose':
-                    print(f'could not find a path from {source.uid} to loose node : {n} in network topology')
-                    print(f'node  {n} is skipped')
-                else:
-                    msg = f'could not find a path from {source.uid} to node : {n} in network topology'
-                    logger.critical(msg)
-                    raise ValueError(msg)
+        total_path = compute_constrained_path(network, pathreq)
+        
         # for debug
-        # print(f'{pathreq.baudrate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
-        si = create_input_spectral_information(
-            sidata['f_min'], sidata['roll_off'],
-            pathreq.baudrate, pathreq.power, pathreq.spacing, pathreq.nb_channel)
-        for el in total_path:
-            si = el(si)
-            # print(el)
+        # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
+        
+        total_path = propagate(total_path,pathreq,equipment, show=False)
+
         # we record the last tranceiver object in order to have th whole 
         # information about spectrum. Important Note: since transceivers 
         # attached to roadms are actually logical elements to simulate
@@ -246,7 +108,6 @@ def compute_path(network, pathreqlist):
         # we use deepcopy: to ensure each propagation is recorded and not 
         # overwritten 
         
-        # path_res_list.append(deepcopy(destination))
         path_res_list.append(deepcopy(total_path))
     return path_res_list
 
@@ -266,8 +127,9 @@ if __name__ == '__main__':
     data = load_requests(args.service_filename,args.eqpt_filename)
     equipment = load_equipment(args.eqpt_filename)
     network = load_network(args.network_filename,equipment)
+    set_roadm_loss(network, equipment, False, 0)
     build_network(network, equipment=equipment)
-    pths = requests_from_json(data, args.eqpt_filename)
+    pths = requests_from_json(data, equipment)
     print(pths)
     test = compute_path(network,pths)
 
@@ -277,7 +139,7 @@ if __name__ == '__main__':
         
         for i, p in enumerate(test):
             print(f'{pths[i].source} to {pths[i].destination} : {round(mean(p[-1].snr),2)} ,\
-                {round(mean(p[-1].snr+10*log10(pths[i].baudrate/(12.5e9))),2)}')
+                {round(mean(p[-1].snr+10*log10(pths[i].baud_rate/(12.5e9))),2)}')
     else:
         result = []
         for p in test:

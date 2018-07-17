@@ -7,6 +7,7 @@ calculate nf1, nf2 and Delta_P of a 2 coils edfa with internal VOA
 from nf_min and nf_max inputs 
 '''
 from numpy import clip, polyval
+from sys import exit
 from operator import itemgetter
 from math import isclose
 from pathlib import Path
@@ -16,10 +17,10 @@ from collections import namedtuple
 
 Model = namedtuple('Model', 'nf1 nf2 delta_p')
 Fiber = namedtuple('Fiber', 'type_variety dispersion gamma')
-Spans = namedtuple('Spans', 'max_length length_units max_loss padding EOL con_loss')
-Roadms = namedtuple('Roadms', 'loss')
+Spans = namedtuple('Spans', 'power_mode max_length length_units max_loss padding EOL con_loss')
 Transceiver = namedtuple('Transceiver', 'type_variety frequency mode')
-SI = namedtuple('SI', 'f_min Nch baud_rate spacing roll_off power')
+Roadms = namedtuple('Roadms', 'gain_mode_default_loss power_mode_pref')
+SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off power OSNR bit_rate')
 EdfaBase = namedtuple(
     'EdfaBase',
     'type_variety gain_flatmax gain_min p_max nf_min nf_max'
@@ -100,14 +101,63 @@ def edfa_nf(gain, variety_type, equipment):
     'not necessary when output VOA/att padding strategy will be implemented'
     pad = max(edfa.gain_min - gain, 0)
     gain = gain + pad
-    dg = gain - edfa.gain_flatmax
+    dg = max(edfa.gain_flatmax - gain, 0)
     if edfa.nf_model:
-        g1a = gain - edfa.nf_model.delta_p + dg
+        g1a = gain - edfa.nf_model.delta_p - dg
         nf_avg = lin2db(db2lin(edfa.nf_model.nf1) + db2lin(edfa.nf_model.nf2)/db2lin(g1a))
     else:
         nf_avg = polyval(edfa.nf_fit_coeff, dg)
     return nf_avg + pad # input VOA = 1 for 1 NF degradation
 
+
+def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=False):
+    """return the trx and SI parameters from eqpt_config for a given type_variety and mode (ie format)"""
+    trx_params = {}
+    default_si_data = equipment['SI']['default']
+    try:
+        trxs = equipment['Transceiver']
+        mode_params = next(mode for trx in trxs \
+                    if trx == trx_type_variety \
+                    for mode in trxs[trx].mode \
+                    if mode['format'] == trx_mode)
+        trx_params = {**mode_params}
+        trx_params['frequency'] = equipment['Transceiver'][trx_type_variety].frequency
+        # TODO: novel automatic feature maybe unwanted if spacing is specified
+        trx_params['spacing'] = automatic_spacing(trx_params['baud_rate'])
+    except StopIteration :
+        if error_message:
+            print(f'could not find tsp : {trx_type_variety} with mode: {trx_mode} in eqpt library')
+            print('Computation stopped.')
+            exit()
+        else:
+            # default transponder charcteristics 
+            trx_params['frequency'] = {'min': default_si_data.f_min, 'max': default_si_data.f_max}
+            trx_params['baud_rate'] = default_si_data.baud_rate
+            trx_params['spacing'] = default_si_data.spacing
+            trx_params['OSNR'] = default_si_data.OSNR
+            trx_params['bit_rate'] = default_si_data.bit_rate
+            trx_params['roll_off'] = default_si_data.roll_off
+            print(trx_params['roll_off'])
+    trx_params['power'] =  default_si_data.power
+    trx_params['nb_channel'] = automatic_nch(trx_params['frequency']['min'],
+                                             trx_params['frequency']['max'],
+                                             trx_params['spacing'])
+    return trx_params
+
+def automatic_spacing(baud_rate):
+    """return the min possible channel spacing for a given baud rate"""
+    spacing_list = [(38e9,50e9), (67e9,75e9), (92e9,100e9)] #list of possible tuples 
+                                                #[(max_baud_rate, spacing_for_this_baud_rate)]
+    acceptable_spacing_list = list(filter(lambda x : x[0]>baud_rate, spacing_list))
+    if len(acceptable_spacing_list) < 1: 
+        #can't find an adequate spacing from the list, so default to:
+        return baud_rate*1.2
+    else:
+        #chose the lowest possible spacing
+        return min(acceptable_spacing_list, key=itemgetter(0))[1]
+
+def automatic_nch(f_min, f_max, spacing):
+    return int((f_max - f_min)//spacing)
 
 def load_equipment(filename):
     json_data = load_json(filename)
