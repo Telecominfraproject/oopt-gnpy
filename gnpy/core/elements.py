@@ -155,23 +155,25 @@ class Fused(Node):
         print('pi',pref.pi)
         return spectral_info.update(carriers=carriers, pref=pref)
 
-FiberParams = namedtuple('FiberParams', 'type_variety length loss_coef length_units connector_loss_in connector_loss_out dispersion gamma')
+FiberParams = namedtuple('FiberParams', 'type_variety length loss_coef length_units con_in con_out dispersion gamma')
 
 class Fiber(Node):
     def __init__(self, *args, params=None, **kwargs):
         if params is None:
             params = {}
-        if 'connector_loss_in' not in params :
-            # test added to ensure backward compatibility in case loss was not in the json
-            params['connector_loss_in'] = 0.0
-            params['connector_loss_out'] = 0.0
+        if 'con_in' not in params :
+            # if not defined in the network json
+            # the None value will be updated in network.py[build_network] 
+            # with default values from eqpt_config.json[Spans]
+            params['con_in'] = None
+            params['con_out'] = None
         super().__init__(*args, params=FiberParams(**params), **kwargs)
         self.type_variety = self.params.type_variety
         self.length = self.params.length * UNITS[self.params.length_units] # in m
         self.loss_coef = self.params.loss_coef * 1e-3 # lineic loss dB/m
         self.lin_loss_coef = self.params.loss_coef / (20 * log10(exp(1)))
-        self.connector_loss_in = self.params.connector_loss_in
-        self.connector_loss_out = self.params.connector_loss_out
+        self.con_in = self.params.con_in
+        self.con_out = self.params.con_out
         self.dispersion = self.params.dispersion  # s/m/m
         self.gamma = self.params.gamma # 1/W/m     
         self.pch_out = None  
@@ -186,12 +188,13 @@ class Fiber(Node):
                           f'  type_variety: {self.type_variety}',
                           f'  length (m):   {self.length:.2f}',
                           f'  loss (dB):    {self.loss:.2f}',
-                          f'  (includes conn loss (dB) in: {self.connector_loss_in:.2f} out: {self.connector_loss_out:.2f})'])
+                          f'  (includes conn loss (dB) in: {self.con_in:.2f} out: {self.con_out:.2f})',
+                          f'  (conn loss out includes EOL margin defined in eqpt_config.json)'])
 
     @property
     def loss(self):
         # dB loss: useful for polymorphism (roadm, fiber, att)
-        return self.loss_coef * self.length + self.connector_loss_in + self.connector_loss_out
+        return self.loss_coef * self.length + self.con_in + self.con_out
 
     @property
     def passive(self):
@@ -273,7 +276,7 @@ class Fiber(Node):
     def propagate(self, *carriers):
 
         # apply connector_att_in on all carriers before computing gn analytics  premiere partie pas bonne
-        attenuation = db2lin(self.connector_loss_in)
+        attenuation = db2lin(self.con_in)
 
         chan = []
         for carrier in carriers:
@@ -287,7 +290,7 @@ class Fiber(Node):
         carriers = tuple(f for f in chan)
 
         # propagate in the fiber and apply attenuation out
-        attenuation = db2lin(self.connector_loss_out)
+        attenuation = db2lin(self.con_out)
         for carrier in carriers:
             pwr = carrier.power
             carrier_nli = self._gn_analytic(carrier, *carriers)

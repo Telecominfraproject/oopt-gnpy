@@ -44,8 +44,9 @@
             "length_units": "km",
             "max_loss": 28,
             "padding": 10,
-            "EOL": 1,
-            "con_loss": 0.5
+            "EOL": 0,
+            "con_in": 0,
+            "con_out": 0
             }
       ],
       "Roadms":[{

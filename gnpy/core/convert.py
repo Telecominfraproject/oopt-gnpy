@@ -40,7 +40,7 @@ class Link(namedtuple('Link', 'from_city to_city \
     distance_units')):
     def __new__(cls, from_city, to_city,
       east_distance, east_fiber='SSMF', east_lineic=0.2, 
-      east_con_in=0, east_con_out=0, east_pmd=0.1, east_cable='', 
+      east_con_in=None, east_con_out=None, east_pmd=0.1, east_cable='', 
       west_distance='', west_fiber='', west_lineic='', 
       west_con_in='', west_con_out='', west_pmd='', west_cable='',
       distance_units='km'):
@@ -48,7 +48,7 @@ class Link(namedtuple('Link', 'from_city to_city \
                         east_pmd, east_cable]
         west_values = [west_distance, west_fiber, west_lineic, west_con_in, west_con_out, 
                         west_pmd, west_cable]
-        default_values = [80,'SSMF',0.2,0,0,0.1,'']
+        default_values = [80,'SSMF',0.2,None,None,0.1,'']
         east_values = [x[0] if x[0] != '' else x[1] for x in zip(east_values,default_values)]
         west_values = [x[0] if x[0] != '' else x[1] for x in zip(west_values,east_values)]
         return super().__new__(cls, from_city, to_city, *east_values, *west_values, distance_units)     
@@ -157,8 +157,8 @@ def convert_file(input_filename, filter_region=[]):
               'params': {'length':   round(x.east_distance, 3),
                          'length_units':    x.distance_units,
                          'loss_coef': x.east_lineic,
-                         'connector_loss_in':x.east_con_in,
-                         'connector_loss_out':x.east_con_out}
+                         'con_in':x.east_con_in,
+                         'con_out':x.east_con_out}
             }
               for x in links] +
             [{'uid': f'fiber ({x.to_city} → {x.from_city})-{x.west_cable}',
@@ -169,8 +169,8 @@ def convert_file(input_filename, filter_region=[]):
               'params': {'length':   round(x.west_distance, 3),
                          'length_units':    x.distance_units,
                          'loss_coef': x.west_lineic,
-                         'connector_loss_in':x.west_con_in,
-                         'connector_loss_out':x.west_con_out}
+                         'con_in':x.west_con_in,
+                         'con_out':x.west_con_out}
             } # missing ILA construction 
               for x in links] +
             [{'uid': f'egress edfa in {e.from_city} to {e.to_city}',

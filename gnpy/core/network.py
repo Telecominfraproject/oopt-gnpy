@@ -186,13 +186,18 @@ def split_fiber(network, fiber, bounds, target, equipment):
     network.remove_edge(fiber, next_node)
     network.remove_edge(prev_node, fiber)
     network.remove_node(fiber)
+    # update connector loss parameter with default values
+    fiber_params = fiber.params._asdict()
+    fiber_params['con_in'] = fiber.con_in
+    fiber_params['con_out'] = fiber.con_out
     new_spans = [
         Fiber(
             uid =      f'{fiber.uid}_({span}/{n_spans})',
             metadata = fiber.metadata,
-            params = fiber.params._asdict()
+            params = fiber_params
         ) for span in range(n_spans)
     ]
+    
     new_spans[0].length = new_length
     network.add_node(new_spans[0])
     network.add_edge(prev_node, new_spans[0])
@@ -206,10 +211,23 @@ def split_fiber(network, fiber, bounds, target, equipment):
     network.add_edge(prev_node, next_node)
     add_egress_amplifier(network, prev_node, equipment)
 
-def build_network(network, equipment, bounds=range(75_000, 150_000), target=100_000):
-    fibers = [f for f in network.nodes() if isinstance(f, Fiber)]
+def add_connector_loss(fibers, con_in, con_out):
     for fiber in fibers:
-        split_fiber(network, fiber, bounds, target, equipment)
+        if fiber.con_in is None: fiber.con_in = con_in
+        if fiber.con_out is None: fiber.con_out = con_out
+
+def build_network(network, equipment):
+    default_span_data = equipment['Spans']['default']
+    max_length = int(default_span_data.max_length * UNITS[default_span_data.length_units])
+    bounds = range(75_000, max_length)
+    target = 100_000
+    con_in = default_span_data.con_in
+    con_out = default_span_data.con_out + default_span_data.EOL
+
+    fibers = [f for f in network.nodes() if isinstance(f, Fiber)]
+    add_connector_loss(fibers, con_in, con_out)
+    for fiber in fibers:
+        split_fiber(network, fiber, bounds, target, equipment)        
 
     roadms = [r for r in network.nodes() if isinstance(r, Roadm)]
     for roadm in roadms:

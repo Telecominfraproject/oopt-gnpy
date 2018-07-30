@@ -40,13 +40,14 @@
             }
       ],
       "Spans":[{
-            "power_mode": true,
+            "power_mode": false,
             "max_length": 150,
             "length_units": "km",
             "max_loss": 28,
             "padding": 10,
-            "EOL": 1,
-            "con_loss": 0.5
+            "EOL": 0,
+            "con_in": 0,
+            "con_out": 0
             }
       ],
       "Roadms":[{
@@ -75,14 +76,14 @@
                        {
                        "format": "PS_SP64_1",
                        "baud_rate": 32e9,
-                       "OSNR": 9,
+                       "OSNR": 11,
                        "bit_rate": 100e9,
                        "roll_off": 0.15
                        },
                        {
                        "format": "PS_SP64_2",
-                       "baud_rate": 66e9,
-                       "OSNR": 10,
+                       "baud_rate": 64e9,
+                       "OSNR": 15,
                        "bit_rate": 200e9,
                        "roll_off": 0.15
                        }
@@ -98,7 +99,7 @@
                        {
                        "format": "16QAM",
                        "baud_rate": 32e9,
-                       "OSNR": 15,
+                       "OSNR": 19,
                        "bit_rate": 200e9,
                        "roll_off": 0.15
                        }
