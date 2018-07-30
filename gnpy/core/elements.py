@@ -307,7 +307,7 @@ class Fiber(Node):
 
 # TODO|dutc: eliminate duplication with .equipment.EdfaBase
 EdfaParams = namedtuple('EdfaParams',
-    'type_variety, gain_flatmax gain_min p_max nf_min nf_max'
+    'type_variety, type_def, gain_flatmax gain_min p_max'
     ' nf_model nf_fit_coeff nf_ripple dgt gain_ripple')
 class EdfaOperational:
     def __init__(self, gain_target, tilt_target):
@@ -412,9 +412,11 @@ class Edfa(Node):
         pad = max(self.params.gain_min - self.effective_gain, 0)
         gain_target = self.effective_gain + pad
         dg = max(self.params.gain_flatmax - gain_target, 0)
-        if self.params.nf_model:
+        if self.params.type_def == 'variable_gain':
             g1a = gain_target - self.params.nf_model.delta_p - dg
             nf_avg = lin2db(db2lin(self.params.nf_model.nf1) + db2lin(self.params.nf_model.nf2)/db2lin(g1a))
+        elif self.params.type_def == 'fixed_gain':
+            nf_avg = self.params.nf_model.nf0            
         else:
             nf_avg = polyval(self.params.nf_fit_coeff, -dg)
         return self.interpol_nf_ripple + nf_avg + pad # input VOA = 1 for 1 NF degradation
