@@ -85,6 +85,14 @@ def test_nf_calc(gain, nf_expected, enabled, setup_edfa, si):
 
     assert pytest.approx(nf_expected, abs=0.01) == edfa.nf[0]
 
+def test_si(si, nch_and_spacing):
+    """basic total power check of the channel comb generation"""
+    nb_channel = nch_and_spacing[0]
+    pin = np.array([c.power.signal+c.power.nli+c.power.ase for c in si.carriers])
+    p_tot = np.sum(pin)
+    expected_p_tot = si.carriers[0].power.signal * nb_channel
+    assert pytest.approx(expected_p_tot, abs=0.01) == p_tot
+
 @pytest.mark.parametrize("gain", [17, 19, 21, 23])
 def test_compare_nf_models(gain, setup_edfa, si):
     """ compare the 2 amplifier models (polynomial and estimated from nf_min and max)
@@ -105,14 +113,6 @@ def test_compare_nf_models(gain, setup_edfa, si):
     edfa.interpol_params(frequencies, pin, baud_rates, pref)
     nf_poly = edfa.nf[0]
     assert pytest.approx(nf_model, abs=0.5) == nf_poly
-
-def test_si(si, nch_and_spacing):
-    """basic total power check of the channel comb generation"""
-    nb_channel = nch_and_spacing[0]
-    pin = np.array([c.power.signal+c.power.nli+c.power.ase for c in si.carriers])
-    p_tot = np.sum(pin)
-    expected_p_tot = si.carriers[0].power.signal * nb_channel
-    assert pytest.approx(expected_p_tot, abs=0.01) == p_tot
 
 @pytest.mark.parametrize("gain", [13, 15, 17, 19, 21, 23, 25, 27]) 
 def test_ase_noise(gain, si, setup_edfa, setup_trx, bw):

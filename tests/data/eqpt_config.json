@@ -7,6 +7,7 @@
             },
             {
             "type_variety": "std_medium_gain",
+            "type_def": "variable_gain",            
             "gain_flatmax": 26,
             "gain_min": 15,
             "p_max": 21,
@@ -15,6 +16,7 @@
             },
             {
             "type_variety": "std_low_gain",
+            "type_def": "variable_gain",            
             "gain_flatmax": 16,
             "gain_min": 8,
             "p_max": 21,
@@ -23,6 +25,7 @@
             },
             {
             "type_variety": "test",
+            "type_def": "variable_gain",
             "gain_flatmax": 25,
             "gain_min": 15,
             "p_max": 21,
@@ -56,7 +59,8 @@
             "baud_rate": 32e9,
             "spacing": 50e9,
             "roll_off": 0.15,
-            "power": 1.2589e-3,
+            "power_dbm": 0,
+            "power_range_db": [0,0.5,0.5],
             "OSNR": 15,
             "bit_rate":100e9
             }],
