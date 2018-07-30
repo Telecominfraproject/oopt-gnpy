@@ -66,6 +66,8 @@ def main(network, equipment, source, destination, req = None):
     pref_span_db = lin2db(req.power*1e3)
     try:
         power_range = arange(*equipment['SI']['default'].power_range_db)
+        if len(power_range) == 0 : #bad input that will lead to no simulation (don't enter the power loop)
+            power_range = [0] #better than an error message
     except TypeError:
         print('invalid power range definition in eqpt_config, should be power_range_db: [lower, upper, step]')
         power_range = [0]

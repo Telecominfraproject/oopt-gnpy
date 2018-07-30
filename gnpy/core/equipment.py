@@ -15,7 +15,8 @@ from json import loads
 from gnpy.core.utils import lin2db, db2lin, load_json
 from collections import namedtuple
 
-Model = namedtuple('Model', 'nf1 nf2 delta_p')
+Model_vg = namedtuple('Model_vg', 'nf1 nf2 delta_p')
+Model_fg = namedtuple('Model_fg', 'nf0')
 Fiber = namedtuple('Fiber', 'type_variety dispersion gamma')
 Spans = namedtuple('Spans', 'power_mode max_length length_units max_loss padding EOL con_loss')
 Transceiver = namedtuple('Transceiver', 'type_variety frequency mode')
@@ -53,9 +54,11 @@ class Edfa(EdfaBase):
 
 def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
     if nf_min < -10:
-        raise ValueError(f'Invalid nf_min value {nf_min!r}')
+        print(f'Invalid nf_min value {nf_min!r} for amplifier {type_variety}')
+        exit()
     if nf_max < -10:
-        raise ValueError(f'Invalid nf_max value {nf_max!r}')
+        print(f'Invalid nf_max value {nf_max!r} for amplifier {type_variety}')
+        exit()
 
     # NF estimation model based on nf_min and nf_max
     # delta_p:  max power dB difference between first and second stage coils
@@ -70,7 +73,8 @@ def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
     nf1 = lin2db(db2lin(nf_min) - db2lin(nf2)/db2lin(g1a_max))
 
     if nf1 < 4:
-        raise ValueError(f'First coil value too low {nf1}')
+        print(f'First coil value too low {nf1} for amplifier {type_variety}')
+        exit()
 
     # Check 1 dB < delta_p < 6 dB to ensure nf_min and nf_max values make sense.
     # There shouldn't be high nf differences between the two coils:
@@ -82,17 +86,20 @@ def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
         delta_p = gain_max - g1a_max
         g1a_min = gain_min - (gain_max-gain_min) - delta_p
         if not 1 < delta_p < 6:
-            raise ValueError(f'Computed \N{greek capital letter delta}P invalid \
+            print(f'Computed \N{greek capital letter delta}P invalid \
                 \n 1st coil vs 2nd coil calculated DeltaP {delta_p:.2f} for \
-                \n amp {type_variety} is not valid: revise inputs \
+                \n amplifier {type_variety} is not valid: revise inputs \
                 \n calculated 1st coil NF = {nf1:.2f}, 2nd coil NF = {nf2:.2f}')
+            exit()
     # Check calculated values for nf1 and nf2
     calc_nf_min = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_max))
     if not isclose(nf_min, calc_nf_min, abs_tol=0.01):
-        raise ValueError(f'nf_min does not match calc_nf_min, {nf_min} vs {calc_nf_min} for amp {type_variety}')
+        print(f'nf_min does not match calc_nf_min, {nf_min} vs {calc_nf_min} for amp {type_variety}')
+        exit()
     calc_nf_max = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_min))
     if not isclose(nf_max, calc_nf_max, abs_tol=0.01):
-        raise ValueError(f'nf_max does not match calc_nf_max, {nf_max} vs {calc_nf_max} for amp {type_variety}')
+        print(f'nf_max does not match calc_nf_max, {nf_max} vs {calc_nf_max} for amp {type_variety}')
+        exit()
 
     return nf1, nf2, delta_p
 
