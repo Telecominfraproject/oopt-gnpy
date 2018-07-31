@@ -112,19 +112,27 @@ def set_edfa_dp(network, path):
 def prev_fiber_node_generator(network, node):
     """fused spans interest:
     iterate over all predecessors while they are Fiber type"""
-    prev_node = [n for n in network.predecessors(node)]
-    if len(prev_node) == 1:
-        #fibers or fused spans so there is only 1 predecessor
-        if isinstance(prev_node[0], Fused) or isinstance(node, Fused):
-            # yield and re-iterate
-            yield prev_node[0]
-            yield from prev_fiber_node_generator(network, prev_node[0])
-        else:
-            StopIteration
+    prev_node = next(n for n in network.predecessors(node))
+    # yield and re-iterate
+    if isinstance(prev_node, Fused) or isinstance(node, Fused):
+        yield prev_node
+        yield from prev_fiber_node_generator(network, prev_node)
+    else:
+        StopIteration
 
 def span_loss(network, node):
+    """Fused span interest:
+    return the total span loss of all the fibers spliced by a Fused node"""
     loss = node.loss if node.passive else 0
     return loss + sum(n.loss for n in prev_fiber_node_generator(network, node))
+
+def find_first_fiber(network, node):
+    """Fused span interest:
+    returns the 1st fiber at the origin of a succession of spliced fibers"""
+    fiber = node
+    for fiber in prev_fiber_node_generator(network, node):
+        pass
+    return fiber
 
 def add_egress_amplifier(network, node, equipment):
     if isinstance(node, Edfa):
@@ -222,10 +230,19 @@ def add_connector_loss(fibers, con_in, con_out):
         if fiber.con_in is None: fiber.con_in = con_in
         if fiber.con_out is None: fiber.con_out = con_out
 
-def add_fiber_padding(fibers, padding):
-    small_spans = (fiber for fiber in fibers if fiber.loss < padding)
-    for fiber in small_spans:
-        fiber.att_in = padding - fiber.loss
+def add_fiber_padding(network, fibers, padding):
+    """last_fibers = (fiber for n in network.nodes()
+                         if not (isinstance(n, Fiber) or isinstance(n, Fused))
+                         for fiber in network.predecessors(n)
+                         if isinstance(fiber, Fiber))"""
+    for fiber in fibers:
+        fiber_loss = span_loss(network, fiber)
+        next_node = next(network.successors(fiber))
+        if fiber_loss < padding and not (isinstance(next_node, Fused)):
+            #add a padding att_in at the input of the 1st fiber:
+            #address the case when several fibers are spliced together
+            first_fiber = find_first_fiber(network, fiber)
+            first_fiber.att_in = padding - fiber_loss
 
 def build_network(network, equipment):
     default_span_data = equipment['Spans']['default']
@@ -239,8 +256,7 @@ def build_network(network, equipment):
 
     fibers = [f for f in network.nodes() if isinstance(f, Fiber)]
     add_connector_loss(fibers, con_in, con_out)
-    add_fiber_padding(fibers, padding)
-
+    add_fiber_padding(network, fibers, padding)
     for fiber in fibers:
         split_fiber(network, fiber, bounds, target_length, equipment)        
 

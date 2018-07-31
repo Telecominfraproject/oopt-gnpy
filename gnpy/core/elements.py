@@ -190,7 +190,7 @@ class Fiber(Node):
         return f'{type(self).__name__}(uid={self.uid!r}, length={self.length!r}, loss={self.loss!r})'
 
     def __str__(self):
-        return '\n'.join([f'  {type(self).__name__}        {self.uid}',
+        return '\n'.join([f'{type(self).__name__}        {self.uid}',
                           f'  type_variety:                {self.type_variety}',
                           f'  length (m):                  {self.length:.2f}',
                           f'  pad att_in (dB):             {self.att_in:.2f}',
@@ -288,7 +288,7 @@ class Fiber(Node):
     def propagate(self, *carriers):
 
         # apply connector_att_in on all carriers before computing gn analytics  premiere partie pas bonne
-        attenuation = db2lin(self.con_in)
+        attenuation = db2lin(self.con_in + self.att_in)
 
         chan = []
         for carrier in carriers:
@@ -359,6 +359,7 @@ class Edfa(Node):
         self.effective_pch_db = None
         self.passive = False
         self.effective_gain = self.operational.gain_target
+        self.att_in = None
 
     def __repr__(self):
         return (f'{type(self).__name__}(uid={self.uid!r}, '
@@ -381,6 +382,8 @@ class Edfa(Node):
                           f'  target gain (dB):       {self.operational.gain_target:.2f}',
                           f'  effective gain(dB):     {self.effective_gain:.2f}',
                           f'  noise figure (dB):      {nf:.2f}',
+                          f'  including att_in',
+                          f'  pad att_in (dB):        {self.att_in:.2f}',
                           f'  Power In (dBm):         {self.pin_db:.2f}',
                           f'  Power Out (dBm):        {self.pout_db:.2f}',
                           f'  Delta_P (dB):           {self.dp_db!r}',
@@ -425,6 +428,7 @@ class Edfa(Node):
         # TODO|jla: TBD alarm rising or input VOA padding in case
         # gain_min > gain_target TBD:
         pad = max(self.params.gain_min - self.effective_gain, 0)
+        self.att_in = pad
         gain_target = self.effective_gain + pad
         dg = max(self.params.gain_flatmax - gain_target, 0)
         if self.params.type_def == 'variable_gain':
