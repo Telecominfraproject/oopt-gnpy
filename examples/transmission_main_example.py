@@ -68,12 +68,15 @@ def main(network, equipment, source, destination, req = None):
 
     for dp_db in bounds:
         p_db = pref_span_db + dp_db
+        pref_roadm_db = equipment['Roadms']['default'].power_mode_pref
+        roadm_loss = p_db - pref_roadm_db #dynamic update the ROADM loss wrto power sweep to keep the same pref_roadm
+        set_roadm_loss(network, equipment, power_mode, roadm_loss)        
         p = db2lin(p_db)*1e-3
         req.power = p
         print(f'\nPropagating with input power = {lin2db(req.power*1e3):.2f}dBm :')
         propagate(path, req, equipment, show=True)
         print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f}dBm :')        
-
+        print(destination)
     return path
 
 

@@ -40,7 +40,7 @@ class Link(namedtuple('Link', 'from_city to_city \
     distance_units')):
     def __new__(cls, from_city, to_city,
       east_distance, east_fiber='SSMF', east_lineic=0.2, 
-      east_con_in=0.5, east_con_out=0.5, east_pmd=0.1, east_cable='', 
+      east_con_in=0, east_con_out=0, east_pmd=0.1, east_cable='', 
       west_distance='', west_fiber='', west_lineic='', 
       west_con_in='', west_con_out='', west_pmd='', west_cable='',
       distance_units='km'):
@@ -48,7 +48,7 @@ class Link(namedtuple('Link', 'from_city to_city \
                         east_pmd, east_cable]
         west_values = [west_distance, west_fiber, west_lineic, west_con_in, west_con_out, 
                         west_pmd, west_cable]
-        default_values = [80,'SSMF',0.2,0.5,0.5,0.1,'']
+        default_values = [80,'SSMF',0.2,0,0,0.1,'']
         east_values = [x[0] if x[0] != '' else x[1] for x in zip(east_values,default_values)]
         west_values = [x[0] if x[0] != '' else x[1] for x in zip(west_values,east_values)]
         return super().__new__(cls, from_city, to_city, *east_values, *west_values, distance_units)     
