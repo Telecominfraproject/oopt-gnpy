@@ -82,7 +82,7 @@ def select_edfa(ingress_span_loss, equipment):
         return min(acceptable_edfa_list, key=itemgetter(2))[0]
 
 def set_roadm_loss(network, equipment, power_mode, roadm_loss):
-    roadms = [roadm for roadm in network if isinstance(roadm, Roadm)]
+    roadms = (roadm for roadm in network if isinstance(roadm, Roadm))
     default_roadm_loss = equipment['Roadms']['default'].gain_mode_default_loss
     for roadm in roadms:
         if power_mode:
@@ -222,16 +222,25 @@ def add_connector_loss(fibers, con_in, con_out):
         if fiber.con_in is None: fiber.con_in = con_in
         if fiber.con_out is None: fiber.con_out = con_out
 
+def add_fiber_padding(fibers, padding):
+    small_spans = (fiber for fiber in fibers if fiber.loss < padding)
+    for fiber in small_spans:
+        fiber.att_in = padding - fiber.loss
+
 def build_network(network, equipment):
     default_span_data = equipment['Spans']['default']
     max_length = int(default_span_data.max_length * UNITS[default_span_data.length_units])
-    bounds = range(75_000, max_length)
-    target_length = 100_000
+    min_length = max(int(default_span_data.padding/0.2*1e3),50_000)
+    bounds = range(min_length, max_length)
+    target_length = max(min_length, 90_000)
     con_in = default_span_data.con_in
     con_out = default_span_data.con_out + default_span_data.EOL
+    padding = default_span_data.padding
 
     fibers = [f for f in network.nodes() if isinstance(f, Fiber)]
     add_connector_loss(fibers, con_in, con_out)
+    add_fiber_padding(fibers, padding)
+
     for fiber in fibers:
         split_fiber(network, fiber, bounds, target_length, equipment)        
 

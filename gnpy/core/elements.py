@@ -155,23 +155,29 @@ class Fused(Node):
         print('pi',pref.pi)
         return spectral_info.update(carriers=carriers, pref=pref)
 
-FiberParams = namedtuple('FiberParams', 'type_variety length loss_coef length_units con_in con_out dispersion gamma')
+FiberParams = namedtuple('FiberParams', 'type_variety length loss_coef length_units \
+                                         att_in con_in con_out dispersion gamma')
 
 class Fiber(Node):
     def __init__(self, *args, params=None, **kwargs):
         if params is None:
             params = {}
-        if 'con_in' not in params :
-            # if not defined in the network json
+        if 'con_in' not in params:
+            # if not defined in the network json connector loss in/out
             # the None value will be updated in network.py[build_network] 
             # with default values from eqpt_config.json[Spans]
             params['con_in'] = None
             params['con_out'] = None
+        if 'att_in' not in params:
+            #fixed attenuator for padding
+            params['att_in'] = 0
+
         super().__init__(*args, params=FiberParams(**params), **kwargs)
         self.type_variety = self.params.type_variety
         self.length = self.params.length * UNITS[self.params.length_units] # in m
         self.loss_coef = self.params.loss_coef * 1e-3 # lineic loss dB/m
         self.lin_loss_coef = self.params.loss_coef / (20 * log10(exp(1)))
+        self.att_in = self.params.att_in
         self.con_in = self.params.con_in
         self.con_out = self.params.con_out
         self.dispersion = self.params.dispersion  # s/m/m
@@ -184,18 +190,24 @@ class Fiber(Node):
         return f'{type(self).__name__}(uid={self.uid!r}, length={self.length!r}, loss={self.loss!r})'
 
     def __str__(self):
-        return '\n'.join([f'{type(self).__name__} {self.uid}',
-                          f'  type_variety: {self.type_variety}',
-                          f'  length (m):   {self.length:.2f}',
-                          f'  loss (dB):    {self.loss:.2f}',
+        return '\n'.join([f'  {type(self).__name__}        {self.uid}',
+                          f'  type_variety:                {self.type_variety}',
+                          f'  length (m):                  {self.length:.2f}',
+                          f'  pad att_in (dB):             {self.att_in:.2f}',
+                          f'  total loss (dB):             {self.loss:.2f}',
                           f'  (includes conn loss (dB) in: {self.con_in:.2f} out: {self.con_out:.2f})',
                           f'  (conn loss out includes EOL margin defined in eqpt_config.json)'])
 
     @property
-    def loss(self):
-        # dB loss: useful for polymorphism (roadm, fiber, att)
+    def fiber_loss(self):
+        # dB fiber loss, not including padding attenuator
         return self.loss_coef * self.length + self.con_in + self.con_out
 
+    @property
+    def loss(self):
+        #total loss incluiding padding att_in: useful for polymorphism with roadm loss
+        return self.loss_coef * self.length + self.con_in + self.con_out + self.att_in
+    
     @property
     def passive(self):
         return True   
