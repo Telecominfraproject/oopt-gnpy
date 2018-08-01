@@ -13,7 +13,7 @@ from pathlib import Path
 from json import loads
 from collections import Counter
 from logging import getLogger, basicConfig, INFO, ERROR, DEBUG
-
+from numpy import arange
 from matplotlib.pyplot import show, axis, figure, title
 from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels, dijkstra_path)
@@ -64,9 +64,13 @@ def main(network, equipment, source, destination, req = None):
     print(f'\nNow propagating between {source.uid} and {destination.uid}:')
 
     pref_span_db = lin2db(req.power*1e3)
-    bounds = range(0, 1) #power sweep
+    try:
+        power_range = arange(*equipment['SI']['default'].power_range_db)
+    except TypeError:
+        print('invalid power range definition in eqpt_config, should be power_range_db: [lower, upper, step]')
+        power_range = [0]
 
-    for dp_db in bounds:
+    for dp_db in power_range:
         p_db = pref_span_db + dp_db
         pref_roadm_db = equipment['Roadms']['default'].power_mode_pref
         roadm_loss = p_db - pref_roadm_db #dynamic update the ROADM loss wrto power sweep to keep the same pref_roadm
@@ -74,7 +78,7 @@ def main(network, equipment, source, destination, req = None):
         p = db2lin(p_db)*1e-3
         req.power = p
         print(f'\nPropagating with input power = {lin2db(req.power*1e3):.2f}dBm :')
-        propagate(path, req, equipment, show=True)
+        propagate(path, req, equipment, show=len(power_range)==1)
         print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f}dBm :')        
         print(destination)
     return path

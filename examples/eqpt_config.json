@@ -20,14 +20,6 @@
             "p_max": 21,
             "nf_min": 7,
             "nf_max": 11
-            },
-            {
-            "type_variety": "test",
-            "gain_flatmax": 25,
-            "gain_min": 15,
-            "p_max": 21,
-            "nf_min": 5.8,
-            "nf_max": 10
             }
       ],
       "Fiber":[{
@@ -55,9 +47,10 @@
             "f_max":196.1e12,
             "baud_rate": 32e9,
             "spacing": 50e9,
-            "power": 1e-3,
+            "power": 0.5e-3,
+            "power_range_db": [0,0.5,0.5],
             "roll_off": 0.15,
-            "OSNR": 15,
+            "OSNR": 11,
             "bit_rate":100e9
             }],
       "Transceiver":[
@@ -71,14 +64,14 @@
                        {
                        "format": "PS_SP64_1",
                        "baud_rate": 32e9,
-                       "OSNR": 9,
+                       "OSNR": 11,
                        "bit_rate": 100e9,
                        "roll_off": 0.15
                        },
                        {
                        "format": "PS_SP64_2",
                        "baud_rate": 66e9,
-                       "OSNR": 10,
+                       "OSNR": 15,
                        "bit_rate": 200e9,
                        "roll_off": 0.15
                        }
@@ -94,7 +87,7 @@
                        {
                        "format": "16QAM",
                        "baud_rate": 32e9,
-                       "OSNR": 15,
+                       "OSNR": 19,
                        "bit_rate": 200e9,
                        "roll_off": 0.15
                        }

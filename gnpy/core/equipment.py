@@ -20,7 +20,8 @@ Fiber = namedtuple('Fiber', 'type_variety dispersion gamma')
 Spans = namedtuple('Spans', 'power_mode max_length length_units max_loss padding EOL con_loss')
 Transceiver = namedtuple('Transceiver', 'type_variety frequency mode')
 Roadms = namedtuple('Roadms', 'gain_mode_default_loss power_mode_pref')
-SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off power OSNR bit_rate')
+SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off \
+                       power power_range_db OSNR bit_rate')
 EdfaBase = namedtuple(
     'EdfaBase',
     'type_variety gain_flatmax gain_min p_max nf_min nf_max'
