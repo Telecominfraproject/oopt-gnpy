@@ -53,7 +53,8 @@ def main(network, equipment, source, destination, req = None):
     print('\n'.join([f'Power mode is set to {power_mode}',
                      f'=> it can be modified in eqpt_config.json - Spans']))    
 
-    set_roadm_loss(network, equipment, False, 0)
+    #set raodm loss for gain_mode before to build network
+    set_roadm_loss(network, equipment, False, 0) 
     build_network(network, equipment=equipment)
     path = compute_constrained_path(network, req)
     if power_mode: 

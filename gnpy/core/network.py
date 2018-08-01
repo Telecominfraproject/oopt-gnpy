@@ -91,7 +91,7 @@ def set_roadm_loss(network, equipment, power_mode, roadm_loss):
             roadm.loss = default_roadm_loss
 
 def set_edfa_dp(network, path):
-    path_amps = [amp for amp in path if isinstance(amp, Edfa)]
+    path_amps = (amp for amp in path if isinstance(amp, Edfa))
     prev_dp = 0
     for amp in path_amps:
         next_node = [n for n in network.successors(amp)][0]
@@ -130,18 +130,19 @@ def add_egress_amplifier(network, node, equipment):
     if isinstance(node, Edfa):
         return
 
-    next_nodes = [n for n in network.successors(node)
-        if not (isinstance(n, Transceiver) or isinstance(n, Fused))]
+    next_nodes = (n for n in network.successors(node)
+        if not (isinstance(n, Transceiver) or isinstance(n, Fused)))
         #no amplification for fused spans or TRX
 
+    #do not set the gain in power mode: will be done later
+    power_mode = equipment['Spans']['default'].power_mode
+    total_loss = span_loss(network, node)
     for i, next_node in enumerate(next_nodes):
         if isinstance(next_node, Edfa):
             if next_node.operational.gain_target == 0:
-                total_loss = span_loss(network, node)
                 next_node.operational.gain_target = total_loss
         else:
             network.remove_edge(node, next_node)
-            total_loss = span_loss(network, node)
             edfa_variety = select_edfa(total_loss, equipment)
             extra_params = equipment['Edfa'][edfa_variety]
             amp = Edfa(
@@ -156,23 +157,23 @@ def add_egress_amplifier(network, node, equipment):
             network.add_edge(amp, next_node)
 
 
-def calculate_new_length(fiber_length, bounds, target):
+def calculate_new_length(fiber_length, bounds, target_length):
     if fiber_length < bounds.stop:
         return fiber_length, 1
 
-    n_spans = int(fiber_length // target)
+    n_spans = int(fiber_length // target_length)
 
     length1 = fiber_length / (n_spans+1)
-    delta1 = target-length1
+    delta1 = target_length-length1
     result1 = (length1, n_spans+1)
 
     length2 = fiber_length / n_spans
-    delta2 = length2-target
+    delta2 = length2-target_length
     result2 = (length2, n_spans)
 
-    if length1 in bounds and length2 not in bounds:
+    if (bounds.start<=length1<=bounds.stop) and not(bounds.start<=length2<=bounds.stop):
         result = result1
-    elif length2 in bounds and length1 not in bounds:
+    elif (bounds.start<=length2<=bounds.stop) and not(bounds.start<=length1<=bounds.stop):
         result = result2
     else:
         result = result1 if delta1 < delta2 else result2
@@ -180,8 +181,8 @@ def calculate_new_length(fiber_length, bounds, target):
     return result
 
 
-def split_fiber(network, fiber, bounds, target, equipment):
-    new_length, n_spans = calculate_new_length(fiber.length, bounds, target)
+def split_fiber(network, fiber, bounds, target_length, equipment):
+    new_length, n_spans = calculate_new_length(fiber.length, bounds, target_length)
     if n_spans == 1:
         add_egress_amplifier(network, fiber, equipment)
         return
@@ -225,14 +226,14 @@ def build_network(network, equipment):
     default_span_data = equipment['Spans']['default']
     max_length = int(default_span_data.max_length * UNITS[default_span_data.length_units])
     bounds = range(75_000, max_length)
-    target = 100_000
+    target_length = 100_000
     con_in = default_span_data.con_in
     con_out = default_span_data.con_out + default_span_data.EOL
 
     fibers = [f for f in network.nodes() if isinstance(f, Fiber)]
     add_connector_loss(fibers, con_in, con_out)
     for fiber in fibers:
-        split_fiber(network, fiber, bounds, target, equipment)        
+        split_fiber(network, fiber, bounds, target_length, equipment)        
 
     roadms = [r for r in network.nodes() if isinstance(r, Roadm)]
     for roadm in roadms:
