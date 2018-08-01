@@ -26,9 +26,9 @@
             {
             "type_variety": "std_fixed_gain",
             "type_def": "fixed_gain",
-            "gain_flatmax": 21,
+            "gain_flatmax": 20,
             "gain_min": 20,
-            "p_max": 20,
+            "p_max": 21,
             "nf0": 5.5
             },
             {
@@ -37,8 +37,8 @@
             "gain_flatmax": 25,
             "gain_min": 15,
             "p_max": 21,
-            "nf_min": 5.8,
-            "nf_max": 10
+            "nf_min": 7,
+            "nf_max": 11
             }            
       ],
       "Fiber":[{

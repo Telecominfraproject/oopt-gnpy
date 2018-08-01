@@ -31,6 +31,14 @@
             "p_max": 21,
             "nf_min": 5.8,
             "nf_max": 10
+            },
+            {
+            "type_variety": "test_fixed_gain",
+            "type_def": "fixed_gain",
+            "gain_flatmax": 21,
+            "gain_min": 20,
+            "p_max": 21,
+            "nf0": 5
             }
       ],
       "Fiber":[{

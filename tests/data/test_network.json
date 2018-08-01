@@ -46,6 +46,39 @@
             }
         },
         {
+            "uid": "Span2",
+            "type": "Fiber",
+            "type_variety": "SSMF",
+            "params": {
+                "length": 80,
+                "loss_coef": 0.2,
+                "length_units": "km"
+                },
+            "metadata": {
+                "location": {
+                    "region": "",
+                    "latitude": 1,
+                    "longitude": 0
+                }
+            }
+        },
+        {
+            "uid": "Edfa2",
+            "type": "Edfa",
+            "type_variety": "test_fixed_gain",            
+            "operational": {
+                "gain_target": 16,
+                "tilt_target": 0
+            },
+            "metadata": {
+                "location": {
+                    "region": "",
+                    "latitude": 2,
+                    "longitude": 0
+                }
+            }
+        },   
+        {
             "uid": "Site_B",
             "type": "Transceiver",
             "metadata": {
@@ -69,6 +102,14 @@
         },
         {
             "from_node": "Edfa1",
+            "to_node": "Span2"
+        },
+        {
+            "from_node": "Span2",
+            "to_node": "Edfa2"
+        },        
+        {
+            "from_node": "Edfa2",
             "to_node": "Site_B"
         }
 
