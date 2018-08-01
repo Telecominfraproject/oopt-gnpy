@@ -16,6 +16,7 @@ from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm, Fused
 from gnpy.core.equipment import edfa_nf
 from gnpy.core.units import UNITS
 from gnpy.core.utils import load_json
+from sys import exit
 
 logger = getLogger(__name__)
 
@@ -42,6 +43,10 @@ def network_from_json(json_data, equipment):
         if typ in equipment and variety in equipment[typ]:
             extra_params = equipment[typ][variety]
             el_config.setdefault('params', {}).update(extra_params._asdict())
+        elif typ in ['Edfa', 'Fiber']: #catch it now because the code will crash later!
+            print( f'The {typ} of variety type {variety} was not recognized:'
+                    '\nplease check it is properly defined in the eqpt_config json file')
+            exit()
         cls = getattr(elements, typ)
         el = cls(**el_config)
         g.add_node(el)
