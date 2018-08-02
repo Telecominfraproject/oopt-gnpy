@@ -1,9 +1,10 @@
 {     "Edfa":[{
             "type_variety": "CienaDB_medium_gain",
-            "gain_flatmax": 1,
-            "gain_min": 1,
+            "gain_flatmax": 15,
+            "gain_min": 25,
             "p_max": 21,
-            "advanced_config_from_json": "std_medium_gain_advanced_config.json"
+            "advanced_config_from_json": "std_medium_gain_advanced_config.json",
+            "allowed_for_design": false
             },
             {
             "type_variety": "std_medium_gain",
@@ -12,7 +13,8 @@
             "gain_min": 15,
             "p_max": 22,
             "nf_min": 6,
-            "nf_max": 10
+            "nf_max": 10,
+            "allowed_for_design": true
             },
             {
             "type_variety": "std_low_gain",
@@ -21,7 +23,8 @@
             "gain_min": 8,
             "p_max": 22,
             "nf_min": 7,
-            "nf_max": 11
+            "nf_max": 11,
+            "allowed_for_design": true
             },
             {
             "type_variety": "std_fixed_gain",
@@ -29,7 +32,8 @@
             "gain_flatmax": 20,
             "gain_min": 20,
             "p_max": 22,
-            "nf0": 5.5
+            "nf0": 5.5,
+            "allowed_for_design": true
             },
             {
             "type_variety": "test",
@@ -38,7 +42,8 @@
             "gain_min": 15,
             "p_max": 21,
             "nf_min": 7,
-            "nf_max": 11
+            "nf_max": 11,
+            "allowed_for_design": false
             }            
       ],
       "Fiber":[{
@@ -68,7 +73,7 @@
             "f_max":195.1e12,
             "baud_rate": 32e9,
             "spacing": 50e9,
-            "power_dbm": 0.5,
+            "power_dbm": 0,
             "power_range_db": [0,0,0.5],
             "roll_off": 0.15,
             "OSNR": 11,

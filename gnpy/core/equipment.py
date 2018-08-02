@@ -27,14 +27,14 @@ SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off \
 EdfaBase = namedtuple(
     'EdfaBase',
     'type_variety type_def gain_flatmax gain_min p_max'
-    ' nf_model nf_fit_coeff nf_ripple dgt gain_ripple')
+    ' nf_model nf_fit_coeff nf_ripple dgt gain_ripple allowed_for_design')
 class Edfa(EdfaBase):
     def __new__(cls,
-            type_variety, type_def, gain_flatmax, gain_min, p_max, 
-            nf_model=None, nf_fit_coeff=None, nf_ripple=None, dgt=None, gain_ripple=None):
+            type_variety, type_def, gain_flatmax, gain_min, p_max, nf_model=None, 
+            nf_fit_coeff=None, nf_ripple=None, dgt=None, gain_ripple=None, allowed_for_design=True):
         return super().__new__(cls,
             type_variety, type_def, gain_flatmax, gain_min, p_max, 
-            nf_model, nf_fit_coeff, nf_ripple, dgt, gain_ripple)
+            nf_model, nf_fit_coeff, nf_ripple, dgt, gain_ripple, allowed_for_design)
 
     @classmethod
     def from_advanced_json(cls, filename, **kwargs):

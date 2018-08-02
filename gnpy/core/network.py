@@ -72,7 +72,8 @@ def select_edfa(ingress_span_loss, equipment):
     edfa_list = [(edfa_variety, 
                 edfa_dict[edfa_variety].gain_flatmax-ingress_span_loss,
                 edfa_nf(ingress_span_loss, edfa_variety, equipment)) \
-                for edfa_variety in edfa_dict]
+                for edfa_variety in edfa_dict
+                if edfa_dict[edfa_variety].allowed_for_design]
     acceptable_edfa_list = list(filter(lambda x : x[1]>-TARGET_EXTENDED_GAIN, edfa_list))
     if len(acceptable_edfa_list) < 1: 
         #no amplifier satisfies the required gain, so pick the highest gain one:

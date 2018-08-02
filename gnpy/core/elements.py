@@ -323,7 +323,7 @@ class Fiber(Node):
 # TODO|dutc: eliminate duplication with .equipment.EdfaBase
 EdfaParams = namedtuple('EdfaParams',
     'type_variety, type_def, gain_flatmax gain_min p_max'
-    ' nf_model nf_fit_coeff nf_ripple dgt gain_ripple')
+    ' nf_model nf_fit_coeff nf_ripple dgt gain_ripple allowed_for_design')
 class EdfaOperational:
     def __init__(self, gain_target, tilt_target):
         self.gain_target = gain_target
