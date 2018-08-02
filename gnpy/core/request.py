@@ -29,6 +29,7 @@ from gnpy.core.utils import load_json
 from gnpy.core.network import load_network, build_network
 from gnpy.core.equipment import load_equipment
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
+from gnpy.core.network import set_roadm_loss
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
 from copy import copy, deepcopy
@@ -170,6 +171,11 @@ def compute_constrained_path(network, req):
     return total_path 
 
 def propagate(path, req, equipment, show=False):
+    p_db = lin2db(req.power*1e3)    
+    pref_roadm_db = equipment['Roadms']['default'].power_mode_pref
+    power_mode = equipment['Spans']['default'].power_mode
+    roadm_loss = p_db - pref_roadm_db #dynamic update the ROADM loss wrto power sweep to keep the same pref_roadm
+    set_roadm_loss(path, equipment, power_mode, roadm_loss)        
     
     si = create_input_spectral_information(
         req.frequency['min'], req.roll_off,

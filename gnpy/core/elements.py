@@ -320,10 +320,27 @@ class Fiber(Node):
         pref = self.update_pref(spectral_info.pref)
         return spectral_info.update(carriers=carriers, pref=pref)
 
-# TODO|dutc: eliminate duplication with .equipment.EdfaBase
-EdfaParams = namedtuple('EdfaParams',
-    'type_variety, type_def, gain_flatmax gain_min p_max'
-    ' nf_model nf_fit_coeff nf_ripple dgt gain_ripple allowed_for_design')
+class EdfaParams:
+    def __init__(self, **params):
+        self.update_params(params)
+        if params == {}:
+            self.type_variety = ''
+            self.type_def = ''
+            self.gain_flatmax = 0
+            self.gain_min = 0
+            self.p_max = 0
+            self.nf_model = None
+            self.nf_fit_coeff = None
+            self.nf_ripple = None
+            self.dgt = None
+            self.gain_ripple = None
+            self.allowed_for_design = None
+
+    def update_params(self, kwargs):
+        for k,v in kwargs.items() :
+            setattr(self, k, update_params(**v)
+                if isinstance(v, dict) else v)
+
 class EdfaOperational:
     def __init__(self, gain_target, tilt_target):
         self.gain_target = gain_target
@@ -334,11 +351,12 @@ class EdfaOperational:
                 f'tilt_target={self.tilt_target!r})')
 
 class Edfa(Node):
-    def __init__(self, *args, params=None, operational=None, **kwargs):
-        if params is None:
-            params = {}
-        if operational is None:
-            operational = {}
+    def __init__(self, *args, params={}, operational={}, **kwargs):
+        #TBC is this useful? put in comment for now:
+        #if params is None:
+        #    params = {}
+        #if operational is None:
+        #    operational = {}
         super().__init__(
             *args,
             params=EdfaParams(**params),

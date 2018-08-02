@@ -172,7 +172,6 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             trx_params['OSNR'] = default_si_data.OSNR
             trx_params['bit_rate'] = default_si_data.bit_rate
             trx_params['roll_off'] = default_si_data.roll_off
-            print(trx_params['roll_off'])
     trx_params['power'] =  db2lin(default_si_data.power_dbm)*1e-3
     trx_params['nb_channel'] = automatic_nch(trx_params['frequency']['min'],
                                              trx_params['frequency']['max'],
