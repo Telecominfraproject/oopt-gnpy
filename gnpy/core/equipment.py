@@ -18,7 +18,8 @@ from collections import namedtuple
 Model_vg = namedtuple('Model_vg', 'nf1 nf2 delta_p')
 Model_fg = namedtuple('Model_fg', 'nf0')
 Fiber = namedtuple('Fiber', 'type_variety dispersion gamma')
-Spans = namedtuple('Spans', 'power_mode max_length length_units max_loss padding EOL con_in con_out')
+Spans = namedtuple('Spans', 'power_mode delta_power_range_db max_length length_units \
+                             max_loss padding EOL con_in con_out')
 Transceiver = namedtuple('Transceiver', 'type_variety frequency mode')
 Roadms = namedtuple('Roadms', 'gain_mode_default_loss power_mode_pref')
 SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off \

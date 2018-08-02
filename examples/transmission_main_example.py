@@ -58,7 +58,7 @@ def main(network, equipment, source, destination, req = None):
     build_network(network, equipment=equipment)
     path = compute_constrained_path(network, req)
     if power_mode: 
-        set_edfa_dp(network, path)
+        set_edfa_dp(network, path, equipment)
 
     spans = [s.length for s in path if isinstance(s, Fiber)]
     print(f'\nThere are {len(spans)} fiber spans over {sum(spans):.0f}m between {source.uid} and {destination.uid}')

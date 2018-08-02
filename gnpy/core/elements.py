@@ -187,12 +187,12 @@ class Fiber(Node):
 
 
     def __repr__(self):
-        return f'{type(self).__name__}(uid={self.uid!r}, length={self.length!r}, loss={self.loss!r})'
+        return f'{type(self).__name__}(uid={self.uid!r}, length={round(self.length*1e-3,1)!r}km, loss={round(self.loss,1)!r}dB)'
 
     def __str__(self):
-        return '\n'.join([f'{type(self).__name__}        {self.uid}',
+        return '\n'.join([f'{type(self).__name__}          {self.uid}',
                           f'  type_variety:                {self.type_variety}',
-                          f'  length (m):                  {self.length:.2f}',
+                          f'  length (km):                 {round(self.length*1e-3):.2f}',
                           f'  pad att_in (dB):             {self.att_in:.2f}',
                           f'  total loss (dB):             {self.loss:.2f}',
                           f'  (includes conn loss (dB) in: {self.con_in:.2f} out: {self.con_out:.2f})',
@@ -406,7 +406,7 @@ class Edfa(Node):
         """check power saturation and correct target_gain accordingly:"""
 
         if self.dp_db is not None:
-            self.target_pch_db = self.dp_db + pref.p0
+            self.target_pch_db = round(self.dp_db + pref.p0, 2)
             self.effective_gain = self.target_pch_db - pref.pi
         else:
             self.effective_gain = self.operational.gain_target
