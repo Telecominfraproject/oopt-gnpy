@@ -61,26 +61,34 @@ def network_from_json(json_data, equipment):
 
     return g
 
-def select_edfa(gain_target, equipment):
+def select_edfa(gain_target, power_target, equipment):
     """amplifer selection algorithm
     @Orange Jean-Luc Augé
     """
-    #TODO |jla add power requirement in the selection criteria
     TARGET_EXTENDED_GAIN = 2.1
     #MAX_EXTENDED_GAIN = 5
     edfa_dict = equipment['Edfa']
-    edfa_list = [(edfa_variety, 
+
+    Pin = power_target - gain_target
+    edfa_list = [(edfa_variety,
+                min(Pin+
+                    edfa_dict[edfa_variety].gain_flatmax, 
+                    edfa_dict[edfa_variety].p_max)
+                    -power_target,
                 edfa_dict[edfa_variety].gain_flatmax-gain_target,
                 edfa_nf(gain_target, edfa_variety, equipment)) \
                 for edfa_variety in edfa_dict
                 if edfa_dict[edfa_variety].allowed_for_design]
-    acceptable_edfa_list = list(filter(lambda x : x[1]>-TARGET_EXTENDED_GAIN, edfa_list))
-    if len(acceptable_edfa_list) < 1: 
-        #no amplifier satisfies the required gain, so pick the highest gain one:
-        return max(edfa_list, key=itemgetter(1))[0]
-    else:
-        #chose the amp with the best NF among the acceptable ones:
-        return min(acceptable_edfa_list, key=itemgetter(2))[0]
+    acceptable_gain_list = list(filter(lambda x : x[2]>-TARGET_EXTENDED_GAIN, edfa_list))
+    if len(acceptable_gain_list) < 1: 
+        #no amplifier satisfies the required gain, so pick the highest gain:
+        return max(edfa_list, key=itemgetter(2))[0] #filter on gain
+    acceptable_power_list = list(filter(lambda x : x[1]>=0, acceptable_gain_list))
+    if len(acceptable_power_list) < 1: 
+        #no amplifier satisfies the required power, so pick the highest power:
+        return max(acceptable_gain_list, key=itemgetter(1))[0] #filter on power
+    #chose the amp with the best NF among the acceptable ones:
+    return min(acceptable_power_list, key=itemgetter(3))[0] #filter on NF
 
 def set_roadm_loss(network, equipment, power_mode, roadm_loss):
     roadms = (roadm for roadm in network if isinstance(roadm, Roadm))
@@ -170,7 +178,7 @@ def find_last_node(network_node):
     return this_node
 
 
-def set_egress_amplifier(network, roadm, equipment):
+def set_egress_amplifier(network, roadm, equipment, pref_total_db):
     power_mode = equipment['Spans']['default'].power_mode
     next_oms = (n for n in network.successors(roadm) if not isinstance(n, Transceiver))
     for oms in next_oms:
@@ -198,7 +206,8 @@ def set_egress_amplifier(network, roadm, equipment):
                     node.dp_db = dp
                 node.operational.gain_target = gain_target
                 if node.params.type_variety == '':
-                    edfa_variety = select_edfa(gain_target, equipment)
+                    power_target = pref_total_db + dp
+                    edfa_variety = select_edfa(gain_target, power_target, equipment)
                     extra_params = equipment['Edfa'][edfa_variety]
                     node.params.update_params(extra_params._asdict())
             if isinstance(next_node, Roadm) or isinstance(next_node, Transceiver):
@@ -330,9 +339,11 @@ def build_network(network, equipment, pref_total_db):
 
     roadms = [r for r in network.nodes() if isinstance(r, Roadm)]
     for roadm in roadms:
-        set_egress_amplifier(network, roadm, equipment)
-    if len(roadms) == 0: #support older json input topology wo Roadms
+        set_egress_amplifier(network, roadm, equipment, pref_total_db)
+
+    #support older json input topology wo Roadms        
+    if len(roadms) == 0: 
         trx = [t for t in network.nodes() if isinstance(t, Transceiver)]
         for t in trx:
-            set_egress_amplifier(network, t, equipment)        
+            set_egress_amplifier(network, t, equipment, pref_total_db)        
 
