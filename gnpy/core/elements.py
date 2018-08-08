@@ -438,7 +438,7 @@ class Edfa(Node):
         # ase & nli are only calculated in signal bandwidth
         #    pout_db is not the absolute full output power (negligible if sufficient channels)
 
-    def _calc_nf(self):
+    def _calc_nf(self, avg = False):
         """nf calculation based on 2 models: self.params.nf_model.enabled from json import:
         True => 2 stages amp modelling based on precalculated nf1, nf2 and delta_p in build_OA_json
         False => polynomial fit based on self.params.nf_fit_coeff"""
@@ -455,7 +455,10 @@ class Edfa(Node):
             nf_avg = self.params.nf_model.nf0            
         else:
             nf_avg = polyval(self.params.nf_fit_coeff, -dg)
-        return self.interpol_nf_ripple + nf_avg + pad # input VOA = 1 for 1 NF degradation
+        if avg:
+            return nf_avg + pad
+        else:
+            return self.interpol_nf_ripple + nf_avg + pad # input VOA = 1 for 1 NF degradation            
 
     def noise_profile(self, df):
         """ noise_profile(bw) computes amplifier ase (W) in signal bw (Hz)
