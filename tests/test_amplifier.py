@@ -71,7 +71,7 @@ def setup_trx():
 def si(nch_and_spacing, bw):
     """parametrize a channel comb with nb_channel, spacing and signal bw"""
     nb_channel, spacing = nch_and_spacing
-    return create_input_spectral_information(191.3e12, 0.15, bw, 1e-6, spacing, nb_channel)
+    return create_input_spectral_information(191.3e12, 0.15, bw, 1e-3, spacing, nb_channel)
 
 @pytest.mark.parametrize("gain, nf_expected", [(10, 15), (15, 10), (25, 5.8)])
 def test_variable_gain_nf(gain, nf_expected, setup_edfa_variable_gain, si):
@@ -79,12 +79,13 @@ def test_variable_gain_nf(gain, nf_expected, setup_edfa_variable_gain, si):
     edfa = setup_edfa_variable_gain
     frequencies = np.array([c.frequency for c in si.carriers])
     pin = np.array([c.power.signal+c.power.nli+c.power.ase for c in si.carriers])
+    pin = pin/db2lin(gain)
     baud_rates = np.array([c.baud_rate for c in si.carriers])
     edfa.operational.gain_target = gain
-    pref=Pref(0, 0)
+    pref=Pref(0, -gain)
     edfa.interpol_params(frequencies, pin, baud_rates, pref)
-
-    assert pytest.approx(nf_expected, abs=0.01) == edfa.nf[0]
+    result = edfa.nf
+    assert pytest.approx(nf_expected, abs=0.01) == result[0]
 
 @pytest.mark.parametrize("gain, nf_expected", [(15, 10), (20, 5), (25, 5)])
 def test_fixed_gain_nf(gain, nf_expected, setup_edfa_fixed_gain, si):
@@ -92,9 +93,10 @@ def test_fixed_gain_nf(gain, nf_expected, setup_edfa_fixed_gain, si):
     edfa = setup_edfa_fixed_gain
     frequencies = np.array([c.frequency for c in si.carriers])
     pin = np.array([c.power.signal+c.power.nli+c.power.ase for c in si.carriers])
+    pin = pin/db2lin(gain)
     baud_rates = np.array([c.baud_rate for c in si.carriers])
     edfa.operational.gain_target = gain
-    pref=Pref(0, 0)
+    pref=Pref(0, -gain)
     edfa.interpol_params(frequencies, pin, baud_rates, pref)
 
     assert pytest.approx(nf_expected, abs=0.01) == edfa.nf[0]
@@ -116,10 +118,11 @@ def test_compare_nf_models(gain, setup_edfa_variable_gain, si):
     edfa = setup_edfa_variable_gain
     frequencies = np.array([c.frequency for c in si.carriers])
     pin = np.array([c.power.signal+c.power.nli+c.power.ase for c in si.carriers])
+    pin = pin/db2lin(gain)
     baud_rates = np.array([c.baud_rate for c in si.carriers])
     edfa.operational.gain_target = gain
     # edfa.params.nf_model_enabled = True
-    pref=Pref(0, 0)
+    pref=Pref(0, -gain)
     edfa.interpol_params(frequencies, pin, baud_rates, pref)
     nf_model = edfa.nf[0]
 

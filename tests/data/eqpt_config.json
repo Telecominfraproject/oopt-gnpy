@@ -53,8 +53,8 @@
             }
       ],
       "Spans":[{
-            "power_mode": false,
-            "delta_power_range_db": [-3,3,1],
+            "power_mode": true,
+            "delta_power_range_db": [0,0,1],
             "max_length": 150,
             "length_units": "km",
             "max_loss": 28,

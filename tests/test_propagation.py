@@ -19,7 +19,7 @@ from numpy import mean
 #network_file_name = 'tests/test_network.json'
 network_file_name = Path(__file__).parent.parent / 'tests/LinkforTest.json'
 #network_file_name = Path(__file__).parent.parent / 'examples/edfa_example_network.json'
-eqpt_library_name = Path(__file__).parent.parent / 'examples/eqpt_config.json'
+eqpt_library_name = Path(__file__).parent.parent / 'tests/data/eqpt_config.json'
 
 @pytest.fixture(params=[(96, 0.05e12), (60, 0.075e12), (45, 0.1e12), (2, 0.1e12)], 
     ids=['50GHz spacing', '75GHz spacing', '100GHz spacing', '2 channels'])
@@ -31,6 +31,7 @@ def nch_and_spacing(request):
 def propagation(input_power, con_in, con_out,dest):
     equipment = load_equipment(eqpt_library_name)
     network = load_network(network_file_name,equipment)
+    build_network(network, equipment, 0, 20)
 
     # parametrize the network elements with the con losses and adapt gain 
     # (assumes all spans are identical)
