@@ -63,9 +63,13 @@ def main(network, equipment, source, destination, req = None):
     print(f'\nNow propagating between {source.uid} and {destination.uid}:')
 
     try:
-        power_range = arange(*equipment['SI']['default'].power_range_db)
+        power_range = list(arange(*equipment['SI']['default'].power_range_db))
+        last = equipment['SI']['default'].power_range_db[-2]
         if len(power_range) == 0 : #bad input that will lead to no simulation
             power_range = [0] #better than an error message
+        else:
+            power_range.append(last)
+        print(power_range)
     except TypeError:
         print('invalid power range definition in eqpt_config, should be power_range_db: [lower, upper, step]')
         power_range = [0]

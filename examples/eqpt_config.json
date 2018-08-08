@@ -1,7 +1,7 @@
 {     "Edfa":[{
             "type_variety": "CienaDB_medium_gain",
-            "gain_flatmax": 15,
-            "gain_min": 25,
+            "gain_flatmax": 25,
+            "gain_min": 15,
             "p_max": 21,
             "advanced_config_from_json": "std_medium_gain_advanced_config.json",
             "out_voa_auto": false,
@@ -15,7 +15,7 @@
             "p_max": 22,
             "nf_min": 6,
             "nf_max": 10,
-            "out_voa_auto": true,
+            "out_voa_auto": false,
             "allowed_for_design": true
             },
             {
@@ -26,7 +26,7 @@
             "p_max": 22,
             "nf_min": 6.5,
             "nf_max": 11,
-            "out_voa_auto": true,
+            "out_voa_auto": false,
             "allowed_for_design": true
             },
             {
@@ -77,7 +77,7 @@
             "baud_rate": 32e9,
             "spacing": 50e9,
             "power_dbm": 0,
-            "power_range_db": [0,1,1],
+            "power_range_db": [0,0,1],
             "roll_off": 0.15,
             "OSNR": 11,
             "bit_rate":100e9
