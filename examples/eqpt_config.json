@@ -31,7 +31,7 @@
             "type_def": "fixed_gain",
             "gain_flatmax": 20,
             "gain_min": 20,
-            "p_max": 20,
+            "p_max": 21,
             "nf0": 5.5,
             "allowed_for_design": true
             },

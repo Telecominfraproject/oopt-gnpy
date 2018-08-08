@@ -87,15 +87,24 @@ def select_edfa(gain_target, power_target, equipment):
                 for edfa_variety, edfa in edfa_dict.items()
                 if edfa.allowed_for_design]
 
-    acceptable_gain_list = list(filter(lambda x : x.gain>-TARGET_EXTENDED_GAIN, edfa_list))
+    acceptable_gain_list = \
+    list(filter(lambda x : x.gain>-TARGET_EXTENDED_GAIN, edfa_list))
     if len(acceptable_gain_list) < 1: 
         #no amplifier satisfies the required gain, so pick the highest gain:
-        return max(edfa_list, key=itemgetter(2)).variety #filter on gain
-    acceptable_power_list = list(filter(lambda x : x.power>=0, acceptable_gain_list))
-    if len(acceptable_power_list) < 1: 
+        gain_max = max(edfa_list, key=itemgetter(2)).gain
+        #pick up all amplifiers that share this max gain:
+        acceptable_gain_list = \
+        list(filter(lambda x : x.gain-gain_max>-0.1, edfa_list))
+    acceptable_power_list = \
+    list(filter(lambda x : x.power>=0, acceptable_gain_list))
+    if len(acceptable_power_list) < 1:
         #no amplifier satisfies the required power, so pick the highest power:
-        return max(acceptable_gain_list, key=itemgetter(1)).variety #filter on power
-    # gain and power requirements are satisfied:
+        power_max = \
+        max(acceptable_gain_list, key=itemgetter(1)).power
+        #pick up all amplifiers that share this max gain:
+        acceptable_power_list = \
+        list(filter(lambda x : x.power-power_max>-0.1, acceptable_gain_list))
+    # gain and power requirements are resolved,
     #       =>chose the amp with the best NF among the acceptable ones:
     return min(acceptable_power_list, key=itemgetter(3)).variety #filter on NF
 
