@@ -39,8 +39,7 @@ def setup_edfa_variable_gain():
     remove all gain and nf ripple"""
     equipment = load_equipment(eqpt_library)
     network = load_network(test_network, equipment)
-    build_network(network, equipment=equipment)
-    set_roadm_loss(network, equipment, False, 0)
+    build_network(network, equipment,0, 20)
     edfa = [n for n in network.nodes() if isinstance(n, Edfa)][0]
 
     #edfa.params.dgt = np.zeros(96)
@@ -55,8 +54,7 @@ def setup_edfa_fixed_gain():
     """init edfa class by reading the 2nd edfa in test_network.json file"""
     equipment = load_equipment(eqpt_library)
     network = load_network(test_network, equipment)
-    build_network(network, equipment=equipment)
-    set_roadm_loss(network, equipment, False, 0)
+    build_network(network, equipment, 0, 20)
     edfa = [n for n in network.nodes() if isinstance(n, Edfa)][1]
     yield edfa
 
@@ -65,7 +63,7 @@ def setup_trx():
     """init transceiver class to access snr and osnr calculations"""
     equipment = load_equipment(eqpt_library)
     network = load_network(test_network, equipment)
-    build_network(network, equipment=equipment)
+    build_network(network, equipment, 0, 20)
     trx = [n for n in network.nodes() if isinstance(n, Transceiver)][0]
     return trx
 
