@@ -30,10 +30,8 @@ from gnpy.core.network import load_network, build_network, set_roadm_loss
 from gnpy.core.equipment import load_equipment, trx_mode_params
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
-from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
 from gnpy.core.request import Path_request, Result_element, compute_constrained_path, propagate
 from copy import copy, deepcopy
-from numpy import log10
 
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
 
@@ -83,11 +81,18 @@ def load_requests(filename,eqpt_filename):
             json_data = loads(f.read())
     return json_data
 
-def compute_path(network, pathreqlist):
+def compute_path(network, equipment, pathreqlist):
     
     path_res_list = []
 
     for pathreq in pathreqlist:
+        #need to rebuid the network for each path because the total power
+        #can be different and the choice of amplifiers in autodesign is power dependant
+        #but the design is the same if the total power is the same
+        #TODO parametrize the total spectrum power so the same design can be shared
+        p_db = lin2db(pathreq.power*1e3)
+        p_total_db = p_db + lin2db(pathreq.nb_channel)
+        build_network(network, equipment, p_db, p_total_db)
         pathreq.nodes_list.append(pathreq.destination)
         #we assume that the destination is a strict constraint
         pathreq.loose_list.append('strict')
@@ -127,11 +132,9 @@ if __name__ == '__main__':
     data = load_requests(args.service_filename,args.eqpt_filename)
     equipment = load_equipment(args.eqpt_filename)
     network = load_network(args.network_filename,equipment)
-    set_roadm_loss(network, equipment, False, 0)
-    build_network(network, equipment=equipment)
     pths = requests_from_json(data, equipment)
     print(pths)
-    test = compute_path(network,pths)
+    test = compute_path(network, equipment, pths)
 
     if args.output is None:
         #TODO write results
@@ -139,7 +142,7 @@ if __name__ == '__main__':
         
         for i, p in enumerate(test):
             print(f'{pths[i].source} to {pths[i].destination} : {round(mean(p[-1].snr),2)} ,\
-                {round(mean(p[-1].snr+10*log10(pths[i].baud_rate/(12.5e9))),2)}')
+                {round(mean(p[-1].snr+lin2db(pths[i].baud_rate/(12.5e9))),2)}')
     else:
         result = []
         for p in test:

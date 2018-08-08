@@ -3,7 +3,8 @@
             "gain_flatmax": 25,
             "gain_min": 15,
             "p_max": 21,
-            "advanced_config_from_json": "std_medium_gain_advanced_config.json"
+            "advanced_config_from_json": "std_medium_gain_advanced_config.json",
+            "allowed_for_design": true
             },
             {
             "type_variety": "std_medium_gain",
@@ -12,7 +13,8 @@
             "gain_min": 15,
             "p_max": 21,
             "nf_min": 6,
-            "nf_max": 10
+            "nf_max": 10,
+            "allowed_for_design": true
             },
             {
             "type_variety": "std_low_gain",
@@ -21,7 +23,8 @@
             "gain_min": 8,
             "p_max": 21,
             "nf_min": 7,
-            "nf_max": 11
+            "nf_max": 11,
+            "allowed_for_design": true
             },
             {
             "type_variety": "test",
@@ -30,7 +33,8 @@
             "gain_min": 15,
             "p_max": 21,
             "nf_min": 5.8,
-            "nf_max": 10
+            "nf_max": 10,
+            "allowed_for_design": true
             },
             {
             "type_variety": "test_fixed_gain",
@@ -38,7 +42,8 @@
             "gain_flatmax": 21,
             "gain_min": 20,
             "p_max": 21,
-            "nf0": 5
+            "nf0": 5,
+            "allowed_for_design": true
             }
       ],
       "Fiber":[{
@@ -49,6 +54,7 @@
       ],
       "Spans":[{
             "power_mode": false,
+            "delta_power_range_db": [-3,3,1],
             "max_length": 150,
             "length_units": "km",
             "max_loss": 28,
@@ -67,9 +73,9 @@
             "f_max":196.1e12,
             "baud_rate": 32e9,
             "spacing": 50e9,
-            "roll_off": 0.15,
             "power_dbm": 0,
             "power_range_db": [0,0.5,0.5],
+            "roll_off": 0.15,
             "OSNR": 15,
             "bit_rate":100e9
             }],

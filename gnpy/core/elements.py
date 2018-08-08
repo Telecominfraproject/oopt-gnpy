@@ -152,7 +152,6 @@ class Fused(Node):
     def __call__(self, spectral_info):
         carriers = tuple(self.propagate(*spectral_info.carriers))
         pref = self.update_pref(spectral_info.pref)
-        print('pi',pref.pi)
         return spectral_info.update(carriers=carriers, pref=pref)
 
 FiberParams = namedtuple('FiberParams', 'type_variety length loss_coef length_units \

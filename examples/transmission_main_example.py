@@ -53,10 +53,9 @@ def main(network, equipment, source, destination, req = None):
     print('\n'.join([f'Power mode is set to {power_mode}',
                      f'=> it can be modified in eqpt_config.json - Spans']))    
 
-
     pref_ch_db = lin2db(req.power*1e3) #reference channel power / span (SL=20dB)
-    pref_total_db = pref_ch_db + lin2db(req.nb_channel) #reference total power / span (SL=20dB)
-    build_network(network, equipment, pref_total_db)
+    pref_total_db = pref_ch_db + lin2db(req.nb_channel) #reference total power / span (SL=20dB) 
+    build_network(network, equipment, pref_ch_db, pref_total_db)
     path = compute_constrained_path(network, req)
 
     spans = [s.length for s in path if isinstance(s, Fiber)]
@@ -65,15 +64,14 @@ def main(network, equipment, source, destination, req = None):
 
     try:
         power_range = arange(*equipment['SI']['default'].power_range_db)
-        if len(power_range) == 0 : #bad input that will lead to no simulation (don't enter the power loop)
+        if len(power_range) == 0 : #bad input that will lead to no simulation
             power_range = [0] #better than an error message
     except TypeError:
         print('invalid power range definition in eqpt_config, should be power_range_db: [lower, upper, step]')
         power_range = [0]
 
     for dp_db in power_range:
-        p = db2lin(pref_ch_db + dp_db)*1e-3
-        req.power = p
+        req.power = db2lin(pref_ch_db + dp_db)*1e-3
         print(f'\nPropagating with input power = {lin2db(req.power*1e3):.2f}dBm :')
         propagate(path, req, equipment, show=len(power_range)==1)
         print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f}dBm :')        

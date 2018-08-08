@@ -18,7 +18,9 @@ from gnpy.core.equipment import edfa_nf
 from gnpy.core.units import UNITS
 from gnpy.core.utils import load_json
 from gnpy.core.utils import round2float
+from gnpy.core.utils import db2lin, lin2db
 from sys import exit
+from collections import namedtuple
 
 logger = getLogger(__name__)
 
@@ -65,34 +67,45 @@ def select_edfa(gain_target, power_target, equipment):
     """amplifer selection algorithm
     @Orange Jean-Luc Augé
     """
+    Edfa_list = namedtuple('Edfa_list', 'variety power gain nf')
     TARGET_EXTENDED_GAIN = 2.1
     #MAX_EXTENDED_GAIN = 5
     edfa_dict = equipment['Edfa']
+    pin = power_target - gain_target
 
-    Pin = power_target - gain_target
-    edfa_list = [(edfa_variety,
-                min(Pin+
-                    edfa_dict[edfa_variety].gain_flatmax, 
-                    edfa_dict[edfa_variety].p_max)
+    edfa_list = [Edfa_list(
+                variety=edfa_variety,
+                power=min(
+                    pin
+                    +edfa.gain_flatmax
+                    +TARGET_EXTENDED_GAIN, 
+                    edfa.p_max
+                    )
                     -power_target,
-                edfa_dict[edfa_variety].gain_flatmax-gain_target,
-                edfa_nf(gain_target, edfa_variety, equipment)) \
-                for edfa_variety in edfa_dict
-                if edfa_dict[edfa_variety].allowed_for_design]
-    acceptable_gain_list = list(filter(lambda x : x[2]>-TARGET_EXTENDED_GAIN, edfa_list))
+                gain=edfa.gain_flatmax-gain_target,
+                nf=edfa_nf(gain_target, edfa_variety, equipment)) \
+                for edfa_variety, edfa in edfa_dict.items()
+                if edfa.allowed_for_design]
+
+    acceptable_gain_list = list(filter(lambda x : x.gain>-TARGET_EXTENDED_GAIN, edfa_list))
     if len(acceptable_gain_list) < 1: 
         #no amplifier satisfies the required gain, so pick the highest gain:
-        return max(edfa_list, key=itemgetter(2))[0] #filter on gain
-    acceptable_power_list = list(filter(lambda x : x[1]>=0, acceptable_gain_list))
+        return max(edfa_list, key=itemgetter(2)).variety #filter on gain
+    acceptable_power_list = list(filter(lambda x : x.power>=0, acceptable_gain_list))
     if len(acceptable_power_list) < 1: 
         #no amplifier satisfies the required power, so pick the highest power:
-        return max(acceptable_gain_list, key=itemgetter(1))[0] #filter on power
-    #chose the amp with the best NF among the acceptable ones:
-    return min(acceptable_power_list, key=itemgetter(3))[0] #filter on NF
+        return max(acceptable_gain_list, key=itemgetter(1)).variety #filter on power
+    # gain and power requirements are satisfied:
+    #       =>chose the amp with the best NF among the acceptable ones:
+    return min(acceptable_power_list, key=itemgetter(3)).variety #filter on NF
 
-def set_roadm_loss(network, equipment, power_mode, roadm_loss):
-    roadms = (roadm for roadm in network if isinstance(roadm, Roadm))
+def set_roadm_loss(network, equipment, pref_ch_db):
+    roadms = [roadm for roadm in network if isinstance(roadm, Roadm)]
+    power_mode = equipment['Spans']['default'].power_mode    
     default_roadm_loss = equipment['Roadms']['default'].gain_mode_default_loss
+    pref_roadm_db = equipment['Roadms']['default'].power_mode_pref
+    roadm_loss = pref_ch_db - pref_roadm_db 
+
     for roadm in roadms:
         if power_mode:
             roadm.loss = roadm_loss
@@ -115,7 +128,7 @@ def target_power(network, node, equipment): #get_fiber_dp
         exit()
     if isinstance(node, Roadm) or not power_mode:
         dp = 0
-    print(f'{repr(node)} launched delta power:        {dp}dB')
+    print(f'{repr(node)} delta power in:\n{dp}dB')
     return dp
     
 
@@ -168,7 +181,7 @@ def find_first_node(network, node):
         pass
     return this_node
 
-def find_last_node(network_node):
+def find_last_node(network, node):
     """Fused node interest:
     returns the last node in a succession of fused nodes 
     (aka no amp in between)"""
@@ -177,6 +190,12 @@ def find_last_node(network_node):
         pass
     return this_node
 
+def set_amplifier_voa(amp, pref_total_db):
+    #TODO!!
+    gain_target = amp.operational.gain_target
+    p_max = amp.params.p_max
+    gain_flatmax = amp.params.gain_flatmax
+    pin = pref_total_db + amp.dp_db
 
 def set_egress_amplifier(network, roadm, equipment, pref_total_db):
     power_mode = equipment['Spans']['default'].power_mode
@@ -196,7 +215,7 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
         #go through all nodes in the OMS (loop until next Roadm instance)
             if isinstance(node, Edfa):
                 node_loss = span_loss(network, prev_node)
-                dp = target_power(network, next_node, equipment)                
+                dp = target_power(network, next_node, equipment)
                 if node.operational.gain_target > 0:
                     gain_target = node.operational.gain_target
                     dp = prev_dp + gain_target - node_loss
@@ -219,8 +238,8 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
 
 
 def add_egress_amplifier(network, node):
-    next_nodes = (n for n in network.successors(node)
-        if not (isinstance(n, Transceiver) or isinstance(n, Fused) or isinstance(n, Edfa)))
+    next_nodes = [n for n in network.successors(node) 
+        if not (isinstance(n, Transceiver) or isinstance(n, Fused) or isinstance(n, Edfa))]
         #no amplification for fused spans or TRX
     for i, next_node in enumerate(next_nodes):
         network.remove_edge(node, next_node)
@@ -230,7 +249,7 @@ def add_egress_amplifier(network, node):
                     operational = {
                         'gain_target': 0,
                         'tilt_target': 0,
-                    })            
+                    })
         network.add_node(amp)
         network.add_edge(node, amp)
         network.add_edge(amp, next_node)
@@ -312,7 +331,7 @@ def add_fiber_padding(network, fibers, padding):
             first_fiber = find_first_node(network, fiber)
             first_fiber.att_in = padding - fiber_loss
 
-def build_network(network, equipment, pref_total_db):
+def build_network(network, equipment, pref_ch_db, pref_total_db):
     default_span_data = equipment['Spans']['default']
     max_length = int(default_span_data.max_length * UNITS[default_span_data.length_units])
     min_length = max(int(default_span_data.padding/0.2*1e3),50_000)
@@ -323,7 +342,7 @@ def build_network(network, equipment, pref_total_db):
     padding = default_span_data.padding
 
     #set raodm loss for gain_mode before to build network
-    set_roadm_loss(network, equipment, False, 0) 
+    set_roadm_loss(network, equipment, pref_ch_db) 
     fibers = [f for f in network.nodes() if isinstance(f, Fiber)]
     add_connector_loss(fibers, con_in, con_out)
     add_fiber_padding(network, fibers, padding)
@@ -341,7 +360,7 @@ def build_network(network, equipment, pref_total_db):
     for roadm in roadms:
         set_egress_amplifier(network, roadm, equipment, pref_total_db)
 
-    #support older json input topology wo Roadms        
+    #support older json input topology wo Roadms:      
     if len(roadms) == 0: 
         trx = [t for t in network.nodes() if isinstance(t, Transceiver)]
         for t in trx:
