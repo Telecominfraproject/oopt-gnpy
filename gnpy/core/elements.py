@@ -333,6 +333,7 @@ class EdfaParams:
             self.nf_ripple = None
             self.dgt = None
             self.gain_ripple = None
+            self.out_voa_auto = False
             self.allowed_for_design = None
 
     def update_params(self, kwargs):
@@ -341,9 +342,10 @@ class EdfaParams:
                 if isinstance(v, dict) else v)
 
 class EdfaOperational:
-    def __init__(self, gain_target, tilt_target):
+    def __init__(self, gain_target, tilt_target, out_voa=None):
         self.gain_target = gain_target
         self.tilt_target = tilt_target
+        self.out_voa = out_voa
     def __repr__(self):
         return (f'{type(self).__name__}('
                 f'gain_target={self.gain_target!r}, '
@@ -405,7 +407,8 @@ class Edfa(Node):
                           f'  Power Out (dBm):        {self.pout_db:.2f}',
                           f'  Delta_P (dB):           {self.dp_db!r}',
                           f'  target pch (dBm):       {self.target_pch_db!r}',
-                          f'  effective pch (dBm):    {self.effective_pch_db!r}'])
+                          f'  effective pch (dBm):    {self.effective_pch_db!r}',
+                          f'  output VOA (dB):        {self.operational.out_voa:.2f}'])
 
     def interpol_params(self, frequencies, pin, baud_rates, pref):
         """interpolate SI channel frequencies with the edfa dgt and gain_ripple frquencies from json
@@ -626,17 +629,19 @@ class Edfa(Node):
 
         gains = db2lin(self.gprofile)
         carrier_ases = self.noise_profile(brate)
+        att = db2lin(self.operational.out_voa)
 
         for gain, carrier_ase, carrier in zip(gains, carrier_ases, carriers):
             pwr = carrier.power
             bw = carrier.baud_rate
-            pwr = pwr._replace(signal=pwr.signal*gain,
-                               nonlinear_interference=pwr.nli*gain,
-                               amplified_spontaneous_emission=(pwr.ase+carrier_ase)*gain)
+            pwr = pwr._replace(signal=pwr.signal*gain/att,
+                               nonlinear_interference=pwr.nli*gain/att,
+                               amplified_spontaneous_emission=(pwr.ase+carrier_ase)*gain/att)
             yield carrier._replace(power=pwr)
 
     def update_pref(self, pref):
-        return pref._replace(p_span0=pref.p0, p_spani=pref.pi + self.effective_gain)
+        return pref._replace(p_span0=pref.p0, 
+                            p_spani=pref.pi + self.effective_gain - self.operational.out_voa)
 
     def __call__(self, spectral_info):
         carriers = tuple(self.propagate(spectral_info.pref, *spectral_info.carriers))

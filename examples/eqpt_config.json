@@ -4,6 +4,7 @@
             "gain_min": 25,
             "p_max": 21,
             "advanced_config_from_json": "std_medium_gain_advanced_config.json",
+            "out_voa_auto": false,
             "allowed_for_design": false
             },
             {
@@ -14,6 +15,7 @@
             "p_max": 22,
             "nf_min": 6,
             "nf_max": 10,
+            "out_voa_auto": true,
             "allowed_for_design": true
             },
             {
@@ -24,6 +26,7 @@
             "p_max": 22,
             "nf_min": 6.5,
             "nf_max": 11,
+            "out_voa_auto": true,
             "allowed_for_design": true
             },
             {
@@ -53,7 +56,7 @@
             }
       ],
       "Spans":[{
-            "power_mode": true,
+            "power_mode":true,
             "delta_power_range_db": [-3,3,1],
             "max_length": 150,
             "length_units": "km",
@@ -74,7 +77,7 @@
             "baud_rate": 32e9,
             "spacing": 50e9,
             "power_dbm": 0,
-            "power_range_db": [0,0.5,0.5],
+            "power_range_db": [0,1,1],
             "roll_off": 0.15,
             "OSNR": 11,
             "bit_rate":100e9

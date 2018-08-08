@@ -199,12 +199,20 @@ def find_last_node(network, node):
         pass
     return this_node
 
-def set_amplifier_voa(amp, pref_total_db):
-    #TODO!!
-    gain_target = amp.operational.gain_target
-    p_max = amp.params.p_max
-    gain_flatmax = amp.params.gain_flatmax
-    pin = pref_total_db + amp.dp_db
+def set_amplifier_voa(amp, pref_total_db, power_mode):
+    VOA_MARGIN = 0
+    if amp.operational.out_voa is None:
+        if power_mode:
+            gain_target = amp.operational.gain_target
+            pout = pref_total_db + amp.dp_db
+            voa = min(amp.params.p_max-pout, 
+                      amp.params.gain_flatmax-amp.operational.gain_target)
+            voa = round2float(max(voa, 0), 0.5) - VOA_MARGIN if amp.params.out_voa_auto else 0
+            amp.dp_db = amp.dp_db + voa
+            amp.operational.gain_target = amp.operational.gain_target + voa
+        else:
+            voa = 0 # no output voa optimization in gain mode
+        amp.operational.out_voa = voa
 
 def set_egress_amplifier(network, roadm, equipment, pref_total_db):
     power_mode = equipment['Spans']['default'].power_mode
@@ -238,6 +246,7 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
                     edfa_variety = select_edfa(gain_target, power_target, equipment)
                     extra_params = equipment['Edfa'][edfa_variety]
                     node.params.update_params(extra_params._asdict())
+                set_amplifier_voa(node, pref_total_db, power_mode)
             if isinstance(next_node, Roadm) or isinstance(next_node, Transceiver):
                 break
             prev_dp = dp

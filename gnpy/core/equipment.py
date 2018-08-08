@@ -28,14 +28,16 @@ SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off \
 AmpBase = namedtuple(
     'AmpBase',
     'type_variety type_def gain_flatmax gain_min p_max'
-    ' nf_model nf_fit_coeff nf_ripple dgt gain_ripple allowed_for_design')
+    ' nf_model nf_fit_coeff nf_ripple dgt gain_ripple out_voa_auto allowed_for_design')
 class Amp(AmpBase):
     def __new__(cls,
             type_variety, type_def, gain_flatmax, gain_min, p_max, nf_model=None, 
-            nf_fit_coeff=None, nf_ripple=None, dgt=None, gain_ripple=None, allowed_for_design=True):
+            nf_fit_coeff=None, nf_ripple=None, dgt=None, gain_ripple=None, 
+             out_voa_auto=False, allowed_for_design=True):
         return super().__new__(cls,
             type_variety, type_def, gain_flatmax, gain_min, p_max, 
-            nf_model, nf_fit_coeff, nf_ripple, dgt, gain_ripple, allowed_for_design)
+            nf_model, nf_fit_coeff, nf_ripple, dgt, gain_ripple, 
+            out_voa_auto, allowed_for_design)
 
     @classmethod
     def from_advanced_json(cls, filename, **kwargs):
