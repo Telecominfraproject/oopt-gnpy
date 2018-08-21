@@ -27,6 +27,12 @@ Installation
 
     $ pip install gnpy
 
+This will make the library available for your use. To test, try importing `gnpy` from your Python console
+
+.. code-block:: python
+
+    >>> import gnpy
+
 It can also be installed directly from the repo.
 
 .. code-block:: shell
@@ -57,7 +63,7 @@ fully-functional programs.
     development.*
 
 
-**To get started, run the transmission example:**
+**To get started, perform an installation from the repo and run the transmission example:**
 
     **Note**: *Examples should be run from the examples/ folder.*
 
