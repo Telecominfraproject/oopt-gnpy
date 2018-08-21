@@ -7,7 +7,7 @@
 **gnpy is an open-source, community-developed library for building route planning
 and optimization tools in real-world mesh optical networks.**
 
-`gnpy <http://github.com/telecominfraproject/gnpy>`__ is:
+`gnpy <http://github.com/telecominfraproject/oopt-gnpy>`__ is:
 
 - a sponsored project of the `OOPT/PSE <https://telecominfraproject.com/open-optical-packet-transport/>`_ working group of the `Telecom Infra Project <http://telecominfraproject.com>`_.
 - fully community-driven, fully open source library
@@ -23,7 +23,7 @@ Quick Demo
 
 **For a quick demo, run the transmission example via Binder.**
 
-`Transmission Main Example.ipynb (mybinder.org) <https://mybinder.org/v2/gh/Telecominfraproject/gnpy/develop?filepath=examples%2FTransmission%20Main%20Example.ipynb>`_
+`Transmission Main Example.ipynb (mybinder.org) <https://mybinder.org/v2/gh/Telecominfraproject/oopt-gnpy/develop?filepath=examples%2FTransmission%20Main%20Example.ipynb>`_
 
     **Note**: *The Binder service is occasionally unavailable. Please file an
     issue on Github if you run into issues using the quick demo. As an
@@ -46,8 +46,8 @@ It can also be installed directly from the repo.
 
 .. code-block:: shell
 
-    $ git clone https://github.com/telecominfraproject/gnpy
-    $ cd gnpy
+    $ git clone https://github.com/telecominfraproject/oopt-gnpy
+    $ cd oopt-gnpy
     $ python3 setup.py install
 
 Both approaches above will handle installing any additional software dependencies.
@@ -89,7 +89,7 @@ You may need to set PYTHONPATH variable. For example on Ubuntu, add your workspa
 
 .. code-block:: shell
 
-    export PYTHONPATH=$PYTHONPATH:~/<workspace path>/gnpy/
+    export PYTHONPATH=$PYTHONPATH:~/<workspace path>/oopt-gnpy/
 
 You can specify a different network at the command line as follows. For
 example, to use the CORONET Continental US (CONUS) network defined in `examples/coronet_conus_example.json <examples/coronet_conus_example.json>`_:
