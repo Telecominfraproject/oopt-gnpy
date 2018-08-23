@@ -1238,8 +1238,8 @@
         "length": 336.951,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1256,8 +1256,8 @@
         "length": 761.209,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1274,8 +1274,8 @@
         "length": 277.065,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1292,8 +1292,8 @@
         "length": 234.221,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1310,8 +1310,8 @@
         "length": 1133.443,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1328,8 +1328,8 @@
         "length": 647.737,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1346,8 +1346,8 @@
         "length": 436.949,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1364,8 +1364,8 @@
         "length": 943.536,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1382,8 +1382,8 @@
         "length": 690.608,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1400,8 +1400,8 @@
         "length": 210.729,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1418,8 +1418,8 @@
         "length": 436.324,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1436,8 +1436,8 @@
         "length": 7035.611,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1454,8 +1454,8 @@
         "length": 266.228,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1472,8 +1472,8 @@
         "length": 439.238,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1490,8 +1490,8 @@
         "length": 554.111,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1508,8 +1508,8 @@
         "length": 282.049,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1526,8 +1526,8 @@
         "length": 143.553,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1544,8 +1544,8 @@
         "length": 179.195,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1562,8 +1562,8 @@
         "length": 384.819,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1580,8 +1580,8 @@
         "length": 67.179,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1598,8 +1598,8 @@
         "length": 3505.95,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1616,8 +1616,8 @@
         "length": 2070.724,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1634,8 +1634,8 @@
         "length": 500.152,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1652,8 +1652,8 @@
         "length": 147.35,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1670,8 +1670,8 @@
         "length": 1146.124,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1688,8 +1688,8 @@
         "length": 1284.465,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1706,8 +1706,8 @@
         "length": 623.015,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1724,8 +1724,8 @@
         "length": 729.017,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1742,8 +1742,8 @@
         "length": 880.042,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1760,8 +1760,8 @@
         "length": 848.858,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1778,8 +1778,8 @@
         "length": 352.383,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1796,8 +1796,8 @@
         "length": 582.464,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1814,8 +1814,8 @@
         "length": 738.94,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1832,8 +1832,8 @@
         "length": 79.923,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1850,8 +1850,8 @@
         "length": 381.913,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1868,8 +1868,8 @@
         "length": 528.58,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1886,8 +1886,8 @@
         "length": 1136.2,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1904,8 +1904,8 @@
         "length": 336.434,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1922,8 +1922,8 @@
         "length": 126.626,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1940,8 +1940,8 @@
         "length": 379.311,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1958,8 +1958,8 @@
         "length": 430.182,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1976,8 +1976,8 @@
         "length": 159.883,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -1994,8 +1994,8 @@
         "length": 459.145,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2012,8 +2012,8 @@
         "length": 165.326,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2030,8 +2030,8 @@
         "length": 357.573,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2048,8 +2048,8 @@
         "length": 193.215,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2066,8 +2066,8 @@
         "length": 177.493,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2084,8 +2084,8 @@
         "length": 777.051,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2102,8 +2102,8 @@
         "length": 238.963,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2120,8 +2120,8 @@
         "length": 191.244,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2138,8 +2138,8 @@
         "length": 294.714,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2156,8 +2156,8 @@
         "length": 432.731,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2174,8 +2174,8 @@
         "length": 553.958,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2192,8 +2192,8 @@
         "length": 366.936,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2210,8 +2210,8 @@
         "length": 5457.525,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2228,8 +2228,8 @@
         "length": 1402.141,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2246,8 +2246,8 @@
         "length": 920.337,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2264,8 +2264,8 @@
         "length": 731.272,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2282,8 +2282,8 @@
         "length": 107.244,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2300,8 +2300,8 @@
         "length": 964.453,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2318,8 +2318,8 @@
         "length": 505.749,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2336,8 +2336,8 @@
         "length": 717.001,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2354,8 +2354,8 @@
         "length": 496.199,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2372,8 +2372,8 @@
         "length": 386.671,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2390,8 +2390,8 @@
         "length": 289.941,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2408,8 +2408,8 @@
         "length": 690.409,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2426,8 +2426,8 @@
         "length": 131.097,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2444,8 +2444,8 @@
         "length": 317.897,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2462,8 +2462,8 @@
         "length": 186.271,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2480,8 +2480,8 @@
         "length": 125.56,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2498,8 +2498,8 @@
         "length": 1480.406,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2516,8 +2516,8 @@
         "length": 8856.6,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2534,8 +2534,8 @@
         "length": 966.177,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2552,8 +2552,8 @@
         "length": 4921.459,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2570,8 +2570,8 @@
         "length": 9808.616,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2588,8 +2588,8 @@
         "length": 9767.013,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2606,8 +2606,8 @@
         "length": 1650.406,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2624,8 +2624,8 @@
         "length": 246.577,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2642,8 +2642,8 @@
         "length": 314.032,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2660,8 +2660,8 @@
         "length": 470.866,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2678,8 +2678,8 @@
         "length": 418.438,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2696,8 +2696,8 @@
         "length": 495.9,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2714,8 +2714,8 @@
         "length": 700.005,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2732,8 +2732,8 @@
         "length": 261.343,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2750,8 +2750,8 @@
         "length": 411.692,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2768,8 +2768,8 @@
         "length": 7079.447,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2786,8 +2786,8 @@
         "length": 29.362,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2804,8 +2804,8 @@
         "length": 223.845,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2822,8 +2822,8 @@
         "length": 150.677,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2840,8 +2840,8 @@
         "length": 295.118,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2858,8 +2858,8 @@
         "length": 473.802,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2876,8 +2876,8 @@
         "length": 1263.619,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2894,8 +2894,8 @@
         "length": 1497.358,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2912,8 +2912,8 @@
         "length": 377.836,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2930,8 +2930,8 @@
         "length": 8829.358,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2948,8 +2948,8 @@
         "length": 397.115,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2966,8 +2966,8 @@
         "length": 129.825,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -2984,8 +2984,8 @@
         "length": 568.334,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3002,8 +3002,8 @@
         "length": 561.327,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3020,8 +3020,8 @@
         "length": 7415.841,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3038,8 +3038,8 @@
         "length": 4692.708,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3056,8 +3056,8 @@
         "length": 653.359,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3074,8 +3074,8 @@
         "length": 24.214,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3092,8 +3092,8 @@
         "length": 199.575,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3110,8 +3110,8 @@
         "length": 204.152,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3128,8 +3128,8 @@
         "length": 136.06,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3146,8 +3146,8 @@
         "length": 298.656,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3164,8 +3164,8 @@
         "length": 383.669,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3182,8 +3182,8 @@
         "length": 132.649,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3200,8 +3200,8 @@
         "length": 1135.717,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3218,8 +3218,8 @@
         "length": 25.72,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3236,8 +3236,8 @@
         "length": 12461.707,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3254,8 +3254,8 @@
         "length": 193.359,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3272,8 +3272,8 @@
         "length": 275.793,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3290,8 +3290,8 @@
         "length": 193.409,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3308,8 +3308,8 @@
         "length": 574.675,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3326,8 +3326,8 @@
         "length": 222.458,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3344,8 +3344,8 @@
         "length": 473.565,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3362,8 +3362,8 @@
         "length": 937.74,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3380,8 +3380,8 @@
         "length": 1221.189,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3398,8 +3398,8 @@
         "length": 279.082,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3416,8 +3416,8 @@
         "length": 9349.706,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3434,8 +3434,8 @@
         "length": 190.145,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3452,8 +3452,8 @@
         "length": 145.266,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3470,8 +3470,8 @@
         "length": 920.026,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3488,8 +3488,8 @@
         "length": 823.4,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3506,8 +3506,8 @@
         "length": 77.163,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3524,8 +3524,8 @@
         "length": 446.99,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3542,8 +3542,8 @@
         "length": 223.775,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3560,8 +3560,8 @@
         "length": 444.207,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3578,8 +3578,8 @@
         "length": 1391.085,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3596,8 +3596,8 @@
         "length": 7562.331,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3614,8 +3614,8 @@
         "length": 144.06,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3632,8 +3632,8 @@
         "length": 2537.345,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3650,8 +3650,8 @@
         "length": 394.094,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3668,8 +3668,8 @@
         "length": 669.297,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3686,8 +3686,8 @@
         "length": 336.951,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3704,8 +3704,8 @@
         "length": 761.209,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3722,8 +3722,8 @@
         "length": 277.065,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3740,8 +3740,8 @@
         "length": 234.221,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3758,8 +3758,8 @@
         "length": 1133.443,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3776,8 +3776,8 @@
         "length": 647.737,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3794,8 +3794,8 @@
         "length": 436.949,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3812,8 +3812,8 @@
         "length": 943.536,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3830,8 +3830,8 @@
         "length": 690.608,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3848,8 +3848,8 @@
         "length": 210.729,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3866,8 +3866,8 @@
         "length": 436.324,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3884,8 +3884,8 @@
         "length": 7035.611,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3902,8 +3902,8 @@
         "length": 266.228,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3920,8 +3920,8 @@
         "length": 439.238,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3938,8 +3938,8 @@
         "length": 554.111,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3956,8 +3956,8 @@
         "length": 282.049,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3974,8 +3974,8 @@
         "length": 143.553,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -3992,8 +3992,8 @@
         "length": 179.195,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4010,8 +4010,8 @@
         "length": 384.819,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4028,8 +4028,8 @@
         "length": 67.179,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4046,8 +4046,8 @@
         "length": 3505.95,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4064,8 +4064,8 @@
         "length": 2070.724,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4082,8 +4082,8 @@
         "length": 500.152,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4100,8 +4100,8 @@
         "length": 147.35,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4118,8 +4118,8 @@
         "length": 1146.124,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4136,8 +4136,8 @@
         "length": 1284.465,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4154,8 +4154,8 @@
         "length": 623.015,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4172,8 +4172,8 @@
         "length": 729.017,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4190,8 +4190,8 @@
         "length": 880.042,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4208,8 +4208,8 @@
         "length": 848.858,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4226,8 +4226,8 @@
         "length": 352.383,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4244,8 +4244,8 @@
         "length": 582.464,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4262,8 +4262,8 @@
         "length": 738.94,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4280,8 +4280,8 @@
         "length": 79.923,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4298,8 +4298,8 @@
         "length": 381.913,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4316,8 +4316,8 @@
         "length": 528.58,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4334,8 +4334,8 @@
         "length": 1136.2,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4352,8 +4352,8 @@
         "length": 336.434,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4370,8 +4370,8 @@
         "length": 126.626,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4388,8 +4388,8 @@
         "length": 379.311,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4406,8 +4406,8 @@
         "length": 430.182,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4424,8 +4424,8 @@
         "length": 159.883,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4442,8 +4442,8 @@
         "length": 459.145,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4460,8 +4460,8 @@
         "length": 165.326,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4478,8 +4478,8 @@
         "length": 357.573,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4496,8 +4496,8 @@
         "length": 193.215,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4514,8 +4514,8 @@
         "length": 177.493,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4532,8 +4532,8 @@
         "length": 777.051,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4550,8 +4550,8 @@
         "length": 238.963,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4568,8 +4568,8 @@
         "length": 191.244,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4586,8 +4586,8 @@
         "length": 294.714,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4604,8 +4604,8 @@
         "length": 432.731,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4622,8 +4622,8 @@
         "length": 553.958,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4640,8 +4640,8 @@
         "length": 366.936,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4658,8 +4658,8 @@
         "length": 5457.525,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4676,8 +4676,8 @@
         "length": 1402.141,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4694,8 +4694,8 @@
         "length": 920.337,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4712,8 +4712,8 @@
         "length": 731.272,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4730,8 +4730,8 @@
         "length": 107.244,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4748,8 +4748,8 @@
         "length": 964.453,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4766,8 +4766,8 @@
         "length": 505.749,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4784,8 +4784,8 @@
         "length": 717.001,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4802,8 +4802,8 @@
         "length": 496.199,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4820,8 +4820,8 @@
         "length": 386.671,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4838,8 +4838,8 @@
         "length": 289.941,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4856,8 +4856,8 @@
         "length": 690.409,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4874,8 +4874,8 @@
         "length": 131.097,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4892,8 +4892,8 @@
         "length": 317.897,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4910,8 +4910,8 @@
         "length": 186.271,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4928,8 +4928,8 @@
         "length": 125.56,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4946,8 +4946,8 @@
         "length": 1480.406,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4964,8 +4964,8 @@
         "length": 8856.6,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -4982,8 +4982,8 @@
         "length": 966.177,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5000,8 +5000,8 @@
         "length": 4921.459,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5018,8 +5018,8 @@
         "length": 9808.616,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5036,8 +5036,8 @@
         "length": 9767.013,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5054,8 +5054,8 @@
         "length": 1650.406,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5072,8 +5072,8 @@
         "length": 246.577,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5090,8 +5090,8 @@
         "length": 314.032,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5108,8 +5108,8 @@
         "length": 470.866,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5126,8 +5126,8 @@
         "length": 418.438,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5144,8 +5144,8 @@
         "length": 495.9,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5162,8 +5162,8 @@
         "length": 700.005,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5180,8 +5180,8 @@
         "length": 261.343,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5198,8 +5198,8 @@
         "length": 411.692,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5216,8 +5216,8 @@
         "length": 7079.447,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5234,8 +5234,8 @@
         "length": 29.362,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5252,8 +5252,8 @@
         "length": 223.845,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5270,8 +5270,8 @@
         "length": 150.677,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5288,8 +5288,8 @@
         "length": 295.118,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5306,8 +5306,8 @@
         "length": 473.802,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5324,8 +5324,8 @@
         "length": 1263.619,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5342,8 +5342,8 @@
         "length": 1497.358,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5360,8 +5360,8 @@
         "length": 377.836,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5378,8 +5378,8 @@
         "length": 8829.358,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5396,8 +5396,8 @@
         "length": 397.115,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5414,8 +5414,8 @@
         "length": 129.825,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5432,8 +5432,8 @@
         "length": 568.334,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5450,8 +5450,8 @@
         "length": 561.327,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5468,8 +5468,8 @@
         "length": 7415.841,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5486,8 +5486,8 @@
         "length": 4692.708,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5504,8 +5504,8 @@
         "length": 653.359,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5522,8 +5522,8 @@
         "length": 24.214,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5540,8 +5540,8 @@
         "length": 199.575,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5558,8 +5558,8 @@
         "length": 204.152,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5576,8 +5576,8 @@
         "length": 136.06,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5594,8 +5594,8 @@
         "length": 298.656,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5612,8 +5612,8 @@
         "length": 383.669,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5630,8 +5630,8 @@
         "length": 132.649,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5648,8 +5648,8 @@
         "length": 1135.717,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5666,8 +5666,8 @@
         "length": 25.72,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5684,8 +5684,8 @@
         "length": 12461.707,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5702,8 +5702,8 @@
         "length": 193.359,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5720,8 +5720,8 @@
         "length": 275.793,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5738,8 +5738,8 @@
         "length": 193.409,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5756,8 +5756,8 @@
         "length": 574.675,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5774,8 +5774,8 @@
         "length": 222.458,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5792,8 +5792,8 @@
         "length": 473.565,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5810,8 +5810,8 @@
         "length": 937.74,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5828,8 +5828,8 @@
         "length": 1221.189,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5846,8 +5846,8 @@
         "length": 279.082,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5864,8 +5864,8 @@
         "length": 9349.706,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5882,8 +5882,8 @@
         "length": 190.145,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5900,8 +5900,8 @@
         "length": 145.266,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5918,8 +5918,8 @@
         "length": 920.026,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5936,8 +5936,8 @@
         "length": 823.4,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5954,8 +5954,8 @@
         "length": 77.163,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5972,8 +5972,8 @@
         "length": 446.99,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -5990,8 +5990,8 @@
         "length": 223.775,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -6008,8 +6008,8 @@
         "length": 444.207,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -6026,8 +6026,8 @@
         "length": 1391.085,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -6044,8 +6044,8 @@
         "length": 7562.331,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -6062,8 +6062,8 @@
         "length": 144.06,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -6080,8 +6080,8 @@
         "length": 2537.345,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -6098,8 +6098,8 @@
         "length": 394.094,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     },
     {
@@ -6116,8 +6116,8 @@
         "length": 669.297,
         "length_units": "km",
         "loss_coef": 0.2,
-        "connector_loss_in": 0.5,
-        "connector_loss_out": 0.5
+        "con_in": null,
+        "con_out": null
       }
     }
   ],

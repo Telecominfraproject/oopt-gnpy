@@ -155,23 +155,31 @@ class Fused(Node):
         print('pi',pref.pi)
         return spectral_info.update(carriers=carriers, pref=pref)
 
-FiberParams = namedtuple('FiberParams', 'type_variety length loss_coef length_units connector_loss_in connector_loss_out dispersion gamma')
+FiberParams = namedtuple('FiberParams', 'type_variety length loss_coef length_units \
+                                         att_in con_in con_out dispersion gamma')
 
 class Fiber(Node):
     def __init__(self, *args, params=None, **kwargs):
         if params is None:
             params = {}
-        if 'connector_loss_in' not in params :
-            # test added to ensure backward compatibility in case loss was not in the json
-            params['connector_loss_in'] = 0.0
-            params['connector_loss_out'] = 0.0
+        if 'con_in' not in params:
+            # if not defined in the network json connector loss in/out
+            # the None value will be updated in network.py[build_network] 
+            # with default values from eqpt_config.json[Spans]
+            params['con_in'] = None
+            params['con_out'] = None
+        if 'att_in' not in params:
+            #fixed attenuator for padding
+            params['att_in'] = 0
+
         super().__init__(*args, params=FiberParams(**params), **kwargs)
         self.type_variety = self.params.type_variety
         self.length = self.params.length * UNITS[self.params.length_units] # in m
         self.loss_coef = self.params.loss_coef * 1e-3 # lineic loss dB/m
         self.lin_loss_coef = self.params.loss_coef / (20 * log10(exp(1)))
-        self.connector_loss_in = self.params.connector_loss_in
-        self.connector_loss_out = self.params.connector_loss_out
+        self.att_in = self.params.att_in
+        self.con_in = self.params.con_in
+        self.con_out = self.params.con_out
         self.dispersion = self.params.dispersion  # s/m/m
         self.gamma = self.params.gamma # 1/W/m     
         self.pch_out = None  
@@ -182,17 +190,24 @@ class Fiber(Node):
         return f'{type(self).__name__}(uid={self.uid!r}, length={self.length!r}, loss={self.loss!r})'
 
     def __str__(self):
-        return '\n'.join([f'{type(self).__name__} {self.uid}',
-                          f'  type_variety: {self.type_variety}',
-                          f'  length (m):   {self.length:.2f}',
-                          f'  loss (dB):    {self.loss:.2f}',
-                          f'  (includes conn loss (dB) in: {self.connector_loss_in:.2f} out: {self.connector_loss_out:.2f})'])
+        return '\n'.join([f'{type(self).__name__}        {self.uid}',
+                          f'  type_variety:                {self.type_variety}',
+                          f'  length (m):                  {self.length:.2f}',
+                          f'  pad att_in (dB):             {self.att_in:.2f}',
+                          f'  total loss (dB):             {self.loss:.2f}',
+                          f'  (includes conn loss (dB) in: {self.con_in:.2f} out: {self.con_out:.2f})',
+                          f'  (conn loss out includes EOL margin defined in eqpt_config.json)'])
+
+    @property
+    def fiber_loss(self):
+        # dB fiber loss, not including padding attenuator
+        return self.loss_coef * self.length + self.con_in + self.con_out
 
     @property
     def loss(self):
-        # dB loss: useful for polymorphism (roadm, fiber, att)
-        return self.loss_coef * self.length + self.connector_loss_in + self.connector_loss_out
-
+        #total loss incluiding padding att_in: useful for polymorphism with roadm loss
+        return self.loss_coef * self.length + self.con_in + self.con_out + self.att_in
+    
     @property
     def passive(self):
         return True   
@@ -273,7 +288,7 @@ class Fiber(Node):
     def propagate(self, *carriers):
 
         # apply connector_att_in on all carriers before computing gn analytics  premiere partie pas bonne
-        attenuation = db2lin(self.connector_loss_in)
+        attenuation = db2lin(self.con_in + self.att_in)
 
         chan = []
         for carrier in carriers:
@@ -287,7 +302,7 @@ class Fiber(Node):
         carriers = tuple(f for f in chan)
 
         # propagate in the fiber and apply attenuation out
-        attenuation = db2lin(self.connector_loss_out)
+        attenuation = db2lin(self.con_out)
         for carrier in carriers:
             pwr = carrier.power
             carrier_nli = self._gn_analytic(carrier, *carriers)
@@ -307,7 +322,7 @@ class Fiber(Node):
 
 # TODO|dutc: eliminate duplication with .equipment.EdfaBase
 EdfaParams = namedtuple('EdfaParams',
-    'type_variety, gain_flatmax gain_min p_max nf_min nf_max'
+    'type_variety, type_def, gain_flatmax gain_min p_max'
     ' nf_model nf_fit_coeff nf_ripple dgt gain_ripple')
 class EdfaOperational:
     def __init__(self, gain_target, tilt_target):
@@ -344,6 +359,7 @@ class Edfa(Node):
         self.effective_pch_db = None
         self.passive = False
         self.effective_gain = self.operational.gain_target
+        self.att_in = None
 
     def __repr__(self):
         return (f'{type(self).__name__}(uid={self.uid!r}, '
@@ -366,6 +382,8 @@ class Edfa(Node):
                           f'  target gain (dB):       {self.operational.gain_target:.2f}',
                           f'  effective gain(dB):     {self.effective_gain:.2f}',
                           f'  noise figure (dB):      {nf:.2f}',
+                          f'  including att_in',
+                          f'  pad att_in (dB):        {self.att_in:.2f}',
                           f'  Power In (dBm):         {self.pin_db:.2f}',
                           f'  Power Out (dBm):        {self.pout_db:.2f}',
                           f'  Delta_P (dB):           {self.dp_db!r}',
@@ -410,11 +428,14 @@ class Edfa(Node):
         # TODO|jla: TBD alarm rising or input VOA padding in case
         # gain_min > gain_target TBD:
         pad = max(self.params.gain_min - self.effective_gain, 0)
+        self.att_in = pad
         gain_target = self.effective_gain + pad
         dg = max(self.params.gain_flatmax - gain_target, 0)
-        if self.params.nf_model:
+        if self.params.type_def == 'variable_gain':
             g1a = gain_target - self.params.nf_model.delta_p - dg
             nf_avg = lin2db(db2lin(self.params.nf_model.nf1) + db2lin(self.params.nf_model.nf2)/db2lin(g1a))
+        elif self.params.type_def == 'fixed_gain':
+            nf_avg = self.params.nf_model.nf0            
         else:
             nf_avg = polyval(self.params.nf_fit_coeff, -dg)
         return self.interpol_nf_ripple + nf_avg + pad # input VOA = 1 for 1 NF degradation

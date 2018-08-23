@@ -15,46 +15,74 @@ from json import loads
 from gnpy.core.utils import lin2db, db2lin, load_json
 from collections import namedtuple
 
-Model = namedtuple('Model', 'nf1 nf2 delta_p')
+Model_vg = namedtuple('Model_vg', 'nf1 nf2 delta_p')
+Model_fg = namedtuple('Model_fg', 'nf0')
 Fiber = namedtuple('Fiber', 'type_variety dispersion gamma')
-Spans = namedtuple('Spans', 'power_mode max_length length_units max_loss padding EOL con_loss')
+Spans = namedtuple('Spans', 'power_mode max_length length_units max_loss padding EOL con_in con_out')
 Transceiver = namedtuple('Transceiver', 'type_variety frequency mode')
 Roadms = namedtuple('Roadms', 'gain_mode_default_loss power_mode_pref')
-SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off power OSNR bit_rate')
+SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off \
+                       power_dbm power_range_db OSNR bit_rate')
 EdfaBase = namedtuple(
     'EdfaBase',
-    'type_variety gain_flatmax gain_min p_max nf_min nf_max'
+    'type_variety type_def gain_flatmax gain_min p_max'
     ' nf_model nf_fit_coeff nf_ripple dgt gain_ripple')
 class Edfa(EdfaBase):
     def __new__(cls,
-            type_variety, gain_flatmax, gain_min, p_max, nf_min=None, nf_max=None,
+            type_variety, type_def, gain_flatmax, gain_min, p_max, 
             nf_model=None, nf_fit_coeff=None, nf_ripple=None, dgt=None, gain_ripple=None):
         return super().__new__(cls,
-            type_variety, gain_flatmax, gain_min, p_max, nf_min, nf_max,
+            type_variety, type_def, gain_flatmax, gain_min, p_max, 
             nf_model, nf_fit_coeff, nf_ripple, dgt, gain_ripple)
 
     @classmethod
     def from_advanced_json(cls, filename, **kwargs):
         with open(filename) as f:
             json_data = loads(f.read())
-        return cls(**{**kwargs, **json_data, 'nf_model': None})
+        return cls(**{**kwargs, **json_data, 'type_def':None, 'nf_model':None})
 
     @classmethod
     def from_default_json(cls, filename, **kwargs):
         with open(filename) as f:
             json_data = loads(f.read())
         type_variety = kwargs['type_variety']
-        gain_min, gain_max = kwargs['gain_min'], kwargs['gain_flatmax']
-        nf_min, nf_max = kwargs['nf_min'], kwargs['nf_max']
-        nf1, nf2, delta_p = nf_model(type_variety, gain_min, gain_max, nf_min, nf_max)
-        return cls(**{**kwargs, **json_data, 'nf_model': Model(nf1, nf2, delta_p)})
+        type_def = kwargs.get('type_def', 'variable_gain') #default compatibility with older json eqpt files
+        nf_def = None
+
+        if type_def == 'fixed_gain':
+            try:
+                nf0 = kwargs.pop('nf0')
+            except KeyError: #nf0 is expected for a fixed gain amp
+                print(f'missing nf0 value input for amplifier: {type_variety} in eqpt_config.json')
+                exit()
+            try: #remove all remaining nf inputs
+                del kwargs['nf_min']
+                del kwargs['nf_max']
+            except KeyError: pass #nf_min and nf_max are not needed for fixed gain amp
+            nf_def = Model_fg(nf0)
+        elif type_def == 'variable_gain':
+            gain_min, gain_max = kwargs['gain_min'], kwargs['gain_flatmax']
+            try: #nf_min and nf_max are expected for a variable gain amp
+                nf_min = kwargs.pop('nf_min')
+                nf_max = kwargs.pop('nf_max')
+            except KeyError:
+                print(f'missing nf_min/max value input for amplifier: {type_variety} in eqpt_config.json')
+                exit()
+            try: #remove all remaining nf inputs
+                del kwargs['nf0']
+            except KeyError: pass #nf0 is not needed for variable gain amp
+            nf1, nf2, delta_p = nf_model(type_variety, gain_min, gain_max, nf_min, nf_max)
+            nf_def = Model_vg(nf1, nf2, delta_p)
+        return cls(**{**kwargs, **json_data, 'nf_model': nf_def})
 
 
 def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
     if nf_min < -10:
-        raise ValueError(f'Invalid nf_min value {nf_min!r}')
+        print(f'Invalid nf_min value {nf_min!r} for amplifier {type_variety}')
+        exit()
     if nf_max < -10:
-        raise ValueError(f'Invalid nf_max value {nf_max!r}')
+        print(f'Invalid nf_max value {nf_max!r} for amplifier {type_variety}')
+        exit()
 
     # NF estimation model based on nf_min and nf_max
     # delta_p:  max power dB difference between first and second stage coils
@@ -69,7 +97,8 @@ def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
     nf1 = lin2db(db2lin(nf_min) - db2lin(nf2)/db2lin(g1a_max))
 
     if nf1 < 4:
-        raise ValueError(f'First coil value too low {nf1}')
+        print(f'First coil value too low {nf1} for amplifier {type_variety}')
+        exit()
 
     # Check 1 dB < delta_p < 6 dB to ensure nf_min and nf_max values make sense.
     # There shouldn't be high nf differences between the two coils:
@@ -81,17 +110,20 @@ def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
         delta_p = gain_max - g1a_max
         g1a_min = gain_min - (gain_max-gain_min) - delta_p
         if not 1 < delta_p < 6:
-            raise ValueError(f'Computed \N{greek capital letter delta}P invalid \
+            print(f'Computed \N{greek capital letter delta}P invalid \
                 \n 1st coil vs 2nd coil calculated DeltaP {delta_p:.2f} for \
-                \n amp {type_variety} is not valid: revise inputs \
+                \n amplifier {type_variety} is not valid: revise inputs \
                 \n calculated 1st coil NF = {nf1:.2f}, 2nd coil NF = {nf2:.2f}')
+            exit()
     # Check calculated values for nf1 and nf2
     calc_nf_min = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_max))
     if not isclose(nf_min, calc_nf_min, abs_tol=0.01):
-        raise ValueError(f'nf_min does not match calc_nf_min, {nf_min} vs {calc_nf_min} for amp {type_variety}')
+        print(f'nf_min does not match calc_nf_min, {nf_min} vs {calc_nf_min} for amp {type_variety}')
+        exit()
     calc_nf_max = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_min))
     if not isclose(nf_max, calc_nf_max, abs_tol=0.01):
-        raise ValueError(f'nf_max does not match calc_nf_max, {nf_max} vs {calc_nf_max} for amp {type_variety}')
+        print(f'nf_max does not match calc_nf_max, {nf_max} vs {calc_nf_max} for amp {type_variety}')
+        exit()
 
     return nf1, nf2, delta_p
 
@@ -102,9 +134,11 @@ def edfa_nf(gain, variety_type, equipment):
     pad = max(edfa.gain_min - gain, 0)
     gain = gain + pad
     dg = max(edfa.gain_flatmax - gain, 0)
-    if edfa.nf_model:
+    if edfa.type_def == 'variable_gain':
         g1a = gain - edfa.nf_model.delta_p - dg
         nf_avg = lin2db(db2lin(edfa.nf_model.nf1) + db2lin(edfa.nf_model.nf2)/db2lin(g1a))
+    elif edfa.type_def == 'fixed_gain':
+        nf_avg = edfa.nf_model.nf0
     else:
         nf_avg = polyval(edfa.nf_fit_coeff, dg)
     return nf_avg + pad # input VOA = 1 for 1 NF degradation
@@ -138,7 +172,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             trx_params['bit_rate'] = default_si_data.bit_rate
             trx_params['roll_off'] = default_si_data.roll_off
             print(trx_params['roll_off'])
-    trx_params['power'] =  default_si_data.power
+    trx_params['power'] =  db2lin(default_si_data.power_dbm)*1e-3
     trx_params['nb_channel'] = automatic_nch(trx_params['frequency']['min'],
                                              trx_params['frequency']['max'],
                                              trx_params['spacing'])

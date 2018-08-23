@@ -28,7 +28,7 @@ def nch_and_spacing(request):
     """parametrize channel count vs channel spacing (Hz)"""
     yield request.param
 
-def propagation(input_power, connector_loss_in, connector_loss_out,dest):
+def propagation(input_power, con_in, con_out,dest):
     equipment = load_equipment(eqpt_library_name)
     network = load_network(network_file_name,equipment)
 
@@ -37,10 +37,10 @@ def propagation(input_power, connector_loss_in, connector_loss_out,dest):
     for e in network.nodes():
         if isinstance(e, Fiber):
             loss = e.loss_coef * e.length 
-            e.connector_loss_in = connector_loss_in
-            e.connector_loss_out = connector_loss_out
+            e.con_in = con_in
+            e.con_out = con_out
         if isinstance(e, Edfa):
-            e.operational.gain_target = loss + connector_loss_in + connector_loss_out
+            e.operational.gain_target = loss + con_in + con_out
     
     transceivers = {n.uid: n for n in network.nodes() if isinstance(n, Transceiver)}
 
@@ -65,7 +65,7 @@ def propagation(input_power, connector_loss_in, connector_loss_out,dest):
     edfa_sample = next(el for el in path if isinstance(el, Edfa))
     nf = mean(edfa_sample.nf)
 
-    print(f'pw: {input_power} conn in: {connector_loss_in} con out: {connector_loss_out} ' +
+    print(f'pw: {input_power} conn in: {con_in} con out: {con_out} ' +
         f'OSNR@0.1nm: {round(mean(sink.osnr_ase_01nm),2)}  SNR@bandwitdth: {round(mean(sink.snr),2)}')
     return sink , nf
 
