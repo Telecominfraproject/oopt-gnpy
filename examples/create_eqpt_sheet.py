@@ -77,11 +77,11 @@ def read_excel(input_filename):
             # print(f'node {nodes[len(nodes)-1]} eqt {temp_eqt}') 
             nodes.append(Shortnode(row[0].value,temp_eqt))
             # print(len(nodes)-1)
-            print(f'reading: node {nodes[len(nodes)-1].nodename} eqt {temp_eqt}')        
+            print(f'reading: node {nodes[len(nodes)-1].nodename} eqpt {temp_eqt}')        
         return links,nodes, links_by_src , links_by_dest
 
 def create_eqt_template(links,nodes, links_by_src , links_by_dest, input_filename):
-    output_filename = f'{input_filename[:-4]}_eqt_sheet.txt'
+    output_filename = f'{input_filename[:-4]}_eqpt_sheet.txt'
     with open(output_filename,'w') as my_file :
         # print header similar to excel
         my_file.write('OPTIONAL\n\n\n\
