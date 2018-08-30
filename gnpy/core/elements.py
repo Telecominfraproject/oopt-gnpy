@@ -152,7 +152,6 @@ class Fused(Node):
     def __call__(self, spectral_info):
         carriers = tuple(self.propagate(*spectral_info.carriers))
         pref = self.update_pref(spectral_info.pref)
-        print('pi',pref.pi)
         return spectral_info.update(carriers=carriers, pref=pref)
 
 FiberParams = namedtuple('FiberParams', 'type_variety length loss_coef length_units \
@@ -187,12 +186,12 @@ class Fiber(Node):
 
 
     def __repr__(self):
-        return f'{type(self).__name__}(uid={self.uid!r}, length={self.length!r}, loss={self.loss!r})'
+        return f'{type(self).__name__}(uid={self.uid!r}, length={round(self.length*1e-3,1)!r}km, loss={round(self.loss,1)!r}dB)'
 
     def __str__(self):
-        return '\n'.join([f'{type(self).__name__}        {self.uid}',
+        return '\n'.join([f'{type(self).__name__}          {self.uid}',
                           f'  type_variety:                {self.type_variety}',
-                          f'  length (m):                  {self.length:.2f}',
+                          f'  length (km):                 {round(self.length*1e-3):.2f}',
                           f'  pad att_in (dB):             {self.att_in:.2f}',
                           f'  total loss (dB):             {self.loss:.2f}',
                           f'  (includes conn loss (dB) in: {self.con_in:.2f} out: {self.con_out:.2f})',
@@ -320,25 +319,45 @@ class Fiber(Node):
         pref = self.update_pref(spectral_info.pref)
         return spectral_info.update(carriers=carriers, pref=pref)
 
-# TODO|dutc: eliminate duplication with .equipment.EdfaBase
-EdfaParams = namedtuple('EdfaParams',
-    'type_variety, type_def, gain_flatmax gain_min p_max'
-    ' nf_model nf_fit_coeff nf_ripple dgt gain_ripple')
+class EdfaParams:
+    def __init__(self, **params):
+        self.update_params(params)
+        if params == {}:
+            self.type_variety = ''
+            self.type_def = ''
+            self.gain_flatmax = 0
+            self.gain_min = 0
+            self.p_max = 0
+            self.nf_model = None
+            self.nf_fit_coeff = None
+            self.nf_ripple = None
+            self.dgt = None
+            self.gain_ripple = None
+            self.out_voa_auto = False
+            self.allowed_for_design = None
+
+    def update_params(self, kwargs):
+        for k,v in kwargs.items() :
+            setattr(self, k, update_params(**v)
+                if isinstance(v, dict) else v)
+
 class EdfaOperational:
-    def __init__(self, gain_target, tilt_target):
+    def __init__(self, gain_target, tilt_target, out_voa=None):
         self.gain_target = gain_target
         self.tilt_target = tilt_target
+        self.out_voa = out_voa
     def __repr__(self):
         return (f'{type(self).__name__}('
                 f'gain_target={self.gain_target!r}, '
                 f'tilt_target={self.tilt_target!r})')
 
 class Edfa(Node):
-    def __init__(self, *args, params=None, operational=None, **kwargs):
-        if params is None:
-            params = {}
-        if operational is None:
-            operational = {}
+    def __init__(self, *args, params={}, operational={}, **kwargs):
+        #TBC is this useful? put in comment for now:
+        #if params is None:
+        #    params = {}
+        #if operational is None:
+        #    operational = {}
         super().__init__(
             *args,
             params=EdfaParams(**params),
@@ -388,7 +407,8 @@ class Edfa(Node):
                           f'  Power Out (dBm):        {self.pout_db:.2f}',
                           f'  Delta_P (dB):           {self.dp_db!r}',
                           f'  target pch (dBm):       {self.target_pch_db!r}',
-                          f'  effective pch (dBm):    {self.effective_pch_db!r}'])
+                          f'  effective pch (dBm):    {self.effective_pch_db!r}',
+                          f'  output VOA (dB):        {self.operational.out_voa:.2f}'])
 
     def interpol_params(self, frequencies, pin, baud_rates, pref):
         """interpolate SI channel frequencies with the edfa dgt and gain_ripple frquencies from json
@@ -406,7 +426,7 @@ class Edfa(Node):
         """check power saturation and correct target_gain accordingly:"""
 
         if self.dp_db is not None:
-            self.target_pch_db = self.dp_db + pref.p0
+            self.target_pch_db = round(self.dp_db + pref.p0, 2)
             self.effective_gain = self.target_pch_db - pref.pi
         else:
             self.effective_gain = self.operational.gain_target
@@ -421,7 +441,7 @@ class Edfa(Node):
         # ase & nli are only calculated in signal bandwidth
         #    pout_db is not the absolute full output power (negligible if sufficient channels)
 
-    def _calc_nf(self):
+    def _calc_nf(self, avg = False):
         """nf calculation based on 2 models: self.params.nf_model.enabled from json import:
         True => 2 stages amp modelling based on precalculated nf1, nf2 and delta_p in build_OA_json
         False => polynomial fit based on self.params.nf_fit_coeff"""
@@ -438,7 +458,10 @@ class Edfa(Node):
             nf_avg = self.params.nf_model.nf0            
         else:
             nf_avg = polyval(self.params.nf_fit_coeff, -dg)
-        return self.interpol_nf_ripple + nf_avg + pad # input VOA = 1 for 1 NF degradation
+        if avg:
+            return nf_avg + pad
+        else:
+            return self.interpol_nf_ripple + nf_avg + pad # input VOA = 1 for 1 NF degradation            
 
     def noise_profile(self, df):
         """ noise_profile(bw) computes amplifier ase (W) in signal bw (Hz)
@@ -606,17 +629,19 @@ class Edfa(Node):
 
         gains = db2lin(self.gprofile)
         carrier_ases = self.noise_profile(brate)
+        att = db2lin(self.operational.out_voa)
 
         for gain, carrier_ase, carrier in zip(gains, carrier_ases, carriers):
             pwr = carrier.power
             bw = carrier.baud_rate
-            pwr = pwr._replace(signal=pwr.signal*gain,
-                               nonlinear_interference=pwr.nli*gain,
-                               amplified_spontaneous_emission=(pwr.ase+carrier_ase)*gain)
+            pwr = pwr._replace(signal=pwr.signal*gain/att,
+                               nonlinear_interference=pwr.nli*gain/att,
+                               amplified_spontaneous_emission=(pwr.ase+carrier_ase)*gain/att)
             yield carrier._replace(power=pwr)
 
     def update_pref(self, pref):
-        return pref._replace(p_span0=pref.p0, p_spani=pref.pi + self.effective_gain)
+        return pref._replace(p_span0=pref.p0, 
+                            p_spani=pref.pi + self.effective_gain - self.operational.out_voa)
 
     def __call__(self, spectral_info):
         carriers = tuple(self.propagate(spectral_info.pref, *spectral_info.carriers))

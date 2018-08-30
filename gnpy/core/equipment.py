@@ -14,26 +14,30 @@ from pathlib import Path
 from json import loads
 from gnpy.core.utils import lin2db, db2lin, load_json
 from collections import namedtuple
+from gnpy.core.elements import Edfa
 
 Model_vg = namedtuple('Model_vg', 'nf1 nf2 delta_p')
 Model_fg = namedtuple('Model_fg', 'nf0')
 Fiber = namedtuple('Fiber', 'type_variety dispersion gamma')
-Spans = namedtuple('Spans', 'power_mode max_length length_units max_loss padding EOL con_in con_out')
+Spans = namedtuple('Spans', 'power_mode delta_power_range_db max_length length_units \
+                             max_loss padding EOL con_in con_out')
 Transceiver = namedtuple('Transceiver', 'type_variety frequency mode')
 Roadms = namedtuple('Roadms', 'gain_mode_default_loss power_mode_pref')
 SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off \
                        power_dbm power_range_db OSNR bit_rate')
-EdfaBase = namedtuple(
-    'EdfaBase',
+AmpBase = namedtuple(
+    'AmpBase',
     'type_variety type_def gain_flatmax gain_min p_max'
-    ' nf_model nf_fit_coeff nf_ripple dgt gain_ripple')
-class Edfa(EdfaBase):
+    ' nf_model nf_fit_coeff nf_ripple dgt gain_ripple out_voa_auto allowed_for_design')
+class Amp(AmpBase):
     def __new__(cls,
-            type_variety, type_def, gain_flatmax, gain_min, p_max, 
-            nf_model=None, nf_fit_coeff=None, nf_ripple=None, dgt=None, gain_ripple=None):
+            type_variety, type_def, gain_flatmax, gain_min, p_max, nf_model=None, 
+            nf_fit_coeff=None, nf_ripple=None, dgt=None, gain_ripple=None, 
+             out_voa_auto=False, allowed_for_design=True):
         return super().__new__(cls,
             type_variety, type_def, gain_flatmax, gain_min, p_max, 
-            nf_model, nf_fit_coeff, nf_ripple, dgt, gain_ripple)
+            nf_model, nf_fit_coeff, nf_ripple, dgt, gain_ripple, 
+            out_voa_auto, allowed_for_design)
 
     @classmethod
     def from_advanced_json(cls, filename, **kwargs):
@@ -127,22 +131,16 @@ def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
 
     return nf1, nf2, delta_p
 
-def edfa_nf(gain, variety_type, equipment):
-    edfa = equipment['Edfa'][variety_type]
-    'input VOA padding at low gain = worst case strategy'
-    'not necessary when output VOA/att padding strategy will be implemented'
-    pad = max(edfa.gain_min - gain, 0)
-    gain = gain + pad
-    dg = max(edfa.gain_flatmax - gain, 0)
-    if edfa.type_def == 'variable_gain':
-        g1a = gain - edfa.nf_model.delta_p - dg
-        nf_avg = lin2db(db2lin(edfa.nf_model.nf1) + db2lin(edfa.nf_model.nf2)/db2lin(g1a))
-    elif edfa.type_def == 'fixed_gain':
-        nf_avg = edfa.nf_model.nf0
-    else:
-        nf_avg = polyval(edfa.nf_fit_coeff, dg)
-    return nf_avg + pad # input VOA = 1 for 1 NF degradation
-
+def edfa_nf(gain_target, variety_type, equipment):
+    amp_params = equipment['Edfa'][variety_type]
+    amp = Edfa(
+            uid = f'calc_NF',
+            params = amp_params._asdict(),
+            operational = {
+                'gain_target': gain_target,
+                'tilt_target': 0,
+            })
+    return amp._calc_nf(True)
 
 def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=False):
     """return the trx and SI parameters from eqpt_config for a given type_variety and mode (ie format)"""
@@ -171,7 +169,6 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             trx_params['OSNR'] = default_si_data.OSNR
             trx_params['bit_rate'] = default_si_data.bit_rate
             trx_params['roll_off'] = default_si_data.roll_off
-            print(trx_params['roll_off'])
     trx_params['power'] =  db2lin(default_si_data.power_dbm)*1e-3
     trx_params['nb_channel'] = automatic_nch(trx_params['frequency']['min'],
                                              trx_params['frequency']['max'],
@@ -216,9 +213,9 @@ def equipment_from_json(json_data, filename):
             if key == 'Edfa':
                 if 'advanced_config_from_json' in entry:
                     config = Path(filename).parent / entry.pop('advanced_config_from_json')
-                    typ = lambda **kws: Edfa.from_advanced_json(config, **kws)
+                    typ = lambda **kws: Amp.from_advanced_json(config, **kws)
                 else:
                     config = Path(filename).parent / 'default_edfa_config.json'
-                    typ = lambda **kws: Edfa.from_default_json(config, **kws)
+                    typ = lambda **kws: Amp.from_default_json(config, **kws)
             equipment[key][subkey] = typ(**entry)
     return equipment

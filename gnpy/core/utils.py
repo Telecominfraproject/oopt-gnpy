@@ -64,6 +64,14 @@ def lin2db(value):
 def db2lin(value):
     return 10**(value / 10)
 
+def round2float(number, step):
+    step = round(step, 1)
+    if step >= 0.01:
+        number = round(number / step, 0)
+        number = round(number * step, 1)
+    else:
+        number = round(number, 2)
+    return number
 
 wavelength2freq = constants.lambda2nu
 freq2wavelength = constants.nu2lambda

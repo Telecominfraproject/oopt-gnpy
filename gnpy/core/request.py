@@ -15,24 +15,16 @@ and returns path results in terms of path and feasibility
 
 """
 
-from sys import exit
-from argparse import ArgumentParser
-from pathlib import Path
 from collections import namedtuple
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
-from json import dumps, loads
-from networkx import (draw_networkx_nodes, draw_networkx_edges,
-                      draw_networkx_labels, dijkstra_path, NetworkXNoPath)
+from networkx import (dijkstra_path, NetworkXNoPath)
 from numpy import mean
 from examples.convert_service_sheet import convert_service_sheet, Request_element, Element
-from gnpy.core.utils import load_json
-from gnpy.core.network import load_network, build_network
-from gnpy.core.equipment import load_equipment
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
+from gnpy.core.network import set_roadm_loss
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
 from copy import copy, deepcopy
-from numpy import log10
 
 RequestParams = namedtuple('RequestParams','request_id source destination trx_type'+
 ' trx_mode nodes_list loose_list spacing power nb_channel frequency format baud_rate OSNR bit_rate roll_off')
@@ -96,7 +88,7 @@ class Result_element(Element):
                        },
                        {
                        'metric-type': 'SNR@0.1nm',
-                       'accumulative-value': round(mean(self.computed_path[-1].snr+10*log10(self.path_request.baud_rate/12.5e9)),2)
+                       'accumulative-value': round(mean(self.computed_path[-1].snr+lin2db(self.path_request.baud_rate/12.5e9)),2)
                        }
                     ],
                     'path-srlgs': {
@@ -170,7 +162,8 @@ def compute_constrained_path(network, req):
     return total_path 
 
 def propagate(path, req, equipment, show=False):
-    
+    #update roadm loss in case of power sweep (power mode only)
+    set_roadm_loss(path, equipment, lin2db(req.power*1e3))
     si = create_input_spectral_information(
         req.frequency['min'], req.roll_off,
         req.baud_rate, req.power, req.spacing, req.nb_channel)
