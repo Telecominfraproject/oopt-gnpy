@@ -173,6 +173,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
     trx_params['nb_channel'] = automatic_nch(trx_params['frequency']['min'],
                                              trx_params['frequency']['max'],
                                              trx_params['spacing'])
+    print('N channels = ', trx_params['nb_channel'])
     return trx_params
 
 def automatic_spacing(baud_rate):
