@@ -125,7 +125,21 @@ element. The amplifier is currently defined with gain range of 15 dB to 25 dB
 and 21 dBm max output power. Ripple and NF models are defined in
 `examples/std_medium_gain_advanced_config.json <examples/std_medium_gain_advanced_config.json>`_
 
-It is possible to use an excell file input. this will generate the json topology entry. How to prepare the Excel input file is explained `here <Excel_userguide.rst>`_.
+It is possible to use an Excel file input. This will generate the json topology entry. How to prepare the Excel input file is explained `here <Excel_userguide.rst>`_.
+
+**Run multiple optimisation with path_requests_run.py**
+
+**Usage**: path_requests_run.py [-h] [-v] [-o OUTPUT]
+                            [network_filename xls or json] [service_filename xls or json] [eqpt_filename json]
+
+.. code-block:: shell
+
+    $ cd examples
+    $ python path_requests_run.py meshTopologyExampleV2.xls meshTopologyExampleV2_services.json eqpt_file -o output_file.json
+
+
+Additionally to the json or excel topology input, the program requires a list of connection to be estimated and the equipment library. The program computes performances for the list of services (accepts json or excel format) using the same spectrum propagation modules as transmission_main_example.py. Explanation on the Excel template is provided in the `Excel_userguide.rst <Excel_userguide.rst#service-sheet>`_ ; template for the json format can be found here:  `service_template.json <https://github.com/Telecominfraproject/oopt-gnpy/blob/8f8fc13dedee83532ff5bf83defb5fcb15b46f9f/service-template.json#L1>`_.
+
 
 Contributing
 ------------

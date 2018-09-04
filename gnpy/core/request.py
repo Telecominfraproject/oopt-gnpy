@@ -37,7 +37,7 @@ class Path_request:
         self.destination = params.destination
         self.tsp        = params.trx_type
         self.tsp_mode   = params.trx_mode
-        self.baud_rate   = params.baud_rate
+        self.baud_rate  = params.baud_rate
         self.nodes_list = params.nodes_list
         self.loose_list = params.loose_list
         self.spacing    = params.spacing
@@ -89,6 +89,18 @@ class Result_element(Element):
                        {
                        'metric-type': 'SNR@0.1nm',
                        'accumulative-value': round(mean(self.computed_path[-1].snr+lin2db(self.path_request.baud_rate/12.5e9)),2)
+                       },
+                       {
+                       'metric-type': 'OSNR@bandwidth',
+                       'accumulative-value': round(mean(self.computed_path[-1].osnr_ase),2)
+                       },
+                       {
+                       'metric-type': 'OSNR@0.1nm',
+                       'accumulative-value': round(mean(self.computed_path[-1].osnr_ase_01nm),2)
+                       },
+                       {
+                       'metric-type': 'reference_power',
+                       'accumulative-value': self.path_request.power
                        }
                     ],
                     'path-srlgs': {

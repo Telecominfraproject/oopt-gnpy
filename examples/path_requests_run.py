@@ -97,7 +97,7 @@ def compute_path(network, equipment, pathreqlist):
         #we assume that the destination is a strict constraint
         pathreq.loose_list.append('strict')
         print(f'Computing path from {pathreq.source} to {pathreq.destination}')
-        print(f'with explicit path: {pathreq.nodes_list}')
+        print(f'with explicit path: {[pathreq.source]+pathreq.nodes_list}') #adding first node to be clearer on the output
         total_path = compute_constrained_path(network, pathreq)
         
         # for debug
@@ -135,7 +135,7 @@ if __name__ == '__main__':
     pths = requests_from_json(data, equipment)
     print(pths)
     test = compute_path(network, equipment, pths)
-
+    
     if args.output is None:
         #TODO write results
         print("demand\t\t\t\tsnr@bandwidth\tsnr@0.1nm")
