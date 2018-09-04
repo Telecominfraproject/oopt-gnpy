@@ -52,6 +52,16 @@ class Transceiver(Node):
             self.snr = [lin2db(c.power.signal/(c.power.nli+c.power.ase))
                         for c in spectral_info.carriers]
 
+
+    @property
+    def to_json(self):
+        return {'uid'       : self.uid,
+                'type'      : type(self).__name__,
+                'metadata'      : {
+                    'location': self.metadata['location']._asdict()
+                                    }
+}
+
     def __repr__(self):
         return (f'{type(self).__name__}('
                 f'uid={self.uid!r}, '
@@ -91,6 +101,16 @@ class Roadm(Node):
         self.pch_out = None
         self.passive = True
 
+    @property
+    def to_json(self):
+        return {'uid'       : self.uid,
+                'type'      : type(self).__name__,
+                'params'    : {'loss' : self.loss},
+                'metadata'      : {
+                    'location': self.metadata['location']._asdict()
+                                    }
+                }        
+
     def __repr__(self):
         return f'{type(self).__name__}(uid={self.uid!r}, loss={self.loss!r})'
 
@@ -128,6 +148,15 @@ class Fused(Node):
         super().__init__(*args, params=FusedParams(**params), **kwargs)
         self.loss = self.params.loss
         self.passive = True
+
+    @property
+    def to_json(self):
+        return {'uid'       : self.uid,
+                'type'      : type(self).__name__,
+                'metadata'      : {
+                    'location': self.metadata['location']._asdict()
+                                    }
+                }
 
     def __repr__(self):
         return f'{type(self).__name__}(uid={self.uid!r}, loss={self.loss!r})'
@@ -184,6 +213,25 @@ class Fiber(Node):
         self.pch_out = None  
         # TODO|jla: discuss factor 2 in the linear lineic attenuation
 
+    @property
+    def to_json(self):
+        return {'uid'           : self.uid,
+                'type'          : type(self).__name__,
+                'type_variety'  : self.type_variety,
+                'params'        : {
+                #have to specify each because namedtupple cannot be updated :(
+                    'type_variety'  : self.type_variety,
+                    'length'        : self.length/UNITS[self.params.length_units],
+                    'loss_coef'     : self.loss_coef*1e3,
+                    'length_units'  : self.params.length_units,
+                    'att_in'        : self.att_in,
+                    'con_in'        : self.con_in,
+                    'con_out'       : self.con_out
+                                },
+                'metadata'      : {
+                    'location': self.metadata['location']._asdict()
+                                }
+                }
 
     def __repr__(self):
         return f'{type(self).__name__}(uid={self.uid!r}, length={round(self.length*1e-3,1)!r}km, loss={round(self.loss,1)!r}dB)'
@@ -201,7 +249,7 @@ class Fiber(Node):
     def fiber_loss(self):
         # dB fiber loss, not including padding attenuator
         return self.loss_coef * self.length + self.con_in + self.con_out
-
+    
     @property
     def loss(self):
         #total loss incluiding padding att_in: useful for polymorphism with roadm loss
@@ -380,6 +428,21 @@ class Edfa(Node):
         self.effective_gain = self.operational.gain_target
         self.att_in = None
 
+    @property
+    def to_json(self):
+        return {'uid'           : self.uid,
+                'type'          : type(self).__name__,
+                'type_variety'  : self.params.type_variety,
+                'operational'   : {
+                    'gain_target' : self.operational.gain_target,
+                    'tilt_target' : self.operational.tilt_target,
+                    'out_voa'     : self.operational.out_voa
+                },
+                'metadata'      : {
+                    'location': self.metadata['location']._asdict()
+                                    }
+                }
+
     def __repr__(self):
         return (f'{type(self).__name__}(uid={self.uid!r}, '
                 f'type_variety={self.params.type_variety!r}'
@@ -398,7 +461,6 @@ class Edfa(Node):
         nf = mean(self.nf)
         return '\n'.join([f'{type(self).__name__} {self.uid}', 
                           f'  type_variety:           {self.params.type_variety}',
-                          f'  target gain (dB):       {self.operational.gain_target:.2f}',
                           f'  effective gain(dB):     {self.effective_gain:.2f}',
                           f'  noise figure (dB):      {nf:.2f}',
                           f'  including att_in',
@@ -438,6 +500,7 @@ class Edfa(Node):
 
         pout = (pin + self.noise_profile(baud_rates))*db2lin(self.gprofile)
         self.pout_db = lin2db(sum(pout*1e3))
+        self.operational.gain_target = self.effective_gain
         # ase & nli are only calculated in signal bandwidth
         #    pout_db is not the absolute full output power (negligible if sufficient channels)
 

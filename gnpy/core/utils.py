@@ -24,7 +24,7 @@ def load_json(filename):
 
 def save_json(obj, filename):
     with open(filename, 'w') as f:
-        json.dump(obj, f)
+        json.dump(obj, f, indent=2)
 
 
 def c():

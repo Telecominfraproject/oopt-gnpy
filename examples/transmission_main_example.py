@@ -17,7 +17,7 @@ from numpy import arange
 from matplotlib.pyplot import show, axis, figure, title
 from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels, dijkstra_path)
-from gnpy.core.network import load_network, build_network
+from gnpy.core.network import load_network, build_network, save_network
 from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
 from gnpy.core.request import Path_request, RequestParams, compute_constrained_path, propagate
@@ -170,6 +170,7 @@ if __name__ == '__main__':
     params.update(trx_params)
     req = Path_request(**params)
     path = main(network, equipment, source, destination, req)
+    save_network(args.filename, network)
 
     if args.plot:
         plot_results(network, path, source, destination)

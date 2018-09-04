@@ -11,14 +11,13 @@ from gnpy.core.convert import convert_file
 from networkx import DiGraph
 from numpy import arange
 from logging import getLogger
+from os import path
 from operator import itemgetter
 from gnpy.core import elements
 from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm, Fused
 from gnpy.core.equipment import edfa_nf
 from gnpy.core.units import UNITS
-from gnpy.core.utils import load_json
-from gnpy.core.utils import round2float
-from gnpy.core.utils import db2lin, lin2db
+from gnpy.core.utils import load_json, save_json, round2float, db2lin, lin2db
 from sys import exit
 from collections import namedtuple
 
@@ -35,6 +34,11 @@ def load_network(filename, equipment):
         raise ValueError(f'unsuported topology filename extension {filename.suffix.lower()}')
     json_data = load_json(json_filename)
     return network_from_json(json_data, equipment)
+
+def save_network(filename, network):
+    filename_output = path.splitext(filename)[0] + '_auto_design.json'
+    json_data = network_to_json(network)
+    save_json(json_data, filename_output)
 
 def network_from_json(json_data, equipment):
     # NOTE|dutc: we could use the following, but it would tie our data format
@@ -62,6 +66,19 @@ def network_from_json(json_data, equipment):
         g.add_edge(nodes[from_node], nodes[to_node])
 
     return g
+
+def network_to_json(network):
+    data = {
+        'elements': [n.to_json for n in network]
+        }
+    connections = {
+        'connections': [{"from_node": n.uid,
+                         "to_node": next_n.uid}
+                        for n in network
+                        for next_n in network.successors(n) if next_n is not None]
+        }
+    data.update(connections)
+    return data
 
 def select_edfa(gain_target, power_target, equipment):
     """amplifer selection algorithm
@@ -137,7 +154,7 @@ def target_power(network, node, equipment): #get_fiber_dp
         exit()
     if isinstance(node, Roadm) or not power_mode:
         dp = 0
-    print(f'{repr(node)} delta power in:\n{dp}dB')
+    #print(f'{repr(node)} delta power in:\n{dp}dB')
     return dp
     
 
