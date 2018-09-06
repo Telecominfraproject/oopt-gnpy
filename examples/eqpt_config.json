@@ -21,7 +21,7 @@
             {
             "type_variety": "std_low_gain",
             "type_def": "variable_gain",
-            "gain_flatmax": 17,
+            "gain_flatmax": 16,
             "gain_min": 8,
             "p_max": 22,
             "nf_min": 6.5,
@@ -36,7 +36,7 @@
             "gain_min": 20,
             "p_max": 21,
             "nf0": 5.5,
-            "allowed_for_design": true
+            "allowed_for_design": false
             },
             {
             "type_variety": "test",
@@ -91,14 +91,14 @@
                         },
             "mode":[
                        {
-                       "format": "PS_SP64_1",
+                       "format": "mode 1",
                        "baud_rate": 32e9,
                        "OSNR": 11,
                        "bit_rate": 100e9,
                        "roll_off": 0.15
                        },
                        {
-                       "format": "PS_SP64_2",
+                       "format": "mode 2",
                        "baud_rate": 66e9,
                        "OSNR": 15,
                        "bit_rate": 200e9,
@@ -107,7 +107,7 @@
                    ]
             },
             {
-            "type_variety": "Voyager_16QAM",
+            "type_variety": "Voyager",
             "frequency":{
                         "min": 191.35e12,
                         "max": 196.1e12
@@ -119,7 +119,15 @@
                        "OSNR": 19,
                        "bit_rate": 200e9,
                        "roll_off": 0.15
+                       },
+                       {
+                       "format": "QPSK",
+                       "baud_rate": 32e9,
+                       "OSNR": 12,
+                       "bit_rate": 100e9,
+                       "roll_off": 0.15
                        }
+
                    ]
             }
       ]

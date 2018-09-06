@@ -83,7 +83,7 @@ class Request_element(Element):
             self.nodes_list.remove(self.source)
             msg = f'{self.source} removed from explicit path node-list'
             logger.info(msg)
-            print(msg)
+            # print(msg)
         except ValueError:
             msg = f'{self.source} already removed from explicit path node-list'
             logger.info(msg)
@@ -92,7 +92,7 @@ class Request_element(Element):
             self.nodes_list.remove(self.destination)
             msg = f'{self.destination} removed from explicit path node-list'
             logger.info(msg)
-            print(msg)
+            # print(msg)
         except ValueError:
             msg = f'{self.destination} already removed from explicit path node-list'
             logger.info(msg)

@@ -27,9 +27,10 @@ START_LINE = 5
 
 parser = ArgumentParser(description = 'A function that writes json path results in an excel sheet.')
 parser.add_argument('filename', nargs='?', type = Path)
-parser.add_argument('eqpt_filename', nargs='?', type = Path)
-
 parser.add_argument('output_filename', nargs='?', type = Path)
+parser.add_argument('eqpt_filename', nargs='?', type = Path, default=Path(__file__).parent / 'eqpt_config.json')
+
+
 
 if __name__ == '__main__':
     args = parser.parse_args()

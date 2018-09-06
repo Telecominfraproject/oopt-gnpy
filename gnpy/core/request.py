@@ -26,6 +26,9 @@ from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
 from copy import copy, deepcopy
 
+logger = getLogger(__name__)
+
+
 RequestParams = namedtuple('RequestParams','request_id source destination trx_type'+
 ' trx_mode nodes_list loose_list spacing power nb_channel frequency format baud_rate OSNR bit_rate roll_off')
 
@@ -55,12 +58,14 @@ class Path_request:
                             f'destination:  {self.destination}'])
     def __repr__(self):
         return '\n\t'.join([  f'{type(self).__name__} {self.request_id}',
-                            f'source:       {self.source}',
-                            f'destination:  {self.destination}',
-                            f'trx type:     {self.tsp}',
-                            f'baud_rate:     {self.baud_rate}',
-                            f'spacing:      {self.spacing}',
-                            f'power:        {self.power}'
+                            f'source: \t{self.source}',
+                            f'destination:\t{self.destination}',
+                            f'trx type:\t{self.tsp}',
+                            f'trx mode:\t{self.tsp_mode}',
+                            f'baud_rate:\t{self.baud_rate * 1e-9} Gbaud',
+                            f'bit_rate:\t{self.bit_rate * 1e-9} Gb/s',
+                            f'spacing:\t{self.spacing * 1e-9} GHz',
+                            f'power:  \t{round(lin2db(self.power)+30,2)} dBm'
                             '\n'])
 
 class Result_element(Element):
@@ -139,6 +144,8 @@ def compute_constrained_path(network, req):
     edfa = [n for n in network.nodes() if isinstance(n, Edfa)]
     source = next(el for el in trx if el.uid == req.source)
     # start the path with its source
+    # TODO : avoid loops due to constraints , guess name base on string,
+    # avoid crashing if on req is not correct
     total_path = [source]
     for n in req.nodes_list:
         # print(n)
@@ -170,7 +177,9 @@ def compute_constrained_path(network, req):
             else:
                 msg = f'could not find a path from {source.uid} to node : {n} in network topology'
                 logger.critical(msg)
-                raise ValueError(msg)
+                #raise ValueError(msg)
+                print(msg)
+                total_path = []
     return total_path 
 
 def propagate(path, req, equipment, show=False):
