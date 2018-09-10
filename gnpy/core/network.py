@@ -137,7 +137,7 @@ def target_power(network, node, equipment): #get_fiber_dp
         exit()
     if isinstance(node, Roadm) or not power_mode:
         dp = 0
-    print(f'{repr(node)} delta power in:\n{dp}dB')
+    # print(f'{repr(node)} delta power in:\n{dp}dB')
     return dp
     
 
