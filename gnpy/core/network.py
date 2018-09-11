@@ -252,6 +252,7 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
             prev_dp = dp
             prev_node = node
             node = next_node
+            # print(f'{node.uid}')
             next_node = next(n for n in network.successors(node))
 
 

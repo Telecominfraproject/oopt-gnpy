@@ -250,6 +250,13 @@ def compute_constrained_path(network, req):
                 #raise ValueError(msg)
                 print(msg)
                 total_path = []
+
+# preparing disjonction feature
+    # for p in all_simple_paths(network,\
+    #     source=next(el for el in trx if el.uid == req.source),\
+    #     target=next(el for el in trx if el.uid == req.destination)):
+    #     print([e.uid for e in p if isinstance(e,Roadm)])
+
     return total_path 
 
 def propagate(path, req, equipment, show=False):
