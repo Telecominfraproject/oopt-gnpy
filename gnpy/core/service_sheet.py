@@ -153,7 +153,7 @@ class Request_element(Element):
     @property
     def pathsync(self):
         if self.disjoint_from :
-            return {'synchonization-id':self.request_id,
+            return {'synchronization-id':self.request_id,
                 'svec': {
                     'relaxable' : 'False',
                     'link-diverse': 'True',
@@ -177,7 +177,7 @@ def convert_service_sheet(input_filename, eqpt_filename, output_filename='', fil
     # print(json_filename)
     data = {
         'path-request': [n.json[0] for n in req],
-        'synchronisation': [n.json[1] for n in req
+        'synchronization': [n.json[1] for n in req
         if n.json[1] is not None]
     }
     with open(output_filename, 'w') as f:

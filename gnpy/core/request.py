@@ -32,6 +32,7 @@ logger = getLogger(__name__)
 
 RequestParams = namedtuple('RequestParams','request_id source destination trx_type'+
 ' trx_mode nodes_list loose_list spacing power nb_channel frequency format baud_rate OSNR bit_rate roll_off')
+DisjunctionParams = namedtuple('DisjunctionParams','relaxable link_diverse node_diverse disjunctions_req')
 
 class Path_request:
     def __init__(self, *args, **params):
@@ -68,6 +69,26 @@ class Path_request:
                             f'spacing:\t{self.spacing * 1e-9} GHz',
                             f'power:  \t{round(lin2db(self.power)+30,2)} dBm'
                             '\n'])
+class Disjunction:
+    def __init__(self, *args, **params):
+        params = DisjunctionParams(**params)
+        self.relaxable = params.relaxable
+        self.link_diverse = params.link_diverse
+        self.node_diverse = params.node_diverse
+        self.disjunctions_req = params.disjunctions_req
+        
+    def __str__(self):
+        return '\n\t'.join([f'relaxable:    {self.relaxable}',
+                            f'link-diverse:       {self.link_diverse}',
+                            f'node-diverse:  {self.node_diverse}',
+                            f'request-id-numbers: {self.disjunctions_req}']
+                            )
+    def __repr__(self):
+        return '\n\t'.join([f'relaxable:    {self.relaxable}',
+                            f'link-diverse:       {self.link_diverse}',
+                            f'node-diverse:  {self.node_diverse}',
+                            f'request-id-numbers: {self.disjunctions_req}']
+                            )
 
 class Result_element(Element):
     def __init__(self,path_request,computed_path):
@@ -226,8 +247,10 @@ def compute_constrained_path(network, req):
                 node = next(el for el in roadm if el.uid == f'roadm {n}')
             except StopIteration:
                 try:
-                    node = next(el for el in edfa
-                        if el.uid.startswith(f'egress edfa in {n}'))
+                    # TODO this test is not giving good results: full name of the 
+                    # amp is required to avoid ambiguity on the direction
+                    node = next(el for el in edfa 
+                        if el.uid.find(f'{n}'))
                 except StopIteration:
                     msg = f'could not find node : {n} in network topology: \
                         not a trx, roadm, edfa or fused element'
@@ -251,7 +274,7 @@ def compute_constrained_path(network, req):
                 print(msg)
                 total_path = []
 
-# preparing disjonction feature
+# preparing disjunction feature
     # for p in all_simple_paths(network,\
     #     source=next(el for el in trx if el.uid == req.source),\
     #     target=next(el for el in trx if el.uid == req.destination)):
@@ -297,17 +320,10 @@ def jsontocsv(json_data,equipment,fileout):
         ['path-route-object']['unnumbered-hop']['hop-type'].split(' - ')
 
         # find the min  acceptable OSNR, baud rate from the eqpt library based on tsp (tupe) and mode (format)
-        try:
-            [minosnr, baud_rate] = next([m['OSNR'] , m['baud_rate']]
-                for m in equipment['Transceiver'][tsp].mode if  m['format']==mode)
-
-        # for debug
-        # print(f'coucou {baud_rate}')
-        except IndexError:
-            msg = f'could not find tsp : {self.tsp} with mode: {self.tsp_mode} in eqpt library'
-
-            raise ValueError(msg)
-        output_snr = next(e['accumulative-value']
+        # loading equipment already tests the existence of tsp type and mode:
+        [minosnr, baud_rate] = next([m['OSNR'] , m['baud_rate']]  
+            for m in equipment['Transceiver'][tsp].mode if  m['format']==mode)
+        output_snr = next(e['accumulative-value'] 
             for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR@0.1nm')
         output_snrbandwidth = next(e['accumulative-value']
             for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR@bandwidth')
