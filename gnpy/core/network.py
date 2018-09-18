@@ -144,23 +144,24 @@ def target_power(dp_from_gain, network, node, equipment): #get_fiber_dp
     power_mode = equipment['Spans']['default'].power_mode
     dp_range = list(equipment['Spans']['default'].delta_power_range_db)
     node_loss = span_loss(network, node)
+
+    dp_gain_mode = 0
     try:
-        dp = round2float((node_loss - SPAN_LOSS_REF) * POWER_SLOPE, dp_range[2])
-        dp = max(dp_range[0], dp)
-        dp = min(dp_range[1], dp)
+        dp_power_mode = round2float((node_loss - SPAN_LOSS_REF) * POWER_SLOPE, dp_range[2])
+        dp_power_mode = max(dp_range[0], dp_power_mode)
+        dp_power_mode = min(dp_range[1], dp_power_mode)
     except KeyError:
         print(f'invalid delta_power_range_db definition in eqpt_config[Spans]'
               f'delta_power_range_db: [lower_bound, upper_bound, step]')
         exit()
-    if dp_from_gain:
-        dp = dp_from_gain
-    
-    if power_mode and isinstance(node, Roadm):
-        dp = 0
 
-    if not power_mode and not dp_from_gain:
-        dp = 0
-    
+    if dp_from_gain:
+        dp_power_mode = dp_from_gain
+        dp_gain_mode = dp_from_gain
+    if isinstance(node, Roadm):
+        dp_power_mode = 0
+
+    dp = dp_power_mode if power_mode else dp_gain_mode
     #print(f'{repr(node)} delta power in:\n{dp}dB')
     return dp
     
