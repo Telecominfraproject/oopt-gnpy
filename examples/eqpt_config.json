@@ -92,14 +92,14 @@
                         },
             "mode":[
                        {
-                       "format": "PS_SP64_1",
+                       "format": "mode_1",
                        "baud_rate": 32e9,
                        "OSNR": 11,
                        "bit_rate": 100e9,
                        "roll_off": 0.15
                        },
                        {
-                       "format": "PS_SP64_2",
+                       "format": "mode_2",
                        "baud_rate": 66e9,
                        "OSNR": 15,
                        "bit_rate": 200e9,
