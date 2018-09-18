@@ -32,7 +32,7 @@ logger = getLogger(__name__)
 
 RequestParams = namedtuple('RequestParams','request_id source destination trx_type'+
 ' trx_mode nodes_list loose_list spacing power nb_channel frequency format baud_rate OSNR bit_rate roll_off')
-DisjunctionParams = namedtuple('DisjunctionParams','relaxable link_diverse node_diverse disjunctions_req')
+DisjunctionParams = namedtuple('DisjunctionParams','disjunction_id relaxable link_diverse node_diverse disjunctions_req')
 
 class Path_request:
     def __init__(self, *args, **params):
@@ -72,6 +72,7 @@ class Path_request:
 class Disjunction:
     def __init__(self, *args, **params):
         params = DisjunctionParams(**params)
+        self.disjunction_id = params.disjunction_id
         self.relaxable = params.relaxable
         self.link_diverse = params.link_diverse
         self.node_diverse = params.node_diverse

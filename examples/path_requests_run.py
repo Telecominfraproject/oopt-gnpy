@@ -75,6 +75,7 @@ def disjunctions_from_json(json_data):
 
     for snc in json_data['synchronization']:
         params = {}
+        params['disjunction_id'] = snc['synchronization-id']
         params['relaxable'] = snc['svec']['relaxable']
         params['link_diverse'] = snc['svec']['link-diverse']
         params['node_diverse'] = snc['svec']['node-diverse']
@@ -171,12 +172,17 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     # for each remaining request compute a set of simple path
     rqs = {}
     simple_rqs = {}
+    simple_rqs_reversed = {}
     for pathreq in pathreqlist_disjt :
         print(pathreq.request_id)
         all_simp_pths = list(all_simple_paths(network,\
             source=next(el for el in network.nodes() if el.uid == pathreq.source),\
             target=next(el for el in network.nodes() if el.uid == pathreq.destination)))
-        rqs[pathreq.request_id] = all_simp_pths 
+        # reversed direction paths required to check disjunction on both direction
+        all_simp_pths_reversed = []
+        for pth in all_simp_pths:
+            all_simp_pths_reversed.append(find_reversed_path(pth,network))
+        # rqs[pathreq.request_id] = all_simp_pths 
         temp =[]
         for p in all_simp_pths :
             # build a short list representing each roadm+direction with the first item
@@ -184,74 +190,96 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
             temp.append([e.uid for i,e in enumerate(p[1:-1]) \
                 if (isinstance(e,Roadm) | (isinstance(p[i],Roadm) ))] )
         simple_rqs[pathreq.request_id] = temp
-        for p in all_simp_pths :
-            print ([e.uid for e in p if isinstance (e,Roadm)])
-    tab = {}
-    tab2 = {}
+        temp =[]
+        for p in all_simp_pths_reversed :
+            # build a short list representing each roadm+direction with the first item
+            # start enumeration at 1 to avoid Trx in the list
+            temp.append([e.uid for i,e in enumerate(p[1:-1]) \
+                if (isinstance(e,Roadm) | (isinstance(p[i],Roadm) ))] )
+        simple_rqs_reversed[pathreq.request_id] = temp
     # step 2 
-    # for each pair in the set of requests that need to be disjoint
-    # count the non disjoint cases tab[path] = list of disjoint path
+    # for each set of requests that need to be disjoint
+    # select the disjoint path combination
+
+    candidates = {}
     for d in disjunctions_list :
         print(d)
-        temp = d.disjunctions_req.copy()
-        for e1 in temp :
-            for i,p1 in enumerate(simple_rqs[e1]):
-                if temp:
-                    for e2 in temp :
-                        if e1 != e2 :
-                            for j,p2 in enumerate(simple_rqs[e2]):
-                                # print(f'{id(p1)}    {id(p2)}')
-                                try :
-                                    tab[id(p1)] += isdisjoint(p1,p2)
-                                    if isdisjoint(p1,p2)==0:
-                                        tab2[id(p1)] = tab2[id(p1)].append(p2)
-                                    print(f'{e1} is {isdisjoint(p1,p2)} {e2}    tab : {tab2[id(p1),e2]}')
-                                except KeyError:
-                                    tab[id(p1)] = isdisjoint(p1,p2)
-                                    if isdisjoint(p1,p2)==0:
-                                        tab2[id(p1)] = [p2]
-                                try :
-                                    tab[id(p2)] += isdisjoint(p1,p2)
-                                    if isdisjoint(p1,p2)==0:
-                                        tab2[id(p2)] = tab2[id(p2)].append(p1)
-                                except KeyError:
-                                    tab[id(p2)] = isdisjoint(p1,p2)
-                                    if isdisjoint(p1,p2)==0:
-                                        tab2[id(p2)] = [p1]
-            # remove the request from the list to avoid computind ij and ji cases
-            temp = temp.remove(e1)
+        dlist = d.disjunctions_req.copy()
+        # each line of dpath is one combination of path that satisfies disjunction
+        dpath = []
+        for p in simple_rqs[dlist[0]]:
+            dpath.append([p])
+        # in each loop, dpath is updated with a path for rq that satisfies 
+        # disjunction with each path in dpath
+        # for example, assume set of disjunction_list is  {rq1,rq2, rq3}
+        # rq1  p1: abcg
+        #      p2: aefhg
+        #      p3: abfhg
+        # rq2  p8: bf
+        # rq2  p4: abcgh
+        #      p6: aefh
+        #      p7: abfh
+        # initiate with rq1
+        #  dpath = [p1
+        #           p2
+        #           p3]
+        #  after first loop:
+        #  dpath = [p1 p8
+        #           p3 p8]
+        #  since p2 and p8 are not disjoint
+        #  after second loop:
+        #  dpath = [ p1 P8 p6 ]
+        #  since p1 and p4 are not disjoint 
+        #        p1 and p7 are not disjoint
+        #        p3 and p4 are not disjoint
+        #        p3 and p7 are not disjoint
 
+        for e1 in dlist[1:] :
+            temp = []
+            for j,p1 in enumerate(simple_rqs[e1]):
+                # can use index j in simple_rqs_reversed because index 
+                # of direct and reversed paths have been kept identical
+                p1_reversed = simple_rqs_reversed[e1][j]
+                # print(p1_reversed)
+                # print('\n\n')
+                for c in dpath :
+                    # print(f' c: \t{c}')
+                    temp2 = c.copy()
+                    for p in c :
+                        if isdisjoint(p1,p)+ isdisjoint(p1_reversed,p)==0 :
+                            temp2.append(p1)
+                            temp.append(temp2)
+                            # print(f' coucou {e1}: \t{temp}')
+            dpath = temp
+            # print(f' coucou : \t{temp}')
+        # print(dpath)
+        candidates[d.disjunction_id] = dpath
+    print( candidates)
 
-    # print(tab)
-    # print(len(tab))
-    el = disjunctions_list[0].disjunctions_req[0]
-    # print(tab[id(simple_rqs[el][0])])
-
-    # now for each request, select the path that has the least nb of disjunction
-    # and completely disjoined from the already selected paths in the constraint
-    for pathreq in pathreqlist_disjt :
-        pths = [ tab[id(e)] for e in simple_rqs[pathreq.request_id]]
-        pths2 = []
-        for p in simple_rqs[pathreq.request_id] :
-            print(f'{p} disjoint de {tab2[id(p)]}')
-                        
-        i = pths.index(min(pths)) 
-        print(simple_rqs[pathreq.request_id][i])
-        print(pths)
-        print(pths2)
+    # now for each request, select the path that satisfies all disjunctions
+    # path must be in candidates[id] for all concerned ids
 
 
 def isdisjoint(p1,p2) :
     # returns 0 if disjoint
-    # TODO add reverse direction in the test
     edge1 = list(pairwise(p1))
     edge2 = list(pairwise(p2))
-    edge3 = list(pairwise(reversed(p2)))
     for e in edge1 :
-        if (e in edge2) | (e in edge3) :
+        if e in edge2 :
             return 1
     return 0
 
+def find_reversed_path(p,network) :
+    # select of intermediate roadms and find the path between them
+    reversed_roadm_path = list(reversed([e for e in p if isinstance (e,Roadm)]))
+    source = p[-1]
+    destination = p[0]
+    total_path = [source]
+    for node in reversed_roadm_path :
+        total_path.extend(dijkstra_path(network, source, node)[1:])
+        source = node
+    total_path.append(destination)
+    return total_path
 
 def path_result_json(pathresult):
     data = {
