@@ -129,18 +129,45 @@ def compute_path(network, equipment, pathreqlist):
         path_res_list.append(deepcopy(total_path))
     return path_res_list
 
-def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
+def compute_path_2(network, equipment, pathreqlist, pathlist):
     
     path_res_list = []
 
-    # Build the network once using the default power defined in SI in eqpt config
-    # power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
-    # spacing, f_min and f_max 
-    p_db = equipment['SI']['default'].power_dbm
+    for i,pathreq in enumerate(pathreqlist):
+        #need to rebuid the network for each path because the total power
+        #can be different and the choice of amplifiers in autodesign is power dependant
+        #but the design is the same if the total power is the same
+        #TODO parametrize the total spectrum power so the same design can be shared
+        p_db = lin2db(pathreq.power*1e3)
+        p_total_db = p_db + lin2db(pathreq.nb_channel)
+        pathreq.nodes_list.append(pathreq.destination)
+        #we assume that the destination is a strict constraint
+        total_path = pathlist[i]
+        print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}\n')
+        # for debug
+        # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
+        if total_path :
+            total_path = propagate(total_path,pathreq,equipment, show=False)
+        else:
+            total_path = []
+        # we record the last tranceiver object in order to have th whole 
+        # information about spectrum. Important Note: since transceivers 
+        # attached to roadms are actually logical elements to simulate
+        # performance, several demands having the same destination may use 
+        # the same transponder for the performance simaulation. This is why 
+        # we use deepcopy: to ensure each propagation is recorded and not 
+        # overwritten 
+        
+        path_res_list.append(deepcopy(total_path))
+    return path_res_list
+
+
+def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
-        equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
-    build_network(network, equipment, p_db, p_total_db)
+    # need to return list
+    path_res_list = []
+
+
     # todo : disjctn must be computed at once together to avoid blocking
     #         1     1
     # eg    a----b-----c
@@ -163,13 +190,18 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     global_disjunctions_list = [e for d in disjunctions_list for e in d.disjunctions_req ]
     pathreqlist_simple = [e for e in pathreqlist if e.request_id not in global_disjunctions_list]
     pathreqlist_disjt = [e for e in pathreqlist if e.request_id in global_disjunctions_list]
-    # compute paths for this simple path
-    pathreslist_simple = compute_path(network, equipment, pathreqlist_simple)
+
+    class Pth:
+        def __init__(self, req, pth, simplepth):
+            self.req = req
+            self.pth = pth
+            self.simplepth = simplepth
 
     # build a conflict table where each path has a count for 
     # conflicts with the paths from the requests to be disjoint
     # step 1
     # for each remaining request compute a set of simple path
+    allpaths = {}
     rqs = {}
     simple_rqs = {}
     simple_rqs_reversed = {}
@@ -178,17 +210,21 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
         all_simp_pths = list(all_simple_paths(network,\
             source=next(el for el in network.nodes() if el.uid == pathreq.source),\
             target=next(el for el in network.nodes() if el.uid == pathreq.destination)))
+        # sort them
+        all_simp_pths = sorted(all_simp_pths, key=lambda path: len(path))
         # reversed direction paths required to check disjunction on both direction
         all_simp_pths_reversed = []
         for pth in all_simp_pths:
             all_simp_pths_reversed.append(find_reversed_path(pth,network))
-        # rqs[pathreq.request_id] = all_simp_pths 
+        rqs[pathreq.request_id] = all_simp_pths 
         temp =[]
         for p in all_simp_pths :
             # build a short list representing each roadm+direction with the first item
             # start enumeration at 1 to avoid Trx in the list
-            temp.append([e.uid for i,e in enumerate(p[1:-1]) \
-                if (isinstance(e,Roadm) | (isinstance(p[i],Roadm) ))] )
+            s = [e.uid for i,e in enumerate(p[1:-1]) \
+                if (isinstance(e,Roadm) | (isinstance(p[i],Roadm) ))] 
+            temp.append(s)
+            allpaths[id(s)] = Pth(pathreq,p,s)
         simple_rqs[pathreq.request_id] = temp
         temp =[]
         for p in all_simp_pths_reversed :
@@ -201,34 +237,36 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     # for each set of requests that need to be disjoint
     # select the disjoint path combination
 
+
     candidates = {}
     for d in disjunctions_list :
         print(d)
         dlist = d.disjunctions_req.copy()
         # each line of dpath is one combination of path that satisfies disjunction
         dpath = []
-        for p in simple_rqs[dlist[0]]:
+        for i,p in enumerate(simple_rqs[dlist[0]]):
             dpath.append([p])
+            allpaths[id(p)].d_id = d.disjunction_id
         # in each loop, dpath is updated with a path for rq that satisfies 
         # disjunction with each path in dpath
-        # for example, assume set of disjunction_list is  {rq1,rq2, rq3}
-        # rq1  p1: abcg
+        # for example, assume set of requests in the vector (disjunction_list) is  {rq1,rq2, rq3}
+        # rq1  p1: abfhg
         #      p2: aefhg
-        #      p3: abfhg
+        #      p3: abcg
         # rq2  p8: bf
-        # rq2  p4: abcgh
+        # rq3  p4: abcgh
         #      p6: aefh
         #      p7: abfh
         # initiate with rq1
-        #  dpath = [p1
-        #           p2
-        #           p3]
+        #  dpath = [[p1]
+        #           [p2]
+        #           [p3]]
         #  after first loop:
-        #  dpath = [p1 p8
-        #           p3 p8]
+        #  dpath = [[p1 p8]
+        #           [p3 p8]]
         #  since p2 and p8 are not disjoint
         #  after second loop:
-        #  dpath = [ p1 P8 p6 ]
+        #  dpath = [ p3 p8 p6 ]
         #  since p1 and p4 are not disjoint 
         #        p1 and p7 are not disjoint
         #        p3 and p4 are not disjoint
@@ -237,28 +275,93 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
         for e1 in dlist[1:] :
             temp = []
             for j,p1 in enumerate(simple_rqs[e1]):
+                allpaths[id(p1)].d_id = d.disjunction_id
                 # can use index j in simple_rqs_reversed because index 
                 # of direct and reversed paths have been kept identical
                 p1_reversed = simple_rqs_reversed[e1][j]
                 # print(p1_reversed)
                 # print('\n\n')
-                for c in dpath :
+                for k,c in enumerate(dpath) :
                     # print(f' c: \t{c}')
                     temp2 = c.copy()
+                    all_disjoint = 0
                     for p in c :
-                        if isdisjoint(p1,p)+ isdisjoint(p1_reversed,p)==0 :
-                            temp2.append(p1)
-                            temp.append(temp2)
+                        all_disjoint += isdisjoint(p1,p)+ isdisjoint(p1_reversed,p)
+                    if all_disjoint ==0:
+                        temp2.append(p1)
+                        temp.append(temp2)
                             # print(f' coucou {e1}: \t{temp}')
             dpath = temp
-            # print(f' coucou : \t{temp}')
         # print(dpath)
         candidates[d.disjunction_id] = dpath
-    print( candidates)
 
+    # for i in disjunctions_list  :
+    #     print(f'\n{candidates[i.disjunction_id]}')
+
+    # step 3
     # now for each request, select the path that satisfies all disjunctions
     # path must be in candidates[id] for all concerned ids
+    # for example, assume set of sync vectors (disjunction groups) is
+    #   s1 = {rq1 rq2}   s2 = {rq1 rq3}
+    #   candidate[s1] = [[p1 p8]
+    #                    [p3 p8]]
+    #   candidate[s2] = [[p3 p6]]
+    #   for rq1 p3 should be preferred
 
+
+    for pathreq in pathreqlist_disjt:
+        concerned_d_id = [d.disjunction_id for d in disjunctions_list if pathreq.request_id in d.disjunctions_req]
+        # for each set of solution, verify that the same path is used
+        candidate_paths = simple_rqs[pathreq.request_id]
+        for p in candidate_paths :
+            iscandidate = 0
+            for sol in concerned_d_id :
+                test = 1
+                # for each solution test if p is part of the solution
+                # if yes, then p can remain a candidate
+                for m in candidates[sol] :
+                    if p in m:
+                        test = 0
+                        break
+                iscandidate += test
+            if iscandidate != 0:
+                for l in concerned_d_id :
+                    for m in candidates[l] :
+                        if p in m :
+                            candidates[l].remove(m)
+
+    # for i in disjunctions_list  :
+    #     print(f'\n{candidates[i.disjunction_id]}')
+
+    # step 3 select the first combination that works
+    pathreslist_disjoint = {}
+    for d in disjunctions_list  :
+        sol = next(s for s in candidates[d.disjunction_id])
+        # print(f'\n\n\n{sol}')
+        if sol :
+            for p in sol:
+                print(id(p))
+                if allpaths[id(p)].req in pathreqlist_disjt: 
+                    pathreslist_disjoint[allpaths[id(p)].req] = allpaths[id(p)].pth
+                    pathreqlist_disjt.remove(allpaths[id(p)].req)
+        else:
+            msg = f'No disjoint path found'
+            print(msg)
+    for req in pathreqlist :
+        if req in pathreqlist_simple:
+            # path_res_list.append([e.uid for e in compute_constrained_path(network, req)
+            #    if isinstance(e,Roadm) ])
+            print('cucou')
+            req.nodes_list.append(req.destination)
+            #we assume that the destination is a strict constraint
+            req.loose_list.append('strict')
+            path_res_list.append(compute_constrained_path(network, req))
+            print([e.uid for e in compute_constrained_path(network, req)])
+        else:
+            print("---")
+            path_res_list.append(pathreslist_disjoint[req])
+            print([e.uid for e in pathreslist_disjoint[req]])
+    return path_res_list
 
 def isdisjoint(p1,p2) :
     # returns 0 if disjoint
@@ -298,12 +401,24 @@ if __name__ == '__main__':
     equipment = load_equipment(args.eqpt_filename)
     network = load_network(args.network_filename,equipment)
 
+    # Build the network once using the default power defined in SI in eqpt config
+    # power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
+    # spacing, f_min and f_max 
+    p_db = equipment['SI']['default'].power_dbm
+    
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
+        equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    build_network(network, equipment, p_db, p_total_db)
+
     rqs = requests_from_json(data, equipment)
     print('The following services have been requested:')
     print(rqs)
-    pths = compute_path(network, equipment, rqs)
+    # pths = compute_path(network, equipment, rqs)
     dsjn = disjunctions_from_json(data)
     toto = compute_path_dsjctn(network, equipment, rqs,dsjn)
+    pths = compute_path_2(network, equipment, rqs, toto)
+    print('toto')
+    #print(toto)
     
     #TODO write results
 
