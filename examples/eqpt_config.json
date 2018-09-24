@@ -1,5 +1,5 @@
 {     "Edfa":[{
-            "type_variety": "CienaDB_medium_gain",
+            "type_variety": "high_detail_model_example",
             "gain_flatmax": 25,
             "gain_min": 15,
             "p_max": 21,
@@ -8,11 +8,22 @@
             "allowed_for_design": false
             },
             {
+            "type_variety": "operator_model_example",
+            "type_def": "variable_gain",
+            "gain_flatmax": 26,
+            "gain_min": 15,
+            "p_max": 23,
+            "nf_min": 6,
+            "nf_max": 10,
+            "out_voa_auto": false,
+            "allowed_for_design": false           
+            },
+            {
             "type_variety": "std_medium_gain",
             "type_def": "variable_gain",
             "gain_flatmax": 26,
             "gain_min": 15,
-            "p_max": 22,
+            "p_max": 23,
             "nf_min": 6,
             "nf_max": 10,
             "out_voa_auto": false,
@@ -23,7 +34,7 @@
             "type_def": "variable_gain",
             "gain_flatmax": 16,
             "gain_min": 8,
-            "p_max": 22,
+            "p_max": 23,
             "nf_min": 6.5,
             "nf_max": 11,
             "out_voa_auto": false,
@@ -32,7 +43,7 @@
             {
             "type_variety": "std_fixed_gain",
             "type_def": "fixed_gain",
-            "gain_flatmax": 20,
+            "gain_flatmax": 21,
             "gain_min": 20,
             "p_max": 21,
             "nf0": 5.5,
@@ -47,7 +58,7 @@
             "nf_min": 7,
             "nf_max": 11,
             "allowed_for_design": false
-            }            
+            }         
       ],
       "Fiber":[{
             "type_variety": "SSMF",
@@ -57,7 +68,7 @@
       ],
       "Spans":[{
             "power_mode":true,
-            "delta_power_range_db": [-3,3,1],
+            "delta_power_range_db": [0,0,0.5],
             "max_length": 150,
             "length_units": "km",
             "max_loss": 28,
@@ -73,11 +84,11 @@
             }],
       "SI":[{
             "f_min": 191.3e12,
-            "f_max":195.1e12,
             "baud_rate": 32e9,
+            "f_max":195.1e12,
             "spacing": 50e9,
             "power_dbm": 0,
-            "power_range_db": [0,0,1],
+            "power_range_db": [0,0,0.5],
             "roll_off": 0.15,
             "OSNR": 11,
             "bit_rate":100e9
@@ -91,6 +102,7 @@
                         },
             "mode":[
                        {
+
                        "format": "mode 1",
                        "baud_rate": 32e9,
                        "OSNR": 11,
@@ -112,7 +124,7 @@
                        "roll_off": 0.15
                        },
                        {
-                       "format": "PS_SP64_2",
+                       "format": "mode_2",
                        "baud_rate": 66e9,
                        "OSNR": 15,
                        "bit_rate": 200e9,

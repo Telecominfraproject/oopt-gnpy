@@ -12,6 +12,7 @@ This module contains utility functions that are used with gnpy.
 import json
 
 import numpy as np
+from csv import writer
 from numpy import pi, cos, sqrt, log10
 from scipy import constants
 
@@ -24,8 +25,46 @@ def load_json(filename):
 
 def save_json(obj, filename):
     with open(filename, 'w') as f:
-        json.dump(obj, f)
+        json.dump(obj, f, indent=2)
 
+def write_csv(obj, filename):
+    """
+    convert dictionary items to a csv file
+    the dictionary format :
+
+    {'result category 1':
+                        [
+                        # 1st line of results
+                        {'header 1' : value_xxx,
+                         'header 2' : value_yyy},
+                         # 2nd line of results: same headers, different results
+                        {'header 1' : value_www,
+                         'header 2' : value_zzz}
+                        ],
+    'result_category 2':
+                        [
+                        {},{}
+                        ]
+    }
+
+    the generated csv file will be:
+    result_category 1
+    header 1    header 2
+    value_xxx   value_yyy
+    value_www   value_zzz
+    result_category 2
+    ...
+    """
+    with open(filename, 'w') as f:
+        w = writer(f)
+        for data_key, data_list in obj.items():
+            #main header
+            w.writerow([data_key])
+            #sub headers:
+            headers = [_ for _ in data_list[0].keys()]            
+            w.writerow(headers)
+            for data_dict in data_list:
+                w.writerow([_ for _ in data_dict.values()])     
 
 def c():
     """

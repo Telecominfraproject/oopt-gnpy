@@ -21,11 +21,11 @@ from uuid import uuid4
 from collections import namedtuple
 
 class Location(namedtuple('Location', 'latitude longitude city region')):
-    def __new__(cls, latitude, longitude, city=None, region=None):
+    def __new__(cls, latitude=0, longitude=0, city=None, region=None):
         return super().__new__(cls, latitude, longitude, city, region)
 
 class Node:
-    def __init__(self, uid, name=None, params=None, metadata=None, operational=None):
+    def __init__(self, uid, name=None, params=None, metadata={'location':{}}, operational=None):
         if name is None:
             name = uid
         self.uid, self.name = uid, name

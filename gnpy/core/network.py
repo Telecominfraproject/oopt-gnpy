@@ -11,14 +11,13 @@ from gnpy.core.convert import convert_file
 from networkx import DiGraph
 from numpy import arange
 from logging import getLogger
+from os import path
 from operator import itemgetter
 from gnpy.core import elements
 from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm, Fused
 from gnpy.core.equipment import edfa_nf
 from gnpy.core.units import UNITS
-from gnpy.core.utils import load_json
-from gnpy.core.utils import round2float
-from gnpy.core.utils import db2lin, lin2db
+from gnpy.core.utils import load_json, save_json, round2float, db2lin, lin2db
 from sys import exit
 from collections import namedtuple
 
@@ -35,6 +34,11 @@ def load_network(filename, equipment):
         raise ValueError(f'unsuported topology filename extension {filename.suffix.lower()}')
     json_data = load_json(json_filename)
     return network_from_json(json_data, equipment)
+
+def save_network(filename, network):
+    filename_output = path.splitext(filename)[0] + '_auto_design.json'
+    json_data = network_to_json(network)
+    save_json(json_data, filename_output)
 
 def network_from_json(json_data, equipment):
     # NOTE|dutc: we could use the following, but it would tie our data format
@@ -62,6 +66,19 @@ def network_from_json(json_data, equipment):
         g.add_edge(nodes[from_node], nodes[to_node])
 
     return g
+
+def network_to_json(network):
+    data = {
+        'elements': [n.to_json for n in network]
+        }
+    connections = {
+        'connections': [{"from_node": n.uid,
+                         "to_node": next_n.uid}
+                        for n in network
+                        for next_n in network.successors(n) if next_n is not None]
+        }
+    data.update(connections)
+    return data
 
 def select_edfa(gain_target, power_target, equipment):
     """amplifer selection algorithm
@@ -121,23 +138,32 @@ def set_roadm_loss(network, equipment, pref_ch_db):
         elif roadm.loss == None:
             roadm.loss = default_roadm_loss
 
-def target_power(network, node, equipment): #get_fiber_dp
+def target_power(dp_from_gain, network, node, equipment): #get_fiber_dp
     SPAN_LOSS_REF = 20
     POWER_SLOPE = 0.3
     power_mode = equipment['Spans']['default'].power_mode
     dp_range = list(equipment['Spans']['default'].delta_power_range_db)
     node_loss = span_loss(network, node)
+
+    dp_gain_mode = 0
     try:
-        dp = round2float((node_loss - SPAN_LOSS_REF) * POWER_SLOPE, dp_range[2])
-        dp = max(dp_range[0], dp)
-        dp = min(dp_range[1], dp)
+        dp_power_mode = round2float((node_loss - SPAN_LOSS_REF) * POWER_SLOPE, dp_range[2])
+        dp_power_mode = max(dp_range[0], dp_power_mode)
+        dp_power_mode = min(dp_range[1], dp_power_mode)
     except KeyError:
         print(f'invalid delta_power_range_db definition in eqpt_config[Spans]'
               f'delta_power_range_db: [lower_bound, upper_bound, step]')
         exit()
-    if isinstance(node, Roadm) or not power_mode:
-        dp = 0
-    # print(f'{repr(node)} delta power in:\n{dp}dB')
+
+    if dp_from_gain:
+        dp_power_mode = dp_from_gain
+        dp_gain_mode = dp_from_gain
+    if isinstance(node, Roadm):
+        dp_power_mode = 0
+
+    dp = dp_power_mode if power_mode else dp_gain_mode
+    #print(f'{repr(node)} delta power in:\n{dp}dB')
+
     return dp
     
 
@@ -232,15 +258,15 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
         #go through all nodes in the OMS (loop until next Roadm instance)
             if isinstance(node, Edfa):
                 node_loss = span_loss(network, prev_node)
-                dp = target_power(network, next_node, equipment)
-                if node.operational.gain_target > 0:
-                    gain_target = node.operational.gain_target
-                    dp = prev_dp + gain_target - node_loss
-                else :
-                    gain_target = node_loss + dp - prev_dp
+                dp_from_gain = prev_dp + node.operational.gain_target - node_loss \
+                    if node.operational.gain_target > 0 else None
+                dp = target_power(dp_from_gain, network, next_node, equipment)
+                gain_target = node_loss + dp - prev_dp
+
                 if power_mode:
                     node.dp_db = dp
                 node.operational.gain_target = gain_target
+
                 if node.params.type_variety == '':
                     power_target = pref_total_db + dp
                     edfa_variety = select_edfa(gain_target, power_target, equipment)
@@ -331,10 +357,13 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
         prev_node = new_span
     network.add_edge(prev_node, next_node)
 
-def add_connector_loss(fibers, con_in, con_out):
+def add_connector_loss(fibers, con_in, con_out, EOL):
     for fiber in fibers:
         if fiber.con_in is None: fiber.con_in = con_in
-        if fiber.con_out is None: fiber.con_out = con_out
+        if fiber.con_out is None:
+            fiber.con_out = con_out #con_out includes EOL
+        else:
+            fiber.con_out = fiber.con_out+EOL
 
 def add_fiber_padding(network, fibers, padding):
     """last_fibers = (fiber for n in network.nodes()
@@ -342,13 +371,16 @@ def add_fiber_padding(network, fibers, padding):
                          for fiber in network.predecessors(n)
                          if isinstance(fiber, Fiber))"""
     for fiber in fibers:
-        fiber_loss = span_loss(network, fiber)
+        this_span_loss = span_loss(network, fiber)
         next_node = next(network.successors(fiber))
-        if fiber_loss < padding and not (isinstance(next_node, Fused)):
+        if this_span_loss < padding and not (isinstance(next_node, Fused)):
             #add a padding att_in at the input of the 1st fiber:
             #address the case when several fibers are spliced together
             first_fiber = find_first_node(network, fiber)
-            first_fiber.att_in = padding - fiber_loss
+            if first_fiber.att_in is None:
+                first_fiber.att_in = padding - this_span_loss
+            else :
+                first_fiber.att_in = first_fiber.att_in + padding - this_span_loss
 
 def build_network(network, equipment, pref_ch_db, pref_total_db):
     default_span_data = equipment['Spans']['default']
@@ -363,7 +395,7 @@ def build_network(network, equipment, pref_ch_db, pref_total_db):
     #set raodm loss for gain_mode before to build network
     set_roadm_loss(network, equipment, pref_ch_db) 
     fibers = [f for f in network.nodes() if isinstance(f, Fiber)]
-    add_connector_loss(fibers, con_in, con_out)
+    add_connector_loss(fibers, con_in, con_out, default_span_data.EOL)
     add_fiber_padding(network, fibers, padding)
     # don't group split fiber and add amp in the same loop 
     # =>for code clarity (at the expense of speed):

@@ -6,18 +6,18 @@ propagates a 96 channels comb
 '''
 
 from gnpy.core.equipment import load_equipment, trx_mode_params
-from gnpy.core.utils import db2lin, lin2db
+from gnpy.core.utils import db2lin, lin2db, write_csv
 from argparse import ArgumentParser
 from sys import exit
 from pathlib import Path
 from json import loads
 from collections import Counter
 from logging import getLogger, basicConfig, INFO, ERROR, DEBUG
-from numpy import arange
+from numpy import arange, mean
 from matplotlib.pyplot import show, axis, figure, title
 from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels, dijkstra_path)
-from gnpy.core.network import load_network, build_network
+from gnpy.core.network import load_network, build_network, save_network
 from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
 from gnpy.core.request import Path_request, RequestParams, compute_constrained_path, propagate
@@ -49,6 +49,23 @@ def plot_results(network, path, source, destination):
 
 
 def main(network, equipment, source, destination, req = None):
+    result_dicts = {}
+    network_data = [{
+                    'network_name'  : str(args.filename),
+                    'source'        : source.uid,
+                    'destination'   : destination.uid
+                    }]
+    result_dicts.update({'network': network_data})
+    design_data = [{
+                    'power_mode'        : equipment['Spans']['default'].power_mode,
+                    'span_power_range'  : equipment['Spans']['default'].delta_power_range_db,
+                    'design_pch'        : equipment['SI']['default'].power_dbm,
+                    'baud_rate'         : equipment['SI']['default'].baud_rate
+                    }]
+    result_dicts.update({'design': design_data})
+    simulation_data = []
+    result_dicts.update({'simulation results': simulation_data})
+
     power_mode = equipment['Spans']['default'].power_mode
     print('\n'.join([f'Power mode is set to {power_mode}',
                      f'=> it can be modified in eqpt_config.json - Spans']))    
@@ -69,7 +86,6 @@ def main(network, equipment, source, destination, req = None):
             power_range = [0] #better than an error message
         else:
             power_range.append(last)
-        print(power_range)
     except TypeError:
         print('invalid power range definition in eqpt_config, should be power_range_db: [lower, upper, step]')
         power_range = [0]
@@ -80,6 +96,14 @@ def main(network, equipment, source, destination, req = None):
         propagate(path, req, equipment, show=len(power_range)==1)
         print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f}dBm :')        
         print(destination)
+        simulation_data.append({
+                    'Pch_dBm'               : pref_ch_db + dp_db,
+                    'OSNR_ASE_0.1nm'        : round(mean(destination.osnr_ase_01nm),2),
+                    'OSNR_ASE_signal_bw'    : round(mean(destination.osnr_ase),2),
+                    'SNR_nli_signal_bw'     : round(mean(destination.osnr_nli),2),
+                    'SNR_total_signal_bw'   : round(mean(destination.snr),2)
+                            })
+    write_csv(result_dicts, 'simulation_result.csv')
     return path
 
 
@@ -170,6 +194,7 @@ if __name__ == '__main__':
     params.update(trx_params)
     req = Path_request(**params)
     path = main(network, equipment, source, destination, req)
+    save_network(args.filename, network)
 
     if args.plot:
         plot_results(network, path, source, destination)
