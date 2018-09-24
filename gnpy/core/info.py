@@ -9,7 +9,10 @@ This module contains classes for modelling SpectralInformation.
 
 
 from collections import namedtuple
-
+from numpy import array
+from gnpy.core.utils import lin2db
+from json import loads
+from gnpy.core.utils import load_json
 
 class ConvenienceAccess:
 
@@ -22,6 +25,10 @@ class ConvenienceAccess:
             if abbrev in kwargs:
                 kwargs[field] = kwargs.pop(abbrev)
         return self._replace(**kwargs)
+        
+    #def ptot_dbm(self):
+    #    p = array([c.power.signal+c.power.nli+c.power.ase for c in self.carriers])
+    #    return lin2db(sum(p*1e3))
 
 
 class Power(namedtuple('Power', 'signal nonlinear_interference amplified_spontaneous_emission'), ConvenienceAccess):
@@ -37,11 +44,30 @@ class Channel(namedtuple('Channel', 'channel_number frequency baud_rate roll_off
                 'ffs':      'frequency',
                 'freq':     'frequency',}
 
+class Pref(namedtuple('Pref', 'p_span0, p_spani'), ConvenienceAccess):
 
-class SpectralInformation(namedtuple('SpectralInformation', 'carriers'), ConvenienceAccess):
+    _ABBREVS = {'p0' :  'p_span0',
+                'pi' :  'p_spani'}
 
-    def __new__(cls, *carriers):
-        return super().__new__(cls, carriers)
+class SpectralInformation(namedtuple('SpectralInformation', 'pref, carriers'), ConvenienceAccess):
+
+    def __new__(cls, pref=Pref(0, 0), *carriers):
+        return super().__new__(cls, pref, carriers)
+
+def merge_input_spectral_information(*si):
+    """mix channel combs of different baud rates and power"""
+    #TODO
+    pass
+
+def create_input_spectral_information(f_min, roll_off, baud_rate, power, spacing, nb_channel):
+    # pref in dB : convert power lin into power in dB
+    pref = lin2db(power * 1e3)
+    si = SpectralInformation(pref=Pref(pref, pref))
+    si = si.update(carriers=[
+            Channel(f, (f_min+spacing*f), 
+            baud_rate, roll_off, Power(power, 0, 0)) for f in range(1,nb_channel+1)
+            ])
+    return si
 
 
 if __name__ == '__main__':

@@ -1,0 +1,196 @@
+{
+  "elements": [
+    {
+      "uid": "trx Site_A",
+      "metadata": {
+        "location": {
+          "city": "Site_A",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx Site_C",
+      "metadata": {
+        "location": {
+          "city": "Site_C",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "roadm Site_A",
+      "metadata": {
+        "location": {
+          "city": "Site_A",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Roadm",
+      "params": {
+        "loss": 17
+      }
+    },
+    {
+      "uid": "roadm Site_C",
+      "metadata": {
+        "location": {
+          "city": "Site_C",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "ingress fused spans in Site_B",
+      "metadata": {
+        "location": {
+          "city": "Site_B",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Fused",
+      "params": {
+        "loss": 0.5
+      }
+    },
+    {
+      "uid": "egress fused spans in Site_B",
+      "metadata": {
+        "location": {
+          "city": "Site_B",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Fused"
+    },
+    {
+      "uid": "fiber (Site_A \u2192 Site_B)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 40.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    },
+    {
+      "uid": "fiber (Site_B \u2192 Site_C)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    },
+    {
+      "uid": "fiber (Site_B \u2192 Site_A)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 40.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    },
+    {
+      "uid": "fiber (Site_C \u2192 Site_B)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50.0,
+        "length_units": "km",
+        "loss_coef": 0.2
+      }
+    }
+  ],
+  "connections": [
+    {
+      "from_node": "roadm Site_A",
+      "to_node": "fiber (Site_A \u2192 Site_B)-"
+    },
+    {
+      "from_node": "fiber (Site_B \u2192 Site_A)-",
+      "to_node": "roadm Site_A"
+    },
+    {
+      "from_node": "fiber (Site_A \u2192 Site_B)-",
+      "to_node": "ingress fused spans in Site_B"
+    },
+    {
+      "from_node": "ingress fused spans in Site_B",
+      "to_node": "fiber (Site_B \u2192 Site_C)-"
+    },
+    {
+      "from_node": "fiber (Site_C \u2192 Site_B)-",
+      "to_node": "egress fused spans in Site_B"
+    },
+    {
+      "from_node": "egress fused spans in Site_B",
+      "to_node": "fiber (Site_B \u2192 Site_A)-"
+    },
+    {
+      "from_node": "roadm Site_C",
+      "to_node": "fiber (Site_C \u2192 Site_B)-"
+    },
+    {
+      "from_node": "fiber (Site_B \u2192 Site_C)-",
+      "to_node": "roadm Site_C"
+    },
+    {
+      "from_node": "trx Site_A",
+      "to_node": "roadm Site_A"
+    },
+    {
+      "from_node": "roadm Site_A",
+      "to_node": "trx Site_A"
+    },
+    {
+      "from_node": "trx Site_C",
+      "to_node": "roadm Site_C"
+    },
+    {
+      "from_node": "roadm Site_C",
+      "to_node": "trx Site_C"
+    }
+  ]
+}
