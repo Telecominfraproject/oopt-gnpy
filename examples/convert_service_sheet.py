@@ -53,7 +53,16 @@ class Element:
 
 class Request_element(Element):
     def __init__(self,Request,eqpt_filename):
-        self.request_id = int(Request.request_id)
+        # request_id is str
+        # excel has automatic number formatting that adds .0 on integer values 
+        # the next lines recover the pure int value, assuming this .0 is unwanted
+        if not isinstance(Request.request_id,str):
+            value = str(int(Request.request_id))
+            if value.endswith('.0'):
+                value = value[:-2]
+            self.request_id = value
+        else:
+            self.request_id = Request.request_id
         self.source = Request.source
         self.destination = Request.destination
         self.srctpid = f'trx {Request.source}'
@@ -61,21 +70,27 @@ class Request_element(Element):
         # test that trx_type belongs to eqpt_config.json
         # if not replace it with a default 
         equipment = load_equipment(eqpt_filename)
-        if equipment['Transceiver'][Request.trx_type]:
-            self.trx_type = Request.trx_type
-            self.mode = Request.mode
-        else:
-            #TODO : this case must raise an error instead of using Voyager
-            self.trx_type = 'Voyager_16QAM'
-            print(f'Transceiver type {Request.trx_type} is not defined in {eqpt_filename}')
-            print('replaced by Voyager_16QAM')
+        try :
+            if equipment['Transceiver'][Request.trx_type]:
+                self.trx_type = Request.trx_type
+            if [mode for mode in equipment['Transceiver'][Request.trx_type].mode]:
+                self.mode = Request.mode
+        except KeyError:
+            msg = f'could not find tsp : {Request.trx_type} with mode: {Request.mode} in eqpt library \nComputation stopped.'
+            #print(msg)
+            logger.critical(msg)
+            exit()
+        # excel input are in GHz and dBm
         self.spacing = Request.spacing * 1e9
         self.power =  db2lin(Request.power) * 1e-3
         self.nb_channel = int(Request.nb_channel)
-        if isinstance(Request.disjoint_from,str):
-            self.disjoint_from = [int(n) for n in Request.disjoint_from.split()]
+        if not isinstance(Request.disjoint_from,str):
+            value = str(int(Request.disjoint_from))
+            if value.endswith('.0'):
+                value = value[:-2]
         else:
-            self.disjoint_from = [int(Request.disjoint_from)]
+            value = Request.disjoint_from
+        self.disjoint_from = [n for n in value.split()]
         self.nodes_list = []
         if Request.nodes_list :
             self.nodes_list = Request.nodes_list.split(' | ')
@@ -83,7 +98,7 @@ class Request_element(Element):
             self.nodes_list.remove(self.source)
             msg = f'{self.source} removed from explicit path node-list'
             logger.info(msg)
-            print(msg)
+            # print(msg)
         except ValueError:
             msg = f'{self.source} already removed from explicit path node-list'
             logger.info(msg)
@@ -92,7 +107,7 @@ class Request_element(Element):
             self.nodes_list.remove(self.destination)
             msg = f'{self.destination} removed from explicit path node-list'
             logger.info(msg)
-            print(msg)
+            # print(msg)
         except ValueError:
             msg = f'{self.destination} already removed from explicit path node-list'
             logger.info(msg)
