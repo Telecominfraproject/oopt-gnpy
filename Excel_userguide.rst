@@ -189,7 +189,7 @@ Service sheet must contain 11 columns::
 
    route id ; Source ; Destination ; TRX type ; Mode ; System: spacing ; System: input power (dBm) ; System: nb of channels ;  routing: disjoint from ; routing: path ; routing: is loose?
 
-- **route id** is mandatory. It must be unique. It is the identifier of the request. It must be an integer value (TODO: relax this format in future development to accept any strings)
+- **route id** is mandatory. It must be unique. It is the identifier of the request. It can be an integer or a string (do not  use blank or dash)
 
 - **Source** is mandatory. It is the name of the source node (as listed in Nodes sheet). Source MUST be a ROADM node. (TODO: relax this and accept trx entries)
 

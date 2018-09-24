@@ -137,7 +137,7 @@ def target_power(network, node, equipment): #get_fiber_dp
         exit()
     if isinstance(node, Roadm) or not power_mode:
         dp = 0
-    print(f'{repr(node)} delta power in:\n{dp}dB')
+    # print(f'{repr(node)} delta power in:\n{dp}dB')
     return dp
     
 
@@ -252,6 +252,7 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
             prev_dp = dp
             prev_node = node
             node = next_node
+            # print(f'{node.uid}')
             next_node = next(n for n in network.successors(node))
 
 

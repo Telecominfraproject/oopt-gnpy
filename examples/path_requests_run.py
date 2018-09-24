@@ -30,7 +30,7 @@ from gnpy.core.network import load_network, build_network, set_roadm_loss
 from gnpy.core.equipment import load_equipment, trx_mode_params
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
-from gnpy.core.request import Path_request, Result_element, compute_constrained_path, propagate
+from gnpy.core.request import Path_request, Result_element, compute_constrained_path, propagate, jsontocsv
 from copy import copy, deepcopy
 
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
@@ -97,14 +97,15 @@ def compute_path(network, equipment, pathreqlist):
         #we assume that the destination is a strict constraint
         pathreq.loose_list.append('strict')
         print(f'Computing path from {pathreq.source} to {pathreq.destination}')
-        print(f'with explicit path: {[pathreq.source]+pathreq.nodes_list}') #adding first node to be clearer on the output
+        print(f'with path constraint: {[pathreq.source]+pathreq.nodes_list}') #adding first node to be clearer on the output
         total_path = compute_constrained_path(network, pathreq)
-        
+        print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}\n')
         # for debug
         # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
-        
-        total_path = propagate(total_path,pathreq,equipment, show=False)
-
+        if total_path :
+            total_path = propagate(total_path,pathreq,equipment, show=False)
+        else:
+            total_path = []
         # we record the last tranceiver object in order to have th whole 
         # information about spectrum. Important Note: since transceivers 
         # attached to roadms are actually logical elements to simulate
@@ -136,16 +137,32 @@ if __name__ == '__main__':
     print(pths)
     test = compute_path(network, equipment, pths)
     
-    if args.output is None:
-        #TODO write results
-        print("demand\t\t\t\tsnr@bandwidth\tsnr@0.1nm")
-        
-        for i, p in enumerate(test):
-            print(f'{pths[i].source} to {pths[i].destination} : {round(mean(p[-1].snr),2)} ,\
-                {round(mean(p[-1].snr+lin2db(pths[i].baud_rate/(12.5e9))),2)}')
-    else:
+    #TODO write results
+
+    header = ['demand','snr@bandwidth','snr@0.1nm','Receiver minOSNR']
+    data = []
+    data.append(header)
+    for i, p in enumerate(test):
+        if p:
+            line = [f'{pths[i].source} to {pths[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
+                f'{round(mean(p[-1].snr+lin2db(pths[i].baud_rate/(12.5e9))),2)}',\
+                f'{pths[i].OSNR}']
+        else:
+            line = [f'no path from {pths[i].source} to {pths[i].destination} ']
+        data.append(line)
+
+    col_width = max(len(word) for row in data for word in row)   # padding
+    for row in data:
+        print(''.join(word.ljust(col_width) for word in row))
+
+
+
+    if args.output :
         result = []
         for p in test:
             result.append(Result_element(pths[test.index(p)],p))
         with open(args.output, 'w') as f:
             f.write(dumps(path_result_json(result), indent=2))
+            fnamecsv = next(s for s in args.output.split('.')) + '.csv'
+            with open(fnamecsv,"w") as fcsv :
+                jsontocsv(path_result_json(result),equipment,fcsv)

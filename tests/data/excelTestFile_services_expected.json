@@ -1,7 +1,7 @@
 {
   "path-request": [
     {
-      "request-id": 0,
+      "request-id": "0",
       "source": "BREST_KLA",
       "destination": "Vannes_KBE",
       "src-tp-id": "trx BREST_KLA",
@@ -27,7 +27,7 @@
       }
     },
     {
-      "request-id": 1,
+      "request-id": "1",
       "source": "Lorient_KMA",
       "destination": "Vannes_KBE",
       "src-tp-id": "trx Lorient_KMA",
@@ -55,26 +55,26 @@
   ],
   "synchronisation": [
     {
-      "synchonization-id": 0,
+      "synchonization-id": "0",
       "svec": {
         "relaxable": "False",
         "link-diverse": "True",
         "node-diverse": "True",
         "request-id-number": [
-          0,
-          1
+          "0",
+          "1"
         ]
       }
     },
     {
-      "synchonization-id": 1,
+      "synchonization-id": "1",
       "svec": {
         "relaxable": "False",
         "link-diverse": "True",
         "node-diverse": "True",
         "request-id-number": [
-          1,
-          0
+          "1",
+          "0"
         ]
       }
     }
