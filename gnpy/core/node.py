@@ -17,48 +17,21 @@ This base class provides a mode convenient way to define a network element
 via subclassing.
 '''
 
-
 from uuid import uuid4
-from gnpy.core.utils import load_json
-from gnpy.core.equipment import get_eqpt_params
+from collections import namedtuple
 
-
-class ConfigStruct:
-
-    def __init__(self, **config):
-        if config is None:
-            return None
-        if 'type_variety' in config:
-            #print('avant',config['type_variety'], config)
-            config['params'] = {**config.get('params',{}),
-                                **get_eqpt_params(config['type_variety'])}
-            #print('apres', config)
-
-        self.set_config_attr(config)
-
-    def set_config_attr(self, config):
-        for k, v in config.items():
-            setattr(self, k, ConfigStruct(**v)
-                    if isinstance(v, dict) else v)
-
-    def __repr__(self):
-        return f'{self.__dict__}'
-
+class Location(namedtuple('Location', 'latitude longitude city region')):
+    def __new__(cls, latitude=0, longitude=0, city=None, region=None):
+        return super().__new__(cls, latitude, longitude, city, region)
 
 class Node:
-
-    def __init__(self, config=None):
-        self.config = ConfigStruct(**config)
-        if self.config is None or not hasattr(self.config, 'uid'):
-            self.uid = uuid4()
-        else:
-            self.uid = self.config.uid
-        if hasattr(self.config, 'params'):
-            self.params = self.config.params
-        if hasattr(self.config, 'metadata'):
-            self.metadata = self.config.metadata
-        if hasattr(self.config, 'operational'):
-            self.operational = self.config.operational
+    def __init__(self, uid, name=None, params=None, metadata={'location':{}}, operational=None):
+        if name is None:
+            name = uid
+        self.uid, self.name = uid, name
+        if metadata and not isinstance(metadata.get('location'), Location):
+            metadata['location'] = Location(**metadata.pop('location', {}))
+        self.params, self.metadata, self.operational = params, metadata, operational
 
     @property
     def coords(self):
@@ -66,16 +39,15 @@ class Node:
 
     @property
     def location(self):
-        return self.config.metadata.location
+        return self.metadata['location']
+    loc = location
 
     @property
-    def loc(self):  # Aliases .location
-        return self.location
+    def longitude(self):
+        return self.location.longitude
+    lng = longitude
 
     @property
-    def lng(self):
-        return self.config.metadata.location.longitude
-
-    @property
-    def lat(self):
-        return self.config.metadata.location.latitude
+    def latitude(self):
+        return self.location.latitude
+    lat = latitude

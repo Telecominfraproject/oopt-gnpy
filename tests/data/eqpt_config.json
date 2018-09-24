@@ -1,0 +1,124 @@
+{     "Edfa":[{
+            "type_variety": "CienaDB_medium_gain",
+            "gain_flatmax": 25,
+            "gain_min": 15,
+            "p_max": 21,
+            "advanced_config_from_json": "std_medium_gain_advanced_config.json",
+            "allowed_for_design": true
+            },
+            {
+            "type_variety": "std_medium_gain",
+            "type_def": "variable_gain",            
+            "gain_flatmax": 26,
+            "gain_min": 15,
+            "p_max": 21,
+            "nf_min": 6,
+            "nf_max": 10,
+            "allowed_for_design": true
+            },
+            {
+            "type_variety": "std_low_gain",
+            "type_def": "variable_gain",            
+            "gain_flatmax": 16,
+            "gain_min": 8,
+            "p_max": 21,
+            "nf_min": 7,
+            "nf_max": 11,
+            "allowed_for_design": true
+            },
+            {
+            "type_variety": "test",
+            "type_def": "variable_gain",
+            "gain_flatmax": 25,
+            "gain_min": 15,
+            "p_max": 21,
+            "nf_min": 5.8,
+            "nf_max": 10,
+            "allowed_for_design": true
+            },
+            {
+            "type_variety": "test_fixed_gain",
+            "type_def": "fixed_gain",
+            "gain_flatmax": 21,
+            "gain_min": 20,
+            "p_max": 21,
+            "nf0": 5,
+            "allowed_for_design": true
+            }
+      ],
+      "Fiber":[{
+            "type_variety": "SSMF",
+            "dispersion": 1.67e-05,
+            "gamma": 0.00127
+            }
+      ],
+      "Spans":[{
+            "power_mode": true,
+            "delta_power_range_db": [0,0,1],
+            "max_length": 150,
+            "length_units": "km",
+            "max_loss": 28,
+            "padding": 10,
+            "EOL": 0,
+            "con_in": 0,
+            "con_out": 0
+            }
+      ],
+      "Roadms":[{
+            "gain_mode_default_loss": 20,
+            "power_mode_pref": -20
+            }],
+      "SI":[{
+            "f_min": 191.3e12,
+            "f_max":196.1e12,
+            "baud_rate": 32e9,
+            "spacing": 50e9,
+            "power_dbm": 0,
+            "power_range_db": [0,0.5,0.5],
+            "roll_off": 0.15,
+            "OSNR": 15,
+            "bit_rate":100e9
+            }],
+      "Transceiver":[
+            {
+            "type_variety": "vendorA_trx-type1",
+            "frequency":{
+                        "min": 191.35e12,
+                        "max": 196.1e12
+                        },
+            "mode":[
+                       {
+                       "format": "PS_SP64_1",
+                       "baud_rate": 32e9,
+                       "OSNR": 11,
+                       "bit_rate": 100e9,
+                       "roll_off": 0.15
+                       },
+                       {
+                       "format": "PS_SP64_2",
+                       "baud_rate": 64e9,
+                       "OSNR": 15,
+                       "bit_rate": 200e9,
+                       "roll_off": 0.15
+                       }
+                   ]
+            },
+            {
+            "type_variety": "Voyager_16QAM",
+            "frequency":{
+                        "min": 191.35e12,
+                        "max": 196.1e12
+                        },
+            "mode":[
+                       {
+                       "format": "16QAM",
+                       "baud_rate": 32e9,
+                       "OSNR": 19,
+                       "bit_rate": 200e9,
+                       "roll_off": 0.15
+                       }
+                   ]
+            }
+      ]
+
+}
