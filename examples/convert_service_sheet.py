@@ -72,25 +72,16 @@ class Request_element(Element):
         self.nodes_list = []
         if Request.nodes_list :
             self.nodes_list = Request.nodes_list.split(' | ')
-        try : 
-            self.nodes_list.remove(self.source)
-            msg = f'{self.source} removed from explicit path node-list'
-            logger.info(msg)
-            # print(msg)
-        except ValueError:
-            msg = f'{self.source} already removed from explicit path node-list'
-            logger.info(msg)
-            # print(msg)
-        try : 
-            self.nodes_list.remove(self.destination)
-            msg = f'{self.destination} removed from explicit path node-list'
-            logger.info(msg)
-            # print(msg)
-        except ValueError:
-            msg = f'{self.destination} already removed from explicit path node-list'
-            logger.info(msg)
-            # print(msg)
-            
+        toberemoved = [self.source, self.destination, self.srctpid, self.dsttpid]
+        for n in toberemoved:
+            try : 
+                self.nodes_list.remove(n)
+                msg = f'{n} removed from explicit path node-list'
+                logger.info(msg)
+                # print(msg)
+            except ValueError:
+                pass
+                # print(msg)            
         self.loose = 'loose'
         if Request.is_loose == 'no' :
             self.loose = 'strict' 
