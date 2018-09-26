@@ -240,12 +240,11 @@ def compute_constrained_path(network, req):
     # avoid crashing if on req is not correct
     total_path = [source]
     for n in req.nodes_list:
-        # print(n)
         try :
             node = next(el for el in trx if el.uid == n)
         except StopIteration:
             try:
-                node = next(el for el in roadm if el.uid == f'roadm {n}')
+                node = next(el for el in roadm if el.uid == n)
             except StopIteration:
                 try:
                     # TODO this test is not giving good results: full name of the 
@@ -262,16 +261,12 @@ def compute_constrained_path(network, req):
             total_path.extend(dijkstra_path(network, source, node)[1:])
             source = node
         except NetworkXNoPath:
-            # for debug
-            # print(req.loose_list)
-            # print(req.nodes_list.index(n))
             if req.loose_list[req.nodes_list.index(n)] == 'loose':
                 print(f'could not find a path from {source.uid} to loose node : {n} in network topology')
                 print(f'node  {n} is skipped')
             else:
                 msg = f'could not find a path from {source.uid} to node : {n} in network topology'
                 logger.critical(msg)
-                #raise ValueError(msg)
                 print(msg)
                 total_path = []
 
