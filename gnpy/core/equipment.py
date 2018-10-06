@@ -2,10 +2,12 @@
 # -*- coding: utf-8 -*-
 
 '''
-nf model parameters calculation
-calculate nf1, nf2 and Delta_P of a 2 coils edfa with internal VOA
-from nf_min and nf_max inputs
+gnpy.core.equipment
+===================
+
+This module contains functionality for specifying equipment.
 '''
+
 from numpy import clip, polyval
 from sys import exit
 from operator import itemgetter

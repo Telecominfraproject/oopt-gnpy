@@ -1,19 +1,25 @@
 #!/usr/bin/env python3
-"""
-@author: briantaylor
-@author: giladgoldfarb
-@author: jeanluc-auge
-xls to json parser, that can be called directly from the transmission_main_example
-xls examples are meshTopologyExampleV2.xls and CORONET_Global_Topology.xls
-Require Nodes and Links sheets, Eqpt sheet is optional
-*in Nodes sheet, only the 'City' column is mandatory. The column 'Type' is discovered based
-on the topology: degree 2 = ILA, other degrees = ROADM. The value is also corrected if the user
-specifies an ILA of degree != 2.
-*In Links sheet only the 3 first columns (Node A, Node Z and east Distance (km)) are mandatory.
-Missing west information are copied from east information so it is possible to input undir data
-*in Eqpt sheet
+# -*- coding: utf-8 -*-
 
 """
+gnpy.core.convert
+=================
+
+This module contains utilities for converting between XLS and JSON.
+
+The input XLS file must contain sheets named "Nodes" and "Links".
+It may optionally contain a sheet named "Eqpt".
+
+In the "Nodes" sheet, only the "City" column is mandatory. The column "Type"
+can be determined automatically given the topology (e.g., if degree 2, ILA;
+otherwise, ROADM.) Incorrectly specified types (e.g., ILA for node of
+degree ≠ 2) will be automatically corrected.
+
+In the "Links" sheet, only the first three columns ("Node A", "Node Z" and
+"east Distance (km)") are mandatory.  Missing "west" information is copied from
+the "east" information so that it is possible to input undirected data.
+"""
+
 from sys import exit
 try:
     from xlrd import open_workbook

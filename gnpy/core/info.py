@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 '''
 gnpy.core.info
@@ -26,10 +27,6 @@ class ConvenienceAccess:
                 kwargs[field] = kwargs.pop(abbrev)
         return self._replace(**kwargs)
 
-    #def ptot_dbm(self):
-    #    p = array([c.power.signal+c.power.nli+c.power.ase for c in self.carriers])
-    #    return lin2db(sum(p*1e3))
-
 
 class Power(namedtuple('Power', 'signal nonlinear_interference amplified_spontaneous_emission'), ConvenienceAccess):
 
@@ -49,7 +46,7 @@ class Pref(namedtuple('Pref', 'p_span0, p_spani'), ConvenienceAccess):
     _ABBREVS = {'p0' :  'p_span0',
                 'pi' :  'p_spani'}
 
-class SpectralInformation(namedtuple('SpectralInformation', 'pref, carriers'), ConvenienceAccess):
+class SpectralInformation(namedtuple('SpectralInformation', 'pref carriers'), ConvenienceAccess):
 
     def __new__(cls, pref=Pref(0, 0), *carriers):
         return super().__new__(cls, pref, carriers)
@@ -71,7 +68,9 @@ def create_input_spectral_information(f_min, roll_off, baud_rate, power, spacing
 
 
 if __name__ == '__main__':
+    pref = lin2db(power * 1e3)
     si = SpectralInformation(
+        Pref(pref, pref),
         Channel(1, 193.95e12, 32e9, 0.15,  # 193.95 THz, 32 Gbaud
             Power(1e-3, 1e-6, 1e-6)),             # 1 mW, 1uW, 1uW
         Channel(1, 195.95e12, 32e9, 0.15,  # 195.95 THz, 32 Gbaud
@@ -79,7 +78,7 @@ if __name__ == '__main__':
     )
 
     si = SpectralInformation()
-    spacing = 0.05 #THz
+    spacing = 0.05 # THz
 
     si = si.update(carriers=tuple(Channel(f+1, 191.3+spacing*(f+1), 32e9, 0.15, Power(1e-3, f, 1)) for f in range(96)))
 

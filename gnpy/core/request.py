@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-# TelecomInfraProject/gnpy/examples
-# Module name : path_requests_run.py
-# Version :
-# License : BSD 3-Clause Licence
-# Copyright (c) 2018, Telecom Infra Project
+# -*- coding: utf-8 -*-
 
 """
-@author: esther.lerouzic
-@author: jeanluc-auge
-read json request file in accordance with:
-    Yang model for requesting Path Computation
-    draft-ietf-teas-yang-path-computation-01.txt.
-and returns path results in terms of path and feasibility
+gnpy.core.request
+=================
 
+This module contains path request functionality.
+
+This functionality allows the user to provide a JSON request
+file in accordance with a Yang model for requesting path
+computations and returns path results in terms of path
+and feasibility
+
+See: draft-ietf-teas-yang-path-computation-01.txt
 """
 
 from collections import namedtuple
