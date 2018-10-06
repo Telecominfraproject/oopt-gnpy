@@ -1,19 +1,16 @@
 #!/usr/bin/env python3
-# TelecomInfraProject/gnpy/examples
-# Module name : convert_service_sheet.py
-# Version : 
-# License : BSD 3-Clause Licence
-# Copyright (c) 2018, Telecom Infra Project
+# -*- coding: utf-8 -*-
 
 """
-@author: esther.lerouzic
-@author: jeanluc-auge
-xls parser, that can be called to create a json request file in accordance with:
-    Yang model for requesting Path Computation
-    draft-ietf-teas-yang-path-computation-01.txt. 
- 
+convert_service_sheet.py
+========================
 
+XLS parser that can be called to create a JSON request file in accordance with
+Yang model for requesting path computation.
+
+See: draft-ietf-teas-yang-path-computation-01.txt
 """
+
 from sys import exit
 try:
     from xlrd import open_workbook, XL_CELL_EMPTY
@@ -54,7 +51,7 @@ class Element:
 class Request_element(Element):
     def __init__(self,Request,eqpt_filename):
         # request_id is str
-        # excel has automatic number formatting that adds .0 on integer values 
+        # excel has automatic number formatting that adds .0 on integer values
         # the next lines recover the pure int value, assuming this .0 is unwanted
         if not isinstance(Request.request_id,str):
             value = str(int(Request.request_id))
@@ -68,7 +65,7 @@ class Request_element(Element):
         self.srctpid = f'trx {Request.source}'
         self.dsttpid = f'trx {Request.destination}'
         # test that trx_type belongs to eqpt_config.json
-        # if not replace it with a default 
+        # if not replace it with a default
         equipment = load_equipment(eqpt_filename)
         try :
             if equipment['Transceiver'][Request.trx_type]:
@@ -94,7 +91,7 @@ class Request_element(Element):
         self.nodes_list = []
         if Request.nodes_list :
             self.nodes_list = Request.nodes_list.split(' | ')
-        try : 
+        try :
             self.nodes_list.remove(self.source)
             msg = f'{self.source} removed from explicit path node-list'
             logger.info(msg)
@@ -103,7 +100,7 @@ class Request_element(Element):
             msg = f'{self.source} already removed from explicit path node-list'
             logger.info(msg)
             # print(msg)
-        try : 
+        try :
             self.nodes_list.remove(self.destination)
             msg = f'{self.destination} removed from explicit path node-list'
             logger.info(msg)
@@ -112,11 +109,11 @@ class Request_element(Element):
             msg = f'{self.destination} already removed from explicit path node-list'
             logger.info(msg)
             # print(msg)
-            
+
         self.loose = 'loose'
         if Request.is_loose == 'no' :
-            self.loose = 'strict' 
-           
+            self.loose = 'strict'
+
     uid = property(lambda self: repr(self))
     @property
     def pathrequest(self):
@@ -139,7 +136,7 @@ class Request_element(Element):
                     },
                     'optimizations': {
                         'explicit-route-include-objects': [
-                        { 
+                        {
                             'index': self.nodes_list.index(node),
                             'unnumbered-hop':{
                                 'node-id': f'{node}',
@@ -154,8 +151,8 @@ class Request_element(Element):
                                 }
                             }
                         }
-                        for node in self.nodes_list 
-                    ] 
+                        for node in self.nodes_list
+                    ]
 
                 }
             }
@@ -163,7 +160,7 @@ class Request_element(Element):
     def pathsync(self):
         if self.disjoint_from :
             return {'synchonization-id':self.request_id,
-                'svec': {   
+                'svec': {
                     'relaxable' : 'False',
                     'link-diverse': 'True',
                     'node-diverse': 'True',
@@ -186,7 +183,7 @@ def convert_service_sheet(input_filename, eqpt_filename, output_filename='', fil
     # print(json_filename)
     data = {
         'path-request': [n.json[0] for n in req],
-        'synchronisation': [n.json[1] for n in req 
+        'synchronisation': [n.json[1] for n in req
         if n.json[1] is not None]
     }
     with open(output_filename, 'w') as f:
