@@ -19,7 +19,7 @@ from collections import namedtuple
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
 from networkx import (dijkstra_path, NetworkXNoPath)
 from numpy import mean
-from examples.convert_service_sheet import convert_service_sheet, Request_element, Element
+from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.network import set_roadm_loss
 from gnpy.core.utils import db2lin, lin2db

@@ -13,7 +13,7 @@ from gnpy.core.utils import lin2db, db2lin
 from gnpy.core.info import SpectralInformation, Channel, Power
 from tests.compare import compare_networks, compare_services
 from gnpy.core.convert import convert_file
-from examples.convert_service_sheet import convert_service_sheet
+from gnpy.core.service_sheet import convert_service_sheet
 from pathlib import Path
 import filecmp
 from os import unlink
