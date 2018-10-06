@@ -7,11 +7,11 @@ xls to json parser, that can be called directly from the transmission_main_examp
 xls examples are meshTopologyExampleV2.xls and CORONET_Global_Topology.xls
 Require Nodes and Links sheets, Eqpt sheet is optional
 *in Nodes sheet, only the 'City' column is mandatory. The column 'Type' is discovered based
-on the topology: degree 2 = ILA, other degrees = ROADM. The value is also corrected if the user 
+on the topology: degree 2 = ILA, other degrees = ROADM. The value is also corrected if the user
 specifies an ILA of degree != 2.
-*In Links sheet only the 3 first columns (Node A, Node Z and east Distance (km)) are mandatory. 
+*In Links sheet only the 3 first columns (Node A, Node Z and east Distance (km)) are mandatory.
 Missing west information are copied from east information so it is possible to input undir data
-*in Eqpt sheet 
+*in Eqpt sheet
 
 """
 from sys import exit
@@ -39,19 +39,19 @@ class Link(namedtuple('Link', 'from_city to_city \
     west_distance west_fiber west_lineic west_con_in west_con_out west_pmd west_cable \
     distance_units')):
     def __new__(cls, from_city, to_city,
-      east_distance, east_fiber='SSMF', east_lineic=0.2, 
-      east_con_in=None, east_con_out=None, east_pmd=0.1, east_cable='', 
-      west_distance='', west_fiber='', west_lineic='', 
+      east_distance, east_fiber='SSMF', east_lineic=0.2,
+      east_con_in=None, east_con_out=None, east_pmd=0.1, east_cable='',
+      west_distance='', west_fiber='', west_lineic='',
       west_con_in='', west_con_out='', west_pmd='', west_cable='',
       distance_units='km'):
-        east_values = [east_distance, east_fiber, east_lineic, east_con_in, east_con_out, 
+        east_values = [east_distance, east_fiber, east_lineic, east_con_in, east_con_out,
                         east_pmd, east_cable]
-        west_values = [west_distance, west_fiber, west_lineic, west_con_in, west_con_out, 
+        west_values = [west_distance, west_fiber, west_lineic, west_con_in, west_con_out,
                         west_pmd, west_cable]
         default_values = [80,'SSMF',0.2,None,None,0.1,'']
         east_values = [x[0] if x[0] != '' else x[1] for x in zip(east_values,default_values)]
         west_values = [x[0] if x[0] != '' else x[1] for x in zip(west_values,east_values)]
-        return super().__new__(cls, from_city, to_city, *east_values, *west_values, distance_units)     
+        return super().__new__(cls, from_city, to_city, *east_values, *west_values, distance_units)
 
 class Eqpt(namedtuple('Eqpt', 'from_city to_city \
     egress_amp_type egress_att_in egress_amp_gain egress_amp_tilt egress_amp_att_out\
@@ -64,7 +64,7 @@ class Eqpt(namedtuple('Eqpt', 'from_city to_city \
             ingress_amp_type, ingress_att_in, ingress_amp_gain, ingress_amp_tilt, ingress_amp_att_out]
         default_values = ['','','',0,0,0,0,'',0,0,0,0]
         values = [x[0] if x[0] != '' else x[1] for x in zip(values,default_values)]
-        return super().__new__(cls, *values)        
+        return super().__new__(cls, *values)
 
 def sanity_check(nodes, nodes_by_city, links_by_city, eqpts_by_city):
     try :
@@ -83,7 +83,7 @@ def sanity_check(nodes, nodes_by_city, links_by_city, eqpts_by_city):
 
     for city,link in links_by_city.items():
         if nodes_by_city[city].node_type.lower()=='ila' and len(link) != 2:
-            #wrong input: ILA sites can only be Degree 2 
+            #wrong input: ILA sites can only be Degree 2
             # => correct to make it a ROADM and remove entry in links_by_city
             #TODO : put in log rather than print
             print(f'invalid node type ({nodes_by_city[city].node_type})\
@@ -115,7 +115,7 @@ def convert_file(input_filename, filter_region=[]):
     global eqpts_by_city
     eqpts_by_city = defaultdict(list)
     for eqpt in eqpts:
-        eqpts_by_city[eqpt.from_city].append(eqpt) 
+        eqpts_by_city[eqpt.from_city].append(eqpt)
 
     nodes = sanity_check(nodes, nodes_by_city, links_by_city, eqpts_by_city)
 
@@ -148,7 +148,7 @@ def convert_file(input_filename, filter_region=[]):
                                         'latitude':  x.latitude,
                                         'longitude': x.longitude}},
               'type': 'Fused'}
-             for x in nodes_by_city.values() if x.node_type.lower() == 'fused'] +                                    
+             for x in nodes_by_city.values() if x.node_type.lower() == 'fused'] +
             [{'uid': f'fiber ({x.from_city} → {x.to_city})-{x.east_cable}',
               'metadata': {'location': midpoint(nodes_by_city[x.from_city],
                                                 nodes_by_city[x.to_city])},
@@ -171,7 +171,7 @@ def convert_file(input_filename, filter_region=[]):
                          'loss_coef': x.west_lineic,
                          'con_in':x.west_con_in,
                          'con_out':x.west_con_out}
-            } # missing ILA construction 
+            } # missing ILA construction
               for x in links] +
             [{'uid': f'egress edfa in {e.from_city} to {e.to_city}',
               'metadata': {'location': {'city':      nodes_by_city[e.from_city].city,
@@ -193,7 +193,7 @@ def convert_file(input_filename, filter_region=[]):
               'type_variety': e.ingress_amp_type,
               'operational': {'gain_target': e.ingress_amp_gain,
                               'tilt_target': e.ingress_amp_tilt}
-              }              
+              }
              for e in eqpts if e.ingress_amp_type.lower() != ''],
         'connections':
             list(chain.from_iterable([eqpt_connection_by_city(n.city)
@@ -205,7 +205,7 @@ def convert_file(input_filename, filter_region=[]):
              for x in nodes_by_city.values() if x.node_type.lower()=='roadm'],
             [{'from_node': f'roadm {x.city}',
               'to_node':   f'trx {x.city}'}
-             for x in nodes_by_city.values() if x.node_type.lower()=='roadm'])))            
+             for x in nodes_by_city.values() if x.node_type.lower()=='roadm'])))
     }
 
     #print(dumps(data, indent=2))
@@ -235,20 +235,20 @@ def parse_excel(input_filename):
         expected = ['City', 'State', 'Country', 'Region', 'Latitude', 'Longitude']
         if header != expected:
             raise ValueError(f'Malformed header on Nodes sheet: {header} != {expected}')
-        """ 
+        """
 
         nodes = []
         for row in all_rows(nodes_sheet, start=5):
             nodes.append(Node(*(x.value for x in row[0:NODES_COLUMN])))
         #check input
         expected_node_types = ('ROADM', 'ILA', 'FUSED')
-        nodes = [n._replace(node_type='ILA') 
+        nodes = [n._replace(node_type='ILA')
                 if not (n.node_type in expected_node_types) else n for n in nodes]
 
         # sanity check
         """
         header = [x.value.strip() for x in links_sheet.row(4)]
-        expected = ['Node A', 'Node Z', 
+        expected = ['Node A', 'Node Z',
             'Distance (km)', 'Fiber type', 'lineic att', 'Con_in', 'Con_out', 'PMD', 'Cable id',
             'Distance (km)', 'Fiber type', 'lineic att', 'Con_in', 'Con_out', 'PMD', 'Cable id']
         if header != expected:
@@ -280,7 +280,7 @@ def eqpt_connection_by_city(city_name):
     if nodes_by_city[city_name].node_type.lower() in ('ila', 'fused'):
         # Then len(other_cities) == 2
         direction = ['ingress', 'egress']
-        for i in range(2):     
+        for i in range(2):
             from_ = fiber_link(other_cities[i], city_name)
             in_ = eqpt_in_city_to_city(city_name, other_cities[0],direction[i])
             to_ = fiber_link(city_name, other_cities[1-i])
@@ -334,7 +334,7 @@ def fiber_dest_from_source(city_name):
     destinations = []
     links_from_city = links_by_city[city_name]
     for l in links_from_city:
-        if l.from_city == city_name: 
+        if l.from_city == city_name:
             destinations.append(l.to_city)
         else:
             destinations.append(l.from_city)

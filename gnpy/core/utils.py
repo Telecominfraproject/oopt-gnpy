@@ -61,10 +61,10 @@ def write_csv(obj, filename):
             #main header
             w.writerow([data_key])
             #sub headers:
-            headers = [_ for _ in data_list[0].keys()]            
+            headers = [_ for _ in data_list[0].keys()]
             w.writerow(headers)
             for data_dict in data_list:
-                w.writerow([_ for _ in data_dict.values()])     
+                w.writerow([_ for _ in data_dict.values()])
 
 def c():
     """

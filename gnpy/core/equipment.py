@@ -4,7 +4,7 @@
 '''
 nf model parameters calculation
 calculate nf1, nf2 and Delta_P of a 2 coils edfa with internal VOA
-from nf_min and nf_max inputs 
+from nf_min and nf_max inputs
 '''
 from numpy import clip, polyval
 from sys import exit
@@ -31,12 +31,12 @@ AmpBase = namedtuple(
     ' nf_model nf_fit_coeff nf_ripple dgt gain_ripple out_voa_auto allowed_for_design')
 class Amp(AmpBase):
     def __new__(cls,
-            type_variety, type_def, gain_flatmax, gain_min, p_max, nf_model=None, 
-            nf_fit_coeff=None, nf_ripple=None, dgt=None, gain_ripple=None, 
+            type_variety, type_def, gain_flatmax, gain_min, p_max, nf_model=None,
+            nf_fit_coeff=None, nf_ripple=None, dgt=None, gain_ripple=None,
              out_voa_auto=False, allowed_for_design=True):
         return super().__new__(cls,
-            type_variety, type_def, gain_flatmax, gain_min, p_max, 
-            nf_model, nf_fit_coeff, nf_ripple, dgt, gain_ripple, 
+            type_variety, type_def, gain_flatmax, gain_min, p_max,
+            nf_model, nf_fit_coeff, nf_ripple, dgt, gain_ripple,
             out_voa_auto, allowed_for_design)
 
     @classmethod
@@ -162,7 +162,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             print('Computation stopped.')
             exit()
         else:
-            # default transponder charcteristics 
+            # default transponder charcteristics
             trx_params['frequency'] = {'min': default_si_data.f_min, 'max': default_si_data.f_max}
             trx_params['baud_rate'] = default_si_data.baud_rate
             trx_params['spacing'] = default_si_data.spacing
@@ -178,10 +178,10 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
 
 def automatic_spacing(baud_rate):
     """return the min possible channel spacing for a given baud rate"""
-    spacing_list = [(38e9,50e9), (67e9,75e9), (92e9,100e9)] #list of possible tuples 
+    spacing_list = [(38e9,50e9), (67e9,75e9), (92e9,100e9)] #list of possible tuples
                                                 #[(max_baud_rate, spacing_for_this_baud_rate)]
     acceptable_spacing_list = list(filter(lambda x : x[0]>baud_rate, spacing_list))
-    if len(acceptable_spacing_list) < 1: 
+    if len(acceptable_spacing_list) < 1:
         #can't find an adequate spacing from the list, so default to:
         return baud_rate*1.2
     else:

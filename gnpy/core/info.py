@@ -25,7 +25,7 @@ class ConvenienceAccess:
             if abbrev in kwargs:
                 kwargs[field] = kwargs.pop(abbrev)
         return self._replace(**kwargs)
-        
+
     #def ptot_dbm(self):
     #    p = array([c.power.signal+c.power.nli+c.power.ase for c in self.carriers])
     #    return lin2db(sum(p*1e3))
@@ -64,7 +64,7 @@ def create_input_spectral_information(f_min, roll_off, baud_rate, power, spacing
     pref = lin2db(power * 1e3)
     si = SpectralInformation(pref=Pref(pref, pref))
     si = si.update(carriers=[
-            Channel(f, (f_min+spacing*f), 
+            Channel(f, (f_min+spacing*f),
             baud_rate, roll_off, Power(power, 0, 0)) for f in range(1,nb_channel+1)
             ])
     return si
