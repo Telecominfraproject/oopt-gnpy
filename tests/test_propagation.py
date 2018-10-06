@@ -46,7 +46,7 @@ def propagation(input_power, con_in, con_out,dest):
     transceivers = {n.uid: n for n in network.nodes() if isinstance(n, Transceiver)}
 
     p = input_power
-    p=db2lin(p)*1e-3
+    p = db2lin(p) * 1e-3
     spacing = 0.05 # THz
     si = SpectralInformation() # SI units: W, Hz
     si = si.update(carriers=[
@@ -56,18 +56,15 @@ def propagation(input_power, con_in, con_out,dest):
     source = next(transceivers[uid] for uid in transceivers if uid == 'trx A')
     sink = next(transceivers[uid] for uid in transceivers if uid == dest)
     path = dijkstra_path(network, source, sink)
-    # print(f'\nPropagating with input power = {lin2db(p*1e3):.2f}dBm :')
     for el in path:
         si = el(si)
-        # if isinstance(el, Edfa):
-        #     nf = mean(el.nf)
-        print(el) #remove this line when sweeping across several powers
-    # print(f'\nTransmission result for input power = {lin2db(p*1e3):.2f}dBm :')
+        print(el) # remove this line when sweeping across several powers
     edfa_sample = next(el for el in path if isinstance(el, Edfa))
     nf = mean(edfa_sample.nf)
 
-    print(f'pw: {input_power} conn in: {con_in} con out: {con_out} ' +
-        f'OSNR@0.1nm: {round(mean(sink.osnr_ase_01nm),2)}  SNR@bandwitdth: {round(mean(sink.snr),2)}')
+    print(f'pw: {input_power} conn in: {con_in} con out: {con_out}',
+          f'OSNR@0.1nm: {round(mean(sink.osnr_ase_01nm),2)}',
+          f'SNR@bandwitdth: {round(mean(sink.snr),2)}')
     return sink , nf
 
 test = {'a':(-1,1,0),'b':(-1,1,1),'c':(0,1,0),'d':(1,1,1)}
@@ -99,7 +96,6 @@ if __name__ == '__main__':
     logger = getLogger(__name__)
     basicConfig(level=INFO)
 
-    #logger.info(f'Running {test}')
     for a in test :
         test_snr(a,'trx F')
     print('\n')
