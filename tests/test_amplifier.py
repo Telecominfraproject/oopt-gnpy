@@ -10,7 +10,7 @@ import pytest
 from gnpy.core.elements import Transceiver, Fiber, Edfa
 from gnpy.core.utils import lin2db, db2lin
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
-from gnpy.core.equipment import load_equipment 
+from gnpy.core.equipment import load_equipment
 from gnpy.core.network import build_network, load_network, set_roadm_loss
 from pathlib import Path
 import filecmp
@@ -131,7 +131,7 @@ def test_compare_nf_models(gain, setup_edfa_variable_gain, si):
     nf_poly = edfa.nf[0]
     assert pytest.approx(nf_model, abs=0.5) == nf_poly
 
-@pytest.mark.parametrize("gain", [13, 15, 17, 19, 21, 23, 25, 27]) 
+@pytest.mark.parametrize("gain", [13, 15, 17, 19, 21, 23, 25, 27])
 def test_ase_noise(gain, si, setup_edfa_variable_gain, setup_trx, bw):
     """testing 3 different ways of calculating osnr:
     1-pin-edfa.nf+58 vs
