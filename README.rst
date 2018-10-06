@@ -2,7 +2,7 @@
 `gnpy`: mesh optical network route planning and optimization library
 ====================================================================
 
-|docs| |build| |binder|
+|docs| |build|
 
 **gnpy is an open-source, community-developed library for building route planning
 and optimization tools in real-world mesh optical networks.**
@@ -17,18 +17,6 @@ and optimization tools in real-world mesh optical networks.**
 - performant to the scale of real-world mesh optical networks
 
 Documentation: https://gnpy.readthedocs.io
-
-Quick Demo
-----------
-
-**For a quick demo, run the transmission example via Binder.**
-
-`Transmission Main Example.ipynb (mybinder.org) <https://mybinder.org/v2/gh/Telecominfraproject/oopt-gnpy/develop?filepath=examples%2FTransmission%20Main%20Example.ipynb>`_
-
-    **Note**: *The Binder service is occasionally unavailable. Please file an
-    issue on Github if you run into issues using the quick demo. As an
-    alternative, you can use Microsoft's Azure Notebook service (free):
-    https://notebooks.azure.com/help/libraries/creating/import-from-github*
 
 Installation
 ------------
@@ -296,11 +284,6 @@ implementations.
 .. |build| image:: https://travis-ci.com/Telecominfraproject/oopt-gnpy.svg?branch=develop
   :target: https://travis-ci.com/Telecominfraproject/oopt-gnpy
   :alt: Build Status
-  :scale: 100%
-
-.. |binder| image:: https://mybinder.org/badge.svg
-  :target: https://mybinder.org/v2/gh/Telecominfraproject/gnpy/develop?filepath=examples%2FTransmission%20Main%20Example.ipynb
-  :alt: Binder Link
   :scale: 100%
 
 TIP OOPT/PSE & PSE WG Charter
