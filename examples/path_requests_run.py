@@ -95,6 +95,8 @@ def load_requests(filename,eqpt_filename):
 
 def compute_path(network, equipment, pathreqlist):
 
+    # This function is obsolete
+    
     path_res_list = []
 
     for pathreq in pathreqlist:
@@ -128,7 +130,7 @@ def compute_path(network, equipment, pathreqlist):
         path_res_list.append(deepcopy(total_path))
     return path_res_list
 
-def compute_path_2(network, equipment, pathreqlist, pathlist):
+def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
     
     path_res_list = []
     # # Build the network once using the default power defined in SI in eqpt config
@@ -169,7 +171,8 @@ def compute_path_2(network, equipment, pathreqlist, pathlist):
     return path_res_list
 
 def correct_route_list(network, pathreqlist):
-
+    # prepares the format of route list of nodes to be consistant
+    # remove wrong names, remove endpoints
     roadms = [n.uid for n in network.nodes() if isinstance(n, Roadm)]
     for pathreq in pathreqlist:
         for i,n_id in enumerate(pathreq.nodes_list):
@@ -186,7 +189,7 @@ def correct_route_list(network, pathreqlist):
                     print(f'invalid route node specified \'{n_id}\', could not use it as constraint, skipped!')
                     pathreq.nodes_list.remove(n_id)
                     pathreq.loose_list.pop(i)
-        # remove endpoints from this list in case they were added by the user in the xls or json files
+        # TODO remove endpoints from this list in case they were added by the user in the xls or json files
     return pathreqlist
 
 def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
@@ -509,7 +512,7 @@ if __name__ == '__main__':
     # pths = compute_path(network, equipment, rqs)
     dsjn = disjunctions_from_json(data)
     pths = compute_path_dsjctn(network, equipment, rqs,dsjn)
-    propagatedpths = compute_path_2(network, equipment, rqs, pths)
+    propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
 
     
     header = ['demand','snr@bandwidth','snr@0.1nm','Receiver minOSNR']
