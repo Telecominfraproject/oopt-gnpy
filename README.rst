@@ -171,40 +171,40 @@ can be added and existing ones removed. Three different noise models are availab
 
 For all amplifier models:
 
-| field                | type      | description |
-|----------------------|-----------|-------------|
-| `type_variety`       | (string)  | a unique name to ID the amplifier in the JSON or Excel template topology input file |
-| `out_voa_auto`       | (boolean) | auto_design feature to optimize the amplifier output VOA. If true, output VOA is present and will be used to push amplifier gain to its maximum, within EOL power margins. |
-| `allowed_for_design` | (boolean) | If false, the amplifier will not be picked by auto-design but it can still be used as a manual input (from JSON or Excel template topology files.) |
+ field                | type      | description
+----------------------|-----------|-------------
+ `type_variety`       | (string)  | a unique name to ID the amplifier in the JSON or Excel template topology input file
+ `out_voa_auto`       | (boolean) | auto_design feature to optimize the amplifier output VOA. If true, output VOA is present and will be used to push amplifier gain to its maximum, within EOL power margins.
+ `allowed_for_design` | (boolean) | If false, the amplifier will not be picked by auto-design but it can still be used as a manual input (from JSON or Excel template topology files.)
 
 The fiber library currently describes SSMF but additional fiber types can be entered by the user following the same model:
 
-| field                | type      | description |
-|----------------------|-----------|-------------|
-| `type_variety`       | (string)  | a unique name to ID the amplifier in the JSON or Excel template topology input file |
-| `dispersion`         | (number)  | (s.m-1.m-1) |
-| `gamma`              | (number)  | 2pi.n2/(lambda*Aeff) (w-2.m-1) |
+ field                | type      | description
+----------------------|-----------|-------------
+ `type_variety`       | (string)  | a unique name to ID the amplifier in the JSON or Excel template topology input file
+ `dispersion`         | (number)  | (s.m-1.m-1)
+ `gamma`              | (number)  | 2pi.n2/(lambda*Aeff) (w-2.m-1)
 
 The transceiver equipment library is a list of supported transceivers. New
 transceivers can be added and existing ones removed at will by the user. It is
 used to determine the service list path feasibility when running the
 path_request_run.py routine.
 
-| field                | type      | description |
-|----------------------|-----------|-------------|
-| `type_variety`       | (string)  | a unique name to ID the amplifier in the JSON or Excel template topology input file |
-| `frequency`          | (number)  | Min/max as below. |
-| `mode`               | (number)  | a list of modes supported by the transponder. New modes can be added at will by the user. The modes are specific to each transponder type_variety. Each mode is described as below. |
+ field                | type      | description
+----------------------|-----------|-------------
+ `type_variety`       | (string)  | a unique name to ID the amplifier in the JSON or Excel template topology input file
+ `frequency`          | (number)  | Min/max as below.
+ `mode`               | (number)  | a list of modes supported by the transponder. New modes can be added at will by the user. The modes are specific to each transponder type_variety. Each mode is described as below.
 
 The modes are defined as follows:
 
-| field                | type      | description |
-|----------------------|-----------|-------------|
-| `format`             | (string)  | a unique name to ID the mode. |
-| `baud_rate`          | (number)  | in Hz |
-| `OSNR`               | (number)  | min required OSNR in 0.1nm (dB) |
-| `bit_rate`           | (number)  | in bit/s |
-| `roll_off`           | (number)  | |
+ field                | type      | description
+----------------------|-----------|-------------
+ `format`             | (string)  | a unique name to ID the mode.
+ `baud_rate`          | (number)  | in Hz
+ `OSNR`               | (number)  | min required OSNR in 0.1nm (dB)
+ `bit_rate`           | (number)  | in bit/s
+ `roll_off`           | (number)  |
 
 Simulation parameters are defined as follows.
 
@@ -224,16 +224,16 @@ Span configuration is performed as followws. It is not a list (which may change
 in later releases,) and the user can only modify the value of existing
 parameters:
 
-| field                | type      | description |
-|----------------------|-----------|-------------|
-| `power_mode`         | (boolean) | If false, gain mode. Auto-design sets amplifier gain = preceeding span loss, unless the amplifier exists and its gain > 0 in the topology input json. If true, power mode (recommended for auto-design and power sweep.) Auto-design sets amplifier power according to delta_power_range. If the amplifier exists with gain > 0 in the topology json input, then its gain is translated into a power target/channel. Moreover, when performing a power sweep (see power_range_db in the SI configuration library) the power sweep is performed w/r/t this power target, regardless of preceeding amplifiers power saturation/limitations. |
-| `delta_power_range_db` | (array of numbers) | Auto-design only, power-mode only. Specifies the [min, max, step] power excursion / span. It is a relative power excursion w/r/t the power_dbm + power_range_db (power sweep if applicable) defined in the SI configuration library. This relative power excursion is = 1/3 of the span loss difference with the reference 20 dB span. The 1/3 slope is derived from the GN model equations. For example, a 23 dB span loss will be set to 1 dB more power than a 20 dB span loss. The 20 dB reference spans will ALWAYS be set to power = power_dbm + power_range_db. To configure the same power in all spans, use `[0, 0, 0]`. All spans will be set to power = power_dbm + power_range_db. To configure the same power in all spans and 3 dB more power just for the longest spans: `[0, 3, 3]`. The longest spans are set to power = power_dbm + power_range_db + 3. To configure a 4 dB power range across all spans in 0.5 dB steps: `[-2, 2, 0.5]`. A 17 dB span is set to power=power_dbm+power_range_db-1, a 20 dB span to power=power_dbm+power_range_db and a 23 dB span to power=power_dbm+power_range_db+1 |
-| `max_length` | (number) | Split fiber lengths > max_length. Interest to support high level topologies that do not specify in line amplification sites. For example the CORONET_Global_Topology.xls defines links > 1000km between 2 sites: it couldn't be simulated if these links were not splitted in shorter span lengths. |
-| `length_unit` | ("m" or "km") | Unit for max_length. |
-| `max_loss`    | (number)      | Not used in the current code implementation. |
-| `padding`     | (number)      | In dB. Min span loss before putting an attenuator before fiber. Attenuator value Fiber.att_in = max(0, padding-span_loss). Padding can be set manually to reach a higher padding value for a given fiber by filling in the Fiber/params/att_in field in the topology json input [1] but if span_loss = length * loss_coef + att_in + con_in + con_out < padding, the specified att_in value will be completed to have span_loss = padding. Therefore it is not possible to set span_loss < padding. |
-| `EOL`         | (number)      | All fiber span loss ageing. The value is added to the con_out (fiber output connector). So the design and the path feasibility are performed with span_loss + EOL. EOL cannot be set manually for a given fiber span (workaround is to specify higher con_out loss for this fiber). |
-| `con_in`, `con_out` | (number) | Default values if Fiber/params/con_in/out is None in the topology input description. This default value is ignored if a Fiber/params/con_in/out value is input in the topology for a given Fiber. |
+ field                | type      | description
+----------------------|-----------|-------------|
+ `power_mode`         | (boolean) | If false, gain mode. Auto-design sets amplifier gain = preceeding span loss, unless the amplifier exists and its gain > 0 in the topology input json. If true, power mode (recommended for auto-design and power sweep.) Auto-design sets amplifier power according to delta_power_range. If the amplifier exists with gain > 0 in the topology json input, then its gain is translated into a power target/channel. Moreover, when performing a power sweep (see power_range_db in the SI configuration library) the power sweep is performed w/r/t this power target, regardless of preceeding amplifiers power saturation/limitations.
+ `delta_power_range_db` | (array of numbers) | Auto-design only, power-mode only. Specifies the [min, max, step] power excursion / span. It is a relative power excursion w/r/t the power_dbm + power_range_db (power sweep if applicable) defined in the SI configuration library. This relative power excursion is = 1/3 of the span loss difference with the reference 20 dB span. The 1/3 slope is derived from the GN model equations. For example, a 23 dB span loss will be set to 1 dB more power than a 20 dB span loss. The 20 dB reference spans will ALWAYS be set to power = power_dbm + power_range_db. To configure the same power in all spans, use `[0, 0, 0]`. All spans will be set to power = power_dbm + power_range_db. To configure the same power in all spans and 3 dB more power just for the longest spans: `[0, 3, 3]`. The longest spans are set to power = power_dbm + power_range_db + 3. To configure a 4 dB power range across all spans in 0.5 dB steps: `[-2, 2, 0.5]`. A 17 dB span is set to power=power_dbm+power_range_db-1, a 20 dB span to power=power_dbm+power_range_db and a 23 dB span to power=power_dbm+power_range_db+1
+ `max_length` | (number) | Split fiber lengths > max_length. Interest to support high level topologies that do not specify in line amplification sites. For example the CORONET_Global_Topology.xls defines links > 1000km between 2 sites: it couldn't be simulated if these links were not splitted in shorter span lengths.
+ `length_unit` | ("m" or "km") | Unit for max_length.
+ `max_loss`    | (number)      | Not used in the current code implementation.
+ `padding`     | (number)      | In dB. Min span loss before putting an attenuator before fiber. Attenuator value Fiber.att_in = max(0, padding-span_loss). Padding can be set manually to reach a higher padding value for a given fiber by filling in the Fiber/params/att_in field in the topology json input [1] but if span_loss = length * loss_coef + att_in + con_in + con_out < padding, the specified att_in value will be completed to have span_loss = padding. Therefore it is not possible to set span_loss < padding.
+ `EOL`         | (number)      | All fiber span loss ageing. The value is added to the con_out (fiber output connector). So the design and the path feasibility are performed with span_loss + EOL. EOL cannot be set manually for a given fiber span (workaround is to specify higher con_out loss for this fiber).
+ `con_in`, `con_out` | (number) | Default values if Fiber/params/con_in/out is None in the topology input description. This default value is ignored if a Fiber/params/con_in/out value is input in the topology for a given Fiber.
 
 **[1]**
 
@@ -256,10 +256,10 @@ parameters:
 
 ROADMs can be configured as follows. The user can only modify the value of existing parmeters:
 
-| field                | type      | description |
-|----------------------|-----------|-------------|
-| `gain_mode_default_loss` | (number) | Default value if Roadm/params/loss is None in the topology input description. This default value is ignored if a params/loss value is input in the topology for a given ROADM. |
-| `power_mode_pref` | (number) | Power mode only. Auto-design sets the power of ROADM ingress amplifiers to power_dbm + power_range_db, *regardless of existing gain settings* from the topology JSON input. Auto-design sets the Roadm loss so that its egress channel power = power_mode_pref, *regardless of existing loss settings* from the topology JSON input. It means that the ouput power from a ROADM (and therefore its OSNR contribution) is Cte and not depending from power_dbm and power_range_db sweep settings. This choice is meant to reflect some typical control loop algorithms. |
+ field                | type      | description
+----------------------|-----------|-------------
+ `gain_mode_default_loss` | (number) | Default value if Roadm/params/loss is None in the topology input description. This default value is ignored if a params/loss value is input in the topology for a given ROADM.
+ `power_mode_pref` | (number) | Power mode only. Auto-design sets the power of ROADM ingress amplifiers to power_dbm + power_range_db, *regardless of existing gain settings* from the topology JSON input. Auto-design sets the Roadm loss so that its egress channel power = power_mode_pref, *regardless of existing loss settings* from the topology JSON input. It means that the ouput power from a ROADM (and therefore its OSNR contribution) is Cte and not depending from power_dbm and power_range_db sweep settings. This choice is meant to reflect some typical control loop algorithms.
 
 The Spectral Information can be configured as follows. The user can only modify
 the value of existing parameters. It defines a spectrum of N identical
@@ -267,16 +267,16 @@ carriers. While the code libraries allow for different carriers and power
 levels, the current user parametrization only allows one carrier type and one
 power/channel definition.
 
-| field                | type      | description |
-|----------------------|-----------|-------------|
-| `f_min/max`          | (number)  | In Hz. Carrier min max excursion |
-| `baud_rate`          | (number)  | In Hz. Simulated baud rate. |
-| `spacing`            | (number)  | In Hz. Carrier spacing. |
-| `roll_off`           | (number)  | Not used. |
-| `OSNR`               | (number)  | Not used. |
-| `bit_rate`           | (number)  | Not used. |
-| `power_dbm`          | (number)  | Reference channel power. In gain mode (see spans/power_mode = false), all gain settings are offset w/r/t this reference power. In power mode, it is the reference power for Spans/delta_power_range_db. For example, if delta_power_range_db = [0,0,0], the same power=power_dbm is launched in every spans. The network design is performed with the power_dbm value: even if a power sweep is defined (see after) the design is not repeated. |
-| `power_range_db`     | (number)  | Power sweep excursion around power_dbm. It is not the min and max channel power values! The reference power becomes : power_range_db + power_dbm. |
+ field                | type      | description
+----------------------|-----------|-------------
+ `f_min/max`          | (number)  | In Hz. Carrier min max excursion
+ `baud_rate`          | (number)  | In Hz. Simulated baud rate.
+ `spacing`            | (number)  | In Hz. Carrier spacing.
+ `roll_off`           | (number)  | Not used.
+ `OSNR`               | (number)  | Not used.
+ `bit_rate`           | (number)  | Not used.
+ `power_dbm`          | (number)  | Reference channel power. In gain mode (see spans/power_mode = false), all gain settings are offset w/r/t this reference power. In power mode, it is the reference power for Spans/delta_power_range_db. For example, if delta_power_range_db = [0,0,0], the same power=power_dbm is launched in every spans. The network design is performed with the power_dbm value: even if a power sweep is defined (see after) the design is not repeated.
+ `power_range_db`     | (number)  | Power sweep excursion around power_dbm. It is not the min and max channel power values! The reference power becomes : power_range_db + power_dbm.
 
 The `transmission_main_example.py <examples/transmission_main_example.py>`_
 script propagates a specrum of 96 channels at 32 Gbaud, 50 GHz spacing and 0
@@ -292,6 +292,7 @@ and 21 dBm max output power. Ripple and NF models are defined in
 Use `examples/path_requests_run.py <examples/path_requests_run.py>`_ to run multiple optimizations as follows:
 
 .. code-block:: shell
+
      $ path_requests_run.py -h
      Usage: path_requests_run.py [-h] [-v] [-o OUTPUT] [network_filename] [service_filename] [eqpt_filename]
 
