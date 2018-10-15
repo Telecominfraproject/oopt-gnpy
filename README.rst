@@ -30,6 +30,12 @@ Installation
 
 This will install the current (tagged) release version.
 
+This will make the library available for your use. To test, try importing `gnpy` from your Python console
+
+.. code-block:: python
+
+    >>> import gnpy
+
 It can also be installed directly from the repo.
 
 .. code-block:: shell
@@ -78,6 +84,12 @@ You may need to set PYTHONPATH variable. For example on Ubuntu, add your workspa
 .. code-block:: shell
 
     export PYTHONPATH=$PYTHONPATH:~/<workspace path>/oopt-gnpy/
+
+You may need to set PYTHONPATH variable. For example on Ubuntu, add your workspace path to PYTHONPATH in your .bashrc file:
+
+.. code-block:: shell
+
+    export PYTHONPATH=$PYTHONPATH:~/<workspace path>/gnpy/
 
 You can specify a different network at the command line as follows. For
 example, to use the CORONET Continental US (CONUS) network defined in `examples/coronet_conus_example.json <examples/coronet_conus_example.json>`_:
