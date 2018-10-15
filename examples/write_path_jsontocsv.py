@@ -1,17 +1,14 @@
 #!/usr/bin/env python3
-# TelecomInfraProject/gnpy/examples
-# Module name : write_path_jsontoxls.py
-# Version : 
-# License : BSD 3-Clause Licence
-# Copyright (c) 2018, Telecom Infra Project
+# -*- coding: utf-8 -*-
 
 """
-@author: esther.lerouzic
-read json path result file in accordance with:
-    Yang model for requesting Path Computation
-    draft-ietf-teas-yang-path-computation-01.txt. 
-and write results in an CSV file
+write_path_jsontocsv.py
+========================
 
+Reads JSON path result file in accordance with the Yang model for requesting
+path computation and writes results to a CSV file.
+
+See: draft-ietf-teas-yang-path-computation-01.txt
 """
 
 from argparse import ArgumentParser
@@ -28,7 +25,7 @@ parser.add_argument('eqpt_filename', nargs='?', type = Path, default=Path(__file
 
 if __name__ == '__main__':
     args = parser.parse_args()
-    
+
     with open(args.output_filename,"w") as file :
         with open(args.filename) as f:
             print(f'Reading {args.filename}')

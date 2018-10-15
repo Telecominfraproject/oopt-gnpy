@@ -109,7 +109,7 @@ class Roadm(Node):
                 'metadata'      : {
                     'location': self.metadata['location']._asdict()
                                     }
-                }        
+                }
 
     def __repr__(self):
         return f'{type(self).__name__}(uid={self.uid!r}, loss={self.loss!r})'
@@ -174,7 +174,7 @@ class Fused(Node):
                                nonlinear_interference=pwr.nli/attenuation,
                                amplified_spontaneous_emission=pwr.ase/attenuation)
             yield carrier._replace(power=pwr)
-    
+
     def update_pref(self, pref):
         return pref._replace(p_span0=pref.p0, p_spani=pref.pi - self.loss)
 
@@ -192,7 +192,7 @@ class Fiber(Node):
             params = {}
         if 'con_in' not in params:
             # if not defined in the network json connector loss in/out
-            # the None value will be updated in network.py[build_network] 
+            # the None value will be updated in network.py[build_network]
             # with default values from eqpt_config.json[Spans]
             params['con_in'] = None
             params['con_out'] = None
@@ -209,8 +209,8 @@ class Fiber(Node):
         self.con_in = self.params.con_in
         self.con_out = self.params.con_out
         self.dispersion = self.params.dispersion  # s/m/m
-        self.gamma = self.params.gamma # 1/W/m     
-        self.pch_out = None  
+        self.gamma = self.params.gamma # 1/W/m
+        self.pch_out = None
         # TODO|jla: discuss factor 2 in the linear lineic attenuation
 
     @property
@@ -249,15 +249,15 @@ class Fiber(Node):
     def fiber_loss(self):
         # dB fiber loss, not including padding attenuator
         return self.loss_coef * self.length + self.con_in + self.con_out
-    
+
     @property
     def loss(self):
         #total loss incluiding padding att_in: useful for polymorphism with roadm loss
         return self.loss_coef * self.length + self.con_in + self.con_out + self.att_in
-    
+
     @property
     def passive(self):
-        return True   
+        return True
 
     @property
     def lin_attenuation(self):
@@ -459,7 +459,7 @@ class Edfa(Node):
         if self.pin_db is None or self.pout_db is None:
             return f'{type(self).__name__} {self.uid}'
         nf = mean(self.nf)
-        return '\n'.join([f'{type(self).__name__} {self.uid}', 
+        return '\n'.join([f'{type(self).__name__} {self.uid}',
                           f'  type_variety:           {self.params.type_variety}',
                           f'  effective gain(dB):     {self.effective_gain:.2f}',
                           f'  (before att_in and before output VOA)',
@@ -519,13 +519,13 @@ class Edfa(Node):
             g1a = gain_target - self.params.nf_model.delta_p - dg
             nf_avg = lin2db(db2lin(self.params.nf_model.nf1) + db2lin(self.params.nf_model.nf2)/db2lin(g1a))
         elif self.params.type_def == 'fixed_gain':
-            nf_avg = self.params.nf_model.nf0            
+            nf_avg = self.params.nf_model.nf0
         else:
             nf_avg = polyval(self.params.nf_fit_coeff, -dg)
         if avg:
             return nf_avg + pad
         else:
-            return self.interpol_nf_ripple + nf_avg + pad # input VOA = 1 for 1 NF degradation            
+            return self.interpol_nf_ripple + nf_avg + pad # input VOA = 1 for 1 NF degradation
 
     def noise_profile(self, df):
         """ noise_profile(bw) computes amplifier ase (W) in signal bw (Hz)
@@ -704,7 +704,7 @@ class Edfa(Node):
             yield carrier._replace(power=pwr)
 
     def update_pref(self, pref):
-        return pref._replace(p_span0=pref.p0, 
+        return pref._replace(p_span0=pref.p0,
                             p_spani=pref.pi + self.effective_gain - self.operational.out_voa)
 
     def __call__(self, spectral_info):

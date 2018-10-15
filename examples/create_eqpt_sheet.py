@@ -1,20 +1,16 @@
 #!/usr/bin/env python3
-# TelecomInfraProject/gnpy/examples
-# Module name : create_eqpt_sheet.py
-# Version : 
-# License : BSD 3-Clause Licence
-# Copyright (c) 2018, Telecom Infra Project
+# -*- coding: utf-8 -*-
 
 """
-@author: esther.lerouzic
-@author: jeanluc-auge
-xls parser, that can be called to create the mandatory 'City' column in Eqpt sheet. 
-If not present in sheet Nodes, the  'Type' column is implicitely determined based on the 
-topology: degree 2 = ILA, other degrees = ROADM. The value is also corrected to ROADM if the user 
-specifies an ILA of degree != 2.
- 
+create_eqpt_sheet.py
+====================
 
+XLS parser that can be called to create a "City" column in the "Eqpt" sheet.
+
+If not present in the "Nodes" sheet, the "Type" column will be implicitly
+determined based on the topology.
 """
+
 from sys import exit
 try:
     from xlrd import open_workbook
@@ -24,17 +20,9 @@ from argparse import ArgumentParser
 from collections import namedtuple, defaultdict
 
 
-class Shortlink(namedtuple('Link', 'src dest')):
-    def __new__(cls, src,dest):
-        src = src 
-        dest = dest 
-        return super().__new__(cls,src,dest)
+Shortlink = namedtuple('Link', 'src dest')
 
-class Shortnode(namedtuple('Node', 'nodename eqt')):
-    def __new__(cls, nodename,eqt):
-        nodename = nodename 
-        eqt = eqt
-        return super().__new__(cls,nodename,eqt)
+Shortnode = namedtuple('Node', 'nodename eqt')
 
 parser = ArgumentParser()
 parser.add_argument('workbook', nargs='?', default='meshTopologyExampleV2.xls',
@@ -62,7 +50,7 @@ def read_excel(input_filename):
         nodes = []
         node_degree = []
         for row in all_rows(nodes_sheet, start=5) :
-            
+
             temp_eqt = row[6].value
             # verify node degree to confirm eqt type
             node_degree.append(nodeoccuranceinlinks.count(row[0].value))
@@ -74,10 +62,10 @@ def read_excel(input_filename):
                 temp_eqt = 'ILA'
             if temp_eqt == '' and nodeoccuranceinlinks.count(row[0].value) != 2 :
                 temp_eqt = 'ROADM'
-            # print(f'node {nodes[len(nodes)-1]} eqt {temp_eqt}') 
+            # print(f'node {nodes[len(nodes)-1]} eqt {temp_eqt}')
             nodes.append(Shortnode(row[0].value,temp_eqt))
             # print(len(nodes)-1)
-            print(f'reading: node {nodes[len(nodes)-1].nodename} eqpt {temp_eqt}')        
+            print(f'reading: node {nodes[len(nodes)-1].nodename} eqpt {temp_eqt}')
         return links,nodes, links_by_src , links_by_dest
 
 def create_eqt_template(links,nodes, links_by_src , links_by_dest, input_filename):
@@ -87,7 +75,7 @@ def create_eqt_template(links,nodes, links_by_src , links_by_dest, input_filenam
         my_file.write('OPTIONAL\n\n\n\
            \t\tNode a egress amp (from a to z)\t\t\t\t\tNode a ingress amp (from z to a) \
            \nNode A \tNode Z \tamp type \tatt_in \tamp gain \ttilt \tatt_out\
-           amp type   \tatt_in \tamp gain   \ttilt   \tatt_out\n')                                            
+           amp type   \tatt_in \tamp gain   \ttilt   \tatt_out\n')
 
         tab = []
         temp = []
@@ -113,5 +101,3 @@ if __name__ == '__main__':
     input_filename = args.workbook
     links,nodes,links_by_src, links_by_dest = read_excel(input_filename)
     create_eqt_template(links,nodes, links_by_src , links_by_dest , input_filename)
-
-

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
 ########################################################################
 #                _____ ___ ____    ____  ____  _____                   #
 #               |_   _|_ _|  _ \  |  _ \/ ___|| ____|                  #
@@ -22,7 +23,6 @@ operators of large-scale mesh optical networks.
 :copyright: © 2018, Telecom Infra Project
 :license: BSD 3-Clause, see LICENSE for more details.
 '''
-
 
 from . import elements
 from .execute import *

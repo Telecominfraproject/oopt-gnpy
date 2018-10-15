@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 '''
-Transmission setup example: 
-reads from network json (default = examples/edfa/edfa_example_network.json)
-propagates a 96 channels comb 
+transmission_main_example.py
+============================
+
+Main example for transmission simulation.
+
+Reads from network JSON (by default, `edfa_example_network.json`)
 '''
 
 from gnpy.core.equipment import load_equipment, trx_mode_params
@@ -68,10 +73,10 @@ def main(network, equipment, source, destination, req = None):
 
     power_mode = equipment['Spans']['default'].power_mode
     print('\n'.join([f'Power mode is set to {power_mode}',
-                     f'=> it can be modified in eqpt_config.json - Spans']))    
+                     f'=> it can be modified in eqpt_config.json - Spans']))
 
     pref_ch_db = lin2db(req.power*1e3) #reference channel power / span (SL=20dB)
-    pref_total_db = pref_ch_db + lin2db(req.nb_channel) #reference total power / span (SL=20dB) 
+    pref_total_db = pref_ch_db + lin2db(req.nb_channel) #reference total power / span (SL=20dB)
     build_network(network, equipment, pref_ch_db, pref_total_db)
     path = compute_constrained_path(network, req)
 
@@ -94,7 +99,7 @@ def main(network, equipment, source, destination, req = None):
         req.power = db2lin(pref_ch_db + dp_db)*1e-3
         print(f'\nPropagating with input power = {lin2db(req.power*1e3):.2f}dBm :')
         propagate(path, req, equipment, show=len(power_range)==1)
-        print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f}dBm :')        
+        print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f}dBm :')
         print(destination)
         simulation_data.append({
                     'Pch_dBm'               : pref_ch_db + dp_db,
@@ -133,7 +138,7 @@ if __name__ == '__main__':
     # print(network)
 
     transceivers = {n.uid: n for n in network.nodes() if isinstance(n, Transceiver)}
-    
+
     if not transceivers:
         exit('Network has no transceivers!')
     if len(transceivers) < 2:
