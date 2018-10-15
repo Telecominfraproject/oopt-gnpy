@@ -24,7 +24,7 @@
       },
       "optimizations": {
         "explicit-route-include-objects": {
-          "route-object-include-object": [ 
+          "route-object-include-object": [
           {
             "index": null,
             "unnumbered-hop": {

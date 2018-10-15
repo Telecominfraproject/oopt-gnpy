@@ -38,7 +38,7 @@ class NetworksResults(namedtuple('NetworksResult', 'elements connections')):
 
 class ServicesResults(namedtuple('ServicesResult', 'requests synchronizations')):
     def _asdict(self):
-        return {'requests': self.requests.asdict(),
+        return {'requests':         self.requests.asdict(),
                 'synchronizations': self.synchronizations.asdict()}
     def __str__(self):
         return '\n'.join([

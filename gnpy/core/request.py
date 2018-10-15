@@ -1,25 +1,25 @@
 #!/usr/bin/env python3
-# TelecomInfraProject/gnpy/examples
-# Module name : path_requests_run.py
-# Version : 
-# License : BSD 3-Clause Licence
-# Copyright (c) 2018, Telecom Infra Project
+# -*- coding: utf-8 -*-
 
 """
-@author: esther.lerouzic
-@author: jeanluc-auge
-read json request file in accordance with:
-    Yang model for requesting Path Computation
-    draft-ietf-teas-yang-path-computation-01.txt. 
-and returns path results in terms of path and feasibility
+gnpy.core.request
+=================
 
+This module contains path request functionality.
+
+This functionality allows the user to provide a JSON request
+file in accordance with a Yang model for requesting path
+computations and returns path results in terms of path
+and feasibility
+
+See: draft-ietf-teas-yang-path-computation-01.txt
 """
 
 from collections import namedtuple
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
 from networkx import (dijkstra_path, NetworkXNoPath)
 from numpy import mean
-from examples.convert_service_sheet import convert_service_sheet, Request_element, Element
+from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.network import set_roadm_loss
 from gnpy.core.utils import db2lin, lin2db
@@ -76,8 +76,8 @@ class Result_element(Element):
         self.computed_path = computed_path
         hop_type = []
         for e in computed_path :
-            if isinstance(e, Transceiver) : 
-                hop_type.append(' - '.join([path_request.tsp,path_request.tsp_mode])) 
+            if isinstance(e, Transceiver) :
+                hop_type.append(' - '.join([path_request.tsp,path_request.tsp_mode]))
             else:
                 hop_type.append('not recorded')
         self.hop_type = hop_type
@@ -203,10 +203,10 @@ class Result_element(Element):
                             ]
                     }
                 }
-                    
+
     @property
     def json(self):
-        return self.pathresult 
+        return self.pathresult
 
 def compute_constrained_path(network, req):
     trx = [n for n in network.nodes() if isinstance(n, Transceiver)]
@@ -226,7 +226,7 @@ def compute_constrained_path(network, req):
                 node = next(el for el in roadm if el.uid == f'roadm {n}')
             except StopIteration:
                 try:
-                    node = next(el for el in edfa 
+                    node = next(el for el in edfa
                         if el.uid.startswith(f'egress edfa in {n}'))
                 except StopIteration:
                     msg = f'could not find node : {n} in network topology: \
@@ -257,7 +257,7 @@ def compute_constrained_path(network, req):
     #     target=next(el for el in trx if el.uid == req.destination)):
     #     print([e.uid for e in p if isinstance(e,Roadm)])
 
-    return total_path 
+    return total_path
 
 def propagate(path, req, equipment, show=False):
     #update roadm loss in case of power sweep (power mode only)
@@ -269,13 +269,13 @@ def propagate(path, req, equipment, show=False):
         si = el(si)
         if show :
             print(el)
-    return path    
+    return path
 
 
 def jsontocsv(json_data,equipment,fileout):
     # read json path result file in accordance with:
     # Yang model for requesting Path Computation
-    # draft-ietf-teas-yang-path-computation-01.txt. 
+    # draft-ietf-teas-yang-path-computation-01.txt.
     # and write results in an CSV file
 
     mywriter = writer(fileout)
@@ -290,32 +290,32 @@ def jsontocsv(json_data,equipment,fileout):
         ['path-route-object']['unnumbered-hop']['node-id']
         destination = p['path-properties']['path-route-objects'][-1]\
         ['path-route-object']['unnumbered-hop']['node-id']
-        pth        = ' | '.join([ e['path-route-object']['unnumbered-hop']['node-id'] 
+        pth        = ' | '.join([ e['path-route-object']['unnumbered-hop']['node-id']
                  for e in p['path-properties']['path-route-objects']])
 
         [tsp,mode] = p['path-properties']['path-route-objects'][0]\
         ['path-route-object']['unnumbered-hop']['hop-type'].split(' - ')
-        
+
         # find the min  acceptable OSNR, baud rate from the eqpt library based on tsp (tupe) and mode (format)
         try:
-            [minosnr, baud_rate] = next([m['OSNR'] , m['baud_rate']]  
+            [minosnr, baud_rate] = next([m['OSNR'] , m['baud_rate']]
                 for m in equipment['Transceiver'][tsp].mode if  m['format']==mode)
 
         # for debug
         # print(f'coucou {baud_rate}')
         except IndexError:
             msg = f'could not find tsp : {self.tsp} with mode: {self.tsp_mode} in eqpt library'
-            
+
             raise ValueError(msg)
-        output_snr = next(e['accumulative-value'] 
+        output_snr = next(e['accumulative-value']
             for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR@0.1nm')
-        output_snrbandwidth = next(e['accumulative-value'] 
+        output_snrbandwidth = next(e['accumulative-value']
             for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR@bandwidth')
-        output_osnr = next(e['accumulative-value'] 
+        output_osnr = next(e['accumulative-value']
             for e in p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR@0.1nm')
-        output_osnrbandwidth = next(e['accumulative-value'] 
+        output_osnrbandwidth = next(e['accumulative-value']
             for e in p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR@bandwidth')
-        power = next(e['accumulative-value'] 
+        power = next(e['accumulative-value']
             for e in p['path-properties']['path-metric'] if e['metric-type'] == 'reference_power')
         if isinstance(output_snr, str):
             isok = ''
@@ -333,5 +333,5 @@ def jsontocsv(json_data,equipment,fileout):
             output_osnr,
             output_snrbandwidth,
             output_snr,
-            isok 
+            isok
             ))

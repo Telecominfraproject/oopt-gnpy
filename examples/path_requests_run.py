@@ -1,18 +1,15 @@
 #!/usr/bin/env python3
-# TelecomInfraProject/gnpy/examples
-# Module name : path_requests_run.py
-# Version : 
-# License : BSD 3-Clause Licence
-# Copyright (c) 2018, Telecom Infra Project
+# -*- coding: utf-8 -*-
 
 """
-@author: esther.lerouzic
-@author: jeanluc-auge
-read json request file in accordance with:
-    Yang model for requesting Path Computation
-    draft-ietf-teas-yang-path-computation-01.txt. 
-and returns path results in terms of path and feasibility
+path_requests_run.py
+====================
 
+Reads a JSON request file in accordance with the Yang model
+for requesting path computation and returns path results in terms
+of path and feasibilty.
+
+See: draft-ietf-teas-yang-path-computation-01.txt
 """
 
 from sys import exit
@@ -61,7 +58,7 @@ def requests_from_json(json_data,equipment):
         params['nodes_list'] = [n['unnumbered-hop']['node-id'] for n in nd_list]
         params['loose_list'] = [n['unnumbered-hop']['hop-type'] for n in nd_list]
         params['spacing'] = req['path-constraints']['te-bandwidth']['spacing']
-        
+
         trx_params = trx_mode_params(equipment,params['trx_type'],params['trx_mode'],True)
         params.update(trx_params)
         params['power'] = req['path-constraints']['te-bandwidth']['output-power']
@@ -82,7 +79,7 @@ def load_requests(filename,eqpt_filename):
     return json_data
 
 def compute_path(network, equipment, pathreqlist):
-    
+
     path_res_list = []
 
     for pathreq in pathreqlist:
@@ -106,14 +103,14 @@ def compute_path(network, equipment, pathreqlist):
             total_path = propagate(total_path,pathreq,equipment, show=False)
         else:
             total_path = []
-        # we record the last tranceiver object in order to have th whole 
-        # information about spectrum. Important Note: since transceivers 
+        # we record the last tranceiver object in order to have th whole
+        # information about spectrum. Important Note: since transceivers
         # attached to roadms are actually logical elements to simulate
-        # performance, several demands having the same destination may use 
-        # the same transponder for the performance simaulation. This is why 
-        # we use deepcopy: to ensure each propagation is recorded and not 
-        # overwritten 
-        
+        # performance, several demands having the same destination may use
+        # the same transponder for the performance simaulation. This is why
+        # we use deepcopy: to ensure each propagation is recorded and not
+        # overwritten
+
         path_res_list.append(deepcopy(total_path))
     return path_res_list
 
@@ -136,7 +133,7 @@ if __name__ == '__main__':
     pths = requests_from_json(data, equipment)
     print(pths)
     test = compute_path(network, equipment, pths)
-    
+
     #TODO write results
 
     header = ['demand','snr@bandwidth','snr@0.1nm','Receiver minOSNR']

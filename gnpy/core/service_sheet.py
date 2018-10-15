@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-convert_service_sheet.py
+gnpy.core.service_sheet
 ========================
 
 XLS parser that can be called to create a JSON request file in accordance with
@@ -29,11 +29,6 @@ SERVICES_COLUMN = 11
 
 all_rows = lambda sheet, start=0: (sheet.row(x) for x in range(start, sheet.nrows))
 logger = getLogger(__name__)
-
-parser = ArgumentParser()
-parser.add_argument('workbook', nargs='?', type = Path , default='meshTopologyExampleV2.xls')
-parser.add_argument('-v', '--verbose', action='count')
-parser.add_argument('-o', '--output', default=None)
 
 # Type for input data
 class Request(namedtuple('Request', 'request_id source destination trx_type mode \
@@ -220,13 +215,3 @@ def parse_service_sheet(service_sheet):
         # request_id should be unique for disjunction constraints (not used yet)
         for row in all_rows(service_sheet, start=5):
             yield Request(**parse_row(row[0:SERVICES_COLUMN], service_fieldnames))
-
-if __name__ == '__main__':
-    args = parser.parse_args()
-    basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(args.verbose, CRITICAL))
-    logger.info(f'Converting Service sheet {args.workbook!r} into gnpy JSON format')
-    if args.output is None:
-        data = convert_service_sheet(args.workbook,'eqpt_config.json')
-        print(dumps(data, indent=2))
-    else:
-        data = convert_service_sheet(args.workbook,'eqpt_config.json',args.output)
