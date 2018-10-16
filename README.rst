@@ -18,11 +18,23 @@ and optimization tools in real-world mesh optical networks.**
 
 Documentation: https://gnpy.readthedocs.io
 
-Branches:
+Branches and Tagged Releases
+----------------------------
 
 - the `master <https://github.com/Telecominfraproject/oopt-gnpy/tree/master>`_ branch contains stable, validated code. It is updated from develop on a release schedule determined by the OOPT-PSE Working Group. For more information about the validation process, see: https://github.com/Telecominfraproject/oopt-gnpy/wiki/Testing-for-Quality
 - the `develop <https://github.com/Telecominfraproject/oopt-gnpy/tree/develop>`_ branch contains the latest code under active development, which may not be fully validated and tested.
 - the `phase-1 <https://github.com/Telecominfraproject/oopt-gnpy/tree/phase-1>`_ branch contains code for Phase I of the OOPT-PSE efforts and is kept only for reference. This branch is unmaintained.
+
+A brief outline of major (tagged) `gnpy` releases:
+
++---------------+-------------+-----------------------------------------------+
+| release date  | version tag | notes                                         |
++===============+=============+===============================================+
+| Oct 16, 2018  | v1.0        | First "production"-ready release.             |
+|               |             | - open network element model (EDFA, GN-model) |
+|               |             | - auto-design functionality                   |
+|               |             | - path request functionality                  |
++---------------+-------------+-----------------------------------------------+
 
 How to Install
 --------------
