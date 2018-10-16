@@ -684,7 +684,6 @@ class Edfa(Node):
 
     def propagate(self, pref, *carriers):
         """add ase noise to the propagating carriers of SpectralInformation"""
-        i = 0
         pin = array([c.power.signal+c.power.nli+c.power.ase for c in carriers]) # pin in W
         freq = array([c.frequency for c in carriers])
         brate = array([c.baud_rate for c in carriers])
@@ -697,7 +696,6 @@ class Edfa(Node):
 
         for gain, carrier_ase, carrier in zip(gains, carrier_ases, carriers):
             pwr = carrier.power
-            bw = carrier.baud_rate
             pwr = pwr._replace(signal=pwr.signal*gain/att,
                                nonlinear_interference=pwr.nli*gain/att,
                                amplified_spontaneous_emission=(pwr.ase+carrier_ase)*gain/att)

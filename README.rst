@@ -90,6 +90,9 @@ executes without a `ModuleNotFoundError`, you have successfully installed
 
     $ python -c 'import gnpy' # attempt to import gnpy
 
+    $ cd oopt-gnpy
+    $ pytest                  # run tests
+
 Instructions for First Use
 --------------------------
 
@@ -112,7 +115,7 @@ fully-functional programs.
     $ pwd
     /path/to/oopt-gnpy
     $ cd examples
-    $ python3 transmission_main_example.py
+    $ python transmission_main_example.py
 
 By default, this script operates on a single span network defined in
 `examples/edfa_example_network.json <examples/edfa_example_network.json>`_
@@ -124,7 +127,7 @@ example, to use the CORONET Continental US (CONUS) network defined in
 .. code-block:: shell
 
     $ cd examples
-    $ python3 transmission_main_example.py CORONET_Global_Topology.json
+    $ python transmission_main_example.py CORONET_Global_Topology.json
 
 It is also possible to use an Excel file input (for example
 `examples/CORONET_Global_Topology.xls <examples/CORONET_Global_Topology.xls>`_).
@@ -448,7 +451,7 @@ power/channel definition.
 +----------------------+-----------+-------------------------------------------+
 
 The `transmission_main_example.py <examples/transmission_main_example.py>`_
-script propagates a specrum of 96 channels at 32 Gbaud, 50 GHz spacing and 0
+script propagates a specrum of channels at 32 Gbaud, 50 GHz spacing and 0
 dBm/channel. These are not yet parametrized but can be modified directly in the
 script (via the SpectralInformation structure) to accomodate any baud rate,
 spacing, power or channel count demand.
@@ -462,7 +465,7 @@ Use `examples/path_requests_run.py <examples/path_requests_run.py>`_ to run mult
 
 .. code-block:: shell
 
-     $ path_requests_run.py -h
+     $ python path_requests_run.py -h
      Usage: path_requests_run.py [-h] [-v] [-o OUTPUT] [network_filename] [service_filename] [eqpt_filename]
 
 The `network_filename` and `service_filename` can be an XLS or JSON file. The `eqpt_filename` must be a JSON file.
@@ -472,7 +475,7 @@ To see an example of it, run:
 .. code-block:: shell
 
     $ cd examples
-    $ python path_requests_run.py meshTopologyExampleV2.xls meshTopologyExampleV2_services.json eqpt_file -o output_file.json
+    $ python path_requests_run.py meshTopologyExampleV2.xls meshTopologyExampleV2_services.json eqpt_config.json -o output_file.json
 
 This program requires a list of connections to be estimated and the equipment
 library. The program computes performances for the list of services (accepts
