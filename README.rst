@@ -4,8 +4,8 @@
 
 |docs| |build|
 
-**`gnpy` is an open-source, community-developed library for building route planning
-and optimization tools in real-world mesh optical networks.**
+**`gnpy` is an open-source, community-developed library for building route
+planning and optimization tools in real-world mesh optical networks.**
 
 `gnpy <http://github.com/telecominfraproject/oopt-gnpy>`__ is:
 
@@ -40,17 +40,19 @@ How to Install
 --------------
 
    **Note**: `gnpy` supports Python 3 only. Python 2 is not supported.
-   `gnpy` requires Python >3.6.5
+   `gnpy` requires Python ≥3.6
 
    **Note**: the `gnpy` maintainers strongly recommend the use of Anaconda for
    managing dependencies.
 
 It is recommended that you use a "virtual environment" when installing `gnpy`.
-Do not install `gnpy` on your system Python.  repo. We recommend the use of the
-Anaconda Python distribution (https://www.anaconda.com/download) which comes
-with many scientific computing dependencies pre-installed. Anaconda creates a
-base "virtual environment" for you automatically. You can also create and
-manage your conda "virtual environments" yourself (see:
+Do not install `gnpy` on your system Python.
+
+We recommend the use of the Anaconda Python distribution
+(https://www.anaconda.com/download) which comes with many scientific computing
+dependencies pre-installed. Anaconda creates a base "virtual environment" for
+you automatically. You can also create and manage your conda "virtual
+environments" yourself (see:
 https://conda.io/docs/user-guide/tasks/manage-environments.html)
 
 To activate your Anaconda virtual environment, you may need to do the
@@ -61,7 +63,7 @@ following:
     $ source /path/to/anaconda/bin/activate # activate Anaconda base environment
     (base) $                                # note the change to the prompt
 
-Check with:
+You can check which Anaconda environment you are using with:
 
 .. code-block:: shell
 
@@ -164,8 +166,8 @@ interference noise.
 .. |Pase| replace:: P\ :sub:`ase`
 .. |Pnli| replace:: P\ :sub:`nli`
 
-Further Instructions for Use (`transmission_main_example.py`)
--------------------------------------------------------------
+Further Instructions for Use (`transmission_main_example.py`, `path_requests_run.py`)
+-------------------------------------------------------------------------------------
 
 Design and transmission parameters are defined in a dedicated json file. By
 default, this information is read from `examples/eqpt_config.json
@@ -174,8 +176,6 @@ can be customized (EDFAs, fibers, and transcievers).
 
 It also defines the simulation parameters (spans, ROADMs, and the spectral
 information to transmit.)
-
-Equipment Library
 
 The EDFA equipment library is a list of supported amplifiers. New amplifiers
 can be added and existing ones removed. Three different noise models are available:
@@ -378,6 +378,7 @@ parameters:
 **[1]**
 
 .. code-block:: json
+
     {
         "uid": "fiber (A1->A2)",
         "type": "Fiber",
@@ -394,7 +395,8 @@ parameters:
         }
     }
 
-ROADMs can be configured as follows. The user can only modify the value of existing parmeters:
+ROADMs can be configured as follows. The user can only modify the value of
+existing parmeters:
 
 +-------------------------+-----------+---------------------------------------------+
 | field                   |   type    | description                                 |
@@ -422,11 +424,11 @@ ROADMs can be configured as follows. The user can only modify the value of exist
 |                         |           | control loop algorithms.                    |
 +-------------------------+-----------+---------------------------------------------+
 
-The Spectral Information can be configured as follows. The user can only modify
-the value of existing parameters. It defines a spectrum of N identical
-carriers. While the code libraries allow for different carriers and power
-levels, the current user parametrization only allows one carrier type and one
-power/channel definition.
+The `SpectralInformation` object can be configured as follows. The user can
+only modify the value of existing parameters. It defines a spectrum of N
+identical carriers. While the code libraries allow for different carriers and
+power levels, the current user parametrization only allows one carrier type and
+one power/channel definition.
 
 +----------------------+-----------+-------------------------------------------+
 | field                |   type    | description                               |
