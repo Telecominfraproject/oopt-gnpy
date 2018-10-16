@@ -30,7 +30,7 @@ A brief outline of major (tagged) `gnpy` releases:
 +---------------+-------------+-----------------------------------------------+
 | release date  | version tag | notes                                         |
 +===============+=============+===============================================+
-| Oct 16, 2018  | v1.0        | First "production"-ready release.             |
+| Oct 16, 2018  | v1.0        | - first "production"-ready release            |
 |               |             | - open network element model (EDFA, GN-model) |
 |               |             | - auto-design functionality                   |
 |               |             | - path request functionality                  |
