@@ -491,8 +491,7 @@ class Edfa(Node):
         if self.dp_db is not None:
             self.target_pch_db = round(self.dp_db + pref.p0, 2)
             self.effective_gain = self.target_pch_db - pref.pi
-        else:
-            self.effective_gain = self.operational.gain_target
+        
         self.effective_gain = min(self.effective_gain, self.params.p_max - self.pin_db)
         self.effective_pch_db = round(pref.pi + self.effective_gain, 2)
 
@@ -610,7 +609,7 @@ class Edfa(Node):
 
         # TODO|jla: find a way to use these or lose them. Primarily we should have
         # a way to determine if exceeding the gain or output power of the amp
-        tot_in_power_db = lin2db(sum(pin*1e3)) # Pin in W
+        tot_in_power_db = self.pin_db # Pin in W
 
         # linear fit to get the
         p = polyfit(nb_channel, self.interpol_dgt, 1)
