@@ -119,7 +119,7 @@
         "te-bandwidth": {
           "technology": "flexi-grid",
           "trx_type": "vendorA_trx-type1",
-          "trx_mode": "PS_SP64_2",
+          "trx_mode": "PS_SP64_1",
           "effective-freq-slot": [
             {
               "n": "null",
