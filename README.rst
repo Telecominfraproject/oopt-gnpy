@@ -448,7 +448,7 @@ power/channel definition.
 +----------------------+-----------+-------------------------------------------+
 
 The `transmission_main_example.py <examples/transmission_main_example.py>`_
-script propagates a specrum of 96 channels at 32 Gbaud, 50 GHz spacing and 0
+script propagates a specrum of channels at 32 Gbaud, 50 GHz spacing and 0
 dBm/channel. These are not yet parametrized but can be modified directly in the
 script (via the SpectralInformation structure) to accomodate any baud rate,
 spacing, power or channel count demand.

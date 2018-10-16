@@ -16,7 +16,6 @@ try:
     from xlrd import open_workbook, XL_CELL_EMPTY
 except ModuleNotFoundError:
     exit('Required: `pip install xlrd`')
-from argparse import ArgumentParser
 from collections import namedtuple
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
 from json import dumps
