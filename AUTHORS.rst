@@ -13,7 +13,9 @@ To learn how to contribute, please see CONTRIBUTING.md
 - Gert Grammel (Juniper Networks) <ggrammel@juniper.net>
 - Gilad Goldfarb (Facebook) <giladg@fb.com>
 - James Powell (Telecom Infra Project) <james.powell@telecominfraproject.com>
-- Jeanluc Auge (Orange) <jeanluc.auge@orange.com>
+- Jeanluc Augé (Orange) <jeanluc.auge@orange.com>
+- Jonas Mårtensson (RISE) <jonas.martensson@ri.se>
 - Mattia Cantono (Politecnico di Torino) <mattia.cantono@polito.it>
+- Roberts Miculens (Lattelecom) <roberts.miculens@lattelecom.lv>
 - Vittorio Curri (Politecnico di Torino) <vittorio.curri@polito.it>
 - Xufeng Liu (Jabil) <xufeng_liu@jabil.com>
