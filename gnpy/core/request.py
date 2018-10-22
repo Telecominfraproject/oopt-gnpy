@@ -17,7 +17,8 @@ See: draft-ietf-teas-yang-path-computation-01.txt
 
 from collections import namedtuple
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
-from networkx import (dijkstra_path, NetworkXNoPath)
+from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths)
+from networkx.utils import pairwise 
 from numpy import mean
 from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
@@ -236,7 +237,7 @@ def compute_constrained_path(network, req):
     edfa = [n for n in network.nodes() if isinstance(n, Edfa)]
     source = next(el for el in trx if el.uid == req.source)
     # start the path with its source
-    # TODO : avoid loops due to constraints , guess name base on string,
+    # TODO : avoid loops due to constraints , guess name based on string,
     # avoid crashing if on req is not correct
     total_path = [source]
     for n in req.nodes_list:
@@ -269,12 +270,6 @@ def compute_constrained_path(network, req):
                 logger.critical(msg)
                 print(msg)
                 total_path = []
-
-# preparing disjunction feature
-    # for p in all_simple_paths(network,\
-    #     source=next(el for el in trx if el.uid == req.source),\
-    #     target=next(el for el in trx if el.uid == req.destination)):
-    #     print([e.uid for e in p if isinstance(e,Roadm)])
 
     return total_path
 
@@ -347,3 +342,310 @@ def jsontocsv(json_data,equipment,fileout):
             output_snr,
             isok
             ))
+
+
+def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
+    # pathreqlist is a list of Path_request objects
+    # disjunctions_list a list of Disjunction objects
+    
+    # given a network, a list of requests with the set of disjunction features between
+    # request, the function computes the set of path satisfying : first the disjunction
+    # constraint and second the routing constraint if the request include an explicit 
+    # set of elements to pass through.
+    # the algorithm used allows to specify disjunction for demands not sharing source or
+    # destination.
+    # a request might be declared as disjoint from several requests
+    # it is a iterative process:
+    # first computes a list of all shortest path (this may add computation time)
+    # second elaborate the set of path solution for each synchronization vector
+    # third select only the candidates that satisfy all synchronization vectors they belong to
+    # fourth apply route constraints : remove candidate path that do not satisfy the constraint
+    # fifth select the first candidate among the set of candidates.
+    # the example network used in comments has been added to the set of data tests files
+
+    # define the list to be returned
+    path_res_list = []
+
+    # all disjctn must be computed at once together to avoid blocking
+    #         1     1
+    # eg    a----b-----c
+    #       |1   |0.5  |1
+    #       e----f--h--g
+    #         1  0.5 0.5
+    # if I have to compute a to g and a to h 
+    # I must not compute a-b-f-h-g, otherwise there is no disjoint path remaining for a to h
+    # instead I should list all most disjoint path and select the one that have the less
+    # number of commonalities
+    #     \     path abfh  aefh   abcgh 
+    #      \___cost   2     2.5    3.5
+    #   path| cost  
+    #  abfhg|  2.5    x      x      x
+    #  abcg |  3      x             x
+    #  aefhg|  3      x      x      x
+    # from this table abcg and aefh have no common links and should be preferred 
+    # even they are not the shortest paths
+
+    # build the list of pathreqlist elements not concerned by disjunction
+    global_disjunctions_list = [e for d in disjunctions_list for e in d.disjunctions_req ]
+    pathreqlist_simple = [e for e in pathreqlist if e.request_id not in global_disjunctions_list]
+    pathreqlist_disjt = [e for e in pathreqlist if e.request_id in global_disjunctions_list]
+
+    # use a mirror class to record path and the corresponding requests
+    class Pth:
+        def __init__(self, req, pth, simplepth):
+            self.req = req
+            self.pth = pth
+            self.simplepth = simplepth
+
+    # step 1
+    # for each remaining request compute a set of simple path
+    allpaths = {}
+    rqs = {}
+    simple_rqs = {}
+    simple_rqs_reversed = {}
+    for pathreq in pathreqlist_disjt :
+        all_simp_pths = list(all_simple_paths(network,\
+            source=next(el for el in network.nodes() if el.uid == pathreq.source),\
+            target=next(el for el in network.nodes() if el.uid == pathreq.destination)))
+        # sort them
+        all_simp_pths = sorted(all_simp_pths, key=lambda path: len(path))
+        # reversed direction paths required to check disjunction on both direction
+        all_simp_pths_reversed = []
+        for pth in all_simp_pths:
+            all_simp_pths_reversed.append(find_reversed_path(pth,network))
+        rqs[pathreq.request_id] = all_simp_pths 
+        temp =[]
+        for p in all_simp_pths :
+            # build a short list representing each roadm+direction with the first item
+            # start enumeration at 1 to avoid Trx in the list
+            s = [e.uid for i,e in enumerate(p[1:-1]) \
+                if (isinstance(e,Roadm) | (isinstance(p[i],Roadm) ))] 
+            temp.append(s)
+            # id(s) is unique even if path is the same: two objects with same 
+            # path have two different ids
+            allpaths[id(s)] = Pth(pathreq,p,s)
+        simple_rqs[pathreq.request_id] = temp
+        temp =[]
+        for p in all_simp_pths_reversed :
+            # build a short list representing each roadm+direction with the first item
+            # start enumeration at 1 to avoid Trx in the list
+            temp.append([e.uid for i,e in enumerate(p[1:-1]) \
+                if (isinstance(e,Roadm) | (isinstance(p[i],Roadm) ))] )
+        simple_rqs_reversed[pathreq.request_id] = temp
+    # step 2 
+    # for each set of requests that need to be disjoint
+    # select the disjoint path combination
+
+    candidates = {}
+    for d in disjunctions_list :
+        dlist = d.disjunctions_req.copy()
+        # each line of dpath is one combination of path that satisfies disjunction
+        dpath = []
+        for i,p in enumerate(simple_rqs[dlist[0]]):
+            dpath.append([p])
+            # allpaths[id(p)].d_id = d.disjunction_id
+        # in each loop, dpath is updated with a path for rq that satisfies 
+        # disjunction with each path in dpath
+        # for example, assume set of requests in the vector (disjunction_list) is  {rq1,rq2, rq3}
+        # rq1  p1: abfhg
+        #      p2: aefhg
+        #      p3: abcg
+        # rq2  p8: bf
+        # rq3  p4: abcgh
+        #      p6: aefh
+        #      p7: abfh
+        # initiate with rq1
+        #  dpath = [[p1]
+        #           [p2]
+        #           [p3]]
+        #  after first loop:
+        #  dpath = [[p1 p8]
+        #           [p3 p8]]
+        #  since p2 and p8 are not disjoint
+        #  after second loop:
+        #  dpath = [ p3 p8 p6 ]
+        #  since p1 and p4 are not disjoint 
+        #        p1 and p7 are not disjoint
+        #        p3 and p4 are not disjoint
+        #        p3 and p7 are not disjoint
+
+        for e1 in dlist[1:] :
+            temp = []
+            for j,p1 in enumerate(simple_rqs[e1]):
+                # allpaths[id(p1)].d_id = d.disjunction_id
+                # can use index j in simple_rqs_reversed because index 
+                # of direct and reversed paths have been kept identical
+                p1_reversed = simple_rqs_reversed[e1][j]
+                # print(p1_reversed)
+                # print('\n\n')
+                for k,c in enumerate(dpath) :
+                    # print(f' c: \t{c}')
+                    temp2 = c.copy()
+                    all_disjoint = 0
+                    for p in c :
+                        all_disjoint += isdisjoint(p1,p)+ isdisjoint(p1_reversed,p)
+                    if all_disjoint ==0:
+                        temp2.append(p1)
+                        temp.append(temp2)
+                            # print(f' coucou {e1}: \t{temp}')
+            dpath = temp
+        # print(dpath)
+        candidates[d.disjunction_id] = dpath
+
+    # for i in disjunctions_list  :
+    #     print(f'\n{candidates[i.disjunction_id]}')
+
+    # step 3
+    # now for each request, select the path that satisfies all disjunctions
+    # path must be in candidates[id] for all concerned ids
+    # for example, assume set of sync vectors (disjunction groups) is
+    #   s1 = {rq1 rq2}   s2 = {rq1 rq3}
+    #   candidate[s1] = [[p1 p8]
+    #                    [p3 p8]]
+    #   candidate[s2] = [[p3 p6]]
+    #   for rq1 p3 should be preferred
+
+
+    for pathreq in pathreqlist_disjt:
+        concerned_d_id = [d.disjunction_id for d in disjunctions_list if pathreq.request_id in d.disjunctions_req]
+        # for each set of solution, verify that the same path is used for the same request
+        candidate_paths = simple_rqs[pathreq.request_id]
+        # print('coucou')
+        # print(pathreq.request_id)
+        for p in candidate_paths :
+            iscandidate = 0
+            for sol in concerned_d_id :
+                test = 1
+                # for each solution test if p is part of the solution
+                # if yes, then p can remain a candidate
+                for i,m in enumerate(candidates[sol]) :
+                    if p in m:
+                        if allpaths[id(m[m.index(p)])].req.request_id == pathreq.request_id :
+                            test = 0
+                            break
+                iscandidate += test
+            if iscandidate != 0:
+                for l in concerned_d_id :
+                    for m in candidates[l] :
+                        if p in m :
+                            candidates[l].remove(m)
+
+#    for i in disjunctions_list  :
+#        print(i.disjunction_id)
+#        print(f'\n{candidates[i.disjunction_id]}')
+
+    # step 4 apply route constraints : remove candidate path that do not satisfy the constraint
+    # only in  the case of disjounction: the simple path is processed in request.compute_constrained_path
+    # TODO : keep a version without the loose constraint
+    for d in disjunctions_list  :
+        temp = []
+        for j,sol in enumerate(candidates[d.disjunction_id]) :
+            testispartok = True
+            for i,p in enumerate(sol) :
+                # print(f'test {allpaths[id(p)].req.request_id}')
+                # print(f'length of route {len(allpaths[id(p)].req.nodes_list)}')
+                if allpaths[id(p)].req.nodes_list :
+                    # if p does not containt the ordered list node, remove sol from the candidate
+                    # except if this was the last solution: then check if the constraint is loose or not
+                    if not ispart(allpaths[id(p)].req.nodes_list, p) : 
+                        # print(f'nb of solutions {len(temp)}')
+                        if j < len(candidates[d.disjunction_id])-1 :
+                            msg = f'removing {sol}'
+                            logger.info(msg)
+                            testispartok = False
+                            #break
+                        else:
+                            if 'loose' in allpaths[id(p)].req.loose_list:
+                                logger.info(f'Could not apply route constraint'+
+                                    f'{allpaths[id(p)].req.nodes_list} on request {allpaths[id(p)].req.request_id}')
+                            else :
+                                logger.info(f'removing last solution from candidate paths\n{sol}')
+                                testispartok = False
+            if testispartok :
+                temp.append(sol)
+        candidates[d.disjunction_id] = temp
+
+    # step 5 select the first combination that works
+    pathreslist_disjoint = {}
+    for d in disjunctions_list  :
+        test_sol = True
+        while test_sol:
+            if candidates[d.disjunction_id] :
+                for p in candidates[d.disjunction_id][0]:
+                    if allpaths[id(p)].req in pathreqlist_disjt: 
+                        # print(f'selected path :{p} for req {allpaths[id(p)].req.request_id}')
+                        pathreslist_disjoint[allpaths[id(p)].req] = allpaths[id(p)].pth
+                        pathreqlist_disjt.remove(allpaths[id(p)].req)
+                        candidates = remove_candidate(candidates, allpaths, allpaths[id(p)].req, p)
+                        test_sol = False
+            else:
+                msg = f'No disjoint path found with added constraint'
+                logger.critical(msg)
+                print(f'{msg}\nComputation stopped.')
+                # TODO in this case: replay step 5  with the candidate without constraints
+                exit()
+    
+    # for i in disjunctions_list  :
+    #     print(i.disjunction_id)
+    #     print(f'\n{candidates[i.disjunction_id]}')
+
+    # list the results in the same order as initial pathreqlist        
+    for req in pathreqlist :
+        req.nodes_list.append(req.destination)
+        # we assume that the destination is a strict constraint
+        req.loose_list.append('strict')
+        if req in pathreqlist_simple:
+            path_res_list.append(compute_constrained_path(network, req))
+        else:
+            path_res_list.append(pathreslist_disjoint[req])
+    return path_res_list
+
+def isdisjoint(p1,p2) :
+    # returns 0 if disjoint
+    edge1 = list(pairwise(p1))
+    edge2 = list(pairwise(p2))
+    for e in edge1 :
+        if e in edge2 :
+            return 1
+    return 0
+
+def find_reversed_path(p,network) :
+    # select of intermediate roadms and find the path between them
+    # note that this function may not give an exact result in case of multiple
+    # links between two adjacent nodes. 
+    # TODO add some indication on elements to indicate from which other they 
+    # are the reversed direction
+    reversed_roadm_path = list(reversed([e for e in p if isinstance (e,Roadm)]))
+    source = p[-1]
+    destination = p[0]
+    total_path = [source]
+    for node in reversed_roadm_path :
+        total_path.extend(dijkstra_path(network, source, node)[1:])
+        source = node
+    total_path.append(destination)
+    return total_path
+
+def ispart(a,b) :
+    j = 0
+    for i, el in enumerate(a):
+        if el in b :
+            if b.index(el) >= j :
+                j = b.index(el)
+            else: 
+                return False
+        else:
+            return False
+    return True
+
+def remove_candidate(candidates, allpaths, rq, pth) :
+    # print(f'coucou {rq.request_id}')
+    for key, candidate  in candidates.items() :
+        temp = candidate.copy()
+        for i,sol in enumerate(candidate) :
+            for p in sol :
+                if allpaths[id(p)].req.request_id == rq.request_id :
+                    if id(p) != id(pth) :
+                        temp.remove(sol)
+                        break
+        candidates[key] = temp
+    return candidates
