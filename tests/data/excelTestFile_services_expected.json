@@ -53,9 +53,9 @@
       }
     }
   ],
-  "synchronisation": [
+  "synchronization": [
     {
-      "synchonization-id": "0",
+      "synchronization-id": "0",
       "svec": {
         "relaxable": "False",
         "link-diverse": "True",
@@ -67,7 +67,7 @@
       }
     },
     {
-      "synchonization-id": "1",
+      "synchronization-id": "1",
       "svec": {
         "relaxable": "False",
         "link-diverse": "True",

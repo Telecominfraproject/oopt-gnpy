@@ -178,9 +178,9 @@
       }
     }
   ],
-  "synchronisation": [
+  "synchronization": [
     {
-      "synchonization-id": "0",
+      "synchronization-id": "0",
       "svec": {
         "relaxable": "False",
         "link-diverse": "True",
@@ -192,7 +192,7 @@
       }
     },
     {
-      "synchonization-id": "3",
+      "synchronization-id": "3",
       "svec": {
         "relaxable": "False",
         "link-diverse": "True",
@@ -204,7 +204,7 @@
       }
     },
     {
-      "synchonization-id": "5",
+      "synchronization-id": "5",
       "svec": {
         "relaxable": "False",
         "link-diverse": "True",
