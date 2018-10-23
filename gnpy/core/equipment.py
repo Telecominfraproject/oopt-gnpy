@@ -215,7 +215,7 @@ def equipment_from_json(json_data, filename):
             if key == 'Edfa':
                 if 'advanced_config_from_json' in entry:
                     config = Path(filename).parent / entry.pop('advanced_config_from_json')
-                    equipment[key][subkey] = Amp.from_advanced_json(config, **entry)                    
+                    equipment[key][subkey] = Amp.from_advanced_json(config, **entry)
                 else:
                     config = Path(filename).parent / 'default_edfa_config.json'
                     equipment[key][subkey] = Amp.from_default_json(config, **entry)
