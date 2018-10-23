@@ -132,7 +132,11 @@ def compute_path(network, equipment, pathreqlist):
 
 def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
     
+    # use a list but a dictionnary might be helpful to find path bathsed on request_id
+    # TODO change all these req, dsjct, res lists into dict !
     path_res_list = []
+
+
     # # Build the network once using the default power defined in SI in eqpt config
     # # power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
     # # spacing, f_min and f_max 
@@ -145,6 +149,9 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
     # pathreq.power to be adapted
     for i,pathreq in enumerate(pathreqlist):
 
+        # use the power specified in requests but might be different from the one specified for design
+        # TODO: set the power as an optional parameter for requests definition
+        # if optional, use the one defines in eqt_config.json
         p_db = lin2db(pathreq.power*1e3)
         p_total_db = p_db + lin2db(pathreq.nb_channel)
         print(f'request {pathreq.request_id}')
