@@ -13,7 +13,7 @@ from sys import exit
 from operator import itemgetter
 from math import isclose
 from pathlib import Path
-from json import loads
+from json import load
 from gnpy.core.utils import lin2db, db2lin, load_json
 from collections import namedtuple
 from gnpy.core.elements import Edfa
@@ -44,13 +44,13 @@ class Amp(AmpBase):
     @classmethod
     def from_advanced_json(cls, filename, **kwargs):
         with open(filename) as f:
-            json_data = loads(f.read())
+            json_data = load(f)
         return cls(**{**kwargs, **json_data, 'type_def':None, 'nf_model':None})
 
     @classmethod
     def from_default_json(cls, filename, **kwargs):
         with open(filename) as f:
-            json_data = loads(f.read())
+            json_data = load(f)
         type_variety = kwargs['type_variety']
         type_def = kwargs.get('type_def', 'variable_gain') #default compatibility with older json eqpt files
         nf_def = None
@@ -208,17 +208,17 @@ def equipment_from_json(json_data, filename):
     """
     equipment = {}
     for key, entries in json_data.items():
+        equipment[key] = {}
+        typ = globals()[key]
         for entry in entries:
-            if key not in equipment:
-                equipment[key] = {}
-            subkey = entry.get('type_variety', 'default')
-            typ = globals()[key]
+            subkey = entry.get('type_variety', 'default')           
             if key == 'Edfa':
                 if 'advanced_config_from_json' in entry:
                     config = Path(filename).parent / entry.pop('advanced_config_from_json')
-                    typ = lambda **kws: Amp.from_advanced_json(config, **kws)
+                    equipment[key][subkey] = Amp.from_advanced_json(config, **entry)
                 else:
                     config = Path(filename).parent / 'default_edfa_config.json'
-                    typ = lambda **kws: Amp.from_default_json(config, **kws)
-            equipment[key][subkey] = typ(**entry)
+                    equipment[key][subkey] = Amp.from_default_json(config, **entry)
+            else:                
+                equipment[key][subkey] = typ(**entry)
     return equipment
