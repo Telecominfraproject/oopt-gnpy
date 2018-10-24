@@ -24,7 +24,7 @@ from numpy import mean
 from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
 from gnpy.core.utils import load_json
 from gnpy.core.network import load_network, build_network, set_roadm_loss
-from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch
+from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch, automatic_spacing
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.request import (Path_request, Result_element, compute_constrained_path,
@@ -72,7 +72,25 @@ def requests_from_json(json_data,equipment):
             params['power'] = req['path-constraints']['te-bandwidth']['output-power']
         # same process for nb-channel
         if req['path-constraints']['te-bandwidth']['max-nb-of-channel'] :
-            params['nb_channel'] = req['path-constraints']['te-bandwidth']['max-nb-of-channel']
+            # check if requested nb_channels is consistant with baudrate and min-max frequencies
+            min_recommanded_spacing = automatic_spacing(trx_params['baud_rate'])
+            fmin = trx_params['frequency']['min']
+            fmax = trx_params['frequency']['max']
+            max_recommanded_nb_channels = automatic_nch(fmin,fmax,
+                min_recommanded_spacing)
+                
+            if req['path-constraints']['te-bandwidth']['max-nb-of-channel'] <= max_recommanded_nb_channels :
+                params['nb_channel'] = req['path-constraints']['te-bandwidth']['max-nb-of-channel']
+            else:
+                temp = params['baud_rate']
+
+                msg = f'Requested channel number is not consistant with frequency range  : \
+                \n{fmin*1e-12} THz, {fmax*1e-12} THz and baud rate: {temp*1e-9} GHz \
+                \nmin recommanded spacing is {min_recommanded_spacing}\
+                \nmax recommanded nb of channels is {max_recommanded_nb_channels}\
+                \nComputation stopped.'
+                logger.critical(msg)
+                raise ValueError(msg)
         requests_list.append(Path_request(**params))
     return requests_list
 

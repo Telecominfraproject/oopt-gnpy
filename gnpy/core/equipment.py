@@ -158,6 +158,8 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
         trx_params['frequency'] = equipment['Transceiver'][trx_type_variety].frequency
         # TODO: novel automatic feature maybe unwanted if spacing is specified
         trx_params['spacing'] = automatic_spacing(trx_params['baud_rate'])
+        temp = trx_params['spacing']
+        print(f'spacing {temp}')
     except StopIteration :
         if error_message:
             print(f'could not find tsp : {trx_type_variety} with mode: {trx_mode} in eqpt library')
@@ -180,7 +182,8 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
 
 def automatic_spacing(baud_rate):
     """return the min possible channel spacing for a given baud rate"""
-    spacing_list = [(38e9,50e9), (67e9,75e9), (92e9,100e9)] #list of possible tuples
+    # TODO : this should parametrized in a cfg file
+    spacing_list = [(33e9,37.5e9), (38e9,50e9), (50e9,62.5e9), (67e9,75e9), (92e9,100e9)] #list of possible tuples
                                                 #[(max_baud_rate, spacing_for_this_baud_rate)]
     acceptable_spacing_list = list(filter(lambda x : x[0]>baud_rate, spacing_list))
     if len(acceptable_spacing_list) < 1:
