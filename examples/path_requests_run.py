@@ -62,10 +62,17 @@ def requests_from_json(json_data,equipment):
         params['spacing'] = req['path-constraints']['te-bandwidth']['spacing']
 
         # recover trx physical param (baudrate, ...) from type and mode
+        # in trx_mode_params optical power is read from equipment['SI']['default'] and
+        # nb_channel is computed based on min max frequency and spacing
         trx_params = trx_mode_params(equipment,params['trx_type'],params['trx_mode'],True)
         params.update(trx_params)
-        params['power'] = req['path-constraints']['te-bandwidth']['output-power']
-        params['nb_channel'] = req['path-constraints']['te-bandwidth']['max-nb-of-channel']
+        # optical power might be set differently in the request. if it is indicated then the 
+        # params['power'] is updated
+        if req['path-constraints']['te-bandwidth']['output-power']:
+            params['power'] = req['path-constraints']['te-bandwidth']['output-power']
+        # same process for nb-channel
+        if req['path-constraints']['te-bandwidth']['max-nb-of-channel'] :
+            params['nb_channel'] = req['path-constraints']['te-bandwidth']['max-nb-of-channel']
         requests_list.append(Path_request(**params))
     return requests_list
 

@@ -68,7 +68,8 @@ class Path_request:
                             f'baud_rate:\t{self.baud_rate * 1e-9} Gbaud',
                             f'bit_rate:\t{self.bit_rate * 1e-9} Gb/s',
                             f'spacing:\t{self.spacing * 1e-9} GHz',
-                            f'power:  \t{round(lin2db(self.power)+30,2)} dBm'
+                            f'power:  \t{round(lin2db(self.power)+30,2)} dBm',
+                            f'nb channels: \t{self.nb_channel}'
                             '\n'])
 class Disjunction:
     def __init__(self, *args, **params):
@@ -570,6 +571,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     for d in disjunctions_list  :
         test_sol = True
         while test_sol:
+            # print('coucou')
             if candidates[d.disjunction_id] :
                 for p in candidates[d.disjunction_id][0]:
                     if allpaths[id(p)].req in pathreqlist_disjt: 
