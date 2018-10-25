@@ -111,7 +111,9 @@ class Request_element(Element):
             # print(msg)
 
         self.loose = 'loose'
+        print(Request.is_loose)
         if Request.is_loose == 'no' :
+            print(Request.is_loose)
             self.loose = 'strict'
 
     uid = property(lambda self: repr(self))

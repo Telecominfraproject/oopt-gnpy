@@ -23,7 +23,7 @@ from networkx import (draw_networkx_nodes, draw_networkx_edges,
 from numpy import mean
 from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
 from gnpy.core.utils import load_json
-from gnpy.core.network import load_network, build_network, set_roadm_loss
+from gnpy.core.network import load_network, build_network, set_roadm_loss, save_network
 from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch, automatic_spacing
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
@@ -205,22 +205,29 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
 def correct_route_list(network, pathreqlist):
     # prepares the format of route list of nodes to be consistant
     # remove wrong names, remove endpoints
-    roadms = [n.uid for n in network.nodes() if isinstance(n, Roadm)]
+    anytype = [n.uid for n in network.nodes()]
     for pathreq in pathreqlist:
         for i,n_id in enumerate(pathreq.nodes_list):
             # replace possibly wrong name with a formated roadm name
-            if n_id not in [n.uid for n in network.nodes()]:
-                nodes_suggestion = [uid for uid in roadms \
+            print(n_id)
+            if n_id not in anytype :
+                nodes_suggestion = [uid for uid in anytype \
                     if n_id.lower() in uid.lower()]
-                if len(nodes_suggestion)>0 :
-                    new_n = nodes_suggestion[0]
-                    print(f'invalid route node specified:\
-                    \n\'{n_id}\', replaced with \'{new_n}\'')
-                    pathreq.nodes_list[i] = new_n
+                if pathreq.loose_list[i] == 'loose':
+                    if len(nodes_suggestion)>0 :
+                        new_n = nodes_suggestion[0]
+                        print(f'invalid route node specified:\
+                        \n\'{n_id}\', replaced with \'{new_n}\'')
+                        pathreq.nodes_list[i] = new_n
+                    else:
+                        print(f'invalid route node specified \'{n_id}\', could not use it as constraint, skipped!')
+                        pathreq.nodes_list.remove(n_id)
+                        pathreq.loose_list.pop(i)
                 else:
-                    print(f'invalid route node specified \'{n_id}\', could not use it as constraint, skipped!')
-                    pathreq.nodes_list.remove(n_id)
-                    pathreq.loose_list.pop(i)
+                    msg = f'could not find node : {n_id} in network topology. Strict constraint can not be applied.'
+                    logger.critical(msg)
+                    raise ValueError(msg)
+
         # TODO remove endpoints from this list in case they were added by the user in the xls or json files
     return pathreqlist
 
@@ -251,6 +258,7 @@ if __name__ == '__main__':
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
         equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
+    save_network(args.network_filename, network)
 
     rqs = requests_from_json(data, equipment)
     rqs = correct_route_list(network, rqs)

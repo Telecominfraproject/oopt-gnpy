@@ -236,6 +236,7 @@ def compute_constrained_path(network, req):
     trx = [n for n in network.nodes() if isinstance(n, Transceiver)]
     roadm = [n for n in network.nodes() if isinstance(n, Roadm)]
     edfa = [n for n in network.nodes() if isinstance(n, Edfa)]
+    anytypenode = [n for n in network.nodes()]
     source = next(el for el in trx if el.uid == req.source)
     # start the path with its source
     # TODO : avoid loops due to constraints , guess name based on string,
@@ -246,16 +247,16 @@ def compute_constrained_path(network, req):
             node = next(el for el in trx if el.uid == n)
         except StopIteration:
             try:
-                node = next(el for el in roadm if el.uid == n)
+                node = next(el for el in anytypenode if el.uid == n)
             except StopIteration:
                 try:
                     # TODO this test is not giving good results: full name of the 
                     # amp is required to avoid ambiguity on the direction
-                    node = next(el for el in edfa 
+                    node = next(el for el in anytypenode 
                         if el.uid.find(f'{n}'))
                 except StopIteration:
                     msg = f'could not find node : {n} in network topology: \
-                        not a trx, roadm, edfa or fused element'
+                        not a trx, roadm, edfa, fiber or fused element'
                     logger.critical(msg)
                     raise ValueError(msg)
         # extend path list without repeating source -> skip first element in the list
