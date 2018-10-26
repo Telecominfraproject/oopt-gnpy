@@ -73,11 +73,11 @@ class Request_element(Element):
             exit()
         # excel input are in GHz and dBm
         self.spacing = Request.spacing * 1e9
-        if Request.power :
+        if Request.power is not None:
             self.power =  db2lin(Request.power) * 1e-3
         else:
             self.power = None
-        if Request.nb_channel :
+        if Request.nb_channel is not None :
             self.nb_channel = int(Request.nb_channel)
         else:
             self.nb_channel = None

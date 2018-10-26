@@ -105,7 +105,7 @@
           {
             "index": 0,
             "unnumbered-hop": {
-              "node-id": "e",
+              "node-id": "roadm e",
               "link-tp-id": "link-tp-id is not used",
               "hop-type": "loose",
               "direction": "direction is not used"
@@ -120,7 +120,7 @@
           {
             "index": 1,
             "unnumbered-hop": {
-              "node-id": "g",
+              "node-id": "roadm g",
               "link-tp-id": "link-tp-id is not used",
               "hop-type": "loose",
               "direction": "direction is not used"
@@ -324,7 +324,7 @@
           {
             "index": 0,
             "unnumbered-hop": {
-              "node-id": "e",
+              "node-id": "roadm e",
               "link-tp-id": "link-tp-id is not used",
               "hop-type": "loose",
               "direction": "direction is not used"
@@ -339,7 +339,7 @@
           {
             "index": 1,
             "unnumbered-hop": {
-              "node-id": "g",
+              "node-id": "roadm g",
               "link-tp-id": "link-tp-id is not used",
               "hop-type": "loose",
               "direction": "direction is not used"
