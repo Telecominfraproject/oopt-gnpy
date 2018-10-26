@@ -28,7 +28,7 @@ from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch, 
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.request import (Path_request, Result_element, compute_constrained_path,
-                              propagate, jsontocsv, Disjunction, compute_path_dsjctn)
+                              propagate, jsontocsv, Disjunction, compute_path_dsjctn, requests_aggregation)
 from copy import copy, deepcopy
 from textwrap import dedent
 
@@ -92,6 +92,11 @@ def requests_from_json(json_data,equipment):
                 Computation stopped.''')
                 logger.critical(msg)
                 raise ValueError(msg)
+
+        try :
+            params['bit_rate'] = req['path-constraints']['te-bandwidth']['path_bandwidth']
+        except KeyError:
+            pass
         requests_list.append(Path_request(**params))
     return requests_list
 
@@ -262,7 +267,9 @@ if __name__ == '__main__':
     save_network(args.network_filename, network)
 
     rqs = requests_from_json(data, equipment)
+    print(rqs)
     rqs = correct_route_list(network, rqs)
+    rqs = requests_aggregation(rqs)
     print('The following services have been requested:')
     print(rqs)
     # pths = compute_path(network, equipment, rqs)

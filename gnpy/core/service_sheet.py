@@ -23,7 +23,7 @@ from pathlib import Path
 from gnpy.core.equipment import load_equipment
 from gnpy.core.utils import db2lin, lin2db
 
-SERVICES_COLUMN = 11
+SERVICES_COLUMN = 12
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
 
 all_rows = lambda sheet, start=0: (sheet.row(x) for x in range(start, sheet.nrows))
@@ -31,9 +31,9 @@ logger = getLogger(__name__)
 
 # Type for input data
 class Request(namedtuple('Request', 'request_id source destination trx_type mode \
-    spacing power nb_channel disjoint_from nodes_list is_loose')):
-    def __new__(cls, request_id, source, destination, trx_type,  mode , spacing , power = None, nb_channel = None , disjoint_from ='' ,  nodes_list = None, is_loose = ''):
-        return super().__new__(cls, request_id, source, destination, trx_type, mode, spacing, power, nb_channel, disjoint_from,  nodes_list, is_loose)
+    spacing power nb_channel disjoint_from nodes_list is_loose path_bandwidth')):
+    def __new__(cls, request_id, source, destination, trx_type,  mode=None , spacing= None , power = None, nb_channel = None , disjoint_from ='' ,  nodes_list = None, is_loose = '', path_bandwidth = None):
+        return super().__new__(cls, request_id, source, destination, trx_type, mode, spacing, power, nb_channel, disjoint_from,  nodes_list, is_loose, path_bandwidth)
 
 # Type for output data:  // from dutc
 class Element:
@@ -64,8 +64,10 @@ class Request_element(Element):
         try :
             if equipment['Transceiver'][Request.trx_type]:
                 self.trx_type = Request.trx_type
-            if [mode for mode in equipment['Transceiver'][Request.trx_type].mode]:
-                self.mode = Request.mode
+            if Request.mode is not None :
+                if [mode for mode in equipment['Transceiver'][Request.trx_type].mode]:
+                    self.mode = Request.mode
+
         except KeyError:
             msg = f'could not find tsp : {Request.trx_type} with mode: {Request.mode} in eqpt library \nComputation stopped.'
             #print(msg)
@@ -115,11 +117,16 @@ class Request_element(Element):
         if Request.is_loose == 'no' :
             print(Request.is_loose)
             self.loose = 'strict'
+        else :
+            print(f'esther{Request.is_loose}')
+        self.path_bandwidth = None
+        if Request.path_bandwidth is not None:
+            self.path_bandwidth = Request.path_bandwidth * 1e9
 
     uid = property(lambda self: repr(self))
     @property
     def pathrequest(self):
-        return {
+        req_dictionnary = {
                     'request-id':self.request_id,
                     'source':    self.source,
                     'destination':  self.destination,
@@ -134,6 +141,7 @@ class Request_element(Element):
                             'spacing'   : self.spacing,
                             'max-nb-of-channel'  : self.nb_channel,
                             'output-power'       : self.power
+                            # 'path_bandwidth'       : self.path_bandwidth 
                         }
                     },
                     'optimizations': {
@@ -143,7 +151,7 @@ class Request_element(Element):
                             'unnumbered-hop':{
                                 'node-id': f'{node}',
                                 'link-tp-id': 'link-tp-id is not used',
-                                'hop-type': 'loose',
+                                'hop-type': f'{self.loose}',
                                 'direction': 'direction is not used'
                             },
                             'label-hop':{
@@ -158,6 +166,10 @@ class Request_element(Element):
 
                 }
             }
+        if self.path_bandwidth is not None:
+            req_dictionnary['path-constraints']['te-bandwidth']['path_bandwidth'] = self.path_bandwidth
+            
+        return req_dictionnary
     @property
     def pathsync(self):
         if self.disjoint_from :
@@ -206,19 +218,24 @@ def parse_excel(input_filename):
 
 def parse_service_sheet(service_sheet):
         logger.info(f'Validating headers on {service_sheet.name!r}')
-        header = [x.value.strip() for x in service_sheet.row(4)[0:SERVICES_COLUMN]]
-        expected = ['route id', 'Source', 'Destination', 'TRX type', \
-         'Mode', 'System: spacing', 'System: input power (dBm)', 'System: nb of channels',\
-         'routing: disjoint from', 'routing: path', 'routing: is loose?']
-        if header != expected:
-            msg = f'Malformed header on Service sheet: {header} != {expected}'
+        # add a test on field to enable the '' field case that arises when columns on the 
+        # right hand side are used as comments or drawing in the excel sheet
+        header = [x.value.strip() for x in service_sheet.row(4)[0:SERVICES_COLUMN] if len(x.value.strip())>0]
+
+        # create a service_fieldname independant from the excel column order
+        # to be compatible with any version of the sheet
+        # the following dictionnary records the excel field names and the corresponding parameter's name
+
+        authorized_fieldnames = {'route id':'request_id', 'Source':'source', 'Destination':'destination', \
+         'TRX type':'trx_type', 'Mode' : 'mode', 'System: spacing':'spacing', \
+         'System: input power (dBm)':'power', 'System: nb of channels':'nb_channel',\
+         'routing: disjoint from': 'disjoint_from', 'routing: path':'nodes_list',\
+         'routing: is loose?':'is_loose', 'path bandwidth':'path_bandwidth'}
+        try :
+            service_fieldnames = [authorized_fieldnames[e] for e in header]
+        except KeyError:
+            msg = f'Malformed header on Service sheet: {header} field not in {authorized_fieldnames}'
             logger.critical(msg)
             raise ValueError(msg)
-
-        service_fieldnames = 'request_id source destination trx_type mode spacing power nb_channel disjoint_from nodes_list is_loose'.split()
-        # Important Note: it reads all colum on each row so that
-        # it is not possible to write annotation in the excel sheet
-        # outside the SERVICES_COLUMN ...  TO BE IMPROVED
-        # request_id should be unique for disjunction constraints (not used yet)
         for row in all_rows(service_sheet, start=5):
             yield Request(**parse_row(row[0:SERVICES_COLUMN], service_fieldnames))
