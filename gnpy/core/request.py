@@ -69,7 +69,9 @@ class Path_request:
                             f'bit_rate:\t{self.bit_rate * 1e-9} Gb/s',
                             f'spacing:\t{self.spacing * 1e-9} GHz',
                             f'power:  \t{round(lin2db(self.power)+30,2)} dBm',
-                            f'nb channels: \t{self.nb_channel}'
+                            f'nb channels: \t{self.nb_channel}',
+                            f'nodes-list:\t{self.nodes_list}',
+                            f'loose-list:\t{self.loose_list}'
                             '\n'])
 class Disjunction:
     def __init__(self, *args, **params):
@@ -629,6 +631,8 @@ def find_reversed_path(p,network) :
     return total_path
 
 def ispart(a,b) :
+    # the functions takes two paths a and b and retrns True
+    # if all a elements are part of b and in the same order
     j = 0
     for i, el in enumerate(a):
         if el in b :
@@ -652,3 +656,40 @@ def remove_candidate(candidates, allpaths, rq, pth) :
                         break
         candidates[key] = temp
     return candidates
+
+def compare_reqs(req1,req2) :
+    if req1.source     == req2.source and \
+        req1.destination == req2.destination and  \
+        req1.tsp        == req2.tsp and \
+        req1.tsp_mode   == req2.tsp_mode and \
+        req1.baud_rate  == req2.baud_rate and \
+        req1.nodes_list == req2.nodes_list and \
+        req1.loose_list == req2.loose_list and \
+        req1.spacing    == req2.spacing and \
+        req1.power      == req2.power and \
+        req1.nb_channel == req2.nb_channel and \
+        req1.frequency  == req2.frequency and \
+        req1.format     == req2.format and \
+        req1.OSNR       == req2.OSNR and \
+        req1.roll_off   == req2.roll_off :
+        print(f'coucou {req1.request_id}  {req2.request_id}')
+        print(f'{req1.nodes_list} == {req2.nodes_list}')
+        return True
+    else:
+        return False
+
+def requests_aggregation(pathreqlist) :
+    # this function aggregates requests so that if several requests
+    # exist between same source and destination and with same transponder type
+    # todo maybe add conditions on mode ??, spacing ...
+    # currently if undefined takes the default values
+    local_list = pathreqlist.copy()
+    for req in local_list:
+        for r in local_list : 
+            if  req.request_id != r.request_id and compare_reqs(req, r):
+                # aggregate
+                req.bit_rate += r.bit_rate
+                req.request_id = ' | '.join((req.request_id,r.request_id))
+                # remove request from list
+                local_list.remove(r)
+    return local_list
