@@ -115,6 +115,6 @@ if __name__ == '__main__':
 
     if args.output:
         with open(args.output, 'w', encoding='utf-8') as f:
-            dump(result, f, default=encode_sets, indent=2)
+            dump(result, f, default=encode_sets, indent=2, ensure_ascii=False)
     else:
         print(str(result))

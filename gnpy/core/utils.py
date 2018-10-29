@@ -25,7 +25,7 @@ def load_json(filename):
 
 def save_json(obj, filename):
     with open(filename, 'w', encoding='utf-8') as f:
-        json.dump(obj, f, indent=2)
+        json.dump(obj, f, indent=2, ensure_ascii=False)
 
 def write_csv(obj, filename):
     """
