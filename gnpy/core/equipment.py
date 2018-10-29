@@ -43,13 +43,13 @@ class Amp(AmpBase):
 
     @classmethod
     def from_advanced_json(cls, filename, **kwargs):
-        with open(filename) as f:
+        with open(filename, encoding='utf-8') as f:
             json_data = load(f)
         return cls(**{**kwargs, **json_data, 'type_def':None, 'nf_model':None})
 
     @classmethod
     def from_default_json(cls, filename, **kwargs):
-        with open(filename) as f:
+        with open(filename, encoding='utf-8') as f:
             json_data = load(f)
         type_variety = kwargs['type_variety']
         type_def = kwargs.get('type_def', 'variable_gain') #default compatibility with older json eqpt files

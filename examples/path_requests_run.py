@@ -74,7 +74,7 @@ def load_requests(filename,eqpt_filename):
         logger.info('Automatically converting requests from XLS to JSON')
         json_data = convert_service_sheet(filename,eqpt_filename)
     else:
-        with open(filename) as f:
+        with open(filename, encoding='utf-8') as f:
             json_data = loads(f.read())
     return json_data
 

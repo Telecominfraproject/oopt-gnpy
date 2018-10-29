@@ -220,7 +220,7 @@ def convert_file(input_filename, filter_region=[]):
     full_input_filename = str(input_filename)
     split_filename = [full_input_filename[0:len(full_input_filename)-len(suffix_filename)] , suffix_filename[1:]]
     output_json_file_name = split_filename[0]+'.json'
-    with  open(output_json_file_name,'w') as edfa_json_file:
+    with  open(output_json_file_name, 'w', encoding='utf-8') as edfa_json_file:
         edfa_json_file.write(dumps(data, indent=2))
     return output_json_file_name
 

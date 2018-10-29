@@ -105,16 +105,16 @@ def encode_sets(obj):
 if __name__ == '__main__':
     args = parser.parse_args()
 
-    with open(args.expected_output) as f:
+    with open(args.expected_output, encoding='utf-8') as f:
         expected = load(f)
 
-    with open(args.actual_output) as f:
+    with open(args.actual_output, encoding='utf-8') as f:
         actual = load(f)
 
     result = COMPARISONS[args.comparison](expected, actual)
 
     if args.output:
-        with open(args.output, 'w') as f:
+        with open(args.output, 'w', encoding='utf-8') as f:
             dump(result, f, default=encode_sets, indent=2)
     else:
         print(str(result))
