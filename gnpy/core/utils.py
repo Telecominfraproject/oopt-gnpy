@@ -18,14 +18,14 @@ from scipy import constants
 
 
 def load_json(filename):
-    with open(filename, 'r') as f:
+    with open(filename, 'r', encoding='utf-8') as f:
         data = json.load(f)
     return data
 
 
 def save_json(obj, filename):
-    with open(filename, 'w') as f:
-        json.dump(obj, f, indent=2)
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(obj, f, indent=2, ensure_ascii=False)
 
 def write_csv(obj, filename):
     """
@@ -55,7 +55,7 @@ def write_csv(obj, filename):
     result_category 2
     ...
     """
-    with open(filename, 'w') as f:
+    with open(filename, 'w', encoding='utf-8') as f:
         w = writer(f)
         for data_key, data_list in obj.items():
             #main header

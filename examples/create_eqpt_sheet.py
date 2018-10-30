@@ -70,7 +70,7 @@ def read_excel(input_filename):
 
 def create_eqt_template(links,nodes, links_by_src , links_by_dest, input_filename):
     output_filename = f'{input_filename[:-4]}_eqpt_sheet.txt'
-    with open(output_filename,'w') as my_file :
+    with open(output_filename, 'w', encoding='utf-8') as my_file:
         # print header similar to excel
         my_file.write('OPTIONAL\n\n\n\
            \t\tNode a egress amp (from a to z)\t\t\t\t\tNode a ingress amp (from z to a) \

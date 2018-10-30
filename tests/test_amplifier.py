@@ -5,7 +5,7 @@
 
 from gnpy.core.elements import Edfa
 from numpy import zeros, array
-from json import load, dumps
+from json import load
 from gnpy.core.elements import Transceiver, Fiber, Edfa
 from gnpy.core.utils import lin2db, db2lin
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref

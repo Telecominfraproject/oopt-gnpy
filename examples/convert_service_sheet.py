@@ -25,7 +25,7 @@ if __name__ == '__main__':
     basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(args.verbose, CRITICAL))
     logger.info(f'Converting Service sheet {args.workbook!r} into gnpy JSON format')
     if args.output is None:
-        data = convert_service_sheet(args.workbook,'eqpt_config.json')
-        print(dumps(data, indent=2))
+        data = convert_service_sheet(args.workbook, 'eqpt_config.json')
+        print(dumps(data, indent=2, ensure_ascii=False))
     else:
         data = convert_service_sheet(args.workbook,'eqpt_config.json',args.output)
