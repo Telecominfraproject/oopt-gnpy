@@ -47,7 +47,6 @@ def requests_from_json(json_data,equipment):
     requests_list = []
 
     for req in json_data['path-request']:
-        # print(f'{req}')
         # init all params from request
         params = {}
         params['request_id'] = req['request-id']
