@@ -89,10 +89,6 @@ def requests_from_json(json_data,equipment):
                 min recommanded spacing is {min_recommanded_spacing}
                 max recommanded nb of channels is {max_recommanded_nb_channels}
                 Computation stopped.''')
-                \n{fmin*1e-12} THz, {fmax*1e-12} THz and baud rate: {temp*1e-9} GHz \
-                \nmin recommanded spacing is {min_recommanded_spacing}\
-                \nmax recommanded nb of channels is {max_recommanded_nb_channels}\
-                \nComputation stopped.'
                 logger.critical(msg)
                 raise ValueError(msg)
         requests_list.append(Path_request(**params))
