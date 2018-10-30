@@ -148,38 +148,40 @@ if __name__ == '__main__':
         for uid in transceivers:
             print(uid)
         exit()
-
+    
+    #First try to find exact match if source/destination provided
     if args.source:
-        try:
-            source = next(transceivers[uid] for uid in transceivers if uid == args.source)
-        except StopIteration as e:
-            #TODO code a more advanced regex to find nodes match
-            nodes_suggestion = [uid for uid in transceivers \
-                if args.source.lower() in uid.lower()]
-            source = transceivers[nodes_suggestion[0]] \
-                if len(nodes_suggestion)>0 else list(transceivers.values())[0]
-            print(f'invalid souce node specified, did you mean:\
-                  \n{nodes_suggestion}?\
-                  \n{args.source!r}, replaced with {source.uid}')
-            del transceivers[source.uid]
+        source = transceivers.pop(args.source, None)
+        valid_source = True if source else False
     else:
+        source = None
         logger.info('No source node specified: picking random transceiver')
-        source = list(transceivers.values())[0]
-
+        
     if args.destination:
-        try:
-            destination = next(transceivers[uid] for uid in transceivers if uid == args.destination)
-        except StopIteration as e:
-            nodes_suggestion = [uid for uid in transceivers \
-                if args.destination.lower() in uid.lower()]
-            destination = transceivers[nodes_suggestion[0]] \
-                if len(nodes_suggestion)>0 else list(transceivers.values())[0]
-            print(f'invalid destination node specified, did you mean:\
-                \n{nodes_suggestion}?\
-                \n{args.destination!r}, replaced with {destination.uid}')
+        destination = transceivers.pop(args.destination, None)
+        valid_destination = True if destination else False
     else:
-        logger.info('No source node specified: picking random transceiver')
-        destination = list(transceivers.values())[1]
+        destination = None
+        logger.info('No destination node specified: picking random transceiver')
+    
+    #If no exact match try to find partial match
+    if args.source and not source:
+        #TODO code a more advanced regex to find nodes match
+        source = next((transceivers.pop(uid) for uid in transceivers \
+                  if args.source.lower() in uid.lower()), None)
+ 
+    if args.destination and not destination:
+        #TODO code a more advanced regex to find nodes match
+        destination = next((transceivers.pop(uid) for uid in transceivers \
+                  if args.destination.lower() in uid.lower()), None)
+    
+    #If no partial match or no source/destination provided pick random
+    if not source:
+        source = list(transceivers.values())[0]
+        del transceivers[source.uid]
+    
+    if not destination:
+        destination = list(transceivers.values())[0]
 
     logger.info(f'source = {args.source!r}')
     logger.info(f'destination = {args.destination!r}')
@@ -201,5 +203,15 @@ if __name__ == '__main__':
     path = main(network, equipment, source, destination, req)
     save_network(args.filename, network)
 
+    if not args.source:
+        print(f'\n(No source node specified: picked {source.uid})')
+    elif not valid_source:
+        print(f'\n(Invalid source node {args.source!r} replaced with {source.uid})')
+        
+    if not args.destination:
+        print(f'\n(No destination node specified: picked {destination.uid})')
+    elif not valid_destination:
+        print(f'\n(Invalid destination node {args.destination!r} replaced with {destination.uid})')
+    
     if args.plot:
         plot_results(network, path, source, destination)
