@@ -74,7 +74,7 @@ def load_requests(filename,eqpt_filename):
         logger.info('Automatically converting requests from XLS to JSON')
         json_data = convert_service_sheet(filename,eqpt_filename)
     else:
-        with open(filename) as f:
+        with open(filename, encoding='utf-8') as f:
             json_data = loads(f.read())
     return json_data
 
@@ -159,7 +159,7 @@ if __name__ == '__main__':
         for p in test:
             result.append(Result_element(pths[test.index(p)],p))
         with open(args.output, 'w') as f:
-            f.write(dumps(path_result_json(result), indent=2))
+            f.write(dumps(path_result_json(result), indent=2, ensure_ascii=False))
             fnamecsv = next(s for s in args.output.split('.')) + '.csv'
             with open(fnamecsv,"w") as fcsv :
                 jsontocsv(path_result_json(result),equipment,fcsv)

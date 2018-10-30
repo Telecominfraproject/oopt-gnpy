@@ -5,7 +5,7 @@
 
 from gnpy.core.elements import Edfa
 import numpy as np
-from json import load, dumps
+from json import load
 import pytest
 from gnpy.core.elements import Transceiver, Fiber, Edfa
 from gnpy.core.utils import lin2db, db2lin
