@@ -189,7 +189,7 @@ def convert_service_sheet(input_filename, eqpt_filename, output_filename='', fil
         if n.json[1] is not None]
     }
     with open(output_filename, 'w') as f:
-            f.write(dumps(data, indent=2))
+            f.write(dumps(data, indent=2, ensure_ascii=False))
     return data
 
 # to be used from dutc

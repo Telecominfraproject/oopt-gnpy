@@ -64,6 +64,16 @@
             "type_variety": "SSMF",
             "dispersion": 1.67e-05,
             "gamma": 0.00127
+            },
+            {
+            "type_variety": "NZDF",
+            "dispersion": 0.5e-05,
+            "gamma": 0.00146
+            },
+            {
+            "type_variety": "LOF",
+            "dispersion": 2.2e-05,
+            "gamma": 0.000843
             }
       ],
       "Spans":[{
