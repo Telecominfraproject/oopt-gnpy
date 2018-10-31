@@ -148,18 +148,27 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
     """return the trx and SI parameters from eqpt_config for a given type_variety and mode (ie format)"""
     trx_params = {}
     default_si_data = equipment['SI']['default']
+    print(trx_mode)
     try:
         trxs = equipment['Transceiver']
-        mode_params = next(mode for trx in trxs \
-                    if trx == trx_type_variety \
-                    for mode in trxs[trx].mode \
-                    if mode['format'] == trx_mode)
+        if trx_mode is not None:
+            mode_params = next(mode for trx in trxs \
+                        if trx == trx_type_variety \
+                        for mode in trxs[trx].mode \
+                        if mode['format'] == trx_mode)
+        else:
+            mode_params = {"format": "undetermined",
+                       "baud_rate": None,
+                       "OSNR": None,
+                       "bit_rate": None,
+                       "roll_off": None}
         trx_params = {**mode_params}
         trx_params['frequency'] = equipment['Transceiver'][trx_type_variety].frequency
+        
         # TODO: novel automatic feature maybe unwanted if spacing is specified
-        trx_params['spacing'] = automatic_spacing(trx_params['baud_rate'])
-        temp = trx_params['spacing']
-        print(f'spacing {temp}')
+        # trx_params['spacing'] = automatic_spacing(trx_params['baud_rate'])
+        # temp = trx_params['spacing']
+        # print(f'spacing {temp}')
     except StopIteration :
         if error_message:
             print(f'could not find tsp : {trx_type_variety} with mode: {trx_mode} in eqpt library')
@@ -167,17 +176,21 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             exit()
         else:
             # default transponder charcteristics
+            # mainly used with transmission_main_example.py
             trx_params['frequency'] = {'min': default_si_data.f_min, 'max': default_si_data.f_max}
             trx_params['baud_rate'] = default_si_data.baud_rate
             trx_params['spacing'] = default_si_data.spacing
             trx_params['OSNR'] = default_si_data.OSNR
             trx_params['bit_rate'] = default_si_data.bit_rate
             trx_params['roll_off'] = default_si_data.roll_off
+            trx_params['nb_channel'] = automatic_nch(trx_params['frequency']['min'],
+                                        trx_params['frequency']['max'],
+                                        trx_params['spacing'])
     trx_params['power'] =  db2lin(default_si_data.power_dbm)*1e-3
-    trx_params['nb_channel'] = automatic_nch(trx_params['frequency']['min'],
-                                             trx_params['frequency']['max'],
-                                             trx_params['spacing'])
-    print('N channels = ', trx_params['nb_channel'])
+    # trx_params['nb_channel'] = automatic_nch(trx_params['frequency']['min'],
+    #                                          trx_params['frequency']['max'],
+    #                                          trx_params['spacing'])
+    # print('N channels = ', trx_params['nb_channel'])
     return trx_params
 
 def automatic_spacing(baud_rate):

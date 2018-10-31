@@ -60,13 +60,20 @@ class Path_request:
                             f'source:       {self.source}',
                             f'destination:  {self.destination}'])
     def __repr__(self):
+        if self.baud_rate is not None:
+            temp = self.baud_rate * 1e-9
+            temp2 = self.bit_rate * 1e-9
+        else:
+            temp = self.baud_rate
+            temp2 = self.bit_rate
+
         return '\n\t'.join([  f'{type(self).__name__} {self.request_id}',
                             f'source: \t{self.source}',
                             f'destination:\t{self.destination}',
                             f'trx type:\t{self.tsp}',
                             f'trx mode:\t{self.tsp_mode}',
-                            f'baud_rate:\t{self.baud_rate * 1e-9} Gbaud',
-                            f'bit_rate:\t{self.bit_rate * 1e-9} Gb/s',
+                            f'baud_rate:\t{temp} Gbaud',
+                            f'bit_rate:\t{temp2} Gb/s',
                             f'spacing:\t{self.spacing * 1e-9} GHz',
                             f'power:  \t{round(lin2db(self.power)+30,2)} dBm',
                             f'nb channels: \t{self.nb_channel}',
@@ -289,6 +296,38 @@ def propagate(path, req, equipment, show=False):
             print(el)
     return path
 
+def propagate_and_optimize_mode(path, req, equipment, show=False):
+    #update roadm loss in case of power sweep (power mode only)
+    set_roadm_loss(path, equipment, lin2db(req.power*1e3))
+    # if mode is unknown : loops on the modes starting from the highest baudrate fiting in the
+    # spacing. TODO add a min_spacing attribute in transceivers. for now just using baudrate*1.1
+    # step 1: create an ordered list of modes based on baudrate
+    baudrate_to_explore = list(set([m['baud_rate'] for m in equipment['Transceiver'][req.tsp].mode 
+        if m['baud_rate']< req.spacing+1.1]))
+    baudrate_to_explore = sorted(baudrate_to_explore, reverse=True)
+    for b in baudrate_to_explore :
+
+        modes_to_explore = [m for m in equipment['Transceiver'][req.tsp].mode 
+            if m['baud_rate'] == b]
+        modes_to_explore = sorted(modes_to_explore, 
+            key = lambda x: x['bit_rate'], reverse=True)
+        # step2 : computes propagation for each baudrate: stop and select the first that passes
+        found_a_feasible_mode = False
+        # TODO : the case of roll of is not included: for now use SI one
+        si = create_input_spectral_information(
+        req.frequency['min'], equipment['SI']['default'].roll_off,
+        b, req.power, req.spacing, req.nb_channel)
+        for el in path:
+            si = el(si)
+            if show :
+                print(el)
+        for m in modes_to_explore :
+            if round(mean(path[-1].snr+lin2db(b/(12.5e9))),2) > m['OSNR'] :
+                found_a_feasible_mode = True
+                return path, m
+    # if no feasible path were found
+    return found_a_feasible_mode
+
 
 def jsontocsv(json_data,equipment,fileout):
     # read json path result file in accordance with:
@@ -298,8 +337,9 @@ def jsontocsv(json_data,equipment,fileout):
 
     mywriter = writer(fileout)
     mywriter.writerow(('path-id','source','destination','transponder-type',\
-        'transponder-mode','baud rate (Gbaud)', 'input power (dBm)','path',\
-        'OSNR@bandwidth','OSNR@0.1nm','SNR@bandwidth','SNR@0.1nm','Pass?'))
+        'transponder-mode',\
+        'OSNR@bandwidth','OSNR@0.1nm','SNR@bandwidth','SNR@0.1nm','Pass?',\
+        'baud rate (Gbaud)', 'input power (dBm)','path'))
     tspjsondata = equipment['Transceiver']
     #print(tspjsondata)
     for p in json_data['path']:
@@ -337,14 +377,14 @@ def jsontocsv(json_data,equipment,fileout):
             destination,
             tsp,
             mode,
-            baud_rate*1e-9,
-            round(lin2db(power)+30,2),
-            pth,
             output_osnrbandwidth,
             output_osnr,
             output_snrbandwidth,
             output_snr,
-            isok
+            isok,
+            baud_rate*1e-9,
+            round(lin2db(power)+30,2),
+            pth
             ))
 
 
@@ -672,8 +712,6 @@ def compare_reqs(req1,req2) :
         req1.format     == req2.format and \
         req1.OSNR       == req2.OSNR and \
         req1.roll_off   == req2.roll_off :
-        print(f'coucou {req1.request_id}  {req2.request_id}')
-        print(f'{req1.nodes_list} == {req2.nodes_list}')
         return True
     else:
         return False
