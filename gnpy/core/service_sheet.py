@@ -122,6 +122,8 @@ class Request_element(Element):
         self.path_bandwidth = None
         if Request.path_bandwidth is not None:
             self.path_bandwidth = Request.path_bandwidth * 1e9
+        else:
+            self.path_bandwidth = 0
 
     uid = property(lambda self: repr(self))
     @property

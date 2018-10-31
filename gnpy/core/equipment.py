@@ -148,7 +148,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
     """return the trx and SI parameters from eqpt_config for a given type_variety and mode (ie format)"""
     trx_params = {}
     default_si_data = equipment['SI']['default']
-    print(trx_mode)
+    
     try:
         trxs = equipment['Transceiver']
         if trx_mode is not None:
@@ -164,7 +164,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
                        "roll_off": None}
         trx_params = {**mode_params}
         trx_params['frequency'] = equipment['Transceiver'][trx_type_variety].frequency
-        
+
         # TODO: novel automatic feature maybe unwanted if spacing is specified
         # trx_params['spacing'] = automatic_spacing(trx_params['baud_rate'])
         # temp = trx_params['spacing']
