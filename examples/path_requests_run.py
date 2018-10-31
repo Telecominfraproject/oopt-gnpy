@@ -28,7 +28,8 @@ from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch, 
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.request import (Path_request, Result_element, compute_constrained_path,
-                              propagate, jsontocsv, Disjunction, compute_path_dsjctn, requests_aggregation)
+                              propagate, jsontocsv, Disjunction, compute_path_dsjctn, requests_aggregation,
+                              propagate_and_optimize_mode)
 from copy import copy, deepcopy
 from textwrap import dedent
 
@@ -71,11 +72,18 @@ def requests_from_json(json_data,equipment):
         if req['path-constraints']['te-bandwidth']['output-power']:
             params['power'] = req['path-constraints']['te-bandwidth']['output-power']
         # same process for nb-channel
-        if req['path-constraints']['te-bandwidth']['max-nb-of-channel'] :
+        fmin = trx_params['frequency']['min']
+        fmax = trx_params['frequency']['max']
+        if req['path-constraints']['te-bandwidth']['max-nb-of-channel'] is not None :
             # check if requested nb_channels is consistant with baudrate and min-max frequencies
-            min_recommanded_spacing = automatic_spacing(trx_params['baud_rate'])
-            fmin = trx_params['frequency']['min']
-            fmax = trx_params['frequency']['max']
+            if trx_params['baud_rate'] is not None:
+                min_recommanded_spacing = automatic_spacing(trx_params['baud_rate'])
+                # needed for printing - else argument with quote are making errors in the print
+                temp = params['baud_rate']*1e-9
+            else:
+                min_recommanded_spacing = params['spacing']
+                temp = 'undetermined baudrate'
+        
             max_recommanded_nb_channels = automatic_nch(fmin,fmax,
                 min_recommanded_spacing)
                 
@@ -92,9 +100,10 @@ def requests_from_json(json_data,equipment):
                 Computation stopped.''')
                 logger.critical(msg)
                 raise ValueError(msg)
-
+        else :
+            params['nb_channel'] = automatic_nch(fmin,fmax,params['spacing'])
         try :
-            params['bit_rate'] = req['path-constraints']['te-bandwidth']['path_bandwidth']
+            params['path_bandwidth'] = req['path-constraints']['te-bandwidth']['path_bandwidth']
         except KeyError:
             pass
         requests_list.append(Path_request(**params))
@@ -194,7 +203,14 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         # for debug
         # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
         if total_path :
-            total_path = propagate(total_path,pathreq,equipment, show=False)
+            if pathreq.baud_rate is not None:
+                total_path = propagate(total_path,pathreq,equipment, show=False)
+            else:
+                total_path,mode = propagate_and_optimize_mode(total_path,pathreq,equipment, show=False)
+                pathreq.baud_rate = mode['baud_rate']
+                pathreq.tsp_mode = mode['format']
+                pathreq.format = mode['format']
+                pathreq.OSNR = mode['OSNR']
         else:
             total_path = []
         # we record the last tranceiver object in order to have th whole 
@@ -215,7 +231,7 @@ def correct_route_list(network, pathreqlist):
     for pathreq in pathreqlist:
         for i,n_id in enumerate(pathreq.nodes_list):
             # replace possibly wrong name with a formated roadm name
-            print(n_id)
+            # print(n_id)
             if n_id not in anytype :
                 nodes_suggestion = [uid for uid in anytype \
                     if n_id.lower() in uid.lower()]
@@ -267,7 +283,6 @@ if __name__ == '__main__':
     save_network(args.network_filename, network)
 
     rqs = requests_from_json(data, equipment)
-    print(rqs)
     rqs = correct_route_list(network, rqs)
     rqs = requests_aggregation(rqs)
     print('The following services have been requested:')
@@ -278,14 +293,14 @@ if __name__ == '__main__':
     propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
 
     
-    header = ['demand','snr@bandwidth','snr@0.1nm','Receiver minOSNR']
+    header = ['demand','snr@bandwidth','snr@0.1nm','Receiver minOSNR', 'mode']
     data = []
     data.append(header)
     for i, p in enumerate(propagatedpths):
         if p:
             line = [f'{rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
                 f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
-                f'{rqs[i].OSNR}']
+                f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}']
         else:
             line = [f'no path from {rqs[i].source} to {rqs[i].destination} ']
         data.append(line)

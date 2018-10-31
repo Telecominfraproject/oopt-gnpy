@@ -67,7 +67,8 @@ class Request_element(Element):
             if Request.mode is not None :
                 if [mode for mode in equipment['Transceiver'][Request.trx_type].mode]:
                     self.mode = Request.mode
-
+            else:
+                self.mode = Request.mode
         except KeyError:
             msg = f'could not find tsp : {Request.trx_type} with mode: {Request.mode} in eqpt library \nComputation stopped.'
             #print(msg)
@@ -93,32 +94,31 @@ class Request_element(Element):
         self.nodes_list = []
         if Request.nodes_list :
             self.nodes_list = Request.nodes_list.split(' | ')
+
+        # cleaning the list of nodes to remove source and destination
+        # (because the remaining of the program assumes that the nodes list are nodes 
+        # on the path and should not include source and destination)
         try :
             self.nodes_list.remove(self.source)
             msg = f'{self.source} removed from explicit path node-list'
             logger.info(msg)
-            # print(msg)
         except ValueError:
             msg = f'{self.source} already removed from explicit path node-list'
             logger.info(msg)
-            # print(msg)
+
         try :
             self.nodes_list.remove(self.destination)
             msg = f'{self.destination} removed from explicit path node-list'
             logger.info(msg)
-            # print(msg)
         except ValueError:
             msg = f'{self.destination} already removed from explicit path node-list'
             logger.info(msg)
-            # print(msg)
 
+        # the excel parser applies the same hop-type to all nodes in the route nodes_list.
+        # user can change this per node in the generated json
         self.loose = 'loose'
-        print(Request.is_loose)
         if Request.is_loose == 'no' :
-            print(Request.is_loose)
             self.loose = 'strict'
-        else :
-            print(f'esther{Request.is_loose}')
         self.path_bandwidth = None
         if Request.path_bandwidth is not None:
             self.path_bandwidth = Request.path_bandwidth * 1e9
