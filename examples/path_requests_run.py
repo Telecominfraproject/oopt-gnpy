@@ -32,6 +32,7 @@ from gnpy.core.request import (Path_request, Result_element, compute_constrained
                               propagate_and_optimize_mode)
 from copy import copy, deepcopy
 from textwrap import dedent
+from math import ceil
 
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
 
@@ -211,6 +212,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 pathreq.tsp_mode = mode['format']
                 pathreq.format = mode['format']
                 pathreq.OSNR = mode['OSNR']
+                pathreq.bit_rate = mode['bit_rate']
         else:
             total_path = []
         # we record the last tranceiver object in order to have th whole 
@@ -227,7 +229,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
 def correct_route_list(network, pathreqlist):
     # prepares the format of route list of nodes to be consistant
     # remove wrong names, remove endpoints
-    anytype = [n.uid for n in network.nodes()]
+    anytype = [n.uid for n in network.nodes() if not isinstance(n, Transceiver)]
     for pathreq in pathreqlist:
         for i,n_id in enumerate(pathreq.nodes_list):
             # replace possibly wrong name with a formated roadm name
@@ -293,30 +295,35 @@ if __name__ == '__main__':
     propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
 
     
-    header = ['demand','snr@bandwidth','snr@0.1nm','Receiver minOSNR', 'mode']
+    header = ['demand','snr@bandwidth','snr@0.1nm','Receiver minOSNR', 'mode', 'Gbit/s' , 'nb of tsp']
     data = []
     data.append(header)
     for i, p in enumerate(propagatedpths):
         if p:
             line = [f'{rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
                 f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
-                f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}']
+                f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }']
         else:
             line = [f'no path from {rqs[i].source} to {rqs[i].destination} ']
         data.append(line)
 
-    col_width = max(len(word) for row in data for word in row)   # padding
+    col_width = max(len(word) for row in data for word in row[1:])   # padding
+    firstcol_width = max(len(row[0]) for row in data )   # padding
     for row in data:
-        print(''.join(word.ljust(col_width) for word in row))
+        firstcol = ''.join(row[0].ljust(firstcol_width)) 
+        remainingcols = ''.join(word.ljust(col_width) for word in row[1:])
+        print(f'{firstcol} {remainingcols}')
 
 
 
     if args.output :
         result = []
-        for p in pths:
-            result.append(Result_element(rqs[pths.index(p)],p))
+        for p in propagatedpths:
+            result.append(Result_element(rqs[propagatedpths.index(p)],p))
+        temp = path_result_json(result)
         with open(args.output, 'w', encoding='utf-8') as f:
             f.write(dumps(path_result_json(result), indent=2, ensure_ascii=False))
             fnamecsv = next(s for s in args.output.split('.')) + '.csv'
             with open(fnamecsv,"w", encoding='utf-8') as fcsv :
-                jsontocsv(path_result_json(result),equipment,fcsv)
+                jsontocsv(temp,equipment,fcsv)
+

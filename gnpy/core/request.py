@@ -28,12 +28,13 @@ from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
 from copy import copy, deepcopy
 from csv import writer
+from math import ceil
 
 logger = getLogger(__name__)
 
 
 RequestParams = namedtuple('RequestParams','request_id source destination trx_type'+
-' trx_mode nodes_list loose_list spacing power nb_channel frequency format baud_rate OSNR bit_rate roll_off')
+' trx_mode nodes_list loose_list spacing power nb_channel frequency format baud_rate OSNR bit_rate roll_off path_bandwidth')
 DisjunctionParams = namedtuple('DisjunctionParams','disjunction_id relaxable link_diverse node_diverse disjunctions_req')
 
 class Path_request:
@@ -55,6 +56,7 @@ class Path_request:
         self.OSNR       = params.OSNR
         self.bit_rate   = params.bit_rate
         self.roll_off   = params.roll_off
+        self.path_bandwidth  = params.path_bandwidth
 
     def __str__(self):
         return '\n\t'.join([  f'{type(self).__name__} {self.request_id}',
@@ -142,6 +144,10 @@ class Result_element(Element):
                            {
                            'metric-type': 'reference_power',
                            'accumulative-value': self.path_request.power
+                           },
+                           {
+                           'metric-type': 'path_bandwidth',
+                           'accumulative-value': self.path_request.path_bandwidth
                            }
                         ],
                         'path-srlgs': {
@@ -210,6 +216,10 @@ class Result_element(Element):
                            {
                            'metric-type': 'reference_power',
                            'accumulative-value': self.path_request.power
+                           },
+                           {
+                           'metric-type': 'path_bandwidth',
+                           'accumulative-value': self.path_request.path_bandwidth
                            }
                         ],
                         'path-srlgs': {
@@ -247,7 +257,9 @@ def compute_constrained_path(network, req):
     roadm = [n for n in network.nodes() if isinstance(n, Roadm)]
     edfa = [n for n in network.nodes() if isinstance(n, Edfa)]
     anytypenode = [n for n in network.nodes()]
+    # print(req.source)
     source = next(el for el in trx if el.uid == req.source)
+
     # start the path with its source
     # TODO : avoid loops due to constraints , guess name based on string,
     # avoid crashing if on req is not correct
@@ -337,10 +349,10 @@ def jsontocsv(json_data,equipment,fileout):
     # and write results in an CSV file
 
     mywriter = writer(fileout)
-    mywriter.writerow(('path-id','source','destination','transponder-type',\
-        'transponder-mode',\
-        'OSNR@bandwidth','OSNR@0.1nm','SNR@bandwidth','SNR@0.1nm','Pass?',\
-        'baud rate (Gbaud)', 'input power (dBm)','path'))
+    mywriter.writerow(('path-id','source','destination','path_bandwidth','Pass?',\
+        'nb of tsp','transponder-type','transponder-mode',\
+        'OSNR@0.1nm','SNR@0.1nm','SNR@bandwidth','baud rate (Gbaud)',\
+        'input power (dBm)','path'))
     tspjsondata = equipment['Transceiver']
     #print(tspjsondata)
     for p in json_data['path']:
@@ -349,15 +361,17 @@ def jsontocsv(json_data,equipment,fileout):
         ['path-route-object']['unnumbered-hop']['node-id']
         destination = p['path-properties']['path-route-objects'][-1]\
         ['path-route-object']['unnumbered-hop']['node-id']
+        # selects only roadm nodes
         pth        = ' | '.join([ e['path-route-object']['unnumbered-hop']['node-id']
-                 for e in p['path-properties']['path-route-objects']])
+                 for e in p['path-properties']['path-route-objects'] 
+                 if e['path-route-object']['unnumbered-hop']['node-id'].startswith('roadm')])
 
         [tsp,mode] = p['path-properties']['path-route-objects'][0]\
         ['path-route-object']['unnumbered-hop']['hop-type'].split(' - ')
 
         # find the min  acceptable OSNR, baud rate from the eqpt library based on tsp (tupe) and mode (format)
         # loading equipment already tests the existence of tsp type and mode:
-        [minosnr, baud_rate] = next([m['OSNR'] , m['baud_rate']]  
+        [minosnr, baud_rate, bit_rate] = next([m['OSNR'] , m['baud_rate'] , m['bit_rate']]  
             for m in equipment['Transceiver'][tsp].mode if  m['format']==mode)
         output_snr = next(e['accumulative-value'] 
             for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR@0.1nm')
@@ -369,21 +383,25 @@ def jsontocsv(json_data,equipment,fileout):
             for e in p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR@bandwidth')
         power = next(e['accumulative-value']
             for e in p['path-properties']['path-metric'] if e['metric-type'] == 'reference_power')
+        path_bandwidth = next(e['accumulative-value']
+            for e in p['path-properties']['path-metric'] if e['metric-type'] == 'path_bandwidth')
         if isinstance(output_snr, str):
             isok = ''
         else:
             isok = output_snr >= minosnr
+        nb_tsp = ceil(path_bandwidth / bit_rate)
         mywriter.writerow((path_id,
             source,
             destination,
+            round(path_bandwidth*1e-9,2),
+            isok,
+            nb_tsp,
             tsp,
             mode,
-            output_osnrbandwidth,
-            output_osnr,
-            output_snrbandwidth,
-            output_snr,
-            isok,
-            baud_rate*1e-9,
+            round(output_osnr,2),
+            round(output_snr,2),
+            round(output_snrbandwidth,2),
+            round(baud_rate*1e-9,2),
             round(lin2db(power)+30,2),
             pth
             ))
@@ -723,13 +741,19 @@ def requests_aggregation(pathreqlist) :
     # todo maybe add conditions on mode ??, spacing ...
     # currently if undefined takes the default values
     local_list = pathreqlist.copy()
-    for req in local_list:
+    for req in pathreqlist:
         for r in local_list : 
+            if req.request_id == '648' and r.request_id == '644 | 642 | 643 | 645 | 647 | 646':
+                print(r.__repr__())
             if  req.request_id != r.request_id and compare_reqs(req, r):
                 # aggregate
-                req.bit_rate += r.bit_rate
-                req.request_id = ' | '.join((req.request_id,r.request_id))
+                r.path_bandwidth += req.path_bandwidth
+                r.request_id = ' | '.join((r.request_id,req.request_id))
                 # remove request from list
-                local_list.remove(r)
+                local_list.remove(req)
+                break
+
+            
+
     return local_list
 
