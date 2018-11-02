@@ -522,8 +522,11 @@ class Edfa(Node):
         elif self.params.type_def == 'fixed_gain':
             nf_avg = self.params.nf_model.nf0
         elif self.params.type_def == 'openroadm':
-            print('openroadm',self.pin_db - lin2db(self.nch) )
-            nf_avg = polyval(self.params.nf_model.nf_coef, self.pin_db - lin2db(self.nch))
+            pin_ch = self.pin_db - lin2db(self.nch)
+            # model NF = f(Pin)
+            nf_avg = polyval(self.params.nf_model.nf_coef, pin_ch)
+            # model OSNR = f(Pin)
+            #nf_avg = pin_ch - nf_avg + 58
         else:
             nf_avg = polyval(self.params.nf_fit_coeff, -dg)
         if avg:
