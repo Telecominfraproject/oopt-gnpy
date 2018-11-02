@@ -20,6 +20,7 @@ from gnpy.core.elements import Edfa
 
 Model_vg = namedtuple('Model_vg', 'nf1 nf2 delta_p')
 Model_fg = namedtuple('Model_fg', 'nf0')
+Model_openroadm = namedtuple('Model_openroadm', 'nf_coef')
 Fiber = namedtuple('Fiber', 'type_variety dispersion gamma')
 Spans = namedtuple('Spans', 'power_mode delta_power_range_db max_length length_units \
                              max_loss padding EOL con_in con_out')
@@ -79,6 +80,13 @@ class Amp(AmpBase):
             except KeyError: pass #nf0 is not needed for variable gain amp
             nf1, nf2, delta_p = nf_model(type_variety, gain_min, gain_max, nf_min, nf_max)
             nf_def = Model_vg(nf1, nf2, delta_p)
+        elif type_def == 'openroadm':
+            try:
+                nf_coef = kwargs.pop('nf_coef')
+            except KeyError: #nf_coef is expected for openroadm amp
+                print(f'missing nf_coef input for amplifier: {type_variety} in eqpt_config.json')
+                exit()
+            nf_def = Model_openroadm(nf_coef)
         return cls(**{**kwargs, **json_data, 'nf_model': nf_def})
 
 
@@ -140,8 +148,11 @@ def edfa_nf(gain_target, variety_type, equipment):
             params = amp_params._asdict(),
             operational = {
                 'gain_target': gain_target,
-                'tilt_target': 0,
-            })
+                'tilt_target': 0
+                        }
+            )
+    amp.pin_db = 0
+    amp.nch = 88
     return amp._calc_nf(True)
 
 def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=False):
