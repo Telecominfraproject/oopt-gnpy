@@ -337,23 +337,17 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
         print(f'{repr(fiber)} is not properly connected, please check network topology')
         exit()
 
-    network.remove_edge(fiber, next_node)
-    network.remove_edge(prev_node, fiber)
     network.remove_node(fiber)
-    # update connector loss parameter with default values
+
     fiber_params = fiber.params._asdict()
+    fiber_params['length'] = new_length / UNITS[fiber.params.length_units]
     fiber_params['con_in'] = fiber.con_in
     fiber_params['con_out'] = fiber.con_out
-    new_spans = [
-        Fiber(
-            uid =      f'{fiber.uid}_({span}/{n_spans})',
-            metadata = fiber.metadata,
-            params = fiber_params
-        ) for span in range(n_spans)
-    ]
-    for new_span in new_spans:
-        new_span.length = new_length
-        network.add_node(new_span)
+    
+    for span in range(n_spans):
+        new_span = Fiber(uid =      f'{fiber.uid}_({span}/{n_spans})',
+                          metadata = fiber.metadata,
+                          params = fiber_params)
         network.add_edge(prev_node, new_span)
         prev_node = new_span
     network.add_edge(prev_node, next_node)
