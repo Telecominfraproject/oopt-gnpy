@@ -345,7 +345,7 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
     fiber_params['con_out'] = fiber.con_out
     
     for span in range(n_spans):
-        new_span = Fiber(uid =      f'{fiber.uid}_({span}/{n_spans})',
+        new_span = Fiber(uid =      f'{fiber.uid}_({span+1}/{n_spans})',
                           metadata = fiber.metadata,
                           params = fiber_params)
         network.add_edge(prev_node, new_span)
