@@ -197,11 +197,13 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             trx_params['nb_channel'] = automatic_nch(trx_params['frequency']['min'],
                                         trx_params['frequency']['max'],
                                         trx_params['spacing'])
+            nch = automatic_nch(trx_params['frequency']['min'],
+                                                      trx_params['frequency']['max'],
+                                                      trx_params['spacing'])
+            print(f'There are {nch} channels propagating')
+                
     trx_params['power'] =  db2lin(default_si_data.power_dbm)*1e-3
-    nch = automatic_nch(trx_params['frequency']['min'],
-                                              trx_params['frequency']['max'],
-                                              trx_params['spacing'])
-    print(f'There are {nch} channels propagating')
+
     return trx_params
 
 def automatic_spacing(baud_rate):
