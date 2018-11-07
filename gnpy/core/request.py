@@ -315,8 +315,9 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
     # spacing. TODO add a min_spacing attribute in transceivers. for now just using baudrate*1.1
     # step 1: create an ordered list of modes based on baudrate
     baudrate_to_explore = list(set([m['baud_rate'] for m in equipment['Transceiver'][req.tsp].mode 
-        if m['baud_rate']< req.spacing+1.1]))
+        if float(m['baud_rate'])+12.5e9< req.spacing]))
     baudrate_to_explore = sorted(baudrate_to_explore, reverse=True)
+
     for b in baudrate_to_explore :
 
         modes_to_explore = [m for m in equipment['Transceiver'][req.tsp].mode 
