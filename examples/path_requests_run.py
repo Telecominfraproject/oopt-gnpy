@@ -33,6 +33,7 @@ from gnpy.core.request import (Path_request, Result_element, compute_constrained
 from copy import copy, deepcopy
 from textwrap import dedent
 from math import ceil
+import time
 
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
 
@@ -121,6 +122,7 @@ def disjunctions_from_json(json_data):
         params['node_diverse'] = snc['svec']['node-diverse']
         params['disjunctions_req'] = snc['svec']['request-id-number']
         disjunctions_list.append(Disjunction(**params))
+    print(disjunctions_list)
     return disjunctions_list
 
 
@@ -229,7 +231,9 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
 def correct_route_list(network, pathreqlist):
     # prepares the format of route list of nodes to be consistant
     # remove wrong names, remove endpoints
+    # also correct source and destination
     anytype = [n.uid for n in network.nodes() if not isinstance(n, Transceiver)]
+    transponders = [n.uid for n in network.nodes() if isinstance(n, Transceiver)]
     for pathreq in pathreqlist:
         for i,n_id in enumerate(pathreq.nodes_list):
             # replace possibly wrong name with a formated roadm name
@@ -252,9 +256,29 @@ def correct_route_list(network, pathreqlist):
                     logger.critical(msg)
                     raise ValueError(msg)
 
+        if pathreq.source not in transponders:
+            msg = f'Request: {pathreq.request_id}: could not find transponder source : {pathreq.source}.'
+            logger.critical(msg)
+            print(f'{msg}\nComputation stopped.')
+            exit()
+            
+        if pathreq.destination not in transponders:
+            msg = f'Request: {pathreq.request_id}: could not find transponder destination : {pathreq.destination}.'
+            logger.critical(msg)
+            print(f'{msg}\nComputation stopped.')
+            exit()
+
         # TODO remove endpoints from this list in case they were added by the user in the xls or json files
     return pathreqlist
 
+def correct_disjn(disjn):
+    local_disjn = disjn.copy()
+    for el in local_disjn:
+        for d in local_disjn:
+            if set(el.disjunctions_req) == set(d.disjunctions_req) and\
+             el.disjunction_id != d.disjunction_id:
+                local_disjn.remove(d)
+    return local_disjn
 
 
 def path_result_json(pathresult):
@@ -265,6 +289,7 @@ def path_result_json(pathresult):
 
 
 if __name__ == '__main__':
+    start = time.time()
     args = parser.parse_args()
     basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(args.verbose, DEBUG))
     logger.info(f'Computing path requests {args.service_filename} into JSON format')
@@ -285,17 +310,40 @@ if __name__ == '__main__':
     save_network(args.network_filename, network)
 
     rqs = requests_from_json(data, equipment)
+
+    # check that request ids are unique. Non unique ids, may 
+    # mess the computation : better to stop the computation
+    all_ids = [r.request_id for r in rqs]
+    if len(all_ids) != len(set(all_ids)):
+        for a in list(set(all_ids)):
+            all_ids.remove(a)
+        msg = f'Requests id {all_ids} are not unique'
+        logger.critical(msg)
+        exit()
     rqs = correct_route_list(network, rqs)
-    rqs = requests_aggregation(rqs)
-    print('The following services have been requested:')
-    print(rqs)
+
     # pths = compute_path(network, equipment, rqs)
     dsjn = disjunctions_from_json(data)
+    # print('ohohoho')
+    # print(dsjn)
+    # need to warn or correct in case of wrong disjunction form
+    # disjunction must not be repeated with same or different ids
+    dsjn = correct_disjn(dsjn)
+        
+    # Aggregate demands with same exact constraints
+    rqs,dsjn = requests_aggregation(rqs,dsjn)
+    # TODO export novel set of aggregated demands in a json file
+
+    print('WARNING: The following services have been requested:')
+    print(rqs)
+    
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
     propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
 
+    end = time.time()
+    print(f'computation time {end-start}')
     
-    header = ['demand','snr@bandwidth','snr@0.1nm','Receiver minOSNR', 'mode', 'Gbit/s' , 'nb of tsp']
+    header = ['demand','snr@bandwidth','snr@0.1nm','Receiver minOSNR', 'mode', 'Gbit/s' , 'nb of tsp pairs']
     data = []
     data.append(header)
     for i, p in enumerate(propagatedpths):
@@ -313,7 +361,6 @@ if __name__ == '__main__':
         firstcol = ''.join(row[0].ljust(firstcol_width)) 
         remainingcols = ''.join(word.ljust(col_width) for word in row[1:])
         print(f'{firstcol} {remainingcols}')
-
 
 
     if args.output :
