@@ -64,3 +64,36 @@ def test_disjunction(net,eqpt,serv):
     print(dsjn_list)
     assert test
 
+@pytest.mark.parametrize("net",[network_file_name])
+@pytest.mark.parametrize("eqpt", [eqpt_library_name])
+@pytest.mark.parametrize("serv",[service_file_name])
+def test_does_not_loop_back(net,eqpt,serv):
+    data = load_requests(serv,eqpt)
+    equipment = load_equipment(eqpt)
+    network = load_network(net,equipment)
+
+    # Build the network once using the default power defined in SI in eqpt config
+    # power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
+    # spacing, f_min and f_max 
+    p_db = equipment['SI']['default'].power_dbm
+    
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
+        equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    build_network(network, equipment, p_db, p_total_db)
+
+    rqs = requests_from_json(data, equipment)
+    rqs = correct_route_list(network, rqs)
+    dsjn = disjunctions_from_json(data)
+    pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
+
+    # check that computed paths do not loop back ie each element appears only once
+    test = True
+    for p in pths :
+        for el in p:
+            p.remove(el)
+            a = [e for e in p if e.uid == el.uid]
+            if a :
+                test = False
+                break
+
+    assert test        

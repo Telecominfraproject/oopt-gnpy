@@ -19,7 +19,8 @@
           ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": 80,
-          "output-power": 0.0012589254117941673
+          "output-power": 0.0012589254117941673,
+          "path_bandwidth": 0
         }
       },
       "optimizations": {
@@ -45,7 +46,8 @@
           ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": 80,
-          "output-power": 0.0012589254117941673
+          "output-power": 0.0012589254117941673,
+          "path_bandwidth": 0
         }
       },
       "optimizations": {
@@ -102,7 +104,8 @@
           ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": 80,
-          "output-power": 0.0012589254117941673
+          "output-power": 0.0012589254117941673,
+          "path_bandwidth": 0
         }
       },
       "optimizations": {
@@ -128,7 +131,8 @@
           ],
           "spacing": 75000000000.0,
           "max-nb-of-channel": 64,
-          "output-power": 0.0019952623149688794
+          "output-power": 0.0019952623149688794,
+          "path_bandwidth": 0
         }
       },
       "optimizations": {
@@ -154,7 +158,8 @@
           ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": 80,
-          "output-power": 0.0012589254117941673
+          "output-power": 0.0012589254117941673,
+          "path_bandwidth": 0
         }
       },
       "optimizations": {
