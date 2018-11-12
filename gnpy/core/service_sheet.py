@@ -32,7 +32,7 @@ logger = getLogger(__name__)
 # Type for input data
 class Request(namedtuple('Request', 'request_id source destination trx_type mode \
     spacing power nb_channel disjoint_from nodes_list is_loose')):
-    def __new__(cls, request_id, source, destination, trx_type,  mode , spacing , power , nb_channel , disjoint_from ='' ,  nodes_list = None, is_loose = ''):
+    def __new__(cls, request_id, source, destination, trx_type,  mode , spacing , power = None, nb_channel = None , disjoint_from ='' ,  nodes_list = None, is_loose = ''):
         return super().__new__(cls, request_id, source, destination, trx_type, mode, spacing, power, nb_channel, disjoint_from,  nodes_list, is_loose)
 
 # Type for output data:  // from dutc
@@ -73,8 +73,14 @@ class Request_element(Element):
             exit()
         # excel input are in GHz and dBm
         self.spacing = Request.spacing * 1e9
-        self.power =  db2lin(Request.power) * 1e-3
-        self.nb_channel = int(Request.nb_channel)
+        if Request.power is not None:
+            self.power =  db2lin(Request.power) * 1e-3
+        else:
+            self.power = None
+        if Request.nb_channel is not None :
+            self.nb_channel = int(Request.nb_channel)
+        else:
+            self.nb_channel = None
         if not isinstance(Request.disjoint_from,str):
             value = str(int(Request.disjoint_from))
             if value.endswith('.0'):
@@ -105,7 +111,9 @@ class Request_element(Element):
             # print(msg)
 
         self.loose = 'loose'
+        print(Request.is_loose)
         if Request.is_loose == 'no' :
+            print(Request.is_loose)
             self.loose = 'strict'
 
     uid = property(lambda self: repr(self))
@@ -153,7 +161,7 @@ class Request_element(Element):
     @property
     def pathsync(self):
         if self.disjoint_from :
-            return {'synchonization-id':self.request_id,
+            return {'synchronization-id':self.request_id,
                 'svec': {
                     'relaxable' : 'False',
                     'link-diverse': 'True',
@@ -177,7 +185,7 @@ def convert_service_sheet(input_filename, eqpt_filename, output_filename='', fil
     # print(json_filename)
     data = {
         'path-request': [n.json[0] for n in req],
-        'synchronisation': [n.json[1] for n in req
+        'synchronization': [n.json[1] for n in req
         if n.json[1] is not None]
     }
     with open(output_filename, 'w') as f:

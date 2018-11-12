@@ -155,7 +155,7 @@ def convert_file(input_filename, filter_region=[]):
                                         'longitude': x.longitude}},
               'type': 'Fused'}
              for x in nodes_by_city.values() if x.node_type.lower() == 'fused'] +
-            [{'uid': f'fiber ({x.from_city} → {x.to_city})-{x.east_cable}',
+            [{'uid': f'fiber ({x.from_city} \u2192 {x.to_city})-{x.east_cable}',
               'metadata': {'location': midpoint(nodes_by_city[x.from_city],
                                                 nodes_by_city[x.to_city])},
               'type': 'Fiber',
@@ -167,7 +167,7 @@ def convert_file(input_filename, filter_region=[]):
                          'con_out':x.east_con_out}
             }
               for x in links] +
-            [{'uid': f'fiber ({x.to_city} → {x.from_city})-{x.west_cable}',
+            [{'uid': f'fiber ({x.to_city} \u2192 {x.from_city})-{x.west_cable}',
               'metadata': {'location': midpoint(nodes_by_city[x.from_city],
                                                 nodes_by_city[x.to_city])},
               'type': 'Fiber',
@@ -350,9 +350,9 @@ def fiber_link(from_city, to_city):
     link = links_by_city[from_city]
     l = next(l for l in link if l.from_city in source_dest and l.to_city in source_dest)
     if l.from_city == from_city:
-        fiber = f'fiber ({l.from_city} → {l.to_city})-{l.east_cable}'
+        fiber = f'fiber ({l.from_city} \u2192 {l.to_city})-{l.east_cable}'
     else:
-        fiber = f'fiber ({l.to_city} → {l.from_city})-{l.west_cable}'
+        fiber = f'fiber ({l.to_city} \u2192 {l.from_city})-{l.west_cable}'
     return fiber
 
 
