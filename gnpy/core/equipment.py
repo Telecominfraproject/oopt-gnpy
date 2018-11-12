@@ -182,7 +182,7 @@ def automatic_spacing(baud_rate):
     """return the min possible channel spacing for a given baud rate"""
     spacing_list = [(38e9,50e9), (67e9,75e9), (92e9,100e9)] #list of possible tuples
                                                 #[(max_baud_rate, spacing_for_this_baud_rate)]
-    return next((s[1] for s in spacing_list if s[0] > baud_rate), baud_rate*1.2)
+    return min((s[1] for s in spacing_list if s[0] > baud_rate), default=baud_rate*1.2)
 
 def automatic_nch(f_min, f_max, spacing):
     return int((f_max - f_min)//spacing)
