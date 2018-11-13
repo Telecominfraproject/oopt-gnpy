@@ -77,7 +77,12 @@ class Request_element(Element):
             logger.critical(msg)
             exit()
         # excel input are in GHz and dBm
-        self.spacing = Request.spacing * 1e9
+        if Request.spacing is not None:
+            self.spacing = Request.spacing * 1e9
+        else:
+            msg = f'Request {self.request_id} missing spacing: spacing is mandatory.\ncomputation stopped'
+            logger.critical(msg)
+            exit()
         if Request.power is not None:
             self.power =  db2lin(Request.power) * 1e-3
         else:

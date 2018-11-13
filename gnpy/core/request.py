@@ -34,7 +34,7 @@ logger = getLogger(__name__)
 
 
 RequestParams = namedtuple('RequestParams','request_id source destination trx_type'+
-' trx_mode nodes_list loose_list spacing power nb_channel frequency format baud_rate OSNR bit_rate roll_off path_bandwidth')
+' trx_mode nodes_list loose_list spacing power nb_channel frequency format baud_rate OSNR bit_rate roll_off cost path_bandwidth')
 DisjunctionParams = namedtuple('DisjunctionParams','disjunction_id relaxable link_diverse node_diverse disjunctions_req')
 
 class Path_request:
@@ -56,6 +56,7 @@ class Path_request:
         self.OSNR       = params.OSNR
         self.bit_rate   = params.bit_rate
         self.roll_off   = params.roll_off
+        self.cost       = params.cost
         self.path_bandwidth  = params.path_bandwidth
 
     def __str__(self):
@@ -401,7 +402,6 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
     baudrate_to_explore = sorted(baudrate_to_explore, reverse=True)
     found_a_feasible_mode = False
     for b in baudrate_to_explore :
-
         modes_to_explore = [m for m in equipment['Transceiver'][req.tsp].mode 
             if m['baud_rate'] == b]
         modes_to_explore = sorted(modes_to_explore, 
