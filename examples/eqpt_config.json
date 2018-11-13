@@ -100,7 +100,8 @@
             "power_range_db": [0,0,0.5],
             "roll_off": 0.15,
             "OSNR": 11,
-            "bit_rate":100e9
+            "bit_rate":100e9,
+            "cost":1
             }],
       "Transceiver":[
             {
@@ -116,14 +117,16 @@
                        "baud_rate": 32e9,
                        "OSNR": 11,
                        "bit_rate": 100e9,
-                       "roll_off": 0.15
+                       "roll_off": 0.15,
+                       "cost":1
                        },
                        {
                        "format": "mode 2",
                        "baud_rate": 66e9,
                        "OSNR": 15,
                        "bit_rate": 200e9,
-                       "roll_off": 0.15
+                       "roll_off": 0.15,
+                       "cost":1
                        }
                    ]
             },
@@ -139,28 +142,32 @@
                        "baud_rate": 32e9,
                        "OSNR": 12,
                        "bit_rate": 100e9,
-                       "roll_off": 0.15
+                       "roll_off": 0.15,
+                       "cost":1
                        },
                        {
                        "format": "mode 3",
                        "baud_rate": 44e9,
                        "OSNR": 18,
                        "bit_rate": 300e9,
-                       "roll_off": 0.15
+                       "roll_off": 0.15,
+                       "cost":1
                        },
                        {
                        "format": "mode 2",
                        "baud_rate": 66e9,
                        "OSNR": 21,
                        "bit_rate": 400e9,
-                       "roll_off": 0.15
+                       "roll_off": 0.15,
+                       "cost":1
                        },
                        {
                        "format": "mode 4",
                        "baud_rate": 66e9,
                        "OSNR": 16,
                        "bit_rate": 200e9,
-                       "roll_off": 0.15
+                       "roll_off": 0.15,
+                       "cost":1
                        }
                    ]
             }

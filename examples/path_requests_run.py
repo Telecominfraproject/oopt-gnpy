@@ -33,6 +33,7 @@ from gnpy.core.request import (Path_request, Result_element, compute_constrained
 from copy import copy, deepcopy
 from math import ceil
 import time
+from textwrap import dedent
 
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
 
@@ -91,16 +92,16 @@ def requests_from_json(json_data,equipment):
             if req['path-constraints']['te-bandwidth']['max-nb-of-channel'] <= max_recommanded_nb_channels :
                 params['nb_channel'] = req['path-constraints']['te-bandwidth']['max-nb-of-channel']
             else:
-                temp = params['baud_rate']
-
                 msg = dedent(f'''
                 Requested channel number is not consistent with frequency range:
-                {fmin*1e-12} THz, {fmax*1e-12} THz and baud rate: {temp*1e-9} GHz
+                {fmin*1e-12} THz, {fmax*1e-12} THz and baud rate: {temp} GHz
                 min recommanded spacing is {min_recommanded_spacing}
                 max recommanded nb of channels is {max_recommanded_nb_channels}
                 Computation stopped.''')
                 logger.critical(msg)
-                raise ValueError(msg)
+                exit()
+                
+
         else :
             params['nb_channel'] = automatic_nch(fmin,fmax,params['spacing'])
         try :
