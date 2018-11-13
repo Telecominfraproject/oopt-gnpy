@@ -491,6 +491,8 @@ class Edfa(Node):
         if self.dp_db is not None:
             self.target_pch_db = round(self.dp_db + pref.p0, 2)
             self.effective_gain = self.target_pch_db - pref.pi
+        else:
+            self.effective_gain = self.operational.gain_target
         
         self.effective_gain = min(self.effective_gain, self.params.p_max - self.pin_db)
         self.effective_pch_db = round(pref.pi + self.effective_gain, 2)
