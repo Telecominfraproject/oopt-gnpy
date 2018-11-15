@@ -97,3 +97,11 @@ def test_does_not_loop_back(net,eqpt,serv):
                 break
 
     assert test        
+
+    # TODO : test that identical requests are correctly agregated 
+    # and reproduce disjunction vector as well as route constraints
+    # check that requests with different parameters are not aggregated
+
+    # check that the total agregated bandwidth is the same after aggregation
+
+    # 
