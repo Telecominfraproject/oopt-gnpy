@@ -180,21 +180,10 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
     # TODO change all these req, dsjct, res lists into dict !
     path_res_list = []
 
-
-    # # Build the network once using the default power defined in SI in eqpt config
-    # # power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
-    # # spacing, f_min and f_max 
-    # p_db = equipment['SI']['default'].power_dbm
-    
-    # p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
-    #     equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
-    # build_network(network, equipment, p_db, p_total_db)
-    # TODO : get the designed power to set it when it is not an input
-    # pathreq.power to be adapted
     for i,pathreq in enumerate(pathreqlist):
 
         # use the power specified in requests but might be different from the one specified for design
-        # TODO: set the power as an optional parameter for requests definition
+        # the power is an optional parameter for requests definition
         # if optional, use the one defines in eqt_config.json
         p_db = lin2db(pathreq.power*1e3)
         p_total_db = p_db + lin2db(pathreq.nb_channel)
@@ -211,13 +200,18 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 total_path = propagate(total_path,pathreq,equipment, show=False)
             else:
                 total_path,mode = propagate_and_optimize_mode(total_path,pathreq,equipment, show=False)
-                pathreq.baud_rate = mode['baud_rate']
-                pathreq.tsp_mode = mode['format']
-                pathreq.format = mode['format']
-                pathreq.OSNR = mode['OSNR']
-                pathreq.bit_rate = mode['bit_rate']
-        else:
-            total_path = []
+                # if no baudrate satisfies spacing, no mode is returned and an empty path is returned
+                # a warning is shown in the propagate_and_optimize_mode
+                if mode is not None :
+                    # propagate_and_optimize_mode function returns the mode with the highest bitrate
+                    # that passes. if no mode passes, then it returns an empty path
+                    pathreq.baud_rate = mode['baud_rate']
+                    pathreq.tsp_mode = mode['format']
+                    pathreq.format = mode['format']
+                    pathreq.OSNR = mode['OSNR']
+                    pathreq.bit_rate = mode['bit_rate']
+                else :
+                    total_path = []
         # we record the last tranceiver object in order to have th whole 
         # information about spectrum. Important Note: since transceivers 
         # attached to roadms are actually logical elements to simulate
@@ -301,7 +295,7 @@ if __name__ == '__main__':
     network = load_network(args.network_filename,equipment)
 
     # Build the network once using the default power defined in SI in eqpt config
-    # power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
+    # TODO power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
     # spacing, f_min and f_max 
     p_db = equipment['SI']['default'].power_dbm
     

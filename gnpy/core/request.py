@@ -121,7 +121,9 @@ class Result_element(Element):
                 else:
                     hop_type.append('not recorded')
         else:
-            mode = 'no mode'
+            # TODO differentiate empty path in case not feasible because of tsp or not feasible because
+            # ther is no path connecting the nodes (whatever the tsp)
+            mode = 'not feasible with this transponder'
             hop_type = ' - '.join([path_request.tsp,mode])
         self.hop_type = hop_type
     uid = property(lambda self: repr(self))
@@ -400,28 +402,42 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
     baudrate_to_explore = list(set([m['baud_rate'] for m in equipment['Transceiver'][req.tsp].mode 
         if float(m['baud_rate'])+12.5e9< req.spacing]))
     baudrate_to_explore = sorted(baudrate_to_explore, reverse=True)
-    found_a_feasible_mode = False
-    for b in baudrate_to_explore :
-        modes_to_explore = [m for m in equipment['Transceiver'][req.tsp].mode 
-            if m['baud_rate'] == b]
-        modes_to_explore = sorted(modes_to_explore, 
-            key = lambda x: x['bit_rate'], reverse=True)
-        # step2 : computes propagation for each baudrate: stop and select the first that passes
-        found_a_feasible_mode = False
-        # TODO : the case of roll of is not included: for now use SI one
-        si = create_input_spectral_information(
-        req.frequency['min'], equipment['SI']['default'].roll_off,
-        b, req.power, req.spacing, req.nb_channel)
-        for el in path:
-            si = el(si)
-            if show :
-                print(el)
-        for m in modes_to_explore :
-            if round(mean(path[-1].snr+lin2db(b/(12.5e9))),2) > m['OSNR'] :
-                found_a_feasible_mode = True
-                return path, m
-    # if no feasible path were found
-    return found_a_feasible_mode
+    if baudrate_to_explore : 
+        # at least 1 baudrate can be tested wrt spacing
+        for b in baudrate_to_explore :
+            modes_to_explore = [m for m in equipment['Transceiver'][req.tsp].mode 
+                if m['baud_rate'] == b]
+            modes_to_explore = sorted(modes_to_explore, 
+                key = lambda x: x['bit_rate'], reverse=True)
+            # step2 : computes propagation for each baudrate: stop and select the first that passes
+            found_a_feasible_mode = False
+            # TODO : the case of roll of is not included: for now use SI one
+            # TODO : if the loop in mode optimization does not have a feasible path, then bugs
+            si = create_input_spectral_information(
+            req.frequency['min'], equipment['SI']['default'].roll_off,
+            b, req.power, req.spacing, req.nb_channel)
+            for el in path:
+                si = el(si)
+                if show :
+                    print(el)
+            for m in modes_to_explore :
+                if round(mean(path[-1].snr+lin2db(b/(12.5e9))),2) > m['OSNR'] :
+                    found_a_feasible_mode = True
+                    return path, m
+                else:
+                    mode = m
+        # only get to this point if no budrate/mode staisfies OSNR requirement
+        # returns the last propagated path and mode
+        msg = f'Warning! Request {req.request_id}: no mode satisfies path SNR requirement.\n'
+        print(msg)
+        logger.info(msg)
+        return [],None
+    else :
+    #  no baudrate satisfying spacing
+        msg = f'Warning! Request {req.request_id}: no baudrate satisfies spacing requirement.\n'
+        print(msg)
+        logger.info(msg)
+        return path, None
 
 
 def jsontocsv(json_data,equipment,fileout):
@@ -453,7 +469,7 @@ def jsontocsv(json_data,equipment,fileout):
 
         # find the min  acceptable OSNR, baud rate from the eqpt library based on tsp (tupe) and mode (format)
         # loading equipment already tests the existence of tsp type and mode:
-        if mode !='no mode' :
+        if mode !='not feasible with this transponder' :
             [minosnr, baud_rate, bit_rate, cost] = next([m['OSNR'] , m['baud_rate'] , m['bit_rate'], m['cost']]  
                 for m in equipment['Transceiver'][tsp].mode if  m['format']==mode)
         # else:
@@ -471,9 +487,9 @@ def jsontocsv(json_data,equipment,fileout):
         path_bandwidth = next(e['accumulative-value']
             for e in p['path-properties']['path-metric'] if e['metric-type'] == 'path_bandwidth')
         if isinstance(output_snr, str):
-            isok = ''
-            nb_tsp = ''
-            pthbdbw = ''
+            isok = False
+            nb_tsp = 0
+            pthbdbw = round(path_bandwidth*1e-9,2)
             rosnr = ''
             rsnr = ''
             rsnrb = ''
