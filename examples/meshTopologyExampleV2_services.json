@@ -1,7 +1,7 @@
 {
   "path-request": [
     {
-      "request-id": 0,
+      "request-id": "0",
       "source": "Lorient_KMA",
       "destination": "Vannes_KBE",
       "src-tp-id": "trx Lorient_KMA",
@@ -9,7 +9,7 @@
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
-          "trx_type": "Voyager_16QAM",
+          "trx_type": "Voyager",
           "trx_mode": "16QAM",
           "effective-freq-slot": [
             {
@@ -27,7 +27,7 @@
       }
     },
     {
-      "request-id": 1,
+      "request-id": "1",
       "source": "Brest_KLA",
       "destination": "Vannes_KBE",
       "src-tp-id": "trx Brest_KLA",
@@ -35,7 +35,7 @@
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
-          "trx_type": "Voyager_16QAM",
+          "trx_type": "Voyager",
           "trx_mode": "16QAM",
           "effective-freq-slot": [
             {
@@ -53,7 +53,7 @@
           {
             "index": 0,
             "unnumbered-hop": {
-              "node-id": "Lannion_CAS",
+              "node-id": "roadm Brest_KLA",
               "link-tp-id": "link-tp-id is not used",
               "hop-type": "loose",
               "direction": "direction is not used"
@@ -68,7 +68,37 @@
           {
             "index": 1,
             "unnumbered-hop": {
-              "node-id": "Lorient_KMA",
+              "node-id": "roadm Lannion_CAS",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "loose",
+              "direction": "direction is not used"
+            },
+            "label-hop": {
+              "te-label": {
+                "generic": "generic is not used",
+                "direction": "direction is not used"
+              }
+            }
+          },
+          {
+            "index": 2,
+            "unnumbered-hop": {
+              "node-id": "roadm Lorient_KMA",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "loose",
+              "direction": "direction is not used"
+            },
+            "label-hop": {
+              "te-label": {
+                "generic": "generic is not used",
+                "direction": "direction is not used"
+              }
+            }
+          },
+          {
+            "index": 3,
+            "unnumbered-hop": {
+              "node-id": "roadm Vannes_KBE",
               "link-tp-id": "link-tp-id is not used",
               "hop-type": "loose",
               "direction": "direction is not used"
@@ -84,7 +114,7 @@
       }
     },
     {
-      "request-id": 3,
+      "request-id": "3",
       "source": "Lannion_CAS",
       "destination": "Rennes_STA",
       "src-tp-id": "trx Lannion_CAS",
@@ -93,7 +123,7 @@
         "te-bandwidth": {
           "technology": "flexi-grid",
           "trx_type": "vendorA_trx-type1",
-          "trx_mode": "PS_SP64_1",
+          "trx_mode": "mode 1",
           "effective-freq-slot": [
             {
               "n": "null",
@@ -110,7 +140,7 @@
       }
     },
     {
-      "request-id": 4,
+      "request-id": "4",
       "source": "Rennes_STA",
       "destination": "Lannion_CAS",
       "src-tp-id": "trx Rennes_STA",
@@ -119,7 +149,7 @@
         "te-bandwidth": {
           "technology": "flexi-grid",
           "trx_type": "vendorA_trx-type1",
-          "trx_mode": "PS_SP64_1",
+          "trx_mode": "mode 2",
           "effective-freq-slot": [
             {
               "n": "null",
@@ -127,7 +157,33 @@
             }
           ],
           "spacing": 75000000000.0,
-          "max-nb-of-channel": 64,
+          "max-nb-of-channel": 63,
+          "output-power": 0.0019952623149688794
+        }
+      },
+      "optimizations": {
+        "explicit-route-include-objects": []
+      }
+    },
+    {
+      "request-id": "5",
+      "source": "Rennes_STA",
+      "destination": "Lannion_CAS",
+      "src-tp-id": "trx Rennes_STA",
+      "dst-tp-id": "trx Lannion_CAS",
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "vendorA_trx-type1",
+          "trx_mode": "mode 2",
+          "effective-freq-slot": [
+            {
+              "n": "null",
+              "m": "null"
+            }
+          ],
+          "spacing": 75000000000.0,
+          "max-nb-of-channel": 63,
           "output-power": 0.0019952623149688794
         }
       },
@@ -138,26 +194,26 @@
   ],
   "synchronization": [
     {
-      "synchronization-id": 0,
+      "synchronization-id": "3",
       "svec": {
         "relaxable": "False",
         "link-diverse": "True",
         "node-diverse": "True",
         "request-id-number": [
-          0,
-          0
+          "3",
+          "1"
         ]
       }
     },
     {
-      "synchronization-id": 3,
+      "synchronization-id": "4",
       "svec": {
         "relaxable": "False",
         "link-diverse": "True",
         "node-diverse": "True",
         "request-id-number": [
-          3,
-          4
+          "4",
+          "5"
         ]
       }
     }

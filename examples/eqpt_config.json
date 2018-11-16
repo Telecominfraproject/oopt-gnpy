@@ -165,30 +165,6 @@
                        }
 
                    ]
-            },
-                        {
-            "type_variety": "Voyager_16QAM",
-            "frequency":{
-                        "min": 191.35e12,
-                        "max": 196.1e12
-                        },
-            "mode":[
-                       {
-                       "format": "16QAM",
-                       "baud_rate": 32e9,
-                       "OSNR": 19,
-                       "bit_rate": 200e9,
-                       "roll_off": 0.15
-                       },
-                       {
-                       "format": "QPSK",
-                       "baud_rate": 32e9,
-                       "OSNR": 12,
-                       "bit_rate": 100e9,
-                       "roll_off": 0.15
-                       }
-
-                   ]
             }
       ]
 
