@@ -488,6 +488,7 @@ class Edfa(Node):
 
         self.nch = frequencies.size
         self.pin_db = lin2db(sum(pin*1e3))
+        
         """check power saturation and correct target_gain accordingly:"""
 
         if self.dp_db is not None:
@@ -523,10 +524,8 @@ class Edfa(Node):
             nf_avg = self.params.nf_model.nf0
         elif self.params.type_def == 'openroadm':
             pin_ch = self.pin_db - lin2db(self.nch)
-            # model NF = f(Pin)
-            nf_avg = polyval(self.params.nf_model.nf_coef, pin_ch)
             # model OSNR = f(Pin)
-            #nf_avg = pin_ch - nf_avg + 58
+            nf_avg = pin_ch - polyval(self.params.nf_model.nf_coef, pin_ch) + 58
         else:
             nf_avg = polyval(self.params.nf_fit_coeff, -dg)
         if avg:
