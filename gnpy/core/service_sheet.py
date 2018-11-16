@@ -188,7 +188,7 @@ def convert_service_sheet(input_filename, eqpt_filename, output_filename='', fil
         'synchronization': [n.json[1] for n in req
         if n.json[1] is not None]
     }
-    with open(output_filename, 'w') as f:
+    with open(output_filename, 'w', encoding='utf-8') as f:
             f.write(dumps(data, indent=2, ensure_ascii=False))
     return data
 
