@@ -209,6 +209,18 @@
           "1"
         ]
       }
+    },
+    {
+      "synchronization-id": "4",
+      "svec": {
+        "relaxable": "False",
+        "link-diverse": "True",
+        "node-diverse": "True",
+        "request-id-number": [
+          "4",
+          "5"
+        ]
+      }
     }
   ]
 }
