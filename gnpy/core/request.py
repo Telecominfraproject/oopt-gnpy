@@ -424,8 +424,6 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
                 if round(mean(path[-1].snr+lin2db(b/(12.5e9))),2) > m['OSNR'] :
                     found_a_feasible_mode = True
                     return path, m
-                else:
-                    mode = m
         # only get to this point if no budrate/mode staisfies OSNR requirement
         # returns the last propagated path and mode
         msg = f'Warning! Request {req.request_id}: no mode satisfies path SNR requirement.\n'
@@ -437,7 +435,7 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
         msg = f'Warning! Request {req.request_id}: no baudrate satisfies spacing requirement.\n'
         print(msg)
         logger.info(msg)
-        return path, None
+        return [], None
 
 
 def jsontocsv(json_data,equipment,fileout):

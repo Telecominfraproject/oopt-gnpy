@@ -343,11 +343,11 @@ if __name__ == '__main__':
     data.append(header)
     for i, p in enumerate(propagatedpths):
         if p:
-            line = [f'{rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
+            line = [f'{rqs[i].request_id} {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
                 f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
                 f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }']
         else:
-            line = [f'no path from {rqs[i].source} to {rqs[i].destination} ']
+            line = [f'{rqs[i].request_id} no path from {rqs[i].source} to {rqs[i].destination} ']
         data.append(line)
 
     col_width = max(len(word) for row in data for word in row[1:])   # padding
