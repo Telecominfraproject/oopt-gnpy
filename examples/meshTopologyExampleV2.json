@@ -337,6 +337,78 @@
       }
     },
     {
+      "uid": "fiber (Brest_KLA → Quimper)-",
+      "metadata": {
+        "location": {
+          "latitude": 2.5,
+          "longitude": 0.5
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 75.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Quimper → Lorient_KMA)-",
+      "metadata": {
+        "location": {
+          "latitude": 1.5,
+          "longitude": 2.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 70.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Ploermel → Vannes_KBE)-",
+      "metadata": {
+        "location": {
+          "latitude": 1.5,
+          "longitude": 3.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Ploermel → Rennes_STA)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 1.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 55.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
       "uid": "fiber (Corlay → Lannion_CAS)-F061",
       "metadata": {
         "location": {
@@ -627,11 +699,27 @@
       "to_node": "roadm Lorient_KMA"
     },
     {
+      "from_node": "roadm Lorient_KMA",
+      "to_node": "fiber (Lorient_KMA → Quimper)-"
+    },
+    {
+      "from_node": "fiber (Quimper → Lorient_KMA)-",
+      "to_node": "roadm Lorient_KMA"
+    },
+    {
       "from_node": "roadm Vannes_KBE",
       "to_node": "fiber (Vannes_KBE → Lorient_KMA)-F055"
     },
     {
       "from_node": "fiber (Lorient_KMA → Vannes_KBE)-F055",
+      "to_node": "roadm Vannes_KBE"
+    },
+    {
+      "from_node": "roadm Vannes_KBE",
+      "to_node": "fiber (Vannes_KBE → Ploermel)-"
+    },
+    {
+      "from_node": "fiber (Ploermel → Vannes_KBE)-",
       "to_node": "roadm Vannes_KBE"
     },
     {
@@ -648,6 +736,14 @@
     },
     {
       "from_node": "fiber (Stbrieuc → Rennes_STA)-F057",
+      "to_node": "roadm Rennes_STA"
+    },
+    {
+      "from_node": "roadm Rennes_STA",
+      "to_node": "fiber (Rennes_STA → Ploermel)-"
+    },
+    {
+      "from_node": "fiber (Ploermel → Rennes_STA)-",
       "to_node": "roadm Rennes_STA"
     },
     {
@@ -672,6 +768,14 @@
     },
     {
       "from_node": "fiber (Morlaix → Brest_KLA)-F060",
+      "to_node": "roadm Brest_KLA"
+    },
+    {
+      "from_node": "roadm Brest_KLA",
+      "to_node": "fiber (Brest_KLA → Quimper)-"
+    },
+    {
+      "from_node": "fiber (Quimper → Brest_KLA)-",
       "to_node": "roadm Brest_KLA"
     },
     {

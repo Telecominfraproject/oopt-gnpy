@@ -34,7 +34,6 @@ from copy import copy, deepcopy
 from textwrap import dedent
 from math import ceil
 import time
-from textwrap import dedent
 
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
 
@@ -360,8 +359,9 @@ if __name__ == '__main__':
 
     if args.output :
         result = []
-        for p in propagatedpths:
-            result.append(Result_element(rqs[propagatedpths.index(p)],p))
+        # assumes that list of rqs and list of propgatedpths have same order
+        for i,p in enumerate(propagatedpths):
+            result.append(Result_element(rqs[i],p))
         temp = path_result_json(result)
         with open(args.output, 'w', encoding='utf-8') as f:
             f.write(dumps(path_result_json(result), indent=2, ensure_ascii=False))
