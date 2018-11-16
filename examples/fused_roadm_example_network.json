@@ -79,7 +79,7 @@
       "type": "Fused"
     },
     {
-      "uid": "fiber (Site_A \u2192 Site_B)-",
+      "uid": "fiber (Site_A -> Site_B)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -95,7 +95,7 @@
       }
     },
     {
-      "uid": "fiber (Site_B \u2192 Site_C)-",
+      "uid": "fiber (Site_B -> Site_C)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -111,7 +111,7 @@
       }
     },
     {
-      "uid": "fiber (Site_B \u2192 Site_A)-",
+      "uid": "fiber (Site_B -> Site_A)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -127,7 +127,7 @@
       }
     },
     {
-      "uid": "fiber (Site_C \u2192 Site_B)-",
+      "uid": "fiber (Site_C -> Site_B)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -146,34 +146,34 @@
   "connections": [
     {
       "from_node": "roadm Site_A",
-      "to_node": "fiber (Site_A \u2192 Site_B)-"
+      "to_node": "fiber (Site_A -> Site_B)-"
     },
     {
-      "from_node": "fiber (Site_B \u2192 Site_A)-",
+      "from_node": "fiber (Site_B -> Site_A)-",
       "to_node": "roadm Site_A"
     },
     {
-      "from_node": "fiber (Site_A \u2192 Site_B)-",
+      "from_node": "fiber (Site_A -> Site_B)-",
       "to_node": "ingress fused spans in Site_B"
     },
     {
       "from_node": "ingress fused spans in Site_B",
-      "to_node": "fiber (Site_B \u2192 Site_C)-"
+      "to_node": "fiber (Site_B -> Site_C)-"
     },
     {
-      "from_node": "fiber (Site_C \u2192 Site_B)-",
+      "from_node": "fiber (Site_C -> Site_B)-",
       "to_node": "egress fused spans in Site_B"
     },
     {
       "from_node": "egress fused spans in Site_B",
-      "to_node": "fiber (Site_B \u2192 Site_A)-"
+      "to_node": "fiber (Site_B -> Site_A)-"
     },
     {
       "from_node": "roadm Site_C",
-      "to_node": "fiber (Site_C \u2192 Site_B)-"
+      "to_node": "fiber (Site_C -> Site_B)-"
     },
     {
-      "from_node": "fiber (Site_B \u2192 Site_C)-",
+      "from_node": "fiber (Site_B -> Site_C)-",
       "to_node": "roadm Site_C"
     },
     {

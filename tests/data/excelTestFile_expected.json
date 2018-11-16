@@ -169,7 +169,7 @@
       "type": "Fused"
     },
     {
-      "uid": "fiber (Lannion_CAS \u2192 Corlay)-",
+      "uid": "fiber (Lannion_CAS -> Corlay)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -187,7 +187,7 @@
       }
     },
     {
-      "uid": "fiber (Corlay \u2192 Loudeac)-",
+      "uid": "fiber (Corlay -> Loudeac)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -205,7 +205,7 @@
       }
     },
     {
-      "uid": "fiber (Loudeac \u2192 Lorient_KMA)-",
+      "uid": "fiber (Loudeac -> Lorient_KMA)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -223,7 +223,7 @@
       }
     },
     {
-      "uid": "fiber (Lorient_KMA \u2192 Vannes_KBE)-F01",
+      "uid": "fiber (Lorient_KMA -> Vannes_KBE)-F01",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -241,7 +241,7 @@
       }
     },
     {
-      "uid": "fiber (Lannion_CAS \u2192 Stbrieuc)-",
+      "uid": "fiber (Lannion_CAS -> Stbrieuc)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -259,7 +259,7 @@
       }
     },
     {
-      "uid": "fiber (Stbrieuc \u2192 Rennes_STA)-",
+      "uid": "fiber (Stbrieuc -> Rennes_STA)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -277,7 +277,7 @@
       }
     },
     {
-      "uid": "fiber (Lannion_CAS \u2192 Morlaix)-",
+      "uid": "fiber (Lannion_CAS -> Morlaix)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -295,7 +295,7 @@
       }
     },
     {
-      "uid": "fiber (Morlaix \u2192 Brest_KLA)-",
+      "uid": "fiber (Morlaix -> Brest_KLA)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -313,7 +313,7 @@
       }
     },
     {
-      "uid": "fiber (Corlay \u2192 Lannion_CAS)-",
+      "uid": "fiber (Corlay -> Lannion_CAS)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -331,7 +331,7 @@
       }
     },
     {
-      "uid": "fiber (Loudeac \u2192 Corlay)-",
+      "uid": "fiber (Loudeac -> Corlay)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -349,7 +349,7 @@
       }
     },
     {
-      "uid": "fiber (Lorient_KMA \u2192 Loudeac)-",
+      "uid": "fiber (Lorient_KMA -> Loudeac)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -367,7 +367,7 @@
       }
     },
     {
-      "uid": "fiber (Vannes_KBE \u2192 Lorient_KMA)-F01",
+      "uid": "fiber (Vannes_KBE -> Lorient_KMA)-F01",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -385,7 +385,7 @@
       }
     },
     {
-      "uid": "fiber (Stbrieuc \u2192 Lannion_CAS)-",
+      "uid": "fiber (Stbrieuc -> Lannion_CAS)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -403,7 +403,7 @@
       }
     },
     {
-      "uid": "fiber (Rennes_STA \u2192 Stbrieuc)-",
+      "uid": "fiber (Rennes_STA -> Stbrieuc)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -421,7 +421,7 @@
       }
     },
     {
-      "uid": "fiber (Morlaix \u2192 Lannion_CAS)-",
+      "uid": "fiber (Morlaix -> Lannion_CAS)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -439,7 +439,7 @@
       }
     },
     {
-      "uid": "fiber (Brest_KLA \u2192 Morlaix)-",
+      "uid": "fiber (Brest_KLA -> Morlaix)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -532,10 +532,10 @@
     },
     {
       "from_node": "egress edfa in Lannion_CAS to Corlay",
-      "to_node": "fiber (Lannion_CAS \u2192 Corlay)-"
+      "to_node": "fiber (Lannion_CAS -> Corlay)-"
     },
     {
-      "from_node": "fiber (Corlay \u2192 Lannion_CAS)-",
+      "from_node": "fiber (Corlay -> Lannion_CAS)-",
       "to_node": "roadm Lannion_CAS"
     },
     {
@@ -544,10 +544,10 @@
     },
     {
       "from_node": "egress edfa in Lannion_CAS to Stbrieuc",
-      "to_node": "fiber (Lannion_CAS \u2192 Stbrieuc)-"
+      "to_node": "fiber (Lannion_CAS -> Stbrieuc)-"
     },
     {
-      "from_node": "fiber (Stbrieuc \u2192 Lannion_CAS)-",
+      "from_node": "fiber (Stbrieuc -> Lannion_CAS)-",
       "to_node": "roadm Lannion_CAS"
     },
     {
@@ -556,98 +556,98 @@
     },
     {
       "from_node": "egress edfa in Lannion_CAS to Morlaix",
-      "to_node": "fiber (Lannion_CAS \u2192 Morlaix)-"
+      "to_node": "fiber (Lannion_CAS -> Morlaix)-"
     },
     {
-      "from_node": "fiber (Morlaix \u2192 Lannion_CAS)-",
+      "from_node": "fiber (Morlaix -> Lannion_CAS)-",
       "to_node": "roadm Lannion_CAS"
     },
     {
-      "from_node": "fiber (Lannion_CAS \u2192 Corlay)-",
+      "from_node": "fiber (Lannion_CAS -> Corlay)-",
       "to_node": "ingress fused spans in Corlay"
     },
     {
       "from_node": "ingress fused spans in Corlay",
-      "to_node": "fiber (Corlay \u2192 Loudeac)-"
+      "to_node": "fiber (Corlay -> Loudeac)-"
     },
     {
-      "from_node": "fiber (Loudeac \u2192 Corlay)-",
+      "from_node": "fiber (Loudeac -> Corlay)-",
       "to_node": "egress fused spans in Corlay"
     },
     {
       "from_node": "egress fused spans in Corlay",
-      "to_node": "fiber (Corlay \u2192 Lannion_CAS)-"
+      "to_node": "fiber (Corlay -> Lannion_CAS)-"
     },
     {
-      "from_node": "fiber (Corlay \u2192 Loudeac)-",
+      "from_node": "fiber (Corlay -> Loudeac)-",
       "to_node": "ingress fused spans in Loudeac"
     },
     {
       "from_node": "ingress fused spans in Loudeac",
-      "to_node": "fiber (Loudeac \u2192 Lorient_KMA)-"
+      "to_node": "fiber (Loudeac -> Lorient_KMA)-"
     },
     {
-      "from_node": "fiber (Lorient_KMA \u2192 Loudeac)-",
+      "from_node": "fiber (Lorient_KMA -> Loudeac)-",
       "to_node": "egress fused spans in Loudeac"
     },
     {
       "from_node": "egress fused spans in Loudeac",
-      "to_node": "fiber (Loudeac \u2192 Corlay)-"
+      "to_node": "fiber (Loudeac -> Corlay)-"
     },
     {
       "from_node": "roadm Lorient_KMA",
-      "to_node": "fiber (Lorient_KMA \u2192 Loudeac)-"
+      "to_node": "fiber (Lorient_KMA -> Loudeac)-"
     },
     {
-      "from_node": "fiber (Loudeac \u2192 Lorient_KMA)-",
+      "from_node": "fiber (Loudeac -> Lorient_KMA)-",
       "to_node": "roadm Lorient_KMA"
     },
     {
       "from_node": "roadm Lorient_KMA",
-      "to_node": "fiber (Lorient_KMA \u2192 Vannes_KBE)-F01"
+      "to_node": "fiber (Lorient_KMA -> Vannes_KBE)-F01"
     },
     {
-      "from_node": "fiber (Vannes_KBE \u2192 Lorient_KMA)-F01",
+      "from_node": "fiber (Vannes_KBE -> Lorient_KMA)-F01",
       "to_node": "roadm Lorient_KMA"
     },
     {
       "from_node": "roadm Vannes_KBE",
-      "to_node": "fiber (Vannes_KBE \u2192 Lorient_KMA)-F01"
+      "to_node": "fiber (Vannes_KBE -> Lorient_KMA)-F01"
     },
     {
-      "from_node": "fiber (Lorient_KMA \u2192 Vannes_KBE)-F01",
+      "from_node": "fiber (Lorient_KMA -> Vannes_KBE)-F01",
       "to_node": "roadm Vannes_KBE"
     },
     {
-      "from_node": "fiber (Lannion_CAS \u2192 Stbrieuc)-",
-      "to_node": "fiber (Stbrieuc \u2192 Rennes_STA)-"
+      "from_node": "fiber (Lannion_CAS -> Stbrieuc)-",
+      "to_node": "fiber (Stbrieuc -> Rennes_STA)-"
     },
     {
-      "from_node": "fiber (Rennes_STA \u2192 Stbrieuc)-",
-      "to_node": "fiber (Stbrieuc \u2192 Lannion_CAS)-"
+      "from_node": "fiber (Rennes_STA -> Stbrieuc)-",
+      "to_node": "fiber (Stbrieuc -> Lannion_CAS)-"
     },
     {
       "from_node": "roadm Rennes_STA",
-      "to_node": "fiber (Rennes_STA \u2192 Stbrieuc)-"
+      "to_node": "fiber (Rennes_STA -> Stbrieuc)-"
     },
     {
-      "from_node": "fiber (Stbrieuc \u2192 Rennes_STA)-",
+      "from_node": "fiber (Stbrieuc -> Rennes_STA)-",
       "to_node": "roadm Rennes_STA"
     },
     {
-      "from_node": "fiber (Lannion_CAS \u2192 Morlaix)-",
-      "to_node": "fiber (Morlaix \u2192 Brest_KLA)-"
+      "from_node": "fiber (Lannion_CAS -> Morlaix)-",
+      "to_node": "fiber (Morlaix -> Brest_KLA)-"
     },
     {
-      "from_node": "fiber (Brest_KLA \u2192 Morlaix)-",
-      "to_node": "fiber (Morlaix \u2192 Lannion_CAS)-"
+      "from_node": "fiber (Brest_KLA -> Morlaix)-",
+      "to_node": "fiber (Morlaix -> Lannion_CAS)-"
     },
     {
       "from_node": "roadm Brest_KLA",
-      "to_node": "fiber (Brest_KLA \u2192 Morlaix)-"
+      "to_node": "fiber (Brest_KLA -> Morlaix)-"
     },
     {
-      "from_node": "fiber (Morlaix \u2192 Brest_KLA)-",
+      "from_node": "fiber (Morlaix -> Brest_KLA)-",
       "to_node": "roadm Brest_KLA"
     },
     {

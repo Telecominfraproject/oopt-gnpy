@@ -193,7 +193,7 @@
       "type": "Roadm"
     },
     {
-      "uid": "fiber (a \u2192 b)-",
+      "uid": "fiber (a -> b)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -211,7 +211,7 @@
       }
     },
     {
-      "uid": "fiber (a \u2192 c)-",
+      "uid": "fiber (a -> c)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -229,7 +229,7 @@
       }
     },
     {
-      "uid": "fiber (c \u2192 d)-",
+      "uid": "fiber (c -> d)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -247,7 +247,7 @@
       }
     },
     {
-      "uid": "fiber (c \u2192 f)-",
+      "uid": "fiber (c -> f)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -265,7 +265,7 @@
       }
     },
     {
-      "uid": "fiber (b \u2192 f)-",
+      "uid": "fiber (b -> f)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -283,7 +283,7 @@
       }
     },
     {
-      "uid": "fiber (e \u2192 d)-",
+      "uid": "fiber (e -> d)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -301,7 +301,7 @@
       }
     },
     {
-      "uid": "fiber (e \u2192 g)-",
+      "uid": "fiber (e -> g)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -319,7 +319,7 @@
       }
     },
     {
-      "uid": "fiber (f \u2192 h)-",
+      "uid": "fiber (f -> h)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -337,7 +337,7 @@
       }
     },
     {
-      "uid": "fiber (h \u2192 g)-",
+      "uid": "fiber (h -> g)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -355,7 +355,7 @@
       }
     },
     {
-      "uid": "fiber (b \u2192 a)-F061",
+      "uid": "fiber (b -> a)-F061",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -373,7 +373,7 @@
       }
     },
     {
-      "uid": "fiber (c \u2192 a)-F010",
+      "uid": "fiber (c -> a)-F010",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -391,7 +391,7 @@
       }
     },
     {
-      "uid": "fiber (d \u2192 c)-F054",
+      "uid": "fiber (d -> c)-F054",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -409,7 +409,7 @@
       }
     },
     {
-      "uid": "fiber (f \u2192 c)-F055",
+      "uid": "fiber (f -> c)-F055",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -427,7 +427,7 @@
       }
     },
     {
-      "uid": "fiber (f \u2192 b)-F056",
+      "uid": "fiber (f -> b)-F056",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -445,7 +445,7 @@
       }
     },
     {
-      "uid": "fiber (d \u2192 e)-F057",
+      "uid": "fiber (d -> e)-F057",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -463,7 +463,7 @@
       }
     },
     {
-      "uid": "fiber (g \u2192 e)-F059",
+      "uid": "fiber (g -> e)-F059",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -481,7 +481,7 @@
       }
     },
     {
-      "uid": "fiber (h \u2192 f)-F060",
+      "uid": "fiber (h -> f)-F060",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -499,7 +499,7 @@
       }
     },
     {
-      "uid": "fiber (g \u2192 h)-",
+      "uid": "fiber (g -> h)-",
       "metadata": {
         "location": {
           "latitude": 0.0,
@@ -520,146 +520,146 @@
   "connections": [
     {
       "from_node": "roadm a",
-      "to_node": "fiber (a \u2192 b)-"
+      "to_node": "fiber (a -> b)-"
     },
     {
-      "from_node": "fiber (b \u2192 a)-F061",
+      "from_node": "fiber (b -> a)-F061",
       "to_node": "roadm a"
     },
     {
       "from_node": "roadm a",
-      "to_node": "fiber (a \u2192 c)-"
+      "to_node": "fiber (a -> c)-"
     },
     {
-      "from_node": "fiber (c \u2192 a)-F010",
+      "from_node": "fiber (c -> a)-F010",
       "to_node": "roadm a"
     },
     {
       "from_node": "roadm b",
-      "to_node": "fiber (b \u2192 a)-F061"
+      "to_node": "fiber (b -> a)-F061"
     },
     {
-      "from_node": "fiber (a \u2192 b)-",
+      "from_node": "fiber (a -> b)-",
       "to_node": "roadm b"
     },
     {
       "from_node": "roadm b",
-      "to_node": "fiber (b \u2192 f)-"
+      "to_node": "fiber (b -> f)-"
     },
     {
-      "from_node": "fiber (f \u2192 b)-F056",
+      "from_node": "fiber (f -> b)-F056",
       "to_node": "roadm b"
     },
     {
       "from_node": "roadm c",
-      "to_node": "fiber (c \u2192 a)-F010"
+      "to_node": "fiber (c -> a)-F010"
     },
     {
-      "from_node": "fiber (a \u2192 c)-",
+      "from_node": "fiber (a -> c)-",
       "to_node": "roadm c"
     },
     {
       "from_node": "roadm c",
-      "to_node": "fiber (c \u2192 d)-"
+      "to_node": "fiber (c -> d)-"
     },
     {
-      "from_node": "fiber (d \u2192 c)-F054",
+      "from_node": "fiber (d -> c)-F054",
       "to_node": "roadm c"
     },
     {
       "from_node": "roadm c",
-      "to_node": "fiber (c \u2192 f)-"
+      "to_node": "fiber (c -> f)-"
     },
     {
-      "from_node": "fiber (f \u2192 c)-F055",
+      "from_node": "fiber (f -> c)-F055",
       "to_node": "roadm c"
     },
     {
       "from_node": "roadm d",
-      "to_node": "fiber (d \u2192 c)-F054"
+      "to_node": "fiber (d -> c)-F054"
     },
     {
-      "from_node": "fiber (c \u2192 d)-",
+      "from_node": "fiber (c -> d)-",
       "to_node": "roadm d"
     },
     {
       "from_node": "roadm d",
-      "to_node": "fiber (d \u2192 e)-F057"
+      "to_node": "fiber (d -> e)-F057"
     },
     {
-      "from_node": "fiber (e \u2192 d)-",
+      "from_node": "fiber (e -> d)-",
       "to_node": "roadm d"
     },
     {
       "from_node": "roadm e",
-      "to_node": "fiber (e \u2192 d)-"
+      "to_node": "fiber (e -> d)-"
     },
     {
-      "from_node": "fiber (d \u2192 e)-F057",
+      "from_node": "fiber (d -> e)-F057",
       "to_node": "roadm e"
     },
     {
       "from_node": "roadm e",
-      "to_node": "fiber (e \u2192 g)-"
+      "to_node": "fiber (e -> g)-"
     },
     {
-      "from_node": "fiber (g \u2192 e)-F059",
+      "from_node": "fiber (g -> e)-F059",
       "to_node": "roadm e"
     },
     {
       "from_node": "roadm f",
-      "to_node": "fiber (f \u2192 c)-F055"
+      "to_node": "fiber (f -> c)-F055"
     },
     {
-      "from_node": "fiber (c \u2192 f)-",
+      "from_node": "fiber (c -> f)-",
       "to_node": "roadm f"
     },
     {
       "from_node": "roadm f",
-      "to_node": "fiber (f \u2192 b)-F056"
+      "to_node": "fiber (f -> b)-F056"
     },
     {
-      "from_node": "fiber (b \u2192 f)-",
+      "from_node": "fiber (b -> f)-",
       "to_node": "roadm f"
     },
     {
       "from_node": "roadm f",
-      "to_node": "fiber (f \u2192 h)-"
+      "to_node": "fiber (f -> h)-"
     },
     {
-      "from_node": "fiber (h \u2192 f)-F060",
+      "from_node": "fiber (h -> f)-F060",
       "to_node": "roadm f"
     },
     {
       "from_node": "roadm g",
-      "to_node": "fiber (g \u2192 e)-F059"
+      "to_node": "fiber (g -> e)-F059"
     },
     {
-      "from_node": "fiber (e \u2192 g)-",
+      "from_node": "fiber (e -> g)-",
       "to_node": "roadm g"
     },
     {
       "from_node": "roadm g",
-      "to_node": "fiber (g \u2192 h)-"
+      "to_node": "fiber (g -> h)-"
     },
     {
-      "from_node": "fiber (h \u2192 g)-",
+      "from_node": "fiber (h -> g)-",
       "to_node": "roadm g"
     },
     {
       "from_node": "roadm h",
-      "to_node": "fiber (h \u2192 f)-F060"
+      "to_node": "fiber (h -> f)-F060"
     },
     {
-      "from_node": "fiber (f \u2192 h)-",
+      "from_node": "fiber (f -> h)-",
       "to_node": "roadm h"
     },
     {
       "from_node": "roadm h",
-      "to_node": "fiber (h \u2192 g)-"
+      "to_node": "fiber (h -> g)-"
     },
     {
-      "from_node": "fiber (g \u2192 h)-",
+      "from_node": "fiber (g -> h)-",
       "to_node": "roadm h"
     },
     {
