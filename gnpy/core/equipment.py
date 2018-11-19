@@ -25,7 +25,7 @@ Fiber = namedtuple('Fiber', 'type_variety dispersion gamma')
 Spans = namedtuple('Spans', 'power_mode delta_power_range_db max_length length_units \
                              max_loss padding EOL con_in con_out')
 Transceiver = namedtuple('Transceiver', 'type_variety frequency mode')
-Roadms = namedtuple('Roadms', 'gain_mode_default_loss power_mode_pref')
+Roadms = namedtuple('Roadms', 'gain_mode_default_loss power_mode_pout_target')
 SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off \
                        power_dbm power_range_db OSNR bit_rate cost')
 AmpBase = namedtuple(
