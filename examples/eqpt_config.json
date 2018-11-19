@@ -98,7 +98,7 @@
       ],
       "Roadms":[{
             "gain_mode_default_loss": 20,
-            "power_mode_pref": -20
+            "power_mode_pout_target": -20
             }],
       "SI":[{
             "f_min": 191.3e12,
