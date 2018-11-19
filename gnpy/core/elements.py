@@ -98,7 +98,8 @@ class Roadm(Node):
             params = {'loss':None}
         super().__init__(*args, params=RoadmParams(**params), **kwargs)
         self.loss = self.params.loss
-        self.pch_out = None
+        self.pout_target = None #set in Networks.py by def set_roadm_loss
+        self.effective_loss = None #set in self.propagate
         self.passive = True
 
     @property
@@ -116,11 +117,16 @@ class Roadm(Node):
 
     def __str__(self):
         return '\n'.join([f'{type(self).__name__} {self.uid}',
-                          f'  loss (dB):     {self.loss:.2f}',
-                          f'  pch out (dBm): {self.pch_out!r}'])
+                          f'  loss (dB):     {self.effective_loss:.2f}',
+                          f'  pch out (dBm): {self.pout_target!r}'])
 
-    def propagate(self, *carriers):
-        attenuation = db2lin(self.loss)
+    def propagate(self, pref, *carriers):
+        #pin_target and loss are read from eqpt_config.json['Roadm']
+        #all ingress channels in xpress are set to this power level
+        #but add channels are not, so we define an effective loss
+        #in the case of add channels
+        self.effective_loss = pref.pi - self.pout_target
+        attenuation = db2lin(self.effective_loss)
 
         for carrier in carriers:
             pwr = carrier.power
@@ -130,11 +136,10 @@ class Roadm(Node):
             yield carrier._replace(power=pwr)
 
     def update_pref(self, pref):
-        self.pch_out = round(pref.pi - self.loss, 2)
-        return pref._replace(p_span0=pref.p0, p_spani=pref.pi - self.loss)
+        return pref._replace(p_span0=pref.p0, p_spani=self.pout_target)
 
     def __call__(self, spectral_info):
-        carriers = tuple(self.propagate(*spectral_info.carriers))
+        carriers = tuple(self.propagate(spectral_info.pref, *spectral_info.carriers))
         pref = self.update_pref(spectral_info.pref)
         return spectral_info.update(carriers=carriers, pref=pref)
 
