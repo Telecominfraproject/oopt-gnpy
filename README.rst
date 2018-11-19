@@ -181,7 +181,7 @@ can be added and existing ones removed. Three different noise models are availab
 
 1. `'type_def': 'variable_gain'` is a simplified model simulating a 2-coil EDFA with internal, input and output VOAs. The NF vs gain response is calculated accordingly based on the input parameters: `nf_min`, `nf_max`, and `gain_flatmax`. It is not a simple interpolation but a 2-stage NF calculation.
 2. `'type_def': 'fixed_gain'` is a fixed gain model.  `NF == Cte == nf0` if `gain_min < gain < gain_flatmax`
-3. `'type_def': None` is an advanced model. A detailed json configuration file is required (by default `examples/advanced_config_from.json <examples/advanced_config_from.json>`_.) It uses a 3rd order polynomial where NF = f(gain), NF_ripple = f(frequency), gain_ripple = f(frequency), N-array dgt = f(frequency). Compared to the previous models, NF ripple and gain ripple are modelled.
+3. `'type_def': None` is an advanced model. A detailed json configuration file is required (by default `examples/std_medium_gain_advanced_config.json <examples/std_medium_gain_advanced_config.json>`_.) It uses a 3rd order polynomial where NF = f(gain), NF_ripple = f(frequency), gain_ripple = f(frequency), N-array dgt = f(frequency). Compared to the previous models, NF ripple and gain ripple are modelled.
 
 For all amplifier models:
 
@@ -203,7 +203,7 @@ For all amplifier models:
 |                      |           | Excel template topology files.)         |
 +----------------------+-----------+-----------------------------------------+
 
-The fiber library currently describes SSMF but additional fiber types can be entered by the user following the same model:
+The fiber library currently describes SSMF and NZDF but additional fiber types can be entered by the user following the same model:
 
 +----------------------+-----------+-----------------------------------------+
 | field                | type      | description                             |
@@ -490,8 +490,8 @@ library. The program computes performances for the list of services (accepts
 json or excel format) using the same spectrum propagation modules as
 transmission_main_example.py. Explanation on the Excel template is provided in
 the `Excel_userguide.rst <Excel_userguide.rst#service-sheet>`_. Template for
-the json format can be found here: `service_template.json
-<service_template.json>`_.
+the json format can be found here: `service-template.json
+<service-template.json>`_.
 
 Contributing
 ------------
