@@ -116,7 +116,7 @@ parser = ArgumentParser()
 parser.add_argument('-e', '--equipment', type=Path,
                     default=Path(__file__).parent / 'eqpt_config.json')
 parser.add_argument('-pl', '--plot', action='store_true')
-parser.add_argument('-v', '--verbose', action='count', default=0)
+parser.add_argument('-v', '--verbose', action='count', default=0, help='increases verbosity for each occurence')
 parser.add_argument('-l', '--list-nodes', action='store_true', help='list all transceiver nodes')
 parser.add_argument('-po', '--power', default=0, help='channel ref power in dBm')
 #parser.add_argument('-plb', '--power-lower-bound', default=0, help='power sweep lower bound')

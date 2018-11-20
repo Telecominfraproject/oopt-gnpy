@@ -40,7 +40,7 @@ parser = ArgumentParser(description = 'A function that computes performances for
 parser.add_argument('network_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls')
 parser.add_argument('service_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls')
 parser.add_argument('eqpt_filename', nargs='?', type = Path, default=Path(__file__).parent / 'eqpt_config.json')
-parser.add_argument('-v', '--verbose', action='count', default=0)
+parser.add_argument('-v', '--verbose', action='count', default=0, help='increases verbosity for each occurence')
 parser.add_argument('-o', '--output')
 
 
