@@ -115,9 +115,9 @@ def main(network, equipment, source, destination, req = None):
 parser = ArgumentParser()
 parser.add_argument('-e', '--equipment', type=Path,
                     default=Path(__file__).parent / 'eqpt_config.json')
-parser.add_argument('-pl', '--plot', action='store_true', default=False)
-parser.add_argument('-v', '--verbose', action='count')
-parser.add_argument('-l', '--list-nodes', action='store_true', default=False, help='list all transceiver nodes')
+parser.add_argument('-pl', '--plot', action='store_true')
+parser.add_argument('-v', '--verbose', action='count', default=0)
+parser.add_argument('-l', '--list-nodes', action='store_true', help='list all transceiver nodes')
 parser.add_argument('-po', '--power', default=0, help='channel ref power in dBm')
 #parser.add_argument('-plb', '--power-lower-bound', default=0, help='power sweep lower bound')
 #parser.add_argument('-pub', '--power-upper-bound', default=1, help='power sweep upper bound')
@@ -129,7 +129,7 @@ parser.add_argument('destination',   nargs='?', help='destination node')
 
 if __name__ == '__main__':
     args = parser.parse_args()
-    basicConfig(level={0: ERROR, 1: INFO, 2: DEBUG}.get(args.verbose, ERROR))
+    basicConfig(level={0: ERROR, 1: INFO, 2: DEBUG}.get(args.verbose, DEBUG))
 
     equipment = load_equipment(args.equipment)
     # logger.info(equipment)

@@ -40,8 +40,8 @@ parser = ArgumentParser(description = 'A function that computes performances for
 parser.add_argument('network_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls')
 parser.add_argument('service_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls')
 parser.add_argument('eqpt_filename', nargs='?', type = Path, default=Path(__file__).parent / 'eqpt_config.json')
-parser.add_argument('-v', '--verbose', action='count')
-parser.add_argument('-o', '--output', default=None)
+parser.add_argument('-v', '--verbose', action='count', default=0)
+parser.add_argument('-o', '--output')
 
 
 def requests_from_json(json_data,equipment):
@@ -243,7 +243,7 @@ def path_result_json(pathresult):
 
 if __name__ == '__main__':
     args = parser.parse_args()
-    basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(args.verbose, CRITICAL))
+    basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(args.verbose, DEBUG))
     logger.info(f'Computing path requests {args.service_filename} into JSON format')
     # for debug
     # print( args.eqpt_filename)
