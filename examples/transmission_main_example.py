@@ -178,7 +178,7 @@ if __name__ == '__main__':
                 \n{nodes_suggestion}?\
                 \n{args.destination!r}, replaced with {destination.uid}')
     else:
-        logger.info('No source node specified: picking random transceiver')
+        logger.info('No destination node specified: picking random transceiver')
         destination = list(transceivers.values())[1]
 
     logger.info(f'source = {args.source!r}')
