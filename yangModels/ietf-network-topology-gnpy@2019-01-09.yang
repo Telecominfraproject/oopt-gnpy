@@ -1,0 +1,239 @@
+module ietf-network-topology-optical-params {
+  yang-version 1.1;
+  namespace "ietf:topo-optical";
+  prefix opt-topo;
+
+  import ietf-network {
+    prefix nd;
+  }
+  import ietf-network-topology {
+    prefix nwt;
+  }
+
+  organization
+    "ietf wg";
+
+  contact
+    "WG Web:   <https://>
+     WG List:  <mailto:xxx>
+
+     WG Chair: xxx
+               <mailto:xxx>
+
+   ";
+
+  description "YANG model augmentation of topology to integrate optical parameters";
+
+  revision "2019-01-15" {
+    description "first draft";
+    reference "YANG model augmentation of topology to integrate optical parameters";
+  }
+
+
+  /*
+   * Identities
+   */
+    identity type-element {
+    description
+      "Base identity for element type";
+  }
+
+  identity Fiber {
+    base type-element;
+    description
+      "Fiber element";
+  }
+
+  identity Roadm {
+    base type-element;
+    description
+      "Roadm element";
+  }
+
+  identity Edfa {
+    base type-element;
+    description
+      "Edfa element";
+  }
+
+  identity Fused {
+    base type-element;
+    description
+      "Fused element";
+  }
+
+  /*
+   * Groupings
+   */
+  grouping edfa-params {
+    container edfa{
+      leaf type_variety {
+        type string ;
+          mandatory true ;
+          description ".....";
+      }
+      container operational {
+        leaf gain-target {
+          type decimal64 {
+            fraction-digits 2;
+          }
+          mandatory true ;
+          units dB ;
+          description "..";    
+        }
+        leaf tilt-target {
+          type decimal64 {
+            fraction-digits 2;
+          }
+          mandatory true ;
+          description "..";    
+        }
+        leaf out-voa {
+          type decimal64 {
+            fraction-digits 2;
+          }
+          mandatory true;
+          units dB;
+          description "..";    
+        }
+        description "Operational values for the Edfa ";
+      }
+    }
+  }
+
+  grouping fiber-params {
+    description ".....";
+    container fiber {
+      leaf type_variety {
+      type string ;
+        mandatory true ;
+        description ".....";
+      }
+      leaf length {
+        mandatory true ;
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units km;
+      }
+      leaf loss_coef{
+        mandatory true ;
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units dB/km;
+      }
+      leaf pmd{
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units sqrt(ps);
+      }
+      leaf conn_in{
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units dB;
+      }
+      leaf conn_out{
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units dB;
+      }
+    }
+  }
+
+  grouping roadm-params{
+    container roadm{
+      leaf type_variety {
+      type string ;
+        mandatory true ;
+        description ".....";
+      }      
+      leaf loss {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units dB ;
+        description "..";        
+      }
+    }
+  }
+
+  grouping fused-params{
+    container fused{
+      leaf loss {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units dB ;
+        description "..";        
+      }
+    }
+
+  }
+
+  augment "/nd:networks/nd:network/nwt:link" {
+    container OMS-attributes {
+      leaf opposite-link {
+        type leafref {
+          path "../../../nwt:link/nwt:link-id";
+        }
+        description
+          "optional - pointer to reverse link in case of bidirectional link";
+      }
+      leaf snr {
+        type decimal64 {
+          fraction-digits 5;
+        }
+        units "dB@0.1nm";
+        description "snr";
+      }
+      list OMS-elements {
+        key "elt-index";
+        description
+          "defines the spans and the amplifier blocks of the amplified lines";
+        leaf elt-index {
+          type uint16;
+          description
+            "ordered list of Index of OMS element (whether it's a Fiber, an EDFA or a Fused)";
+        }
+        leaf uid {
+          type string;
+          description
+            "unique id of the element if it exists";
+        }
+        leaf type {
+          type identityref {
+             base type-element ;
+          }
+          mandatory true ;        
+        }
+
+        container element {
+          choice element {
+            case edfa {
+              when "type = 'Edfa'";
+              uses edfa-params ;
+            }
+            case fiber {
+              when "type = 'Fiber'";
+              uses fiber-params ;
+            }
+            case fused {
+              when "type = 'Fused'";
+              uses fused-params ;
+            }            
+          }
+        }
+      }
+    }
+  }
+
+  augment "/nd:networks/nd:network/nd:node" {
+    container optical-attributes {
+
+    }
+  }
+}
