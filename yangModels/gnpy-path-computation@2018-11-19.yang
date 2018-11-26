@@ -1,0 +1,242 @@
+module gnpy-path-computation {
+  yang-version 1.1;
+  namespace "gnpy:path";
+  // replace with namespace when determined
+
+  prefix "gnpypc";
+
+  import ietf-te { 
+    prefix "te"; 
+  }
+
+  import ietf-te-path-computation {
+    prefix "itpc";
+  }
+
+  import ietf-te-types {
+    prefix "te-types";
+  }
+
+  import ietf-flexi-grid-media-channel {
+    prefix "fg-mdchn";
+  }
+
+  organization
+    "Telecom Infra Project OOPT PSE Working Group";
+
+  contact
+    "WG Web:   <https://github.com/Telecominfraproject/oopt-gnpy>
+     WG List:  <mailto:xxx>
+
+     WG Chair: xxx
+               <mailto:xxx>
+
+   ";
+
+  description "YANG model for gnpy path computation";
+
+  revision "2018-11-19" {
+    description "first draft";
+    reference "YANG model for path computation with gnpy inputs";
+  }
+
+
+  /*
+   *Groupings
+   */
+    grouping effective-freq-slot{
+         /* content copied from ietf-flexi-grid-media-channel, because only M and N are needed 
+            from the initial grouping.
+         */
+         description "The effective frequency slot is an attribute
+            of a media channel and, being a frequency slot, it is
+            described by its nominal central frequency and slot
+            width";
+         reference "rfc7698";
+            leaf N {
+               type int32;
+               description
+                  "Is used to determine the Nominal Central
+                  Frequency. The set of nominal central frequencies
+                  can be built using the following expression:
+                     f = 193.1 THz + n x 0.00625 THz,
+                  where 193.1 THz is ITU-T ''anchor frequency'' for
+                  transmission over the C band, n is a positive or
+                  negative integer including 0.";
+               reference "rfc7698";
+            }
+            leaf M {
+               type int32;
+               description
+                  "Is used to determine the slot width. A slot width
+                  is constrained to be M x SWG (that is, M x 12.5 GHz),
+                  where M is an integer greater than or equal to 1.";
+               reference "rfc7698";
+      }
+    }
+
+  grouping gnpy-specific-parameters{
+    description
+      "This grouping defines the gnpy specific parameters for requests.";
+        leaf technology {
+            type string;
+            default "flexi-grid";
+            description
+          "Data plane technology type.";
+          }
+      leaf trx_type {
+        type string ;
+        mandatory true;
+        description "name of the transponder type (to be read from equipment library";
+
+      }
+      leaf trx_mode {
+        type string ;
+        description "name of the transponder mode (to be read from equipment library";
+
+      }
+      list effective-freq-slot {
+        key "N";
+        uses effective-freq-slot;
+      }
+      leaf spacing{
+        mandatory true;
+        type decimal64 {
+          fraction-digits 1;
+        }
+        units Hz;
+        description
+          "It is the spacing between channels assuming full load with
+          same channels as the requested one. multiple of 12.5 GHz";
+
+      }
+      leaf max-nb-of-channel{
+        type uint32 ;
+        description "Nb of channel to take into account for the full load case.
+        ";
+
+      }
+      leaf output-power{
+        type decimal64 {
+          fraction-digits 5;
+        }
+        units W;
+        description "optical power setting to be used for the propagation";
+
+      }
+      leaf path_bandwidth{
+        type decimal64 {
+          fraction-digits 5;
+        }
+        mandatory true;
+        units bit/s;
+        description "Capacity required";
+      }
+  }  
+
+  identity SNR-bandwidth {
+    base te-types:path-metric-type;
+    description
+      "A metric that records SNR @ signal bandwidth";
+  }
+
+  identity OSNR-bandwidth {
+    base te-types:path-metric-type;
+    description
+      "A metric that records OSNR @ signal bandwidth";
+  }
+
+  identity SNR-0.1nm {
+    base te-types:path-metric-type;
+    description
+      "A metric that records SNR @ 0.1nm";
+  }
+
+  identity OSNR-0.1nm {
+    base te-types:path-metric-type;
+    description
+      "A metric that records OSNR @ 0.1nm";
+  }
+
+/*
+  grouping gnpy-specific-path-metric{
+    description
+      "This grouping defines the gnpy specific path metrics for response";
+    leaf metric-type {
+      type string;
+      description
+        "metric type";
+    }
+    leaf accumulative-value {
+      type gnpy-path-metric-SNRbandwidth ;
+    }
+  }
+*/
+  grouping transponder{
+        leaf transponder-type {
+        type string ;
+        description
+          "transponder type.";
+          }
+      leaf transponder-mode {
+        type string ;
+        description
+          "transponder mode.";
+          }
+  }
+
+  grouping hop-attribute{
+    description
+      "This grouping defines the hop attribute parameters for response";
+    container gnpy-hop-attribute {
+      container transponder{
+        uses transponder ;
+      }
+      container regenerator{
+        leaf regenerator-id{
+          type string ;
+
+        }
+        uses transponder ;
+      }
+      container optical-power{
+        leaf optical-power{
+          type decimal64 {
+            fraction-digits 5;
+          }
+          mandatory true;
+          units W;
+          description "hop output (input??) power";
+        }
+      }
+    }
+  }
+  /*
+   * Augment
+   */
+
+  // augment "/itpc:esther/"
+  //      + "itpc:path-request/itpc:path-constraints/"
+  //      + "itpc:te-bandwidth/itpc:technology"{ 
+  //
+
+  augment "/te:tunnels-rpc/te:input/te:tunnel-info/"
+        + "itpc:path-request/itpc:path-constraints/"
+        + "itpc:te-bandwidth/itpc:technology" {
+    description " ";
+    case gnpy {
+      container gnpy{
+        uses gnpypc:gnpy-specific-parameters;
+      }
+    }
+  }
+
+  augment "/te:tunnels-rpc/te:output/te:result/"
+        + "itpc:response/itpc:response-type/itpc:path-case/"
+        + "itpc:computed-path/itpc:path-properties/itpc:path-route-objects/"
+        + "itpc:path-route-object/itpc:type"{
+    case hop-attribute{
+      uses gnpypc:hop-attribute;
+    } 
+  }
+}

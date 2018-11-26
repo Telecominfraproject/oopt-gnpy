@@ -1,0 +1,278 @@
+module ietf-network-topology-optical-params {
+  yang-version 1.1;
+  namespace "ietf:topo-optical";
+  prefix opt-topo;
+
+  import ietf-network {
+    prefix nd;
+  }
+  import ietf-network-topology {
+    prefix nwt;
+  }
+
+  organization
+    "ietf wg";
+
+  contact
+    "WG Web:   <https://>
+     WG List:  <mailto:xxx>
+
+     WG Chair: xxx
+               <mailto:xxx>
+     Authors: Auge Jean-Luc , Orange
+              Le Rouzic Esther , Orange
+
+   ";
+
+  description "YANG model augmentation of topology to integrate optical parameters";
+
+  revision "2019-01-15" {
+    description "first draft";
+    reference "YANG model augmentation of topology to integrate optical parameters";
+  }
+
+
+  /*
+   * Identities
+   */
+    identity type-element {
+    description
+      "Base identity for element type";
+  }
+
+  identity Fiber {
+    base type-element;
+    description
+      "Fiber element";
+  }
+
+  identity Roadm {
+    base type-element;
+    description
+      "Roadm element";
+  }
+
+  identity Edfa {
+    base type-element;
+    description
+      "Edfa element";
+  }
+
+  identity Fused {
+    base type-element;
+    description
+      "Fused element";
+  }
+
+  /*
+   * Groupings
+   */
+  grouping amplifier-params {
+    container amplifier{
+      leaf type_variety {
+        type string ;
+          mandatory true ;
+          description "String identifier of amplifier type referencing a specification in a separate equipment catalog";
+      }
+      container operational {
+        leaf gain-target {
+          type decimal64 {
+            fraction-digits 2;
+          }
+          mandatory true ;
+          units dB ;
+          description "..";    
+        }
+        leaf tilt-target {
+          type decimal64 {
+            fraction-digits 2;
+          }
+          mandatory true ;
+          description "..";    
+        }
+        leaf out-voa {
+          type decimal64 {
+            fraction-digits 2;
+          }
+          mandatory true;
+          units dB;
+          description "..";    
+        }
+        description "Operational values for the Edfa ";
+      }
+    }
+  }
+
+  grouping fiber-params {
+    description "String identifier of fiber type referencing a specification in a separate equipment catalog";
+    container fiber {
+      leaf type_variety {
+      type string ;
+        mandatory true ;
+        description ".....";
+      }
+      leaf length {
+        mandatory true ;
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units km;
+      }
+      leaf loss_coef{
+        mandatory true ;
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units dB/km;
+      }
+      leaf pmd{
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units sqrt(ps);
+      }
+      leaf conn_in{
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units dB;
+      }
+      leaf conn_out{
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units dB;
+      }
+    }
+  }
+
+  grouping roadm-params{
+    container roadm{
+      leaf type_variety {
+      type string ;
+        mandatory true ;
+        description "String identifier of roadm type referencing a specification in a separate equipment catalog";
+      }      
+      leaf loss {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units dB ;
+        description "..";        
+      }
+    }
+  }
+
+  grouping fused-params{
+    container fused{
+      leaf loss {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units dB ;
+        description "..";        
+      }
+    }
+  }
+
+  grouping oms-general-optical-params{
+    leaf generalized-snr {
+      type decimal64 {
+        fraction-digits 5;
+      }
+      units "dB@0.1nm";
+      description "generalized snr";
+    }    
+    leaf input-power{
+      type decimal64 {
+          fraction-digits 2;
+      }
+      default 0.0 ;
+      units dBm ;
+      description " Reference channel power input in the OMS. ";
+    }
+    list current-channels {
+      key "channel-N";
+      description
+      "list of channels in the OMS";
+      leaf channel-N {
+        type int32 ;
+        description
+        "center frequency of this channel";
+      }
+      leaf channel-bandwidth {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units GHz ;
+        description
+        "effective channel bandwidth in GHz";
+      }
+      leaf channel-delta-power {
+        type decimal64 {
+            fraction-digits 2;
+        }
+        units dB ;
+        description
+          "optional ; delta power to ref channel input-power applied to this channel";
+      }
+    }
+  }
+
+  augment "/nd:networks/nd:network/nwt:link" {
+    container OMS-attributes {
+      leaf opposite-link {
+        type leafref {
+          path "../../../nwt:link/nwt:link-id";
+        }
+        description
+          "optional - pointer to reverse link in case of bidirectional link";
+      }
+      uses oms-general-optical-params ;
+      list OMS-elements {
+        key "elt-index";
+        description
+          "defines the spans and the amplifier blocks of the amplified lines";
+        leaf elt-index {
+          type uint16;
+          description
+            "ordered list of Index of OMS element (whether it's a Fiber, an EDFA or a Fused)";
+        }
+        leaf uid {
+          type string;
+          description
+            "unique id of the element if it exists";
+        }
+        leaf type {
+          type identityref {
+             base type-element;
+          }
+          mandatory true;        
+        }
+        
+        container element {
+          choice element {
+            case amplifier {
+              when "type = 'Edfa'";
+              uses amplifier-params ;
+            }
+            case fiber {
+              when "type = 'Fiber'";
+              uses fiber-params ;
+            }
+            case fused {
+              when "type = 'Fused'";
+              uses fused-params ;
+            }            
+          }
+        }
+      }
+    }
+  }
+
+  augment "/nd:networks/nd:network/nd:node" {
+    container optical-attributes {
+
+    }
+  }
+}
