@@ -28,9 +28,12 @@ from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch, 
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.request import (Path_request, Result_element, compute_constrained_path,
-                              propagate, jsontocsv, Disjunction, compute_path_dsjctn)
+                              propagate, jsontocsv, Disjunction, compute_path_dsjctn, requests_aggregation,
+                              propagate_and_optimize_mode)
 from copy import copy, deepcopy
 from textwrap import dedent
+from math import ceil
+import time
 
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
 
@@ -71,27 +74,40 @@ def requests_from_json(json_data,equipment):
         if req['path-constraints']['te-bandwidth']['output-power']:
             params['power'] = req['path-constraints']['te-bandwidth']['output-power']
         # same process for nb-channel
-        if req['path-constraints']['te-bandwidth']['max-nb-of-channel'] :
+        fmin = trx_params['frequency']['min']
+        fmax = trx_params['frequency']['max']
+        if req['path-constraints']['te-bandwidth']['max-nb-of-channel'] is not None :
             # check if requested nb_channels is consistant with baudrate and min-max frequencies
-            min_recommanded_spacing = automatic_spacing(trx_params['baud_rate'])
-            fmin = trx_params['frequency']['min']
-            fmax = trx_params['frequency']['max']
+            if trx_params['baud_rate'] is not None:
+                min_recommanded_spacing = automatic_spacing(trx_params['baud_rate'])
+                # needed for printing - else argument with quote are making errors in the print
+                temp = params['baud_rate']*1e-9
+            else:
+                min_recommanded_spacing = params['spacing']
+                temp = 'undetermined baudrate'
+        
             max_recommanded_nb_channels = automatic_nch(fmin,fmax,
                 min_recommanded_spacing)
                 
             if req['path-constraints']['te-bandwidth']['max-nb-of-channel'] <= max_recommanded_nb_channels :
                 params['nb_channel'] = req['path-constraints']['te-bandwidth']['max-nb-of-channel']
             else:
-                temp = params['baud_rate']
-
                 msg = dedent(f'''
                 Requested channel number is not consistent with frequency range:
-                {fmin*1e-12} THz, {fmax*1e-12} THz and baud rate: {temp*1e-9} GHz
+                {fmin*1e-12} THz, {fmax*1e-12} THz and baud rate: {temp} GHz
                 min recommanded spacing is {min_recommanded_spacing}
                 max recommanded nb of channels is {max_recommanded_nb_channels}
                 Computation stopped.''')
                 logger.critical(msg)
-                raise ValueError(msg)
+                exit()
+                
+
+        else :
+            params['nb_channel'] = automatic_nch(fmin,fmax,params['spacing'])
+        try :
+            params['path_bandwidth'] = req['path-constraints']['te-bandwidth']['path_bandwidth']
+        except KeyError:
+            pass
         requests_list.append(Path_request(**params))
     return requests_list
 
@@ -106,6 +122,7 @@ def disjunctions_from_json(json_data):
         params['node_diverse'] = snc['svec']['node-diverse']
         params['disjunctions_req'] = snc['svec']['request-id-number']
         disjunctions_list.append(Disjunction(**params))
+    print(disjunctions_list)
     return disjunctions_list
 
 
@@ -162,21 +179,10 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
     # TODO change all these req, dsjct, res lists into dict !
     path_res_list = []
 
-
-    # # Build the network once using the default power defined in SI in eqpt config
-    # # power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
-    # # spacing, f_min and f_max 
-    # p_db = equipment['SI']['default'].power_dbm
-    
-    # p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
-    #     equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
-    # build_network(network, equipment, p_db, p_total_db)
-    # TODO : get the designed power to set it when it is not an input
-    # pathreq.power to be adapted
     for i,pathreq in enumerate(pathreqlist):
 
         # use the power specified in requests but might be different from the one specified for design
-        # TODO: set the power as an optional parameter for requests definition
+        # the power is an optional parameter for requests definition
         # if optional, use the one defines in eqt_config.json
         p_db = lin2db(pathreq.power*1e3)
         p_total_db = p_db + lin2db(pathreq.nb_channel)
@@ -189,9 +195,22 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         # for debug
         # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
         if total_path :
-            total_path = propagate(total_path,pathreq,equipment, show=False)
-        else:
-            total_path = []
+            if pathreq.baud_rate is not None:
+                total_path = propagate(total_path,pathreq,equipment, show=False)
+            else:
+                total_path,mode = propagate_and_optimize_mode(total_path,pathreq,equipment, show=False)
+                # if no baudrate satisfies spacing, no mode is returned and an empty path is returned
+                # a warning is shown in the propagate_and_optimize_mode
+                if mode is not None :
+                    # propagate_and_optimize_mode function returns the mode with the highest bitrate
+                    # that passes. if no mode passes, then it returns an empty path
+                    pathreq.baud_rate = mode['baud_rate']
+                    pathreq.tsp_mode = mode['format']
+                    pathreq.format = mode['format']
+                    pathreq.OSNR = mode['OSNR']
+                    pathreq.bit_rate = mode['bit_rate']
+                else :
+                    total_path = []
         # we record the last tranceiver object in order to have th whole 
         # information about spectrum. Important Note: since transceivers 
         # attached to roadms are actually logical elements to simulate
@@ -206,11 +225,13 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
 def correct_route_list(network, pathreqlist):
     # prepares the format of route list of nodes to be consistant
     # remove wrong names, remove endpoints
-    anytype = [n.uid for n in network.nodes()]
+    # also correct source and destination
+    anytype = [n.uid for n in network.nodes() if not isinstance(n, Transceiver)]
+    transponders = [n.uid for n in network.nodes() if isinstance(n, Transceiver)]
     for pathreq in pathreqlist:
         for i,n_id in enumerate(pathreq.nodes_list):
             # replace possibly wrong name with a formated roadm name
-            print(n_id)
+            # print(n_id)
             if n_id not in anytype :
                 nodes_suggestion = [uid for uid in anytype \
                     if n_id.lower() in uid.lower()]
@@ -229,9 +250,29 @@ def correct_route_list(network, pathreqlist):
                     logger.critical(msg)
                     raise ValueError(msg)
 
+        if pathreq.source not in transponders:
+            msg = f'Request: {pathreq.request_id}: could not find transponder source : {pathreq.source}.'
+            logger.critical(msg)
+            print(f'{msg}\nComputation stopped.')
+            exit()
+            
+        if pathreq.destination not in transponders:
+            msg = f'Request: {pathreq.request_id}: could not find transponder destination : {pathreq.destination}.'
+            logger.critical(msg)
+            print(f'{msg}\nComputation stopped.')
+            exit()
+
         # TODO remove endpoints from this list in case they were added by the user in the xls or json files
     return pathreqlist
 
+def correct_disjn(disjn):
+    local_disjn = disjn.copy()
+    for el in local_disjn:
+        for d in local_disjn:
+            if set(el.disjunctions_req) == set(d.disjunctions_req) and\
+             el.disjunction_id != d.disjunction_id:
+                local_disjn.remove(d)
+    return local_disjn
 
 
 def path_result_json(pathresult):
@@ -242,6 +283,7 @@ def path_result_json(pathresult):
 
 
 if __name__ == '__main__':
+    start = time.time()
     args = parser.parse_args()
     basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(args.verbose, DEBUG))
     logger.info(f'Computing path requests {args.service_filename} into JSON format')
@@ -252,7 +294,7 @@ if __name__ == '__main__':
     network = load_network(args.network_filename,equipment)
 
     # Build the network once using the default power defined in SI in eqpt config
-    # power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
+    # TODO power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
     # spacing, f_min and f_max 
     p_db = equipment['SI']['default'].power_dbm
     
@@ -262,39 +304,68 @@ if __name__ == '__main__':
     save_network(args.network_filename, network)
 
     rqs = requests_from_json(data, equipment)
+
+    # check that request ids are unique. Non unique ids, may 
+    # mess the computation : better to stop the computation
+    all_ids = [r.request_id for r in rqs]
+    if len(all_ids) != len(set(all_ids)):
+        for a in list(set(all_ids)):
+            all_ids.remove(a)
+        msg = f'Requests id {all_ids} are not unique'
+        logger.critical(msg)
+        exit()
     rqs = correct_route_list(network, rqs)
-    print('The following services have been requested:')
-    print(rqs)
+
     # pths = compute_path(network, equipment, rqs)
     dsjn = disjunctions_from_json(data)
+    # print('ohohoho')
+    # print(dsjn)
+    # need to warn or correct in case of wrong disjunction form
+    # disjunction must not be repeated with same or different ids
+    dsjn = correct_disjn(dsjn)
+        
+    # Aggregate demands with same exact constraints
+    rqs,dsjn = requests_aggregation(rqs,dsjn)
+    # TODO export novel set of aggregated demands in a json file
+
+    print('WARNING: The following services have been requested:')
+    print(rqs)
+    
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
     propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
 
+    end = time.time()
+    print(f'computation time {end-start}')
     
-    header = ['demand','snr@bandwidth','snr@0.1nm','Receiver minOSNR']
+    header = ['demand','snr@bandwidth','snr@0.1nm','Receiver minOSNR', 'mode', 'Gbit/s' , 'nb of tsp pairs']
     data = []
     data.append(header)
     for i, p in enumerate(propagatedpths):
         if p:
-            line = [f'{rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
+            line = [f'{rqs[i].request_id} {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
                 f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
-                f'{rqs[i].OSNR}']
+                f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }']
         else:
-            line = [f'no path from {rqs[i].source} to {rqs[i].destination} ']
+            line = [f'{rqs[i].request_id} no path from {rqs[i].source} to {rqs[i].destination} ']
         data.append(line)
 
-    col_width = max(len(word) for row in data for word in row)   # padding
+    col_width = max(len(word) for row in data for word in row[1:])   # padding
+    firstcol_width = max(len(row[0]) for row in data )   # padding
     for row in data:
-        print(''.join(word.ljust(col_width) for word in row))
-
+        firstcol = ''.join(row[0].ljust(firstcol_width)) 
+        remainingcols = ''.join(word.ljust(col_width) for word in row[1:])
+        print(f'{firstcol} {remainingcols}')
 
 
     if args.output :
         result = []
-        for p in pths:
-            result.append(Result_element(rqs[pths.index(p)],p))
+        # assumes that list of rqs and list of propgatedpths have same order
+        for i,p in enumerate(propagatedpths):
+            result.append(Result_element(rqs[i],p))
+        temp = path_result_json(result)
         with open(args.output, 'w', encoding='utf-8') as f:
             f.write(dumps(path_result_json(result), indent=2, ensure_ascii=False))
             fnamecsv = next(s for s in args.output.split('.')) + '.csv'
             with open(fnamecsv,"w", encoding='utf-8') as fcsv :
-                jsontocsv(path_result_json(result),equipment,fcsv)
+                jsontocsv(temp,equipment,fcsv)
+

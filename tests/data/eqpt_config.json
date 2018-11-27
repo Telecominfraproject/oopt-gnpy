@@ -77,7 +77,8 @@
             "power_range_db": [0,0.5,0.5],
             "roll_off": 0.15,
             "OSNR": 15,
-            "bit_rate":100e9
+            "bit_rate":100e9,
+            "cost":1
             }],
       "Transceiver":[
             {
@@ -92,14 +93,16 @@
                        "baud_rate": 32e9,
                        "OSNR": 11,
                        "bit_rate": 100e9,
-                       "roll_off": 0.15
+                       "roll_off": 0.15,
+                       "cost":1
                        },
                        {
                        "format": "PS_SP64_2",
                        "baud_rate": 64e9,
                        "OSNR": 15,
                        "bit_rate": 200e9,
-                       "roll_off": 0.15
+                       "roll_off": 0.15,
+                       "cost":1                       
                        }
                    ]
             },
@@ -115,7 +118,8 @@
                        "baud_rate": 32e9,
                        "OSNR": 19,
                        "bit_rate": 200e9,
-                       "roll_off": 0.15
+                       "roll_off": 0.15,
+                       "cost":1
                        }
                    ]
             }

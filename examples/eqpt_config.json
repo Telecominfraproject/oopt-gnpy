@@ -17,6 +17,15 @@
             "nf_max": 10,
             "out_voa_auto": false,
             "allowed_for_design": false           
+            },            
+            {
+            "type_variety": "low_noise",
+            "type_def": "openroadm",
+            "gain_flatmax": 27,
+            "gain_min": 11,
+            "p_max": 22,
+            "nf_coef": [8.1e-4,6.142e-2,1.558,19.97],
+            "allowed_for_design": false
             },
             {
             "type_variety": "std_medium_gain",
@@ -48,17 +57,7 @@
             "p_max": 21,
             "nf0": 5.5,
             "allowed_for_design": false
-            },
-            {
-            "type_variety": "test",
-            "type_def": "variable_gain",
-            "gain_flatmax": 25,
-            "gain_min": 15,
-            "p_max": 21,
-            "nf_min": 7,
-            "nf_max": 11,
-            "allowed_for_design": false
-            }         
+            }       
       ],
       "Fiber":[{
             "type_variety": "SSMF",
@@ -101,7 +100,8 @@
             "power_range_db": [0,0,0.5],
             "roll_off": 0.15,
             "OSNR": 11,
-            "bit_rate":100e9
+            "bit_rate":100e9,
+            "cost":1
             }],
       "Transceiver":[
             {
@@ -117,28 +117,16 @@
                        "baud_rate": 32e9,
                        "OSNR": 11,
                        "bit_rate": 100e9,
-                       "roll_off": 0.15
+                       "roll_off": 0.15,
+                       "cost":1
                        },
                        {
                        "format": "mode 2",
                        "baud_rate": 66e9,
                        "OSNR": 15,
                        "bit_rate": 200e9,
-                       "roll_off": 0.15
-                       },
-                       {
-                       "format": "PS_SP64_1",
-                       "baud_rate": 32e9,
-                       "OSNR": 11,
-                       "bit_rate": 100e9,
-                       "roll_off": 0.15
-                       },
-                       {
-                       "format": "mode_2",
-                       "baud_rate": 66e9,
-                       "OSNR": 15,
-                       "bit_rate": 200e9,
-                       "roll_off": 0.15
+                       "roll_off": 0.15,
+                       "cost":1
                        }
                    ]
             },
@@ -150,20 +138,37 @@
                         },
             "mode":[
                        {
-                       "format": "16QAM",
-                       "baud_rate": 32e9,
-                       "OSNR": 19,
-                       "bit_rate": 200e9,
-                       "roll_off": 0.15
-                       },
-                       {
-                       "format": "QPSK",
+                       "format": "mode 1",
                        "baud_rate": 32e9,
                        "OSNR": 12,
                        "bit_rate": 100e9,
-                       "roll_off": 0.15
+                       "roll_off": 0.15,
+                       "cost":1
+                       },
+                       {
+                       "format": "mode 3",
+                       "baud_rate": 44e9,
+                       "OSNR": 18,
+                       "bit_rate": 300e9,
+                       "roll_off": 0.15,
+                       "cost":1
+                       },
+                       {
+                       "format": "mode 2",
+                       "baud_rate": 66e9,
+                       "OSNR": 21,
+                       "bit_rate": 400e9,
+                       "roll_off": 0.15,
+                       "cost":1
+                       },
+                       {
+                       "format": "mode 4",
+                       "baud_rate": 66e9,
+                       "OSNR": 16,
+                       "bit_rate": 200e9,
+                       "roll_off": 0.15,
+                       "cost":1
                        }
-
                    ]
             }
       ]

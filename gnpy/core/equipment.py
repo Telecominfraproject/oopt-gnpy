@@ -20,13 +20,14 @@ from gnpy.core.elements import Edfa
 
 Model_vg = namedtuple('Model_vg', 'nf1 nf2 delta_p')
 Model_fg = namedtuple('Model_fg', 'nf0')
+Model_openroadm = namedtuple('Model_openroadm', 'nf_coef')
 Fiber = namedtuple('Fiber', 'type_variety dispersion gamma')
 Spans = namedtuple('Spans', 'power_mode delta_power_range_db max_length length_units \
                              max_loss padding EOL con_in con_out')
 Transceiver = namedtuple('Transceiver', 'type_variety frequency mode')
 Roadms = namedtuple('Roadms', 'gain_mode_default_loss power_mode_pref')
 SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off \
-                       power_dbm power_range_db OSNR bit_rate')
+                       power_dbm power_range_db OSNR bit_rate cost')
 AmpBase = namedtuple(
     'AmpBase',
     'type_variety type_def gain_flatmax gain_min p_max'
@@ -79,6 +80,13 @@ class Amp(AmpBase):
             except KeyError: pass #nf0 is not needed for variable gain amp
             nf1, nf2, delta_p = nf_model(type_variety, gain_min, gain_max, nf_min, nf_max)
             nf_def = Model_vg(nf1, nf2, delta_p)
+        elif type_def == 'openroadm':
+            try:
+                nf_coef = kwargs.pop('nf_coef')
+            except KeyError: #nf_coef is expected for openroadm amp
+                print(f'missing nf_coef input for amplifier: {type_variety} in eqpt_config.json')
+                exit()
+            nf_def = Model_openroadm(nf_coef)
         return cls(**{**kwargs, **json_data, 'nf_model': nf_def})
 
 
@@ -140,26 +148,39 @@ def edfa_nf(gain_target, variety_type, equipment):
             params = amp_params._asdict(),
             operational = {
                 'gain_target': gain_target,
-                'tilt_target': 0,
-            })
+                'tilt_target': 0
+                        }
+            )
+    amp.pin_db = 0
+    amp.nch = 88
     return amp._calc_nf(True)
 
 def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=False):
     """return the trx and SI parameters from eqpt_config for a given type_variety and mode (ie format)"""
     trx_params = {}
     default_si_data = equipment['SI']['default']
+    
     try:
         trxs = equipment['Transceiver']
-        mode_params = next(mode for trx in trxs \
-                    if trx == trx_type_variety \
-                    for mode in trxs[trx].mode \
-                    if mode['format'] == trx_mode)
+        if trx_mode is not None:
+            mode_params = next(mode for trx in trxs \
+                        if trx == trx_type_variety \
+                        for mode in trxs[trx].mode \
+                        if mode['format'] == trx_mode)
+        else:
+            mode_params = {"format": "undetermined",
+                       "baud_rate": None,
+                       "OSNR": None,
+                       "bit_rate": None,
+                       "roll_off": None,
+                       "cost":None}
         trx_params = {**mode_params}
         trx_params['frequency'] = equipment['Transceiver'][trx_type_variety].frequency
+
         # TODO: novel automatic feature maybe unwanted if spacing is specified
-        trx_params['spacing'] = automatic_spacing(trx_params['baud_rate'])
-        temp = trx_params['spacing']
-        print(f'spacing {temp}')
+        # trx_params['spacing'] = automatic_spacing(trx_params['baud_rate'])
+        # temp = trx_params['spacing']
+        # print(f'spacing {temp}')
     except StopIteration :
         if error_message:
             print(f'could not find tsp : {trx_type_variety} with mode: {trx_mode} in eqpt library')
@@ -167,17 +188,24 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             exit()
         else:
             # default transponder charcteristics
+            # mainly used with transmission_main_example.py
             trx_params['frequency'] = {'min': default_si_data.f_min, 'max': default_si_data.f_max}
             trx_params['baud_rate'] = default_si_data.baud_rate
             trx_params['spacing'] = default_si_data.spacing
             trx_params['OSNR'] = default_si_data.OSNR
             trx_params['bit_rate'] = default_si_data.bit_rate
+            trx_params['cost'] = default_si_data.cost
             trx_params['roll_off'] = default_si_data.roll_off
+            trx_params['nb_channel'] = automatic_nch(trx_params['frequency']['min'],
+                                        trx_params['frequency']['max'],
+                                        trx_params['spacing'])
+            nch = automatic_nch(trx_params['frequency']['min'],
+                                                      trx_params['frequency']['max'],
+                                                      trx_params['spacing'])
+            print(f'There are {nch} channels propagating')
+                
     trx_params['power'] =  db2lin(default_si_data.power_dbm)*1e-3
-    trx_params['nb_channel'] = automatic_nch(trx_params['frequency']['min'],
-                                             trx_params['frequency']['max'],
-                                             trx_params['spacing'])
-    print('N channels = ', trx_params['nb_channel'])
+
     return trx_params
 
 def automatic_spacing(baud_rate):

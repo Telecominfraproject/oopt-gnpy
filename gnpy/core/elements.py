@@ -420,6 +420,7 @@ class Edfa(Node):
         self.nf = None # dB edfa nf at operational.gain_target
         self.gprofile = None
         self.pin_db = None
+        self.nch = None
         self.pout_db = None
         self.dp_db = None #delta P with Pref (power swwep) in power mode
         self.target_pch_db = None
@@ -485,6 +486,7 @@ class Edfa(Node):
         self.interpol_gain_ripple = interp(self.channel_freq, amplifier_freq, self.params.gain_ripple)
         self.interpol_nf_ripple =interp(self.channel_freq, amplifier_freq, self.params.nf_ripple)
 
+        self.nch = frequencies.size
         self.pin_db = lin2db(sum(pin*1e3))
         """check power saturation and correct target_gain accordingly:"""
 
@@ -521,6 +523,12 @@ class Edfa(Node):
             nf_avg = lin2db(db2lin(self.params.nf_model.nf1) + db2lin(self.params.nf_model.nf2)/db2lin(g1a))
         elif self.params.type_def == 'fixed_gain':
             nf_avg = self.params.nf_model.nf0
+        elif self.params.type_def == 'openroadm':
+            pin_ch = self.pin_db - lin2db(self.nch)
+            # model NF = f(Pin)
+            nf_avg = polyval(self.params.nf_model.nf_coef, pin_ch)
+            # model OSNR = f(Pin)
+            #nf_avg = pin_ch - nf_avg + 58
         else:
             nf_avg = polyval(self.params.nf_fit_coeff, -dg)
         if avg:

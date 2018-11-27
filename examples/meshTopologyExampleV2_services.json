@@ -10,7 +10,7 @@
         "te-bandwidth": {
           "technology": "flexi-grid",
           "trx_type": "Voyager",
-          "trx_mode": "16QAM",
+          "trx_mode": "mode 1",
           "effective-freq-slot": [
             {
               "n": "null",
@@ -19,7 +19,8 @@
           ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": 80,
-          "output-power": 0.0012589254117941673
+          "output-power": 0.0012589254117941673,
+          "path_bandwidth": 100000000000.0
         }
       },
       "optimizations": {
@@ -36,7 +37,7 @@
         "te-bandwidth": {
           "technology": "flexi-grid",
           "trx_type": "Voyager",
-          "trx_mode": "16QAM",
+          "trx_mode": "mode 1",
           "effective-freq-slot": [
             {
               "n": "null",
@@ -45,7 +46,8 @@
           ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": 80,
-          "output-power": 0.0012589254117941673
+          "output-power": 0.0012589254117941673,
+          "path_bandwidth": 0
         }
       },
       "optimizations": {
@@ -132,7 +134,8 @@
           ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": 80,
-          "output-power": 0.0012589254117941673
+          "output-power": 0.0012589254117941673,
+          "path_bandwidth": 60000000000.0
         }
       },
       "optimizations": {
@@ -158,7 +161,8 @@
           ],
           "spacing": 75000000000.0,
           "max-nb-of-channel": 63,
-          "output-power": 0.0019952623149688794
+          "output-power": 0.0019952623149688794,
+          "path_bandwidth": 150000000000.0
         }
       },
       "optimizations": {
@@ -184,7 +188,8 @@
           ],
           "spacing": 75000000000.0,
           "max-nb-of-channel": 63,
-          "output-power": 0.0019952623149688794
+          "output-power": 0.0019952623149688794,
+          "path_bandwidth": 20000000000.0
         }
       },
       "optimizations": {
