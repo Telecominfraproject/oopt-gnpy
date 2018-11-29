@@ -98,7 +98,8 @@ class Roadm(Node):
             params = {'loss':None}
         super().__init__(*args, params=RoadmParams(**params), **kwargs)
         self.loss = self.params.loss
-        self.pout_target = None #set in Networks.py by def set_roadm_loss
+        self.target_pch_out_db = None #set in Networks.py by def set_roadm_loss
+        self.effective_pch_out_db = None
         self.effective_loss = None #set in self.propagate
         self.passive = True
 
@@ -118,14 +119,18 @@ class Roadm(Node):
     def __str__(self):
         return '\n'.join([f'{type(self).__name__} {self.uid}',
                           f'  loss (dB):     {self.effective_loss:.2f}',
-                          f'  pch out (dBm): {self.pout_target!r}'])
+                          f'  pch out (dBm): {self.effective_pch_out_db!r}'])
 
     def propagate(self, pref, *carriers):
         #pin_target and loss are read from eqpt_config.json['Roadm']
         #all ingress channels in xpress are set to this power level
         #but add channels are not, so we define an effective loss
         #in the case of add channels
-        self.effective_loss = pref.pi - self.pout_target
+        if self.target_pch_out_db:
+            self.effective_loss = pref.pi - self.target_pch_out_db
+        else:
+             self.effective_loss = self.loss
+        self.effective_pch_out_db = pref.pi - self.effective_loss
         attenuation = db2lin(self.effective_loss)
 
         for carrier in carriers:
@@ -136,7 +141,7 @@ class Roadm(Node):
             yield carrier._replace(power=pwr)
 
     def update_pref(self, pref):
-        return pref._replace(p_span0=pref.p0, p_spani=self.pout_target)
+        return pref._replace(p_span0=pref.p0, p_spani=self.effective_pch_out_db)
 
     def __call__(self, spectral_info):
         carriers = tuple(self.propagate(spectral_info.pref, *spectral_info.carriers))
@@ -215,7 +220,7 @@ class Fiber(Node):
         self.con_out = self.params.con_out
         self.dispersion = self.params.dispersion  # s/m/m
         self.gamma = self.params.gamma # 1/W/m
-        self.pch_out = None
+        self.pch_out_db = None
         # TODO|jla: discuss factor 2 in the linear lineic attenuation
 
     @property
@@ -248,7 +253,8 @@ class Fiber(Node):
                           f'  pad att_in (dB):             {self.att_in:.2f}',
                           f'  total loss (dB):             {self.loss:.2f}',
                           f'  (includes conn loss (dB) in: {self.con_in:.2f} out: {self.con_out:.2f})',
-                          f'  (conn loss out includes EOL margin defined in eqpt_config.json)'])
+                          f'  (conn loss out includes EOL margin defined in eqpt_config.json)',
+                          f'  pch out (dBm): {self.pch_out_db!r}'])
 
     @property
     def fiber_loss(self):
@@ -364,8 +370,8 @@ class Fiber(Node):
             yield carrier._replace(power=pwr)
 
     def update_pref(self, pref):
-        self.pch_out = round(pref.pi - self.loss, 2)
-        return pref._replace(p_span0=pref.p0, p_spani=pref.pi - self.loss)
+        self.pch_out_db = round(pref.pi - self.loss, 2)
+        return pref._replace(p_span0=pref.p0, p_spani=self.pch_out_db)
 
     def __call__(self, spectral_info):
         carriers = tuple(self.propagate(*spectral_info.carriers))
@@ -428,8 +434,8 @@ class Edfa(Node):
         self.nch = None
         self.pout_db = None
         self.dp_db = None #delta P with Pref (power swwep) in power mode
-        self.target_pch_db = None
-        self.effective_pch_db = None
+        self.target_pch_out_db = None
+        self.effective_pch_out_db = None
         self.passive = False
         self.effective_gain = self.operational.gain_target
         self.att_in = None
@@ -475,8 +481,8 @@ class Edfa(Node):
                           f'  Power In (dBm):         {self.pin_db:.2f}',
                           f'  Power Out (dBm):        {self.pout_db:.2f}',
                           f'  Delta_P (dB):           {self.dp_db!r}',
-                          f'  target pch (dBm):       {self.target_pch_db!r}',
-                          f'  effective pch (dBm):    {self.effective_pch_db!r}',
+                          f'  target pch (dBm):       {self.target_pch_out_db!r}',
+                          f'  effective pch (dBm):    {self.effective_pch_out_db!r}',
                           f'  output VOA (dB):        {self.operational.out_voa:.2f}'])
 
     def interpol_params(self, frequencies, pin, baud_rates, pref):
@@ -494,14 +500,18 @@ class Edfa(Node):
         self.nch = frequencies.size
         self.pin_db = lin2db(sum(pin*1e3))
         
-        """check power saturation and correct target_gain accordingly:"""
-
+        """in power mode: dp_db is defined and can be used to calculate the power target
+        This power target is used calculate the amplifier gain"""
         if self.dp_db is not None:
-            self.target_pch_db = round(self.dp_db + pref.p0, 2)
-            self.effective_gain = self.target_pch_db - pref.pi
+            self.target_pch_out_db = round(self.dp_db + pref.p0, 2)
+            self.effective_gain = self.target_pch_out_db - pref.pi
+        else:
+            self.effective_gain = self.operational.gain_target
         
+        """check power saturation and correct target_gain accordingly:"""
         self.effective_gain = min(self.effective_gain, self.params.p_max - self.pin_db)
-        self.effective_pch_db = round(pref.pi + self.effective_gain, 2)
+        print(self.effective_gain, pref.pi)
+        self.effective_pch_out_db = round(pref.pi + self.effective_gain, 2)
 
         self.nf = self._calc_nf()
         self.gprofile = self._gain_profile(pin)
