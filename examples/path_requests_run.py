@@ -31,9 +31,9 @@ from gnpy.core.request import (Path_request, Result_element, compute_constrained
                               propagate, jsontocsv, Disjunction, compute_path_dsjctn, requests_aggregation,
                               propagate_and_optimize_mode)
 from copy import copy, deepcopy
+from textwrap import dedent
 from math import ceil
 import time
-from textwrap import dedent
 
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
 
@@ -43,8 +43,8 @@ parser = ArgumentParser(description = 'A function that computes performances for
 parser.add_argument('network_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls')
 parser.add_argument('service_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls')
 parser.add_argument('eqpt_filename', nargs='?', type = Path, default=Path(__file__).parent / 'eqpt_config.json')
-parser.add_argument('-v', '--verbose', action='count')
-parser.add_argument('-o', '--output', default=None)
+parser.add_argument('-v', '--verbose', action='count', default=0, help='increases verbosity for each occurence')
+parser.add_argument('-o', '--output')
 
 
 def requests_from_json(json_data,equipment):
@@ -285,7 +285,7 @@ def path_result_json(pathresult):
 if __name__ == '__main__':
     start = time.time()
     args = parser.parse_args()
-    basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(args.verbose, CRITICAL))
+    basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(args.verbose, DEBUG))
     logger.info(f'Computing path requests {args.service_filename} into JSON format')
     # for debug
     # print( args.eqpt_filename)
@@ -359,12 +359,13 @@ if __name__ == '__main__':
 
     if args.output :
         result = []
-        for p in propagatedpths:
-            result.append(Result_element(rqs[propagatedpths.index(p)],p))
+        # assumes that list of rqs and list of propgatedpths have same order
+        for i,p in enumerate(propagatedpths):
+            result.append(Result_element(rqs[i],p))
         temp = path_result_json(result)
-        with open(args.output, 'w') as f:
+        with open(args.output, 'w', encoding='utf-8') as f:
             f.write(dumps(path_result_json(result), indent=2, ensure_ascii=False))
             fnamecsv = next(s for s in args.output.split('.')) + '.csv'
-            with open(fnamecsv,"w") as fcsv :
+            with open(fnamecsv,"w", encoding='utf-8') as fcsv :
                 jsontocsv(temp,equipment,fcsv)
 

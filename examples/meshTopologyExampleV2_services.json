@@ -10,7 +10,7 @@
         "te-bandwidth": {
           "technology": "flexi-grid",
           "trx_type": "Voyager",
-          "trx_mode": null,
+          "trx_mode": "mode 1",
           "effective-freq-slot": [
             {
               "n": "null",
@@ -37,7 +37,7 @@
         "te-bandwidth": {
           "technology": "flexi-grid",
           "trx_type": "Voyager",
-          "trx_mode": null,
+          "trx_mode": "mode 1",
           "effective-freq-slot": [
             {
               "n": "null",
@@ -152,7 +152,7 @@
         "te-bandwidth": {
           "technology": "flexi-grid",
           "trx_type": "vendorA_trx-type1",
-          "trx_mode": null,
+          "trx_mode": "mode 2",
           "effective-freq-slot": [
             {
               "n": "null",

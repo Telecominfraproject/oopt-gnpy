@@ -15,6 +15,7 @@ and feasibility
 See: draft-ietf-teas-yang-path-computation-01.txt
 """
 
+from sys import exit
 from collections import namedtuple
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
 from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths)
