@@ -67,6 +67,13 @@ class Request_element(Element):
             if equipment['Transceiver'][Request.trx_type]:
                 self.trx_type = Request.trx_type
             if Request.mode is not None :
+                if not isinstance(Request.mode,str):
+                    value = str(int(Request.mode))
+                    if value.endswith('.0'):
+                        value = value[:-2]
+                    self.mode= value
+                else:
+                    self.mode = Request.mode                
                 if [mode for mode in equipment['Transceiver'][Request.trx_type].mode]:
                     self.mode = Request.mode
             else:
