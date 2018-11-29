@@ -131,11 +131,6 @@ def select_edfa(gain_target, power_target, equipment):
     #       =>chose the amp with the best NF among the acceptable ones:
     return min(acceptable_power_list, key=itemgetter(3)).variety #filter on NF
 
-def set_roadm_loss(network, equipment):
-    roadms = [roadm for roadm in network if isinstance(roadm, Roadm)]
-    power_mode = equipment['Spans']['default'].power_mode
-    roadm_loss = equipment['Roadms']['default'].default_loss
-    pout_target = equipment['Roadms']['default'].power_mode_pout_target
 
 def set_roadm_loss(network, equipment, pref_ch_db):
     roadms = [roadm for roadm in network if isinstance(roadm, Roadm)]
@@ -147,7 +142,7 @@ def set_roadm_loss(network, equipment, pref_ch_db):
     for roadm in roadms:
         if power_mode:
             roadm.loss = roadm_loss
-            roadm.pout_target = pout_target
+            roadm.target_pch_out_db = pout_target
         elif roadm.loss == None:
             roadm.loss = default_roadm_loss
 
