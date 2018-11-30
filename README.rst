@@ -151,7 +151,7 @@ further instructions on how to prepare the Excel input file, see
 
 The main transmission example will calculate the average signal OSNR and SNR
 across network elements (transceiver, ROADMs, fibers, and amplifiers)
-between two transceivers selected by the user. (By default, for the CORONET Global
+between two transceivers selected by the user. Additional details are provided by doing ``transmission_main_example.py -h``. (By default, for the CORONET Global
 network, it will show the transmission of spectral information between Albuquerque and Atlanta (Georgia))
 
 This script calculates the average signal OSNR = |OSNR| and SNR = |SNR|.
