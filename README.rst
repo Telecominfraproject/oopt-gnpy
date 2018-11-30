@@ -152,7 +152,7 @@ further instructions on how to prepare the Excel input file, see
 The main transmission example will calculate the average signal OSNR and SNR
 across network elements (transceiver, ROADMs, fibers, and amplifiers)
 between two transceivers selected by the user. (By default, for the CORONET Global
-network, it will show the transmission of spectral information between Abilene, Texas and Albany, New York.)
+network, it will show the transmission of spectral information between Albuquerque and Atlanta (Georgia))
 
 This script calculates the average signal OSNR = |OSNR| and SNR = |SNR|.
 
@@ -170,8 +170,8 @@ Further Instructions for Use (`transmission_main_example.py`, `path_requests_run
 
 Design and transmission parameters are defined in a dedicated json file. By
 default, this information is read from `examples/eqpt_config.json
-<examples/eqpt_config.json>`_. This file defines the equipement librairies that
-can be customized (EDFAs, fibers, and transcievers).
+<examples/eqpt_config.json>`_. This file defines the equipment libraries that
+can be customized (EDFAs, fibers, and transceivers).
 
 It also defines the simulation parameters (spans, ROADMs, and the spectral
 information to transmit.)
@@ -276,7 +276,7 @@ parameters:
 | field                  | type      | description                                 |
 +========================+===========+=============================================+
 | `power_mode`           | (boolean) | If false, gain mode. Auto-design sets       |
-|                        |           | amplifier gain = preceeding span loss,      |
+|                        |           | amplifier gain = preceding span loss,      |
 |                        |           | unless the amplifier exists and its         |
 |                        |           | gain > 0 in the topology input json.        |
 |                        |           | If true, power mode (recommended for        |
@@ -290,7 +290,7 @@ parameters:
 |                        |           | (see power_range_db in the SI               |
 |                        |           | configuration library) the power sweep      |
 |                        |           | is performed w/r/t this power target,       |
-|                        |           | regardless of preceeding amplifiers         |
+|                        |           | regardless of preceding amplifiers         |
 |                        |           | power saturation/limitations.               |
 +------------------------+-----------+---------------------------------------------+
 | `delta_power_range_db` | (number)  | Auto-design only, power-mode                |
@@ -395,7 +395,7 @@ parameters:
     }
 
 ROADMs can be configured as follows. The user can only modify the value of
-existing parmeters:
+existing parameters:
 
 +-------------------------+-----------+---------------------------------------------+
 | field                   |   type    | description                                 |
@@ -415,7 +415,7 @@ existing parmeters:
 |                         |           | its egress channel power = power_mode_pref, |
 |                         |           | regardless of existing loss settings        |
 |                         |           | from the topology JSON input. It means      |
-|                         |           | that the ouput power from a ROADM (and      |
+|                         |           | that the output power from a ROADM (and      |
 |                         |           | therefore its OSNR contribution) is Cte     |
 |                         |           | and not depending from power_dbm and        |
 |                         |           | power_range_db sweep settings. This         |
@@ -464,9 +464,9 @@ one power/channel definition.
 +----------------------+-----------+-------------------------------------------+
 
 The `transmission_main_example.py <examples/transmission_main_example.py>`_
-script propagates a specrum of channels at 32 Gbaud, 50 GHz spacing and 0
+script propagates a spectrum of channels at 32 Gbaud, 50 GHz spacing and 0
 dBm/channel. These are not yet parametrized but can be modified directly in the
-script (via the SpectralInformation structure) to accomodate any baud rate,
+script (via the SpectralInformation structure) to accommodate any baud rate,
 spacing, power or channel count demand.
 
 Use `examples/path_requests_run.py <examples/path_requests_run.py>`_ to run multiple optimizations as follows:
@@ -507,7 +507,7 @@ To get involved, please contact James Powell
 
 See the `Onboarding Guide
 <https://github.com/Telecominfraproject/gnpy/wiki/Onboarding-Guide>`_ for
-specific details on code contribtions.
+specific details on code contributions.
 
 See `AUTHORS.rst <AUTHORS.rst>`_ for past and present contributors.
 
@@ -517,7 +517,7 @@ Project Background
 Data Centers are built upon interchangeable, highly standardized node and
 network architectures rather than a sum of isolated solutions. This also
 translates to optical networking. It leads to a push in enabling multi-vendor
-optical network by disaggregating HW and SW functions and focussing on
+optical network by disaggregating HW and SW functions and focusing on
 interoperability. In this paradigm, the burden of responsibility for ensuring
 the performance of such disaggregated open optical systems falls on the
 operators. Consequently, operators and vendors are collaborating in defining
