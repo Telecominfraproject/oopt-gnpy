@@ -40,24 +40,43 @@ class Node(namedtuple('Node', 'city state country region latitude longitude node
         values = [x[0] if x[0] != '' else x[1] for x in zip(values,default_values)]
         return super().__new__(cls, city, state, country, region, *values)
 
-class Link(namedtuple('Link', 'from_city to_city \
-    east_distance east_fiber east_lineic east_con_in east_con_out east_pmd east_cable \
-    west_distance west_fiber west_lineic west_con_in west_con_out west_pmd west_cable \
-    distance_units')):
-    def __new__(cls, from_city, to_city,
-      east_distance, east_fiber='SSMF', east_lineic=0.2,
-      east_con_in=None, east_con_out=None, east_pmd=0.1, east_cable='',
-      west_distance='', west_fiber='', west_lineic='',
-      west_con_in='', west_con_out='', west_pmd='', west_cable='',
-      distance_units='km'):
-        east_values = [east_distance, east_fiber, east_lineic, east_con_in, east_con_out,
-                        east_pmd, east_cable]
-        west_values = [west_distance, west_fiber, west_lineic, west_con_in, west_con_out,
-                        west_pmd, west_cable]
-        default_values = [80,'SSMF',0.2,None,None,0.1,'']
-        east_values = [x[0] if x[0] != '' else x[1] for x in zip(east_values,default_values)]
-        west_values = [x[0] if x[0] != '' else x[1] for x in zip(west_values,east_values)]
-        return super().__new__(cls, from_city, to_city, *east_values, *west_values, distance_units)
+class Link(object, ):
+    """attribtes from ingress parse_ept_headers dict
+    +node_a, node_z, ingress_fiber_con_in, egress_fiber_con_in
+    """
+    def __init__(self, **kwargs):
+        super(Link, self).__init__()
+        print(kwargs)
+        self.update_attr(kwargs)
+        self.update_egress(kwargs)
+        self.distance_units = 'km'
+
+    def update_attr(self, kwargs):
+        for k,v in kwargs.items():
+            if not 'west' in k:
+                setattr(self, k, v if v!='' else self.default_values[k])
+
+    def update_egress(self, kwargs):
+        for k,v in kwargs.items():
+            if 'west' in k:
+                if v=='':
+                    print(k)
+                    attribut = 'east' + k.split('west')[1]
+                    setattr(self, k, getattr(self, attribut))
+                else:
+                    setattr(self, k, v)
+
+    default_values = \
+    {
+            'east_distance':        80,
+            'east_fiber':           'SSMF',
+            'east_lineic':          0.2,
+            'east_con_in':          None,
+            'east_con_out':         None,
+            'east_pmd':             0.1,
+            'east_cable':           ''
+    }
+
 
 class Eqpt(namedtuple('Eqpt', 'from_city to_city \
     egress_amp_type egress_att_in egress_amp_gain egress_amp_tilt egress_amp_att_out\
@@ -71,6 +90,71 @@ class Eqpt(namedtuple('Eqpt', 'from_city to_city \
         default_values = ['','','',0,0,0,0,'',0,0,0,0]
         values = [x[0] if x[0] != '' else x[1] for x in zip(values,default_values)]
         return super().__new__(cls, *values)
+
+def read_header(my_sheet, line, slice_):
+    """ return the list of headers !:= ''
+    header_i = [(header, header_column_index), ...]
+    in a {line, slice1_x, slice_y} range
+    """
+    Param_header = namedtuple('Param_header', 'header colindex')
+    try:
+        header = [x.value.strip() for x in my_sheet.row_slice(line, slice_[0], slice_[1])]
+        header_i = [Param_header(header,i+slice_[0]) for i, header in enumerate(header) if header != '']
+    except:
+        header_i = []
+    if header_i != [] and header_i[-1].colindex != slice_[1]:
+        header_i.append(Param_header('',slice_[1]))
+    return header_i
+
+def read_slice(my_sheet, line, slice_, header):
+    """return the slice range of a given header
+    in a defined range {line, slice_x, slice_y}"""
+    header_i = read_header(my_sheet, line, slice_)
+    slice_range = (-1,-1)
+    if header_i != []:
+        try:
+            slice_range = next((h.colindex,header_i[i+1].colindex) \
+                for i,h in enumerate(header_i) if header in h.header)
+        except:
+            pass
+    return slice_range    
+
+
+def parse_headers(my_sheet, input_headers_dict, headers, start_line, slice_in):
+    """return a dict of header1_slice
+    key = column index
+    value   = all_headers 3rd order value
+            = Ept_inputs attributs"""
+
+    for h0 in input_headers_dict:
+        slice_out = read_slice(my_sheet, start_line, slice_in, h0)
+        iteration = 1
+        while slice_out == (-1,-1) and iteration < 10:
+            #try next lines
+            print(h0, iteration)
+            slice_out = read_slice(my_sheet, start_line+iteration, slice_in, h0)
+            iteration += 1
+        if slice_out == (-1, -1):
+            print(f'critical missing header {h0}, abort parsing')
+            exit()
+        if not isinstance(input_headers_dict[h0], dict):
+            headers[slice_out[0]] = input_headers_dict[h0]
+        else:
+            headers = parse_headers(my_sheet, input_headers_dict[h0], headers, start_line+1, slice_out)
+    return headers
+
+def parse_row(row, headers):
+    #print([label for label in ept.values()])
+    #print([i for i in ept.keys()])
+    #print(row[i for i in ept.keys()])
+    return {f: r.value for f, r in \
+            zip([label for label in headers.values()], [row[i] for i in headers])}
+            #if r.ctype != XL_CELL_EMPTY}
+
+def parse_sheet(my_sheet, input_headers_dict, header_line, start_line, column):
+    headers = parse_headers(my_sheet, input_headers_dict, {}, header_line, (0,column))
+    for row in all_rows(my_sheet, start=start_line):
+        yield parse_row(row[0: column], headers)
 
 def sanity_check(nodes, nodes_by_city, links_by_city, eqpts_by_city):
     try :
@@ -225,6 +309,29 @@ def convert_file(input_filename, filter_region=[]):
     return output_json_file_name
 
 def parse_excel(input_filename):
+    link_headers = \
+    {  'Node A': 'from_city',
+       'Node Z': 'to_city',
+       'east':{
+            'Distance (km)':        'east_distance',
+            'Fiber type':           'east_fiber',
+            'lineic att':           'east_lineic',
+            'Con_in':               'east_con_in',
+            'Con_out':              'east_con_out',
+            'PMD':                  'east_pmd',
+            'Cable id':             'east_cable'
+        },
+        'west':{
+            'Distance (km)':        'west_distance',
+            'Fiber type':           'west_fiber',
+            'lineic att':           'west_lineic',
+            'Con_in':               'west_con_in',
+            'Con_out':              'west_con_out',
+            'PMD':                  'west_pmd',
+            'Cable id':             'west_cable'
+        }
+    }
+
     with open_workbook(input_filename) as wb:
         nodes_sheet = wb.sheet_by_name('Nodes')
         links_sheet = wb.sheet_by_name('Links')
@@ -261,8 +368,9 @@ def parse_excel(input_filename):
             raise ValueError(f'Malformed header on Nodes sheet: {header} != {expected}')
         """
         links = []
-        for row in all_rows(links_sheet, start=5):
-            links.append(Link(*(x.value for x in row[0:LINKS_COLUMN])))
+        for link in parse_sheet(links_sheet, link_headers, LINKS_LINE, LINKS_LINE+2, LINKS_COLUMN):
+            links.append(Link(**link))
+        print('\n', [l.__dict__ for l in links])
 
         eqpts = []
         if eqpt_sheet != None:
@@ -380,8 +488,11 @@ def midpoint(city_a, city_b):
 
 #output_json_file_name = 'coronet_conus_example.json'
 #TODO get column size automatically from tupple size
+
 NODES_COLUMN = 7
+NODES_LINE = 4
 LINKS_COLUMN = 16
+LINKS_LINE = 3
 EQPTS_COLUMN = 12
 parser = ArgumentParser()
 parser.add_argument('workbook', nargs='?', type=Path , default='meshTopologyExampleV2.xls')
