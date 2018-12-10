@@ -33,14 +33,28 @@ from pathlib import Path
 
 all_rows = lambda sh, start=0: (sh.row(x) for x in range(start, sh.nrows))
 
-class Node(namedtuple('Node', 'city state country region latitude longitude node_type')):
-    def __new__(cls, city, state='', country='', region='', latitude=0, longitude=0, node_type='ILA'):
-        values = [latitude, longitude, node_type]
-        default_values = [0, 0, 'ILA']
-        values = [x[0] if x[0] != '' else x[1] for x in zip(values,default_values)]
-        return super().__new__(cls, city, state, country, region, *values)
+class Node(object):
+    def __init__(self, **kwargs):
+        super(Node, self).__init__()
+        print(kwargs)
+        self.update_attr(kwargs)
 
-class Link(object, ):
+    def update_attr(self, kwargs):
+        for k,v in kwargs.items():
+            setattr(self, k, v if v!='' else self.default_values[k])
+    
+    default_values = \
+    {
+        'city':         '',
+        'state':        '',
+        'country':      '',
+        'region':       '',
+        'latitude':     0,
+        'longitude':    0,
+        'node_type':    'ILA'
+    }
+
+class Link(object):
     """attribtes from ingress parse_ept_headers dict
     +node_a, node_z, ingress_fiber_con_in, egress_fiber_con_in
     """
@@ -331,6 +345,15 @@ def parse_excel(input_filename):
             'Cable id':             'west_cable'
         }
     }
+    node_headers = \
+    {   'City':         'city',
+        'State':        'state',
+        'Country':      'country',
+        'Region':       'region',
+        'Latitude':     'latitude',
+        'Longitude':    'longitude',
+        'Type':         'node_type'
+    }
 
     with open_workbook(input_filename) as wb:
         nodes_sheet = wb.sheet_by_name('Nodes')
@@ -341,36 +364,22 @@ def parse_excel(input_filename):
             #eqpt_sheet is optional
             eqpt_sheet = None
 
-
-        # sanity check
-        """
-        header = [x.value.strip() for x in nodes_sheet.row(4)]
-        expected = ['City', 'State', 'Country', 'Region', 'Latitude', 'Longitude']
-        if header != expected:
-            raise ValueError(f'Malformed header on Nodes sheet: {header} != {expected}')
-        """
-
         nodes = []
-        for row in all_rows(nodes_sheet, start=5):
-            nodes.append(Node(*(x.value for x in row[0:NODES_COLUMN])))
+        for node in parse_sheet(nodes_sheet, node_headers, NODES_LINE, NODES_LINE+1, NODES_COLUMN):
+            nodes.append(Node(**node))
+        #print('\n', [l.__dict__ for l in links])
+
+        #for row in all_rows(nodes_sheet, start=5):
+        #    nodes.append(Node(*(x.value for x in row[0:NODES_COLUMN])))
         #check input
         expected_node_types = ('ROADM', 'ILA', 'FUSED')
         nodes = [n._replace(node_type='ILA')
                 if not (n.node_type in expected_node_types) else n for n in nodes]
 
-        # sanity check
-        """
-        header = [x.value.strip() for x in links_sheet.row(4)]
-        expected = ['Node A', 'Node Z',
-            'Distance (km)', 'Fiber type', 'lineic att', 'Con_in', 'Con_out', 'PMD', 'Cable id',
-            'Distance (km)', 'Fiber type', 'lineic att', 'Con_in', 'Con_out', 'PMD', 'Cable id']
-        if header != expected:
-            raise ValueError(f'Malformed header on Nodes sheet: {header} != {expected}')
-        """
         links = []
         for link in parse_sheet(links_sheet, link_headers, LINKS_LINE, LINKS_LINE+2, LINKS_COLUMN):
             links.append(Link(**link))
-        print('\n', [l.__dict__ for l in links])
+        #print('\n', [l.__dict__ for l in links])
 
         eqpts = []
         if eqpt_sheet != None:
