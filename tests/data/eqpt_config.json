@@ -78,6 +78,7 @@
             "roll_off": 0.15,
             "OSNR": 15,
             "bit_rate":100e9,
+            "tx_osnr": 100,
             "cost":1
             }],
       "Transceiver":[
@@ -94,6 +95,7 @@
                        "OSNR": 11,
                        "bit_rate": 100e9,
                        "roll_off": 0.15,
+                       "tx_osnr": 100,
                        "cost":1
                        },
                        {
@@ -102,6 +104,7 @@
                        "OSNR": 15,
                        "bit_rate": 200e9,
                        "roll_off": 0.15,
+                       "tx_osnr": 100,
                        "cost":1                       
                        }
                    ]
@@ -119,6 +122,7 @@
                        "OSNR": 19,
                        "bit_rate": 200e9,
                        "roll_off": 0.15,
+                       "tx_osnr": 100,
                        "cost":1
                        }
                    ]
