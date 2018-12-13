@@ -18,7 +18,7 @@ Network elements MUST implement two attributes .uid and .name representing a
 unique identifier and a printable name.
 '''
 
-from numpy import abs, arange, arcsinh, array, exp
+from numpy import abs, arange, arcsinh, array, exp, divide, errstate
 from numpy import interp, log10, mean, pi, polyfit, polyval, sum
 from scipy.constants import c, h
 from collections import namedtuple
@@ -36,22 +36,18 @@ class Transceiver(Node):
         self.snr = None
         self.passive = False
 
-    def _calc_snr(self, spectral_info):
-        ase = [c.power.ase for c in spectral_info.carriers]
-        nli = [c.power.nli for c in spectral_info.carriers]
-        if min(ase) > 1e-20:
-            self.osnr_ase = [lin2db(c.power.signal/c.power.ase)
-                             for c in spectral_info.carriers]
+    def _calc_snr(self, spectral_info):    
+        with errstate(divide='ignore'):
+            self.osnr_ase = [lin2db(divide(c.power.signal, c.power.ase))
+                            for c in spectral_info.carriers]
             ratio_01nm = [lin2db(12.5e9/c.baud_rate)
                           for c in spectral_info.carriers]
             self.osnr_ase_01nm = [ase - ratio for ase, ratio
                                   in zip(self.osnr_ase, ratio_01nm)]
-        if min(nli) > 1e-20:
-            self.osnr_nli = [lin2db(c.power.signal/c.power.nli)
+            self.osnr_nli = [lin2db(divide(c.power.signal, c.power.nli))
                              for c in spectral_info.carriers]
-            self.snr = [lin2db(c.power.signal/(c.power.nli+c.power.ase))
+            self.snr = [lin2db(divide(c.power.signal, c.power.nli+c.power.ase)) 
                         for c in spectral_info.carriers]
-
 
     @property
     def to_json(self):
@@ -80,7 +76,7 @@ class Transceiver(Node):
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
 
-                          f'  OSNR ASE (1nm):        {osnr_ase_01nm:.2f}',
+                          f'  OSNR ASE (0.1nm):      {osnr_ase_01nm:.2f}',
                           f'  OSNR ASE (signal bw):  {osnr_ase:.2f}',
                           f'  SNR total (signal bw): {snr:.2f}'])
 
