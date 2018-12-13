@@ -243,8 +243,23 @@ def convert_file(input_filename, filter_region=[]):
         cities = {lnk.from_city for lnk in links} | {lnk.to_city for lnk in links}
         nodes = [n for n in nodes if n.city in cities]
 
+
     global nodes_by_city
     nodes_by_city = {n.city: n for n in nodes}
+
+    #create matching dictionary for node name mismatch analysis        
+    cities = {''.join(c.strip() for c in n.city.split('C+L')).lower(): n.city for n in nodes}
+    cities_to_match = [k for k in cities]
+    city_match_dic = defaultdict(list)
+    for city in cities:
+        if city in cities_to_match:
+            cities_to_match.remove(city)
+        matches = get_close_matches(city, cities_to_match, 4, 0.85)
+        for m in matches:
+            city_match_dic[cities[city]].append(cities[m])
+    #print(city_match_dic)
+    with  open('name_match_dictionary.json', 'w', encoding='utf-8') as city_match_dic_file:
+        city_match_dic_file.write(dumps(city_match_dic, indent=2, ensure_ascii=False))            
 
     global links_by_city
     links_by_city = defaultdict(list)
