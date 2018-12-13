@@ -30,13 +30,14 @@ from collections import namedtuple, Counter, defaultdict
 from itertools import chain
 from json import dumps
 from pathlib import Path
+from difflib import get_close_matches
+import time
 
 all_rows = lambda sh, start=0: (sh.row(x) for x in range(start, sh.nrows))
 
 class Node(object):
     def __init__(self, **kwargs):
         super(Node, self).__init__()
-        print(kwargs)
         self.update_attr(kwargs)
 
     def update_attr(self, kwargs):
@@ -60,9 +61,9 @@ class Link(object):
     """
     def __init__(self, **kwargs):
         super(Link, self).__init__()
-        print(kwargs)
         self.update_attr(kwargs)
-        self.update_egress(kwargs)
+        # need to update west after east, in case east is copied over west
+        self.update_west(kwargs)
         self.distance_units = 'km'
 
     def update_attr(self, kwargs):
@@ -70,15 +71,18 @@ class Link(object):
             if not 'west' in k:
                 setattr(self, k, v if v!='' else self.default_values[k])
 
-    def update_egress(self, kwargs):
+    def update_west(self, kwargs):
         for k,v in kwargs.items():
             if 'west' in k:
                 if v=='':
-                    print(k)
-                    attribut = 'east' + k.split('west')[1]
+                    attribut = 'east' + k.split('west')[-1]
                     setattr(self, k, getattr(self, attribut))
                 else:
                     setattr(self, k, v)
+
+    def __eq__(self, link):
+        return (self.from_city == link.from_city and self.to_city == link.to_city) \
+                or (self.from_city == link.to_city and self.to_city == link.from_city)
 
     default_values = \
     {
@@ -92,18 +96,33 @@ class Link(object):
     }
 
 
-class Eqpt(namedtuple('Eqpt', 'from_city to_city \
-    egress_amp_type egress_att_in egress_amp_gain egress_amp_tilt egress_amp_att_out\
-    ingress_amp_type ingress_att_in ingress_amp_gain ingress_amp_tilt ingress_amp_att_out')):
-    def __new__(cls, from_city='', to_city='',
-    egress_amp_type='', egress_att_in=0, egress_amp_gain=0, egress_amp_tilt=0, egress_amp_att_out=0,
-    ingress_amp_type='', ingress_att_in=0, ingress_amp_gain=0, ingress_amp_tilt=0, ingress_amp_att_out=0):
-        values = [from_city, to_city,
-            egress_amp_type, egress_att_in, egress_amp_gain, egress_amp_tilt, egress_amp_att_out,
-            ingress_amp_type, ingress_att_in, ingress_amp_gain, ingress_amp_tilt, ingress_amp_att_out]
-        default_values = ['','','',0,0,0,0,'',0,0,0,0]
-        values = [x[0] if x[0] != '' else x[1] for x in zip(values,default_values)]
-        return super().__new__(cls, *values)
+class Eqpt(object):
+    def __init__(self, **kwargs):
+        super(Eqpt, self).__init__()
+        self.update_attr(kwargs)
+
+    def update_attr(self, kwargs):
+        for k,v in kwargs.items():
+            if v=='':
+                # remove east/west prefix to map default values that are east/west agnostic
+                attribut = k.split('west_')[-1]
+                attribut = attribut.split('east_')[-1]
+                print(attribut)
+                setattr(self, k, self.default_values[attribut])
+            else:
+                setattr(self, k, v)
+
+    default_values = \
+    {
+            'from_city':        '',
+            'to_city':          '',
+            'amp_type':         '',
+            'att_in':           0,
+            'amp_gain':         0,
+            'tilt':             0,
+            'att_out':          0
+    }
+
 
 def read_header(my_sheet, line, slice_):
     """ return the list of headers !:= ''
@@ -145,7 +164,7 @@ def parse_headers(my_sheet, input_headers_dict, headers, start_line, slice_in):
         iteration = 1
         while slice_out == (-1,-1) and iteration < 10:
             #try next lines
-            print(h0, iteration)
+            #print(h0, iteration)
             slice_out = read_slice(my_sheet, start_line+iteration, slice_in, h0)
             iteration += 1
         if slice_out == (-1, -1):
@@ -170,7 +189,21 @@ def parse_sheet(my_sheet, input_headers_dict, header_line, start_line, column):
     for row in all_rows(my_sheet, start=start_line):
         yield parse_row(row[0: column], headers)
 
-def sanity_check(nodes, nodes_by_city, links_by_city, eqpts_by_city):
+def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
+
+    duplicate_links = []
+    for l1 in links:
+        for l2 in links:
+            if l1 is not l2 and l1 == l2 and l2 not in duplicate_links:
+                print(f'\nWARNING\n \
+                    link {l1.from_city}-{l1.to_city} is duplicate \
+                    \nthe 1st duplicate link will be removed but you should check Links sheet input')
+                duplicate_links.append(l1)
+    if duplicate_links != []:
+        time.sleep(3)
+    for l in duplicate_links:
+        links.remove(l)
+
     try :
         test_nodes = [n for n in nodes_by_city if not n in links_by_city]
         test_links = [n for n in links_by_city if not n in nodes_by_city]
@@ -179,24 +212,24 @@ def sanity_check(nodes, nodes_by_city, links_by_city, eqpts_by_city):
                 and (test_links == [] or test_links ==[''])\
                 and (test_eqpts == [] or test_eqpts ==[''])
     except AssertionError:
-        print(f'\x1b[1;31;40m'+ f'!names in Nodes and Links sheets do no match, check:\
+        print(f'CRITICAL error: \nNames in Nodes and Links sheets do no match, check:\
             \n{test_nodes} in Nodes sheet\
             \n{test_links} in Links sheet\
-            \n{test_eqpts} in Eqpt sheet'+ '\x1b[0m')
+            \n{test_eqpts} in Eqpt sheet')
         exit(1)
 
     for city,link in links_by_city.items():
-        if (nodes_by_city[city].node_type.lower()=='ila' or nodes_by_city[city].node_type.lower()=='fused')  and len(link) != 2:
+        if nodes_by_city[city].node_type.lower()=='ila' and len(link) != 2:
             #wrong input: ILA sites can only be Degree 2
             # => correct to make it a ROADM and remove entry in links_by_city
             #TODO : put in log rather than print
-            msg = f'\x1b[1;33;40m'+ f'\n\tInvalid node type ({nodes_by_city[city].node_type}) '+\
-                f'specified in {city}, replaced by ROADM'+ '\x1b[0m'
-            print(msg)
-            # TODO create a logger ?
-            nodes_by_city[city] = nodes_by_city[city]._replace(node_type='ROADM')
-            nodes = [n._replace(node_type='ROADM') if n.city==city else n for n in nodes]
-    return nodes
+            print(f'invalid node type ({nodes_by_city[city].node_type})\
+ specified in {city}, replaced by ROADM')
+            nodes_by_city[city].node_type = 'ROADM'
+            for n in nodes:
+                if n.city==city:
+                    n.node_type='ROADM'
+    return nodes, links
 
 def convert_file(input_filename, filter_region=[]):
     nodes, links, eqpts = parse_excel(input_filename)
@@ -223,7 +256,7 @@ def convert_file(input_filename, filter_region=[]):
     for eqpt in eqpts:
         eqpts_by_city[eqpt.from_city].append(eqpt)
 
-    nodes = sanity_check(nodes, nodes_by_city, links_by_city, eqpts_by_city)
+    nodes, links = sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city)
 
     data = {
         'elements':
@@ -354,6 +387,24 @@ def parse_excel(input_filename):
         'Longitude':    'longitude',
         'Type':         'node_type'
     }
+    eqpt_headers = \
+    {  'Node A': 'from_city',
+       'Node Z': 'to_city',
+       'egress':{
+            'amp type':         'east_amp_type',
+            'att_in':           'east_att_in',
+            'amp gain':         'east_amp_gain',
+            'tilt':             'east_tilt',
+            'att_out':          'east_att_out'
+       },
+       'ingress':{
+            'amp type':         'west_amp_type',
+            'att_in':           'west_att_in',
+            'amp gain':         'west_amp_gain',
+            'tilt':             'west_tilt',
+            'att_out':          'west_att_out'       
+       }       
+    }
 
     with open_workbook(input_filename) as wb:
         nodes_sheet = wb.sheet_by_name('Nodes')
@@ -367,14 +418,10 @@ def parse_excel(input_filename):
         nodes = []
         for node in parse_sheet(nodes_sheet, node_headers, NODES_LINE, NODES_LINE+1, NODES_COLUMN):
             nodes.append(Node(**node))
-        #print('\n', [l.__dict__ for l in links])
-
-        #for row in all_rows(nodes_sheet, start=5):
-        #    nodes.append(Node(*(x.value for x in row[0:NODES_COLUMN])))
-        #check input
         expected_node_types = ('ROADM', 'ILA', 'FUSED')
-        nodes = [n._replace(node_type='ILA')
-                if not (n.node_type in expected_node_types) else n for n in nodes]
+        for n in nodes:
+            if not (n.node_type in expected_node_types):
+                n.node_type='ILA'
 
         links = []
         for link in parse_sheet(links_sheet, link_headers, LINKS_LINE, LINKS_LINE+2, LINKS_COLUMN):
@@ -382,9 +429,9 @@ def parse_excel(input_filename):
         #print('\n', [l.__dict__ for l in links])
 
         eqpts = []
-        if eqpt_sheet != None:
-            for row in all_rows(eqpt_sheet, start=5):
-                eqpts.append(Eqpt(*(x.value for x in row[0:EQPTS_COLUMN])))
+        if eqpt_sheet != None:        
+            for eqpt in parse_sheet(eqpt_sheet, eqpt_headers, EQPTS_LINE, EQPTS_LINE+2, EQPTS_COLUMN):
+                eqpts.append(Eqpt(**eqpt))
 
     # sanity check
     all_cities = Counter(n.city for n in nodes)
@@ -404,15 +451,10 @@ def eqpt_connection_by_city(city_name):
         # Then len(other_cities) == 2
         direction = ['ingress', 'egress']
         for i in range(2):
-            try:
-                from_ = fiber_link(other_cities[i], city_name)
-                in_ = eqpt_in_city_to_city(city_name, other_cities[0],direction[i])
-                to_ = fiber_link(city_name, other_cities[1-i])
-                subdata += connect_eqpt(from_, in_, to_)
-            except IndexError:
-                msg = f'In {__name__} eqpt_connection_by_city:\n\t{city_name} is not properly connected'
-                print(msg)
-                exit(1)
+            from_ = fiber_link(other_cities[i], city_name)
+            in_ = eqpt_in_city_to_city(city_name, other_cities[0],direction[i])
+            to_ = fiber_link(city_name, other_cities[1-i])
+            subdata += connect_eqpt(from_, in_, to_)
     elif nodes_by_city[city_name].node_type.lower() == 'roadm':
         for other_city in other_cities:
             from_ = f'roadm {city_name}'
@@ -502,6 +544,7 @@ NODES_COLUMN = 7
 NODES_LINE = 4
 LINKS_COLUMN = 16
 LINKS_LINE = 3
+EQPTS_LINE = 3
 EQPTS_COLUMN = 12
 parser = ArgumentParser()
 parser.add_argument('workbook', nargs='?', type=Path , default='meshTopologyExampleV2.xls')
