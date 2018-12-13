@@ -308,7 +308,7 @@ def compute_constrained_path(network, req):
             candidate.sort(key=lambda x: len(x))
             total_path = candidate[0]
         else:
-            if req.loose_list[req.nodes_list.index(n)] == 'loose':
+            if req.loose_list[1] == 'loose':
                 print(f'Request {req.request_id} could not find a path crossing {nodes_list} in network topology')
                 print(f'constraint ignored')
                 total_path = dijkstra_path(network, source, destination)
@@ -430,6 +430,7 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
                 else:  
                     return [], None
         # only get to this point if no baudrate/mode satisfies OSNR requirement
+
         # returns the last propagated path and mode
         msg = f'Warning! Request {req.request_id}: no mode satisfies path SNR requirement.\n'
         print(msg)
