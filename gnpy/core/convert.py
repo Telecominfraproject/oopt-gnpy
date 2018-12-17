@@ -56,8 +56,8 @@ class Node(object):
     }
 
 class Link(object):
-    """attribtes from ingress parse_ept_headers dict
-    +node_a, node_z, ingress_fiber_con_in, egress_fiber_con_in
+    """attribtes from west parse_ept_headers dict
+    +node_a, node_z, west_fiber_con_in, east_fiber_con_in
     """
     def __init__(self, **kwargs):
         super(Link, self).__init__()
@@ -75,6 +75,7 @@ class Link(object):
         for k,v in kwargs.items():
             if 'west' in k:
                 if v=='':
+                # copy east attributes
                     attribut = 'east' + k.split('west')[-1]
                     setattr(self, k, getattr(self, attribut))
                 else:
@@ -107,7 +108,6 @@ class Eqpt(object):
                 # remove east/west prefix to map default values that are east/west agnostic
                 attribut = k.split('west_')[-1]
                 attribut = attribut.split('east_')[-1]
-                print(attribut)
                 setattr(self, k, self.default_values[attribut])
             else:
                 setattr(self, k, v)
@@ -274,14 +274,14 @@ def convert_file(input_filename, filter_region=[]):
                                         'longitude': x.longitude}},
               'type': 'Roadm'}
              for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'] +
-            [{'uid': f'ingress fused spans in {x.city}',
+            [{'uid': f'west fused spans in {x.city}',
               'metadata': {'location': {'city':      x.city,
                                         'region':    x.region,
                                         'latitude':  x.latitude,
                                         'longitude': x.longitude}},
               'type': 'Fused'}
              for x in nodes_by_city.values() if x.node_type.lower() == 'fused'] +
-            [{'uid': f'egress fused spans in {x.city}',
+            [{'uid': f'east fused spans in {x.city}',
               'metadata': {'location': {'city':      x.city,
                                         'region':    x.region,
                                         'latitude':  x.latitude,
@@ -312,28 +312,30 @@ def convert_file(input_filename, filter_region=[]):
                          'con_out':x.west_con_out}
             } # missing ILA construction
               for x in links] +
-            [{'uid': f'egress edfa in {e.from_city} to {e.to_city}',
+            [{'uid': f'east edfa in {e.from_city} to {e.to_city}',
               'metadata': {'location': {'city':      nodes_by_city[e.from_city].city,
                                         'region':    nodes_by_city[e.from_city].region,
                                         'latitude':  nodes_by_city[e.from_city].latitude,
                                         'longitude': nodes_by_city[e.from_city].longitude}},
               'type': 'Edfa',
-              'type_variety': e.egress_amp_type,
-              'operational': {'gain_target': e.egress_amp_gain,
-                              'tilt_target': e.egress_amp_tilt}
+              'type_variety': e.east_amp_type,
+              'operational': {'gain_target': e.east_amp_gain,
+                              'tilt_target': e.east_tilt,
+                              'out_voa'    : e.east_att_out}
             }
-             for e in eqpts if e.egress_amp_type.lower() != ''] +
-            [{'uid': f'ingress edfa in {e.from_city} to {e.to_city}',
+             for e in eqpts if e.east_amp_type.lower() != ''] +
+            [{'uid': f'west edfa in {e.from_city} to {e.to_city}',
               'metadata': {'location': {'city':      nodes_by_city[e.from_city].city,
                                         'region':    nodes_by_city[e.from_city].region,
                                         'latitude':  nodes_by_city[e.from_city].latitude,
                                         'longitude': nodes_by_city[e.from_city].longitude}},
               'type': 'Edfa',
-              'type_variety': e.ingress_amp_type,
-              'operational': {'gain_target': e.ingress_amp_gain,
-                              'tilt_target': e.ingress_amp_tilt}
+              'type_variety': e.west_amp_type,
+              'operational': {'gain_target': e.west_amp_gain,
+                              'tilt_target': e.west_tilt,
+                              'out_voa'    : e.west_att_out}
               }
-             for e in eqpts if e.ingress_amp_type.lower() != ''],
+             for e in eqpts if e.west_amp_type.lower() != ''],
         'connections':
             list(chain.from_iterable([eqpt_connection_by_city(n.city)
             for n in nodes]))
@@ -390,14 +392,14 @@ def parse_excel(input_filename):
     eqpt_headers = \
     {  'Node A': 'from_city',
        'Node Z': 'to_city',
-       'egress':{
+       'east':{
             'amp type':         'east_amp_type',
             'att_in':           'east_att_in',
             'amp gain':         'east_amp_gain',
             'tilt':             'east_tilt',
             'att_out':          'east_att_out'
        },
-       'ingress':{
+       'west':{
             'amp type':         'west_amp_type',
             'att_in':           'west_att_in',
             'amp gain':         'west_amp_gain',
@@ -449,7 +451,7 @@ def eqpt_connection_by_city(city_name):
     subdata = []
     if nodes_by_city[city_name].node_type.lower() in ('ila', 'fused'):
         # Then len(other_cities) == 2
-        direction = ['ingress', 'egress']
+        direction = ['west', 'east']
         for i in range(2):
             from_ = fiber_link(other_cities[i], city_name)
             in_ = eqpt_in_city_to_city(city_name, other_cities[0],direction[i])
@@ -463,7 +465,7 @@ def eqpt_connection_by_city(city_name):
             subdata += connect_eqpt(from_, in_, to_)
 
             from_ = fiber_link(other_city, city_name)
-            in_ = eqpt_in_city_to_city(city_name, other_city, "ingress")
+            in_ = eqpt_in_city_to_city(city_name, other_city, "west")
             to_ = f'roadm {city_name}'
             subdata += connect_eqpt(from_, in_, to_)
     return subdata
@@ -479,8 +481,8 @@ def connect_eqpt(from_, in_, to_):
     return connections
 
 
-def eqpt_in_city_to_city(in_city, to_city, direction='egress'):
-    rev_direction = 'ingress' if direction == 'egress' else 'egress'
+def eqpt_in_city_to_city(in_city, to_city, direction='east'):
+    rev_direction = 'west' if direction == 'east' else 'east'
     amp_direction = f'{direction}_amp_type'
     amp_rev_direction = f'{rev_direction}_amp_type'
     return_eqpt = ''
