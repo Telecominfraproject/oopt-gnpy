@@ -607,6 +607,16 @@ class Edfa(Node):
             pin_ch = self.pin_db - lin2db(self.nch)
             # model OSNR = f(Pin)
             nf_avg = pin_ch - polyval(self.params.nf_model.nf_coef, pin_ch) + 58
+        elif self.params.type_def == 'hybrid':
+            # recalculate dg to take ramn gain into_account
+            gain_target -= self.params.raman_model.gain_ram
+            dg = max(self.params.gain_flatmax - gain_target, 0)
+            g1a = gain_target - self.params.nf_model.delta_p - dg + self.params.raman_model.gain_ram
+            nf_avg = lin2db(
+                db2lin(self.params.raman_model.nf_ram)+
+                db2lin(self.params.nf_model.nf1)/db2lin(self.params.raman_model.gain_ram)\
+                 + db2lin(self.params.nf_model.nf2)/db2lin(g1a)
+                 )
         else:
             nf_avg = polyval(self.params.nf_fit_coeff, -dg)
         if avg:

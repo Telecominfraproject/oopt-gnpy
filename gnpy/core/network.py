@@ -50,8 +50,16 @@ def network_from_json(json_data, equipment):
         typ = el_config.pop('type')
         variety = el_config.pop('type_variety', 'default')
         if typ in equipment and variety in equipment[typ]:
-            extra_params = equipment[typ][variety]
-            el_config.setdefault('params', {}).update(extra_params._asdict())
+            extra_params = equipment[typ][variety]._asdict()            
+            if extra_params.get('type_def','') == 'hybrid':
+                raman_model = extra_params['nf_model']
+                type_variety = extra_params['type_variety']
+                extra_params_edfa = equipment['Edfa'][raman_model.edfa_variety]._asdict()
+                extra_params.update(extra_params_edfa)
+                extra_params['type_def'] = 'hybrid'
+                extra_params['raman_model'] = raman_model
+                extra_params['type_variety'] = type_variety
+            el_config.setdefault('params', {}).update(extra_params)
         elif typ in ['Edfa', 'Fiber']: #catch it now because the code will crash later!
             print( f'The {typ} of variety type {variety} was not recognized:'
                     '\nplease check it is properly defined in the eqpt_config json file')
@@ -276,8 +284,14 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
         #go through all nodes in the OMS (loop until next Roadm instance)
             if isinstance(node, Edfa):
                 node_loss = span_loss(network, prev_node)
-                dp_from_gain = prev_dp + node.operational.gain_target - node_loss \
-                    if node.operational.gain_target > 0 else None
+                if isinstance(prev_node, Roadm):
+                    # gain readings shouldnot set the power level after roadm if exact roadm loss are not known
+                    # => use gain readings only to set span power differences 
+                    # but leave auto_design to set the average powe level after roadm
+                    dp_from_gain = None
+                else:
+                    dp_from_gain = prev_dp + node.operational.gain_target - node_loss \
+                        if node.operational.gain_target > 0 else None
                 dp = target_power(dp_from_gain, network, next_node, equipment)
                 gain_target = node_loss + dp - prev_dp
 

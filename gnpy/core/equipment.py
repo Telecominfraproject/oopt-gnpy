@@ -21,6 +21,7 @@ from gnpy.core.elements import Edfa
 Model_vg = namedtuple('Model_vg', 'nf1 nf2 delta_p')
 Model_fg = namedtuple('Model_fg', 'nf0')
 Model_openroadm = namedtuple('Model_openroadm', 'nf_coef')
+Model_hybrid = namedtuple('Model_hybrid', 'nf_ram gain_ram edfa_variety')
 Fiber = namedtuple('Fiber', 'type_variety dispersion gamma')
 Spans = namedtuple('Spans', 'power_mode delta_power_range_db max_length length_units \
                              max_loss padding EOL con_in con_out')
@@ -34,7 +35,7 @@ AmpBase = namedtuple(
     ' nf_model nf_fit_coeff nf_ripple dgt gain_ripple out_voa_auto allowed_for_design')
 class Amp(AmpBase):
     def __new__(cls,
-            type_variety, type_def, gain_flatmax, gain_min, p_max, nf_model=None,
+            type_variety, type_def, gain_flatmax=None, gain_min=None, p_max=None, nf_model=None,
             nf_fit_coeff=None, nf_ripple=None, dgt=None, gain_ripple=None,
              out_voa_auto=False, allowed_for_design=True):
         return super().__new__(cls,
@@ -87,6 +88,15 @@ class Amp(AmpBase):
                 print(f'missing nf_coef input for amplifier: {type_variety} in eqpt_config.json')
                 exit()
             nf_def = Model_openroadm(nf_coef)
+        elif type_def == 'hybrid':
+            try: #nf_ram and gain_ram are expected for a hybrid amp
+                nf_ram = kwargs.pop('nf_ram')
+                gain_ram = kwargs.pop('gain_ram')
+                edfa_variety = kwargs.pop('edfa_variety')
+            except KeyError:
+                print(f'missing nf_ram/gain_ram values input for amplifier: {type_variety} in eqpt_config.json')
+                exit()
+            nf_def = Model_hybrid(nf_ram, gain_ram, edfa_variety)
         return cls(**{**kwargs, **json_data, 'nf_model': nf_def})
 
 
