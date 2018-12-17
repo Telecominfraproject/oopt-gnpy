@@ -200,8 +200,8 @@ def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
                     link {l1.from_city}-{l1.to_city} is duplicate \
                     \nthe 1st duplicate link will be removed but you should check Links sheet input')
                 duplicate_links.append(l1)
-    if duplicate_links != []:
-        time.sleep(3)
+    #if duplicate_links != []:
+        #time.sleep(3)
     for l in duplicate_links:
         links.remove(l)
 
@@ -247,7 +247,8 @@ def convert_file(input_filename, filter_region=[]):
     global nodes_by_city
     nodes_by_city = {n.city: n for n in nodes}
 
-    #create matching dictionary for node name mismatch analysis        
+    #create matching dictionary for node name mismatch analysis
+
     cities = {''.join(c.strip() for c in n.city.split('C+L')).lower(): n.city for n in nodes}
     cities_to_match = [k for k in cities]
     city_match_dic = defaultdict(list)
@@ -257,6 +258,12 @@ def convert_file(input_filename, filter_region=[]):
         matches = get_close_matches(city, cities_to_match, 4, 0.85)
         for m in matches:
             city_match_dic[cities[city]].append(cities[m])
+    #check lower case/upper case
+    for city in nodes_by_city:
+        for match_city in nodes_by_city:
+            if match_city.lower() == city.lower() and match_city != city:
+                city_match_dic[city].append(match_city)
+
     #print(city_match_dic)
     with  open('name_match_dictionary.json', 'w', encoding='utf-8') as city_match_dic_file:
         city_match_dic_file.write(dumps(city_match_dic, indent=2, ensure_ascii=False))            
