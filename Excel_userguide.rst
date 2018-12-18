@@ -189,27 +189,30 @@ Service sheet must contain 11 columns::
 
    route id ; Source ; Destination ; TRX type ; Mode ; System: spacing ; System: input power (dBm) ; System: nb of channels ;  routing: disjoint from ; routing: path ; routing: is loose?
 
-- **route id** is mandatory. It must be unique. It is the identifier of the request. It can be an integer or a string (do not  use blank or dash)
+- **route id** is mandatory. It must be unique. It is the identifier of the request. It can be an integer or a string (do not  use blank or dash or coma)
 
 - **Source** is mandatory. It is the name of the source node (as listed in Nodes sheet). Source MUST be a ROADM node. (TODO: relax this and accept trx entries)
 
 - **Destination** is mandatory. It is the name of the destination node (as listed in Nodes sheet). Source MUST be a ROADM node. (TODO: relax this and accept trx entries)
 
-- **TRX type and mode** are mandatory. They are the variety type and selected mode of the transceiver to be used for the propagation simulation. These modes MUST be defined in the equipment library. The format of the mode is used as the name of the mode. (TODO: maybe add another  mode id on Transceiver library ?). In particular the mode selection defines the channel baudrate to be used for the propagation simulation. 
+- **TRX type ** is mandatory. They are the variety type and selected mode of the transceiver to be used for the propagation simulation. These modes MUST be defined in the equipment library. The format of the mode is used as the name of the mode. (TODO: maybe add another  mode id on Transceiver library ?). In particular the mode selection defines the channel baudrate to be used for the propagation simulation.
 
-- **System: spacing ; System: input power (dBm) ; System: nb of channels** are mandatory input defining the system parameters for the propagation simulation.
+- **mode** is optional. If not specified, the program will search for the mode of the defined transponder with the highest baudrate fitting within the spacing value. 
 
-  - spacing is the channel spacing defined in GHz
+- **System: spacing** is mandatory. Spacing is the channel spacing defined in GHz difined for the feasibility propagation simulation, assuming system full load.
+
+- **System: input power (dBm) ; System: nb of channels** are optional input defining the system parameters for the propagation simulation.
+
   - input power is the channel optical input power in dBm
   - nb of channels is the number of channels to be used for the simulation.
 
 - **routing: disjoint from ; routing: path ; routing: is loose?** are optional.
 
-  - disjoint from: (work not started) identifies the requests from which this request must be disjoint. It is not used yet 
-  - path: is the set of ROADM nodes that must be used by the path. It must contain the list of ROADM names that the path must cross. TODO : only ROADM nodes are accepted in this release. Relax this with any type of nodes.
-  - is loose?  (in progress) 'no' value means that the list of nodes should be strictly followed, while any other value means that the constraint may be relaxed if the node is not reachable. 
+  - disjoint from: identifies the requests from which this request must be disjoint. If filled it must contain request ids separated by ' | ' 
+  - path: is the set of ROADM nodes that must be used by the path. It must contain the list of ROADM names that the path must cross. TODO : only ROADM nodes are accepted in this release. Relax this with any type of nodes. If filled it must contain ROADM ids separated by ' | '. Exact names are required. 
+  - is loose?  'no' value means that the list of nodes should be strictly followed, while any other value means that the constraint may be relaxed if the node is not reachable. 
 
-# to be completed #
+- ** path bandwidth** is optional. It is the amount of capacity required between source and destination in Gbit/s. Default value is 0.0 Gbit/s. 
 
 convert_service_sheet.py
 ------------------------
