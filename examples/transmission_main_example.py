@@ -18,7 +18,7 @@ from pathlib import Path
 from json import loads
 from collections import Counter
 from logging import getLogger, basicConfig, INFO, ERROR, DEBUG
-from numpy import arange, mean
+from numpy import linspace, mean
 from matplotlib.pyplot import show, axis, figure, title
 from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels, dijkstra_path)
@@ -85,12 +85,9 @@ def main(network, equipment, source, destination, req = None):
     print(f'\nNow propagating between {source.uid} and {destination.uid}:')
 
     try:
-        power_range = list(arange(*equipment['SI']['default'].power_range_db))
-        last = equipment['SI']['default'].power_range_db[-2]
-        if len(power_range) == 0 : #bad input that will lead to no simulation
-            power_range = [0] #better than an error message
-        else:
-            power_range.append(last)
+        p_start, p_stop, p_step = equipment['SI']['default'].power_range_db
+        p_num = abs(int(round((p_stop - p_start)/p_step))) + 1 if p_step != 0 else 1
+        power_range = list(linspace(p_start, p_stop, p_num))
     except TypeError:
         print('invalid power range definition in eqpt_config, should be power_range_db: [lower, upper, step]')
         power_range = [0]
