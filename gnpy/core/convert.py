@@ -81,19 +81,21 @@ def sanity_check(nodes, nodes_by_city, links_by_city, eqpts_by_city):
                 and (test_links == [] or test_links ==[''])\
                 and (test_eqpts == [] or test_eqpts ==[''])
     except AssertionError:
-        print(f'!names in Nodes and Links sheets do no match, check:\
+        print(f'\x1b[1;31;40m'+ f'!names in Nodes and Links sheets do no match, check:\
             \n{test_nodes} in Nodes sheet\
             \n{test_links} in Links sheet\
-            \n{test_eqpts} in Eqpt sheet')
+            \n{test_eqpts} in Eqpt sheet'+ '\x1b[0m')
         exit(1)
 
     for city,link in links_by_city.items():
-        if nodes_by_city[city].node_type.lower()=='ila' and len(link) != 2:
+        if (nodes_by_city[city].node_type.lower()=='ila' or nodes_by_city[city].node_type.lower()=='fused')  and len(link) != 2:
             #wrong input: ILA sites can only be Degree 2
             # => correct to make it a ROADM and remove entry in links_by_city
             #TODO : put in log rather than print
-            print(f'invalid node type ({nodes_by_city[city].node_type})\
- specified in {city}, replaced by ROADM')
+            msg = f'\x1b[1;33;40m'+ f'\n\tInvalid node type ({nodes_by_city[city].node_type}) '+\
+                f'specified in {city}, replaced by ROADM'+ '\x1b[0m'
+            print(msg)
+            # TODO create a logger ?
             nodes_by_city[city] = nodes_by_city[city]._replace(node_type='ROADM')
             nodes = [n._replace(node_type='ROADM') if n.city==city else n for n in nodes]
     return nodes

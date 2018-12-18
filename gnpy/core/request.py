@@ -291,7 +291,7 @@ def compute_constrained_path(network, req):
         try :
             total_path = dijkstra_path(network, source, destination)
         except NetworkXNoPath:
-            msg = f'Request {req.request_id} could not find a path from {source.uid} to node : {destination.uid} in network topology'
+            msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path from {source.uid} to node : {destination.uid} in network topology'+ '\x1b[0m'
             logger.critical(msg)
             print(msg)
             total_path = []        
@@ -309,11 +309,11 @@ def compute_constrained_path(network, req):
             total_path = candidate[0]
         else:
             if req.loose_list[req.nodes_list.index(n)] == 'loose':
-                print(f'Request {req.request_id} could not find a path crossing {nodes_list} in network topology')
+                print(f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing {nodes_list} in network topology'+ '\x1b[0m')
                 print(f'constraint ignored')
                 total_path = dijkstra_path(network, source, destination)
             else:
-                msg = f'Request {req.request_id} could not find a path crossing {nodes_list}.\nNo path computed'
+                msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing {nodes_list}.\nNo path computed'+ '\x1b[0m'
                 logger.critical(msg)
                 print(msg)
                 total_path = []
