@@ -57,7 +57,7 @@ def test_excel_json_generation(xls_input, expected_json_output):
 
 # assume json entries
 # test that the build network gives correct results
-# TODO !!
+# 
 @pytest.mark.parametrize('xls_input,expected_json_output', {
     DATA_DIR / 'excelTestFile.xls':             DATA_DIR / 'excelTestFile_auto_design_expected.json',
     DATA_DIR / 'CORONET_Global_Topology.xls':   DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json',
@@ -93,6 +93,44 @@ def test_auto_design_generation(xls_input, expected_json_output):
     assert not results.connections.missing
     assert not results.connections.extra
     assert not results.connections.different
+
+#test that autodesign creates same file as an input file already autodesigned
+@pytest.mark.parametrize('json_input,expected_json_output', {
+    DATA_DIR / 'excelTestFile_auto_design_expected.json':             DATA_DIR / 'excelTestFile_auto_design_expected.json',
+    DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json':   DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json',
+    DATA_DIR / 'meshTopologyExampleV2_auto_design_expected.json':     DATA_DIR / 'meshTopologyExampleV2_auto_design_expected.json',
+    DATA_DIR / 'meshTopologyExampleV2Eqpt_auto_design_expected.json': DATA_DIR / 'meshTopologyExampleV2Eqpt_auto_design_expected.json',
+ }.items())
+def test_auto_design_generation(json_input, expected_json_output):
+    equipment = load_equipment(eqpt_filename)
+    network = load_network(json_input,equipment)
+
+    # Build the network once using the default power defined in SI in eqpt config
+ 
+    p_db = equipment['SI']['default'].power_dbm
+    
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
+        equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    build_network(network, equipment, p_db, p_total_db)
+    save_network(json_input, network)
+
+    actual_json_output = f'{str(json_input)[0:len(str(json_input))-5]}_auto_design.json'
+
+    with open(actual_json_output, encoding='utf-8') as f:
+        actual = load(f)
+    unlink(actual_json_output)
+
+    with open(expected_json_output, encoding='utf-8') as f:
+        expected = load(f)
+
+    results = compare_networks(expected, actual)
+    assert not results.elements.missing
+    assert not results.elements.extra
+    assert not results.elements.different
+    assert not results.connections.missing
+    assert not results.connections.extra
+    assert not results.connections.different
+
 # test services creation
 
 @pytest.mark.parametrize('xls_input,expected_json_output', {
