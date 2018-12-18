@@ -27,7 +27,7 @@ Spans = namedtuple('Spans', 'power_mode delta_power_range_db max_length length_u
 Transceiver = namedtuple('Transceiver', 'type_variety frequency mode')
 Roadms = namedtuple('Roadms', 'gain_mode_default_loss power_mode_pref')
 SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off \
-                       power_dbm power_range_db OSNR bit_rate cost')
+                       power_dbm power_range_db OSNR bit_rate tx_osnr cost')
 AmpBase = namedtuple(
     'AmpBase',
     'type_variety type_def gain_flatmax gain_min p_max'
@@ -199,6 +199,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             trx_params['nb_channel'] = automatic_nch(trx_params['frequency']['min'],
                                         trx_params['frequency']['max'],
                                         trx_params['spacing'])
+            trx_params['tx_osnr'] = default_si_data.tx_osnr
             nch = automatic_nch(trx_params['frequency']['min'],
                                                       trx_params['frequency']['max'],
                                                       trx_params['spacing'])

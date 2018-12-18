@@ -66,7 +66,7 @@ def setup_trx():
 def si(nch_and_spacing, bw):
     """parametrize a channel comb with nb_channel, spacing and signal bw"""
     nb_channel, spacing = nch_and_spacing
-    return create_input_spectral_information(191.3e12, 0.15, bw, 1e-3, spacing, nb_channel)
+    return create_input_spectral_information(191.3e12, 0.15, bw, 1e-3, spacing, nb_channel, 100)
 
 @pytest.mark.parametrize("gain, nf_expected", [(10, 15), (15, 10), (25, 5.8)])
 def test_variable_gain_nf(gain, nf_expected, setup_edfa_variable_gain, si):

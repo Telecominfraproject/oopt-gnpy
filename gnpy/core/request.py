@@ -34,7 +34,7 @@ logger = getLogger(__name__)
 
 
 RequestParams = namedtuple('RequestParams','request_id source destination trx_type'+
-' trx_mode nodes_list loose_list spacing power nb_channel frequency format baud_rate OSNR bit_rate roll_off cost path_bandwidth')
+' trx_mode nodes_list loose_list spacing power nb_channel frequency format baud_rate OSNR bit_rate roll_off tx_osnr cost path_bandwidth')
 DisjunctionParams = namedtuple('DisjunctionParams','disjunction_id relaxable link_diverse node_diverse disjunctions_req')
 
 class Path_request:
@@ -56,6 +56,7 @@ class Path_request:
         self.OSNR       = params.OSNR
         self.bit_rate   = params.bit_rate
         self.roll_off   = params.roll_off
+        self.tx_osnr    = params.tx_osnr
         self.cost       = params.cost
         self.path_bandwidth  = params.path_bandwidth
 
@@ -385,8 +386,8 @@ def propagate(path, req, equipment, show=False):
     #update roadm loss in case of power sweep (power mode only)
     set_roadm_loss(path, equipment, lin2db(req.power*1e3))
     si = create_input_spectral_information(
-        req.frequency['min'], req.roll_off,
-        req.baud_rate, req.power, req.spacing, req.nb_channel)
+        req.frequency['min'], req.roll_off, req.baud_rate,
+        req.power, req.spacing, req.nb_channel, req.tx_osnr)
     for el in path:
         si = el(si)
         if show :
@@ -415,7 +416,7 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
             # TODO : if the loop in mode optimization does not have a feasible path, then bugs
             si = create_input_spectral_information(
             req.frequency['min'], equipment['SI']['default'].roll_off,
-            b, req.power, req.spacing, req.nb_channel)
+            b, req.power, req.spacing, req.nb_channel, req.tx_osnr)
             for el in path:
                 si = el(si)
                 if show :

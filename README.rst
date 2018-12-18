@@ -253,6 +253,8 @@ The modes are defined as follows:
 +----------------------+-----------+-----------------------------------------+
 | `roll_off`           | (number)  | Not used.                               |
 +----------------------+-----------+-----------------------------------------+
+| `tx_osnr`            | (number)  | In dB. OSNR out from transponder.       |
++----------------------+-----------+-----------------------------------------+
 
 Simulation parameters are defined as follows.
 
@@ -443,6 +445,8 @@ one power/channel definition.
 | `OSNR`               | (number)  | Not used.                                 |
 +----------------------+-----------+-------------------------------------------+
 | `bit_rate`           | (number)  | Not used.                                 |
++----------------------+-----------+-------------------------------------------+
+| `tx_osnr`            | (number)  | In dB. OSNR out from transponder.         |
 +----------------------+-----------+-------------------------------------------+
 | `power_dbm`          | (number)  | Reference channel power. In gain mode     |
 |                      |           | (see spans/power_mode = false), all gain  |

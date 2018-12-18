@@ -101,6 +101,7 @@
             "roll_off": 0.15,
             "OSNR": 11,
             "bit_rate":100e9,
+            "tx_osnr": 45,
             "cost":1
             }],
       "Transceiver":[
@@ -118,6 +119,7 @@
                        "OSNR": 11,
                        "bit_rate": 100e9,
                        "roll_off": 0.15,
+                       "tx_osnr": 45,
                        "cost":1
                        },
                        {
@@ -126,6 +128,7 @@
                        "OSNR": 15,
                        "bit_rate": 200e9,
                        "roll_off": 0.15,
+                       "tx_osnr": 45,
                        "cost":1
                        }
                    ]
@@ -143,6 +146,7 @@
                        "OSNR": 12,
                        "bit_rate": 100e9,
                        "roll_off": 0.15,
+                       "tx_osnr": 45,
                        "cost":1
                        },
                        {
@@ -151,6 +155,7 @@
                        "OSNR": 18,
                        "bit_rate": 300e9,
                        "roll_off": 0.15,
+                       "tx_osnr": 45,
                        "cost":1
                        },
                        {
@@ -159,6 +164,7 @@
                        "OSNR": 21,
                        "bit_rate": 400e9,
                        "roll_off": 0.15,
+                       "tx_osnr": 45,
                        "cost":1
                        },
                        {
@@ -167,6 +173,7 @@
                        "OSNR": 16,
                        "bit_rate": 200e9,
                        "roll_off": 0.15,
+                       "tx_osnr": 45,
                        "cost":1
                        }
                    ]
