@@ -431,13 +431,13 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
                     return [], None
         # only get to this point if no baudrate/mode satisfies OSNR requirement
         # returns the last propagated path and mode
-        msg = f'Warning! Request {req.request_id}: no mode satisfies path SNR requirement.\n'
+        msg = f'\tWarning! Request {req.request_id}: no mode satisfies path SNR requirement.\n'
         print(msg)
         logger.info(msg)
         return [],None
     else :
     #  no baudrate satisfying spacing
-        msg = f'Warning! Request {req.request_id}: no baudrate satisfies spacing requirement.\n'
+        msg = f'\tWarning! Request {req.request_id}: no baudrate satisfies spacing requirement.\n'
         print(msg)
         logger.info(msg)
         return [], None

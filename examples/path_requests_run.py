@@ -198,6 +198,13 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         if total_path :
             if pathreq.baud_rate is not None:
                 total_path = propagate(total_path,pathreq,equipment, show=False)
+                temp_snr01nm = round(mean(total_path[-1].snr+lin2db(pathreq.baud_rate/(12.5e9))),2)
+                if temp_snr01nm < pathreq.OSNR :
+                    msg = f'\tWarning! Request {pathreq.request_id} computed path from {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}\n' +\
+                    f'\tcomputedSNR in 0.1nm = {temp_snr01nm} - required osnr {pathreq.OSNR}\n'
+                    print(msg)
+                    logger.warning(msg)
+                    total_path = []
             else:
                 total_path,mode = propagate_and_optimize_mode(total_path,pathreq,equipment, show=False)
                 # if no baudrate satisfies spacing, no mode is returned and an empty path is returned
@@ -339,24 +346,26 @@ if __name__ == '__main__':
     end = time.time()
     print(f'computation time {end-start}')
     
-    header = ['demand','snr@bandwidth','snr@0.1nm','Receiver minOSNR', 'mode', 'Gbit/s' , 'nb of tsp pairs']
+    header = ['req id', '  demand','  snr@bandwidth','  snr@0.1nm','  Receiver minOSNR', '  mode', '  Gbit/s' , '  nb of tsp pairs']
     data = []
     data.append(header)
     for i, p in enumerate(propagatedpths):
         if p:
-            line = [f'{rqs[i].request_id} {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
+            line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
                 f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
                 f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }']
         else:
-            line = [f'{rqs[i].request_id} no path from {rqs[i].source} to {rqs[i].destination} ']
+            line = [f'{rqs[i].request_id}',f' {rqs[i].source} to {rqs[i].destination} : not feasible ']
         data.append(line)
 
-    col_width = max(len(word) for row in data for word in row[1:])   # padding
+    col_width = max(len(word) for row in data for word in row[2:])   # padding
     firstcol_width = max(len(row[0]) for row in data )   # padding
+    secondcol_width = max(len(row[1]) for row in data )   # padding
     for row in data:
         firstcol = ''.join(row[0].ljust(firstcol_width)) 
-        remainingcols = ''.join(word.ljust(col_width) for word in row[1:])
-        print(f'{firstcol} {remainingcols}')
+        secondcol = ''.join(row[1].ljust(secondcol_width))
+        remainingcols = ''.join(word.center(col_width,' ') for word in row[2:])
+        print(f'{firstcol} {secondcol} {remainingcols}')
 
 
     if args.output :
