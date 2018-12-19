@@ -69,6 +69,7 @@ def requests_from_json(json_data,equipment):
         # nb_channel is computed based on min max frequency and spacing
         trx_params = trx_mode_params(equipment,params['trx_type'],params['trx_mode'],True)
         params.update(trx_params)
+        print(trx_params['tx_osnr'])
         # optical power might be set differently in the request. if it is indicated then the 
         # params['power'] is updated
         if req['path-constraints']['te-bandwidth']['output-power']:
@@ -208,6 +209,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                     pathreq.tsp_mode = mode['format']
                     pathreq.format = mode['format']
                     pathreq.OSNR = mode['OSNR']
+                    pathreq.tx_osnr = mode['tx_osnr']
                     pathreq.bit_rate = mode['bit_rate']
                 else :
                     total_path = []
