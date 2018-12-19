@@ -64,7 +64,12 @@ def network_from_json(json_data, equipment):
 
     for cx in json_data['connections']:
         from_node, to_node = cx['from_node'], cx['to_node']
-        g.add_edge(nodes[from_node], nodes[to_node])
+        try:
+            g.add_edge(nodes[from_node], nodes[to_node])
+        except KeyError:
+            msg = f'In {__name__} network_from_json function:\n\tcan not find {from_node} or {to_node} defined in {cx}'
+            print(msg)
+            exit(1)
 
     return g
 
@@ -171,7 +176,13 @@ def target_power(dp_from_gain, network, node, equipment): #get_fiber_dp
 def prev_node_generator(network, node):
     """fused spans interest:
     iterate over all predecessors while they are Fused or Fiber type"""
-    prev_node = next(n for n in network.predecessors(node))
+    try:
+        prev_node = next(n for n in network.predecessors(node))
+    except StopIteration:
+        msg = f'In {__name__} prev_node_generator function:\n\t{node.uid} is not properly connected, please check network topology'
+        print(msg)
+        logger.critical(msg)
+        exit(1)
     # yield and re-iterate
     if isinstance(prev_node, Fused) or isinstance(node, Fused):
         yield prev_node
@@ -182,7 +193,11 @@ def prev_node_generator(network, node):
 def next_node_generator(network, node):
     """fused spans interest:
     iterate over all successors while they are Fused or Fiber type"""
-    next_node = next(n for n in network.successors(node))
+    try:
+        next_node = next(n for n in network.successors(node))
+    except StopIteration:
+        print(f'In {__name__} next_node_generator function:\n\t{node.uid}  is not properly connected, please check network topology')
+        exit(1)        
     # yield and re-iterate
     if isinstance(next_node, Fused) or isinstance(node, Fused):
         yield next_node
@@ -334,7 +349,8 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
         next_node = next(network.successors(fiber))
         prev_node = next(network.predecessors(fiber))
     except StopIteration:
-        print(f'{repr(fiber)} is not properly connected, please check network topology')
+
+        print(f'In {__name__} split_fiber function:\n\t{fiber.uid}   is not properly connected, please check network topology')
         exit()
 
     network.remove_node(fiber)
@@ -367,7 +383,13 @@ def add_fiber_padding(network, fibers, padding):
                          if isinstance(fiber, Fiber))"""
     for fiber in fibers:
         this_span_loss = span_loss(network, fiber)
-        next_node = next(network.successors(fiber))
+        try:
+            next_node = next(network.successors(fiber))
+        except StopIteration:
+            msg = f'In {__name__} add_fiber_padding function:\n\t{fiber.uid}   is not properly connected, please check network topology'
+            print(msg)
+            logger.critical(msg)
+            exit(1)            
         if this_span_loss < padding and not (isinstance(next_node, Fused)):
             #add a padding att_in at the input of the 1st fiber:
             #address the case when several fibers are spliced together

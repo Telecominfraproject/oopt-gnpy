@@ -588,7 +588,8 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     for pathreq in pathreqlist_disjt :
         all_simp_pths = list(all_simple_paths(network,\
             source=next(el for el in network.nodes() if el.uid == pathreq.source),\
-            target=next(el for el in network.nodes() if el.uid == pathreq.destination)))
+            target=next(el for el in network.nodes() if el.uid == pathreq.destination),\
+            cutoff=80))
         # sort them
         all_simp_pths = sorted(all_simp_pths, key=lambda path: len(path))
         # reversed direction paths required to check disjunction on both direction
