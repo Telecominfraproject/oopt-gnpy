@@ -148,16 +148,16 @@
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
-          "trx_type": "vendorA_trx-type1",
-          "trx_mode": "PS_SP64_1",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 2 - fake",
           "effective-freq-slot": [
             {
               "n": "null",
               "m": "null"
             }
           ],
-          "spacing": 50000000000.0,
-          "max-nb-of-channel": 80,
+          "spacing": 75000000000.0,
+          "max-nb-of-channel": 63,
           "output-power": 0.001,
           "path_bandwidth": 300000000000.0
         }
@@ -175,16 +175,16 @@
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
-          "trx_type": "Voyager_16QAM",
-          "trx_mode": "16QAM",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 2",
           "effective-freq-slot": [
             {
               "n": "null",
               "m": "null"
             }
           ],
-          "spacing": 50000000000.0,
-          "max-nb-of-channel": 80,
+          "spacing": 75000000000.0,
+          "max-nb-of-channel": 63,
           "output-power": 0.001,
           "path_bandwidth": 300000000000.0
         }
@@ -245,16 +245,16 @@
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
-          "trx_type": "vendorA_trx-type1",
-          "trx_mode": "PS_SP64_1",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 3",
           "effective-freq-slot": [
             {
               "n": "null",
               "m": "null"
             }
           ],
-          "spacing": 50000000000.0,
-          "max-nb-of-channel": 80,
+          "spacing": 62500000000.0,
+          "max-nb-of-channel": 76,
           "output-power": 0.001,
           "path_bandwidth": 300000000000.0
         }
@@ -362,6 +362,280 @@
             }
           }
         ]
+      }
+    },
+    {
+      "request-id": "e:1# /",
+      "source": "a",
+      "destination": "g",
+      "src-tp-id": "trx a",
+      "dst-tp-id": "trx g",
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager_16QAM",
+          "trx_mode": "16QAM",
+          "effective-freq-slot": [
+            {
+              "n": "null",
+              "m": "null"
+            }
+          ],
+          "spacing": 50000000000.0,
+          "max-nb-of-channel": 80,
+          "output-power": null,
+          "path_bandwidth": 300000000000.0
+        }
+      },
+      "optimizations": {
+        "explicit-route-include-objects": []
+      }
+    },
+    {
+      "request-id": "b-2a",
+      "source": "a",
+      "destination": "h",
+      "src-tp-id": "trx a",
+      "dst-tp-id": "trx h",
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 1",
+          "effective-freq-slot": [
+            {
+              "n": "null",
+              "m": "null"
+            }
+          ],
+          "spacing": 50000000000.0,
+          "max-nb-of-channel": null,
+          "output-power": 0.001,
+          "path_bandwidth": 300000000000.0
+        }
+      },
+      "optimizations": {
+        "explicit-route-include-objects": []
+      }
+    },
+    {
+      "request-id": "3a;?",
+      "source": "f",
+      "destination": "b",
+      "src-tp-id": "trx f",
+      "dst-tp-id": "trx b",
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "vendorA_trx-type1",
+          "trx_mode": "PS_SP64_1",
+          "effective-freq-slot": [
+            {
+              "n": "null",
+              "m": "null"
+            }
+          ],
+          "spacing": 50000000000.0,
+          "max-nb-of-channel": null,
+          "output-power": null,
+          "path_bandwidth": 300000000000.0
+        }
+      },
+      "optimizations": {
+        "explicit-route-include-objects": []
+      }
+    },
+    {
+      "request-id": "ee-s",
+      "source": "c",
+      "destination": "f",
+      "src-tp-id": "trx c",
+      "dst-tp-id": "trx f",
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "vendorA_trx-type1",
+          "trx_mode": null,
+          "effective-freq-slot": [
+            {
+              "n": "null",
+              "m": "null"
+            }
+          ],
+          "spacing": 50000000000.0,
+          "max-nb-of-channel": 80,
+          "output-power": 0.001,
+          "path_bandwidth": 300000000000.0
+        }
+      },
+      "optimizations": {
+        "explicit-route-include-objects": [
+          {
+            "index": 0,
+            "unnumbered-hop": {
+              "node-id": "roadm e",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "loose",
+              "direction": "direction is not used"
+            },
+            "label-hop": {
+              "te-label": {
+                "generic": "generic is not used",
+                "direction": "direction is not used"
+              }
+            }
+          },
+          {
+            "index": 1,
+            "unnumbered-hop": {
+              "node-id": "roadm g",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "loose",
+              "direction": "direction is not used"
+            },
+            "label-hop": {
+              "te-label": {
+                "generic": "generic is not used",
+                "direction": "direction is not used"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request-id": "ff-b",
+      "source": "c",
+      "destination": "f",
+      "src-tp-id": "trx c",
+      "dst-tp-id": "trx f",
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": null,
+          "effective-freq-slot": [
+            {
+              "n": "null",
+              "m": "null"
+            }
+          ],
+          "spacing": 50000000000.0,
+          "max-nb-of-channel": null,
+          "output-power": 0.001,
+          "path_bandwidth": 300000000000.0
+        }
+      },
+      "optimizations": {
+        "explicit-route-include-objects": []
+      }
+    },
+    {
+      "request-id": "10-z",
+      "source": "a",
+      "destination": "g",
+      "src-tp-id": "trx a",
+      "dst-tp-id": "trx g",
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": null,
+          "effective-freq-slot": [
+            {
+              "n": "null",
+              "m": "null"
+            }
+          ],
+          "spacing": 75000000000.0,
+          "max-nb-of-channel": 63,
+          "output-power": null,
+          "path_bandwidth": 300000000000.0
+        }
+      },
+      "optimizations": {
+        "explicit-route-include-objects": []
+      }
+    },
+    {
+      "request-id": "11 g",
+      "source": "a",
+      "destination": "h",
+      "src-tp-id": "trx a",
+      "dst-tp-id": "trx h",
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": null,
+          "effective-freq-slot": [
+            {
+              "n": "null",
+              "m": "null"
+            }
+          ],
+          "spacing": 50000000000.0,
+          "max-nb-of-channel": null,
+          "output-power": null,
+          "path_bandwidth": 300000000000.0
+        }
+      },
+      "optimizations": {
+        "explicit-route-include-objects": []
+      }
+    },
+    {
+      "request-id": "12<",
+      "source": "f",
+      "destination": "b",
+      "src-tp-id": "trx f",
+      "dst-tp-id": "trx b",
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": null,
+          "effective-freq-slot": [
+            {
+              "n": "null",
+              "m": "null"
+            }
+          ],
+          "spacing": 75000000000.0,
+          "max-nb-of-channel": null,
+          "output-power": null,
+          "path_bandwidth": null
+        }
+      },
+      "optimizations": {
+        "explicit-route-include-objects": []
+      }
+    },
+    {
+      "request-id": "12>",
+      "source": "f",
+      "destination": "b",
+      "src-tp-id": "trx f",
+      "dst-tp-id": "trx b",
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": null,
+          "effective-freq-slot": [
+            {
+              "n": "null",
+              "m": "null"
+            }
+          ],
+          "spacing": 30000000000.0,
+          "max-nb-of-channel": null,
+          "output-power": null,
+          "path_bandwidth": null
+        }
+      },
+      "optimizations": {
+        "explicit-route-include-objects": []
       }
     }
   ],

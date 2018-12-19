@@ -410,7 +410,7 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
                 if m['baud_rate'] == b]
             modes_to_explore = sorted(modes_to_explore, 
                 key = lambda x: x['bit_rate'], reverse=True)
-            print(modes_to_explore)
+            # print(modes_to_explore)
             # step2 : computes propagation for each baudrate: stop and select the first that passes
             found_a_feasible_mode = False
             # TODO : the case of roll of is not included: for now use SI one

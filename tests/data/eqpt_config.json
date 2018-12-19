@@ -126,6 +126,60 @@
                        "cost":1
                        }
                    ]
+            },
+            {
+            "type_variety": "Voyager",
+            "frequency":{
+                        "min": 191.35e12,
+                        "max": 196.1e12
+                        },
+            "mode":[
+                       {
+                       "format": "mode 1",
+                       "baud_rate": 32e9,
+                       "OSNR": 12,
+                       "bit_rate": 100e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 45,
+                       "cost":1
+                       },
+                       {
+                       "format": "mode 3",
+                       "baud_rate": 44e9,
+                       "OSNR": 18,
+                       "bit_rate": 300e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 45,
+                       "cost":1
+                       },
+                       {
+                       "format": "mode 2",
+                       "baud_rate": 66e9,
+                       "OSNR": 21,
+                       "bit_rate": 400e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 45,
+                       "cost":1
+                       },
+                       {
+                       "format": "mode 2 - fake",
+                       "baud_rate": 66e9,
+                       "OSNR": 21,
+                       "bit_rate": 400e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 45,
+                       "cost":1
+                       },                       
+                       {
+                       "format": "mode 4",
+                       "baud_rate": 66e9,
+                       "OSNR": 16,
+                       "bit_rate": 200e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 45,
+                       "cost":1
+                       }
+                   ]
             }
       ]
 
