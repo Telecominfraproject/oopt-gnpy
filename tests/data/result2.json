@@ -1,0 +1,2600 @@
+{
+  "path": [
+    {
+      "path-id": "1",
+      "path-properties": {
+        "path-metric": [
+          {
+            "metric-type": "SNR@bandwidth",
+            "accumulative-value": 12.59
+          },
+          {
+            "metric-type": "SNR@0.1nm",
+            "accumulative-value": 19.81
+          },
+          {
+            "metric-type": "OSNR@bandwidth",
+            "accumulative-value": 12.92
+          },
+          {
+            "metric-type": "OSNR@0.1nm",
+            "accumulative-value": 20.15
+          },
+          {
+            "metric-type": "reference_power",
+            "accumulative-value": 0.001
+          },
+          {
+            "metric-type": "path_bandwidth",
+            "accumulative-value": 0
+          }
+        ],
+        "path-srlgs": {
+          "usage": "not used yet",
+          "values": "not used yet"
+        },
+        "path-route-objects": [
+          {
+            "path-route-object": {
+              "index": 0,
+              "unnumbered-hop": {
+                "node-id": "trx R_A",
+                "link-tp-id": "trx R_A",
+                "hop-type": "Voyager - mode 2",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 1,
+              "unnumbered-hop": {
+                "node-id": "roadm R_A",
+                "link-tp-id": "roadm R_A",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_roadm R_A",
+                "link-tp-id": "Edfa0_roadm R_A",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 3,
+              "unnumbered-hop": {
+                "node-id": "fiber (R_A → A1)-",
+                "link-tp-id": "fiber (R_A → A1)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 4,
+              "unnumbered-hop": {
+                "node-id": "ingress fused spans in A1",
+                "link-tp-id": "ingress fused spans in A1",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 5,
+              "unnumbered-hop": {
+                "node-id": "fiber (A1 → A2)-",
+                "link-tp-id": "fiber (A1 → A2)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 6,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A1 → A2)-",
+                "link-tp-id": "Edfa0_fiber (A1 → A2)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 7,
+              "unnumbered-hop": {
+                "node-id": "fiber (A2 → A3)-",
+                "link-tp-id": "fiber (A2 → A3)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 8,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A2 → A3)-",
+                "link-tp-id": "Edfa0_fiber (A2 → A3)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 9,
+              "unnumbered-hop": {
+                "node-id": "fiber (A3 → A4)-",
+                "link-tp-id": "fiber (A3 → A4)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 10,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A3 → A4)-",
+                "link-tp-id": "Edfa0_fiber (A3 → A4)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 11,
+              "unnumbered-hop": {
+                "node-id": "fiber (A4 → A5)-",
+                "link-tp-id": "fiber (A4 → A5)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 12,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A4 → A5)-",
+                "link-tp-id": "Edfa0_fiber (A4 → A5)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 13,
+              "unnumbered-hop": {
+                "node-id": "fiber (A5 → A6)-",
+                "link-tp-id": "fiber (A5 → A6)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 14,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A5 → A6)-",
+                "link-tp-id": "Edfa0_fiber (A5 → A6)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 15,
+              "unnumbered-hop": {
+                "node-id": "fiber (A6 → A7)-",
+                "link-tp-id": "fiber (A6 → A7)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 16,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A6 → A7)-",
+                "link-tp-id": "Edfa0_fiber (A6 → A7)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 17,
+              "unnumbered-hop": {
+                "node-id": "fiber (A7 → A8)-",
+                "link-tp-id": "fiber (A7 → A8)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 18,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A7 → A8)-",
+                "link-tp-id": "Edfa0_fiber (A7 → A8)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 19,
+              "unnumbered-hop": {
+                "node-id": "fiber (A8 → A9)-",
+                "link-tp-id": "fiber (A8 → A9)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 20,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A8 → A9)-",
+                "link-tp-id": "Edfa0_fiber (A8 → A9)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 21,
+              "unnumbered-hop": {
+                "node-id": "fiber (A9 → A10)-",
+                "link-tp-id": "fiber (A9 → A10)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 22,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A9 → A10)-",
+                "link-tp-id": "Edfa0_fiber (A9 → A10)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 23,
+              "unnumbered-hop": {
+                "node-id": "fiber (A10 → R)-",
+                "link-tp-id": "fiber (A10 → R)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 24,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A10 → R)-",
+                "link-tp-id": "Edfa0_fiber (A10 → R)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 25,
+              "unnumbered-hop": {
+                "node-id": "roadm R",
+                "link-tp-id": "roadm R",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 26,
+              "unnumbered-hop": {
+                "node-id": "Edfa2_roadm R",
+                "link-tp-id": "Edfa2_roadm R",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 27,
+              "unnumbered-hop": {
+                "node-id": "fiber (R → C2)-",
+                "link-tp-id": "fiber (R → C2)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 28,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (R → C2)-",
+                "link-tp-id": "Edfa0_fiber (R → C2)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 29,
+              "unnumbered-hop": {
+                "node-id": "fiber (C2 → C1)-",
+                "link-tp-id": "fiber (C2 → C1)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 30,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (C2 → C1)-",
+                "link-tp-id": "Edfa0_fiber (C2 → C1)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 31,
+              "unnumbered-hop": {
+                "node-id": "fiber (C1 → R_C)-",
+                "link-tp-id": "fiber (C1 → R_C)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 32,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (C1 → R_C)-",
+                "link-tp-id": "Edfa0_fiber (C1 → R_C)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 33,
+              "unnumbered-hop": {
+                "node-id": "roadm R_C",
+                "link-tp-id": "roadm R_C",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 34,
+              "unnumbered-hop": {
+                "node-id": "trx R_C",
+                "link-tp-id": "trx R_C",
+                "hop-type": "Voyager - mode 2",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "path-id": "2a",
+      "path-properties": {
+        "path-metric": [
+          {
+            "metric-type": "SNR@bandwidth",
+            "accumulative-value": 14.35
+          },
+          {
+            "metric-type": "SNR@0.1nm",
+            "accumulative-value": 18.43
+          },
+          {
+            "metric-type": "OSNR@bandwidth",
+            "accumulative-value": 16.08
+          },
+          {
+            "metric-type": "OSNR@0.1nm",
+            "accumulative-value": 20.16
+          },
+          {
+            "metric-type": "reference_power",
+            "accumulative-value": 0.001
+          },
+          {
+            "metric-type": "path_bandwidth",
+            "accumulative-value": 0
+          }
+        ],
+        "path-srlgs": {
+          "usage": "not used yet",
+          "values": "not used yet"
+        },
+        "path-route-objects": [
+          {
+            "path-route-object": {
+              "index": 0,
+              "unnumbered-hop": {
+                "node-id": "trx R_A",
+                "link-tp-id": "trx R_A",
+                "hop-type": "vendorA_trx-type1 - mode 1",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 1,
+              "unnumbered-hop": {
+                "node-id": "roadm R_A",
+                "link-tp-id": "roadm R_A",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_roadm R_A",
+                "link-tp-id": "Edfa0_roadm R_A",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 3,
+              "unnumbered-hop": {
+                "node-id": "fiber (R_A → A1)-",
+                "link-tp-id": "fiber (R_A → A1)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 4,
+              "unnumbered-hop": {
+                "node-id": "ingress fused spans in A1",
+                "link-tp-id": "ingress fused spans in A1",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 5,
+              "unnumbered-hop": {
+                "node-id": "fiber (A1 → A2)-",
+                "link-tp-id": "fiber (A1 → A2)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 6,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A1 → A2)-",
+                "link-tp-id": "Edfa0_fiber (A1 → A2)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 7,
+              "unnumbered-hop": {
+                "node-id": "fiber (A2 → A3)-",
+                "link-tp-id": "fiber (A2 → A3)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 8,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A2 → A3)-",
+                "link-tp-id": "Edfa0_fiber (A2 → A3)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 9,
+              "unnumbered-hop": {
+                "node-id": "fiber (A3 → A4)-",
+                "link-tp-id": "fiber (A3 → A4)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 10,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A3 → A4)-",
+                "link-tp-id": "Edfa0_fiber (A3 → A4)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 11,
+              "unnumbered-hop": {
+                "node-id": "fiber (A4 → A5)-",
+                "link-tp-id": "fiber (A4 → A5)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 12,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A4 → A5)-",
+                "link-tp-id": "Edfa0_fiber (A4 → A5)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 13,
+              "unnumbered-hop": {
+                "node-id": "fiber (A5 → A6)-",
+                "link-tp-id": "fiber (A5 → A6)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 14,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A5 → A6)-",
+                "link-tp-id": "Edfa0_fiber (A5 → A6)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 15,
+              "unnumbered-hop": {
+                "node-id": "fiber (A6 → A7)-",
+                "link-tp-id": "fiber (A6 → A7)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 16,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A6 → A7)-",
+                "link-tp-id": "Edfa0_fiber (A6 → A7)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 17,
+              "unnumbered-hop": {
+                "node-id": "fiber (A7 → A8)-",
+                "link-tp-id": "fiber (A7 → A8)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 18,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A7 → A8)-",
+                "link-tp-id": "Edfa0_fiber (A7 → A8)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 19,
+              "unnumbered-hop": {
+                "node-id": "fiber (A8 → A9)-",
+                "link-tp-id": "fiber (A8 → A9)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 20,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A8 → A9)-",
+                "link-tp-id": "Edfa0_fiber (A8 → A9)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 21,
+              "unnumbered-hop": {
+                "node-id": "fiber (A9 → A10)-",
+                "link-tp-id": "fiber (A9 → A10)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 22,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A9 → A10)-",
+                "link-tp-id": "Edfa0_fiber (A9 → A10)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 23,
+              "unnumbered-hop": {
+                "node-id": "fiber (A10 → R)-",
+                "link-tp-id": "fiber (A10 → R)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 24,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A10 → R)-",
+                "link-tp-id": "Edfa0_fiber (A10 → R)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 25,
+              "unnumbered-hop": {
+                "node-id": "roadm R",
+                "link-tp-id": "roadm R",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 26,
+              "unnumbered-hop": {
+                "node-id": "Edfa2_roadm R",
+                "link-tp-id": "Edfa2_roadm R",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 27,
+              "unnumbered-hop": {
+                "node-id": "fiber (R → C2)-",
+                "link-tp-id": "fiber (R → C2)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 28,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (R → C2)-",
+                "link-tp-id": "Edfa0_fiber (R → C2)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 29,
+              "unnumbered-hop": {
+                "node-id": "fiber (C2 → C1)-",
+                "link-tp-id": "fiber (C2 → C1)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 30,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (C2 → C1)-",
+                "link-tp-id": "Edfa0_fiber (C2 → C1)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 31,
+              "unnumbered-hop": {
+                "node-id": "fiber (C1 → R_C)-",
+                "link-tp-id": "fiber (C1 → R_C)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 32,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (C1 → R_C)-",
+                "link-tp-id": "Edfa0_fiber (C1 → R_C)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 33,
+              "unnumbered-hop": {
+                "node-id": "roadm R_C",
+                "link-tp-id": "roadm R_C",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 34,
+              "unnumbered-hop": {
+                "node-id": "trx R_C",
+                "link-tp-id": "trx R_C",
+                "hop-type": "vendorA_trx-type1 - mode 1",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "path-id": "3",
+      "path-properties": {
+        "path-metric": [
+          {
+            "metric-type": "SNR@bandwidth",
+            "accumulative-value": 13.46
+          },
+          {
+            "metric-type": "SNR@0.1nm",
+            "accumulative-value": 20.68
+          },
+          {
+            "metric-type": "OSNR@bandwidth",
+            "accumulative-value": 15.42
+          },
+          {
+            "metric-type": "OSNR@0.1nm",
+            "accumulative-value": 22.64
+          },
+          {
+            "metric-type": "reference_power",
+            "accumulative-value": 0.0019952623149688794
+          },
+          {
+            "metric-type": "path_bandwidth",
+            "accumulative-value": 0
+          }
+        ],
+        "path-srlgs": {
+          "usage": "not used yet",
+          "values": "not used yet"
+        },
+        "path-route-objects": [
+          {
+            "path-route-object": {
+              "index": 0,
+              "unnumbered-hop": {
+                "node-id": "trx R_A",
+                "link-tp-id": "trx R_A",
+                "hop-type": "vendorA_trx-type1 - mode 2",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 1,
+              "unnumbered-hop": {
+                "node-id": "roadm R_A",
+                "link-tp-id": "roadm R_A",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_roadm R_A",
+                "link-tp-id": "Edfa0_roadm R_A",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 3,
+              "unnumbered-hop": {
+                "node-id": "fiber (R_A → A1)-",
+                "link-tp-id": "fiber (R_A → A1)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 4,
+              "unnumbered-hop": {
+                "node-id": "ingress fused spans in A1",
+                "link-tp-id": "ingress fused spans in A1",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 5,
+              "unnumbered-hop": {
+                "node-id": "fiber (A1 → A2)-",
+                "link-tp-id": "fiber (A1 → A2)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 6,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A1 → A2)-",
+                "link-tp-id": "Edfa0_fiber (A1 → A2)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 7,
+              "unnumbered-hop": {
+                "node-id": "fiber (A2 → A3)-",
+                "link-tp-id": "fiber (A2 → A3)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 8,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A2 → A3)-",
+                "link-tp-id": "Edfa0_fiber (A2 → A3)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 9,
+              "unnumbered-hop": {
+                "node-id": "fiber (A3 → A4)-",
+                "link-tp-id": "fiber (A3 → A4)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 10,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A3 → A4)-",
+                "link-tp-id": "Edfa0_fiber (A3 → A4)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 11,
+              "unnumbered-hop": {
+                "node-id": "fiber (A4 → A5)-",
+                "link-tp-id": "fiber (A4 → A5)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 12,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A4 → A5)-",
+                "link-tp-id": "Edfa0_fiber (A4 → A5)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 13,
+              "unnumbered-hop": {
+                "node-id": "fiber (A5 → A6)-",
+                "link-tp-id": "fiber (A5 → A6)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 14,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A5 → A6)-",
+                "link-tp-id": "Edfa0_fiber (A5 → A6)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 15,
+              "unnumbered-hop": {
+                "node-id": "fiber (A6 → A7)-",
+                "link-tp-id": "fiber (A6 → A7)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 16,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A6 → A7)-",
+                "link-tp-id": "Edfa0_fiber (A6 → A7)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 17,
+              "unnumbered-hop": {
+                "node-id": "fiber (A7 → A8)-",
+                "link-tp-id": "fiber (A7 → A8)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 18,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A7 → A8)-",
+                "link-tp-id": "Edfa0_fiber (A7 → A8)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 19,
+              "unnumbered-hop": {
+                "node-id": "fiber (A8 → A9)-",
+                "link-tp-id": "fiber (A8 → A9)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 20,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A8 → A9)-",
+                "link-tp-id": "Edfa0_fiber (A8 → A9)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 21,
+              "unnumbered-hop": {
+                "node-id": "fiber (A9 → A10)-",
+                "link-tp-id": "fiber (A9 → A10)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 22,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A9 → A10)-",
+                "link-tp-id": "Edfa0_fiber (A9 → A10)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 23,
+              "unnumbered-hop": {
+                "node-id": "fiber (A10 → R)-",
+                "link-tp-id": "fiber (A10 → R)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 24,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A10 → R)-",
+                "link-tp-id": "Edfa0_fiber (A10 → R)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 25,
+              "unnumbered-hop": {
+                "node-id": "roadm R",
+                "link-tp-id": "roadm R",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 26,
+              "unnumbered-hop": {
+                "node-id": "Edfa2_roadm R",
+                "link-tp-id": "Edfa2_roadm R",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 27,
+              "unnumbered-hop": {
+                "node-id": "fiber (R → C2)-",
+                "link-tp-id": "fiber (R → C2)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 28,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (R → C2)-",
+                "link-tp-id": "Edfa0_fiber (R → C2)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 29,
+              "unnumbered-hop": {
+                "node-id": "fiber (C2 → C1)-",
+                "link-tp-id": "fiber (C2 → C1)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 30,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (C2 → C1)-",
+                "link-tp-id": "Edfa0_fiber (C2 → C1)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 31,
+              "unnumbered-hop": {
+                "node-id": "fiber (C1 → R_C)-",
+                "link-tp-id": "fiber (C1 → R_C)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 32,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (C1 → R_C)-",
+                "link-tp-id": "Edfa0_fiber (C1 → R_C)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 33,
+              "unnumbered-hop": {
+                "node-id": "roadm R_C",
+                "link-tp-id": "roadm R_C",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 34,
+              "unnumbered-hop": {
+                "node-id": "trx R_C",
+                "link-tp-id": "trx R_C",
+                "hop-type": "vendorA_trx-type1 - mode 2",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "path-id": "4",
+      "path-properties": {
+        "path-metric": [
+          {
+            "metric-type": "SNR@bandwidth",
+            "accumulative-value": 11.26
+          },
+          {
+            "metric-type": "SNR@0.1nm",
+            "accumulative-value": 18.49
+          },
+          {
+            "metric-type": "OSNR@bandwidth",
+            "accumulative-value": 12.45
+          },
+          {
+            "metric-type": "OSNR@0.1nm",
+            "accumulative-value": 19.68
+          },
+          {
+            "metric-type": "reference_power",
+            "accumulative-value": 0.0019952623149688794
+          },
+          {
+            "metric-type": "path_bandwidth",
+            "accumulative-value": 0
+          }
+        ],
+        "path-srlgs": {
+          "usage": "not used yet",
+          "values": "not used yet"
+        },
+        "path-route-objects": [
+          {
+            "path-route-object": {
+              "index": 0,
+              "unnumbered-hop": {
+                "node-id": "trx R_A",
+                "link-tp-id": "trx R_A",
+                "hop-type": "vendorA_trx-type1 - mode 2",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 1,
+              "unnumbered-hop": {
+                "node-id": "roadm R_A",
+                "link-tp-id": "roadm R_A",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_roadm R_A",
+                "link-tp-id": "Edfa0_roadm R_A",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 3,
+              "unnumbered-hop": {
+                "node-id": "fiber (R_A → A1)-",
+                "link-tp-id": "fiber (R_A → A1)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 4,
+              "unnumbered-hop": {
+                "node-id": "ingress fused spans in A1",
+                "link-tp-id": "ingress fused spans in A1",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 5,
+              "unnumbered-hop": {
+                "node-id": "fiber (A1 → A2)-",
+                "link-tp-id": "fiber (A1 → A2)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 6,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A1 → A2)-",
+                "link-tp-id": "Edfa0_fiber (A1 → A2)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 7,
+              "unnumbered-hop": {
+                "node-id": "fiber (A2 → A3)-",
+                "link-tp-id": "fiber (A2 → A3)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 8,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A2 → A3)-",
+                "link-tp-id": "Edfa0_fiber (A2 → A3)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 9,
+              "unnumbered-hop": {
+                "node-id": "fiber (A3 → A4)-",
+                "link-tp-id": "fiber (A3 → A4)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 10,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A3 → A4)-",
+                "link-tp-id": "Edfa0_fiber (A3 → A4)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 11,
+              "unnumbered-hop": {
+                "node-id": "fiber (A4 → A5)-",
+                "link-tp-id": "fiber (A4 → A5)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 12,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A4 → A5)-",
+                "link-tp-id": "Edfa0_fiber (A4 → A5)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 13,
+              "unnumbered-hop": {
+                "node-id": "fiber (A5 → A6)-",
+                "link-tp-id": "fiber (A5 → A6)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 14,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A5 → A6)-",
+                "link-tp-id": "Edfa0_fiber (A5 → A6)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 15,
+              "unnumbered-hop": {
+                "node-id": "fiber (A6 → A7)-",
+                "link-tp-id": "fiber (A6 → A7)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 16,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A6 → A7)-",
+                "link-tp-id": "Edfa0_fiber (A6 → A7)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 17,
+              "unnumbered-hop": {
+                "node-id": "fiber (A7 → A8)-",
+                "link-tp-id": "fiber (A7 → A8)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 18,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A7 → A8)-",
+                "link-tp-id": "Edfa0_fiber (A7 → A8)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 19,
+              "unnumbered-hop": {
+                "node-id": "fiber (A8 → A9)-",
+                "link-tp-id": "fiber (A8 → A9)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 20,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A8 → A9)-",
+                "link-tp-id": "Edfa0_fiber (A8 → A9)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 21,
+              "unnumbered-hop": {
+                "node-id": "fiber (A9 → A10)-",
+                "link-tp-id": "fiber (A9 → A10)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 22,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A9 → A10)-",
+                "link-tp-id": "Edfa0_fiber (A9 → A10)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 23,
+              "unnumbered-hop": {
+                "node-id": "fiber (A10 → R)-",
+                "link-tp-id": "fiber (A10 → R)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 24,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (A10 → R)-",
+                "link-tp-id": "Edfa0_fiber (A10 → R)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 25,
+              "unnumbered-hop": {
+                "node-id": "roadm R",
+                "link-tp-id": "roadm R",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 26,
+              "unnumbered-hop": {
+                "node-id": "Edfa1_roadm R",
+                "link-tp-id": "Edfa1_roadm R",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 27,
+              "unnumbered-hop": {
+                "node-id": "fiber (R → B2)-",
+                "link-tp-id": "fiber (R → B2)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 28,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (R → B2)-",
+                "link-tp-id": "Edfa0_fiber (R → B2)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 29,
+              "unnumbered-hop": {
+                "node-id": "fiber (B2 → B1)-",
+                "link-tp-id": "fiber (B2 → B1)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 30,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (B2 → B1)-",
+                "link-tp-id": "Edfa0_fiber (B2 → B1)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 31,
+              "unnumbered-hop": {
+                "node-id": "fiber (B1 → R_B)-",
+                "link-tp-id": "fiber (B1 → R_B)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 32,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (B1 → R_B)-",
+                "link-tp-id": "Edfa0_fiber (B1 → R_B)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 33,
+              "unnumbered-hop": {
+                "node-id": "roadm R_B",
+                "link-tp-id": "roadm R_B",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 34,
+              "unnumbered-hop": {
+                "node-id": "Edfa1_roadm R_B",
+                "link-tp-id": "Edfa1_roadm R_B",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 35,
+              "unnumbered-hop": {
+                "node-id": "fiber (R_B → R_C)-",
+                "link-tp-id": "fiber (R_B → R_C)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 36,
+              "unnumbered-hop": {
+                "node-id": "Edfa0_fiber (R_B → R_C)-",
+                "link-tp-id": "Edfa0_fiber (R_B → R_C)-",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 37,
+              "unnumbered-hop": {
+                "node-id": "roadm R_C",
+                "link-tp-id": "roadm R_C",
+                "hop-type": "not recorded",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 38,
+              "unnumbered-hop": {
+                "node-id": "trx R_C",
+                "link-tp-id": "trx R_C",
+                "hop-type": "vendorA_trx-type1 - mode 2",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

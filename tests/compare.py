@@ -81,7 +81,7 @@ def compare_services(expected, actual):
                                key=lambda el: el['synchronization-id'])
     return ServicesResults(requests, synchronizations)
 
-def compare_paths(expected_output, actual_output):
+def compare_paths(expected, actual):
     paths = compare(expected['path'], actual['path'], key=lambda el: el['path-id'])
     return PathsResults(paths)
 
