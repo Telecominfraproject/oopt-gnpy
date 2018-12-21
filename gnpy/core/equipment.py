@@ -27,7 +27,7 @@ Spans = namedtuple('Spans', 'power_mode delta_power_range_db max_length length_u
 Transceiver = namedtuple('Transceiver', 'type_variety frequency mode')
 Roadms = namedtuple('Roadms', 'gain_mode_default_loss power_mode_pref')
 SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off \
-                       power_dbm power_range_db OSNR bit_rate tx_osnr cost')
+                       power_dbm power_range_db OSNR bit_rate tx_osnr min_spacing cost')
 AmpBase = namedtuple(
     'AmpBase',
     'type_variety type_def gain_flatmax gain_min p_max'
@@ -167,6 +167,13 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
                         if trx == trx_type_variety \
                         for mode in trxs[trx].mode \
                         if mode['format'] == trx_mode)
+            trx_params = {**mode_params}
+            # sanity check: spacing baudrate must be smaller than min spacing
+            if trx_params['baud_rate'] > trx_params['min_spacing'] :
+                msg = f'Inconsistency in equipment library:\n Transpoder "{trx_type_variety}" mode "{trx_params["format"]}" '+\
+                    f'has baud rate: {trx_params["baud_rate"]*1e-9} GHz greater than min_spacing {trx_params["min_spacing"]*1e-9}.'
+                print(msg)
+                exit()
         else:
             mode_params = {"format": "undetermined",
                        "baud_rate": None,
@@ -174,8 +181,9 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
                        "bit_rate": None,
                        "roll_off": None,
                        "tx_osnr":None,
+                       "min_spacing":None,
                        "cost":None}
-        trx_params = {**mode_params}
+            trx_params = {**mode_params} 
         trx_params['frequency'] = equipment['Transceiver'][trx_type_variety].frequency
 
         # TODO: novel automatic feature maybe unwanted if spacing is specified
@@ -201,6 +209,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
                                         trx_params['frequency']['max'],
                                         trx_params['spacing'])
             trx_params['tx_osnr'] = default_si_data.tx_osnr
+            trx_params['min_spacing'] = default_si_data.min_spacing
             nch = automatic_nch(trx_params['frequency']['min'],
                                                       trx_params['frequency']['max'],
                                                       trx_params['spacing'])
