@@ -69,48 +69,49 @@ def requests_from_json(json_data,equipment):
         # nb_channel is computed based on min max frequency and spacing
         trx_params = trx_mode_params(equipment,params['trx_type'],params['trx_mode'],True)
         params.update(trx_params)
-        print(trx_params['tx_osnr'])
+        # print(trx_params['min_spacing'])
         # optical power might be set differently in the request. if it is indicated then the 
         # params['power'] is updated
         if req['path-constraints']['te-bandwidth']['output-power']:
             params['power'] = req['path-constraints']['te-bandwidth']['output-power']
         # same process for nb-channel
-        fmin = trx_params['frequency']['min']
-        fmax = trx_params['frequency']['max']
+        fmin = params['frequency']['min']
+        fmax = params['frequency']['max']
         if req['path-constraints']['te-bandwidth']['max-nb-of-channel'] is not None :
-            # check if requested nb_channels is consistant with baudrate and min-max frequencies
-            if trx_params['baud_rate'] is not None:
-                min_recommanded_spacing = automatic_spacing(trx_params['baud_rate'])
-                # needed for printing - else argument with quote are making errors in the print
-                temp = params['baud_rate']*1e-9
-            else:
-                min_recommanded_spacing = params['spacing']
-                temp = 'undetermined baudrate'
-        
-            max_recommanded_nb_channels = automatic_nch(fmin,fmax,
-                min_recommanded_spacing)
-                
-            if req['path-constraints']['te-bandwidth']['max-nb-of-channel'] <= max_recommanded_nb_channels :
-                params['nb_channel'] = req['path-constraints']['te-bandwidth']['max-nb-of-channel']
-            else:
-                msg = dedent(f'''
-                Requested channel number is not consistent with frequency range:
-                {fmin*1e-12} THz, {fmax*1e-12} THz and baud rate: {temp} GHz
-                min recommanded spacing is {min_recommanded_spacing}
-                max recommanded nb of channels is {max_recommanded_nb_channels}
-                Computation stopped.''')
-                logger.critical(msg)
-                exit()
-                
-
+            params['nb_channel'] = req['path-constraints']['te-bandwidth']['max-nb-of-channel']               
         else :
             params['nb_channel'] = automatic_nch(fmin,fmax,params['spacing'])
+        consitency_check(params)
         try :
             params['path_bandwidth'] = req['path-constraints']['te-bandwidth']['path_bandwidth']
         except KeyError:
             pass
         requests_list.append(Path_request(**params))
     return requests_list
+
+def consitency_check(params):
+    fmin = params['frequency']['min']
+    fmax = params['frequency']['max']
+    max_recommanded_nb_channels = automatic_nch(fmin,fmax,
+                params['spacing'])        
+    if params['baud_rate'] is not None:
+        #implicitely means that a mode is defined with min_spacing
+        if params['min_spacing']>params['spacing'] : 
+            msg = f'Request {params["request_id"]} has spacing below transponder {params["trx_type"]}'+\
+                f' {params["trx_mode"]} min spacing value {params["min_spacing"]*1e-9}GHz.\n'+\
+                'Computation stopped'
+            print(msg)
+            logger.critical(msg)
+            exit()
+        if params['nb_channel']>max_recommanded_nb_channels:
+            msg = dedent(f'''
+            Requested channel number {params["nb_channel"]}, baud rate {params["baud_rate"]} GHz and requested spacing {params["spacing"]*1e-9}GHz 
+            is not consistent with frequency range {fmin*1e-12} THz, {fmax*1e-12} THz, min recommanded spacing {params["min_spacing"]*1e-9}GHz.
+            max recommanded nb of channels is {max_recommanded_nb_channels}
+            Computation stopped.''')
+            logger.critical(msg)
+            exit()    
+
 
 def disjunctions_from_json(json_data):
     disjunctions_list = []

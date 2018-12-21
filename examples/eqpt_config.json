@@ -102,6 +102,7 @@
             "OSNR": 11,
             "bit_rate":100e9,
             "tx_osnr": 45,
+            "min_spacing": 37.5e9,
             "cost":1
             }],
       "Transceiver":[
@@ -120,6 +121,7 @@
                        "bit_rate": 100e9,
                        "roll_off": 0.15,
                        "tx_osnr": 45,
+                       "min_spacing": 37.5e9,
                        "cost":1
                        },
                        {
@@ -129,6 +131,7 @@
                        "bit_rate": 200e9,
                        "roll_off": 0.15,
                        "tx_osnr": 45,
+                       "min_spacing": 75e9,
                        "cost":1
                        }
                    ]
@@ -147,6 +150,7 @@
                        "bit_rate": 100e9,
                        "roll_off": 0.15,
                        "tx_osnr": 45,
+                       "min_spacing": 37.5e9,
                        "cost":1
                        },
                        {
@@ -156,6 +160,7 @@
                        "bit_rate": 300e9,
                        "roll_off": 0.15,
                        "tx_osnr": 45,
+                       "min_spacing": 62.5e9,
                        "cost":1
                        },
                        {
@@ -165,6 +170,7 @@
                        "bit_rate": 400e9,
                        "roll_off": 0.15,
                        "tx_osnr": 45,
+                       "min_spacing": 75e9,
                        "cost":1
                        },
                        {
@@ -174,6 +180,7 @@
                        "bit_rate": 200e9,
                        "roll_off": 0.15,
                        "tx_osnr": 45,
+                       "min_spacing": 75e9,
                        "cost":1
                        }
                    ]

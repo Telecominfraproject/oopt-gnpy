@@ -34,7 +34,7 @@ logger = getLogger(__name__)
 
 
 RequestParams = namedtuple('RequestParams','request_id source destination trx_type'+
-' trx_mode nodes_list loose_list spacing power nb_channel frequency format baud_rate OSNR bit_rate roll_off tx_osnr cost path_bandwidth')
+' trx_mode nodes_list loose_list spacing power nb_channel frequency format baud_rate OSNR bit_rate roll_off tx_osnr min_spacing cost path_bandwidth')
 DisjunctionParams = namedtuple('DisjunctionParams','disjunction_id relaxable link_diverse node_diverse disjunctions_req')
 
 class Path_request:
@@ -57,6 +57,7 @@ class Path_request:
         self.bit_rate   = params.bit_rate
         self.roll_off   = params.roll_off
         self.tx_osnr    = params.tx_osnr
+        self.min_spacing = params.min_spacing
         self.cost       = params.cost
         self.path_bandwidth  = params.path_bandwidth
 
@@ -401,7 +402,8 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
     # spacing. TODO add a min_spacing attribute in transceivers. for now just using baudrate*1.1
     # step 1: create an ordered list of modes based on baudrate
     baudrate_to_explore = list(set([m['baud_rate'] for m in equipment['Transceiver'][req.tsp].mode 
-        if float(m['baud_rate'])+12.5e9< req.spacing]))
+        if float(m['min_spacing'])<= req.spacing]))  
+        # TODO be carefull on limits cases if min_spacing very close to req spacing eg 50.001 50.000
     baudrate_to_explore = sorted(baudrate_to_explore, reverse=True)
     if baudrate_to_explore : 
         # at least 1 baudrate can be tested wrt spacing
@@ -424,7 +426,7 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
                 if show :
                     print(el)
                 if path[-1].snr is not None:
-                    if round(mean(path[-1].snr+lin2db(b/(12.5e9))),2) > m['OSNR'] :
+                    if round(min(path[-1].snr+lin2db(b/(12.5e9))),2) > m['OSNR'] :
                         found_a_feasible_mode = True
                         return path, m
                 else:  
