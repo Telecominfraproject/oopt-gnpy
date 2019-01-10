@@ -36,7 +36,7 @@ class Node:
 
     @property
     def coords(self):
-        return tuple(self.lng, self.lat)
+        return (self.lng, self.lat)
 
     @property
     def location(self):
