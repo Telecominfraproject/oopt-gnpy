@@ -217,6 +217,8 @@ class Fiber(Node):
         self.dispersion = self.params.dispersion  # s/m/m
         self.gamma = self.params.gamma # 1/W/m
         self.pch_out_db = None
+        self.carriers_in = None
+        self.carriers_out = None
         # TODO|jla: discuss factor 2 in the linear lineic attenuation
 
     @property
@@ -281,6 +283,25 @@ class Fiber(Node):
         _, alpha = self.dbkm_2_lin()
         aleff = 1 / (2 * alpha)
         return aleff
+
+    def carriers(self, loc, attr):
+        """retrieve carriers information
+        loc = (in, out) of the class element
+        attr = (ase, nli, signal, total) power information"""
+        if not (loc in ('in', 'out') and attr in ('nli', 'signal', 'total', 'ase')):
+            yield None
+            return
+        power_dict = {
+                        'nli':      'nonlinear_interference',
+                        'ase':      'amplified_spontaneous_emission'
+                    }
+        attr = power_dict.get(attr, attr)
+        loc_attr = 'carriers_'+loc
+        for c in getattr(self, loc_attr) :
+            if attr == 'total':
+                yield c.power.ase+c.power.nli+c.power.signal
+            else:
+                yield c.power._asdict().get(attr, None)
 
     def beta2(self, ref_wavelength=None):
         """ Returns beta2 from dispersion parameter.
@@ -370,8 +391,10 @@ class Fiber(Node):
         return pref._replace(p_span0=pref.p0, p_spani=self.pch_out_db)
 
     def __call__(self, spectral_info):
+        self.carriers_in = spectral_info.carriers
         carriers = tuple(self.propagate(*spectral_info.carriers))
         pref = self.update_pref(spectral_info.pref)
+        self.carriers_out = carriers
         return spectral_info.update(carriers=carriers, pref=pref)
 
 class EdfaParams:
@@ -435,6 +458,8 @@ class Edfa(Node):
         self.passive = False
         self.effective_gain = self.operational.gain_target
         self.att_in = None
+        self.carriers_in = None
+        self.carriers_out = None
 
     @property
     def to_json(self):
@@ -480,6 +505,25 @@ class Edfa(Node):
                           f'  target pch (dBm):       {self.target_pch_out_db!r}',
                           f'  effective pch (dBm):    {self.effective_pch_out_db!r}',
                           f'  output VOA (dB):        {self.operational.out_voa:.2f}'])
+
+    def carriers(self, loc, attr):
+        """retrieve carriers information
+        loc = (in, out) of the class element
+        attr = (ase, nli, signal, total) power information"""
+        if not (loc in ('in', 'out') and attr in ('nli', 'signal', 'total', 'ase')):
+            yield None
+            return
+        power_dict = {
+                        'nli':      'nonlinear_interference',
+                        'ase':      'amplified_spontaneous_emission'
+                    }
+        attr = power_dict.get(attr, attr)
+        loc_attr = 'carriers_'+loc
+        for c in getattr(self, loc_attr) :
+            if attr == 'total':
+                yield c.power.ase+c.power.nli+c.power.signal
+            else:
+                yield c.power._asdict().get(attr, None)
 
     def interpol_params(self, frequencies, pin, baud_rates, pref):
         """interpolate SI channel frequencies with the edfa dgt and gain_ripple frquencies from json
@@ -722,6 +766,8 @@ class Edfa(Node):
                             p_spani=pref.pi + self.effective_gain - self.operational.out_voa)
 
     def __call__(self, spectral_info):
+        self.carriers_in = spectral_info.carriers
         carriers = tuple(self.propagate(spectral_info.pref, *spectral_info.carriers))
         pref = self.update_pref(spectral_info.pref)
+        self.carriers_out = carriers
         return spectral_info.update(carriers=carriers, pref=pref)
