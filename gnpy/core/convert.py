@@ -232,7 +232,7 @@ def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
                     n.node_type='ROADM'
     return nodes, links
 
-def convert_file(input_filename, filter_region=[]):
+def convert_file(input_filename, names_matching=False, filter_region=[]):
     nodes, links, eqpts = parse_excel(input_filename)
 
     if filter_region:
@@ -264,7 +264,8 @@ def convert_file(input_filename, filter_region=[]):
             if match_city.lower() == city.lower() and match_city != city:
                 city_match_dic[city].append(match_city)
 
-    #print(city_match_dic)
+    if names_matching:
+        print('\ncity match dictionary:',city_match_dic) 
     with  open('name_match_dictionary.json', 'w', encoding='utf-8') as city_match_dic_file:
         city_match_dic_file.write(dumps(city_match_dic, indent=2, ensure_ascii=False))            
 
