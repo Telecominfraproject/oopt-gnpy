@@ -106,7 +106,25 @@
                        "roll_off": 0.15,
                        "tx_osnr": 100,
                        "cost":1                       
-                       }
+                       },
+                       {
+                       "format": "mode 1",
+                       "baud_rate": 32e9,
+                       "OSNR": 11,
+                       "bit_rate": 100e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 100,
+                       "cost":1
+                       },
+                       {
+                       "format": "mode 2",
+                       "baud_rate": 64e9,
+                       "OSNR": 15,
+                       "bit_rate": 200e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 100,
+                       "cost":1                       
+                       }                       
                    ]
             },
             {
