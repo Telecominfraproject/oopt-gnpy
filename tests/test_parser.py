@@ -39,7 +39,7 @@ def test_excel_json_generation(xls_input, expected_json_output):
     actual_json_output = xls_input.with_suffix('.json')
     with open(actual_json_output, encoding='utf-8') as f:
         actual = load(f)
-    unlink(actual_json_output)
+    #unlink(actual_json_output)
 
     with open(expected_json_output, encoding='utf-8') as f:
         expected = load(f)
