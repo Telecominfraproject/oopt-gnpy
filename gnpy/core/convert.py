@@ -41,8 +41,10 @@ class Node(object):
         self.update_attr(kwargs)
 
     def update_attr(self, kwargs):
-        for k,v in kwargs.items():
-            setattr(self, k, v if v!='' else self.default_values[k])
+        clean_kwargs = {k:v for k,v in kwargs.items() if v !=''}        
+        for k,v in self.default_values.items():
+            v = clean_kwargs.get(k,v)
+            setattr(self, k, v)
     
     default_values = \
     {
@@ -62,24 +64,16 @@ class Link(object):
     def __init__(self, **kwargs):
         super(Link, self).__init__()
         self.update_attr(kwargs)
-        # need to update west after east, in case east is copied over west
-        self.update_west(kwargs)
         self.distance_units = 'km'
 
     def update_attr(self, kwargs):
-        for k,v in kwargs.items():
-            if not 'west' in k:
-                setattr(self, k, v if v!='' else self.default_values[k])
-
-    def update_west(self, kwargs):
-        for k,v in kwargs.items():
-            if 'west' in k:
-                if v=='':
-                # copy east attributes
-                    attribut = 'east' + k.split('west')[-1]
-                    setattr(self, k, getattr(self, attribut))
-                else:
-                    setattr(self, k, v)
+        clean_kwargs = {k:v for k,v in kwargs.items() if v !=''}
+        for k,v in self.default_values.items():
+            v = clean_kwargs.get(k,v)
+            setattr(self, k, v)
+            k = 'west' + k.split('east')[-1]
+            v = clean_kwargs.get(k,v)
+            setattr(self, k, v)
 
     def __eq__(self, link):
         return (self.from_city == link.from_city and self.to_city == link.to_city) \
@@ -87,6 +81,8 @@ class Link(object):
 
     default_values = \
     {
+            'from_city':            '',
+            'to_city':              '',
             'east_distance':        80,
             'east_fiber':           'SSMF',
             'east_lineic':          0.2,
@@ -103,24 +99,23 @@ class Eqpt(object):
         self.update_attr(kwargs)
 
     def update_attr(self, kwargs):
-        for k,v in kwargs.items():
-            if v=='':
-                # remove east/west prefix to map default values that are east/west agnostic
-                attribut = k.split('west_')[-1]
-                attribut = attribut.split('east_')[-1]
-                setattr(self, k, self.default_values[attribut])
-            else:
-                setattr(self, k, v)
+        clean_kwargs = {k:v for k,v in kwargs.items() if v !=''}
+        for k,v in self.default_values.items():
+            v_east = clean_kwargs.get(k,v)
+            setattr(self, k, v_east)
+            k = 'west' + k.split('east')[-1]
+            v_west = clean_kwargs.get(k,v)
+            setattr(self, k, v_west)
 
     default_values = \
     {
             'from_city':        '',
             'to_city':          '',
-            'amp_type':         '',
-            'att_in':           0,
-            'amp_gain':         0,
-            'tilt':             0,
-            'att_out':          0
+            'east_amp_type':         '',
+            'east_att_in':           0,
+            'east_amp_gain':         0,
+            'east_tilt':             0,
+            'east_att_out':          0
     }
 
 
@@ -154,10 +149,10 @@ def read_slice(my_sheet, line, slice_, header):
 
 
 def parse_headers(my_sheet, input_headers_dict, headers, start_line, slice_in):
-    """return a dict of header1_slice
+    """return a dict of header_slice
     key = column index
-    value   = all_headers 3rd order value
-            = Ept_inputs attributs"""
+    value = header name"""
+
 
     for h0 in input_headers_dict:
         slice_out = read_slice(my_sheet, start_line, slice_in, h0)
@@ -168,12 +163,18 @@ def parse_headers(my_sheet, input_headers_dict, headers, start_line, slice_in):
             slice_out = read_slice(my_sheet, start_line+iteration, slice_in, h0)
             iteration += 1
         if slice_out == (-1, -1):
-            print(f'critical missing header {h0}, abort parsing')
-            exit()
-        if not isinstance(input_headers_dict[h0], dict):
+            if h0 == 'east':
+                print(f'\x1b[1;31;40m'+f'CRITICAL: missing _east_ header above other headers (hierarchical) _ ABORT'+ '\x1b[0m')
+                exit()
+            else:
+                print(f'missing header {h0}')
+        elif not isinstance(input_headers_dict[h0], dict):
             headers[slice_out[0]] = input_headers_dict[h0]
         else:
             headers = parse_headers(my_sheet, input_headers_dict[h0], headers, start_line+1, slice_out)
+    if headers == {}:
+        print(f'\x1b[1;31;40m'+f'CRITICAL ERROR: could not find any header to read _ ABORT'+ '\x1b[0m')
+        exit()
     return headers
 
 def parse_row(row, headers):
