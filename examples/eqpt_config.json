@@ -108,11 +108,7 @@
             "power_dbm": 0,
             "power_range_db": [0,0,0.5],
             "roll_off": 0.15,
-            "OSNR": 11,
-            "bit_rate":100e9,
-            "tx_osnr": 45,
-            "min_spacing": 37.5e9,
-            "cost":1
+            "tx_osnr": 45
             }],
       "Transceiver":[
             {

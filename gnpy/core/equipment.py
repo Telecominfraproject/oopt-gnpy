@@ -27,7 +27,7 @@ Spans = namedtuple('Spans', 'power_mode delta_power_range_db max_length length_u
 Transceiver = namedtuple('Transceiver', 'type_variety frequency mode')
 Roadms = namedtuple('Roadms', 'gain_mode_default_loss power_mode_pout_target')
 SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off \
-                       power_dbm power_range_db OSNR bit_rate tx_osnr min_spacing cost')
+                       power_dbm power_range_db tx_osnr')
 AmpBase = namedtuple(
     'AmpBase',
     'type_variety type_def gain_flatmax gain_min p_max'
@@ -162,6 +162,8 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
     
     try:
         trxs = equipment['Transceiver']
+        #if called from path_requests_run.py, trx_mode is filled with None when not specified by user
+        #if called from transmission_main.py, trx_mode is ''
         if trx_mode is not None:
             mode_params = next(mode for trx in trxs \
                         if trx == trx_type_variety \
@@ -184,7 +186,8 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
                        "min_spacing":None,
                        "cost":None}
             trx_params = {**mode_params} 
-        trx_params['frequency'] = equipment['Transceiver'][trx_type_variety].frequency
+        trx_params['f_min'] = equipment['Transceiver'][trx_type_variety].frequency['min']
+        trx_params['f_max'] = equipment['Transceiver'][trx_type_variety].frequency['max']
 
         # TODO: novel automatic feature maybe unwanted if spacing is specified
         # trx_params['spacing'] = automatic_spacing(trx_params['baud_rate'])
@@ -198,21 +201,18 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
         else:
             # default transponder charcteristics
             # mainly used with transmission_main_example.py
-            trx_params['frequency'] = {'min': default_si_data.f_min, 'max': default_si_data.f_max}
+            trx_params['f_min'] = default_si_data.f_min
+            trx_params['f_max'] = default_si_data.f_max
             trx_params['baud_rate'] = default_si_data.baud_rate
             trx_params['spacing'] = default_si_data.spacing
-            trx_params['OSNR'] = default_si_data.OSNR
-            trx_params['bit_rate'] = default_si_data.bit_rate
-            trx_params['cost'] = default_si_data.cost
+            trx_params['OSNR'] = None
+            trx_params['bit_rate'] = None
+            trx_params['cost'] = None
             trx_params['roll_off'] = default_si_data.roll_off
-            trx_params['nb_channel'] = automatic_nch(trx_params['frequency']['min'],
-                                        trx_params['frequency']['max'],
-                                        trx_params['spacing'])
             trx_params['tx_osnr'] = default_si_data.tx_osnr
-            trx_params['min_spacing'] = default_si_data.min_spacing
-            nch = automatic_nch(trx_params['frequency']['min'],
-                                                      trx_params['frequency']['max'],
-                                                      trx_params['spacing'])
+            trx_params['min_spacing'] = None
+            nch = automatic_nch(trx_params['f_min'], trx_params['f_max'], trx_params['spacing'])
+            trx_params['nb_channel'] = nch
             print(f'There are {nch} channels propagating')
                 
     trx_params['power'] =  db2lin(default_si_data.power_dbm)*1e-3
