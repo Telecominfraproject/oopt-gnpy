@@ -501,6 +501,11 @@ computation requests that must be synchronized.";
    * Augment
    */
 
+  /* TODO : correct the following with good trees:
+  *  te:tunnels-rpc/te:input/te:tunnel-info
+  *  te:tunnels-rpc/te:output/te:result
+  */
+
   list path-request {
     key "request-id";
     description "request-list";
@@ -516,7 +521,6 @@ identified by the request-id-number.";
     uses generic-path-constraints;
   }
   uses synchronization-info;
-  
 
   list response {
     key response-id;
