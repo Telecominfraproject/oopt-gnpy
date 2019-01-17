@@ -40,25 +40,43 @@ class Transceiver(Node):
     def _calc_snr(self, spectral_info):    
         with errstate(divide='ignore'):
             self.baud_rate = [c.baud_rate for c in spectral_info.carriers]
-            self.osnr_ase = [lin2db(divide(c.power.signal, c.power.ase))
-                            for c in spectral_info.carriers]
             ratio_01nm = [lin2db(12.5e9/b_rate) for b_rate in self.baud_rate]
-            self.osnr_ase_01nm = [ase - ratio for ase, ratio
-                                  in zip(self.osnr_ase, ratio_01nm)]
-            self.osnr_nli = [lin2db(divide(c.power.signal, c.power.nli))
+            
+        #set raw values to record original calculation, before update_snr()            
+            self.raw_osnr_ase = [lin2db(divide(c.power.signal, c.power.ase))
+                            for c in spectral_info.carriers]
+            self.raw_osnr_ase_01nm = [ase - ratio for ase, ratio
+                                  in zip(self.raw_osnr_ase, ratio_01nm)]
+            self.raw_osnr_nli = [lin2db(divide(c.power.signal, c.power.nli))
                              for c in spectral_info.carriers]
-            self.snr = [lin2db(divide(c.power.signal, c.power.nli+c.power.ase)) 
+            self.raw_snr = [lin2db(divide(c.power.signal, c.power.nli+c.power.ase)) 
                         for c in spectral_info.carriers]
+
+            self.osnr_ase = self.raw_osnr_ase
+            self.osnr_ase_01nm = self.raw_osnr_ase_01nm
+            self.osnr_nli = self.raw_osnr_nli
+            self.snr = self.raw_snr
                         
-    def update_snr(self, snr_added, bw_added=12.5e9):
-        self.osnr_ase = self.osnr_nli = list(map(lambda x,y:snr_sum(x,y,snr_added,bw_added),
-                        self.osnr_ase, self.baud_rate))
-        self.osnr_nli = list(map(lambda x,y:snr_sum(x,y,snr_added,bw_added),
-                        self.osnr_nli, self.baud_rate))
-        self.snr = list(map(lambda x,y:snr_sum(x,y,snr_added,bw_added), 
-                        self.snr, self.baud_rate))
-        self.osnr_ase_01nm = list(map(lambda x:snr_sum(x,12.5e9,snr_added,bw_added), 
-                        self.osnr_ase_01nm))
+    def update_snr(self, *args):
+        """
+        snr_added in 0.1nm
+        compute SNR penalties such as transponder Tx_osnr or Roadm add_drop_osnr
+        only applied in request.py / propagate on the last Trasceiver node of the path
+        all penalties are added in a single call because to avoid uncontrolled cumul
+        """
+        #use raw_values so that the added snr penalties are not cumulated
+        snr_added = 0
+        for s in args:
+            snr_added += db2lin(-s)
+        snr_added = -lin2db(snr_added)
+        self.osnr_ase = list(map(lambda x,y:snr_sum(x,y,snr_added),
+                        self.raw_osnr_ase, self.baud_rate))
+        self.osnr_nli = list(map(lambda x,y:snr_sum(x,y,snr_added),
+                        self.raw_osnr_nli, self.baud_rate))
+        self.snr = list(map(lambda x,y:snr_sum(x,y,snr_added), 
+                        self.raw_snr, self.baud_rate))
+        self.osnr_ase_01nm = list(map(lambda x:snr_sum(x,12.5e9,snr_added), 
+                        self.raw_osnr_ase_01nm))
 
     @property
     def to_json(self):
