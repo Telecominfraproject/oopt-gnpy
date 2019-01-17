@@ -212,7 +212,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                     logger.warning(msg)
                     total_path = []
             else:
-                total_path,mode = propagate_and_optimize_mode(total_path,pathreq,equipment, show=False)
+                total_path,mode = propagate_and_optimize_mode(total_path,pathreq,equipment)
                 # if no baudrate satisfies spacing, no mode is returned and an empty path is returned
                 # a warning is shown in the propagate_and_optimize_mode
                 if mode is not None :

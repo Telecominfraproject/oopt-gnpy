@@ -398,7 +398,7 @@ def propagate(path, req, equipment, show=False):
     path[-1].update_snr(req.tx_osnr, equipment['Roadms']['default'].add_drop_osnr)
     return path
 
-def propagate_and_optimize_mode(path, req, equipment, show=False):
+def propagate_and_optimize_mode(path, req, equipment):
     #update roadm loss in case of power sweep (power mode only)
     set_roadm_loss(path, equipment, lin2db(req.power*1e3))
     # if mode is unknown : loops on the modes starting from the highest baudrate fiting in the
@@ -419,14 +419,12 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
             found_a_feasible_mode = False
             # TODO : the case of roll of is not included: for now use SI one
             # TODO : if the loop in mode optimization does not have a feasible path, then bugs
+            si = create_input_spectral_information(
+            req.f_min, req.f_max, equipment['SI']['default'].roll_off,
+            b, req.power, req.spacing)
+            for el in path:
+                si = el(si)
             for m in modes_to_explore :
-                si = create_input_spectral_information(
-                req.f_min, req.f_max, equipment['SI']['default'].roll_off,
-                b, req.power, req.spacing)
-                for el in path:
-                    si = el(si)
-                if show :
-                    print(el)
                 if path[-1].snr is not None:
                     path[-1].update_snr(m['tx_osnr'], equipment['Roadms']['default'].add_drop_osnr)
                     if round(min(path[-1].snr+lin2db(b/(12.5e9))),2) > m['OSNR'] :
