@@ -11,6 +11,7 @@ module gnpy-path-computation {
 
   import ietf-te-path-computation {
     prefix "itpc";
+    revision-date 2018-06-19;
   }
 
   import ietf-te-types {
