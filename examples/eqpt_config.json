@@ -109,7 +109,8 @@
             "power_dbm": 0,
             "power_range_db": [0,0,0.5],
             "roll_off": 0.15,
-            "tx_osnr": 40
+            "tx_osnr": 40,
+            "sys_margins": 0
             }],
       "Transceiver":[
             {

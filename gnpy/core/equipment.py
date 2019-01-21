@@ -27,7 +27,7 @@ Spans = namedtuple('Spans', 'power_mode delta_power_range_db max_length length_u
 Transceiver = namedtuple('Transceiver', 'type_variety frequency mode')
 Roadms = namedtuple('Roadms', 'gain_mode_default_loss power_mode_pout_target add_drop_osnr')
 SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off \
-                       power_dbm power_range_db tx_osnr')
+                       power_dbm power_range_db tx_osnr sys_margins')
 AmpBase = namedtuple(
     'AmpBase',
     'type_variety type_def gain_flatmax gain_min p_max'
@@ -233,6 +233,13 @@ def load_equipment(filename):
     json_data = load_json(filename)
     return equipment_from_json(json_data, filename)
 
+def update_trx_osnr(equipment):
+    """add sys_margins to all Transceivers OSNR values"""
+    for trx in equipment['Transceiver'].values():
+        for m in trx.mode:
+            m['OSNR'] = m['OSNR'] + equipment['SI']['default'].sys_margins
+    return equipment
+
 def equipment_from_json(json_data, filename):
     """build global dictionnary eqpt_library that stores all eqpt characteristics:
     edfa type type_variety, fiber type_variety
@@ -257,4 +264,5 @@ def equipment_from_json(json_data, filename):
                     equipment[key][subkey] = Amp.from_default_json(config, **entry)
             else:                
                 equipment[key][subkey] = typ(**entry)
+    equipment = update_trx_osnr(equipment)
     return equipment
