@@ -25,7 +25,7 @@ from gnpy.core.service_sheet import convert_service_sheet, Request_element, Elem
 from gnpy.core.utils import load_json
 from gnpy.core.network import load_network, build_network, set_roadm_loss, save_network
 from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch, automatic_spacing
-from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
+from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused, Fiber
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.request import (Path_request, Result_element, compute_constrained_path,
                               propagate, jsontocsv, Disjunction, compute_path_dsjctn, requests_aggregation,
@@ -44,7 +44,7 @@ parser.add_argument('network_filename', nargs='?', type = Path, default= Path(__
 parser.add_argument('service_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls')
 parser.add_argument('eqpt_filename', nargs='?', type = Path, default=Path(__file__).parent / 'eqpt_config.json')
 parser.add_argument('-v', '--verbose', action='count', default=0, help='increases verbosity for each occurence')
-parser.add_argument('-o', '--output')
+parser.add_argument('-o', '--output', type = Path)
 
 
 def requests_from_json(json_data,equipment):
@@ -228,7 +228,9 @@ def correct_route_list(network, pathreqlist):
     # prepares the format of route list of nodes to be consistant
     # remove wrong names, remove endpoints
     # also correct source and destination
-    anytype = [n.uid for n in network.nodes() if not isinstance(n, Transceiver)]
+    anytype = [n.uid for n in network.nodes() if not isinstance(n, Transceiver) and not isinstance(n, Fiber)]
+    # TODO there is a problem of identification of fibers in case of parallel fibers bitween two adjacent roadms
+    # so fiber constraint is not supported
     transponders = [n.uid for n in network.nodes() if isinstance(n, Transceiver)]
     for pathreq in pathreqlist:
         for i,n_id in enumerate(pathreq.nodes_list):
@@ -251,7 +253,6 @@ def correct_route_list(network, pathreqlist):
                     msg = f'could not find node : {n_id} in network topology. Strict constraint can not be applied.'
                     logger.critical(msg)
                     raise ValueError(msg)
-
         if pathreq.source not in transponders:
             msg = f'Request: {pathreq.request_id}: could not find transponder source : {pathreq.source}.'
             logger.critical(msg)
@@ -365,9 +366,10 @@ if __name__ == '__main__':
         for i,p in enumerate(propagatedpths):
             result.append(Result_element(rqs[i],p))
         temp = path_result_json(result)
-        with open(args.output, 'w', encoding='utf-8') as f:
+        fnamecsv = f'{str(args.output)[0:len(str(args.output))-len(str(args.output.suffix))]}.csv'
+        fnamejson = f'{str(args.output)[0:len(str(args.output))-len(str(args.output.suffix))]}.json'
+        with open(fnamejson, 'w', encoding='utf-8') as f:
             f.write(dumps(path_result_json(result), indent=2, ensure_ascii=False))
-            fnamecsv = next(s for s in args.output.split('.')) + '.csv'
             with open(fnamecsv,"w", encoding='utf-8') as fcsv :
                 jsontocsv(temp,equipment,fcsv)
 

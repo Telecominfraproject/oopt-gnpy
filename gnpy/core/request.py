@@ -276,6 +276,7 @@ def compute_constrained_path(network, req):
     destination = next(el for el in trx if el.uid == req.destination)
     nodes_list = []
     for n in req.nodes_list :
+        # for debug excel print(n)
         nodes_list.append(next(el for el in anytypenode if el.uid == n))
     # nodes_list contains at least the destination
     if nodes_list is None :
@@ -297,7 +298,7 @@ def compute_constrained_path(network, req):
             total_path = []        
     else : 
         all_simp_pths = list(all_simple_paths(network,source=source,\
-            target=destination))
+            target=destination, cutoff=120))
         candidate = []
         for p in all_simp_pths :
             if ispart(nodes_list, p) :
@@ -308,7 +309,7 @@ def compute_constrained_path(network, req):
             candidate.sort(key=lambda x: len(x))
             total_path = candidate[0]
         else:
-            if req.loose_list[req.nodes_list.index(n)] == 'loose':
+            if req.loose_list[1] == 'loose':
                 print(f'Request {req.request_id} could not find a path crossing {nodes_list} in network topology')
                 print(f'constraint ignored')
                 total_path = dijkstra_path(network, source, destination)
@@ -465,7 +466,7 @@ def jsontocsv(json_data,equipment,fileout):
         # selects only roadm nodes
         pth        = ' | '.join([ e['path-route-object']['unnumbered-hop']['node-id']
                  for e in p['path-properties']['path-route-objects'] 
-                 if e['path-route-object']['unnumbered-hop']['node-id'].startswith('roadm')])
+                 if e['path-route-object']['unnumbered-hop']['node-id'].startswith('roadm') or e['path-route-object']['unnumbered-hop']['node-id'].startswith('Edfa')])
 
         [tsp,mode] = p['path-properties']['path-route-objects'][0]\
         ['path-route-object']['unnumbered-hop']['hop-type'].split(' - ')
@@ -589,7 +590,8 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     for pathreq in pathreqlist_disjt :
         all_simp_pths = list(all_simple_paths(network,\
             source=next(el for el in network.nodes() if el.uid == pathreq.source),\
-            target=next(el for el in network.nodes() if el.uid == pathreq.destination)))
+            target=next(el for el in network.nodes() if el.uid == pathreq.destination),\
+            cutoff=80))
         # sort them
         all_simp_pths = sorted(all_simp_pths, key=lambda path: len(path))
         # reversed direction paths required to check disjunction on both direction
