@@ -18,7 +18,7 @@ from pathlib import Path
 from json import loads
 from collections import Counter
 from logging import getLogger, basicConfig, INFO, ERROR, DEBUG
-from numpy import arange, mean
+from numpy import linspace, mean
 from matplotlib.pyplot import show, axis, figure, title
 from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels, dijkstra_path)
@@ -85,12 +85,9 @@ def main(network, equipment, source, destination, req = None):
     print(f'\nNow propagating between {source.uid} and {destination.uid}:')
 
     try:
-        power_range = list(arange(*equipment['SI']['default'].power_range_db))
-        last = equipment['SI']['default'].power_range_db[-2]
-        if len(power_range) == 0 : #bad input that will lead to no simulation
-            power_range = [0] #better than an error message
-        else:
-            power_range.append(last)
+        p_start, p_stop, p_step = equipment['SI']['default'].power_range_db
+        p_num = abs(int(round((p_stop - p_start)/p_step))) + 1 if p_step != 0 else 1
+        power_range = list(linspace(p_start, p_stop, p_num))
     except TypeError:
         print('invalid power range definition in eqpt_config, should be power_range_db: [lower, upper, step]')
         power_range = [0]
@@ -101,6 +98,12 @@ def main(network, equipment, source, destination, req = None):
         propagate(path, req, equipment, show=len(power_range)==1)
         print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f}dBm :')
         print(destination)
+        
+        #print(f'\n !!!!!!!!!!!!!!!!!     TEST POINT         !!!!!!!!!!!!!!!!!!!!!')
+        #print(f'carriers ase output of {path[1]} =\n {list(path[1].carriers("out", "nli"))}')
+        # => use "in" or "out" parameter
+        # => use "nli" or "ase" or "signal" or "total" parameter
+    
         simulation_data.append({
                     'Pch_dBm'               : pref_ch_db + dp_db,
                     'OSNR_ASE_0.1nm'        : round(mean(destination.osnr_ase_01nm),2),
@@ -115,10 +118,11 @@ def main(network, equipment, source, destination, req = None):
 parser = ArgumentParser()
 parser.add_argument('-e', '--equipment', type=Path,
                     default=Path(__file__).parent / 'eqpt_config.json')
-parser.add_argument('-pl', '--plot', action='store_true', default=False)
-parser.add_argument('-v', '--verbose', action='count')
-parser.add_argument('-l', '--list-nodes', action='store_true', default=False, help='list all transceiver nodes')
+parser.add_argument('-pl', '--plot', action='store_true')
+parser.add_argument('-v', '--verbose', action='count', default=0, help='increases verbosity for each occurence')
+parser.add_argument('-l', '--list-nodes', action='store_true', help='list all transceiver nodes')
 parser.add_argument('-po', '--power', default=0, help='channel ref power in dBm')
+parser.add_argument('-names', '--names-matching', action='store_true', help='display network names that are closed matches')
 #parser.add_argument('-plb', '--power-lower-bound', default=0, help='power sweep lower bound')
 #parser.add_argument('-pub', '--power-upper-bound', default=1, help='power sweep upper bound')
 parser.add_argument('filename', nargs='?', type=Path,
@@ -129,12 +133,12 @@ parser.add_argument('destination',   nargs='?', help='destination node')
 
 if __name__ == '__main__':
     args = parser.parse_args()
-    basicConfig(level={0: ERROR, 1: INFO, 2: DEBUG}.get(args.verbose, ERROR))
+    basicConfig(level={0: ERROR, 1: INFO, 2: DEBUG}.get(args.verbose, DEBUG))
 
     equipment = load_equipment(args.equipment)
     # logger.info(equipment)
     # print(args.filename)
-    network = load_network(args.filename, equipment)
+    network = load_network(args.filename, equipment, args.names_matching)
     # print(network)
 
     transceivers = {n.uid: n for n in network.nodes() if isinstance(n, Transceiver)}
@@ -195,6 +199,7 @@ if __name__ == '__main__':
     params['nodes_list'] = [destination.uid]
     params['loose_list'] = ['strict']
     params['format'] = ''
+    params['path_bandwidth'] = 0
     trx_params = trx_mode_params(equipment)
     if args.power:
         trx_params['power'] = db2lin(float(args.power))*1e-3

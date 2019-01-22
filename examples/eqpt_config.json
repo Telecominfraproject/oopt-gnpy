@@ -19,6 +19,24 @@
             "allowed_for_design": false           
             },
             {
+            "type_variety": "low_noise",
+            "type_def": "openroadm",
+            "gain_flatmax": 27,
+            "gain_min": 12,
+            "p_max": 22,
+            "nf_coef": [-8.104e-4,-6.221e-2,-5.889e-1,37.62],
+            "allowed_for_design": false
+            },          
+            {
+            "type_variety": "standard",
+            "type_def": "openroadm",
+            "gain_flatmax": 27,
+            "gain_min": 12,
+            "p_max": 22,
+            "nf_coef": [-5.952e-4,-6.250e-2,-1.071,28.99],
+            "allowed_for_design": false
+            },
+            {
             "type_variety": "std_medium_gain",
             "type_def": "variable_gain",
             "gain_flatmax": 26,
@@ -48,22 +66,22 @@
             "p_max": 21,
             "nf0": 5.5,
             "allowed_for_design": false
-            },
-            {
-            "type_variety": "test",
-            "type_def": "variable_gain",
-            "gain_flatmax": 25,
-            "gain_min": 15,
-            "p_max": 21,
-            "nf_min": 7,
-            "nf_max": 11,
-            "allowed_for_design": false
-            }         
+            }       
       ],
       "Fiber":[{
             "type_variety": "SSMF",
             "dispersion": 1.67e-05,
             "gamma": 0.00127
+            },
+            {
+            "type_variety": "NZDF",
+            "dispersion": 0.5e-05,
+            "gamma": 0.00146
+            },
+            {
+            "type_variety": "LOF",
+            "dispersion": 2.2e-05,
+            "gamma": 0.000843
             }
       ],
       "Spans":[{
@@ -80,7 +98,7 @@
       ],
       "Roadms":[{
             "gain_mode_default_loss": 20,
-            "power_mode_pref": -20
+            "power_mode_pout_target": -20
             }],
       "SI":[{
             "f_min": 191.3e12,
@@ -91,7 +109,10 @@
             "power_range_db": [0,0,0.5],
             "roll_off": 0.15,
             "OSNR": 11,
-            "bit_rate":100e9
+            "bit_rate":100e9,
+            "tx_osnr": 45,
+            "min_spacing": 37.5e9,
+            "cost":1
             }],
       "Transceiver":[
             {
@@ -107,28 +128,20 @@
                        "baud_rate": 32e9,
                        "OSNR": 11,
                        "bit_rate": 100e9,
-                       "roll_off": 0.15
+                       "roll_off": 0.15,
+                       "tx_osnr": 45,
+                       "min_spacing": 37.5e9,
+                       "cost":1
                        },
                        {
                        "format": "mode 2",
                        "baud_rate": 66e9,
                        "OSNR": 15,
                        "bit_rate": 200e9,
-                       "roll_off": 0.15
-                       },
-                       {
-                       "format": "PS_SP64_1",
-                       "baud_rate": 32e9,
-                       "OSNR": 11,
-                       "bit_rate": 100e9,
-                       "roll_off": 0.15
-                       },
-                       {
-                       "format": "mode_2",
-                       "baud_rate": 66e9,
-                       "OSNR": 15,
-                       "bit_rate": 200e9,
-                       "roll_off": 0.15
+                       "roll_off": 0.15,
+                       "tx_osnr": 45,
+                       "min_spacing": 75e9,
+                       "cost":1
                        }
                    ]
             },
@@ -140,44 +153,45 @@
                         },
             "mode":[
                        {
-                       "format": "16QAM",
-                       "baud_rate": 32e9,
-                       "OSNR": 19,
-                       "bit_rate": 200e9,
-                       "roll_off": 0.15
-                       },
-                       {
-                       "format": "QPSK",
+                       "format": "mode 1",
                        "baud_rate": 32e9,
                        "OSNR": 12,
                        "bit_rate": 100e9,
-                       "roll_off": 0.15
-                       }
-
-                   ]
-            },
-                        {
-            "type_variety": "Voyager_16QAM",
-            "frequency":{
-                        "min": 191.35e12,
-                        "max": 196.1e12
-                        },
-            "mode":[
-                       {
-                       "format": "16QAM",
-                       "baud_rate": 32e9,
-                       "OSNR": 19,
-                       "bit_rate": 200e9,
-                       "roll_off": 0.15
+                       "roll_off": 0.15,
+                       "tx_osnr": 45,
+                       "min_spacing": 37.5e9,
+                       "cost":1
                        },
                        {
-                       "format": "QPSK",
-                       "baud_rate": 32e9,
-                       "OSNR": 12,
-                       "bit_rate": 100e9,
-                       "roll_off": 0.15
+                       "format": "mode 3",
+                       "baud_rate": 44e9,
+                       "OSNR": 18,
+                       "bit_rate": 300e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 45,
+                       "min_spacing": 62.5e9,
+                       "cost":1
+                       },
+                       {
+                       "format": "mode 2",
+                       "baud_rate": 66e9,
+                       "OSNR": 21,
+                       "bit_rate": 400e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 45,
+                       "min_spacing": 75e9,
+                       "cost":1
+                       },
+                       {
+                       "format": "mode 4",
+                       "baud_rate": 66e9,
+                       "OSNR": 16,
+                       "bit_rate": 200e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 45,
+                       "min_spacing": 75e9,
+                       "cost":1
                        }
-
                    ]
             }
       ]

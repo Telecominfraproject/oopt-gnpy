@@ -37,11 +37,11 @@ def test_excel_json_generation(xls_input, expected_json_output):
     convert_file(xls_input)
 
     actual_json_output = xls_input.with_suffix('.json')
-    with open(actual_json_output) as f:
+    with open(actual_json_output, encoding='utf-8') as f:
         actual = load(f)
-    unlink(actual_json_output)
+    #unlink(actual_json_output)
 
-    with open(expected_json_output) as f:
+    with open(expected_json_output, encoding='utf-8') as f:
         expected = load(f)
 
     results = compare_networks(expected, actual)
@@ -65,11 +65,11 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
     convert_service_sheet(xls_input, eqpt_filename)
 
     actual_json_output = f'{str(xls_input)[:-4]}_services.json'
-    with open(actual_json_output) as f:
+    with open(actual_json_output, encoding='utf-8') as f:
         actual = load(f)
     unlink(actual_json_output)
 
-    with open(expected_json_output) as f:
+    with open(expected_json_output, encoding='utf-8') as f:
         expected = load(f)
 
     results = compare_services(expected, actual)

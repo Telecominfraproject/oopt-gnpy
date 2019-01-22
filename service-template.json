@@ -19,7 +19,8 @@
           ],
           "spacing": null,
           "max-nb-of-channel": null,
-          "output-power": null
+          "output-power": null,
+          "path_bandwidth": null
           }
       },
       "optimizations": {

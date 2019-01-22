@@ -77,8 +77,8 @@ def compare_networks(expected, actual):
 def compare_services(expected, actual):
     requests = compare(expected['path-request'], actual['path-request'],
                        key=lambda el: el['request-id'])
-    synchronizations = compare(expected['synchronisation'], actual['synchronisation'],
-                               key=lambda el: el['synchonization-id'])
+    synchronizations = compare(expected['synchronization'], actual['synchronization'],
+                               key=lambda el: el['synchronization-id'])
     return ServicesResults(requests, synchronizations)
 
 def compare_paths(expected_output, actual_output):
@@ -105,16 +105,16 @@ def encode_sets(obj):
 if __name__ == '__main__':
     args = parser.parse_args()
 
-    with open(args.expected_output) as f:
+    with open(args.expected_output, encoding='utf-8') as f:
         expected = load(f)
 
-    with open(args.actual_output) as f:
+    with open(args.actual_output, encoding='utf-8') as f:
         actual = load(f)
 
     result = COMPARISONS[args.comparison](expected, actual)
 
     if args.output:
-        with open(args.output, 'w') as f:
-            dump(result, f, default=encode_sets, indent=2)
+        with open(args.output, 'w', encoding='utf-8') as f:
+            dump(result, f, default=encode_sets, indent=2, ensure_ascii=False)
     else:
         print(str(result))
