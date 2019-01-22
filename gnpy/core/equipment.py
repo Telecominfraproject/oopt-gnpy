@@ -173,6 +173,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
                        "OSNR": None,
                        "bit_rate": None,
                        "roll_off": None,
+                       "tx_osnr":None,
                        "cost":None}
         trx_params = {**mode_params}
         trx_params['frequency'] = equipment['Transceiver'][trx_type_variety].frequency

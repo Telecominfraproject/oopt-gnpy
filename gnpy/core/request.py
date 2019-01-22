@@ -411,25 +411,26 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
                 if m['baud_rate'] == b]
             modes_to_explore = sorted(modes_to_explore, 
                 key = lambda x: x['bit_rate'], reverse=True)
+            # print(modes_to_explore)
             # step2 : computes propagation for each baudrate: stop and select the first that passes
             found_a_feasible_mode = False
             # TODO : the case of roll of is not included: for now use SI one
             # TODO : if the loop in mode optimization does not have a feasible path, then bugs
-            si = create_input_spectral_information(
-            req.frequency['min'], equipment['SI']['default'].roll_off,
-            b, req.power, req.spacing, req.nb_channel, req.tx_osnr)
-            for el in path:
-                si = el(si)
+            for m in modes_to_explore :
+                si = create_input_spectral_information(
+                req.frequency['min'], equipment['SI']['default'].roll_off,
+                b, req.power, req.spacing, req.nb_channel, m['tx_osnr'])
+                for el in path:
+                    si = el(si)
                 if show :
                     print(el)
-            for m in modes_to_explore :
                 if path[-1].snr is not None:
                     if round(mean(path[-1].snr+lin2db(b/(12.5e9))),2) > m['OSNR'] :
                         found_a_feasible_mode = True
                         return path, m
                 else:  
                     return [], None
-        # only get to this point if no budrate/mode staisfies OSNR requirement
+        # only get to this point if no baudrate/mode satisfies OSNR requirement
         # returns the last propagated path and mode
         msg = f'Warning! Request {req.request_id}: no mode satisfies path SNR requirement.\n'
         print(msg)
