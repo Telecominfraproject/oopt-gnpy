@@ -416,18 +416,23 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
             # print(modes_to_explore)
             # step2 : computes propagation for each baudrate: stop and select the first that passes
             found_a_feasible_mode = False
+            snr_cache = {}
             # TODO : the case of roll of is not included: for now use SI one
             # TODO : if the loop in mode optimization does not have a feasible path, then bugs
             for m in modes_to_explore :
-                si = create_input_spectral_information(
-                req.frequency['min'], equipment['SI']['default'].roll_off,
-                b, req.power, req.spacing, req.nb_channel, m['tx_osnr'])
-                for el in path:
-                    si = el(si)
-                if show :
-                    print(el)
-                if path[-1].snr is not None:
-                    if round(min(path[-1].snr+lin2db(b/(12.5e9))),2) > m['OSNR'] :
+                mode_snr = snr_cache.get(m['tx_osnr'])
+                if not mode_snr:
+                    si = create_input_spectral_information(
+                    req.frequency['min'], equipment['SI']['default'].roll_off,
+                    b, req.power, req.spacing, req.nb_channel, m['tx_osnr'])
+                    for el in path:
+                        si = el(si)
+                    if show :
+                        print(el)
+                    mode_snr = path[-1].snr
+                    snr_cache[m['tx_osnr']] = mode_snr                
+                if mode_snr is not None:
+                    if round(min(mode_snr+lin2db(b/(12.5e9))),2) > m['OSNR'] :
                         found_a_feasible_mode = True
                         return path, m
                 else:  
