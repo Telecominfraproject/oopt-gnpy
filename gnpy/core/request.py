@@ -292,7 +292,7 @@ def compute_constrained_path(network, req):
         try :
             total_path = dijkstra_path(network, source, destination)
         except NetworkXNoPath:
-            msg = f'Request {req.request_id} could not find a path from {source.uid} to node : {destination.uid} in network topology'
+            msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path from {source.uid} to node : {destination.uid} in network topology'+ '\x1b[0m'
             logger.critical(msg)
             print(msg)
             total_path = []        
@@ -309,12 +309,12 @@ def compute_constrained_path(network, req):
             candidate.sort(key=lambda x: len(x))
             total_path = candidate[0]
         else:
-            if req.loose_list[1] == 'loose':
-                print(f'Request {req.request_id} could not find a path crossing {nodes_list} in network topology')
+            if req.loose_list[req.nodes_list.index(n)] == 'loose':
+                print(f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing {nodes_list} in network topology'+ '\x1b[0m')
                 print(f'constraint ignored')
                 total_path = dijkstra_path(network, source, destination)
             else:
-                msg = f'Request {req.request_id} could not find a path crossing {nodes_list}.\nNo path computed'
+                msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing {nodes_list}.\nNo path computed'+ '\x1b[0m'
                 logger.critical(msg)
                 print(msg)
                 total_path = []
@@ -432,13 +432,13 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
                     return [], None
         # only get to this point if no baudrate/mode satisfies OSNR requirement
         # returns the last propagated path and mode
-        msg = f'Warning! Request {req.request_id}: no mode satisfies path SNR requirement.\n'
+        msg = f'\tWarning! Request {req.request_id}: no mode satisfies path SNR requirement.\n'
         print(msg)
         logger.info(msg)
         return [],None
     else :
     #  no baudrate satisfying spacing
-        msg = f'Warning! Request {req.request_id}: no baudrate satisfies spacing requirement.\n'
+        msg = f'\tWarning! Request {req.request_id}: no baudrate satisfies spacing requirement.\n'
         print(msg)
         logger.info(msg)
         return [], None

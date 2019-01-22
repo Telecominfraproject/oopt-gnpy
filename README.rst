@@ -255,6 +255,8 @@ The modes are defined as follows:
 +----------------------+-----------+-----------------------------------------+
 | `tx_osnr`            | (number)  | In dB. OSNR out from transponder.       |
 +----------------------+-----------+-----------------------------------------+
+| `cost`               | (number)  | Arbitrary unit                          |
++----------------------+-----------+-----------------------------------------+
 
 Simulation parameters are defined as follows.
 

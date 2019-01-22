@@ -123,7 +123,6 @@ def disjunctions_from_json(json_data):
         params['node_diverse'] = snc['svec']['node-diverse']
         params['disjunctions_req'] = snc['svec']['request-id-number']
         disjunctions_list.append(Disjunction(**params))
-    print(disjunctions_list)
     return disjunctions_list
 
 
@@ -198,6 +197,13 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         if total_path :
             if pathreq.baud_rate is not None:
                 total_path = propagate(total_path,pathreq,equipment, show=False)
+                temp_snr01nm = round(mean(total_path[-1].snr+lin2db(pathreq.baud_rate/(12.5e9))),2)
+                if temp_snr01nm < pathreq.OSNR :
+                    msg = f'\tWarning! Request {pathreq.request_id} computed path from {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}\n' +\
+                    f'\tcomputedSNR in 0.1nm = {temp_snr01nm} - required osnr {pathreq.OSNR}\n'
+                    print(msg)
+                    logger.warning(msg)
+                    total_path = []
             else:
                 total_path,mode = propagate_and_optimize_mode(total_path,pathreq,equipment, show=False)
                 # if no baudrate satisfies spacing, no mode is returned and an empty path is returned
@@ -246,21 +252,21 @@ def correct_route_list(network, pathreqlist):
                         \n\'{n_id}\', replaced with \'{new_n}\'')
                         pathreq.nodes_list[i] = new_n
                     else:
-                        print(f'invalid route node specified \'{n_id}\', could not use it as constraint, skipped!')
+                        print(f'\x1b[1;33;40m'+f'invalid route node specified \'{n_id}\', could not use it as constraint, skipped!'+'\x1b[0m')
                         pathreq.nodes_list.remove(n_id)
                         pathreq.loose_list.pop(i)
                 else:
-                    msg = f'could not find node : {n_id} in network topology. Strict constraint can not be applied.'
+                    msg = f'\x1b[1;33;40m'+f'could not find node : {n_id} in network topology. Strict constraint can not be applied.'+'\x1b[0m'
                     logger.critical(msg)
                     raise ValueError(msg)
         if pathreq.source not in transponders:
-            msg = f'Request: {pathreq.request_id}: could not find transponder source : {pathreq.source}.'
+            msg = f'\x1b[1;31;40m'+f'Request: {pathreq.request_id}: could not find transponder source : {pathreq.source}.'+'\x1b[0m'
             logger.critical(msg)
             print(f'{msg}\nComputation stopped.')
             exit()
             
         if pathreq.destination not in transponders:
-            msg = f'Request: {pathreq.request_id}: could not find transponder destination : {pathreq.destination}.'
+            msg = f'\x1b[1;31;40m'+f'Request: {pathreq.request_id}: could not find transponder destination : {pathreq.destination}.'+'\x1b[0m'
             logger.critical(msg)
             print(f'{msg}\nComputation stopped.')
             exit()
@@ -290,6 +296,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(args.verbose, DEBUG))
     logger.info(f'Computing path requests {args.service_filename} into JSON format')
+    print('\x1b[1;34;40m'+f'Computing path requests {args.service_filename} into JSON format'+ '\x1b[0m')
     # for debug
     # print( args.eqpt_filename)
     data = load_requests(args.service_filename,args.eqpt_filename)
@@ -321,43 +328,52 @@ if __name__ == '__main__':
 
     # pths = compute_path(network, equipment, rqs)
     dsjn = disjunctions_from_json(data)
-    # print('ohohoho')
-    # print(dsjn)
+
+    print('\x1b[1;34;40m'+f'List of disjunctions'+ '\x1b[0m')
+    print(dsjn)
     # need to warn or correct in case of wrong disjunction form
     # disjunction must not be repeated with same or different ids
     dsjn = correct_disjn(dsjn)
         
     # Aggregate demands with same exact constraints
+    print('\x1b[1;34;40m'+f'Aggregating similar requests'+ '\x1b[0m')
+
     rqs,dsjn = requests_aggregation(rqs,dsjn)
     # TODO export novel set of aggregated demands in a json file
 
-    print('WARNING: The following services have been requested:')
+    print('\x1b[1;34;40m'+'The following services have been requested:'+ '\x1b[0m')
     print(rqs)
     
+    print('\x1b[1;34;40m'+f'Computing all paths with constraints'+ '\x1b[0m')
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
+
+    print('\x1b[1;34;40m'+f'Propagating on selected path'+ '\x1b[0m')
     propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
 
     end = time.time()
     print(f'computation time {end-start}')
+    print('\x1b[1;34;40m'+f'Result summary'+ '\x1b[0m')
     
-    header = ['demand','snr@bandwidth','snr@0.1nm','Receiver minOSNR', 'mode', 'Gbit/s' , 'nb of tsp pairs']
+    header = ['req id', '  demand','  snr@bandwidth','  snr@0.1nm','  Receiver minOSNR', '  mode', '  Gbit/s' , '  nb of tsp pairs']
     data = []
     data.append(header)
     for i, p in enumerate(propagatedpths):
         if p:
-            line = [f'{rqs[i].request_id} {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
+            line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
                 f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
                 f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }']
         else:
-            line = [f'{rqs[i].request_id} no path from {rqs[i].source} to {rqs[i].destination} ']
+            line = [f'{rqs[i].request_id}',f' {rqs[i].source} to {rqs[i].destination} : not feasible ']
         data.append(line)
 
-    col_width = max(len(word) for row in data for word in row[1:])   # padding
+    col_width = max(len(word) for row in data for word in row[2:])   # padding
     firstcol_width = max(len(row[0]) for row in data )   # padding
+    secondcol_width = max(len(row[1]) for row in data )   # padding
     for row in data:
         firstcol = ''.join(row[0].ljust(firstcol_width)) 
-        remainingcols = ''.join(word.ljust(col_width) for word in row[1:])
-        print(f'{firstcol} {remainingcols}')
+        secondcol = ''.join(row[1].ljust(secondcol_width))
+        remainingcols = ''.join(word.center(col_width,' ') for word in row[2:])
+        print(f'{firstcol} {secondcol} {remainingcols}')
 
 
     if args.output :
@@ -372,4 +388,5 @@ if __name__ == '__main__':
             f.write(dumps(path_result_json(result), indent=2, ensure_ascii=False))
             with open(fnamecsv,"w", encoding='utf-8') as fcsv :
                 jsontocsv(temp,equipment,fcsv)
+                print('\x1b[1;34;40m'+f'saving in {args.output} and {fnamecsv}'+ '\x1b[0m')
 
