@@ -17,14 +17,23 @@
             "nf_max": 10,
             "out_voa_auto": false,
             "allowed_for_design": false           
-            },            
+            },
             {
             "type_variety": "low_noise",
             "type_def": "openroadm",
             "gain_flatmax": 27,
-            "gain_min": 11,
+            "gain_min": 12,
             "p_max": 22,
-            "nf_coef": [8.1e-4,6.142e-2,1.558,19.97],
+            "nf_coef": [-8.104e-4,-6.221e-2,-5.889e-1,37.62],
+            "allowed_for_design": false
+            },          
+            {
+            "type_variety": "standard",
+            "type_def": "openroadm",
+            "gain_flatmax": 27,
+            "gain_min": 12,
+            "p_max": 22,
+            "nf_coef": [-5.952e-4,-6.250e-2,-1.071,28.99],
             "allowed_for_design": false
             },
             {
@@ -89,7 +98,7 @@
       ],
       "Roadms":[{
             "gain_mode_default_loss": 20,
-            "power_mode_pref": -20
+            "power_mode_pout_target": -20
             }],
       "SI":[{
             "f_min": 191.3e12,

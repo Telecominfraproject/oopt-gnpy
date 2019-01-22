@@ -433,6 +433,7 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
                 else:  
                     return [], None
         # only get to this point if no baudrate/mode satisfies OSNR requirement
+
         # returns the last propagated path and mode
         msg = f'\tWarning! Request {req.request_id}: no mode satisfies path SNR requirement.\n'
         print(msg)
