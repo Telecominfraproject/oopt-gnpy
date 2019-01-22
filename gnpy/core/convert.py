@@ -287,10 +287,15 @@ def eqpt_connection_by_city(city_name):
         # Then len(other_cities) == 2
         direction = ['ingress', 'egress']
         for i in range(2):
-            from_ = fiber_link(other_cities[i], city_name)
-            in_ = eqpt_in_city_to_city(city_name, other_cities[0],direction[i])
-            to_ = fiber_link(city_name, other_cities[1-i])
-            subdata += connect_eqpt(from_, in_, to_)
+            try:
+                from_ = fiber_link(other_cities[i], city_name)
+                in_ = eqpt_in_city_to_city(city_name, other_cities[0],direction[i])
+                to_ = fiber_link(city_name, other_cities[1-i])
+                subdata += connect_eqpt(from_, in_, to_)
+            except IndexError:
+                msg = f'In {__name__} eqpt_connection_by_city:\n\t{city_name} is not properly connected'
+                print(msg)
+                exit(1)
     elif nodes_by_city[city_name].node_type.lower() == 'roadm':
         for other_city in other_cities:
             from_ = f'roadm {city_name}'
