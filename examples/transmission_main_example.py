@@ -116,6 +116,7 @@ parser.add_argument('-pl', '--plot', action='store_true')
 parser.add_argument('-v', '--verbose', action='count', default=0, help='increases verbosity for each occurence')
 parser.add_argument('-l', '--list-nodes', action='store_true', help='list all transceiver nodes')
 parser.add_argument('-po', '--power', default=0, help='channel ref power in dBm')
+parser.add_argument('-names', '--names-matching', action='store_true', help='display network names that are closed matches')
 #parser.add_argument('-plb', '--power-lower-bound', default=0, help='power sweep lower bound')
 #parser.add_argument('-pub', '--power-upper-bound', default=1, help='power sweep upper bound')
 parser.add_argument('filename', nargs='?', type=Path,
@@ -131,7 +132,7 @@ if __name__ == '__main__':
     equipment = load_equipment(args.equipment)
     # logger.info(equipment)
     # print(args.filename)
-    network = load_network(args.filename, equipment)
+    network = load_network(args.filename, equipment, args.names_matching)
     # print(network)
 
     transceivers = {n.uid: n for n in network.nodes() if isinstance(n, Transceiver)}

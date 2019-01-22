@@ -24,11 +24,11 @@ from collections import namedtuple
 
 logger = getLogger(__name__)
 
-def load_network(filename, equipment):
+def load_network(filename, equipment, name_matching = False):
     json_filename = ''
     if filename.suffix.lower() == '.xls':
         logger.info('Automatically generating topology JSON file')
-        json_filename = convert_file(filename)
+        json_filename = convert_file(filename, name_matching)
     elif filename.suffix.lower() == '.json':
         json_filename = filename
     else:
