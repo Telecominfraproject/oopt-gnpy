@@ -310,7 +310,7 @@ def compute_constrained_path(network, req):
             candidate.sort(key=lambda x: len(x))
             total_path = candidate[0]
         else:
-            if req.loose_list[1] == 'loose':
+            if req.loose_list[req.nodes_list.index(n)] == 'loose':
                 print(f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing {nodes_list} in network topology'+ '\x1b[0m')
                 print(f'constraint ignored')
                 total_path = dijkstra_path(network, source, destination)
