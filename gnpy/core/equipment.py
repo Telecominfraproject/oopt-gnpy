@@ -229,6 +229,9 @@ def automatic_spacing(baud_rate):
 def automatic_nch(f_min, f_max, spacing):
     return int((f_max - f_min)//spacing)
 
+def automatic_fmax(f_min, spacing, nch):
+    return f_min + spacing * nch
+
 def load_equipment(filename):
     json_data = load_json(filename)
     return equipment_from_json(json_data, filename)

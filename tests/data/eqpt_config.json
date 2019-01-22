@@ -66,7 +66,8 @@
       ],
       "Roadms":[{
             "gain_mode_default_loss": 20,
-            "power_mode_pout_target": -20
+            "power_mode_pout_target": -20,
+            "add_drop_osnr": 100
             }],
       "SI":[{
             "f_min": 191.3e12,
@@ -76,11 +77,8 @@
             "power_dbm": 0,
             "power_range_db": [0,0.5,0.5],
             "roll_off": 0.15,
-            "OSNR": 15,
-            "bit_rate":100e9,
             "tx_osnr": 100,
-            "min_spacing": 50e9,
-            "cost":1
+            "sys_margins": 0            
             }],
       "Transceiver":[
             {
