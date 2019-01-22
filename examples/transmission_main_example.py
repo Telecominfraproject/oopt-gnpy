@@ -98,6 +98,12 @@ def main(network, equipment, source, destination, req = None):
         propagate(path, req, equipment, show=len(power_range)==1)
         print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f}dBm :')
         print(destination)
+        
+        #print(f'\n !!!!!!!!!!!!!!!!!     TEST POINT         !!!!!!!!!!!!!!!!!!!!!')
+        #print(f'carriers ase output of {path[1]} =\n {list(path[1].carriers("out", "nli"))}')
+        # => use "in" or "out" parameter
+        # => use "nli" or "ase" or "signal" or "total" parameter
+    
         simulation_data.append({
                     'Pch_dBm'               : pref_ch_db + dp_db,
                     'OSNR_ASE_0.1nm'        : round(mean(destination.osnr_ase_01nm),2),
