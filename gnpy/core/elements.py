@@ -71,8 +71,6 @@ class Transceiver(Node):
         snr_added = -lin2db(snr_added)
         self.osnr_ase = list(map(lambda x,y:snr_sum(x,y,snr_added),
                         self.raw_osnr_ase, self.baud_rate))
-        self.osnr_nli = list(map(lambda x,y:snr_sum(x,y,snr_added),
-                        self.raw_osnr_nli, self.baud_rate))
         self.snr = list(map(lambda x,y:snr_sum(x,y,snr_added), 
                         self.raw_snr, self.baud_rate))
         self.osnr_ase_01nm = list(map(lambda x:snr_sum(x,12.5e9,snr_added), 
