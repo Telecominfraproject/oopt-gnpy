@@ -74,7 +74,7 @@ def test_automaticmodefeature(net,eqpt,serv,expected_mode):
             path_res_list.append(pathreq.format)
             total_path = propagate(total_path,pathreq,equipment, show=False)
         else:
-            total_path,mode = propagate_and_optimize_mode(total_path,pathreq,equipment, show=False)
+            total_path,mode = propagate_and_optimize_mode(total_path,pathreq,equipment)
             # if no baudrate satisfies spacing, no mode is returned and an empty path is returned
             # a warning is shown in the propagate_and_optimize_mode
             if mode is not None :

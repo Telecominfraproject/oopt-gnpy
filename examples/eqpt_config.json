@@ -98,7 +98,8 @@
       ],
       "Roadms":[{
             "gain_mode_default_loss": 20,
-            "power_mode_pout_target": -20
+            "power_mode_pout_target": -20,
+            "add_drop_osnr": 38
             }],
       "SI":[{
             "f_min": 191.3e12,
@@ -108,11 +109,8 @@
             "power_dbm": 0,
             "power_range_db": [0,0,0.5],
             "roll_off": 0.15,
-            "OSNR": 11,
-            "bit_rate":100e9,
-            "tx_osnr": 45,
-            "min_spacing": 37.5e9,
-            "cost":1
+            "tx_osnr": 40,
+            "sys_margins": 0
             }],
       "Transceiver":[
             {
@@ -129,7 +127,7 @@
                        "OSNR": 11,
                        "bit_rate": 100e9,
                        "roll_off": 0.15,
-                       "tx_osnr": 45,
+                       "tx_osnr": 40,
                        "min_spacing": 37.5e9,
                        "cost":1
                        },
@@ -139,7 +137,7 @@
                        "OSNR": 15,
                        "bit_rate": 200e9,
                        "roll_off": 0.15,
-                       "tx_osnr": 45,
+                       "tx_osnr": 40,
                        "min_spacing": 75e9,
                        "cost":1
                        }
@@ -158,7 +156,7 @@
                        "OSNR": 12,
                        "bit_rate": 100e9,
                        "roll_off": 0.15,
-                       "tx_osnr": 45,
+                       "tx_osnr": 40,
                        "min_spacing": 37.5e9,
                        "cost":1
                        },
@@ -168,7 +166,7 @@
                        "OSNR": 18,
                        "bit_rate": 300e9,
                        "roll_off": 0.15,
-                       "tx_osnr": 45,
+                       "tx_osnr": 40,
                        "min_spacing": 62.5e9,
                        "cost":1
                        },
@@ -178,7 +176,7 @@
                        "OSNR": 21,
                        "bit_rate": 400e9,
                        "roll_off": 0.15,
-                       "tx_osnr": 45,
+                       "tx_osnr": 40,
                        "min_spacing": 75e9,
                        "cost":1
                        },
@@ -188,7 +186,7 @@
                        "OSNR": 16,
                        "bit_rate": 200e9,
                        "roll_off": 0.15,
-                       "tx_osnr": 45,
+                       "tx_osnr": 40,
                        "min_spacing": 75e9,
                        "cost":1
                        }

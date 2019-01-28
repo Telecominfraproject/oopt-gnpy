@@ -74,14 +74,20 @@ def requests_from_json(json_data,equipment):
         # params['power'] is updated
         if req['path-constraints']['te-bandwidth']['output-power']:
             params['power'] = req['path-constraints']['te-bandwidth']['output-power']
+
         # same process for nb-channel
-        fmin = params['frequency']['min']
-        fmax = params['frequency']['max']
+        f_min = params['f_min']
+        f_max_from_si = params['f_max']
         if req['path-constraints']['te-bandwidth']['max-nb-of-channel'] is not None :
-            params['nb_channel'] = req['path-constraints']['te-bandwidth']['max-nb-of-channel']               
+            nch = req['path-constraints']['te-bandwidth']['max-nb-of-channel'] 
+            params['nb_channel'] = nch         
+            spacing = params['spacing']
+            params['f_max'] = f_min + nch*spacing
         else :
-            params['nb_channel'] = automatic_nch(fmin,fmax,params['spacing'])
-        consitency_check(params)
+            params['nb_channel'] = automatic_nch(f_min,f_max_from_si,params['spacing'])
+
+        consistency_check(params, f_max_from_si)
+
         try :
             params['path_bandwidth'] = req['path-constraints']['te-bandwidth']['path_bandwidth']
         except KeyError:
@@ -89,11 +95,11 @@ def requests_from_json(json_data,equipment):
         requests_list.append(Path_request(**params))
     return requests_list
 
-def consitency_check(params):
-    fmin = params['frequency']['min']
-    fmax = params['frequency']['max']
-    max_recommanded_nb_channels = automatic_nch(fmin,fmax,
-                params['spacing'])        
+def consistency_check(params, f_max_from_si):
+    f_min = params['f_min']
+    f_max = params['f_max']
+    max_recommanded_nb_channels = automatic_nch(f_min,f_max,
+                params['spacing'])
     if params['baud_rate'] is not None:
         #implicitely means that a mode is defined with min_spacing
         if params['min_spacing']>params['spacing'] : 
@@ -103,10 +109,10 @@ def consitency_check(params):
             print(msg)
             logger.critical(msg)
             exit()
-        if params['nb_channel']>max_recommanded_nb_channels:
+        if f_max>f_max_from_si:
             msg = dedent(f'''
             Requested channel number {params["nb_channel"]}, baud rate {params["baud_rate"]} GHz and requested spacing {params["spacing"]*1e-9}GHz 
-            is not consistent with frequency range {fmin*1e-12} THz, {fmax*1e-12} THz, min recommanded spacing {params["min_spacing"]*1e-9}GHz.
+            is not consistent with frequency range {f_min*1e-12} THz, {f_max*1e-12} THz, min recommanded spacing {params["min_spacing"]*1e-9}GHz.
             max recommanded nb of channels is {max_recommanded_nb_channels}
             Computation stopped.''')
             logger.critical(msg)
@@ -206,7 +212,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                     logger.warning(msg)
                     total_path = []
             else:
-                total_path,mode = propagate_and_optimize_mode(total_path,pathreq,equipment, show=False)
+                total_path,mode = propagate_and_optimize_mode(total_path,pathreq,equipment)
                 # if no baudrate satisfies spacing, no mode is returned and an empty path is returned
                 # a warning is shown in the propagate_and_optimize_mode
                 if mode is not None :

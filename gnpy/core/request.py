@@ -34,7 +34,7 @@ logger = getLogger(__name__)
 
 
 RequestParams = namedtuple('RequestParams','request_id source destination trx_type'+
-' trx_mode nodes_list loose_list spacing power nb_channel frequency format baud_rate OSNR bit_rate roll_off tx_osnr min_spacing cost path_bandwidth')
+' trx_mode nodes_list loose_list spacing power nb_channel f_min f_max format baud_rate OSNR bit_rate roll_off tx_osnr min_spacing cost path_bandwidth')
 DisjunctionParams = namedtuple('DisjunctionParams','disjunction_id relaxable link_diverse node_diverse disjunctions_req')
 
 class Path_request:
@@ -51,7 +51,8 @@ class Path_request:
         self.spacing    = params.spacing
         self.power      = params.power
         self.nb_channel = params.nb_channel
-        self.frequency  = params.frequency
+        self.f_min       = params.f_min
+        self.f_max       = params.f_max
         self.format     = params.format
         self.OSNR       = params.OSNR
         self.bit_rate   = params.bit_rate
@@ -388,23 +389,23 @@ def propagate(path, req, equipment, show=False):
     #update roadm loss in case of power sweep (power mode only)
     set_roadm_loss(path, equipment, lin2db(req.power*1e3))
     si = create_input_spectral_information(
-        req.frequency['min'], req.roll_off, req.baud_rate,
-        req.power, req.spacing, req.nb_channel, req.tx_osnr)
+        req.f_min, req.f_max, req.roll_off, req.baud_rate,
+        req.power, req.spacing)
     for el in path:
         si = el(si)
         if show :
             print(el)
+    path[-1].update_snr(req.tx_osnr, equipment['Roadms']['default'].add_drop_osnr)
     return path
 
-def propagate_and_optimize_mode(path, req, equipment, show=False):
+def propagate_and_optimize_mode(path, req, equipment):
     #update roadm loss in case of power sweep (power mode only)
     set_roadm_loss(path, equipment, lin2db(req.power*1e3))
     # if mode is unknown : loops on the modes starting from the highest baudrate fiting in the
-    # spacing. TODO add a min_spacing attribute in transceivers. for now just using baudrate*1.1
     # step 1: create an ordered list of modes based on baudrate
     baudrate_to_explore = list(set([m['baud_rate'] for m in equipment['Transceiver'][req.tsp].mode 
         if float(m['min_spacing'])<= req.spacing]))  
-        # TODO be carefull on limits cases if min_spacing very close to req spacing eg 50.001 50.000
+        # TODO be carefull on limits cases if spacing very close to req spacing eg 50.001 50.000
     baudrate_to_explore = sorted(baudrate_to_explore, reverse=True)
     if baudrate_to_explore : 
         # at least 1 baudrate can be tested wrt spacing
@@ -418,15 +419,14 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
             found_a_feasible_mode = False
             # TODO : the case of roll of is not included: for now use SI one
             # TODO : if the loop in mode optimization does not have a feasible path, then bugs
+            si = create_input_spectral_information(
+            req.f_min, req.f_max, equipment['SI']['default'].roll_off,
+            b, req.power, req.spacing)
+            for el in path:
+                si = el(si)
             for m in modes_to_explore :
-                si = create_input_spectral_information(
-                req.frequency['min'], equipment['SI']['default'].roll_off,
-                b, req.power, req.spacing, req.nb_channel, m['tx_osnr'])
-                for el in path:
-                    si = el(si)
-                if show :
-                    print(el)
                 if path[-1].snr is not None:
+                    path[-1].update_snr(m['tx_osnr'], equipment['Roadms']['default'].add_drop_osnr)
                     if round(min(path[-1].snr+lin2db(b/(12.5e9))),2) > m['OSNR'] :
                         found_a_feasible_mode = True
                         return path, m
@@ -869,7 +869,8 @@ def compare_reqs(req1,req2,disjlist) :
         req1.spacing    == req2.spacing and \
         req1.power      == req2.power and \
         req1.nb_channel == req2.nb_channel and \
-        req1.frequency  == req2.frequency and \
+        req1.f_min  == req2.f_min and \
+        req1.f_max  == req2.f_max and \
         req1.format     == req2.format and \
         req1.OSNR       == req2.OSNR and \
         req1.roll_off   == req2.roll_off and \
