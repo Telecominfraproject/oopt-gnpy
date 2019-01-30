@@ -22,26 +22,101 @@ Model_vg = namedtuple('Model_vg', 'nf1 nf2 delta_p')
 Model_fg = namedtuple('Model_fg', 'nf0')
 Model_openroadm = namedtuple('Model_openroadm', 'nf_coef')
 Model_hybrid = namedtuple('Model_hybrid', 'nf_ram gain_ram edfa_variety')
-Fiber = namedtuple('Fiber', 'type_variety dispersion gamma')
-Spans = namedtuple('Spans', 'power_mode delta_power_range_db max_length length_units \
-                             max_loss padding EOL con_in con_out')
-Transceiver = namedtuple('Transceiver', 'type_variety frequency mode')
-Roadms = namedtuple('Roadms', 'gain_mode_default_loss power_mode_pout_target add_drop_osnr')
-SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off \
-                       power_dbm power_range_db tx_osnr sys_margins')
-AmpBase = namedtuple(
-    'AmpBase',
-    'type_variety type_def gain_flatmax gain_min p_max'
-    ' nf_model nf_fit_coeff nf_ripple dgt gain_ripple out_voa_auto allowed_for_design')
-class Amp(AmpBase):
-    def __new__(cls,
-            type_variety, type_def, gain_flatmax=None, gain_min=None, p_max=None, nf_model=None,
-            nf_fit_coeff=None, nf_ripple=None, dgt=None, gain_ripple=None,
-             out_voa_auto=False, allowed_for_design=True):
-        return super().__new__(cls,
-            type_variety, type_def, gain_flatmax, gain_min, p_max,
-            nf_model, nf_fit_coeff, nf_ripple, dgt, gain_ripple,
-            out_voa_auto, allowed_for_design)
+
+class common:
+    def update_attr(self, default_values, kwargs):
+        clean_kwargs = {k:v for k,v in kwargs.items() if v !=''}
+        for k,v in default_values.items():
+            v = clean_kwargs.get(k,v)
+            setattr(self, k, v)
+
+class SI(common):
+    default_values =\
+    {
+        "f_min":            191.35e12,
+        "f_max":            196.1e12,
+        "baud_rate":        32e9,        
+        "spacing":          50e9,
+        "power_dbm":        0,
+        "power_range_db":   [0,0,0.5],
+        "roll_off":         0.15,
+        "tx_osnr":          45,
+        "sys_margins":      0    
+    }
+
+    def __init__(self, **kwargs):
+        self.update_attr(self.default_values, kwargs)    
+
+class Spans(common):
+    default_values = \
+    {
+        'power_mode':           True,
+        'delta_power_range_db': None,
+        'max_length':           150,
+        'length_units':         'km',
+        'max_loss':             None,
+        'padding':              10,
+        'EOL':                  0,
+        'con_in':               0,
+        'con_out':              0
+    }
+    
+    def __init__(self, **kwargs):
+        self.update_attr(self.default_values, kwargs)
+
+class Roadms(common):
+    default_values = \
+    {
+        'gain_mode_default_loss':   20,
+        'power_mode_pout_target':   -18,
+        'add_drop_osnr':            100
+    }    
+
+    def __init__(self, **kwargs):
+        self.update_attr(self.default_values, kwargs)
+
+class Transceiver(common):
+    default_values = \
+    {
+        'type_variety': None,
+        'frequency':    None,
+        'mode':         {}
+    }
+
+    def __init__(self, **kwargs):
+        self.update_attr(self.default_values, kwargs)        
+
+class Fiber(common):
+    default_values = \
+    {
+        'type_variety':  '',
+        'dispersion':    None,
+        'gamma':         0
+    }
+
+    def __init__(self, **kwargs):
+        self.update_attr(self.default_values, kwargs)    
+
+class Amp(common):
+    default_values = \
+    {
+        'type_variety':         '',
+        'type_def':             '',
+        'gain_flatmax':         None,
+        'gain_min':             None,
+        'p_max':                None,
+        'nf_model':             None,
+        'raman_model':          None,
+        'nf_fit_coeff':         None,
+        'nf_ripple':            None,
+        'dgt':                  None,
+        'gain_ripple':          None,
+        'out_voa_auto':         False,
+        'allowed_for_design':   False
+    }
+
+    def __init__(self, **kwargs):
+        self.update_attr(self.default_values, kwargs)
 
     @classmethod
     def from_advanced_json(cls, filename, **kwargs):
@@ -155,7 +230,7 @@ def edfa_nf(gain_target, variety_type, equipment):
     amp_params = equipment['Edfa'][variety_type]
     amp = Edfa(
             uid = f'calc_NF',
-            params = amp_params._asdict(),
+            params = amp_params.__dict__,
             operational = {
                 'gain_target': gain_target,
                 'tilt_target': 0

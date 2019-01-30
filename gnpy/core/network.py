@@ -59,7 +59,7 @@ def network_from_json(json_data, equipment):
                 extra_params['type_def'] = 'hybrid'
                 extra_params['raman_model'] = raman_model
                 extra_params['type_variety'] = type_variety
-            el_config.setdefault('params', {}).update(extra_params)
+            el_config.setdefault('params', {}).update(extra_params.__dict__)
         elif typ in ['Edfa', 'Fiber']: #catch it now because the code will crash later!
             print( f'The {typ} of variety type {variety} was not recognized:'
                     '\nplease check it is properly defined in the eqpt_config json file')
@@ -303,7 +303,7 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
                     power_target = pref_total_db + dp
                     edfa_variety = select_edfa(gain_target, power_target, equipment)
                     extra_params = equipment['Edfa'][edfa_variety]
-                    node.params.update_params(extra_params._asdict())
+                    node.params.update_params(extra_params.__dict__)
                 set_amplifier_voa(node, pref_total_db, power_mode)
             if isinstance(next_node, Roadm) or isinstance(next_node, Transceiver):
                 break
