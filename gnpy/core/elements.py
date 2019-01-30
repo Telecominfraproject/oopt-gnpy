@@ -619,9 +619,10 @@ class Edfa(Node):
             # update gain_target with ramnan gain
             gain_target = self.effective_gain - self.params.raman_model.gain_ram
             nf_edfa_avg = self._nf_variable_gain(self.params, gain_target)
-            print('gain tal', self.effective_gain )
-            print('gain', gain_target)
-            print('edfa',nf_edfa_avg)
+            #DEBUG/CHECK:
+            #print('gain total', self.effective_gain )
+            #print('gain', gain_target)
+            #print('edfa',nf_edfa_avg)
             nf_avg = lin2db(
                 db2lin(self.params.raman_model.nf_ram)
                 + db2lin(nf_edfa_avg)

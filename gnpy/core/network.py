@@ -13,7 +13,7 @@ from networkx import DiGraph
 from numpy import arange
 from logging import getLogger
 from os import path
-from operator import itemgetter
+from operator import itemgetter, attrgetter
 from gnpy.core import elements
 from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm, Fused
 from gnpy.core.equipment import edfa_nf
@@ -86,11 +86,11 @@ def network_to_json(network):
     data.update(connections)
     return data
 
-def select_edfa(gain_target, power_target, equipment):
+def select_edfa(gain_target, power_target, equipment, uid):
     """amplifer selection algorithm
     @Orange Jean-Luc Augé
     """
-    Edfa_list = namedtuple('Edfa_list', 'variety power gain nf')
+    Edfa_list = namedtuple('Edfa_list', 'variety power gain_max gain_min nf')
     TARGET_EXTENDED_GAIN = 2.1
     #MAX_EXTENDED_GAIN = 5
     edfa_dict = equipment['Edfa']
@@ -105,31 +105,60 @@ def select_edfa(gain_target, power_target, equipment):
                     edfa.p_max
                     )
                     -power_target,
-                gain=edfa.gain_flatmax-gain_target,
+                gain_max=
+                    edfa.gain_flatmax
+                    +TARGET_EXTENDED_GAIN
+                    -gain_target,
+                gain_min=
+                    gain_target
+                    -edfa.gain_min,
                 nf=edfa_nf(gain_target, edfa_variety, equipment)) \
                 for edfa_variety, edfa in edfa_dict.items()
                 if edfa.allowed_for_design]
 
+    #filter on max gain limitation:
     acceptable_gain_list = \
-    list(filter(lambda x : x.gain>-TARGET_EXTENDED_GAIN, edfa_list))
+    list(filter(lambda x : x.gain_max>0, edfa_list))
     if len(acceptable_gain_list) < 1:
+        print(
+            f'\x1b[1;31;40m'\
+            + f'CRITICAL: target gain in node {uid} is > 2dB beyond all available amplifiers max gain:\
+                high tilt risk'\
+            + '\x1b[0m'
+            )        
         #no amplifier satisfies the required gain, so pick the highest gain:
-        gain_max = max(edfa_list, key=itemgetter(2)).gain
+        gain_max = max(edfa_list, key=attrgetter('gain_max')).gain_max
         #pick up all amplifiers that share this max gain:
         acceptable_gain_list = \
-        list(filter(lambda x : x.gain-gain_max>-0.1, edfa_list))
+        list(filter(lambda x : x.gain_max-gain_max>-0.1, edfa_list))
+    #filter on min gain limitation:            
+    acceptable_gain_min_list = \
+    list(filter(lambda x : x.gain_min>0, acceptable_gain_list))
+    if len(acceptable_gain_min_list) < 1:
+        #do not take this empty list into account for the rest of the code
+        #but issue a warning to the user
+        print(
+            f'\x1b[1;31;40m'\
+            + f'WARNING: target gain in node {uid} is below all available amplifiers min gain: \
+                amplifier input padding will be assumed, consider increase fiber padding instead'\
+            + '\x1b[0m'
+            )
+    else:
+        acceptable_gain_list = acceptable_gain_min_list            
+
+    #filer on max power limitation:
     acceptable_power_list = \
     list(filter(lambda x : x.power>=0, acceptable_gain_list))
     if len(acceptable_power_list) < 1:
         #no amplifier satisfies the required power, so pick the highest power:
         power_max = \
-        max(acceptable_gain_list, key=itemgetter(1)).power
+        max(acceptable_gain_list, key=attrgetter('power')).power
         #pick up all amplifiers that share this max gain:
         acceptable_power_list = \
         list(filter(lambda x : x.power-power_max>-0.1, acceptable_gain_list))
     # gain and power requirements are resolved,
     #       =>chose the amp with the best NF among the acceptable ones:
-    return min(acceptable_power_list, key=itemgetter(3)).variety #filter on NF
+    return min(acceptable_power_list, key=attrgetter('nf')).variety #filter on NF
 
 
 def set_roadm_loss(network, equipment, pref_ch_db):
@@ -293,7 +322,7 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
 
                 if node.params.type_variety == '':
                     power_target = pref_total_db + dp
-                    edfa_variety = select_edfa(gain_target, power_target, equipment)
+                    edfa_variety = select_edfa(gain_target, power_target, equipment, node.uid)
                     extra_params = equipment['Edfa'][edfa_variety]
                     node.params.update_params(extra_params.__dict__)
                 set_amplifier_voa(node, pref_total_db, power_mode)
