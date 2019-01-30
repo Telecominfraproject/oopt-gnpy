@@ -51,15 +51,7 @@ def network_from_json(json_data, equipment):
         typ = el_config.pop('type')
         variety = el_config.pop('type_variety', 'default')
         if typ in equipment and variety in equipment[typ]:
-            extra_params = equipment[typ][variety]._asdict()            
-            if extra_params.get('type_def','') == 'hybrid':
-                raman_model = extra_params['nf_model']
-                type_variety = extra_params['type_variety']
-                extra_params_edfa = equipment['Edfa'][raman_model.edfa_variety]._asdict()
-                extra_params.update(extra_params_edfa)
-                extra_params['type_def'] = 'hybrid'
-                extra_params['raman_model'] = raman_model
-                extra_params['type_variety'] = type_variety
+            extra_params = equipment[typ][variety]
             el_config.setdefault('params', {}).update(extra_params.__dict__)
         elif typ in ['Edfa', 'Fiber']: #catch it now because the code will crash later!
             print( f'The {typ} of variety type {variety} was not recognized:'

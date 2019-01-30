@@ -131,6 +131,7 @@ class Amp(common):
         type_variety = kwargs['type_variety']
         type_def = kwargs.get('type_def', 'variable_gain') #default compatibility with older json eqpt files
         nf_def = None
+        raman_def = None
 
         if type_def == 'fixed_gain':
             try:
@@ -171,8 +172,8 @@ class Amp(common):
             except KeyError:
                 print(f'missing nf_ram/gain_ram values input for amplifier: {type_variety} in eqpt_config.json')
                 exit()
-            nf_def = Model_hybrid(nf_ram, gain_ram, edfa_variety)
-        return cls(**{**kwargs, **json_data, 'nf_model': nf_def})
+            raman_def = Model_hybrid(nf_ram, gain_ram, edfa_variety)
+        return cls(**{**kwargs, **json_data, 'nf_model': nf_def, 'raman_model' : raman_def})
 
 
 def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
@@ -208,7 +209,7 @@ def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
         g1a_max = lin2db(db2lin(nf2) / (db2lin(nf_min) - db2lin(nf1)))
         delta_p = gain_max - g1a_max
         g1a_min = gain_min - (gain_max-gain_min) - delta_p
-        if not 1 < delta_p < 6:
+        if not 1 < delta_p < 11:
             print(f'Computed \N{greek capital letter delta}P invalid \
                 \n 1st coil vs 2nd coil calculated DeltaP {delta_p:.2f} for \
                 \n amplifier {type_variety} is not valid: revise inputs \
@@ -328,6 +329,18 @@ def update_trx_osnr(equipment):
             m['OSNR'] = m['OSNR'] + equipment['SI']['default'].sys_margins
     return equipment
 
+def update_hybrid(equipment):
+    edfa_dict = equipment['Edfa']
+    for edfa in edfa_dict.values():
+        if edfa.type_def == 'hybrid':
+            edfa_booster = edfa_dict[edfa.raman_model.edfa_variety]
+            edfa.nf_model = edfa_booster.nf_model
+            edfa.p_max = edfa_booster.p_max
+            edfa.gain_flatmax = edfa_booster.gain_flatmax + edfa.raman_model.gain_ram
+            edfa.edfa_gain_min = edfa_booster.gain_min
+            edfa.edfa_gain_flatmax = edfa_booster.gain_flatmax
+    return equipment
+
 def equipment_from_json(json_data, filename):
     """build global dictionnary eqpt_library that stores all eqpt characteristics:
     edfa type type_variety, fiber type_variety
@@ -353,4 +366,5 @@ def equipment_from_json(json_data, filename):
             else:                
                 equipment[key][subkey] = typ(**entry)
     equipment = update_trx_osnr(equipment)
+    equipment = update_hybrid(equipment)
     return equipment
