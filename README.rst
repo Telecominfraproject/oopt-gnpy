@@ -32,9 +32,9 @@ A brief outline of major (tagged) `gnpy` releases:
 +===============+=============+===============================================+
 | Jan 30, 2019  | v1.1        | - XLS parser enhancements                     |
 |               |             | - carrier probe feature                       |
-|               |             | - bug fixes                                    |
+|               |             | - bug fixes                                   |
 +---------------+-------------+-----------------------------------------------+
-| Oct 16, 2018  | v1.0        | - first "production"-ready release             |
+| Oct 16, 2018  | v1.0        | - first "production"-ready release            |
 |               |             | - open network element model (EDFA, GN-model) |
 |               |             | - auto-design functionality                   |
 |               |             | - path request functionality                  |
