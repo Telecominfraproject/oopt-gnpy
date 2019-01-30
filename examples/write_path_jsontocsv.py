@@ -26,8 +26,8 @@ parser.add_argument('eqpt_filename', nargs='?', type = Path, default=Path(__file
 if __name__ == '__main__':
     args = parser.parse_args()
 
-    with open(args.output_filename,"w") as file :
-        with open(args.filename) as f:
+    with open(args.output_filename, 'w', encoding='utf-8') as file:
+        with open(args.filename, encoding='utf-8') as f:
             print(f'Reading {args.filename}')
             json_data = loads(f.read())
             equipment = load_equipment(args.eqpt_filename)

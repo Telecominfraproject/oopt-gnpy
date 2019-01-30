@@ -24,11 +24,11 @@ from collections import namedtuple
 
 logger = getLogger(__name__)
 
-def load_network(filename, equipment):
+def load_network(filename, equipment, name_matching = False):
     json_filename = ''
     if filename.suffix.lower() == '.xls':
         logger.info('Automatically generating topology JSON file')
-        json_filename = convert_file(filename)
+        json_filename = convert_file(filename, name_matching)
     elif filename.suffix.lower() == '.json':
         json_filename = filename
     else:
@@ -64,7 +64,12 @@ def network_from_json(json_data, equipment):
 
     for cx in json_data['connections']:
         from_node, to_node = cx['from_node'], cx['to_node']
-        g.add_edge(nodes[from_node], nodes[to_node])
+        try:
+            g.add_edge(nodes[from_node], nodes[to_node])
+        except KeyError:
+            msg = f'In {__name__} network_from_json function:\n\tcan not find {from_node} or {to_node} defined in {cx}'
+            print(msg)
+            exit(1)
 
     return g
 
@@ -126,16 +131,18 @@ def select_edfa(gain_target, power_target, equipment):
     #       =>chose the amp with the best NF among the acceptable ones:
     return min(acceptable_power_list, key=itemgetter(3)).variety #filter on NF
 
+
 def set_roadm_loss(network, equipment, pref_ch_db):
     roadms = [roadm for roadm in network if isinstance(roadm, Roadm)]
     power_mode = equipment['Spans']['default'].power_mode
     default_roadm_loss = equipment['Roadms']['default'].gain_mode_default_loss
-    pref_roadm_db = equipment['Roadms']['default'].power_mode_pref
-    roadm_loss = pref_ch_db - pref_roadm_db
+    pout_target = equipment['Roadms']['default'].power_mode_pout_target
+    roadm_loss = pref_ch_db - pout_target
 
     for roadm in roadms:
         if power_mode:
             roadm.loss = roadm_loss
+            roadm.target_pch_out_db = pout_target
         elif roadm.loss == None:
             roadm.loss = default_roadm_loss
 
@@ -171,7 +178,13 @@ def target_power(dp_from_gain, network, node, equipment): #get_fiber_dp
 def prev_node_generator(network, node):
     """fused spans interest:
     iterate over all predecessors while they are Fused or Fiber type"""
-    prev_node = next(n for n in network.predecessors(node))
+    try:
+        prev_node = next(n for n in network.predecessors(node))
+    except StopIteration:
+        msg = f'In {__name__} prev_node_generator function:\n\t{node.uid} is not properly connected, please check network topology'
+        print(msg)
+        logger.critical(msg)
+        exit(1)
     # yield and re-iterate
     if isinstance(prev_node, Fused) or isinstance(node, Fused):
         yield prev_node
@@ -182,7 +195,11 @@ def prev_node_generator(network, node):
 def next_node_generator(network, node):
     """fused spans interest:
     iterate over all successors while they are Fused or Fiber type"""
-    next_node = next(n for n in network.successors(node))
+    try:
+        next_node = next(n for n in network.successors(node))
+    except StopIteration:
+        print(f'In {__name__} next_node_generator function:\n\t{node.uid}  is not properly connected, please check network topology')
+        exit(1)        
     # yield and re-iterate
     if isinstance(next_node, Fused) or isinstance(node, Fused):
         yield next_node
@@ -334,26 +351,21 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
         next_node = next(network.successors(fiber))
         prev_node = next(network.predecessors(fiber))
     except StopIteration:
-        print(f'{repr(fiber)} is not properly connected, please check network topology')
+
+        print(f'In {__name__} split_fiber function:\n\t{fiber.uid}   is not properly connected, please check network topology')
         exit()
 
-    network.remove_edge(fiber, next_node)
-    network.remove_edge(prev_node, fiber)
     network.remove_node(fiber)
-    # update connector loss parameter with default values
+
     fiber_params = fiber.params._asdict()
+    fiber_params['length'] = new_length / UNITS[fiber.params.length_units]
     fiber_params['con_in'] = fiber.con_in
     fiber_params['con_out'] = fiber.con_out
-    new_spans = [
-        Fiber(
-            uid =      f'{fiber.uid}_({span}/{n_spans})',
-            metadata = fiber.metadata,
-            params = fiber_params
-        ) for span in range(n_spans)
-    ]
-    for new_span in new_spans:
-        new_span.length = new_length
-        network.add_node(new_span)
+    
+    for span in range(n_spans):
+        new_span = Fiber(uid =      f'{fiber.uid}_({span+1}/{n_spans})',
+                          metadata = fiber.metadata,
+                          params = fiber_params)
         network.add_edge(prev_node, new_span)
         prev_node = new_span
     network.add_edge(prev_node, next_node)
@@ -373,7 +385,13 @@ def add_fiber_padding(network, fibers, padding):
                          if isinstance(fiber, Fiber))"""
     for fiber in fibers:
         this_span_loss = span_loss(network, fiber)
-        next_node = next(network.successors(fiber))
+        try:
+            next_node = next(network.successors(fiber))
+        except StopIteration:
+            msg = f'In {__name__} add_fiber_padding function:\n\t{fiber.uid}   is not properly connected, please check network topology'
+            print(msg)
+            logger.critical(msg)
+            exit(1)            
         if this_span_loss < padding and not (isinstance(next_node, Fused)):
             #add a padding att_in at the input of the 1st fiber:
             #address the case when several fibers are spliced together

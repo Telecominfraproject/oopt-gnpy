@@ -11,9 +11,10 @@ This module contains classes for modelling SpectralInformation.
 
 from collections import namedtuple
 from numpy import array
-from gnpy.core.utils import lin2db
+from gnpy.core.utils import lin2db, db2lin
 from json import loads
 from gnpy.core.utils import load_json
+from gnpy.core.equipment import automatic_nch, automatic_spacing
 
 class ConvenienceAccess:
 
@@ -56,16 +57,16 @@ def merge_input_spectral_information(*si):
     #TODO
     pass
 
-def create_input_spectral_information(f_min, roll_off, baud_rate, power, spacing, nb_channel):
+def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing):
     # pref in dB : convert power lin into power in dB
     pref = lin2db(power * 1e3)
     si = SpectralInformation(pref=Pref(pref, pref))
+    nb_channel = automatic_nch(f_min, f_max, spacing)
     si = si.update(carriers=[
             Channel(f, (f_min+spacing*f),
             baud_rate, roll_off, Power(power, 0, 0)) for f in range(1,nb_channel+1)
             ])
     return si
-
 
 if __name__ == '__main__':
     pref = lin2db(power * 1e3)

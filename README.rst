@@ -9,7 +9,7 @@ planning and optimization tools in real-world mesh optical networks.**
 
 `gnpy <http://github.com/telecominfraproject/oopt-gnpy>`__ is:
 
-- a sponsored project of the `OOPT/PSE <https://telecominfraproject.com/open-optical-packet-transport/>`_ working group of the `Telecom Infra Project <http://telecominfraproject.com>`_.
+- a sponsored project of the `OOPT/PSE <https://telecominfraproject.com/open-optical-packet-transport/>`_ working group of the `Telecom Infra Project <http://telecominfraproject.com>`_
 - fully community-driven, fully open source library
 - driven by a consortium of operators, vendors, and academic researchers
 - intended for rapid development of production-grade route planning tools
@@ -30,7 +30,11 @@ A brief outline of major (tagged) `gnpy` releases:
 +---------------+-------------+-----------------------------------------------+
 | release date  | version tag | notes                                         |
 +===============+=============+===============================================+
-| Oct 16, 2018  | v1.0        | - first "production"-ready release            |
+| Jan 30, 2019  | v1.1        | - XLS parser enhancements                     |
+|               |             | - carrier probe feature                       |
+|               |             | - bug fixes                                    |
++---------------+-------------+-----------------------------------------------+
+| Oct 16, 2018  | v1.0        | - first "production"-ready release             |
 |               |             | - open network element model (EDFA, GN-model) |
 |               |             | - auto-design functionality                   |
 |               |             | - path request functionality                  |
@@ -135,8 +139,8 @@ By default, this script operates on a single span network defined in
 `examples/edfa_example_network.json <examples/edfa_example_network.json>`_
 
 You can specify a different network at the command line as follows. For
-example, to use the CORONET Continental US (CONUS) network defined in
-`examples/coronet_conus_example.json <examples/coronet_conus_example.json>`_:
+example, to use the CORONET Global network defined in
+`examples/CORONET_Global_Topology.json <examples/CORONET_Global_Topology.json>`_:
 
 .. code-block:: shell
 
@@ -150,10 +154,9 @@ further instructions on how to prepare the Excel input file, see
 `Excel_userguide.rst <Excel_userguide.rst>`_.
 
 The main transmission example will calculate the average signal OSNR and SNR
-across 93 network elements (transceiver, ROADMs, fibers, and amplifiers)
-between two transceivers selected by the user. (By default, for the CORONET US
-network, it will show the transmission of spectral information between Abilene,
-Texas and Albany, New York.)
+across network elements (transceiver, ROADMs, fibers, and amplifiers)
+between two transceivers selected by the user. Additional details are provided by doing ``transmission_main_example.py -h``. (By default, for the CORONET Global
+network, it will show the transmission of spectral information between Abilene and Albany)
 
 This script calculates the average signal OSNR = |OSNR| and SNR = |SNR|.
 
@@ -171,8 +174,8 @@ Further Instructions for Use (`transmission_main_example.py`, `path_requests_run
 
 Design and transmission parameters are defined in a dedicated json file. By
 default, this information is read from `examples/eqpt_config.json
-<examples/eqpt_config.json>`_. This file defines the equipement librairies that
-can be customized (EDFAs, fibers, and transcievers).
+<examples/eqpt_config.json>`_. This file defines the equipment libraries that
+can be customized (EDFAs, fibers, and transceivers).
 
 It also defines the simulation parameters (spans, ROADMs, and the spectral
 information to transmit.)
@@ -182,7 +185,7 @@ can be added and existing ones removed. Three different noise models are availab
 
 1. `'type_def': 'variable_gain'` is a simplified model simulating a 2-coil EDFA with internal, input and output VOAs. The NF vs gain response is calculated accordingly based on the input parameters: `nf_min`, `nf_max`, and `gain_flatmax`. It is not a simple interpolation but a 2-stage NF calculation.
 2. `'type_def': 'fixed_gain'` is a fixed gain model.  `NF == Cte == nf0` if `gain_min < gain < gain_flatmax`
-3. `'type_def': None` is an advanced model. A detailed json configuration file is required (by default `examples/advanced_config_from.json <examples/advanced_config_from.json>`_.) It uses a 3rd order polynomial where NF = f(gain), NF_ripple = f(frequency), gain_ripple = f(frequency), N-array dgt = f(frequency). Compared to the previous models, NF ripple and gain ripple are modelled.
+3. `'type_def': None` is an advanced model. A detailed json configuration file is required (by default `examples/std_medium_gain_advanced_config.json <examples/std_medium_gain_advanced_config.json>`_.) It uses a 3rd order polynomial where NF = f(gain), NF_ripple = f(frequency), gain_ripple = f(frequency), N-array dgt = f(frequency). Compared to the previous models, NF ripple and gain ripple are modelled.
 
 For all amplifier models:
 
@@ -204,12 +207,12 @@ For all amplifier models:
 |                      |           | Excel template topology files.)         |
 +----------------------+-----------+-----------------------------------------+
 
-The fiber library currently describes SSMF but additional fiber types can be entered by the user following the same model:
+The fiber library currently describes SSMF and NZDF but additional fiber types can be entered by the user following the same model:
 
 +----------------------+-----------+-----------------------------------------+
 | field                | type      | description                             |
 +======================+===========+=========================================+
-| `type_variety`       | (string)  | a unique name to ID the amplifier in the|
+| `type_variety`       | (string)  | a unique name to ID the fiber in the    |
 |                      |           | JSON or Excel template topology input   |
 |                      |           | file                                    |
 +----------------------+-----------+-----------------------------------------+
@@ -226,7 +229,7 @@ path_request_run.py routine.
 +----------------------+-----------+-----------------------------------------+
 | field                | type      | description                             |
 +======================+===========+=========================================+
-|  `type_variety`      | (string)  | a unique name to ID the amplifier in    |
+|  `type_variety`      | (string)  | a unique name to ID the transceiver in  |
 |                      |           | the JSON or Excel template topology     |
 |                      |           | input file                              |
 +----------------------+-----------+-----------------------------------------+
@@ -252,7 +255,11 @@ The modes are defined as follows:
 +----------------------+-----------+-----------------------------------------+
 | `bit_rate`           | (number)  | in bit/s                                |
 +----------------------+-----------+-----------------------------------------+
-| `roll_off`           | (number)  |                                         |
+| `roll_off`           | (number)  | Not used.                               |
++----------------------+-----------+-----------------------------------------+
+| `tx_osnr`            | (number)  | In dB. OSNR out from transponder.       |
++----------------------+-----------+-----------------------------------------+
+| `cost`               | (number)  | Arbitrary unit                          |
 +----------------------+-----------+-----------------------------------------+
 
 Simulation parameters are defined as follows.
@@ -269,15 +276,15 @@ For amplifiers defined in the topology JSON input but whose gain = 0
 (placeholder), auto-design will set its gain automatically: see `power_mode` in
 the `Spans` library to find out how the gain is calculated.
 
-Span configuration is performed as followws. It is not a list (which may change
-in later releases,) and the user can only modify the value of existing
+Span configuration is performed as follows. It is not a list (which may change
+in later releases) and the user can only modify the value of existing
 parameters:
 
 +------------------------+-----------+---------------------------------------------+
 | field                  | type      | description                                 |
 +========================+===========+=============================================+
 | `power_mode`           | (boolean) | If false, gain mode. Auto-design sets       |
-|                        |           | amplifier gain = preceeding span loss,      |
+|                        |           | amplifier gain = preceding span loss,      |
 |                        |           | unless the amplifier exists and its         |
 |                        |           | gain > 0 in the topology input json.        |
 |                        |           | If true, power mode (recommended for        |
@@ -291,7 +298,7 @@ parameters:
 |                        |           | (see power_range_db in the SI               |
 |                        |           | configuration library) the power sweep      |
 |                        |           | is performed w/r/t this power target,       |
-|                        |           | regardless of preceeding amplifiers         |
+|                        |           | regardless of preceding amplifiers         |
 |                        |           | power saturation/limitations.               |
 +------------------------+-----------+---------------------------------------------+
 | `delta_power_range_db` | (number)  | Auto-design only, power-mode                |
@@ -396,7 +403,7 @@ parameters:
     }
 
 ROADMs can be configured as follows. The user can only modify the value of
-existing parmeters:
+existing parameters:
 
 +-------------------------+-----------+---------------------------------------------+
 | field                   |   type    | description                                 |
@@ -416,7 +423,7 @@ existing parmeters:
 |                         |           | its egress channel power = power_mode_pref, |
 |                         |           | regardless of existing loss settings        |
 |                         |           | from the topology JSON input. It means      |
-|                         |           | that the ouput power from a ROADM (and      |
+|                         |           | that the output power from a ROADM (and      |
 |                         |           | therefore its OSNR contribution) is Cte     |
 |                         |           | and not depending from power_dbm and        |
 |                         |           | power_range_db sweep settings. This         |
@@ -445,6 +452,8 @@ one power/channel definition.
 +----------------------+-----------+-------------------------------------------+
 | `bit_rate`           | (number)  | Not used.                                 |
 +----------------------+-----------+-------------------------------------------+
+| `tx_osnr`            | (number)  | In dB. OSNR out from transponder.         |
++----------------------+-----------+-------------------------------------------+
 | `power_dbm`          | (number)  | Reference channel power. In gain mode     |
 |                      |           | (see spans/power_mode = false), all gain  |
 |                      |           | settings are offset w/r/t this reference  |
@@ -465,15 +474,10 @@ one power/channel definition.
 +----------------------+-----------+-------------------------------------------+
 
 The `transmission_main_example.py <examples/transmission_main_example.py>`_
-script propagates a specrum of channels at 32 Gbaud, 50 GHz spacing and 0
+script propagates a spectrum of channels at 32 Gbaud, 50 GHz spacing and 0
 dBm/channel. These are not yet parametrized but can be modified directly in the
-script (via the SpectralInformation structure) to accomodate any baud rate,
+script (via the SpectralInformation structure) to accommodate any baud rate,
 spacing, power or channel count demand.
-
-The amplifier's gain is set to exactly compensate for the loss in each network
-element. The amplifier is currently defined with gain range of 15 dB to 25 dB
-and 21 dBm max output power. Ripple and NF models are defined in
-`examples/std_medium_gain_advanced_config.json <examples/std_medium_gain_advanced_config.json>`_
 
 Use `examples/path_requests_run.py <examples/path_requests_run.py>`_ to run multiple optimizations as follows:
 
@@ -496,8 +500,8 @@ library. The program computes performances for the list of services (accepts
 json or excel format) using the same spectrum propagation modules as
 transmission_main_example.py. Explanation on the Excel template is provided in
 the `Excel_userguide.rst <Excel_userguide.rst#service-sheet>`_. Template for
-the json format can be found here: `service_template.json
-<service_template.json>`_.
+the json format can be found here: `service-template.json
+<service-template.json>`_.
 
 Contributing
 ------------
@@ -513,7 +517,7 @@ To get involved, please contact James Powell
 
 See the `Onboarding Guide
 <https://github.com/Telecominfraproject/gnpy/wiki/Onboarding-Guide>`_ for
-specific details on code contribtions.
+specific details on code contributions.
 
 See `AUTHORS.rst <AUTHORS.rst>`_ for past and present contributors.
 
@@ -523,7 +527,7 @@ Project Background
 Data Centers are built upon interchangeable, highly standardized node and
 network architectures rather than a sum of isolated solutions. This also
 translates to optical networking. It leads to a push in enabling multi-vendor
-optical network by disaggregating HW and SW functions and focussing on
+optical network by disaggregating HW and SW functions and focusing on
 interoperability. In this paradigm, the burden of responsibility for ensuring
 the performance of such disaggregated open optical systems falls on the
 operators. Consequently, operators and vendors are collaborating in defining

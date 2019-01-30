@@ -1,0 +1,730 @@
+{
+  "elements": [
+    {
+      "uid": "trx a",
+      "metadata": {
+        "location": {
+          "city": "a",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx b",
+      "metadata": {
+        "location": {
+          "city": "b",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx c",
+      "metadata": {
+        "location": {
+          "city": "c",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx d",
+      "metadata": {
+        "location": {
+          "city": "d",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx e",
+      "metadata": {
+        "location": {
+          "city": "e",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx f",
+      "metadata": {
+        "location": {
+          "city": "f",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx g",
+      "metadata": {
+        "location": {
+          "city": "g",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx h",
+      "metadata": {
+        "location": {
+          "city": "h",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "roadm a",
+      "metadata": {
+        "location": {
+          "city": "a",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "roadm b",
+      "metadata": {
+        "location": {
+          "city": "b",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "roadm c",
+      "metadata": {
+        "location": {
+          "city": "c",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "roadm d",
+      "metadata": {
+        "location": {
+          "city": "d",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "roadm e",
+      "metadata": {
+        "location": {
+          "city": "e",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "roadm f",
+      "metadata": {
+        "location": {
+          "city": "f",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "roadm g",
+      "metadata": {
+        "location": {
+          "city": "g",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "roadm h",
+      "metadata": {
+        "location": {
+          "city": "h",
+          "region": "",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "fiber (a \u2192 b)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 30.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (a \u2192 c)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 30.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (c \u2192 d)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (c \u2192 f)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 60.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (b \u2192 f)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 70.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (e \u2192 d)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (e \u2192 g)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 90.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (f \u2192 h)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 100.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (h \u2192 g)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 110.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (b \u2192 a)-F061",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 30.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (c \u2192 a)-F010",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 30.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (d \u2192 c)-F054",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (f \u2192 c)-F055",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 60.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (f \u2192 b)-F056",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 70.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (d \u2192 e)-F057",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (g \u2192 e)-F059",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 90.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (h \u2192 f)-F060",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 100.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (g \u2192 h)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 110.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    }
+  ],
+  "connections": [
+    {
+      "from_node": "roadm a",
+      "to_node": "fiber (a \u2192 b)-"
+    },
+    {
+      "from_node": "fiber (b \u2192 a)-F061",
+      "to_node": "roadm a"
+    },
+    {
+      "from_node": "roadm a",
+      "to_node": "fiber (a \u2192 c)-"
+    },
+    {
+      "from_node": "fiber (c \u2192 a)-F010",
+      "to_node": "roadm a"
+    },
+    {
+      "from_node": "roadm b",
+      "to_node": "fiber (b \u2192 a)-F061"
+    },
+    {
+      "from_node": "fiber (a \u2192 b)-",
+      "to_node": "roadm b"
+    },
+    {
+      "from_node": "roadm b",
+      "to_node": "fiber (b \u2192 f)-"
+    },
+    {
+      "from_node": "fiber (f \u2192 b)-F056",
+      "to_node": "roadm b"
+    },
+    {
+      "from_node": "roadm c",
+      "to_node": "fiber (c \u2192 a)-F010"
+    },
+    {
+      "from_node": "fiber (a \u2192 c)-",
+      "to_node": "roadm c"
+    },
+    {
+      "from_node": "roadm c",
+      "to_node": "fiber (c \u2192 d)-"
+    },
+    {
+      "from_node": "fiber (d \u2192 c)-F054",
+      "to_node": "roadm c"
+    },
+    {
+      "from_node": "roadm c",
+      "to_node": "fiber (c \u2192 f)-"
+    },
+    {
+      "from_node": "fiber (f \u2192 c)-F055",
+      "to_node": "roadm c"
+    },
+    {
+      "from_node": "roadm d",
+      "to_node": "fiber (d \u2192 c)-F054"
+    },
+    {
+      "from_node": "fiber (c \u2192 d)-",
+      "to_node": "roadm d"
+    },
+    {
+      "from_node": "roadm d",
+      "to_node": "fiber (d \u2192 e)-F057"
+    },
+    {
+      "from_node": "fiber (e \u2192 d)-",
+      "to_node": "roadm d"
+    },
+    {
+      "from_node": "roadm e",
+      "to_node": "fiber (e \u2192 d)-"
+    },
+    {
+      "from_node": "fiber (d \u2192 e)-F057",
+      "to_node": "roadm e"
+    },
+    {
+      "from_node": "roadm e",
+      "to_node": "fiber (e \u2192 g)-"
+    },
+    {
+      "from_node": "fiber (g \u2192 e)-F059",
+      "to_node": "roadm e"
+    },
+    {
+      "from_node": "roadm f",
+      "to_node": "fiber (f \u2192 c)-F055"
+    },
+    {
+      "from_node": "fiber (c \u2192 f)-",
+      "to_node": "roadm f"
+    },
+    {
+      "from_node": "roadm f",
+      "to_node": "fiber (f \u2192 b)-F056"
+    },
+    {
+      "from_node": "fiber (b \u2192 f)-",
+      "to_node": "roadm f"
+    },
+    {
+      "from_node": "roadm f",
+      "to_node": "fiber (f \u2192 h)-"
+    },
+    {
+      "from_node": "fiber (h \u2192 f)-F060",
+      "to_node": "roadm f"
+    },
+    {
+      "from_node": "roadm g",
+      "to_node": "fiber (g \u2192 e)-F059"
+    },
+    {
+      "from_node": "fiber (e \u2192 g)-",
+      "to_node": "roadm g"
+    },
+    {
+      "from_node": "roadm g",
+      "to_node": "fiber (g \u2192 h)-"
+    },
+    {
+      "from_node": "fiber (h \u2192 g)-",
+      "to_node": "roadm g"
+    },
+    {
+      "from_node": "roadm h",
+      "to_node": "fiber (h \u2192 f)-F060"
+    },
+    {
+      "from_node": "fiber (f \u2192 h)-",
+      "to_node": "roadm h"
+    },
+    {
+      "from_node": "roadm h",
+      "to_node": "fiber (h \u2192 g)-"
+    },
+    {
+      "from_node": "fiber (g \u2192 h)-",
+      "to_node": "roadm h"
+    },
+    {
+      "from_node": "trx a",
+      "to_node": "roadm a"
+    },
+    {
+      "from_node": "roadm a",
+      "to_node": "trx a"
+    },
+    {
+      "from_node": "trx b",
+      "to_node": "roadm b"
+    },
+    {
+      "from_node": "roadm b",
+      "to_node": "trx b"
+    },
+    {
+      "from_node": "trx c",
+      "to_node": "roadm c"
+    },
+    {
+      "from_node": "roadm c",
+      "to_node": "trx c"
+    },
+    {
+      "from_node": "trx d",
+      "to_node": "roadm d"
+    },
+    {
+      "from_node": "roadm d",
+      "to_node": "trx d"
+    },
+    {
+      "from_node": "trx e",
+      "to_node": "roadm e"
+    },
+    {
+      "from_node": "roadm e",
+      "to_node": "trx e"
+    },
+    {
+      "from_node": "trx f",
+      "to_node": "roadm f"
+    },
+    {
+      "from_node": "roadm f",
+      "to_node": "trx f"
+    },
+    {
+      "from_node": "trx g",
+      "to_node": "roadm g"
+    },
+    {
+      "from_node": "roadm g",
+      "to_node": "trx g"
+    },
+    {
+      "from_node": "trx h",
+      "to_node": "roadm h"
+    },
+    {
+      "from_node": "roadm h",
+      "to_node": "trx h"
+    }
+  ]
+}

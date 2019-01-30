@@ -5,11 +5,11 @@
 
 from gnpy.core.elements import Edfa
 from numpy import zeros, array
-from json import load, dumps
+from json import load
 from gnpy.core.elements import Transceiver, Fiber, Edfa
 from gnpy.core.utils import lin2db, db2lin
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
-from gnpy.core.equipment import load_equipment
+from gnpy.core.equipment import load_equipment, automatic_fmax
 from gnpy.core.network import build_network, load_network, set_roadm_loss
 from pathlib import Path
 import pytest
@@ -66,7 +66,9 @@ def setup_trx():
 def si(nch_and_spacing, bw):
     """parametrize a channel comb with nb_channel, spacing and signal bw"""
     nb_channel, spacing = nch_and_spacing
-    return create_input_spectral_information(191.3e12, 0.15, bw, 1e-3, spacing, nb_channel)
+    f_min = 191.3e12
+    f_max = automatic_fmax(f_min, spacing, nb_channel)
+    return create_input_spectral_information(f_min, f_max, 0.15, bw, 1e-3, spacing)
 
 @pytest.mark.parametrize("gain, nf_expected", [(10, 15), (15, 10), (25, 5.8)])
 def test_variable_gain_nf(gain, nf_expected, setup_edfa_variable_gain, si):

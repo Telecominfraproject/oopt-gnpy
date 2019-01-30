@@ -18,7 +18,7 @@ from pathlib import Path
 from json import loads
 from collections import Counter
 from logging import getLogger, basicConfig, INFO, ERROR, DEBUG
-from numpy import arange, mean
+from numpy import linspace, mean
 from matplotlib.pyplot import show, axis, figure, title
 from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels, dijkstra_path)
@@ -85,12 +85,9 @@ def main(network, equipment, source, destination, req = None):
     print(f'\nNow propagating between {source.uid} and {destination.uid}:')
 
     try:
-        power_range = list(arange(*equipment['SI']['default'].power_range_db))
-        last = equipment['SI']['default'].power_range_db[-2]
-        if len(power_range) == 0 : #bad input that will lead to no simulation
-            power_range = [0] #better than an error message
-        else:
-            power_range.append(last)
+        p_start, p_stop, p_step = equipment['SI']['default'].power_range_db
+        p_num = abs(int(round((p_stop - p_start)/p_step))) + 1 if p_step != 0 else 1
+        power_range = list(linspace(p_start, p_stop, p_num))
     except TypeError:
         print('invalid power range definition in eqpt_config, should be power_range_db: [lower, upper, step]')
         power_range = [0]
@@ -101,6 +98,12 @@ def main(network, equipment, source, destination, req = None):
         propagate(path, req, equipment, show=len(power_range)==1)
         print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f}dBm :')
         print(destination)
+        
+        #print(f'\n !!!!!!!!!!!!!!!!!     TEST POINT         !!!!!!!!!!!!!!!!!!!!!')
+        #print(f'carriers ase output of {path[1]} =\n {list(path[1].carriers("out", "nli"))}')
+        # => use "in" or "out" parameter
+        # => use "nli" or "ase" or "signal" or "total" parameter
+    
         simulation_data.append({
                     'Pch_dBm'               : pref_ch_db + dp_db,
                     'OSNR_ASE_0.1nm'        : round(mean(destination.osnr_ase_01nm),2),
@@ -115,10 +118,11 @@ def main(network, equipment, source, destination, req = None):
 parser = ArgumentParser()
 parser.add_argument('-e', '--equipment', type=Path,
                     default=Path(__file__).parent / 'eqpt_config.json')
-parser.add_argument('-pl', '--plot', action='store_true', default=False)
-parser.add_argument('-v', '--verbose', action='count')
-parser.add_argument('-l', '--list-nodes', action='store_true', default=False, help='list all transceiver nodes')
+parser.add_argument('-pl', '--plot', action='store_true')
+parser.add_argument('-v', '--verbose', action='count', default=0, help='increases verbosity for each occurence')
+parser.add_argument('-l', '--list-nodes', action='store_true', help='list all transceiver nodes')
 parser.add_argument('-po', '--power', default=0, help='channel ref power in dBm')
+parser.add_argument('-names', '--names-matching', action='store_true', help='display network names that are closed matches')
 #parser.add_argument('-plb', '--power-lower-bound', default=0, help='power sweep lower bound')
 #parser.add_argument('-pub', '--power-upper-bound', default=1, help='power sweep upper bound')
 parser.add_argument('filename', nargs='?', type=Path,
@@ -129,12 +133,12 @@ parser.add_argument('destination',   nargs='?', help='destination node')
 
 if __name__ == '__main__':
     args = parser.parse_args()
-    basicConfig(level={0: ERROR, 1: INFO, 2: DEBUG}.get(args.verbose, ERROR))
+    basicConfig(level={0: ERROR, 1: INFO, 2: DEBUG}.get(args.verbose, DEBUG))
 
     equipment = load_equipment(args.equipment)
     # logger.info(equipment)
     # print(args.filename)
-    network = load_network(args.filename, equipment)
+    network = load_network(args.filename, equipment, args.names_matching)
     # print(network)
 
     transceivers = {n.uid: n for n in network.nodes() if isinstance(n, Transceiver)}
@@ -148,38 +152,40 @@ if __name__ == '__main__':
         for uid in transceivers:
             print(uid)
         exit()
-
+    
+    #First try to find exact match if source/destination provided
     if args.source:
-        try:
-            source = next(transceivers[uid] for uid in transceivers if uid == args.source)
-        except StopIteration as e:
-            #TODO code a more advanced regex to find nodes match
-            nodes_suggestion = [uid for uid in transceivers \
-                if args.source.lower() in uid.lower()]
-            source = transceivers[nodes_suggestion[0]] \
-                if len(nodes_suggestion)>0 else list(transceivers.values())[0]
-            print(f'invalid souce node specified, did you mean:\
-                  \n{nodes_suggestion}?\
-                  \n{args.source!r}, replaced with {source.uid}')
-            del transceivers[source.uid]
+        source = transceivers.pop(args.source, None)
+        valid_source = True if source else False
     else:
+        source = None
         logger.info('No source node specified: picking random transceiver')
-        source = list(transceivers.values())[0]
-
+        
     if args.destination:
-        try:
-            destination = next(transceivers[uid] for uid in transceivers if uid == args.destination)
-        except StopIteration as e:
-            nodes_suggestion = [uid for uid in transceivers \
-                if args.destination.lower() in uid.lower()]
-            destination = transceivers[nodes_suggestion[0]] \
-                if len(nodes_suggestion)>0 else list(transceivers.values())[0]
-            print(f'invalid destination node specified, did you mean:\
-                \n{nodes_suggestion}?\
-                \n{args.destination!r}, replaced with {destination.uid}')
+        destination = transceivers.pop(args.destination, None)
+        valid_destination = True if destination else False
     else:
+        destination = None
         logger.info('No destination node specified: picking random transceiver')
-        destination = list(transceivers.values())[1]
+    
+    #If no exact match try to find partial match
+    if args.source and not source:
+        #TODO code a more advanced regex to find nodes match
+        source = next((transceivers.pop(uid) for uid in transceivers \
+                  if args.source.lower() in uid.lower()), None)
+ 
+    if args.destination and not destination:
+        #TODO code a more advanced regex to find nodes match
+        destination = next((transceivers.pop(uid) for uid in transceivers \
+                  if args.destination.lower() in uid.lower()), None)
+    
+    #If no partial match or no source/destination provided pick random
+    if not source:
+        source = list(transceivers.values())[0]
+        del transceivers[source.uid]
+    
+    if not destination:
+        destination = list(transceivers.values())[0]
 
     logger.info(f'source = {args.source!r}')
     logger.info(f'destination = {args.destination!r}')
@@ -193,6 +199,7 @@ if __name__ == '__main__':
     params['nodes_list'] = [destination.uid]
     params['loose_list'] = ['strict']
     params['format'] = ''
+    params['path_bandwidth'] = 0
     trx_params = trx_mode_params(equipment)
     if args.power:
         trx_params['power'] = db2lin(float(args.power))*1e-3
@@ -201,5 +208,15 @@ if __name__ == '__main__':
     path = main(network, equipment, source, destination, req)
     save_network(args.filename, network)
 
+    if not args.source:
+        print(f'\n(No source node specified: picked {source.uid})')
+    elif not valid_source:
+        print(f'\n(Invalid source node {args.source!r} replaced with {source.uid})')
+        
+    if not args.destination:
+        print(f'\n(No destination node specified: picked {destination.uid})')
+    elif not valid_destination:
+        print(f'\n(Invalid destination node {args.destination!r} replaced with {destination.uid})')
+    
     if args.plot:
         plot_results(network, path, source, destination)

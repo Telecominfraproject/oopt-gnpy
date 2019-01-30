@@ -19,7 +19,8 @@
           ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": 80,
-          "output-power": 0.001
+          "output-power": 0.001,
+          "path_bandwidth": 0
         }
       },
       "optimizations": {
@@ -45,7 +46,8 @@
           ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": 80,
-          "output-power": 0.001
+          "output-power": 0.001,
+          "path_bandwidth": 0
         }
       },
       "optimizations": {
@@ -53,9 +55,9 @@
       }
     }
   ],
-  "synchronisation": [
+  "synchronization": [
     {
-      "synchonization-id": "0",
+      "synchronization-id": "0",
       "svec": {
         "relaxable": "False",
         "link-diverse": "True",
@@ -67,7 +69,7 @@
       }
     },
     {
-      "synchonization-id": "1",
+      "synchronization-id": "1",
       "svec": {
         "relaxable": "False",
         "link-diverse": "True",

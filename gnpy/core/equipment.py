@@ -13,20 +13,21 @@ from sys import exit
 from operator import itemgetter
 from math import isclose
 from pathlib import Path
-from json import loads
+from json import load
 from gnpy.core.utils import lin2db, db2lin, load_json
 from collections import namedtuple
 from gnpy.core.elements import Edfa
 
 Model_vg = namedtuple('Model_vg', 'nf1 nf2 delta_p')
 Model_fg = namedtuple('Model_fg', 'nf0')
+Model_openroadm = namedtuple('Model_openroadm', 'nf_coef')
 Fiber = namedtuple('Fiber', 'type_variety dispersion gamma')
 Spans = namedtuple('Spans', 'power_mode delta_power_range_db max_length length_units \
                              max_loss padding EOL con_in con_out')
 Transceiver = namedtuple('Transceiver', 'type_variety frequency mode')
-Roadms = namedtuple('Roadms', 'gain_mode_default_loss power_mode_pref')
+Roadms = namedtuple('Roadms', 'gain_mode_default_loss power_mode_pout_target add_drop_osnr')
 SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off \
-                       power_dbm power_range_db OSNR bit_rate')
+                       power_dbm power_range_db tx_osnr sys_margins')
 AmpBase = namedtuple(
     'AmpBase',
     'type_variety type_def gain_flatmax gain_min p_max'
@@ -43,14 +44,14 @@ class Amp(AmpBase):
 
     @classmethod
     def from_advanced_json(cls, filename, **kwargs):
-        with open(filename) as f:
-            json_data = loads(f.read())
+        with open(filename, encoding='utf-8') as f:
+            json_data = load(f)
         return cls(**{**kwargs, **json_data, 'type_def':None, 'nf_model':None})
 
     @classmethod
     def from_default_json(cls, filename, **kwargs):
-        with open(filename) as f:
-            json_data = loads(f.read())
+        with open(filename, encoding='utf-8') as f:
+            json_data = load(f)
         type_variety = kwargs['type_variety']
         type_def = kwargs.get('type_def', 'variable_gain') #default compatibility with older json eqpt files
         nf_def = None
@@ -79,6 +80,13 @@ class Amp(AmpBase):
             except KeyError: pass #nf0 is not needed for variable gain amp
             nf1, nf2, delta_p = nf_model(type_variety, gain_min, gain_max, nf_min, nf_max)
             nf_def = Model_vg(nf1, nf2, delta_p)
+        elif type_def == 'openroadm':
+            try:
+                nf_coef = kwargs.pop('nf_coef')
+            except KeyError: #nf_coef is expected for openroadm amp
+                print(f'missing nf_coef input for amplifier: {type_variety} in eqpt_config.json')
+                exit()
+            nf_def = Model_openroadm(nf_coef)
         return cls(**{**kwargs, **json_data, 'nf_model': nf_def})
 
 
@@ -140,24 +148,51 @@ def edfa_nf(gain_target, variety_type, equipment):
             params = amp_params._asdict(),
             operational = {
                 'gain_target': gain_target,
-                'tilt_target': 0,
-            })
+                'tilt_target': 0
+                        }
+            )
+    amp.pin_db = 0
+    amp.nch = 88
     return amp._calc_nf(True)
 
 def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=False):
     """return the trx and SI parameters from eqpt_config for a given type_variety and mode (ie format)"""
     trx_params = {}
     default_si_data = equipment['SI']['default']
+    
     try:
         trxs = equipment['Transceiver']
-        mode_params = next(mode for trx in trxs \
-                    if trx == trx_type_variety \
-                    for mode in trxs[trx].mode \
-                    if mode['format'] == trx_mode)
-        trx_params = {**mode_params}
-        trx_params['frequency'] = equipment['Transceiver'][trx_type_variety].frequency
+        #if called from path_requests_run.py, trx_mode is filled with None when not specified by user
+        #if called from transmission_main.py, trx_mode is ''
+        if trx_mode is not None:
+            mode_params = next(mode for trx in trxs \
+                        if trx == trx_type_variety \
+                        for mode in trxs[trx].mode \
+                        if mode['format'] == trx_mode)
+            trx_params = {**mode_params}
+            # sanity check: spacing baudrate must be smaller than min spacing
+            if trx_params['baud_rate'] > trx_params['min_spacing'] :
+                msg = f'Inconsistency in equipment library:\n Transpoder "{trx_type_variety}" mode "{trx_params["format"]}" '+\
+                    f'has baud rate: {trx_params["baud_rate"]*1e-9} GHz greater than min_spacing {trx_params["min_spacing"]*1e-9}.'
+                print(msg)
+                exit()
+        else:
+            mode_params = {"format": "undetermined",
+                       "baud_rate": None,
+                       "OSNR": None,
+                       "bit_rate": None,
+                       "roll_off": None,
+                       "tx_osnr":None,
+                       "min_spacing":None,
+                       "cost":None}
+            trx_params = {**mode_params} 
+        trx_params['f_min'] = equipment['Transceiver'][trx_type_variety].frequency['min']
+        trx_params['f_max'] = equipment['Transceiver'][trx_type_variety].frequency['max']
+
         # TODO: novel automatic feature maybe unwanted if spacing is specified
-        trx_params['spacing'] = automatic_spacing(trx_params['baud_rate'])
+        # trx_params['spacing'] = automatic_spacing(trx_params['baud_rate'])
+        # temp = trx_params['spacing']
+        # print(f'spacing {temp}')
     except StopIteration :
         if error_message:
             print(f'could not find tsp : {trx_type_variety} with mode: {trx_mode} in eqpt library')
@@ -165,37 +200,48 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             exit()
         else:
             # default transponder charcteristics
-            trx_params['frequency'] = {'min': default_si_data.f_min, 'max': default_si_data.f_max}
+            # mainly used with transmission_main_example.py
+            trx_params['f_min'] = default_si_data.f_min
+            trx_params['f_max'] = default_si_data.f_max
             trx_params['baud_rate'] = default_si_data.baud_rate
             trx_params['spacing'] = default_si_data.spacing
-            trx_params['OSNR'] = default_si_data.OSNR
-            trx_params['bit_rate'] = default_si_data.bit_rate
+            trx_params['OSNR'] = None
+            trx_params['bit_rate'] = None
+            trx_params['cost'] = None
             trx_params['roll_off'] = default_si_data.roll_off
+            trx_params['tx_osnr'] = default_si_data.tx_osnr
+            trx_params['min_spacing'] = None
+            nch = automatic_nch(trx_params['f_min'], trx_params['f_max'], trx_params['spacing'])
+            trx_params['nb_channel'] = nch
+            print(f'There are {nch} channels propagating')
+                
     trx_params['power'] =  db2lin(default_si_data.power_dbm)*1e-3
-    trx_params['nb_channel'] = automatic_nch(trx_params['frequency']['min'],
-                                             trx_params['frequency']['max'],
-                                             trx_params['spacing'])
-    print('N channels = ', trx_params['nb_channel'])
+
     return trx_params
 
 def automatic_spacing(baud_rate):
     """return the min possible channel spacing for a given baud rate"""
-    spacing_list = [(38e9,50e9), (67e9,75e9), (92e9,100e9)] #list of possible tuples
+    # TODO : this should parametrized in a cfg file
+    spacing_list = [(33e9,37.5e9), (38e9,50e9), (50e9,62.5e9), (67e9,75e9), (92e9,100e9)] #list of possible tuples
                                                 #[(max_baud_rate, spacing_for_this_baud_rate)]
-    acceptable_spacing_list = list(filter(lambda x : x[0]>baud_rate, spacing_list))
-    if len(acceptable_spacing_list) < 1:
-        #can't find an adequate spacing from the list, so default to:
-        return baud_rate*1.2
-    else:
-        #chose the lowest possible spacing
-        return min(acceptable_spacing_list, key=itemgetter(0))[1]
+    return min((s[1] for s in spacing_list if s[0] > baud_rate), default=baud_rate*1.2)
 
 def automatic_nch(f_min, f_max, spacing):
     return int((f_max - f_min)//spacing)
 
+def automatic_fmax(f_min, spacing, nch):
+    return f_min + spacing * nch
+
 def load_equipment(filename):
     json_data = load_json(filename)
     return equipment_from_json(json_data, filename)
+
+def update_trx_osnr(equipment):
+    """add sys_margins to all Transceivers OSNR values"""
+    for trx in equipment['Transceiver'].values():
+        for m in trx.mode:
+            m['OSNR'] = m['OSNR'] + equipment['SI']['default'].sys_margins
+    return equipment
 
 def equipment_from_json(json_data, filename):
     """build global dictionnary eqpt_library that stores all eqpt characteristics:
@@ -208,17 +254,18 @@ def equipment_from_json(json_data, filename):
     """
     equipment = {}
     for key, entries in json_data.items():
+        equipment[key] = {}
+        typ = globals()[key]
         for entry in entries:
-            if key not in equipment:
-                equipment[key] = {}
-            subkey = entry.get('type_variety', 'default')
-            typ = globals()[key]
+            subkey = entry.get('type_variety', 'default')           
             if key == 'Edfa':
                 if 'advanced_config_from_json' in entry:
                     config = Path(filename).parent / entry.pop('advanced_config_from_json')
-                    typ = lambda **kws: Amp.from_advanced_json(config, **kws)
+                    equipment[key][subkey] = Amp.from_advanced_json(config, **entry)
                 else:
                     config = Path(filename).parent / 'default_edfa_config.json'
-                    typ = lambda **kws: Amp.from_default_json(config, **kws)
-            equipment[key][subkey] = typ(**entry)
+                    equipment[key][subkey] = Amp.from_default_json(config, **entry)
+            else:                
+                equipment[key][subkey] = typ(**entry)
+    equipment = update_trx_osnr(equipment)
     return equipment

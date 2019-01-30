@@ -18,14 +18,14 @@ from scipy import constants
 
 
 def load_json(filename):
-    with open(filename, 'r') as f:
+    with open(filename, 'r', encoding='utf-8') as f:
         data = json.load(f)
     return data
 
 
 def save_json(obj, filename):
-    with open(filename, 'w') as f:
-        json.dump(obj, f, indent=2)
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(obj, f, indent=2, ensure_ascii=False)
 
 def write_csv(obj, filename):
     """
@@ -55,7 +55,7 @@ def write_csv(obj, filename):
     result_category 2
     ...
     """
-    with open(filename, 'w') as f:
+    with open(filename, 'w', encoding='utf-8') as f:
         w = writer(f)
         for data_key, data_list in obj.items():
             #main header
@@ -120,6 +120,10 @@ def freq2wavelength(value):
     """
     return c() / value
 
+def snr_sum(snr, bw, snr_added, bw_added=12.5e9):
+    snr_added = snr_added - lin2db(bw/bw_added)
+    snr = -lin2db(db2lin(-snr)+db2lin(-snr_added))
+    return snr
 
 def deltawl2deltaf(delta_wl, wavelength):
     """ deltawl2deltaf(delta_wl, wavelength):
