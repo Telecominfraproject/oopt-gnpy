@@ -8,6 +8,24 @@
             "allowed_for_design": false
             },
             {
+            "type_variety": "hybrid_raman_high_gain",
+            "type_def": "hybrid",
+            "nf_ram": 0.5,
+            "gain_ram": 10,
+            "gain_min": 25,
+            "edfa_variety": "std_medium_gain",
+            "allowed_for_design": true
+            },             
+            {
+            "type_variety": "hybrid_raman_low_gain",
+            "type_def": "hybrid",
+            "nf_ram": 0.5,
+            "gain_ram": 10,
+            "gain_min": 25,
+            "edfa_variety": "std_low_gain",
+            "allowed_for_design": true
+            },                         
+            {
             "type_variety": "operator_model_example",
             "type_def": "variable_gain",
             "gain_flatmax": 26,
