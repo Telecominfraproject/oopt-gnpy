@@ -43,6 +43,10 @@ Contributors in alphabetical order
 +==========+============+=======================+======================================+
 | Alessio  | Ferrari    | Politecnico di Torino | alessio.ferrari@polito.it            |
 +----------+------------+-----------------------+--------------------------------------+
+| Anders   | Lindgren   | Telia Company         | Anders.X.Lindgren@teliacompany.com   |
++----------+------------+-----------------------+--------------------------------------+
+| Andrea   | d'Amico    | Politecnico di Torino | andrea.damico@polito.it              |
++----------+------------+-----------------------+--------------------------------------+
 | Brian    | Taylor     | Facebook              | briantaylor@fb.com                   |
 +----------+------------+-----------------------+--------------------------------------+
 | David    | Boertjes   | Ciena                 | dboertje@ciena.com                   |
@@ -59,12 +63,19 @@ Contributors in alphabetical order
 +----------+------------+-----------------------+--------------------------------------+
 | Jeanluc  | Auge       | Orange                | jeanluc.auge@orange.com              |
 +----------+------------+-----------------------+--------------------------------------+
+| Jonas    | Martensson | RISE Research Sweden  | jonas.martensson@ri.se               |
++----------+------------+-----------------------+--------------------------------------+
 | Mattia   | Cantono    | Politecnico di Torino | mattia.cantono@polito.it             |
++----------+------------+-----------------------+--------------------------------------+
+| Miguel   | Garrich    | University Catalunya  | miquel.garrich@upct.es               |
++----------+------------+-----------------------+--------------------------------------+
+| Stefan   | Melin      | Telia Company         | Stefan.Melin@teliacompany.com        |
++----------+------------+-----------------------+--------------------------------------+
+| Raj      | Nagarajan  | Lumentum              | raj.nagarajan@lumentum.com           |
 +----------+------------+-----------------------+--------------------------------------+
 | Vittorio | Curri      | Politecnico di Torino | vittorio.curri@polito.it             |
 +----------+------------+-----------------------+--------------------------------------+
 
-PSE WG Charter
 --------------
 
 - Goal is to build an end-to-end simulation environment which defines the
