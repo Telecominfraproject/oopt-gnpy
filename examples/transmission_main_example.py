@@ -129,6 +129,7 @@ parser.add_argument('filename', nargs='?', type=Path,
                     default=Path(__file__).parent / 'edfa_example_network.json')
 parser.add_argument('source', nargs='?', help='source node')
 parser.add_argument('destination',   nargs='?', help='destination node')
+parser.add_argument('-s', '--strict', action='count', default=0, help='use one time for allowing partial matching, two times for full matching')
 
 
 if __name__ == '__main__':
@@ -170,22 +171,34 @@ if __name__ == '__main__':
     
     #If no exact match try to find partial match
     if args.source and not source:
-        #TODO code a more advanced regex to find nodes match
-        source = next((transceivers.pop(uid) for uid in transceivers \
-                  if args.source.lower() in uid.lower()), None)
+        if args.strict < 2:
+            #TODO code a more advanced regex to find nodes match
+            source = next((transceivers.pop(uid) for uid in transceivers \
+                    if args.source.lower() in uid.lower()), None)
+        else:
+            exit(f'Invalid source node {args.source!r} and strict full matching requested')
  
     if args.destination and not destination:
-        #TODO code a more advanced regex to find nodes match
-        destination = next((transceivers.pop(uid) for uid in transceivers \
-                  if args.destination.lower() in uid.lower()), None)
+        if args.strict < 2:
+            #TODO code a more advanced regex to find nodes match
+            destination = next((transceivers.pop(uid) for uid in transceivers \
+                    if args.destination.lower() in uid.lower()), None)
+        else:
+            exit(f'Invalid destination node {args.destination!r} and strict full matching requested')
     
-    #If no partial match or no source/destination provided pick random
+    #If no partial match (and not strict partial matching) or no source/destination provided pick random
     if not source:
-        source = list(transceivers.values())[0]
-        del transceivers[source.uid]
+        if args.source and args.strict == 1:
+            exit(f'Invalid source node {args.source!r} and strict partial matching requested')
+        else:
+            source = list(transceivers.values())[0]
+            del transceivers[source.uid]
     
     if not destination:
-        destination = list(transceivers.values())[0]
+        if args.destination and args.strict == 1:
+            exit(f'Invalid destination node {args.destination!r} and strict partial matching requested')
+        else:
+            destination = list(transceivers.values())[0]
 
     logger.info(f'source = {args.source!r}')
     logger.info(f'destination = {args.destination!r}')
