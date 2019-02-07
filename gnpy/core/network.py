@@ -86,17 +86,18 @@ def network_to_json(network):
     data.update(connections)
     return data
 
-def select_edfa(gain_target, power_target, equipment, uid):
+def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
     """amplifer selection algorithm
     @Orange Jean-Luc Augé
     """
-    Edfa_list = namedtuple('Edfa_list', 'variety power gain_max gain_min nf')
+    Edfa_list = namedtuple('Edfa_list', 'type_def variety power gain_max gain_min nf')
     TARGET_EXTENDED_GAIN = 2.1
     #MAX_EXTENDED_GAIN = 5
     edfa_dict = equipment['Edfa']
     pin = power_target - gain_target
 
     edfa_list = [Edfa_list(
+                type_def = edfa.type_def,
                 variety=edfa_variety,
                 power=min(
                     pin
@@ -117,6 +118,11 @@ def select_edfa(gain_target, power_target, equipment, uid):
                 if edfa.allowed_for_design]
 
     #filter on max gain limitation:
+
+    raman = lambda x : (x.type_def == "dual_stage" and raman_allowed) \
+                        or (x.type_def != "dual_stage")
+    edfa_list = list(filter(raman, edfa_list))
+
     acceptable_gain_list = \
     list(filter(lambda x : x.gain_max>0, edfa_list))
     if len(acceptable_gain_list) < 1:
@@ -322,7 +328,11 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
 
                 if node.params.type_variety == '':
                     power_target = pref_total_db + dp
-                    edfa_variety = select_edfa(gain_target, power_target, equipment, node.uid)
+                    raman_allowed = False
+                    if isinstance(prev_node, Fiber):
+                        raman_allowed = prev_node.params.loss_coef < 0.291
+                    edfa_variety = select_edfa(raman_allowed, 
+                                   gain_target, power_target, equipment, node.uid)
                     extra_params = equipment['Edfa'][edfa_variety]
                     node.params.update_params(extra_params.__dict__)
                 set_amplifier_voa(node, pref_total_db, power_mode)
