@@ -22,6 +22,7 @@ Model_vg = namedtuple('Model_vg', 'nf1 nf2 delta_p')
 Model_fg = namedtuple('Model_fg', 'nf0')
 Model_openroadm = namedtuple('Model_openroadm', 'nf_coef')
 Model_hybrid = namedtuple('Model_hybrid', 'nf_ram gain_ram edfa_variety')
+Model_dual_stage = namedtuple('Model_dual_stage', 'preamp_variety booster_variety')
 
 class common:
     def update_attr(self, default_values, kwargs):
@@ -107,6 +108,7 @@ class Amp(common):
         'p_max':                None,
         'nf_model':             None,
         'raman_model':          None,
+        'dual_stage_model':     None,
         'nf_fit_coeff':         None,
         'nf_ripple':            None,
         'dgt':                  None,
@@ -119,19 +121,14 @@ class Amp(common):
         self.update_attr(self.default_values, kwargs)
 
     @classmethod
-    def from_advanced_json(cls, filename, **kwargs):
-        with open(filename, encoding='utf-8') as f:
-            json_data = load(f)
-        return cls(**{**kwargs, **json_data, 'type_def':None, 'nf_model':None})
+    def from_json(cls, filename, **kwargs):
+        config = Path(filename).parent / 'default_edfa_config.json'
 
-    @classmethod
-    def from_default_json(cls, filename, **kwargs):
-        with open(filename, encoding='utf-8') as f:
-            json_data = load(f)
         type_variety = kwargs['type_variety']
         type_def = kwargs.get('type_def', 'variable_gain') #default compatibility with older json eqpt files
         nf_def = None
         raman_def = None
+        dual_stage_def = None
 
         if type_def == 'fixed_gain':
             try:
@@ -144,6 +141,8 @@ class Amp(common):
                 del kwargs['nf_max']
             except KeyError: pass #nf_min and nf_max are not needed for fixed gain amp
             nf_def = Model_fg(nf0)
+        elif type_def == 'advanced_model':
+            config = Path(filename).parent / kwargs.pop('advanced_config_from_json')
         elif type_def == 'variable_gain':
             gain_min, gain_max = kwargs['gain_min'], kwargs['gain_flatmax']
             try: #nf_min and nf_max are expected for a variable gain amp
@@ -173,7 +172,20 @@ class Amp(common):
                 print(f'missing nf_ram/gain_ram values input for amplifier: {type_variety} in eqpt_config.json')
                 exit()
             raman_def = Model_hybrid(nf_ram, gain_ram, edfa_variety)
-        return cls(**{**kwargs, **json_data, 'nf_model': nf_def, 'raman_model' : raman_def})
+        elif type_def == 'dual_stage':
+            try: #nf_ram and gain_ram are expected for a hybrid amp
+                preamp_variety = kwargs.pop('preamp_variety')
+                booster_variety = kwargs.pop('booster_variety')
+            except KeyError:
+                print(f'missing preamp/booster variety input for amplifier: {type_variety} in eqpt_config.json')
+                exit()
+            dual_stage_def = Model_dual_stage(preamp_variety, booster_variety)
+
+        with open(config, encoding='utf-8') as f:
+            json_data = load(f)
+
+        return cls(**{**kwargs, **json_data, 
+            'nf_model': nf_def, 'raman_model' : raman_def, 'dual_stage_model': dual_stage_def})
 
 
 def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
@@ -341,6 +353,31 @@ def update_hybrid(equipment):
             edfa.edfa_gain_flatmax = edfa_booster.gain_flatmax
     return equipment
 
+def update_dual_stage(equipment):
+    edfa_dict = equipment['Edfa']
+    for edfa in edfa_dict.values():
+        if edfa.type_def == 'dual_stage':
+            edfa_preamp = edfa_dict[edfa.dual_stage_model.preamp_variety]
+            edfa_booster = edfa_dict[edfa.dual_stage_model.booster_variety]
+            for k,v in edfa_preamp.__dict__.items():
+                attr_k = 'preamp_'+k
+                setattr(edfa, attr_k, v)
+            for k,v in edfa_booster.__dict__.items():
+                attr_k = 'booster_'+k
+                setattr(edfa, attr_k, v)           
+            edfa.p_max = edfa_booster.p_max
+            edfa.gain_flatmax = edfa_booster.gain_flatmax + edfa_preamp.gain_flatmax
+            if edfa.gain_min < edfa_preamp.gain_min:
+                print(
+                    f'\x1b[1;31;40m'\
+                    + f'CRITICAL: dual stage {edfa.type_variety} min gain is lower than its preamp min gain\
+                        => please increase its min gain in eqpt_config.json'\
+                    + '\x1b[0m'
+                    )                        
+                exit()
+    return equipment
+
+
 def equipment_from_json(json_data, filename):
     """build global dictionnary eqpt_library that stores all eqpt characteristics:
     edfa type type_variety, fiber type_variety
@@ -357,14 +394,10 @@ def equipment_from_json(json_data, filename):
         for entry in entries:
             subkey = entry.get('type_variety', 'default')           
             if key == 'Edfa':
-                if 'advanced_config_from_json' in entry:
-                    config = Path(filename).parent / entry.pop('advanced_config_from_json')
-                    equipment[key][subkey] = Amp.from_advanced_json(config, **entry)
-                else:
-                    config = Path(filename).parent / 'default_edfa_config.json'
-                    equipment[key][subkey] = Amp.from_default_json(config, **entry)
+                equipment[key][subkey] = Amp.from_json(filename, **entry)
             else:                
                 equipment[key][subkey] = typ(**entry)
     equipment = update_trx_osnr(equipment)
     equipment = update_hybrid(equipment)
+    equipment = update_dual_stage(equipment)
     return equipment
