@@ -588,12 +588,29 @@ class Edfa(Node):
         # ase & nli are only calculated in signal bandwidth
         #    pout_db is not the absolute full output power (negligible if sufficient channels)
 
-    def _nf_variable_gain(self, params, gain_target):
+    def _nf(self, type_def, nf_model, nf_fit_coef, gain_flatmax, gain_target):
         #if hybrid raman, use edfa_gain_flatmax attribute, else use gain_flatmax 
-        gain_flatmax = getattr(params, 'edfa_gain_flatmax', params.gain_flatmax)
+        #gain_flatmax = getattr(params, 'edfa_gain_flatmax', params.gain_flatmax)
         dg = max(gain_flatmax - gain_target, 0)
-        g1a = gain_target - params.nf_model.delta_p - dg
-        nf_avg = lin2db(db2lin(params.nf_model.nf1) + db2lin(params.nf_model.nf2)/db2lin(g1a))
+        if type_def == 'variable_gain':
+            g1a = gain_target - nf_model.delta_p - dg
+            nf_avg = lin2db(db2lin(nf_model.nf1) + db2lin(nf_model.nf2)/db2lin(g1a))            
+        elif type_def == 'fixed_gain':
+            nf_avg = nf_model.nf0
+        elif type_def == 'openroadm':
+            pin_ch = self.pin_db - lin2db(self.nch)
+            # model OSNR = f(Pin)
+            nf_avg = pin_ch - polyval(nf_model.nf_coef, pin_ch) + 58
+        elif type_def == 'advanced_model':
+            nf_avg = polyval(nf_fit_coeff, -dg)
+        else :
+            print(
+                f'\x1b[1;31;40m'\
+                + f'CRITICAL: unrecognized type def _{self.params.type_def}_\n\
+                    => please check eqpt_config.json'\
+                + '\x1b[0m'
+                )                        
+            exit()            
         return nf_avg
 
     def _calc_nf(self, avg = False):
@@ -602,23 +619,19 @@ class Edfa(Node):
         False => polynomial fit based on self.params.nf_fit_coeff"""
         # TODO|jla: TBD alarm rising or input VOA padding in case
         # gain_min > gain_target TBD:
-        pad = max(self.params.gain_min - self.effective_gain, 0)
-        gain_target = self.effective_gain + pad
 
-        if self.params.type_def == 'variable_gain':
-            nf_avg = self._nf_variable_gain(self.params, gain_target)
-        elif self.params.type_def == 'fixed_gain':
-            nf_avg = self.params.nf_model.nf0
-        elif self.params.type_def == 'openroadm':
-            pin_ch = self.pin_db - lin2db(self.nch)
-            # model OSNR = f(Pin)
-            nf_avg = pin_ch - polyval(self.params.nf_model.nf_coef, pin_ch) + 58
-        elif self.params.type_def == 'hybrid':          
-            #pas de padding en raman, sauf implem specifique entre le raman et l'edfa, non supporté
+
+        if self.params.type_def == 'hybrid':
+            #pas de padding en raman, sauf implem specifique entre le raman et l'edfa: non supportée
             pad = 0
+            
             # update gain_target with ramnan gain
             gain_target = self.effective_gain - self.params.raman_model.gain_ram
-            nf_edfa_avg = self._nf_variable_gain(self.params, gain_target)
+            nf_edfa_avg = self._nf( 'variable_gain', 
+                                    self.params.nf_model,
+                                    None,
+                                    self.params.edfa_gain_flatmax, 
+                                    gain_target)
             #DEBUG/CHECK:
             #print('gain total', self.effective_gain )
             #print('gain', gain_target)
@@ -628,10 +641,30 @@ class Edfa(Node):
                 + db2lin(nf_edfa_avg)
                 / db2lin(self.params.raman_model.gain_ram)\
                  )
-            print('hybrid',nf_avg)
-        else: #use polynomial model
-            dg = max(self.params.gain_flatmax - gain_target, 0)
-            nf_avg = polyval(self.params.nf_fit_coeff, -dg)
+        elif self.params.type_def == 'dual_stage':        
+            pad = 0
+            g1 = self.params.preamp_gain_flatmax
+            g2 = self.effective_gain - g1
+            nf1_avg = self._nf( self.params.preamp_type_def, 
+                                self.params.preamp_nf_model,
+                                self.params.preamp_nf_fit_coeff,
+                                self.params.preamp_gain_flatmax, 
+                                g1)
+            nf2_avg = self._nf( self.params.booster_type_def,
+                                self.params.booster_nf_model,
+                                self.params.booster_nf_fit_coeff,
+                                self.params.booster_gain_flatmax, 
+                                g2)
+            nf_avg = lin2db(db2lin(nf1_avg) + db2lin(nf2_avg-g1))
+        else:
+            pad = max(self.params.gain_min - self.effective_gain, 0)
+            gain_target = self.effective_gain + pad        
+
+            nf_avg = self._nf(  self.params.type_def,
+                                self.params.nf_model,
+                                self.params.nf_fit_coeff,
+                                self.params.gain_flatmax,
+                                gain_target)
 
         self.att_in = pad
         if avg:

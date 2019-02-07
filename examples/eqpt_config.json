@@ -1,5 +1,6 @@
 {     "Edfa":[{
             "type_variety": "high_detail_model_example",
+            "type_def": "advanced_model",
             "gain_flatmax": 25,
             "gain_min": 15,
             "p_max": 21,
@@ -84,7 +85,15 @@
             "p_max": 21,
             "nf0": 5.5,
             "allowed_for_design": false
-            }       
+            },
+            {
+            "type_variety": "a+b",
+            "type_def": "dual_stage",
+            "gain_min": 20,
+            "preamp_variety": "std_medium_gain",
+            "booster_variety": "std_low_gain",
+            "allowed_for_design": true
+            }            
       ],
       "Fiber":[{
             "type_variety": "SSMF",
@@ -117,7 +126,11 @@
       "Roadms":[{
             "gain_mode_default_loss": 20,
             "power_mode_pout_target": -20,
-            "add_drop_osnr": 38
+            "add_drop_osnr": 38,
+            "restrictions": {
+                            "preamp_variety_list":["low_gain_preamp", "high_gain_preamp"],
+                            "booster_variety_list":["std_booster"]
+                            }            
             }],
       "SI":[{
             "f_min": 191.3e12,
