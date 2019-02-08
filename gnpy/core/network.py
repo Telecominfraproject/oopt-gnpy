@@ -330,7 +330,9 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
                     power_target = pref_total_db + dp
                     raman_allowed = False
                     if isinstance(prev_node, Fiber):
-                        raman_allowed = prev_node.params.loss_coef < 0.291
+                        max_fiber_lineic_loss_for_raman = \
+                                equipment['Spans']['default'].max_fiber_lineic_loss_for_raman
+                        raman_allowed = prev_node.params.loss_coef < max_fiber_lineic_loss_for_raman
                     edfa_variety = select_edfa(raman_allowed, 
                                    gain_target, power_target, equipment, node.uid)
                     extra_params = equipment['Edfa'][edfa_variety]

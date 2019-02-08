@@ -51,15 +51,16 @@ class SI(common):
 class Spans(common):
     default_values = \
     {
-        'power_mode':           True,
-        'delta_power_range_db': None,
-        'max_length':           150,
-        'length_units':         'km',
-        'max_loss':             None,
-        'padding':              10,
-        'EOL':                  0,
-        'con_in':               0,
-        'con_out':              0
+        'power_mode':                       True,
+        'delta_power_range_db':             None,
+        'max_fiber_lineic_loss_for_raman':  0.25,
+        'max_length':                       150,
+        'length_units':                     'km',
+        'max_loss':                         None,
+        'padding':                          10,
+        'EOL':                              0,
+        'con_in':                           0,
+        'con_out':                          0
     }
     
     def __init__(self, **kwargs):
