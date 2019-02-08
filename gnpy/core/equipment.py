@@ -114,7 +114,8 @@ class Amp(common):
         'dgt':                  None,
         'gain_ripple':          None,
         'out_voa_auto':         False,
-        'allowed_for_design':   False
+        'allowed_for_design':   False,
+        'raman':                False
     }
 
     def __init__(self, **kwargs):

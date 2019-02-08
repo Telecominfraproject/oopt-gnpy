@@ -91,14 +91,14 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
     """amplifer selection algorithm
     @Orange Jean-Luc Augé
     """
-    Edfa_list = namedtuple('Edfa_list', 'type_def variety power gain_max gain_min nf')
+    Edfa_list = namedtuple('Edfa_list', 'raman variety power gain_max gain_min nf')
     TARGET_EXTENDED_GAIN = 2.1
     #MAX_EXTENDED_GAIN = 5
     edfa_dict = equipment['Edfa']
     pin = power_target - gain_target
 
     edfa_list = [Edfa_list(
-                type_def = edfa.type_def,
+                raman = edfa.raman,
                 variety=edfa_variety,
                 power=min(
                     pin
@@ -120,9 +120,9 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
 
     #filter on max gain limitation:
 
-    raman = lambda x : (x.type_def == "dual_stage" and raman_allowed) \
-                        or (x.type_def != "dual_stage")
-    edfa_list = list(filter(raman, edfa_list))
+    raman_filter = lambda x : (x.raman and raman_allowed) \
+                        or not x.raman
+    edfa_list = list(filter(raman_filter, edfa_list))
 
     acceptable_gain_list = \
     list(filter(lambda x : x.gain_max>0, edfa_list))
