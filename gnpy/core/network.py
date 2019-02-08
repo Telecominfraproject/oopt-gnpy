@@ -118,12 +118,27 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
                 for edfa_variety, edfa in edfa_dict.items()
                 if edfa.allowed_for_design]
 
-    #filter on max gain limitation:
-
-    raman_filter = lambda x : (x.raman and raman_allowed) \
-                        or not x.raman
+    #filter on raman restriction
+    raman_filter = lambda edfa: (edfa.raman and raman_allowed) or not edfa.raman
     edfa_list = list(filter(raman_filter, edfa_list))
 
+    #filter on min gain limitation:            
+    acceptable_gain_min_list = \
+    list(filter(lambda x : x.gain_min>0, edfa_list))
+    if len(acceptable_gain_min_list) < 1:
+        #do not take this empty list into account for the rest of the code
+        #but issue a warning to the user
+        print(
+            f'\x1b[1;31;40m'\
+            + f'WARNING: target gain in node {uid} is below all available amplifiers min gain: \
+                amplifier input padding will be assumed, consider increase fiber padding instead'\
+            + '\x1b[0m'
+            )
+    else:
+        edfa_list = acceptable_gain_min_list            
+
+    """
+    #filter on max gain limitation:
     acceptable_gain_list = \
     list(filter(lambda x : x.gain_max>0, edfa_list))
     if len(acceptable_gain_list) < 1:
@@ -138,31 +153,20 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
         #pick up all amplifiers that share this max gain:
         acceptable_gain_list = \
         list(filter(lambda x : x.gain_max-gain_max>-0.1, edfa_list))
-    #filter on min gain limitation:            
-    acceptable_gain_min_list = \
-    list(filter(lambda x : x.gain_min>0, acceptable_gain_list))
-    if len(acceptable_gain_min_list) < 1:
-        #do not take this empty list into account for the rest of the code
-        #but issue a warning to the user
-        print(
-            f'\x1b[1;31;40m'\
-            + f'WARNING: target gain in node {uid} is below all available amplifiers min gain: \
-                amplifier input padding will be assumed, consider increase fiber padding instead'\
-            + '\x1b[0m'
-            )
-    else:
-        acceptable_gain_list = acceptable_gain_min_list            
+    """
 
-    #filer on max power limitation:
+    #filter on max power limitation:
     acceptable_power_list = \
-    list(filter(lambda x : x.power>=0, acceptable_gain_list))
+    list(filter(lambda x : x.power>=0, edfa_list))
     if len(acceptable_power_list) < 1:
         #no amplifier satisfies the required power, so pick the highest power:
-        power_max = \
-        max(acceptable_gain_list, key=attrgetter('power')).power
+        power_max = max(edfa_list, key=attrgetter('power')).power
         #pick up all amplifiers that share this max gain:
         acceptable_power_list = \
-        list(filter(lambda x : x.power-power_max>-0.1, acceptable_gain_list))
+        list(filter(lambda x : x.power-power_max>-0.3, edfa_list))
+
+    print(gain_target, power_target, '=>\n',acceptable_power_list,'\n')
+    
     # gain and power requirements are resolved,
     #       =>chose the amp with the best NF among the acceptable ones:
     return min(acceptable_power_list, key=attrgetter('nf')).variety #filter on NF
