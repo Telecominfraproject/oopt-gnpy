@@ -54,6 +54,7 @@ class Spans(common):
         'power_mode':                       True,
         'delta_power_range_db':             None,
         'max_fiber_lineic_loss_for_raman':  0.25,
+        'target_extended_gain':             2.5,
         'max_length':                       150,
         'length_units':                     'km',
         'max_loss':                         None,
