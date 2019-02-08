@@ -91,7 +91,7 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
     @Orange Jean-Luc Augé
     """
     Edfa_list = namedtuple('Edfa_list', 'raman variety power gain_max gain_min nf')
-    TARGET_EXTENDED_GAIN = 2.1
+    TARGET_EXTENDED_GAIN = equipment['Spans']['default'].target_extended_gain
     #MAX_EXTENDED_GAIN = 5
     edfa_dict = equipment['Edfa']
     pin = power_target - gain_target
