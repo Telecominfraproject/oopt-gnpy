@@ -7,25 +7,7 @@
             "advanced_config_from_json": "std_medium_gain_advanced_config.json",
             "out_voa_auto": false,
             "allowed_for_design": false
-            },
-            {
-            "type_variety": "hybrid_raman_high_gain",
-            "type_def": "hybrid",
-            "nf_ram": 0.5,
-            "gain_ram": 10,
-            "gain_min": 25,
-            "edfa_variety": "std_medium_gain",
-            "allowed_for_design": true
-            },             
-            {
-            "type_variety": "hybrid_raman_low_gain",
-            "type_def": "hybrid",
-            "nf_ram": 0.5,
-            "gain_ram": 10,
-            "gain_min": 25,
-            "edfa_variety": "std_low_gain",
-            "allowed_for_design": true
-            },                         
+            },                     
             {
             "type_variety": "operator_model_example",
             "type_def": "variable_gain",
@@ -87,9 +69,9 @@
             "allowed_for_design": false
             },
             {
-            "type_variety": "a+b",
+            "type_variety": "medium+low_gain",
             "type_def": "dual_stage",
-            "gain_min": 20,
+            "gain_min": 25,
             "preamp_variety": "std_medium_gain",
             "booster_variety": "std_low_gain",
             "allowed_for_design": true

@@ -108,7 +108,6 @@ class Amp(common):
         'gain_min':             None,
         'p_max':                None,
         'nf_model':             None,
-        'raman_model':          None,
         'dual_stage_model':     None,
         'nf_fit_coeff':         None,
         'nf_ripple':            None,
@@ -129,7 +128,6 @@ class Amp(common):
         type_variety = kwargs['type_variety']
         type_def = kwargs.get('type_def', 'variable_gain') #default compatibility with older json eqpt files
         nf_def = None
-        raman_def = None
         dual_stage_def = None
 
         if type_def == 'fixed_gain':
@@ -165,15 +163,6 @@ class Amp(common):
                 print(f'missing nf_coef input for amplifier: {type_variety} in eqpt_config.json')
                 exit()
             nf_def = Model_openroadm(nf_coef)
-        elif type_def == 'hybrid':
-            try: #nf_ram and gain_ram are expected for a hybrid amp
-                nf_ram = kwargs.pop('nf_ram')
-                gain_ram = kwargs.pop('gain_ram')
-                edfa_variety = kwargs.pop('edfa_variety')
-            except KeyError:
-                print(f'missing nf_ram/gain_ram values input for amplifier: {type_variety} in eqpt_config.json')
-                exit()
-            raman_def = Model_hybrid(nf_ram, gain_ram, edfa_variety)
         elif type_def == 'dual_stage':
             try: #nf_ram and gain_ram are expected for a hybrid amp
                 preamp_variety = kwargs.pop('preamp_variety')
@@ -187,7 +176,7 @@ class Amp(common):
             json_data = load(f)
 
         return cls(**{**kwargs, **json_data, 
-            'nf_model': nf_def, 'raman_model' : raman_def, 'dual_stage_model': dual_stage_def})
+            'nf_model': nf_def, 'dual_stage_model': dual_stage_def})
 
 
 def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
