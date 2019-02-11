@@ -574,11 +574,12 @@ class Edfa(Node):
             self.effective_gain = self.target_pch_out_db - pref.pi
         else:
             self.effective_gain = self.operational.gain_target
-        
+        #print(self.uid, self.effective_gain, self.operational.gain_target)
+
         """check power saturation and correct target_gain accordingly:"""
         self.effective_gain = min(self.effective_gain, self.params.p_max - self.pin_db)
         self.effective_pch_out_db = round(pref.pi + self.effective_gain, 2)
-
+        #print(self.uid, self.effective_gain, self.pin_db, pref.pi)
         self.nf = self._calc_nf()
         self.gprofile = self._gain_profile(pin)
 
@@ -588,9 +589,11 @@ class Edfa(Node):
         # ase & nli are only calculated in signal bandwidth
         #    pout_db is not the absolute full output power (negligible if sufficient channels)
 
-    def _nf(self, type_def, nf_model, nf_fit_coef, gain_flatmax, gain_target):
+    def _nf(self, type_def, nf_model, nf_fit_coef, gain_min, gain_flatmax, gain_target):
         #if hybrid raman, use edfa_gain_flatmax attribute, else use gain_flatmax 
         #gain_flatmax = getattr(params, 'edfa_gain_flatmax', params.gain_flatmax)
+        pad = max(gain_min - gain_target, 0)
+        gain_target += pad
         dg = max(gain_flatmax - gain_target, 0)
         if type_def == 'variable_gain':
             g1a = gain_target - nf_model.delta_p - dg
@@ -611,66 +614,45 @@ class Edfa(Node):
                 + '\x1b[0m'
                 )                        
             exit()            
-        return nf_avg
+        return nf_avg+pad, pad
 
     def _calc_nf(self, avg = False):
         """nf calculation based on 2 models: self.params.nf_model.enabled from json import:
         True => 2 stages amp modelling based on precalculated nf1, nf2 and delta_p in build_OA_json
         False => polynomial fit based on self.params.nf_fit_coeff"""
-        # TODO|jla: TBD alarm rising or input VOA padding in case
         # gain_min > gain_target TBD:
-
-
-        if self.params.type_def == 'hybrid':
-            #pas de padding en raman, sauf implem specifique entre le raman et l'edfa: non supportée
-            pad = 0
-            
-            # update gain_target with ramnan gain
-            gain_target = self.effective_gain - self.params.raman_model.gain_ram
-            nf_edfa_avg = self._nf( 'variable_gain', 
-                                    self.params.nf_model,
-                                    None,
-                                    self.params.edfa_gain_flatmax, 
-                                    gain_target)
-            #DEBUG/CHECK:
-            #print('gain total', self.effective_gain )
-            #print('gain', gain_target)
-            #print('edfa',nf_edfa_avg)
-            nf_avg = lin2db(
-                db2lin(self.params.raman_model.nf_ram)
-                + db2lin(nf_edfa_avg)
-                / db2lin(self.params.raman_model.gain_ram)\
-                 )
-        elif self.params.type_def == 'dual_stage':        
-            pad = 0
+        if self.params.type_def == 'dual_stage':        
             g1 = self.params.preamp_gain_flatmax
             g2 = self.effective_gain - g1
-            nf1_avg = self._nf( self.params.preamp_type_def, 
+            nf1_avg, pad = self._nf( self.params.preamp_type_def, 
                                 self.params.preamp_nf_model,
                                 self.params.preamp_nf_fit_coeff,
+                                self.params.booster_gain_min,
                                 self.params.preamp_gain_flatmax, 
                                 g1)
-            nf2_avg = self._nf( self.params.booster_type_def,
+            #no padding expected for the 1stage because g1 = gain_max
+            nf2_avg, pad = self._nf( self.params.booster_type_def,
                                 self.params.booster_nf_model,
                                 self.params.booster_nf_fit_coeff,
+                                self.params.booster_gain_min,
                                 self.params.booster_gain_flatmax, 
                                 g2)
             nf_avg = lin2db(db2lin(nf1_avg) + db2lin(nf2_avg-g1))
-        else:
-            pad = max(self.params.gain_min - self.effective_gain, 0)
-            gain_target = self.effective_gain + pad        
-
-            nf_avg = self._nf(  self.params.type_def,
+            #no padding expected for the 1stage because g1 = gain_max            
+            pad = 0
+        else:      
+            nf_avg, pad = self._nf(  self.params.type_def,
                                 self.params.nf_model,
                                 self.params.nf_fit_coeff,
+                                self.params.gain_min,
                                 self.params.gain_flatmax,
-                                gain_target)
+                                self.effective_gain)
 
-        self.att_in = pad
+        self.att_in = pad # not used to attenuate carriers, only used in _repr_ and _str_
         if avg:
-            return nf_avg + pad
+            return nf_avg
         else:
-            return self.interpol_nf_ripple + nf_avg + pad # input VOA = 1 for 1 NF degradation
+            return self.interpol_nf_ripple + nf_avg # input VOA = 1 for 1 NF degradation
 
     def noise_profile(self, df):
         """ noise_profile(bw) computes amplifier ase (W) in signal bw (Hz)
