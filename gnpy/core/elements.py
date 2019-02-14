@@ -41,7 +41,6 @@ class Transceiver(Node):
         with errstate(divide='ignore'):
             self.baud_rate = [c.baud_rate for c in spectral_info.carriers]
             ratio_01nm = [lin2db(12.5e9/b_rate) for b_rate in self.baud_rate]
-            
         #set raw values to record original calculation, before update_snr()            
             self.raw_osnr_ase = [lin2db(divide(c.power.signal, c.power.ase))
                             for c in spectral_info.carriers]
@@ -561,6 +560,7 @@ class Edfa(Node):
         amplifier_freq = itufs(0.05) * 1e12 # Hz
         self.channel_freq = frequencies
         self.interpol_dgt = interp(self.channel_freq, amplifier_freq, self.params.dgt)
+
         self.interpol_gain_ripple = interp(self.channel_freq, amplifier_freq, self.params.gain_ripple)
         self.interpol_nf_ripple =interp(self.channel_freq, amplifier_freq, self.params.nf_ripple)
 
@@ -627,7 +627,7 @@ class Edfa(Node):
             nf1_avg, pad = self._nf( self.params.preamp_type_def, 
                                 self.params.preamp_nf_model,
                                 self.params.preamp_nf_fit_coeff,
-                                self.params.booster_gain_min,
+                                self.params.preamp_gain_min,
                                 self.params.preamp_gain_flatmax, 
                                 g1)
             #no padding expected for the 1stage because g1 = gain_max
