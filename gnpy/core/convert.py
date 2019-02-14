@@ -163,8 +163,8 @@ def parse_headers(my_sheet, input_headers_dict, headers, start_line, slice_in):
             slice_out = read_slice(my_sheet, start_line+iteration, slice_in, h0)
             iteration += 1
         if slice_out == (-1, -1):
-            if h0 == 'east':
-                print(f'\x1b[1;31;40m'+f'CRITICAL: missing _east_ header above other headers (hierarchical) _ ABORT'+ '\x1b[0m')
+            if h0 in ('east', 'Node A', 'Node Z', 'City') :
+                print(f'\x1b[1;31;40m'+f'CRITICAL: missing _{h0}_ header: EXECUTION ENDS'+ '\x1b[0m')
                 exit()
             else:
                 print(f'missing header {h0}')
