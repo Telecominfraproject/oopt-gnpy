@@ -106,7 +106,7 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
                     )
                     -power_target,
                 gain_min=
-                    gain_target
+                    gain_target+3
                     -edfa.gain_min,
                 nf=edfa_nf(gain_target, edfa_variety, equipment)) \
                 for edfa_variety, edfa in edfa_dict.items()
@@ -115,6 +115,8 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
     #filter on raman restriction
     raman_filter = lambda edfa: (edfa.raman and raman_allowed) or not edfa.raman
     edfa_list = list(filter(raman_filter, edfa_list))
+    #print(f'\n{uid}, gain {gain_target}, {power_target}')
+    #print('edfa',edfa_list)
 
     #filter on min gain limitation:            
     acceptable_gain_min_list = \
@@ -130,6 +132,7 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
             )
     else:
         edfa_list = acceptable_gain_min_list            
+    #print('gain_min', acceptable_gain_min_list)
 
     #filter on max power limitation:
     acceptable_power_list = \
@@ -140,6 +143,7 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
         #pick up all amplifiers that share this max gain:
         acceptable_power_list = \
         list(filter(lambda x : x.power-power_max>-0.3, edfa_list))
+    #print('power', acceptable_power_list)
 
     # debug:
     # print(gain_target, power_target, '=>\n',acceptable_power_list)
