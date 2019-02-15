@@ -575,11 +575,16 @@ class Edfa(Node):
             self.effective_gain = self.target_pch_out_db - pref.pi
         else:
             self.effective_gain = self.operational.gain_target
+
+        """check power saturation and correct effective gain & power accordingly:"""            
+        self.effective_gain = min(  
+                                    self.effective_gain, 
+                                    self.params.p_max - (pref.pi + pref.neq_ch)
+                                    )
         #print(self.uid, self.effective_gain, self.operational.gain_target)
+        self.effective_pch_out_db = round(pref.pi + self.effective_gain, 2)
 
         """check power saturation and correct target_gain accordingly:"""
-        self.effective_gain = min(self.effective_gain, self.params.p_max - self.pin_db)
-        self.effective_pch_out_db = round(pref.pi + self.effective_gain, 2)
         #print(self.uid, self.effective_gain, self.pin_db, pref.pi)
         self.nf = self._calc_nf()
         self.gprofile = self._gain_profile(pin)

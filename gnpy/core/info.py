@@ -30,7 +30,7 @@ class ConvenienceAccess:
 
 
 class Power(namedtuple('Power', 'signal nonlinear_interference amplified_spontaneous_emission'), ConvenienceAccess):
-
+"""carriers power in W"""
     _ABBREVS = {'nli': 'nonlinear_interference',
                 'ase': 'amplified_spontaneous_emission',}
 
@@ -42,7 +42,11 @@ class Channel(namedtuple('Channel', 'channel_number frequency baud_rate roll_off
                 'ffs':      'frequency',
                 'freq':     'frequency',}
 
-class Pref(namedtuple('Pref', 'p_span0, p_spani'), ConvenienceAccess):
+class Pref(namedtuple('Pref', 'p_span0, p_spani, neq_ch '), ConvenienceAccess):
+    """noiseless reference power in dBm: 
+    p0: inital target carrier power
+    pi: carrier power after element i
+    neqch: equivalent channel count in dB"""
 
     _ABBREVS = {'p0' :  'p_span0',
                 'pi' :  'p_spani'}
@@ -60,8 +64,8 @@ def merge_input_spectral_information(*si):
 def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing):
     # pref in dB : convert power lin into power in dB
     pref = lin2db(power * 1e3)
-    si = SpectralInformation(pref=Pref(pref, pref))
     nb_channel = automatic_nch(f_min, f_max, spacing)
+    si = SpectralInformation(pref=Pref(pref, pref, lin2db(nb_channel)))
     si = si.update(carriers=[
             Channel(f, (f_min+spacing*f),
             baud_rate, roll_off, Power(power, 0, 0)) for f in range(1,nb_channel+1)
