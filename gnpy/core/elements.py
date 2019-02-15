@@ -429,16 +429,16 @@ class EdfaParams:
         if params == {}:
             self.type_variety = ''
             self.type_def = ''
-            self.gain_flatmax = 0
-            self.gain_min = 0
-            self.p_max = 0
-            self.nf_model = None
-            self.nf_fit_coeff = None
-            self.nf_ripple = None
-            self.dgt = None
-            self.gain_ripple = None
-            self.out_voa_auto = False
-            self.allowed_for_design = None
+            # self.gain_flatmax = 0
+            # self.gain_min = 0
+            # self.p_max = 0
+            # self.nf_model = None
+            # self.nf_fit_coeff = None
+            # self.nf_ripple = None
+            # self.dgt = None
+            # self.gain_ripple = None
+            # self.out_voa_auto = False
+            # self.allowed_for_design = None
 
     def update_params(self, kwargs):
         for k,v in kwargs.items() :
@@ -446,11 +446,22 @@ class EdfaParams:
                 if isinstance(v, dict) else v)
 
 class EdfaOperational:
-    def __init__(self, gain_target, deltap, tilt_target, out_voa=None):
-        self.gain_target = gain_target
-        self.dp_db = deltap
-        self.tilt_target = tilt_target
-        self.out_voa = out_voa
+    default_values = \
+    {
+        'gain_target':      None,
+        'dp_db':            None,
+        'tilt_target':      0,
+        'out_voa':          0
+    }
+
+    def __init__(self, **operational):
+        self.update_attr(operational)
+
+    def update_attr(self, kwargs):
+        clean_kwargs = {k:v for k,v in kwargs.items() if v !=''}
+        for k,v in self.default_values.items():
+            setattr(self, k, clean_kwargs.get(k,v))
+
     def __repr__(self):
         return (f'{type(self).__name__}('
                 f'gain_target={self.gain_target!r}, '
