@@ -111,11 +111,12 @@ class Eqpt(object):
     {
             'from_city':        '',
             'to_city':          '',
-            'east_amp_type':         '',
-            'east_att_in':           0,
-            'east_amp_gain':         0,
-            'east_tilt':             0,
-            'east_att_out':          0
+            'east_amp_type':    '',
+            'east_att_in':      0,
+            'east_amp_gain':    None,
+            'east_amp_dp':      None,
+            'east_tilt':        0,
+            'east_att_out':     None
     }
 
 
@@ -344,6 +345,7 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
               'type': 'Edfa',
               'type_variety': e.east_amp_type,
               'operational': {'gain_target': e.east_amp_gain,
+                              'delta_p':     e.east_amp_dp,
                               'tilt_target': e.east_tilt,
                               'out_voa'    : e.east_att_out}
             }
@@ -356,6 +358,7 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
               'type': 'Edfa',
               'type_variety': e.west_amp_type,
               'operational': {'gain_target': e.west_amp_gain,
+                              'delta_p':     e.west_amp_dp,
                               'tilt_target': e.west_tilt,
                               'out_voa'    : e.west_att_out}
               }
@@ -420,6 +423,7 @@ def parse_excel(input_filename):
             'amp type':         'east_amp_type',
             'att_in':           'east_att_in',
             'amp gain':         'east_amp_gain',
+            'delta p':          'east_amp_dp',
             'tilt':             'east_tilt',
             'att_out':          'east_att_out'
        },
@@ -427,6 +431,7 @@ def parse_excel(input_filename):
             'amp type':         'west_amp_type',
             'att_in':           'west_att_in',
             'amp gain':         'west_amp_gain',
+            'delta p':          'west_amp_dp',
             'tilt':             'west_tilt',
             'att_out':          'west_att_out'       
        }       
