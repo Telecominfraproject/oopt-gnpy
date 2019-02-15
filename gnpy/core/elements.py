@@ -490,7 +490,7 @@ class Edfa(Node):
         self.pin_db = None
         self.nch = None
         self.pout_db = None
-        self.dp_db = None #delta P with Pref (power swwep) in power mode
+        self.dp_db = self.operational.dp_db #delta P with Pref (power swwep) in power mode
         self.target_pch_out_db = None
         self.effective_pch_out_db = None
         self.passive = False
@@ -584,8 +584,6 @@ class Edfa(Node):
         if self.dp_db is not None:
             self.target_pch_out_db = round(self.dp_db + pref.p0, 2)
             self.effective_gain = self.target_pch_out_db - pref.pi
-        else:
-            self.effective_gain = self.operational.gain_target
 
         """check power saturation and correct effective gain & power accordingly:"""            
         self.effective_gain = min(  
