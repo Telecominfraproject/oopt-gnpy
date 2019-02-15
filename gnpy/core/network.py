@@ -118,7 +118,9 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
     #print(f'\n{uid}, gain {gain_target}, {power_target}')
     #print('edfa',edfa_list)
 
-    #filter on min gain limitation:            
+    #filter on min gain limitation: 
+    #consider gain_target+3 to allow some operation below min gain 
+    #(~counterpart to the extended gain range)           
     acceptable_gain_min_list = \
     list(filter(lambda x : x.gain_min>0, edfa_list))
     if len(acceptable_gain_min_list) < 1:
@@ -170,34 +172,26 @@ def set_roadm_loss(network, equipment, pref_ch_db):
         elif roadm.loss == None:
             roadm.loss = default_roadm_loss
 
-def target_power(dp_from_gain, network, node, equipment): #get_fiber_dp
+def target_power(network, node, equipment): #get_fiber_dp
     SPAN_LOSS_REF = 20
     POWER_SLOPE = 0.3
     power_mode = equipment['Spans']['default'].power_mode
     dp_range = list(equipment['Spans']['default'].delta_power_range_db)
     node_loss = span_loss(network, node)
 
-    dp_gain_mode = 0
     try:
-        dp_power_mode = round2float((node_loss - SPAN_LOSS_REF) * POWER_SLOPE, dp_range[2])
-        dp_power_mode = max(dp_range[0], dp_power_mode)
-        dp_power_mode = min(dp_range[1], dp_power_mode)
+        dp = round2float((node_loss - SPAN_LOSS_REF) * POWER_SLOPE, dp_range[2])
+        dp = max(dp_range[0], dp)
+        dp = min(dp_range[1], dp)
     except KeyError:
         print(f'invalid delta_power_range_db definition in eqpt_config[Spans]'
               f'delta_power_range_db: [lower_bound, upper_bound, step]')
         exit()
 
-    if dp_from_gain:
-        dp_power_mode = dp_from_gain
-        dp_gain_mode = dp_from_gain
     if isinstance(node, Roadm):
-        dp_power_mode = 0
-
-    dp = dp_power_mode if power_mode else dp_gain_mode
-    #print(f'{repr(node)} delta power in:\n{dp}dB')
+        dp = 0
 
     return dp
-
 
 def prev_node_generator(network, node):
     """fused spans interest:
@@ -294,23 +288,27 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
         #     node = find_last_node(next_node)
         #     next_node = next(n for n in network.successors(node))
         #     next_node = find_last_node(next_node)
-        prev_dp = 0
+        prev_dp = equipment['Roadms']['default'].power_mode_pout_target
         dp = 0
         while True:
         #go through all nodes in the OMS (loop until next Roadm instance)
             if isinstance(node, Edfa):
                 node_loss = span_loss(network, prev_node)
-                if isinstance(prev_node, Roadm):
-                    # gain readings shouldnot set the power level after roadm if exact roadm loss are not known
-                    # => use gain readings only to set span power differences 
-                    # but leave auto_design to set the average powe level after roadm
-                    dp_from_gain = None
+                if node.operational.dp_db is None:
+                    dp = target_power(network, next_node, equipment)
                 else:
-                    dp_from_gain = prev_dp + node.operational.gain_target - node_loss \
-                        if node.operational.gain_target > 0 else None
-                dp = target_power(dp_from_gain, network, next_node, equipment)
-                gain_target = node_loss + dp - prev_dp                
-                if node.params.type_variety == '':
+                    dp = node.operational.dp_db
+                if isinstance(prev_node, Roadm):
+                    gain_from_dp = dp - prev_dp
+                else:
+                    gain_from_dp = node_loss + dp - prev_dp
+                if node.operational.gain_target is None or power_mode:
+                    gain_target = gain_from_dp
+                else:
+                    gain_target = node.operational.gain_target
+           
+                if node.params.type_variety == '' :
+                # no auto-design in gain_mode
                     power_target = pref_total_db + dp
                     raman_allowed = False
                     if isinstance(prev_node, Fiber):
@@ -323,10 +321,9 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
                     node.params.update_params(extra_params.__dict__)
                     dp += power_reduction
                     gain_target += power_reduction
-                
-                if power_mode:
-                    node.dp_db = dp
-                node.operational.gain_target = gain_target                    
+                                
+                node.dp_db = dp if power_mode else None
+                node.effective_gain = gain_target                    
                 set_amplifier_voa(node, pref_total_db, power_mode)
             if isinstance(next_node, Roadm) or isinstance(next_node, Transceiver):
                 break
@@ -347,7 +344,7 @@ def add_egress_amplifier(network, node):
                     uid = f'Edfa{i}_{node.uid}',
                     params = {},
                     operational = {
-                        'gain_target': 0,
+                        'gain_target': None,
                         'tilt_target': 0,
                     })
         network.add_node(amp)
