@@ -446,8 +446,9 @@ class EdfaParams:
                 if isinstance(v, dict) else v)
 
 class EdfaOperational:
-    def __init__(self, gain_target, tilt_target, out_voa=None):
+    def __init__(self, gain_target, deltap, tilt_target, out_voa=None):
         self.gain_target = gain_target
+        self.dp_db = deltap
         self.tilt_target = tilt_target
         self.out_voa = out_voa
     def __repr__(self):
