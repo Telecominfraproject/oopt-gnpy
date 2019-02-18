@@ -261,20 +261,19 @@ def find_last_node(network, node):
         pass
     return this_node
 
-def set_amplifier_voa(amp, pref_total_db, power_mode):
-    VOA_MARGIN = 0
-    if amp.operational.out_voa is None:
+def set_amplifier_voa(amp, power_target, power_mode):
+    VOA_MARGIN = 1 #do not maximize the VOA optimization
+    if amp.out_voa is None:
         if power_mode:
-            gain_target = amp.operational.gain_target
-            pout = pref_total_db + amp.dp_db
-            voa = min(amp.params.p_max-pout,
-                      amp.params.gain_flatmax-amp.operational.gain_target)
-            voa = round2float(max(voa, 0), 0.5) - VOA_MARGIN if amp.params.out_voa_auto else 0
-            amp.dp_db = amp.dp_db + voa
-            amp.operational.gain_target = amp.operational.gain_target + voa
+            gain_target = amp.effective_gain
+            voa = min(amp.params.p_max-power_target,
+                      amp.params.gain_flatmax-amp.effective_gain)
+            voa = max(round2float(max(voa, 0), 0.5) - VOA_MARGIN, 0) if amp.params.out_voa_auto else 0
+            amp.delta_p = amp.delta_p + voa
+            amp.effective_gain = amp.effective_gain + voa
         else:
             voa = 0 # no output voa optimization in gain mode
-        amp.operational.out_voa = voa
+        amp.out_voa = voa
 
 def set_egress_amplifier(network, roadm, equipment, pref_total_db):
     power_mode = equipment['Spans']['default'].power_mode
@@ -294,22 +293,22 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
         #go through all nodes in the OMS (loop until next Roadm instance)
             if isinstance(node, Edfa):
                 node_loss = span_loss(network, prev_node)
-                if node.operational.dp_db is None:
+                if node.delta_p is None:
                     dp = target_power(network, next_node, equipment)
                 else:
-                    dp = node.operational.dp_db
+                    dp = node.delta_p
                 if isinstance(prev_node, Roadm):
                     gain_from_dp = dp - prev_dp
                 else:
                     gain_from_dp = node_loss + dp - prev_dp
-                if node.operational.gain_target is None or power_mode:
+                if node.effective_gain is None or power_mode:
                     gain_target = gain_from_dp
-                else:
-                    gain_target = node.operational.gain_target
-           
-                if node.params.type_variety == '' :
-                # no auto-design in gain_mode
-                    power_target = pref_total_db + dp
+                else: #gain mode with effective_gain 
+                    gain_target = node.effective_gain
+                    dp = prev_dp - node_loss + gain_target
+                power_target = pref_total_db + dp
+
+                if node.params.type_variety == '' :                   
                     raman_allowed = False
                     if isinstance(prev_node, Fiber):
                         max_fiber_lineic_loss_for_raman = \
@@ -322,9 +321,9 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
                     dp += power_reduction
                     gain_target += power_reduction
                                 
-                node.dp_db = dp if power_mode else None
+                node.delta_p = dp if power_mode else None
                 node.effective_gain = gain_target                    
-                set_amplifier_voa(node, pref_total_db, power_mode)
+                set_amplifier_voa(node, power_target, power_mode)
             if isinstance(next_node, Roadm) or isinstance(next_node, Transceiver):
                 break
             prev_dp = dp
