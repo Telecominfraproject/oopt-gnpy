@@ -333,18 +333,6 @@ def update_trx_osnr(equipment):
             m['OSNR'] = m['OSNR'] + equipment['SI']['default'].sys_margins
     return equipment
 
-def update_hybrid(equipment):
-    edfa_dict = equipment['Edfa']
-    for edfa in edfa_dict.values():
-        if edfa.type_def == 'hybrid':
-            edfa_booster = edfa_dict[edfa.raman_model.edfa_variety]
-            edfa.nf_model = edfa_booster.nf_model
-            edfa.p_max = edfa_booster.p_max
-            edfa.gain_flatmax = edfa_booster.gain_flatmax + edfa.raman_model.gain_ram
-            edfa.edfa_gain_min = edfa_booster.gain_min
-            edfa.edfa_gain_flatmax = edfa_booster.gain_flatmax
-    return equipment
-
 def update_dual_stage(equipment):
     edfa_dict = equipment['Edfa']
     for edfa in edfa_dict.values():
@@ -369,7 +357,6 @@ def update_dual_stage(equipment):
                 exit()
     return equipment
 
-
 def equipment_from_json(json_data, filename):
     """build global dictionnary eqpt_library that stores all eqpt characteristics:
     edfa type type_variety, fiber type_variety
@@ -390,6 +377,5 @@ def equipment_from_json(json_data, filename):
             else:                
                 equipment[key][subkey] = typ(**entry)
     equipment = update_trx_osnr(equipment)
-    equipment = update_hybrid(equipment)
     equipment = update_dual_stage(equipment)
     return equipment

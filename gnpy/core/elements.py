@@ -449,9 +449,9 @@ class EdfaOperational:
     default_values = \
     {
         'gain_target':      None,
-        'dp_db':            None,
-        'tilt_target':      0,
-        'out_voa':          0
+        'delta_p':          None,
+        'out_voa':          None,        
+        'tilt_target':      0
     }
 
     def __init__(self, **operational):
@@ -490,14 +490,16 @@ class Edfa(Node):
         self.pin_db = None
         self.nch = None
         self.pout_db = None
-        self.dp_db = self.operational.dp_db #delta P with Pref (power swwep) in power mode
         self.target_pch_out_db = None
         self.effective_pch_out_db = None
         self.passive = False
-        self.effective_gain = self.operational.gain_target
         self.att_in = None
         self.carriers_in = None
         self.carriers_out = None
+        self.effective_gain = self.operational.gain_target
+        self.delta_p = self.operational.delta_p #delta P with Pref (power swwep) in power mode
+        self.tilt_target = self.operational.tilt_target
+        self.out_voa = self.operational.out_voa
 
     @property
     def to_json(self):
@@ -505,9 +507,10 @@ class Edfa(Node):
                 'type'          : type(self).__name__,
                 'type_variety'  : self.params.type_variety,
                 'operational'   : {
-                    'gain_target' : self.operational.gain_target,
-                    'tilt_target' : self.operational.tilt_target,
-                    'out_voa'     : self.operational.out_voa
+                    'gain_target' : self.effective_gain,
+                    'delta_p'     : self.delta_p,
+                    'tilt_target' : self.tilt_target,
+                    'out_voa'     : self.out_voa
                 },
                 'metadata'      : {
                     'location': self.metadata['location']._asdict()
@@ -539,10 +542,10 @@ class Edfa(Node):
                           f'  pad att_in (dB):        {self.att_in:.2f}',
                           f'  Power In (dBm):         {self.pin_db:.2f}',
                           f'  Power Out (dBm):        {self.pout_db:.2f}',
-                          f'  Delta_P (dB):           {self.dp_db!r}',
+                          f'  Delta_P (dB):           {self.delta_p!r}',
                           f'  target pch (dBm):       {self.target_pch_out_db!r}',
                           f'  effective pch (dBm):    {self.effective_pch_out_db!r}',
-                          f'  output VOA (dB):        {self.operational.out_voa:.2f}'])
+                          f'  output VOA (dB):        {self.out_voa:.2f}'])
 
     def carriers(self, loc, attr):
         """retrieve carriers information
@@ -579,10 +582,10 @@ class Edfa(Node):
         self.nch = frequencies.size
         self.pin_db = lin2db(sum(pin*1e3))
         
-        """in power mode: dp_db is defined and can be used to calculate the power target
+        """in power mode: delta_p is defined and can be used to calculate the power target
         This power target is used calculate the amplifier gain"""
-        if self.dp_db is not None:
-            self.target_pch_out_db = round(self.dp_db + pref.p0, 2)
+        if self.delta_p is not None:
+            self.target_pch_out_db = round(self.delta_p + pref.p0, 2)
             self.effective_gain = self.target_pch_out_db - pref.pi
 
         """check power saturation and correct effective gain & power accordingly:"""            
@@ -600,7 +603,6 @@ class Edfa(Node):
 
         pout = (pin + self.noise_profile(baud_rates))*db2lin(self.gprofile)
         self.pout_db = lin2db(sum(pout*1e3))
-        self.operational.gain_target = self.effective_gain
         # ase & nli are only calculated in signal bandwidth
         #    pout_db is not the absolute full output power (negligible if sufficient channels)
 
@@ -636,7 +638,7 @@ class Edfa(Node):
         True => 2 stages amp modelling based on precalculated nf1, nf2 and delta_p in build_OA_json
         False => polynomial fit based on self.params.nf_fit_coeff"""
         # gain_min > gain_target TBD:
-        if self.params.type_def == 'dual_stage':        
+        if self.params.type_def == 'dual_stage':
             g1 = self.params.preamp_gain_flatmax
             g2 = self.effective_gain - g1
             nf1_avg, pad = self._nf( self.params.preamp_type_def, 
@@ -760,7 +762,7 @@ class Edfa(Node):
 
         # Calculate the target slope - currently assumes equal spaced channels
         # TODO|jla: support arbitrary channel spacing
-        targ_slope = self.operational.tilt_target / (len(nb_channel) - 1)
+        targ_slope = self.tilt_target / (len(nb_channel) - 1)
 
         # first estimate of DGT scaling
         if abs(dgt_slope) > 0.001: # check for zero value due to flat dgt
@@ -834,7 +836,7 @@ class Edfa(Node):
 
         gains = db2lin(self.gprofile)
         carrier_ases = self.noise_profile(brate)
-        att = db2lin(self.operational.out_voa)
+        att = db2lin(self.out_voa)
 
         for gain, carrier_ase, carrier in zip(gains, carrier_ases, carriers):
             pwr = carrier.power
@@ -845,7 +847,7 @@ class Edfa(Node):
 
     def update_pref(self, pref):
         return pref._replace(p_span0=pref.p0,
-                            p_spani=pref.pi + self.effective_gain - self.operational.out_voa)
+                            p_spani=pref.pi + self.effective_gain - self.out_voa)
 
     def __call__(self, spectral_info):
         self.carriers_in = spectral_info.carriers
