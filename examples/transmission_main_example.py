@@ -62,8 +62,8 @@ def main(network, equipment, source, destination, req = None):
                     }]
     result_dicts.update({'network': network_data})
     design_data = [{
-                    'power_mode'        : equipment['Spans']['default'].power_mode,
-                    'span_power_range'  : equipment['Spans']['default'].delta_power_range_db,
+                    'power_mode'        : equipment['Span']['default'].power_mode,
+                    'span_power_range'  : equipment['Span']['default'].delta_power_range_db,
                     'design_pch'        : equipment['SI']['default'].power_dbm,
                     'baud_rate'         : equipment['SI']['default'].baud_rate
                     }]
@@ -71,9 +71,9 @@ def main(network, equipment, source, destination, req = None):
     simulation_data = []
     result_dicts.update({'simulation results': simulation_data})
 
-    power_mode = equipment['Spans']['default'].power_mode
+    power_mode = equipment['Span']['default'].power_mode
     print('\n'.join([f'Power mode is set to {power_mode}',
-                     f'=> it can be modified in eqpt_config.json - Spans']))
+                     f'=> it can be modified in eqpt_config.json - Span']))
 
     pref_ch_db = lin2db(req.power*1e3) #reference channel power / span (SL=20dB)
     pref_total_db = pref_ch_db + lin2db(req.nb_channel) #reference total power / span (SL=20dB)

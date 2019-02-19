@@ -48,7 +48,7 @@ class SI(common):
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs)    
 
-class Spans(common):
+class Span(common):
     default_values = \
     {
         'power_mode':                       True,
@@ -67,12 +67,11 @@ class Spans(common):
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs)
 
-class Roadms(common):
+class Roadm(common):
     default_values = \
     {
-        'gain_mode_default_loss':   20,
-        'power_mode_pout_target':   -18,
-        'add_drop_osnr':            100
+        'target_pch_out_db':   -17,
+        'add_drop_osnr':       100
     }    
 
     def __init__(self, **kwargs):

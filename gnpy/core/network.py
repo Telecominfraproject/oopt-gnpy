@@ -49,7 +49,7 @@ def network_from_json(json_data, equipment):
     for el_config in json_data['elements']:
         typ = el_config.pop('type')
         variety = el_config.pop('type_variety', 'default')
-        if typ in equipment and variety in equipment[typ]:
+        if typ in equipment and variety in equipment[typ]:           
             extra_params = equipment[typ][variety]
             el_config.setdefault('params', {}).update(extra_params.__dict__)
         elif typ in ['Edfa', 'Fiber']: #catch it now because the code will crash later!
@@ -91,7 +91,7 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
     @Orange Jean-Luc Augé
     """
     Edfa_list = namedtuple('Edfa_list', 'raman variety power gain_min nf')
-    TARGET_EXTENDED_GAIN = equipment['Spans']['default'].target_extended_gain
+    TARGET_EXTENDED_GAIN = equipment['Span']['default'].target_extended_gain
     edfa_dict = equipment['Edfa']
     pin = power_target - gain_target
 
@@ -184,7 +184,7 @@ def target_power(network, node, equipment): #get_fiber_dp
         dp = max(dp_range[0], dp)
         dp = min(dp_range[1], dp)
     except KeyError:
-        print(f'invalid delta_power_range_db definition in eqpt_config[Spans]'
+        print(f'invalid delta_power_range_db definition in eqpt_config[Span]'
               f'delta_power_range_db: [lower_bound, upper_bound, step]')
         exit()
 
@@ -276,7 +276,7 @@ def set_amplifier_voa(amp, power_target, power_mode):
         amp.out_voa = voa
 
 def set_egress_amplifier(network, roadm, equipment, pref_total_db):
-    power_mode = equipment['Spans']['default'].power_mode
+    power_mode = equipment['Span']['default'].power_mode
     next_oms = (n for n in network.successors(roadm) if not isinstance(n, Transceiver))
     for oms in next_oms:
         #go through all the OMS departing from the Roadm
@@ -435,7 +435,7 @@ def add_fiber_padding(network, fibers, padding):
                 first_fiber.att_in = first_fiber.att_in + padding - this_span_loss
 
 def build_network(network, equipment, pref_ch_db, pref_total_db):
-    default_span_data = equipment['Spans']['default']
+    default_span_data = equipment['Span']['default']
     max_length = int(default_span_data.max_length * UNITS[default_span_data.length_units])
     min_length = max(int(default_span_data.padding/0.2*1e3),50_000)
     bounds = range(min_length, max_length)
