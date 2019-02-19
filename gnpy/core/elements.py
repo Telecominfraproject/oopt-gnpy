@@ -601,7 +601,7 @@ class Edfa(Node):
         # ase & nli are only calculated in signal bandwidth
         #    pout_db is not the absolute full output power (negligible if sufficient channels)
 
-    def _nf(self, type_def, nf_model, nf_fit_coef, gain_min, gain_flatmax, gain_target):
+    def _nf(self, type_def, nf_model, nf_fit_coeff, gain_min, gain_flatmax, gain_target):
         #if hybrid raman, use edfa_gain_flatmax attribute, else use gain_flatmax 
         #gain_flatmax = getattr(params, 'edfa_gain_flatmax', params.gain_flatmax)
         pad = max(gain_min - gain_target, 0)

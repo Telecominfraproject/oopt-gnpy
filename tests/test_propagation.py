@@ -47,12 +47,8 @@ def propagation(input_power, con_in, con_out,dest):
 
     p = input_power
     p = db2lin(p) * 1e-3
-    spacing = 0.05 # THz
-    si = SpectralInformation() # SI units: W, Hz
-    si = si.update(carriers=[
-        Channel(f, (191.3 + spacing * f) * 1e12, 32e9, 0.15, Power(p, 0, 0))
-        for f in range(1,80)
-    ])
+    spacing = 50e9 # THz
+    si = create_input_spectral_information(191.3e12, 191.3e12+79*spacing, 0.15, 32e9, p, spacing)
     source = next(transceivers[uid] for uid in transceivers if uid == 'trx A')
     sink = next(transceivers[uid] for uid in transceivers if uid == dest)
     path = dijkstra_path(network, source, sink)

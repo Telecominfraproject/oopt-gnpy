@@ -1,9 +1,11 @@
 {     "Edfa":[{
             "type_variety": "CienaDB_medium_gain",
+            "type_def": "advanced_model",
             "gain_flatmax": 25,
             "gain_min": 15,
             "p_max": 21,
             "advanced_config_from_json": "std_medium_gain_advanced_config.json",
+            "out_voa_auto": false,
             "allowed_for_design": true
             },
             {
@@ -52,7 +54,7 @@
             "gamma": 0.00127
             }
       ],
-      "Spans":[{
+      "Span":[{
             "power_mode": true,
             "delta_power_range_db": [0,0,1],
             "max_length": 150,
@@ -64,8 +66,7 @@
             "con_out": 0
             }
       ],
-      "Roadms":[{
-            "gain_mode_default_loss": 20,
+      "Roadm":[{
             "power_mode_pout_target": -20,
             "add_drop_osnr": 100
             }],
