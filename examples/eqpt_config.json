@@ -93,7 +93,7 @@
             "gamma": 0.000843
             }
       ],
-      "Spans":[{
+      "Span":[{
             "power_mode":true,
             "delta_power_range_db": [0,0,0.5],
             "max_fiber_lineic_loss_for_raman": 0.28,
@@ -107,9 +107,8 @@
             "con_out": 0
             }
       ],
-      "Roadms":[{
-            "gain_mode_default_loss": 20,
-            "power_mode_pout_target": -20,
+      "Roadm":[{
+            "target_pch_out_db": -20,
             "add_drop_osnr": 38,
             "restrictions": {
                             "preamp_variety_list":["low_gain_preamp", "high_gain_preamp"],

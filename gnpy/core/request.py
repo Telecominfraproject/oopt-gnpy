@@ -23,7 +23,6 @@ from networkx.utils import pairwise
 from numpy import mean
 from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
-from gnpy.core.network import set_roadm_loss
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
 from copy import copy, deepcopy
@@ -386,8 +385,6 @@ def compute_constrained_path(network, req):
     return total_path
 
 def propagate(path, req, equipment, show=False):
-    #update roadm loss in case of power sweep (power mode only)
-    set_roadm_loss(path, equipment, lin2db(req.power*1e3))
     si = create_input_spectral_information(
         req.f_min, req.f_max, req.roll_off, req.baud_rate,
         req.power, req.spacing)
@@ -395,7 +392,7 @@ def propagate(path, req, equipment, show=False):
         si = el(si)
         if show :
             print(el)
-    path[-1].update_snr(req.tx_osnr, equipment['Roadms']['default'].add_drop_osnr)
+    path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
     return path
 
 def propagate2(path, req, equipment, show=False):
@@ -415,8 +412,6 @@ def propagate2(path, req, equipment, show=False):
     return infos
 
 def propagate_and_optimize_mode(path, req, equipment):
-    #update roadm loss in case of power sweep (power mode only)
-    set_roadm_loss(path, equipment, lin2db(req.power*1e3))
     # if mode is unknown : loops on the modes starting from the highest baudrate fiting in the
     # step 1: create an ordered list of modes based on baudrate
     baudrate_to_explore = list(set([m['baud_rate'] for m in equipment['Transceiver'][req.tsp].mode 
@@ -442,7 +437,7 @@ def propagate_and_optimize_mode(path, req, equipment):
                 si = el(si)
             for m in modes_to_explore :
                 if path[-1].snr is not None:
-                    path[-1].update_snr(m['tx_osnr'], equipment['Roadms']['default'].add_drop_osnr)
+                    path[-1].update_snr(m['tx_osnr'], equipment['Roadm']['default'].add_drop_osnr)
                     if round(min(path[-1].snr+lin2db(b/(12.5e9))),2) > m['OSNR'] :
                         found_a_feasible_mode = True
                         return path, m
