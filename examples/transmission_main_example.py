@@ -92,25 +92,43 @@ def main(network, equipment, source, destination, req = None):
         print('invalid power range definition in eqpt_config, should be power_range_db: [lower, upper, step]')
         power_range = [0]
 
+    if not power_mode:
+        #power cannot be changed in gain mode
+        power_range = [0]
     for dp_db in power_range:
         req.power = db2lin(pref_ch_db + dp_db)*1e-3
-        print(f'\nPropagating with input power = {lin2db(req.power*1e3):.2f}dBm :')
+        if power_mode:
+            print(f'\nPropagating with input power = {lin2db(req.power*1e3):.2f}dBm :')
+        else:
+            print(f'\nPropagating in gain mode: power cannot be set manually')
         propagate(path, req, equipment, show=len(power_range)==1)
-        print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f}dBm :')
+        if power_mode:
+            print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f}dBm :')
+        else:
+            print(f'\nTransmission results:')
         print(destination)
         
         #print(f'\n !!!!!!!!!!!!!!!!!     TEST POINT         !!!!!!!!!!!!!!!!!!!!!')
         #print(f'carriers ase output of {path[1]} =\n {list(path[1].carriers("out", "nli"))}')
         # => use "in" or "out" parameter
         # => use "nli" or "ase" or "signal" or "total" parameter
-    
-        simulation_data.append({
-                    'Pch_dBm'               : pref_ch_db + dp_db,
-                    'OSNR_ASE_0.1nm'        : round(mean(destination.osnr_ase_01nm),2),
-                    'OSNR_ASE_signal_bw'    : round(mean(destination.osnr_ase),2),
-                    'SNR_nli_signal_bw'     : round(mean(destination.osnr_nli),2),
-                    'SNR_total_signal_bw'   : round(mean(destination.snr),2)
-                            })
+        
+        if power_mode:
+            simulation_data.append({
+                        'Pch_dBm'               : pref_ch_db + dp_db,
+                        'OSNR_ASE_0.1nm'        : round(mean(destination.osnr_ase_01nm),2),
+                        'OSNR_ASE_signal_bw'    : round(mean(destination.osnr_ase),2),
+                        'SNR_nli_signal_bw'     : round(mean(destination.osnr_nli),2),
+                        'SNR_total_signal_bw'   : round(mean(destination.snr),2)
+                                })
+        else:
+            simulation_data.append({
+                        'gain_mode'             : 'power canot be set',
+                        'OSNR_ASE_0.1nm'        : round(mean(destination.osnr_ase_01nm),2),
+                        'OSNR_ASE_signal_bw'    : round(mean(destination.osnr_ase),2),
+                        'SNR_nli_signal_bw'     : round(mean(destination.osnr_nli),2),
+                        'SNR_total_signal_bw'   : round(mean(destination.snr),2)
+                                })          
     write_csv(result_dicts, 'simulation_result.csv')
     return path
 
