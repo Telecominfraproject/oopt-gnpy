@@ -396,8 +396,6 @@ def propagate(path, req, equipment, show=False):
     return path
 
 def propagate2(path, req, equipment, show=False):
-    #update roadm loss in case of power sweep (power mode only)
-    set_roadm_loss(path, equipment, lin2db(req.power*1e3))
     si = create_input_spectral_information(
         req.f_min, req.f_max, req.roll_off, req.baud_rate,
         req.power, req.spacing)
@@ -408,7 +406,7 @@ def propagate2(path, req, equipment, show=False):
         infos[el] = before_si, after_si
         if show :
             print(el)
-    path[-1].update_snr(req.tx_osnr, equipment['Roadms']['default'].add_drop_osnr)
+    path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
     return infos
 
 def propagate_and_optimize_mode(path, req, equipment):
