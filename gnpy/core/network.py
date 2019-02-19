@@ -293,7 +293,7 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
                 else: #gain mode with effective_gain 
                     gain_target = node.effective_gain
                     dp = prev_dp - node_loss + gain_target
-                print(node.delta_p, dp, gain_target)
+                #print(node.delta_p, dp, gain_target)
                 power_target = pref_total_db + dp
 
                 if node.params.type_variety == '' :                   

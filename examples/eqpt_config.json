@@ -69,6 +69,33 @@
             "allowed_for_design": false
             },
             {
+            "type_variety": "4pumps_raman",
+            "type_def": "fixed_gain",
+            "gain_flatmax": 12,
+            "gain_min": 12,
+            "p_max": 21,
+            "nf0": -1,
+            "allowed_for_design": false
+            },   
+            {
+            "type_variety": "hybrid_4pumps_lowgain",
+            "type_def": "dual_stage",
+            "raman": true,
+            "gain_min": 25,
+            "preamp_variety": "4pumps_raman",
+            "booster_variety": "std_low_gain",
+            "allowed_for_design": true
+            },
+            {
+            "type_variety": "hybrid_4pumps_mediumgain",
+            "type_def": "dual_stage",
+            "raman": true,
+            "gain_min": 25,
+            "preamp_variety": "4pumps_raman",
+            "booster_variety": "std_medium_gain",
+            "allowed_for_design": true
+            },            
+            {
             "type_variety": "medium+low_gain",
             "type_def": "dual_stage",
             "gain_min": 25,
@@ -96,7 +123,7 @@
       "Span":[{
             "power_mode":true,
             "delta_power_range_db": [0,0,0.5],
-            "max_fiber_lineic_loss_for_raman": 0.28,
+            "max_fiber_lineic_loss_for_raman": 0.25,
             "target_extended_gain": 2.5,
             "max_length": 150,
             "length_units": "km",
