@@ -154,7 +154,15 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
     # gain and power requirements are resolved,
     #       =>chose the amp with the best NF among the acceptable ones:
     selected_edfa = min(acceptable_power_list, key=attrgetter('nf')) #filter on NF
-    power_reduction = min(selected_edfa.power, 0)
+    power_reduction = round(min(selected_edfa.power, 0),2)
+    if power_reduction < -0.5:
+        print(
+            f'\x1b[1;31;40m'\
+            + f'WARNING: target gain and power in node {uid}\n \
+    is beyond all available amplifiers capabilities and/or extended_gain_range:\n\
+    a power reduction of {power_reduction} is applied\n'\
+            + '\x1b[0m'
+            )        
 
     return selected_edfa.variety, power_reduction
 
