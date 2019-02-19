@@ -157,26 +157,11 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
 
     return selected_edfa.variety, power_reduction
 
-
-def set_roadm_loss(network, equipment, pref_ch_db):
-    roadms = [roadm for roadm in network if isinstance(roadm, Roadm)]
-    power_mode = equipment['Spans']['default'].power_mode
-    default_roadm_loss = equipment['Roadms']['default'].gain_mode_default_loss
-    pout_target = equipment['Roadms']['default'].power_mode_pout_target
-    roadm_loss = pref_ch_db - pout_target
-
-    for roadm in roadms:
-        if power_mode:
-            roadm.loss = roadm_loss
-            roadm.target_pch_out_db = pout_target
-        elif roadm.loss == None:
-            roadm.loss = default_roadm_loss
-
 def target_power(network, node, equipment): #get_fiber_dp
     SPAN_LOSS_REF = 20
     POWER_SLOPE = 0.3
-    power_mode = equipment['Spans']['default'].power_mode
-    dp_range = list(equipment['Spans']['default'].delta_power_range_db)
+    power_mode = equipment['Span']['default'].power_mode
+    dp_range = list(equipment['Span']['default'].delta_power_range_db)
     node_loss = span_loss(network, node)
 
     try:
@@ -287,32 +272,34 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
         #     node = find_last_node(next_node)
         #     next_node = next(n for n in network.successors(node))
         #     next_node = find_last_node(next_node)
-        prev_dp = equipment['Roadms']['default'].power_mode_pout_target
-        dp = 0
+        prev_dp = getattr(node.params, 'target_pch_out_db', 0)
+        dp = prev_dp
+        prev_voa = 0
+        voa = 0
         while True:
         #go through all nodes in the OMS (loop until next Roadm instance)
             if isinstance(node, Edfa):
                 node_loss = span_loss(network, prev_node)
+                if node.out_voa:
+                    voa = node.out_voa
                 if node.delta_p is None:
                     dp = target_power(network, next_node, equipment)
                 else:
                     dp = node.delta_p
-                if isinstance(prev_node, Roadm):
-                    gain_from_dp = dp - prev_dp
-                else:
-                    gain_from_dp = node_loss + dp - prev_dp
+                gain_from_dp = node_loss + dp - prev_dp + prev_voa
                 if node.effective_gain is None or power_mode:
                     gain_target = gain_from_dp
                 else: #gain mode with effective_gain 
                     gain_target = node.effective_gain
                     dp = prev_dp - node_loss + gain_target
+                print(node.delta_p, dp, gain_target)
                 power_target = pref_total_db + dp
 
                 if node.params.type_variety == '' :                   
                     raman_allowed = False
                     if isinstance(prev_node, Fiber):
                         max_fiber_lineic_loss_for_raman = \
-                                equipment['Spans']['default'].max_fiber_lineic_loss_for_raman
+                                equipment['Span']['default'].max_fiber_lineic_loss_for_raman
                         raman_allowed = prev_node.params.loss_coef < max_fiber_lineic_loss_for_raman
                     edfa_variety, power_reduction = select_edfa(raman_allowed, 
                                    gain_target, power_target, equipment, node.uid)
@@ -327,6 +314,7 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
             if isinstance(next_node, Roadm) or isinstance(next_node, Transceiver):
                 break
             prev_dp = dp
+            prev_voa = voa
             prev_node = node
             node = next_node
             # print(f'{node.uid}')
@@ -445,7 +433,6 @@ def build_network(network, equipment, pref_ch_db, pref_total_db):
     padding = default_span_data.padding
 
     #set raodm loss for gain_mode before to build network
-    set_roadm_loss(network, equipment, pref_ch_db)
     fibers = [f for f in network.nodes() if isinstance(f, Fiber)]
     add_connector_loss(fibers, con_in, con_out, default_span_data.EOL)
     add_fiber_padding(network, fibers, padding)
