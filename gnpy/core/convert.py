@@ -571,12 +571,12 @@ def midpoint(city_a, city_b):
 #output_json_file_name = 'coronet_conus_example.json'
 #TODO get column size automatically from tupple size
 
-NODES_COLUMN = 7
+NODES_COLUMN = 8
 NODES_LINE = 4
 LINKS_COLUMN = 16
 LINKS_LINE = 3
 EQPTS_LINE = 3
-EQPTS_COLUMN = 12
+EQPTS_COLUMN = 14
 parser = ArgumentParser()
 parser.add_argument('workbook', nargs='?', type=Path , default='meshTopologyExampleV2.xls')
 parser.add_argument('-f', '--filter-region', action='append', default=[])
