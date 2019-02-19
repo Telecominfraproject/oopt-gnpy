@@ -111,25 +111,21 @@ class Transceiver(Node):
         self._calc_snr(spectral_info)
         return spectral_info
 
-RoadmParams = namedtuple('RoadmParams', 'loss')
+RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr')
 
 class Roadm(Node):
-    def __init__(self, *args, params=None, **kwargs):
-        if params is None:
-            # default loss value if not mentioned in loaded network json
-            params = {'loss':None}
+    def __init__(self, *args, params, **kwargs):
         super().__init__(*args, params=RoadmParams(**params), **kwargs)
-        self.loss = self.params.loss
-        self.target_pch_out_db = None #set in Networks.py by def set_roadm_loss
-        self.effective_pch_out_db = None
-        self.effective_loss = None #set in self.propagate
+        self.loss = 0 #auto-design interest
+        self.effective_loss = None
+        self.effective_pch_out_db = self.params.target_pch_out_db
         self.passive = True
 
     @property
     def to_json(self):
         return {'uid'       : self.uid,
                 'type'      : type(self).__name__,
-                'params'    : {'loss' : self.loss},
+                'params'    : {'target_pch_out_db' : self.effective_pch_out_db},
                 'metadata'      : {
                     'location': self.metadata['location']._asdict()
                                     }
@@ -140,26 +136,25 @@ class Roadm(Node):
 
     def __str__(self):
         return '\n'.join([f'{type(self).__name__} {self.uid}',
-                          f'  loss (dB):     {self.effective_loss:.2f}',
-                          f'  pch out (dBm): {self.effective_pch_out_db!r}'])
+                          f'  effective loss (dB):  {self.effective_loss:.2f}',
+                          f'  pch out (dBm):        {self.effective_pch_out_db!r}'])
 
     def propagate(self, pref, *carriers):
         #pin_target and loss are read from eqpt_config.json['Roadm']
         #all ingress channels in xpress are set to this power level
         #but add channels are not, so we define an effective loss
         #in the case of add channels
-        if self.target_pch_out_db:
-            self.effective_loss = pref.pi - self.target_pch_out_db
-        else:
-             self.effective_loss = self.loss
-        self.effective_pch_out_db = pref.pi - self.effective_loss
-        attenuation = db2lin(self.effective_loss)
-
-        for carrier in carriers:
+        self.effective_pch_out_db = min(pref.pi, self.params.target_pch_out_db)
+        self.effective_loss = pref.pi - self.effective_pch_out_db
+        carriers_power = array([c.power.signal +c.power.nli+c.power.ase for c in carriers])
+        carriers_att = list(map(lambda x : lin2db(x*1e3)-self.params.target_pch_out_db, carriers_power))
+        exceeding_att = -min(list(filter(lambda x: x < 0, carriers_att)), default = 0)
+        carriers_att = list(map(lambda x: db2lin(x+exceeding_att), carriers_att))
+        for carrier_att, carrier in zip(carriers_att, carriers) :
             pwr = carrier.power
-            pwr = pwr._replace(signal=pwr.signal/attenuation,
-                               nonlinear_interference=pwr.nli/attenuation,
-                               amplified_spontaneous_emission=pwr.ase/attenuation)
+            pwr = pwr._replace( signal = pwr.signal/carrier_att,
+                                nonlinear_interference = pwr.nli/carrier_att,
+                                amplified_spontaneous_emission = pwr.ase/carrier_att)
             yield carrier._replace(power=pwr)
 
     def update_pref(self, pref):
