@@ -1,39 +1,63 @@
 {
-  "paths": [
+  "response": [
     {
-      "path": {
-        "path-id": null,
-        "path-properties": {
-          "path-metric": [
-            {
-              "metric-type": null,
-              "accumulative-value": null
-            }
-          ],
-          "path-srlgs": {
-            "usage": "not used yet",
-            "values": ["not used yet"]
+      "response-id": null,
+      "path-properties": {
+        "path-metric": [
+          {
+            "metric-type": "SNR@bandwidth",
+            "accumulative-value": null
           },
-          "path-route-objects": [
-            {
-              "path-route-object": {
-                "index": null,
-                "unnumbered-hop": {
-                  "node-id": null,
-                  "link-tp-id": null,
-                  "hop-type": null,
-                  "direction": "not used"
-                },
-                "label-hop": {
-                  "te-label": {
-                    "generic": "not used yet",
-                    "direction": "not used yet"
-                  }
-                }
+          {
+            "metric-type": "SNR@0.1nm",
+            "accumulative-value": null
+          },
+          {
+            "metric-type": "OSNR@bandwidth",
+            "accumulative-value": null
+          },
+          {
+            "metric-type": "OSNR@0.1nm",
+            "accumulative-value": null
+          },
+          {
+            "metric-type": "reference_power",
+            "accumulative-value": null
+          },
+          {
+            "metric-type": "path_bandwidth",
+            "accumulative-value": null
+          }
+        ],
+        "path-route-objects": [
+          {
+            "path-route-object": {
+              "index": 0,
+              "num-unnum-hop": {
+                "node-id": null,
+                "link-tp-id": null
               }
             }
-          ]
-        }
+          },
+          {
+            "path-route-object": {
+              "index": 1,
+              "transponder": {
+                "transponder-type": null,
+                "transponder-mode": null
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
+              "num-unnum-hop": {
+                "node-id": null,
+                "link-tp-id": null
+              }
+            }
+          },
+        ]
       }
     }
   ]
