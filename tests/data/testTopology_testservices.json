@@ -2,8 +2,8 @@
   "path-request": [
     {
       "request-id": "1",
-      "source": "a",
-      "destination": "g",
+      "source": "trx a",
+      "destination": "trx g",
       "src-tp-id": "trx a",
       "dst-tp-id": "trx g",
       "path-constraints": {
@@ -22,15 +22,12 @@
           "output-power": 0.001,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
       "request-id": "2a",
-      "source": "a",
-      "destination": "h",
+      "source": "trx a",
+      "destination": "trx h",
       "src-tp-id": "trx a",
       "dst-tp-id": "trx h",
       "path-constraints": {
@@ -49,15 +46,12 @@
           "output-power": 0.001,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
       "request-id": "3",
-      "source": "f",
-      "destination": "b",
+      "source": "trx f",
+      "destination": "trx b",
       "src-tp-id": "trx f",
       "dst-tp-id": "trx b",
       "path-constraints": {
@@ -76,15 +70,12 @@
           "output-power": 0.001,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
       "request-id": "ee",
-      "source": "c",
-      "destination": "f",
+      "source": "trx c",
+      "destination": "trx f",
       "src-tp-id": "trx c",
       "dst-tp-id": "trx f",
       "path-constraints": {
@@ -104,36 +95,23 @@
           "path_bandwidth": 300000000000.0
         }
       },
-      "optimizations": {
-        "explicit-route-include-objects": [
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 0,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "roadm e",
-              "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           },
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 1,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "roadm g",
               "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           }
         ]
@@ -141,8 +119,8 @@
     },
     {
       "request-id": "ff",
-      "source": "c",
-      "destination": "f",
+      "source": "trx c",
+      "destination": "trx f",
       "src-tp-id": "trx c",
       "dst-tp-id": "trx f",
       "path-constraints": {
@@ -161,15 +139,12 @@
           "output-power": 0.001,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
       "request-id": "10",
-      "source": "a",
-      "destination": "g",
+      "source": "trx a",
+      "destination": "trx g",
       "src-tp-id": "trx a",
       "dst-tp-id": "trx g",
       "path-constraints": {
@@ -188,15 +163,12 @@
           "output-power": 0.001,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
       "request-id": "11",
-      "source": "a",
-      "destination": "h",
+      "source": "trx a",
+      "destination": "trx h",
       "src-tp-id": "trx a",
       "dst-tp-id": "trx h",
       "path-constraints": {
@@ -216,21 +188,15 @@
           "path_bandwidth": 300000000000.0
         }
       },
-      "optimizations": {
-        "explicit-route-include-objects": [
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 0,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "bb",
               "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           }
         ]
@@ -238,8 +204,8 @@
     },
     {
       "request-id": "12",
-      "source": "f",
-      "destination": "b",
+      "source": "trx f",
+      "destination": "trx b",
       "src-tp-id": "trx f",
       "dst-tp-id": "trx b",
       "path-constraints": {
@@ -259,21 +225,15 @@
           "path_bandwidth": 300000000000.0
         }
       },
-      "optimizations": {
-        "explicit-route-include-objects": [
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 0,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "trx b",
               "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           }
         ]
@@ -281,8 +241,8 @@
     },
     {
       "request-id": "13",
-      "source": "c",
-      "destination": "f",
+      "source": "trx c",
+      "destination": "trx f",
       "src-tp-id": "trx c",
       "dst-tp-id": "trx f",
       "path-constraints": {
@@ -301,15 +261,12 @@
           "output-power": 0.001,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
       "request-id": "14",
-      "source": "c",
-      "destination": "f",
+      "source": "trx c",
+      "destination": "trx f",
       "src-tp-id": "trx c",
       "dst-tp-id": "trx f",
       "path-constraints": {
@@ -329,36 +286,23 @@
           "path_bandwidth": 300000000000.0
         }
       },
-      "optimizations": {
-        "explicit-route-include-objects": [
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 0,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "roadm e",
-              "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           },
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 1,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "roadm g",
               "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           }
         ]
@@ -366,8 +310,8 @@
     },
     {
       "request-id": "e:1# /",
-      "source": "a",
-      "destination": "g",
+      "source": "trx a",
+      "destination": "trx g",
       "src-tp-id": "trx a",
       "dst-tp-id": "trx g",
       "path-constraints": {
@@ -386,15 +330,12 @@
           "output-power": null,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
       "request-id": "b-2a",
-      "source": "a",
-      "destination": "h",
+      "source": "trx a",
+      "destination": "trx h",
       "src-tp-id": "trx a",
       "dst-tp-id": "trx h",
       "path-constraints": {
@@ -413,15 +354,12 @@
           "output-power": 0.001,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
       "request-id": "3a;?",
-      "source": "f",
-      "destination": "b",
+      "source": "trx f",
+      "destination": "trx b",
       "src-tp-id": "trx f",
       "dst-tp-id": "trx b",
       "path-constraints": {
@@ -440,15 +378,12 @@
           "output-power": null,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
       "request-id": "ee-s",
-      "source": "c",
-      "destination": "f",
+      "source": "trx c",
+      "destination": "trx f",
       "src-tp-id": "trx c",
       "dst-tp-id": "trx f",
       "path-constraints": {
@@ -468,36 +403,23 @@
           "path_bandwidth": 300000000000.0
         }
       },
-      "optimizations": {
-        "explicit-route-include-objects": [
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 0,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "roadm e",
-              "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           },
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 1,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "roadm g",
               "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           }
         ]
@@ -505,8 +427,8 @@
     },
     {
       "request-id": "ff-b",
-      "source": "c",
-      "destination": "f",
+      "source": "trx c",
+      "destination": "trx f",
       "src-tp-id": "trx c",
       "dst-tp-id": "trx f",
       "path-constraints": {
@@ -525,15 +447,12 @@
           "output-power": 0.001,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
       "request-id": "10-z",
-      "source": "a",
-      "destination": "g",
+      "source": "trx a",
+      "destination": "trx g",
       "src-tp-id": "trx a",
       "dst-tp-id": "trx g",
       "path-constraints": {
@@ -552,15 +471,12 @@
           "output-power": null,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
       "request-id": "11 g",
-      "source": "a",
-      "destination": "h",
+      "source": "trx a",
+      "destination": "trx h",
       "src-tp-id": "trx a",
       "dst-tp-id": "trx h",
       "path-constraints": {
@@ -579,15 +495,12 @@
           "output-power": null,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
       "request-id": "12<",
-      "source": "f",
-      "destination": "b",
+      "source": "trx f",
+      "destination": "trx b",
       "src-tp-id": "trx f",
       "dst-tp-id": "trx b",
       "path-constraints": {
@@ -606,15 +519,12 @@
           "output-power": null,
           "path_bandwidth": null
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
       "request-id": "12>",
-      "source": "f",
-      "destination": "b",
+      "source": "trx f",
+      "destination": "trx b",
       "src-tp-id": "trx f",
       "dst-tp-id": "trx b",
       "path-constraints": {
@@ -633,9 +543,6 @@
           "output-power": null,
           "path_bandwidth": null
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     }
   ],

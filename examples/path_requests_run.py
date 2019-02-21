@@ -56,8 +56,8 @@ def requests_from_json(json_data,equipment):
         # init all params from request
         params = {}
         params['request_id'] = req['request-id']
-        params['source'] = req['src-tp-id']
-        params['destination'] = req['dst-tp-id']
+        params['source'] = req['source']
+        params['destination'] = req['destination']
         params['trx_type'] = req['path-constraints']['te-bandwidth']['trx_type']
         params['trx_mode'] = req['path-constraints']['te-bandwidth']['trx_mode']
         params['format'] = params['trx_mode']
@@ -170,7 +170,7 @@ def compute_path(network, equipment, pathreqlist):
         build_network(network, equipment, p_db, p_total_db)
         pathreq.nodes_list.append(pathreq.destination)
         #we assume that the destination is a strict constraint
-        pathreq.loose_list.append('strict')
+        pathreq.loose_list.append('STRICT')
         print(f'Computing path from {pathreq.source} to {pathreq.destination}')
         print(f'with path constraint: {[pathreq.source]+pathreq.nodes_list}') #adding first node to be clearer on the output
         total_path = compute_constrained_path(network, pathreq)
@@ -252,7 +252,7 @@ def correct_route_list(network, pathreqlist):
     # prepares the format of route list of nodes to be consistant
     # remove wrong names, remove endpoints
     # also correct source and destination
-    anytype = [n.uid for n in network.nodes() if not isinstance(n, Transceiver)]
+    anytype = [n.uid for n in network.nodes()]
     # TODO there is a problem of identification of fibers in case of parallel fibers bitween two adjacent roadms
     # so fiber constraint is not supported
     transponders = [n.uid for n in network.nodes() if isinstance(n, Transceiver)]
@@ -263,7 +263,7 @@ def correct_route_list(network, pathreqlist):
             if n_id not in anytype :
                 nodes_suggestion = [uid for uid in anytype \
                     if n_id.lower() in uid.lower()]
-                if pathreq.loose_list[i] == 'loose':
+                if pathreq.loose_list[i] == 'LOOSE':
                     if len(nodes_suggestion)>0 :
                         new_n = nodes_suggestion[0]
                         print(f'invalid route node specified:\
