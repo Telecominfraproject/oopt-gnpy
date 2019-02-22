@@ -25,9 +25,9 @@ from gnpy.core.request import (compute_path_dsjctn, isdisjoint , find_reversed_p
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.elements import Roadm
 
-network_file_name = Path(__file__).parent.parent / 'tests/data/meshTopologyToy.json'
-service_file_name = Path(__file__).parent.parent / 'tests/data/meshTopologyToy_services.json'
-result_file_name  = Path(__file__).parent.parent / 'tests/data/meshTopologyToy_results.json'
+network_file_name = Path(__file__).parent.parent / 'tests/data/testTopology_expected.json'
+service_file_name = Path(__file__).parent.parent / 'tests/data/testTopology_testservices.json'
+result_file_name  = Path(__file__).parent.parent / 'tests/data/testTopology_testresults.json'
 eqpt_library_name = Path(__file__).parent.parent / 'tests/data/eqpt_config.json'
 
 @pytest.mark.parametrize("net",[network_file_name])
