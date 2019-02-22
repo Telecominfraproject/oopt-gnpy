@@ -32,8 +32,7 @@ eqpt_filename = DATA_DIR / 'eqpt_config.json'
 
 @pytest.mark.parametrize('xls_input,expected_json_output', {
     DATA_DIR / 'CORONET_Global_Topology.xls':   DATA_DIR / 'CORONET_Global_Topology_expected.json',
-    DATA_DIR / 'meshTopologyExampleV2.xls':     DATA_DIR / 'meshTopologyExampleV2_expected.json',
-    DATA_DIR / 'meshTopologyExampleV2Eqpt.xls': DATA_DIR / 'meshTopologyExampleV2Eqpt_expected.json',
+    DATA_DIR / 'testTopology.xls':     DATA_DIR / 'testTopology_expected.json',
  }.items())
 def test_excel_json_generation(xls_input, expected_json_output):
     convert_file(xls_input)
@@ -54,17 +53,17 @@ def test_excel_json_generation(xls_input, expected_json_output):
     assert not results.connections.extra
     assert not results.connections.different
 
-# assume json entries
-# test that the build network gives correct results
+# assume xls entries
+# test that the build network gives correct results in gain mode
 # 
 @pytest.mark.parametrize('xls_input,expected_json_output', {
     DATA_DIR / 'CORONET_Global_Topology.xls':   DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json',
-    DATA_DIR / 'meshTopologyExampleV2.xls':     DATA_DIR / 'meshTopologyExampleV2_auto_design_expected.json',
-    DATA_DIR / 'meshTopologyExampleV2Eqpt.xls': DATA_DIR / 'meshTopologyExampleV2Eqpt_auto_design_expected.json',
+    DATA_DIR / 'testTopology.xls':     DATA_DIR / 'testTopology_auto_design_expected.json',
  }.items())
-def test_auto_design_generation_fromxls(xls_input, expected_json_output):
+def test_auto_design_generation_fromxlsgainmode(xls_input, expected_json_output):
     equipment = load_equipment(eqpt_filename)
     network = load_network(xls_input,equipment)
+    # in order to test the Eqpt sheet and load gain target, change the power-mode to False (to be in gain mode)
     equipment['Span']['default'].power_mode = False
     # Build the network once using the default power defined in SI in eqpt config
  
@@ -95,12 +94,12 @@ def test_auto_design_generation_fromxls(xls_input, expected_json_output):
 #test that autodesign creates same file as an input file already autodesigned
 @pytest.mark.parametrize('json_input,expected_json_output', {
     DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json':   DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json',
-    DATA_DIR / 'meshTopologyExampleV2_auto_design_expected.json':     DATA_DIR / 'meshTopologyExampleV2_auto_design_expected.json',
-    DATA_DIR / 'meshTopologyExampleV2Eqpt_auto_design_expected.json': DATA_DIR / 'meshTopologyExampleV2Eqpt_auto_design_expected.json',
+    DATA_DIR / 'testTopology_auto_design_expected.json':     DATA_DIR / 'testTopology_auto_design_expected.json',
  }.items())
 def test_auto_design_generation_fromjson(json_input, expected_json_output):
     equipment = load_equipment(eqpt_filename)
     network = load_network(json_input,equipment)
+    # in order to test the Eqpt sheet and load gain target, change the power-mode to False (to be in gain mode)
     equipment['Span']['default'].power_mode = False
     # Build the network once using the default power defined in SI in eqpt config
  
@@ -131,8 +130,7 @@ def test_auto_design_generation_fromjson(json_input, expected_json_output):
 # test services creation
 
 @pytest.mark.parametrize('xls_input,expected_json_output', {
-    DATA_DIR / 'meshTopologyExampleV2.xls':     DATA_DIR / 'meshTopologyExampleV2_services_expected.json',
-    DATA_DIR / 'meshTopologyExampleV2Eqpt.xls': DATA_DIR / 'meshTopologyExampleV2Eqpt_services_expected.json',
+    DATA_DIR / 'testTopology.xls':     DATA_DIR / 'testTopology_services_expected.json',
 }.items())
 def test_excel_service_json_generation(xls_input, expected_json_output):
     convert_service_sheet(xls_input, eqpt_filename)
