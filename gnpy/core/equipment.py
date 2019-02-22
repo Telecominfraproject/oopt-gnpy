@@ -17,6 +17,7 @@ from json import load
 from gnpy.core.utils import lin2db, db2lin, load_json
 from collections import namedtuple
 from gnpy.core.elements import Edfa
+import time
 
 Model_vg = namedtuple('Model_vg', 'nf1 nf2 delta_p')
 Model_fg = namedtuple('Model_fg', 'nf0')
@@ -25,11 +26,16 @@ Model_hybrid = namedtuple('Model_hybrid', 'nf_ram gain_ram edfa_variety')
 Model_dual_stage = namedtuple('Model_dual_stage', 'preamp_variety booster_variety')
 
 class common:
-    def update_attr(self, default_values, kwargs):
+    def update_attr(self, default_values, kwargs, name):
         clean_kwargs = {k:v for k,v in kwargs.items() if v !=''}
         for k,v in default_values.items():
-            v = clean_kwargs.get(k,v)
-            setattr(self, k, v)
+            setattr(self, k, clean_kwargs.get(k,v))
+            if k not in clean_kwargs and name != 'Amp' :
+                print(f'\x1b[1;31;40m'+
+                    f'\n WARNING missing {k} attribute in eqpt_config.json[{name}]'
+                    f'\n default value is {k} = {v}'
+                    + '\x1b[0m')
+                time.sleep(1)
 
 class SI(common):
     default_values =\
@@ -46,7 +52,7 @@ class SI(common):
     }
 
     def __init__(self, **kwargs):
-        self.update_attr(self.default_values, kwargs)    
+        self.update_attr(self.default_values, kwargs, 'SI')
 
 class Span(common):
     default_values = \
@@ -65,7 +71,7 @@ class Span(common):
     }
     
     def __init__(self, **kwargs):
-        self.update_attr(self.default_values, kwargs)
+        self.update_attr(self.default_values, kwargs, 'Span')
 
 class Roadm(common):
     default_values = \
@@ -75,7 +81,7 @@ class Roadm(common):
     }    
 
     def __init__(self, **kwargs):
-        self.update_attr(self.default_values, kwargs)
+        self.update_attr(self.default_values, kwargs, 'Roadm')
 
 class Transceiver(common):
     default_values = \
@@ -86,7 +92,7 @@ class Transceiver(common):
     }
 
     def __init__(self, **kwargs):
-        self.update_attr(self.default_values, kwargs)        
+        self.update_attr(self.default_values, kwargs, 'Transceiver')
 
 class Fiber(common):
     default_values = \
@@ -97,7 +103,7 @@ class Fiber(common):
     }
 
     def __init__(self, **kwargs):
-        self.update_attr(self.default_values, kwargs)    
+        self.update_attr(self.default_values, kwargs, 'Fiber')
 
 class Amp(common):
     default_values = \
@@ -119,7 +125,7 @@ class Amp(common):
     }
 
     def __init__(self, **kwargs):
-        self.update_attr(self.default_values, kwargs)
+        self.update_attr(self.default_values, kwargs, 'Amp')
 
     @classmethod
     def from_json(cls, filename, **kwargs):
