@@ -181,18 +181,6 @@
       "type": "Fused"
     },
     {
-      "uid": "west fused spans in Loudeac",
-      "metadata": {
-        "location": {
-          "city": "Loudeac",
-          "region": "RLD",
-          "latitude": 2.0,
-          "longitude": 2.0
-        }
-      },
-      "type": "Fused"
-    },
-    {
       "uid": "west fused spans in Morlaix",
       "metadata": {
         "location": {
@@ -212,18 +200,6 @@
           "region": "RLD",
           "latitude": 2.0,
           "longitude": 1.0
-        }
-      },
-      "type": "Fused"
-    },
-    {
-      "uid": "east fused spans in Loudeac",
-      "metadata": {
-        "location": {
-          "city": "Loudeac",
-          "region": "RLD",
-          "latitude": 2.0,
-          "longitude": 2.0
         }
       },
       "type": "Fused"
@@ -577,7 +553,7 @@
       "type": "Edfa",
       "type_variety": "test",
       "operational": {
-        "gain_target": null,
+        "gain_target": 19.0,
         "delta_p": null,
         "tilt_target": 0,
         "out_voa": null
@@ -596,7 +572,45 @@
       "type": "Edfa",
       "type_variety": "test",
       "operational": {
-        "gain_target": null,
+        "gain_target": 18.0,
+        "delta_p": null,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Lannion_CAS to Corlay",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "test",
+      "operational": {
+        "gain_target": 18.0,
+        "delta_p": null,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Lorient_KMA to Loudeac",
+      "metadata": {
+        "location": {
+          "city": "Lorient_KMA",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 3.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "test",
+      "operational": {
+        "gain_target": 18.0,
         "delta_p": null,
         "tilt_target": 0,
         "out_voa": null
@@ -614,6 +628,10 @@
     },
     {
       "from_node": "fiber (Corlay → Lannion_CAS)-F061",
+      "to_node": "west edfa in Lannion_CAS to Corlay"
+    },
+    {
+      "from_node": "west edfa in Lannion_CAS to Corlay",
       "to_node": "roadm Lannion_CAS"
     },
     {
@@ -650,18 +668,10 @@
     },
     {
       "from_node": "fiber (Corlay → Loudeac)-F010",
-      "to_node": "west fused spans in Loudeac"
-    },
-    {
-      "from_node": "west fused spans in Loudeac",
       "to_node": "fiber (Loudeac → Lorient_KMA)-F054"
     },
     {
       "from_node": "fiber (Lorient_KMA → Loudeac)-F054",
-      "to_node": "east fused spans in Loudeac"
-    },
-    {
-      "from_node": "east fused spans in Loudeac",
       "to_node": "fiber (Loudeac → Corlay)-F010"
     },
     {
@@ -674,6 +684,10 @@
     },
     {
       "from_node": "fiber (Loudeac → Lorient_KMA)-F054",
+      "to_node": "west edfa in Lorient_KMA to Loudeac"
+    },
+    {
+      "from_node": "west edfa in Lorient_KMA to Loudeac",
       "to_node": "roadm Lorient_KMA"
     },
     {
