@@ -64,7 +64,7 @@
       "uid": "roadm Lannion_CAS",
       "type": "Roadm",
       "params": {
-        "loss": 20
+        "target_pch_out_db": -20
       },
       "metadata": {
         "location": {
@@ -79,7 +79,7 @@
       "uid": "roadm Lorient_KMA",
       "type": "Roadm",
       "params": {
-        "loss": 20
+        "target_pch_out_db": -20
       },
       "metadata": {
         "location": {
@@ -94,7 +94,7 @@
       "uid": "roadm Vannes_KBE",
       "type": "Roadm",
       "params": {
-        "loss": 20
+        "target_pch_out_db": -20
       },
       "metadata": {
         "location": {
@@ -109,7 +109,7 @@
       "uid": "roadm Rennes_STA",
       "type": "Roadm",
       "params": {
-        "loss": 20
+        "target_pch_out_db": -20
       },
       "metadata": {
         "location": {
@@ -124,7 +124,7 @@
       "uid": "roadm Brest_KLA",
       "type": "Roadm",
       "params": {
-        "loss": 20
+        "target_pch_out_db": -20
       },
       "metadata": {
         "location": {
@@ -136,7 +136,7 @@
       }
     },
     {
-      "uid": "ingress fused spans in Corlay",
+      "uid": "west fused spans in Corlay",
       "type": "Fused",
       "metadata": {
         "location": {
@@ -148,7 +148,7 @@
       }
     },
     {
-      "uid": "ingress fused spans in Loudeac",
+      "uid": "west fused spans in Loudeac",
       "type": "Fused",
       "metadata": {
         "location": {
@@ -160,7 +160,7 @@
       }
     },
     {
-      "uid": "ingress fused spans in Morlaix",
+      "uid": "west fused spans in Morlaix",
       "type": "Fused",
       "metadata": {
         "location": {
@@ -172,7 +172,7 @@
       }
     },
     {
-      "uid": "egress fused spans in Corlay",
+      "uid": "east fused spans in Corlay",
       "type": "Fused",
       "metadata": {
         "location": {
@@ -184,7 +184,7 @@
       }
     },
     {
-      "uid": "egress fused spans in Loudeac",
+      "uid": "east fused spans in Loudeac",
       "type": "Fused",
       "metadata": {
         "location": {
@@ -196,7 +196,7 @@
       }
     },
     {
-      "uid": "egress fused spans in Morlaix",
+      "uid": "east fused spans in Morlaix",
       "type": "Fused",
       "metadata": {
         "location": {
@@ -741,6 +741,7 @@
       "type_variety": "test_fixed_gain",
       "operational": {
         "gain_target": 20,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -759,6 +760,7 @@
       "type_variety": "test_fixed_gain",
       "operational": {
         "gain_target": 20,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -777,6 +779,7 @@
       "type_variety": "test_fixed_gain",
       "operational": {
         "gain_target": 20,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -795,6 +798,7 @@
       "type_variety": "test_fixed_gain",
       "operational": {
         "gain_target": 20,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -813,6 +817,7 @@
       "type_variety": "test_fixed_gain",
       "operational": {
         "gain_target": 20,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -831,6 +836,7 @@
       "type_variety": "test_fixed_gain",
       "operational": {
         "gain_target": 20,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -849,6 +855,7 @@
       "type_variety": "test_fixed_gain",
       "operational": {
         "gain_target": 20,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -867,6 +874,7 @@
       "type_variety": "test_fixed_gain",
       "operational": {
         "gain_target": 20,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -885,6 +893,7 @@
       "type_variety": "test_fixed_gain",
       "operational": {
         "gain_target": 20,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -903,6 +912,7 @@
       "type_variety": "test_fixed_gain",
       "operational": {
         "gain_target": 20,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -921,6 +931,7 @@
       "type_variety": "test_fixed_gain",
       "operational": {
         "gain_target": 20,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -939,6 +950,7 @@
       "type_variety": "test_fixed_gain",
       "operational": {
         "gain_target": 20,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -957,6 +969,7 @@
       "type_variety": "std_medium_gain",
       "operational": {
         "gain_target": 28.0,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -975,6 +988,7 @@
       "type_variety": "std_low_gain",
       "operational": {
         "gain_target": 10.0,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -993,6 +1007,7 @@
       "type_variety": "std_low_gain",
       "operational": {
         "gain_target": 12.0,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -1011,6 +1026,7 @@
       "type_variety": "std_low_gain",
       "operational": {
         "gain_target": 13.0,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -1029,6 +1045,7 @@
       "type_variety": "std_low_gain",
       "operational": {
         "gain_target": 16.0,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -1047,6 +1064,7 @@
       "type_variety": "std_low_gain",
       "operational": {
         "gain_target": 15.0,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -1065,6 +1083,7 @@
       "type_variety": "std_low_gain",
       "operational": {
         "gain_target": 14.0,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -1083,6 +1102,7 @@
       "type_variety": "std_low_gain",
       "operational": {
         "gain_target": 10.0,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -1101,6 +1121,7 @@
       "type_variety": "std_low_gain",
       "operational": {
         "gain_target": 11.0,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -1119,6 +1140,7 @@
       "type_variety": "std_medium_gain",
       "operational": {
         "gain_target": 28.0,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -1137,6 +1159,7 @@
       "type_variety": "std_low_gain",
       "operational": {
         "gain_target": 10.0,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -1155,6 +1178,7 @@
       "type_variety": "std_low_gain",
       "operational": {
         "gain_target": 12.0,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -1173,6 +1197,7 @@
       "type_variety": "std_low_gain",
       "operational": {
         "gain_target": 13.0,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -1191,6 +1216,7 @@
       "type_variety": "std_low_gain",
       "operational": {
         "gain_target": 16.0,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -1209,6 +1235,7 @@
       "type_variety": "std_low_gain",
       "operational": {
         "gain_target": 15.0,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -1227,6 +1254,7 @@
       "type_variety": "std_low_gain",
       "operational": {
         "gain_target": 14.0,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -1245,6 +1273,7 @@
       "type_variety": "std_low_gain",
       "operational": {
         "gain_target": 10.0,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -1263,6 +1292,7 @@
       "type_variety": "std_low_gain",
       "operational": {
         "gain_target": 11.0,
+        "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
@@ -1366,36 +1396,36 @@
       "to_node": "Edfa1_roadm Brest_KLA"
     },
     {
-      "from_node": "ingress fused spans in Corlay",
+      "from_node": "west fused spans in Corlay",
       "to_node": "fiber (Corlay → Loudeac)-F010"
     },
     {
-      "from_node": "ingress fused spans in Loudeac",
+      "from_node": "west fused spans in Loudeac",
       "to_node": "fiber (Loudeac → Lorient_KMA)-F054"
     },
     {
-      "from_node": "ingress fused spans in Morlaix",
+      "from_node": "west fused spans in Morlaix",
       "to_node": "fiber (Morlaix → Brest_KLA)-F060"
     },
     {
-      "from_node": "egress fused spans in Corlay",
+      "from_node": "east fused spans in Corlay",
       "to_node": "fiber (Corlay → Lannion_CAS)-F061"
     },
     {
-      "from_node": "egress fused spans in Loudeac",
+      "from_node": "east fused spans in Loudeac",
       "to_node": "fiber (Loudeac → Corlay)-F010"
     },
     {
-      "from_node": "egress fused spans in Morlaix",
+      "from_node": "east fused spans in Morlaix",
       "to_node": "fiber (Morlaix → Lannion_CAS)-F059"
     },
     {
       "from_node": "fiber (Lannion_CAS → Corlay)-F061",
-      "to_node": "ingress fused spans in Corlay"
+      "to_node": "west fused spans in Corlay"
     },
     {
       "from_node": "fiber (Corlay → Loudeac)-F010",
-      "to_node": "ingress fused spans in Loudeac"
+      "to_node": "west fused spans in Loudeac"
     },
     {
       "from_node": "fiber (Loudeac → Lorient_KMA)-F054",
@@ -1415,7 +1445,7 @@
     },
     {
       "from_node": "fiber (Lannion_CAS → Morlaix)-F059",
-      "to_node": "ingress fused spans in Morlaix"
+      "to_node": "west fused spans in Morlaix"
     },
     {
       "from_node": "fiber (Morlaix → Brest_KLA)-F060",
@@ -1443,11 +1473,11 @@
     },
     {
       "from_node": "fiber (Loudeac → Corlay)-F010",
-      "to_node": "egress fused spans in Corlay"
+      "to_node": "east fused spans in Corlay"
     },
     {
       "from_node": "fiber (Lorient_KMA → Loudeac)-F054",
-      "to_node": "egress fused spans in Loudeac"
+      "to_node": "east fused spans in Loudeac"
     },
     {
       "from_node": "fiber (Vannes_KBE → Lorient_KMA)-F055",
@@ -1467,7 +1497,7 @@
     },
     {
       "from_node": "fiber (Brest_KLA → Morlaix)-F060",
-      "to_node": "egress fused spans in Morlaix"
+      "to_node": "east fused spans in Morlaix"
     },
     {
       "from_node": "fiber (Quimper → Brest_KLA)-",
