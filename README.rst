@@ -345,6 +345,9 @@ parameters:
 |                        |           | a 23 dB span to                             |
 |                        |           | power = power_dbm + power_range_db + 1      |
 +------------------------+-----------+---------------------------------------------+
+| max_fiber_lineic_loss_ |  (number) | Maximum linear fiber loss for Raman         |
+| for_raman`             |           | amplification use.                          |
++------------------------+-----------+---------------------------------------------+
 | `max_length`           | (number)  | Split fiber lengths > max_length.           |
 |                        |           | Interest to support high level              |
 |                        |           | topologies that do not specify in line      |
@@ -418,27 +421,25 @@ existing parameters:
 +-------------------------+-----------+---------------------------------------------+
 | field                   |   type    | description                                 |
 +=========================+===========+=============================================+
-|`gain_mode_default_loss` | (number)  | Default value if Roadm/params/loss is       |
-|                         |           | None in the topology input description.     |
+|`target_pch_out_db`      | (number)  | Auto-design sets the Roadm egress channel   |
+|                         |           | power. This reflects typical control loop   |
+|                         |           | algorithms that adjust Roadm losses to      |
+|                         |           | equalize channels (eg coming from different |
+|                         |           | ingress drection or add ports)              |
+|                         |           | Thi is the default value                    |
+|                         |           | Roadm/params/target_pch_out_db if no value  |
+|                         |           | is given in the Roadm element in the        |
+|                         |           | topology input description.                 |
 |                         |           | This default value is ignored if a          |
-|                         |           | params/loss value is input in the           |
-|                         |           | topology for a given ROADM.                 |
+|                         |           | params/target_pch_out_db value is input in  |
+|                         |           | the topology for a given ROADM.             |
 +-------------------------+-----------+---------------------------------------------+
-|`power_mode_pref`        | (number)  | Power mode only. Auto-design sets the       |
-|                         |           | power of ROADM ingress amplifiers to        |
-|                         |           | power_dbm + power_range_db,                 |
-|                         |           | regardless of existing gain settings        |
-|                         |           | from the topology JSON input.               |
-|                         |           | Auto-design sets the Roadm loss so that     |
-|                         |           | its egress channel power = power_mode_pref, |
-|                         |           | regardless of existing loss settings        |
-|                         |           | from the topology JSON input. It means      |
-|                         |           | that the output power from a ROADM (and      |
-|                         |           | therefore its OSNR contribution) is Cte     |
-|                         |           | and not depending from power_dbm and        |
-|                         |           | power_range_db sweep settings. This         |
-|                         |           | choice is meant to reflect some typical     |
-|                         |           | control loop algorithms.                    |
+|`add_drop_osnr`          | (number)  | OSNR contribution from the add/drop ports   |
++-------------------------+-----------+---------------------------------------------+
+|`restrictions`           | (strings) | Authorized type_variety of amplifier for    |
+|                         |           | booster or preamp.                          |
+|                         |           | listed type_variety MUST be defined in the  |
+|                         |           | Edfa catalog.                               |
 +-------------------------+-----------+---------------------------------------------+
 
 The `SpectralInformation` object can be configured as follows. The user can
@@ -457,10 +458,6 @@ one power/channel definition.
 | `spacing`            | (number)  | In Hz. Carrier spacing.                   |
 +----------------------+-----------+-------------------------------------------+
 | `roll_off`           | (number)  | Not used.                                 |
-+----------------------+-----------+-------------------------------------------+
-| `OSNR`               | (number)  | Not used.                                 |
-+----------------------+-----------+-------------------------------------------+
-| `bit_rate`           | (number)  | Not used.                                 |
 +----------------------+-----------+-------------------------------------------+
 | `tx_osnr`            | (number)  | In dB. OSNR out from transponder.         |
 +----------------------+-----------+-------------------------------------------+
@@ -482,12 +479,15 @@ one power/channel definition.
 |                      |           | values! The reference power becomes:      |
 |                      |           | power_range_db + power_dbm.               |
 +----------------------+-----------+-------------------------------------------+
+| `sys_margins`        | (number)  | In dB. Added margin on min required       |
+|                      |           | transceiver OSNR.                         |         
++----------------------+-----------+-------------------------------------------+
 
 The `transmission_main_example.py <examples/transmission_main_example.py>`_
 script propagates a spectrum of channels at 32 Gbaud, 50 GHz spacing and 0
 dBm/channel. These are not yet parametrized but can be modified directly in the
-script (via the SpectralInformation structure) to accommodate any baud rate,
-spacing, power or channel count demand.
+eqpt_config.json (via the SpectralInformation -SI- structure) to accommodate 
+any baud rate, spacing or power  demand. The number of channel is computed based on spacing and f_min/max values.
 
 Use `examples/path_requests_run.py <examples/path_requests_run.py>`_ to run multiple optimizations as follows:
 
