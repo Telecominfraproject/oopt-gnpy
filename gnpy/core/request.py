@@ -157,19 +157,19 @@ class Result_element(Element):
                    'path-properties':{
                        'path-metric': [
                            {
-                           'metric-type': 'SNR-bandwidth',
+                           'metric-type': 'SNR_bandwidth',
                            'accumulative-value': round(mean(self.computed_path[-1].snr),2)
                            },
                            {
-                           'metric-type': 'SNR-0.1nm',
+                           'metric-type': 'SNR_0.1nm',
                            'accumulative-value': round(mean(self.computed_path[-1].snr+lin2db(self.path_request.baud_rate/12.5e9)),2)
                            },
                            {
-                           'metric-type': 'OSNR-bandwidth',
+                           'metric-type': 'OSNR_bandwidth',
                            'accumulative-value': round(mean(self.computed_path[-1].osnr_ase),2)
                            },
                            {
-                           'metric-type': 'OSNR-0.1nm',
+                           'metric-type': 'OSNR_0.1nm',
                            'accumulative-value': round(mean(self.computed_path[-1].osnr_ase_01nm),2)
                            },
                            {

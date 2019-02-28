@@ -23,7 +23,7 @@ from networkx import (draw_networkx_nodes, draw_networkx_edges,
 from numpy import mean
 from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
 from gnpy.core.utils import load_json
-from gnpy.core.network import load_network, build_network, save_network
+from gnpy.core.network import load_network, network_from_json, build_network, save_network
 from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch, automatic_spacing
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused, Fiber
 from gnpy.core.utils import db2lin, lin2db
@@ -35,7 +35,15 @@ from textwrap import dedent
 from math import ceil
 import time
 
+from flask import Flask, jsonify, abort, make_response, request
+from flask_restful import Api, Resource, reqparse, fields, marshal
+from flask_httpauth import HTTPBasicAuth
+
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
+
+app = Flask(__name__, static_url_path="")
+api = Api(app)
+auth = HTTPBasicAuth()
 
 logger = getLogger(__name__)
 
@@ -45,7 +53,7 @@ parser.add_argument('service_filename', nargs='?', type = Path, default= Path(__
 parser.add_argument('eqpt_filename', nargs='?', type = Path, default=Path(__file__).parent / 'eqpt_config.json')
 parser.add_argument('-v', '--verbose', action='count', default=0, help='increases verbosity for each occurence')
 parser.add_argument('-o', '--output', type = Path)
-
+parser.add_argument('-r', '--rest', action='count', default=0, help='use the REST Api')
 
 def requests_from_json(json_data,equipment):
     requests_list = []
@@ -306,32 +314,20 @@ def path_result_json(pathresult):
     }
     return data
 
-
-if __name__ == '__main__':
-    start = time.time()
-    args = parser.parse_args()
-    basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(args.verbose, DEBUG))
-    logger.info(f'Computing path requests {args.service_filename} into JSON format')
-    print('\x1b[1;34;40m'+f'Computing path requests {args.service_filename} into JSON format'+ '\x1b[0m')
-    # for debug
-    # print( args.eqpt_filename)
-    data = load_requests(args.service_filename,args.eqpt_filename)
-    equipment = load_equipment(args.eqpt_filename)
-    network = load_network(args.network_filename,equipment)
-
+def compute_requests(network,data,equipment):
     # Build the network once using the default power defined in SI in eqpt config
     # TODO power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
-    # spacing, f_min and f_max 
+    # spacing, f_min and f_max
     p_db = equipment['SI']['default'].power_dbm
-    
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
-        equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min, \
+                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
     save_network(args.network_filename, network)
 
     rqs = requests_from_json(data, equipment)
 
-    # check that request ids are unique. Non unique ids, may 
+    # check that request ids are unique. Non unique ids, may
     # mess the computation : better to stop the computation
     all_ids = [r.request_id for r in rqs]
     if len(all_ids) != len(set(all_ids)):
@@ -345,53 +341,71 @@ if __name__ == '__main__':
     # pths = compute_path(network, equipment, rqs)
     dsjn = disjunctions_from_json(data)
 
-    print('\x1b[1;34;40m'+f'List of disjunctions'+ '\x1b[0m')
+    print('\x1b[1;34;40m' + f'List of disjunctions' + '\x1b[0m')
     print(dsjn)
     # need to warn or correct in case of wrong disjunction form
     # disjunction must not be repeated with same or different ids
     dsjn = correct_disjn(dsjn)
-        
-    # Aggregate demands with same exact constraints
-    print('\x1b[1;34;40m'+f'Aggregating similar requests'+ '\x1b[0m')
 
-    rqs,dsjn = requests_aggregation(rqs,dsjn)
+    # Aggregate demands with same exact constraints
+    print('\x1b[1;34;40m' + f'Aggregating similar requests' + '\x1b[0m')
+
+    rqs, dsjn = requests_aggregation(rqs, dsjn)
     # TODO export novel set of aggregated demands in a json file
 
-    print('\x1b[1;34;40m'+'The following services have been requested:'+ '\x1b[0m')
+    print('\x1b[1;34;40m' + 'The following services have been requested:' + '\x1b[0m')
     print(rqs)
-    
-    print('\x1b[1;34;40m'+f'Computing all paths with constraints'+ '\x1b[0m')
+
+    print('\x1b[1;34;40m' + f'Computing all paths with constraints' + '\x1b[0m')
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
 
-    print('\x1b[1;34;40m'+f'Propagating on selected path'+ '\x1b[0m')
+    print('\x1b[1;34;40m' + f'Propagating on selected path' + '\x1b[0m')
     propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
 
     end = time.time()
-    print(f'computation time {end-start}')
-    print('\x1b[1;34;40m'+f'Result summary'+ '\x1b[0m')
-    
-    header = ['req id', '  demand','  snr@bandwidth','  snr@0.1nm','  Receiver minOSNR', '  mode', '  Gbit/s' , '  nb of tsp pairs']
+    print(f'computation time {end - start}')
+    print('\x1b[1;34;40m' + f'Result summary' + '\x1b[0m')
+
+    header = ['req id', '  demand', '  snr@bandwidth', '  snr@0.1nm', '  Receiver minOSNR', '  mode', '  Gbit/s',
+              '  nb of tsp pairs']
     data = []
     data.append(header)
     for i, p in enumerate(propagatedpths):
         if p:
-            line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
-                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
-                f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }']
+            line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ',
+                    f'{round(mean(p[-1].snr), 2)}', \
+                    f'{round(mean(p[-1].snr + lin2db(rqs[i].baud_rate / (12.5e9))), 2)}', \
+                    f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
+                    f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate)}']
         else:
-            line = [f'{rqs[i].request_id}',f' {rqs[i].source} to {rqs[i].destination} : not feasible ']
+            line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : not feasible ']
         data.append(line)
 
-    col_width = max(len(word) for row in data for word in row[2:])   # padding
-    firstcol_width = max(len(row[0]) for row in data )   # padding
-    secondcol_width = max(len(row[1]) for row in data )   # padding
+    col_width = max(len(word) for row in data for word in row[2:])  # padding
+    firstcol_width = max(len(row[0]) for row in data)  # padding
+    secondcol_width = max(len(row[1]) for row in data)  # padding
     for row in data:
-        firstcol = ''.join(row[0].ljust(firstcol_width)) 
+        firstcol = ''.join(row[0].ljust(firstcol_width))
         secondcol = ''.join(row[1].ljust(secondcol_width))
-        remainingcols = ''.join(word.center(col_width,' ') for word in row[2:])
+        remainingcols = ''.join(word.center(col_width, ' ') for word in row[2:])
         print(f'{firstcol} {secondcol} {remainingcols}')
 
+    return propagatedpths,rqs
 
+def launch_cli():
+    start = time.time()
+    args = parser.parse_args()
+    basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(args.verbose, DEBUG))
+    logger.info(f'Computing path requests {args.service_filename} into JSON format')
+    print('\x1b[1;34;40m'+f'Computing path requests {args.service_filename} into JSON format'+ '\x1b[0m')
+    # for debug
+    # print( args.eqpt_filename)
+    data = load_requests(args.service_filename,args.eqpt_filename)
+    equipment = load_equipment(args.eqpt_filename)
+    network = load_network(args.network_filename,equipment)
+    #Compute requests using network, data and equipment
+    propagatedpths, rqs = compute_requests(network,data,equipment)
+    #Generate the output
     if args.output :
         result = []
         # assumes that list of rqs and list of propgatedpths have same order
@@ -406,3 +420,56 @@ if __name__ == '__main__':
                 jsontocsv(temp,equipment,fcsv)
                 print('\x1b[1;34;40m'+f'saving in {args.output} and {fnamecsv}'+ '\x1b[0m')
 
+
+class GnpyAPI(Resource):
+    decorators = [auth.login_required]
+    @auth.get_password
+    def get_password(username):
+        if username == 'gnpy':
+            return 'gnpy'
+        return None
+
+    @auth.error_handler
+    def unauthorized():
+        # return 403 instead of 401 to prevent browsers from displaying the default
+        # auth dialog
+        return make_response(jsonify({'message': 'Unauthorized access'}), 403)
+
+    def post(self):
+        print (request.is_json)
+        content = request.get_json()
+        content1 = content['gnpy-api']
+        topoJson = content1['topology-file']
+        svcJson = content1['service-file']
+        # Load equipment
+        equipment = load_equipment('eqpt_config.json')
+        #Create load_requests
+        data = svcJson
+        #network = load_network(args.network_filename, equipment)
+        network = network_from_json(topoJson, equipment)
+        # Compute requests using network, data and equipment
+        propagatedpths, rqs = compute_requests(network, data, equipment)
+        # Generate the output
+        result = []
+        #assumes that list of rqs and list of propgatedpths have same order
+        for i, p in enumerate(propagatedpths):
+            result.append(Result_element(rqs[i], p))
+
+        return {"result":path_result_json(result)}, 201
+
+api.add_resource(GnpyAPI, '/gnpy/api/v1.0/files', endpoint='files')
+
+if __name__ == '__main__':
+
+    start = time.time()
+    args = parser.parse_args()
+    # input_str = raw_input("How will you use your program: c:[cli] , a:[api] ?")
+    # print(input_str)
+    #
+    if ((args.rest == 1) and (args.output is None)):
+        print('you have chosen the rest mode')
+        app.run(host='0.0.0.0', port=5000, debug=True)
+    elif ((args.rest > 1) or ((args.rest == 1) and (args.output is not None))):
+        print('command is not well formulated')
+    else:
+        launch_cli()
