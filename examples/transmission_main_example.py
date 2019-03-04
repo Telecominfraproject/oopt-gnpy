@@ -74,7 +74,7 @@ def plot_results(network, path, source, destination, infos):
     title(f'Propagating from {source.loc.city} to {destination.loc.city}')
     axis('off')
 
-    textbox = text(0.85, 0.50, 'Spectral Information\n', fontsize=12, fontname='Ubuntu Mono',
+    textbox = text(0.85, 0.95, 'Spectral Information\n', fontsize=12, fontname='Ubuntu Mono',
                    verticalalignment='top', transform=fig.axes[0].transAxes,
                    bbox={'boxstyle': 'round', 'facecolor': 'wheat', 'alpha': 0.5})
 
@@ -84,7 +84,7 @@ def plot_results(network, path, source, destination, infos):
         if fig.contains(event):
             x, y = round(event.xdata, 0), round(event.ydata, 0)
             if (x, y) in nodes:
-                disp = [n for n in nodes[x, y] if n in infos]
+                disp = sorted((n for n in nodes[x, y] if n in infos), key=path.index)
                 msg = "\n\n".join(str(n) for n in disp)
                 msg = f'Spectral Information\n\n{msg}'
                 textbox.set_text(msg)
