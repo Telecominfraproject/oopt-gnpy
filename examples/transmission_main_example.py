@@ -178,7 +178,8 @@ if __name__ == '__main__':
     equipment = load_equipment(args.equipment)
     network = load_network(args.filename, equipment, args.names_matching)
 
-    plot_baseline(network)
+    if args.plot:
+        plot_baseline(network)
 
     transceivers = {n.uid: n for n in network.nodes() if isinstance(n, Transceiver)}
 
