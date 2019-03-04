@@ -505,7 +505,7 @@ class Edfa(Node):
 
     def __repr__(self):
         return (f'{type(self).__name__}(uid={self.uid!r}, '
-                f'type_variety={self.params.type_variety!r}'
+                f'type_variety={self.params.type_variety!r}, '
                 f'interpol_dgt={self.interpol_dgt!r}, '
                 f'interpol_gain_ripple={self.interpol_gain_ripple!r}, '
                 f'interpol_nf_ripple={self.interpol_nf_ripple!r}, '

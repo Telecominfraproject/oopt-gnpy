@@ -309,6 +309,14 @@ def add_egress_amplifier(network, node):
         amp = Edfa(
                     uid = f'Edfa{i}_{node.uid}',
                     params = {},
+                    metadata = {
+                        'location': {
+                            'latitude':  (node.lat + next_node.lat) / 2,
+                            'longitude': (node.lng + next_node.lng) / 2,
+                            'city':      node.loc.city,
+                            'region':    node.loc.region,
+                        }
+                    },
                     operational = {
                         'gain_target': 0,
                         'tilt_target': 0,
