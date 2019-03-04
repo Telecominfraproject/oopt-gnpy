@@ -103,9 +103,9 @@ class Transceiver(Node):
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
 
-                          f'  OSNR ASE (0.1nm):      {osnr_ase_01nm:.2f}',
-                          f'  OSNR ASE (signal bw):  {osnr_ase:.2f}',
-                          f'  SNR total (signal bw): {snr:.2f}'])
+                          f'  OSNR ASE (0.1nm, dB):      {osnr_ase_01nm:.2f}',
+                          f'  OSNR ASE (signal bw, dB):  {osnr_ase:.2f}',
+                          f'  SNR total (signal bw, dB): {snr:.2f}'])
 
 
     def __call__(self, spectral_info):
