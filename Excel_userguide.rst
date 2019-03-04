@@ -195,7 +195,7 @@ Service sheet must contain 11 columns::
 
 - **Destination** is mandatory. It is the name of the destination node (as listed in Nodes sheet). Source MUST be a ROADM node. (TODO: relax this and accept trx entries)
 
-- **TRX type ** is mandatory. They are the variety type and selected mode of the transceiver to be used for the propagation simulation. These modes MUST be defined in the equipment library. The format of the mode is used as the name of the mode. (TODO: maybe add another  mode id on Transceiver library ?). In particular the mode selection defines the channel baudrate to be used for the propagation simulation.
+- **TRX type** is mandatory. They are the variety type and selected mode of the transceiver to be used for the propagation simulation. These modes MUST be defined in the equipment library. The format of the mode is used as the name of the mode. (TODO: maybe add another  mode id on Transceiver library ?). In particular the mode selection defines the channel baudrate to be used for the propagation simulation.
 
 - **mode** is optional. If not specified, the program will search for the mode of the defined transponder with the highest baudrate fitting within the spacing value. 
 
@@ -214,26 +214,6 @@ Service sheet must contain 11 columns::
 
 - ** path bandwidth** is optional. It is the amount of capacity required between source and destination in Gbit/s. Default value is 0.0 Gbit/s. 
 
-convert_service_sheet.py
-------------------------
-
-
-`convert_service_sheet.py <examples/convert_service_sheet.py>`_ converts the service sheet to a json file following the Yang model for requesting Path Computation defined in `draft-ietf-teas-yang-path-computation-01.txt <https://www.ietf.org/id/draft-ietf-teas-yang-path-computation-01.pdf>`_. TODO: verify that this implementation is correct + give feedback to ietf on what is missing for our specific application.
-For PSE use, additional fields with trx type and mode have been added to the te-bandwidth field.
-
-**Usage**: convert_service_sheet.py [-h] [-v] [-o OUTPUT] [workbook_name.xls]
-
-.. code-block:: shell
-
-    $ cd examples
-    $ python convert_service_sheet.py meshTopologyExampleV2.xls -o service_file.json
-
--o output_file.json is an optional parameter: 
-
-  - if not used, the program output the json data on  standard output and on a json file with name 'workbook_name_services.json'.
-
-A template for the json file can be found here: `service_template.json <service_template.json>`_
-
 path_requests_run.py
 ------------------------
 
@@ -246,6 +226,11 @@ path_requests_run.py
     $ python path_requests_run.py meshTopologyExampleV2.xls service_file.json eqpt_file -o output_file.json
 
 A function that computes performances for a list of services provided in the service file (accepts json or excel format.
+
+if the service <file.xls> is in xls format, path_requests_run.py converts it to a json file <file_services.json> following the Yang model for requesting Path Computation defined in `draft-ietf-teas-yang-path-computation-01.txt <https://www.ietf.org/id/draft-ietf-teas-yang-path-computation-01.pdf>`_. For PSE use, additional fields with trx type and mode have been added to the te-bandwidth field. 
+
+A template for the json file can be found here: `service_template.json <service_template.json>`_
+
 
 If no output file is given, the computation is shown on standard output for demo.
 If a file is specified with the optional -o argument, the result of the computation is converted into a json format following  the Yang model for requesting Path Computation defined in `draft-ietf-teas-yang-path-computation-01.txt <https://www.ietf.org/id/draft-ietf-teas-yang-path-computation-01.pdf>`_. TODO: verify that this implementation is correct + give feedback to ietf on what is missing for our specific application.
