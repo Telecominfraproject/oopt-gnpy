@@ -30,6 +30,10 @@ A brief outline of major (tagged) `gnpy` releases:
 +---------------+-------------+-----------------------------------------------+
 | release date  | version tag | notes                                         |
 +===============+=============+===============================================+
+| Mar 5, 2019   | v1.2        | - plotting fixes                              |
+|               |             | - documentation clean-up                      |
+|               |             | - bug fixes                                   |
++---------------+-------------+-----------------------------------------------+
 | Jan 30, 2019  | v1.1        | - XLS parser enhancements                     |
 |               |             | - Transponder and Roadm add-drop noise        |
 |               |             |   contribution and system margin included     |
