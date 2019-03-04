@@ -65,8 +65,9 @@ def plot_results(network, path, source, destination, infos):
 
     fig = figure()
     kwargs = {'figure': fig, 'pos': pos}
-    plot = draw_networkx_nodes(network, nodelist=network.nodes(), node_color='#ababab', **kwargs)
-    draw_networkx_nodes(network, nodelist=path, node_color='#ff0000', **kwargs)
+    all_nodes = network.nodes()
+    plot = draw_networkx_nodes(network, nodelist=all_nodes, node_color='#ababab', node_size=100, **kwargs)
+    draw_networkx_nodes(network, nodelist=path, node_color='#ff0000', node_size=100, **kwargs)
     draw_networkx_edges(network, edgelist=edges, edge_color='#ababab', **kwargs)
     draw_networkx_edges(network, edgelist=path_edges, edge_color='#ff0000', **kwargs)
     draw_networkx_labels(network, labels=labels, font_size=14, **{**kwargs, 'pos': label_pos})
@@ -163,8 +164,6 @@ parser.add_argument('-v', '--verbose', action='count', default=0, help='increase
 parser.add_argument('-l', '--list-nodes', action='store_true', help='list all transceiver nodes')
 parser.add_argument('-po', '--power', default=0, help='channel ref power in dBm')
 parser.add_argument('-names', '--names-matching', action='store_true', help='display network names that are closed matches')
-#parser.add_argument('-plb', '--power-lower-bound', default=0, help='power sweep lower bound')
-#parser.add_argument('-pub', '--power-upper-bound', default=1, help='power sweep upper bound')
 parser.add_argument('filename', nargs='?', type=Path,
                     default=Path(__file__).parent / 'edfa_example_network.json')
 parser.add_argument('source', nargs='?', help='source node')
