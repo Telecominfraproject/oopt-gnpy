@@ -11,6 +11,7 @@ This module contains functions for constructing networks of network elements.
 from gnpy.core.convert import convert_file
 from networkx import DiGraph
 from numpy import arange
+from scipy.interpolate import interp1d
 from logging import getLogger
 from os import path
 from operator import itemgetter
@@ -311,8 +312,8 @@ def add_egress_amplifier(network, node):
                     params = {},
                     metadata = {
                         'location': {
-                            'latitude':  (node.lat + next_node.lat) / 2,
-                            'longitude': (node.lng + next_node.lng) / 2,
+                            'latitude':  (node.lat * 2 + next_node.lat * 2) / 4,
+                            'longitude': (node.lng * 2 + next_node.lng * 2) / 4,
                             'city':      node.loc.city,
                             'region':    node.loc.region,
                         }
@@ -369,10 +370,20 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
     fiber_params['length'] = new_length / UNITS[fiber.params.length_units]
     fiber_params['con_in'] = fiber.con_in
     fiber_params['con_out'] = fiber.con_out
-    
-    for span in range(n_spans):
-        new_span = Fiber(uid =      f'{fiber.uid}_({span+1}/{n_spans})',
-                          metadata = fiber.metadata,
+
+    f = interp1d([prev_node.lng, next_node.lng], [prev_node.lat, next_node.lat])
+    xpos = [prev_node.lng + (next_node.lng - prev_node.lng) * (n+1)/(n_spans+1) for n in range(n_spans)]
+    ypos = f(xpos)
+    for span, lng, lat in zip(range(n_spans), xpos, ypos):
+        new_span = Fiber(uid = f'{fiber.uid}_({span+1}/{n_spans})',
+                          metadata = {
+                            'location': {
+                                'latitude':  lat,
+                                'longitude': lng,
+                                'city':      fiber.loc.city,
+                                'region':    fiber.loc.region,
+                            }
+                          },
                           params = fiber_params)
         network.add_edge(prev_node, new_span)
         prev_node = new_span

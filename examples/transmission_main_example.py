@@ -54,7 +54,7 @@ def plot_results(network, path, source, destination, infos):
     pos = {n: (n.lng, n.lat) for n in network.nodes()}
     nodes = {}
     for k, (x, y) in pos.items():
-        nodes.setdefault((round(x, 0), round(y, 0)), []).append(k)
+        nodes.setdefault((round(x, 1), round(y, 1)), []).append(k)
     labels = {n: n.location.city for n in network.nodes() if isinstance(n, Transceiver)}
     city_labels = set(labels.values())
     for n in network.nodes():
@@ -65,29 +65,32 @@ def plot_results(network, path, source, destination, infos):
 
     fig = figure()
     kwargs = {'figure': fig, 'pos': pos}
-    all_nodes = network.nodes()
-    plot = draw_networkx_nodes(network, nodelist=all_nodes, node_color='#ababab', node_size=100, **kwargs)
-    draw_networkx_nodes(network, nodelist=path, node_color='#ff0000', node_size=100, **kwargs)
+    all_nodes = [n for n in network.nodes() if n not in path]
+    plot = draw_networkx_nodes(network, nodelist=all_nodes, node_color='#ababab', node_size=50, **kwargs)
+    draw_networkx_nodes(network, nodelist=path, node_color='#ff0000', node_size=55, **kwargs)
     draw_networkx_edges(network, edgelist=edges, edge_color='#ababab', **kwargs)
     draw_networkx_edges(network, edgelist=path_edges, edge_color='#ff0000', **kwargs)
     draw_networkx_labels(network, labels=labels, font_size=14, **{**kwargs, 'pos': label_pos})
     title(f'Propagating from {source.loc.city} to {destination.loc.city}')
     axis('off')
 
-    textbox = text(0.85, 0.95, 'Spectral Information\n', fontsize=12, fontname='Ubuntu Mono',
+    heading = 'Spectral Information\n\n'
+    textbox = text(0.85, 0.20, heading, fontsize=14, fontname='Ubuntu Mono',
                    verticalalignment='top', transform=fig.axes[0].transAxes,
                    bbox={'boxstyle': 'round', 'facecolor': 'wheat', 'alpha': 0.5})
+
+    msgs = {(x, y): heading + '\n\n'.join(str(n) for n in ns if n in path)
+            for (x, y), ns in nodes.items()}
 
     def hover(event):
         if event.xdata is None or event.ydata is None:
             return
         if fig.contains(event):
-            x, y = round(event.xdata, 0), round(event.ydata, 0)
-            if (x, y) in nodes:
-                disp = sorted((n for n in nodes[x, y] if n in infos), key=path.index)
-                msg = "\n\n".join(str(n) for n in disp)
-                msg = f'Spectral Information\n\n{msg}'
-                textbox.set_text(msg)
+            x, y = round(event.xdata, 1), round(event.ydata, 1)
+            if (x, y) in msgs:
+                textbox.set_text(msgs[x, y])
+            else:
+                textbox.set_text(heading)
             fig.canvas.draw_idle()
 
     fig.canvas.mpl_connect('motion_notify_event', hover)
