@@ -30,8 +30,18 @@ A brief outline of major (tagged) `gnpy` releases:
 +---------------+-------------+-----------------------------------------------+
 | release date  | version tag | notes                                         |
 +===============+=============+===============================================+
+| Mar 5, 2019   | v1.2        | - plotting fixes                              |
+|               |             | - documentation clean-up                      |
+|               |             | - bug fixes                                   |
++---------------+-------------+-----------------------------------------------+
 | Jan 30, 2019  | v1.1        | - XLS parser enhancements                     |
-|               |             | - carrier probe feature                       |
+|               |             | - Transponder and Roadm add-drop noise        |
+|               |             |   contribution and system margin included     |
+|               |             | - Automatic transponders’ mode selection      |
+|               |             | - Route selection with disjunction constraints|
+|               |             | - Detailed carrier information inspection on  |
+|               |             |   each element  along propagation             |
+|               |             | - OpenRoadm noise models                      | 
 |               |             | - bug fixes                                   |
 +---------------+-------------+-----------------------------------------------+
 | Oct 16, 2018  | v1.0        | - first "production"-ready release            |

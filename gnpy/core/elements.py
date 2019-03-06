@@ -103,9 +103,9 @@ class Transceiver(Node):
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
 
-                          f'  OSNR ASE (0.1nm):      {osnr_ase_01nm:.2f}',
-                          f'  OSNR ASE (signal bw):  {osnr_ase:.2f}',
-                          f'  SNR total (signal bw): {snr:.2f}'])
+                          f'  OSNR ASE (0.1nm, dB):      {osnr_ase_01nm:.2f}',
+                          f'  OSNR ASE (signal bw, dB):  {osnr_ase:.2f}',
+                          f'  SNR total (signal bw, dB): {snr:.2f}'])
 
 
     def __call__(self, spectral_info):
@@ -505,7 +505,7 @@ class Edfa(Node):
 
     def __repr__(self):
         return (f'{type(self).__name__}(uid={self.uid!r}, '
-                f'type_variety={self.params.type_variety!r}'
+                f'type_variety={self.params.type_variety!r}, '
                 f'interpol_dgt={self.interpol_dgt!r}, '
                 f'interpol_gain_ripple={self.interpol_gain_ripple!r}, '
                 f'interpol_nf_ripple={self.interpol_nf_ripple!r}, '

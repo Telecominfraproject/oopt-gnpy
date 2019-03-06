@@ -44,22 +44,29 @@ it will be marked with **”default”** value.
 
     {"Edfa": [{
                 "type_variety": "std_medium_gain",
+                "type_def": "variable_gain",
                 "gain_flatmax": 26,
                 "gain_min": 15,
-                "p_max": 21,
+                "p_max": 23,
                 "nf_min": 6,
-                "nf_max": 10
+                "nf_max": 10,
+                "out_voa_auto": false,
+                "allowed_for_design": true
                 },
                 {
                 "type_variety": "std_low_gain",
+                "type_def": "variable_gain",
                 "gain_flatmax": 16,
                 "gain_min": 8,
-                "p_max": 21,
-                "nf_min": 7,
-                "nf_max": 11
+                "p_max": 23,
+                "nf_min": 6.5,
+                "nf_max": 11,
+                "out_voa_auto": false,
+                "allowed_for_design": true
                 }
         ],
     "Fiber": [{
+                "type_variety": "SSMF",
                 "dispersion": 1.67e-05,
                 "gamma": 0.00127
                 }
@@ -74,7 +81,7 @@ it will be marked with **”default”** value.
 1.2.1. EDFA element
 *******************
 
-Two types of EDFA definition are possible. Description JSON file
+Four types of EDFA definition are possible. Description JSON file
 location is in **transmission_main_example.py** folder:
 
 -  Advanced – with JSON file describing gain/noise figure tilt and
@@ -84,27 +91,65 @@ location is in **transmission_main_example.py** folder:
 .. code-block::
 
     "Edfa":[{
+            "type_variety": "high_detail_model_example",
             "gain_flatmax": 25,
             "gain_min": 15,
             "p_max": 21,
-            "advanced_config_from_json": "std_medium_gain_advanced_config.json"
+            "advanced_config_from_json": "std_medium_gain_advanced_config.json",
+            "out_voa_auto": false,
+            "allowed_for_design": false
             }
         ]
 
--  Default – with JSON file describing gain figure tilt and gain/noise
+-  Variable gain – with JSON file describing gain figure tilt and gain/noise
    figure ripple. **”default_edfa_config.json”** as source file.
 
 .. code-block::
 
     "Edfa":[{
+            "type_variety": "std_medium_gain",
+            "type_def": "variable_gain",
             "gain_flatmax": 26,
             "gain_min": 15,
-            "p_max": 21,
+            "p_max": 23,
             "nf_min": 6,
-            "nf_max": 10
+            "nf_max": 10,
+            "out_voa_auto": false,
+            "allowed_for_design": true
             }
         ]
 
+-  Fixed gain – with JSON file describing gain figure tilt and gain/noise
+   figure ripple. **”default_edfa_config.json”** as source file.
+
+.. code-block::
+
+    "Edfa":[{
+            "type_variety": "std_fixed_gain",
+            "type_def": "fixed_gain",
+            "gain_flatmax": 21,
+            "gain_min": 20,
+            "p_max": 21,
+            "nf0": 5.5,
+            "allowed_for_design": false
+            }
+        ]
+
+- openroadm – with JSON file describing gain figure tilt and gain/noise
+   figure ripple. **”default_edfa_config.json”** as source file. 
+
+.. code-block::
+
+    "Edfa":[{
+            "type_variety": "low_noise",
+            "type_def": "openroadm",
+            "gain_flatmax": 27,
+            "gain_min": 12,
+            "p_max": 22,
+            "nf_coef": [-8.104e-4,-6.221e-2,-5.889e-1,37.62],
+            "allowed_for_design": false
+            }
+        ]
 
 1.2.2. Fiber element
 ********************
@@ -114,11 +159,25 @@ Fiber element with its parameters:
 .. code-block::
 
     "Fiber":[{
+            "type_variety": "SSMF",
             "dispersion": 1.67e-05,
             "gamma": 0.00127
             }
         ]
 
+1.2.3 Roadm element
+*******************
+
+Roadm element with its parameters:
+
+.. code-block::
+
+      "Roadms":[{
+            "gain_mode_default_loss": 20,
+            "power_mode_pout_target": -20,
+            "add_drop_osnr": 38
+            }
+        ]
 
 1.2.3. Spans element
 ********************
@@ -128,12 +187,15 @@ Spans element with its parameters:
 .. code-block::
 
     "Spans":[{
+            "power_mode":true,
+            "delta_power_range_db": [0,0,0.5],
             "max_length": 150,
             "length_units": "km",
             "max_loss": 28,
             "padding": 10,
-            "EOL": 1,
-            "con_loss": 0.5
+            "EOL": 0,
+            "con_in": 0,
+            "con_out": 0
             }
         ]
 
@@ -147,11 +209,14 @@ Spectral information with its parameters:
 
     "SI":[{
             "f_min": 191.3e12,
-            "Nch": 80,
             "baud_rate": 32e9,
-            "spacing": 75e9,
+            "f_max":195.1e12,
+            "spacing": 50e9,
+            "power_dbm": 0,
+            "power_range_db": [0,0,0.5],
             "roll_off": 0.15,
-            "power": 1.2589e-3
+            "tx_osnr": 40,
+            "sys_margins": 0
             }
         ]
 
@@ -171,16 +236,24 @@ Transceiver operation formats.
                                 },
                     "mode":[
                             {
-                            "format": "PS_SP64_1",
-                            "baudrate": 32e9,
-                            "OSNR": 9,
-                            "bit_rate": 100e9
+                               "format": "mode 1",
+                               "baud_rate": 32e9,
+                               "OSNR": 11,
+                               "bit_rate": 100e9,
+                               "roll_off": 0.15,
+                               "tx_osnr": 40,
+                               "min_spacing": 37.5e9,
+                               "cost":1
                             },
                             {
-                            "format": "PS_SP64_2",
-                            "baudrate": 66e9,
-                            "OSNR": 10,
-                            "bit_rate": 200e9
+                              "format": "mode 2",
+                               "baud_rate": 66e9,
+                               "OSNR": 15,
+                               "bit_rate": 200e9,
+                               "roll_off": 0.15,
+                               "tx_osnr": 40,
+                               "min_spacing": 75e9,
+                               "cost":1
                             }
                     ]
                 }

@@ -41,11 +41,11 @@ class Node(object):
         self.update_attr(kwargs)
 
     def update_attr(self, kwargs):
-        clean_kwargs = {k:v for k,v in kwargs.items() if v !=''}        
+        clean_kwargs = {k:v for k,v in kwargs.items() if v !=''}
         for k,v in self.default_values.items():
             v = clean_kwargs.get(k,v)
             setattr(self, k, v)
-    
+
     default_values = \
     {
         'city':         '',
@@ -128,7 +128,7 @@ def read_header(my_sheet, line, slice_):
     try:
         header = [x.value.strip() for x in my_sheet.row_slice(line, slice_[0], slice_[1])]
         header_i = [Param_header(header,i+slice_[0]) for i, header in enumerate(header) if header != '']
-    except:
+    except Exception:
         header_i = []
     if header_i != [] and header_i[-1].colindex != slice_[1]:
         header_i.append(Param_header('',slice_[1]))
@@ -143,9 +143,9 @@ def read_slice(my_sheet, line, slice_, header):
         try:
             slice_range = next((h.colindex,header_i[i+1].colindex) \
                 for i,h in enumerate(header_i) if header in h.header)
-        except:
+        except Exception:
             pass
-    return slice_range    
+    return slice_range
 
 
 def parse_headers(my_sheet, input_headers_dict, headers, start_line, slice_in):
@@ -265,9 +265,9 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
                 city_match_dic[city].append(match_city)
 
     if names_matching:
-        print('\ncity match dictionary:',city_match_dic) 
+        print('\ncity match dictionary:',city_match_dic)
     with  open('name_match_dictionary.json', 'w', encoding='utf-8') as city_match_dic_file:
-        city_match_dic_file.write(dumps(city_match_dic, indent=2, ensure_ascii=False))            
+        city_match_dic_file.write(dumps(city_match_dic, indent=2, ensure_ascii=False))
 
     global links_by_city
     links_by_city = defaultdict(list)
@@ -428,8 +428,8 @@ def parse_excel(input_filename):
             'att_in':           'west_att_in',
             'amp gain':         'west_amp_gain',
             'tilt':             'west_tilt',
-            'att_out':          'west_att_out'       
-       }       
+            'att_out':          'west_att_out'
+       }
     }
 
     with open_workbook(input_filename) as wb:
@@ -437,17 +437,17 @@ def parse_excel(input_filename):
         links_sheet = wb.sheet_by_name('Links')
         try:
             eqpt_sheet = wb.sheet_by_name('Eqpt')
-        except:
+        except Exception:
             #eqpt_sheet is optional
             eqpt_sheet = None
 
         nodes = []
         for node in parse_sheet(nodes_sheet, node_headers, NODES_LINE, NODES_LINE+1, NODES_COLUMN):
             nodes.append(Node(**node))
-        expected_node_types = ('ROADM', 'ILA', 'FUSED')
+        expected_node_types = {'ROADM', 'ILA', 'FUSED'}
         for n in nodes:
-            if not (n.node_type in expected_node_types):
-                n.node_type='ILA'
+            if n.node_type not in expected_node_types:
+                n.node_type = 'ILA'
 
         links = []
         for link in parse_sheet(links_sheet, link_headers, LINKS_LINE, LINKS_LINE+2, LINKS_COLUMN):
@@ -455,7 +455,7 @@ def parse_excel(input_filename):
         #print('\n', [l.__dict__ for l in links])
 
         eqpts = []
-        if eqpt_sheet != None:        
+        if eqpt_sheet != None:
             for eqpt in parse_sheet(eqpt_sheet, eqpt_headers, EQPTS_LINE, EQPTS_LINE+2, EQPTS_COLUMN):
                 eqpts.append(Eqpt(**eqpt))
 
@@ -473,7 +473,7 @@ def parse_excel(input_filename):
 def eqpt_connection_by_city(city_name):
     other_cities = fiber_dest_from_source(city_name)
     subdata = []
-    if nodes_by_city[city_name].node_type.lower() in ('ila', 'fused'):
+    if nodes_by_city[city_name].node_type.lower() in {'ila', 'fused'}:
         # Then len(other_cities) == 2
         direction = ['west', 'east']
         for i in range(2):
