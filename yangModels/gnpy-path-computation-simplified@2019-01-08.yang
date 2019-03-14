@@ -128,25 +128,25 @@ module gnpy-path-computation-simplified {
   identity SNR-bandwidth {
     base path-metric-type;
     description
-      "A metric that records SNR @ signal bandwidth";
+      "A metric that records SNR in signal bandwidth";
   }
 
   identity OSNR-bandwidth {
     base path-metric-type;
     description
-      "A metric that records OSNR @ signal bandwidth";
+      "A metric that records OSNR in signal bandwidth";
   }
 
   identity SNR-0.1nm {
     base path-metric-type;
     description
-      "A metric that records SNR @ 0.1nm";
+      "A metric that records SNR in 0.1nm";
   }
 
   identity OSNR-0.1nm {
     base path-metric-type;
     description
-      "A metric that records OSNR @ 0.1nm";
+      "A metric that records OSNR in 0.1nm";
   }
 
   grouping transponder{
@@ -282,6 +282,19 @@ module gnpy-path-computation-simplified {
        This attribute is mapped to local or remote link identifier in
        RFC3630 and RFC5305.";
   }
+
+  //added by esther for accumulated metrics
+    typedef accumulated-metric-type {
+    type union {
+      type uint64;
+      type decimal64 {
+          fraction-digits 2;
+        } 
+    }
+    description
+      "type useable for accumulative-value";
+  }
+  // end added
 
   grouping path-route-objects {
     description
@@ -463,7 +476,7 @@ computation requests that must be synchronized.";
           description "TE path metric type";
         }
         leaf accumulative-value {
-          type uint64;
+          type accumulated-metric-type; // changed by esther type uint64 ;
           description "TE path metric accumulative value";
         }
       }
