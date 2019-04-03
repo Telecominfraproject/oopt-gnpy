@@ -38,6 +38,17 @@
             "allowed_for_design": false
             },
             {
+            "type_variety": "std_high_gain",
+            "type_def": "variable_gain",
+            "gain_flatmax": 35,
+            "gain_min": 25,
+            "p_max": 21,
+            "nf_min": 5.5,
+            "nf_max": 7,
+            "out_voa_auto": false,
+            "allowed_for_design": true
+            },            
+            {
             "type_variety": "std_medium_gain",
             "type_def": "variable_gain",
             "gain_flatmax": 26,
@@ -59,6 +70,17 @@
             "out_voa_auto": false,
             "allowed_for_design": true
             },
+            {
+            "type_variety": "high_power",
+            "type_def": "variable_gain",
+            "gain_flatmax": 16,
+            "gain_min": 8,
+            "p_max": 25,
+            "nf_min": 9,
+            "nf_max": 15,
+            "out_voa_auto": false,
+            "allowed_for_design": false
+            },            
             {
             "type_variety": "std_fixed_gain",
             "type_def": "fixed_gain",
@@ -102,7 +124,15 @@
             "preamp_variety": "std_medium_gain",
             "booster_variety": "std_low_gain",
             "allowed_for_design": true
-            }            
+            },
+            {
+            "type_variety": "medium+high_power",
+            "type_def": "dual_stage",
+            "gain_min": 25,
+            "preamp_variety": "std_medium_gain",
+            "booster_variety": "high_power",
+            "allowed_for_design": false
+            }                                  
       ],
       "Fiber":[{
             "type_variety": "SSMF",
@@ -122,7 +152,7 @@
       ],
       "Span":[{
             "power_mode":true,
-            "delta_power_range_db": [0,0,0.5],
+            "delta_power_range_db": [-2,3,0.5],
             "max_fiber_lineic_loss_for_raman": 0.25,
             "target_extended_gain": 2.5,
             "max_length": 150,
@@ -148,10 +178,10 @@
             "f_max":195.1e12,
             "spacing": 50e9,
             "power_dbm": 0,
-            "power_range_db": [0,0,0.5],
+            "power_range_db": [0,0,1],
             "roll_off": 0.15,
             "tx_osnr": 40,
-            "sys_margins": 0
+            "sys_margins": 2
             }],
       "Transceiver":[
             {
