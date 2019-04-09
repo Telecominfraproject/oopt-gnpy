@@ -1530,10 +1530,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 2.0,
+          "longitude": 2.75,
+          "city": "Lorient_KMA",
+          "region": "RLD"
         }
       }
     },
@@ -1549,10 +1549,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 2.0,
+          "longitude": 3.25,
+          "city": "Lorient_KMA",
+          "region": "RLD"
         }
       }
     },
@@ -1568,10 +1568,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 1.75,
+          "longitude": 2.5,
+          "city": "Lorient_KMA",
+          "region": "RLD"
         }
       }
     },
@@ -1587,10 +1587,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 2.0,
+          "longitude": 3.75,
+          "city": "Vannes_KBE",
+          "region": "RLD"
         }
       }
     },
@@ -1606,10 +1606,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 1.75,
+          "longitude": 3.5,
+          "city": "Vannes_KBE",
+          "region": "RLD"
         }
       }
     },
@@ -1625,10 +1625,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.25,
+          "longitude": 0.0,
+          "city": "Rennes_STA",
+          "region": "RLD"
         }
       }
     },
@@ -1644,10 +1644,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.25,
+          "longitude": 0.5,
+          "city": "Rennes_STA",
+          "region": "RLD"
         }
       }
     },
@@ -1663,10 +1663,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 3.75,
+          "longitude": 0.0,
+          "city": "Brest_KLA",
+          "region": "RLD"
         }
       }
     },
@@ -1682,10 +1682,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "a",
+          "region": ""
         }
       }
     },
@@ -1701,10 +1701,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "a",
+          "region": ""
         }
       }
     },
@@ -1720,10 +1720,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "b",
+          "region": ""
         }
       }
     },
@@ -1739,10 +1739,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "b",
+          "region": ""
         }
       }
     },
@@ -1758,10 +1758,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "c",
+          "region": ""
         }
       }
     },
@@ -1777,10 +1777,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "c",
+          "region": ""
         }
       }
     },
@@ -1796,10 +1796,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "c",
+          "region": ""
         }
       }
     },
@@ -1815,10 +1815,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "d",
+          "region": ""
         }
       }
     },
@@ -1834,10 +1834,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "d",
+          "region": ""
         }
       }
     },
@@ -1853,10 +1853,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "e",
+          "region": ""
         }
       }
     },
@@ -1872,10 +1872,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "e",
+          "region": ""
         }
       }
     },
@@ -1891,10 +1891,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "f",
+          "region": ""
         }
       }
     },
@@ -1910,10 +1910,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "f",
+          "region": ""
         }
       }
     },
@@ -1929,10 +1929,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "f",
+          "region": ""
         }
       }
     },
@@ -1948,10 +1948,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "g",
+          "region": ""
         }
       }
     },
@@ -1967,10 +1967,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "g",
+          "region": ""
         }
       }
     },
@@ -1986,10 +1986,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "h",
+          "region": ""
         }
       }
     },
@@ -2005,10 +2005,10 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
-          "city": null,
-          "region": null
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "h",
+          "region": ""
         }
       }
     },
@@ -2024,8 +2024,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 2.0,
+          "longitude": 2.75,
           "city": null,
           "region": null
         }
@@ -2043,8 +2043,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 2.0,
+          "longitude": 3.75,
           "city": null,
           "region": null
         }
@@ -2062,8 +2062,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.25,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2081,8 +2081,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 3.75,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2100,8 +2100,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 2.0,
+          "longitude": 1.25,
           "city": null,
           "region": null
         }
@@ -2119,8 +2119,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 1.75,
+          "longitude": 2.5,
           "city": null,
           "region": null
         }
@@ -2138,8 +2138,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 1.75,
+          "longitude": 3.5,
           "city": null,
           "region": null
         }
@@ -2157,8 +2157,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.25,
+          "longitude": 0.5,
           "city": null,
           "region": null
         }
@@ -2176,8 +2176,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.0,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2195,8 +2195,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.0,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2214,8 +2214,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.0,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2233,8 +2233,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.0,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2252,8 +2252,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.0,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2271,8 +2271,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.0,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2290,8 +2290,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.0,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2309,8 +2309,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.0,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2328,8 +2328,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.0,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2347,8 +2347,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 2.0,
+          "longitude": 3.25,
           "city": null,
           "region": null
         }
@@ -2366,8 +2366,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 1.75,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2385,8 +2385,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 1.0,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2404,8 +2404,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 3.25,
+          "longitude": 0.25,
           "city": null,
           "region": null
         }
@@ -2423,8 +2423,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 1.0,
+          "longitude": 2.0,
           "city": null,
           "region": null
         }
@@ -2442,8 +2442,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.0,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2461,8 +2461,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.0,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2480,8 +2480,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.0,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2499,8 +2499,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.0,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2518,8 +2518,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.0,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2537,8 +2537,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.0,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2556,8 +2556,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.0,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2575,8 +2575,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.0,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
@@ -2594,8 +2594,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 0.0,
+          "longitude": 0.0,
           "city": null,
           "region": null
         }
