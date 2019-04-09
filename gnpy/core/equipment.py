@@ -108,6 +108,8 @@ class Fiber(common):
 class Amp(common):
     default_values = \
     {
+        'f_min':                191.35e12,
+        'f_max':                196.1e12,
         'type_variety':         '',
         'type_def':             '',
         'gain_flatmax':         None,

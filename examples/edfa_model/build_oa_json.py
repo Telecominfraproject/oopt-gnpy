@@ -4,7 +4,6 @@
 Created on Tue Jan 30 12:32:00 2018
 
 @author: jeanluc-auge
-@comments about amplifier input files from Brian Taylor & Dave Boertjes
 
 update an existing json file with all the 96ch txt files for a given amplifier type
 amplifier type 'OA_type1' is hard coded but can be modified and other types added
@@ -18,46 +17,29 @@ from gnpy.core.utils import lin2db, db2lin
 
 """amplifier file names
 convert a set of amplifier files + input json definiton file into a valid edfa_json_file:
-nf_fit_coeff: NF polynomial coefficients txt file (optional)
+nf_fit_coeff: NF 3rd order polynomial coefficients txt file
+    nf = f(dg)
+    with dg = gain_operational - gain_max
 nf_ripple: NF ripple excursion txt file
-dfg: gain txt file
+gain_ripple: gain ripple txt file
 dgt: dynamic gain txt file
 input json file in argument (defult = 'OA.json')
+
 the json input file should have the following fields:
 {
-    "gain_flatmax": 25,
-    "gain_min": 15,
-    "p_max": 21,
-    "nf_fit_coeff": "pNFfit3.txt",
-    "nf_ripple": "NFR_96.txt", 
-    "dfg": "DFG_96.txt",
-    "dgt": "DGT_96.txt",
-    "nf_model": 
-        {
-        "enabled": true,
-        "nf_min": 5.8,
-        "nf_max": 10
-        }
+    "nf_fit_coeff": "nf_filename.txt",
+    "nf_ripple": "nf_ripple_filename.txt", 
+    "gain_ripple": "DFG_filename.txt",
+    "dgt": "DGT_filename.txt",
 }
-gain_flat = max flat gain (dB)
-gain_min = min gain (dB) : will consider an input VOA if below (TBD vs throwing an exception)
-p_max = max power (dBm)
-nf_fit = boolean (True, False) : 
-        if False nf_fit_coeff are ignored and nf_model fields are used
+
 """
 
 input_json_file_name = "OA.json" #default path
 output_json_file_name = "default_edfa_config.json"
-param_field  ="params"
-gain_min_field = "gain_min"
-gain_max_field = "gain_flatmax"
-gain_ripple_field = "dfg"
+gain_ripple_field = "gain_ripple"
 nf_ripple_field = "nf_ripple"
 nf_fit_coeff = "nf_fit_coeff"
-nf_model_field = "nf_model"
-nf_model_enabled_field = "enabled"
-nf_min_field  ="nf_min"
-nf_max_field = "nf_max"
 
 def read_file(field, file_name):
     """read and format the 96 channels txt files describing the amplifier NF and ripple
@@ -76,6 +58,7 @@ def read_file(field, file_name):
         #consider ripple excursion only to avoid redundant information
         #because the max flat_gain is already given by the 'gain_flat' field in json
         #remove the mean component
+        print(file_name, ', mean value =', data.mean(), ' is substracted')
         data = data - data.mean()
     data = data.tolist()
     return data

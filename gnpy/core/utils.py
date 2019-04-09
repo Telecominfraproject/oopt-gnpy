@@ -88,6 +88,20 @@ def itufs(spacing, startf=191.35, stopf=196.10):
     """
     return np.arange(startf, stopf + spacing / 2, spacing)
 
+def itufl(length, startf=191.35, stopf=196.10):
+    """Creates an array of frequencies whose default range is
+    191.35-196.10 THz
+
+    :param length: number of elements
+    :param starf: Start frequency in THz
+    :param stopf: Stop frequency in THz
+    :type length: integer
+    :type startf: float
+    :type stopf: float
+    :return an array of frequnecies determined by the spacing parameter
+    :rtype: numpy.ndarray
+    """
+    return np.linspace(startf, stopf, length)
 
 def h():
     """

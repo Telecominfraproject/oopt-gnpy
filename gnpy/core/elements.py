@@ -25,7 +25,7 @@ from collections import namedtuple
 
 from gnpy.core.node import Node
 from gnpy.core.units import UNITS
-from gnpy.core.utils import lin2db, db2lin, itufs, snr_sum
+from gnpy.core.utils import lin2db, db2lin, itufs, itufl, snr_sum
 
 class Transceiver(Node):
     def __init__(self, *args, **kwargs):
@@ -567,7 +567,7 @@ class Edfa(Node):
                 self.channel_freq, self.nf, self.interpol_dgt and self.interpol_gain_ripple
         """
         # TODO|jla: read amplifier actual frequencies from additional params in json
-        amplifier_freq = itufs(0.05) * 1e12 # Hz
+        amplifier_freq = itufl(len(self.params.dgt), self.params.f_min, self.params.f_max) * 1e12 # Hz
         self.channel_freq = frequencies
         self.interpol_dgt = interp(self.channel_freq, amplifier_freq, self.params.dgt)
 

@@ -7,7 +7,16 @@
             "advanced_config_from_json": "std_medium_gain_advanced_config.json",
             "out_voa_auto": false,
             "allowed_for_design": false
-            },                     
+            },                  {
+            "type_variety": "Juniper_BoosterHG",
+            "type_def": "advanced_model",
+            "gain_flatmax": 25,
+            "gain_min": 10,
+            "p_max": 21,
+            "advanced_config_from_json": "Juniper-BoosterHG.json",
+            "out_voa_auto": false,
+            "allowed_for_design": false
+            }, 
             {
             "type_variety": "operator_model_example",
             "type_def": "variable_gain",
