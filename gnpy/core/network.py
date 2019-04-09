@@ -66,7 +66,13 @@ def network_from_json(json_data, equipment):
     for cx in json_data['connections']:
         from_node, to_node = cx['from_node'], cx['to_node']
         try:
-            g.add_edge(nodes[from_node], nodes[to_node])
+            if isinstance(nodes[from_node], Fiber): 
+                edge_length = nodes[from_node].params.length
+                print(from_node)
+                print(edge_length)
+            else:
+                edge_length = 0.01
+            g.add_edge(nodes[from_node], nodes[to_node], weight = edge_length)
         except KeyError:
             msg = f'In {__name__} network_from_json function:\n\tcan not find {from_node} or {to_node} defined in {cx}'
             print(msg)
@@ -352,8 +358,12 @@ def add_egress_amplifier(network, node):
                         'tilt_target': 0,
                     })
         network.add_node(amp)
-        network.add_edge(node, amp)
-        network.add_edge(amp, next_node)
+        if isinstance(node,Fiber):
+            edgeweight = node.params.length
+        else:
+            edgeweight = 0.01
+        network.add_edge(node, amp, weight = edgeweight)
+        network.add_edge(amp, next_node, weight = 0.01)
 
 
 def calculate_new_length(fiber_length, bounds, target_length):
@@ -414,9 +424,17 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
                             }
                           },
                           params = fiber_params)
-        network.add_edge(prev_node, new_span)
+        if isinstance(prev_node,Fiber):
+            edgeweight = prev_node.params.length
+        else:
+            edgeweight = 0.01
+        network.add_edge(prev_node, new_span, weight = edgeweight)
         prev_node = new_span
-    network.add_edge(prev_node, next_node)
+    if isinstance(prev_node,Fiber):
+        edgeweight = prev_node.params.length
+    else:
+        edgeweight = 0.01    
+    network.add_edge(prev_node, next_node, weight = edgeweight)
 
 def add_connector_loss(fibers, con_in, con_out, EOL):
     for fiber in fibers:

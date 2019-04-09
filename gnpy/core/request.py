@@ -18,7 +18,8 @@ See: draft-ietf-teas-yang-path-computation-01.txt
 from sys import exit
 from collections import namedtuple
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
-from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths)
+from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths,shortest_path_length)
+from networkx import DiGraph
 from networkx.utils import pairwise 
 from numpy import mean
 from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
@@ -291,7 +292,15 @@ def compute_constrained_path(network, req):
 
     if len(nodes_list) == 1  :
         try :
-            total_path = dijkstra_path(network, source, destination)
+            total_path = dijkstra_path(network, source, destination, weight = 'weight')
+            # print('checking edges length is correct')
+            # print(shortest_path_length(network,source,destination))
+            # print(shortest_path_length(network,source,destination,weight ='weight'))
+            # s = total_path[0]
+            # for e in total_path[1:]:
+            #     print(s.uid)
+            #     print(network.get_edge_data(s,e))
+            #     s = e
         except NetworkXNoPath:
             msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path from {source.uid} to node : {destination.uid} in network topology'+ '\x1b[0m'
             logger.critical(msg)
@@ -313,7 +322,7 @@ def compute_constrained_path(network, req):
             if req.loose_list[req.nodes_list.index(n)] == 'loose':
                 print(f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing {nodes_list} in network topology'+ '\x1b[0m')
                 print(f'constraint ignored')
-                total_path = dijkstra_path(network, source, destination)
+                total_path = dijkstra_path(network, source, destination, weight = 'weight')
             else:
                 msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing {nodes_list}.\nNo path computed'+ '\x1b[0m'
                 logger.critical(msg)
@@ -818,7 +827,7 @@ def find_reversed_path(p,network) :
     destination = p[0]
     total_path = [source]
     for node in reversed_roadm_path :
-        total_path.extend(dijkstra_path(network, source, node)[1:])
+        total_path.extend(dijkstra_path(network, source, node, weight = 'weight')[1:])
         source = node
     total_path.append(destination)
     return total_path
