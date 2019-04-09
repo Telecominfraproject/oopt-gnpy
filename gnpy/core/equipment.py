@@ -17,44 +17,124 @@ from json import load
 from gnpy.core.utils import lin2db, db2lin, load_json
 from collections import namedtuple
 from gnpy.core.elements import Edfa
+import time
 
 Model_vg = namedtuple('Model_vg', 'nf1 nf2 delta_p')
 Model_fg = namedtuple('Model_fg', 'nf0')
 Model_openroadm = namedtuple('Model_openroadm', 'nf_coef')
-Fiber = namedtuple('Fiber', 'type_variety dispersion gamma')
-Spans = namedtuple('Spans', 'power_mode delta_power_range_db max_length length_units \
-                             max_loss padding EOL con_in con_out')
-Transceiver = namedtuple('Transceiver', 'type_variety frequency mode')
-Roadms = namedtuple('Roadms', 'gain_mode_default_loss power_mode_pout_target add_drop_osnr')
-SI = namedtuple('SI', 'f_min f_max baud_rate spacing roll_off \
-                       power_dbm power_range_db tx_osnr sys_margins')
-AmpBase = namedtuple(
-    'AmpBase',
-    'type_variety type_def gain_flatmax gain_min p_max'
-    ' nf_model nf_fit_coeff nf_ripple dgt gain_ripple out_voa_auto allowed_for_design')
-class Amp(AmpBase):
-    def __new__(cls,
-            type_variety, type_def, gain_flatmax, gain_min, p_max, nf_model=None,
-            nf_fit_coeff=None, nf_ripple=None, dgt=None, gain_ripple=None,
-             out_voa_auto=False, allowed_for_design=True):
-        return super().__new__(cls,
-            type_variety, type_def, gain_flatmax, gain_min, p_max,
-            nf_model, nf_fit_coeff, nf_ripple, dgt, gain_ripple,
-            out_voa_auto, allowed_for_design)
+Model_hybrid = namedtuple('Model_hybrid', 'nf_ram gain_ram edfa_variety')
+Model_dual_stage = namedtuple('Model_dual_stage', 'preamp_variety booster_variety')
+
+class common:
+    def update_attr(self, default_values, kwargs, name):
+        clean_kwargs = {k:v for k,v in kwargs.items() if v !=''}
+        for k,v in default_values.items():
+            setattr(self, k, clean_kwargs.get(k,v))
+            if k not in clean_kwargs and name != 'Amp' :
+                print(f'\x1b[1;31;40m'+
+                    f'\n WARNING missing {k} attribute in eqpt_config.json[{name}]'
+                    f'\n default value is {k} = {v}'
+                    + '\x1b[0m')
+                time.sleep(1)
+
+class SI(common):
+    default_values =\
+    {
+        "f_min":            191.35e12,
+        "f_max":            196.1e12,
+        "baud_rate":        32e9,        
+        "spacing":          50e9,
+        "power_dbm":        0,
+        "power_range_db":   [0,0,0.5],
+        "roll_off":         0.15,
+        "tx_osnr":          45,
+        "sys_margins":      0    
+    }
+
+    def __init__(self, **kwargs):
+        self.update_attr(self.default_values, kwargs, 'SI')
+
+class Span(common):
+    default_values = \
+    {
+        'power_mode':                       True,
+        'delta_power_range_db':             None,
+        'max_fiber_lineic_loss_for_raman':  0.25,
+        'target_extended_gain':             2.5,
+        'max_length':                       150,
+        'length_units':                     'km',
+        'max_loss':                         None,
+        'padding':                          10,
+        'EOL':                              0,
+        'con_in':                           0,
+        'con_out':                          0
+    }
+    
+    def __init__(self, **kwargs):
+        self.update_attr(self.default_values, kwargs, 'Span')
+
+class Roadm(common):
+    default_values = \
+    {
+        'target_pch_out_db':   -17,
+        'add_drop_osnr':       100
+    }    
+
+    def __init__(self, **kwargs):
+        self.update_attr(self.default_values, kwargs, 'Roadm')
+
+class Transceiver(common):
+    default_values = \
+    {
+        'type_variety': None,
+        'frequency':    None,
+        'mode':         {}
+    }
+
+    def __init__(self, **kwargs):
+        self.update_attr(self.default_values, kwargs, 'Transceiver')
+
+class Fiber(common):
+    default_values = \
+    {
+        'type_variety':  '',
+        'dispersion':    None,
+        'gamma':         0
+    }
+
+    def __init__(self, **kwargs):
+        self.update_attr(self.default_values, kwargs, 'Fiber')
+
+class Amp(common):
+    default_values = \
+    {
+        'type_variety':         '',
+        'type_def':             '',
+        'gain_flatmax':         None,
+        'gain_min':             None,
+        'p_max':                None,
+        'nf_model':             None,
+        'dual_stage_model':     None,
+        'nf_fit_coeff':         None,
+        'nf_ripple':            None,
+        'dgt':                  None,
+        'gain_ripple':          None,
+        'out_voa_auto':         False,
+        'allowed_for_design':   False,
+        'raman':                False
+    }
+
+    def __init__(self, **kwargs):
+        self.update_attr(self.default_values, kwargs, 'Amp')
 
     @classmethod
-    def from_advanced_json(cls, filename, **kwargs):
-        with open(filename, encoding='utf-8') as f:
-            json_data = load(f)
-        return cls(**{**kwargs, **json_data, 'type_def':None, 'nf_model':None})
+    def from_json(cls, filename, **kwargs):
+        config = Path(filename).parent / 'default_edfa_config.json'
 
-    @classmethod
-    def from_default_json(cls, filename, **kwargs):
-        with open(filename, encoding='utf-8') as f:
-            json_data = load(f)
         type_variety = kwargs['type_variety']
         type_def = kwargs.get('type_def', 'variable_gain') #default compatibility with older json eqpt files
         nf_def = None
+        dual_stage_def = None
 
         if type_def == 'fixed_gain':
             try:
@@ -67,6 +147,8 @@ class Amp(AmpBase):
                 del kwargs['nf_max']
             except KeyError: pass #nf_min and nf_max are not needed for fixed gain amp
             nf_def = Model_fg(nf0)
+        elif type_def == 'advanced_model':
+            config = Path(filename).parent / kwargs.pop('advanced_config_from_json')
         elif type_def == 'variable_gain':
             gain_min, gain_max = kwargs['gain_min'], kwargs['gain_flatmax']
             try: #nf_min and nf_max are expected for a variable gain amp
@@ -87,7 +169,20 @@ class Amp(AmpBase):
                 print(f'missing nf_coef input for amplifier: {type_variety} in eqpt_config.json')
                 exit()
             nf_def = Model_openroadm(nf_coef)
-        return cls(**{**kwargs, **json_data, 'nf_model': nf_def})
+        elif type_def == 'dual_stage':
+            try: #nf_ram and gain_ram are expected for a hybrid amp
+                preamp_variety = kwargs.pop('preamp_variety')
+                booster_variety = kwargs.pop('booster_variety')
+            except KeyError:
+                print(f'missing preamp/booster variety input for amplifier: {type_variety} in eqpt_config.json')
+                exit()
+            dual_stage_def = Model_dual_stage(preamp_variety, booster_variety)
+
+        with open(config, encoding='utf-8') as f:
+            json_data = load(f)
+
+        return cls(**{**kwargs, **json_data, 
+            'nf_model': nf_def, 'dual_stage_model': dual_stage_def})
 
 
 def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
@@ -123,7 +218,7 @@ def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
         g1a_max = lin2db(db2lin(nf2) / (db2lin(nf_min) - db2lin(nf1)))
         delta_p = gain_max - g1a_max
         g1a_min = gain_min - (gain_max-gain_min) - delta_p
-        if not 1 < delta_p < 6:
+        if not 1 < delta_p < 11:
             print(f'Computed \N{greek capital letter delta}P invalid \
                 \n 1st coil vs 2nd coil calculated DeltaP {delta_p:.2f} for \
                 \n amplifier {type_variety} is not valid: revise inputs \
@@ -145,7 +240,7 @@ def edfa_nf(gain_target, variety_type, equipment):
     amp_params = equipment['Edfa'][variety_type]
     amp = Edfa(
             uid = f'calc_NF',
-            params = amp_params._asdict(),
+            params = amp_params.__dict__,
             operational = {
                 'gain_target': gain_target,
                 'tilt_target': 0
@@ -243,6 +338,30 @@ def update_trx_osnr(equipment):
             m['OSNR'] = m['OSNR'] + equipment['SI']['default'].sys_margins
     return equipment
 
+def update_dual_stage(equipment):
+    edfa_dict = equipment['Edfa']
+    for edfa in edfa_dict.values():
+        if edfa.type_def == 'dual_stage':
+            edfa_preamp = edfa_dict[edfa.dual_stage_model.preamp_variety]
+            edfa_booster = edfa_dict[edfa.dual_stage_model.booster_variety]
+            for k,v in edfa_preamp.__dict__.items():
+                attr_k = 'preamp_'+k
+                setattr(edfa, attr_k, v)
+            for k,v in edfa_booster.__dict__.items():
+                attr_k = 'booster_'+k
+                setattr(edfa, attr_k, v)           
+            edfa.p_max = edfa_booster.p_max
+            edfa.gain_flatmax = edfa_booster.gain_flatmax + edfa_preamp.gain_flatmax
+            if edfa.gain_min < edfa_preamp.gain_min:
+                print(
+                    f'\x1b[1;31;40m'\
+                    + f'CRITICAL: dual stage {edfa.type_variety} min gain is lower than its preamp min gain\
+                        => please increase its min gain in eqpt_config.json'\
+                    + '\x1b[0m'
+                    )                        
+                exit()
+    return equipment
+
 def equipment_from_json(json_data, filename):
     """build global dictionnary eqpt_library that stores all eqpt characteristics:
     edfa type type_variety, fiber type_variety
@@ -259,13 +378,9 @@ def equipment_from_json(json_data, filename):
         for entry in entries:
             subkey = entry.get('type_variety', 'default')           
             if key == 'Edfa':
-                if 'advanced_config_from_json' in entry:
-                    config = Path(filename).parent / entry.pop('advanced_config_from_json')
-                    equipment[key][subkey] = Amp.from_advanced_json(config, **entry)
-                else:
-                    config = Path(filename).parent / 'default_edfa_config.json'
-                    equipment[key][subkey] = Amp.from_default_json(config, **entry)
+                equipment[key][subkey] = Amp.from_json(filename, **entry)
             else:                
                 equipment[key][subkey] = typ(**entry)
     equipment = update_trx_osnr(equipment)
+    equipment = update_dual_stage(equipment)
     return equipment

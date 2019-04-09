@@ -623,31 +623,473 @@
         "con_in": null,
         "con_out": null
       }
+    },
+    {
+      "uid": "east edfa in Lannion_CAS to Corlay",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "east edfa in Corlay to Loudeac",
+      "metadata": {
+        "location": {
+          "city": "Corlay",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 1.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "east edfa in Loudeac to Lorient_KMA",
+      "metadata": {
+        "location": {
+          "city": "Loudeac",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 2.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "east edfa in Lorient_KMA to Vannes_KBE",
+      "metadata": {
+        "location": {
+          "city": "Lorient_KMA",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 3.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "east edfa in Lannion_CAS to Stbrieuc",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "east edfa in Stbrieuc to Rennes_STA",
+      "metadata": {
+        "location": {
+          "city": "Stbrieuc",
+          "region": "RLD",
+          "latitude": 1.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "east edfa in Lannion_CAS to Morlaix",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "east edfa in Lorient_KMA to Loudeac",
+      "metadata": {
+        "location": {
+          "city": "Lorient_KMA",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 3.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "east edfa in Vannes_KBE to Lorient_KMA",
+      "metadata": {
+        "location": {
+          "city": "Vannes_KBE",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 4.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "east edfa in Rennes_STA to Stbrieuc",
+      "metadata": {
+        "location": {
+          "city": "Rennes_STA",
+          "region": "RLD",
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "east edfa in Brest_KLA to Morlaix",
+      "metadata": {
+        "location": {
+          "city": "Brest_KLA",
+          "region": "RLD",
+          "latitude": 4.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Lannion_CAS to Corlay",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Corlay to Loudeac",
+      "metadata": {
+        "location": {
+          "city": "Corlay",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 1.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Loudeac to Lorient_KMA",
+      "metadata": {
+        "location": {
+          "city": "Loudeac",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 2.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Lorient_KMA to Vannes_KBE",
+      "metadata": {
+        "location": {
+          "city": "Lorient_KMA",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 3.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Lannion_CAS to Stbrieuc",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Stbrieuc to Rennes_STA",
+      "metadata": {
+        "location": {
+          "city": "Stbrieuc",
+          "region": "RLD",
+          "latitude": 1.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Lannion_CAS to Morlaix",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Lorient_KMA to Loudeac",
+      "metadata": {
+        "location": {
+          "city": "Lorient_KMA",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 3.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Vannes_KBE to Lorient_KMA",
+      "metadata": {
+        "location": {
+          "city": "Vannes_KBE",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 4.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Rennes_STA to Stbrieuc",
+      "metadata": {
+        "location": {
+          "city": "Rennes_STA",
+          "region": "RLD",
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Brest_KLA to Morlaix",
+      "metadata": {
+        "location": {
+          "city": "Brest_KLA",
+          "region": "RLD",
+          "latitude": 4.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
     }
   ],
   "connections": [
     {
       "from_node": "roadm Lannion_CAS",
+      "to_node": "east edfa in Lannion_CAS to Corlay"
+    },
+    {
+      "from_node": "east edfa in Lannion_CAS to Corlay",
       "to_node": "fiber (Lannion_CAS → Corlay)-F061"
     },
     {
       "from_node": "fiber (Corlay → Lannion_CAS)-F061",
+      "to_node": "west edfa in Lannion_CAS to Corlay"
+    },
+    {
+      "from_node": "west edfa in Lannion_CAS to Corlay",
       "to_node": "roadm Lannion_CAS"
     },
     {
       "from_node": "roadm Lannion_CAS",
+      "to_node": "east edfa in Lannion_CAS to Stbrieuc"
+    },
+    {
+      "from_node": "east edfa in Lannion_CAS to Stbrieuc",
       "to_node": "fiber (Lannion_CAS → Stbrieuc)-F056"
     },
     {
       "from_node": "fiber (Stbrieuc → Lannion_CAS)-F056",
+      "to_node": "west edfa in Lannion_CAS to Stbrieuc"
+    },
+    {
+      "from_node": "west edfa in Lannion_CAS to Stbrieuc",
       "to_node": "roadm Lannion_CAS"
     },
     {
       "from_node": "roadm Lannion_CAS",
+      "to_node": "east edfa in Lannion_CAS to Morlaix"
+    },
+    {
+      "from_node": "east edfa in Lannion_CAS to Morlaix",
       "to_node": "fiber (Lannion_CAS → Morlaix)-F059"
     },
     {
       "from_node": "fiber (Morlaix → Lannion_CAS)-F059",
+      "to_node": "west edfa in Lannion_CAS to Morlaix"
+    },
+    {
+      "from_node": "west edfa in Lannion_CAS to Morlaix",
       "to_node": "roadm Lannion_CAS"
     },
     {
@@ -684,18 +1126,34 @@
     },
     {
       "from_node": "roadm Lorient_KMA",
+      "to_node": "east edfa in Lorient_KMA to Loudeac"
+    },
+    {
+      "from_node": "east edfa in Lorient_KMA to Loudeac",
       "to_node": "fiber (Lorient_KMA → Loudeac)-F054"
     },
     {
       "from_node": "fiber (Loudeac → Lorient_KMA)-F054",
+      "to_node": "west edfa in Lorient_KMA to Loudeac"
+    },
+    {
+      "from_node": "west edfa in Lorient_KMA to Loudeac",
       "to_node": "roadm Lorient_KMA"
     },
     {
       "from_node": "roadm Lorient_KMA",
+      "to_node": "east edfa in Lorient_KMA to Vannes_KBE"
+    },
+    {
+      "from_node": "east edfa in Lorient_KMA to Vannes_KBE",
       "to_node": "fiber (Lorient_KMA → Vannes_KBE)-F055"
     },
     {
       "from_node": "fiber (Vannes_KBE → Lorient_KMA)-F055",
+      "to_node": "west edfa in Lorient_KMA to Vannes_KBE"
+    },
+    {
+      "from_node": "west edfa in Lorient_KMA to Vannes_KBE",
       "to_node": "roadm Lorient_KMA"
     },
     {
@@ -708,10 +1166,18 @@
     },
     {
       "from_node": "roadm Vannes_KBE",
+      "to_node": "east edfa in Vannes_KBE to Lorient_KMA"
+    },
+    {
+      "from_node": "east edfa in Vannes_KBE to Lorient_KMA",
       "to_node": "fiber (Vannes_KBE → Lorient_KMA)-F055"
     },
     {
       "from_node": "fiber (Lorient_KMA → Vannes_KBE)-F055",
+      "to_node": "west edfa in Vannes_KBE to Lorient_KMA"
+    },
+    {
+      "from_node": "west edfa in Vannes_KBE to Lorient_KMA",
       "to_node": "roadm Vannes_KBE"
     },
     {
@@ -724,18 +1190,34 @@
     },
     {
       "from_node": "fiber (Lannion_CAS → Stbrieuc)-F056",
+      "to_node": "east edfa in Stbrieuc to Rennes_STA"
+    },
+    {
+      "from_node": "east edfa in Stbrieuc to Rennes_STA",
       "to_node": "fiber (Stbrieuc → Rennes_STA)-F057"
     },
     {
       "from_node": "fiber (Rennes_STA → Stbrieuc)-F057",
+      "to_node": "west edfa in Stbrieuc to Rennes_STA"
+    },
+    {
+      "from_node": "west edfa in Stbrieuc to Rennes_STA",
       "to_node": "fiber (Stbrieuc → Lannion_CAS)-F056"
     },
     {
       "from_node": "roadm Rennes_STA",
+      "to_node": "east edfa in Rennes_STA to Stbrieuc"
+    },
+    {
+      "from_node": "east edfa in Rennes_STA to Stbrieuc",
       "to_node": "fiber (Rennes_STA → Stbrieuc)-F057"
     },
     {
       "from_node": "fiber (Stbrieuc → Rennes_STA)-F057",
+      "to_node": "west edfa in Rennes_STA to Stbrieuc"
+    },
+    {
+      "from_node": "west edfa in Rennes_STA to Stbrieuc",
       "to_node": "roadm Rennes_STA"
     },
     {
@@ -764,10 +1246,18 @@
     },
     {
       "from_node": "roadm Brest_KLA",
+      "to_node": "east edfa in Brest_KLA to Morlaix"
+    },
+    {
+      "from_node": "east edfa in Brest_KLA to Morlaix",
       "to_node": "fiber (Brest_KLA → Morlaix)-F060"
     },
     {
       "from_node": "fiber (Morlaix → Brest_KLA)-F060",
+      "to_node": "west edfa in Brest_KLA to Morlaix"
+    },
+    {
+      "from_node": "west edfa in Brest_KLA to Morlaix",
       "to_node": "roadm Brest_KLA"
     },
     {

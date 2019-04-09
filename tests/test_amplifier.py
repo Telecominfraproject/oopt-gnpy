@@ -9,8 +9,8 @@ from json import load
 from gnpy.core.elements import Transceiver, Fiber, Edfa
 from gnpy.core.utils import lin2db, db2lin
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
-from gnpy.core.equipment import load_equipment, automatic_fmax
-from gnpy.core.network import build_network, load_network, set_roadm_loss
+from gnpy.core.equipment import load_equipment, automatic_fmax, automatic_nch
+from gnpy.core.network import build_network, load_network
 from pathlib import Path
 import pytest
 
@@ -79,7 +79,7 @@ def test_variable_gain_nf(gain, nf_expected, setup_edfa_variable_gain, si):
     pin = pin/db2lin(gain)
     baud_rates = array([c.baud_rate for c in si.carriers])
     edfa.operational.gain_target = gain
-    pref = Pref(0, -gain)
+    pref = Pref(0, -gain, lin2db(len(frequencies)))
     edfa.interpol_params(frequencies, pin, baud_rates, pref)
     result = edfa.nf
     assert pytest.approx(nf_expected, abs=0.01) == result[0]
@@ -93,7 +93,7 @@ def test_fixed_gain_nf(gain, nf_expected, setup_edfa_fixed_gain, si):
     pin = pin/db2lin(gain)
     baud_rates = array([c.baud_rate for c in si.carriers])
     edfa.operational.gain_target = gain
-    pref = Pref(0, -gain)
+    pref = Pref(0, -gain, lin2db(len(frequencies)))
     edfa.interpol_params(frequencies, pin, baud_rates, pref)
 
     assert pytest.approx(nf_expected, abs=0.01) == edfa.nf[0]
@@ -118,7 +118,7 @@ def test_compare_nf_models(gain, setup_edfa_variable_gain, si):
     pin = pin/db2lin(gain)
     baud_rates = array([c.baud_rate for c in si.carriers])
     edfa.operational.gain_target = gain
-    pref = Pref(0, -gain)
+    pref = Pref(0, -gain, lin2db(len(frequencies)))
     edfa.interpol_params(frequencies, pin, baud_rates, pref)
     nf_model = edfa.nf[0]
     edfa.interpol_params(frequencies, pin, baud_rates, pref)
@@ -137,7 +137,7 @@ def test_ase_noise(gain, si, setup_edfa_variable_gain, setup_trx, bw):
     pin = array([c.power.signal+c.power.nli+c.power.ase for c in si.carriers])
     baud_rates = array([c.baud_rate for c in si.carriers])
     edfa.operational.gain_target = gain
-    pref = Pref(0, 0)
+    pref = Pref(0, 0, lin2db(len(frequencies)))
     edfa.interpol_params(frequencies, pin, baud_rates, pref)
     nf = edfa.nf
     pin = lin2db(pin[0]*1e3)

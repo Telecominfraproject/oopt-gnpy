@@ -469,9 +469,10 @@
       "type": "Edfa",
       "type_variety": "test",
       "operational": {
-        "gain_target": 0,
+        "gain_target": null,
+        "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": null
       }
     },
     {
@@ -487,9 +488,10 @@
       "type": "Edfa",
       "type_variety": "test",
       "operational": {
-        "gain_target": 0,
+        "gain_target": null,
+        "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": null
       }
     },
     {
@@ -505,9 +507,10 @@
       "type": "Edfa",
       "type_variety": "test",
       "operational": {
-        "gain_target": 0,
+        "gain_target": null,
+        "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": null
       }
     },
     {
@@ -523,9 +526,10 @@
       "type": "Edfa",
       "type_variety": "test",
       "operational": {
-        "gain_target": 0,
+        "gain_target": null,
+        "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": null
       }
     }
   ],

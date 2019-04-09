@@ -41,7 +41,6 @@ class Transceiver(Node):
         with errstate(divide='ignore'):
             self.baud_rate = [c.baud_rate for c in spectral_info.carriers]
             ratio_01nm = [lin2db(12.5e9/b_rate) for b_rate in self.baud_rate]
-            
         #set raw values to record original calculation, before update_snr()            
             self.raw_osnr_ase = [lin2db(divide(c.power.signal, c.power.ase))
                             for c in spectral_info.carriers]
@@ -112,25 +111,21 @@ class Transceiver(Node):
         self._calc_snr(spectral_info)
         return spectral_info
 
-RoadmParams = namedtuple('RoadmParams', 'loss')
+RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr')
 
 class Roadm(Node):
-    def __init__(self, *args, params=None, **kwargs):
-        if params is None:
-            # default loss value if not mentioned in loaded network json
-            params = {'loss':None}
+    def __init__(self, *args, params, **kwargs):
         super().__init__(*args, params=RoadmParams(**params), **kwargs)
-        self.loss = self.params.loss
-        self.target_pch_out_db = None #set in Networks.py by def set_roadm_loss
-        self.effective_pch_out_db = None
-        self.effective_loss = None #set in self.propagate
+        self.loss = 0 #auto-design interest
+        self.effective_loss = None
+        self.effective_pch_out_db = self.params.target_pch_out_db
         self.passive = True
 
     @property
     def to_json(self):
         return {'uid'       : self.uid,
                 'type'      : type(self).__name__,
-                'params'    : {'loss' : self.loss},
+                'params'    : {'target_pch_out_db' : self.effective_pch_out_db},
                 'metadata'      : {
                     'location': self.metadata['location']._asdict()
                                     }
@@ -141,26 +136,25 @@ class Roadm(Node):
 
     def __str__(self):
         return '\n'.join([f'{type(self).__name__} {self.uid}',
-                          f'  loss (dB):     {self.effective_loss:.2f}',
-                          f'  pch out (dBm): {self.effective_pch_out_db!r}'])
+                          f'  effective loss (dB):  {self.effective_loss:.2f}',
+                          f'  pch out (dBm):        {self.effective_pch_out_db!r}'])
 
     def propagate(self, pref, *carriers):
         #pin_target and loss are read from eqpt_config.json['Roadm']
         #all ingress channels in xpress are set to this power level
         #but add channels are not, so we define an effective loss
         #in the case of add channels
-        if self.target_pch_out_db:
-            self.effective_loss = pref.pi - self.target_pch_out_db
-        else:
-             self.effective_loss = self.loss
-        self.effective_pch_out_db = pref.pi - self.effective_loss
-        attenuation = db2lin(self.effective_loss)
-
-        for carrier in carriers:
+        self.effective_pch_out_db = min(pref.pi, self.params.target_pch_out_db)
+        self.effective_loss = pref.pi - self.effective_pch_out_db
+        carriers_power = array([c.power.signal +c.power.nli+c.power.ase for c in carriers])
+        carriers_att = list(map(lambda x : lin2db(x*1e3)-self.params.target_pch_out_db, carriers_power))
+        exceeding_att = -min(list(filter(lambda x: x < 0, carriers_att)), default = 0)
+        carriers_att = list(map(lambda x: db2lin(x+exceeding_att), carriers_att))
+        for carrier_att, carrier in zip(carriers_att, carriers) :
             pwr = carrier.power
-            pwr = pwr._replace(signal=pwr.signal/attenuation,
-                               nonlinear_interference=pwr.nli/attenuation,
-                               amplified_spontaneous_emission=pwr.ase/attenuation)
+            pwr = pwr._replace( signal = pwr.signal/carrier_att,
+                                nonlinear_interference = pwr.nli/carrier_att,
+                                amplified_spontaneous_emission = pwr.ase/carrier_att)
             yield carrier._replace(power=pwr)
 
     def update_pref(self, pref):
@@ -430,16 +424,16 @@ class EdfaParams:
         if params == {}:
             self.type_variety = ''
             self.type_def = ''
-            self.gain_flatmax = 0
-            self.gain_min = 0
-            self.p_max = 0
-            self.nf_model = None
-            self.nf_fit_coeff = None
-            self.nf_ripple = None
-            self.dgt = None
-            self.gain_ripple = None
-            self.out_voa_auto = False
-            self.allowed_for_design = None
+            # self.gain_flatmax = 0
+            # self.gain_min = 0
+            # self.p_max = 0
+            # self.nf_model = None
+            # self.nf_fit_coeff = None
+            # self.nf_ripple = None
+            # self.dgt = None
+            # self.gain_ripple = None
+            # self.out_voa_auto = False
+            # self.allowed_for_design = None
 
     def update_params(self, kwargs):
         for k,v in kwargs.items() :
@@ -447,10 +441,22 @@ class EdfaParams:
                 if isinstance(v, dict) else v)
 
 class EdfaOperational:
-    def __init__(self, gain_target, tilt_target, out_voa=None):
-        self.gain_target = gain_target
-        self.tilt_target = tilt_target
-        self.out_voa = out_voa
+    default_values = \
+    {
+        'gain_target':      None,
+        'delta_p':          None,
+        'out_voa':          None,        
+        'tilt_target':      0
+    }
+
+    def __init__(self, **operational):
+        self.update_attr(operational)
+
+    def update_attr(self, kwargs):
+        clean_kwargs = {k:v for k,v in kwargs.items() if v !=''}
+        for k,v in self.default_values.items():
+            setattr(self, k, clean_kwargs.get(k,v))
+
     def __repr__(self):
         return (f'{type(self).__name__}('
                 f'gain_target={self.gain_target!r}, '
@@ -479,14 +485,16 @@ class Edfa(Node):
         self.pin_db = None
         self.nch = None
         self.pout_db = None
-        self.dp_db = None #delta P with Pref (power swwep) in power mode
         self.target_pch_out_db = None
         self.effective_pch_out_db = None
         self.passive = False
-        self.effective_gain = self.operational.gain_target
         self.att_in = None
         self.carriers_in = None
         self.carriers_out = None
+        self.effective_gain = self.operational.gain_target
+        self.delta_p = self.operational.delta_p #delta P with Pref (power swwep) in power mode
+        self.tilt_target = self.operational.tilt_target
+        self.out_voa = self.operational.out_voa
 
     @property
     def to_json(self):
@@ -494,9 +502,10 @@ class Edfa(Node):
                 'type'          : type(self).__name__,
                 'type_variety'  : self.params.type_variety,
                 'operational'   : {
-                    'gain_target' : self.operational.gain_target,
-                    'tilt_target' : self.operational.tilt_target,
-                    'out_voa'     : self.operational.out_voa
+                    'gain_target' : self.effective_gain,
+                    'delta_p'     : self.delta_p,
+                    'tilt_target' : self.tilt_target,
+                    'out_voa'     : self.out_voa
                 },
                 'metadata'      : {
                     'location': self.metadata['location']._asdict()
@@ -528,10 +537,10 @@ class Edfa(Node):
                           f'  pad att_in (dB):        {self.att_in:.2f}',
                           f'  Power In (dBm):         {self.pin_db:.2f}',
                           f'  Power Out (dBm):        {self.pout_db:.2f}',
-                          f'  Delta_P (dB):           {self.dp_db!r}',
+                          f'  Delta_P (dB):           {self.delta_p!r}',
                           f'  target pch (dBm):       {self.target_pch_out_db!r}',
                           f'  effective pch (dBm):    {self.effective_pch_out_db!r}',
-                          f'  output VOA (dB):        {self.operational.out_voa:.2f}'])
+                          f'  output VOA (dB):        {self.out_voa:.2f}'])
 
     def carriers(self, loc, attr):
         """retrieve carriers information
@@ -561,58 +570,101 @@ class Edfa(Node):
         amplifier_freq = itufs(0.05) * 1e12 # Hz
         self.channel_freq = frequencies
         self.interpol_dgt = interp(self.channel_freq, amplifier_freq, self.params.dgt)
+
         self.interpol_gain_ripple = interp(self.channel_freq, amplifier_freq, self.params.gain_ripple)
         self.interpol_nf_ripple =interp(self.channel_freq, amplifier_freq, self.params.nf_ripple)
 
         self.nch = frequencies.size
         self.pin_db = lin2db(sum(pin*1e3))
         
-        """in power mode: dp_db is defined and can be used to calculate the power target
+        """in power mode: delta_p is defined and can be used to calculate the power target
         This power target is used calculate the amplifier gain"""
-        if self.dp_db is not None:
-            self.target_pch_out_db = round(self.dp_db + pref.p0, 2)
+        if self.delta_p is not None:
+            self.target_pch_out_db = round(self.delta_p + pref.p0, 2)
             self.effective_gain = self.target_pch_out_db - pref.pi
-        else:
-            self.effective_gain = self.operational.gain_target
-        
-        """check power saturation and correct target_gain accordingly:"""
-        self.effective_gain = min(self.effective_gain, self.params.p_max - self.pin_db)
+
+        """check power saturation and correct effective gain & power accordingly:"""            
+        self.effective_gain = min(  
+                                    self.effective_gain, 
+                                    self.params.p_max - (pref.pi + pref.neq_ch)
+                                    )
+        #print(self.uid, self.effective_gain, self.operational.gain_target)
         self.effective_pch_out_db = round(pref.pi + self.effective_gain, 2)
 
+        """check power saturation and correct target_gain accordingly:"""
+        #print(self.uid, self.effective_gain, self.pin_db, pref.pi)
         self.nf = self._calc_nf()
         self.gprofile = self._gain_profile(pin)
 
         pout = (pin + self.noise_profile(baud_rates))*db2lin(self.gprofile)
         self.pout_db = lin2db(sum(pout*1e3))
-        self.operational.gain_target = self.effective_gain
         # ase & nli are only calculated in signal bandwidth
         #    pout_db is not the absolute full output power (negligible if sufficient channels)
+
+    def _nf(self, type_def, nf_model, nf_fit_coeff, gain_min, gain_flatmax, gain_target):
+        #if hybrid raman, use edfa_gain_flatmax attribute, else use gain_flatmax 
+        #gain_flatmax = getattr(params, 'edfa_gain_flatmax', params.gain_flatmax)
+        pad = max(gain_min - gain_target, 0)
+        gain_target += pad
+        dg = max(gain_flatmax - gain_target, 0)
+        if type_def == 'variable_gain':
+            g1a = gain_target - nf_model.delta_p - dg
+            nf_avg = lin2db(db2lin(nf_model.nf1) + db2lin(nf_model.nf2)/db2lin(g1a))            
+        elif type_def == 'fixed_gain':
+            nf_avg = nf_model.nf0
+        elif type_def == 'openroadm':
+            pin_ch = self.pin_db - lin2db(self.nch)
+            # model OSNR = f(Pin)
+            nf_avg = pin_ch - polyval(nf_model.nf_coef, pin_ch) + 58
+        elif type_def == 'advanced_model':
+            nf_avg = polyval(nf_fit_coeff, -dg)
+        else :
+            print(
+                f'\x1b[1;31;40m'\
+                + f'CRITICAL: unrecognized type def _{self.params.type_def}_\n\
+                    => please check eqpt_config.json'\
+                + '\x1b[0m'
+                )                        
+            exit()            
+        return nf_avg+pad, pad
 
     def _calc_nf(self, avg = False):
         """nf calculation based on 2 models: self.params.nf_model.enabled from json import:
         True => 2 stages amp modelling based on precalculated nf1, nf2 and delta_p in build_OA_json
         False => polynomial fit based on self.params.nf_fit_coeff"""
-        # TODO|jla: TBD alarm rising or input VOA padding in case
         # gain_min > gain_target TBD:
-        pad = max(self.params.gain_min - self.effective_gain, 0)
-        self.att_in = pad
-        gain_target = self.effective_gain + pad
-        dg = max(self.params.gain_flatmax - gain_target, 0)
-        if self.params.type_def == 'variable_gain':
-            g1a = gain_target - self.params.nf_model.delta_p - dg
-            nf_avg = lin2db(db2lin(self.params.nf_model.nf1) + db2lin(self.params.nf_model.nf2)/db2lin(g1a))
-        elif self.params.type_def == 'fixed_gain':
-            nf_avg = self.params.nf_model.nf0
-        elif self.params.type_def == 'openroadm':
-            pin_ch = self.pin_db - lin2db(self.nch)
-            # model OSNR = f(Pin)
-            nf_avg = pin_ch - polyval(self.params.nf_model.nf_coef, pin_ch) + 58
-        else:
-            nf_avg = polyval(self.params.nf_fit_coeff, -dg)
+        if self.params.type_def == 'dual_stage':
+            g1 = self.params.preamp_gain_flatmax
+            g2 = self.effective_gain - g1
+            nf1_avg, pad = self._nf( self.params.preamp_type_def, 
+                                self.params.preamp_nf_model,
+                                self.params.preamp_nf_fit_coeff,
+                                self.params.preamp_gain_min,
+                                self.params.preamp_gain_flatmax, 
+                                g1)
+            #no padding expected for the 1stage because g1 = gain_max
+            nf2_avg, pad = self._nf( self.params.booster_type_def,
+                                self.params.booster_nf_model,
+                                self.params.booster_nf_fit_coeff,
+                                self.params.booster_gain_min,
+                                self.params.booster_gain_flatmax, 
+                                g2)
+            nf_avg = lin2db(db2lin(nf1_avg) + db2lin(nf2_avg-g1))
+            #no padding expected for the 1stage because g1 = gain_max            
+            pad = 0
+        else:      
+            nf_avg, pad = self._nf(  self.params.type_def,
+                                self.params.nf_model,
+                                self.params.nf_fit_coeff,
+                                self.params.gain_min,
+                                self.params.gain_flatmax,
+                                self.effective_gain)
+
+        self.att_in = pad # not used to attenuate carriers, only used in _repr_ and _str_
         if avg:
-            return nf_avg + pad
+            return nf_avg
         else:
-            return self.interpol_nf_ripple + nf_avg + pad # input VOA = 1 for 1 NF degradation
+            return self.interpol_nf_ripple + nf_avg # input VOA = 1 for 1 NF degradation
 
     def noise_profile(self, df):
         """ noise_profile(bw) computes amplifier ase (W) in signal bw (Hz)
@@ -705,7 +757,7 @@ class Edfa(Node):
 
         # Calculate the target slope - currently assumes equal spaced channels
         # TODO|jla: support arbitrary channel spacing
-        targ_slope = self.operational.tilt_target / (len(nb_channel) - 1)
+        targ_slope = self.tilt_target / (len(nb_channel) - 1)
 
         # first estimate of DGT scaling
         if abs(dgt_slope) > 0.001: # check for zero value due to flat dgt
@@ -779,7 +831,7 @@ class Edfa(Node):
 
         gains = db2lin(self.gprofile)
         carrier_ases = self.noise_profile(brate)
-        att = db2lin(self.operational.out_voa)
+        att = db2lin(self.out_voa)
 
         for gain, carrier_ase, carrier in zip(gains, carrier_ases, carriers):
             pwr = carrier.power
@@ -790,7 +842,7 @@ class Edfa(Node):
 
     def update_pref(self, pref):
         return pref._replace(p_span0=pref.p0,
-                            p_spani=pref.pi + self.effective_gain - self.operational.out_voa)
+                            p_spani=pref.pi + self.effective_gain - self.out_voa)
 
     def __call__(self, spectral_info):
         self.carriers_in = spectral_info.carriers
