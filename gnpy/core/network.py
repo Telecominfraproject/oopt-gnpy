@@ -436,13 +436,13 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
         edgeweight = 0.01    
     network.add_edge(prev_node, next_node, weight = edgeweight)
 
-def add_connector_loss(fibers, con_in, con_out, EOL):
+def add_connector_loss(fibers, default_con_in, default_con_out, EOL):
     for fiber in fibers:
-        if fiber.con_in is None: fiber.con_in = con_in
+        if fiber.con_in is None: fiber.con_in = default_con_in
         if fiber.con_out is None:
-            fiber.con_out = con_out #con_out includes EOL
+            fiber.con_out = default_con_out + EOL
         else:
-            fiber.con_out = fiber.con_out+EOL
+            fiber.con_out = fiber.con_out + EOL
 
 def add_fiber_padding(network, fibers, padding):
     """last_fibers = (fiber for n in network.nodes()
@@ -473,13 +473,13 @@ def build_network(network, equipment, pref_ch_db, pref_total_db):
     min_length = max(int(default_span_data.padding/0.2*1e3),50_000)
     bounds = range(min_length, max_length)
     target_length = max(min_length, 90_000)
-    con_in = default_span_data.con_in
-    con_out = default_span_data.con_out + default_span_data.EOL
+    default_con_in = default_span_data.con_in
+    default_con_out = default_span_data.con_out
     padding = default_span_data.padding
 
     #set raodm loss for gain_mode before to build network
     fibers = [f for f in network.nodes() if isinstance(f, Fiber)]
-    add_connector_loss(fibers, con_in, con_out, default_span_data.EOL)
+    add_connector_loss(fibers, default_con_in, default_con_out, default_span_data.EOL)
     add_fiber_padding(network, fibers, padding)
     # don't group split fiber and add amp in the same loop
     # =>for code clarity (at the expense of speed):
