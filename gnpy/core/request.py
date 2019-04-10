@@ -19,7 +19,6 @@ from sys import exit
 from collections import namedtuple
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
 from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths,shortest_path_length)
-from networkx import DiGraph
 from networkx.utils import pairwise 
 from numpy import mean
 from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
@@ -314,9 +313,10 @@ def compute_constrained_path(network, req):
             if ispart(nodes_list, p) :
                 # print(f'selection{[el.uid for el in p if el in roadm]}')
                 candidate.append(p)
-        # select the shortest path (in nb of hops)
+        # select the shortest path (in nb of hops) -> changed to shortest path in km length
         if len(candidate)>0 :
-            candidate.sort(key=lambda x: len(x))
+            # candidate.sort(key=lambda x: len(x))
+            candidate.sort(key=lambda x: sum(network.get_edge_data(x[i],x[i+1])['weight'] for i in range(len(x)-2)))
             total_path = candidate[0]
         else:
             if req.loose_list[req.nodes_list.index(n)] == 'loose':
@@ -613,8 +613,10 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
             source=next(el for el in network.nodes() if el.uid == pathreq.source),\
             target=next(el for el in network.nodes() if el.uid == pathreq.destination),\
             cutoff=80))
-        # sort them
-        all_simp_pths = sorted(all_simp_pths, key=lambda path: len(path))
+        # sort them in km length instead of hop
+        # all_simp_pths = sorted(all_simp_pths, key=lambda path: len(path))
+        all_simp_pths = sorted(all_simp_pths, key=lambda \
+            x: sum(network.get_edge_data(x[i],x[i+1])['weight'] for i in range(len(x)-2)))
         # reversed direction paths required to check disjunction on both direction
         all_simp_pths_reversed = []
         for pth in all_simp_pths:

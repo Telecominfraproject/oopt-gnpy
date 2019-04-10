@@ -68,8 +68,8 @@ def network_from_json(json_data, equipment):
         try:
             if isinstance(nodes[from_node], Fiber): 
                 edge_length = nodes[from_node].params.length
-                print(from_node)
-                print(edge_length)
+                # print(from_node)
+                # print(edge_length)
             else:
                 edge_length = 0.01
             g.add_edge(nodes[from_node], nodes[to_node], weight = edge_length)
