@@ -30,6 +30,7 @@ from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.request import (Path_request, Result_element, compute_constrained_path,
                               propagate, jsontocsv, Disjunction, compute_path_dsjctn, requests_aggregation,
                               propagate_and_optimize_mode)
+from gnpy.core.spectrum_assignment import build_OMS_list, spectrum_selection
 from copy import copy, deepcopy
 from textwrap import dedent
 from math import ceil
@@ -320,6 +321,17 @@ if __name__ == '__main__':
     build_network(network, equipment, p_db, p_total_db)
     save_network(args.network_filename, network)
 
+    oms_list = build_OMS_list(network,equipment)
+
+    # print(len(oms_list))
+    # print(oms_list)
+    # print(len(network.nodes))
+    # susu = 0
+    # for o in oms_list:
+    #     susu += len(o.el_id_list) -2
+    # print(susu)
+    # verification :  susu = len(network.nodes) -roadms -transceivers
+
     rqs = requests_from_json(data, equipment)
 
     # check that request ids are unique. Non unique ids, may 
@@ -356,6 +368,19 @@ if __name__ == '__main__':
 
     print('\x1b[1;34;40m'+f'Propagating on selected path'+ '\x1b[0m')
     propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
+
+    (n,startm,stopm) , path_oms = spectrum_selection(pths[0],oms_list, 4, N = None)
+    print("toto")
+    print(n,startm,stopm)
+    print(path_oms)
+    for o in path_oms:
+        oms_list[o].assign_spectrum(n,4)
+    (n,startm,stopm) , path_oms = spectrum_selection(pths[0],oms_list, 4, N = -10)
+    print("toto")
+    print(n,startm,stopm)
+    print(path_oms)
+    for o in path_oms:
+        oms_list[o].assign_spectrum(n,4)
 
     end = time.time()
     print(f'computation time {end-start}')
