@@ -168,7 +168,7 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
     is beyond all available amplifiers capabilities and/or extended_gain_range:\n\
     a power reduction of {power_reduction} is applied\n'\
             + '\x1b[0m'
-            )        
+            )
 
     return selected_edfa.variety, power_reduction
 
@@ -295,8 +295,7 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
         #go through all nodes in the OMS (loop until next Roadm instance)
             if isinstance(node, Edfa):
                 node_loss = span_loss(network, prev_node)
-                if node.out_voa:
-                    voa = node.out_voa
+                voa = node.out_voa if node.out_voa else 0
                 if node.delta_p is None:
                     dp = target_power(network, next_node, equipment)
                 else:
@@ -308,7 +307,8 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
                     gain_target = node.effective_gain
                     dp = prev_dp - node_loss + gain_target
                 #print(node.delta_p, dp, gain_target)
-                power_target = pref_total_db + dp
+                power_target = pref_total_db + dp         
+
 
                 if node.params.type_variety == '' :                   
                     raman_allowed = False
