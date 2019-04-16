@@ -106,7 +106,6 @@ class Transceiver(Node):
                           f'  OSNR ASE (signal bw, dB):  {osnr_ase:.2f}',
                           f'  SNR total (signal bw, dB): {snr:.2f}'])
 
-
     def __call__(self, spectral_info):
         self._calc_snr(spectral_info)
         return spectral_info

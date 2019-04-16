@@ -16,6 +16,7 @@
             "p_max": 21,
             "nf_min": 6,
             "nf_max": 10,
+            "out_voa_auto": false,
             "allowed_for_design": true
             },
             {
@@ -26,6 +27,7 @@
             "p_max": 21,
             "nf_min": 7,
             "nf_max": 11,
+            "out_voa_auto": false,
             "allowed_for_design": true
             },
             {
@@ -36,6 +38,7 @@
             "p_max": 21,
             "nf_min": 5.8,
             "nf_max": 10,
+            "out_voa_auto": false,
             "allowed_for_design": true
             },
             {
@@ -55,8 +58,10 @@
             }
       ],
       "Span":[{
-            "power_mode": true,
-            "delta_power_range_db": [0,0,1],
+            "power_mode":true,
+            "delta_power_range_db": [0,0,0.5],
+            "max_fiber_lineic_loss_for_raman": 0.25,
+            "target_extended_gain": 2.5,
             "max_length": 150,
             "length_units": "km",
             "max_loss": 28,
@@ -67,8 +72,12 @@
             }
       ],
       "Roadm":[{
-            "power_mode_pout_target": -20,
-            "add_drop_osnr": 100
+            "target_pch_out_db": -20,
+            "add_drop_osnr": 38,
+            "restrictions": {
+                            "preamp_variety_list":["low_gain_preamp", "high_gain_preamp"],
+                            "booster_variety_list":["std_booster"]
+                            }    
             }],
       "SI":[{
             "f_min": 191.3e12,
@@ -76,7 +85,7 @@
             "baud_rate": 32e9,
             "spacing": 50e9,
             "power_dbm": 0,
-            "power_range_db": [0,0.5,0.5],
+            "power_range_db": [0,0,0.5],
             "roll_off": 0.15,
             "tx_osnr": 100,
             "sys_margins": 0            
