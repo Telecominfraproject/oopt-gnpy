@@ -151,14 +151,27 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
 
     if len(acceptable_gain_min_list) < 1:
         #do not take this empty list into account for the rest of the code
-        #but issue a warning to the user
-        acceptable_gain_min_list = amp_list
-        print(
-            f'\x1b[1;31;40m'\
-            + f'WARNING: target gain in node {uid} is below all available amplifiers min gain: \
-                amplifier input padding will be assumed, consider increase fiber padding instead'\
-            + '\x1b[0m'
-            )
+        #but issue a warning to the user and do not consider Raman
+        #Raman below min gain should not be allowed because i is meant to be a design requirement
+        #and raman padding at the amplifier input is impossible!
+
+        if len(edfa_list) < 1:
+            print(
+                f'\x1b[1;31;40m'\
+                + f'CRITICAL _ ABORT: auto_design could not find any amplifier \
+                    to satisfy min gain requirement in node {uid} \
+                    please increase span fiber padding'\
+                + '\x1b[0m'
+                )
+            exit()
+        else:
+            print(
+                f'\x1b[1;31;40m'\
+                + f'WARNING: target gain in node {uid} is below all available amplifiers min gain: \
+                    amplifier input padding will be assumed, consider increase span fiber padding instead'\
+                + '\x1b[0m'
+                )
+            acceptable_gain_min_list = edfa_list
 
     #filter on gain+power limitation:
     #this list checks both the gain and the power requirement
@@ -187,6 +200,7 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
     a power reduction of {power_reduction} is applied\n'\
             + '\x1b[0m'
             )
+
 
     return selected_edfa.variety, power_reduction
 
