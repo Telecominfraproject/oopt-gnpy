@@ -309,19 +309,26 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
                 #print(node.delta_p, dp, gain_target)
                 power_target = pref_total_db + dp         
 
+                raman_allowed = False
+                if isinstance(prev_node, Fiber):
+                    max_fiber_lineic_loss_for_raman = \
+                            equipment['Span']['default'].max_fiber_lineic_loss_for_raman
+                    raman_allowed = prev_node.params.loss_coef < max_fiber_lineic_loss_for_raman
 
                 if node.params.type_variety == '' :                   
-                    raman_allowed = False
-                    if isinstance(prev_node, Fiber):
-                        max_fiber_lineic_loss_for_raman = \
-                                equipment['Span']['default'].max_fiber_lineic_loss_for_raman
-                        raman_allowed = prev_node.params.loss_coef < max_fiber_lineic_loss_for_raman
                     edfa_variety, power_reduction = select_edfa(raman_allowed, 
                                    gain_target, power_target, equipment, node.uid)
                     extra_params = equipment['Edfa'][edfa_variety]
                     node.params.update_params(extra_params.__dict__)
                     dp += power_reduction
                     gain_target += power_reduction
+                elif node.params.raman and not raman_allowed:
+                    print(
+                        f'\x1b[1;31;40m'\
+                        + f'WARNING: raman is used in node {node.uid}\n \
+                but fiber lineic loss is above threshold\n'\
+                        + '\x1b[0m'
+                        )                    
                                 
                 node.delta_p = dp if power_mode else None
                 node.effective_gain = gain_target                    
