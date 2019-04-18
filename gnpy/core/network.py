@@ -97,13 +97,18 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
     """amplifer selection algorithm
     @Orange Jean-Luc Augé
     """
-    Edfa_list = namedtuple('Edfa_list', 'raman variety power gain_min nf')
+    Edfa_list = namedtuple('Edfa_list', 'variety power gain_min nf')
     TARGET_EXTENDED_GAIN = equipment['Span']['default'].target_extended_gain
     edfa_dict = equipment['Edfa']
     pin = power_target - gain_target
 
+    #create 2 list of available amplifiers with relevant attributs for their selection
+
+    #edfa list with :
+    #extended gain min allowance of 3dB: could be parametrized, but a bit complex
+    #extended gain max allowance TARGET_EXTENDED_GAIN is coming from eqpt_config.json
+    #power attribut include power AND gain limitations
     edfa_list = [Edfa_list(
-                raman=edfa.raman,
                 variety=edfa_variety,
                 power=min(
                     pin
@@ -122,7 +127,6 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
     #consider a Raman list because of different gain_min requirement: 
     #do not allow extended gain min for Raman
     raman_list = [Edfa_list(
-                raman=edfa.raman,
                 variety=edfa_variety,
                 power=min(
                     pin
@@ -139,46 +143,41 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
                 if (edfa.allowed_for_design and edfa.raman)] \
                 if raman_allowed else []
 
-    #filter on raman restriction
-    amp_list = edfa_list+raman_list
-    #print(f'\n{uid}, gain {gain_target}, {power_target}')
-    #print('edfa',edfa_list)
+    #merge raman and edfa lists
+    amp_list = edfa_list + raman_list
 
     #filter on min gain limitation: 
-    #consider gain_target+3 to allow some operation below min gain 
-    #(~counterpart to the extended gain range)           
-    acceptable_gain_min_list = \
-    list(filter(lambda x : x.gain_min>0, amp_list))
+    acceptable_gain_min_list = [x for x in amp_list if x.gain_min>0]
+
     if len(acceptable_gain_min_list) < 1:
         #do not take this empty list into account for the rest of the code
         #but issue a warning to the user
+        acceptable_gain_min_list = amp_list
         print(
             f'\x1b[1;31;40m'\
             + f'WARNING: target gain in node {uid} is below all available amplifiers min gain: \
                 amplifier input padding will be assumed, consider increase fiber padding instead'\
             + '\x1b[0m'
             )
-    else:
-        amp_list = acceptable_gain_min_list            
-    #print('gain_min', acceptable_gain_min_list)
 
-    #filter on max power limitation:
-    acceptable_power_list = \
-    list(filter(lambda x : x.power>=0, amp_list))
+    #filter on gain+power limitation:
+    #this list checks both the gain and the power requirement
+    #because of the way .power is calculated in the list
+    acceptable_power_list = [x for x in acceptable_gain_min_list if x.power>0]
     if len(acceptable_power_list) < 1:
-        #no amplifier satisfies the required power, so pick the highest power:
-        power_max = max(amp_list, key=attrgetter('power')).power
-        #pick up all amplifiers that share this max gain:
-        acceptable_power_list = \
-        list(filter(lambda x : x.power-power_max>-0.3, amp_list))
-    #print('power', acceptable_power_list)
+        #no amplifier satisfies the required power, so pick the highest power(s):
+        power_max = max(acceptable_gain_min_list, key=attrgetter('power')).power
+        #check and pick if other amplifiers may have a similar gain/power
+        #allow a 0.3dB power range 
+        #this allows to chose an amplifier with a better NF subsequentely
+        acceptable_power_list = [x for x in acceptable_gain_min_list
+                                 if x.power-power_max>-0.3]
 
-    # debug:
-    # print(gain_target, power_target, '=>\n',acceptable_power_list)
     
     # gain and power requirements are resolved,
     #       =>chose the amp with the best NF among the acceptable ones:
     selected_edfa = min(acceptable_power_list, key=attrgetter('nf')) #filter on NF
+    #check what are the gain and power limitations of this amp
     power_reduction = round(min(selected_edfa.power, 0),2)
     if power_reduction < -0.5:
         print(
