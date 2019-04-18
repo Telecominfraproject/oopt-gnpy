@@ -30,7 +30,7 @@ from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.request import (Path_request, Result_element, compute_constrained_path,
                               propagate, jsontocsv, Disjunction, compute_path_dsjctn, requests_aggregation,
                               propagate_and_optimize_mode)
-from gnpy.core.spectrum_assignment import build_OMS_list, spectrum_selection
+from gnpy.core.spectrum_assignment import build_OMS_list, spectrum_selection , pth_assign_spectrum
 from copy import copy, deepcopy
 from textwrap import dedent
 from math import ceil
@@ -369,31 +369,33 @@ if __name__ == '__main__':
     print('\x1b[1;34;40m'+f'Propagating on selected path'+ '\x1b[0m')
     propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
 
-    (n,startm,stopm) , path_oms = spectrum_selection(pths[0],oms_list, 4, N = None)
-    print("toto")
-    print(n,startm,stopm)
-    print(path_oms)
-    for o in path_oms:
-        oms_list[o].assign_spectrum(n,4)
-    (n,startm,stopm) , path_oms = spectrum_selection(pths[0],oms_list, 4, N = -10)
-    print("toto")
-    print(n,startm,stopm)
-    print(path_oms)
-    for o in path_oms:
-        oms_list[o].assign_spectrum(n,4)
+    # (n,startm,stopm) , path_oms = spectrum_selection(pths[0],oms_list, 4, N = None)
+    # print("toto")
+    # print(n,startm,stopm)
+    # print(path_oms)
+    # for o in path_oms:
+    #     oms_list[o].assign_spectrum(n,4)
+    # (n,startm,stopm) , path_oms = spectrum_selection(pths[0],oms_list, 4, N = -10)
+    # print("toto")
+    # print(n,startm,stopm)
+    # print(path_oms)
+    # for o in path_oms:
+    #     oms_list[o].assign_spectrum(n,4)
+
+    pth_assign_spectrum(pths, rqs, oms_list)
 
     end = time.time()
     print(f'computation time {end-start}')
     print('\x1b[1;34;40m'+f'Result summary'+ '\x1b[0m')
     
-    header = ['req id', '  demand','  snr@bandwidth','  snr@0.1nm','  Receiver minOSNR', '  mode', '  Gbit/s' , '  nb of tsp pairs']
+    header = ['req id', '  demand','  snr@bandwidth','  snr@0.1nm','  Receiver minOSNR', '  mode', '  Gbit/s' , '  nb of tsp pairs', 'blocked']
     data = []
     data.append(header)
     for i, p in enumerate(propagatedpths):
         if p:
             line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
                 f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
-                f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }']
+                f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }', f'{rqs[i].blocked}']
         else:
             line = [f'{rqs[i].request_id}',f' {rqs[i].source} to {rqs[i].destination} : not feasible ']
         data.append(line)

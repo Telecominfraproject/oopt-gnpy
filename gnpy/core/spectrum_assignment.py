@@ -14,6 +14,8 @@ from collections import namedtuple
 from gnpy.core.elements import Roadm, Transceiver
 from numpy import array
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
+from math import ceil
+from copy import copy
 
 logger = getLogger(__name__)
 
@@ -44,12 +46,14 @@ class Bitmap:
     def geti(self,n):
         return self.freq_index.index(n)
     def insert_left(self,newbitmap):
-        self.bitmap =  newbitmap.append(self.bitmap)
+        self.bitmap =  newbitmap + self.bitmap
         temp = list(range(self.n_min-len(newbitmap),self.n_min))
-        self.freq_index = temp.append(self.freq_index)
+        self.freq_index = temp + self.freq_index
+        self.n_min = self.freq_index[0]
     def insert_right(self,newbitmap):
-        self.bitmap =  self.bitmap.append(newbitmap)
-        self.freq_index = self.freq_index.append(range(self.n_max,self.n_max+len(newbitmap)))
+        self.bitmap =  self.bitmap + newbitmap
+        self.freq_index = self.freq_index + list(range(self.n_max,self.n_max+len(newbitmap)))
+        self.n_max = self.freq_index[-1]
 
 #    +'grid available_slots f_min f_max services_list')
 OMSParams = namedtuple('OMSParams','oms_id el_id_list') 
@@ -60,6 +64,8 @@ class OMS:
         self.oms_id = params.oms_id
         self.el_id_list = params.el_id_list
         self.spectrum_bitmap = []
+        self.nb_channels = 0
+        self.service_list = []
     # TODO
     def __str__(self):
         return '\n\t'.join([  f'{type(self).__name__} {self.oms_id}',
@@ -91,7 +97,6 @@ class OMS:
             self.spectrum_bitmap = Bitmap(f_min,f_max, grid, guardband)
             # print(len(self.spectrum_bitmap.bitmap))
 
-
     def assign_spectrum(self,n,m):
         # print("assign_spectrum")
         # print(f'n , m :{n},{m}')
@@ -108,13 +113,18 @@ class OMS:
             # verification that both length are identical
             # print(len(self.spectrum_bitmap.bitmap[self.spectrum_bitmap.geti(startn):self.spectrum_bitmap.geti(stopn)+1]))
             # print(stopn-startn+1)
-            self.spectrum_bitmap.bitmap[self.spectrum_bitmap.geti(startn):self.spectrum_bitmap.geti(stopn)+1] = [0] * (stopn-startn+1)        
+            self.spectrum_bitmap.bitmap[self.spectrum_bitmap.geti(startn):self.spectrum_bitmap.geti(stopn)+1] = [0] * (stopn-startn+1)
+            # print(self.spectrum_bitmap.bitmap)
+            # print(m_to_freq(n,m,grid = 0.00625e12))
+            return True
         else:
             msg = f'Could not assign n {n}, m {m} values: one or several slots are not available'
-            logger.info(msg)            
-        # todo : handle error if not
-        # print(self.spectrum_bitmap.bitmap)
-        # print(m_to_freq(n,m,grid = 0.00625e12))
+            logger.info(msg)
+            return False
+
+    def add_service(self,service_id, nb_wl):
+        self.service_list.append(service_id)
+        self.nb_channels += nb_wl 
 
 def frequency_to_n(freq,grid = 0.00625e12):
     return (int)((freq-193.1e12)/grid)  
@@ -143,13 +153,14 @@ def align_grids(oms_list):
     # out of grid slots are set to 0
     n_min = min([o.spectrum_bitmap.n_min for o in oms_list])
     n_max = max([o.spectrum_bitmap.n_max for o in oms_list])
-    print(n_min , n_max)
     for o in oms_list:
         if (o.spectrum_bitmap.n_min - n_min) > 0 :
             o.spectrum_bitmap.insert_left([0] * (o.spectrum_bitmap.n_min - n_min))
         if (n_max - o.spectrum_bitmap.n_max) > 0 :
             o.spectrum_bitmap.insert_right( [0] * (n_max - o.spectrum_bitmap.n_max))
-    
+
+    return oms_list
+
 def build_OMS_list(network,equipment):
     oms_id = 0
     OMS_list =[]
@@ -185,22 +196,27 @@ def build_OMS_list(network,equipment):
                 except AttributeError:
                     n_out.oms_list = []
                     n_out.oms_list.append(oms_id)                
-                # print(f'coucou2 {oms.oms_id}')
+                print(f'coucou2 {oms.oms_id} {oms.el_id_list[0]} {oms.el_id_list[-1]}')
                 # for e in oms.el_id_list:
                 #     print(f' {e}')
+
                 # TODO do not forget to correct next line !
-                oms.update_spectrum(equipment['SI']['default'].f_min,equipment['SI']['default'].f_max, grid = 0.00625e12)
                 # to test different grids
                 if oms_id<3:
-                    oms.update_spectrum(equipment['SI']['default'].f_min + 0.5e12,equipment['SI']['default'].f_max, grid = 0.00625e12)
+                    #oms.update_spectrum(equipment['SI']['default'].f_min + 0.5e12,equipment['SI']['default'].f_max, grid = 0.00625e12)
+                    oms.update_spectrum(equipment['SI']['default'].f_min,equipment['SI']['default'].f_max, grid = 0.00625e12)
+                    print(len(oms.spectrum_bitmap.bitmap))
+                else:
+                    oms.update_spectrum(equipment['SI']['default'].f_min,equipment['SI']['default'].f_max, grid = 0.00625e12)
+                    print(len(oms.spectrum_bitmap.bitmap))                    
                 # oms.assign_spectrum(13,7) gives back (193137500000000.0, 193225000000000.0) 
                 # as in the example in the standard
-                oms.assign_spectrum(13,7)
+                # oms.assign_spectrum(13,7)
 
                 OMS_list.append(oms)
                 oms_id += 1
                 # print('\n')
-    align_grids(OMS_list)
+    OMS_list = align_grids(OMS_list)
     return OMS_list
 
 def spectrum_selection(pth,OMS_list, m, N = None):
@@ -224,7 +240,8 @@ def spectrum_selection(pth,OMS_list, m, N = None):
     # print(path_oms)
     # remove duplicate oms_id, order is not important
     path_oms = list(set(path_oms))
-    # print(path_oms)
+    print(path_oms)
+    # print(OMS_list[path_oms[0]].spectrum_bitmap.bitmap)
     freq_availability = 1 - array(OMS_list[path_oms[0]].spectrum_bitmap.bitmap)
     # assuming all oms have same freq index
     freq_index = OMS_list[path_oms[0]].spectrum_bitmap.freq_index
@@ -263,7 +280,7 @@ def spectrum_selection(pth,OMS_list, m, N = None):
     # print(freq_availability[321:321+2*m])
     # a = [i+321 for i in range(2*m)]
     # print(a)
-    # print(candidate)
+    print(candidate)
     return candidate, path_oms
 
 def select_candidate(candidates, policy):
@@ -272,3 +289,28 @@ def select_candidate(candidates, policy):
             return candidates[0]
         else:
             return (None, None , None)
+
+def pth_assign_spectrum(pths, rqs, oms_list):
+    
+    # baseic first fit assignment
+    for i, pth in enumerate(pths) :
+        # computes the number of channels required
+        nb_wl = ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) 
+        # computes the total nb of slots according to requested spacing
+        # todo : express superchannels
+        # assumes that all channels must be grouped
+        # todo : enables non contiguous reservation in case of blocking
+        M = ceil(rqs[i].spacing / 0.0125e12) * nb_wl
+        print(M*nb_wl)
+        (n,startm,stopm) , path_oms = spectrum_selection(pth,oms_list, M, N = None)
+        if n is not None : 
+            print("toto")
+            print(n,startm,stopm)
+            print(path_oms)
+            for o in path_oms:
+                oms_list[o].assign_spectrum(n,M)
+                oms_list[o].add_service(rqs[i].request_id,nb_wl)
+            rqs[i].blocked = False
+        else:
+            rqs[i].blocked = True
+
