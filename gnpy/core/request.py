@@ -452,13 +452,15 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
                         return path, m
                 else:  
                     return [], None
+        if path[-1].snr is not None:
+            req.baud_rate = baudrate_to_explore[-1]
         # only get to this point if no baudrate/mode satisfies OSNR requirement
 
         # returns the last propagated path and mode
         msg = f'\tWarning! Request {req.request_id}: no mode satisfies path SNR requirement.\n'
         print(msg)
         logger.info(msg)
-        return [],None
+        return path,None
     else :
     #  no baudrate satisfying spacing
         msg = f'\tWarning! Request {req.request_id}: no baudrate satisfies spacing requirement.\n'
@@ -496,11 +498,11 @@ def jsontocsv(json_data,equipment,fileout):
 
         # find the min  acceptable OSNR, baud rate from the eqpt library based on tsp (tupe) and mode (format)
         # loading equipment already tests the existence of tsp type and mode:
-        if mode !='not feasible with this transponder' :
+        if mode !='NO_FEASIBLE_MODE' :
             [minosnr, baud_rate, bit_rate, cost] = next([m['OSNR'] , m['baud_rate'] , m['bit_rate'], m['cost']]  
                 for m in equipment['Transceiver'][tsp].mode if  m['format']==mode)
-        # else:
-        #     [minosnr, baud_rate, bit_rate] = ['','','','']
+        else:
+            [minosnr, baud_rate, bit_rate, cost] = ['','','','']
         output_snr = next(e['accumulative-value'] 
             for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR@0.1nm')
         output_snrbandwidth = next(e['accumulative-value']
@@ -523,7 +525,7 @@ def jsontocsv(json_data,equipment,fileout):
             br = ''
             pw = ''
             total_cost = ''
-        else:
+        elif mode !='NO_FEASIBLE_MODE':
             isok   = output_snr >= minosnr
             nb_tsp = ceil(path_bandwidth / bit_rate)
             pthbdbw = round(path_bandwidth*1e-9,2)
@@ -533,6 +535,16 @@ def jsontocsv(json_data,equipment,fileout):
             br     = round(baud_rate*1e-9,2) 
             pw     = round(lin2db(power)+30,2)
             total_cost = nb_tsp * cost
+        elif mode =='NO_FEASIBLE_MODE' :
+            isok   = False
+            nb_tsp = ''
+            pthbdbw = round(path_bandwidth*1e-9,2)
+            rosnr  = round(output_osnr,2)
+            rsnr   = round(output_snr,2)
+            rsnrb  = round(output_snrbandwidth,2)
+            br     = ''
+            pw     = round(lin2db(power)+30,2)
+            total_cost = ''
         mywriter.writerow((path_id,
             source,
             destination,

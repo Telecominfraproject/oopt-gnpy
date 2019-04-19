@@ -226,7 +226,11 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                     pathreq.tx_osnr = mode['tx_osnr']
                     pathreq.bit_rate = mode['bit_rate']
                 else :
-                    total_path = []
+                    if total_path:
+                        pathreq.tsp_mode = 'NO_FEASIBLE_MODE'
+                        pathreq.format = 'NO_FEASIBLE_MODE'
+                    else:
+                        total_path = []
         # we record the last tranceiver object in order to have th whole 
         # information about spectrum. Important Note: since transceivers 
         # attached to roadms are actually logical elements to simulate
@@ -392,12 +396,17 @@ if __name__ == '__main__':
     data = []
     data.append(header)
     for i, p in enumerate(propagatedpths):
-        if p:
+        if p and rqs[i].bit_rate is not None:
             line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
                 f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
                 f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }', f'{rqs[i].blocked}']
         else:
-            line = [f'{rqs[i].request_id}',f' {rqs[i].source} to {rqs[i].destination} : not feasible ']
+            if not p:
+                line = [f'{rqs[i].request_id}',f' {rqs[i].source} to {rqs[i].destination} : not feasible ']
+            else:
+                line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
+                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
+                f'-', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'-', f'-']
         data.append(line)
 
     col_width = max(len(word) for row in data for word in row[2:])   # padding

@@ -295,22 +295,23 @@ def pth_assign_spectrum(pths, rqs, oms_list):
     # baseic first fit assignment
     for i, pth in enumerate(pths) :
         # computes the number of channels required
-        nb_wl = ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) 
-        # computes the total nb of slots according to requested spacing
-        # todo : express superchannels
-        # assumes that all channels must be grouped
-        # todo : enables non contiguous reservation in case of blocking
-        M = ceil(rqs[i].spacing / 0.0125e12) * nb_wl
-        print(M*nb_wl)
-        (n,startm,stopm) , path_oms = spectrum_selection(pth,oms_list, M, N = None)
-        if n is not None : 
-            print("toto")
-            print(n,startm,stopm)
-            print(path_oms)
-            for o in path_oms:
-                oms_list[o].assign_spectrum(n,M)
-                oms_list[o].add_service(rqs[i].request_id,nb_wl)
-            rqs[i].blocked = False
-        else:
-            rqs[i].blocked = True
+        if rqs[i].bit_rate is not None:
+            nb_wl = ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) 
+            # computes the total nb of slots according to requested spacing
+            # todo : express superchannels
+            # assumes that all channels must be grouped
+            # todo : enables non contiguous reservation in case of blocking
+            M = ceil(rqs[i].spacing / 0.0125e12) * nb_wl
+            print(M*nb_wl)
+            (n,startm,stopm) , path_oms = spectrum_selection(pth,oms_list, M, N = None)
+            if n is not None : 
+                print("toto")
+                print(n,startm,stopm)
+                print(path_oms)
+                for o in path_oms:
+                    oms_list[o].assign_spectrum(n,M)
+                    oms_list[o].add_service(rqs[i].request_id,nb_wl)
+                rqs[i].blocked = False
+            else:
+                rqs[i].blocked = True
 
