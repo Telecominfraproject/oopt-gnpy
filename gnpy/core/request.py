@@ -31,7 +31,6 @@ from math import ceil
 
 logger = getLogger(__name__)
 
-
 RequestParams = namedtuple('RequestParams','request_id source destination trx_type'+
 ' trx_mode nodes_list loose_list spacing power nb_channel f_min f_max format baud_rate OSNR bit_rate roll_off tx_osnr min_spacing cost path_bandwidth')
 DisjunctionParams = namedtuple('DisjunctionParams','disjunction_id relaxable link_diverse node_diverse disjunctions_req')
@@ -110,81 +109,112 @@ class Disjunction:
                             f'request-id-numbers: {self.disjunctions_req}'
                             '\n'])
 
+blocking_nopath = ['NO_PATH','NO_PATH_WITH_CONSTRAINT' , 'NO_FEASIBLE_BAUDRATE_WITH_SPACING','NO_COMPUTED_SNR']
+blocking_nomode = ['NO_FEASIBLE_MODE', 'MODE_NOT_FEASIBLE']
+blocking_nospectrum = 'NO_SPECTRUM'
+
 class Result_element(Element):
     def __init__(self,path_request,computed_path):
         self.path_id = path_request.request_id
         self.path_request = path_request
         self.computed_path = computed_path
     uid = property(lambda self: repr(self))
-    @property
-    def pathresult(self):
-        if not self.computed_path:
-            return {
-                   'response-id': self.path_id,
-                   'no-path': "Response without path information, due to failure performing the path computation"
-                   }
-        else:
-            index = 0
-            pro_list = [] 
-            for n in self.computed_path :
+    @property 
+    def detailed_path_json(self) :
+        index = 0
+        pro_list = [] 
+        for n in self.computed_path :
+            temp = {
+                'path-route-object': {
+                    'index': index,
+                    'num-unnum-hop': {
+                        'node-id': n.uid,
+                        'link-tp-id': n.uid,
+                        # TODO change index in order to insert transponder attribute
+                        }
+                    }
+                }
+            pro_list.append(temp) 
+            index += 1
+            if self.path_request.M>0 :
+                temp = {
+                    'path-route-object': {
+                        'index': index,                        
+                        "label-hop": {
+                            "N": self.path_request.N,
+                            "M": self.path_request.M
+                            },
+                        }
+                    }
+                pro_list.append(temp) 
+                index += 1
+            if isinstance(n, Transceiver) :
                 temp = {
                     'path-route-object': {
                         'index': index,
-                        'num-unnum-hop': {
-                            'node-id': n.uid,
-                            'link-tp-id': n.uid,
-                            # TODO change index in order to insert transponder attribute
+                        'transponder' : {
+                           'transponder-type' : self.path_request.tsp,
+                           'transponder-mode' : self.path_request.tsp_mode,
                             }
                         }
                     }
                 pro_list.append(temp) 
                 index += 1
-                if isinstance(n, Transceiver) :
-                    temp = {
-                        'path-route-object': {
-                            'index': index,
-                            'transponder' : {
-                               'transponder-type' : self.path_request.tsp,
-                               'transponder-mode' : self.path_request.tsp_mode,
-                                }
-                            }
-                        }
-                    pro_list.append(temp) 
-                    index += 1
-
+        return pro_list
+    @property
+    def path_properties(self):
+        return {
+               'path-metric': [
+                   {
+                   'metric-type': 'SNR-bandwidth',
+                   'accumulative-value': round(mean(self.computed_path[-1].snr),2)
+                   },
+                   {
+                   'metric-type': 'SNR-0.1nm',
+                   'accumulative-value': round(mean(self.computed_path[-1].snr+lin2db(self.path_request.baud_rate/12.5e9)),2)
+                   },
+                   {
+                   'metric-type': 'OSNR-bandwidth',
+                   'accumulative-value': round(mean(self.computed_path[-1].osnr_ase),2)
+                   },
+                   {
+                   'metric-type': 'OSNR-0.1nm',
+                   'accumulative-value': round(mean(self.computed_path[-1].osnr_ase_01nm),2)
+                   },
+                   {
+                   'metric-type': 'reference_power',
+                   'accumulative-value': self.path_request.power
+                   },
+                   {
+                   'metric-type': 'path_bandwidth',
+                   'accumulative-value': self.path_request.path_bandwidth
+                   }
+                ],
+                'path-route-objects': self.detailed_path_json
+            }
+    
+    @property
+    def pathresult(self):
+        try:
+            if self.path_request.blocking_reason in blocking_nopath :
+                response =  {
+                       'response-id': self.path_id,
+                       'no-path': self.path_request.blocking_reason
+                       }
+                return response
+            else:
+                response =  {
+                       'response-id': self.path_id,
+                       'no-path': self.path_request.blocking_reason,
+                       'path-properties': self.path_properties
+                       }
+                return response
+        except AttributeError:
             response = {
                    'response-id': self.path_id,
-                   'path-properties':{
-                       'path-metric': [
-                           {
-                           'metric-type': 'SNR-bandwidth',
-                           'accumulative-value': round(mean(self.computed_path[-1].snr),2)
-                           },
-                           {
-                           'metric-type': 'SNR-0.1nm',
-                           'accumulative-value': round(mean(self.computed_path[-1].snr+lin2db(self.path_request.baud_rate/12.5e9)),2)
-                           },
-                           {
-                           'metric-type': 'OSNR-bandwidth',
-                           'accumulative-value': round(mean(self.computed_path[-1].osnr_ase),2)
-                           },
-                           {
-                           'metric-type': 'OSNR-0.1nm',
-                           'accumulative-value': round(mean(self.computed_path[-1].osnr_ase_01nm),2)
-                           },
-                           {
-                           'metric-type': 'reference_power',
-                           'accumulative-value': self.path_request.power
-                           },
-                           {
-                           'metric-type': 'path_bandwidth',
-                           'accumulative-value': self.path_request.path_bandwidth
-                           }
-                        ],
-                        'path-route-objects': pro_list
-                    }
+                   'path-properties': self.path_properties
                 }
-        return response
+            return response
 
     @property
     def json(self):
@@ -231,6 +261,7 @@ def compute_constrained_path(network, req):
             msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path from {source.uid} to node : {destination.uid} in network topology'+ '\x1b[0m'
             logger.critical(msg)
             print(msg)
+            req.blocking_reason = 'NO_PATH'
             total_path = []        
     else : 
         all_simp_pths = list(all_simple_paths(network,source=source,\
@@ -254,6 +285,7 @@ def compute_constrained_path(network, req):
                 msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing {nodes_list}.\nNo path computed'+ '\x1b[0m'
                 logger.critical(msg)
                 print(msg)
+                req.blocking_reason = 'NO_PATH_WITH_CONSTRAINT'
                 total_path = []
 
     # obsolete method: this does not guaranty to avoid loops or correct results
@@ -266,7 +298,7 @@ def compute_constrained_path(network, req):
     # if I have to compute a to g with constraint f-c
     # result will be a concatenation of: a-b-f and f-b-c and c-g
     # which means a loop. 
-    # if to avoid loops I iteratively suppress edges of the segmenst in the topo
+    # if to avoid loops I iteratively suppress edges of the segments in the topo
     # segment 1 = a-b-f
     #               1
     # eg    a    b-----c
@@ -377,24 +409,60 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
                     if round(min(path[-1].snr+lin2db(b/(12.5e9))),2) > m['OSNR'] :
                         found_a_feasible_mode = True
                         return path, m
+                    else :
+                        last_explored_mode = m
                 else:  
-                    return [], None
+                    req.blocking_reason = 'NO_COMPUTED_SNR'
+                    return path, None
         if path[-1].snr is not None:
             req.baud_rate = baudrate_to_explore[-1]
-        # only get to this point if no baudrate/mode satisfies OSNR requirement
+         # only get to this point if no baudrate/mode satisfies OSNR requirement
 
         # returns the last propagated path and mode
         msg = f'\tWarning! Request {req.request_id}: no mode satisfies path SNR requirement.\n'
         print(msg)
         logger.info(msg)
-        return path,None
+        req.blocking_reason = 'NO_FEASIBLE_MODE'
+        req.tsp_mode = last_explored_mode['format']
+        return path,last_explored_mode
     else :
     #  no baudrate satisfying spacing
         msg = f'\tWarning! Request {req.request_id}: no baudrate satisfies spacing requirement.\n'
         print(msg)
         logger.info(msg)
+        req.blocking_reason = 'NO_FEASIBLE_BAUDRATE_WITH_SPACING'
         return [], None
 
+def jsontoparams(p, tsp, mode, equipment):
+    temp = []
+    for e in p['path-properties']['path-route-objects'] :
+        try :
+            temp .append(e['path-route-object']['num-unnum-hop']['node-id'])
+        except KeyError:
+            pass
+    pth        = ' | '.join(temp)
+
+    # find the min  acceptable OSNR, baud rate from the eqpt library based on tsp (tupe) and mode (format)
+    # loading equipment already tests the existence of tsp type and mode:
+    if mode is not None:
+        [minosnr, baud_rate, bit_rate, cost] = next([m['OSNR'] , m['baud_rate'] , m['bit_rate'], m['cost']]  
+            for m in equipment['Transceiver'][tsp].mode if  m['format']==mode)
+    else:
+        [minosnr, baud_rate, bit_rate, cost] = ['','','','']
+    output_snr = next(e['accumulative-value'] 
+        for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR-0.1nm')
+    output_snrbandwidth = next(e['accumulative-value']
+        for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR-bandwidth')
+    output_osnr = next(e['accumulative-value']
+        for e in p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-0.1nm')
+    output_osnrbandwidth = next(e['accumulative-value']
+        for e in p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-bandwidth')
+    power = next(e['accumulative-value']
+        for e in p['path-properties']['path-metric'] if e['metric-type'] == 'reference_power')
+    path_bandwidth = next(e['accumulative-value']
+        for e in p['path-properties']['path-metric'] if e['metric-type'] == 'path_bandwidth')    
+    return pth, minosnr, baud_rate, bit_rate, cost, output_snr, \
+        output_snrbandwidth, output_osnr, output_osnrbandwidth, power, path_bandwidth
 
 def jsontocsv(json_data,equipment,fileout):
     # read json path result file in accordance with:
@@ -407,90 +475,78 @@ def jsontocsv(json_data,equipment,fileout):
         'nb of tsp pairs','total cost','transponder-type','transponder-mode',\
         'OSNR-0.1nm','SNR-0.1nm','SNR-bandwidth','baud rate (Gbaud)',\
         'input power (dBm)','path'))
-    tspjsondata = equipment['Transceiver']
-    #print(tspjsondata)
+    #print(equipment['Transceiver'])
     for p in json_data['response']:
         path_id     = p['response-id']
         try:
-            if p['no-path'] :
-                isok = False
-                nb_tsp = 0
-                pthbdbw = round(path_bandwidth*1e-9,2)
+            # this part only works if the request has a blocking_reason atribute, ie if it could not be satisfied
+            if p['no-path'] in blocking_nopath:
+                source = ''
+                destination = ''
+                pthbdbw = ''
+                isok = p['no-path']
+                nb_tsp = ''
+                total_cost = ''
+                tsp = ''
+                mode = ''
                 rosnr = ''
                 rsnr = ''
                 rsnrb = ''
                 br = ''
                 pw = ''
-                total_cost = ''
                 pth = ''
+            else :    
+                # spectrum assignment is not performed for blocked demands: there is no label object in the answer
+                # so the hop_attribute with tsp and mode is second object or last object, while id of hop is first and 
+                # penultimate
+                source = p['path-properties']['path-route-objects'][0]\
+                ['path-route-object']['num-unnum-hop']['node-id']
+                destination = p['path-properties']['path-route-objects'][-2]\
+                ['path-route-object']['num-unnum-hop']['node-id']                
+                [tsp,mode] = [p['path-properties']['path-route-objects'][1]\
+                ['path-route-object']['transponder']['transponder-type'],\
+                p['path-properties']['path-route-objects'][1]\
+                ['path-route-object']['transponder']['transponder-mode'] ]
+                isok =  p['no-path']
+                total_cost = ''
+                nb_tsp = ''
+                if p['no-path'] in blocking_nomode or p['no-path'] in blocking_nospectrum  :
+                    pth, minosnr, baud_rate, bit_rate, cost, output_snr, output_snrbandwidth, \
+                        output_osnr, output_osnrbandwidth, power, path_bandwidth = jsontoparams(p, tsp, mode, equipment)
+                    pthbdbw = ''
+                    rosnr  = round(output_osnr,2)
+                    rsnr   = round(output_snr,2)
+                    rsnrb  = round(output_snrbandwidth,2)
+                    br     = round(baud_rate*1e-9,2) 
+                    pw     = round(lin2db(power)+30,2)
         except KeyError:
+            # if there was a key error means that the request was not blocked
             source      = p['path-properties']['path-route-objects'][0]\
             ['path-route-object']['num-unnum-hop']['node-id']
-            destination = p['path-properties']['path-route-objects'][-2]\
+            destination = p['path-properties']['path-route-objects'][-3]\
             ['path-route-object']['num-unnum-hop']['node-id']
             # selects only roadm nodes
-            temp = []
-            for e in p['path-properties']['path-route-objects'] :
-                try :
-                    temp .append(e['path-route-object']['num-unnum-hop']['node-id'])
-                except KeyError:
-                    pass
-            pth        = ' | '.join(temp)
-
-            [tsp,mode] = [p['path-properties']['path-route-objects'][1]\
+            [tsp,mode] = [p['path-properties']['path-route-objects'][2]\
             ['path-route-object']['transponder']['transponder-type'],\
-            p['path-properties']['path-route-objects'][1]\
+            p['path-properties']['path-route-objects'][2]\
             ['path-route-object']['transponder']['transponder-mode'] ]
 
-            # find the min  acceptable OSNR, baud rate from the eqpt library based on tsp (tupe) and mode (format)
+            # find the min  acceptable OSNR, baud rate from the eqpt library based on tsp (type) and mode (format)
             # loading equipment already tests the existence of tsp type and mode:
-            if mode !='NO_FEASIBLE_MODE' :
-                [minosnr, baud_rate, bit_rate, cost] = next([m['OSNR'] , m['baud_rate'] , m['bit_rate'], m['cost']]  
-                    for m in equipment['Transceiver'][tsp].mode if  m['format']==mode)
-            else:
-                [minosnr, baud_rate, bit_rate, cost] = ['','','','']
-            output_snr = next(e['accumulative-value'] 
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR-0.1nm')
-            output_snrbandwidth = next(e['accumulative-value']
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR-bandwidth')
-            output_osnr = next(e['accumulative-value']
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-0.1nm')
-            output_osnrbandwidth = next(e['accumulative-value']
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-bandwidth')
-            power = next(e['accumulative-value']
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'reference_power')
-            path_bandwidth = next(e['accumulative-value']
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'path_bandwidth')
-            if isinstance(output_snr, str):
-                isok = False
-                nb_tsp = 0
-                pthbdbw = round(path_bandwidth*1e-9,2)
-                rosnr = ''
-                rsnr = ''
-                rsnrb = ''
-                br = ''
-                pw = ''
-                total_cost = ''
-            elif mode !='NO_FEASIBLE_MODE':
-                isok   = output_snr >= minosnr
-                nb_tsp = ceil(path_bandwidth / bit_rate)
-                pthbdbw = round(path_bandwidth*1e-9,2)
-                rosnr  = round(output_osnr,2)
-                rsnr   = round(output_snr,2)
-                rsnrb  = round(output_snrbandwidth,2)
-                br     = round(baud_rate*1e-9,2) 
-                pw     = round(lin2db(power)+30,2)
-                total_cost = nb_tsp * cost
-            elif mode =='NO_FEASIBLE_MODE' :
-                isok   = False
-                nb_tsp = ''
-                pthbdbw = round(path_bandwidth*1e-9,2)
-                rosnr  = round(output_osnr,2)
-                rsnr   = round(output_snr,2)
-                rsnrb  = round(output_snrbandwidth,2)
-                br     = '' # should be this value round(baud_rate*1e-9,2) 
-                pw     = round(lin2db(power)+30,2)
-                total_cost = ''
+            pth, minosnr, baud_rate, bit_rate, cost, output_snr, output_snrbandwidth, \
+                output_osnr, output_osnrbandwidth, power, path_bandwidth = jsontoparams(p, tsp, mode, equipment)
+
+            isok   = output_snr >= minosnr
+            nb_tsp = ceil(path_bandwidth / bit_rate)
+            pthbdbw = round(path_bandwidth*1e-9,2)
+            rosnr  = round(output_osnr,2)
+            rsnr   = round(output_snr,2)
+            rsnrb  = round(output_snrbandwidth,2)
+            br     = round(baud_rate*1e-9,2) 
+            pw     = round(lin2db(power)+30,2)
+            total_cost = nb_tsp * cost
+
+
         mywriter.writerow((path_id,
             source,
             destination,

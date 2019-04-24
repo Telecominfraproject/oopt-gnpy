@@ -295,14 +295,18 @@ def pth_assign_spectrum(pths, rqs, oms_list):
     # baseic first fit assignment
     for i, pth in enumerate(pths) :
         # computes the number of channels required
-        if rqs[i].bit_rate is not None:
+        try:
+            if rqs[i].blocking_reason :
+                rqs[i].blocked = True
+                rqs[i].N = 0
+                rqs[i].M = 0
+        except AttributeError :              
             nb_wl = ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) 
             # computes the total nb of slots according to requested spacing
             # todo : express superchannels
             # assumes that all channels must be grouped
             # todo : enables non contiguous reservation in case of blocking
             M = ceil(rqs[i].spacing / 0.0125e12) * nb_wl
-            print(M*nb_wl)
             (n,startm,stopm) , path_oms = spectrum_selection(pth,oms_list, M, N = None)
             if n is not None : 
                 print("toto")
@@ -312,6 +316,12 @@ def pth_assign_spectrum(pths, rqs, oms_list):
                     oms_list[o].assign_spectrum(n,M)
                     oms_list[o].add_service(rqs[i].request_id,nb_wl)
                 rqs[i].blocked = False
+                rqs[i].N = n
+                rqs[i].M = M
             else:
                 rqs[i].blocked = True
+                rqs[i].N = 0
+                rqs[i].M = 0
+                rqs[i].blocking_reason = 'NO_SPECTRUM'
+       
 
