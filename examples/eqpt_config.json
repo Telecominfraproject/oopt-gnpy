@@ -271,55 +271,6 @@
                        "cost":1
                        }
                    ]
-            },
-            {
-            "type_variety": "Voyager2",
-            "frequency":{
-                        "min": 191.35e12,
-                        "max": 196.1e12
-                        },
-            "mode":[
-                       {
-                       "format": "mode 1",
-                       "baud_rate": 32e9,
-                       "OSNR": 120,
-                       "bit_rate": 100e9,
-                       "roll_off": 0.15,
-                       "tx_osnr": 40,
-                       "min_spacing": 37.5e9,
-                       "cost":1
-                       },
-                       {
-                       "format": "mode 3",
-                       "baud_rate": 44e9,
-                       "OSNR": 180,
-                       "bit_rate": 300e9,
-                       "roll_off": 0.15,
-                       "tx_osnr": 40,
-                       "min_spacing": 62.5e9,
-                       "cost":1
-                       },
-                       {
-                       "format": "mode 2",
-                       "baud_rate": 66e9,
-                       "OSNR": 210,
-                       "bit_rate": 400e9,
-                       "roll_off": 0.15,
-                       "tx_osnr": 40,
-                       "min_spacing": 75e9,
-                       "cost":1
-                       },
-                       {
-                       "format": "mode 4",
-                       "baud_rate": 32e9,
-                       "OSNR": 100,
-                       "bit_rate": 50e9,
-                       "roll_off": 0.15,
-                       "tx_osnr": 40,
-                       "min_spacing": 75e9,
-                       "cost":1
-                       }
-                   ]
             }
       ]
 

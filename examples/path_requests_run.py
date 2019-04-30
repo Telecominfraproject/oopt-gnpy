@@ -30,7 +30,7 @@ from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.request import (Path_request, Result_element, compute_constrained_path,
                               propagate, jsontocsv, Disjunction, compute_path_dsjctn, requests_aggregation,
                               propagate_and_optimize_mode, blocking_nopath, find_reversed_path)
-from gnpy.core.spectrum_assignment import build_OMS_list, spectrum_selection , pth_assign_spectrum
+from gnpy.core.spectrum_assignment import build_OMS_list, reversed_OMS, spectrum_selection , pth_assign_spectrum
 from copy import copy, deepcopy
 from textwrap import dedent
 from math import ceil
@@ -171,7 +171,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         print(f'with path constraint: {[pathreq.source]+pathreq.nodes_list}') #adding first node to be clearer on the output
 
         total_path = deepcopy(pathlist[i])
-        print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}\n')
+        print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}')
         # for debug
         # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
         if total_path :
@@ -181,7 +181,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 temp_snr01nm = round(mean(total_path[-1].snr+lin2db(pathreq.baud_rate/(12.5e9))),2)
                 if temp_snr01nm < pathreq.OSNR :
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}\n' +\
-                    f'\tcomputedSNR in 0.1nm = {temp_snr01nm} - required osnr {pathreq.OSNR}\n'
+                    f'\tcomputedSNR in 0.1nm = {temp_snr01nm} - required osnr {pathreq.OSNR}'
                     print(msg)
                     logger.warning(msg)
                     # total_path = []
@@ -195,10 +195,16 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 # that contains the reason for blocking: 'NO_PATH', 'NO_FEASIBLE_MODE', ...
                 try:
                     if pathreq.blocking_reason in blocking_nopath :
-                        print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
-                        total_path = []  
+                        total_path = []
+                    elif pathreq.blocking_reason in blocking_nomode :
+                        pathreq.baud_rate = mode['baud_rate']
+                        pathreq.tsp_mode = mode['format']
+                        pathreq.format = mode['format']
+                        pathreq.OSNR = mode['OSNR']
+                        pathreq.tx_osnr = mode['tx_osnr']
+                        pathreq.bit_rate = mode['bit_rate']
+                    # other blocking reason should not appear at this point                                
                 except:
-                    print('ccccccccccccccccccccccccccccccccccccccccc')
                     pathreq.baud_rate = mode['baud_rate']
                     pathreq.tsp_mode = mode['format']
                     pathreq.format = mode['format']
@@ -212,8 +218,13 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         # the same transponder for the performance simaulation. This is why 
         # we use deepcopy: to ensure each propagation is recorded and not 
         # overwritten 
-        #                print(f'Computing path from {total_path[0].uid} to {total_path[-1].uid}')
+        else:
+            msg = 'Total path is empty. No propagation'
+            print(msg)
+            logger.info(msg)
+
         path_res_list.append(total_path)
+        print('\n')
     return path_res_list
 
 def correct_route_list(network, pathreqlist):
@@ -300,7 +311,6 @@ if __name__ == '__main__':
     save_network(args.network_filename, network)
 
     oms_list = build_OMS_list(network,equipment)
-
     # print(len(oms_list))
     # print(oms_list)
     # print(len(network.nodes))
@@ -346,20 +356,18 @@ if __name__ == '__main__':
 
     print('\x1b[1;34;40m'+f'Propagating on selected path'+ '\x1b[0m')
     propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
+    # Note that deepcopy used in compute_path_with_disjunction retrns a list of nodes which are not belonging to 
+    # network (they are copies of the node objects). so there can not be propagation on these nodes.
 
     # TODO : compute paths in the reversed deirection : compute path with disjunction suppresses nodes in networks: correct this bug !
     reversed_propagatedpths = []
-    for i,p in enumerate(propagatedpths) :   
-        if p : 
-            for e in p :
-                print(e.uid)
-            print('coucou')
-            reversed_path = p
-            # reversed_path = propagate(find_reversed_path(p,network) , rqs[i], equipment, show=False)
+    for i,p in enumerate(pths) :   
+        if propagatedpths[i] : 
+            reversed_path = propagate(find_reversed_path(p) , rqs[i], equipment, show=False)
         else:
-            reversed_path = p
-
+            reversed_path = propagatedpths[i]
         reversed_propagatedpths.append(deepcopy(reversed_path))    
+
     # (n,startm,stopm) , path_oms = spectrum_selection(pths[0],oms_list, 4, N = None)
     # print("toto")
     # print(n,startm,stopm)
@@ -374,15 +382,17 @@ if __name__ == '__main__':
     #     oms_list[o].assign_spectrum(n,4)
 
     pth_assign_spectrum(pths, rqs, oms_list)
+    pth_assign_spectrum(reversed_propagatedpths, rqs, oms_list)    
 
     end = time.time()
     print(f'computation time {end-start}')
     print('\x1b[1;34;40m'+f'Result summary'+ '\x1b[0m')
     
-    header = ['req id', '  demand','  snr@bandwidth','  snr@0.1nm','  Receiver minOSNR', '  mode', '  Gbit/s' , '  nb of tsp pairs', 'blocked']
+    header = ['req id', '  demand','  snr@bandwidth A-Z (Z-A)','  snr@0.1nm A-Z (Z-A)','  Receiver minOSNR', '  mode', '  Gbit/s' , '  nb of tsp pairs', 'N,M or blocking reason']
     data = []
     data.append(header)
     for i, p in enumerate(propagatedpths):
+        rp = reversed_propagatedpths[i]
         try :
             if rqs[i].blocking_reason == 'NO_PATH':
                 line = [f'{rqs[i].request_id}',f' {rqs[i].source} to {rqs[i].destination} :', f'-',\
@@ -397,21 +407,21 @@ if __name__ == '__main__':
                 line = [f'{rqs[i].request_id}',f' {rqs[i].source} to {rqs[i].destination} :', f'-',\
                 f'-',f'-', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'-', f'NO_PATH_WITH_CONSTRAINT']
             elif rqs[i].blocking_reason == 'NO_FEASIBLE_MODE':
-                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
-                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
+                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)} ({round(mean(rp[-1].snr),2)})',\
+                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)} ({round(mean(rp[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)})',\
                 f'-', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'-', f'NO_FEASIBLE_MODE']           
             elif rqs[i].blocking_reason == 'MODE_NOT_FEASIBLE':
-                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
-                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
+                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)} ({round(mean(rp[-1].snr),2)})',\
+                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}  ({round(mean(rp[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)})',\
                 f'-', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'-', f'MODE_NOT_FEASIBLE']    
             elif rqs[i].blocking_reason == 'NO_SPECTRUM':
-                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
-                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
+                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)} ({round(mean(rp[-1].snr),2)})',\
+                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}  ({round(mean(rp[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)})',\
                 f'-', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'-', f'NO_SPECTRUM']
    
         except AttributeError:
-            line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
-                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
+            line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}  ({round(mean(rp[-1].snr),2)})',\
+                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)} ({round(mean(rp[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)})',\
                 f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' ,\
                 f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }', f'({rqs[i].N},{rqs[i].M})']
         data.append(line)
@@ -424,7 +434,7 @@ if __name__ == '__main__':
         secondcol = ''.join(row[1].ljust(secondcol_width))
         remainingcols = ''.join(word.center(col_width,' ') for word in row[2:])
         print(f'{firstcol} {secondcol} {remainingcols}')
-    print('\x1b[1;33;40m'+f'Result summary show mean SNR and OSNR (average over all channels)'+ '\x1b[0m')
+    print('\x1b[1;33;40m'+f'Result summary shows mean SNR and OSNR (average over all channels)'+ '\x1b[0m')
 
     if args.output :
         result = []

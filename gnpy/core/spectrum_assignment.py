@@ -56,13 +56,14 @@ class Bitmap:
         self.n_max = self.freq_index[-1]
 
 #    +'grid available_slots f_min f_max services_list')
-OMSParams = namedtuple('OMSParams','oms_id el_id_list') 
+OMSParams = namedtuple('OMSParams','oms_id el_id_list el_list') 
 
 class OMS:
     def __init__(self, *args, **params):
         params = OMSParams(**params)
         self.oms_id = params.oms_id
         self.el_id_list = params.el_id_list
+        self.el_list = params.el_list
         self.spectrum_bitmap = []
         self.nb_channels = 0
         self.service_list = []
@@ -75,8 +76,9 @@ class OMS:
         	                f'{self.el_id_list[0]} - {self.el_id_list[-1]}',
         	                '\n'])
 
-    def add_element(self,el_id):
-        self.el_id_list.append(el_id)
+    def add_element(self,el):
+        self.el_id_list.append(el.uid)
+        self.el_list.append(el)
 
     def update_spectrum(self,f_min , f_max, guardband = 0.15e12, existing_spectrum = None, grid = 0.00625e12):
     	# frequencies expressed in Hz
@@ -179,23 +181,26 @@ def build_OMS_list(network,equipment):
                 params = {}
                 params['oms_id']= oms_id
                 params['el_id_list'] = []
+                params['el_list']=[]
                 oms = OMS(**params)
-                oms.add_element(n_in.uid)
+                oms.add_element(n_in)
                 while not isinstance(n_out,Roadm) :
-                    oms.add_element(n_out.uid)
+                    oms.add_element(n_out)
                     # add an oms_id in the element
                     n_out.oms_id =  oms_id
+                    n_out.oms = oms
                     n_temp = n_out
                     n_out= next(n[1] for n in network.edges([n_temp]) if n[1].uid != n_in.uid)
                     n_in = n_temp 
 
-                oms.add_element(n_out.uid)
+                oms.add_element(n_out)
                 # n_out is a Roadm
                 try: 
                     n_out.oms_list.append(oms_id)
                 except AttributeError:
                     n_out.oms_list = []
-                    n_out.oms_list.append(oms_id)                
+                    n_out.oms_list.append(oms_id)  
+
                 # print(f'coucou2 {oms.oms_id} {oms.el_id_list[0]} {oms.el_id_list[-1]}')
                 # for e in oms.el_id_list:
                 #     print(f' {e}')
@@ -217,7 +222,16 @@ def build_OMS_list(network,equipment):
                 oms_id += 1
                 # print('\n')
     OMS_list = align_grids(OMS_list)
+    reversed_OMS(OMS_list)
     return OMS_list
+
+def reversed_OMS(OMS_list):
+    # only applicable for non parallel OMS
+    for oms in OMS_list:
+        for o in OMS_list:
+            if oms.el_id_list[0] == o.el_id_list[-1] and oms.el_id_list[-1] == o.el_id_list[0] :
+                oms.reversed_oms = o 
+                break
 
 def spectrum_selection(pth,OMS_list, m, N = None):
     # step 1 collects pth spectrum availability
@@ -240,7 +254,7 @@ def spectrum_selection(pth,OMS_list, m, N = None):
     # print(path_oms)
     # remove duplicate oms_id, order is not important
     path_oms = list(set(path_oms))
-    print(path_oms)
+    # print(path_oms)
     # print(OMS_list[path_oms[0]].spectrum_bitmap.bitmap)
     freq_availability = 1 - array(OMS_list[path_oms[0]].spectrum_bitmap.bitmap)
     # assuming all oms have same freq index
@@ -276,7 +290,7 @@ def spectrum_selection(pth,OMS_list, m, N = None):
     # print(freq_availability[321:321+2*m])
     # a = [i+321 for i in range(2*m)]
     # print(a)
-    print(candidate)
+    # print(candidate)
     return candidate, path_oms
 
 def select_candidate(candidates, policy):

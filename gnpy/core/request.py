@@ -16,7 +16,7 @@ See: draft-ietf-teas-yang-path-computation-01.txt
 """
 
 from sys import exit
-from collections import namedtuple
+from collections import namedtuple, OrderedDict
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
 from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths,shortest_path_length)
 from networkx.utils import pairwise 
@@ -25,6 +25,7 @@ from gnpy.core.service_sheet import convert_service_sheet, Request_element, Elem
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
+from gnpy.core.spectrum_assignment import build_OMS_list, reversed_OMS
 from copy import copy, deepcopy
 from csv import writer
 from math import ceil
@@ -414,19 +415,17 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
                 else:  
                     req.blocking_reason = 'NO_COMPUTED_SNR'
                     return path, None
-        if path[-1].snr is not None:
-            req.baud_rate = baudrate_to_explore[-1]
-         # only get to this point if no baudrate/mode satisfies OSNR requirement
+
+        # only get to this point if no baudrate/mode satisfies OSNR requirement
 
         # returns the last propagated path and mode
         msg = f'\tWarning! Request {req.request_id}: no mode satisfies path SNR requirement.\n'
         print(msg)
         logger.info(msg)
         req.blocking_reason = 'NO_FEASIBLE_MODE'
-        req.tsp_mode = last_explored_mode['format']
         return path,last_explored_mode
     else :
-    #  no baudrate satisfying spacing
+        # no baudrate satisfying spacing
         msg = f'\tWarning! Request {req.request_id}: no baudrate satisfies spacing requirement.\n'
         print(msg)
         logger.info(msg)
@@ -636,7 +635,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
         # reversed direction paths required to check disjunction on both direction
         all_simp_pths_reversed = []
         for pth in all_simp_pths:
-            all_simp_pths_reversed.append(find_reversed_path(pth,network))
+            all_simp_pths_reversed.append(find_reversed_path(pth))
         rqs[pathreq.request_id] = all_simp_pths 
         temp =[]
         for p in all_simp_pths :
@@ -834,27 +833,22 @@ def isdisjoint(p1,p2) :
             return 1
     return 0
 
-def find_reversed_path(p,network) :
+def find_reversed_path(p) :
     # select of intermediate roadms and find the path between them
     # note that this function may not give an exact result in case of multiple
     # links between two adjacent nodes. 
     # TODO add some indication on elements to indicate from which other they 
     # are the reversed direction
-    reversed_roadm_path = list(reversed([e for e in p if isinstance (e,Roadm)]))
-    for e in reversed_roadm_path :
-        print(e.uid)
-    source = p[-1]
-    print(f'source {source.uid}')
-    destination = p[0]
-    print(f'destination {destination.uid}')
-    total_path = [source]
-    for node in reversed_roadm_path :
-        print(f'node {node.uid}')
-        print(network.edges([node.uid]))
-        total_path.extend(dijkstra_path(network, source, node, weight = 'weight')[1:])
-        source = node
-    total_path.append(destination)
-    return total_path
+
+    p_oms = list(OrderedDict.fromkeys(reversed([el.oms.reversed_oms for el in p if not isinstance(el,Transceiver) and not isinstance(el,Roadm)])))
+
+    reversed_path = [p[-1]]
+    for t in p_oms:
+        reversed_path.extend(t.el_list)
+        reversed_path = list(OrderedDict.fromkeys(reversed_path))
+    reversed_path.append(p[0])
+
+    return reversed_path
 
 def ispart(a,b) :
     # the functions takes two paths a and b and retrns True
