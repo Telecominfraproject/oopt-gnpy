@@ -841,10 +841,16 @@ def find_reversed_path(p,network) :
     # TODO add some indication on elements to indicate from which other they 
     # are the reversed direction
     reversed_roadm_path = list(reversed([e for e in p if isinstance (e,Roadm)]))
+    for e in reversed_roadm_path :
+        print(e.uid)
     source = p[-1]
+    print(f'source {source.uid}')
     destination = p[0]
+    print(f'destination {destination.uid}')
     total_path = [source]
     for node in reversed_roadm_path :
+        print(f'node {node.uid}')
+        print(network.edges([node.uid]))
         total_path.extend(dijkstra_path(network, source, node, weight = 'weight')[1:])
         source = node
     total_path.append(destination)

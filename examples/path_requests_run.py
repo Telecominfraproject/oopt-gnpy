@@ -29,7 +29,7 @@ from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused, Fiber
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.request import (Path_request, Result_element, compute_constrained_path,
                               propagate, jsontocsv, Disjunction, compute_path_dsjctn, requests_aggregation,
-                              propagate_and_optimize_mode, blocking_nopath)
+                              propagate_and_optimize_mode, blocking_nopath, find_reversed_path)
 from gnpy.core.spectrum_assignment import build_OMS_list, spectrum_selection , pth_assign_spectrum
 from copy import copy, deepcopy
 from textwrap import dedent
@@ -152,47 +152,10 @@ def load_requests(filename,eqpt_filename):
             json_data = loads(f.read())
     return json_data
 
-def compute_path(network, equipment, pathreqlist):
-
-    # This function is obsolete and not relevant with respect to network building: suggest either to correct
-    # or to suppress it
-    
-    path_res_list = []
-
-    for pathreq in pathreqlist:
-        #need to rebuid the network for each path because the total power
-        #can be different and the choice of amplifiers in autodesign is power dependant
-        #but the design is the same if the total power is the same
-        #TODO parametrize the total spectrum power so the same design can be shared
-        p_db = lin2db(pathreq.power*1e3)
-        p_total_db = p_db + lin2db(pathreq.nb_channel)
-        build_network(network, equipment, p_db, p_total_db)
-        pathreq.nodes_list.append(pathreq.destination)
-        #we assume that the destination is a strict constraint
-        pathreq.loose_list.append('STRICT')
-        print(f'Computing path from {pathreq.source} to {pathreq.destination}')
-        print(f'with path constraint: {[pathreq.source]+pathreq.nodes_list}') #adding first node to be clearer on the output
-        total_path = compute_constrained_path(network, pathreq)
-        print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}\n')
-
-        if total_path :
-            total_path = propagate(total_path,pathreq,equipment, show=False)
-        else:
-            total_path = []
-        # we record the last tranceiver object in order to have th whole
-        # information about spectrum. Important Note: since transceivers
-        # attached to roadms are actually logical elements to simulate
-        # performance, several demands having the same destination may use
-        # the same transponder for the performance simaulation. This is why
-        # we use deepcopy: to ensure each propagation is recorded and not
-        # overwritten
-
-        path_res_list.append(deepcopy(total_path))
-    return path_res_list
 
 def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
     
-    # use a list but a dictionnary might be helpful to find path bathsed on request_id
+    # use a list but a dictionnary might be helpful to find path based on request_id
     # TODO change all these req, dsjct, res lists into dict !
     path_res_list = []
 
@@ -207,7 +170,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         print(f'Computing path from {pathreq.source} to {pathreq.destination}')
         print(f'with path constraint: {[pathreq.source]+pathreq.nodes_list}') #adding first node to be clearer on the output
 
-        total_path = pathlist[i]
+        total_path = deepcopy(pathlist[i])
         print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}\n')
         # for debug
         # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
@@ -225,15 +188,17 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                     pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
             else:
                 total_path,mode = propagate_and_optimize_mode(total_path,pathreq,equipment)
-                # if no baudrate satisfies spacing, no mode is returned and an empty path is returned
+                # if no baudrate satisfies spacing, no mode is returned and the last explored mode
                 # a warning is shown in the propagate_and_optimize_mode
                 # propagate_and_optimize_mode function returns the mode with the highest bitrate
                 # that passes. if no mode passes, then a attribute blocking_reason is added on pathreq
                 # that contains the reason for blocking: 'NO_PATH', 'NO_FEASIBLE_MODE', ...
                 try:
                     if pathreq.blocking_reason in blocking_nopath :
-                        total_path = []
+                        print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+                        total_path = []  
                 except:
+                    print('ccccccccccccccccccccccccccccccccccccccccc')
                     pathreq.baud_rate = mode['baud_rate']
                     pathreq.tsp_mode = mode['format']
                     pathreq.format = mode['format']
@@ -247,8 +212,8 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         # the same transponder for the performance simaulation. This is why 
         # we use deepcopy: to ensure each propagation is recorded and not 
         # overwritten 
-        
-        path_res_list.append(deepcopy(total_path))
+        #                print(f'Computing path from {total_path[0].uid} to {total_path[-1].uid}')
+        path_res_list.append(total_path)
     return path_res_list
 
 def correct_route_list(network, pathreqlist):
@@ -382,6 +347,19 @@ if __name__ == '__main__':
     print('\x1b[1;34;40m'+f'Propagating on selected path'+ '\x1b[0m')
     propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
 
+    # TODO : compute paths in the reversed deirection : compute path with disjunction suppresses nodes in networks: correct this bug !
+    reversed_propagatedpths = []
+    for i,p in enumerate(propagatedpths) :   
+        if p : 
+            for e in p :
+                print(e.uid)
+            print('coucou')
+            reversed_path = p
+            # reversed_path = propagate(find_reversed_path(p,network) , rqs[i], equipment, show=False)
+        else:
+            reversed_path = p
+
+        reversed_propagatedpths.append(deepcopy(reversed_path))    
     # (n,startm,stopm) , path_oms = spectrum_selection(pths[0],oms_list, 4, N = None)
     # print("toto")
     # print(n,startm,stopm)
@@ -437,7 +415,7 @@ if __name__ == '__main__':
                 f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' ,\
                 f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }', f'({rqs[i].N},{rqs[i].M})']
         data.append(line)
-
+    
     col_width = max(len(word) for row in data for word in row[2:])   # padding
     firstcol_width = max(len(row[0]) for row in data )   # padding
     secondcol_width = max(len(row[1]) for row in data )   # padding
@@ -446,7 +424,7 @@ if __name__ == '__main__':
         secondcol = ''.join(row[1].ljust(secondcol_width))
         remainingcols = ''.join(word.center(col_width,' ') for word in row[2:])
         print(f'{firstcol} {secondcol} {remainingcols}')
-
+    print('\x1b[1;33;40m'+f'Result summary show mean SNR and OSNR (average over all channels)'+ '\x1b[0m')
 
     if args.output :
         result = []

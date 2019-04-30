@@ -31,7 +31,7 @@ class Bitmap:
         self.n_max = n_max
         self.freq_index_min = frequency_to_n(f_min)
         self.freq_index_max = frequency_to_n(f_max) 
-        self.freq_index = list(range(n_min,n_max))
+        self.freq_index = list(range(n_min,n_max+1))
         if bitmap is None:
             self.bitmap = [1] * (n_max-n_min+1)
         else:
@@ -196,7 +196,7 @@ def build_OMS_list(network,equipment):
                 except AttributeError:
                     n_out.oms_list = []
                     n_out.oms_list.append(oms_id)                
-                print(f'coucou2 {oms.oms_id} {oms.el_id_list[0]} {oms.el_id_list[-1]}')
+                # print(f'coucou2 {oms.oms_id} {oms.el_id_list[0]} {oms.el_id_list[-1]}')
                 # for e in oms.el_id_list:
                 #     print(f' {e}')
 
@@ -205,10 +205,10 @@ def build_OMS_list(network,equipment):
                 if oms_id<3:
                     #oms.update_spectrum(equipment['SI']['default'].f_min + 0.5e12,equipment['SI']['default'].f_max, grid = 0.00625e12)
                     oms.update_spectrum(equipment['SI']['default'].f_min,equipment['SI']['default'].f_max, grid = 0.00625e12)
-                    print(len(oms.spectrum_bitmap.bitmap))
+                    # print(len(oms.spectrum_bitmap.bitmap))
                 else:
                     oms.update_spectrum(equipment['SI']['default'].f_min,equipment['SI']['default'].f_max, grid = 0.00625e12)
-                    print(len(oms.spectrum_bitmap.bitmap))                    
+                    # print(len(oms.spectrum_bitmap.bitmap))                    
                 # oms.assign_spectrum(13,7) gives back (193137500000000.0, 193225000000000.0) 
                 # as in the example in the standard
                 # oms.assign_spectrum(13,7)
@@ -261,11 +261,7 @@ def spectrum_selection(pth,OMS_list, m, N = None):
             for i in range(len(freq_availability) )
             if freq_availability[i:i+2*m] == [1] * (2*m) and freq_index[i] >= freq_index_min 
             and freq_index[i] <= freq_index_max]
-
-        # print(candidates)
         candidate = select_candidate(candidates, policy = 'first_fit')
-        # print("coucou1")
-        # print(candidate)
     else:
         i = OMS_list[path_oms[0]].spectrum_bitmap.geti(N)
         # print(f'N {N} i {i}')
@@ -309,9 +305,6 @@ def pth_assign_spectrum(pths, rqs, oms_list):
             M = ceil(rqs[i].spacing / 0.0125e12) * nb_wl
             (n,startm,stopm) , path_oms = spectrum_selection(pth,oms_list, M, N = None)
             if n is not None : 
-                print("toto")
-                print(n,startm,stopm)
-                print(path_oms)
                 for o in path_oms:
                     oms_list[o].assign_spectrum(n,M)
                     oms_list[o].add_service(rqs[i].request_id,nb_wl)
