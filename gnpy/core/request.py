@@ -200,14 +200,20 @@ class Result_element(Element):
             if self.path_request.blocking_reason in blocking_nopath :
                 response =  {
                        'response-id': self.path_id,
-                       'no-path': self.path_request.blocking_reason
-                       }
+                       'no-path':
+                           {
+                           'no-path': self.path_request.blocking_reason
+                           }
+                        }
                 return response
             else:
                 response =  {
                        'response-id': self.path_id,
-                       'no-path': self.path_request.blocking_reason,
-                       'path-properties': self.path_properties
+                       'no-path':
+                            {
+                            'no-path': self.path_request.blocking_reason,
+                            'path-properties': self.path_properties
+                            }
                        }
                 return response
         except AttributeError:
@@ -479,11 +485,11 @@ def jsontocsv(json_data,equipment,fileout):
         path_id     = p['response-id']
         try:
             # this part only works if the request has a blocking_reason atribute, ie if it could not be satisfied
-            if p['no-path'] in blocking_nopath:
+            if p['no-path']['no-path'] in blocking_nopath:
                 source = ''
                 destination = ''
                 pthbdbw = ''
-                isok = p['no-path']
+                isok = p['no-path']['no-path']
                 nb_tsp = ''
                 total_cost = ''
                 tsp = ''
@@ -498,20 +504,20 @@ def jsontocsv(json_data,equipment,fileout):
                 # spectrum assignment is not performed for blocked demands: there is no label object in the answer
                 # so the hop_attribute with tsp and mode is second object or last object, while id of hop is first and 
                 # penultimate
-                source = p['path-properties']['path-route-objects'][0]\
+                source = p['no-path']['path-properties']['path-route-objects'][0]\
                 ['path-route-object']['num-unnum-hop']['node-id']
-                destination = p['path-properties']['path-route-objects'][-2]\
+                destination = p['no-path']['path-properties']['path-route-objects'][-2]\
                 ['path-route-object']['num-unnum-hop']['node-id']                
-                [tsp,mode] = [p['path-properties']['path-route-objects'][1]\
+                [tsp,mode] = [p['no-path']['path-properties']['path-route-objects'][1]\
                 ['path-route-object']['transponder']['transponder-type'],\
-                p['path-properties']['path-route-objects'][1]\
+                p['no-path']['path-properties']['path-route-objects'][1]\
                 ['path-route-object']['transponder']['transponder-mode'] ]
-                isok =  p['no-path']
+                isok =  p['no-path']['no-path']
                 total_cost = ''
                 nb_tsp = ''
-                if p['no-path'] in blocking_nomode or p['no-path'] in blocking_nospectrum  :
+                if p['no-path']['no-path'] in blocking_nomode or p['no-path']['no-path'] in blocking_nospectrum  :
                     pth, minosnr, baud_rate, bit_rate, cost, output_snr, output_snrbandwidth, \
-                        output_osnr, output_osnrbandwidth, power, path_bandwidth = jsontoparams(p, tsp, mode, equipment)
+                        output_osnr, output_osnrbandwidth, power, path_bandwidth = jsontoparams(p['no-path'], tsp, mode, equipment)
                     pthbdbw = ''
                     rosnr  = round(output_osnr,2)
                     rsnr   = round(output_snr,2)
