@@ -228,10 +228,23 @@ def build_OMS_list(network,equipment):
 def reversed_OMS(OMS_list):
     # only applicable for non parallel OMS
     for oms in OMS_list:
+        has_reversed= False
         for o in OMS_list:
             if oms.el_id_list[0] == o.el_id_list[-1] and oms.el_id_list[-1] == o.el_id_list[0] :
                 oms.reversed_oms = o 
+                has_reversed = True
                 break
+        if not has_reversed:
+            oms.reversed_oms = None
+
+def bitmap_sum(B,b):
+    res = []
+    for i,el in enumerate(B):
+        if b[i]*B[i]==0:
+            res.append(0)
+        else:
+           res.append(1)
+    return res
 
 def spectrum_selection(pth,OMS_list, m, N = None):
     # step 1 collects pth spectrum availability
@@ -256,18 +269,16 @@ def spectrum_selection(pth,OMS_list, m, N = None):
     path_oms = list(set(path_oms))
     # print(path_oms)
     # print(OMS_list[path_oms[0]].spectrum_bitmap.bitmap)
-    freq_availability = 1 - array(OMS_list[path_oms[0]].spectrum_bitmap.bitmap)
+    # freq_availability = 1 - array(OMS_list[path_oms[0]].spectrum_bitmap.bitmap)
     # assuming all oms have same freq index
     freq_index = OMS_list[path_oms[0]].spectrum_bitmap.freq_index
     freq_index_min = OMS_list[path_oms[0]].spectrum_bitmap.freq_index_min
     freq_index_max = OMS_list[path_oms[0]].spectrum_bitmap.freq_index_max
 
+    freq_availability = OMS_list[0].spectrum_bitmap.bitmap
     for oms in path_oms[1:]:
-        freq_availability = (freq_availability + 1- array(OMS_list[oms].spectrum_bitmap.bitmap))/2
-    freq_availability = freq_availability.astype(int)
-    freq_availability = 1- freq_availability.astype(int)
-    freq_availability = freq_availability.tolist()
-    # print(freq_availability)
+        freq_availability = bitmap_sum(OMS_list[oms].spectrum_bitmap.bitmap,freq_availability)
+        # print(freq_availability)
     
     if N is None:
         # avoid slots reserved on the edge 0.15e-12 on both sides -> 24 
@@ -300,9 +311,10 @@ def select_candidate(candidates, policy):
         else:
             return (None, None , None)
 
-def pth_assign_spectrum(pths, rqs, oms_list):
+def pth_assign_spectrum(pths, rqs, oms_list,rpths):
     
-    # baseic first fit assignment
+    # basic first fit assignment
+    # if reversed path are provided, means that occupation is bidir
     for i, pth in enumerate(pths) :
         # computes the number of channels required
         try:
@@ -317,7 +329,13 @@ def pth_assign_spectrum(pths, rqs, oms_list):
             # assumes that all channels must be grouped
             # todo : enables non contiguous reservation in case of blocking
             M = ceil(rqs[i].spacing / 0.0125e12) * nb_wl
+            # concatenate all path and reversed path elements to derive slots availability
+            pth.extend(rpths[i])
             (n,startm,stopm) , path_oms = spectrum_selection(pth,oms_list, M, N = None)
+            # print(rqs[i].request_id)
+            # print(path_oms)
+            # print((n,startm,stopm))
+
             if n is not None : 
                 for o in path_oms:
                     oms_list[o].assign_spectrum(n,M)

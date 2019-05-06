@@ -41,9 +41,10 @@ import time
 logger = getLogger(__name__)
 
 parser = ArgumentParser(description = 'A function that computes performances for a list of services provided in a json file or an excel sheet.')
-parser.add_argument('network_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls')
-parser.add_argument('service_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls')
-parser.add_argument('eqpt_filename', nargs='?', type = Path, default=Path(__file__).parent / 'eqpt_config.json')
+parser.add_argument('network_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls', help='input topology file in xls or json')
+parser.add_argument('service_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls', help='input service file in xls or json')
+parser.add_argument('eqpt_filename', nargs='?', type = Path, default=Path(__file__).parent / 'eqpt_config.json', help='input equipment library in json. Default is eqpt_config.json')
+parser.add_argument('-bi', '--bidir', action='store_true', help='considers that all demands are bidir')
 parser.add_argument('-v', '--verbose', action='count', default=0, help='increases verbosity for each occurence')
 parser.add_argument('-o', '--output', type = Path)
 
@@ -224,7 +225,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
             logger.info(msg)
 
         path_res_list.append(total_path)
-        print('\n')
+        print('')
     return path_res_list
 
 def correct_route_list(network, pathreqlist):
@@ -359,30 +360,26 @@ if __name__ == '__main__':
     # Note that deepcopy used in compute_path_with_disjunction retrns a list of nodes which are not belonging to 
     # network (they are copies of the node objects). so there can not be propagation on these nodes.
 
-    # TODO : compute paths in the reversed deirection : compute path with disjunction suppresses nodes in networks: correct this bug !
+    # propagate on reversed path only if bidir option is activated (takes time)
     reversed_propagatedpths = []
+    reversed_pths =[]
+    if args.bidir:
+        print('\x1b[1;34;40m'+f'Propagating on selected path reversed direction'+ '\x1b[0m')
     for i,p in enumerate(pths) :   
-        if propagatedpths[i] : 
-            reversed_path = propagate(find_reversed_path(p) , rqs[i], equipment, show=False)
+        if propagatedpths[i] and args.bidir : 
+            rp = find_reversed_path(p)
+            print(f'request {rqs[i].request_id}')
+            print(f'Propagating path from {rqs[i].destination} to {rqs[i].source}')
+            print(f'Path (roadsm) {[r.uid for r in rp if isinstance(r,Roadm)]}\n')
+            reversed_pths.append(find_reversed_path(p))
+            reversed_path = propagate(rp , rqs[i], equipment, show=False)
+            reversed_propagatedpths.append(deepcopy(reversed_path))
         else:
-            reversed_path = propagatedpths[i]
-        reversed_propagatedpths.append(deepcopy(reversed_path))    
+            reversed_propagatedpths.append([])    
+            reversed_pths.append([])
 
-    # (n,startm,stopm) , path_oms = spectrum_selection(pths[0],oms_list, 4, N = None)
-    # print("toto")
-    # print(n,startm,stopm)
-    # print(path_oms)
-    # for o in path_oms:
-    #     oms_list[o].assign_spectrum(n,4)
-    # (n,startm,stopm) , path_oms = spectrum_selection(pths[0],oms_list, 4, N = -10)
-    # print("toto")
-    # print(n,startm,stopm)
-    # print(path_oms)
-    # for o in path_oms:
-    #     oms_list[o].assign_spectrum(n,4)
 
-    pth_assign_spectrum(pths, rqs, oms_list)
-    pth_assign_spectrum(reversed_propagatedpths, rqs, oms_list)    
+    pth_assign_spectrum(pths, rqs, oms_list,reversed_pths)
 
     end = time.time()
     print(f'computation time {end-start}')
@@ -393,6 +390,13 @@ if __name__ == '__main__':
     data.append(header)
     for i, p in enumerate(propagatedpths):
         rp = reversed_propagatedpths[i]
+        if rp and p:
+            psnrb = f'{round(mean(p[-1].snr),2)} ({round(mean(rp[-1].snr),2)})'
+            psnr = f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)} ({round(mean(rp[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)})'
+        elif p :
+            psnrb = f'{round(mean(p[-1].snr),2)}'
+            psnr = f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}'
+
         try :
             if rqs[i].blocking_reason == 'NO_PATH':
                 line = [f'{rqs[i].request_id}',f' {rqs[i].source} to {rqs[i].destination} :', f'-',\
@@ -407,21 +411,21 @@ if __name__ == '__main__':
                 line = [f'{rqs[i].request_id}',f' {rqs[i].source} to {rqs[i].destination} :', f'-',\
                 f'-',f'-', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'-', f'NO_PATH_WITH_CONSTRAINT']
             elif rqs[i].blocking_reason == 'NO_FEASIBLE_MODE':
-                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)} ({round(mean(rp[-1].snr),2)})',\
-                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)} ({round(mean(rp[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)})',\
+                line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,\
+                psnr,\
                 f'-', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'-', f'NO_FEASIBLE_MODE']           
             elif rqs[i].blocking_reason == 'MODE_NOT_FEASIBLE':
-                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)} ({round(mean(rp[-1].snr),2)})',\
-                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}  ({round(mean(rp[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)})',\
+                line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,\
+                psnr,\
                 f'-', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'-', f'MODE_NOT_FEASIBLE']    
             elif rqs[i].blocking_reason == 'NO_SPECTRUM':
-                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)} ({round(mean(rp[-1].snr),2)})',\
-                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}  ({round(mean(rp[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)})',\
+                line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,\
+                psnr,\
                 f'-', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'-', f'NO_SPECTRUM']
    
         except AttributeError:
-            line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}  ({round(mean(rp[-1].snr),2)})',\
-                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)} ({round(mean(rp[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)})',\
+            line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,\
+                psnr,\
                 f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' ,\
                 f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }', f'({rqs[i].N},{rqs[i].M})']
         data.append(line)
@@ -441,6 +445,10 @@ if __name__ == '__main__':
         # assumes that list of rqs and list of propgatedpths have same order
         for i,p in enumerate(propagatedpths):
             result.append(Result_element(rqs[i],p))
+            # temporary return: add bidir paths in the list .
+            # TODO : add a container with reversed properties only ; reversed path is implicit, knowing the topology
+            # if reversed_propagatedpths[i]:
+            #     result.append(Result_element(rqs[i],reversed_propagatedpths[i]))
         temp = path_result_json(result)
         fnamecsv = f'{str(args.output)[0:len(str(args.output))-len(str(args.output.suffix))]}.csv'
         fnamejson = f'{str(args.output)[0:len(str(args.output))-len(str(args.output.suffix))]}.json'

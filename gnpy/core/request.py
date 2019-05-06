@@ -115,10 +115,13 @@ blocking_nomode = ['NO_FEASIBLE_MODE', 'MODE_NOT_FEASIBLE']
 blocking_nospectrum = 'NO_SPECTRUM'
 
 class Result_element(Element):
-    def __init__(self,path_request,computed_path):
+    def __init__(self,path_request,computed_path,reversed_computed_path=None):
         self.path_id = path_request.request_id
         self.path_request = path_request
         self.computed_path = computed_path
+        # starting implementing reversed properties in case of bidir demand
+        if reversed_computed_path is not None:
+            self.reversed_computed_path = reversed_computed_path
     uid = property(lambda self: repr(self))
     @property 
     def detailed_path_json(self) :
@@ -447,6 +450,16 @@ def jsontoparams(p, tsp, mode, equipment):
             pass
     pth        = ' | '.join(temp)
 
+    temp2 = []
+    for e in p['path-properties']['path-route-objects'] :
+        try :
+            temp2.append(f'{e["path-route-object"]["label-hop"]["N"]} , {e["path-route-object"]["label-hop"]["M"]}')
+        except KeyError:
+            pass
+    # TODO : if spectrum changes along the path, gives the slots
+    temp2 = list(OrderedDict.fromkeys(temp2))
+    sp        = ' | '.join(temp2)
+    
     # find the min  acceptable OSNR, baud rate from the eqpt library based on tsp (tupe) and mode (format)
     # loading equipment already tests the existence of tsp type and mode:
     if mode is not None:
@@ -467,7 +480,7 @@ def jsontoparams(p, tsp, mode, equipment):
     path_bandwidth = next(e['accumulative-value']
         for e in p['path-properties']['path-metric'] if e['metric-type'] == 'path_bandwidth')    
     return pth, minosnr, baud_rate, bit_rate, cost, output_snr, \
-        output_snrbandwidth, output_osnr, output_osnrbandwidth, power, path_bandwidth
+        output_snrbandwidth, output_osnr, output_osnrbandwidth, power, path_bandwidth, sp
 
 def jsontocsv(json_data,equipment,fileout):
     # read json path result file in accordance with:
@@ -479,7 +492,7 @@ def jsontocsv(json_data,equipment,fileout):
     mywriter.writerow(('response-id','source','destination','path_bandwidth','Pass?',\
         'nb of tsp pairs','total cost','transponder-type','transponder-mode',\
         'OSNR-0.1nm','SNR-0.1nm','SNR-bandwidth','baud rate (Gbaud)',\
-        'input power (dBm)','path'))
+        'input power (dBm)','path', 'spectrum (N,M)'))
     #print(equipment['Transceiver'])
     for p in json_data['response']:
         path_id     = p['response-id']
@@ -500,6 +513,7 @@ def jsontocsv(json_data,equipment,fileout):
                 br = ''
                 pw = ''
                 pth = ''
+                sp = ''
             else :    
                 # spectrum assignment is not performed for blocked demands: there is no label object in the answer
                 # so the hop_attribute with tsp and mode is second object or last object, while id of hop is first and 
@@ -517,7 +531,7 @@ def jsontocsv(json_data,equipment,fileout):
                 nb_tsp = ''
                 if p['no-path']['no-path'] in blocking_nomode or p['no-path']['no-path'] in blocking_nospectrum  :
                     pth, minosnr, baud_rate, bit_rate, cost, output_snr, output_snrbandwidth, \
-                        output_osnr, output_osnrbandwidth, power, path_bandwidth = jsontoparams(p['no-path'], tsp, mode, equipment)
+                        output_osnr, output_osnrbandwidth, power, path_bandwidth, sp = jsontoparams(p['no-path'], tsp, mode, equipment)
                     pthbdbw = ''
                     rosnr  = round(output_osnr,2)
                     rsnr   = round(output_snr,2)
@@ -539,7 +553,7 @@ def jsontocsv(json_data,equipment,fileout):
             # find the min  acceptable OSNR, baud rate from the eqpt library based on tsp (type) and mode (format)
             # loading equipment already tests the existence of tsp type and mode:
             pth, minosnr, baud_rate, bit_rate, cost, output_snr, output_snrbandwidth, \
-                output_osnr, output_osnrbandwidth, power, path_bandwidth = jsontoparams(p, tsp, mode, equipment)
+                output_osnr, output_osnrbandwidth, power, path_bandwidth,sp = jsontoparams(p, tsp, mode, equipment)
 
             isok   = output_snr >= minosnr
             nb_tsp = ceil(path_bandwidth / bit_rate)
@@ -550,7 +564,6 @@ def jsontocsv(json_data,equipment,fileout):
             br     = round(baud_rate*1e-9,2) 
             pw     = round(lin2db(power)+30,2)
             total_cost = nb_tsp * cost
-
 
         mywriter.writerow((path_id,
             source,
@@ -566,7 +579,8 @@ def jsontocsv(json_data,equipment,fileout):
             rsnrb,
             br,
             pw,
-            pth
+            pth,
+            sp
             ))
 
 
@@ -850,8 +864,13 @@ def find_reversed_path(p) :
 
     reversed_path = [p[-1]]
     for t in p_oms:
-        reversed_path.extend(t.el_list)
-        reversed_path = list(OrderedDict.fromkeys(reversed_path))
+        if t is not None:
+            reversed_path.extend(t.el_list)
+            reversed_path = list(OrderedDict.fromkeys(reversed_path))
+        else:
+            msg = f'Error while handling reversed path {p[-1].uid} to {p[0].uid}: can not handle unidir topology. TO DO.'
+            logger.critical(msg)
+            exit()
     reversed_path.append(p[0])
 
     return reversed_path
