@@ -415,31 +415,31 @@ parameters:
 ROADMs can be configured as follows. The user can only modify the value of
 existing parameters:
 
-+-------------------------+-----------+---------------------------------------------+
-| field                   |   type    | description                                 |
-+=========================+===========+=============================================+
-|`gain_mode_default_loss` | (number)  | Default value if Roadm/params/loss is       |
-|                         |           | None in the topology input description.     |
-|                         |           | This default value is ignored if a          |
-|                         |           | params/loss value is input in the           |
-|                         |           | topology for a given ROADM.                 |
-+-------------------------+-----------+---------------------------------------------+
-|`power_mode_pref`        | (number)  | Power mode only. Auto-design sets the       |
-|                         |           | power of ROADM ingress amplifiers to        |
-|                         |           | power_dbm + power_range_db,                 |
-|                         |           | regardless of existing gain settings        |
-|                         |           | from the topology JSON input.               |
-|                         |           | Auto-design sets the Roadm loss so that     |
-|                         |           | its egress channel power = power_mode_pref, |
-|                         |           | regardless of existing loss settings        |
-|                         |           | from the topology JSON input. It means      |
-|                         |           | that the output power from a ROADM (and      |
-|                         |           | therefore its OSNR contribution) is Cte     |
-|                         |           | and not depending from power_dbm and        |
-|                         |           | power_range_db sweep settings. This         |
-|                         |           | choice is meant to reflect some typical     |
-|                         |           | control loop algorithms.                    |
-+-------------------------+-----------+---------------------------------------------+
++--------------------------+-----------+---------------------------------------------+
+| field                    |   type    | description                                 |
++==========================+===========+=============================================+
+| `gain_mode_default_loss` | (number)  | Default value if Roadm/params/loss is       |
+|                          |           | None in the topology input description.     |
+|                          |           | This default value is ignored if a          |
+|                          |           | params/loss value is input in the           |
+|                          |           | topology for a given ROADM.                 |
++--------------------------+-----------+---------------------------------------------+
+| `power_mode_pref`        | (number)  | Power mode only. Auto-design sets the       |
+|                          |           | power of ROADM ingress amplifiers to        |
+|                          |           | power_dbm + power_range_db,                 |
+|                          |           | regardless of existing gain settings        |
+|                          |           | from the topology JSON input.               |
+|                          |           | Auto-design sets the Roadm loss so that     |
+|                          |           | its egress channel power = power_mode_pref, |
+|                          |           | regardless of existing loss settings        |
+|                          |           | from the topology JSON input. It means      |
+|                          |           | that the output power from a ROADM (and     |
+|                          |           | therefore its OSNR contribution) is Cte     |
+|                          |           | and not depending from power_dbm and        |
+|                          |           | power_range_db sweep settings. This         |
+|                          |           | choice is meant to reflect some typical     |
+|                          |           | control loop algorithms.                    |
++--------------------------+-----------+---------------------------------------------+
 
 The `SpectralInformation` object can be configured as follows. The user can
 only modify the value of existing parameters. It defines a spectrum of N
