@@ -50,11 +50,14 @@ class Transceiver(Node):
                              for c in spectral_info.carriers]
             self.raw_snr = [lin2db(divide(c.power.signal, c.power.nli+c.power.ase)) 
                         for c in spectral_info.carriers]
+            self.raw_snr_01nm = [snr - ratio for snr, ratio
+                                  in zip(self.raw_snr, ratio_01nm)]
 
             self.osnr_ase = self.raw_osnr_ase
             self.osnr_ase_01nm = self.raw_osnr_ase_01nm
             self.osnr_nli = self.raw_osnr_nli
             self.snr = self.raw_snr
+            self.snr_01nm = self.raw_snr_01nm
                         
     def update_snr(self, *args):
         """
@@ -74,6 +77,8 @@ class Transceiver(Node):
                         self.raw_snr, self.baud_rate))
         self.osnr_ase_01nm = list(map(lambda x:snr_sum(x,12.5e9,snr_added), 
                         self.raw_osnr_ase_01nm))
+        self.snr_01nm = list(map(lambda x:snr_sum(x,12.5e9,snr_added), 
+                        self.raw_snr_01nm))
 
     @property
     def to_json(self):
@@ -99,12 +104,14 @@ class Transceiver(Node):
         snr = round(mean(self.snr),2)
         osnr_ase = round(mean(self.osnr_ase),2)
         osnr_ase_01nm = round(mean(self.osnr_ase_01nm), 2)
+        snr_01nm = round(mean(self.snr_01nm),2)
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
 
                           f'  OSNR ASE (0.1nm, dB):      {osnr_ase_01nm:.2f}',
                           f'  OSNR ASE (signal bw, dB):  {osnr_ase:.2f}',
-                          f'  SNR total (signal bw, dB): {snr:.2f}'])
+                          f'  SNR total (signal bw, dB): {snr:.2f}',
+                          f'  SNR total (0.1nm, dB): {snr_01nm:.2f}'])
 
     def __call__(self, spectral_info):
         self._calc_snr(spectral_info)
