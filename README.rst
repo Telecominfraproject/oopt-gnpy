@@ -418,29 +418,29 @@ parameters:
 ROADMs can be configured as follows. The user can only modify the value of
 existing parameters:
 
-+-------------------------+-----------+---------------------------------------------+
-| field                   |   type    | description                                 |
-+=========================+===========+=============================================+
-|`target_pch_out_db`      | (number)  | Auto-design sets the Roadm egress channel   |
-|                         |           | power. This reflects typical control loop   |
-|                         |           | algorithms that adjust Roadm losses to      |
-|                         |           | equalize channels (eg coming from different |
-|                         |           | ingress drection or add ports)              |
-|                         |           | Thi is the default value                    |
-|                         |           | Roadm/params/target_pch_out_db if no value  |
-|                         |           | is given in the Roadm element in the        |
-|                         |           | topology input description.                 |
-|                         |           | This default value is ignored if a          |
-|                         |           | params/target_pch_out_db value is input in  |
-|                         |           | the topology for a given ROADM.             |
-+-------------------------+-----------+---------------------------------------------+
-|`add_drop_osnr`          | (number)  | OSNR contribution from the add/drop ports   |
-+-------------------------+-----------+---------------------------------------------+
-|`restrictions`           | (strings) | Authorized type_variety of amplifier for    |
-|                         |           | booster or preamp.                          |
-|                         |           | listed type_variety MUST be defined in the  |
-|                         |           | Edfa catalog.                               |
-+-------------------------+-----------+---------------------------------------------+
++--------------------------+-----------+---------------------------------------------+
+| field                    |   type    | description                                 |
++==========================+===========+=============================================+
+| `target_pch_out_db`      | (number)  | Auto-design sets the Roadm egress channel   |
+|                          |           | power. This reflects typical control loop   |
+|                          |           | algorithms that adjust Roadm losses to      |
+|                          |           | equalize channels (eg coming from different |
+|                          |           | ingress drection or add ports)              |
+|                          |           | Thi is the default value                    |
+|                          |           | Roadm/params/target_pch_out_db if no value  |
+|                          |           | is given in the Roadm element in the        |
+|                          |           | topology input description.                 |
+|                          |           | This default value is ignored if a          |
+|                          |           | params/target_pch_out_db value is input in  |
+|                          |           | the topology for a given ROADM.             |
++--------------------------+-----------+---------------------------------------------+
+| `add_drop_osnr`          | (number)  | OSNR contribution from the add/drop ports   |
++--------------------------+-----------+---------------------------------------------+
+| `restrictions`           | (strings) | Authorized type_variety of amplifier for    |
+|                          |           | booster or preamp.                          |
+|                          |           | listed type_variety MUST be defined in the  |
+|                          |           | Edfa catalog.                               |
++--------------------------+-----------+---------------------------------------------+
 
 The `SpectralInformation` object can be configured as follows. The user can
 only modify the value of existing parameters. It defines a spectrum of N
