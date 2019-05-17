@@ -480,11 +480,10 @@ one power/channel definition.
 |                      |           | transceiver OSNR.                         |         
 +----------------------+-----------+-------------------------------------------+
 
-The `transmission_main_example.py <examples/transmission_main_example.py>`_
-script propagates a spectrum of channels at 32 Gbaud, 50 GHz spacing and 0
-dBm/channel. These are not yet parametrized but can be modified directly in the
-``eqpt_config.json`` (via the ``SpectralInformation`` -SI- structure) to accommodate 
-any baud rate, spacing or power demand. The number of channel is computed based on ``spacing`` and ``f_min``, ``f_max`` values.
+The `transmission_main_example.py <examples/transmission_main_example.py>`_ script propagates a spectrum of channels at 32 Gbaud, 50 GHz spacing and 0 dBm/channel. 
+Launch power can be overridden by using the ``--power`` argument.
+Spectrum information is not yet parametrized but can be modified directly in the ``eqpt_config.json`` (via the ``SpectralInformation`` -SI- structure) to accommodate any baud rate or spacing.
+The number of channel is computed based on ``spacing`` and ``f_min``, ``f_max`` values.
 
 Use `examples/path_requests_run.py <examples/path_requests_run.py>`_ to run multiple optimizations as follows:
 
