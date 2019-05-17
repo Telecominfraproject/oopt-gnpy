@@ -21,33 +21,9 @@ Documentation: https://gnpy.readthedocs.io
 Branches and Tagged Releases
 ----------------------------
 
+- all releases are `available via GitHub <https://github.com/Telecominfraproject/oopt-gnpy/releases>`_
 - the `master <https://github.com/Telecominfraproject/oopt-gnpy/tree/master>`_ branch contains stable, `validated code <https://github.com/Telecominfraproject/oopt-gnpy/wiki/Testing-for-Quality>`_. It is updated from develop on a release schedule determined by the OOPT-PSE Working Group.
 - the `develop <https://github.com/Telecominfraproject/oopt-gnpy/tree/develop>`_ branch contains the latest code under active development, which may not be fully validated and tested.
-
-A brief outline of major (tagged) `gnpy` releases:
-
-+---------------+-------------+-----------------------------------------------+
-| release date  | version tag | notes                                         |
-+===============+=============+===============================================+
-| Mar 5, 2019   | v1.2        | - plotting fixes                              |
-|               |             | - documentation clean-up                      |
-|               |             | - bug fixes                                   |
-+---------------+-------------+-----------------------------------------------+
-| Jan 30, 2019  | v1.1        | - XLS parser enhancements                     |
-|               |             | - Transponder and Roadm add-drop noise        |
-|               |             |   contribution and system margin included     |
-|               |             | - Automatic transponders’ mode selection      |
-|               |             | - Route selection with disjunction constraints|
-|               |             | - Detailed carrier information inspection on  |
-|               |             |   each element  along propagation             |
-|               |             | - OpenRoadm noise models                      | 
-|               |             | - bug fixes                                   |
-+---------------+-------------+-----------------------------------------------+
-| Oct 16, 2018  | v1.0        | - first "production"-ready release            |
-|               |             | - open network element model (EDFA, GN-model) |
-|               |             | - auto-design functionality                   |
-|               |             | - path request functionality                  |
-+---------------+-------------+-----------------------------------------------+
 
 How to Install
 --------------
