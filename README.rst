@@ -62,10 +62,9 @@ How to Install
 It is recommended that you use a "virtual environment" when installing `gnpy`.
 Do not install `gnpy` on your system Python.
 
-We recommend the use of the Anaconda Python distribution
-(https://www.anaconda.com/download) which comes with many scientific computing
+We recommend the use of the `Anaconda Python distribution <https://www.anaconda.com/download>`_ which comes with many scientific computing
 dependencies pre-installed. Anaconda creates a base "virtual environment" for
-you automatically. You can also create and manage your conda "virtual
+you automatically. You can also create and manage your ``conda`` "virtual
 environments" yourself (see:
 https://conda.io/docs/user-guide/tasks/manage-environments.html)
 
@@ -111,7 +110,7 @@ of the `gnpy` repo and install it with:
     $ python setup.py install                                    # install
 
 To test that `gnpy` was successfully installed, you can run this command. If it
-executes without a `ModuleNotFoundError`, you have successfully installed
+executes without a ``ModuleNotFoundError``, you have successfully installed
 `gnpy`.
 
 .. code-block:: shell
@@ -193,59 +192,59 @@ information to transmit.)
 The EDFA equipment library is a list of supported amplifiers. New amplifiers
 can be added and existing ones removed. Three different noise models are available:
 
-1. `'type_def': 'variable_gain'` is a simplified model simulating a 2-coil EDFA with internal, input and output VOAs. The NF vs gain response is calculated accordingly based on the input parameters: `nf_min`, `nf_max`, and `gain_flatmax`. It is not a simple interpolation but a 2-stage NF calculation.
-2. `'type_def': 'fixed_gain'` is a fixed gain model.  `NF == Cte == nf0` if `gain_min < gain < gain_flatmax`
-3. `'type_def': None` is an advanced model. A detailed json configuration file is required (by default `examples/std_medium_gain_advanced_config.json <examples/std_medium_gain_advanced_config.json>`_.) It uses a 3rd order polynomial where NF = f(gain), NF_ripple = f(frequency), gain_ripple = f(frequency), N-array dgt = f(frequency). Compared to the previous models, NF ripple and gain ripple are modelled.
+1. ``'type_def': 'variable_gain'`` is a simplified model simulating a 2-coil EDFA with internal, input and output VOAs. The NF vs gain response is calculated accordingly based on the input parameters: ``nf_min``, ``nf_max``, and ``gain_flatmax``. It is not a simple interpolation but a 2-stage NF calculation.
+2. ``'type_def': 'fixed_gain'`` is a fixed gain model.  `NF == Cte == nf0` if `gain_min < gain < gain_flatmax`
+3. ``'type_def': None`` is an advanced model. A detailed JSON configuration file is required (by default `examples/std_medium_gain_advanced_config.json <examples/std_medium_gain_advanced_config.json>`_). It uses a 3rd order polynomial where NF = f(gain), NF_ripple = f(frequency), gain_ripple = f(frequency), N-array dgt = f(frequency). Compared to the previous models, NF ripple and gain ripple are modelled.
 
 For all amplifier models:
 
-+----------------------+-----------+-----------------------------------------+
-| field                |   type    | description                             |
-+======================+===========+=========================================+
-| `type_variety`       | (string)  | a unique name to ID the amplifier in the|
-|                      |           | JSON/Excel template topology input file |
-+----------------------+-----------+-----------------------------------------+
-| `out_voa_auto`       | (boolean) | auto_design feature to optimize the     |
-|                      |           | amplifier output VOA. If true, output   |
-|                      |           | VOA is present and will be used to push |
-|                      |           | amplifier gain to its maximum, within   |
-|                      |           | EOL power margins.                      |
-+----------------------+-----------+-----------------------------------------+
-| `allowed_for_design` | (boolean) | If false, the amplifier will not be     |
-|                      |           | picked by auto-design but it can still  |
-|                      |           | be used as a manual input (from JSON or |
-|                      |           | Excel template topology files.)         |
-+----------------------+-----------+-----------------------------------------+
++------------------------+-----------+-----------------------------------------+
+| field                  |   type    | description                             |
++========================+===========+=========================================+
+| ``type_variety``       | (string)  | a unique name to ID the amplifier in the|
+|                        |           | JSON/Excel template topology input file |
++------------------------+-----------+-----------------------------------------+
+| ``out_voa_auto``       | (boolean) | auto_design feature to optimize the     |
+|                        |           | amplifier output VOA. If true, output   |
+|                        |           | VOA is present and will be used to push |
+|                        |           | amplifier gain to its maximum, within   |
+|                        |           | EOL power margins.                      |
++------------------------+-----------+-----------------------------------------+
+| ``allowed_for_design`` | (boolean) | If false, the amplifier will not be     |
+|                        |           | picked by auto-design but it can still  |
+|                        |           | be used as a manual input (from JSON or |
+|                        |           | Excel template topology files.)         |
++------------------------+-----------+-----------------------------------------+
 
 The fiber library currently describes SSMF and NZDF but additional fiber types can be entered by the user following the same model:
 
 +----------------------+-----------+-----------------------------------------+
 | field                | type      | description                             |
 +======================+===========+=========================================+
-| `type_variety`       | (string)  | a unique name to ID the fiber in the    |
+| ``type_variety``     | (string)  | a unique name to ID the fiber in the    |
 |                      |           | JSON or Excel template topology input   |
 |                      |           | file                                    |
 +----------------------+-----------+-----------------------------------------+
-| `dispersion`         | (number)  | (s.m-1.m-1)                             |
+| ``dispersion``       | (number)  | (s.m-1.m-1)                             |
 +----------------------+-----------+-----------------------------------------+
-| `gamma`              | (number)  | 2pi.n2/(lambda*Aeff) (w-2.m-1)          |
+| ``gamma``            | (number)  | 2pi.n2/(lambda*Aeff) (w-2.m-1)          |
 +----------------------+-----------+-----------------------------------------+
 
 The transceiver equipment library is a list of supported transceivers. New
 transceivers can be added and existing ones removed at will by the user. It is
 used to determine the service list path feasibility when running the
-path_request_run.py routine.
+`path_request_run.py routine <examples/path_request_run.py>`_.
 
 +----------------------+-----------+-----------------------------------------+
 | field                | type      | description                             |
 +======================+===========+=========================================+
-|  `type_variety`      | (string)  | a unique name to ID the transceiver in  |
+| ``type_variety``     | (string)  | A unique name to ID the transceiver in  |
 |                      |           | the JSON or Excel template topology     |
 |                      |           | input file                              |
 +----------------------+-----------+-----------------------------------------+
-|  `frequency`         | (number)  | Min/max as below.                       |
+| ``frequency``        | (number)  | Min/max as below.                       |
 +----------------------+-----------+-----------------------------------------+
-|  `mode`              | (number)  | a list of modes supported by the        |
+| ``mode``             | (number)  | A list of modes supported by the        |
 |                      |           | transponder. New modes can be added at  |
 |                      |           | will by the user. The modes are specific|
 |                      |           | to each transponder type_variety.       |
@@ -257,34 +256,34 @@ The modes are defined as follows:
 +----------------------+-----------+-----------------------------------------+
 | field                | type      | description                             |
 +======================+===========+=========================================+
-| `format`             | (string)  | a unique name to ID the mode.           |
+| ``format``           | (string)  | a unique name to ID the mode            |
 +----------------------+-----------+-----------------------------------------+
-| `baud_rate`          | (number)  | in Hz                                   |
+| ``baud_rate``        | (number)  | in Hz                                   |
 +----------------------+-----------+-----------------------------------------+
-| `OSNR`               | (number)  | min required OSNR in 0.1nm (dB)         |
+| ``OSNR``             | (number)  | min required OSNR in 0.1nm (dB)         |
 +----------------------+-----------+-----------------------------------------+
-| `bit_rate`           | (number)  | in bit/s                                |
+| ``bit_rate``         | (number)  | in bit/s                                |
 +----------------------+-----------+-----------------------------------------+
-| `roll_off`           | (number)  | Not used.                               |
+| ``roll_off``         | (number)  | Not used.                               |
 +----------------------+-----------+-----------------------------------------+
-| `tx_osnr`            | (number)  | In dB. OSNR out from transponder.       |
+| ``tx_osnr``          | (number)  | In dB. OSNR out from transponder.       |
 +----------------------+-----------+-----------------------------------------+
-| `cost`               | (number)  | Arbitrary unit                          |
+| ``cost``             | (number)  | Arbitrary unit                          |
 +----------------------+-----------+-----------------------------------------+
 
 Simulation parameters are defined as follows.
 
 Auto-design automatically creates EDFA amplifier network elements when they are
 missing, after a fiber, or between a ROADM and a fiber. This auto-design
-functionality can be manually and locally deactivated by introducing a `Fused`
-network element after a `Fiber` or a `Roadm` that doesn't need amplification.
+functionality can be manually and locally deactivated by introducing a ``Fused``
+network element after a ``Fiber`` or a ``Roadm`` that doesn't need amplification.
 The amplifier is chosen in the EDFA list of the equipment library based on
 gain, power, and NF criteria. Only the EDFA that are marked
-`'allowed_for_design': true` are considered.
+``'allowed_for_design': true`` are considered.
 
-For amplifiers defined in the topology JSON input but whose gain = 0
-(placeholder), auto-design will set its gain automatically: see `power_mode` in
-the `Spans` library to find out how the gain is calculated.
+For amplifiers defined in the topology JSON input but whose ``gain = 0``
+(placeholder), auto-design will set its gain automatically: see ``power_mode`` in
+the ``Spans`` library to find out how the gain is calculated.
 
 Span configuration is performed as follows. It is not a list (which may change
 in later releases) and the user can only modify the value of existing
@@ -293,25 +292,25 @@ parameters:
 +------------------------+-----------+---------------------------------------------+
 | field                  | type      | description                                 |
 +========================+===========+=============================================+
-| `power_mode`           | (boolean) | If false, gain mode. Auto-design sets       |
-|                        |           | amplifier gain = preceding span loss,      |
+| ``power_mode``         | (boolean) | If false, gain mode. Auto-design sets       |
+|                        |           | amplifier gain = preceding span loss,       |
 |                        |           | unless the amplifier exists and its         |
-|                        |           | gain > 0 in the topology input json.        |
+|                        |           | gain > 0 in the topology input JSON.        |
 |                        |           | If true, power mode (recommended for        |
 |                        |           | auto-design and power sweep.)               |
 |                        |           | Auto-design sets amplifier power            |
 |                        |           | according to delta_power_range. If the      |
 |                        |           | amplifier exists with gain > 0 in the       |
-|                        |           | topology json input, then its gain is       |
+|                        |           | topology JSON input, then its gain is       |
 |                        |           | translated into a power target/channel.     |
 |                        |           | Moreover, when performing a power sweep     |
-|                        |           | (see power_range_db in the SI               |
+|                        |           | (see ``power_range_db`` in the SI           |
 |                        |           | configuration library) the power sweep      |
 |                        |           | is performed w/r/t this power target,       |
-|                        |           | regardless of preceding amplifiers         |
+|                        |           | regardless of preceding amplifiers          |
 |                        |           | power saturation/limitations.               |
 +------------------------+-----------+---------------------------------------------+
-| `delta_power_range_db` | (number)  | Auto-design only, power-mode                |
+| ``delta_power_range_db`` | (number) | Auto-design only, power-mode               |
 |                        |           | only. Specifies the [min, max, step]        |
 |                        |           | power excursion/span. It is a relative      |
 |                        |           | power excursion w/r/t the                   |
@@ -345,25 +344,24 @@ parameters:
 |                        |           | a 23 dB span to                             |
 |                        |           | power = power_dbm + power_range_db + 1      |
 +------------------------+-----------+---------------------------------------------+
-| max_fiber_lineic_loss_ |  (number) | Maximum linear fiber loss for Raman         |
-| for_raman`             |           | amplification use.                          |
+| ``max_fiber_lineic_loss_for_raman`` | (number) | Maximum linear fiber loss for Raman |
+|                        |           | amplification use.                          |
 +------------------------+-----------+---------------------------------------------+
-| `max_length`           | (number)  | Split fiber lengths > max_length.           |
+| ``max_length``         | (number)  | Split fiber lengths > max_length.           |
 |                        |           | Interest to support high level              |
 |                        |           | topologies that do not specify in line      |
 |                        |           | amplification sites. For example the        |
 |                        |           | CORONET_Global_Topology.xls defines         |
 |                        |           | links > 1000km between 2 sites: it          |
 |                        |           | couldn't be simulated if these links        |
-|                        |           | were not splitted in shorter span           |
-|                        |           | lengths.                                    |
+|                        |           | were not split in shorter span lengths.     |
 +------------------------+-----------+---------------------------------------------+
-| `length_unit`          | "m"/"km"  | Unit for max_length.                        |
+| ``length_unit``        | "m"/"km"  | Unit for ``max_length``.                    |
 +------------------------+-----------+---------------------------------------------+
-| `max_loss`             | (number)  | Not used in the current code                |
+| ``max_loss``           | (number)  | Not used in the current code                |
 |                        |           | implementation.                             |
 +------------------------+-----------+---------------------------------------------+
-| `padding`              | (number)  | In dB. Min span loss before putting an      |
+| ``padding``            | (number)  | In dB. Min span loss before putting an      |
 |                        |           | attenuator before fiber. Attenuator         |
 |                        |           | value                                       |
 |                        |           | Fiber.att_in = max(0, padding - span_loss). |
@@ -378,24 +376,22 @@ parameters:
 |                        |           | Therefore it is not possible to set         |
 |                        |           | span_loss < padding.                        |
 +------------------------+-----------+---------------------------------------------+
-| `EOL`                  | (number)  | All fiber span loss ageing. The value       |
+| ``EOL``                | (number)  | All fiber span loss ageing. The value       |
 |                        |           | is added to the con_out (fiber output       |
 |                        |           | connector). So the design and the path      |
 |                        |           | feasibility are performed with              |
 |                        |           | span_loss + EOL. EOL cannot be set          |
 |                        |           | manually for a given fiber span             |
-|                        |           | (workaround is to specify higher con_out    |
+|                        |           | (workaround is to specify higher ``con_out`` |
 |                        |           | loss for this fiber).                       |
 +------------------------+-----------+---------------------------------------------+
-| `con_in`, `con_out`    | (number)  | Default values if Fiber/params/con_in/out   |
-|                        |           | is None in the topology input               |
+| ``con_in``,            | (number)  | Default values if Fiber/params/con_in/out   |
+| ``con_out``            |           | is None in the topology input               |
 |                        |           | description. This default value is          |
 |                        |           | ignored if a Fiber/params/con_in/out        |
 |                        |           | value is input in the topology for a        |
 |                        |           | given Fiber.                                |
 +------------------------+-----------+---------------------------------------------+
-
-**[1]**
 
 .. code-block:: json
 
@@ -421,28 +417,28 @@ existing parameters:
 +--------------------------+-----------+---------------------------------------------+
 | field                    |   type    | description                                 |
 +==========================+===========+=============================================+
-| `target_pch_out_db`      | (number)  | Auto-design sets the Roadm egress channel   |
+| ``target_pch_out_db``    | (number)  | Auto-design sets the ROADM egress channel   |
 |                          |           | power. This reflects typical control loop   |
-|                          |           | algorithms that adjust Roadm losses to      |
+|                          |           | algorithms that adjust ROADM losses to      |
 |                          |           | equalize channels (eg coming from different |
-|                          |           | ingress drection or add ports)              |
-|                          |           | Thi is the default value                    |
+|                          |           | ingress direction or add ports)             |
+|                          |           | This is the default value                   |
 |                          |           | Roadm/params/target_pch_out_db if no value  |
-|                          |           | is given in the Roadm element in the        |
+|                          |           | is given in the ``Roadm`` element in the    |
 |                          |           | topology input description.                 |
 |                          |           | This default value is ignored if a          |
 |                          |           | params/target_pch_out_db value is input in  |
 |                          |           | the topology for a given ROADM.             |
 +--------------------------+-----------+---------------------------------------------+
-| `add_drop_osnr`          | (number)  | OSNR contribution from the add/drop ports   |
+| ``add_drop_osnr``        | (number)  | OSNR contribution from the add/drop ports   |
 +--------------------------+-----------+---------------------------------------------+
-| `restrictions`           | (strings) | Authorized type_variety of amplifier for    |
+| ``restrictions``         | (strings) | Authorized type_variety of amplifier for    |
 |                          |           | booster or preamp.                          |
-|                          |           | listed type_variety MUST be defined in the  |
+|                          |           | Listed type_variety MUST be defined in the  |
 |                          |           | Edfa catalog.                               |
 +--------------------------+-----------+---------------------------------------------+
 
-The `SpectralInformation` object can be configured as follows. The user can
+The ``SpectralInformation`` object can be configured as follows. The user can
 only modify the value of existing parameters. It defines a spectrum of N
 identical carriers. While the code libraries allow for different carriers and
 power levels, the current user parametrization only allows one carrier type and
@@ -451,17 +447,18 @@ one power/channel definition.
 +----------------------+-----------+-------------------------------------------+
 | field                |   type    | description                               |
 +======================+===========+===========================================+
-| `f_min/max`          | (number)  | In Hz. Carrier min max excursion          |
+| ``f_min``,           | (number)  | In Hz. Carrier min max excursion.          |
+| ``f_max``            |           |                                           |
 +----------------------+-----------+-------------------------------------------+
-| `baud_rate`          | (number)  | In Hz. Simulated baud rate.               |
+| ``baud_rate``        | (number)  | In Hz. Simulated baud rate.               |
 +----------------------+-----------+-------------------------------------------+
-| `spacing`            | (number)  | In Hz. Carrier spacing.                   |
+| ``spacing``          | (number)  | In Hz. Carrier spacing.                   |
 +----------------------+-----------+-------------------------------------------+
-| `roll_off`           | (number)  | Not used.                                 |
+| ``roll_off``         | (number)  | Not used.                                 |
 +----------------------+-----------+-------------------------------------------+
-| `tx_osnr`            | (number)  | In dB. OSNR out from transponder.         |
+| ``tx_osnr``          | (number)  | In dB. OSNR out from transponder.         |
 +----------------------+-----------+-------------------------------------------+
-| `power_dbm`          | (number)  | Reference channel power. In gain mode     |
+| ``power_dbm``        | (number)  | Reference channel power. In gain mode     |
 |                      |           | (see spans/power_mode = false), all gain  |
 |                      |           | settings are offset w/r/t this reference  |
 |                      |           | power. In power mode, it is the           |
@@ -474,20 +471,20 @@ one power/channel definition.
 |                      |           | power sweep is defined (see after) the    |
 |                      |           | design is not repeated.                   |
 +----------------------+-----------+-------------------------------------------+
-| `power_range_db`     | (number)  | Power sweep excursion around power_dbm.   |
+| ``power_range_db``   | (number)  | Power sweep excursion around power_dbm.   |
 |                      |           | It is not the min and max channel power   |
 |                      |           | values! The reference power becomes:      |
 |                      |           | power_range_db + power_dbm.               |
 +----------------------+-----------+-------------------------------------------+
-| `sys_margins`        | (number)  | In dB. Added margin on min required       |
+| ``sys_margins``      | (number)  | In dB. Added margin on min required       |
 |                      |           | transceiver OSNR.                         |         
 +----------------------+-----------+-------------------------------------------+
 
 The `transmission_main_example.py <examples/transmission_main_example.py>`_
 script propagates a spectrum of channels at 32 Gbaud, 50 GHz spacing and 0
 dBm/channel. These are not yet parametrized but can be modified directly in the
-eqpt_config.json (via the SpectralInformation -SI- structure) to accommodate 
-any baud rate, spacing or power  demand. The number of channel is computed based on spacing and f_min/max values.
+``eqpt_config.json`` (via the ``SpectralInformation`` -SI- structure) to accommodate 
+any baud rate, spacing or power demand. The number of channel is computed based on ``spacing`` and ``f_min``, ``f_max`` values.
 
 Use `examples/path_requests_run.py <examples/path_requests_run.py>`_ to run multiple optimizations as follows:
 
@@ -496,7 +493,7 @@ Use `examples/path_requests_run.py <examples/path_requests_run.py>`_ to run mult
      $ python path_requests_run.py -h
      Usage: path_requests_run.py [-h] [-v] [-o OUTPUT] [network_filename] [service_filename] [eqpt_filename]
 
-The `network_filename` and `service_filename` can be an XLS or JSON file. The `eqpt_filename` must be a JSON file.
+The ``network_filename`` and ``service_filename`` can be an XLS or JSON file. The ``eqpt_filename`` must be a JSON file.
 
 To see an example of it, run:
 
@@ -507,10 +504,10 @@ To see an example of it, run:
 
 This program requires a list of connections to be estimated and the equipment
 library. The program computes performances for the list of services (accepts
-json or excel format) using the same spectrum propagation modules as
-transmission_main_example.py. Explanation on the Excel template is provided in
+JSON or Excel format) using the same spectrum propagation modules as
+``transmission_main_example.py``. Explanation on the Excel template is provided in
 the `Excel_userguide.rst <Excel_userguide.rst#service-sheet>`_. Template for
-the json format can be found here: `service-template.json
+the JSON format can be found here: `service-template.json
 <service-template.json>`_.
 
 Contributing
