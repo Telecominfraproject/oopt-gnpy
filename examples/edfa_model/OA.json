@@ -1,5 +1,6 @@
 {
-    "nf_ripple": "NFR0_96.txt", 
-    "gain_ripple": "DFG0_96.txt",
-    "dgt": "DGT_96.txt"    
+    "nf_ripple": "NFR_96.txt", 
+    "gain_ripple": "DFG_96.txt",
+    "dgt": "DGT_96.txt",
+    "nf_fit_coeff": "pNFfit3.txt"
 }

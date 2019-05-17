@@ -111,11 +111,12 @@ class Eqpt(object):
     {
             'from_city':        '',
             'to_city':          '',
-            'east_amp_type':         '',
-            'east_att_in':           0,
-            'east_amp_gain':         0,
-            'east_tilt':             0,
-            'east_att_out':          0
+            'east_amp_type':    '',
+            'east_att_in':      0,
+            'east_amp_gain':    None,
+            'east_amp_dp':      None,
+            'east_tilt':        0,
+            'east_att_out':     None
     }
 
 
@@ -163,8 +164,8 @@ def parse_headers(my_sheet, input_headers_dict, headers, start_line, slice_in):
             slice_out = read_slice(my_sheet, start_line+iteration, slice_in, h0)
             iteration += 1
         if slice_out == (-1, -1):
-            if h0 == 'east':
-                print(f'\x1b[1;31;40m'+f'CRITICAL: missing _east_ header above other headers (hierarchical) _ ABORT'+ '\x1b[0m')
+            if h0 in ('east', 'Node A', 'Node Z', 'City') :
+                print(f'\x1b[1;31;40m'+f'CRITICAL: missing _{h0}_ header: EXECUTION ENDS'+ '\x1b[0m')
                 exit()
             else:
                 print(f'missing header {h0}')
@@ -344,6 +345,7 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
               'type': 'Edfa',
               'type_variety': e.east_amp_type,
               'operational': {'gain_target': e.east_amp_gain,
+                              'delta_p':     e.east_amp_dp,
                               'tilt_target': e.east_tilt,
                               'out_voa'    : e.east_att_out}
             }
@@ -356,6 +358,7 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
               'type': 'Edfa',
               'type_variety': e.west_amp_type,
               'operational': {'gain_target': e.west_amp_gain,
+                              'delta_p':     e.west_amp_dp,
                               'tilt_target': e.west_tilt,
                               'out_voa'    : e.west_att_out}
               }
@@ -420,6 +423,7 @@ def parse_excel(input_filename):
             'amp type':         'east_amp_type',
             'att_in':           'east_att_in',
             'amp gain':         'east_amp_gain',
+            'delta p':          'east_amp_dp',
             'tilt':             'east_tilt',
             'att_out':          'east_att_out'
        },
@@ -427,6 +431,7 @@ def parse_excel(input_filename):
             'amp type':         'west_amp_type',
             'att_in':           'west_att_in',
             'amp gain':         'west_amp_gain',
+            'delta p':          'west_amp_dp',
             'tilt':             'west_tilt',
             'att_out':          'west_att_out'
        }
@@ -566,12 +571,12 @@ def midpoint(city_a, city_b):
 #output_json_file_name = 'coronet_conus_example.json'
 #TODO get column size automatically from tupple size
 
-NODES_COLUMN = 7
+NODES_COLUMN = 8
 NODES_LINE = 4
 LINKS_COLUMN = 16
 LINKS_LINE = 3
 EQPTS_LINE = 3
-EQPTS_COLUMN = 12
+EQPTS_COLUMN = 14
 parser = ArgumentParser()
 parser.add_argument('workbook', nargs='?', type=Path , default='meshTopologyExampleV2.xls')
 parser.add_argument('-f', '--filter-region', action='append', default=[])

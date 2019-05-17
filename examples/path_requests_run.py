@@ -23,7 +23,7 @@ from networkx import (draw_networkx_nodes, draw_networkx_edges,
 from numpy import mean
 from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
 from gnpy.core.utils import load_json
-from gnpy.core.network import load_network, build_network, set_roadm_loss, save_network
+from gnpy.core.network import load_network, build_network, save_network
 from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch, automatic_spacing
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused, Fiber
 from gnpy.core.utils import db2lin, lin2db

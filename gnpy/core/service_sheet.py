@@ -73,7 +73,7 @@ class Request_element(Element):
                 Requestmode = None
                 self.mode = Request.mode
         except KeyError:
-            msg = f'Request Id: {self.request_id} - could not find tsp : \'{Request.trx_type}\' with mode: \'{Requestmode}\' in eqpt library \nComputation stopped.'
+            msg = f'Request Id: {self.request_id} - could not find tsp : \'{Request.trx_type}\' with mode: \'{Request.mode}\' in eqpt library \nComputation stopped.'
             #print(msg)
             logger.critical(msg)
             exit()

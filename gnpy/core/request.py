@@ -18,12 +18,11 @@ See: draft-ietf-teas-yang-path-computation-01.txt
 from sys import exit
 from collections import namedtuple
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
-from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths)
+from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths,shortest_path_length)
 from networkx.utils import pairwise 
 from numpy import mean
 from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
-from gnpy.core.network import set_roadm_loss
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
 from copy import copy, deepcopy
@@ -292,7 +291,15 @@ def compute_constrained_path(network, req):
 
     if len(nodes_list) == 1  :
         try :
-            total_path = dijkstra_path(network, source, destination)
+            total_path = dijkstra_path(network, source, destination, weight = 'weight')
+            # print('checking edges length is correct')
+            # print(shortest_path_length(network,source,destination))
+            # print(shortest_path_length(network,source,destination,weight ='weight'))
+            # s = total_path[0]
+            # for e in total_path[1:]:
+            #     print(s.uid)
+            #     print(network.get_edge_data(s,e))
+            #     s = e
         except NetworkXNoPath:
             msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path from {source.uid} to node : {destination.uid} in network topology'+ '\x1b[0m'
             logger.critical(msg)
@@ -306,15 +313,16 @@ def compute_constrained_path(network, req):
             if ispart(nodes_list, p) :
                 # print(f'selection{[el.uid for el in p if el in roadm]}')
                 candidate.append(p)
-        # select the shortest path (in nb of hops)
+        # select the shortest path (in nb of hops) -> changed to shortest path in km length
         if len(candidate)>0 :
-            candidate.sort(key=lambda x: len(x))
+            # candidate.sort(key=lambda x: len(x))
+            candidate.sort(key=lambda x: sum(network.get_edge_data(x[i],x[i+1])['weight'] for i in range(len(x)-2)))
             total_path = candidate[0]
         else:
             if req.loose_list[req.nodes_list.index(n)] == 'loose':
                 print(f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing {nodes_list} in network topology'+ '\x1b[0m')
                 print(f'constraint ignored')
-                total_path = dijkstra_path(network, source, destination)
+                total_path = dijkstra_path(network, source, destination, weight = 'weight')
             else:
                 msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing {nodes_list}.\nNo path computed'+ '\x1b[0m'
                 logger.critical(msg)
@@ -386,8 +394,6 @@ def compute_constrained_path(network, req):
     return total_path
 
 def propagate(path, req, equipment, show=False):
-    #update roadm loss in case of power sweep (power mode only)
-    set_roadm_loss(path, equipment, lin2db(req.power*1e3))
     si = create_input_spectral_information(
         req.f_min, req.f_max, req.roll_off, req.baud_rate,
         req.power, req.spacing)
@@ -395,12 +401,10 @@ def propagate(path, req, equipment, show=False):
         si = el(si)
         if show :
             print(el)
-    path[-1].update_snr(req.tx_osnr, equipment['Roadms']['default'].add_drop_osnr)
+    path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
     return path
 
 def propagate2(path, req, equipment, show=False):
-    #update roadm loss in case of power sweep (power mode only)
-    set_roadm_loss(path, equipment, lin2db(req.power*1e3))
     si = create_input_spectral_information(
         req.f_min, req.f_max, req.roll_off, req.baud_rate,
         req.power, req.spacing)
@@ -411,12 +415,10 @@ def propagate2(path, req, equipment, show=False):
         infos[el] = before_si, after_si
         if show :
             print(el)
-    path[-1].update_snr(req.tx_osnr, equipment['Roadms']['default'].add_drop_osnr)
+    path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
     return infos
 
-def propagate_and_optimize_mode(path, req, equipment):
-    #update roadm loss in case of power sweep (power mode only)
-    set_roadm_loss(path, equipment, lin2db(req.power*1e3))
+def propagate_and_optimize_mode(path, req, equipment, show=False):
     # if mode is unknown : loops on the modes starting from the highest baudrate fiting in the
     # step 1: create an ordered list of modes based on baudrate
     baudrate_to_explore = list(set([m['baud_rate'] for m in equipment['Transceiver'][req.tsp].mode 
@@ -427,7 +429,7 @@ def propagate_and_optimize_mode(path, req, equipment):
         # at least 1 baudrate can be tested wrt spacing
         for b in baudrate_to_explore :
             modes_to_explore = [m for m in equipment['Transceiver'][req.tsp].mode 
-                if m['baud_rate'] == b]
+                if m['baud_rate'] == b and float(m['min_spacing'])<= req.spacing]
             modes_to_explore = sorted(modes_to_explore, 
                 key = lambda x: x['bit_rate'], reverse=True)
             # print(modes_to_explore)
@@ -440,9 +442,11 @@ def propagate_and_optimize_mode(path, req, equipment):
             b, req.power, req.spacing)
             for el in path:
                 si = el(si)
+                if show:
+                    print(el)
             for m in modes_to_explore :
                 if path[-1].snr is not None:
-                    path[-1].update_snr(m['tx_osnr'], equipment['Roadms']['default'].add_drop_osnr)
+                    path[-1].update_snr(m['tx_osnr'], equipment['Roadm']['default'].add_drop_osnr)
                     if round(min(path[-1].snr+lin2db(b/(12.5e9))),2) > m['OSNR'] :
                         found_a_feasible_mode = True
                         return path, m
@@ -611,8 +615,10 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
             source=next(el for el in network.nodes() if el.uid == pathreq.source),\
             target=next(el for el in network.nodes() if el.uid == pathreq.destination),\
             cutoff=80))
-        # sort them
-        all_simp_pths = sorted(all_simp_pths, key=lambda path: len(path))
+        # sort them in km length instead of hop
+        # all_simp_pths = sorted(all_simp_pths, key=lambda path: len(path))
+        all_simp_pths = sorted(all_simp_pths, key=lambda \
+            x: sum(network.get_edge_data(x[i],x[i+1])['weight'] for i in range(len(x)-2)))
         # reversed direction paths required to check disjunction on both direction
         all_simp_pths_reversed = []
         for pth in all_simp_pths:
@@ -825,7 +831,7 @@ def find_reversed_path(p,network) :
     destination = p[0]
     total_path = [source]
     for node in reversed_roadm_path :
-        total_path.extend(dijkstra_path(network, source, node)[1:])
+        total_path.extend(dijkstra_path(network, source, node, weight = 'weight')[1:])
         source = node
     total_path.append(destination)
     return total_path
