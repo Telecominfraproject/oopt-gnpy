@@ -6,16 +6,24 @@ To learn how to contribute, please see CONTRIBUTING.md
 (*in alphabetical order*)
 
 - Alessio Ferrari (Politecnico di Torino) <alessio.ferrari@polito.it>
+- Anders Lindgren (Telia Company) <Anders.X.Lindgren@teliacompany.com>
+- Andrea d'Amico (Politecnico di Torino) <andrea.damico@polito.it>
 - Brian Taylor (Facebook) <briantaylor@fb.com>
 - David Boertjes (Ciena) <dboertje@ciena.com>
+- Diego Landa (Facebook) <dlanda@fb.com>
 - Esther Le Rouzic (Orange) <esther.lerouzic@orange.com>
 - Gabriele Galimberti (Cisco) <ggalimbe@cisco.com>
 - Gert Grammel (Juniper Networks) <ggrammel@juniper.net>
 - Gilad Goldfarb (Facebook) <giladg@fb.com>
 - James Powell (Telecom Infra Project) <james.powell@telecominfraproject.com>
+- Jan Kundrát (Telecom Infra Project) <jan.kundrat@telecominfraproject.com>
 - Jeanluc Augé (Orange) <jeanluc.auge@orange.com>
 - Jonas Mårtensson (RISE) <jonas.martensson@ri.se>
 - Mattia Cantono (Politecnico di Torino) <mattia.cantono@polito.it>
+- Miguel Garrich (University Catalunya) <miquel.garrich@upct.es>
+- Raj Nagarajan (Lumentum) <raj.nagarajan@lumentum.com>
 - Roberts Miculens (Lattelecom) <roberts.miculens@lattelecom.lv>
+- Shengxiang Zhu (University of Arizona) <szhu@email.arizona.edu>
+- Stefan Melin (Telia Company) <Stefan.Melin@teliacompany.com>
 - Vittorio Curri (Politecnico di Torino) <vittorio.curri@polito.it>
 - Xufeng Liu (Jabil) <xufeng_liu@jabil.com>

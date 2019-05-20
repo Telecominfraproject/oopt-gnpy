@@ -51,6 +51,8 @@ Contributors in alphabetical order
 +----------+------------+-----------------------+--------------------------------------+
 | David    | Boertjes   | Ciena                 | dboertje@ciena.com                   |
 +----------+------------+-----------------------+--------------------------------------+
+| Diego    | Landa      | Facebook              | dlanda@fb.com                        |
++----------+------------+-----------------------+--------------------------------------+
 | Esther   | Le Rouzic  | Orange                | esther.lerouzic@orange.com           |
 +----------+------------+-----------------------+--------------------------------------+
 | Gabriele | Galimberti | Cisco                 | ggalimbe@cisco.com                   |
@@ -61,19 +63,27 @@ Contributors in alphabetical order
 +----------+------------+-----------------------+--------------------------------------+
 | James    | Powell     | Telecom Infra Project | james.powell@telecominfraproject.com |
 +----------+------------+-----------------------+--------------------------------------+
-| Jeanluc  | Auge       | Orange                | jeanluc.auge@orange.com              |
+| Jan      | Kundrát    | Telecom Infra Project | jan.kundrat@telecominfraproject.com  |
 +----------+------------+-----------------------+--------------------------------------+
-| Jonas    | Martensson | RISE Research Sweden  | jonas.martensson@ri.se               |
+| Jeanluc  | Augé       | Orange                | jeanluc.auge@orange.com              |
++----------+------------+-----------------------+--------------------------------------+
+| Jonas    | Mårtensson | RISE Research Sweden  | jonas.martensson@ri.se               |
 +----------+------------+-----------------------+--------------------------------------+
 | Mattia   | Cantono    | Politecnico di Torino | mattia.cantono@polito.it             |
 +----------+------------+-----------------------+--------------------------------------+
 | Miguel   | Garrich    | University Catalunya  | miquel.garrich@upct.es               |
 +----------+------------+-----------------------+--------------------------------------+
-| Stefan   | Melin      | Telia Company         | Stefan.Melin@teliacompany.com        |
-+----------+------------+-----------------------+--------------------------------------+
 | Raj      | Nagarajan  | Lumentum              | raj.nagarajan@lumentum.com           |
 +----------+------------+-----------------------+--------------------------------------+
+| Roberts  | Miculens   | Lattelecom            | roberts.miculens@lattelecom.lv       |
++----------+------------+-----------------------+--------------------------------------+
+| Shengxiang | Zhu      | University of Arizona | szhu@email.arizona.edu               |
++----------+------------+-----------------------+--------------------------------------+
+| Stefan   | Melin      | Telia Company         | Stefan.Melin@teliacompany.com        |
++----------+------------+-----------------------+--------------------------------------+
 | Vittorio | Curri      | Politecnico di Torino | vittorio.curri@polito.it             |
++----------+------------+-----------------------+--------------------------------------+
+| Xufeng   | Liu        | Jabil                 | xufeng_liu@jabil.com                 |
 +----------+------------+-----------------------+--------------------------------------+
 
 --------------
