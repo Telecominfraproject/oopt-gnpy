@@ -104,8 +104,8 @@ It ships with a number of example programs. Release versions will ship with
 fully-functional programs.
 
     **Note**: *If you are a network operator or involved in route planning and
-    optimization for your organization, please contact project maintainer James
-    Powell <james.powell@telecominfraproject>. gnpy is looking for users with
+    optimization for your organization, please contact project maintainer Jan
+    Kundrát <jan.kundrat@telecominfraproject>. gnpy is looking for users with
     specific, delineated use cases to drive requirements for future
     development.*
 
@@ -490,8 +490,8 @@ Contributing
 ``gnpy`` is looking for additional contributors, especially those with experience
 planning and maintaining large-scale, real-world mesh optical networks.
 
-To get involved, please contact James Powell
-<james.powell@telecominfraproject.com> or Gert Grammel <ggrammel@juniper.net>.
+To get involved, please contact Jan Kundrát
+<jan.kundrat@telecominfraproject.com> or Gert Grammel <ggrammel@juniper.net>.
 
 ``gnpy`` contributions are currently limited to members of `TIP
 <http://telecominfraproject.com>`_. Membership is free and open to all.
