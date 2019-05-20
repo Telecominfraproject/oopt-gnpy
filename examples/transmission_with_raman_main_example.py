@@ -11,7 +11,7 @@ Reads from network JSON (by default, `edfa_example_network.json`)
 '''
 
 from gnpy.core.equipment import load_equipment, trx_mode_params
-from gnpy.core.utils import db2lin, lin2db, write_csv
+from gnpy.core.utils import db2lin, lin2db, write_csv, load_json
 from argparse import ArgumentParser
 from sys import exit
 from pathlib import Path
@@ -97,7 +97,7 @@ def plot_results(network, path, source, destination, infos):
     show()
 
 
-def main(network, equipment, source, destination, req = None):
+def main(network, equipment, source, destination, sim_params, req = None):
     result_dicts = {}
     network_data = [{
                     'network_name'  : str(args.filename),
@@ -181,6 +181,8 @@ def main(network, equipment, source, destination, req = None):
 parser = ArgumentParser()
 parser.add_argument('-e', '--equipment', type=Path,
                     default=Path(__file__).parent / 'eqpt_config.json')
+parser.add_argument('-sim', '--sim-params', type=Path,
+                    default=Path(__file__).parent / 'sim_params.json', help='json containing simulation parameters')
 parser.add_argument('-pl', '--plot', action='store_true')
 parser.add_argument('-v', '--verbose', action='count', default=0, help='increases verbosity for each occurence')
 parser.add_argument('-l', '--list-nodes', action='store_true', help='list all transceiver nodes')
@@ -213,6 +215,8 @@ if __name__ == '__main__':
         for uid in transceivers:
             print(uid)
         exit()
+
+    sim_params = load_json(args.sim_params)
 
     #First try to find exact match if source/destination provided
     if args.source:
@@ -266,7 +270,7 @@ if __name__ == '__main__':
         trx_params['power'] = db2lin(float(args.power))*1e-3
     params.update(trx_params)
     req = Path_request(**params)
-    path, infos = main(network, equipment, source, destination, req)
+    path, infos = main(network, equipment, source, destination, sim_params, req)
     save_network(args.filename, network)
 
     if not args.source:
