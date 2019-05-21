@@ -5,8 +5,6 @@ python:
 install:
   - python setup.py install
   - pip install pytest-cov
-# command to run tests
-before_script:
 script:
   - pytest --cov-report=xml --cov=gnpy
 after_success:
