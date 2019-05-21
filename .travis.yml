@@ -4,7 +4,10 @@ python:
 # command to install dependencies
 install:
   - python setup.py install
+  - pip install pytest-cov
 # command to run tests
 before_script:
 script:
-  - pytest
+  - pytest --cov-report=xml --cov=gnpy
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
