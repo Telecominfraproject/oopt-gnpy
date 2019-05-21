@@ -144,10 +144,11 @@ class Amp(common):
             except KeyError: #nf0 is expected for a fixed gain amp
                 print(f'missing nf0 value input for amplifier: {type_variety} in eqpt_config.json')
                 exit()
-            try: #remove all remaining nf inputs
-                del kwargs['nf_min']
-                del kwargs['nf_max']
-            except KeyError: pass #nf_min and nf_max are not needed for fixed gain amp
+            for k in ('nf_min', 'nf_max'):
+                try:
+                    del kwargs[k]
+                except KeyError:
+                    pass
             nf_def = Model_fg(nf0)
         elif type_def == 'advanced_model':
             config = Path(filename).parent / kwargs.pop('advanced_config_from_json')
