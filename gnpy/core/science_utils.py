@@ -1,5 +1,9 @@
-from collections import namedtuple
+from gnpy.core.utils import load_json
 
+
+def load_sim_params(path_sim_params):
+    sim_params = load_json(path_sim_params)
+    return SimParams(**sim_params)
 
 class RamanParameters():
     def __init__(self, params=None):
