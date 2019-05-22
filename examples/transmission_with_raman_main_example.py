@@ -11,7 +11,7 @@ Reads from network JSON (by default, `edfa_example_network.json`)
 '''
 
 from gnpy.core.equipment import load_equipment, trx_mode_params
-from gnpy.core.utils import db2lin, lin2db, write_csv, load_json
+from gnpy.core.utils import db2lin, lin2db, write_csv
 from argparse import ArgumentParser
 from sys import exit
 from pathlib import Path
@@ -26,6 +26,7 @@ from gnpy.core.network import load_network, build_network, save_network
 from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
 from gnpy.core.request import Path_request, RequestParams, compute_constrained_path, propagate2
+from gnpy.core.science_utils import load_sim_params
 
 logger = getLogger(__name__)
 
@@ -182,14 +183,14 @@ parser = ArgumentParser()
 parser.add_argument('-e', '--equipment', type=Path,
                     default=Path(__file__).parent / 'eqpt_config.json')
 parser.add_argument('-sim', '--sim-params', type=Path,
-                    default=Path(__file__).parent / 'sim_params.json', help='json containing simulation parameters')
+                    default=Path(__file__).parent / 'sim_params.json', help='Path to the json containing simulation parameters')
 parser.add_argument('-pl', '--plot', action='store_true')
 parser.add_argument('-v', '--verbose', action='count', default=0, help='increases verbosity for each occurence')
 parser.add_argument('-l', '--list-nodes', action='store_true', help='list all transceiver nodes')
 parser.add_argument('-po', '--power', default=0, help='channel ref power in dBm')
 parser.add_argument('-names', '--names-matching', action='store_true', help='display network names that are closed matches')
 parser.add_argument('filename', nargs='?', type=Path,
-                    default=Path(__file__).parent / 'edfa_example_network.json')
+                    default=Path(__file__).parent / 'raman_edfa_example_network.json')
 parser.add_argument('source', nargs='?', help='source node')
 parser.add_argument('destination',   nargs='?', help='destination node')
 
@@ -200,6 +201,7 @@ if __name__ == '__main__':
 
     equipment = load_equipment(args.equipment)
     network = load_network(args.filename, equipment, args.names_matching)
+    sim_params = load_sim_params(args.sim_params)
 
     if args.plot:
         plot_baseline(network)
@@ -215,8 +217,6 @@ if __name__ == '__main__':
         for uid in transceivers:
             print(uid)
         exit()
-
-    sim_params = load_json(args.sim_params)
 
     #First try to find exact match if source/destination provided
     if args.source:
