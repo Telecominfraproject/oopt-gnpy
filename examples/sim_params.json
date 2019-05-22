@@ -7,7 +7,7 @@
     "verbose": 2
   },
   "nli_parameters": {
-  	"method_nli": "GGN",
+  	"nli_method_name": "GGN",
   	"wdm_grid_size": 50e9,
   	"dispersion_tolerance": 1,
   	"phase_shift_tollerance": 0.1,
