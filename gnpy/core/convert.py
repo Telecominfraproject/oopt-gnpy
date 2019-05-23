@@ -467,10 +467,10 @@ def parse_excel(input_filename):
     # sanity check
     all_cities = Counter(n.city for n in nodes)
     if len(all_cities) != len(nodes):
-        ValueError(f'Duplicate city: {all_cities}')
+        raise ValueError(f'Duplicate city: {all_cities}')
     if any(ln.from_city not in all_cities or
            ln.to_city   not in all_cities for ln in links):
-        ValueError(f'Bad link.')
+        raise ValueError(f'Bad link.')
 
     return nodes, links, eqpts
 
