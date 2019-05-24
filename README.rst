@@ -422,7 +422,7 @@ one power/channel definition.
 +----------------------+-----------+-------------------------------------------+
 | field                |   type    | description                               |
 +======================+===========+===========================================+
-| ``f_min``,           | (number)  | In Hz. Carrier min max excursion.          |
+| ``f_min``,           | (number)  | In Hz. Carrier min max excursion.         |
 | ``f_max``            |           |                                           |
 +----------------------+-----------+-------------------------------------------+
 | ``baud_rate``        | (number)  | In Hz. Simulated baud rate.               |
