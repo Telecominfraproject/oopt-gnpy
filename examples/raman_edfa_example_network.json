@@ -14,7 +14,7 @@
     },
     {
       "uid": "Span1",
-      "type": "Fiber",
+      "type": "RamanFiber",
       "type_variety": "SSMF",
       "operational": {
         "raman_pumps": [
