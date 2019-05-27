@@ -107,7 +107,7 @@ Several amplifiers can be used by GNpy, so they are defined as an array of equip
 
     It does not prevent the use of an amplifier if it is placed in the topology input.
 
-    .. code-block::
+    .. code-block:: json
 
         {"Edfa": [{
                     "type_variety": "std_medium_gain",
@@ -131,7 +131,7 @@ Several amplifiers can be used by GNpy, so they are defined as an array of equip
                     "out_voa_auto": false,
                     "allowed_for_design": true
                     }
-            ],
+            ]}
 
 
 3. Amplifier models
@@ -162,7 +162,7 @@ In an opensource and multi-vendor environnement, it is needed to support differe
             
         *See next section for the generation of this json file*
 
-    .. code-block::
+    .. code-block:: json-object
 
         "Edfa":[{
                 "type_variety": "high_detail_model_example",
@@ -184,7 +184,7 @@ In an opensource and multi-vendor environnement, it is needed to support differe
     - nf_ripple = [0,...,0]
     - dgt = [...] generic dgt comb
 
-    .. code-block::
+    .. code-block:: json-object
 
         "Edfa":[{
                 "type_variety": "std_medium_gain",
@@ -208,7 +208,7 @@ In an opensource and multi-vendor environnement, it is needed to support differe
 
     NF += gain_min - gain
 
-    .. code-block::
+    .. code-block:: json-object
 
         "Edfa":[{
                 "type_variety": "std_fixed_gain",
@@ -224,7 +224,7 @@ In an opensource and multi-vendor environnement, it is needed to support differe
 - *"openroadm"* 
     This model is a black box model replicating OpenRoadm MSA spec for ILA.
 
-    .. code-block::
+    .. code-block:: json-object
 
         "Edfa":[{
                 "type_variety": "low_noise",
@@ -252,7 +252,7 @@ In an opensource and multi-vendor environnement, it is needed to support differe
     
     But unlike other models the 1st stage input will not be padded: it is always operated to its maximu gain and min NF. Therefore if gain adaptation and padding is needed it will be performed by the 2nd stage.
 
-    .. code-block::
+    .. code-block:: json
 
                 {
                 "type_variety": "medium+low_gain",
@@ -289,12 +289,12 @@ input json file in argument (defult = 'OA.json')
 
 the json input file should have the following fields:
 
-    .. code-block::
+    .. code-block:: json
 
         {
             "nf_fit_coeff": "nf_filename.txt",
             "nf_ripple": "nf_ripple_filename.txt", 
             "gain_ripple": "DFG_filename.txt",
-            "dgt": "DGT_filename.txt",
+            "dgt": "DGT_filename.txt"
         }
 
