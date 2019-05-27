@@ -105,6 +105,17 @@ class Fiber(common):
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Fiber')
 
+class RamanFiber(common):
+    default_values = \
+    {
+        'type_variety':  '',
+        'dispersion':    None,
+        'gamma':         0
+    }
+
+    def __init__(self, **kwargs):
+        self.update_attr(self.default_values, kwargs, 'RamanFiber')
+
 class Amp(common):
     default_values = \
     {
