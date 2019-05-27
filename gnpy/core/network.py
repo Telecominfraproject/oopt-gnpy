@@ -222,7 +222,9 @@ def target_power(network, node, equipment): #get_fiber_dp
 
     if isinstance(node, Roadm):
         dp = 0
-
+    elif isinstance(node, Transceiver):
+        # limit power on a transceiver
+        dp = -15
     return dp
 
 def prev_node_generator(network, node):

@@ -205,6 +205,36 @@
                     "longitude": 0
                 }
             }
+        },
+        {
+        "uid": "Att_B",
+        "type": "Fused",
+        "params":{
+            "loss":16
+        },
+        "metadata": {
+            "location": {
+              "latitude": 2.0,
+              "longitude": 1.0,
+              "city": "B",
+              "region": ""
+                }
+            }
+        },
+        {
+        "uid": "Att_F",
+        "type": "Fused",
+        "params":{
+            "loss":16
+        },
+        "metadata": {
+            "location": {
+              "latitude": 2.0,
+              "longitude": 1.0,
+              "city": "B",
+              "region": ""
+                }
+            }
         }
 
   ],
@@ -247,6 +277,10 @@
     },
     {
       "from_node": "Edfa5",
+      "to_node": "Att_F"
+    },
+    {
+      "from_node": "Att_F",
       "to_node": "trx F"
     },
     {
@@ -255,6 +289,10 @@
     },
     {
       "from_node": "Edfa1",
+      "to_node": "Att_B"
+    },
+    {
+      "from_node": "Att_B",
       "to_node": "trx B"
     }
   ]

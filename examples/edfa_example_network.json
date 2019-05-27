@@ -50,6 +50,21 @@
             }
         },
         {
+            "uid": "Att_B",
+            "type": "Fused",
+            "params":{
+                "loss":16
+            },
+            "metadata": {
+                "location": {
+                  "latitude": 2.0,
+                  "longitude": 0.0,
+                  "city": "B",
+                  "region": ""
+                }
+            }
+        },        
+        {
             "uid": "Site_B",
             "type": "Transceiver",
             "metadata": {
@@ -73,6 +88,10 @@
         },
         {
             "from_node": "Edfa1",
+            "to_node": "Att_B"
+        },
+        {
+            "from_node": "Att_B",            
             "to_node": "Site_B"
         }
 
