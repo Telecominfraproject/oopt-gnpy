@@ -113,7 +113,8 @@ fully-functional programs.
 
     **Note**: *Examples should be run from the examples/ folder.*
 
-.. code-block:: shell
+.. code-block:: shell-session
+
     $ pwd
     /path/to/oopt-gnpy
     $ cd examples
@@ -126,7 +127,7 @@ You can specify a different network at the command line as follows. For
 example, to use the CORONET Global network defined in
 `examples/CORONET_Global_Topology.json <examples/CORONET_Global_Topology.json>`_:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
     $ cd examples
     $ python transmission_main_example.py CORONET_Global_Topology.json
