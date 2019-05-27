@@ -131,7 +131,7 @@ Several amplifiers can be used by GNpy, so they are defined as an array of equip
                     "out_voa_auto": false,
                     "allowed_for_design": true
                     }
-            ],
+            ]}
 
 
 3. Amplifier models
@@ -295,6 +295,6 @@ the json input file should have the following fields:
             "nf_fit_coeff": "nf_filename.txt",
             "nf_ripple": "nf_ripple_filename.txt", 
             "gain_ripple": "DFG_filename.txt",
-            "dgt": "DGT_filename.txt",
+            "dgt": "DGT_filename.txt"
         }
 
