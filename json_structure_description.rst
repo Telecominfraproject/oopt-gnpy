@@ -320,7 +320,7 @@ Transceiver element with its parameters.
 .. code-block:: json
 
     {"uid": "trx Site_A",
-    “metadata": {
+    "metadata": {
                 "location": {
                             "city": "Site_A",
                             "region": "",
@@ -363,12 +363,12 @@ default loss value of 20dB is used.
 Fused element with its parameters. **“params”** is optional, if not used
 default loss value of 1dB is used.
 
-.. code-block::
+.. code-block:: json
 
     {"uid": "ingress fused spans in Site_B",
     "metadata": {
                 "location": {
-                            “city": "Site_B",
+                            "city": "Site_B",
                             "region": "",
                             "latitude": 0,
                             "longitude": 0
