@@ -34,8 +34,7 @@ class SimParams():
             self.raman_params = RamanParams(params=params['raman_parameters'])
             self.nli_params = NLIParams(params=params['nli_parameters'])
 
-    class RamanSolver:
-
+class RamanSolver:
     def __init__(self, fiber_information=None):
         """ Initialize the fiber object with its physical parameters
         :param length: fiber length in m.
@@ -211,7 +210,7 @@ class SimParams():
 
             power_ase[f_ind, :] = bc_evolution + ase_evolution
 
-        spontaneous_raman_scattering.x = power_ase
+        spontaneous_raman_scattering.x = 2 * power_ase
         spontaneous_raman_scattering.success = True
         spontaneous_raman_scattering.message = "Spontaneous Raman Scattering evaluated successfully"
 
