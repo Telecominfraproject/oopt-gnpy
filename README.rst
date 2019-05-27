@@ -265,109 +265,109 @@ Span configuration is performed as follows. It is not a list (which may change
 in later releases) and the user can only modify the value of existing
 parameters:
 
-+------------------------+-----------+---------------------------------------------+
-| field                  | type      | description                                 |
-+========================+===========+=============================================+
-| ``power_mode``         | (boolean) | If false, gain mode. Auto-design sets       |
-|                        |           | amplifier gain = preceding span loss,       |
-|                        |           | unless the amplifier exists and its         |
-|                        |           | gain > 0 in the topology input JSON.        |
-|                        |           | If true, power mode (recommended for        |
-|                        |           | auto-design and power sweep.)               |
-|                        |           | Auto-design sets amplifier power            |
-|                        |           | according to delta_power_range. If the      |
-|                        |           | amplifier exists with gain > 0 in the       |
-|                        |           | topology JSON input, then its gain is       |
-|                        |           | translated into a power target/channel.     |
-|                        |           | Moreover, when performing a power sweep     |
-|                        |           | (see ``power_range_db`` in the SI           |
-|                        |           | configuration library) the power sweep      |
-|                        |           | is performed w/r/t this power target,       |
-|                        |           | regardless of preceding amplifiers          |
-|                        |           | power saturation/limitations.               |
-+------------------------+-----------+---------------------------------------------+
-| ``delta_power_range_db`` | (number) | Auto-design only, power-mode               |
-|                        |           | only. Specifies the [min, max, step]        |
-|                        |           | power excursion/span. It is a relative      |
-|                        |           | power excursion w/r/t the                   |
-|                        |           | power_dbm + power_range_db                  |
-|                        |           | (power sweep if applicable) defined in      |
-|                        |           | the SI configuration library. This          |
-|                        |           | relative power excursion is = 1/3 of        |
-|                        |           | the span loss difference with the           |
-|                        |           | reference 20 dB span. The 1/3 slope is      |
-|                        |           | derived from the GN model equations.        |
-|                        |           | For example, a 23 dB span loss will be      |
-|                        |           | set to 1 dB more power than a 20 dB         |
-|                        |           | span loss. The 20 dB reference spans        |
-|                        |           | will *always* be set to                     |
-|                        |           | power = power_dbm + power_range_db.         |
-|                        |           | To configure the same power in all          |
-|                        |           | spans, use `[0, 0, 0]`. All spans will      |
-|                        |           | be set to                                   |
-|                        |           | power = power_dbm + power_range_db.         |
-|                        |           | To configure the same power in all spans    |
-|                        |           | and 3 dB more power just for the longest    |
-|                        |           | spans: `[0, 3, 3]`. The longest spans are   |
-|                        |           | set to                                      |
-|                        |           | power = power_dbm + power_range_db + 3.     |
-|                        |           | To configure a 4 dB power range across      |
-|                        |           | all spans in 0.5 dB steps: `[-2, 2, 0.5]`.  |
-|                        |           | A 17 dB span is set to                      |
-|                        |           | power = power_dbm + power_range_db - 1,     |
-|                        |           | a 20 dB span to                             |
-|                        |           | power = power_dbm + power_range_db and      |
-|                        |           | a 23 dB span to                             |
-|                        |           | power = power_dbm + power_range_db + 1      |
-+------------------------+-----------+---------------------------------------------+
-| ``max_fiber_lineic_loss_for_raman`` | (number) | Maximum linear fiber loss for Raman |
-|                        |           | amplification use.                          |
-+------------------------+-----------+---------------------------------------------+
-| ``max_length``         | (number)  | Split fiber lengths > max_length.           |
-|                        |           | Interest to support high level              |
-|                        |           | topologies that do not specify in line      |
-|                        |           | amplification sites. For example the        |
-|                        |           | CORONET_Global_Topology.xls defines         |
-|                        |           | links > 1000km between 2 sites: it          |
-|                        |           | couldn't be simulated if these links        |
-|                        |           | were not split in shorter span lengths.     |
-+------------------------+-----------+---------------------------------------------+
-| ``length_unit``        | "m"/"km"  | Unit for ``max_length``.                    |
-+------------------------+-----------+---------------------------------------------+
-| ``max_loss``           | (number)  | Not used in the current code                |
-|                        |           | implementation.                             |
-+------------------------+-----------+---------------------------------------------+
-| ``padding``            | (number)  | In dB. Min span loss before putting an      |
-|                        |           | attenuator before fiber. Attenuator         |
-|                        |           | value                                       |
-|                        |           | Fiber.att_in = max(0, padding - span_loss). |
-|                        |           | Padding can be set manually to reach a      |
-|                        |           | higher padding value for a given fiber      |
-|                        |           | by filling in the Fiber/params/att_in       |
-|                        |           | field in the topology json input [1]        |
-|                        |           | but if span_loss = length * loss_coef       |
-|                        |           | + att_in + con_in + con_out < padding,      |
-|                        |           | the specified att_in value will be          |
-|                        |           | completed to have span_loss = padding.      |
-|                        |           | Therefore it is not possible to set         |
-|                        |           | span_loss < padding.                        |
-+------------------------+-----------+---------------------------------------------+
-| ``EOL``                | (number)  | All fiber span loss ageing. The value       |
-|                        |           | is added to the con_out (fiber output       |
-|                        |           | connector). So the design and the path      |
-|                        |           | feasibility are performed with              |
-|                        |           | span_loss + EOL. EOL cannot be set          |
-|                        |           | manually for a given fiber span             |
-|                        |           | (workaround is to specify higher ``con_out`` |
-|                        |           | loss for this fiber).                       |
-+------------------------+-----------+---------------------------------------------+
-| ``con_in``,            | (number)  | Default values if Fiber/params/con_in/out   |
-| ``con_out``            |           | is None in the topology input               |
-|                        |           | description. This default value is          |
-|                        |           | ignored if a Fiber/params/con_in/out        |
-|                        |           | value is input in the topology for a        |
-|                        |           | given Fiber.                                |
-+------------------------+-----------+---------------------------------------------+
++-------------------------------------+-----------+---------------------------------------------+
+| field                               | type      | description                                 |
++=====================================+===========+=============================================+
+| ``power_mode``                      | (boolean) | If false, gain mode. Auto-design sets       |
+|                                     |           | amplifier gain = preceding span loss,       |
+|                                     |           | unless the amplifier exists and its         |
+|                                     |           | gain > 0 in the topology input JSON.        |
+|                                     |           | If true, power mode (recommended for        |
+|                                     |           | auto-design and power sweep.)               |
+|                                     |           | Auto-design sets amplifier power            |
+|                                     |           | according to delta_power_range. If the      |
+|                                     |           | amplifier exists with gain > 0 in the       |
+|                                     |           | topology JSON input, then its gain is       |
+|                                     |           | translated into a power target/channel.     |
+|                                     |           | Moreover, when performing a power sweep     |
+|                                     |           | (see ``power_range_db`` in the SI           |
+|                                     |           | configuration library) the power sweep      |
+|                                     |           | is performed w/r/t this power target,       |
+|                                     |           | regardless of preceding amplifiers          |
+|                                     |           | power saturation/limitations.               |
++-------------------------------------+-----------+---------------------------------------------+
+| ``delta_power_range_db``            | (number)  | Auto-design only, power-mode                |
+|                                     |           | only. Specifies the [min, max, step]        |
+|                                     |           | power excursion/span. It is a relative      |
+|                                     |           | power excursion w/r/t the                   |
+|                                     |           | power_dbm + power_range_db                  |
+|                                     |           | (power sweep if applicable) defined in      |
+|                                     |           | the SI configuration library. This          |
+|                                     |           | relative power excursion is = 1/3 of        |
+|                                     |           | the span loss difference with the           |
+|                                     |           | reference 20 dB span. The 1/3 slope is      |
+|                                     |           | derived from the GN model equations.        |
+|                                     |           | For example, a 23 dB span loss will be      |
+|                                     |           | set to 1 dB more power than a 20 dB         |
+|                                     |           | span loss. The 20 dB reference spans        |
+|                                     |           | will *always* be set to                     |
+|                                     |           | power = power_dbm + power_range_db.         |
+|                                     |           | To configure the same power in all          |
+|                                     |           | spans, use `[0, 0, 0]`. All spans will      |
+|                                     |           | be set to                                   |
+|                                     |           | power = power_dbm + power_range_db.         |
+|                                     |           | To configure the same power in all spans    |
+|                                     |           | and 3 dB more power just for the longest    |
+|                                     |           | spans: `[0, 3, 3]`. The longest spans are   |
+|                                     |           | set to                                      |
+|                                     |           | power = power_dbm + power_range_db + 3.     |
+|                                     |           | To configure a 4 dB power range across      |
+|                                     |           | all spans in 0.5 dB steps: `[-2, 2, 0.5]`.  |
+|                                     |           | A 17 dB span is set to                      |
+|                                     |           | power = power_dbm + power_range_db - 1,     |
+|                                     |           | a 20 dB span to                             |
+|                                     |           | power = power_dbm + power_range_db and      |
+|                                     |           | a 23 dB span to                             |
+|                                     |           | power = power_dbm + power_range_db + 1      |
++-------------------------------------+-----------+---------------------------------------------+
+| ``max_fiber_lineic_loss_for_raman`` | (number)  | Maximum linear fiber loss for Raman         |
+|                                     |           | amplification use.                          |
++-------------------------------------+-----------+---------------------------------------------+
+| ``max_length``                      | (number)  | Split fiber lengths > max_length.           |
+|                                     |           | Interest to support high level              |
+|                                     |           | topologies that do not specify in line      |
+|                                     |           | amplification sites. For example the        |
+|                                     |           | CORONET_Global_Topology.xls defines         |
+|                                     |           | links > 1000km between 2 sites: it          |
+|                                     |           | couldn't be simulated if these links        |
+|                                     |           | were not split in shorter span lengths.     |
++-------------------------------------+-----------+---------------------------------------------+
+| ``length_unit``                     | "m"/"km"  | Unit for ``max_length``.                    |
++-------------------------------------+-----------+---------------------------------------------+
+| ``max_loss``                        | (number)  | Not used in the current code                |
+|                                     |           | implementation.                             |
++-------------------------------------+-----------+---------------------------------------------+
+| ``padding``                         | (number)  | In dB. Min span loss before putting an      |
+|                                     |           | attenuator before fiber. Attenuator         |
+|                                     |           | value                                       |
+|                                     |           | Fiber.att_in = max(0, padding - span_loss). |
+|                                     |           | Padding can be set manually to reach a      |
+|                                     |           | higher padding value for a given fiber      |
+|                                     |           | by filling in the Fiber/params/att_in       |
+|                                     |           | field in the topology json input [1]        |
+|                                     |           | but if span_loss = length * loss_coef       |
+|                                     |           | + att_in + con_in + con_out < padding,      |
+|                                     |           | the specified att_in value will be          |
+|                                     |           | completed to have span_loss = padding.      |
+|                                     |           | Therefore it is not possible to set         |
+|                                     |           | span_loss < padding.                        |
++-------------------------------------+-----------+---------------------------------------------+
+| ``EOL``                             | (number)  | All fiber span loss ageing. The value       |
+|                                     |           | is added to the con_out (fiber output       |
+|                                     |           | connector). So the design and the path      |
+|                                     |           | feasibility are performed with              |
+|                                     |           | span_loss + EOL. EOL cannot be set          |
+|                                     |           | manually for a given fiber span             |
+|                                     |           | (workaround is to specify higher            |
+|                                     |           | ``con_out`` loss for this fiber).           |
++-------------------------------------+-----------+---------------------------------------------+
+| ``con_in``,                         | (number)  | Default values if Fiber/params/con_in/out   |
+| ``con_out``                         |           | is None in the topology input               |
+|                                     |           | description. This default value is          |
+|                                     |           | ignored if a Fiber/params/con_in/out        |
+|                                     |           | value is input in the topology for a        |
+|                                     |           | given Fiber.                                |
++-------------------------------------+-----------+---------------------------------------------+
 
 .. code-block:: json
 
