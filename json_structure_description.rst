@@ -23,7 +23,7 @@ type’][‘subtype’]=object**
 Every equipment type is defined in JSON root with according name and
 array of parameters as value.
 
-.. code-block::
+.. code-block:: none
 
     {"Edfa": [...],
     "Fiber": [...]
@@ -40,7 +40,7 @@ object contains **"type_variety":”type name”** name:value combination,
 if only one subtype exists **"type_variety"** name is not mandatory and
 it will be marked with **”default”** value.
 
-.. code-block::
+.. code-block:: json
 
     {"Edfa": [{
                 "type_variety": "std_medium_gain",
@@ -88,7 +88,7 @@ location is in **transmission_main_example.py** folder:
    gain/noise figure ripple. **"advanced_config_from_json"** value
    contains filename.
 
-.. code-block::
+.. code-block:: json-object
 
     "Edfa":[{
             "type_variety": "high_detail_model_example",
@@ -104,7 +104,7 @@ location is in **transmission_main_example.py** folder:
 -  Variable gain – with JSON file describing gain figure tilt and gain/noise
    figure ripple. **”default_edfa_config.json”** as source file.
 
-.. code-block::
+.. code-block:: json-object
 
     "Edfa":[{
             "type_variety": "std_medium_gain",
@@ -122,7 +122,7 @@ location is in **transmission_main_example.py** folder:
 -  Fixed gain – with JSON file describing gain figure tilt and gain/noise
    figure ripple. **”default_edfa_config.json”** as source file.
 
-.. code-block::
+.. code-block:: json-object
 
     "Edfa":[{
             "type_variety": "std_fixed_gain",
@@ -138,7 +138,7 @@ location is in **transmission_main_example.py** folder:
 - openroadm – with JSON file describing gain figure tilt and gain/noise
    figure ripple. **”default_edfa_config.json”** as source file. 
 
-.. code-block::
+.. code-block:: json-object
 
     "Edfa":[{
             "type_variety": "low_noise",
@@ -156,7 +156,7 @@ location is in **transmission_main_example.py** folder:
 
 Fiber element with its parameters:
 
-.. code-block::
+.. code-block:: json-object
 
     "Fiber":[{
             "type_variety": "SSMF",
@@ -170,7 +170,7 @@ Fiber element with its parameters:
 
 Roadm element with its parameters:
 
-.. code-block::
+.. code-block:: json-object
 
       "Roadms":[{
             "gain_mode_default_loss": 20,
@@ -184,7 +184,7 @@ Roadm element with its parameters:
 
 Spans element with its parameters:
 
-.. code-block::
+.. code-block:: json-object
 
     "Spans":[{
             "power_mode":true,
@@ -205,7 +205,7 @@ Spans element with its parameters:
 
 Spectral information with its parameters:
 
-.. code-block::
+.. code-block:: json-object
 
     "SI":[{
             "f_min": 191.3e12,
@@ -227,7 +227,7 @@ Spectral information with its parameters:
 Transceiver element with its parameters. **”mode”** can contain multiple
 Transceiver operation formats.
 
-.. code-block::
+.. code-block:: json-object
 
     "Transceiver":[{
                     "frequency":{
@@ -288,7 +288,7 @@ Network description JSON file root consist of three unordered parts:
 
 -  connections – contains array of unidirectional connection objects
 
-.. code-block::
+.. code-block:: none
 
     {"network_name": "Example Network",
     "elements": [{...},
@@ -317,7 +317,7 @@ obligatory.
 
 Transceiver element with its parameters.
 
-.. code-block::
+.. code-block:: json
 
     {"uid": "trx Site_A",
     “metadata": {
@@ -339,7 +339,7 @@ Transceiver element with its parameters.
 ROADM element with its parameters. **“params”** is optional, if not used
 default loss value of 20dB is used.
 
-.. code-block::
+.. code-block:: json
 
     {"uid": "roadm Site_A",
     "metadata": {
@@ -386,7 +386,7 @@ default loss value of 1dB is used.
 
 Fiber element with its parameters.
 
-.. code-block::
+.. code-block:: json
 
     {"uid": "fiber (Site_A \\u2192 Site_B)",
     "metadata": {
@@ -412,7 +412,7 @@ Fiber element with its parameters.
 
 EDFA element with its parameters.
 
-.. code-block::
+.. code-block:: json
 
     {"uid": "Edfa1",
     "type": "Edfa",
@@ -438,7 +438,7 @@ Each unidirectional connection object in connections array consist of
 two unordered **”from_node”** and **”to_node”** name pair with values
 corresponding to element **”uid”**
 
-.. code-block::
+.. code-block:: json
 
     {"from_node": "roadm Site_C",
     "to_node": "trx Site_C"
