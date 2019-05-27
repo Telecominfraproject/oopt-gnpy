@@ -573,7 +573,7 @@ class Edfa(Node):
                 self.channel_freq, self.nf, self.interpol_dgt and self.interpol_gain_ripple
         """
         # TODO|jla: read amplifier actual frequencies from additional params in json
-        amplifier_freq = itufl(len(self.params.dgt), self.params.f_min, self.params.f_max) * 1e12 # Hz
+        amplifier_freq = itufl(len(self.params.dgt), self.params.f_min, self.params.f_max) # Hz
         self.channel_freq = frequencies
         self.interpol_dgt = interp(self.channel_freq, amplifier_freq, self.params.dgt)
 
