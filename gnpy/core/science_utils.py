@@ -4,11 +4,17 @@ from scipy.integrate import solve_bvp
 from scipy.integrate import cumtrapz
 from scipy.interpolate import interp1d
 from scipy.optimize import OptimizeResult
+from gnpy.core.elements import RamanFiber
 
 
 def load_sim_params(path_sim_params):
     sim_params = load_json(path_sim_params)
     return SimParams(params=sim_params)
+
+def configure_network(network, sim_params):
+    for node in network.nodes:
+        if isinstance(node, RamanFiber):
+            node.sim_params = sim_params
 
 class RamanParams():
     def __init__(self, params=None):
