@@ -512,6 +512,14 @@ class RamanFiber(Node):
         aleff = 1 / (2 * alpha)
         return aleff
 
+    @property
+    def sim_params(self):
+        return self._sim_params
+
+    @sim_params.setter
+    def sim_params(self, sim_params=None):
+        self._sim_params = sim_params
+
     def carriers(self, loc, attr):
         """retrieve carriers information
         loc = (in, out) of the class element
