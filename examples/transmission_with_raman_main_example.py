@@ -23,10 +23,10 @@ from matplotlib.pyplot import show, axis, figure, title, text
 from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels, dijkstra_path)
 from gnpy.core.network import load_network, build_network, save_network
-from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
+from gnpy.core.elements import Transceiver, Fiber, RamanFiber, Edfa, Roadm
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
 from gnpy.core.request import Path_request, RequestParams, compute_constrained_path, propagate2
-from gnpy.core.science_utils import load_sim_params
+from gnpy.core.science_utils import load_sim_params, configure_network
 
 logger = getLogger(__name__)
 
@@ -118,14 +118,16 @@ def main(network, equipment, source, destination, sim_params, req = None):
 
     power_mode = equipment['Span']['default'].power_mode
     print('\n'.join([f'Power mode is set to {power_mode}',
-                     f'=> it can be modified in eqpt_config.json - Span']))
+                     f'=> it can be modified in eqpt_with_raman_config.json - Span']))
 
     pref_ch_db = lin2db(req.power*1e3) #reference channel power / span (SL=20dB)
     pref_total_db = pref_ch_db + lin2db(req.nb_channel) #reference total power / span (SL=20dB)
     build_network(network, equipment, pref_ch_db, pref_total_db)
+    configure_network(network, sim_params)
     path = compute_constrained_path(network, req)
 
-    spans = [s.length for s in path if isinstance(s, Fiber)]
+    spans = [s.length for s in path if isinstance(s, RamanFiber)]
+
     print(f'\nThere are {len(spans)} fiber spans over {sum(spans):.0f}m between {source.uid} and {destination.uid}')
     print(f'\nNow propagating between {source.uid} and {destination.uid}:')
 
@@ -181,7 +183,7 @@ def main(network, equipment, source, destination, sim_params, req = None):
 
 parser = ArgumentParser()
 parser.add_argument('-e', '--equipment', type=Path,
-                    default=Path(__file__).parent / 'eqpt_config.json')
+                    default=Path(__file__).parent / 'eqpt_with_raman_config.json')
 parser.add_argument('-sim', '--sim-params', type=Path,
                     default=Path(__file__).parent / 'sim_params.json', help='Path to the json containing simulation parameters')
 parser.add_argument('-pl', '--plot', action='store_true')
