@@ -26,6 +26,7 @@ from gnpy.core.network import load_network, build_network, save_network
 from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
 from gnpy.core.request import Path_request, RequestParams, compute_constrained_path, propagate2
+from gnpy.core.exceptions import ConfigurationError
 
 logger = getLogger(__name__)
 
@@ -196,8 +197,12 @@ if __name__ == '__main__':
     args = parser.parse_args()
     basicConfig(level={0: ERROR, 1: INFO, 2: DEBUG}.get(args.verbose, DEBUG))
 
-    equipment = load_equipment(args.equipment)
-    network = load_network(args.filename, equipment, args.names_matching)
+    try:
+        equipment = load_equipment(args.equipment)
+        network = load_network(args.filename, equipment, args.names_matching)
+    except ConfigurationError as e:
+        print('\x1b[1;31;40m' + 'Configuration error:' + '\x1b[0m' + f' {e}')
+        exit(1)
 
     if args.plot:
         plot_baseline(network)

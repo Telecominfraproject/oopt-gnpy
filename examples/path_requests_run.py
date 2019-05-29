@@ -30,6 +30,7 @@ from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.request import (Path_request, Result_element, compute_constrained_path,
                               propagate, jsontocsv, Disjunction, compute_path_dsjctn, requests_aggregation,
                               propagate_and_optimize_mode)
+from gnpy.core.exceptions import ConfigurationError
 from copy import copy, deepcopy
 from textwrap import dedent
 from math import ceil
@@ -306,15 +307,19 @@ if __name__ == '__main__':
     print('\x1b[1;34;40m'+f'Computing path requests {args.service_filename} into JSON format'+ '\x1b[0m')
     # for debug
     # print( args.eqpt_filename)
-    data = load_requests(args.service_filename,args.eqpt_filename)
-    equipment = load_equipment(args.eqpt_filename)
-    network = load_network(args.network_filename,equipment)
+    try:
+        data = load_requests(args.service_filename,args.eqpt_filename)
+        equipment = load_equipment(args.eqpt_filename)
+        network = load_network(args.network_filename,equipment)
+    except ConfigurationError as e:
+        print('\x1b[1;31;40m' + 'Configuration error:' + '\x1b[0m' + f' {e}')
+        exit(1)
 
     # Build the network once using the default power defined in SI in eqpt config
     # TODO power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
-    # spacing, f_min and f_max 
+    # spacing, f_min and f_max
     p_db = equipment['SI']['default'].power_dbm
-    
+
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
         equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
@@ -322,7 +327,7 @@ if __name__ == '__main__':
 
     rqs = requests_from_json(data, equipment)
 
-    # check that request ids are unique. Non unique ids, may 
+    # check that request ids are unique. Non unique ids, may
     # mess the computation : better to stop the computation
     all_ids = [r.request_id for r in rqs]
     if len(all_ids) != len(set(all_ids)):
@@ -341,7 +346,7 @@ if __name__ == '__main__':
     # need to warn or correct in case of wrong disjunction form
     # disjunction must not be repeated with same or different ids
     dsjn = correct_disjn(dsjn)
-        
+
     # Aggregate demands with same exact constraints
     print('\x1b[1;34;40m'+f'Aggregating similar requests'+ '\x1b[0m')
 
@@ -350,7 +355,7 @@ if __name__ == '__main__':
 
     print('\x1b[1;34;40m'+'The following services have been requested:'+ '\x1b[0m')
     print(rqs)
-    
+
     print('\x1b[1;34;40m'+f'Computing all paths with constraints'+ '\x1b[0m')
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
 
@@ -360,7 +365,7 @@ if __name__ == '__main__':
     end = time.time()
     print(f'computation time {end-start}')
     print('\x1b[1;34;40m'+f'Result summary'+ '\x1b[0m')
-    
+
     header = ['req id', '  demand','  snr@bandwidth','  snr@0.1nm','  Receiver minOSNR', '  mode', '  Gbit/s' , '  nb of tsp pairs']
     data = []
     data.append(header)
@@ -377,7 +382,7 @@ if __name__ == '__main__':
     firstcol_width = max(len(row[0]) for row in data )   # padding
     secondcol_width = max(len(row[1]) for row in data )   # padding
     for row in data:
-        firstcol = ''.join(row[0].ljust(firstcol_width)) 
+        firstcol = ''.join(row[0].ljust(firstcol_width))
         secondcol = ''.join(row[1].ljust(secondcol_width))
         remainingcols = ''.join(word.center(col_width,' ') for word in row[2:])
         print(f'{firstcol} {secondcol} {remainingcols}')
@@ -396,4 +401,3 @@ if __name__ == '__main__':
             with open(fnamecsv,"w", encoding='utf-8') as fcsv :
                 jsontocsv(temp,equipment,fcsv)
                 print('\x1b[1;34;40m'+f'saving in {args.output} and {fnamecsv}'+ '\x1b[0m')
-
