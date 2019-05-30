@@ -157,6 +157,7 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
                     to satisfy min gain requirement in node {uid} \
                     please increase span fiber padding')
         else:
+            # TODO: convert to logging
             print(
                 f'\x1b[1;31;40m'\
                 + f'WARNING: target gain in node {uid} is below all available amplifiers min gain: \
