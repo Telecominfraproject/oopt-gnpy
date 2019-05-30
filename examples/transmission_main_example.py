@@ -27,6 +27,7 @@ from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
 from gnpy.core.request import Path_request, RequestParams, compute_constrained_path, propagate2
 from gnpy.core.exceptions import ConfigurationError
+import gnpy.core.ansi_escapes as ansi_escapes
 
 logger = getLogger(__name__)
 
@@ -201,7 +202,7 @@ if __name__ == '__main__':
         equipment = load_equipment(args.equipment)
         network = load_network(args.filename, equipment, args.names_matching)
     except ConfigurationError as e:
-        print('\x1b[1;31;40m' + 'Configuration error:' + '\x1b[0m' + f' {e}')
+        print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
         exit(1)
 
     if args.plot:

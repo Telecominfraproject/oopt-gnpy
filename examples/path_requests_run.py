@@ -31,6 +31,7 @@ from gnpy.core.request import (Path_request, Result_element, compute_constrained
                               propagate, jsontocsv, Disjunction, compute_path_dsjctn, requests_aggregation,
                               propagate_and_optimize_mode)
 from gnpy.core.exceptions import ConfigurationError
+import gnpy.core.ansi_escapes as ansi_escapes
 from copy import copy, deepcopy
 from textwrap import dedent
 from math import ceil
@@ -312,7 +313,7 @@ if __name__ == '__main__':
         equipment = load_equipment(args.eqpt_filename)
         network = load_network(args.network_filename,equipment)
     except ConfigurationError as e:
-        print('\x1b[1;31;40m' + 'Configuration error:' + '\x1b[0m' + f' {e}')
+        print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
         exit(1)
 
     # Build the network once using the default power defined in SI in eqpt config
