@@ -16,7 +16,7 @@ from json import load
 from gnpy.core.utils import lin2db, db2lin, load_json
 from collections import namedtuple
 from gnpy.core.elements import Edfa
-from gnpy.core.exceptions import ConfigurationError
+from gnpy.core.exceptions import EquipmentConfigError
 import time
 
 Model_vg = namedtuple('Model_vg', 'nf1 nf2 delta_p')
@@ -142,7 +142,7 @@ class Amp(common):
             try:
                 nf0 = kwargs.pop('nf0')
             except KeyError: #nf0 is expected for a fixed gain amp
-                raise ConfigurationError(f'missing nf0 value input for amplifier: {type_variety} in equipment config')
+                raise EquipmentConfigError(f'missing nf0 value input for amplifier: {type_variety} in equipment config')
             for k in ('nf_min', 'nf_max'):
                 try:
                     del kwargs[k]
@@ -157,7 +157,7 @@ class Amp(common):
                 nf_min = kwargs.pop('nf_min')
                 nf_max = kwargs.pop('nf_max')
             except KeyError:
-                raise ConfigurationError(f'missing nf_min or nf_max value input for amplifier: {type_variety} in equipment config')
+                raise EquipmentConfigError(f'missing nf_min or nf_max value input for amplifier: {type_variety} in equipment config')
             try: #remove all remaining nf inputs
                 del kwargs['nf0']
             except KeyError: pass #nf0 is not needed for variable gain amp
@@ -167,14 +167,14 @@ class Amp(common):
             try:
                 nf_coef = kwargs.pop('nf_coef')
             except KeyError: #nf_coef is expected for openroadm amp
-                raise ConfigurationError(f'missing nf_coef input for amplifier: {type_variety} in equipment config')
+                raise EquipmentConfigError(f'missing nf_coef input for amplifier: {type_variety} in equipment config')
             nf_def = Model_openroadm(nf_coef)
         elif type_def == 'dual_stage':
             try: #nf_ram and gain_ram are expected for a hybrid amp
                 preamp_variety = kwargs.pop('preamp_variety')
                 booster_variety = kwargs.pop('booster_variety')
             except KeyError:
-                raise ConfigurationError(f'missing preamp/booster variety input for amplifier: {type_variety} in equipment config')
+                raise EquipmentConfigError(f'missing preamp/booster variety input for amplifier: {type_variety} in equipment config')
             dual_stage_def = Model_dual_stage(preamp_variety, booster_variety)
 
         with open(config, encoding='utf-8') as f:
@@ -186,9 +186,9 @@ class Amp(common):
 
 def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
     if nf_min < -10:
-        raise ConfigurationError(f'Invalid nf_min value {nf_min!r} for amplifier {type_variety}')
+        raise EquipmentConfigError(f'Invalid nf_min value {nf_min!r} for amplifier {type_variety}')
     if nf_max < -10:
-        raise ConfigurationError(f'Invalid nf_max value {nf_max!r} for amplifier {type_variety}')
+        raise EquipmentConfigError(f'Invalid nf_max value {nf_max!r} for amplifier {type_variety}')
 
     # NF estimation model based on nf_min and nf_max
     # delta_p:  max power dB difference between first and second stage coils
@@ -203,7 +203,7 @@ def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
     nf1 = lin2db(db2lin(nf_min) - db2lin(nf2)/db2lin(g1a_max))
 
     if nf1 < 4:
-        raise ConfigurationError(f'First coil value too low {nf1} for amplifier {type_variety}')
+        raise EquipmentConfigError(f'First coil value too low {nf1} for amplifier {type_variety}')
 
     # Check 1 dB < delta_p < 6 dB to ensure nf_min and nf_max values make sense.
     # There shouldn't be high nf differences between the two coils:
@@ -215,17 +215,17 @@ def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
         delta_p = gain_max - g1a_max
         g1a_min = gain_min - (gain_max-gain_min) - delta_p
         if not 1 < delta_p < 11:
-            raise ConfigurationError(f'Computed \N{greek capital letter delta}P invalid \
+            raise EquipmentConfigError(f'Computed \N{greek capital letter delta}P invalid \
                 \n 1st coil vs 2nd coil calculated DeltaP {delta_p:.2f} for \
                 \n amplifier {type_variety} is not valid: revise inputs \
                 \n calculated 1st coil NF = {nf1:.2f}, 2nd coil NF = {nf2:.2f}')
     # Check calculated values for nf1 and nf2
     calc_nf_min = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_max))
     if not isclose(nf_min, calc_nf_min, abs_tol=0.01):
-        raise ConfigurationError(f'nf_min does not match calc_nf_min, {nf_min} vs {calc_nf_min} for amp {type_variety}')
+        raise EquipmentConfigError(f'nf_min does not match calc_nf_min, {nf_min} vs {calc_nf_min} for amp {type_variety}')
     calc_nf_max = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_min))
     if not isclose(nf_max, calc_nf_max, abs_tol=0.01):
-        raise ConfigurationError(f'nf_max does not match calc_nf_max, {nf_max} vs {calc_nf_max} for amp {type_variety}')
+        raise EquipmentConfigError(f'nf_max does not match calc_nf_max, {nf_max} vs {calc_nf_max} for amp {type_variety}')
 
     return nf1, nf2, delta_p
 
@@ -260,7 +260,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             trx_params = {**mode_params}
             # sanity check: spacing baudrate must be smaller than min spacing
             if trx_params['baud_rate'] > trx_params['min_spacing'] :
-                raise ConfigurationError(f'Inconsistency in equipment library:\n Transpoder "{trx_type_variety}" mode "{trx_params["format"]}" '+\
+                raise EquipmentConfigError(f'Inconsistency in equipment library:\n Transpoder "{trx_type_variety}" mode "{trx_params["format"]}" '+\
                     f'has baud rate: {trx_params["baud_rate"]*1e-9} GHz greater than min_spacing {trx_params["min_spacing"]*1e-9}.')
         else:
             mode_params = {"format": "undetermined",
@@ -281,7 +281,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
         # print(f'spacing {temp}')
     except StopIteration :
         if error_message:
-            raise ConfigurationError(f'Computation stoped: could not find tsp : {trx_type_variety} with mode: {trx_mode} in eqpt library')
+            raise EquipmentConfigError(f'Computation stoped: could not find tsp : {trx_type_variety} with mode: {trx_mode} in eqpt library')
         else:
             # default transponder charcteristics
             # mainly used with transmission_main_example.py
@@ -342,7 +342,7 @@ def update_dual_stage(equipment):
             edfa.p_max = edfa_booster.p_max
             edfa.gain_flatmax = edfa_booster.gain_flatmax + edfa_preamp.gain_flatmax
             if edfa.gain_min < edfa_preamp.gain_min:
-                raise ConfigurationError(f'Dual stage {edfa.type_variety} min gain is lower than its preamp min gain')
+                raise EquipmentConfigError(f'Dual stage {edfa.type_variety} min gain is lower than its preamp min gain')
     return equipment
 
 def equipment_from_json(json_data, filename):

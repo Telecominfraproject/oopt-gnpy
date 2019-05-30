@@ -11,3 +11,6 @@ Exceptions thrown by other gnpy modules
 
 class ConfigurationError(Exception):
     '''User-provided configuration contains an error'''
+
+class EquipmentConfigError(ConfigurationError):
+    '''Incomplete or wrong configuration within the equipment library'''

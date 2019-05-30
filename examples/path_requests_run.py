@@ -30,7 +30,7 @@ from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.request import (Path_request, Result_element, compute_constrained_path,
                               propagate, jsontocsv, Disjunction, compute_path_dsjctn, requests_aggregation,
                               propagate_and_optimize_mode)
-from gnpy.core.exceptions import ConfigurationError
+from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError
 import gnpy.core.ansi_escapes as ansi_escapes
 from copy import copy, deepcopy
 from textwrap import dedent
@@ -312,6 +312,9 @@ if __name__ == '__main__':
         data = load_requests(args.service_filename,args.eqpt_filename)
         equipment = load_equipment(args.eqpt_filename)
         network = load_network(args.network_filename,equipment)
+    except EquipmentConfigError as e:
+        print(f'{ansi_escapes.red}Configuration error in the equipment library:{ansi_escapes.reset} {e}')
+        exit(1)
     except ConfigurationError as e:
         print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
         exit(1)
