@@ -14,3 +14,6 @@ class ConfigurationError(Exception):
 
 class EquipmentConfigError(ConfigurationError):
     '''Incomplete or wrong configuration within the equipment library'''
+
+class NetworkTopologyError(ConfigurationError):
+    '''Topology of user-provided network is wrong'''

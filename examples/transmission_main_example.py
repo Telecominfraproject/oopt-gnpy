@@ -26,7 +26,7 @@ from gnpy.core.network import load_network, build_network, save_network
 from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
 from gnpy.core.request import Path_request, RequestParams, compute_constrained_path, propagate2
-from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError
+from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
 import gnpy.core.ansi_escapes as ansi_escapes
 
 logger = getLogger(__name__)
@@ -203,6 +203,9 @@ if __name__ == '__main__':
         network = load_network(args.filename, equipment, args.names_matching)
     except EquipmentConfigError as e:
         print(f'{ansi_escapes.red}Configuration error in the equipment library:{ansi_escapes.reset} {e}')
+        exit(1)
+    except NetworkTopologyError as e:
+        print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
         exit(1)
     except ConfigurationError as e:
         print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')

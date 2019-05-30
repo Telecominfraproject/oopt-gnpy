@@ -18,9 +18,9 @@ from operator import itemgetter, attrgetter
 from gnpy.core import elements
 from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm, Fused
 from gnpy.core.equipment import edfa_nf
+from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.units import UNITS
 from gnpy.core.utils import load_json, save_json, round2float, db2lin, lin2db
-from sys import exit
 from collections import namedtuple
 
 logger = getLogger(__name__)
@@ -54,9 +54,8 @@ def network_from_json(json_data, equipment):
             extra_params = equipment[typ][variety]
             el_config.setdefault('params', {}).update(extra_params.__dict__)
         elif typ in ['Edfa', 'Fiber']: #catch it now because the code will crash later!
-            print( f'The {typ} of variety type {variety} was not recognized:'
+            raise ConfigurationError(f'The {typ} of variety type {variety} was not recognized:'
                     '\nplease check it is properly defined in the eqpt_config json file')
-            exit()
         cls = getattr(elements, typ)
         el = cls(**el_config)
         g.add_node(el)
@@ -74,9 +73,7 @@ def network_from_json(json_data, equipment):
                 edge_length = 0.01
             g.add_edge(nodes[from_node], nodes[to_node], weight = edge_length)
         except KeyError:
-            msg = f'In {__name__} network_from_json function:\n\tcan not find {from_node} or {to_node} defined in {cx}'
-            print(msg)
-            exit(1)
+            raise NetworkTopologyError(f'can not find {from_node} or {to_node} defined in {cx}')
 
     return g
 
@@ -156,14 +153,9 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid):
         #and raman padding at the amplifier input is impossible!
 
         if len(edfa_list) < 1:
-            print(
-                f'\x1b[1;31;40m'\
-                + f'CRITICAL _ ABORT: auto_design could not find any amplifier \
+            raise ConfigurationError(f'auto_design could not find any amplifier \
                     to satisfy min gain requirement in node {uid} \
-                    please increase span fiber padding'\
-                + '\x1b[0m'
-                )
-            exit()
+                    please increase span fiber padding')
         else:
             print(
                 f'\x1b[1;31;40m'\
@@ -216,9 +208,8 @@ def target_power(network, node, equipment): #get_fiber_dp
         dp = max(dp_range[0], dp)
         dp = min(dp_range[1], dp)
     except KeyError:
-        print(f'invalid delta_power_range_db definition in eqpt_config[Span]'
+        raise ConfigurationError(f'invalid delta_power_range_db definition in eqpt_config[Span]'
               f'delta_power_range_db: [lower_bound, upper_bound, step]')
-        exit()
 
     if isinstance(node, Roadm):
         dp = 0
@@ -231,10 +222,7 @@ def prev_node_generator(network, node):
     try:
         prev_node = next(n for n in network.predecessors(node))
     except StopIteration:
-        msg = f'In {__name__} prev_node_generator function:\n\t{node.uid} is not properly connected, please check network topology'
-        print(msg)
-        logger.critical(msg)
-        exit(1)
+        raise NetworkTopologyError(f'Node {node.uid} is not properly connected, please check network topology')
     # yield and re-iterate
     if isinstance(prev_node, Fused) or isinstance(node, Fused):
         yield prev_node
@@ -248,8 +236,7 @@ def next_node_generator(network, node):
     try:
         next_node = next(n for n in network.successors(node))
     except StopIteration:
-        print(f'In {__name__} next_node_generator function:\n\t{node.uid}  is not properly connected, please check network topology')
-        exit(1)        
+        raise NetworkTopologyError('Node {node.uid} is not properly connected, please check network topology')
     # yield and re-iterate
     if isinstance(next_node, Fused) or isinstance(node, Fused):
         yield next_node
@@ -438,9 +425,7 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
         next_node = next(network.successors(fiber))
         prev_node = next(network.predecessors(fiber))
     except StopIteration:
-
-        print(f'In {__name__} split_fiber function:\n\t{fiber.uid}   is not properly connected, please check network topology')
-        exit()
+        raise NetworkTopologyError(f'Fiber {fiber.uid} is not properly connected, please check network topology')
 
     network.remove_node(fiber)
 
@@ -493,10 +478,7 @@ def add_fiber_padding(network, fibers, padding):
         try:
             next_node = next(network.successors(fiber))
         except StopIteration:
-            msg = f'In {__name__} add_fiber_padding function:\n\t{fiber.uid}   is not properly connected, please check network topology'
-            print(msg)
-            logger.critical(msg)
-            exit(1)            
+            raise NetworkTopologyError(f'Fiber {fiber.uid} is not properly connected, please check network topology')
         if this_span_loss < padding and not (isinstance(next_node, Fused)):
             #add a padding att_in at the input of the 1st fiber:
             #address the case when several fibers are spliced together
