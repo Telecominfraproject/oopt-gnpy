@@ -120,9 +120,9 @@ class Request_element(Element):
 
         # the excel parser applies the same hop-type to all nodes in the route nodes_list.
         # user can change this per node in the generated json
-        self.loose = 'loose'
+        self.loose = 'LOOSE'
         if Request.is_loose == 'no' :
-            self.loose = 'strict'
+            self.loose = 'STRICT'
         self.path_bandwidth = None
         if Request.path_bandwidth is not None:
             self.path_bandwidth = Request.path_bandwidth * 1e9
@@ -132,6 +132,7 @@ class Request_element(Element):
     uid = property(lambda self: repr(self))
     @property
     def pathrequest(self):
+
         req_dictionnary = {
                     'request-id':self.request_id,
                     'source':    self.source,
@@ -143,35 +144,28 @@ class Request_element(Element):
                             'technology': 'flexi-grid',
                             'trx_type'  : self.trx_type,
                             'trx_mode'  : self.mode,
-                            'effective-freq-slot':[{'n': 'null','m': 'null'}] ,
+                            'effective-freq-slot':[{'N': 'null','M': 'null'}] ,
                             'spacing'   : self.spacing,
                             'max-nb-of-channel'  : self.nb_channel,
                             'output-power'       : self.power
-                            # 'path_bandwidth'       : self.path_bandwidth 
                         }
-                    },
-                    'optimizations': {
-                        'explicit-route-include-objects': [
-                        {
-                            'index': self.nodes_list.index(node),
-                            'unnumbered-hop':{
-                                'node-id': f'{node}',
-                                'link-tp-id': 'link-tp-id is not used',
-                                'hop-type': f'{self.loose}',
-                                'direction': 'direction is not used'
-                            },
-                            'label-hop':{
-                                'te-label': {
-                                    'generic': 'generic is not used',
-                                    'direction': 'direction is not used'
-                                }
+                    }
+                }
+
+        if self.nodes_list:
+            req_dictionnary['explicit-route-objects'] = {} 
+            temp =  {'route-object-include-exclude' : [
+                        {'explicit-route-usage': 'route-include-ero',
+                        'index': self.nodes_list.index(node),
+                        'num-unnum-hop': {
+                            'node-id': f'{node}',
+                            'link-tp-id': 'link-tp-id is not used',
+                            'hop-type': f'{self.loose}',
                             }
                         }
-                        for node in self.nodes_list
-                    ]
-
-                }
-            }
+                        for node in self.nodes_list ]
+                    }
+            req_dictionnary['explicit-route-objects'] = temp
         if self.path_bandwidth is not None:
             req_dictionnary['path-constraints']['te-bandwidth']['path_bandwidth'] = self.path_bandwidth
             
@@ -181,12 +175,13 @@ class Request_element(Element):
         if self.disjoint_from :
             return {'synchronization-id':self.request_id,
                 'svec': {
-                    'relaxable' : 'False',
-                    'link-diverse': 'True',
-                    'node-diverse': 'True',
+                    'relaxable' : 'false',
+                    'disjointness': 'node link',
                     'request-id-number': [self.request_id]+ [n for n in self.disjoint_from]
                 }
             }
+        else:
+            return None
         # TO-DO: avoid multiple entries with same synchronisation vectors
     @property
     def json(self):
@@ -201,11 +196,17 @@ def convert_service_sheet(input_filename, eqpt_filename, output_filename='', fil
         output_filename = f'{str(input_filename)[0:len(str(input_filename))-len(str(input_filename.suffixes[0]))]}_services.json'
     # for debug
     # print(json_filename)
-    data = {
-        'path-request': [n.json[0] for n in req],
-        'synchronization': [n.json[1] for n in req
-        if n.json[1] is not None]
-    }
+    # if there is no sync vector , do not write any synchronization
+    synchro = [n.json[1] for n in req if n.json[1] is not None]
+    if synchro :
+        data = {
+            'path-request': [n.json[0] for n in req],
+            'synchronization': synchro
+        }
+    else:
+        data = {
+            'path-request': [n.json[0] for n in req]
+            }
     with open(output_filename, 'w', encoding='utf-8') as f:
             f.write(dumps(data, indent=2, ensure_ascii=False))
     return data
