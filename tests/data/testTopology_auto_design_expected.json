@@ -160,7 +160,11 @@
       "uid": "roadm Lannion_CAS",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -20
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        }
       },
       "metadata": {
         "location": {
@@ -175,7 +179,11 @@
       "uid": "roadm Lorient_KMA",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -20
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        }
       },
       "metadata": {
         "location": {
@@ -190,7 +198,11 @@
       "uid": "roadm Vannes_KBE",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -20
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        }
       },
       "metadata": {
         "location": {
@@ -205,7 +217,11 @@
       "uid": "roadm Rennes_STA",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -20
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        }
       },
       "metadata": {
         "location": {
@@ -220,7 +236,11 @@
       "uid": "roadm Brest_KLA",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -20
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        }
       },
       "metadata": {
         "location": {
@@ -235,7 +255,13 @@
       "uid": "roadm a",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -20
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": [
+            "std_booster"
+          ]
+        }
       },
       "metadata": {
         "location": {
@@ -250,7 +276,13 @@
       "uid": "roadm b",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -20
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [
+            "std_low_gain"
+          ],
+          "booster_variety_list": []
+        }
       },
       "metadata": {
         "location": {
@@ -265,7 +297,11 @@
       "uid": "roadm c",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -20
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        }
       },
       "metadata": {
         "location": {
@@ -280,7 +316,11 @@
       "uid": "roadm d",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -20
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        }
       },
       "metadata": {
         "location": {
@@ -295,7 +335,11 @@
       "uid": "roadm e",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -20
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        }
       },
       "metadata": {
         "location": {
@@ -310,7 +354,11 @@
       "uid": "roadm f",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -20
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        }
       },
       "metadata": {
         "location": {
@@ -325,7 +373,11 @@
       "uid": "roadm g",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -20
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        }
       },
       "metadata": {
         "location": {
@@ -340,7 +392,11 @@
       "uid": "roadm h",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -20
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        }
       },
       "metadata": {
         "location": {
@@ -354,6 +410,9 @@
     {
       "uid": "west fused spans in Corlay",
       "type": "Fused",
+      "params": {
+        "loss": 1
+      },
       "metadata": {
         "location": {
           "latitude": 2.0,
@@ -366,6 +425,9 @@
     {
       "uid": "west fused spans in Loudeac",
       "type": "Fused",
+      "params": {
+        "loss": 1
+      },
       "metadata": {
         "location": {
           "latitude": 2.0,
@@ -378,6 +440,9 @@
     {
       "uid": "west fused spans in Morlaix",
       "type": "Fused",
+      "params": {
+        "loss": 1
+      },
       "metadata": {
         "location": {
           "latitude": 1.0,
@@ -390,6 +455,9 @@
     {
       "uid": "east fused spans in Corlay",
       "type": "Fused",
+      "params": {
+        "loss": 1
+      },
       "metadata": {
         "location": {
           "latitude": 2.0,
@@ -402,6 +470,9 @@
     {
       "uid": "east fused spans in Loudeac",
       "type": "Fused",
+      "params": {
+        "loss": 1
+      },
       "metadata": {
         "location": {
           "latitude": 2.0,
@@ -414,6 +485,9 @@
     {
       "uid": "east fused spans in Morlaix",
       "type": "Fused",
+      "params": {
+        "loss": 1
+      },
       "metadata": {
         "location": {
           "latitude": 1.0,
@@ -737,7 +811,7 @@
       "type_variety": "SSMF",
       "params": {
         "type_variety": "SSMF",
-        "length": 50.0,
+        "length": 10.0,
         "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
@@ -1199,10 +1273,10 @@
       "type_variety": "SSMF",
       "params": {
         "type_variety": "SSMF",
-        "length": 50.0,
+        "length": 10.0,
         "loss_coef": 0.2,
         "length_units": "km",
-        "att_in": 0,
+        "att_in": 8.0,
         "con_in": 0,
         "con_out": 0
       },
@@ -1500,11 +1574,26 @@
       }
     },
     {
+      "uid": "east edfa in c to d",
+      "type": "Fused",
+      "params": {
+        "loss": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 6.0,
+          "longitude": 1.0,
+          "city": "c",
+          "region": ""
+        }
+      }
+    },
+    {
       "uid": "Edfa0_roadm Lorient_KMA",
       "type": "Edfa",
       "type_variety": "test_fixed_gain",
       "operational": {
-        "gain_target": 20,
+        "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
@@ -1523,7 +1612,7 @@
       "type": "Edfa",
       "type_variety": "test_fixed_gain",
       "operational": {
-        "gain_target": 20,
+        "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
@@ -1654,7 +1743,7 @@
     {
       "uid": "Edfa0_roadm a",
       "type": "Edfa",
-      "type_variety": "test_fixed_gain",
+      "type_variety": "std_booster",
       "operational": {
         "gain_target": 20,
         "delta_p": null,
@@ -1673,7 +1762,7 @@
     {
       "uid": "Edfa1_roadm a",
       "type": "Edfa",
-      "type_variety": "test_fixed_gain",
+      "type_variety": "std_booster",
       "operational": {
         "gain_target": 20,
         "delta_p": null,
@@ -1732,7 +1821,7 @@
       "type": "Edfa",
       "type_variety": "test_fixed_gain",
       "operational": {
-        "gain_target": 20,
+        "gain_target": 22,
         "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
@@ -1751,26 +1840,7 @@
       "type": "Edfa",
       "type_variety": "test_fixed_gain",
       "operational": {
-        "gain_target": 20,
-        "delta_p": null,
-        "tilt_target": 0,
-        "out_voa": 0
-      },
-      "metadata": {
-        "location": {
-          "latitude": 6.0,
-          "longitude": 1.75,
-          "city": "c",
-          "region": ""
-        }
-      }
-    },
-    {
-      "uid": "Edfa2_roadm c",
-      "type": "Edfa",
-      "type_variety": "test_fixed_gain",
-      "operational": {
-        "gain_target": 20,
+        "gain_target": 22,
         "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
@@ -2186,9 +2256,9 @@
     {
       "uid": "Edfa0_fiber (c → d)-",
       "type": "Edfa",
-      "type_variety": "std_low_gain",
+      "type_variety": "test_fixed_gain",
       "operational": {
-        "gain_target": 10.0,
+        "gain_target": 22.0,
         "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
@@ -2724,6 +2794,10 @@
       "to_node": "Edfa0_roadm Brest_KLA"
     },
     {
+      "from_node": "roadm c",
+      "to_node": "east edfa in c to d"
+    },
+    {
       "from_node": "roadm a",
       "to_node": "trx a"
     },
@@ -2758,10 +2832,6 @@
     {
       "from_node": "roadm c",
       "to_node": "Edfa1_roadm c"
-    },
-    {
-      "from_node": "roadm c",
-      "to_node": "Edfa2_roadm c"
     },
     {
       "from_node": "roadm d",
@@ -3052,6 +3122,10 @@
       "to_node": "roadm Lannion_CAS"
     },
     {
+      "from_node": "east edfa in c to d",
+      "to_node": "fiber (c → d)-"
+    },
+    {
       "from_node": "Edfa0_roadm Lorient_KMA",
       "to_node": "fiber (Lorient_KMA → Loudeac)-F054"
     },
@@ -3105,10 +3179,6 @@
     },
     {
       "from_node": "Edfa1_roadm c",
-      "to_node": "fiber (c → d)-"
-    },
-    {
-      "from_node": "Edfa2_roadm c",
       "to_node": "fiber (c → f)-"
     },
     {

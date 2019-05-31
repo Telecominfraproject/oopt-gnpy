@@ -49,7 +49,16 @@
             "p_max": 21,
             "nf0": 5,
             "allowed_for_design": true
-            }
+            },
+            {
+            "type_variety": "std_booster",
+            "type_def": "fixed_gain",
+            "gain_flatmax": 21,
+            "gain_min": 20,
+            "p_max": 21,
+            "nf0": 5,
+            "allowed_for_design": false
+            }            
       ],
       "Fiber":[{
             "type_variety": "SSMF",
@@ -75,8 +84,8 @@
             "target_pch_out_db": -20,
             "add_drop_osnr": 38,
             "restrictions": {
-                            "preamp_variety_list":["low_gain_preamp", "high_gain_preamp"],
-                            "booster_variety_list":["std_booster"]
+                            "preamp_variety_list":[],
+                            "booster_variety_list":[]
                             }    
             }],
       "SI":[{
