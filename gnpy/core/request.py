@@ -153,35 +153,36 @@ class Result_element(Element):
                     index += 1
 
             response = {
-                   'response-id': self.path_id,
-                   'path-properties':{
-                       'path-metric': [
-                           {
-                           'metric-type': 'SNR-bandwidth',
-                           'accumulative-value': round(mean(self.computed_path[-1].snr),2)
-                           },
-                           {
-                           'metric-type': 'SNR-0.1nm',
-                           'accumulative-value': round(mean(self.computed_path[-1].snr+lin2db(self.path_request.baud_rate/12.5e9)),2)
-                           },
-                           {
-                           'metric-type': 'OSNR-bandwidth',
-                           'accumulative-value': round(mean(self.computed_path[-1].osnr_ase),2)
-                           },
-                           {
-                           'metric-type': 'OSNR-0.1nm',
-                           'accumulative-value': round(mean(self.computed_path[-1].osnr_ase_01nm),2)
-                           },
-                           {
-                           'metric-type': 'reference_power',
-                           'accumulative-value': self.path_request.power
-                           },
-                           {
-                           'metric-type': 'path_bandwidth',
-                           'accumulative-value': self.path_request.path_bandwidth
-                           }
+                'response-id': self.path_id,
+                'path-properties':{
+                    'path-metric': [
+                        {
+                            'metric-type': 'SNR-bandwidth',
+                            'accumulative-value': round(mean(self.computed_path[-1].snr), 2)
+                        },
+                        {
+                            'metric-type': 'SNR-0.1nm',
+                            'accumulative-value': round(mean(self.computed_path[-1]. snr + \
+                                                            lin2db(self.path_request.baud_rate/12.5e9)), 2)
+                        },
+                        {
+                            'metric-type': 'OSNR-bandwidth',
+                            'accumulative-value': round(mean(self.computed_path[-1].osnr_ase), 2)
+                        },
+                        {
+                            'metric-type': 'OSNR-0.1nm',
+                            'accumulative-value': round(mean(self.computed_path[-1].osnr_ase_01nm), 2)
+                        },
+                        {
+                            'metric-type': 'reference_power',
+                            'accumulative-value': self.path_request.power
+                        },
+                        {
+                            'metric-type': 'path_bandwidth',
+                            'accumulative-value': self.path_request.path_bandwidth
+                        }
                         ],
-                        'path-route-objects': pro_list
+                    'path-route-objects': pro_list
                     }
                 }
         return response
@@ -408,10 +409,10 @@ def jsontocsv(json_data,equipment,fileout):
     tspjsondata = equipment['Transceiver']
     #print(tspjsondata)
 
-    for p in json_data['response']:
-        path_id     = p['response-id']
+    for pth_el in json_data['response']:
+        path_id     = pth_el['response-id']
         try:
-            if p['no-path'] :
+            if pth_el['no-path'] :
                 isok = False
                 nb_tsp = 0
                 pthbdbw = round(path_bandwidth*1e-9,2)
@@ -423,22 +424,22 @@ def jsontocsv(json_data,equipment,fileout):
                 total_cost = ''
                 pth = ''
         except KeyError:
-            source      = p['path-properties']['path-route-objects'][0]\
+            source      = pth_el['path-properties']['path-route-objects'][0]\
             ['path-route-object']['num-unnum-hop']['node-id']
-            destination = p['path-properties']['path-route-objects'][-2]\
+            destination = pth_el['path-properties']['path-route-objects'][-2]\
             ['path-route-object']['num-unnum-hop']['node-id']
             # selects only roadm nodes
             temp = []
-            for e in p['path-properties']['path-route-objects'] :
+            for e in pth_el['path-properties']['path-route-objects'] :
                 try :
                     temp .append(e['path-route-object']['num-unnum-hop']['node-id'])
                 except KeyError:
                     pass
             pth        = ' | '.join(temp)
 
-            [tsp,mode] = [p['path-properties']['path-route-objects'][1]\
+            [tsp,mode] = [pth_el['path-properties']['path-route-objects'][1]\
             ['path-route-object']['transponder']['transponder-type'],\
-            p['path-properties']['path-route-objects'][1]\
+            pth_el['path-properties']['path-route-objects'][1]\
             ['path-route-object']['transponder']['transponder-mode'] ]
 
             # find the min  acceptable OSNR, baud rate from the eqpt library based on tsp (tupe) and mode (format)
@@ -449,17 +450,17 @@ def jsontocsv(json_data,equipment,fileout):
             # else:
             #     [minosnr, baud_rate, bit_rate] = ['','','','']
             output_snr = next(e['accumulative-value'] 
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR-0.1nm')
+                for e in pth_el['path-properties']['path-metric'] if e['metric-type'] == 'SNR-0.1nm')
             output_snrbandwidth = next(e['accumulative-value']
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR-bandwidth')
+                for e in pth_el['path-properties']['path-metric'] if e['metric-type'] == 'SNR-bandwidth')
             output_osnr = next(e['accumulative-value']
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-0.1nm')
+                for e in pth_el['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-0.1nm')
             output_osnrbandwidth = next(e['accumulative-value']
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-bandwidth')
+                for e in pth_el['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-bandwidth')
             power = next(e['accumulative-value']
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'reference_power')
+                for e in pth_el['path-properties']['path-metric'] if e['metric-type'] == 'reference_power')
             path_bandwidth = next(e['accumulative-value']
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'path_bandwidth')
+                for e in pth_el['path-properties']['path-metric'] if e['metric-type'] == 'path_bandwidth')
             if isinstance(output_snr, str):
                 isok = False
                 nb_tsp = 0
