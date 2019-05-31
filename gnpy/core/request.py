@@ -157,19 +157,19 @@ class Result_element(Element):
                    'path-properties':{
                        'path-metric': [
                            {
-                           'metric-type': 'SNR@bandwidth',
+                           'metric-type': 'SNR-bandwidth',
                            'accumulative-value': round(mean(self.computed_path[-1].snr),2)
                            },
                            {
-                           'metric-type': 'SNR@0.1nm',
+                           'metric-type': 'SNR-0.1nm',
                            'accumulative-value': round(mean(self.computed_path[-1].snr+lin2db(self.path_request.baud_rate/12.5e9)),2)
                            },
                            {
-                           'metric-type': 'OSNR@bandwidth',
+                           'metric-type': 'OSNR-bandwidth',
                            'accumulative-value': round(mean(self.computed_path[-1].osnr_ase),2)
                            },
                            {
-                           'metric-type': 'OSNR@0.1nm',
+                           'metric-type': 'OSNR-0.1nm',
                            'accumulative-value': round(mean(self.computed_path[-1].osnr_ase_01nm),2)
                            },
                            {
@@ -403,7 +403,7 @@ def jsontocsv(json_data,equipment,fileout):
     mywriter = writer(fileout)
     mywriter.writerow(('response-id','source','destination','path_bandwidth','Pass?',\
         'nb of tsp pairs','total cost','transponder-type','transponder-mode',\
-        'OSNR@0.1nm','SNR@0.1nm','SNR@bandwidth','baud rate (Gbaud)',\
+        'OSNR-0.1nm','SNR-0.1nm','SNR-bandwidth','baud rate (Gbaud)',\
         'input power (dBm)','path'))
     tspjsondata = equipment['Transceiver']
     #print(tspjsondata)
@@ -449,13 +449,13 @@ def jsontocsv(json_data,equipment,fileout):
             # else:
             #     [minosnr, baud_rate, bit_rate] = ['','','','']
             output_snr = next(e['accumulative-value'] 
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR@0.1nm')
+                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR-0.1nm')
             output_snrbandwidth = next(e['accumulative-value']
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR@bandwidth')
+                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR-bandwidth')
             output_osnr = next(e['accumulative-value']
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR@0.1nm')
+                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-0.1nm')
             output_osnrbandwidth = next(e['accumulative-value']
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR@bandwidth')
+                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-bandwidth')
             power = next(e['accumulative-value']
                 for e in p['path-properties']['path-metric'] if e['metric-type'] == 'reference_power')
             path_bandwidth = next(e['accumulative-value']
