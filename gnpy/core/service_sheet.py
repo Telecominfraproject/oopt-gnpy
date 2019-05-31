@@ -144,7 +144,7 @@ class Request_element(Element):
                             'technology': 'flexi-grid',
                             'trx_type'  : self.trx_type,
                             'trx_mode'  : self.mode,
-                            'effective-freq-slot':[{'N': 'null','M': 'null'}] ,
+                            'effective-freq-slot':[{'N': 'null', 'M': 'null'}],
                             'spacing'   : self.spacing,
                             'max-nb-of-channel'  : self.nb_channel,
                             'output-power'       : self.power

@@ -81,9 +81,9 @@ class Path_request:
                             f'baud_rate:\t{temp} Gbaud',
                             f'bit_rate:\t{temp2} Gb/s',
                             f'spacing:\t{self.spacing * 1e-9} GHz',
-                            f'power:  \t{round(lin2db(self.power)+30,2)} dBm',
+                            f'power:  \t{round(lin2db(self.power)+30, 2)} dBm',
                             f'nb channels: \t{self.nb_channel}',
-                            f'path_bandwidth: \t{round(self.path_bandwidth * 1e-9,2)} Gbit/s',
+                            f'path_bandwidth: \t{round(self.path_bandwidth * 1e-9, 2)} Gbit/s',
                             f'nodes-list:\t{self.nodes_list}',
                             f'loose-list:\t{self.loose_list}'
                             '\n'])
@@ -97,16 +97,16 @@ class Disjunction:
         self.disjunctions_req = params.disjunctions_req
         
     def __str__(self):
-        return '\n\t'.join([f'relaxable:    {self.relaxable}',
-                            f'link-diverse:       {self.link_diverse}',
+        return '\n\t'.join([f'relaxable:     {self.relaxable}',
+                            f'link-diverse:  {self.link_diverse}',
                             f'node-diverse:  {self.node_diverse}',
                             f'request-id-numbers: {self.disjunctions_req}']
                             )
     def __repr__(self):
         return '\n\t'.join([  f'{type(self).__name__} {self.disjunction_id}',
                             f'relaxable:    {self.relaxable}',
-                            f'link-diverse:       {self.link_diverse}',
-                            f'node-diverse:  {self.node_diverse}',
+                            f'link-diverse: {self.link_diverse}',
+                            f'node-diverse: {self.node_diverse}',
                             f'request-id-numbers: {self.disjunctions_req}'
                             '\n'])
 
@@ -126,7 +126,7 @@ class Result_element(Element):
         else:
             index = 0
             pro_list = []
-            for n in self.computed_path :
+            for n in self.computed_path:
                 temp = {
                     'path-route-object': {
                         'index': index,
@@ -139,7 +139,7 @@ class Result_element(Element):
                     }
                 pro_list.append(temp)
                 index += 1
-                if isinstance(n, Transceiver) :
+                if isinstance(n, Transceiver):
                     temp = {
                         'path-route-object': {
                             'index': index,
@@ -153,35 +153,36 @@ class Result_element(Element):
                     index += 1
 
             response = {
-                   'response-id': self.path_id,
-                   'path-properties':{
-                       'path-metric': [
-                           {
-                           'metric-type': 'SNR-bandwidth',
-                           'accumulative-value': round(mean(self.computed_path[-1].snr),2)
-                           },
-                           {
-                           'metric-type': 'SNR-0.1nm',
-                           'accumulative-value': round(mean(self.computed_path[-1].snr+lin2db(self.path_request.baud_rate/12.5e9)),2)
-                           },
-                           {
-                           'metric-type': 'OSNR-bandwidth',
-                           'accumulative-value': round(mean(self.computed_path[-1].osnr_ase),2)
-                           },
-                           {
-                           'metric-type': 'OSNR-0.1nm',
-                           'accumulative-value': round(mean(self.computed_path[-1].osnr_ase_01nm),2)
-                           },
-                           {
-                           'metric-type': 'reference_power',
-                           'accumulative-value': self.path_request.power
-                           },
-                           {
-                           'metric-type': 'path_bandwidth',
-                           'accumulative-value': self.path_request.path_bandwidth
-                           }
+                'response-id': self.path_id,
+                'path-properties':{
+                    'path-metric': [
+                        {
+                            'metric-type': 'SNR-bandwidth',
+                            'accumulative-value': round(mean(self.computed_path[-1].snr), 2)
+                        },
+                        {
+                            'metric-type': 'SNR-0.1nm',
+                            'accumulative-value': round(mean(self.computed_path[-1]. snr + \
+                                                            lin2db(self.path_request.baud_rate/12.5e9)), 2)
+                        },
+                        {
+                            'metric-type': 'OSNR-bandwidth',
+                            'accumulative-value': round(mean(self.computed_path[-1].osnr_ase), 2)
+                        },
+                        {
+                            'metric-type': 'OSNR-0.1nm',
+                            'accumulative-value': round(mean(self.computed_path[-1].osnr_ase_01nm), 2)
+                        },
+                        {
+                            'metric-type': 'reference_power',
+                            'accumulative-value': self.path_request.power
+                        },
+                        {
+                            'metric-type': 'path_bandwidth',
+                            'accumulative-value': self.path_request.path_bandwidth
+                        }
                         ],
-                        'path-route-objects': pro_list
+                    'path-route-objects': pro_list
                     }
                 }
         return response
@@ -231,7 +232,7 @@ def compute_constrained_path(network, req):
             msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path from {source.uid} to node : {destination.uid} in network topology'+ '\x1b[0m'
             logger.critical(msg)
             print(msg)
-            total_path = []        
+            total_path = []
     else : 
         all_simp_pths = list(all_simple_paths(network,source=source,\
             target=destination, cutoff=120))
@@ -345,7 +346,7 @@ def propagate_and_optimize_mode(path, req, equipment):
     # if mode is unknown : loops on the modes starting from the highest baudrate fiting in the
     # step 1: create an ordered list of modes based on baudrate
     baudrate_to_explore = list(set([m['baud_rate'] for m in equipment['Transceiver'][req.tsp].mode 
-        if float(m['min_spacing'])<= req.spacing]))  
+        if float(m['min_spacing'])<= req.spacing]))
         # TODO be carefull on limits cases if spacing very close to req spacing eg 50.001 50.000
     baudrate_to_explore = sorted(baudrate_to_explore, reverse=True)
     if baudrate_to_explore : 
@@ -402,10 +403,10 @@ def jsontocsv(json_data,equipment,fileout):
     tspjsondata = equipment['Transceiver']
     #print(tspjsondata)
 
-    for p in json_data['response']:
-        path_id     = p['response-id']
+    for pth_el in json_data['response']:
+        path_id = pth_el['response-id']
         try:
-            if p['no-path'] :
+             if pth_el['no-path'] :
                 source = ''
                 destination = ''
                 tsp = ''
@@ -421,15 +422,16 @@ def jsontocsv(json_data,equipment,fileout):
                 total_cost = ''
                 pth = ''
         except KeyError:
-            source = p['path-properties']['path-route-objects'][0]\
+
+            source = pth_el['path-properties']['path-route-objects'][0]\
             ['path-route-object']['num-unnum-hop']['node-id']
-            destination = p['path-properties']['path-route-objects'][-2]\
+            destination = pth_el['path-properties']['path-route-objects'][-2]\
             ['path-route-object']['num-unnum-hop']['node-id']
             # selects only roadm nodes
             temp = []
-            for e in p['path-properties']['path-route-objects'] :
+            for e in pth_el['path-properties']['path-route-objects']:
                 try :
-                    temp .append(e['path-route-object']['num-unnum-hop']['node-id'])
+                    temp.append(e['path-route-object']['num-unnum-hop']['node-id'])
                 except KeyError:
                     pass
             pth = ' | '.join(temp)
@@ -446,19 +448,18 @@ def jsontocsv(json_data,equipment,fileout):
                     for m in equipment['Transceiver'][tsp].mode if  m['format']==mode)
             # else:
             #     [minosnr, baud_rate, bit_rate] = ['','','','']
-
-            output_snr = next(e['accumulative-value']
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR-0.1nm')
+            output_snr = next(e['accumulative-value'] 
+                for e in pth_el['path-properties']['path-metric'] if e['metric-type'] == 'SNR-0.1nm')
             output_snrbandwidth = next(e['accumulative-value']
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR-bandwidth')
+                for e in pth_el['path-properties']['path-metric'] if e['metric-type'] == 'SNR-bandwidth')
             output_osnr = next(e['accumulative-value']
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-0.1nm')
+                for e in pth_el['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-0.1nm')
             output_osnrbandwidth = next(e['accumulative-value']
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-bandwidth')
+                for e in pth_el['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-bandwidth')
             power = next(e['accumulative-value']
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'reference_power')
+                for e in pth_el['path-properties']['path-metric'] if e['metric-type'] == 'reference_power')
             path_bandwidth = next(e['accumulative-value']
-                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'path_bandwidth')
+                for e in pth_el['path-properties']['path-metric'] if e['metric-type'] == 'path_bandwidth')
             if isinstance(output_snr, str):
                 isok = False
                 nb_tsp = 0
@@ -470,14 +471,14 @@ def jsontocsv(json_data,equipment,fileout):
                 pw = ''
                 total_cost = ''
             else:
-                isok   = output_snr >= minosnr
+                isok = output_snr >= minosnr
                 nb_tsp = ceil(path_bandwidth / bit_rate)
                 pthbdbw = round(path_bandwidth*1e-9,2)
-                rosnr  = round(output_osnr,2)
-                rsnr   = round(output_snr,2)
-                rsnrb  = round(output_snrbandwidth,2)
-                br     = round(baud_rate*1e-9,2)
-                pw     = round(lin2db(power)+30,2)
+                rosnr = round(output_osnr,2)
+                rsnr = round(output_snr,2)
+                rsnrb = round(output_snrbandwidth,2)
+                br = round(baud_rate*1e-9,2)
+                pw = round(lin2db(power)+30,2)
                 total_cost = nb_tsp * cost
 
         mywriter.writerow((path_id,
@@ -570,7 +571,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
         all_simp_pths_reversed = []
         for pth in all_simp_pths:
             all_simp_pths_reversed.append(find_reversed_path(pth,network))
-        rqs[pathreq.request_id] = all_simp_pths 
+        rqs[pathreq.request_id] = all_simp_pths
         temp =[]
         for p in all_simp_pths :
             # build a short list representing each roadm+direction with the first item
@@ -843,19 +844,19 @@ def compare_reqs(req1,req2,disjlist) :
         req1.format     == req2.format and \
         req1.OSNR       == req2.OSNR and \
         req1.roll_off   == req2.roll_off and \
-        same_disj :
+        same_disj:
         return True
     else:
         return False
 
-def requests_aggregation(pathreqlist,disjlist) :
+def requests_aggregation(pathreqlist,disjlist):
     # this function aggregates requests so that if several requests
     # exist between same source and destination and with same transponder type
     # todo maybe add conditions on mode ??, spacing ...
     # currently if undefined takes the default values
     local_list = pathreqlist.copy()
     for req in pathreqlist:
-        for r in local_list : 
+        for r in local_list: 
             if  req.request_id != r.request_id and compare_reqs(req, r, disjlist):
                 # aggregate
                 r.path_bandwidth += req.path_bandwidth
@@ -865,12 +866,12 @@ def requests_aggregation(pathreqlist,disjlist) :
                 local_list.remove(req)
                 # todo change also disjunction req with new demand
 
-                for d in disjlist :
-                    if req.request_id in d.disjunctions_req :
+                for d in disjlist:
+                    if req.request_id in d.disjunctions_req:
                         d.disjunctions_req.remove(req.request_id)
                         d.disjunctions_req.append(r.request_id)
-                for d in disjlist :        
-                    if temp_r_id in d.disjunctions_req :
+                for d in disjlist:
+                    if temp_r_id in d.disjunctions_req:
                         disjlist.remove(d)
                 break
     return local_list, disjlist
