@@ -11,8 +11,8 @@ This module contains utility functions that are used with gnpy.
 
 import json
 
-import numpy as np
 from csv import writer
+import numpy as np
 from numpy import pi, cos, sqrt, log10
 from scipy import constants
 
@@ -199,3 +199,43 @@ def rrc(ffs, baud_rate, alpha):
     p_inds = np.where(np.logical_and(np.abs(ffs) > 0, np.abs(ffs) < l_lim))
     hf[p_inds] = 1
     return sqrt(hf)
+
+def merge_amplifier_restrictions(dict1, dict2):
+    """Updates contents of dicts recursively
+
+    >>> d1 = {'params': {'restrictions': {'preamp_variety_list': [], 'booster_variety_list': []}}}
+    >>> d2 = {'params': {'target_pch_out_db': -20}}
+    >>> merge_amplifier_restrictions(d1, d2)
+    {'params': {'restrictions': {'preamp_variety_list': [], 'booster_variety_list': []}, 'target_pch_out_db': -20}}
+
+    >>> d3 = {'params': {'restrictions': {'preamp_variety_list': ['foo'], 'booster_variety_list': ['bar']}}}
+    >>> merge_amplifier_restrictions(d1, d3)
+    {'params': {'restrictions': {'preamp_variety_list': [], 'booster_variety_list': []}}}
+    """
+
+    copy_dict1 = dict1.copy()
+    for key in dict2:
+        if key in dict1:
+            if isinstance(dict1[key], dict):
+                copy_dict1[key] = merge_amplifier_restrictions(copy_dict1[key], dict2[key])
+        else:
+            copy_dict1[key] = dict2[key]
+    return copy_dict1
+
+def silent_remove(this_list, elem):
+    """Remove matching elements from a list without raising ValueError
+
+    >>> li = [0, 1]
+    >>> li = silent_remove(li, 1)
+    >>> li
+    [0]
+    >>> li = silent_remove(li, 1)
+    >>> li
+    [0]
+    """
+
+    try:
+        this_list.remove(elem)
+    except ValueError:
+        pass
+    return this_list
