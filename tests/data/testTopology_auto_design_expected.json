@@ -41,7 +41,7 @@
       "type": "Transceiver",
       "metadata": {
         "location": {
-          "latitude": 0.0,
+          "latitude": 4.0,
           "longitude": 0.0,
           "city": "Rennes_STA",
           "region": "RLD"
@@ -53,7 +53,7 @@
       "type": "Transceiver",
       "metadata": {
         "location": {
-          "latitude": 4.0,
+          "latitude": 0.0,
           "longitude": 0.0,
           "city": "Brest_KLA",
           "region": "RLD"
@@ -65,8 +65,8 @@
       "type": "Transceiver",
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 6.0,
+          "longitude": 0.0,
           "city": "a",
           "region": ""
         }
@@ -77,8 +77,8 @@
       "type": "Transceiver",
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 5.0,
+          "longitude": 0.0,
           "city": "b",
           "region": ""
         }
@@ -89,8 +89,8 @@
       "type": "Transceiver",
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 6.0,
+          "longitude": 1.0,
           "city": "c",
           "region": ""
         }
@@ -101,8 +101,8 @@
       "type": "Transceiver",
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 6.0,
+          "longitude": 4.0,
           "city": "d",
           "region": ""
         }
@@ -113,8 +113,8 @@
       "type": "Transceiver",
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 5.0,
+          "longitude": 4.0,
           "city": "e",
           "region": ""
         }
@@ -125,8 +125,8 @@
       "type": "Transceiver",
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 5.0,
+          "longitude": 1.0,
           "city": "f",
           "region": ""
         }
@@ -137,8 +137,8 @@
       "type": "Transceiver",
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 5.0,
+          "longitude": 3.0,
           "city": "g",
           "region": ""
         }
@@ -149,8 +149,8 @@
       "type": "Transceiver",
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 5.0,
+          "longitude": 2.0,
           "city": "h",
           "region": ""
         }
@@ -209,7 +209,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
+          "latitude": 4.0,
           "longitude": 0.0,
           "city": "Rennes_STA",
           "region": "RLD"
@@ -224,7 +224,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 4.0,
+          "latitude": 0.0,
           "longitude": 0.0,
           "city": "Brest_KLA",
           "region": "RLD"
@@ -239,8 +239,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 6.0,
+          "longitude": 0.0,
           "city": "a",
           "region": ""
         }
@@ -254,8 +254,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 5.0,
+          "longitude": 0.0,
           "city": "b",
           "region": ""
         }
@@ -269,8 +269,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 6.0,
+          "longitude": 1.0,
           "city": "c",
           "region": ""
         }
@@ -284,8 +284,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 6.0,
+          "longitude": 4.0,
           "city": "d",
           "region": ""
         }
@@ -299,8 +299,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 5.0,
+          "longitude": 4.0,
           "city": "e",
           "region": ""
         }
@@ -314,8 +314,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 5.0,
+          "longitude": 1.0,
           "city": "f",
           "region": ""
         }
@@ -329,8 +329,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 5.0,
+          "longitude": 3.0,
           "city": "g",
           "region": ""
         }
@@ -344,8 +344,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0,
-          "longitude": 0,
+          "latitude": 5.0,
+          "longitude": 2.0,
           "city": "h",
           "region": ""
         }
@@ -380,7 +380,7 @@
       "type": "Fused",
       "metadata": {
         "location": {
-          "latitude": 3.0,
+          "latitude": 1.0,
           "longitude": 0.0,
           "city": "Morlaix",
           "region": "RLD"
@@ -416,7 +416,7 @@
       "type": "Fused",
       "metadata": {
         "location": {
-          "latitude": 3.0,
+          "latitude": 1.0,
           "longitude": 0.0,
           "city": "Morlaix",
           "region": "RLD"
@@ -526,7 +526,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 1.5,
+          "latitude": 2.5,
           "longitude": 0.0,
           "city": null,
           "region": null
@@ -548,7 +548,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.5,
+          "latitude": 3.5,
           "longitude": 0.0,
           "city": null,
           "region": null
@@ -570,7 +570,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 2.5,
+          "latitude": 1.5,
           "longitude": 0.0,
           "city": null,
           "region": null
@@ -592,7 +592,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 3.5,
+          "latitude": 0.5,
           "longitude": 0.0,
           "city": null,
           "region": null
@@ -614,8 +614,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 2.5,
-          "longitude": 0.5,
+          "latitude": 0.0,
+          "longitude": 1.5,
           "city": null,
           "region": null
         }
@@ -636,8 +636,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 1.5,
-          "longitude": 2.0,
+          "latitude": 1.0,
+          "longitude": 3.0,
           "city": null,
           "region": null
         }
@@ -658,8 +658,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 1.5,
-          "longitude": 3.0,
+          "latitude": 3.0,
+          "longitude": 4.0,
           "city": null,
           "region": null
         }
@@ -680,8 +680,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.5,
-          "longitude": 1.0,
+          "latitude": 4.0,
+          "longitude": 2.0,
           "city": null,
           "region": null
         }
@@ -702,7 +702,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
+          "latitude": 5.5,
           "longitude": 0.0,
           "city": null,
           "region": null
@@ -724,8 +724,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 6.0,
+          "longitude": 0.5,
           "city": null,
           "region": null
         }
@@ -746,8 +746,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 6.0,
+          "longitude": 2.5,
           "city": null,
           "region": null
         }
@@ -768,8 +768,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.5,
+          "longitude": 1.0,
           "city": null,
           "region": null
         }
@@ -790,8 +790,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 0.5,
           "city": null,
           "region": null
         }
@@ -812,8 +812,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.5,
+          "longitude": 4.0,
           "city": null,
           "region": null
         }
@@ -834,8 +834,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 3.5,
           "city": null,
           "region": null
         }
@@ -856,8 +856,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 1.5,
           "city": null,
           "region": null
         }
@@ -878,8 +878,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 2.5,
           "city": null,
           "region": null
         }
@@ -988,7 +988,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 1.5,
+          "latitude": 2.5,
           "longitude": 0.0,
           "city": null,
           "region": null
@@ -1010,7 +1010,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.5,
+          "latitude": 3.5,
           "longitude": 0.0,
           "city": null,
           "region": null
@@ -1032,7 +1032,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 2.5,
+          "latitude": 1.5,
           "longitude": 0.0,
           "city": null,
           "region": null
@@ -1054,7 +1054,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 3.5,
+          "latitude": 0.5,
           "longitude": 0.0,
           "city": null,
           "region": null
@@ -1076,8 +1076,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 2.5,
-          "longitude": 0.5,
+          "latitude": 0.0,
+          "longitude": 1.5,
           "city": null,
           "region": null
         }
@@ -1098,8 +1098,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 1.5,
-          "longitude": 2.0,
+          "latitude": 1.0,
+          "longitude": 3.0,
           "city": null,
           "region": null
         }
@@ -1120,8 +1120,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 1.5,
-          "longitude": 3.0,
+          "latitude": 3.0,
+          "longitude": 4.0,
           "city": null,
           "region": null
         }
@@ -1142,8 +1142,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.5,
-          "longitude": 1.0,
+          "latitude": 4.0,
+          "longitude": 2.0,
           "city": null,
           "region": null
         }
@@ -1164,7 +1164,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
+          "latitude": 5.5,
           "longitude": 0.0,
           "city": null,
           "region": null
@@ -1186,8 +1186,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 6.0,
+          "longitude": 0.5,
           "city": null,
           "region": null
         }
@@ -1208,8 +1208,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 6.0,
+          "longitude": 2.5,
           "city": null,
           "region": null
         }
@@ -1230,8 +1230,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.5,
+          "longitude": 1.0,
           "city": null,
           "region": null
         }
@@ -1252,8 +1252,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 0.5,
           "city": null,
           "region": null
         }
@@ -1274,8 +1274,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.5,
+          "longitude": 4.0,
           "city": null,
           "region": null
         }
@@ -1296,8 +1296,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 3.5,
           "city": null,
           "region": null
         }
@@ -1318,8 +1318,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 1.5,
           "city": null,
           "region": null
         }
@@ -1340,8 +1340,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 2.5,
           "city": null,
           "region": null
         }
@@ -1397,7 +1397,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 1.0,
+          "latitude": 3.0,
           "longitude": 0.0,
           "city": "Stbrieuc",
           "region": "RLD"
@@ -1435,7 +1435,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 4.0,
+          "latitude": 0.0,
           "longitude": 0.0,
           "city": "Brest_KLA",
           "region": "RLD"
@@ -1454,8 +1454,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 1.0,
-          "longitude": 2.0,
+          "latitude": 4.0,
+          "longitude": 4.0,
           "city": "Ploermel",
           "region": "RLD"
         }
@@ -1495,25 +1495,6 @@
           "latitude": 2.0,
           "longitude": 0.0,
           "city": "Lannion_CAS",
-          "region": "RLD"
-        }
-      }
-    },
-    {
-      "uid": "west edfa in Quimper to Lorient_KMA",
-      "type": "Edfa",
-      "type_variety": "std_low_gain",
-      "operational": {
-        "gain_target": 19.0,
-        "delta_p": null,
-        "tilt_target": 0,
-        "out_voa": 0
-      },
-      "metadata": {
-        "location": {
-          "latitude": 1.0,
-          "longitude": 1.0,
-          "city": "Quimper",
           "region": "RLD"
         }
       }
@@ -1568,8 +1549,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 1.75,
-          "longitude": 2.5,
+          "latitude": 1.5,
+          "longitude": 3.0,
           "city": "Lorient_KMA",
           "region": "RLD"
         }
@@ -1606,8 +1587,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 1.75,
-          "longitude": 3.5,
+          "latitude": 2.5,
+          "longitude": 4.0,
           "city": "Vannes_KBE",
           "region": "RLD"
         }
@@ -1625,7 +1606,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.25,
+          "latitude": 3.75,
           "longitude": 0.0,
           "city": "Rennes_STA",
           "region": "RLD"
@@ -1644,8 +1625,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.25,
-          "longitude": 0.5,
+          "latitude": 4.0,
+          "longitude": 1.0,
           "city": "Rennes_STA",
           "region": "RLD"
         }
@@ -1663,7 +1644,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 3.75,
+          "latitude": 0.25,
           "longitude": 0.0,
           "city": "Brest_KLA",
           "region": "RLD"
@@ -1682,7 +1663,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
+          "latitude": 5.75,
           "longitude": 0.0,
           "city": "a",
           "region": ""
@@ -1701,8 +1682,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 6.0,
+          "longitude": 0.25,
           "city": "a",
           "region": ""
         }
@@ -1720,7 +1701,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
+          "latitude": 5.25,
           "longitude": 0.0,
           "city": "b",
           "region": ""
@@ -1739,8 +1720,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 0.25,
           "city": "b",
           "region": ""
         }
@@ -1758,8 +1739,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 6.0,
+          "longitude": 0.75,
           "city": "c",
           "region": ""
         }
@@ -1777,8 +1758,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 6.0,
+          "longitude": 1.75,
           "city": "c",
           "region": ""
         }
@@ -1796,8 +1777,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.75,
+          "longitude": 1.0,
           "city": "c",
           "region": ""
         }
@@ -1815,8 +1796,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 6.0,
+          "longitude": 3.25,
           "city": "d",
           "region": ""
         }
@@ -1834,8 +1815,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.75,
+          "longitude": 4.0,
           "city": "d",
           "region": ""
         }
@@ -1853,8 +1834,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.25,
+          "longitude": 4.0,
           "city": "e",
           "region": ""
         }
@@ -1872,8 +1853,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 3.75,
           "city": "e",
           "region": ""
         }
@@ -1891,8 +1872,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.25,
+          "longitude": 1.0,
           "city": "f",
           "region": ""
         }
@@ -1910,8 +1891,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 0.75,
           "city": "f",
           "region": ""
         }
@@ -1929,8 +1910,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 1.25,
           "city": "f",
           "region": ""
         }
@@ -1948,8 +1929,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 3.25,
           "city": "g",
           "region": ""
         }
@@ -1967,8 +1948,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 2.75,
           "city": "g",
           "region": ""
         }
@@ -1986,8 +1967,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 1.75,
           "city": "h",
           "region": ""
         }
@@ -2005,8 +1986,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 2.25,
           "city": "h",
           "region": ""
         }
@@ -2062,7 +2043,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.25,
+          "latitude": 3.75,
           "longitude": 0.0,
           "city": null,
           "region": null
@@ -2081,7 +2062,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 3.75,
+          "latitude": 0.25,
           "longitude": 0.0,
           "city": null,
           "region": null
@@ -2100,8 +2081,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 2.0,
-          "longitude": 1.25,
+          "latitude": 0.5,
+          "longitude": 2.25,
           "city": null,
           "region": null
         }
@@ -2119,8 +2100,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 1.75,
-          "longitude": 2.5,
+          "latitude": 1.5,
+          "longitude": 3.0,
           "city": null,
           "region": null
         }
@@ -2138,8 +2119,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 1.75,
-          "longitude": 3.5,
+          "latitude": 2.5,
+          "longitude": 4.0,
           "city": null,
           "region": null
         }
@@ -2157,8 +2138,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.25,
-          "longitude": 0.5,
+          "latitude": 4.0,
+          "longitude": 1.0,
           "city": null,
           "region": null
         }
@@ -2176,7 +2157,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
+          "latitude": 5.25,
           "longitude": 0.0,
           "city": null,
           "region": null
@@ -2195,8 +2176,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 6.0,
+          "longitude": 0.75,
           "city": null,
           "region": null
         }
@@ -2214,8 +2195,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 6.0,
+          "longitude": 3.25,
           "city": null,
           "region": null
         }
@@ -2233,8 +2214,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.25,
+          "longitude": 1.0,
           "city": null,
           "region": null
         }
@@ -2252,8 +2233,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 0.75,
           "city": null,
           "region": null
         }
@@ -2271,8 +2252,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.75,
+          "longitude": 4.0,
           "city": null,
           "region": null
         }
@@ -2290,8 +2271,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 3.25,
           "city": null,
           "region": null
         }
@@ -2309,8 +2290,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 1.75,
           "city": null,
           "region": null
         }
@@ -2328,8 +2309,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 2.75,
           "city": null,
           "region": null
         }
@@ -2366,7 +2347,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 1.75,
+          "latitude": 2.25,
           "longitude": 0.0,
           "city": null,
           "region": null
@@ -2385,7 +2366,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 1.0,
+          "latitude": 3.0,
           "longitude": 0.0,
           "city": null,
           "region": null
@@ -2397,15 +2378,34 @@
       "type": "Edfa",
       "type_variety": "std_low_gain",
       "operational": {
-        "gain_target": 10.0,
+        "gain_target": 15.0,
         "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
       },
       "metadata": {
         "location": {
-          "latitude": 3.25,
-          "longitude": 0.25,
+          "latitude": 0.0,
+          "longitude": 0.75,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa0_fiber (Lorient_KMA → Quimper)-",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 14.0,
+        "delta_p": null,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 2.25,
           "city": null,
           "region": null
         }
@@ -2423,8 +2423,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 1.0,
-          "longitude": 2.0,
+          "latitude": 3.5,
+          "longitude": 3.0,
           "city": null,
           "region": null
         }
@@ -2442,7 +2442,7 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
+          "latitude": 5.75,
           "longitude": 0.0,
           "city": null,
           "region": null
@@ -2461,8 +2461,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 6.0,
+          "longitude": 0.25,
           "city": null,
           "region": null
         }
@@ -2480,8 +2480,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 6.0,
+          "longitude": 1.75,
           "city": null,
           "region": null
         }
@@ -2499,8 +2499,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.75,
+          "longitude": 1.0,
           "city": null,
           "region": null
         }
@@ -2518,8 +2518,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 0.25,
           "city": null,
           "region": null
         }
@@ -2537,8 +2537,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.25,
+          "longitude": 4.0,
           "city": null,
           "region": null
         }
@@ -2556,8 +2556,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 3.75,
           "city": null,
           "region": null
         }
@@ -2575,8 +2575,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 1.25,
           "city": null,
           "region": null
         }
@@ -2594,8 +2594,8 @@
       },
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0,
+          "latitude": 5.0,
+          "longitude": 2.25,
           "city": null,
           "region": null
         }
@@ -2973,7 +2973,7 @@
     },
     {
       "from_node": "fiber (Lorient_KMA → Quimper)-",
-      "to_node": "west edfa in Quimper to Lorient_KMA"
+      "to_node": "Edfa0_fiber (Lorient_KMA → Quimper)-"
     },
     {
       "from_node": "fiber (Vannes_KBE → Ploermel)-",
@@ -3050,10 +3050,6 @@
     {
       "from_node": "west edfa in Lannion_CAS to Morlaix",
       "to_node": "roadm Lannion_CAS"
-    },
-    {
-      "from_node": "west edfa in Quimper to Lorient_KMA",
-      "to_node": "fiber (Quimper → Brest_KLA)-"
     },
     {
       "from_node": "Edfa0_roadm Lorient_KMA",
@@ -3242,6 +3238,10 @@
     {
       "from_node": "Edfa0_fiber (Quimper → Brest_KLA)-",
       "to_node": "roadm Brest_KLA"
+    },
+    {
+      "from_node": "Edfa0_fiber (Lorient_KMA → Quimper)-",
+      "to_node": "fiber (Quimper → Brest_KLA)-"
     },
     {
       "from_node": "Edfa0_fiber (Vannes_KBE → Ploermel)-",

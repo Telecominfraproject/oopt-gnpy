@@ -42,7 +42,7 @@
         "location": {
           "city": "Rennes_STA",
           "region": "RLD",
-          "latitude": 0.0,
+          "latitude": 4.0,
           "longitude": 0.0
         }
       },
@@ -54,7 +54,7 @@
         "location": {
           "city": "Brest_KLA",
           "region": "RLD",
-          "latitude": 4.0,
+          "latitude": 0.0,
           "longitude": 0.0
         }
       },
@@ -66,8 +66,8 @@
         "location": {
           "city": "a",
           "region": "",
-          "latitude": 0,
-          "longitude": 0
+          "latitude": 6.0,
+          "longitude": 0.0
         }
       },
       "type": "Transceiver"
@@ -78,8 +78,8 @@
         "location": {
           "city": "b",
           "region": "",
-          "latitude": 0,
-          "longitude": 0
+          "latitude": 5.0,
+          "longitude": 0.0
         }
       },
       "type": "Transceiver"
@@ -90,8 +90,8 @@
         "location": {
           "city": "c",
           "region": "",
-          "latitude": 0,
-          "longitude": 0
+          "latitude": 6.0,
+          "longitude": 1.0
         }
       },
       "type": "Transceiver"
@@ -102,8 +102,8 @@
         "location": {
           "city": "d",
           "region": "",
-          "latitude": 0,
-          "longitude": 0
+          "latitude": 6.0,
+          "longitude": 4.0
         }
       },
       "type": "Transceiver"
@@ -114,8 +114,8 @@
         "location": {
           "city": "e",
           "region": "",
-          "latitude": 0,
-          "longitude": 0
+          "latitude": 5.0,
+          "longitude": 4.0
         }
       },
       "type": "Transceiver"
@@ -126,8 +126,8 @@
         "location": {
           "city": "f",
           "region": "",
-          "latitude": 0,
-          "longitude": 0
+          "latitude": 5.0,
+          "longitude": 1.0
         }
       },
       "type": "Transceiver"
@@ -138,8 +138,8 @@
         "location": {
           "city": "g",
           "region": "",
-          "latitude": 0,
-          "longitude": 0
+          "latitude": 5.0,
+          "longitude": 3.0
         }
       },
       "type": "Transceiver"
@@ -150,8 +150,8 @@
         "location": {
           "city": "h",
           "region": "",
-          "latitude": 0,
-          "longitude": 0
+          "latitude": 5.0,
+          "longitude": 2.0
         }
       },
       "type": "Transceiver"
@@ -198,7 +198,7 @@
         "location": {
           "city": "Rennes_STA",
           "region": "RLD",
-          "latitude": 0.0,
+          "latitude": 4.0,
           "longitude": 0.0
         }
       },
@@ -210,7 +210,7 @@
         "location": {
           "city": "Brest_KLA",
           "region": "RLD",
-          "latitude": 4.0,
+          "latitude": 0.0,
           "longitude": 0.0
         }
       },
@@ -222,8 +222,8 @@
         "location": {
           "city": "a",
           "region": "",
-          "latitude": 0,
-          "longitude": 0
+          "latitude": 6.0,
+          "longitude": 0.0
         }
       },
       "type": "Roadm"
@@ -234,8 +234,8 @@
         "location": {
           "city": "b",
           "region": "",
-          "latitude": 0,
-          "longitude": 0
+          "latitude": 5.0,
+          "longitude": 0.0
         }
       },
       "type": "Roadm"
@@ -246,8 +246,8 @@
         "location": {
           "city": "c",
           "region": "",
-          "latitude": 0,
-          "longitude": 0
+          "latitude": 6.0,
+          "longitude": 1.0
         }
       },
       "type": "Roadm"
@@ -258,8 +258,8 @@
         "location": {
           "city": "d",
           "region": "",
-          "latitude": 0,
-          "longitude": 0
+          "latitude": 6.0,
+          "longitude": 4.0
         }
       },
       "type": "Roadm"
@@ -270,8 +270,8 @@
         "location": {
           "city": "e",
           "region": "",
-          "latitude": 0,
-          "longitude": 0
+          "latitude": 5.0,
+          "longitude": 4.0
         }
       },
       "type": "Roadm"
@@ -282,8 +282,8 @@
         "location": {
           "city": "f",
           "region": "",
-          "latitude": 0,
-          "longitude": 0
+          "latitude": 5.0,
+          "longitude": 1.0
         }
       },
       "type": "Roadm"
@@ -294,8 +294,8 @@
         "location": {
           "city": "g",
           "region": "",
-          "latitude": 0,
-          "longitude": 0
+          "latitude": 5.0,
+          "longitude": 3.0
         }
       },
       "type": "Roadm"
@@ -306,8 +306,8 @@
         "location": {
           "city": "h",
           "region": "",
-          "latitude": 0,
-          "longitude": 0
+          "latitude": 5.0,
+          "longitude": 2.0
         }
       },
       "type": "Roadm"
@@ -342,7 +342,7 @@
         "location": {
           "city": "Morlaix",
           "region": "RLD",
-          "latitude": 3.0,
+          "latitude": 1.0,
           "longitude": 0.0
         }
       },
@@ -378,7 +378,7 @@
         "location": {
           "city": "Morlaix",
           "region": "RLD",
-          "latitude": 3.0,
+          "latitude": 1.0,
           "longitude": 0.0
         }
       },
@@ -460,7 +460,7 @@
       "uid": "fiber (Lannion_CAS → Stbrieuc)-F056",
       "metadata": {
         "location": {
-          "latitude": 1.5,
+          "latitude": 2.5,
           "longitude": 0.0
         }
       },
@@ -478,7 +478,7 @@
       "uid": "fiber (Stbrieuc → Rennes_STA)-F057",
       "metadata": {
         "location": {
-          "latitude": 0.5,
+          "latitude": 3.5,
           "longitude": 0.0
         }
       },
@@ -496,7 +496,7 @@
       "uid": "fiber (Lannion_CAS → Morlaix)-F059",
       "metadata": {
         "location": {
-          "latitude": 2.5,
+          "latitude": 1.5,
           "longitude": 0.0
         }
       },
@@ -514,7 +514,7 @@
       "uid": "fiber (Morlaix → Brest_KLA)-F060",
       "metadata": {
         "location": {
-          "latitude": 3.5,
+          "latitude": 0.5,
           "longitude": 0.0
         }
       },
@@ -532,8 +532,8 @@
       "uid": "fiber (Brest_KLA → Quimper)-",
       "metadata": {
         "location": {
-          "latitude": 2.5,
-          "longitude": 0.5
+          "latitude": 0.0,
+          "longitude": 1.5
         }
       },
       "type": "Fiber",
@@ -550,8 +550,8 @@
       "uid": "fiber (Quimper → Lorient_KMA)-",
       "metadata": {
         "location": {
-          "latitude": 1.5,
-          "longitude": 2.0
+          "latitude": 1.0,
+          "longitude": 3.0
         }
       },
       "type": "Fiber",
@@ -568,8 +568,8 @@
       "uid": "fiber (Ploermel → Vannes_KBE)-",
       "metadata": {
         "location": {
-          "latitude": 1.5,
-          "longitude": 3.0
+          "latitude": 3.0,
+          "longitude": 4.0
         }
       },
       "type": "Fiber",
@@ -586,8 +586,8 @@
       "uid": "fiber (Ploermel → Rennes_STA)-",
       "metadata": {
         "location": {
-          "latitude": 0.5,
-          "longitude": 1.0
+          "latitude": 4.0,
+          "longitude": 2.0
         }
       },
       "type": "Fiber",
@@ -604,7 +604,7 @@
       "uid": "fiber (a → b)-",
       "metadata": {
         "location": {
-          "latitude": 0.0,
+          "latitude": 5.5,
           "longitude": 0.0
         }
       },
@@ -622,8 +622,8 @@
       "uid": "fiber (a → c)-",
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0
+          "latitude": 6.0,
+          "longitude": 0.5
         }
       },
       "type": "Fiber",
@@ -640,8 +640,8 @@
       "uid": "fiber (c → d)-",
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0
+          "latitude": 6.0,
+          "longitude": 2.5
         }
       },
       "type": "Fiber",
@@ -658,8 +658,8 @@
       "uid": "fiber (c → f)-",
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0
+          "latitude": 5.5,
+          "longitude": 1.0
         }
       },
       "type": "Fiber",
@@ -676,8 +676,8 @@
       "uid": "fiber (b → f)-",
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0
+          "latitude": 5.0,
+          "longitude": 0.5
         }
       },
       "type": "Fiber",
@@ -694,8 +694,8 @@
       "uid": "fiber (e → d)-",
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0
+          "latitude": 5.5,
+          "longitude": 4.0
         }
       },
       "type": "Fiber",
@@ -712,8 +712,8 @@
       "uid": "fiber (e → g)-",
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0
+          "latitude": 5.0,
+          "longitude": 3.5
         }
       },
       "type": "Fiber",
@@ -730,8 +730,8 @@
       "uid": "fiber (f → h)-",
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0
+          "latitude": 5.0,
+          "longitude": 1.5
         }
       },
       "type": "Fiber",
@@ -748,8 +748,8 @@
       "uid": "fiber (h → g)-",
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0
+          "latitude": 5.0,
+          "longitude": 2.5
         }
       },
       "type": "Fiber",
@@ -838,7 +838,7 @@
       "uid": "fiber (Stbrieuc → Lannion_CAS)-F056",
       "metadata": {
         "location": {
-          "latitude": 1.5,
+          "latitude": 2.5,
           "longitude": 0.0
         }
       },
@@ -856,7 +856,7 @@
       "uid": "fiber (Rennes_STA → Stbrieuc)-F057",
       "metadata": {
         "location": {
-          "latitude": 0.5,
+          "latitude": 3.5,
           "longitude": 0.0
         }
       },
@@ -874,7 +874,7 @@
       "uid": "fiber (Morlaix → Lannion_CAS)-F059",
       "metadata": {
         "location": {
-          "latitude": 2.5,
+          "latitude": 1.5,
           "longitude": 0.0
         }
       },
@@ -892,7 +892,7 @@
       "uid": "fiber (Brest_KLA → Morlaix)-F060",
       "metadata": {
         "location": {
-          "latitude": 3.5,
+          "latitude": 0.5,
           "longitude": 0.0
         }
       },
@@ -910,8 +910,8 @@
       "uid": "fiber (Quimper → Brest_KLA)-",
       "metadata": {
         "location": {
-          "latitude": 2.5,
-          "longitude": 0.5
+          "latitude": 0.0,
+          "longitude": 1.5
         }
       },
       "type": "Fiber",
@@ -928,8 +928,8 @@
       "uid": "fiber (Lorient_KMA → Quimper)-",
       "metadata": {
         "location": {
-          "latitude": 1.5,
-          "longitude": 2.0
+          "latitude": 1.0,
+          "longitude": 3.0
         }
       },
       "type": "Fiber",
@@ -946,8 +946,8 @@
       "uid": "fiber (Vannes_KBE → Ploermel)-",
       "metadata": {
         "location": {
-          "latitude": 1.5,
-          "longitude": 3.0
+          "latitude": 3.0,
+          "longitude": 4.0
         }
       },
       "type": "Fiber",
@@ -964,8 +964,8 @@
       "uid": "fiber (Rennes_STA → Ploermel)-",
       "metadata": {
         "location": {
-          "latitude": 0.5,
-          "longitude": 1.0
+          "latitude": 4.0,
+          "longitude": 2.0
         }
       },
       "type": "Fiber",
@@ -982,7 +982,7 @@
       "uid": "fiber (b → a)-",
       "metadata": {
         "location": {
-          "latitude": 0.0,
+          "latitude": 5.5,
           "longitude": 0.0
         }
       },
@@ -1000,8 +1000,8 @@
       "uid": "fiber (c → a)-",
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0
+          "latitude": 6.0,
+          "longitude": 0.5
         }
       },
       "type": "Fiber",
@@ -1018,8 +1018,8 @@
       "uid": "fiber (d → c)-",
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0
+          "latitude": 6.0,
+          "longitude": 2.5
         }
       },
       "type": "Fiber",
@@ -1036,8 +1036,8 @@
       "uid": "fiber (f → c)-",
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0
+          "latitude": 5.5,
+          "longitude": 1.0
         }
       },
       "type": "Fiber",
@@ -1054,8 +1054,8 @@
       "uid": "fiber (f → b)-",
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0
+          "latitude": 5.0,
+          "longitude": 0.5
         }
       },
       "type": "Fiber",
@@ -1072,8 +1072,8 @@
       "uid": "fiber (d → e)-",
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0
+          "latitude": 5.5,
+          "longitude": 4.0
         }
       },
       "type": "Fiber",
@@ -1090,8 +1090,8 @@
       "uid": "fiber (g → e)-",
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0
+          "latitude": 5.0,
+          "longitude": 3.5
         }
       },
       "type": "Fiber",
@@ -1108,8 +1108,8 @@
       "uid": "fiber (h → f)-",
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0
+          "latitude": 5.0,
+          "longitude": 1.5
         }
       },
       "type": "Fiber",
@@ -1126,8 +1126,8 @@
       "uid": "fiber (g → h)-",
       "metadata": {
         "location": {
-          "latitude": 0.0,
-          "longitude": 0.0
+          "latitude": 5.0,
+          "longitude": 2.5
         }
       },
       "type": "Fiber",
@@ -1179,25 +1179,6 @@
       }
     },
     {
-      "uid": "east edfa in Stbrieuc to Rennes_STA",
-      "metadata": {
-        "location": {
-          "city": "Stbrieuc",
-          "region": "RLD",
-          "latitude": 1.0,
-          "longitude": 0.0
-        }
-      },
-      "type": "Edfa",
-      "type_variety": "std_medium_gain",
-      "operational": {
-        "gain_target": 18.5,
-        "delta_p": null,
-        "tilt_target": 0,
-        "out_voa": null
-      }
-    },
-    {
       "uid": "east edfa in Lannion_CAS to Morlaix",
       "metadata": {
         "location": {
@@ -1217,12 +1198,31 @@
       }
     },
     {
+      "uid": "east edfa in Stbrieuc to Rennes_STA",
+      "metadata": {
+        "location": {
+          "city": "Stbrieuc",
+          "region": "RLD",
+          "latitude": 3.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_medium_gain",
+      "operational": {
+        "gain_target": 18.5,
+        "delta_p": null,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
       "uid": "east edfa in Brest_KLA to Quimper",
       "metadata": {
         "location": {
           "city": "Brest_KLA",
           "region": "RLD",
-          "latitude": 4.0,
+          "latitude": 0.0,
           "longitude": 0.0
         }
       },
@@ -1241,8 +1241,8 @@
         "location": {
           "city": "Ploermel",
           "region": "RLD",
-          "latitude": 1.0,
-          "longitude": 2.0
+          "latitude": 4.0,
+          "longitude": 4.0
         }
       },
       "type": "Edfa",
@@ -1287,25 +1287,6 @@
       "type_variety": "std_low_gain",
       "operational": {
         "gain_target": null,
-        "delta_p": null,
-        "tilt_target": 0,
-        "out_voa": null
-      }
-    },
-    {
-      "uid": "west edfa in Quimper to Lorient_KMA",
-      "metadata": {
-        "location": {
-          "city": "Quimper",
-          "region": "RLD",
-          "latitude": 1.0,
-          "longitude": 1.0
-        }
-      },
-      "type": "Edfa",
-      "type_variety": "std_low_gain",
-      "operational": {
-        "gain_target": 19.0,
         "delta_p": null,
         "tilt_target": 0,
         "out_voa": null
@@ -1499,10 +1480,6 @@
     },
     {
       "from_node": "fiber (Lorient_KMA → Quimper)-",
-      "to_node": "west edfa in Quimper to Lorient_KMA"
-    },
-    {
-      "from_node": "west edfa in Quimper to Lorient_KMA",
       "to_node": "fiber (Quimper → Brest_KLA)-"
     },
     {
