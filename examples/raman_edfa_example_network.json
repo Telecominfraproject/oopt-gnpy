@@ -21,12 +21,12 @@
           {
             "power": 200e-3,
             "frequency": 200e12,
-            "propagation_direction": -1
+            "propagation_direction": "counterprop"
           },
           {
             "power": 150e-3,
             "frequency": 201e12,
-            "propagation_direction": -1
+            "propagation_direction": "counterprop"
           }
         ]
       },
