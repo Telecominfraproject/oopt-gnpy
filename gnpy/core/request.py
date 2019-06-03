@@ -81,9 +81,9 @@ class Path_request:
                             f'baud_rate:\t{temp} Gbaud',
                             f'bit_rate:\t{temp2} Gb/s',
                             f'spacing:\t{self.spacing * 1e-9} GHz',
-                            f'power:  \t{round(lin2db(self.power)+30,2)} dBm',
+                            f'power:  \t{round(lin2db(self.power)+30, 2)} dBm',
                             f'nb channels: \t{self.nb_channel}',
-                            f'path_bandwidth: \t{round(self.path_bandwidth * 1e-9,2)} Gbit/s',
+                            f'path_bandwidth: \t{round(self.path_bandwidth * 1e-9, 2)} Gbit/s',
                             f'nodes-list:\t{self.nodes_list}',
                             f'loose-list:\t{self.loose_list}'
                             '\n'])
@@ -97,16 +97,16 @@ class Disjunction:
         self.disjunctions_req = params.disjunctions_req
         
     def __str__(self):
-        return '\n\t'.join([f'relaxable:    {self.relaxable}',
-                            f'link-diverse:       {self.link_diverse}',
+        return '\n\t'.join([f'relaxable:     {self.relaxable}',
+                            f'link-diverse:  {self.link_diverse}',
                             f'node-diverse:  {self.node_diverse}',
                             f'request-id-numbers: {self.disjunctions_req}']
                             )
     def __repr__(self):
         return '\n\t'.join([  f'{type(self).__name__} {self.disjunction_id}',
                             f'relaxable:    {self.relaxable}',
-                            f'link-diverse:       {self.link_diverse}',
-                            f'node-diverse:  {self.node_diverse}',
+                            f'link-diverse: {self.link_diverse}',
+                            f'node-diverse: {self.node_diverse}',
                             f'request-id-numbers: {self.disjunctions_req}'
                             '\n'])
 
@@ -125,7 +125,7 @@ class Result_element(Element):
                    }
         else:
             index = 0
-            pro_list = [] 
+            pro_list = []
             for n in self.computed_path :
                 temp = {
                     'path-route-object': {
@@ -137,7 +137,7 @@ class Result_element(Element):
                             }
                         }
                     }
-                pro_list.append(temp) 
+                pro_list.append(temp)
                 index += 1
                 if isinstance(n, Transceiver) :
                     temp = {
@@ -149,7 +149,7 @@ class Result_element(Element):
                                 }
                             }
                         }
-                    pro_list.append(temp) 
+                    pro_list.append(temp)
                     index += 1
 
             response = {
