@@ -1,0 +1,111 @@
+module gnpy-eqpt-config {
+  yang-version 1.1;
+  namespace "gnpy:gnpy-eqpt-config";
+  // replace with namespace when determined
+
+  prefix "gnpyeqpt";
+
+  organization
+    "Telecom Infra Project OOPT PSE
+     Working Group";
+
+  contact
+    "WG Web:   <https://github.com/Telecominfraproject/oopt-gnpy>
+     WG List:  <mailto:xxx>
+
+     WG Chair: xxx
+               <mailto:xxx>
+
+   ";
+
+  description "Base YANG model for gnpy equipment library input for path computation";
+
+  revision "2018-11-19" {
+    description "first draft";
+    reference "Base YANG model for equipment library input for path computation with gnpy";
+  }
+
+  /*
+   * Identities
+   */
+
+  identity edfa-variety {
+    description "edfa variety";
+  }
+
+  identity fiber-variety {
+    description "base identity for fiber variety";
+  }
+
+  identity transceiver-variety {
+    description "base identity for transceiver variety";
+  }
+
+   /*
+   * Typedef
+   */
+    
+
+  
+
+  /*
+   *Groupings
+   */
+
+
+   /*
+    * main
+    */
+
+
+  list Edfa {
+    key type_variety;
+    leaf type_variety {
+      type identityref{
+        base edfa-variety ;
+      }
+      description "a unique name to ID the amplifier in the JSON/Excel template topology input file";
+    }
+  }
+  
+
+  list Fiber {
+    key type_variety ;
+    leaf type_variety {
+      type identityref{
+        base fiber-variety ;
+      }
+      description "a unique name to ID the fiber in the JSON or Excel template topology input file";
+    }
+  }
+
+  list Transceiver{
+    key type_variety ;
+    leaf type_variety {
+      type identityref{
+        base transceiver-variety ;
+      }
+      description "a unique name to ID the transceiver in the JSON or Excel template topology input file";
+    }
+    list mode {
+      key format ;
+      leaf format {
+        type string ;
+        description "unique name of the mode";
+      }
+    }
+  }
+
+  container Spans {
+    
+  }
+
+  container Roadms {
+    
+  }
+
+  container SI {
+    
+  }
+}
+  

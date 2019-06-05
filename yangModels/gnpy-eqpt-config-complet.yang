@@ -1,0 +1,289 @@
+module gnpy-eqpt-config {
+  yang-version 1.1;
+  namespace "gnpy:gnpy-eqpt-config";
+  // replace with namespace when determined
+
+  prefix "gnpyeqpt";
+
+  organization
+    "Telecom Infra Project OOPT PSE
+     Working Group";
+
+  contact
+    "WG Web:   <https://github.com/Telecominfraproject/oopt-gnpy>
+     WG List:  <mailto:xxx>
+
+     WG Chair: xxx
+               <mailto:xxx>
+
+   ";
+
+  description "YANG model for gnpy equipment library input for path computation";
+
+  revision "2019-06-06" {
+    description "first draft
+    minor formatting changes";
+    reference "YANG model for equipment library input for path computation with gnpy";
+  }
+
+  /*
+   * Identities
+   */
+
+  identity edfa-type-def {
+    description "base identity for variable gain and fixed gain";
+  }
+
+  identity variable-gain {
+    base edfa-type-def;
+    description "'variable_gain' is a simplified model simulating a 2-coil 
+      EDFA with internal, input and output VOAs. The NF vs gain response is 
+      calculated accordingly based on the input parameters: nf_min, nf_max, 
+      and gain_flatmax. It is not a simple interpolation but a 2-stage NF calculation.";
+  }
+
+  identity fixed-gain {
+    base edfa-type-def;
+    description 
+      "'fixed_gain' is a fixed gain model. 
+       NF == Cte == nf0 if gain_min < gain < gain_flatmax";
+  }
+
+  identity fiber-variety {
+    description "base identity for fiber variety";
+  }
+
+  identity SSMF {
+    base fiber-variety;
+  }
+
+  identity transceiver-variety {
+    description "base identity for transceiver variety";
+  }
+
+  identity Voyager {
+    base transceiver-variety;
+  }
+  
+   /*
+   * Typedef
+   */
+    
+
+  
+
+  /*
+   *Groupings
+   */
+
+  grouping variable-gain {
+    leaf nf_min {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units dB;
+    }
+    leaf nf_max {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units dB;
+    }
+    leaf out_voa_auto {
+      type boolean;
+      description "auto_design feature to optimize the amplifier output VOA. If true,
+        output VOA is present and will be used to push amplifier gain to its maximum,
+        within EOL power margins.";
+    }
+  }
+
+  grouping fixed-gain {
+    leaf nf0 {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units dB;
+    }
+  }
+
+  grouping no-type-def {
+
+    leaf advanced_config_from_json {
+      type string;
+      description 
+        "filename with json edfa";
+      
+    }
+  }
+  
+
+  grouping openroadm {
+    leaf-list nf_coef {
+      type decimal64 {
+        fraction-digits 5;
+      }
+      //default [8.1e-4,6.142e-2,1.558,19.97];
+    }
+  }
+
+  list Edfa {
+    key type_variety;
+    leaf type_variety {
+      /*type identityref {
+        base edfa-variety;
+      }*/
+      type string;
+      description 
+        "a unique name to ID the amplifier in the JSON/Excel template topology 
+         input file";
+    }
+    leaf allowed_for_design {
+      type boolean;
+      description 
+        "If false, the amplifier will not be picked by auto-design but 
+         it can still be used as a manual input (from JSON or Excel template 
+         topology files.)";
+    }
+
+    leaf type_def {
+      type identityref {
+        base edfa-type-def;
+      }
+    }
+
+    leaf gain_flatmax {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units dB;
+    }
+    leaf gain_min {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units dB;
+    }
+    leaf p_max {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units dBm;
+    }
+    choice type_of_model {
+      case variable-gain {
+        when "type_def = 'variable-gain'";
+        uses variable-gain;
+      }
+      case fixed-gain {
+        when "type_def = 'fixed-gain'";
+        uses fixed-gain;
+      }
+      case no-type-def {
+        when "type_def = 'no-type-def'";
+        uses no-type-def;
+      }
+      case openroadm {
+        when "type_def = 'openroadm'";
+        uses openroadm;
+      }
+
+    }
+  }
+  
+
+  list Fiber {
+    key type_variety;
+    leaf type_variety {
+      type identityref {
+        base fiber-variety;
+      }
+      description 
+        "a unique name to ID the fiber in the JSON or Excel template topology 
+         input file";
+    }
+    
+    leaf dispersion {
+      type decimal64 {
+        fraction-digits 8;
+      }
+      units s.m-1.m-1;
+    }
+    leaf gamma {
+      type decimal64 {
+        fraction-digits 8;
+      }
+      units w-2.m-1;
+      description "2pi.n2/(lambda*Aeff) (w-2.m-1)";
+    }
+    
+  }
+
+  list Transceiver {
+    key type_variety;
+    leaf type_variety {
+      type identityref {
+        base transceiver-variety;
+      }
+      description 
+        "a unique name to ID the transceiver in the JSON or Excel template topology 
+         input file";
+    }
+    container frequency {
+      leaf min {
+        type decimal64 {
+            fraction-digits 2;
+          }
+        units Hz;
+      }
+      leaf max {
+        type decimal64 {
+            fraction-digits 2;
+          }
+        units Hz;
+      }
+      description "Min/max frequency of transponder eg 191.35e12  and 196.1e12";
+    }
+    list mode {
+      key format;
+      leaf format {
+        type string;
+        description "unique name of the mode";
+      }
+      leaf baud_rate {
+        type decimal64 {
+            fraction-digits 2;
+          }
+        units baud;
+        description "baud_rate";
+      }
+      leaf OSNR {
+        type decimal64 {
+            fraction-digits 2;
+          }
+        units dB;
+        description "min required OSNR in 0.1nm (dB)";
+      }    
+      leaf bit_rate {
+        type decimal64 {
+            fraction-digits 2;
+          }
+        units bit/s;
+        description "bit rate";
+      }
+      leaf roll_off {
+        type decimal64 {
+            fraction-digits 2;
+          }
+        description "...";
+      }
+      leaf cost {
+        type decimal64 {
+            fraction-digits 2;
+          }
+        description "arbitrary unit";
+      }
+    }
+  }
+
+}
+  
