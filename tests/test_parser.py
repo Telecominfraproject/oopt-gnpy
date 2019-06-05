@@ -17,9 +17,11 @@ from gnpy.core.convert import convert_file
 from gnpy.core.service_sheet import convert_service_sheet
 from gnpy.core.equipment import load_equipment, automatic_nch
 from gnpy.core.network import load_network
+from gnpy.core.request import jsontocsv
 from pathlib import Path
 import filecmp
 from os import unlink
+from pandas import read_csv
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
@@ -150,3 +152,54 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
     assert not results.synchronizations.missing
     assert not results.synchronizations.extra
     assert not results.synchronizations.different
+
+# test xls answers creation
+@pytest.mark.parametrize('json_input, csv_output', {
+    DATA_DIR / 'testTopology_response.json':     DATA_DIR / 'testTopology_response',
+}.items())
+def test_csv_response_generation(json_input, csv_output):
+    """ tests if generated csv is consistant with expected generation
+        same columns (order not important)
+    """
+    with open(json_input) as jsonfile:
+        json_data = load(jsonfile)
+    equipment = load_equipment(eqpt_filename)
+    csv_filename = str(csv_output)+'.csv'
+    with open(csv_filename, 'w', encoding='utf-8') as fcsv:
+        jsontocsv(json_data, equipment, fcsv)
+
+    expected_csv_filename = str(csv_output)+'_expected.csv'
+
+    # expected header
+    # csv_header = \
+    # [
+    #  'response-id',
+    #  'source',
+    #  'destination',
+    #  'path_bandwidth',
+    #  'Pass?',
+    #  'nb of tsp pairs',
+    #  'total cost',
+    #  'transponder-type',
+    #  'transponder-mode',
+    #  'OSNR-0.1nm',
+    #  'SNR-0.1nm',
+    #  'SNR-bandwidth',
+    #  'baud rate (Gbaud)',
+    #  'input power (dBm)',
+    #  'path'
+    # ]
+
+    resp = read_csv(csv_filename)
+    unlink(csv_filename)
+    expected_resp = read_csv(expected_csv_filename)
+    resp_header = list(resp.head(0))
+    # check that headers are the same
+    assert resp_header == list(expected_resp.head(0))
+
+    # for each header checks that the output are as expected
+    resp.sort_values(by=['response-id'])
+    expected_resp.sort_values(by=['response-id'])
+
+    for column in expected_resp:
+        assert list(resp[column]) == list(expected_resp[column])
