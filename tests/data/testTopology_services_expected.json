@@ -159,6 +159,30 @@
           "path_bandwidth": 20000000000.0
         }
       }
+    },
+    {
+      "request-id": "6",
+      "source": "trx Lannion_CAS",
+      "destination": "trx a",
+      "src-tp-id": "trx Lannion_CAS",
+      "dst-tp-id": "trx a",
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "vendorA_trx-type1",
+          "trx_mode": "mode 2",
+          "effective-freq-slot": [
+            {
+              "N": "null",
+              "M": "null"
+            }
+          ],
+          "spacing": 75000000000.0,
+          "max-nb-of-channel": null,
+          "output-power": null,
+          "path_bandwidth": 100000000000.0
+        }
+      }
     }
   ],
   "synchronization": [

@@ -215,7 +215,9 @@ def test_csv_response_generation(json_input, csv_output):
     resp_header = list(resp.head(0))
     expected_resp_header = list(expected_resp.head(0))
     # check that headers are the same
-    if not resp_header.sort() == expected_resp_header.sort():
+    if resp_header.sort() != expected_resp_header.sort():
+        print(resp_header.sort())
+        print(expected_resp_header.sort())
         raise AssertionError('headers are differents')
 
     # for each header checks that the output are as expected
@@ -223,9 +225,11 @@ def test_csv_response_generation(json_input, csv_output):
     expected_resp.sort_values(by=['response-id'])
 
     for column in expected_resp:
-        if list(resp[column]) != list(expected_resp[column]):
+        if list(resp[column].fillna('')) != list(expected_resp[column].fillna('')):
+            print(list(resp[column]))
+            print(list(expected_resp[column]))
+            print(type(list(resp[column])[-1]))
             raise AssertionError('results are different')
-
 
 def compare_response(exp_resp, act_resp):
     """ False if the keys are different in the nested dicts as well
