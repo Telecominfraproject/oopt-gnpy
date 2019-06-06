@@ -9,12 +9,12 @@ This module contains the base class for a network element.
 
 Strictly, a network element is any callable which accepts an immutable
 .info.SpectralInformation object and returns a .info.SpectralInformation object
-(a copy.)
+(a copy).
 
 Network elements MUST implement two attributes .uid and .name representing a
 unique identifier and a printable name.
 
-This base class provides a mode convenient way to define a network element
+This base class provides a more convenient way to define a network element
 via subclassing.
 '''
 
