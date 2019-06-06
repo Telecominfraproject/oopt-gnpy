@@ -290,12 +290,12 @@ class Fiber(Node):
 
     @property
     def fiber_loss(self):
-        # dB fiber loss, not including padding attenuator
+        """Fiber loss in dB, not including padding attenuator"""
         return self.loss_coef * self.length + self.con_in + self.con_out
 
     @property
     def loss(self):
-        #total loss incluiding padding att_in: useful for polymorphism with roadm loss
+        """total loss including padding att_in: useful for polymorphism with roadm loss"""
         return self.loss_coef * self.length + self.con_in + self.con_out + self.att_in
 
     @property
@@ -320,8 +320,10 @@ class Fiber(Node):
 
     def carriers(self, loc, attr):
         """retrieve carriers information
-        loc = (in, out) of the class element
-        attr = (ase, nli, signal, total) power information"""
+
+        :param loc: (in, out) of the class element
+        :param attr: (ase, nli, signal, total) power information
+        """
         if not (loc in ('in', 'out') and attr in ('nli', 'signal', 'total', 'ase')):
             yield None
             return
@@ -338,11 +340,11 @@ class Fiber(Node):
                 yield c.power._asdict().get(attr, None)
 
     def beta2(self, ref_wavelength=None):
-        """ Returns beta2 from dispersion parameter.
+        """Returns beta2 from dispersion parameter.
         Dispersion is entered in ps/nm/km.
-        Disperion can be a numpy array or a single value.  If a
-        value ref_wavelength is not entered 1550e-9m will be assumed.
-        ref_wavelength can be a numpy array.
+        Disperion can be a numpy array or a single value.
+
+        :param ref_wavelength: can be a numpy array; default: 1550e-9m
         """
         # TODO|jla: discuss beta2 as method or attribute
         wl = 1550e-9 if ref_wavelength is None else ref_wavelength
@@ -351,17 +353,15 @@ class Fiber(Node):
         return b2 # s/Hz/m
 
     def dbkm_2_lin(self):
-        """ calculates the linear loss coefficient
-        """
-        # alpha_pcoef is linear loss coefficient in dB/km^-1
-        # alpha_acoef is linear loss field amplitude coefficient in m^-1
+        """calculates the linear loss coefficient"""
+        # linear loss coefficient in dB/km^-1
         alpha_pcoef = self.loss_coef
+        # linear loss field amplitude coefficient in m^-1
         alpha_acoef = alpha_pcoef / (2 * 10 * log10(exp(1)))
         return alpha_pcoef, alpha_acoef
 
     def _psi(self, carrier, interfering_carrier):
-        """ Calculates eq. 123 from	arXiv:1209.0394.
-        """
+        """Calculates eq. 123 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__"""
         if carrier.num_chan == interfering_carrier.num_chan: # SCI
             psi = arcsinh(0.5 * pi**2 * self.asymptotic_length
                               * abs(self.beta2()) * carrier.baud_rate**2)
@@ -375,8 +375,9 @@ class Fiber(Node):
         return psi
 
     def _gn_analytic(self, carrier, *carriers):
-        """ Computes the nonlinear interference power on a single carrier.
-        The method uses eq. 120 from arXiv:1209.0394.
+        """Computes the nonlinear interference power on a single carrier.
+        The method uses eq. 120 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__.
+
         :param carrier: the signal under analysis
         :param carriers: the full WDM comb
         :return: carrier_nli: the amount of nonlinear interference in W on the under analysis
@@ -557,8 +558,10 @@ class Edfa(Node):
 
     def carriers(self, loc, attr):
         """retrieve carriers information
-        loc = (in, out) of the class element
-        attr = (ase, nli, signal, total) power information"""
+
+        :param loc: (in, out) of the class element
+        :param attr: (ase, nli, signal, total) power information
+        """
         if not (loc in ('in', 'out') and attr in ('nli', 'signal', 'total', 'ase')):
             yield None
             return
@@ -575,7 +578,7 @@ class Edfa(Node):
                 yield c.power._asdict().get(attr, None)
 
     def interpol_params(self, frequencies, pin, baud_rates, pref):
-        """interpolate SI channel frequencies with the edfa dgt and gain_ripple frquencies from json
+        """interpolate SI channel frequencies with the edfa dgt and gain_ripple frquencies from JSON
         set the edfa class __init__ None parameters :
                 self.channel_freq, self.nf, self.interpol_dgt and self.interpol_gain_ripple
         """
@@ -674,7 +677,7 @@ class Edfa(Node):
             return self.interpol_nf_ripple + nf_avg # input VOA = 1 for 1 NF degradation
 
     def noise_profile(self, df):
-        """ noise_profile(bw) computes amplifier ase (W) in signal bw (Hz)
+        """noise_profile(bw) computes amplifier ase (W) in signal bw (Hz)
         noise is calculated at amplifier input
 
         :bw: signal bandwidth = baud rate in Hz
@@ -829,7 +832,7 @@ class Edfa(Node):
         return g1st - voa + array(self.interpol_dgt) * dgts3
 
     def propagate(self, pref, *carriers):
-        """add ase noise to the propagating carriers of SpectralInformation"""
+        """add ASE noise to the propagating carriers of SpectralInformation"""
         pin = array([c.power.signal+c.power.nli+c.power.ase for c in carriers]) # pin in W
         freq = array([c.frequency for c in carriers])
         brate = array([c.baud_rate for c in carriers])
