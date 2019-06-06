@@ -153,8 +153,8 @@ class Request_element(Element):
                 }
 
         if self.nodes_list:
-            req_dictionnary['explicit-route-objects'] = {} 
-            temp =  {'route-object-include-exclude' : [
+            req_dictionnary['explicit-route-objects'] = {}
+            temp = {'route-object-include-exclude' : [
                         {'explicit-route-usage': 'route-include-ero',
                         'index': self.nodes_list.index(node),
                         'num-unnum-hop': {
@@ -163,8 +163,8 @@ class Request_element(Element):
                             'hop-type': f'{self.loose}',
                             }
                         }
-                        for node in self.nodes_list ]
-                    }
+                        for node in self.nodes_list]
+                   }
             req_dictionnary['explicit-route-objects'] = temp
         if self.path_bandwidth is not None:
             req_dictionnary['path-constraints']['te-bandwidth']['path_bandwidth'] = self.path_bandwidth
