@@ -31,6 +31,7 @@ from itertools import chain
 from json import dumps
 from pathlib import Path
 from difflib import get_close_matches
+from gnpy.core.utils import silent_remove
 import time
 
 all_rows = lambda sh, start=0: (sh.row(x) for x in range(start, sh.nrows))
@@ -54,7 +55,9 @@ class Node(object):
         'region':       '',
         'latitude':     0,
         'longitude':    0,
-        'node_type':    'ILA'
+        'node_type':    'ILA',
+        'booster_restriction' : '',
+        'preamp_restriction'  : ''
     }
 
 class Link(object):
@@ -235,7 +238,6 @@ def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
 
 def convert_file(input_filename, names_matching=False, filter_region=[]):
     nodes, links, eqpts = parse_excel(input_filename)
-
     if filter_region:
         nodes = [n for n in nodes if n.region.lower() in filter_region]
         cities = {n.city for n in nodes}
@@ -244,10 +246,8 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
         cities = {lnk.from_city for lnk in links} | {lnk.to_city for lnk in links}
         nodes = [n for n in nodes if n.city in cities]
 
-
     global nodes_by_city
     nodes_by_city = {n.city: n for n in nodes}
-
     #create matching dictionary for node name mismatch analysis
 
     cities = {''.join(c.strip() for c in n.city.split('C+L')).lower(): n.city for n in nodes}
@@ -298,7 +298,22 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
                                         'latitude':  x.latitude,
                                         'longitude': x.longitude}},
               'type': 'Roadm'}
-             for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'] +
+             for x in nodes_by_city.values() if x.node_type.lower() == 'roadm' \
+                 and x.booster_restriction == '' and x.preamp_restriction == ''] +
+            [{'uid': f'roadm {x.city}',
+              'params' : {
+                'restrictions': {
+                  'preamp_variety_list': silent_remove(x.preamp_restriction.split(' | '),''),
+                  'booster_variety_list': silent_remove(x.booster_restriction.split(' | '),'')
+                  }
+              },
+              'metadata': {'location': {'city':      x.city,
+                                        'region':    x.region,
+                                        'latitude':  x.latitude,
+                                        'longitude': x.longitude}},
+              'type': 'Roadm'}
+             for x in nodes_by_city.values() if x.node_type.lower() == 'roadm' and \
+                 (x.booster_restriction != '' or x.preamp_restriction != '')] +
             [{'uid': f'west fused spans in {x.city}',
               'metadata': {'location': {'city':      x.city,
                                         'region':    x.region,
@@ -348,8 +363,9 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
                               'delta_p':     e.east_amp_dp,
                               'tilt_target': e.east_tilt,
                               'out_voa'    : e.east_att_out}
-            }
-             for e in eqpts if e.east_amp_type.lower() != ''] +
+             }
+             for e in eqpts if (e.east_amp_type.lower() != '' and \
+                                e.east_amp_type.lower() != 'fused')] +
             [{'uid': f'west edfa in {e.from_city} to {e.to_city}',
               'metadata': {'location': {'city':      nodes_by_city[e.from_city].city,
                                         'region':    nodes_by_city[e.from_city].region,
@@ -361,8 +377,31 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
                               'delta_p':     e.west_amp_dp,
                               'tilt_target': e.west_tilt,
                               'out_voa'    : e.west_att_out}
-              }
-             for e in eqpts if e.west_amp_type.lower() != ''],
+             }
+             for e in eqpts if (e.west_amp_type.lower() != '' and \
+                                e.west_amp_type.lower() != 'fused')] +
+            # fused edfa variety is a hack to indicate that there should not be
+            # booster amplifier out the roadm.
+            # If user specifies ILA in Nodes sheet and fused in Eqpt sheet, then assumes that
+            # this is a fused nodes.
+            [{'uid': f'east edfa in {e.from_city} to {e.to_city}',
+              'metadata': {'location': {'city':      nodes_by_city[e.from_city].city,
+                                        'region':    nodes_by_city[e.from_city].region,
+                                        'latitude':  nodes_by_city[e.from_city].latitude,
+                                        'longitude': nodes_by_city[e.from_city].longitude}},
+              'type': 'Fused',
+              'params': {'loss': 0}
+             }
+             for e in eqpts if e.east_amp_type.lower() == 'fused'] +
+            [{'uid': f'west edfa in {e.from_city} to {e.to_city}',
+              'metadata': {'location': {'city':      nodes_by_city[e.from_city].city,
+                                        'region':    nodes_by_city[e.from_city].region,
+                                        'latitude':  nodes_by_city[e.from_city].latitude,
+                                        'longitude': nodes_by_city[e.from_city].longitude}},
+              'type': 'Fused',
+              'params': {'loss': 0}
+             }
+             for e in eqpts if e.west_amp_type.lower() == 'fused'],
         'connections':
             list(chain.from_iterable([eqpt_connection_by_city(n.city)
             for n in nodes]))
@@ -414,7 +453,9 @@ def parse_excel(input_filename):
         'Region':       'region',
         'Latitude':     'latitude',
         'Longitude':    'longitude',
-        'Type':         'node_type'
+        'Type':         'node_type',
+        'Booster_restriction': 'booster_restriction',
+        'Preamp_restriction': 'preamp_restriction'
     }
     eqpt_headers = \
     {  'Node A': 'from_city',
@@ -571,7 +612,7 @@ def midpoint(city_a, city_b):
 #output_json_file_name = 'coronet_conus_example.json'
 #TODO get column size automatically from tupple size
 
-NODES_COLUMN = 8
+NODES_COLUMN = 10
 NODES_LINE = 4
 LINKS_COLUMN = 16
 LINKS_LINE = 3

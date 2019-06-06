@@ -177,8 +177,8 @@
             "target_pch_out_db": -20,
             "add_drop_osnr": 38,
             "restrictions": {
-                            "preamp_variety_list":["low_gain_preamp", "high_gain_preamp"],
-                            "booster_variety_list":["std_booster"]
+                            "preamp_variety_list":[],
+                            "booster_variety_list":[]
                             }            
             }],
       "SI":[{

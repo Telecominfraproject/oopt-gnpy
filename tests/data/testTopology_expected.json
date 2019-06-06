@@ -218,6 +218,14 @@
     },
     {
       "uid": "roadm a",
+      "params": {
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": [
+            "std_booster"
+          ]
+        }
+      },
       "metadata": {
         "location": {
           "city": "a",
@@ -230,6 +238,14 @@
     },
     {
       "uid": "roadm b",
+      "params": {
+        "restrictions": {
+          "preamp_variety_list": [
+            "std_low_gain"
+          ],
+          "booster_variety_list": []
+        }
+      },
       "metadata": {
         "location": {
           "city": "b",
@@ -647,7 +663,7 @@
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
-        "length": 50.0,
+        "length": 10.0,
         "length_units": "km",
         "loss_coef": 0.2,
         "con_in": null,
@@ -1025,7 +1041,7 @@
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
-        "length": 50.0,
+        "length": 10.0,
         "length_units": "km",
         "loss_coef": 0.2,
         "con_in": null,
@@ -1291,6 +1307,21 @@
         "tilt_target": 0,
         "out_voa": null
       }
+    },
+    {
+      "uid": "east edfa in c to d",
+      "metadata": {
+        "location": {
+          "city": "c",
+          "region": "",
+          "latitude": 6.0,
+          "longitude": 1.0
+        }
+      },
+      "type": "Fused",
+      "params": {
+        "loss": 0
+      }
     }
   ],
   "connections": [
@@ -1536,6 +1567,10 @@
     },
     {
       "from_node": "roadm c",
+      "to_node": "east edfa in c to d"
+    },
+    {
+      "from_node": "east edfa in c to d",
       "to_node": "fiber (c → d)-"
     },
     {

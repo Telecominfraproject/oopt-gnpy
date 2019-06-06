@@ -27,14 +27,14 @@ Model_dual_stage = namedtuple('Model_dual_stage', 'preamp_variety booster_variet
 
 class common:
     def update_attr(self, default_values, kwargs, name):
-        clean_kwargs = {k:v for k,v in kwargs.items() if v !=''}
-        for k,v in default_values.items():
-            setattr(self, k, clean_kwargs.get(k,v))
-            if k not in clean_kwargs and name != 'Amp' :
+        clean_kwargs = {k:v for k, v in kwargs.items() if v != ''}
+        for k, v in default_values.items():
+            setattr(self, k, clean_kwargs.get(k, v))
+            if k not in clean_kwargs and name != 'Amp':
                 print(f'\x1b[1;31;40m'+
-                    f'\n WARNING missing {k} attribute in eqpt_config.json[{name}]'
-                    f'\n default value is {k} = {v}'
-                    + '\x1b[0m')
+                      f'\n WARNING missing {k} attribute in eqpt_config.json[{name}]'+
+                      f'\n default value is {k} = {v}'+
+                      f'\x1b[0m')
                 time.sleep(1)
 
 class SI(common):
@@ -42,13 +42,13 @@ class SI(common):
     {
         "f_min":            191.35e12,
         "f_max":            196.1e12,
-        "baud_rate":        32e9,        
+        "baud_rate":        32e9,
         "spacing":          50e9,
         "power_dbm":        0,
-        "power_range_db":   [0,0,0.5],
+        "power_range_db":   [0, 0, 0.5],
         "roll_off":         0.15,
         "tx_osnr":          45,
-        "sys_margins":      0    
+        "sys_margins":      0
     }
 
     def __init__(self, **kwargs):
@@ -69,7 +69,7 @@ class Span(common):
         'con_in':                           0,
         'con_out':                          0
     }
-    
+
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Span')
 
@@ -77,8 +77,12 @@ class Roadm(common):
     default_values = \
     {
         'target_pch_out_db':   -17,
-        'add_drop_osnr':       100
-    }    
+        'add_drop_osnr':       100,
+        'restrictions': {
+            'preamp_variety_list':[],
+            'booster_variety_list':[]
+            }
+    }
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Roadm')
@@ -134,7 +138,7 @@ class Amp(common):
         config = Path(filename).parent / 'default_edfa_config.json'
 
         type_variety = kwargs['type_variety']
-        type_def = kwargs.get('type_def', 'variable_gain') #default compatibility with older json eqpt files
+        type_def = kwargs.get('type_def', 'variable_gain') # default compatibility with older json eqpt files
         nf_def = None
         dual_stage_def = None
 
@@ -180,7 +184,7 @@ class Amp(common):
         with open(config, encoding='utf-8') as f:
             json_data = load(f)
 
-        return cls(**{**kwargs, **json_data, 
+        return cls(**{**kwargs, **json_data,
             'nf_model': nf_def, 'dual_stage_model': dual_stage_def})
 
 
@@ -247,7 +251,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
     """return the trx and SI parameters from eqpt_config for a given type_variety and mode (ie format)"""
     trx_params = {}
     default_si_data = equipment['SI']['default']
-    
+
     try:
         trxs = equipment['Transceiver']
         #if called from path_requests_run.py, trx_mode is filled with None when not specified by user
@@ -264,14 +268,14 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
                     f'has baud rate: {trx_params["baud_rate"]*1e-9} GHz greater than min_spacing {trx_params["min_spacing"]*1e-9}.')
         else:
             mode_params = {"format": "undetermined",
-                       "baud_rate": None,
-                       "OSNR": None,
-                       "bit_rate": None,
-                       "roll_off": None,
-                       "tx_osnr":None,
-                       "min_spacing":None,
-                       "cost":None}
-            trx_params = {**mode_params} 
+                           "baud_rate": None,
+                           "OSNR": None,
+                           "bit_rate": None,
+                           "roll_off": None,
+                           "tx_osnr":None,
+                           "min_spacing":None,
+                           "cost":None}
+            trx_params = {**mode_params}
         trx_params['f_min'] = equipment['Transceiver'][trx_type_variety].frequency['min']
         trx_params['f_max'] = equipment['Transceiver'][trx_type_variety].frequency['max']
 
@@ -298,7 +302,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             nch = automatic_nch(trx_params['f_min'], trx_params['f_max'], trx_params['spacing'])
             trx_params['nb_channel'] = nch
             print(f'There are {nch} channels propagating')
-                
+
     trx_params['power'] =  db2lin(default_si_data.power_dbm)*1e-3
 
     return trx_params
@@ -306,8 +310,8 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
 def automatic_spacing(baud_rate):
     """return the min possible channel spacing for a given baud rate"""
     # TODO : this should parametrized in a cfg file
-    spacing_list = [(33e9,37.5e9), (38e9,50e9), (50e9,62.5e9), (67e9,75e9), (92e9,100e9)] #list of possible tuples
-                                                #[(max_baud_rate, spacing_for_this_baud_rate)]
+    # list of possible tuples [(max_baud_rate, spacing_for_this_baud_rate)]
+    spacing_list = [(33e9, 37.5e9), (38e9, 50e9), (50e9, 62.5e9), (67e9, 75e9), (92e9, 100e9)]
     return min((s[1] for s in spacing_list if s[0] > baud_rate), default=baud_rate*1.2)
 
 def automatic_nch(f_min, f_max, spacing):
@@ -333,17 +337,27 @@ def update_dual_stage(equipment):
         if edfa.type_def == 'dual_stage':
             edfa_preamp = edfa_dict[edfa.dual_stage_model.preamp_variety]
             edfa_booster = edfa_dict[edfa.dual_stage_model.booster_variety]
-            for k,v in edfa_preamp.__dict__.items():
-                attr_k = 'preamp_'+k
-                setattr(edfa, attr_k, v)
-            for k,v in edfa_booster.__dict__.items():
-                attr_k = 'booster_'+k
-                setattr(edfa, attr_k, v)           
+            for key, value in edfa_preamp.__dict__.items():
+                attr_k = 'preamp_' + key
+                setattr(edfa, attr_k, value)
+            for key, value in edfa_booster.__dict__.items():
+                attr_k = 'booster_' + key
+                setattr(edfa, attr_k, value)
             edfa.p_max = edfa_booster.p_max
             edfa.gain_flatmax = edfa_booster.gain_flatmax + edfa_preamp.gain_flatmax
             if edfa.gain_min < edfa_preamp.gain_min:
                 raise EquipmentConfigError(f'Dual stage {edfa.type_variety} min gain is lower than its preamp min gain')
     return equipment
+
+def roadm_restrictions_sanity_check(equipment):
+    """ verifies that booster and preamp restrictions specified in roadm equipment are listed
+    in the edfa.
+    """
+    restrictions = equipment['Roadm']['default'].restrictions['booster_variety_list'] + \
+        equipment['Roadm']['default'].restrictions['preamp_variety_list']
+    for amp_name in restrictions:
+        if amp_name not in equipment['Edfa']:
+            raise EquipmentConfigError(f'ROADM restriction {amp_name} does not refer to a defined EDFA name')
 
 def equipment_from_json(json_data, filename):
     """build global dictionnary eqpt_library that stores all eqpt characteristics:
@@ -359,11 +373,12 @@ def equipment_from_json(json_data, filename):
         equipment[key] = {}
         typ = globals()[key]
         for entry in entries:
-            subkey = entry.get('type_variety', 'default')           
+            subkey = entry.get('type_variety', 'default')
             if key == 'Edfa':
                 equipment[key][subkey] = Amp.from_json(filename, **entry)
-            else:                
+            else:
                 equipment[key][subkey] = typ(**entry)
     equipment = update_trx_osnr(equipment)
     equipment = update_dual_stage(equipment)
+    roadm_restrictions_sanity_check(equipment)
     return equipment

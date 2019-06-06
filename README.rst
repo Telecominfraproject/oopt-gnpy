@@ -408,10 +408,15 @@ existing parameters:
 +--------------------------+-----------+---------------------------------------------+
 | ``add_drop_osnr``        | (number)  | OSNR contribution from the add/drop ports   |
 +--------------------------+-----------+---------------------------------------------+
-| ``restrictions``         | (strings) | Authorized type_variety of amplifier for    |
-|                          |           | booster or preamp.                          |
-|                          |           | Listed type_variety MUST be defined in the  |
-|                          |           | Edfa catalog.                               |
+| ``restrictions``         | (dict of  | If non-empty, keys ``preamp_variety_list``  |
+|                          |  strings) | and ``booster_variety_list`` represent      |
+|                          |           | list of ``type_variety`` amplifiers which   |
+|                          |           | are allowed for auto-design within ROADM's  |
+|                          |           | line degrees.                               |
+|                          |           |                                             |
+|                          |           | If no booster should be placed on a degree, |
+|                          |           | insert a ``Fused`` node on the degree       |
+|                          |           | output.                                     |
 +--------------------------+-----------+---------------------------------------------+
 
 The ``SpectralInformation`` object can be configured as follows. The user can

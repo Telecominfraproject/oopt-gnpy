@@ -117,7 +117,7 @@ class Transceiver(Node):
         self._calc_snr(spectral_info)
         return spectral_info
 
-RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr')
+RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr restrictions')
 
 class Roadm(Node):
     def __init__(self, *args, params, **kwargs):
@@ -126,15 +126,19 @@ class Roadm(Node):
         self.effective_loss = None
         self.effective_pch_out_db = self.params.target_pch_out_db
         self.passive = True
+        self.restrictions = self.params.restrictions
 
     @property
     def to_json(self):
         return {'uid'       : self.uid,
                 'type'      : type(self).__name__,
-                'params'    : {'target_pch_out_db' : self.effective_pch_out_db},
+                'params'    : {
+                    'target_pch_out_db' : self.effective_pch_out_db,
+                    'restrictions'      : self.restrictions
+                    },
                 'metadata'      : {
                     'location': self.metadata['location']._asdict()
-                                    }
+                                }
                 }
 
     def __repr__(self):
@@ -186,6 +190,9 @@ class Fused(Node):
     def to_json(self):
         return {'uid'       : self.uid,
                 'type'      : type(self).__name__,
+                'params'    :{
+                    'loss': self.loss
+                },
                 'metadata'      : {
                     'location': self.metadata['location']._asdict()
                                     }
