@@ -476,12 +476,11 @@ class EdfaOperational:
                 f'tilt_target={self.tilt_target!r})')
 
 class Edfa(Node):
-    def __init__(self, *args, params={}, operational={}, **kwargs):
-        #TBC is this useful? put in comment for now:
-        #if params is None:
-        #    params = {}
-        #if operational is None:
-        #    operational = {}
+    def __init__(self, *args, params=None, operational=None, **kwargs):
+        if params is None:
+            params = {}
+        if operational is None:
+            operational = {}
         super().__init__(
             *args,
             params=EdfaParams(**params),

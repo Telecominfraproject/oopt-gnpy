@@ -26,10 +26,12 @@ class Location(namedtuple('Location', 'latitude longitude city region')):
         return super().__new__(cls, latitude, longitude, city, region)
 
 class Node:
-    def __init__(self, uid, name=None, params=None, metadata={'location':{}}, operational=None):
+    def __init__(self, uid, name=None, params=None, metadata=None, operational=None):
         if name is None:
             name = uid
         self.uid, self.name = uid, name
+        if metadata is None:
+            metadata = {'location': {}}
         if metadata and not isinstance(metadata.get('location'), Location):
             metadata['location'] = Location(**metadata.pop('location', {}))
         self.params, self.metadata, self.operational = params, metadata, operational
