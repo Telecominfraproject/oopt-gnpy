@@ -7,11 +7,11 @@ gnpy.core.elements
 
 This module contains standard network elements.
 
-A network element is a Python callable. It takes a .info.SpectralInformation
+A network element is a Python callable. It takes a :class:`.info.SpectralInformation`
 object and returns a copy with appropriate fields affected. This structure
 represents spectral information that is "propogated" by this network element.
 Network elements must have only a local "view" of the network and propogate
-SpectralInformation using only this information. They should be independent and
+:class:`.info.SpectralInformation` using only this information. They should be independent and
 self-contained.
 
 Network elements MUST implement two attributes .uid and .name representing a
@@ -832,7 +832,7 @@ class Edfa(Node):
         return g1st - voa + array(self.interpol_dgt) * dgts3
 
     def propagate(self, pref, *carriers):
-        """add ASE noise to the propagating carriers of SpectralInformation"""
+        """add ASE noise to the propagating carriers of :class:`.info.SpectralInformation`"""
         pin = array([c.power.signal+c.power.nli+c.power.ase for c in carriers]) # pin in W
         freq = array([c.frequency for c in carriers])
         brate = array([c.baud_rate for c in carriers])

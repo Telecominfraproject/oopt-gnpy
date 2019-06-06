@@ -8,7 +8,7 @@ gnpy.core.node
 This module contains the base class for a network element.
 
 Strictly, a network element is any callable which accepts an immutable
-.info.SpectralInformation object and returns a .info.SpectralInformation object
+:class:`.info.SpectralInformation` object and returns an :class:`.info.SpectralInformation` object
 (a copy).
 
 Network elements MUST implement two attributes .uid and .name representing a
