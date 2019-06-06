@@ -339,17 +339,16 @@ class Fiber(Node):
             else:
                 yield c.power._asdict().get(attr, None)
 
-    def beta2(self, ref_wavelength=None):
+    def beta2(self, ref_wavelength=1550e-9):
         """Returns beta2 from dispersion parameter.
         Dispersion is entered in ps/nm/km.
         Disperion can be a numpy array or a single value.
 
-        :param ref_wavelength: can be a numpy array; default: 1550e-9m
+        :param ref_wavelength: can be a numpy array; default: 1550nm
         """
         # TODO|jla: discuss beta2 as method or attribute
-        wl = 1550e-9 if ref_wavelength is None else ref_wavelength
         D = abs(self.dispersion)
-        b2 = (wl ** 2) * D / (2 * pi * c)  # 10^21 scales [ps^2/km]
+        b2 = (ref_wavelength ** 2) * D / (2 * pi * c)  # 10^21 scales [ps^2/km]
         return b2 # s/Hz/m
 
     def dbkm_2_lin(self):
