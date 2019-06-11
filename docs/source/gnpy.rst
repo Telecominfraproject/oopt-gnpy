@@ -12,6 +12,3 @@ Module contents
 ---------------
 
 .. automodule:: gnpy
-    :members:
-    :undoc-members:
-    :show-inheritance:
