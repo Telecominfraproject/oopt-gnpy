@@ -17,6 +17,7 @@
       "type": "RamanFiber",
       "type_variety": "SSMF",
       "operational": {
+        "temperature": 283,
         "raman_pumps": [
           {
             "power": 200e-3,
