@@ -44,6 +44,62 @@ class SimParams():
             self.raman_params = RamanParams(params=params['raman_parameters'])
             self.nli_params = NLIParams(params=params['nli_parameters'])
 
+fib_params = namedtuple('FiberParams', 'loss_coef length beta2 gamma raman_efficiency temperature')
+pump = namedtuple('RamanPump', 'power frequency propagation_direction')
+
+def propagate_raman_fiber(fiber, *carriers):
+    sim_params = fiber.sim_params
+    # apply input attenuation to carriers
+    attenuation_in = db2lin(fiber.con_in + fiber.att_in)
+    chan = []
+    for carrier in carriers:
+        pwr = carrier.power
+        pwr = pwr._replace(signal=pwr.signal / attenuation_in,
+                           nonlinear_interference=pwr.nli / attenuation_in,
+                           amplified_spontaneous_emission=pwr.ase / attenuation_in)
+        carrier = carrier._replace(power=pwr)
+        chan.append(carrier)
+    carriers = tuple(f for f in chan)
+
+    fiber_params = fib_params(loss_coef=2*fiber.dbkm_2_lin()[1], length=fiber.length, beta2=fiber.beta2(),
+                              gamma=fiber.gamma, raman_efficiency=fiber.params.raman_efficiency,
+                              temperature=fiber.operational['temperature'])
+    # evaluate fiber attenuation involving also SRS if required by sim_params
+    raman_params = fiber.sim_params.raman_params
+    if 'raman_pumps' in fiber.operational:
+        raman_pumps = tuple(pump(p['power'], p['frequency'], p['propagation_direction'])
+                            for p in fiber.operational['raman_pumps'])
+    else:
+        raman_pumps = None
+    if raman_params.flag_raman:
+        raman_solver = RamanSolver(raman_params=raman_params, fiber_params=fiber_params)
+        stimulated_raman_scattering = raman_solver.stimulated_raman_scattering(carriers=carriers,
+                                                                               raman_pumps=raman_pumps)
+        fiber_attenuation = (stimulated_raman_scattering.rho[:, -1])**-2
+    else:
+        fiber_attenuation = tuple(fiber.lin_attenuation for _ in carriers)
+
+    # evaluate Raman ASE noise if required by sim_params and if raman pumps are present
+    if raman_params.flag_raman and raman_pumps:
+        raman_ase = raman_solver.spontaneous_raman_scattering.power[:, -1]
+    else:
+        raman_ase = tuple(0 for _ in carriers)
+
+    # evaluate nli and propagate in fiber
+    attenuation_out = db2lin(fiber.con_out)
+    nli_params = fiber.sim_params.nli_params
+    nli_solver = NliSolver(nli_params=nli_params, fiber_params=fiber_params)
+    for carrier, attenuation, rmn_ase in zip(carriers, fiber_attenuation, raman_ase):
+        pwr = carrier.power
+        if carrier.channel_number in sim_params.list_of_channels_under_test:
+            carrier_nli = nli_solver.compute_nli(carrier, *carriers)
+        else:
+            carrier_nli = np.nan
+        pwr = pwr._replace(signal=pwr.signal/attenuation/attenuation_out,
+                           nonlinear_interference=(pwr.nli+carrier_nli)/attenuation/attenuation_out,
+                           amplified_spontaneous_emission=((pwr.ase/attenuation)+rmn_ase)/attenuation_out)
+        yield carrier._replace(power=pwr)
+
 class RamanSolver:
     def __init__(self, raman_params=None, fiber_params=None):
         """ Initialize the fiber object with its physical parameters
