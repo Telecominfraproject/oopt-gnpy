@@ -8,6 +8,7 @@
 planning and optimization tools in real-world mesh optical networks.**
 
 `gnpy <http://github.com/telecominfraproject/oopt-gnpy>`__ is:
+--------------------------------------------------------------
 
 - a sponsored project of the `OOPT/PSE <https://telecominfraproject.com/open-optical-packet-transport/>`_ working group of the `Telecom Infra Project <http://telecominfraproject.com>`_
 - fully community-driven, fully open source library
@@ -17,6 +18,13 @@ planning and optimization tools in real-world mesh optical networks.**
 - performant to the scale of real-world mesh optical networks
 
 Documentation: https://gnpy.readthedocs.io
+
+Get In Touch
+~~~~~~~~~~~~
+
+There are `weekly calls <https://telecominfraproject.workplace.com/events/458339931322799/>`__ about our progress.
+Newcomers, users and telecom operators are especially welcome there.
+We encourage all interested people outside the TIP to `join the project <https://telecominfraproject.com/apply-for-membership/>`__.
 
 Branches and Tagged Releases
 ----------------------------
