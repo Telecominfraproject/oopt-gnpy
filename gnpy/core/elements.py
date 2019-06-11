@@ -26,6 +26,7 @@ from collections import namedtuple
 from gnpy.core.node import Node
 from gnpy.core.units import UNITS
 from gnpy.core.utils import lin2db, db2lin, itufs, itufl, snr_sum
+from gnpy.core.science_utils import propagate_raman_fiber
 
 class Transceiver(Node):
     def __init__(self, *args, **kwargs):
@@ -357,7 +358,6 @@ class Fiber(Node):
                                 * carrier.baud_rate * (delta_f + 0.5 * interfering_carrier.baud_rate))
             psi -= arcsinh(pi**2 * self.asymptotic_length * abs(self.beta2())
                                  * carrier.baud_rate * (delta_f - 0.5 * interfering_carrier.baud_rate))
-
         return psi
 
     def _gn_analytic(self, carrier, *carriers):
@@ -418,7 +418,7 @@ class Fiber(Node):
         return spectral_info.update(carriers=carriers, pref=pref)
 
 RamanFiberParams = namedtuple('RamanFiberParams', 'type_variety length loss_coef length_units \
-                                         att_in con_in con_out dispersion gamma')
+                                         att_in con_in con_out dispersion gamma raman_efficiency')
 
 class RamanFiber(Node):
     def __init__(self, *args, params=None, **kwargs):
@@ -596,32 +596,6 @@ class RamanFiber(Node):
         carrier_nli = carrier.baud_rate * g_nli
         return carrier_nli
 
-    def propagate(self, *carriers):
-
-        # apply connector_att_in on all carriers before computing gn analytics  premiere partie pas bonne
-        attenuation = db2lin(self.con_in + self.att_in)
-
-        chan = []
-        for carrier in carriers:
-            pwr = carrier.power
-            pwr = pwr._replace(signal=pwr.signal/attenuation,
-                               nonlinear_interference=pwr.nli/attenuation,
-                               amplified_spontaneous_emission=pwr.ase/attenuation)
-            carrier = carrier._replace(power=pwr)
-            chan.append(carrier)
-
-        carriers = tuple(f for f in chan)
-
-        # propagate in the fiber and apply attenuation out
-        attenuation = db2lin(self.con_out)
-        for carrier in carriers:
-            pwr = carrier.power
-            carrier_nli = self._gn_analytic(carrier, *carriers)
-            pwr = pwr._replace(signal=pwr.signal/self.lin_attenuation/attenuation,
-                               nonlinear_interference=(pwr.nli+carrier_nli)/self.lin_attenuation/attenuation,
-                               amplified_spontaneous_emission=pwr.ase/self.lin_attenuation/attenuation)
-            yield carrier._replace(power=pwr)
-
     def update_pref(self, pref):
         self.pch_out_db = round(pref.pi - self.loss, 2)
         return pref._replace(p_span0=pref.p0, p_spani=self.pch_out_db)
@@ -633,6 +607,9 @@ class RamanFiber(Node):
         self.carriers_out = carriers
         return spectral_info.update(carriers=carriers, pref=pref)
 
+    def propagate(self, *carriers):
+        for propagated_carrier in propagate_raman_fiber(self, *carriers):
+            yield propagated_carrier
 
 class EdfaParams:
     def __init__(self, **params):
