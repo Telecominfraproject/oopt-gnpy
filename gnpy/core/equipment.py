@@ -110,7 +110,8 @@ class RamanFiber(common):
     {
         'type_variety':  '',
         'dispersion':    None,
-        'gamma':         0
+        'gamma':         0,
+        'raman_efficiency': None
     }
 
     def __init__(self, **kwargs):
