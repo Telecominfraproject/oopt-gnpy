@@ -1,3 +1,8 @@
+.. image:: docs/images/GNPy-banner.png
+   :width: 100%
+   :align: left
+   :alt: GNPy with an OLS system
+
 ====================================================================
 `gnpy`: mesh optical network route planning and optimization library
 ====================================================================
