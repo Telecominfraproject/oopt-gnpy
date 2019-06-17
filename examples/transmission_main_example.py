@@ -144,16 +144,15 @@ def main(network, equipment, source, destination, req = None):
     for dp_db in power_range:
         req.power = db2lin(pref_ch_db + dp_db)*1e-3
         if power_mode:
-            print(f'\nPropagating with input power = {lin2db(req.power*1e3):.2f}dBm :')
+            print(f'\nPropagating with input power = {ansi_escapes.cyan}{lin2db(req.power*1e3):.2f} dBm{ansi_escapes.reset}:')
         else:
-            print(f'\nPropagating in gain mode: power cannot be set manually')
+            print(f'\nPropagating in {ansi_escapes.cyan}gain mode{ansi_escapes.reset}: power cannot be set manually')
         infos = propagate2(path, req, equipment, show=len(power_range)==1)
         if power_mode:
-            print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f}dBm :')
+            print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f} dBm:')
         else:
             print(f'\nTransmission results:')
-        #info message in gain mode
-        print(destination)
+        print(f'SNR total (at signal bandwidth): {ansi_escapes.cyan}{mean(destination.snr):.02f} dB{ansi_escapes.reset}')
 
         #print(f'\n !!!!!!!!!!!!!!!!!     TEST POINT         !!!!!!!!!!!!!!!!!!!!!')
         #print(f'carriers ase output of {path[1]} =\n {list(path[1].carriers("out", "nli"))}')
@@ -174,8 +173,7 @@ def main(network, equipment, source, destination, req = None):
                         'OSNR_ASE_signal_bw'    : round(mean(destination.osnr_ase),2),
                         'SNR_nli_signal_bw'     : round(mean(destination.osnr_nli),2),
                         'SNR_total_signal_bw'   : round(mean(destination.snr),2)
-                                })          
-        #info message in gain mode
+                                })
     write_csv(result_dicts, 'simulation_result.csv')
     return path, infos
 
