@@ -124,14 +124,9 @@ fully-functional programs.
 
 **To get started, run the main transmission example:**
 
-    **Note**: *Examples should be run from the examples/ folder.*
-
 .. code-block:: shell-session
 
-    $ pwd
-    /path/to/oopt-gnpy
-    $ cd examples
-    $ python transmission_main_example.py
+    $ ./examples/transmission_main_example.py
 
 By default, this script operates on a single span network defined in
 `examples/edfa_example_network.json <examples/edfa_example_network.json>`_
@@ -142,8 +137,7 @@ example, to use the CORONET Global network defined in
 
 .. code-block:: shell-session
 
-    $ cd examples
-    $ python transmission_main_example.py CORONET_Global_Topology.json
+    $ ./examples/transmission_main_example.py examples/CORONET_Global_Topology.json
 
 It is also possible to use an Excel file input (for example
 `examples/CORONET_Global_Topology.xls <examples/CORONET_Global_Topology.xls>`_).
