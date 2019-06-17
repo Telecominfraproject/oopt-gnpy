@@ -133,7 +133,7 @@ def main(network, equipment, source, destination, sim_params, req=None):
         configure_network(network, sim_params)
 
     spans = [s.length for s in path if isinstance(s, RamanFiber) or isinstance(s, Fiber)]
-    print(f'\nThere are {len(spans)} fiber spans over {sum(spans):.0f}m between {source.uid} and {destination.uid}')
+    print(f'\nThere are {len(spans)} fiber spans over {sum(spans)/1000:.0f} km between {source.uid} and {destination.uid}')
     print(f'\nNow propagating between {source.uid} and {destination.uid}:')
 
     try:
