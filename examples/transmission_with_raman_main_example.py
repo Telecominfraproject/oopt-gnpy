@@ -7,18 +7,19 @@ transmission_main_example.py
 
 Main example for transmission simulation.
 
-Reads from network JSON (by default, `edfa_example_network.json`)
+Reads from network JSON (by default, `raman_edfa_example_network.json`)
 '''
 
 from gnpy.core.equipment import load_equipment, trx_mode_params
 from gnpy.core.utils import db2lin, lin2db, write_csv
 from argparse import ArgumentParser
 from sys import exit
+import time
 from pathlib import Path
 from json import loads
 from collections import Counter
 from logging import getLogger, basicConfig, INFO, ERROR, DEBUG
-from numpy import linspace, mean
+from numpy import linspace, mean, log10, array
 from matplotlib.pyplot import show, axis, figure, title, text
 from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels, dijkstra_path)
@@ -272,8 +273,16 @@ if __name__ == '__main__':
         trx_params['power'] = db2lin(float(args.power))*1e-3
     params.update(trx_params)
     req = Path_request(**params)
+    start_time = time.time()
     path, infos = main(network, equipment, source, destination, sim_params, req)
     save_network(args.filename, network)
+    final_signal_power = array([carrier.power.signal for carrier in infos[path[-1]][1].carriers])
+    final_ase = array([carrier.power.ase for carrier in infos[path[-1]][1].carriers])
+    final_nli = array([carrier.power.nli for carrier in infos[path[-1]][1].carriers])
+    print(f'\n Computed after {time.time()-start_time} seconds. \n')
+
+    print('The total SNR per channel is:')
+    print(10*log10(final_signal_power/(final_nli+final_ase)))
 
     if not args.source:
         print(f'\n(No source node specified: picked {source.uid})')
