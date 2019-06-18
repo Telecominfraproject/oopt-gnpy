@@ -1,13 +1,13 @@
 {
-  "list_of_channels_under_test": [1, 2, 3, 4, 37, 38, 39, 74, 75],
+  "list_of_channels_under_test": [1, 18, 37, 56, 75],
   "raman_parameters": {
     "flag_raman": true,
-    "space_resolution": 20e3,
-    "tolerance": 1e-7,
+    "space_resolution": 10e3,
+    "tolerance": 1e-8,
     "verbose": 2
   },
   "nli_parameters": {
-  	"nli_method_name": "gn_model_analytic",
+  	"nli_method_name": "ggn_spectrally_separated_xpm_spm",
   	"wdm_grid_size": 50e9,
   	"dispersion_tolerance": 1,
   	"phase_shift_tollerance": 0.1,
