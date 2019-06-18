@@ -1,0 +1,286 @@
+module gnpy-network-topology {
+  yang-version 1.1;
+  namespace "gnpy:gnpy-network-topology";
+  // replace with namespace when determined
+
+  prefix "gnpynt";
+
+/*
+*  import gnpy-eqpt-config {
+*    prefix "geqpt";
+*  }
+*/
+
+  organization
+    "Telecom Infra Project OOPT PSE
+     Working Group";
+
+  contact
+    "WG Web:   <https://github.com/Telecominfraproject/oopt-gnpy>
+     WG List:  <mailto:xxx>
+
+     WG Chair: xxx
+               <mailto:xxx>
+
+   ";
+
+  description "YANG model for gnpy network input for path computation";
+
+  revision "2019-02-19" {
+    description "first draft";
+    reference "YANG model for network input for path computation with gnpy";
+  }
+
+  /*
+   * Identities
+   */
+
+  identity type-element {
+    description
+      "Base identity for element type";
+  }
+
+  identity Transceiver {
+    base type-element;
+    description
+      " Transceiver element";
+  }
+
+  identity Fiber {
+    base type-element;
+    description
+      "Fiber element";
+  }
+
+  identity Roadm {
+    base type-element;
+    description
+      "Roadm element";
+  }
+
+  identity Edfa {
+    base type-element;
+    description
+      "Edfa element";
+  }
+
+  identity Fused {
+    base type-element;
+    description
+      "Fused element";
+  }
+
+  identity length-unit {
+    description "length unit";
+  }
+
+  identity km {
+    base length-unit ;
+    description "kilometers";
+  }
+
+  identity m{
+    base length-unit ;
+    description "meter";
+  }
+  typedef Coordinate {
+    type  decimal64 {
+      fraction-digits 6;
+    }
+  }
+
+    /*
+   * Typedef
+   */
+    
+  typedef Coef {  
+    type decimal64 {
+      fraction-digits 2;
+    }
+  }
+  
+
+  /*
+   *Groupings
+   */
+
+  grouping location-attributes {
+      container location {
+        leaf city {
+          type string;
+          mandatory true ;
+        }
+        leaf region {
+          type string;
+          mandatory true ;
+        }
+        leaf latitude {
+          type Coordinate;
+          mandatory true ;
+        }
+        leaf longitude {
+          type Coordinate;
+          mandatory true ;
+        }
+    }
+  }
+
+  grouping fiber-params {
+    description ".....";
+    leaf length {
+      mandatory true ;
+      type decimal64 {
+        fraction-digits 2;
+      }
+    }
+    leaf loss_coef{
+      mandatory true ;
+      type decimal64 {
+        fraction-digits 2;
+      }
+    }
+    leaf length_units{
+      type identityref {
+        base length-unit ;
+      }
+      mandatory true ;
+    }
+    leaf att_in{
+      type decimal64 {
+        fraction-digits 2;
+      }
+      mandatory true ;
+    }
+    leaf con_in{
+      type decimal64 {
+        fraction-digits 2;
+      }
+      mandatory true ;
+    }
+    leaf con_out{
+      type decimal64 {
+        fraction-digits 2;
+      }
+      mandatory true ;    
+    }
+  }
+
+  grouping edfa-params {
+    container operational {
+      leaf gain-target {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        mandatory true ;
+        units dB ;
+        description "..";    
+      }
+      leaf tilt-target {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        mandatory true ;
+        description "..";    
+      }
+      leaf out-voa {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        mandatory true;
+        units dB;
+        description "..";    
+      }
+      description "Operational values for the Edfa ";
+    }
+  }
+
+  grouping roadm-params{
+    leaf loss {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units dB ;
+      description "..";        
+    }
+  }
+
+  grouping transceiver-params{
+
+  }
+
+  grouping fused-params{
+
+  }
+
+  grouping element-type-choice{
+    leaf type_variety {
+      type string ;
+      description "Only present for Fiber and Edfa types.";
+    }
+    choice element-type{
+      case Edfa{
+        when "type = 'Edfa'";
+        uses edfa-params ;
+      }
+      case FiberRoadm{
+        container params {
+          choice fiberroadm{
+            case Fiber{
+              when "type = 'Fiber'";
+              uses fiber-params ;
+            }
+            case Roadm{
+              when "type = 'Roadm'";
+              uses roadm-params ;
+            }
+          }
+        }
+      }
+      case Transceiver{
+        when "type = 'Transceiver'";
+      }
+      
+      case Fused{
+        when "type = 'Fused'";
+      }
+    }
+  }
+
+
+   /*
+    * main
+    */
+
+  list elements {
+    key uid;
+    leaf uid {
+        type string;
+    }
+    leaf type {
+      type identityref {
+        base type-element ;
+      }
+      mandatory true ;        
+    }
+    
+    container metadata {
+      uses location-attributes ;
+    }
+
+    uses element-type-choice ;
+  }
+  
+  list connections {
+    config false ;
+    leaf from_node {
+      type leafref{
+        path "/elements/uid";
+      }
+    }
+    leaf to_node {
+      type leafref{
+        path "/elements/uid";
+      }
+    }
+  }
+}
