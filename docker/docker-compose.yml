@@ -1,0 +1,11 @@
+version: "3.3"
+services:
+  gnpy:
+    build:
+      context: ./
+      dockerfile: Dockerfile-compose
+    volumes:
+       - ./:/oopt-gnpy-develop/shared_folder
+#       - ./examples:/examples
+#    entrypoint: python transmission_main_example.py
+    entrypoint: /bin/bash 

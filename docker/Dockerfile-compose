@@ -1,0 +1,25 @@
+
+FROM python:3.6
+
+#COPY . /app
+
+#RUN pip install -r /app/requirements.txt
+
+#ENV PYTHONPATH=/app
+
+#WORKDIR /app/examples
+
+ARG BRANCH="develop"
+
+ADD https://github.com/Telecominfraproject/oopt-gnpy/archive/${BRANCH}.zip /tmp
+
+RUN unzip /tmp/develop.zip -d /
+
+RUN pip install -r /oopt-gnpy-develop/requirements.txt
+
+ENV PYTHONPATH=/oopt-gnpy-develop
+
+WORKDIR /oopt-gnpy-develop/examples
+
+ENTRYPOINT [""]
+
