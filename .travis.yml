@@ -15,6 +15,7 @@ script:
   - ./examples/path_requests_run.py
   - ./examples/transmission_main_example.py examples/raman_edfa_example_network.json --sim examples/sim_params.json --show-channels
   - sphinx-build docs/ x-throwaway-location
+  #- yanglint -t config --strict --merge -f xml -D yang/tip-*.yang yang/all.json
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 jobs:
