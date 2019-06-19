@@ -1,0 +1,527 @@
+module tip-photonic-equipment {
+  yang-version 1.1;
+  namespace "https://oopt.telecominfraproject.com/yang/equipment";
+  prefix "tip-pe";
+
+  organization "Telecom Infrastructure Project";
+  contact "https://github.com/Telecominfraproject/oopt-gnpy";
+  description "Catalog of photonic equipment for simulating signal propagation via the OOPT-PSE GNPy tool";
+
+  revision 2020-09-01 {
+    description "Initial release";
+    reference "Internal documentation";
+  }
+
+  typedef db-ratio {
+    type decimal64 {
+      fraction-digits 2;
+    }
+    units "dB";
+    description "Decibels";
+  }
+
+  typedef noise-figure {
+    type db-ratio {
+      range 3.0..99.9;
+    }
+    description "Noise Figure of an amplifier";
+  }
+
+  typedef gain {
+    type db-ratio {
+      range 0..99.9;
+    }
+    description "Gain of an amplifier";
+  }
+
+  typedef power {
+    type decimal64 {
+      fraction-digits 2;
+      range -99.9..30.0;
+    }
+    units "dBm";
+    description "Optical power in dBm";
+  }
+
+  typedef frequency {
+    type uint64;
+    units "Hz";
+    description "Optical frequency in Hz";
+  }
+
+  typedef polynomial-coefficient {
+    type decimal64 {
+      fraction-digits 6;
+    }
+    description "One coefficient within a polynomial";
+  }
+
+  grouping cubic-polynomial-coefficients {
+    description "Coefficients for a polynomial of a third degree: f(x) = a*x³ + b*x² + c*x + d";
+    leaf a {
+      type polynomial-coefficient;
+      mandatory true;
+      description "Cubic (x³) coefficient";
+    }
+    leaf b {
+      type polynomial-coefficient;
+      mandatory true;
+      description "Quadratic (x²) coefficient";
+    }
+    leaf c {
+      type polynomial-coefficient;
+      mandatory true;
+      description "Linear (x) coefficient";
+    }
+    leaf d {
+      type polynomial-coefficient;
+      mandatory true;
+      description "Offset (+) coefficient";
+    }
+  }
+
+  grouping amp-spectrum-profile {
+    description "Changes in amplifier's operation as a function of frequency";
+
+    list gain-ripple {
+      leaf frequency {
+        type frequency;
+        description "Frequency for the specific gain ripple deviation";
+      }
+
+      leaf gain-ripple {
+        type db-ratio;
+        mandatory true;
+        description "Gain ripple deviation at a given frequency";
+      }
+
+      key "frequency";
+
+      // TODO: what exactly is this?
+      description "Amplifier gain ripple excursion comb list in dB across the frequency range.
+
+      Values are assumed to cover the whole frequency range of the amplifier (frequency-min to frequency-max)
+      uniformly and with a linear interpolation.";
+    }
+
+    list nf-ripple {
+      leaf frequency {
+        type frequency;
+        description "Frequency for the specific NF ripple deviation";
+      }
+
+      leaf nf-ripple {
+        type db-ratio;
+        mandatory true;
+        description "NF ripple deviation at a given frequency";
+      }
+
+      key "frequency";
+
+      description "Amplifier NF ripple excursion comb list in dB across the frequency range
+
+      Values are assumed to cover the whole frequency range of the amplifier (frequency-min to frequency-max)
+      uniformly and with a linear interpolation.";
+    }
+
+    list dynamic-gain-tilt {
+      leaf frequency {
+        type frequency;
+        description "Frequency for the specific NF ripple deviation";
+      }
+
+      leaf dynamic-gain-tilt {
+        type db-ratio;
+        mandatory true;
+        description "DGT at a specified frequency";
+      }
+
+      key "frequency";
+
+      description "Dynamic Gain Tilt (DGT) refers to a relative change of gain
+      at a given frequency when compared to a reference frequency.
+
+      This parameter should be an array of gain corrections (in dB) applied on top of the desired gain.  The first value
+      refers to the lowest frequency, the last value refers to the highest supported frequency of the amplifier.
+
+      Intro about the model: https://telecominfraproject.workplace.com/groups/OOPT.PSE/permalink/957144244450445/
+      Relevant paper: https://www.osapublishing.org/jlt/abstract.cfm?uri=JLT-18-3-343";
+    }
+  }
+
+  grouping amp-common {
+    description "Properties common to all EDFAs except the dual-stage models";
+
+    leaf frequency-min {
+      type frequency;
+      default 191350000000000;
+      description "Minimal frequency supported by this amplifier";
+    }
+
+    leaf frequency-max {
+      type frequency;
+      default 196100000000000;
+      description "Maximal frequency supported by this amplifier";
+    }
+
+    leaf has-output-voa {
+      type boolean;
+      default false;
+      description "If true, output VOA is present.
+
+      This affects operation of autodesign and will be used to push amplifier gain to its maximum, within EOL power margins.";
+    }
+
+    leaf gain-flatmax {
+      type power;
+      mandatory true;
+      description "Maximal gain of the nominal range (without entering the extended range)
+
+      Once the amplifier's gain gets pushed into the extended range, it begins to tilt as specified in the dynamic-gain-tilt.";
+    }
+
+    leaf max-power-out {
+      type power;
+      mandatory true;
+      description "Maximal output power at the amplifier's output port
+
+      The total signal output power will not be allowed beyond this value.";
+    }
+  }
+
+
+  list amplifier {
+    key "type";
+    description "Available amplifier (EDFA) models";
+
+    leaf type {
+      type string;
+      description "Brief identification of the amplifier model. This is used for cross-referencing from topology data.";
+    }
+
+    uses amp-common {
+      when "count(dual-stage) = 0";
+      description "Common parameters for all EDFAs except aggregated ones";
+    }
+
+    leaf gain-min {
+      type gain;
+      mandatory true;
+      description "Minimal possible gain of the amplifier
+
+      If the amplifier's gain is set below this value, the amplifier's input is automatically padded with an attenuator,
+      and the NF is increased by the attenuation of this padding.";
+    }
+
+    choice noise-model {
+      mandatory true;
+      description "What simulation algorithm to use for this amplifier model";
+
+      case polynomial-NF {
+        container polynomial-NF {
+          description "Whitebox model with detailed information about gain ripple, NF ripple and dynamic gain tilt
+
+          Polynomial coefficients for NF calculation:
+
+            f(x) = a*x³ + b*x² + c*x + d
+
+            NF = f(gain_max - gain)
+
+          This model can be also used for fixed-gain fixed-NF amplifiers. In that case, use:
+
+            a = b = c = 0
+            d = NF";
+
+          uses cubic-polynomial-coefficients;
+        }
+      }
+
+      case polynomial-OSNR-OpenROADM {
+        container polynomial-OSNR-OpenROADM {
+          description "EDFA model based on the OpenROADM specification for an ILA
+
+          OpenROADM describes amplifier performance in terms of an incremental OSNR as a function of input power:
+
+            Incremental OSNR = a*Pᵢₙ³ + b*Pᵢₙ² + c*Pᵢₙ + d
+          ";
+
+          uses cubic-polynomial-coefficients;
+        }
+      }
+
+      case min-max-NF {
+        container min-max-NF {
+          description "Operator-focused model
+
+          Performance is defined by the minimal and maximal NF. These are especially suited to model a dual-coil
+          EDFA with a VOA in between.";
+
+          leaf nf-min {
+            type noise-figure;
+            mandatory true;
+            description "Minimal Noise Figure (operating at the maximal gain)";
+          }
+
+          leaf nf-max {
+            type noise-figure;
+            mandatory true;
+            description "Maximal Noise Figure (operating at the minimal gain)";
+          }
+        }
+      }
+
+      case dual-stage {
+        container dual-stage {
+          description "Dual-stage amplifier combines two distinct amplifiers
+
+          The first amplifier will be always operated at its maximal gain (and therefore its best NF).";
+
+          leaf preamp {
+            type leafref {
+              path "/tip-pe:amplifier/type";
+            }
+            must "count(deref(.)/../dual-stage) = 0" {
+              error-message "First (preamp) stage of a dual-stage amplifier must be a single-stage EDFA";
+            }
+            must "../../gain-min >= deref(.)/../gain-min" {
+              error-message "Minimal total gain of a dual-stage EDFA cannot be lower that the minimal gain of the preamp";
+            }
+            mandatory true;
+            description "Amplifier type used as a preamplifier, i.e., the first stage";
+          }
+
+          leaf booster {
+            type leafref {
+              path "/tip-pe:amplifier/type";
+            }
+            must "count(deref(.)/../dual-stage) = 0" {
+              error-message "Second (booster) stage of a dual-stage amplifier must be a single-stage EDFA";
+            }
+            must "deref(.)/../frequency-min <= deref(../preamp)/../frequency-max" {
+              error-message "Booster's minimal operating frequency cannot be higher than preamp's maximal operating frequency";
+            }
+            must "deref(.)/../frequency-max >= deref(../preamp)/../frequency-min" {
+              error-message "Booster's maximal operating frequency cannot be lower than preamp's minimal operating frequency";
+            }
+            mandatory true;
+            description "Amplifier type used as a booster, i.e., the second stage";
+          }
+        }
+      }
+    }
+
+    uses amp-spectrum-profile {
+      when "count(deref(.)/dual-stage) = 0";
+    }
+  }
+
+
+  list fiber {
+    key "type";
+    description "Available fiber types";
+
+    leaf type {
+      type string;
+      description "Unique identification of the fiber type. This is used for cross-referencing from topology data.";
+    }
+
+    leaf dispersion {
+      type decimal64 {
+        fraction-digits 10; // FIXME
+      }
+      units "s*m⁻¹*m⁻¹";
+      mandatory true;
+      description "Chromatic dispersion";
+    }
+
+    leaf dispersion-slope {
+      type decimal64 {
+        fraction-digits 10; // FIXME
+      }
+      units "s*m⁻¹*m⁻¹*m⁻¹";
+      default 0; // FIXME: is this sane? Should we instead make this a mandatory value?
+      description "Dispersion slope is related to the β3 coefficient
+
+      Cf. Abramczyk, Halina. Dispersion phenomena in optical fibers. Virtual European University on Lasers, 2005.
+
+      http://mitr.p.lodz.pl/evu/lectures/Abramczyk3.pdf";
+    }
+
+    leaf gamma {
+      type decimal64 {
+        fraction-digits 10; // FIXME
+      }
+      units "W⁻¹*m⁻¹";
+      mandatory true;
+      description "Fiber's γ coefficient
+
+      See, e.g., A. Carena, G. Bosco, V. Curri, P. Poggiolini, M. Tapia Taiba, and F. Forghieri. Statistical characterization
+      of PM-QPSK signals after propagation in uncompensated fiber links. In European Conference on Optical Communications,
+      2010, 1–3. IEEE, 2010-09.
+
+      URL: http://ieeexplore.ieee.org/document/5621509/
+      doi:10.1109/ECOC.2010.5621509";
+    }
+
+    leaf pmd-coefficient {
+      type decimal64 {
+        fraction-digits 10; // FIXME
+      }
+      units "s*√(m)⁻¹";
+      mandatory true;
+      description "Polarization mode dispersion (PMD) coefficient";
+    }
+
+    list raman-efficiency {
+        key "delta-frequency";
+        description "Efficiency of Raman amplification per operating frequency
+
+        FIXME URL";
+
+        leaf delta-frequency {
+          type frequency {
+            range 0..50000000000000;
+          }
+          description "Spectral difference between the pumping photon and the one receiving energy";
+        }
+
+        leaf cr {
+          type decimal64 {
+            fraction-digits 12;
+            range 0..1; // FIXME
+          }
+          mandatory true;
+          description "Normalized Raman efficiency";
+        }
+    }
+  }
+
+
+  list transceiver {
+    key "type";
+    description "Available transceivers";
+
+    leaf type {
+      type string;
+      description "Unique identification of the transponder type. This is used for cross-referencing from topology data.";
+    }
+
+    leaf frequency-min {
+      type frequency;
+      default 191350000000000;
+      description "Minimal frequency supported by this transceiver model";
+    }
+
+    leaf frequency-max {
+      type frequency;
+      default 196100000000000;
+      description "Maximal frequency supported by this transceiver model";
+    }
+
+    list mode {
+      key "name";
+      min-elements 1;
+      description "Operating mode of a transceiver";
+
+      leaf name {
+        type string;
+        description "Name of this operating mode";
+      }
+
+      leaf bit-rate {
+        type uint64;
+        units "bits * s⁻¹";
+        description "Data bit rate";
+      }
+
+      leaf baud-rate {
+        type uint64;
+        units "baud";
+        mandatory true;
+        description "Symbol baud rate";
+      }
+
+      leaf required-osnr {
+        type db-ratio;
+        mandatory true;
+        description "Minimal required OSNR at the Rx port";
+      }
+
+      leaf tx-osnr {
+        type db-ratio;
+        mandatory true;
+        description "Worst-case guaranteed initial OSNR at the Tx port";
+      }
+
+      leaf grid-spacing {
+        type frequency;
+        mandatory true;
+        description "Minimal grid spacing, i.e., an effective channel spectral bandwidth";
+      }
+
+      leaf tx-roll-off {
+        type decimal64 {
+          fraction-digits 4;
+          range 0..1;
+        }
+        mandatory true;
+        description "Roll-off parameter (β) of the TX pulse shaping filter. This assumes a raised-cosine filter.";
+      }
+    }
+  }
+
+
+  list roadm {
+    key "type";
+    description "ROADM - Reconfigurable Optical Add/Drop Multiplexer";
+
+    leaf type {
+      type string;
+      description "Unique identification of the transponder type. This is used for cross-referencing from topology data.";
+    }
+
+    leaf add-drop-osnr {
+      type db-ratio;
+      mandatory true;
+      description "OSNR penalty introduced by the Add stage or the Drop stage of this ROADM model";
+    }
+
+    leaf channel-tx-power {
+      type power;
+      mandatory true;
+      description "Per-channel target TX power towards the egress amplifier
+
+      Within GNPy, a ROADM is expected to attenuate any signal that enters the ROADM node to this level. This can be overridden
+      on a per-link in the network topology.";
+    }
+
+    leaf pmd {
+      type decimal64 {
+        fraction-digits 10; // FIXME
+      }
+      units "s";
+      mandatory true;
+      description "Polarization mode dispersion (PMD) penalty of the express path within this ROADM model";
+    }
+
+    leaf-list compatible-preamp {
+      type leafref {
+        path "/tip-pe:amplifier/type";
+      }
+      description "A set of allowed amplifier types to be used in the ingress direction
+
+      If empty, autodesign is allowed to pick any amplifier as a preamp.";
+    }
+
+    leaf-list compatible-booster {
+      type leafref {
+        path "/tip-pe:amplifier/type";
+      }
+      description "A set of allowed amplifier types to be used in the egress direction
+
+      If empty, autodesign is allowed to pick any amplifier as a booster.";
+    }
+
+  }
+
+}

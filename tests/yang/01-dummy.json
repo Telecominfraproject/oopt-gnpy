@@ -1,0 +1,124 @@
+{
+  "tip-photonic-equipment:amplifier": [
+    {
+      "type": "fixed-27",
+      "gain-min": "27",
+      "gain-flatmax": "27",
+      "max-power-out": "21.9",
+      "polynomial-NF": {
+        "a": "0",
+        "b": "0",
+        "c": "0",
+        "d": "4.9"
+      }
+    },
+    {
+      "type": "fixed-22",
+      "gain-min": "22",
+      "gain-flatmax": "22",
+      "max-power-out": "21.9",
+      "polynomial-NF": {
+        "a": "0",
+        "b": "0",
+        "c": "0",
+        "d": "4.8"
+      }
+    },
+    {
+      "type": "vg-15-30",
+      "gain-min": "15",
+      "gain-flatmax": "26",
+      "dynamic-gain-tilt": [
+        {
+          "frequency": "191350000000000",
+          "dynamic-gain-tilt": "0"
+        },
+        {
+          "frequency": "196100000000000",
+          "dynamic-gain-tilt": "2.4"
+        }
+      ],
+      "max-power-out": "23",
+      "min-max-NF": {
+        "nf-min": "6.0",
+        "nf-max": "10.0"
+      }
+    },
+    {
+      "type": "vg-8-16",
+      "gain-min": "8",
+      "gain-flatmax": "15",
+      "max-power-out": "23",
+      "min-max-NF": {
+        "nf-min": "6.5",
+        "nf-max": "11.0"
+      }
+    },
+    {
+      "type": "dual--vg-15-30--vg-8-16",
+      "gain-min": "25.0",
+      "dual-stage": {
+        "preamp": "vg-15-30",
+        "booster": "vg-8-16"
+      }
+    },
+    {
+      "type": "Juniper-BoosterHG",
+      "gain-min": "10",
+      "gain-flatmax": "25",
+      "max-power-out": "21",
+      "frequency-min": "191350000000000",
+      "frequency-max": "196100000000000",
+      "polynomial-NF": {
+        "a": "0.0008",
+        "b": "0.0272",
+        "c": "-0.2249",
+        "d": "6.4902"
+      }
+    }
+  ],
+  "tip-photonic-equipment:fiber": [
+    {
+      "type": "SSMF",
+      "dispersion": "1.67e-05",
+      "gamma": "0.00127",
+      "pmd-coefficient": "1.265e-15"
+    },
+    {
+      "type": "NZDF",
+      "dispersion": "0.5e-05",
+      "gamma": "0.00146",
+      "pmd-coefficient": "1.265e-15"
+    },
+    {
+      "type": "LOF",
+      "dispersion": "2.2e-05",
+      "gamma": "0.000843",
+      "pmd-coefficient": "1.265e-15"
+    }
+  ],
+  "tip-photonic-equipment:transceiver": [
+    {
+      "type": "Voyager",
+      "mode": [
+        {
+          "name": "DP-QPSK",
+          "bit-rate": "100000000000",
+          "baud-rate": "32000000000",
+          "required-osnr": "12",
+          "tx-osnr": "40",
+          "grid-spacing": "37500000000",
+          "tx-roll-off": "0.15"
+        }
+      ]
+    }
+  ],
+  "tip-photonic-equipment:roadm": [
+    {
+      "type": "default",
+      "add-drop-osnr": "50.0",
+      "channel-tx-power": "-20",
+      "pmd": "0"
+    }
+  ]
+}
