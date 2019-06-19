@@ -1,0 +1,110 @@
+{
+  "tip-photonic-equipment:amplifier": [
+    {
+      "type": "fixed-27",
+      "gain-min": "27",
+      "gain-flatmax": "27",
+      "gain-max-extended": "27",
+      "max-power-out": "21.9",
+      "polynomial-NF": {
+        "a": "0",
+        "b": "0",
+        "c": "0",
+        "d": "4.9"
+      }
+    },
+    {
+      "type": "fixed-22",
+      "gain-min": "22",
+      "gain-flatmax": "22",
+      "gain-max-extended": "22",
+      "max-power-out": "21.9",
+      "polynomial-NF": {
+        "a": "0",
+        "b": "0",
+        "c": "0",
+        "d": "4.8"
+      }
+    },
+    {
+      "type": "vg-15-30",
+      "gain-min": "15",
+      "gain-flatmax": "27",
+      "gain-max-extended": "28",
+      "gain-ripple": ["0"],
+      "nf-ripple": ["0"],
+      "dynamic-gain-tilt": ["0", "2.4"],
+      "max-power-out": "23",
+      "min-max-NF": {
+        "nf-min": "4.9",
+        "nf-max": "12.0"
+      }
+    },
+    {
+      "type": "vg-10-19",
+      "gain-min": "10",
+      "gain-flatmax": "17",
+      "gain-max-extended": "20",
+      "gain-ripple": ["0"],
+      "nf-ripple": ["0"],
+      "dynamic-gain-tilt": ["0", "1.7"],
+      "max-power-out": "23",
+      "min-max-NF": {
+        "nf-min": "5.1",
+        "nf-max": "5.8"
+      }
+    },
+    {
+      "type": "dual--vg-15-30--vg-10-19",
+      "dual-stage": {
+        "preamp": "vg-15-30",
+        "booster": "vg-10-19",
+        "gain-min": "25.0"
+      }
+    }
+  ],
+  "tip-photonic-equipment:fiber": [
+    {
+      "type": "SSMF",
+      "dispersion": "1.67e-05",
+      "gamma": "0.00127",
+      "pmd-coefficient": "1.265e-15"
+    },
+    {
+      "type": "NZDF",
+      "dispersion": "0.5e-05",
+      "gamma": "0.00146",
+      "pmd-coefficient": "1.265e-15"
+    },
+    {
+      "type": "LOF",
+      "dispersion": "2.2e-05",
+      "gamma": "0.000843",
+      "pmd-coefficient": "1.265e-15"
+    }
+  ],
+  "tip-photonic-equipment:transceiver": [
+    {
+      "type": "Voyager",
+      "mode": [
+        {
+          "name": "DP-QPSK",
+          "bit-rate": "100000000000",
+          "baud-rate": "32000000000",
+          "required-osnr": "12",
+          "tx-osnr": "40",
+          "grid-spacing": "37500000000",
+          "tx-roll-off": "0.15"
+        }
+      ]
+    }
+  ],
+  "tip-photonic-equipment:roadm": [
+    {
+      "type": "default",
+      "add-drop-osnr": "50.0",
+      "egress-tx-power": "-20",
+      "pmd": "0"
+    }
+  ]
+}
