@@ -150,9 +150,9 @@ def test_auto_design_generation_fromjson(json_input, expected_json_output):
     assert not results.connections.different
 
 # test services creation
-
 @pytest.mark.parametrize('xls_input,expected_json_output', {
     DATA_DIR / 'testTopology.xls':     DATA_DIR / 'testTopology_services_expected.json',
+    DATA_DIR / 'testService.xls':     DATA_DIR / 'testService_services_expected.json'
     }.items())
 def test_excel_service_json_generation(xls_input, expected_json_output):
     """ test services creation
