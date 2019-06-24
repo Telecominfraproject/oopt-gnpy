@@ -11,15 +11,26 @@ FROM python:3.6
 
 ARG BRANCH="develop"
 
-ADD https://github.com/Telecominfraproject/oopt-gnpy/archive/${BRANCH}.zip /tmp
+#ADD https://github.com/Telecominfraproject/oopt-gnpy/archive/${BRANCH}.zip /tmp
 
-RUN unzip /tmp/develop.zip -d /
+#RUN unzip /tmp/develop.zip -d /
 
-RUN pip install -r /oopt-gnpy-develop/requirements.txt
+RUN git clone --single-branch --branch ${BRANCH} https://github.com/Telecominfraproject/oopt-gnpy.git
 
-ENV PYTHONPATH=/oopt-gnpy-develop
+RUN pip install -r /oopt-gnpy/requirements.txt
 
-WORKDIR /oopt-gnpy-develop/examples
+ENV PYTHONPATH=/oopt-gnpy
+
+WORKDIR /oopt-gnpy/examples
+
+ADD run.sh ./run.sh
+
+#RUN groupadd -g 999 gn && \
+#    useradd -r -u 999 -g gn gn
+#RUN chown -R gn:gn ../
+RUN chmod -R 777 ../
+
+#USER gn
 
 ENTRYPOINT [""]
 

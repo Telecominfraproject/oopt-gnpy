@@ -5,7 +5,8 @@ services:
       context: ./
       dockerfile: Dockerfile-compose
     volumes:
-       - ./:/oopt-gnpy-develop/shared_folder
+       - ./:/oopt-gnpy/shared_folder
 #       - ./examples:/examples
-#    entrypoint: python transmission_main_example.py
-    entrypoint: /bin/bash 
+         #         cp ./*.* ../
+    #command: ["cp ./*.* ../"]
+    entrypoint: ./run.sh
