@@ -328,3 +328,187 @@ In $\text{Hz}$.
 
 : Roll-off parameter ($\beta$) of the TX pulse shaping filter.
 This assumes a raised-cosine filter.
+
+(yang-topology)=
+## Network Topology
+
+The *topology* acts as a "digital self" of the simulated network.
+The topology builds upon the `ietf-network-topology` from [RFC8345](https://tools.ietf.org/html/rfc8345#section-4.2) and is implemented in the `tip-photonic-topology` YANG model.
+
+In this network, the *nodes* correspond to [amplifiers](yang-topology-amplifier), [ROADMs](yang-topology-roadm), [transceivers](yang-topology-transceiver) and [attenuators](yang-topology-attenuator).
+The *links* model [optical fiber](yang-topology-fiber) or [patchcords](yang-topology-patch)).
+Additional elements are also available for modeling networks which have not been fully specified yet.
+
+Where not every amplifier has been placed already, some links can be represented by a [tentative-link](yang-topology-tentative-link), and some amplifier nodes by [placeholders](yang-topology-amplifier-placeholder).
+
+(yang-topology-common-node-props)=
+### Common Node Properties
+
+All *nodes* share a common set of properties for describing their physical location.
+These are useful mainly for visualizing the network topology.
+
+```javascript
+  {
+    "node-id": "123",
+
+    // ...more data go here...
+
+    "tip-photonic-topology:geo-location": {
+      "x": "0.5",
+      "y": "0.0"
+    }
+  }
+```
+
+Below is a reference as to how the individual elements are used.
+
+(yang-topology-amplifier)=
+### Amplifiers
+
+A physical, unidirectional amplifier.
+The amplifier *model* is specified via `tip-photonic-topology:amplifier/model` leafref.
+
+#### Operational data
+
+If not set, GNPy determines the optimal operating point of the amplifier for the specified simulation input parameters so that the total GSNR remains at its highest possible value.
+
+`out-voa-target`
+
+: Attenuation of the output VOA
+
+`gain-target`
+
+: Amplifier gain
+
+`tilt-target`
+
+: Amplifier tilt
+
+#### Example
+
+```json
+  {
+    "node-id": "edfa-A",
+    "tip-photonic-topology:amplifier": {
+      "model": "fixed-22",
+      "out-voa-target": "0.0",
+      "gain-target": "19.0",
+      "tilt-target": "10.0"
+    }
+  }
+```
+
+(yang-topology-transceiver)=
+### Transceivers
+
+Transceivers can be used as source and destination points of a path when requesting connectivity feasibility checks.
+
+`model`
+
+: Cross-reference to the equipment library, specifies the physical model of this transponder.
+
+There are no transceiver-specific parameters.
+Mode selection is done via global simulation parameters.
+
+(yang-topology-roadm)=
+### ROADMs
+
+FIXME: topology
+
+(yang-topology-attenuator)=
+### Attenuators
+
+This element (``attenuator``) is suitable for modeling a concentrated loss -- perhaps a real-world long-haul fiber with a splice that has a significant attenuation.
+Only one attribute is defined:
+
+`attenuation`
+
+: Attenuation of the splice, in $\text{dB}$.
+
+In the original data formed used by GNPy, the corresponding element, `Fused`, was often used as a cue which disabled automatic EDFA placement.
+
+(yang-topology-amplifier-placeholder)=
+### Amplifier Placeholders
+
+In cases where the actual amplifier locations are already known, but a specific type of amplifier has not been decided yet, the `amplifier-placeholder` will be used.
+This is typically put in place either as a preamp or booster at a ROADM site, or in between two `fiber` `nt::link` elements.
+No properties are defined.
+
+(yang-topology-fiber)=
+### Fiber
+
+An `nt:link` which contains a `fiber` represents a specific, tangible fiber which exists in the physical world.
+It has a certain length, is made of a particular material, etc.
+The following properties are defined:
+
+`type`
+
+: Class of the fiber.
+Refers to the specified fiber material in the equipment library.
+
+`length`
+
+: Total length of the fiber, in :math:`\text{m}`.
+
+`loss-per-km``
+
+: Fiber attenuation per length.
+In $\text{dB}/\text{km}$.
+
+`attenuation-in``
+
+: FIXME: can we remove this and go with a full-blown attenuator instead?
+
+`conn-att-in` and `conn-att-out`
+
+: Attenuation of the input and output connectors, respectively.
+
+#### Raman properties
+
+When using the Raman engine, additional properties are required:
+
+`raman/temperature`
+
+: This is the average temperature of the fiber, given in $\text{K}$.
+
+### Raman amplification
+
+Actual Raman amplification can be activated by adding several pump lasers below the `raman` container.
+Use one list member per pump:
+
+`raman/pump[]/frequency`
+ 
+: Operating frequency of this pump.
+In $\text{Hz}$.
+
+`raman/pump[]/power`
+  
+: Pumping power, in $\text{dBm}$.
+
+`raman/pump[]/direction`
+
+: Direction in which the pumping power is being delivered into the fiber.
+One of `co-propagating` (pumping in the same direction as the signal), or `counter-propagating` (pumping at the fiber end).
+
+(yang-topology-patch)=
+### Patch cords
+
+An `nt:link` with a `patch` element inside corresponds to a short, direct link.
+Typically, this is used for direct connections between equipment.
+No non-linearities are considered.
+
+(yang-topology-tentative-link)=
+### Tentative links
+
+An `nt:link` which contains a `tentative-link` is a placeholder for a link that will be constructed by GNPy.
+Unlike either `patch` or `fiber`, this type of a link will never be used in a finalized, fully specified topology.
+
+`type`
+  
+: Class of the fiber.
+Refers to the specified fiber material in the equipment library.
+
+`length`
+
+: Total length of the fiber, in $\text{km}$.
+>>>>>>> 55a9c246 (YANG: Network Topology)
