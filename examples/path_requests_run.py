@@ -353,13 +353,11 @@ def correct_xls_route_list(network_filename, network, pathreqlist):
                         else:
                             new_n = nodes_suggestion[0]
                         if new_n != n_id:
-                            # warns the user when the name is changed,
-                            # eg 'a' is a roadm and name is 'roadm a' or when there was
-                            # too much ambiguity, 'b' is a ila, its name can be
+                            # warns the user when the correct name is used only in verbose mode,
+                            # eg 'a' is a roadm and correct name is 'roadm a' or when there was
+                            # too much ambiguity, 'b' is an ila, its name can be
                             # Edfa0_fiber (a → b)-xx if next node is c or
                             # Edfa0_fiber (c → b)-xx if next node is a
-                            print(f'\x1b[1;33;40m'+f'invalid route node specified:' +\
-                                  f'\n\t\'{n_id}\', replaced with \'{new_n}\''+'\x1b[0m')
                             LOGGER.info(f'\x1b[1;33;40m'+f'invalid route node specified:' +\
                                   f'\n\t\'{n_id}\', replaced with \'{new_n}\''+'\x1b[0m')
                             pathreq.nodes_list[pathreq.nodes_list.index(n_id)] = new_n
