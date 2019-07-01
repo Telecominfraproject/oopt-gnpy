@@ -33,6 +33,12 @@
         "conformance-type": "implement"
       },
       {
+        "name": "tip-photonic-topology",
+        "revision": "2020-09-01",
+        "namespace": "https://oopt.telecominfraproject.com/yang/topology",
+        "conformance-type": "implement"
+      },
+      {
         "name": "tip-photonic-simulation",
         "revision": "2020-09-01",
         "namespace": "https://oopt.telecominfraproject.com/yang/simulation",
