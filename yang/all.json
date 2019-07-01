@@ -111,17 +111,15 @@
             "tip-photonic-topology:transceiver": {
               "model": "Voyager"
             },
-            "tip-photonic-topology:location": {
-              "name": "A"
+            "tip-photonic-topology:geo-location": {
+              "latitude": 0,
+              "longitude": 0
             }
           },
           {
             "node-id": "trx-2",
             "tip-photonic-topology:transceiver": {
               "model": "Voyager"
-            },
-            "tip-photonic-topology:location": {
-              "name": "B"
             }
           },
           {

@@ -18,6 +18,11 @@ module tip-photonic-topology {
     revision-date 2018-02-26;
   }
 
+  import ietf-geo-location {
+    prefix geo;
+    revision-date 2019-02-17;
+  }
+
   organization "Telecom Infrastructure Project";
   contact "https://github.com/Telecominfraproject/oopt-gnpy";
   description "Network topology for simulating signal propagation via the OOPT-PSE GNPy tool";
@@ -103,30 +108,6 @@ module tip-photonic-topology {
     when "../nw:network-types/tip-pt:photonic-topology";
     description "Optical elements within a network";
 
-    // TODO: a generic model for this?
-    container location {
-      description "Real-world physical position of this thing";
-
-      leaf name {
-        type string;
-        description "Human-friendly location";
-      }
-
-      leaf latitude {
-        type geo-coordinate {
-          range -90..90;
-        }
-        description "Latitude within a globe";
-      }
-
-      leaf longitude {
-        type geo-coordinate {
-          range -180..180;
-        }
-        description "Longitude within a globe";
-      }
-    }
-
     choice element {
       mandatory true;
       description "A physical instance of something";
@@ -182,6 +163,12 @@ module tip-photonic-topology {
         }
       }
 
+    }
+
+    uses geo:geo-location {
+      refine geo-location/location {
+        mandatory false;
+      }
     }
   }
 }
