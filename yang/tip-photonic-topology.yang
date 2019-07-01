@@ -1,0 +1,187 @@
+module tip-photonic-topology {
+  yang-version 1.1;
+  namespace "https://oopt.telecominfraproject.com/yang/topology";
+  prefix "tip-pt";
+
+  import tip-photonic-equipment {
+    prefix tip-pe;
+    revision-date 2019-06-20;
+  }
+
+  import ietf-network {
+    prefix nw;
+    revision-date 2018-02-26;
+  }
+
+  import ietf-network-topology {
+    prefix nt;
+    revision-date 2018-02-26;
+  }
+
+  organization "Telecom Infrastructure Project";
+  contact "https://github.com/Telecominfraproject/oopt-gnpy";
+  description "Network topology for simulating signal propagation via the OOPT-PSE GNPy tool";
+
+  revision 2019-07-02 {
+    description "Initial release";
+    reference "Internal documentation";
+  }
+
+  typedef geo-coordinate {
+    type decimal64 {
+      fraction-digits 6;
+    }
+    description "Intermediate type for a geographic coordinate";
+  }
+
+  augment "/nw:networks/nw:network/nw:network-types" {
+    description "Telecom Infra Project Open Optical Packet Transport Photonic Simulation Environment";
+    container photonic-topology {
+      presence "indicates topology describing optical elements";
+      description "The presence of this container indicates a topology with optical elements";
+    }
+  }
+
+  augment "/nw:networks/nw:network/nt:link" {
+    when "../nw:network-types/tip-pt:photonic-topology";
+    description "Connections of optical components";
+
+    container fiber {
+      description "Fiber connection";
+
+      leaf type {
+        type leafref {
+          path "/tip-pe:fiber/tip-pe:type";
+        }
+        mandatory true;
+        description "Fiber type cross-reference";
+      }
+
+      leaf length {
+        type decimal64 {
+          fraction-digits 3;
+        }
+        mandatory true;
+        units "km";
+        description "Length of the fiber segment";
+      }
+
+      leaf loss-per-km {
+        type decimal64 {
+          fraction-digits 6;
+          range "0..10";
+        }
+        units "dB/km";
+        description "Attenuation per kilometer of fiber";
+        default 0.2;
+      }
+
+      leaf attenuation-in {
+        type tip-pe:db-ratio {
+          range "0..100";
+        }
+        default 0;
+      }
+
+      leaf conn-att-in {
+        type tip-pe:db-ratio {
+          range "0..100";
+        }
+        default 0;
+      }
+
+      leaf conn-att-out {
+        type tip-pe:db-ratio {
+          range "0..100";
+        }
+        default 0;
+      }
+    }
+  }
+
+  augment "/nw:networks/nw:network/nw:node" {
+    when "../nw:network-types/tip-pt:photonic-topology";
+    description "Optical elements within a network";
+
+    // TODO: a generic model for this?
+    container location {
+      description "Real-world physical position of this thing";
+
+      leaf name {
+        type string;
+        description "Human-friendly location";
+      }
+
+      leaf latitude {
+        type geo-coordinate {
+          range -90..90;
+        }
+        description "Latitude within a globe";
+      }
+
+      leaf longitude {
+        type geo-coordinate {
+          range -180..180;
+        }
+        description "Longitude within a globe";
+      }
+    }
+
+    choice element {
+      mandatory true;
+      description "A physical instance of something";
+
+      case amplifier {
+        container amplifier {
+          description "Amplifier";
+
+          leaf model {
+            type leafref {
+              path "/tip-pe:amplifier/tip-pe:type";
+            }
+            mandatory true;
+            description "Amplifier model cross-reference";
+          }
+
+          leaf gain-target {
+            type tip-pe:gain;
+            description "Desired gain of the amplifier";
+          }
+
+          leaf tilt-target {
+            type tip-pe:db-ratio;
+            // FIXME: make this available only when the amplifier model supports tilting
+            description "Desired gain of the amplifier";
+          }
+        }
+      }
+
+      case concentrated-loss {
+        container concentrated-loss {
+          description "Attenuator, or a straight splice";
+
+          leaf attenuation {
+            type tip-pe:db-ratio;
+            default 0;
+            description "Attenuator loss";
+          }
+        }
+      }
+
+      case transceiver {
+        container transceiver {
+          description "Transceiver";
+
+          leaf model {
+            type leafref {
+              path "/tip-pe:transceiver/tip-pe:type";
+            }
+            mandatory true;
+            description "Transceiver model, a cross-reference to the equipment library";
+          }
+        }
+      }
+
+    }
+  }
+}
