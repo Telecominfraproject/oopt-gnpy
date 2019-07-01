@@ -1,3 +1,5 @@
+.. _excel:
+
 Excel (XLS, XLSX) input files
 =============================
 

@@ -3,6 +3,297 @@
 YANG-formatted data
 ===================
 
+The YANG-formatted data are the most flexible way of interacting with GNPy.
+Some topologies cannot be described via :ref:`XLS<excel>` input files, and new features are not being added to the :ref:`legacy JSON<legacy-json>` format that GNPy used earlier.
+
+The input data describe the :ref:`optical network<yang-topology>` (which is, internally, using some :ref:`optical hardware<yang-equipment>`) as well as the :ref:`requested simulation<yang-simulation>`.
+
+
+.. _complete-vs-incomplete:
+
+Fully Specified vs. Partially Designed Networks
+-----------------------------------------------
+
+Let's consider a simple triangle topology with three PoPs covering three cities:
+
+.. graphviz::
+  :layout: neato
+
+  graph {
+    A -- B
+    B -- C
+    C -- A
+  }
+
+In the real world, each city would probably host a ROADM and some transponders:
+
+.. graphviz::
+  :layout: neato
+
+  graph {
+    "ROADM A" [pos="2,2!"]
+    "ROADM B" [pos="4,2!"]
+    "ROADM C" [pos="3,1!"]
+    "Transponder A" [shape=box, pos="0,2!"]
+    "Transponder B" [shape=box, pos="6,2!"]
+    "Transponder C" [shape=box, pos="3,0!"]
+
+    "ROADM A" -- "ROADM B"
+    "ROADM B" -- "ROADM C"
+    "ROADM C" -- "ROADM A"
+
+    "Transponder A" -- "ROADM A"
+    "Transponder B" -- "ROADM B"
+    "Transponder C" -- "ROADM C"
+  }
+
+GNPy simulation works by propagating the optical signal over a sequence of elements, which means that one has to add some preamplifiers and boosters, and perhaps also some inline amplifiers.
+The amplifiers are, by definition, unidirectional, so the graph becomes quite complex:
+
+.. graphviz::
+  :layout: neato
+
+  digraph {
+    "ROADM A" [pos="2,4!"]
+    "ROADM B" [pos="6,4!"]
+    "ROADM C" [pos="4,0!"]
+    "Transponder A" [shape=box, pos="1,5!"]
+    "Transponder B" [shape=box, pos="7,5!"]
+    "Transponder C" [shape=box, pos="4,-1!"]
+
+    "Transponder A" -> "ROADM A"
+    "Transponder B" -> "ROADM B"
+    "Transponder C" -> "ROADM C"
+    "ROADM A" -> "Transponder A"
+    "ROADM B" -> "Transponder B"
+    "ROADM C" -> "Transponder C"
+
+    "Booster A C" [shape=triangle, orientation=-150, fixedsize=true, width=0.5, height=0.5, pos="2.2,3.2!"]
+    "Preamp A C" [shape=triangle, orientation=0, fixedsize=true, width=0.5, height=0.5, pos="1.5,3.0!"]
+    "ROADM A" -> "Booster A C"
+    "Preamp A C" -> "ROADM A"
+
+    "Booster A B" [shape=triangle, orientation=-90, fixedsize=true, width=0.5, height=0.5, pos="3,4.3!"]
+    "Preamp A B" [shape=triangle, orientation=90, fixedsize=true, width=0.5, height=0.5, pos="3,3.6!"]
+    "ROADM A" -> "Booster A B"
+    "Preamp A B" -> "ROADM A"
+
+    "Booster C B" [shape=triangle, orientation=-30, fixedsize=true, width=0.5, height=0.5, pos="4.7,0.9!"]
+    "Preamp C B" [shape=triangle, orientation=120, fixedsize=true, width=0.5, height=0.5, pos="5.4,0.7!"]
+    "ROADM C" -> "Booster C B"
+    "Preamp C B" -> "ROADM C"
+
+    "Booster C A" [shape=triangle, orientation=30, fixedsize=true, width=0.5, height=0.5, pos="2.6,0.7!"]
+    "Preamp C A" [shape=triangle, orientation=150, fixedsize=true, width=0.5, height=0.5, pos="3.3,0.9!"]
+    "ROADM C" -> "Booster C A"
+    "Preamp C A" -> "ROADM C"
+
+    "Booster B A" [shape=triangle, orientation=90, fixedsize=true, width=0.5, height=0.5, pos="5,3.6!"]
+    "Preamp B A" [shape=triangle, orientation=-90, fixedsize=true, width=0.5, height=0.5, pos="5,4.3!"]
+    "ROADM B" -> "Booster B A"
+    "Preamp B A" -> "ROADM B"
+
+    "Booster B C" [shape=triangle, orientation=-180, fixedsize=true, width=0.5, height=0.5, pos="6.5,3.0!"]
+    "Preamp B C" [shape=triangle, orientation=-20, fixedsize=true, width=0.5, height=0.5, pos="5.8,3.2!"]
+    "ROADM B" -> "Booster B C"
+    "Preamp B C" -> "ROADM B"
+
+    "Booster A C" -> "Preamp C A"
+    "Booster A B" -> "Preamp B A"
+    "Booster C A" -> "Preamp A C"
+    "Booster C B" -> "Preamp B C"
+    "Booster B C" -> "Preamp C B"
+    "Booster B A" -> "Preamp A B"
+  }
+
+In such networks, GNPy's autodesign features becomes very useful.
+It is possible to connect ROADMs via "tentative links" which will be replaced by a sequence of actual fibers and specific amplifiers.
+In other cases where the location of amplifier huts is already known, but the specific EDFA models have not yet been decided, one can put in amplifier placeholders and let GNPy assign the best amplifier.
+
+.. _yang-topology:
+
+Network Topology
+----------------
+
+The *topology* acts as a "digital self" of the simulated network.
+The topology builds upon the ``ietf-network-topology`` from `RFC8345 <https://tools.ietf.org/html/rfc8345#section-4.2>`__, and is implemented in the ``tip-photonic-topology`` YANG model.
+
+In this network, the *nodes* correspond to :ref:`amplifiers<yang-topology-amplifier>`, :ref:`ROADMs<yang-topology-roadm>`, :ref:`transceivers<yang-topology-transceiver>` (and sometimes also :ref:`attenuators<yang-topology-attenuator>`), whilte the *links* model :ref:`optical fiber<yang-topology-fiber>` or :ref:`patchcords<yang-topology-patch>`).
+Additional elements are also available for modeling networks which have not been fully specified yet.
+
+Where not every amplifier has been placed already, some links can be represented by a :ref:`tentative-link<yang-topology-tentative-link>`, and some amplifier nodes by :ref:`placeholders<yang-topology-amplifier-placeholder>`.
+
+.. _yang-topology-common-node-props:
+
+Common Node Properties
+~~~~~~~~~~~~~~~~~~~~~~
+
+All *nodes* share a common set of properties for describing their physical location.
+These are useful mainly for visualizing the network topology.
+
+.. code-block:: javascript
+
+  {
+    "node-id": "123",
+
+    // ...more data go here...
+
+    "tip-photonic-topology:geo-location": {
+      "x": "0.5",
+      "y": "0.0"
+    }
+  }
+
+Below is a reference as to how the individual elements are used.
+
+.. _yang-topology-amplifier:
+
+Amplifiers
+~~~~~~~~~~
+
+A physical, unidirectional amplifier.
+The amplifier **model** is specified via ``tip-photonic-topology:amplifier/model`` leafref.
+
+Operational data
+****************
+
+If not set, GNPy determines the optimal operating point of the amplifier for the specified simulation input parameters so that the total GSNR remains at its highest possible value.
+
+``out-voa-target``
+  Attenuation of the output VOA
+``gain-target``
+  Amplifier gain
+``tilt-target``
+  Amplifier tilt
+
+Example
+*******
+
+.. code-block:: json
+  :caption: Amplifier definition in JSON
+
+  {
+    "node-id": "edfa-A",
+    "tip-photonic-topology:amplifier": {
+      "model": "fixed-22",
+      "out-voa-target": "0.0",
+      "gain-target": "19.0",
+      "tilt-target": "10.0"
+    }
+  }
+
+.. _yang-topology-transceiver:
+
+Transceivers
+~~~~~~~~~~~~
+
+Transceivers can be used as source and destination points of a path when requesting connectivity feasibility checks.
+
+``model``
+  Cross-reference to the equipment library, specifies the physical model of this transponder.
+
+There are no transceiver-specific parameters.
+Mode selection is done via global simulation parameters.
+
+.. _yang-topology-roadm:
+
+ROADMs
+~~~~~~
+
+FIXME: topology
+
+.. _yang-topology-attenuator:
+
+Attenuators
+~~~~~~~~~~~
+
+This element (``attenuator``) is suitable for modeling a real-world long-haul fiber with a splice that has a significant attenuation.
+It produces more accurate simulations compared to fiber links with attenuation "moved" to either end.
+Only one attribute is defined:
+
+``attenuation``
+  Attenuation of the splice, in :math:`\text{dB}`.
+
+.. _yang-topology-amplifier-placeholder:
+
+Amplifier Placeholders
+~~~~~~~~~~~~~~~~~~~~~~
+
+In cases where the actual amplifier locations are already known, but a specific type of amplifier has not been decided yet, the ``amplifier-placeholder`` will be used.
+This is typically put in place either as a preamp or booster at a ROADM site, or in between two ``fiber`` ``nt::link`` elements.
+No properties are defined.
+
+.. _yang-topology-fiber:
+
+Fiber
+~~~~~
+
+An ``nt:link`` which contains a ``fiber`` represents a specific, tangible fiber which exists in the physical world.
+It has a certain length, is made of a particular material, etc.
+The following properties are defined:
+
+``type``
+  Class of the fiber.
+  Refers to the specified fiber material in the equipment library.
+``length``
+  Total length of the fiber, in :math:`\text{m}`.
+``loss-per-km``
+  Fiber attenuation per length.
+  In :math:`\text{dB}/\text{km}`.
+``attenuation-in``
+  FIXME: can we remove this and go with a full-blown attenuator instead?
+``conn-att-in`` and ``conn-att-out``
+  Attenuation of the input and output connectors, respectively.
+
+Raman properties
+****************
+
+When using the Raman engine, additional properties are required:
+
+``raman/temperature``
+  This is the average temperature of the fiber, given in :math:`\text{K}`.
+
+Raman amplification
+*******************
+
+Actual Raman amplification can be activated by adding several pump lasers below the ``raman`` container.
+Use one list member per pump:
+
+``raman/pump[]/frequency``
+  Operating frequency of this pump.
+  In :math:`\text{Hz}`.
+``raman/pump[]/power``
+  Pumpping power, in :math:`\text{dBm}`.
+``raman/pump[]/direction``
+  Direction in which the pumping power is being delivered into the fiber.
+  One of ``co-propagating`` (pumping in the same direction as the signal), or ``counter-propagating`` (pumping at the fiber end).
+
+.. _yang-topology-patch:
+
+Patch cords
+~~~~~~~~~~~
+
+An ``nt:link`` with a ``patch`` element inside corresponds to a short, direct link.
+Typically, this is used for direct connections between equipment.
+No non-linearities are considered, and the only allowed parameter is:
+
+``attenuation``
+  Total attenuation of the patch cord connection, including the connector losses.
+
+.. _yang-topology-tentative-link:
+
+Tentative links
+~~~~~~~~~~~~~~~
+
+An ``nt:link`` which contains a ``tentative-link`` is a placeholder for a link that will be constructed by GNPy.
+Unlike either ``patch`` or ``fiber``, this type of a link will never be used in a finalized, fully specified topology.
+
+``type``
+  Class of the fiber.
+  Refers to the specified fiber material in the equipment library.
+``length``
+  Total length of the fiber, in :math:`\text{m}`.
+
 
 .. _yang-equipment:
 

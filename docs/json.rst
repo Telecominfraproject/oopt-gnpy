@@ -1,3 +1,5 @@
+.. _legacy-json:
+
 JSON Input Files
 ================
 

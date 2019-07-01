@@ -61,6 +61,15 @@ module tip-photonic-equipment {
     description "Channel spacing";
   }
 
+  typedef frequency-raman-pump {
+    type decimal64 {
+      fraction-digits 3;
+      range "196.0 .. 260.0";
+    }
+    units "THz";
+    description "Optical frequency of a Raman pumping laser";
+  }
+
   typedef baud-rate {
     type decimal64 {
       fraction-digits 2;
