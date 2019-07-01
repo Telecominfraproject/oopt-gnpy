@@ -484,6 +484,134 @@
     }
   ],
 
+  "ietf-network:networks": {
+    "network": [
+      {
+        "network-id": "TIP OOPT-PSE sample topology",
+        "network-types": {
+          "tip-photonic-topology:photonic-topology": {
+          }
+        },
+        "node": [
+          {
+            "node-id": "trx-1",
+            "tip-photonic-topology:transceiver": {
+              "model": "Voyager"
+            }
+          },
+          {
+            "node-id": "trx-2",
+            "tip-photonic-topology:transceiver": {
+              "model": "Voyager"
+            }
+          },
+          {
+            "node-id": "edfa-A",
+            "tip-photonic-topology:amplifier": {
+              "model": "fixed-22",
+              "gain-target": "19.0",
+              "tilt-target": "10.0"
+            }
+          },
+          {
+            "node-id": "trx-100",
+            "tip-photonic-topology:transceiver": {
+              "model": "Voyager"
+            }
+          },
+          {
+            "node-id": "trx-101",
+            "tip-photonic-topology:transceiver": {
+              "model": "Voyager"
+            }
+          },
+          {
+            "node-id": "trx-200",
+            "tip-photonic-topology:transceiver": {
+              "model": "Voyager"
+            }
+          },
+          {
+            "node-id": "trx-201",
+            "tip-photonic-topology:transceiver": {
+              "model": "Voyager"
+            }
+          }
+        ],
+
+        "ietf-network-topology:link": [
+          {
+            "link-id": "fiber trx-1 edfa-A",
+            "source": {
+              "source-node": "trx-1"
+            },
+            "destination": {
+              "dest-node": "edfa-A"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "60"
+            }
+          },
+          {
+            "link-id": "fiber edfa-A trx-2",
+            "source": {
+              "source-node": "edfa-A"
+            },
+            "destination": {
+              "dest-node": "trx-2"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "50"
+            }
+          },
+          {
+            "link-id": "tentative link for autodesign #1",
+            "source": {
+              "source-node": "trx-100"
+            },
+            "destination": {
+              "dest-node": "trx-101"
+            },
+            "tip-photonic-topology:tentative-link": {
+              "type": "SSMF",
+              "length": "200"
+            }
+          },
+          {
+            "link-id": "A Raman fiber",
+            "source": {
+              "source-node": "trx-200"
+            },
+            "destination": {
+              "dest-node": "trx-201"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "150",
+              "raman": {
+                "temperature": 293,
+                "pump": [
+                  {
+                    "frequency": "205.0",
+                    "power": "0.2",
+                    "direction": "counter-propagating"
+                  },
+                  {
+                    "frequency": "201.0",
+                    "power": "0.25",
+                    "direction": "counter-propagating"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+
   "tip-photonic-simulation:simulation": {
     "autodesign": {
       "gain-mode": [null]
