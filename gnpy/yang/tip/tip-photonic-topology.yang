@@ -1,0 +1,249 @@
+module tip-photonic-topology {
+  yang-version 1.1;
+  namespace "https://oopt.telecominfraproject.com/yang/topology";
+  prefix "tip-topo";
+
+  import tip-photonic-equipment {
+    prefix tip-pe;
+    revision-date 2020-09-01;
+  }
+
+  import ietf-network {
+    prefix nw;
+    revision-date 2018-02-26;
+  }
+
+  import ietf-network-topology {
+    prefix nt;
+    revision-date 2018-02-26;
+  }
+
+  import ietf-geo-location {
+    prefix geo;
+    revision-date 2019-02-17;
+  }
+
+  organization "Telecom Infrastructure Project";
+  contact "https://github.com/Telecominfraproject/oopt-gnpy";
+  description "Network topology for simulating signal propagation via the OOPT-PSE GNPy tool";
+
+  revision 2020-09-01 {
+    description "Initial release";
+    reference "Internal documentation";
+  }
+
+  augment "/nw:networks/nw:network/nw:network-types" {
+    description "Telecom Infra Project Open Optical Packet Transport Photonic Simulation Environment";
+    container photonic-topology {
+      presence "indicates topology describing optical elements";
+      description "The presence of this container indicates a topology with optical elements";
+    }
+  }
+
+  grouping link-common-properties {
+    description "Common fiber parameters which are always known, even when performing autodesign and inserting amplifiers";
+
+    leaf type {
+      type leafref {
+        path "/tip-pe:fiber/tip-pe:type";
+      }
+      mandatory true;
+      description "Fiber type cross-reference";
+    }
+
+    leaf length {
+      type decimal64 {
+        fraction-digits 3;
+      }
+      units "km";
+      mandatory true;
+      description "Length of the fiber segment";
+    }
+  }
+
+  augment "/nw:networks/nw:network/nt:link" {
+    when "../nw:network-types/tip-topo:photonic-topology";
+    description "Connections of optical components";
+
+    // FIXME: add a must for correct source/dest nodes; the base IETF model does not even enforce their existence!
+
+    choice link-type {
+      description "Is this a well-specified fiber, or a link that should be optimized?";
+
+      case tentative-link {
+        container tentative-link {
+          description "A link where GNPy is expected to inject amplifiers where needed";
+          uses link-common-properties;
+        }
+      }
+
+      case fiber {
+        container fiber {
+          description "Fiber connection
+
+          This signifies a fiber whose length is already known. No amplifier huts are available, and the fiber will be used as-is.";
+
+          uses link-common-properties;
+
+          leaf loss-per-km {
+            type decimal64 {
+              fraction-digits 6;
+              range "0..10";
+            }
+            units "dB/km";
+            default 0.2;
+            description "Attenuation per kilometer of fiber";
+            // FIXME: should we just put total attenuation of that fiber in?
+          }
+
+          leaf attenuation-in {
+            type tip-pe:db-ratio {
+              range "0..100";
+            }
+            default 0;
+            description "Extra fixed attenuator at the beginning of the fiber";
+          }
+
+          leaf conn-att-in {
+            type tip-pe:db-ratio {
+              range "0..100";
+            }
+            default 0;
+            description "Attenuation of the connector at the fiber's beginning";
+          }
+
+          leaf conn-att-out {
+            type tip-pe:db-ratio {
+              range "0..100";
+            }
+            default 0;
+            description "Attenuation of the connector at the fiber's end";
+          }
+        }
+      }
+
+      case patch {
+        container patch {
+          // FIXME: check booster/preamp restrictions for ROADMs
+
+          description "Direct connection between network elements
+
+          A direct patch cord is a special case of fiber. It is assumed to be very short (a hundred meters at most) so that the
+          effect of NLI is limited. This is similar to the `attenuator` element which is useful for splicing longer fibers
+          together.";
+          leaf attenuation {
+            type tip-pe:db-ratio;
+            default 0;
+            description "Total loss of the connection, including losses of connectors at both sides of the patch fiber.";
+          }
+        }
+      }
+    }
+  }
+
+  augment "/nw:networks/nw:network/nw:node" {
+    when "../nw:network-types/tip-topo:photonic-topology";
+    description "Optical elements within a network";
+
+    choice element {
+      mandatory true;
+      description "A physical instance of something";
+
+      case amplifier-placeholder {
+        leaf amplifier-placeholder {
+          type empty;
+          mandatory true;
+          description "Intent to place an amplifier, to be replaced by GNPy's autodesign with a specific model";
+        }
+      }
+
+      case amplifier {
+        container amplifier {
+          description "Amplifier";
+
+          leaf model {
+            type leafref {
+              path "/tip-pe:amplifier/tip-pe:type";
+            }
+            mandatory true;
+            description "Amplifier model cross-reference";
+          }
+
+          leaf gain-target {
+            type tip-pe:gain;
+            description "Desired gain of the amplifier
+
+            If not set, GNPy will try to find an optimal operating point.";
+          }
+
+          leaf out-voa-target {
+            when "deref(../model)/has-output-voa";
+            type tip-pe:db-ratio;
+            description "Output VOA setting
+
+            If not set, GNPy will try to find an optimal operating point -- which means operating the EDFA at its highest gain
+            for the lowest NF, and using the output VOA to compensate.";
+          }
+
+          leaf tilt-target {
+            type tip-pe:db-ratio;
+            // FIXME: make this available only when the amplifier model supports tilt settings
+            description "Desired tilt of the amplifier";
+          }
+        }
+      }
+
+      case attenuator {
+        container attenuator {
+          description "Excessive attenuation
+
+          Use this construct for slicing together longer segments of fiber. For shorter connections,
+          use an `nt:link` with a `patch`. Do not put an `attenuator` in between of two `nt:link`, `patch` connections.";
+
+          leaf attenuation {
+            type tip-pe:db-ratio;
+            default 0;
+            description "Attenuator loss";
+          }
+        }
+      }
+
+      case transceiver {
+        container transceiver {
+          description "Transceiver";
+
+          leaf model {
+            type leafref {
+              path "/tip-pe:transceiver/tip-pe:type";
+            }
+            mandatory true;
+            description "Transceiver model, a cross-reference to the equipment library";
+          }
+        }
+      }
+
+      case roadm {
+        container roadm {
+          description "ROADM";
+
+          leaf model {
+            type leafref {
+              path "/tip-pe:roadm/tip-pe:type";
+            }
+            mandatory true;
+            description "ROADM model, a cross-reference to the equipment library";
+          }
+
+          // FIXME: per-degree target power
+        }
+      }
+
+    }
+
+    uses geo:geo-location {
+      refine geo-location/location {
+        mandatory false;
+      }
+    }
+  }
+}
