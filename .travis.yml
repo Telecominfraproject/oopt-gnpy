@@ -11,7 +11,7 @@ install:
 script:
   - pytest --cov-report=xml --cov=gnpy
   - rstcheck --ignore-roles cite --ignore-directives automodule --recursive --ignore-messages '(Duplicate explicit target name.*)' .
-  - cd examples; ./transmission_main_example.py
-  - cd examples; ./path_requests_run.py
+  - ./examples/transmission_main_example.py
+  - ./examples/path_requests_run.py
 after_success:
   - bash <(curl -s https://codecov.io/bash)
