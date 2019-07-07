@@ -16,6 +16,9 @@ script:
   - ./examples/transmission_main_example.py examples/raman_edfa_example_network.json --sim examples/sim_params.json --show-channels
   - sphinx-build docs/ x-throwaway-location
   #- yanglint -t config --strict --merge -f xml -D yang/tip-*.yang yang/all.json
+  # ^^ this is with CESNET's libyang. Alternatively, use CZ-NIC's yangson:
+  #- python path/to/yangson/tools/python/mkylib.py yang/ > LIB.json
+  #- yangson -p yang --validate yang/all.json LIB.json
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 jobs:
