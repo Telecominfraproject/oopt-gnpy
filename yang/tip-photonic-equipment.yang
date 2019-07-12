@@ -411,5 +411,20 @@ module tip-photonic-equipment {
   }
 
 
+  list roadm {
+    key "type";
+    description "Available transceivers";
+
+    leaf type {
+      type string;
+      description "Unique identification of the ROADM model. This is used for cross-referencing from topology data.";
+    }
+
+    leaf per-channel-target-power {
+      type power;
+    }
+  }
+
+
   // FIXME: ROADM
 }
