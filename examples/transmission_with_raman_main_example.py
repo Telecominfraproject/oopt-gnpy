@@ -19,7 +19,7 @@ from pathlib import Path
 from json import loads
 from collections import Counter
 from logging import getLogger, basicConfig, INFO, ERROR, DEBUG
-from numpy import linspace, mean, log10, array
+from numpy import linspace, mean, log10, array, isnan
 from matplotlib.pyplot import show, axis, figure, title, text
 from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels, dijkstra_path)
@@ -278,8 +278,18 @@ if __name__ == '__main__':
     save_network(args.filename, network)
     print(f'\n Computed after {time.time()-start_time} seconds. \n')
 
+    final_carriers = infos[path[-1]][1].carriers
+
     print('The total SNR per channel is:')
-    print(10*log10(final_signal_power/(final_nli+final_ase)))
+    print('Ch. # \t Channel frequency (THz) \t'
+          ' SNR total (signal bw, dB)')
+    for final_carrier in final_carriers:
+        ch_freq = final_carrier.frequency * 1e-12
+        ch_power = 10 * log10(final_carrier.power.signal) + 30
+        ch_snr = ch_power - (10 * log10(final_carrier.power.nli + final_carrier.power.ase) + 30)
+
+        if not isnan(ch_snr):
+            print(f'{final_carrier.num_chan} \t\t {round(ch_freq, 2):.2f} \t\t\t {round(ch_snr, 2)}')
 
     if not args.source:
         print(f'\n(No source node specified: picked {source.uid})')
