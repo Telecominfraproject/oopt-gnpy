@@ -596,14 +596,15 @@ class RamanFiber(Node):
         carrier_nli = carrier.baud_rate * g_nli
         return carrier_nli
 
-    def update_pref(self, pref):
-        self.pch_out_db = round(pref.pi - self.loss, 2)
+    def update_pref(self, pref, *carriers):
+        pch_out_db = 10*log10(mean([carrier.power.signal for carrier in carriers])) + 30
+        self.pch_out_db = round(pch_out_db, 2)
         return pref._replace(p_span0=pref.p0, p_spani=self.pch_out_db)
 
     def __call__(self, spectral_info):
         self.carriers_in = spectral_info.carriers
         carriers = tuple(self.propagate(*spectral_info.carriers))
-        pref = self.update_pref(spectral_info.pref)
+        pref = self.update_pref(spectral_info.pref, *carriers)
         self.carriers_out = carriers
         return spectral_info.update(carriers=carriers, pref=pref)
 
