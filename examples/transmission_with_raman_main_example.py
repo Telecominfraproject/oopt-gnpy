@@ -280,7 +280,7 @@ if __name__ == '__main__':
 
     final_carriers = infos[path[-1]][1].carriers
 
-    print('The total SNR per channel is:')
+    print('The total SNR per channel at the end of the line is:')
     print('Ch. # \t Channel frequency (THz) \t'
           ' SNR total (signal bw, dB)')
     for final_carrier in final_carriers:
