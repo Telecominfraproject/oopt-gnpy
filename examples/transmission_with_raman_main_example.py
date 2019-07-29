@@ -276,9 +276,6 @@ if __name__ == '__main__':
     start_time = time.time()
     path, infos = main(network, equipment, source, destination, sim_params, req)
     save_network(args.filename, network)
-    final_signal_power = array([carrier.power.signal for carrier in infos[path[-1]][1].carriers])
-    final_ase = array([carrier.power.ase for carrier in infos[path[-1]][1].carriers])
-    final_nli = array([carrier.power.nli for carrier in infos[path[-1]][1].carriers])
     print(f'\n Computed after {time.time()-start_time} seconds. \n')
 
     print('The total SNR per channel is:')
