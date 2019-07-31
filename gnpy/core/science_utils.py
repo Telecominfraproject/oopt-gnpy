@@ -181,22 +181,22 @@ class RamanSolver:
         """
         self.fiber_params = fiber_params
         self.raman_params = raman_params
-        self.__carriers = None
-        self.__stimulated_raman_scattering = None
-        self.__spontaneous_raman_scattering = None
+        self._carriers = None
+        self._stimulated_raman_scattering = None
+        self._spontaneous_raman_scattering = None
 
     @property
     def fiber_params(self):
-        return self.__fiber_params
+        return self._fiber_params
 
     @fiber_params.setter
     def fiber_params(self, fiber_params):
-        self.__stimulated_raman_scattering = None
-        self.__fiber_params = fiber_params
+        self._stimulated_raman_scattering = None
+        self._fiber_params = fiber_params
 
     @property
     def carriers(self):
-        return self.__carriers
+        return self._carriers
 
     @carriers.setter
     def carriers(self, carriers):
@@ -204,8 +204,8 @@ class RamanSolver:
         :param carriers: tuple of namedtuples containing information about carriers
         :return:
         """
-        self.__carriers = carriers
-        self.__stimulated_raman_scattering = None
+        self._carriers = carriers
+        self._stimulated_raman_scattering = None
 
     @property
     def raman_pumps(self):
@@ -214,11 +214,11 @@ class RamanSolver:
     @raman_pumps.setter
     def raman_pumps(self, raman_pumps):
         self._raman_pumps = raman_pumps
-        self.__stimulated_raman_scattering = None
+        self._stimulated_raman_scattering = None
 
     @property
     def raman_params(self):
-        return self.__raman_params
+        return self._raman_params
 
     @raman_params.setter
     def raman_params(self, raman_params):
@@ -226,13 +226,13 @@ class RamanSolver:
         :param raman_params: namedtuple containing the solver parameters (optional).
         :return:
         """
-        self.__raman_params = raman_params
-        self.__stimulated_raman_scattering = None
-        self.__spontaneous_raman_scattering = None
+        self._raman_params = raman_params
+        self._stimulated_raman_scattering = None
+        self._spontaneous_raman_scattering = None
 
     @property
     def spontaneous_raman_scattering(self):
-        if self.__spontaneous_raman_scattering is None:
+        if self._spontaneous_raman_scattering is None:
             # SET STUFF
             loss_coef = self.fiber_params.loss_coef
             raman_efficiency = self.fiber_params.raman_efficiency
@@ -256,11 +256,11 @@ class RamanSolver:
             cr = interp_cr(freq_diff)
 
             # z propagation axis
-            z_array = self.__stimulated_raman_scattering.z
+            z_array = self._stimulated_raman_scattering.z
             ase_bc = np.zeros(freq_array.shape)
 
             # calculate ase power
-            spontaneous_raman_scattering = self._int_spontaneous_raman(z_array, self.__stimulated_raman_scattering.power,
+            spontaneous_raman_scattering = self._int_spontaneous_raman(z_array, self._stimulated_raman_scattering.power,
                                                                        alphap_fiber, freq_array, cr, freq_diff, ase_bc,
                                                                        bn_array, temperature)
 
@@ -272,9 +272,9 @@ class RamanSolver:
             if verbose:
                 print(spontaneous_raman_scattering.message)
 
-            self.__spontaneous_raman_scattering = spontaneous_raman_scattering
+            self._spontaneous_raman_scattering = spontaneous_raman_scattering
 
-        return self.__spontaneous_raman_scattering
+        return self._spontaneous_raman_scattering
 
     @staticmethod
     def _compute_power_spectrum(carriers, raman_pumps=None):
@@ -351,11 +351,11 @@ class RamanSolver:
     def stimulated_raman_scattering(self, carriers, raman_pumps=None):
         """ Returns stimulated Raman scattering solution including 
         fiber gain/loss profile.
-        :return: self.__stimulated_raman_scattering: the SRS problem solution.
+        :return: self._stimulated_raman_scattering: the SRS problem solution.
         scipy.interpolate.PPoly instance
         """
 
-        if self.__stimulated_raman_scattering is None:
+        if self._stimulated_raman_scattering is None:
             # fiber parameters
             fiber_length = self.fiber_params.length
             loss_coef = self.fiber_params.loss_coef
@@ -401,9 +401,9 @@ class RamanSolver:
 
             self.carriers = carriers
             self.raman_pumps = raman_pumps
-            self.__stimulated_raman_scattering = stimulated_raman_scattering
+            self._stimulated_raman_scattering = stimulated_raman_scattering
 
-        return self.__stimulated_raman_scattering
+        return self._stimulated_raman_scattering
 
     def _residuals_stimulated_raman(self, ya, yb, power_spectrum, prop_direct):
 
@@ -480,30 +480,30 @@ class NliSolver:
 
     @property
     def fiber_params(self):
-        return self.___fiber_params
+        return self._fiber_params
 
     @fiber_params.setter
     def fiber_params(self, fiber_params):
-        self.___fiber_params = fiber_params
+        self._fiber_params = fiber_params
 
     @property
     def stimulated_raman_scattering(self):
-        return self.__stimulated_raman_scattering
+        return self._stimulated_raman_scattering
 
     @stimulated_raman_scattering.setter
     def stimulated_raman_scattering(self, stimulated_raman_scattering):
-        self.__stimulated_raman_scattering = stimulated_raman_scattering
+        self._stimulated_raman_scattering = stimulated_raman_scattering
 
     @property
     def nli_params(self):
-        return self.__nli_params
+        return self._nli_params
 
     @nli_params.setter
     def nli_params(self, nli_params):
         """
         :param model_params: namedtuple containing the parameters used to compute the NLI.
         """
-        self.__nli_params = nli_params
+        self._nli_params = nli_params
 
     def alpha0(self, f_eval=193.5e12):
         if not hasattr(self.fiber_params.loss_coef, 'alpha_power'):
