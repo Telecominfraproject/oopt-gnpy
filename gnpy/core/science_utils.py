@@ -621,11 +621,10 @@ class NliSolver:
         f_eval = carrier.frequency
         g_cut = (carrier.power.signal / carrier.baud_rate)
 
-
-        partial_nli = carrier.baud_rate * (16.0 / 27.0) * self.fiber_params.gamma**2 * g_cut**3 * \
+        spm_nli = carrier.baud_rate * (16.0 / 27.0) * self.fiber_params.gamma**2 * g_cut**3 * \
                       self._generalized_psi(carrier, carrier, f_eval, f_cut_resolution, f_cut_resolution)
 
-        return partial_nli
+        return spm_nli
 
     def _generalized_spectrally_separated_xpm(self, carrier_cut, pump_carrier):
         delta_index = pump_carrier.channel_number - carrier_cut.channel_number
@@ -634,16 +633,11 @@ class NliSolver:
         f_eval = carrier_cut.frequency
         g_pump = (pump_carrier.power.signal / pump_carrier.baud_rate)
         g_cut = (carrier_cut.power.signal / carrier_cut.baud_rate)
-        partial_nli = carrier_cut.baud_rate * (16.0 / 27.0) * self.fiber_params.gamma**2 * \
-                      g_pump**2 * g_cut * \
-                      2 * self._generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution)
 
-        return partial_nli
+        xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * self.fiber_params.gamma**2 * g_pump**2 * g_cut * \
+                  2 * self._generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution)
 
-    def _generalized_gnli(self, carrier_cut, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution):
-        delta_index = pump_carrier.channel_number - carrier_cut.channel_number
-        f_cut_resolution = self.nli_params.f_cut_resolution[f'delta_{delta_index}']
-        f_pump_resolution = self.nli_params.f_pump_resolution
+        return xpm_nli
 
         g_pump = (pump_carrier.power.signal / pump_carrier.baud_rate)
         g_cut = (carrier_cut.power.signal / carrier_cut.baud_rate)
