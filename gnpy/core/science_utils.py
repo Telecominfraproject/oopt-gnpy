@@ -580,7 +580,7 @@ class NliSolver:
         The method uses eq. 120 from arXiv:1209.0394.
         :param carrier: the signal under analysis
         :param carriers: the full WDM comb
-        :return: carrier_nli: the amount of nonlinear interference in W on the under analysis
+        :return: carrier_nli: the amount of nonlinear interference in W on the carrier under analysis
         """
         alpha = self.alpha0() / 2
         beta2 = self.fiber_params.beta2
@@ -607,8 +607,7 @@ class NliSolver:
         asymptotic_length = 1 / (2 * alpha)
 
         if carrier.channel_number == interfering_carrier.channel_number:  # SPM
-            psi = np.arcsinh(0.5 * np.pi**2 * asymptotic_length
-                              * abs(beta2) * carrier.baud_rate**2)
+            psi = np.arcsinh(0.5 * np.pi**2 * asymptotic_length * abs(beta2) * carrier.baud_rate**2)
         else:  # XPM
             delta_f = carrier.frequency - interfering_carrier.frequency
             psi = np.arcsinh(np.pi**2 * asymptotic_length * abs(beta2) *
@@ -617,7 +616,7 @@ class NliSolver:
                               carrier.baud_rate * (delta_f - 0.5 * interfering_carrier.baud_rate))
         return psi
 
-    # Methods for computing the GGN
+    # Methods for computing the GGN-model
     def _generalized_spectrally_separated_spm(self, carrier):
         f_cut_resolution = self.nli_params.f_cut_resolution['delta_0']
         f_eval = carrier.frequency
