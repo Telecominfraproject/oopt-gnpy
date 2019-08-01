@@ -20,12 +20,12 @@
         "temperature": 283,
         "raman_pumps": [
           {
-            "power": 100e-3,
-            "frequency": 200e12,
+            "power": 200e-3,
+            "frequency": 205e12,
             "propagation_direction": "counterprop"
           },
           {
-            "power": 100e-3,
+            "power": 206e-3,
             "frequency": 201e12,
             "propagation_direction": "counterprop"
           }
