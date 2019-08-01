@@ -634,19 +634,46 @@ class NliSolver:
         g_pump = (pump_carrier.power.signal / pump_carrier.baud_rate)
         g_cut = (carrier_cut.power.signal / carrier_cut.baud_rate)
 
-        xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * self.fiber_params.gamma**2 * g_pump**2 * g_cut * \
-                  2 * self._generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution)
-
+        if abs(carrier_cut.frequency - pump_carrier.frequency) <= 3 * 50e9:  # For the first ten channels use the more accurate method
+            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * self.fiber_params.gamma**2 * g_pump**2 * g_cut * \
+                      2 * self._generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution)
+        else:
+            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * self.fiber_params.gamma**2 * g_pump**2 * g_cut * \
+                      2 * self._fast_generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution)
         return xpm_nli
 
-        g_pump = (pump_carrier.power.signal / pump_carrier.baud_rate)
-        g_cut = (carrier_cut.power.signal / carrier_cut.baud_rate)
+    def _fast_generalized_psi(self, carrier_cut, pump_carrier, f_eval, f_cut_resolution):
+        """ It computes the generalized psi function similarly to the one used in the GN model
+        :return: generalized_psi
+        """
+        # Fiber parameters
+        alpha0 = self.alpha0(f_eval)
+        beta2 = self.fiber_params.beta2
+        beta3 = self.fiber_params.beta3
+        f_ref_beta = self.fiber_params.f_ref_beta
+        z = self.stimulated_raman_scattering.z
+        frequency_rho = self.stimulated_raman_scattering.frequency
+        rho_norm = self.stimulated_raman_scattering.rho * np.exp(np.abs(alpha0) * z / 2)
+        if len(frequency_rho) == 1:
+            rho_function = lambda f: rho_norm[0, :]
+        else:
+            rho_function = interp1d(frequency_rho, rho_norm, axis=0, fill_value='extrapolate')
+        rho_norm_pump = rho_function(pump_carrier.frequency)
 
-        chi = (16.0 / 27.0)
+        f1_array = np.array([pump_carrier.frequency - (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2),
+                             pump_carrier.frequency + (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2)])
+        f2_array = np.arange(carrier_cut.frequency,
+                             carrier_cut.frequency + (carrier_cut.baud_rate * (1 + carrier_cut.roll_off) / 2),
+                             f_cut_resolution)  # Only positive f2 is used since integrand_f2 is symmetric
 
-        partial_nli = chi * self.fiber_params.gamma**2 * \
-                      g_pump**2 * g_cut * \
-                      2 * self._generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution)
+        integrand_f1 = np.zeros(len(f1_array))
+        for f1_index, f1 in enumerate(f1_array):
+            delta_beta = 4 * np.pi**2 * (f1 - f_eval) * (f2_array - f_eval) * \
+                         (beta2 + np.pi * beta3 * (f1 + f2_array - 2 * f_ref_beta))
+            integrand_f2 = self._generalized_rho_nli(delta_beta, rho_norm_pump, z, alpha0)
+            integrand_f1[f1_index] = 2 * np.trapz(integrand_f2, f2_array)  # 2x since integrand_f2 is symmetric in f2
+        generalized_psi = 0.5 * sum(integrand_f1) * pump_carrier.baud_rate
+        return generalized_psi
 
     def _generalized_psi(self, carrier_cut, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution):
         """ It computes the generalized psi function similarly to the one used in the GN model
