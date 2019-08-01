@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-transmission_main_example.py
+transmission_with_raman_main_example.py
 ============================
 
 Main example for transmission simulation.
@@ -278,18 +278,17 @@ if __name__ == '__main__':
     save_network(args.filename, network)
     print(f'\n Computed after {time.time()-start_time} seconds. \n')
 
-    final_carriers = infos[path[-1]][1].carriers
-
     print('The total SNR per channel at the end of the line is:')
-    print('Ch. # \t Channel frequency (THz) \t'
-          ' SNR total (signal bw, dB)')
+    print('Ch. # \t Channel frequency (THz) \t SNR NL (signal bw, dB) \t SNR total (signal bw, dB)')
+    final_carriers = infos[path[-1]][1].carriers
     for final_carrier in final_carriers:
         ch_freq = final_carrier.frequency * 1e-12
-        ch_power = 10 * log10(final_carrier.power.signal) + 30
-        ch_snr = ch_power - (10 * log10(final_carrier.power.nli + final_carrier.power.ase) + 30)
-
+        ch_power = 10 * log10(final_carrier.power.signal)
+        ch_snr_nl =  ch_power - 10 * log10(final_carrier.power.nli)
+        ch_snr = ch_power - 10 * log10(final_carrier.power.nli + final_carrier.power.ase)
         if not isnan(ch_snr):
-            print(f'{final_carrier.num_chan} \t\t {round(ch_freq, 2):.2f} \t\t\t {round(ch_snr, 2)}')
+            print(f'{final_carrier.num_chan} \t\t {round(ch_freq, 2):.2f} \t\t\t {round(ch_snr_nl, 2):.2f} '
+                  f'\t\t\t\t {round(ch_snr, 2):.2f}')
 
     if not args.source:
         print(f'\n(No source node specified: picked {source.uid})')
