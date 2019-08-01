@@ -10,6 +10,136 @@ from scipy.optimize import OptimizeResult
 from gnpy.core.utils import db2lin, load_json
 
 
+class RamanParams():
+    def __init__(self, params):
+        self._flag_raman = params['flag_raman']
+        self._space_resolution = params['space_resolution']
+        self._tolerance = params['tolerance']
+        self._verbose = params['verbose']
+
+    @property
+    def flag_raman(self):
+        return self._flag_raman
+
+    @property
+    def space_resolution(self):
+        return self._space_resolution
+
+    @property
+    def tolerance(self):
+        return self._tolerance
+
+    @property
+    def verbose(self):
+        return self._verbose
+
+class NLIParams():
+    def __init__(self, params):
+        self._nli_method_name = params['nli_method_name']
+        self._wdm_grid_size = params['wdm_grid_size']
+        self._dispersion_tolerance = params['dispersion_tolerance']
+        self._phase_shift_tollerance = params['phase_shift_tollerance']
+        self._f_cut_resolution = None
+        self._f_pump_resolution = None
+        self._verbose = params['verbose']
+
+    @property
+    def nli_method_name(self):
+        return self._nli_method_name
+
+    @property
+    def wdm_grid_size(self):
+        return self._wdm_grid_size
+
+    @property
+    def dispersion_tolerance(self):
+        return self._dispersion_tolerance
+
+    @property
+    def phase_shift_tollerance(self):
+        return self._phase_shift_tollerance
+
+    @property
+    def verbose(self):
+        return self._verbose
+
+    @property
+    def f_cut_resolution(self):
+        return self._f_cut_resolution
+
+    @f_cut_resolution.setter
+    def f_cut_resolution(self, f_cut_resolution):
+        self._f_cut_resolution = f_cut_resolution
+
+    @property
+    def f_pump_resolution(self):
+        return self._f_pump_resolution
+
+    @f_pump_resolution.setter
+    def f_pump_resolution(self, f_pump_resolution):
+        self._f_pump_resolution = f_pump_resolution
+
+class SimParams():
+    def __init__(self, params):
+        self._list_of_channels_under_test = params['list_of_channels_under_test']
+        self._raman_params = RamanParams(params=params['raman_parameters'])
+        self._nli_params = NLIParams(params=params['nli_parameters'])
+
+    @property
+    def list_of_channels_under_test(self):
+        return self._list_of_channels_under_test
+
+    @property
+    def raman_params(self):
+        return self._raman_params
+
+    @property
+    def nli_params(self):
+        return self._nli_params
+
+class FiberParams():
+    def __init__(self, fiber):
+        self._loss_coef = 2 * fiber.dbkm_2_lin()[1]
+        self._length = fiber.length
+        self._gamma = fiber.gamma
+        self._beta2 = fiber.beta2()
+        self._beta3 = fiber.beta3 if hasattr(fiber, 'beta3') else 0
+        self._f_ref_beta = fiber.f_ref_beta if hasattr(fiber, 'f_ref_beta') else 0
+        self._raman_efficiency = fiber.params.raman_efficiency
+        self._temperature = fiber.operational['temperature']
+
+    @property
+    def loss_coef(self):
+        return self._loss_coef
+
+    @property
+    def length(self):
+        return self._length
+
+    @property
+    def gamma(self):
+        return self._gamma
+
+    @property
+    def beta2(self):
+        return self._beta2
+
+    @property
+    def beta3(self):
+        return self._beta3
+
+    @property
+    def f_ref_beta(self):
+        return self._f_ref_beta
+
+    @property
+    def raman_efficiency(self):
+        return self._raman_efficiency
+
+    @property
+    def temperature(self):
+        return self._temperature
+
 def load_sim_params(path_sim_params):
     sim_params = load_json(path_sim_params)
     return SimParams(params=sim_params)
@@ -20,33 +150,6 @@ def configure_network(network, sim_params):
         if isinstance(node, RamanFiber):
             node.sim_params = sim_params
 
-class RamanParams():
-    def __init__(self, params=None):
-        if params:
-            self.flag_raman = params['flag_raman']
-            self.space_resolution = params['space_resolution']
-            self.tolerance = params['tolerance']
-            self.verbose = params['verbose']
-
-class NLIParams():
-    def __init__(self, params=None):
-        if params:
-            self.nli_method_name = params['nli_method_name']
-            self.wdm_grid_size = params['wdm_grid_size']
-            self.dispersion_tolerance = params['dispersion_tolerance']
-            self.phase_shift_tollerance = params['phase_shift_tollerance']
-            self.f_cut_resolution = None
-            self.f_pump_resolution = None
-            self.verbose = params['verbose']
-
-class SimParams():
-    def __init__(self, params=None):
-        if params:
-            self.list_of_channels_under_test = params['list_of_channels_under_test']
-            self.raman_params = RamanParams(params=params['raman_parameters'])
-            self.nli_params = NLIParams(params=params['nli_parameters'])
-
-fib_params = namedtuple('FiberParams', 'loss_coef length beta2 beta3 f_ref_beta gamma raman_efficiency temperature')
 pump = namedtuple('RamanPump', 'power frequency propagation_direction')
 
 def propagate_raman_fiber(fiber, *carriers):
@@ -64,14 +167,7 @@ def propagate_raman_fiber(fiber, *carriers):
         carrier = carrier._replace(power=pwr)
         chan.append(carrier)
     carriers = tuple(f for f in chan)
-    raman_efficiency = fiber.params.raman_efficiency
-    if not raman_params.flag_raman:
-        raman_efficiency['cr'] = np.array(raman_efficiency['cr']) * 0
-    fiber_params = fib_params(loss_coef=2*fiber.dbkm_2_lin()[1], length=fiber.length, gamma=fiber.gamma,
-                              beta2=fiber.beta2(), beta3=fiber.beta3 if hasattr(fiber,'beta3') else 0,
-                              f_ref_beta=fiber.f_ref_beta if hasattr(fiber,'f_ref_beta') else 0,
-                              raman_efficiency=raman_efficiency,
-                              temperature=fiber.operational['temperature'])
+    fiber_params = FiberParams(fiber)
 
     # evaluate fiber attenuation involving also SRS if required by sim_params
     if 'raman_pumps' in fiber.operational:
@@ -97,7 +193,7 @@ def propagate_raman_fiber(fiber, *carriers):
     nli_solver = NliSolver(nli_params=nli_params, fiber_params=fiber_params)
     nli_solver.stimulated_raman_scattering = stimulated_raman_scattering
     for carrier, attenuation, rmn_ase in zip(carriers, fiber_attenuation, raman_ase):
-        resolution_param = frequency_resolution(carrier, carriers, sim_params, fiber)
+        resolution_param = frequency_resolution(carrier, carriers, sim_params, fiber_params)
         f_cut_resolution, f_pump_resolution, _, _ = resolution_param
         nli_params.f_cut_resolution = f_cut_resolution
         nli_params.f_pump_resolution = f_pump_resolution
@@ -111,15 +207,28 @@ def propagate_raman_fiber(fiber, *carriers):
                            amplified_spontaneous_emission=((pwr.ase/attenuation)+rmn_ase)/attenuation_out)
         yield carrier._replace(power=pwr)
 
-def frequency_resolution(carrier, carriers, sim_params, fiber):
+def frequency_resolution(carrier, carriers, sim_params, fiber_params):
+    def _get_freq_res_k_phi(delta_count, grid_size, loss_coef, delta_z, beta2, k_tol, phi_tol):
+        res_phi = _get_freq_res_phase_rotation(delta_count, grid_size, delta_z, beta2, phi_tol)
+        res_k = _get_freq_res_dispersion_attenuation(delta_count, grid_size, loss_coef, beta2, k_tol)
+        res_dict = {'res_phi': res_phi, 'res_k': res_k}
+        method = min(res_dict, key=res_dict.get)
+        return res_dict[method], method, res_dict
+
+    def _get_freq_res_dispersion_attenuation(delta_count, grid_size, loss_coef, beta2, k_tol):
+        return k_tol * abs(loss_coef) / abs(beta2) / (1 + delta_count) / (4 * np.pi ** 2 * grid_size)
+
+    def _get_freq_res_phase_rotation(delta_count, grid_size, delta_z, beta2, phi_tol):
+        return phi_tol / abs(beta2) / (1 + delta_count) / delta_z / (4 * np.pi ** 2 * grid_size)
+
     grid_size = sim_params.nli_params.wdm_grid_size
-    alpha_ef = fiber.dbkm_2_lin()[1]
+    loss_coef = fiber_params.loss_coef
     delta_z = sim_params.raman_params.space_resolution
-    beta2 = fiber.beta2()
+    beta2 = fiber_params.beta2
     k_tol = sim_params.nli_params.dispersion_tolerance
     phi_tol = sim_params.nli_params.phase_shift_tollerance
     f_pump_resolution, method_f_pump, res_dict_pump = \
-        _get_freq_res_k_phi(0, grid_size, alpha_ef, delta_z, beta2, k_tol, phi_tol)
+        _get_freq_res_k_phi(0, grid_size, loss_coef, delta_z, beta2, k_tol, phi_tol)
     f_cut_resolution = {}
     method_f_cut = {}
     res_dict_cut = {}
@@ -127,24 +236,11 @@ def frequency_resolution(carrier, carriers, sim_params, fiber):
         delta_number = cut_carrier.channel_number - carrier.channel_number
         delta_count = abs(delta_number)
         f_res, method, res_dict = \
-            _get_freq_res_k_phi(delta_count, grid_size, alpha_ef, delta_z, beta2, k_tol, phi_tol)
+            _get_freq_res_k_phi(delta_count, grid_size, loss_coef, delta_z, beta2, k_tol, phi_tol)
         f_cut_resolution[f'delta_{delta_number}'] = f_res
         method_f_cut[delta_number] = method
         res_dict_cut[delta_number] = res_dict
     return [f_cut_resolution, f_pump_resolution, (method_f_cut, method_f_pump), (res_dict_cut, res_dict_pump)]
-
-def _get_freq_res_k_phi(delta_count, grid_size, alpha_ef, delta_z, beta2, k_tol, phi_tol):
-    res_phi = _get_freq_res_phase_rotation(delta_count, grid_size, delta_z, beta2, phi_tol)
-    res_k = _get_freq_res_dispersion_attenuation(delta_count, grid_size, alpha_ef, beta2, k_tol)
-    res_dict = {'res_phi': res_phi, 'res_k': res_k}
-    method = min(res_dict, key=res_dict.get)
-    return res_dict[method], method, res_dict
-
-def _get_freq_res_dispersion_attenuation(delta_count, grid_size, alpha_ef, beta2, k_tol):
-    return k_tol * 2 * abs(alpha_ef) / abs(beta2) / (1 + delta_count) / (4*np.pi**2 * grid_size)
-
-def _get_freq_res_phase_rotation(delta_count, grid_size, delta_z, beta2, phi_tol):
-    return phi_tol / abs(beta2) / (1 + delta_count) / delta_z / (4*np.pi**2 * grid_size)
 
 def raised_cosine_comb(f, *carriers):
     """ Returns an array storing the PSD of a WDM comb of raised cosine shaped
@@ -359,7 +455,11 @@ class RamanSolver:
             # fiber parameters
             fiber_length = self.fiber_params.length
             loss_coef = self.fiber_params.loss_coef
-            raman_efficiency = self.fiber_params.raman_efficiency
+            if self.raman_params.flag_raman:
+                raman_efficiency = self.fiber_params.raman_efficiency
+            else:
+                raman_efficiency = self.fiber_params.raman_efficiency
+                raman_efficiency['cr'] = np.array(raman_efficiency['cr']) * 0
             # raman solver parameters
             z_resolution = self.raman_params.space_resolution
             tolerance = self.raman_params.tolerance
