@@ -207,6 +207,7 @@ def propagate_raman_fiber(fiber, *carriers):
     attenuation_out = db2lin(fiber.con_out)
     nli_solver = NliSolver(nli_params=nli_params, fiber_params=fiber_params)
     nli_solver.stimulated_raman_scattering = stimulated_raman_scattering
+    new_carriers = []
     for carrier, attenuation, rmn_ase in zip(carriers, fiber_attenuation, raman_ase):
         resolution_param = frequency_resolution(carrier, carriers, sim_params, fiber_params)
         f_cut_resolution, f_pump_resolution, _, _ = resolution_param
@@ -220,7 +221,8 @@ def propagate_raman_fiber(fiber, *carriers):
         pwr = pwr._replace(signal=pwr.signal/attenuation/attenuation_out,
                            nonlinear_interference=(pwr.nli+carrier_nli)/attenuation/attenuation_out,
                            amplified_spontaneous_emission=((pwr.ase/attenuation)+rmn_ase)/attenuation_out)
-        yield carrier._replace(power=pwr)
+        new_carriers.append(carrier._replace(power=pwr))
+    return new_carriers
 
 def frequency_resolution(carrier, carriers, sim_params, fiber_params):
     def _get_freq_res_k_phi(delta_count, grid_size, alpha0, delta_z, beta2, k_tol, phi_tol):
