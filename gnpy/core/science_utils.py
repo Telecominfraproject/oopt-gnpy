@@ -622,8 +622,7 @@ class NliSolver:
         g_cut = (carrier.power.signal / carrier.baud_rate)
 
         spm_nli = carrier.baud_rate * (16.0 / 27.0) * self.fiber_params.gamma**2 * g_cut**3 * \
-                      self._generalized_psi(carrier, carrier, f_eval, f_cut_resolution, f_cut_resolution)
-
+                  self._generalized_psi(carrier, carrier, f_eval, f_cut_resolution, f_cut_resolution)
         return spm_nli
 
     def _generalized_spectrally_separated_xpm(self, carrier_cut, pump_carrier):
@@ -686,13 +685,12 @@ class NliSolver:
         f_ref_beta = self.fiber_params.f_ref_beta
         z = self.stimulated_raman_scattering.z
         frequency_rho = self.stimulated_raman_scattering.frequency
-        rho = self.stimulated_raman_scattering.rho
-        rho = rho * np.exp(np.abs(alpha0) * z / 2)
+        rho_norm = self.stimulated_raman_scattering.rho * np.exp(np.abs(alpha0) * z / 2)
         if len(frequency_rho) == 1:
-            rho_function = lambda f: rho[0, :]
+            rho_function = lambda f: rho_norm[0, :]
         else:
-            rho_function = interp1d(frequency_rho, rho, axis=0, fill_value='extrapolate')
-        rho_pump = rho_function(pump_carrier.frequency)
+            rho_function = interp1d(frequency_rho, rho_norm, axis=0, fill_value='extrapolate')
+        rho_norm_pump = rho_function(pump_carrier.frequency)
 
         f1_array = np.arange(pump_carrier.frequency - (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2),
                              pump_carrier.frequency + (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2),
@@ -712,21 +710,18 @@ class NliSolver:
             delta_beta = 4 * np.pi**2 * (f1 - f_eval) * (f2_array - f_eval) * \
                          (beta2 + np.pi * beta3 * (f1 + f2_array - 2 * f_ref_beta))
 
-            integrand_f2 = ggg * self._generalized_rho_nli(delta_beta, rho_pump, z, alpha0)
+            integrand_f2 = ggg * self._generalized_rho_nli(delta_beta, rho_norm_pump, z, alpha0)
             integrand_f1[f1_index] = np.trapz(integrand_f2, f2_array)
         generalized_psi = np.trapz(integrand_f1, f1_array)
         return generalized_psi
 
     @staticmethod
-    def _generalized_rho_nli(delta_beta, rho_pump, z, alpha0):
+    def _generalized_rho_nli(delta_beta, rho_norm_pump, z, alpha0):
         w = 1j * delta_beta - alpha0
-
-        generalized_rho_nli = (rho_pump[-1]**2 * np.exp(w * z[-1]) - rho_pump[0]**2 * np.exp(w * z[0])) / w
+        generalized_rho_nli = (rho_norm_pump[-1]**2 * np.exp(w * z[-1]) - rho_norm_pump[0]**2 * np.exp(w * z[0])) / w
         for z_ind in range(0, len(z) - 1):
-            derivative_rho = (rho_pump[z_ind + 1]**2 - rho_pump[z_ind]**2) / (z[z_ind + 1] - z[z_ind])
+            derivative_rho = (rho_norm_pump[z_ind + 1]**2 - rho_norm_pump[z_ind]**2) / (z[z_ind + 1] - z[z_ind])
             generalized_rho_nli -= derivative_rho * (np.exp(w * z[z_ind + 1]) - np.exp(w * z[z_ind])) / (w**2)
-
         generalized_rho_nli = np.abs(generalized_rho_nli)**2
-
         return generalized_rho_nli
 
