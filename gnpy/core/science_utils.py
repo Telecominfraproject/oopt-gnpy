@@ -740,8 +740,8 @@ class NliSolver:
         f_eval = carrier_cut.frequency
         g_pump = (pump_carrier.power.signal / pump_carrier.baud_rate)
         g_cut = (carrier_cut.power.signal / carrier_cut.baud_rate)
-
-        if abs(carrier_cut.frequency - pump_carrier.frequency) <= 3 * 50e9:  # For the first ten channels use the more accurate method
+        frequency_offset_threshold = self._frequency_offset_threshold(pump_carrier.baud_rate)
+        if abs(carrier_cut.frequency - pump_carrier.frequency) <= frequency_offset_threshold:
             xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * self.fiber_params.gamma**2 * g_pump**2 * g_cut * \
                       2 * self._generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution)
         else:
@@ -833,3 +833,10 @@ class NliSolver:
         generalized_rho_nli = np.abs(generalized_rho_nli)**2
         return generalized_rho_nli
 
+    def _frequency_offset_threshold(self, symbol_rate):
+        k_ref = 5
+        beta2_ref = 21.3e-27
+        delta_f_ref = 50e9
+        rs_ref = 32e9
+        freq_offset_th = ((k_ref * delta_f_ref) * rs_ref * beta2_ref) / (self.fiber_params.beta2 * symbol_rate)
+        return freq_offset_th
