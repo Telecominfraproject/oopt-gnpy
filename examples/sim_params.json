@@ -7,7 +7,7 @@
     "verbose": 2
   },
   "nli_parameters": {
-  	"nli_method_name": "ggn_spectrally_separated_xpm_spm",
+  	"nli_method_name": "ggn_spectrally_separated",
   	"wdm_grid_size": 50e9,
   	"dispersion_tolerance": 1,
   	"phase_shift_tollerance": 0.1,
