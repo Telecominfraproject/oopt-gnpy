@@ -287,7 +287,7 @@ if __name__ == '__main__':
         ch_snr_nl =  ch_power - 10 * log10(final_carrier.power.nli)
         ch_snr = ch_power - 10 * log10(final_carrier.power.nli + final_carrier.power.ase)
         if not isnan(ch_snr):
-            print(f'{final_carrier.num_chan} \t\t {round(ch_freq, 2):.2f} \t\t\t {round(ch_snr_nl, 2):.2f} '
+            print(f'{final_carrier.channel_number} \t\t {round(ch_freq, 2):.2f} \t\t\t {round(ch_snr_nl, 2):.2f} '
                   f'\t\t\t\t {round(ch_snr, 2):.2f}')
 
     if not args.source:

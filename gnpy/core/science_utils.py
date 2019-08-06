@@ -177,8 +177,8 @@ def propagate_raman_fiber(fiber, *carriers):
     for carrier in carriers:
         pwr = carrier.power
         pwr = pwr._replace(signal=pwr.signal / attenuation_in,
-                           nonlinear_interference=pwr.nli / attenuation_in,
-                           amplified_spontaneous_emission=pwr.ase / attenuation_in)
+                           nli=pwr.nli / attenuation_in,
+                           ase=pwr.ase / attenuation_in)
         carrier = carrier._replace(power=pwr)
         chan.append(carrier)
     carriers = tuple(f for f in chan)
@@ -219,8 +219,8 @@ def propagate_raman_fiber(fiber, *carriers):
         else:
             carrier_nli = np.nan
         pwr = pwr._replace(signal=pwr.signal/attenuation/attenuation_out,
-                           nonlinear_interference=(pwr.nli+carrier_nli)/attenuation/attenuation_out,
-                           amplified_spontaneous_emission=((pwr.ase/attenuation)+rmn_ase)/attenuation_out)
+                           nli=(pwr.nli+carrier_nli)/attenuation/attenuation_out,
+                           ase=((pwr.ase/attenuation)+rmn_ase)/attenuation_out)
         new_carriers.append(carrier._replace(power=pwr))
     return new_carriers
 
