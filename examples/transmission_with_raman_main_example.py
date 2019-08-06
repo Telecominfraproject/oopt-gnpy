@@ -14,7 +14,6 @@ from gnpy.core.equipment import load_equipment, trx_mode_params
 from gnpy.core.utils import db2lin, lin2db, write_csv
 from argparse import ArgumentParser
 from sys import exit
-import time
 from pathlib import Path
 from json import loads
 from collections import Counter
@@ -273,10 +272,8 @@ if __name__ == '__main__':
         trx_params['power'] = db2lin(float(args.power))*1e-3
     params.update(trx_params)
     req = Path_request(**params)
-    start_time = time.time()
     path, infos = main(network, equipment, source, destination, sim_params, req)
     save_network(args.filename, network)
-    print(f'\n Computed after {time.time()-start_time} seconds. \n')
 
     print('The total SNR per channel at the end of the line is:')
     print('Ch. # \t Channel frequency (THz) \t SNR NL (signal bw, dB) \t SNR total (signal bw, dB)')
