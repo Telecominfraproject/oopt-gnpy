@@ -7,11 +7,11 @@ gnpy.core.elements
 
 This module contains standard network elements.
 
-A network element is a Python callable. It takes a .info.SpectralInformation
+A network element is a Python callable. It takes a :class:`.info.SpectralInformation`
 object and returns a copy with appropriate fields affected. This structure
 represents spectral information that is "propogated" by this network element.
 Network elements must have only a local "view" of the network and propogate
-SpectralInformation using only this information. They should be independent and
+:class:`.info.SpectralInformation` using only this information. They should be independent and
 self-contained.
 
 Network elements MUST implement two attributes .uid and .name representing a
@@ -51,11 +51,14 @@ class Transceiver(Node):
                              for c in spectral_info.carriers]
             self.raw_snr = [lin2db(divide(c.power.signal, c.power.nli+c.power.ase)) 
                         for c in spectral_info.carriers]
+            self.raw_snr_01nm = [snr - ratio for snr, ratio
+                                  in zip(self.raw_snr, ratio_01nm)]
 
             self.osnr_ase = self.raw_osnr_ase
             self.osnr_ase_01nm = self.raw_osnr_ase_01nm
             self.osnr_nli = self.raw_osnr_nli
             self.snr = self.raw_snr
+            self.snr_01nm = self.raw_snr_01nm
                         
     def update_snr(self, *args):
         """
@@ -75,6 +78,8 @@ class Transceiver(Node):
                         self.raw_snr, self.baud_rate))
         self.osnr_ase_01nm = list(map(lambda x:snr_sum(x,12.5e9,snr_added), 
                         self.raw_osnr_ase_01nm))
+        self.snr_01nm = list(map(lambda x:snr_sum(x,12.5e9,snr_added), 
+                        self.raw_snr_01nm))
 
     @property
     def to_json(self):
@@ -100,18 +105,20 @@ class Transceiver(Node):
         snr = round(mean(self.snr),2)
         osnr_ase = round(mean(self.osnr_ase),2)
         osnr_ase_01nm = round(mean(self.osnr_ase_01nm), 2)
+        snr_01nm = round(mean(self.snr_01nm),2)
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
 
                           f'  OSNR ASE (0.1nm, dB):      {osnr_ase_01nm:.2f}',
                           f'  OSNR ASE (signal bw, dB):  {osnr_ase:.2f}',
-                          f'  SNR total (signal bw, dB): {snr:.2f}'])
+                          f'  SNR total (signal bw, dB): {snr:.2f}',
+                          f'  SNR total (0.1nm, dB): {snr_01nm:.2f}'])
 
     def __call__(self, spectral_info):
         self._calc_snr(spectral_info)
         return spectral_info
 
-RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr')
+RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr restrictions')
 
 class Roadm(Node):
     def __init__(self, *args, params, **kwargs):
@@ -120,15 +127,19 @@ class Roadm(Node):
         self.effective_loss = None
         self.effective_pch_out_db = self.params.target_pch_out_db
         self.passive = True
+        self.restrictions = self.params.restrictions
 
     @property
     def to_json(self):
         return {'uid'       : self.uid,
                 'type'      : type(self).__name__,
-                'params'    : {'target_pch_out_db' : self.effective_pch_out_db},
+                'params'    : {
+                    'target_pch_out_db' : self.effective_pch_out_db,
+                    'restrictions'      : self.restrictions
+                    },
                 'metadata'      : {
                     'location': self.metadata['location']._asdict()
-                                    }
+                                }
                 }
 
     def __repr__(self):
@@ -180,6 +191,9 @@ class Fused(Node):
     def to_json(self):
         return {'uid'       : self.uid,
                 'type'      : type(self).__name__,
+                'params'    :{
+                    'loss': self.loss
+                },
                 'metadata'      : {
                     'location': self.metadata['location']._asdict()
                                     }
@@ -277,12 +291,12 @@ class Fiber(Node):
 
     @property
     def fiber_loss(self):
-        # dB fiber loss, not including padding attenuator
+        """Fiber loss in dB, not including padding attenuator"""
         return self.loss_coef * self.length + self.con_in + self.con_out
 
     @property
     def loss(self):
-        #total loss incluiding padding att_in: useful for polymorphism with roadm loss
+        """total loss including padding att_in: useful for polymorphism with roadm loss"""
         return self.loss_coef * self.length + self.con_in + self.con_out + self.att_in
 
     @property
@@ -307,8 +321,10 @@ class Fiber(Node):
 
     def carriers(self, loc, attr):
         """retrieve carriers information
-        loc = (in, out) of the class element
-        attr = (ase, nli, signal, total) power information"""
+
+        :param loc: (in, out) of the class element
+        :param attr: (ase, nli, signal, total) power information
+        """
         if not (loc in ('in', 'out') and attr in ('nli', 'signal', 'total', 'ase')):
             yield None
             return
@@ -324,31 +340,28 @@ class Fiber(Node):
             else:
                 yield c.power._asdict().get(attr, None)
 
-    def beta2(self, ref_wavelength=None):
-        """ Returns beta2 from dispersion parameter.
+    def beta2(self, ref_wavelength=1550e-9):
+        """Returns beta2 from dispersion parameter.
         Dispersion is entered in ps/nm/km.
-        Disperion can be a numpy array or a single value.  If a
-        value ref_wavelength is not entered 1550e-9m will be assumed.
-        ref_wavelength can be a numpy array.
+        Disperion can be a numpy array or a single value.
+
+        :param ref_wavelength: can be a numpy array; default: 1550nm
         """
         # TODO|jla: discuss beta2 as method or attribute
-        wl = 1550e-9 if ref_wavelength is None else ref_wavelength
         D = abs(self.dispersion)
-        b2 = (wl ** 2) * D / (2 * pi * c)  # 10^21 scales [ps^2/km]
+        b2 = (ref_wavelength ** 2) * D / (2 * pi * c)  # 10^21 scales [ps^2/km]
         return b2 # s/Hz/m
 
     def dbkm_2_lin(self):
-        """ calculates the linear loss coefficient
-        """
-        # alpha_pcoef is linear loss coefficient in dB/km^-1
-        # alpha_acoef is linear loss field amplitude coefficient in m^-1
+        """calculates the linear loss coefficient"""
+        # linear loss coefficient in dB/km^-1
         alpha_pcoef = self.loss_coef
+        # linear loss field amplitude coefficient in m^-1
         alpha_acoef = alpha_pcoef / (2 * 10 * log10(exp(1)))
         return alpha_pcoef, alpha_acoef
 
     def _psi(self, carrier, interfering_carrier):
-        """ Calculates eq. 123 from	arXiv:1209.0394.
-        """
+        """Calculates eq. 123 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__"""
         if carrier.num_chan == interfering_carrier.num_chan: # SCI
             psi = arcsinh(0.5 * pi**2 * self.asymptotic_length
                               * abs(self.beta2()) * carrier.baud_rate**2)
@@ -361,8 +374,9 @@ class Fiber(Node):
         return psi
 
     def _gn_analytic(self, carrier, *carriers):
-        """ Computes the nonlinear interference power on a single carrier.
-        The method uses eq. 120 from arXiv:1209.0394.
+        """Computes the nonlinear interference power on a single carrier.
+        The method uses eq. 120 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__.
+
         :param carrier: the signal under analysis
         :param carriers: the full WDM comb
         :return: carrier_nli: the amount of nonlinear interference in W on the under analysis
@@ -657,12 +671,11 @@ class EdfaOperational:
                 f'tilt_target={self.tilt_target!r})')
 
 class Edfa(Node):
-    def __init__(self, *args, params={}, operational={}, **kwargs):
-        #TBC is this useful? put in comment for now:
-        #if params is None:
-        #    params = {}
-        #if operational is None:
-        #    operational = {}
+    def __init__(self, *args, params=None, operational=None, **kwargs):
+        if params is None:
+            params = {}
+        if operational is None:
+            operational = {}
         super().__init__(
             *args,
             params=EdfaParams(**params),
@@ -738,8 +751,10 @@ class Edfa(Node):
 
     def carriers(self, loc, attr):
         """retrieve carriers information
-        loc = (in, out) of the class element
-        attr = (ase, nli, signal, total) power information"""
+
+        :param loc: (in, out) of the class element
+        :param attr: (ase, nli, signal, total) power information
+        """
         if not (loc in ('in', 'out') and attr in ('nli', 'signal', 'total', 'ase')):
             yield None
             return
@@ -756,7 +771,7 @@ class Edfa(Node):
                 yield c.power._asdict().get(attr, None)
 
     def interpol_params(self, frequencies, pin, baud_rates, pref):
-        """interpolate SI channel frequencies with the edfa dgt and gain_ripple frquencies from json
+        """interpolate SI channel frequencies with the edfa dgt and gain_ripple frquencies from JSON
         set the edfa class __init__ None parameters :
                 self.channel_freq, self.nf, self.interpol_dgt and self.interpol_gain_ripple
         """
@@ -812,14 +827,8 @@ class Edfa(Node):
             nf_avg = pin_ch - polyval(nf_model.nf_coef, pin_ch) + 58
         elif type_def == 'advanced_model':
             nf_avg = polyval(nf_fit_coeff, -dg)
-        else :
-            print(
-                f'\x1b[1;31;40m'\
-                + f'CRITICAL: unrecognized type def _{self.params.type_def}_\n\
-                    => please check eqpt_config.json'\
-                + '\x1b[0m'
-                )                        
-            exit()            
+        else:
+            assert False, "Unrecognized amplifier type, this should have been checked by the JSON loader"
         return nf_avg+pad, pad
 
     def _calc_nf(self, avg = False):
@@ -861,7 +870,7 @@ class Edfa(Node):
             return self.interpol_nf_ripple + nf_avg # input VOA = 1 for 1 NF degradation
 
     def noise_profile(self, df):
-        """ noise_profile(bw) computes amplifier ase (W) in signal bw (Hz)
+        """noise_profile(bw) computes amplifier ase (W) in signal bw (Hz)
         noise is calculated at amplifier input
 
         :bw: signal bandwidth = baud rate in Hz
@@ -1016,7 +1025,7 @@ class Edfa(Node):
         return g1st - voa + array(self.interpol_dgt) * dgts3
 
     def propagate(self, pref, *carriers):
-        """add ase noise to the propagating carriers of SpectralInformation"""
+        """add ASE noise to the propagating carriers of :class:`.info.SpectralInformation`"""
         pin = array([c.power.signal+c.power.nli+c.power.ase for c in carriers]) # pin in W
         freq = array([c.frequency for c in carriers])
         brate = array([c.baud_rate for c in carriers])

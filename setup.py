@@ -17,7 +17,7 @@ setup(
     long_description_content_type='text/x-rst; charset=UTF-8',
     url='https://github.com/Telecominfraproject/gnpy',
     author='Telecom Infra Project',
-    author_email='james.powell@telecominfraproject.com',
+    author_email='jan.kundrat@telecominfraproject.com',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',

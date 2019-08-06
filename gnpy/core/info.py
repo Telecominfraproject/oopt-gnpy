@@ -5,7 +5,7 @@
 gnpy.core.info
 ==============
 
-This module contains classes for modelling SpectralInformation.
+This module contains classes for modelling :class:`SpectralInformation`.
 '''
 
 

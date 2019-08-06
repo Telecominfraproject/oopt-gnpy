@@ -9,7 +9,6 @@ This module contains functionality for specifying equipment.
 '''
 
 from numpy import clip, polyval
-from sys import exit
 from operator import itemgetter
 from math import isclose
 from pathlib import Path
@@ -17,6 +16,7 @@ from json import load
 from gnpy.core.utils import lin2db, db2lin, load_json
 from collections import namedtuple
 from gnpy.core.elements import Edfa
+from gnpy.core.exceptions import EquipmentConfigError
 import time
 
 Model_vg = namedtuple('Model_vg', 'nf1 nf2 delta_p')
@@ -27,14 +27,14 @@ Model_dual_stage = namedtuple('Model_dual_stage', 'preamp_variety booster_variet
 
 class common:
     def update_attr(self, default_values, kwargs, name):
-        clean_kwargs = {k:v for k,v in kwargs.items() if v !=''}
-        for k,v in default_values.items():
-            setattr(self, k, clean_kwargs.get(k,v))
-            if k not in clean_kwargs and name != 'Amp' :
+        clean_kwargs = {k:v for k, v in kwargs.items() if v != ''}
+        for k, v in default_values.items():
+            setattr(self, k, clean_kwargs.get(k, v))
+            if k not in clean_kwargs and name != 'Amp':
                 print(f'\x1b[1;31;40m'+
-                    f'\n WARNING missing {k} attribute in eqpt_config.json[{name}]'
-                    f'\n default value is {k} = {v}'
-                    + '\x1b[0m')
+                      f'\n WARNING missing {k} attribute in eqpt_config.json[{name}]'+
+                      f'\n default value is {k} = {v}'+
+                      f'\x1b[0m')
                 time.sleep(1)
 
 class SI(common):
@@ -42,13 +42,13 @@ class SI(common):
     {
         "f_min":            191.35e12,
         "f_max":            196.1e12,
-        "baud_rate":        32e9,        
+        "baud_rate":        32e9,
         "spacing":          50e9,
         "power_dbm":        0,
-        "power_range_db":   [0,0,0.5],
+        "power_range_db":   [0, 0, 0.5],
         "roll_off":         0.15,
         "tx_osnr":          45,
-        "sys_margins":      0    
+        "sys_margins":      0
     }
 
     def __init__(self, **kwargs):
@@ -69,7 +69,7 @@ class Span(common):
         'con_in':                           0,
         'con_out':                          0
     }
-    
+
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Span')
 
@@ -77,8 +77,12 @@ class Roadm(common):
     default_values = \
     {
         'target_pch_out_db':   -17,
-        'add_drop_osnr':       100
-    }    
+        'add_drop_osnr':       100,
+        'restrictions': {
+            'preamp_variety_list':[],
+            'booster_variety_list':[]
+            }
+    }
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Roadm')
@@ -146,7 +150,7 @@ class Amp(common):
         config = Path(filename).parent / 'default_edfa_config.json'
 
         type_variety = kwargs['type_variety']
-        type_def = kwargs.get('type_def', 'variable_gain') #default compatibility with older json eqpt files
+        type_def = kwargs.get('type_def', 'variable_gain') # default compatibility with older json eqpt files
         nf_def = None
         dual_stage_def = None
 
@@ -154,12 +158,12 @@ class Amp(common):
             try:
                 nf0 = kwargs.pop('nf0')
             except KeyError: #nf0 is expected for a fixed gain amp
-                print(f'missing nf0 value input for amplifier: {type_variety} in eqpt_config.json')
-                exit()
-            try: #remove all remaining nf inputs
-                del kwargs['nf_min']
-                del kwargs['nf_max']
-            except KeyError: pass #nf_min and nf_max are not needed for fixed gain amp
+                raise EquipmentConfigError(f'missing nf0 value input for amplifier: {type_variety} in equipment config')
+            for k in ('nf_min', 'nf_max'):
+                try:
+                    del kwargs[k]
+                except KeyError:
+                    pass
             nf_def = Model_fg(nf0)
         elif type_def == 'advanced_model':
             config = Path(filename).parent / kwargs.pop('advanced_config_from_json')
@@ -169,8 +173,7 @@ class Amp(common):
                 nf_min = kwargs.pop('nf_min')
                 nf_max = kwargs.pop('nf_max')
             except KeyError:
-                print(f'missing nf_min/max value input for amplifier: {type_variety} in eqpt_config.json')
-                exit()
+                raise EquipmentConfigError(f'missing nf_min or nf_max value input for amplifier: {type_variety} in equipment config')
             try: #remove all remaining nf inputs
                 del kwargs['nf0']
             except KeyError: pass #nf0 is not needed for variable gain amp
@@ -180,32 +183,28 @@ class Amp(common):
             try:
                 nf_coef = kwargs.pop('nf_coef')
             except KeyError: #nf_coef is expected for openroadm amp
-                print(f'missing nf_coef input for amplifier: {type_variety} in eqpt_config.json')
-                exit()
+                raise EquipmentConfigError(f'missing nf_coef input for amplifier: {type_variety} in equipment config')
             nf_def = Model_openroadm(nf_coef)
         elif type_def == 'dual_stage':
             try: #nf_ram and gain_ram are expected for a hybrid amp
                 preamp_variety = kwargs.pop('preamp_variety')
                 booster_variety = kwargs.pop('booster_variety')
             except KeyError:
-                print(f'missing preamp/booster variety input for amplifier: {type_variety} in eqpt_config.json')
-                exit()
+                raise EquipmentConfigError(f'missing preamp/booster variety input for amplifier: {type_variety} in equipment config')
             dual_stage_def = Model_dual_stage(preamp_variety, booster_variety)
 
         with open(config, encoding='utf-8') as f:
             json_data = load(f)
 
-        return cls(**{**kwargs, **json_data, 
+        return cls(**{**kwargs, **json_data,
             'nf_model': nf_def, 'dual_stage_model': dual_stage_def})
 
 
 def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
     if nf_min < -10:
-        print(f'Invalid nf_min value {nf_min!r} for amplifier {type_variety}')
-        exit()
+        raise EquipmentConfigError(f'Invalid nf_min value {nf_min!r} for amplifier {type_variety}')
     if nf_max < -10:
-        print(f'Invalid nf_max value {nf_max!r} for amplifier {type_variety}')
-        exit()
+        raise EquipmentConfigError(f'Invalid nf_max value {nf_max!r} for amplifier {type_variety}')
 
     # NF estimation model based on nf_min and nf_max
     # delta_p:  max power dB difference between first and second stage coils
@@ -220,8 +219,7 @@ def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
     nf1 = lin2db(db2lin(nf_min) - db2lin(nf2)/db2lin(g1a_max))
 
     if nf1 < 4:
-        print(f'First coil value too low {nf1} for amplifier {type_variety}')
-        exit()
+        raise EquipmentConfigError(f'First coil value too low {nf1} for amplifier {type_variety}')
 
     # Check 1 dB < delta_p < 6 dB to ensure nf_min and nf_max values make sense.
     # There shouldn't be high nf differences between the two coils:
@@ -233,20 +231,17 @@ def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
         delta_p = gain_max - g1a_max
         g1a_min = gain_min - (gain_max-gain_min) - delta_p
         if not 1 < delta_p < 11:
-            print(f'Computed \N{greek capital letter delta}P invalid \
+            raise EquipmentConfigError(f'Computed \N{greek capital letter delta}P invalid \
                 \n 1st coil vs 2nd coil calculated DeltaP {delta_p:.2f} for \
                 \n amplifier {type_variety} is not valid: revise inputs \
                 \n calculated 1st coil NF = {nf1:.2f}, 2nd coil NF = {nf2:.2f}')
-            exit()
     # Check calculated values for nf1 and nf2
     calc_nf_min = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_max))
     if not isclose(nf_min, calc_nf_min, abs_tol=0.01):
-        print(f'nf_min does not match calc_nf_min, {nf_min} vs {calc_nf_min} for amp {type_variety}')
-        exit()
+        raise EquipmentConfigError(f'nf_min does not match calc_nf_min, {nf_min} vs {calc_nf_min} for amp {type_variety}')
     calc_nf_max = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_min))
     if not isclose(nf_max, calc_nf_max, abs_tol=0.01):
-        print(f'nf_max does not match calc_nf_max, {nf_max} vs {calc_nf_max} for amp {type_variety}')
-        exit()
+        raise EquipmentConfigError(f'nf_max does not match calc_nf_max, {nf_max} vs {calc_nf_max} for amp {type_variety}')
 
     return nf1, nf2, delta_p
 
@@ -268,7 +263,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
     """return the trx and SI parameters from eqpt_config for a given type_variety and mode (ie format)"""
     trx_params = {}
     default_si_data = equipment['SI']['default']
-    
+
     try:
         trxs = equipment['Transceiver']
         #if called from path_requests_run.py, trx_mode is filled with None when not specified by user
@@ -281,20 +276,18 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             trx_params = {**mode_params}
             # sanity check: spacing baudrate must be smaller than min spacing
             if trx_params['baud_rate'] > trx_params['min_spacing'] :
-                msg = f'Inconsistency in equipment library:\n Transpoder "{trx_type_variety}" mode "{trx_params["format"]}" '+\
-                    f'has baud rate: {trx_params["baud_rate"]*1e-9} GHz greater than min_spacing {trx_params["min_spacing"]*1e-9}.'
-                print(msg)
-                exit()
+                raise EquipmentConfigError(f'Inconsistency in equipment library:\n Transpoder "{trx_type_variety}" mode "{trx_params["format"]}" '+\
+                    f'has baud rate: {trx_params["baud_rate"]*1e-9} GHz greater than min_spacing {trx_params["min_spacing"]*1e-9}.')
         else:
             mode_params = {"format": "undetermined",
-                       "baud_rate": None,
-                       "OSNR": None,
-                       "bit_rate": None,
-                       "roll_off": None,
-                       "tx_osnr":None,
-                       "min_spacing":None,
-                       "cost":None}
-            trx_params = {**mode_params} 
+                           "baud_rate": None,
+                           "OSNR": None,
+                           "bit_rate": None,
+                           "roll_off": None,
+                           "tx_osnr":None,
+                           "min_spacing":None,
+                           "cost":None}
+            trx_params = {**mode_params}
         trx_params['f_min'] = equipment['Transceiver'][trx_type_variety].frequency['min']
         trx_params['f_max'] = equipment['Transceiver'][trx_type_variety].frequency['max']
 
@@ -304,9 +297,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
         # print(f'spacing {temp}')
     except StopIteration :
         if error_message:
-            print(f'could not find tsp : {trx_type_variety} with mode: {trx_mode} in eqpt library')
-            print('Computation stopped.')
-            exit()
+            raise EquipmentConfigError(f'Computation stoped: could not find tsp : {trx_type_variety} with mode: {trx_mode} in eqpt library')
         else:
             # default transponder charcteristics
             # mainly used with transmission_main_example.py
@@ -323,7 +314,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             nch = automatic_nch(trx_params['f_min'], trx_params['f_max'], trx_params['spacing'])
             trx_params['nb_channel'] = nch
             print(f'There are {nch} channels propagating')
-                
+
     trx_params['power'] =  db2lin(default_si_data.power_dbm)*1e-3
 
     return trx_params
@@ -331,8 +322,8 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
 def automatic_spacing(baud_rate):
     """return the min possible channel spacing for a given baud rate"""
     # TODO : this should parametrized in a cfg file
-    spacing_list = [(33e9,37.5e9), (38e9,50e9), (50e9,62.5e9), (67e9,75e9), (92e9,100e9)] #list of possible tuples
-                                                #[(max_baud_rate, spacing_for_this_baud_rate)]
+    # list of possible tuples [(max_baud_rate, spacing_for_this_baud_rate)]
+    spacing_list = [(33e9, 37.5e9), (38e9, 50e9), (50e9, 62.5e9), (67e9, 75e9), (92e9, 100e9)]
     return min((s[1] for s in spacing_list if s[0] > baud_rate), default=baud_rate*1.2)
 
 def automatic_nch(f_min, f_max, spacing):
@@ -358,23 +349,27 @@ def update_dual_stage(equipment):
         if edfa.type_def == 'dual_stage':
             edfa_preamp = edfa_dict[edfa.dual_stage_model.preamp_variety]
             edfa_booster = edfa_dict[edfa.dual_stage_model.booster_variety]
-            for k,v in edfa_preamp.__dict__.items():
-                attr_k = 'preamp_'+k
-                setattr(edfa, attr_k, v)
-            for k,v in edfa_booster.__dict__.items():
-                attr_k = 'booster_'+k
-                setattr(edfa, attr_k, v)           
+            for key, value in edfa_preamp.__dict__.items():
+                attr_k = 'preamp_' + key
+                setattr(edfa, attr_k, value)
+            for key, value in edfa_booster.__dict__.items():
+                attr_k = 'booster_' + key
+                setattr(edfa, attr_k, value)
             edfa.p_max = edfa_booster.p_max
             edfa.gain_flatmax = edfa_booster.gain_flatmax + edfa_preamp.gain_flatmax
             if edfa.gain_min < edfa_preamp.gain_min:
-                print(
-                    f'\x1b[1;31;40m'\
-                    + f'CRITICAL: dual stage {edfa.type_variety} min gain is lower than its preamp min gain\
-                        => please increase its min gain in eqpt_config.json'\
-                    + '\x1b[0m'
-                    )                        
-                exit()
+                raise EquipmentConfigError(f'Dual stage {edfa.type_variety} min gain is lower than its preamp min gain')
     return equipment
+
+def roadm_restrictions_sanity_check(equipment):
+    """ verifies that booster and preamp restrictions specified in roadm equipment are listed
+    in the edfa.
+    """
+    restrictions = equipment['Roadm']['default'].restrictions['booster_variety_list'] + \
+        equipment['Roadm']['default'].restrictions['preamp_variety_list']
+    for amp_name in restrictions:
+        if amp_name not in equipment['Edfa']:
+            raise EquipmentConfigError(f'ROADM restriction {amp_name} does not refer to a defined EDFA name')
 
 def equipment_from_json(json_data, filename):
     """build global dictionnary eqpt_library that stores all eqpt characteristics:
@@ -390,11 +385,12 @@ def equipment_from_json(json_data, filename):
         equipment[key] = {}
         typ = globals()[key]
         for entry in entries:
-            subkey = entry.get('type_variety', 'default')           
+            subkey = entry.get('type_variety', 'default')
             if key == 'Edfa':
                 equipment[key][subkey] = Amp.from_json(filename, **entry)
-            else:                
+            else:
                 equipment[key][subkey] = typ(**entry)
     equipment = update_trx_osnr(equipment)
     equipment = update_dual_stage(equipment)
+    roadm_restrictions_sanity_check(equipment)
     return equipment

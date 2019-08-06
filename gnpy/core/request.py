@@ -429,7 +429,7 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
         # at least 1 baudrate can be tested wrt spacing
         for b in baudrate_to_explore :
             modes_to_explore = [m for m in equipment['Transceiver'][req.tsp].mode 
-                if m['baud_rate'] == b]
+                if m['baud_rate'] == b and float(m['min_spacing'])<= req.spacing]
             modes_to_explore = sorted(modes_to_explore, 
                 key = lambda x: x['bit_rate'], reverse=True)
             # print(modes_to_explore)

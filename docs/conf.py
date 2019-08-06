@@ -173,5 +173,4 @@ texinfo_documents = [
      'Miscellaneous'),
 ]
 
-
-
+autodoc_default_flags = ['members', 'undoc-members', 'private-members', 'show-inheritance']

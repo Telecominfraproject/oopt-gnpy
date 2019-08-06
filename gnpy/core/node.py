@@ -8,13 +8,13 @@ gnpy.core.node
 This module contains the base class for a network element.
 
 Strictly, a network element is any callable which accepts an immutable
-.info.SpectralInformation object and returns a .info.SpectralInformation object
-(a copy.)
+:class:`.info.SpectralInformation` object and returns an :class:`.info.SpectralInformation` object
+(a copy).
 
 Network elements MUST implement two attributes .uid and .name representing a
 unique identifier and a printable name.
 
-This base class provides a mode convenient way to define a network element
+This base class provides a more convenient way to define a network element
 via subclassing.
 '''
 
@@ -26,10 +26,12 @@ class Location(namedtuple('Location', 'latitude longitude city region')):
         return super().__new__(cls, latitude, longitude, city, region)
 
 class Node:
-    def __init__(self, uid, name=None, params=None, metadata={'location':{}}, operational=None):
+    def __init__(self, uid, name=None, params=None, metadata=None, operational=None):
         if name is None:
             name = uid
         self.uid, self.name = uid, name
+        if metadata is None:
+            metadata = {'location': {}}
         if metadata and not isinstance(metadata.get('location'), Location):
             metadata['location'] = Location(**metadata.pop('location', {}))
         self.params, self.metadata, self.operational = params, metadata, operational
