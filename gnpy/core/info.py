@@ -16,45 +16,26 @@ from json import loads
 from gnpy.core.utils import load_json
 from gnpy.core.equipment import automatic_nch, automatic_spacing
 
-class ConvenienceAccess:
-
-    def __init_subclass__(cls):
-        for abbrev, field in getattr(cls, '_ABBREVS', {}).items():
-            setattr(cls, abbrev, property(lambda self, f=field: getattr(self, f)))
-
-    def update(self, **kwargs):
-        for abbrev, field in getattr(self, '_ABBREVS', {}).items():
-            if abbrev in kwargs:
-                kwargs[field] = kwargs.pop(abbrev)
-        return self._replace(**kwargs)
-
-
-class Power(namedtuple('Power', 'signal nonlinear_interference amplified_spontaneous_emission'), ConvenienceAccess):
+class Power(namedtuple('Power', 'signal nli ase')):
     """carriers power in W"""
-    _ABBREVS = {'nli': 'nonlinear_interference',
-                'ase': 'amplified_spontaneous_emission',}
 
 
-class Channel(namedtuple('Channel', 'channel_number frequency baud_rate roll_off power'), ConvenienceAccess):
+class Channel(namedtuple('Channel', 'channel_number frequency baud_rate roll_off power')):
+    pass
 
-    _ABBREVS = {'channel':  'channel_number',
-                'num_chan': 'channel_number',
-                'ffs':      'frequency',
-                'freq':     'frequency',}
 
-class Pref(namedtuple('Pref', 'p_span0, p_spani, neq_ch '), ConvenienceAccess):
+class Pref(namedtuple('Pref', 'p_span0, p_spani, neq_ch ')):
     """noiseless reference power in dBm: 
-    p0: inital target carrier power
-    pi: carrier power after element i
-    neqch: equivalent channel count in dB"""
+    p_span0: inital target carrier power
+    p_spani: carrier power after element i
+    neq_ch: equivalent channel count in dB"""
 
-    _ABBREVS = {'p0' :  'p_span0',
-                'pi' :  'p_spani'}
 
-class SpectralInformation(namedtuple('SpectralInformation', 'pref carriers'), ConvenienceAccess):
+class SpectralInformation(namedtuple('SpectralInformation', 'pref carriers')):
 
     def __new__(cls, pref, carriers):
         return super().__new__(cls, pref, carriers)
+
 
 def merge_input_spectral_information(*si):
     """mix channel combs of different baud rates and power"""
@@ -86,11 +67,11 @@ if __name__ == '__main__':
     si = SpectralInformation()
     spacing = 0.05 # THz
 
-    si = si.update(carriers=tuple(Channel(f+1, 191.3+spacing*(f+1), 32e9, 0.15, Power(1e-3, f, 1)) for f in range(96)))
+    si = si._replace(carriers=tuple(Channel(f+1, 191.3+spacing*(f+1), 32e9, 0.15, Power(1e-3, f, 1)) for f in range(96)))
 
     print(f'si = {si}')
     print(f'si = {si.carriers[0].power.nli}')
     print(f'si = {si.carriers[20].power.nli}')
-    si2 = si.update(carriers=tuple(c.update(power = c.power.update(nli = c.power.nli * 1e5))
+    si2 = si._replace(carriers=tuple(c._replace(power = c.power._replace(nli = c.power.nli * 1e5))
                               for c in si.carriers))
     print(f'si2 = {si2}')
