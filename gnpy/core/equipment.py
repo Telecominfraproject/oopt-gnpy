@@ -120,6 +120,11 @@ class RamanFiber(common):
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'RamanFiber')
+        for param in ('cr', 'frequency_offset'):
+            if param not in self.raman_efficiency:
+                raise EquipmentConfigError(f'RamanFiber.raman_efficiency: missing "{param}" parameter')
+        if self.raman_efficiency['frequency_offset'] != sorted(self.raman_efficiency['frequency_offset']):
+            raise EquipmentConfigError(f'RamanFiber.raman_efficiency.frequency_offset is not sorted')
 
 class Amp(common):
     default_values = \
