@@ -118,7 +118,7 @@ def main(network, equipment, source, destination, sim_params, req = None):
 
     power_mode = equipment['Span']['default'].power_mode
     print('\n'.join([f'Power mode is set to {power_mode}',
-                     f'=> it can be modified in eqpt_with_raman_config.json - Span']))
+                     f'=> it can be modified in eqpt_config.json - Span']))
 
     pref_ch_db = lin2db(req.power*1e3) #reference channel power / span (SL=20dB)
     pref_total_db = pref_ch_db + lin2db(req.nb_channel) #reference total power / span (SL=20dB)
@@ -183,7 +183,7 @@ def main(network, equipment, source, destination, sim_params, req = None):
 
 parser = ArgumentParser()
 parser.add_argument('-e', '--equipment', type=Path,
-                    default=Path(__file__).parent / 'eqpt_with_raman_config.json')
+                    default=Path(__file__).parent / 'eqpt_config.json')
 parser.add_argument('-sim', '--sim-params', type=Path,
                     default=Path(__file__).parent / 'sim_params.json', help='Path to the json containing simulation parameters')
 parser.add_argument('-pl', '--plot', action='store_true')
