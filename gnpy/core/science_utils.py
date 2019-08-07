@@ -1,6 +1,7 @@
 import numpy as np
 from operator import attrgetter
 from collections import namedtuple
+from logging import getLogger
 import scipy.constants as ph
 from scipy.integrate import solve_bvp
 from scipy.integrate import cumtrapz
@@ -10,12 +11,14 @@ from scipy.optimize import OptimizeResult
 from gnpy.core.utils import db2lin, load_json
 
 
+logger = getLogger(__name__)
+
+
 class RamanParams():
     def __init__(self, params):
         self._flag_raman = params['flag_raman']
         self._space_resolution = params['space_resolution']
         self._tolerance = params['tolerance']
-        self._verbose = params['verbose']
 
     @property
     def flag_raman(self):
@@ -29,10 +32,6 @@ class RamanParams():
     def tolerance(self):
         return self._tolerance
 
-    @property
-    def verbose(self):
-        return self._verbose
-
 class NLIParams():
     def __init__(self, params):
         self._nli_method_name = params['nli_method_name']
@@ -41,7 +40,6 @@ class NLIParams():
         self._phase_shift_tollerance = params['phase_shift_tollerance']
         self._f_cut_resolution = None
         self._f_pump_resolution = None
-        self._verbose = params['verbose']
 
     @property
     def nli_method_name(self):
@@ -58,10 +56,6 @@ class NLIParams():
     @property
     def phase_shift_tollerance(self):
         return self._phase_shift_tollerance
-
-    @property
-    def verbose(self):
-        return self._verbose
 
     @property
     def f_cut_resolution(self):
@@ -352,10 +346,8 @@ class RamanSolver:
             temperature = self.fiber_params.temperature
             carriers = self.carriers
             raman_pumps = self.raman_pumps
-            verbose = self.raman_params.verbose
 
-            if verbose:
-                print('Start computing fiber Spontaneous Raman Scattering')
+            logger.debug('Start computing fiber Spontaneous Raman Scattering')
             power_spectrum, freq_array, prop_direct, bn_array = self._compute_power_spectrum(carriers, raman_pumps)
 
             if not hasattr(loss_coef, 'alpha_power'):
@@ -382,8 +374,7 @@ class RamanSolver:
             setattr(spontaneous_raman_scattering, 'power', spontaneous_raman_scattering.x)
             delattr(spontaneous_raman_scattering, 'x')
 
-            if verbose:
-                print(spontaneous_raman_scattering.message)
+            logger.debug(spontaneous_raman_scattering.message)
 
             self._spontaneous_raman_scattering = spontaneous_raman_scattering
 
@@ -480,10 +471,8 @@ class RamanSolver:
             # raman solver parameters
             z_resolution = self.raman_params.space_resolution
             tolerance = self.raman_params.tolerance
-            verbose = self.raman_params.verbose
 
-            if verbose:
-                print('Start computing fiber Stimulated Raman Scattering')
+            logger.debug('Start computing fiber Stimulated Raman Scattering')
 
             power_spectrum, freq_array, prop_direct, _ = self._compute_power_spectrum(carriers, raman_pumps)
 
@@ -505,7 +494,7 @@ class RamanSolver:
             initial_guess_conditions = self._initial_guess_stimulated_raman(z, power_spectrum, alphap_fiber, prop_direct)
 
             # ODE SOLVER
-            stimulated_raman_scattering = solve_bvp(ode_function, boundary_residual, z, initial_guess_conditions, tol=tolerance, verbose=verbose)
+            stimulated_raman_scattering = solve_bvp(ode_function, boundary_residual, z, initial_guess_conditions, tol=tolerance)
 
             rho = (stimulated_raman_scattering.y.transpose() / power_spectrum).transpose()
             rho = np.sqrt(rho)    # From power attenuation to field attenuation
@@ -654,8 +643,7 @@ class NliSolver:
         eta_matrix = np.zeros(shape=(matrix_size, matrix_size))
 
         # SPM
-        if self.nli_params.verbose:
-            print(f'Start computing SPM on channel #{carrier_cut.channel_number}')
+        logger.debug(f'Start computing SPM on channel #{carrier_cut.channel_number}')
         # SPM GGN
         if 'ggn' in self.nli_params.nli_method_name.lower():
             partial_nli = self._generalized_spectrally_separated_spm(carrier_cut)
@@ -668,9 +656,8 @@ class NliSolver:
         for pump_carrier in carriers:
             pump_index = pump_carrier.channel_number - 1
             if not (cut_index == pump_index):
-                if self.nli_params.verbose:
-                    print(f'Start computing XPM on channel #{carrier_cut.channel_number} '
-                          f'from channel #{pump_carrier.channel_number}')
+                logger.debug(f'Start computing XPM on channel #{carrier_cut.channel_number} '
+                             f'from channel #{pump_carrier.channel_number}')
                 # XPM GGN
                 if 'ggn' in self.nli_params.nli_method_name.lower():
                     partial_nli = self._generalized_spectrally_separated_xpm(carrier_cut, pump_carrier)

@@ -3,14 +3,12 @@
   "raman_parameters": {
     "flag_raman": true,
     "space_resolution": 10e3,
-    "tolerance": 1e-8,
-    "verbose": 2
+    "tolerance": 1e-8
   },
   "nli_parameters": {
   	"nli_method_name": "ggn_spectrally_separated",
   	"wdm_grid_size": 50e9,
   	"dispersion_tolerance": 1,
-  	"phase_shift_tollerance": 0.1,
-  	"verbose": 1
+  	"phase_shift_tollerance": 0.1
   }
 }
