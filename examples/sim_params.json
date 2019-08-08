@@ -1,5 +1,5 @@
 {
-  "list_of_channels_under_test": [1, 18, 37, 56, 75],
+  "raman_computed_channels": [1, 18, 37, 56, 75],
   "raman_parameters": {
     "flag_raman": true,
     "space_resolution": 10e3,

@@ -75,13 +75,13 @@ class NLIParams():
 
 class SimParams():
     def __init__(self, params):
-        self._list_of_channels_under_test = params['list_of_channels_under_test']
+        self._raman_computed_channels = params['raman_computed_channels']
         self._raman_params = RamanParams(params=params['raman_parameters'])
         self._nli_params = NLIParams(params=params['nli_parameters'])
 
     @property
-    def list_of_channels_under_test(self):
-        return self._list_of_channels_under_test
+    def raman_computed_channels(self):
+        return self._raman_computed_channels
 
     @property
     def raman_params(self):
@@ -198,7 +198,7 @@ def propagate_raman_fiber(fiber, *carriers):
         nli_params.f_cut_resolution = f_cut_resolution
         nli_params.f_pump_resolution = f_pump_resolution
         pwr = carrier.power
-        if carrier.channel_number in sim_params.list_of_channels_under_test:
+        if carrier.channel_number in sim_params.raman_computed_channels:
             carrier_nli = nli_solver.compute_nli(carrier, *carriers)
         else:
             carrier_nli = np.nan
