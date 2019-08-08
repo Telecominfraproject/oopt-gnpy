@@ -475,6 +475,17 @@ Launch power can be overridden by using the ``--power`` argument.
 Spectrum information is not yet parametrized but can be modified directly in the ``eqpt_config.json`` (via the ``SpectralInformation`` -SI- structure) to accommodate any baud rate or spacing.
 The number of channel is computed based on ``spacing`` and ``f_min``, ``f_max`` values.
 
+An experimental support for Raman amplification is available:
+
+.. code-block:: shell
+
+     $ ./examples/transmission_main_example.py \
+       examples/raman_edfa_example_network.json \
+       --sim examples/sim_params.json --show-channels
+
+Configuration of Raman pumps (their frequencies, power and pumping direction) is done via the `RamanFiber element in the network topology <examples/raman_edfa_example_network.json>`_.
+General numeric parameters for simulaiton control are provided in the `examples/sim_params.json <examples/sim_params.json>`_.
+
 Use `examples/path_requests_run.py <examples/path_requests_run.py>`_ to run multiple optimizations as follows:
 
 .. code-block:: shell
