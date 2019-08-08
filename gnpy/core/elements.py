@@ -468,7 +468,7 @@ class RamanFiber(Fiber):
         self._sim_params = sim_params
 
     def update_pref(self, pref, *carriers):
-        pch_out_db = 10*log10(mean([carrier.power.signal for carrier in carriers])) + 30
+        pch_out_db = lin2db(mean([carrier.power.signal for carrier in carriers])) + 30
         self.pch_out_db = round(pch_out_db, 2)
         return pref._replace(p_span0=pref.p_span0, p_spani=self.pch_out_db)
 
