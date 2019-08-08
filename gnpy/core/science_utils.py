@@ -8,7 +8,7 @@ from scipy.integrate import cumtrapz
 from scipy.interpolate import interp1d
 from scipy.optimize import OptimizeResult
 
-from gnpy.core.utils import db2lin, load_json
+from gnpy.core.utils import db2lin
 
 
 logger = getLogger(__name__)
@@ -148,16 +148,6 @@ class FiberParams():
                                     self.loss_coef['alpha_power'])
             alpha0 = alpha_interp(f_ref)
         return alpha0
-
-def load_sim_params(path_sim_params):
-    sim_params = load_json(path_sim_params)
-    return SimParams(params=sim_params)
-
-def configure_network(network, sim_params):
-    from gnpy.core.elements import RamanFiber
-    for node in network.nodes:
-        if isinstance(node, RamanFiber):
-            node.sim_params = sim_params
 
 pump = namedtuple('RamanPump', 'power frequency propagation_direction')
 

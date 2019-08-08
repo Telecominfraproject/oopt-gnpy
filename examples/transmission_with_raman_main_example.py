@@ -22,11 +22,10 @@ from numpy import linspace, mean, log10, isnan
 from matplotlib.pyplot import show, axis, figure, title, text
 from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels, dijkstra_path)
-from gnpy.core.network import load_network, build_network, save_network
+from gnpy.core.network import load_network, build_network, save_network, load_sim_params, configure_network
 from gnpy.core.elements import Transceiver, Fiber, RamanFiber, Edfa, Roadm
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
 from gnpy.core.request import Path_request, RequestParams, compute_constrained_path, propagate2
-from gnpy.core.science_utils import load_sim_params, configure_network
 
 logger = getLogger(__name__)
 
