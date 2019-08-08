@@ -18,7 +18,7 @@ Network elements MUST implement two attributes .uid and .name representing a
 unique identifier and a printable name.
 '''
 
-from numpy import abs, arange, arcsinh, array, exp, divide, errstate
+from numpy import abs, arange, array, exp, divide, errstate
 from numpy import interp, log10, mean, pi, polyfit, polyval, sum
 from scipy.constants import c, h
 from collections import namedtuple
@@ -26,6 +26,7 @@ from collections import namedtuple
 from gnpy.core.node import Node
 from gnpy.core.units import UNITS
 from gnpy.core.utils import lin2db, db2lin, itufs, itufl, snr_sum
+from gnpy.core.science_utils import propagate_raman_fiber, _psi
 
 class Transceiver(Node):
     def __init__(self, *args, **kwargs):
@@ -354,20 +355,6 @@ class Fiber(Node):
         alpha_acoef = alpha_pcoef / (2 * 10 * log10(exp(1)))
         return alpha_pcoef, alpha_acoef
 
-    def _psi(self, carrier, interfering_carrier):
-        """Calculates eq. 123 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__"""
-        if carrier.channel_number == interfering_carrier.channel_number: # SCI
-            psi = arcsinh(0.5 * pi**2 * self.asymptotic_length
-                              * abs(self.beta2()) * carrier.baud_rate**2)
-        else: # XCI
-            delta_f = carrier.frequency - interfering_carrier.frequency
-            psi = arcsinh(pi**2 * self.asymptotic_length * abs(self.beta2())
-                                * carrier.baud_rate * (delta_f + 0.5 * interfering_carrier.baud_rate))
-            psi -= arcsinh(pi**2 * self.asymptotic_length * abs(self.beta2())
-                                 * carrier.baud_rate * (delta_f - 0.5 * interfering_carrier.baud_rate))
-
-        return psi
-
     def _gn_analytic(self, carrier, *carriers):
         """Computes the nonlinear interference power on a single carrier.
         The method uses eq. 120 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__.
@@ -379,7 +366,7 @@ class Fiber(Node):
 
         g_nli = 0
         for interfering_carrier in carriers:
-            psi = self._psi(carrier, interfering_carrier)
+            psi = _psi(carrier, interfering_carrier, beta2=self.beta2(), asymptotic_length=self.asymptotic_length)
             g_nli += (interfering_carrier.power.signal/interfering_carrier.baud_rate)**2 \
                      * (carrier.power.signal/carrier.baud_rate) * psi
 
@@ -425,6 +412,63 @@ class Fiber(Node):
         pref = self.update_pref(spectral_info.pref)
         self.carriers_out = carriers
         return spectral_info._replace(carriers=carriers, pref=pref)
+
+RamanFiberParams = namedtuple('RamanFiberParams', 'type_variety length loss_coef length_units \
+                                         att_in con_in con_out dispersion gamma raman_efficiency')
+
+class RamanFiber(Fiber):
+    def __init__(self, *args, params=None, **kwargs):
+        if params is None:
+            params = {}
+        if 'con_in' not in params:
+            # if not defined in the network json connector loss in/out
+            # the None value will be updated in network.py[build_network]
+            # with default values from eqpt_config.json[Spans]
+            params['con_in'] = None
+            params['con_out'] = None
+        if 'att_in' not in params:
+            #fixed attenuator for padding
+            params['att_in'] = 0
+
+        # TODO: can we re-use the Fiber constructor in a better way?
+        Node.__init__(self, *args, params=RamanFiberParams(**params), **kwargs)
+        self.type_variety = self.params.type_variety
+        self.length = self.params.length * UNITS[self.params.length_units] # in m
+        self.loss_coef = self.params.loss_coef * 1e-3 # lineic loss dB/m
+        self.lin_loss_coef = self.params.loss_coef / (20 * log10(exp(1)))
+        self.att_in = self.params.att_in
+        self.con_in = self.params.con_in
+        self.con_out = self.params.con_out
+        self.dispersion = self.params.dispersion  # s/m/m
+        self.gamma = self.params.gamma # 1/W/m
+        self.pch_out_db = None
+        self.carriers_in = None
+        self.carriers_out = None
+        # TODO|jla: discuss factor 2 in the linear lineic attenuation
+
+    @property
+    def sim_params(self):
+        return self._sim_params
+
+    @sim_params.setter
+    def sim_params(self, sim_params=None):
+        self._sim_params = sim_params
+
+    def update_pref(self, pref, *carriers):
+        pch_out_db = lin2db(mean([carrier.power.signal for carrier in carriers])) + 30
+        self.pch_out_db = round(pch_out_db, 2)
+        return pref._replace(p_span0=pref.p_span0, p_spani=self.pch_out_db)
+
+    def __call__(self, spectral_info):
+        self.carriers_in = spectral_info.carriers
+        carriers = tuple(self.propagate(*spectral_info.carriers))
+        pref = self.update_pref(spectral_info.pref, *carriers)
+        self.carriers_out = carriers
+        return spectral_info._replace(carriers=carriers, pref=pref)
+
+    def propagate(self, *carriers):
+        for propagated_carrier in propagate_raman_fiber(self, *carriers):
+            yield propagated_carrier
 
 class EdfaParams:
     def __init__(self, **params):
