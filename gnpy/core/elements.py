@@ -18,7 +18,7 @@ Network elements MUST implement two attributes .uid and .name representing a
 unique identifier and a printable name.
 '''
 
-from numpy import abs, arange, arcsinh, array, exp, divide, errstate
+from numpy import abs, arange, array, exp, divide, errstate
 from numpy import interp, log10, mean, pi, polyfit, polyval, sum
 from scipy.constants import c, h
 from collections import namedtuple
@@ -26,7 +26,7 @@ from collections import namedtuple
 from gnpy.core.node import Node
 from gnpy.core.units import UNITS
 from gnpy.core.utils import lin2db, db2lin, itufs, itufl, snr_sum
-from gnpy.core.science_utils import propagate_raman_fiber
+from gnpy.core.science_utils import propagate_raman_fiber, _psi
 
 class Transceiver(Node):
     def __init__(self, *args, **kwargs):
@@ -355,19 +355,6 @@ class Fiber(Node):
         alpha_acoef = alpha_pcoef / (2 * 10 * log10(exp(1)))
         return alpha_pcoef, alpha_acoef
 
-    def _psi(self, carrier, interfering_carrier):
-        """Calculates eq. 123 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__"""
-        if carrier.channel_number == interfering_carrier.channel_number: # SCI
-            psi = arcsinh(0.5 * pi**2 * self.asymptotic_length
-                              * abs(self.beta2()) * carrier.baud_rate**2)
-        else: # XCI
-            delta_f = carrier.frequency - interfering_carrier.frequency
-            psi = arcsinh(pi**2 * self.asymptotic_length * abs(self.beta2())
-                                * carrier.baud_rate * (delta_f + 0.5 * interfering_carrier.baud_rate))
-            psi -= arcsinh(pi**2 * self.asymptotic_length * abs(self.beta2())
-                                 * carrier.baud_rate * (delta_f - 0.5 * interfering_carrier.baud_rate))
-        return psi
-
     def _gn_analytic(self, carrier, *carriers):
         """Computes the nonlinear interference power on a single carrier.
         The method uses eq. 120 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__.
@@ -379,7 +366,7 @@ class Fiber(Node):
 
         g_nli = 0
         for interfering_carrier in carriers:
-            psi = self._psi(carrier, interfering_carrier)
+            psi = _psi(carrier, interfering_carrier, beta2=self.beta2(), asymptotic_length=self.asymptotic_length)
             g_nli += (interfering_carrier.power.signal/interfering_carrier.baud_rate)**2 \
                      * (carrier.power.signal/carrier.baud_rate) * psi
 

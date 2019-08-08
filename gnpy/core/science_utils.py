@@ -677,28 +677,12 @@ class NliSolver:
         for interfering_carrier in carriers:
             g_interfearing = interfering_carrier.power.signal / interfering_carrier.baud_rate
             g_signal = carrier.power.signal / carrier.baud_rate
-            g_nli += g_interfearing**2 * g_signal * self._psi(carrier, interfering_carrier)
+            g_nli += g_interfearing**2 * g_signal \
+                * _psi(carrier, interfering_carrier, beta2=self.fiber_params.beta2, asymptotic_length=1/self.fiber_params.alpha0())
         g_nli *= (16.0 / 27.0) * (gamma * effective_length)**2 /\
                  (2 * np.pi * abs(beta2) * asymptotic_length)
         carrier_nli = carrier.baud_rate * g_nli
         return carrier_nli
-
-    def _psi(self, carrier, interfering_carrier):
-        """ Calculates eq. 123 from arXiv:1209.0394.
-        """
-        alpha = self.fiber_params.alpha0() / 2
-        beta2 = self.fiber_params.beta2
-        asymptotic_length = 1 / (2 * alpha)
-
-        if carrier.channel_number == interfering_carrier.channel_number:  # SPM
-            psi = np.arcsinh(0.5 * np.pi**2 * asymptotic_length * abs(beta2) * carrier.baud_rate**2)
-        else:  # XPM
-            delta_f = carrier.frequency - interfering_carrier.frequency
-            psi = np.arcsinh(np.pi**2 * asymptotic_length * abs(beta2) *
-                             carrier.baud_rate * (delta_f + 0.5 * interfering_carrier.baud_rate))
-            psi -= np.arcsinh(np.pi**2 * asymptotic_length * abs(beta2) *
-                              carrier.baud_rate * (delta_f - 0.5 * interfering_carrier.baud_rate))
-        return psi
 
     # Methods for computing the GGN-model
     def _generalized_spectrally_separated_spm(self, carrier):
@@ -817,3 +801,16 @@ class NliSolver:
         rs_ref = 32e9
         freq_offset_th = ((k_ref * delta_f_ref) * rs_ref * beta2_ref) / (self.fiber_params.beta2 * symbol_rate)
         return freq_offset_th
+
+def _psi(carrier, interfering_carrier, beta2, asymptotic_length):
+    """Calculates eq. 123 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__"""
+
+    if carrier.channel_number == interfering_carrier.channel_number: # SCI, SPM
+        psi = np.arcsinh(0.5 * np.pi**2 * asymptotic_length * abs(beta2) * carrier.baud_rate**2)
+    else: # XCI, XPM
+        delta_f = carrier.frequency - interfering_carrier.frequency
+        psi = np.arcsinh(np.pi**2 * asymptotic_length * abs(beta2) *
+                         carrier.baud_rate * (delta_f + 0.5 * interfering_carrier.baud_rate))
+        psi -= np.arcsinh(np.pi**2 * asymptotic_length * abs(beta2) *
+                          carrier.baud_rate * (delta_f - 0.5 * interfering_carrier.baud_rate))
+    return psi
