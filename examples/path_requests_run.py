@@ -214,7 +214,7 @@ def correct_route_list(network, pathreqlist):
     # prepares the format of route list of nodes to be consistant
     # remove wrong names, remove endpoints
     # also correct source and destination
-    anytype = [n.uid for n in network.nodes() if not isinstance(n, Transceiver) and not isinstance(n, Fiber)]
+    anytype = [n.uid for n in network.nodes() if not isinstance(n, Transceiver)]
     # TODO there is a problem of identification of fibers in case of parallel fibers bitween two adjacent roadms
     # so fiber constraint is not supported
     transponders = [n.uid for n in network.nodes() if isinstance(n, Transceiver)]
