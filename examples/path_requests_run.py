@@ -60,11 +60,13 @@ def requests_from_json(json_data,equipment):
         params['trx_type'] = req['path-constraints']['te-bandwidth']['trx_type']
         params['trx_mode'] = req['path-constraints']['te-bandwidth']['trx_mode']
         params['format'] = params['trx_mode']
-        nd_list = req['optimizations']['explicit-route-include-objects']
-        params['nodes_list'] = [n['unnumbered-hop']['node-id'] for n in nd_list]
-        params['loose_list'] = [n['unnumbered-hop']['hop-type'] for n in nd_list]
         params['spacing'] = req['path-constraints']['te-bandwidth']['spacing']
-
+        try :
+            nd_list = req['explicit-route-objects']['route-object-include-exclude']
+        except KeyError:
+            nd_list = []
+        params['nodes_list'] = [n['num-unnum-hop']['node-id'] for n in nd_list]
+        params['loose_list'] = [n['num-unnum-hop']['hop-type'] for n in nd_list]
         # recover trx physical param (baudrate, ...) from type and mode
         # in trx_mode_params optical power is read from equipment['SI']['default'] and
         # nb_channel is computed based on min max frequency and spacing
