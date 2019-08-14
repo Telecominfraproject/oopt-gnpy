@@ -75,20 +75,24 @@ def requests_from_json(json_data,equipment):
         # print(trx_params['min_spacing'])
         # optical power might be set differently in the request. if it is indicated then the 
         # params['power'] is updated
-        if req['path-constraints']['te-bandwidth']['output-power']:
-            params['power'] = req['path-constraints']['te-bandwidth']['output-power']
-
+        try:
+            if req['path-constraints']['te-bandwidth']['output-power']:
+                params['power'] = req['path-constraints']['te-bandwidth']['output-power']
+        except KeyError:
+            pass
         # same process for nb-channel
         f_min = params['f_min']
         f_max_from_si = params['f_max']
-        if req['path-constraints']['te-bandwidth']['max-nb-of-channel'] is not None :
-            nch = req['path-constraints']['te-bandwidth']['max-nb-of-channel'] 
-            params['nb_channel'] = nch         
-            spacing = params['spacing']
-            params['f_max'] = f_min + nch*spacing
-        else :
+        try:
+            if req['path-constraints']['te-bandwidth']['max-nb-of-channel'] is not None:
+                nch = req['path-constraints']['te-bandwidth']['max-nb-of-channel']
+                params['nb_channel'] = nch
+                spacing = params['spacing']
+                params['f_max'] = f_min + nch*spacing
+            else :
+                params['nb_channel'] = automatic_nch(f_min,f_max_from_si,params['spacing'])
+        except KeyError:
             params['nb_channel'] = automatic_nch(f_min,f_max_from_si,params['spacing'])
-
         consistency_check(params, f_max_from_si)
 
         try :
