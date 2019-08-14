@@ -133,76 +133,12 @@ class Result_element(Element):
     def pathresult(self):
         if not self.computed_path:
             return {
-                   'path-id': self.path_id,
-                   'path-properties':{
-                       'path-metric': [
-                           {
-                           'metric-type': 'SNR@bandwidth',
-                           'accumulative-value': 'None'
-                           },
-                           {
-                           'metric-type': 'SNR@0.1nm',
-                           'accumulative-value': 'None'
-                           },
-                           {
-                           'metric-type': 'OSNR@bandwidth',
-                           'accumulative-value': 'None'
-                           },
-                           {
-                           'metric-type': 'OSNR@0.1nm',
-                           'accumulative-value': 'None'
-                           },
-                           {
-                           'metric-type': 'reference_power',
-                           'accumulative-value': self.path_request.power
-                           },
-                           {
-                           'metric-type': 'path_bandwidth',
-                           'accumulative-value': self.path_request.path_bandwidth
-                           }
-                        ],
-                        'path-srlgs': {
-                            'usage': 'not used yet',
-                            'values': 'not used yet'
-                        },
-                        'path-route-objects': [
-                            {
-                            'path-route-object': {
-                                'index': 0,
-                                'unnumbered-hop': {
-                                    'node-id': self.path_request.source,
-                                    'link-tp-id': self.path_request.source,
-                                    'hop-type':  self.hop_type,
-                                    'direction': 'not used'
-                                },
-                                'label-hop': {
-                                    'te-label': {
-                                        'generic': 'not used yet',
-                                        'direction': 'not used yet'
-                                        }
-                                    }
-                                }
-                            },
-                            {
-                            'path-route-object': {
-                                'index': 1,
-                                'unnumbered-hop': {
-                                    'node-id': self.path_request.destination,
-                                    'link-tp-id': self.path_request.destination,
-                                    'hop-type':  self.hop_type,
-                                    'direction': 'not used'
-                                },
-                                'label-hop': {
-                                    'te-label': {
-                                        'generic': 'not used yet',
-                                        'direction': 'not used yet'
-                                        }
-                                    }
-                                }
+                   'response-id': self.path_id,
+                   'no-path': "Response without path information, due to failure performing the path computation"
+                   }
                             }
-                            ]
+                        }
                     }
-                }
         else:
             return {
                    'path-id': self.path_id,
