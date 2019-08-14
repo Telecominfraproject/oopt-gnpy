@@ -395,65 +395,86 @@ def jsontocsv(json_data,equipment,fileout):
     # and write results in an CSV file
 
     mywriter = writer(fileout)
-    mywriter.writerow(('path-id','source','destination','path_bandwidth','Pass?',\
+    mywriter.writerow(('response-id','source','destination','path_bandwidth','Pass?',\
         'nb of tsp pairs','total cost','transponder-type','transponder-mode',\
         'OSNR@0.1nm','SNR@0.1nm','SNR@bandwidth','baud rate (Gbaud)',\
         'input power (dBm)','path'))
     tspjsondata = equipment['Transceiver']
     #print(tspjsondata)
-    for p in json_data['path']:
-        path_id     = p['path-id']
-        source      = p['path-properties']['path-route-objects'][0]\
-        ['path-route-object']['unnumbered-hop']['node-id']
-        destination = p['path-properties']['path-route-objects'][-1]\
-        ['path-route-object']['unnumbered-hop']['node-id']
-        # selects only roadm nodes
-        pth        = ' | '.join([ e['path-route-object']['unnumbered-hop']['node-id']
-                 for e in p['path-properties']['path-route-objects'] 
-                 if e['path-route-object']['unnumbered-hop']['node-id'].startswith('roadm') or e['path-route-object']['unnumbered-hop']['node-id'].startswith('Edfa')])
 
-        [tsp,mode] = p['path-properties']['path-route-objects'][0]\
-        ['path-route-object']['unnumbered-hop']['hop-type'].split(' - ')
+    for p in json_data['response']:
+        path_id     = p['response-id']
+        try:
+            if p['no-path'] :
+                isok = False
+                nb_tsp = 0
+                pthbdbw = round(path_bandwidth*1e-9,2)
+                rosnr = ''
+                rsnr = ''
+                rsnrb = ''
+                br = ''
+                pw = ''
+                total_cost = ''
+                pth = ''
+        except KeyError:
+            source = p['path-properties']['path-route-objects'][0]\
+            ['path-route-object']['num-unnum-hop']['node-id']
+            destination = p['path-properties']['path-route-objects'][-2]\
+            ['path-route-object']['num-unnum-hop']['node-id']
+            # selects only roadm nodes
+            temp = []
+            for e in p['path-properties']['path-route-objects'] :
+                try :
+                    temp .append(e['path-route-object']['num-unnum-hop']['node-id'])
+                except KeyError:
+                    pass
+            pth = ' | '.join(temp)
 
-        # find the min  acceptable OSNR, baud rate from the eqpt library based on tsp (tupe) and mode (format)
-        # loading equipment already tests the existence of tsp type and mode:
-        if mode !='not feasible with this transponder' :
-            [minosnr, baud_rate, bit_rate, cost] = next([m['OSNR'] , m['baud_rate'] , m['bit_rate'], m['cost']]  
-                for m in equipment['Transceiver'][tsp].mode if  m['format']==mode)
-        # else:
-        #     [minosnr, baud_rate, bit_rate] = ['','','','']
-        output_snr = next(e['accumulative-value'] 
-            for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR@0.1nm')
-        output_snrbandwidth = next(e['accumulative-value']
-            for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR@bandwidth')
-        output_osnr = next(e['accumulative-value']
-            for e in p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR@0.1nm')
-        output_osnrbandwidth = next(e['accumulative-value']
-            for e in p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR@bandwidth')
-        power = next(e['accumulative-value']
-            for e in p['path-properties']['path-metric'] if e['metric-type'] == 'reference_power')
-        path_bandwidth = next(e['accumulative-value']
-            for e in p['path-properties']['path-metric'] if e['metric-type'] == 'path_bandwidth')
-        if isinstance(output_snr, str):
-            isok = False
-            nb_tsp = 0
-            pthbdbw = round(path_bandwidth*1e-9,2)
-            rosnr = ''
-            rsnr = ''
-            rsnrb = ''
-            br = ''
-            pw = ''
-            total_cost = ''
-        else:
-            isok   = output_snr >= minosnr
-            nb_tsp = ceil(path_bandwidth / bit_rate)
-            pthbdbw = round(path_bandwidth*1e-9,2)
-            rosnr  = round(output_osnr,2)
-            rsnr   = round(output_snr,2)
-            rsnrb  = round(output_snrbandwidth,2)
-            br     = round(baud_rate*1e-9,2) 
-            pw     = round(lin2db(power)+30,2)
-            total_cost = nb_tsp * cost
+            temp_tsp = pth_el['path-properties']['path-route-objects'][1]\
+            ['path-route-object']['transponder']
+            tsp = temp_tsp['transponder-type']
+            mode = temp_tsp['transponder-mode']
+
+            # find the min  acceptable OSNR, baud rate from the eqpt library based on tsp (tupe) and mode (format)
+            # loading equipment already tests the existence of tsp type and mode:
+            if mode !='not feasible with this transponder' :
+                [minosnr, baud_rate, bit_rate, cost] = next([m['OSNR'] , m['baud_rate'] , m['bit_rate'], m['cost']]
+                    for m in equipment['Transceiver'][tsp].mode if  m['format']==mode)
+            # else:
+            #     [minosnr, baud_rate, bit_rate] = ['','','','']
+            output_snr = next(e['accumulative-value']
+                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR@0.1nm')
+            output_snrbandwidth = next(e['accumulative-value']
+                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'SNR@bandwidth')
+            output_osnr = next(e['accumulative-value']
+                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR@0.1nm')
+            output_osnrbandwidth = next(e['accumulative-value']
+                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR@bandwidth')
+            power = next(e['accumulative-value']
+                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'reference_power')
+            path_bandwidth = next(e['accumulative-value']
+                for e in p['path-properties']['path-metric'] if e['metric-type'] == 'path_bandwidth')
+            if isinstance(output_snr, str):
+                isok = False
+                nb_tsp = 0
+                pthbdbw = round(path_bandwidth*1e-9,2)
+                rosnr = ''
+                rsnr = ''
+                rsnrb = ''
+                br = ''
+                pw = ''
+                total_cost = ''
+            else:
+                isok   = output_snr >= minosnr
+                nb_tsp = ceil(path_bandwidth / bit_rate)
+                pthbdbw = round(path_bandwidth*1e-9,2)
+                rosnr  = round(output_osnr,2)
+                rsnr   = round(output_snr,2)
+                rsnrb  = round(output_snrbandwidth,2)
+                br     = round(baud_rate*1e-9,2)
+                pw     = round(lin2db(power)+30,2)
+                total_cost = nb_tsp * cost
+
         mywriter.writerow((path_id,
             source,
             destination,
