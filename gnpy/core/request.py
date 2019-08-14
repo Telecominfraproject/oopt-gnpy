@@ -115,19 +115,6 @@ class Result_element(Element):
         self.path_id = path_request.request_id
         self.path_request = path_request
         self.computed_path = computed_path
-        hop_type = []
-        if len(computed_path)>0 :
-            for e in computed_path :
-                if isinstance(e, Transceiver) :
-                    hop_type.append(' - '.join([path_request.tsp,path_request.tsp_mode]))
-                else:
-                    hop_type.append('not recorded')
-        else:
-            # TODO differentiate empty path in case not feasible because of tsp or not feasible because
-            # ther is no path connecting the nodes (whatever the tsp)
-            mode = 'not feasible with this transponder'
-            hop_type = ' - '.join([path_request.tsp,mode])
-        self.hop_type = hop_type
     uid = property(lambda self: repr(self))
     @property
     def pathresult(self):
@@ -136,12 +123,37 @@ class Result_element(Element):
                    'response-id': self.path_id,
                    'no-path': "Response without path information, due to failure performing the path computation"
                    }
+        else:
+            index = 0
+            pro_list = []
+            for n in self.computed_path :
+                temp = {
+                    'path-route-object': {
+                        'index': index,
+                        'num-unnum-hop': {
+                            'node-id': n.uid,
+                            'link-tp-id': n.uid,
+                            # TODO change index in order to insert transponder attribute
                             }
                         }
                     }
-        else:
-            return {
-                   'path-id': self.path_id,
+                pro_list.append(temp)
+                index += 1
+                if isinstance(n, Transceiver) :
+                    temp = {
+                        'path-route-object': {
+                            'index': index,
+                            'transponder' : {
+                               'transponder-type' : self.path_request.tsp,
+                               'transponder-mode' : self.path_request.tsp_mode,
+                                }
+                            }
+                        }
+                    pro_list.append(temp)
+                    index += 1
+
+            response = {
+                   'response-id': self.path_id,
                    'path-properties':{
                        'path-metric': [
                            {
@@ -169,31 +181,10 @@ class Result_element(Element):
                            'accumulative-value': self.path_request.path_bandwidth
                            }
                         ],
-                        'path-srlgs': {
-                            'usage': 'not used yet',
-                            'values': 'not used yet'
-                        },
-                        'path-route-objects': [
-                            {
-                            'path-route-object': {
-                                'index': self.computed_path.index(n),
-                                'unnumbered-hop': {
-                                    'node-id': n.uid,
-                                    'link-tp-id': n.uid,
-                                    'hop-type': self.hop_type[self.computed_path.index(n)],
-                                    'direction': 'not used'
-                                },
-                                'label-hop': {
-                                    'te-label': {
-                                        'generic': 'not used yet',
-                                        'direction': 'not used yet'
-                                        }
-                                    }
-                                }
-                            } for n in self.computed_path
-                            ]
+                        'path-route-objects': pro_list
                     }
                 }
+        return response
 
     @property
     def json(self):
