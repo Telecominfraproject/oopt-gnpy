@@ -551,8 +551,7 @@
       "synchronization-id": "1",
       "svec": {
         "relaxable": "False",
-        "link-diverse": "True",
-        "node-diverse": "True",
+        "disjointness": "node link",
         "request-id-number": [
           "1",
           "2a"
@@ -563,8 +562,7 @@
       "synchronization-id": "3",
       "svec": {
         "relaxable": "False",
-        "link-diverse": "True",
-        "node-diverse": "True",
+        "disjointness": "node link",
         "request-id-number": [
           "3",
           "1"
@@ -575,8 +573,7 @@
       "synchronization-id": "ff",
       "svec": {
         "relaxable": "False",
-        "link-diverse": "True",
-        "node-diverse": "True",
+        "disjointness": "node link",
         "request-id-number": [
           "ff",
           "13"
@@ -587,8 +584,7 @@
       "synchronization-id": "13",
       "svec": {
         "relaxable": "False",
-        "link-diverse": "True",
-        "node-diverse": "True",
+        "disjointness": "node link",
         "request-id-number": [
           "13",
           "14"

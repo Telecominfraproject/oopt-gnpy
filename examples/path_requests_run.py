@@ -129,6 +129,11 @@ def consistency_check(params, f_max_from_si):
 def disjunctions_from_json(json_data):
     disjunctions_list = []
     try:
+        temp_test = json_data['synchronization']
+    except KeyError:
+        temp_test = []
+        pass
+    if temp_test:
         for snc in json_data['synchronization']:
             params = {}
             params['disjunction_id'] = snc['synchronization-id']
@@ -138,8 +143,7 @@ def disjunctions_from_json(json_data):
             params['disjunctions_req'] = snc['svec']['request-id-number']
             disjunctions_list.append(Disjunction(**params))
         print(disjunctions_list)
-    except KeyError:
-        pass
+
     return disjunctions_list
 
 
