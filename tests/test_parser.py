@@ -3,14 +3,21 @@
 # @Author: Esther Le Rouzic
 # @Date:   2018-06-15
 
-from gnpy.core.elements import Edfa
-import numpy as np
+""" Adding tests to check the parser non regression
+    convention of naming of test files:
+    - ..._expected.json for the reference output
+    tests:
+    - generation of topology json
+    - reading of Eqpt sheet w and W/ power mode
+    - consistency of autodesign
+    - generation of service list based on service sheet
+    - writing of results in csv
+    - writing of results in json (same keys)
+"""
+
 from json import load
 import pytest
-from gnpy.core import network_from_json
-from gnpy.core.elements import Transceiver, Fiber, Edfa
-from gnpy.core.utils import lin2db, db2lin
-from gnpy.core.info import SpectralInformation, Channel, Power
+from gnpy.core.utils import lin2db
 from gnpy.core.network import save_network, build_network
 from tests.compare import compare_networks, compare_services
 from gnpy.core.convert import convert_file
@@ -19,7 +26,6 @@ from gnpy.core.equipment import load_equipment, automatic_nch
 from gnpy.core.network import load_network
 from gnpy.core.request import jsontocsv
 from pathlib import Path
-import filecmp
 from os import unlink
 from pandas import read_csv
 
@@ -27,16 +33,14 @@ TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
 eqpt_filename = DATA_DIR / 'eqpt_config.json'
 
-# adding tests to check the parser non regression
-# convention of naming of test files:
-#
-#    - ..._expected.json for the reference output
 
 @pytest.mark.parametrize('xls_input,expected_json_output', {
     DATA_DIR / 'CORONET_Global_Topology.xls':   DATA_DIR / 'CORONET_Global_Topology_expected.json',
     DATA_DIR / 'testTopology.xls':     DATA_DIR / 'testTopology_expected.json',
- }.items())
+    }.items())
 def test_excel_json_generation(xls_input, expected_json_output):
+    """ tests generation of topology json
+    """
     convert_file(xls_input)
 
     actual_json_output = xls_input.with_suffix('.json')
@@ -57,20 +61,25 @@ def test_excel_json_generation(xls_input, expected_json_output):
 
 # assume xls entries
 # test that the build network gives correct results in gain mode
-# 
-@pytest.mark.parametrize('xls_input,expected_json_output', {
-    DATA_DIR / 'CORONET_Global_Topology.xls':   DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json',
-    DATA_DIR / 'testTopology.xls':     DATA_DIR / 'testTopology_auto_design_expected.json',
- }.items())
+
+@pytest.mark.parametrize('xls_input,expected_json_output',
+                         {DATA_DIR / 'CORONET_Global_Topology.xls':\
+                          DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json',
+                          DATA_DIR / 'testTopology.xls':\
+                          DATA_DIR / 'testTopology_auto_design_expected.json',
+                         }.items())
 def test_auto_design_generation_fromxlsgainmode(xls_input, expected_json_output):
+    """ tests generation of topology json
+        test that the build network gives correct results in gain mode
+    """
     equipment = load_equipment(eqpt_filename)
-    network = load_network(xls_input,equipment)
-    # in order to test the Eqpt sheet and load gain target, change the power-mode to False (to be in gain mode)
+    network = load_network(xls_input, equipment)
+    # in order to test the Eqpt sheet and load gain target,
+    # change the power-mode to False (to be in gain mode)
     equipment['Span']['default'].power_mode = False
     # Build the network once using the default power defined in SI in eqpt config
- 
+
     p_db = equipment['SI']['default'].power_dbm
-    
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
         equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
@@ -94,19 +103,23 @@ def test_auto_design_generation_fromxlsgainmode(xls_input, expected_json_output)
     assert not results.connections.different
 
 #test that autodesign creates same file as an input file already autodesigned
-@pytest.mark.parametrize('json_input,expected_json_output', {
-    DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json':   DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json',
-    DATA_DIR / 'testTopology_auto_design_expected.json':     DATA_DIR / 'testTopology_auto_design_expected.json',
- }.items())
+@pytest.mark.parametrize('json_input,expected_json_output',
+                         {DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json':\
+                          DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json',
+                          DATA_DIR / 'testTopology_auto_design_expected.json':\
+                          DATA_DIR / 'testTopology_auto_design_expected.json',
+                         }.items())
 def test_auto_design_generation_fromjson(json_input, expected_json_output):
+    """test that autodesign creates same file as an input file already autodesigned
+    """
     equipment = load_equipment(eqpt_filename)
-    network = load_network(json_input,equipment)
-    # in order to test the Eqpt sheet and load gain target, change the power-mode to False (to be in gain mode)
+    network = load_network(json_input, equipment)
+    # in order to test the Eqpt sheet and load gain target,
+    # change the power-mode to False (to be in gain mode)
     equipment['Span']['default'].power_mode = False
     # Build the network once using the default power defined in SI in eqpt config
- 
+
     p_db = equipment['SI']['default'].power_dbm
-    
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
         equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
@@ -133,8 +146,10 @@ def test_auto_design_generation_fromjson(json_input, expected_json_output):
 
 @pytest.mark.parametrize('xls_input,expected_json_output', {
     DATA_DIR / 'testTopology.xls':     DATA_DIR / 'testTopology_services_expected.json',
-}.items())
+    }.items())
 def test_excel_service_json_generation(xls_input, expected_json_output):
+    """ test services creation
+    """
     convert_service_sheet(xls_input, eqpt_filename)
 
     actual_json_output = f'{str(xls_input)[:-4]}_services.json'
