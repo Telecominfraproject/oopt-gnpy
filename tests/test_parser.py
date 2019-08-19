@@ -24,7 +24,11 @@ from gnpy.core.convert import convert_file
 from gnpy.core.service_sheet import convert_service_sheet
 from gnpy.core.equipment import load_equipment, automatic_nch
 from gnpy.core.network import load_network
-from gnpy.core.request import jsontocsv
+from gnpy.core.request import (jsontocsv, requests_aggregation,
+                               compute_path_dsjctn, Result_element)
+from examples.path_requests_run import (requests_from_json, disjunctions_from_json,
+                                        correct_route_list, correct_disjn,
+                                        compute_path_with_disjunction)
 from pathlib import Path
 from os import unlink
 from pandas import read_csv
@@ -222,4 +226,69 @@ def test_csv_response_generation(json_input, csv_output):
         if list(resp[column]) != list(expected_resp[column]):
             raise AssertionError('results are different')
 
+
+def compare_response(exp_resp, act_resp):
+    """ False if the keys are different in the nested dicts as well
+    """
+    print(exp_resp)
+    print(act_resp)
+    test = True
+    for key in act_resp.keys():
+        print(key)
+        if not key in exp_resp.keys():
+            print(key)
+            return False
+        if isinstance(act_resp[key], dict):
+            test = compare_response(exp_resp[key], act_resp[key])
+    if test:
+        for key in exp_resp.keys():
+            if not key in act_resp.keys():
+                print(key)
+                return False
+            if isinstance(exp_resp[key], dict):
+                test = compare_response(exp_resp[key], act_resp[key])
+    # at this point exp_resp and act_resp have the same keys. Check if their values are the same
+    for key in act_resp.keys():
+        if not isinstance(act_resp[key], dict):
+            if exp_resp[key] != act_resp[key]:
+                return False
+    return test
+
+
+# test json answers creation
+@pytest.mark.parametrize('xls_input, expected_response_file', {
+    DATA_DIR / 'testTopology.xls':     DATA_DIR / 'testTopology_response.json',
+}.items())
+def test_json_response_generation(xls_input, expected_response_file):
+    """ tests if json response is correctly generated for all combinations of requests
+    """
+    data = convert_service_sheet(xls_input, eqpt_filename)
+    equipment = load_equipment(eqpt_filename)
+    network = load_network(xls_input, equipment)
+    p_db = equipment['SI']['default'].power_dbm
+
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
+        equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    build_network(network, equipment, p_db, p_total_db)
+    rqs = requests_from_json(data, equipment)
+    rqs = correct_route_list(network, rqs)
+    dsjn = disjunctions_from_json(data)
+    dsjn = correct_disjn(dsjn)
+    rqs, dsjn = requests_aggregation(rqs, dsjn)
+    pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
+    propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
+    result = []
+    for i, pth in enumerate(propagatedpths):
+        result.append(Result_element(rqs[i], pth))
+    temp = {
+        'response': [n.json for n in result]
+    }
+    # load expected result and compare keys
+    # (not values at this stage)
+    with open(expected_response_file) as jsonfile:
+        expected = load(jsonfile)
+
+    for i, response in enumerate(temp['response']):
+        if not compare_response(expected['response'][i], response):
+            raise AssertionError()
 
