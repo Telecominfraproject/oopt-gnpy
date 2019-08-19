@@ -22,9 +22,6 @@
           "output-power": 0.001,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
@@ -49,9 +46,6 @@
           "output-power": 0.001,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
@@ -76,9 +70,6 @@
           "output-power": 0.001,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
@@ -104,36 +95,23 @@
           "path_bandwidth": 300000000000.0
         }
       },
-      "optimizations": {
-        "explicit-route-include-objects": [
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 0,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "roadm e",
-              "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           },
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 1,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "roadm g",
               "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           }
         ]
@@ -161,9 +139,6 @@
           "output-power": 0.001,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
@@ -188,9 +163,6 @@
           "output-power": 0.001,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
@@ -216,21 +188,15 @@
           "path_bandwidth": 300000000000.0
         }
       },
-      "optimizations": {
-        "explicit-route-include-objects": [
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 0,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "bb",
               "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           }
         ]
@@ -259,21 +225,15 @@
           "path_bandwidth": 300000000000.0
         }
       },
-      "optimizations": {
-        "explicit-route-include-objects": [
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 0,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "trx b",
               "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           }
         ]
@@ -301,9 +261,6 @@
           "output-power": 0.001,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
@@ -329,36 +286,23 @@
           "path_bandwidth": 300000000000.0
         }
       },
-      "optimizations": {
-        "explicit-route-include-objects": [
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 0,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "roadm e",
-              "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           },
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 1,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "roadm g",
               "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           }
         ]
@@ -386,9 +330,6 @@
           "output-power": null,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
@@ -413,9 +354,6 @@
           "output-power": 0.001,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
@@ -440,9 +378,6 @@
           "output-power": null,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
@@ -468,36 +403,23 @@
           "path_bandwidth": 300000000000.0
         }
       },
-      "optimizations": {
-        "explicit-route-include-objects": [
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 0,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "roadm e",
-              "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           },
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 1,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "roadm g",
               "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           }
         ]
@@ -525,9 +447,6 @@
           "output-power": 0.001,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
@@ -552,9 +471,6 @@
           "output-power": null,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
@@ -579,9 +495,6 @@
           "output-power": null,
           "path_bandwidth": 300000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
@@ -606,9 +519,6 @@
           "output-power": null,
           "path_bandwidth": null
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
@@ -633,9 +543,6 @@
           "output-power": null,
           "path_bandwidth": null
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     }
   ],
