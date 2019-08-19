@@ -148,31 +148,24 @@ class Request_element(Element):
                             'spacing'   : self.spacing,
                             'max-nb-of-channel'  : self.nb_channel,
                             'output-power'       : self.power
-                            # 'path_bandwidth'       : self.path_bandwidth 
                         }
-                    },
-                    'optimizations': {
-                        'explicit-route-include-objects': [
-                        {
-                            'index': self.nodes_list.index(node),
-                            'unnumbered-hop':{
-                                'node-id': f'{node}',
-                                'link-tp-id': 'link-tp-id is not used',
-                                'hop-type': f'{self.loose}',
-                                'direction': 'direction is not used'
-                            },
-                            'label-hop':{
-                                'te-label': {
-                                    'generic': 'generic is not used',
-                                    'direction': 'direction is not used'
-                                }
+                    }
+                }
+
+        if self.nodes_list:
+            req_dictionnary['explicit-route-objects'] = {}
+            temp =  {'route-object-include-exclude' : [
+                        {'explicit-route-usage': 'route-include-ero',
+                        'index': self.nodes_list.index(node),
+                        'num-unnum-hop': {
+                            'node-id': f'{node}',
+                            'link-tp-id': 'link-tp-id is not used',
+                            'hop-type': f'{self.loose}',
                             }
                         }
-                        for node in self.nodes_list
-                    ]
-
-                }
-            }
+                        for node in self.nodes_list ]
+                    }
+            req_dictionnary['explicit-route-objects'] = temp
         if self.path_bandwidth is not None:
             req_dictionnary['path-constraints']['te-bandwidth']['path_bandwidth'] = self.path_bandwidth
             
