@@ -126,20 +126,20 @@ class Result_element(Element):
         else:
             index = 0
             pro_list = []
-            for n in self.computed_path:
+            for nel in self.computed_path:
                 temp = {
                     'path-route-object': {
                         'index': index,
                         'num-unnum-hop': {
-                            'node-id': n.uid,
-                            'link-tp-id': n.uid,
+                            'node-id': nel.uid,
+                            'link-tp-id': nel.uid,
                             # TODO change index in order to insert transponder attribute
                             }
                         }
                     }
                 pro_list.append(temp)
                 index += 1
-                if isinstance(n, Transceiver):
+                if isinstance(nel, Transceiver):
                     temp = {
                         'path-route-object': {
                             'index': index,
