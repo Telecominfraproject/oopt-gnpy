@@ -198,7 +198,7 @@ def convert_service_sheet(input_filename, eqpt_filename, output_filename='', fil
     # print(json_filename)
     # if there is no sync vector , do not write any synchronization
     synchro = [n.json[1] for n in req if n.json[1] is not None]
-    if synchro :
+    if synchro:
         data = {
             'path-request': [n.json[0] for n in req],
             'synchronization': synchro

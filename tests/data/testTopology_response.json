@@ -857,6 +857,10 @@
           }
         ]
       }
+    },
+    {
+      "response-id": "6",
+      "no-path": "Response without path information, due to failure performing the path computation"
     }
   ]
 }
