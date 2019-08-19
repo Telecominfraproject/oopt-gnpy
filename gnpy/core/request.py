@@ -406,9 +406,13 @@ def jsontocsv(json_data,equipment,fileout):
         path_id     = p['response-id']
         try:
             if p['no-path'] :
+                source = ''
+                destination = ''
+                tsp = ''
+                mode = ''
                 isok = False
                 nb_tsp = 0
-                pthbdbw = round(path_bandwidth*1e-9,2)
+                pthbdbw = ''
                 rosnr = ''
                 rsnr = ''
                 rsnrb = ''
