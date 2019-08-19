@@ -202,4 +202,7 @@ def test_csv_response_generation(json_input, csv_output):
     expected_resp.sort_values(by=['response-id'])
 
     for column in expected_resp:
-        assert list(resp[column]) == list(expected_resp[column])
+        if list(resp[column]) != list(expected_resp[column]):
+            raise AssertionError('results are different')
+
+
