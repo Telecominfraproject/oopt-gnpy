@@ -16,10 +16,13 @@
 """
 
 from json import load
+from pathlib import Path
+from os import unlink
+from pandas import read_csv
 import pytest
+from tests.compare import compare_networks, compare_services
 from gnpy.core.utils import lin2db
 from gnpy.core.network import save_network, build_network
-from tests.compare import compare_networks, compare_services
 from gnpy.core.convert import convert_file
 from gnpy.core.service_sheet import convert_service_sheet
 from gnpy.core.equipment import load_equipment, automatic_nch
@@ -29,9 +32,6 @@ from gnpy.core.request import (jsontocsv, requests_aggregation,
 from examples.path_requests_run import (requests_from_json, disjunctions_from_json,
                                         correct_route_list, correct_disjn,
                                         compute_path_with_disjunction)
-from pathlib import Path
-from os import unlink
-from pandas import read_csv
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
@@ -295,4 +295,3 @@ def test_json_response_generation(xls_input, expected_response_file):
     for i, response in enumerate(temp['response']):
         if not compare_response(expected['response'][i], response):
             raise AssertionError()
-
