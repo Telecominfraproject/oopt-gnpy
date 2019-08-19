@@ -216,7 +216,7 @@ def correct_route_list(network, pathreqlist):
             if n_id not in anytype :
                 nodes_suggestion = [uid for uid in anytype \
                     if n_id.lower() in uid.lower()]
-                if pathreq.loose_list[i] == 'loose':
+                if pathreq.loose_list[i] == 'LOOSE':
                     if len(nodes_suggestion)>0 :
                         new_n = nodes_suggestion[0]
                         print(f'invalid route node specified:\
@@ -257,7 +257,7 @@ def correct_disjn(disjn):
 
 def path_result_json(pathresult):
     data = {
-        'path': [n.json for n in pathresult]
+        'response': [n.json for n in pathresult]
     }
     return data
 

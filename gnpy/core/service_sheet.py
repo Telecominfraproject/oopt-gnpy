@@ -120,9 +120,9 @@ class Request_element(Element):
 
         # the excel parser applies the same hop-type to all nodes in the route nodes_list.
         # user can change this per node in the generated json
-        self.loose = 'loose'
+        self.loose = 'LOOSE'
         if Request.is_loose == 'no' :
-            self.loose = 'strict'
+            self.loose = 'STRICT'
         self.path_bandwidth = None
         if Request.path_bandwidth is not None:
             self.path_bandwidth = Request.path_bandwidth * 1e9
@@ -132,6 +132,7 @@ class Request_element(Element):
     uid = property(lambda self: repr(self))
     @property
     def pathrequest(self):
+
         req_dictionnary = {
                     'request-id':self.request_id,
                     'source':    self.source,
@@ -143,7 +144,7 @@ class Request_element(Element):
                             'technology': 'flexi-grid',
                             'trx_type'  : self.trx_type,
                             'trx_mode'  : self.mode,
-                            'effective-freq-slot':[{'n': 'null','m': 'null'}] ,
+                            'effective-freq-slot':[{'N': 'null','M': 'null'}] ,
                             'spacing'   : self.spacing,
                             'max-nb-of-channel'  : self.nb_channel,
                             'output-power'       : self.power
@@ -181,9 +182,8 @@ class Request_element(Element):
         if self.disjoint_from :
             return {'synchronization-id':self.request_id,
                 'svec': {
-                    'relaxable' : 'False',
-                    'link-diverse': 'True',
-                    'node-diverse': 'True',
+                    'relaxable' : 'false',
+                    'disjointness': 'node link',
                     'request-id-number': [self.request_id]+ [n for n in self.disjoint_from]
                 }
             }

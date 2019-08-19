@@ -13,8 +13,8 @@
           "trx_mode": null,
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N": "null",
+              "M": "null"
             }
           ],
           "spacing": 50000000000.0,
@@ -22,9 +22,6 @@
           "output-power": 0.0012589254117941673,
           "path_bandwidth": 100000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
@@ -40,8 +37,8 @@
           "trx_mode": "mode 1",
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N": "null",
+              "M": "null"
             }
           ],
           "spacing": 50000000000.0,
@@ -50,66 +47,42 @@
           "path_bandwidth": 200000000000.0
         }
       },
-      "optimizations": {
-        "explicit-route-include-objects": [
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 0,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "roadm Brest_KLA",
               "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           },
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 1,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "roadm Lannion_CAS",
               "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           },
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 2,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "roadm Lorient_KMA",
               "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           },
           {
+            "explicit-route-usage": "route-include-ero",
             "index": 3,
-            "unnumbered-hop": {
+            "num-unnum-hop": {
               "node-id": "roadm Vannes_KBE",
               "link-tp-id": "link-tp-id is not used",
-              "hop-type": "loose",
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
+              "hop-type": "LOOSE"
             }
           }
         ]
@@ -128,8 +101,8 @@
           "trx_mode": "mode 1",
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N": "null",
+              "M": "null"
             }
           ],
           "spacing": 50000000000.0,
@@ -137,9 +110,6 @@
           "output-power": null,
           "path_bandwidth": 60000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
@@ -155,8 +125,8 @@
           "trx_mode": null,
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N": "null",
+              "M": "null"
             }
           ],
           "spacing": 75000000000.0,
@@ -164,9 +134,6 @@
           "output-power": 0.0019952623149688794,
           "path_bandwidth": 150000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
@@ -182,8 +149,8 @@
           "trx_mode": "mode 2",
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N": "null",
+              "M": "null"
             }
           ],
           "spacing": 75000000000.0,
@@ -191,9 +158,6 @@
           "output-power": 0.0019952623149688794,
           "path_bandwidth": 20000000000.0
         }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": []
       }
     },
     {
@@ -282,9 +246,8 @@
     {
       "synchronization-id": "3",
       "svec": {
-        "relaxable": "False",
-        "link-diverse": "True",
-        "node-diverse": "True",
+        "relaxable": "false",
+        "disjointness": "node link",
         "request-id-number": [
           "3",
           "1"
@@ -294,9 +257,8 @@
     {
       "synchronization-id": "4",
       "svec": {
-        "relaxable": "False",
-        "link-diverse": "True",
-        "node-diverse": "True",
+        "relaxable": "false",
+        "disjointness": "node link",
         "request-id-number": [
           "4",
           "5"
