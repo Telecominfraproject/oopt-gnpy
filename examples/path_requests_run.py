@@ -55,8 +55,8 @@ def requests_from_json(json_data,equipment):
         # init all params from request
         params = {}
         params['request_id'] = req['request-id']
-        params['source'] = req['src-tp-id']
-        params['destination'] = req['dst-tp-id']
+        params['source'] = req['source']
+        params['destination'] = req['destination']
         params['trx_type'] = req['path-constraints']['te-bandwidth']['trx_type']
         params['trx_mode'] = req['path-constraints']['te-bandwidth']['trx_mode']
         params['format'] = params['trx_mode']

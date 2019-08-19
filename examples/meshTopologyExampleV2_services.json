@@ -2,8 +2,8 @@
   "path-request": [
     {
       "request-id": "0",
-      "source": "Lorient_KMA",
-      "destination": "Vannes_KBE",
+      "source": "trx Lorient_KMA",
+      "destination": "trx Vannes_KBE",
       "src-tp-id": "trx Lorient_KMA",
       "dst-tp-id": "trx Vannes_KBE",
       "path-constraints": {
@@ -26,8 +26,8 @@
     },
     {
       "request-id": "1",
-      "source": "Brest_KLA",
-      "destination": "Vannes_KBE",
+      "source": "trx Brest_KLA",
+      "destination": "trx Vannes_KBE",
       "src-tp-id": "trx Brest_KLA",
       "dst-tp-id": "trx Vannes_KBE",
       "path-constraints": {
@@ -90,8 +90,8 @@
     },
     {
       "request-id": "3",
-      "source": "Lannion_CAS",
-      "destination": "Rennes_STA",
+      "source": "trx Lannion_CAS",
+      "destination": "trx Rennes_STA",
       "src-tp-id": "trx Lannion_CAS",
       "dst-tp-id": "trx Rennes_STA",
       "path-constraints": {
@@ -114,8 +114,8 @@
     },
     {
       "request-id": "4",
-      "source": "Rennes_STA",
-      "destination": "Lannion_CAS",
+      "source": "trx Rennes_STA",
+      "destination": "trx Lannion_CAS",
       "src-tp-id": "trx Rennes_STA",
       "dst-tp-id": "trx Lannion_CAS",
       "path-constraints": {
@@ -138,8 +138,8 @@
     },
     {
       "request-id": "5",
-      "source": "Rennes_STA",
-      "destination": "Lannion_CAS",
+      "source": "trx Rennes_STA",
+      "destination": "trx Lannion_CAS",
       "src-tp-id": "trx Rennes_STA",
       "dst-tp-id": "trx Lannion_CAS",
       "path-constraints": {
@@ -162,8 +162,8 @@
     },
     {
       "request-id": "6",
-      "source": "Lannion_CAS",
-      "destination": "Lorient_KMA",
+      "source": "trx Lannion_CAS",
+      "destination": "trx Lorient_KMA",
       "src-tp-id": "trx Lannion_CAS",
       "dst-tp-id": "trx Lorient_KMA",
       "path-constraints": {
@@ -189,8 +189,8 @@
     },
     {
       "request-id": "7",
-      "source": "Lannion_CAS",
-      "destination": "Lorient_KMA",
+      "source": "trx Lannion_CAS",
+      "destination": "trx Lorient_KMA",
       "src-tp-id": "trx Lannion_CAS",
       "dst-tp-id": "trx Lorient_KMA",
       "path-constraints": {
@@ -216,8 +216,8 @@
     },
     {
       "request-id": "7b",
-      "source": "Lannion_CAS",
-      "destination": "Lorient_KMA",
+      "source": "trx Lannion_CAS",
+      "destination": "trx Lorient_KMA",
       "src-tp-id": "trx Lannion_CAS",
       "dst-tp-id": "trx Lorient_KMA",
       "path-constraints": {
