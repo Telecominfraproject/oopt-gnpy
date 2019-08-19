@@ -187,6 +187,8 @@ class Request_element(Element):
                     'request-id-number': [self.request_id]+ [n for n in self.disjoint_from]
                 }
             }
+        else:
+            return None
         # TO-DO: avoid multiple entries with same synchronisation vectors
     @property
     def json(self):
@@ -201,11 +203,17 @@ def convert_service_sheet(input_filename, eqpt_filename, output_filename='', fil
         output_filename = f'{str(input_filename)[0:len(str(input_filename))-len(str(input_filename.suffixes[0]))]}_services.json'
     # for debug
     # print(json_filename)
-    data = {
-        'path-request': [n.json[0] for n in req],
-        'synchronization': [n.json[1] for n in req
-        if n.json[1] is not None]
-    }
+    # if there is no sync vector , do not write any synchronization
+    synchro = [n.json[1] for n in req if n.json[1] is not None]
+    if synchro :
+        data = {
+            'path-request': [n.json[0] for n in req],
+            'synchronization': synchro
+        }
+    else:
+        data = {
+            'path-request': [n.json[0] for n in req]
+            }
     with open(output_filename, 'w', encoding='utf-8') as f:
             f.write(dumps(data, indent=2, ensure_ascii=False))
     return data
