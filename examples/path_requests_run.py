@@ -236,8 +236,11 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                     pathreq.tx_osnr = mode['tx_osnr']
                     pathreq.bit_rate = mode['bit_rate']
 
-            if total_path and pathreq.bidir:
-                reversed_path = find_reversed_path(pathlist[i])
+            # reversed path is needed for correct spectrum assignment
+            reversed_path = find_reversed_path(pathlist[i])
+            if pathreq.bidir:
+                # only propagate if bidir is true, but needs the reversed path anyway for
+                # correct spectrum assignment
                 rev_p = deepcopy(reversed_path)
 
                 print(f'\n\tPropagating Z to A direction {pathreq.destination} to {pathreq.source}')
@@ -255,7 +258,6 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                     # TODO selection of mode should also be on reversed direction !!
                     pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
             else:
-                reversed_path = []
                 propagated_reversed_path = []
         else:
             msg = 'Total path is empty. No propagation'
