@@ -19,6 +19,7 @@ from examples.path_requests_run import (requests_from_json , correct_route_list 
 from gnpy.core.request import compute_path_dsjctn, isdisjoint , find_reversed_path
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.elements import Roadm
+from gnpy.core.spectrum_assignment import build_oms_list
 
 network_file_name = Path(__file__).parent.parent / 'tests/data/testTopology_expected.json'
 service_file_name = Path(__file__).parent.parent / 'tests/data/testTopology_testservices.json'
@@ -32,7 +33,6 @@ def test_disjunction(net,eqpt,serv):
     data = load_requests(serv, eqpt, bidir=False)
     equipment = load_equipment(eqpt)
     network = load_network(net,equipment)
-
     # Build the network once using the default power defined in SI in eqpt config
     # power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
     # spacing, f_min and f_max 
@@ -41,6 +41,7 @@ def test_disjunction(net,eqpt,serv):
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
         equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
+    oms_list = build_oms_list(network, equipment)
 
     rqs = requests_from_json(data, equipment)
     rqs = correct_route_list(network, rqs)
@@ -80,6 +81,7 @@ def test_does_not_loop_back(net,eqpt,serv):
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
         equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
+    oms_list = build_oms_list(network, equipment)
 
     rqs = requests_from_json(data, equipment)
     rqs = correct_route_list(network, rqs)
