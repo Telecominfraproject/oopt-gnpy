@@ -32,6 +32,7 @@ from gnpy.core.request import (Path_request, Result_element, compute_constrained
                               propagate_and_optimize_mode)
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
 import gnpy.core.ansi_escapes as ansi_escapes
+from gnpy.core.spectrum_assignment import build_OMS_list
 from copy import copy, deepcopy
 from textwrap import dedent
 from math import ceil
@@ -306,6 +307,7 @@ if __name__ == '__main__':
     build_network(network, equipment, p_db, p_total_db)
     save_network(args.network_filename, network)
 
+    oms_list = build_OMS_list(network, equipment)
     rqs = requests_from_json(data, equipment)
 
     # check that request ids are unique. Non unique ids, may
