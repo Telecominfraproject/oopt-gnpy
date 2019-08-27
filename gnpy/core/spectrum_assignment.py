@@ -79,6 +79,9 @@ class OMS:
         self.el_id_list = params.el_id_list
         self.el_list = params.el_list
         self.spectrum_bitmap = []
+        self.nb_channels = 0
+        self.service_list = []
+    # TODO
     def __str__(self):
         return '\n\t'.join([f'{type(self).__name__} {self.oms_id}',
                                f'{self.el_id_list[0]} - {self.el_id_list[-1]}'])
@@ -86,9 +89,11 @@ class OMS:
         return '\n\t'.join([f'{type(self).__name__} {self.oms_id}',
                                f'{self.el_id_list[0]} - {self.el_id_list[-1]}', '\n'])
 
-    def add_element(self, el):
-        self.el_id_list.append(el.uid)
-        self.el_list.append(el)
+    def add_element(self, elem):
+        """ records oms elements
+        """
+        self.el_id_list.append(elem.uid)
+        self.el_list.append(elem)
 
     def update_spectrum(self, f_min, f_max, guardband=0.15e12, existing_spectrum=None,
                         grid=0.00625e12):
@@ -138,6 +143,12 @@ class OMS:
                   f' one or several slots are not available'
             LOGGER.info(msg)
             return False
+
+    def add_service(self, service_id, nb_wl):
+        """ record service and mark spectrum as occupied
+        """
+        self.service_list.append(service_id)
+        self.nb_channels += nb_wl
 
 def frequency_to_n(freq, grid=0.00625e12):
     """ converts frequency into the n value (ITU grid)
@@ -324,3 +335,31 @@ def select_candidate(candidates, policy):
             return candidates[0]
         else:
             return (None, None, None)
+
+def pth_assign_spectrum(pths, rqs, oms_list):
+    """ baseic first fit assignment
+    """
+    for i, pth in enumerate(pths):
+        # computes the number of channels required
+        if rqs[i].bit_rate is not None:
+            nb_wl = ceil(rqs[i].path_bandwidth / rqs[i].bit_rate)
+            # computes the total nb of slots according to requested spacing
+            # todo : express superchannels
+            # assumes that all channels must be grouped
+            # todo : enables non contiguous reservation in case of blocking
+            requested_m = ceil(rqs[i].spacing / 0.0125e12) * nb_wl
+            (center_n, startn, stopn), path_oms = spectrum_selection(pth, oms_list, requested_m,
+                                                                     requested_n=None)
+            # checks that requested_m is fitting startm and stopm
+
+            if center_n is not None:
+                if 2 * requested_m > (stopn - startn + 1):
+                    msg = f'candidate : {(center_n, startn, stopn)} is not consitant with {requested_m}'
+                    LOGGER.critical(msg)
+                    exit(1)
+                for oms_elem in path_oms:
+                    oms_list[oms_elem].assign_spectrum(center_n, requested_m)
+                    oms_list[oms_elem].add_service(rqs[i].request_id, nb_wl)
+                rqs[i].blocked = False
+            else:
+                rqs[i].blocked = True
