@@ -32,7 +32,7 @@ from gnpy.core.request import (Path_request, Result_element, compute_constrained
                               propagate_and_optimize_mode)
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
 import gnpy.core.ansi_escapes as ansi_escapes
-from gnpy.core.spectrum_assignment import build_OMS_list
+from gnpy.core.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from copy import copy, deepcopy
 from textwrap import dedent
 from math import ceil
@@ -307,7 +307,7 @@ if __name__ == '__main__':
     build_network(network, equipment, p_db, p_total_db)
     save_network(args.network_filename, network)
 
-    oms_list = build_OMS_list(network, equipment)
+    oms_list = build_oms_list(network, equipment)
     rqs = requests_from_json(data, equipment)
 
     # check that request ids are unique. Non unique ids, may
@@ -345,16 +345,17 @@ if __name__ == '__main__':
     print('\x1b[1;34;40m'+f'Propagating on selected path'+ '\x1b[0m')
     propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
 
-    print('\x1b[1;34;40m'+f'Result summary'+ '\x1b[0m')
+    pth_assign_spectrum(pths, rqs, oms_list)
 
-    header = ['req id', '  demand','  snr@bandwidth','  snr@0.1nm','  Receiver minOSNR', '  mode', '  Gbit/s' , '  nb of tsp pairs']
+    print('\x1b[1;34;40m'+f'Result summary'+ '\x1b[0m')
+    header = ['req id', '  demand','  snr@bandwidth','  snr@0.1nm','  Receiver minOSNR', '  mode', '  Gbit/s' , '  nb of tsp pairs', 'blocked']
     data = []
     data.append(header)
     for i, p in enumerate(propagatedpths):
         if p:
             line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
                 f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
-                f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }']
+                f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}' , f'{round(rqs[i].path_bandwidth * 1e-9,2)}' , f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }', f'{rqs[i].blocked}']
         else:
             line = [f'{rqs[i].request_id}',f' {rqs[i].source} to {rqs[i].destination} : not feasible ']
         data.append(line)
