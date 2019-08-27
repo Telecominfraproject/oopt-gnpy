@@ -56,6 +56,7 @@ class Node(object):
         'latitude':     0,
         'longitude':    0,
         'node_type':    'ILA',
+        'pout_target':  -18,
         'booster_restriction' : '',
         'preamp_restriction'  : ''
     }
@@ -293,6 +294,9 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
               'type': 'Transceiver'}
              for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'] +
             [{'uid': f'roadm {x.city}',
+              'params' : {
+                'target_pch_out_db': x.pout_target
+              },
               'metadata': {'location': {'city':      x.city,
                                         'region':    x.region,
                                         'latitude':  x.latitude,
@@ -305,7 +309,8 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
                 'restrictions': {
                   'preamp_variety_list': silent_remove(x.preamp_restriction.split(' | '),''),
                   'booster_variety_list': silent_remove(x.booster_restriction.split(' | '),'')
-                  }
+                  },
+                'target_pch_out_db': x.pout_target
               },
               'metadata': {'location': {'city':      x.city,
                                         'region':    x.region,
@@ -454,6 +459,7 @@ def parse_excel(input_filename):
         'Latitude':     'latitude',
         'Longitude':    'longitude',
         'Type':         'node_type',
+        'Pout target':  'pout_target',
         'Booster_restriction': 'booster_restriction',
         'Preamp_restriction': 'preamp_restriction'
     }

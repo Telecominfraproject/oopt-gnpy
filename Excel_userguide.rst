@@ -13,7 +13,7 @@ In order to work the excel file MUST contain at least 2 sheets:
 
 (In progress) The File MAY contain an additional sheet:
 
-- Eqt
+- Eqpt
 - Service
 
 Nodes sheet
@@ -40,6 +40,8 @@ Each line represents a 'node' (ROADM site or an in line amplifier site ILA or a 
 
 - **Booster_restriction** and **Preamp_restriction** are not mandatory.
   If used, they must contain one or several amplifier type_variety names separated by ' | '. This information is used to restrict types of amplifiers used in a ROADM node during autodesign. If a ROADM booster or preamp is already specified in the Eqpt sheet , the field is ignored. The field is also ignored if the node is not a ROADM node.
+
+- **Pout target** for ROADMs: this corresponds to the target_pch_out_db parameter defined in the configuration file. This column is optional. If it is filled, it will be used for the node instead of the value given in the general configuration file ('Roadm' attributes in eqpt_config.json for example). Value is ignored if node type is not ROADM.
 
 **There MUST NOT be empty line(s) between two nodes lines**
 
