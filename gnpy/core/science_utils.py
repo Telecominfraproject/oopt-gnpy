@@ -191,17 +191,21 @@ def propagate_raman_fiber(fiber, *carriers):
     attenuation_out = db2lin(fiber.con_out)
     nli_solver = NliSolver(nli_params=nli_params, fiber_params=fiber_params)
     nli_solver.stimulated_raman_scattering = stimulated_raman_scattering
-    new_carriers = []
-    for carrier, attenuation, rmn_ase in zip(carriers, fiber_attenuation, raman_ase):
+
+    nli_frequencies = []
+    computed_nli = []
+    for carrier in (c for c in carriers if c.channel_number in sim_params.raman_computed_channels):
         resolution_param = frequency_resolution(carrier, carriers, sim_params, fiber_params)
         f_cut_resolution, f_pump_resolution, _, _ = resolution_param
         nli_params.f_cut_resolution = f_cut_resolution
         nli_params.f_pump_resolution = f_pump_resolution
+        nli_frequencies.append(carrier.frequency)
+        computed_nli.append(nli_solver.compute_nli(carrier, *carriers))
+
+    new_carriers = []
+    for carrier, attenuation, rmn_ase in zip(carriers, fiber_attenuation, raman_ase):
+        carrier_nli = np.interp(carrier.frequency, nli_frequencies, computed_nli)
         pwr = carrier.power
-        if carrier.channel_number in sim_params.raman_computed_channels:
-            carrier_nli = nli_solver.compute_nli(carrier, *carriers)
-        else:
-            carrier_nli = np.nan
         pwr = pwr._replace(signal=pwr.signal/attenuation/attenuation_out,
                            nli=(pwr.nli+carrier_nli)/attenuation/attenuation_out,
                            ase=((pwr.ase/attenuation)+rmn_ase)/attenuation_out)
