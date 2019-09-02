@@ -18,7 +18,7 @@ from pathlib import Path
 from json import loads
 from collections import Counter
 from logging import getLogger, basicConfig, INFO, ERROR, DEBUG
-from numpy import linspace, mean, log10, isnan
+from numpy import linspace, mean, log10
 from matplotlib.pyplot import show, axis, figure, title, text
 from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels, dijkstra_path)
@@ -299,9 +299,8 @@ if __name__ == '__main__':
             ch_power = 10 * log10(final_carrier.power.signal)
             ch_snr_nl =  ch_power - 10 * log10(final_carrier.power.nli)
             ch_snr = ch_power - 10 * log10(final_carrier.power.nli + final_carrier.power.ase)
-            if not isnan(ch_snr):
-                print(f'{final_carrier.channel_number} \t\t {round(ch_freq, 2):.2f} \t\t\t {round(ch_snr_nl, 2):.2f} '
-                      f'\t\t\t\t {round(ch_snr, 2):.2f}')
+            print(f'{final_carrier.channel_number} \t\t {round(ch_freq, 2):.2f} \t\t\t {round(ch_snr_nl, 2):.2f} '
+                  f'\t\t\t\t {round(ch_snr, 2):.2f}')
 
     if not args.source:
         print(f'\n(No source node specified: picked {source.uid})')
