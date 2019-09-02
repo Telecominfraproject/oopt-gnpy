@@ -97,10 +97,36 @@ def h():
 
 
 def lin2db(value):
+    """Convert linear unit to logarithmic (dB)
+
+    >>> lin2db(0.001)
+    -30.0
+    >>> round(lin2db(1.0), 2)
+    0.0
+    >>> round(lin2db(1.26), 2)
+    1.0
+    >>> round(lin2db(10.0), 2)
+    10.0
+    >>> round(lin2db(100.0), 2)
+    20.0
+    """
     return 10 * log10(value)
 
 
 def db2lin(value):
+    """Convert logarithimic units to linear
+
+    >>> round(db2lin(10.0), 2)
+    10.0
+    >>> round(db2lin(20.0), 2)
+    100.0
+    >>> round(db2lin(1.0), 2)
+    1.26
+    >>> round(db2lin(0.0), 2)
+    1.0
+    >>> round(db2lin(-10.0), 2)
+    0.1
+    """
     return 10**(value / 10)
 
 def round2float(number, step):
