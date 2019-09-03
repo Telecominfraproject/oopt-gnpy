@@ -397,11 +397,14 @@ def propagate(path, req, equipment, show=False):
     si = create_input_spectral_information(
         req.f_min, req.f_max, req.roll_off, req.baud_rate,
         req.power, req.spacing)
-    for el in path:
+    for el in path[:-1]:
         si = el(si)
         if show :
             print(el)
+    si = path[-1](si)
     path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
+    if show :
+        print(path[-1])
     return path
 
 def propagate2(path, req, equipment, show=False):
@@ -409,13 +412,18 @@ def propagate2(path, req, equipment, show=False):
         req.f_min, req.f_max, req.roll_off, req.baud_rate,
         req.power, req.spacing)
     infos = {}
-    for el in path:
+    for el in path[:-1]:
         before_si = si
-        after_si  = si = el(si)
-        infos[el] = before_si, after_si
+        si = el(si)
+        infos[el] = before_si, si
         if show :
             print(el)
+    before_si = si
+    si = path[-1](si)
+    infos[path[-1]] = before_si, si
     path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
+    if show :
+        print(path[-1])
     return infos
 
 def propagate_and_optimize_mode(path, req, equipment, show=False):
@@ -440,15 +448,18 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
             si = create_input_spectral_information(
             req.f_min, req.f_max, equipment['SI']['default'].roll_off,
             b, req.power, req.spacing)
-            for el in path:
+            for el in path[:-1]:
                 si = el(si)
                 if show:
                     print(el)
+            si = path[-1](si)
             for m in modes_to_explore :
                 if path[-1].snr is not None:
                     path[-1].update_snr(m['tx_osnr'], equipment['Roadm']['default'].add_drop_osnr)
                     if round(min(path[-1].snr+lin2db(b/(12.5e9))),2) > m['OSNR'] :
                         found_a_feasible_mode = True
+                        if show:
+                            print(path[-1])
                         return path, m
                 else:  
                     return [], None
