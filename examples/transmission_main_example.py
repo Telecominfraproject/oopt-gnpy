@@ -293,14 +293,13 @@ if __name__ == '__main__':
 
     if args.show_channels:
         print('\nThe total SNR per channel at the end of the line is:')
-        print('Ch. # \t Channel frequency (THz) \t SNR NL (signal bw, dB) \t SNR total (signal bw, dB)')
-        for final_carrier in infos[path[-1]][1].carriers:
+        print('{:>5}{:>26}{:>26}{:>28}{:>28}{:>28}' \
+            .format('Ch. #', 'Channel frequency (THz)', 'Channel power (dBm)', 'OSNR ASE (signal bw, dB)', 'SNR NLI (signal bw, dB)', 'SNR total (signal bw, dB)'))
+        for final_carrier, ch_osnr, ch_snr_nl, ch_snr in zip(infos[path[-1]][1].carriers, path[-1].osnr_ase, path[-1].osnr_nli, path[-1].snr):
             ch_freq = final_carrier.frequency * 1e-12
-            ch_power = 10 * log10(final_carrier.power.signal)
-            ch_snr_nl =  ch_power - 10 * log10(final_carrier.power.nli)
-            ch_snr = ch_power - 10 * log10(final_carrier.power.nli + final_carrier.power.ase)
-            print(f'{final_carrier.channel_number} \t\t {round(ch_freq, 2):.2f} \t\t\t {round(ch_snr_nl, 2):.2f} '
-                  f'\t\t\t\t {round(ch_snr, 2):.2f}')
+            ch_power = lin2db(final_carrier.power.signal*1e3)
+            print('{:5}{:26.2f}{:26.2f}{:28.2f}{:28.2f}{:28.2f}' \
+                .format(final_carrier.channel_number, round(ch_freq, 2), round(ch_power, 2), round(ch_osnr, 2), round(ch_snr_nl, 2), round(ch_snr, 2)))
 
     if not args.source:
         print(f'\n(No source node specified: picked {source.uid})')
