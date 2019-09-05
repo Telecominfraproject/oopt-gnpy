@@ -17,6 +17,7 @@ from collections import namedtuple
 from logging import getLogger
 from math import ceil
 from gnpy.core.elements import Roadm, Transceiver
+from gnpy.core.exceptions import SpectrumError
 
 LOGGER = getLogger(__name__)
 
@@ -43,7 +44,8 @@ class Bitmap:
                 msg = f'bitmap is not consistant with f_min{f_min} - n :' +\
                       f'{n_min} and f_max{f_max}- n :{n_max}'
                 LOGGER.critical(msg)
-                exit()
+                raise SpectrumError(msg)
+
     def getn(self, i):
         """ converts the n (itu grid) into a local index
         """
@@ -126,7 +128,7 @@ class OMS:
                 or isinstance(mvalue, float) or mvalue == 0):
             msg = f'could not assign None values'
             LOGGER.critical(msg)
-            exit()
+            raise SpectrumError(msg)
         startn, stopn = mvalue_to_slots(nvalue, mvalue)
         # print(f'startn stop n {startn} , {stopn}')
         # assumes that guardbands are sufficient to ensure that assigning a center channel

@@ -23,3 +23,6 @@ class ServiceError(Exception):
 
 class DisjunctionError(ServiceError):
     '''Disjunction of user-provided request can not be satisfied'''
+
+class SpectrumError(Exception):
+    '''Spectrum errors of the program'''
