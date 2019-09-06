@@ -410,20 +410,26 @@ def propagate_and_optimize_mode(path, req, equipment):
                     if round(min(path[-1].snr+lin2db(b/(12.5e9))),2) > m['OSNR'] :
                         found_a_feasible_mode = True
                         return path, m
+                    else :
+                        last_explored_mode = m
                 else:  
-                    return [], None
+                    req.blocking_reason = 'NO_COMPUTED_SNR'
+                    return path, None
+
         # only get to this point if no baudrate/mode satisfies OSNR requirement
 
         # returns the last propagated path and mode
         msg = f'\tWarning! Request {req.request_id}: no mode satisfies path SNR requirement.\n'
         print(msg)
         logger.info(msg)
-        return [],None
+        req.blocking_reason = 'NO_FEASIBLE_MODE'
+        return path,last_explored_mode
     else :
-    #  no baudrate satisfying spacing
+        # no baudrate satisfying spacing
         msg = f'\tWarning! Request {req.request_id}: no baudrate satisfies spacing requirement.\n'
         print(msg)
         logger.info(msg)
+        req.blocking_reason = 'NO_FEASIBLE_BAUDRATE_WITH_SPACING'
         return [], None
 
 
