@@ -178,8 +178,8 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
         if total_path :
             if pathreq.baud_rate is not None:
+                # means that at this point the mode was entered/forced by user and thus a baud_rate was defined
                 total_path = propagate(total_path,pathreq,equipment)
-                # for el in total_path: print(el)
                 temp_snr01nm = round(mean(total_path[-1].snr+lin2db(pathreq.baud_rate/(12.5e9))),2)
                 if temp_snr01nm < pathreq.OSNR :
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}\n' +\
@@ -191,17 +191,27 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 total_path,mode = propagate_and_optimize_mode(total_path,pathreq,equipment)
                 # if no baudrate satisfies spacing, no mode is returned and an empty path is returned
                 # a warning is shown in the propagate_and_optimize_mode
-                if mode is not None :
-                    # propagate_and_optimize_mode function returns the mode with the highest bitrate
-                    # that passes. if no mode passes, then it returns an empty path
+                # propagate_and_optimize_mode function returns the mode with the highest bitrate
+                # that passes. if no mode passes, then a attribute blocking_reason is added on pathreq
+                # that contains the reason for blocking: 'NO_PATH', 'NO_FEASIBLE_MODE', ...
+                try:
+                    if pathreq.blocking_reason in BLOCKING_NOPATH:
+                        total_path = []
+                    elif pathreq.blocking_reason in BLOCKING_NOMODE :
+                        pathreq.baud_rate = mode['baud_rate']
+                        pathreq.tsp_mode = mode['format']
+                        pathreq.format = mode['format']
+                        pathreq.OSNR = mode['OSNR']
+                        pathreq.tx_osnr = mode['tx_osnr']
+                        pathreq.bit_rate = mode['bit_rate']
+                    # other blocking reason should not appear at this point
+                except:
                     pathreq.baud_rate = mode['baud_rate']
                     pathreq.tsp_mode = mode['format']
                     pathreq.format = mode['format']
                     pathreq.OSNR = mode['OSNR']
                     pathreq.tx_osnr = mode['tx_osnr']
                     pathreq.bit_rate = mode['bit_rate']
-                else :
-                    total_path = []
         # we record the last tranceiver object in order to have th whole 
         # information about spectrum. Important Note: since transceivers 
         # attached to roadms are actually logical elements to simulate
