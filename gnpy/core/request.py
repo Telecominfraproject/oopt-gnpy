@@ -432,8 +432,37 @@ def propagate_and_optimize_mode(path, req, equipment):
         req.blocking_reason = 'NO_FEASIBLE_BAUDRATE_WITH_SPACING'
         return [], None
 
+def jsontoparams(my_p, tsp, mode, equipment):
+    temp = []
+    for elem in my_p['path-properties']['path-route-objects']:
+        if 'num-unnum-hop' in elem['path-route-object']:
+            temp.append(elem['path-route-object']['num-unnum-hop']['node-id'])
+    pth = ' | '.join(temp)
 
-def jsontocsv(json_data,equipment,fileout):
+    # find the tsp minOSNR, baud rate... from the eqpt library based on tsp (type) and mode (format)
+    # loading equipment already tests the existence of tsp type and mode:
+    if mode is not None:
+        [minosnr, baud_rate, bit_rate, cost] = next([m['OSNR'], m['baud_rate'], m['bit_rate'], m['cost']]
+            for m in equipment['Transceiver'][tsp].mode if m['format'] == mode)
+    else:
+        [minosnr, baud_rate, bit_rate, cost] = ['', '', '', '']
+    output_snr = next(e['accumulative-value']
+        for e in my_p['path-properties']['path-metric'] if e['metric-type'] == 'SNR-0.1nm')
+    output_snrbandwidth = next(e['accumulative-value']
+        for e in my_p['path-properties']['path-metric'] if e['metric-type'] == 'SNR-bandwidth')
+    output_osnr = next(e['accumulative-value']
+        for e in my_p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-0.1nm')
+    # ouput osnr@bandwidth is not used
+    # output_osnrbandwidth = next(e['accumulative-value']
+    #     for e in my_p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-bandwidth')
+    power = next(e['accumulative-value']
+        for e in my_p['path-properties']['path-metric'] if e['metric-type'] == 'reference_power')
+    path_bandwidth = next(e['accumulative-value']
+        for e in my_p['path-properties']['path-metric'] if e['metric-type'] == 'path_bandwidth')    
+    return pth, minosnr, baud_rate, bit_rate, cost, output_snr, \
+        output_snrbandwidth, output_osnr, power, path_bandwidth
+
+def jsontocsv(json_data, equipment, fileout):
     # read json path result file in accordance with:
     # Yang model for requesting Path Computation
     # draft-ietf-teas-yang-path-computation-01.txt.
@@ -444,87 +473,76 @@ def jsontocsv(json_data,equipment,fileout):
         'nb of tsp pairs','total cost','transponder-type','transponder-mode',\
         'OSNR-0.1nm','SNR-0.1nm','SNR-bandwidth','baud rate (Gbaud)',\
         'input power (dBm)','path'))
-    tspjsondata = equipment['Transceiver']
-    #print(tspjsondata)
 
     for pth_el in json_data['response']:
         path_id = pth_el['response-id']
-        try:
-             if pth_el['no-path'] :
+        if 'no-path' in pth_el.keys():
+            total_cost = ''
+            nb_tsp = ''
+            if pth_el['no-path']['no-path'] in BLOCKING_NOPATH:
                 source = ''
                 destination = ''
+                pthbdbw = ''
+                isok = pth_el['no-path']['no-path']
                 tsp = ''
                 mode = ''
-                isok = False
-                nb_tsp = 0
-                pthbdbw = ''
                 rosnr = ''
                 rsnr = ''
                 rsnrb = ''
                 br = ''
                 pw = ''
-                total_cost = ''
                 pth = ''
-        except KeyError:
-
+            else:
+                # the objects are listed with this order:
+                # - id of hop 
+                # - label (N,M)
+                # - transponder for source and destination only
+                # as spectrum assignment is not performed for blocked demands: there is no label object in the answer
+                # so the hop_attribute with tsp and mode is second object or last object, while id of hop is first and
+                # penultimate
+                source = pth_el['no-path']['path-properties']['path-route-objects'][0]\
+                               ['path-route-object']['num-unnum-hop']['node-id']
+                destination = pth_el['no-path']['path-properties']['path-route-objects'][-2]\
+                                    ['path-route-object']['num-unnum-hop']['node-id']
+                temp_tsp = pth_el['no-path']['path-properties']['path-route-objects'][1]\
+                                 ['path-route-object']['transponder']
+                tsp = temp_tsp['transponder-type']
+                mode = temp_tsp['transponder-mode']
+                isok = pth_el['no-path']['no-path']
+                if pth_el['no-path']['no-path'] in BLOCKING_NOMODE or \
+                       pth_el['no-path']['no-path'] in BLOCKING_NOSPECTRUM:
+                    pth, minosnr, baud_rate, bit_rate, cost, output_snr, output_snrbandwidth, \
+                        output_osnr, power, path_bandwidth = jsontoparams(pth_el['no-path'], tsp, mode, equipment)
+                    pthbdbw = ''
+                    rosnr = round(output_osnr, 2)
+                    rsnr = round(output_snr, 2)
+                    rsnrb = round(output_snrbandwidth, 2)
+                    br = round(baud_rate * 1e-9, 2)
+                    pw = round(lin2db(power) + 30, 2)
+        else:
+            # when label will be assigned destination will be with index -3, and transponder with index 2
             source = pth_el['path-properties']['path-route-objects'][0]\
-            ['path-route-object']['num-unnum-hop']['node-id']
+                     ['path-route-object']['num-unnum-hop']['node-id']
             destination = pth_el['path-properties']['path-route-objects'][-2]\
-            ['path-route-object']['num-unnum-hop']['node-id']
+                          ['path-route-object']['num-unnum-hop']['node-id']
             # selects only roadm nodes
-            temp = []
-            for e in pth_el['path-properties']['path-route-objects']:
-                try :
-                    temp.append(e['path-route-object']['num-unnum-hop']['node-id'])
-                except KeyError:
-                    pass
-            pth = ' | '.join(temp)
-
             temp_tsp = pth_el['path-properties']['path-route-objects'][1]\
-            ['path-route-object']['transponder']
+                       ['path-route-object']['transponder']
             tsp = temp_tsp['transponder-type']
             mode = temp_tsp['transponder-mode']
 
-            # find the min  acceptable OSNR, baud rate from the eqpt library based on tsp (tupe) and mode (format)
-            # loading equipment already tests the existence of tsp type and mode:
-            if mode !='not feasible with this transponder' :
-                [minosnr, baud_rate, bit_rate, cost] = next([m['OSNR'] , m['baud_rate'] , m['bit_rate'], m['cost']]
-                    for m in equipment['Transceiver'][tsp].mode if  m['format']==mode)
-            # else:
-            #     [minosnr, baud_rate, bit_rate] = ['','','','']
-            output_snr = next(e['accumulative-value'] 
-                for e in pth_el['path-properties']['path-metric'] if e['metric-type'] == 'SNR-0.1nm')
-            output_snrbandwidth = next(e['accumulative-value']
-                for e in pth_el['path-properties']['path-metric'] if e['metric-type'] == 'SNR-bandwidth')
-            output_osnr = next(e['accumulative-value']
-                for e in pth_el['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-0.1nm')
-            output_osnrbandwidth = next(e['accumulative-value']
-                for e in pth_el['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-bandwidth')
-            power = next(e['accumulative-value']
-                for e in pth_el['path-properties']['path-metric'] if e['metric-type'] == 'reference_power')
-            path_bandwidth = next(e['accumulative-value']
-                for e in pth_el['path-properties']['path-metric'] if e['metric-type'] == 'path_bandwidth')
-            if isinstance(output_snr, str):
-                isok = False
-                nb_tsp = 0
-                pthbdbw = round(path_bandwidth*1e-9,2)
-                rosnr = ''
-                rsnr = ''
-                rsnrb = ''
-                br = ''
-                pw = ''
-                total_cost = ''
-            else:
-                isok = output_snr >= minosnr
-                nb_tsp = ceil(path_bandwidth / bit_rate)
-                pthbdbw = round(path_bandwidth*1e-9,2)
-                rosnr = round(output_osnr,2)
-                rsnr = round(output_snr,2)
-                rsnrb = round(output_snrbandwidth,2)
-                br = round(baud_rate*1e-9,2)
-                pw = round(lin2db(power)+30,2)
-                total_cost = nb_tsp * cost
-
+            pth, minosnr, baud_rate, bit_rate, cost, output_snr, output_snrbandwidth, \
+                output_osnr, power, path_bandwidth = jsontoparams(pth_el, tsp, mode, equipment)
+            # this part only works if the request has a blocking_reason atribute, ie if it could not be satisfied
+            isok = output_snr >= minosnr
+            nb_tsp = ceil(path_bandwidth / bit_rate)
+            pthbdbw = round(path_bandwidth * 1e-9, 2)
+            rosnr = round(output_osnr, 2)
+            rsnr = round(output_snr, 2)
+            rsnrb = round(output_snrbandwidth, 2)
+            br = round(baud_rate * 1e-9, 2)
+            pw = round(lin2db(power) + 30, 2)
+            total_cost = nb_tsp * cost
         mywriter.writerow((path_id,
             source,
             destination,
