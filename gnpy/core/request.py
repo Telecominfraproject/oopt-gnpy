@@ -121,75 +121,93 @@ class Result_element(Element):
         self.computed_path = computed_path
     uid = property(lambda self: repr(self))
     @property
-    def pathresult(self):
-        if not self.computed_path:
-            return {
-                   'response-id': self.path_id,
-                   'no-path': "Response without path information, due to failure performing the path computation"
-                   }
-        else:
-            index = 0
-            pro_list = []
-            for element in self.computed_path:
+    def detailed_path_json(self):
+        index = 0
+        pro_list = []
+        for element in self.computed_path:
+            temp = {
+                'path-route-object': {
+                    'index': index,
+                    'num-unnum-hop': {
+                        'node-id': element.uid,
+                        'link-tp-id': element.uid,
+                        # TODO change index in order to insert transponder attribute
+                        }
+                    }
+                }
+            pro_list.append(temp)
+            index += 1
+            if isinstance(element, Transceiver) :
                 temp = {
                     'path-route-object': {
                         'index': index,
-                        'num-unnum-hop': {
-                            'node-id': element.uid,
-                            'link-tp-id': element.uid,
-                            # TODO change index in order to insert transponder attribute
+                        'transponder' : {
+                           'transponder-type' : self.path_request.tsp,
+                           'transponder-mode' : self.path_request.tsp_mode
                             }
                         }
                     }
                 pro_list.append(temp)
                 index += 1
-                if isinstance(element, Transceiver):
-                    temp = {
-                        'path-route-object': {
-                            'index': index,
-                            'transponder' : {
-                               'transponder-type' : self.path_request.tsp,
-                               'transponder-mode' : self.path_request.tsp_mode,
-                                }
-                            }
-                        }
-                    pro_list.append(temp)
-                    index += 1
+        return pro_list
+    @property
+    def path_properties(self):
+        return {
+               'path-metric': [
+                   {
+                   'metric-type': 'SNR-bandwidth',
+                   'accumulative-value': round(mean(self.computed_path[-1].snr),2)
+                   },
+                   {
+                   'metric-type': 'SNR-0.1nm',
+                   'accumulative-value': round(mean(self.computed_path[-1].snr+lin2db(self.path_request.baud_rate/12.5e9)),2)
+                   },
+                   {
+                   'metric-type': 'OSNR-bandwidth',
+                   'accumulative-value': round(mean(self.computed_path[-1].osnr_ase),2)
+                   },
+                   {
+                   'metric-type': 'OSNR-0.1nm',
+                   'accumulative-value': round(mean(self.computed_path[-1].osnr_ase_01nm),2)
+                   },
+                   {
+                   'metric-type': 'reference_power',
+                   'accumulative-value': self.path_request.power
+                   },
+                   {
+                   'metric-type': 'path_bandwidth',
+                   'accumulative-value': self.path_request.path_bandwidth
+                   }
+                ],
+                'path-route-objects': self.detailed_path_json
+            }
 
-            response = {
-                'response-id': self.path_id,
-                'path-properties':{
-                    'path-metric': [
-                        {
-                            'metric-type': 'SNR-bandwidth',
-                            'accumulative-value': round(mean(self.computed_path[-1].snr), 2)
-                        },
-                        {
-                            'metric-type': 'SNR-0.1nm',
-                            'accumulative-value': round(mean(self.computed_path[-1]. snr + \
-                                                            lin2db(self.path_request.baud_rate/12.5e9)), 2)
-                        },
-                        {
-                            'metric-type': 'OSNR-bandwidth',
-                            'accumulative-value': round(mean(self.computed_path[-1].osnr_ase), 2)
-                        },
-                        {
-                            'metric-type': 'OSNR-0.1nm',
-                            'accumulative-value': round(mean(self.computed_path[-1].osnr_ase_01nm), 2)
-                        },
-                        {
-                            'metric-type': 'reference_power',
-                            'accumulative-value': self.path_request.power
-                        },
-                        {
-                            'metric-type': 'path_bandwidth',
-                            'accumulative-value': self.path_request.path_bandwidth
+    @property
+    def pathresult(self):
+        try:
+            if self.path_request.blocking_reason in BLOCKING_NOPATH:
+                response = {
+                    'response-id': self.path_id,
+                    'no-path': {
+                        'no-path': self.path_request.blocking_reason
                         }
-                        ],
-                    'path-route-objects': pro_list
                     }
+                return response
+            else:
+                response = {
+                    'response-id': self.path_id,
+                    'no-path': {
+                        'no-path': self.path_request.blocking_reason,
+                        'path-properties': self.path_properties
+                        }
+                    }
+                return response
+        except AttributeError:
+            response = {
+                    'response-id': self.path_id,
+                    'path-properties': self.path_properties
                 }
-        return response
+            return response
 
     @property
     def json(self):
