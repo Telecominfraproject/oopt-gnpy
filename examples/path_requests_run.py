@@ -29,7 +29,7 @@ from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused, Fiber
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.request import (Path_request, Result_element, compute_constrained_path,
                               propagate, jsontocsv, Disjunction, compute_path_dsjctn, requests_aggregation,
-                              propagate_and_optimize_mode)
+                              propagate_and_optimize_mode, BLOCKING_NOPATH)
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
 import gnpy.core.ansi_escapes as ansi_escapes
 from gnpy.core.spectrum_assignment import build_oms_list, pth_assign_spectrum
@@ -186,7 +186,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                     f'\tcomputedSNR in 0.1nm = {temp_snr01nm} - required osnr {pathreq.OSNR}\n'
                     print(msg)
                     logger.warning(msg)
-                    total_path = []
+                    pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
             else:
                 total_path,mode = propagate_and_optimize_mode(total_path,pathreq,equipment)
                 # if no baudrate satisfies spacing, no mode is returned and an empty path is returned

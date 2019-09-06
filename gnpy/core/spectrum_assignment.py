@@ -341,7 +341,10 @@ def pth_assign_spectrum(pths, rqs, oms_list):
     """
     for i, pth in enumerate(pths):
         # computes the number of channels required
-        if rqs[i].bit_rate is not None:
+        try:
+            if rqs[i].blocking_reason:
+                rqs[i].blocked = True
+        except AttributeError:
             nb_wl = ceil(rqs[i].path_bandwidth / rqs[i].bit_rate)
             # computes the total nb of slots according to requested spacing
             # todo : express superchannels
@@ -363,3 +366,4 @@ def pth_assign_spectrum(pths, rqs, oms_list):
                 rqs[i].blocked = False
             else:
                 rqs[i].blocked = True
+                rqs[i].blocking_reason = 'NO_SPECTRUM'

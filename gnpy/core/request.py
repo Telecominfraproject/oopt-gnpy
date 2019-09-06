@@ -31,7 +31,6 @@ from math import ceil
 
 logger = getLogger(__name__)
 
-
 RequestParams = namedtuple('RequestParams','request_id source destination trx_type'+
 ' trx_mode nodes_list loose_list spacing power nb_channel f_min f_max format baud_rate OSNR bit_rate roll_off tx_osnr min_spacing cost path_bandwidth')
 DisjunctionParams = namedtuple('DisjunctionParams','disjunction_id relaxable link_diverse node_diverse disjunctions_req')
@@ -109,6 +108,11 @@ class Disjunction:
                             f'node-diverse: {self.node_diverse}',
                             f'request-id-numbers: {self.disjunctions_req}'
                             '\n'])
+
+BLOCKING_NOPATH = ['NO_PATH', 'NO_PATH_WITH_CONSTRAINT', 'NO_FEASIBLE_BAUDRATE_WITH_SPACING',
+                   'NO_COMPUTED_SNR']
+BLOCKING_NOMODE = ['NO_FEASIBLE_MODE', 'MODE_NOT_FEASIBLE']
+BLOCKING_NOSPECTRUM = 'NO_SPECTRUM'
 
 class Result_element(Element):
     def __init__(self,path_request,computed_path):
@@ -232,6 +236,7 @@ def compute_constrained_path(network, req):
             msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path from {source.uid} to node : {destination.uid} in network topology'+ '\x1b[0m'
             logger.critical(msg)
             print(msg)
+            req.blocking_reason = 'NO_PATH'
             total_path = []
     else : 
         all_simp_pths = list(all_simple_paths(network,source=source,\
@@ -269,6 +274,7 @@ def compute_constrained_path(network, req):
                       f'include node constraints.\nNo path computed'+ '\x1b[0m'
                 logger.critical(msg)
                 print(msg)
+                req.blocking_reason = 'NO_PATH_WITH_CONSTRAINT'
                 total_path = []
 
     # obsolete method: this does not guaranty to avoid loops or correct results
