@@ -259,7 +259,24 @@ def build_oms_list(network, equipment):
                 oms_list.append(oms)
                 oms_id += 1
     oms_list = align_grids(oms_list)
+    reversed_oms(oms_list)
     return oms_list
+
+def reversed_oms(oms_list):
+    """ identifies reversed OMS
+        only applicable for non parallel OMS
+    """
+    for oms in oms_list:
+        has_reversed = False
+        for this_o in oms_list:
+            if (oms.el_id_list[0] == this_o.el_id_list[-1] and
+                    oms.el_id_list[-1] == this_o.el_id_list[0]):
+                oms.reversed_oms = this_o
+                has_reversed = True
+                break
+        if not has_reversed:
+            oms.reversed_oms = None
+
 
 def bitmap_sum(band1, band2):
     """ a functions that marks occupied bitmap by 0 if the slot is occupied in band1 or in band2
