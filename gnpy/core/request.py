@@ -16,7 +16,7 @@ See: draft-ietf-teas-yang-path-computation-01.txt
 """
 
 from sys import exit
-from collections import namedtuple
+from collections import namedtuple, OrderedDict
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
 from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths,shortest_path_length)
 from networkx.utils import pairwise 
@@ -25,6 +25,7 @@ from gnpy.core.service_sheet import convert_service_sheet, Request_element, Elem
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
+from gnpy.core.spectrum_assignment import build_oms_list, reversed_oms
 from copy import copy, deepcopy
 from csv import writer
 from math import ceil
@@ -659,7 +660,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
         # reversed direction paths required to check disjunction on both direction
         all_simp_pths_reversed = []
         for pth in all_simp_pths:
-            all_simp_pths_reversed.append(find_reversed_path(pth,network))
+            all_simp_pths_reversed.append(find_reversed_path(pth))
         rqs[pathreq.request_id] = all_simp_pths
         temp =[]
         for p in all_simp_pths :
@@ -858,21 +859,39 @@ def isdisjoint(p1,p2) :
             return 1
     return 0
 
-def find_reversed_path(p,network) :
-    # select of intermediate roadms and find the path between them
-    # note that this function may not give an exact result in case of multiple
-    # links between two adjacent nodes. 
+def find_reversed_path(pth):
+    """ select of intermediate roadms and find the path between them
+        note that this function may not give an exact result in case of multiple
+        links between two adjacent nodes.
+    """
     # TODO add some indication on elements to indicate from which other they 
-    # are the reversed direction
-    reversed_roadm_path = list(reversed([e for e in p if isinstance (e,Roadm)]))
-    source = p[-1]
-    destination = p[0]
-    total_path = [source]
-    for node in reversed_roadm_path :
-        total_path.extend(dijkstra_path(network, source, node, weight = 'weight')[1:])
-        source = node
-    total_path.append(destination)
-    return total_path
+    # are the reversed direction. This is partly done with oms indication
+
+    # we want the list of crossed oms and each item must be unique in the list:
+    # since a succession of elements of the path can be in the same oms, a 'unique'
+    # function is needed 
+    # the OrderedDict.fromkeys function does this. eg 
+    # pth = [el1_oms1 el2_oms1 el3_oms1 el1_oms2 el2_oms2 el3_oms2]
+    # p_oms should be = [oms1 oms2] 
+    p_oms = list(OrderedDict.fromkeys(reversed([el.oms.reversed_oms for el in pth \
+                if not isinstance(el, Transceiver) and not isinstance(el, Roadm)])))
+    reversed_path = [pth[-1]]
+    for oms in p_oms:
+        if oms is not None:
+            reversed_path.extend(oms.el_list)
+            # similarly each oms starts and ends with a roadm so roadm may be repeated
+            # if we don't use the OrderedDict.fromkeys function. eg:
+            # if oms1 = [roadma el1 el2 roadmb] and oms2 = [roadmb el3 el4 roadmc]
+            # concatenation should be [roadma el1 el2 roadmb el3 el4 roadmc]
+            reversed_path = list(OrderedDict.fromkeys(reversed_path))
+        else:
+            msg = f'Error while handling reversed path {pth[-1].uid} to {pth[0].uid}:' +\
+                  ' can not handle unidir topology. TO DO.'
+            logger.critical(msg)
+            raise ValueError(msg)
+    reversed_path.append(pth[0])
+
+    return reversed_path
 
 def ispart(a,b) :
     # the functions takes two paths a and b and retrns True
