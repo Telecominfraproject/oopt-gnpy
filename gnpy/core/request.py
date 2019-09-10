@@ -137,6 +137,18 @@ class Result_element(Element):
                 }
             pro_list.append(temp)
             index += 1
+            if self.path_request.M > 0:
+                temp = {
+                    'path-route-object': {
+                        'index': index,
+                        "label-hop": {
+                            "N": self.path_request.N,
+                            "M": self.path_request.M
+                            },
+                        }
+                    }
+                pro_list.append(temp)
+                index += 1
             if isinstance(element, Transceiver) :
                 temp = {
                     'path-route-object': {
@@ -523,10 +535,10 @@ def jsontocsv(json_data, equipment, fileout):
             # when label will be assigned destination will be with index -3, and transponder with index 2
             source = pth_el['path-properties']['path-route-objects'][0]\
                      ['path-route-object']['num-unnum-hop']['node-id']
-            destination = pth_el['path-properties']['path-route-objects'][-2]\
+            destination = pth_el['path-properties']['path-route-objects'][-3]\
                           ['path-route-object']['num-unnum-hop']['node-id']
             # selects only roadm nodes
-            temp_tsp = pth_el['path-properties']['path-route-objects'][1]\
+            temp_tsp = pth_el['path-properties']['path-route-objects'][2]\
                        ['path-route-object']['transponder']
             tsp = temp_tsp['transponder-type']
             mode = temp_tsp['transponder-mode']
