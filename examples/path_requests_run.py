@@ -31,8 +31,7 @@ from gnpy.core.request import (Path_request, Result_element, compute_constrained
                               propagate, jsontocsv, Disjunction, compute_path_dsjctn, requests_aggregation,
                               propagate_and_optimize_mode, BLOCKING_NOPATH, find_reversed_path)
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
-import gnpy.core.ansi_escapes as ansi_escapes
-from gnpy.core.spectrum_assignment import build_oms_list, pth_assign_spectrum
+from gnpy.core.spectrum_assignment import build_oms_list, reversed_oms, spectrum_selection , pth_assign_spectrum
 from copy import copy, deepcopy
 from textwrap import dedent
 from math import ceil
@@ -158,7 +157,7 @@ def load_requests(filename,eqpt_filename):
 
 def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
     
-    # use a list but a dictionnary might be helpful to find path bathsed on request_id
+    # use a list but a dictionnary might be helpful to find path based on request_id
     # TODO change all these req, dsjct, res lists into dict !
     path_res_list = []
 
@@ -184,13 +183,13 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 temp_snr01nm = round(mean(total_path[-1].snr+lin2db(pathreq.baud_rate/(12.5e9))),2)
                 if temp_snr01nm < pathreq.OSNR :
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}\n' +\
-                    f'\tcomputedSNR in 0.1nm = {temp_snr01nm} - required osnr {pathreq.OSNR}\n'
+                    f'\tcomputedSNR in 0.1nm = {temp_snr01nm} - required osnr {pathreq.OSNR}'
                     print(msg)
                     logger.warning(msg)
                     pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
             else:
                 total_path,mode = propagate_and_optimize_mode(total_path,pathreq,equipment)
-                # if no baudrate satisfies spacing, no mode is returned and an empty path is returned
+                # if no baudrate satisfies spacing, no mode is returned and the last explored mode
                 # a warning is shown in the propagate_and_optimize_mode
                 # propagate_and_optimize_mode function returns the mode with the highest bitrate
                 # that passes. if no mode passes, then a attribute blocking_reason is added on pathreq
@@ -426,7 +425,7 @@ if __name__ == '__main__':
         secondcol = ''.join(row[1].ljust(secondcol_width))
         remainingcols = ''.join(word.center(col_width,' ') for word in row[2:])
         print(f'{firstcol} {secondcol} {remainingcols}')
-
+    print('\x1b[1;33;40m'+f'Result summary shows mean SNR and OSNR (average over all channels)'+ '\x1b[0m')
 
     if args.output :
         result = []
