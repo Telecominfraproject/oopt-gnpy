@@ -29,7 +29,7 @@ from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused, Fiber
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.request import (Path_request, Result_element, compute_constrained_path,
                               propagate, jsontocsv, Disjunction, compute_path_dsjctn, requests_aggregation,
-                              propagate_and_optimize_mode, BLOCKING_NOPATH)
+                              propagate_and_optimize_mode, BLOCKING_NOPATH, find_reversed_path)
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
 import gnpy.core.ansi_escapes as ansi_escapes
 from gnpy.core.spectrum_assignment import build_oms_list, pth_assign_spectrum
@@ -45,6 +45,7 @@ parser = ArgumentParser(description = 'A function that computes performances for
 parser.add_argument('network_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls')
 parser.add_argument('service_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls')
 parser.add_argument('eqpt_filename', nargs='?', type = Path, default=Path(__file__).parent / 'eqpt_config.json')
+parser.add_argument('-bi', '--bidir', action='store_true', help='considers that all demands are bidir')
 parser.add_argument('-v', '--verbose', action='count', default=0, help='increases verbosity for each occurence')
 parser.add_argument('-o', '--output', type = Path)
 
@@ -356,6 +357,26 @@ if __name__ == '__main__':
     propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
 
     pth_assign_spectrum(pths, rqs, oms_list)
+    # Note that deepcopy used in compute_path_with_disjunction retrns a list of nodes which are not belonging to 
+    # network (they are copies of the node objects). so there can not be propagation on these nodes.
+
+    # propagate on reversed path only if bidir option is activated (takes time)
+    reversed_propagatedpths = []
+    reversed_pths =[]
+    if args.bidir:
+        print('\x1b[1;34;40m'+f'Propagating on selected path reversed direction'+ '\x1b[0m')
+    for i,p in enumerate(pths):
+        if propagatedpths[i] and args.bidir:
+            rp = find_reversed_path(p)
+            print(f'request {rqs[i].request_id}')
+            print(f'Propagating path from {rqs[i].destination} to {rqs[i].source}')
+            print(f'Path (roadsm) {[r.uid for r in rp if isinstance(r,Roadm)]}\n')
+            reversed_pths.append(find_reversed_path(p))
+            reversed_path = propagate(rp , rqs[i], equipment, show=False)
+            reversed_propagatedpths.append(deepcopy(reversed_path))
+        else:
+            reversed_propagatedpths.append([])
+            reversed_pths.append([])
 
     print('\x1b[1;34;40m'+f'Result summary'+ '\x1b[0m')
     header = ['req id', '  demand','  snr@bandwidth','  snr@0.1nm','  Receiver minOSNR', '  mode', '  Gbit/s', '  nb of tsp pairs', 'N,M or blocking reason']
