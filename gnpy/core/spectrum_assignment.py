@@ -344,6 +344,8 @@ def pth_assign_spectrum(pths, rqs, oms_list):
         try:
             if rqs[i].blocking_reason:
                 rqs[i].blocked = True
+                rqs[i].N = 0
+                rqs[i].M = 0
         except AttributeError:
             nb_wl = ceil(rqs[i].path_bandwidth / rqs[i].bit_rate)
             # computes the total nb of slots according to requested spacing
@@ -364,6 +366,10 @@ def pth_assign_spectrum(pths, rqs, oms_list):
                     oms_list[oms_elem].assign_spectrum(center_n, requested_m)
                     oms_list[oms_elem].add_service(rqs[i].request_id, nb_wl)
                 rqs[i].blocked = False
+                rqs[i].N = center_n
+                rqs[i].M = requested_m
             else:
                 rqs[i].blocked = True
+                rqs[i].N = 0
+                rqs[i].M = 0
                 rqs[i].blocking_reason = 'NO_SPECTRUM'
