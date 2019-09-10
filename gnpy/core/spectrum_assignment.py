@@ -353,8 +353,9 @@ def select_candidate(candidates, policy):
         else:
             return (None, None, None)
 
-def pth_assign_spectrum(pths, rqs, oms_list):
-    """ baseic first fit assignment
+def pth_assign_spectrum(pths, rqs, oms_list, rpths):
+    """ basic first fit assignment
+        if reversed path are provided, means that occupation is bidir
     """
     for i, pth in enumerate(pths):
         # computes the number of channels required
@@ -370,10 +371,12 @@ def pth_assign_spectrum(pths, rqs, oms_list):
             # assumes that all channels must be grouped
             # todo : enables non contiguous reservation in case of blocking
             requested_m = ceil(rqs[i].spacing / 0.0125e12) * nb_wl
-            (center_n, startn, stopn), path_oms = spectrum_selection(pth, oms_list, requested_m,
+            # concatenate all path and reversed path elements to derive slots availability
+            (center_n, startn, stopn), path_oms = spectrum_selection(pth + rpths[i], oms_list, requested_m,
                                                                      requested_n=None)
             # checks that requested_m is fitting startm and stopm
-
+            # if not None, center_n and start, stop frequencies are applicable to all oms of pth
+            # checks that spectrum is not None else indicate blocking reason
             if center_n is not None:
                 if 2 * requested_m > (stopn - startn + 1):
                     msg = f'candidate : {(center_n, startn, stopn)} is not consitant with {requested_m}'

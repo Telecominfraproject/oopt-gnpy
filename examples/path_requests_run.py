@@ -355,8 +355,6 @@ if __name__ == '__main__':
 
     print('\x1b[1;34;40m'+f'Propagating on selected path'+ '\x1b[0m')
     propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
-
-    pth_assign_spectrum(pths, rqs, oms_list)
     # Note that deepcopy used in compute_path_with_disjunction retrns a list of nodes which are not belonging to 
     # network (they are copies of the node objects). so there can not be propagation on these nodes.
 
@@ -377,6 +375,8 @@ if __name__ == '__main__':
         else:
             reversed_propagatedpths.append([])
             reversed_pths.append([])
+
+    pth_assign_spectrum(pths, rqs, oms_list,reversed_pths)
 
     print('\x1b[1;34;40m'+f'Result summary'+ '\x1b[0m')
     header = ['req id', '  demand','  snr@bandwidth','  snr@0.1nm','  Receiver minOSNR', '  mode', '  Gbit/s', '  nb of tsp pairs', 'N,M or blocking reason']
