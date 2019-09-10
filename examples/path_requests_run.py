@@ -379,10 +379,12 @@ if __name__ == '__main__':
     pth_assign_spectrum(pths, rqs, oms_list,reversed_pths)
 
     print('\x1b[1;34;40m'+f'Result summary'+ '\x1b[0m')
-    header = ['req id', '  demand','  snr@bandwidth','  snr@0.1nm','  Receiver minOSNR', '  mode', '  Gbit/s', '  nb of tsp pairs', 'N,M or blocking reason']
+    header = ['req id', '  demand','  snr@bandwidth A-Z (Z-A)', '  snr@0.1nm A-Z (Z-A)', 
+              '  Receiver minOSNR', '  mode', '  Gbit/s', '  nb of tsp pairs', 'N,M or blocking reason']
     data = []
     data.append(header)
     for i, p in enumerate(propagatedpths):
+        rp = reversed_propagatedpths[i]
         try :
             if rqs[i].blocking_reason == 'NO_PATH':
                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} :', f'-',\
@@ -397,21 +399,21 @@ if __name__ == '__main__':
                 line = [f'{rqs[i].request_id}',f' {rqs[i].source} to {rqs[i].destination} :', f'-',\
                 f'-',f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}', f'-', f'NO_PATH_WITH_CONSTRAINT']
             elif rqs[i].blocking_reason == 'NO_FEASIBLE_MODE':
-                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
-                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
+                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr), 2)} ({round(mean(rp[-1].snr), 2)})',\
+                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)} ({round(mean(rp[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)})',\
                 f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}', f'-', f'NO_FEASIBLE_MODE']
             elif rqs[i].blocking_reason == 'MODE_NOT_FEASIBLE':
-                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
-                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
+                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr), 2)} ({round(mean(rp[-1].snr), 2)})',\
+                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}  ({round(mean(rp[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)})',\
                 f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}', f'-', f'MODE_NOT_FEASIBLE']
             elif rqs[i].blocking_reason == 'NO_SPECTRUM':
-                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
-                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
+                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr), 2)} ({round(mean(rp[-1].snr), 2)})',\
+                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))), 2)}  ({round(mean(rp[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))), 2)})',\
                 f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}', f'-', f'NO_SPECTRUM']
 
         except AttributeError:
-            line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
-                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
+            line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}  ({round(mean(rp[-1].snr), 2)})',\
+                f'{round(mean(p[-1].snr + lin2db(rqs[i].baud_rate / (12.5e9))), 2)} ({round(mean(rp[-1].snr + lin2db(rqs[i].baud_rate / (12.5e9))), 2)})',\
                 f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}',\
                 f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }', f'({rqs[i].N},{rqs[i].M})']
         data.append(line)
