@@ -41,9 +41,9 @@ from math import ceil
 logger = getLogger(__name__)
 
 parser = ArgumentParser(description = 'A function that computes performances for a list of services provided in a json file or an excel sheet.')
-parser.add_argument('network_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls')
-parser.add_argument('service_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls')
-parser.add_argument('eqpt_filename', nargs='?', type = Path, default=Path(__file__).parent / 'eqpt_config.json')
+parser.add_argument('network_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls', help='input topology file in xls or json')
+parser.add_argument('service_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls', help='input service file in xls or json')
+parser.add_argument('eqpt_filename', nargs='?', type = Path, default=Path(__file__).parent / 'eqpt_config.json', help='input equipment library in json. Default is eqpt_config.json')
 parser.add_argument('-bi', '--bidir', action='store_true', help='considers that all demands are bidir')
 parser.add_argument('-v', '--verbose', action='count', default=0, help='increases verbosity for each occurence')
 parser.add_argument('-o', '--output', type = Path)
@@ -172,8 +172,15 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         print(f'Computing path from {pathreq.source} to {pathreq.destination}')
         print(f'with path constraint: {[pathreq.source]+pathreq.nodes_list}') #adding first node to be clearer on the output
 
-        total_path = pathlist[i]
-        print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}\n')
+        # pathlist[i] contains the whole path information for request i
+        # last element is a transciver and where the result of the propagation is
+        # recorded.
+        # Important Note: since transceivers attached to roadms are actually logical
+        # elements to simulate performance, several demands having the same destination
+        # may use the same transponder for the performance simulation. This is why
+        # we use deepcopy: to ensure that each propagation is recorded and not overwritten
+        total_path = deepcopy(pathlist[i])
+        print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}')
         # for debug
         # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
         if total_path :
@@ -212,15 +219,13 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                     pathreq.OSNR = mode['OSNR']
                     pathreq.tx_osnr = mode['tx_osnr']
                     pathreq.bit_rate = mode['bit_rate']
-        # we record the last tranceiver object in order to have th whole 
-        # information about spectrum. Important Note: since transceivers 
-        # attached to roadms are actually logical elements to simulate
-        # performance, several demands having the same destination may use 
-        # the same transponder for the performance simaulation. This is why 
-        # we use deepcopy: to ensure each propagation is recorded and not 
-        # overwritten 
-        
-        path_res_list.append(deepcopy(total_path))
+        else:
+            msg = 'Total path is empty. No propagation'
+            print(msg)
+            logger.info(msg)
+        path_res_list.append(total_path)
+        # print to have a nice output
+        print('')
     return path_res_list
 
 def correct_route_list(network, pathreqlist):
