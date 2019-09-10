@@ -389,37 +389,27 @@ if __name__ == '__main__':
     data.append(header)
     for i, p in enumerate(propagatedpths):
         rp = reversed_propagatedpths[i]
-        try :
-            if rqs[i].blocking_reason == 'NO_PATH':
-                line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} :', f'-',\
-                f'-',f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}', f'-', f'NO_PATH']
-            elif rqs[i].blocking_reason == 'NO_COMPUTED_SNR':
-                line = [f'{rqs[i].request_id}',f' {rqs[i].source} to {rqs[i].destination} :', f'-',\
-                f'-',f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}', f'-', f'NO_COMPUTED_SNR']
-            elif rqs[i].blocking_reason == 'NO_FEASIBLE_BAUDRATE_WITH_SPACING':
-                line = [f'{rqs[i].request_id}',f' {rqs[i].source} to {rqs[i].destination} :', f'-',\
-                f'-',f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}', f'-', f'NO_FEASIBLE_BAUDRATE_WITH_SPACING']
-            elif rqs[i].blocking_reason == 'NO_PATH_WITH_CONSTRAINT':
-                line = [f'{rqs[i].request_id}',f' {rqs[i].source} to {rqs[i].destination} :', f'-',\
-                f'-',f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}', f'-', f'NO_PATH_WITH_CONSTRAINT']
-            elif rqs[i].blocking_reason == 'NO_FEASIBLE_MODE':
-                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr), 2)} ({round(mean(rp[-1].snr), 2)})',\
-                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)} ({round(mean(rp[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)})',\
-                f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}', f'-', f'NO_FEASIBLE_MODE']
-            elif rqs[i].blocking_reason == 'MODE_NOT_FEASIBLE':
-                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr), 2)} ({round(mean(rp[-1].snr), 2)})',\
-                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}  ({round(mean(rp[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)})',\
-                f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}', f'-', f'MODE_NOT_FEASIBLE']
-            elif rqs[i].blocking_reason == 'NO_SPECTRUM':
-                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr), 2)} ({round(mean(rp[-1].snr), 2)})',\
-                f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))), 2)}  ({round(mean(rp[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))), 2)})',\
-                f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}', f'-', f'NO_SPECTRUM']
+        if rp and p:
+            psnrb = f'{round(mean(p[-1].snr),2)} ({round(mean(rp[-1].snr),2)})'
+            psnr = f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)} ' +\
+                   f'({round(mean(rp[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)})'
+        elif p :
+            psnrb = f'{round(mean(p[-1].snr),2)}'
+            psnr = f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}'
 
+        try :
+            if rqs[i].blocking_reason in  BLOCKING_NOPATH:
+                line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} :',\
+                        f'-', f'-',f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}',\
+                        f'-', f'{rqs[i].blocking_reason}']
+            else:
+                line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,\
+                        psnr, f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',\
+                        f'-', f'{rqs[i].blocking_reason}']
         except AttributeError:
-            line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}  ({round(mean(rp[-1].snr), 2)})',\
-                f'{round(mean(p[-1].snr + lin2db(rqs[i].baud_rate / (12.5e9))), 2)} ({round(mean(rp[-1].snr + lin2db(rqs[i].baud_rate / (12.5e9))), 2)})',\
-                f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}',\
-                f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }', f'({rqs[i].N},{rqs[i].M})']
+            line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,\
+                    psnr, f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}',\
+                    f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }', f'({rqs[i].N},{rqs[i].M})']
         data.append(line)
 
     col_width = max(len(word) for row in data for word in row[2:])   # padding
