@@ -116,10 +116,13 @@ BLOCKING_NOMODE = ['NO_FEASIBLE_MODE', 'MODE_NOT_FEASIBLE']
 BLOCKING_NOSPECTRUM = 'NO_SPECTRUM'
 
 class Result_element(Element):
-    def __init__(self,path_request,computed_path):
+    def __init__(self,path_request,computed_path,reversed_computed_path=None):
         self.path_id = path_request.request_id
         self.path_request = path_request
         self.computed_path = computed_path
+        # starting implementing reversed properties in case of bidir demand
+        if reversed_computed_path is not None:
+            self.reversed_computed_path = reversed_computed_path
     uid = property(lambda self: repr(self))
     @property
     def detailed_path_json(self):
