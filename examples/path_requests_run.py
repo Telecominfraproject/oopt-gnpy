@@ -358,7 +358,7 @@ if __name__ == '__main__':
     pth_assign_spectrum(pths, rqs, oms_list)
 
     print('\x1b[1;34;40m'+f'Result summary'+ '\x1b[0m')
-    header = ['req id', '  demand','  snr@bandwidth','  snr@0.1nm','  Receiver minOSNR', '  mode', '  Gbit/s', '  nb of tsp pairs', 'blocked']
+    header = ['req id', '  demand','  snr@bandwidth','  snr@0.1nm','  Receiver minOSNR', '  mode', '  Gbit/s', '  nb of tsp pairs', 'N,M or blocking reason']
     data = []
     data.append(header)
     for i, p in enumerate(propagatedpths):
@@ -391,7 +391,8 @@ if __name__ == '__main__':
         except AttributeError:
             line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', f'{round(mean(p[-1].snr),2)}',\
                 f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}',\
-                f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}', f'-', f'-']
+                f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}',\
+                f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }', f'({rqs[i].N},{rqs[i].M})']
         data.append(line)
 
     col_width = max(len(word) for row in data for word in row[2:])   # padding
