@@ -32,9 +32,12 @@ from math import ceil
 
 logger = getLogger(__name__)
 
-RequestParams = namedtuple('RequestParams','request_id source destination bidir trx_type'+
-' trx_mode nodes_list loose_list spacing power nb_channel f_min f_max format baud_rate OSNR bit_rate roll_off tx_osnr min_spacing cost path_bandwidth')
-DisjunctionParams = namedtuple('DisjunctionParams','disjunction_id relaxable link_diverse node_diverse disjunctions_req')
+RequestParams = namedtuple('RequestParams', 'request_id source destination bidir trx_type' +
+                           ' trx_mode nodes_list loose_list spacing power nb_channel f_min' +
+                           ' f_max format baud_rate OSNR bit_rate roll_off tx_osnr' +
+                           ' min_spacing cost path_bandwidth')
+DisjunctionParams = namedtuple('DisjunctionParams', 'disjunction_id relaxable link' +
+                               '_diverse node_diverse disjunctions_req')
 
 class Path_request:
     def __init__(self, *args, **params):
@@ -110,7 +113,8 @@ class Disjunction:
                             f'request-id-numbers: {self.disjunctions_req}'
                             '\n'])
 
-BLOCKING_NOPATH = ['NO_PATH', 'NO_PATH_WITH_CONSTRAINT', 'NO_FEASIBLE_BAUDRATE_WITH_SPACING',
+BLOCKING_NOPATH = ['NO_PATH', 'NO_PATH_WITH_CONSTRAINT',\
+                   'NO_FEASIBLE_BAUDRATE_WITH_SPACING',\
                    'NO_COMPUTED_SNR']
 BLOCKING_NOMODE = ['NO_FEASIBLE_MODE', 'MODE_NOT_FEASIBLE']
 BLOCKING_NOSPECTRUM = 'NO_SPECTRUM'
@@ -170,30 +174,30 @@ class Result_element(Element):
     def path_properties(self):
         def path_metric(p, r):
             return [
-                   {
-                   'metric-type': 'SNR-bandwidth',
-                   'accumulative-value': round(mean(p[-1].snr),2)
-                   },
-                   {
-                   'metric-type': 'SNR-0.1nm',
-                   'accumulative-value': round(mean(p[-1].snr+lin2db(r.baud_rate/12.5e9)),2)
-                   },
-                   {
-                   'metric-type': 'OSNR-bandwidth',
-                   'accumulative-value': round(mean(p[-1].osnr_ase),2)
-                   },
-                   {
-                   'metric-type': 'OSNR-0.1nm',
-                   'accumulative-value': round(mean(p[-1].osnr_ase_01nm),2)
-                   },
-                   {
-                   'metric-type': 'reference_power',
-                   'accumulative-value': r.power
-                   },
-                   {
-                   'metric-type': 'path_bandwidth',
-                   'accumulative-value': r.path_bandwidth
-                   }
+                {
+                    'metric-type': 'SNR-bandwidth',
+                    'accumulative-value': round(mean(p[-1].snr), 2)
+                },
+                {
+                    'metric-type': 'SNR-0.1nm',
+                    'accumulative-value': round(mean(p[-1].snr+lin2db(r.baud_rate/12.5e9)), 2)
+                },
+                {
+                    'metric-type': 'OSNR-bandwidth',
+                    'accumulative-value': round(mean(p[-1].osnr_ase), 2)
+                },
+                {
+                    'metric-type': 'OSNR-0.1nm',
+                    'accumulative-value': round(mean(p[-1].osnr_ase_01nm), 2)
+                },
+                {
+                    'metric-type': 'reference_power',
+                    'accumulative-value': r.power
+                },
+                {
+                    'metric-type': 'path_bandwidth',
+                    'accumulative-value': r.path_bandwidth
+                }
                 ]
         if self.path_request.bidir:
             path_properties = {
@@ -514,11 +518,11 @@ def jsontocsv(json_data, equipment, fileout):
     # and write results in an CSV file
 
     mywriter = writer(fileout)
-    mywriter.writerow(('response-id','source','destination','path_bandwidth','Pass?',\
-        'nb of tsp pairs','total cost','transponder-type','transponder-mode',\
-        'OSNR-0.1nm','SNR-0.1nm','SNR-bandwidth','baud rate (Gbaud)',\
-        'input power (dBm)', 'path', 'spectrum (N,M)', 'reversed path OSNR-0.1nm',\
-        'reversed path SNR-0.1nm', 'reversed path SNR-bandwidth'))
+    mywriter.writerow(('response-id', 'source', 'destination', 'path_bandwidth', 'Pass?',\
+                       'nb of tsp pairs', 'total cost', 'transponder-type', 'transponder-mode',\
+                       'OSNR-0.1nm', 'SNR-0.1nm', 'SNR-bandwidth', 'baud rate (Gbaud)',\
+                       'input power (dBm)', 'path', 'spectrum (N,M)', 'reversed path OSNR-0.1nm',\
+                       'reversed path SNR-0.1nm', 'reversed path SNR-bandwidth'))
 
     for pth_el in json_data['response']:
         path_id = pth_el['response-id']
