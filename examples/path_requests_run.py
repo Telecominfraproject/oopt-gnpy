@@ -239,7 +239,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                         pathreq.tx_osnr = mode['tx_osnr']
                         pathreq.bit_rate = mode['bit_rate']
                     # other blocking reason should not appear at this point
-                except:
+                except AttributeError:
                     pathreq.baud_rate = mode['baud_rate']
                     pathreq.tsp_mode = mode['format']
                     pathreq.format = mode['format']
