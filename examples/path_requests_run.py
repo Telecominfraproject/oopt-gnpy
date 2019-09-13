@@ -360,31 +360,30 @@ def path_result_json(pathresult):
     }
     return data
 
-
-if __name__ == '__main__':
-    ARGS = PARSER.parse_args()
-    basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(ARGS.verbose, DEBUG))
-    logger.info(f'Computing path requests {ARGS.service_filename} into JSON format')
+def main(args):
+    """ main function that calls all functions
+    """
+    LOGGER.info(f'Computing path requests {args.service_filename} into JSON format')
     print('\x1b[1;34;40m' +\
-          f'Computing path requests {ARGS.service_filename} into JSON format'+ '\x1b[0m')
+          f'Computing path requests {args.service_filename} into JSON format'+ '\x1b[0m')
     # for debug
-    # print( ARGS.eqpt_filename)
+    # print( args.eqpt_filename)
 
     try:
-        data = load_requests(ARGS.service_filename, ARGS.eqpt_filename, ARGS.bidir)
-        equipment = load_equipment(ARGS.eqpt_filename)
-        network = load_network(ARGS.network_filename, equipment)
-    except EquipmentConfigError as e:
-        print(f'{ansi_escapes.red}Configuration error in the equipment library:{ansi_escapes.reset} {e}')
+        data = load_requests(args.service_filename, args.eqpt_filename, args.bidir)
+        equipment = load_equipment(args.eqpt_filename)
+        network = load_network(args.network_filename, equipment)
+    except EquipmentConfigError as this_e:
+        print(f'{ansi_escapes.red}Configuration error in the equipment library:{ansi_escapes.reset} {this_e}')
         exit(1)
-    except NetworkTopologyError as e:
-        print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
+    except NetworkTopologyError as this_e:
+        print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {this_e}')
         exit(1)
-    except ConfigurationError as e:
-        print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
+    except ConfigurationError as this_e:
+        print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {this_e}')
         exit(1)
-    except ServiceError as e:
-        print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {e}')
+    except ServiceError as this_e:
+        print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {this_e}')
         exit(1)
 
     # Build the network once using the default power defined in SI in eqpt config
@@ -395,7 +394,7 @@ if __name__ == '__main__':
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
         equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
-    save_network(ARGS.network_filename, network)
+    save_network(args.network_filename, network)
 
     oms_list = build_oms_list(network, equipment)
     rqs = requests_from_json(data, equipment)
@@ -407,7 +406,7 @@ if __name__ == '__main__':
         for a in list(set(all_ids)):
             all_ids.remove(a)
         msg = f'Requests id {all_ids} are not unique'
-        logger.critical(msg)
+        LOGGER.critical(msg)
         exit()
     rqs = correct_route_list(network, rqs)
 
@@ -447,15 +446,15 @@ if __name__ == '__main__':
               'N,M or blocking reason']
     data = []
     data.append(header)
-    for i, p in enumerate(propagatedpths):
-        rp = reversed_propagatedpths[i]
-        if rp and p:
-            psnrb = f'{round(mean(p[-1].snr),2)} ({round(mean(rp[-1].snr),2)})'
-            psnr = f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)} ' +\
-                   f'({round(mean(rp[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)})'
-        elif p :
-            psnrb = f'{round(mean(p[-1].snr),2)}'
-            psnr = f'{round(mean(p[-1].snr+lin2db(rqs[i].baud_rate/(12.5e9))),2)}'
+    for i, this_p in enumerate(propagatedpths):
+        rev_pth = reversed_propagatedpths[i]
+        if rev_pth and this_p:
+            psnrb = f'{round(mean(this_p[-1].snr),2)} ({round(mean(rev_pth[-1].snr),2)})'
+            psnr = f'{round(mean(this_p[-1].snr_01nm), 2)}' +\
+                   f' ({round(mean(rev_pth[-1].snr_01nm),2)})'
+        elif this_p:
+            psnrb = f'{round(mean(this_p[-1].snr),2)}'
+            psnr = f'{round(mean(this_p[-1].snr_01nm),2)}'
 
         try :
             if rqs[i].blocking_reason in  BLOCKING_NOPATH:
@@ -483,16 +482,22 @@ if __name__ == '__main__':
     print('\x1b[1;33;40m'+f'Result summary shows mean SNR and OSNR (average over all channels)' +\
           '\x1b[0m')
 
-    if ARGS.output:
+    if args.output:
         result = []
         # assumes that list of rqs and list of propgatedpths have same order
         for i, pth in enumerate(propagatedpths):
             result.append(Result_element(rqs[i], pth, reversed_propagatedpths[i]))
         temp = path_result_json(result)
-        fnamecsv = f'{str(ARGS.output)[0:len(str(ARGS.output))-len(str(ARGS.output.suffix))]}.csv'
-        fnamejson = f'{str(ARGS.output)[0:len(str(ARGS.output))-len(str(ARGS.output.suffix))]}.json'
+        fnamecsv = f'{str(args.output)[0:len(str(args.output))-len(str(args.output.suffix))]}.csv'
+        fnamejson = f'{str(args.output)[0:len(str(args.output))-len(str(args.output.suffix))]}.json'
         with open(fnamejson, 'w', encoding='utf-8') as f:
             f.write(dumps(path_result_json(result), indent=2, ensure_ascii=False))
             with open(fnamecsv, "w", encoding='utf-8') as fcsv:
                 jsontocsv(temp, equipment, fcsv)
-                print('\x1b[1;34;40m'+f'saving in {ARGS.output} and {fnamecsv}'+ '\x1b[0m')
+                print('\x1b[1;34;40m'+f'saving in {args.output} and {fnamecsv}'+ '\x1b[0m')
+
+
+if __name__ == '__main__':
+    ARGS = PARSER.parse_args()
+    basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(ARGS.verbose, DEBUG))
+    main(ARGS)
