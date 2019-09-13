@@ -43,7 +43,7 @@ class Element:
         return hash((type(self), self.uid))
 
 class Request_element(Element):
-    def __init__(self,Request,eqpt_filename):
+    def __init__(self, Request, eqpt_filename, bidir):
         # request_id is str
         # excel has automatic number formatting that adds .0 on integer values
         # the next lines recover the pure int value, assuming this .0 is unwanted
@@ -54,6 +54,7 @@ class Request_element(Element):
         # be a string starting with 'trx' : this is manually added here.
         self.srctpid = f'trx {Request.source}'
         self.dsttpid = f'trx {Request.destination}'
+        self.bidir = bidir
         # test that trx_type belongs to eqpt_config.json
         # if not replace it with a default
         equipment = load_equipment(eqpt_filename)
@@ -132,13 +133,14 @@ class Request_element(Element):
     uid = property(lambda self: repr(self))
     @property
     def pathrequest(self):
-
+        # Default assumption for bidir is False
         req_dictionnary = {
                     'request-id':self.request_id,
                     'source':    self.source,
                     'destination':  self.destination,
                     'src-tp-id': self.srctpid,
                     'dst-tp-id': self.dsttpid,
+                    'bidirectional': self.bidir,
                     'path-constraints':{
                         'te-bandwidth': {
                             'technology': 'flexi-grid',
@@ -187,9 +189,9 @@ class Request_element(Element):
     def json(self):
         return self.pathrequest , self.pathsync
 
-def convert_service_sheet(input_filename, eqpt_filename, output_filename='', filter_region=[]):
+def convert_service_sheet(input_filename, eqpt_filename, output_filename='', bidir=False, filter_region=[]):
     service = parse_excel(input_filename)
-    req = [Request_element(n,eqpt_filename) for n in service]
+    req = [Request_element(n, eqpt_filename, bidir) for n in service]
     # dumps the output into a json file with name
     # split_filename = [input_filename[0:len(input_filename)-len(suffix_filename)] , suffix_filename[1:]]
     if output_filename=='':
