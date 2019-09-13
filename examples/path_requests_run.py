@@ -326,11 +326,11 @@ def correct_route_list(network, pathreqlist):
 
 def correct_disjn(disjn):
     local_disjn = disjn.copy()
-    for el in local_disjn:
-        for d in local_disjn:
-            if set(el.disjunctions_req) == set(d.disjunctions_req) and\
-             el.disjunction_id != d.disjunction_id:
-                local_disjn.remove(d)
+    for elem in local_disjn:
+        for dis_elem in local_disjn:
+            if set(elem.disjunctions_req) == set(dis_elem.disjunctions_req) and\
+             elem.disjunction_id != dis_elem.disjunction_id:
+                local_disjn.remove(dis_elem)
     return local_disjn
 
 
