@@ -397,8 +397,12 @@ def main(args):
     save_network(args.network_filename, network)
 
     oms_list = build_oms_list(network, equipment)
-    rqs = requests_from_json(data, equipment)
 
+    try:
+        rqs = requests_from_json(data, equipment)
+    except ServiceError as this_e:
+        print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {this_e}')
+        exit(1)
     # check that request ids are unique. Non unique ids, may
     # mess the computation: better to stop the computation
     all_ids = [r.request_id for r in rqs]
@@ -408,8 +412,11 @@ def main(args):
         msg = f'Requests id {all_ids} are not unique'
         LOGGER.critical(msg)
         exit()
-    rqs = correct_route_list(network, rqs)
-
+    try:
+        rqs = correct_route_list(network, rqs)
+    except ServiceError as this_e:
+        print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {this_e}')
+        exit(1)
     # pths = compute_path(network, equipment, rqs)
     dsjn = disjunctions_from_json(data)
 
