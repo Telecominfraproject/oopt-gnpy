@@ -280,6 +280,9 @@ def test_json_response_generation(xls_input, expected_response_file):
     """ tests if json response is correctly generated for all combinations of requests
     """
     data = convert_service_sheet(xls_input, eqpt_filename)
+    # change one of the request with bidir option to cover bidir case as well
+    data['path-request'][2]['bidirectional'] = True
+
     equipment = load_equipment(eqpt_filename)
     network = load_network(xls_input, equipment)
     p_db = equipment['SI']['default'].power_dbm
@@ -307,13 +310,15 @@ def test_json_response_generation(xls_input, expected_response_file):
             my_rq.M = 0
             error_handled = False
             try:
-                temp_result = {'response': Result_element(my_rq, pth).json}
+                temp_result = {
+                    'response': Result_element(my_rq, pth, reversed_propagatedpths[i]).json}
+                print(temp_result)
             except ServiceError:
                 error_handled = True
             print(error_handled)
             if not error_handled:
                 raise AssertionError()
-        result.append(Result_element(rqs[i], pth))
+        result.append(Result_element(rqs[i], pth, reversed_propagatedpths[i]))
 
     temp = {
         'response': [n.json for n in result]
