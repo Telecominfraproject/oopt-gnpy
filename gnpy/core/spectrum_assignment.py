@@ -378,10 +378,13 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
             # if not None, center_n and start, stop frequencies are applicable to all oms of pth
             # checks that spectrum is not None else indicate blocking reason
             if center_n is not None:
+                # checks that requested_m is fitting startm and stopm
                 if 2 * requested_m > (stopn - startn + 1):
-                    msg = f'candidate : {(center_n, startn, stopn)} is not consitant with {requested_m}'
+                    msg = f'candidate: {(center_n, startn, stopn)} is not consistant ' +\
+                          f'with {requested_m}'
                     LOGGER.critical(msg)
-                    exit(1)
+                    raise ValueError(msg)
+
                 for oms_elem in path_oms:
                     oms_list[oms_elem].assign_spectrum(center_n, requested_m)
                     oms_list[oms_elem].add_service(rqs[i].request_id, nb_wl)
