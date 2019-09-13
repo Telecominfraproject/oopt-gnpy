@@ -170,6 +170,8 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
     # use a list but a dictionnary might be helpful to find path based on request_id
     # TODO change all these req, dsjct, res lists into dict !
     path_res_list = []
+    reversed_path_res_list = []
+    propagated_reversed_path_res_list = []
 
     for i, pathreq in enumerate(pathreqlist):
 
@@ -233,14 +235,41 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                     pathreq.OSNR = mode['OSNR']
                     pathreq.tx_osnr = mode['tx_osnr']
                     pathreq.bit_rate = mode['bit_rate']
+
+            if total_path and pathreq.bidir:
+                reversed_path = find_reversed_path(pathlist[i])
+                rev_p = deepcopy(reversed_path)
+
+                print(f'\n\tPropagating Z to A direction {pathreq.destination} to {pathreq.source}')
+                print(f'\tPath (roadsm) {[r.uid for r in rev_p if isinstance(r,Roadm)]}\n')
+                propagated_reversed_path = propagate(rev_p, pathreq, equipment)
+                temp_snr01nm = round(mean(propagated_reversed_path[-1].snr +\
+                                          lin2db(pathreq.baud_rate/(12.5e9))), 2)
+                if temp_snr01nm < pathreq.OSNR:
+                    msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
+                          f' {pathreq.source} to {pathreq.destination} does not pass with' +\
+                          f' {pathreq.tsp_mode}\n' +\
+                          f'\tcomputedSNR in 0.1nm = {temp_snr01nm} - required osnr {pathreq.OSNR}'
+                    print(msg)
+                    logger.warning(msg)
+                    # TODO selection of mode should also be on reversed direction !!
+                    pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
+            else:
+                reversed_path = []
+                propagated_reversed_path = []
         else:
             msg = 'Total path is empty. No propagation'
             print(msg)
             logger.info(msg)
+            reversed_path = []
+            propagated_reversed_path = []
+
         path_res_list.append(total_path)
+        reversed_path_res_list.append(reversed_path)
+        propagated_reversed_path_res_list.append(propagated_reversed_path)
         # print to have a nice output
         print('')
-    return path_res_list
+    return path_res_list, reversed_path_res_list, propagated_reversed_path_res_list
 
 def correct_route_list(network, pathreqlist):
     # prepares the format of route list of nodes to be consistant
@@ -378,27 +407,12 @@ if __name__ == '__main__':
     print('\x1b[1;34;40m' + f'Computing all paths with constraints' + '\x1b[0m')
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
 
-    propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
-    # Note that deepcopy used in compute_path_with_disjunction retrns a list of nodes which are not belonging to 
-    # network (they are copies of the node objects). so there can not be propagation on these nodes.
-
-    # propagate on reversed path only if bidir option is activated (takes time)
-    reversed_propagatedpths = []
-    reversed_pths =[]
-    print('\x1b[1;34;40m'+f'Propagating on selected path reversed direction'+ '\x1b[0m')
-    for i,p in enumerate(pths):
-        if propagatedpths[i] and rqs[i].bidir:
-            rp = find_reversed_path(p)
-            print(f'request {rqs[i].request_id}')
-            print(f'Propagating path from {rqs[i].destination} to {rqs[i].source}')
-            print(f'Path (roadsm) {[r.uid for r in rp if isinstance(r,Roadm)]}\n')
-            reversed_pths.append(find_reversed_path(p))
-            reversed_path = propagate(rp , rqs[i], equipment, show=False)
-            reversed_propagatedpths.append(deepcopy(reversed_path))
-        else:
-            reversed_propagatedpths.append([])
-            reversed_pths.append([])
     print('\x1b[1;34;40m' + f'Propagating on selected path' + '\x1b[0m')
+    propagatedpths, reversed_pths, reversed_propagatedpths = \
+        compute_path_with_disjunction(network, equipment, rqs, pths)
+    # Note that deepcopy used in compute_path_with_disjunction returns
+    # a list of nodes which are not belonging to network (they are copies of the node objects).
+    # so there can not be propagation on these nodes.
 
     pth_assign_spectrum(pths, rqs, oms_list,reversed_pths)
 
@@ -447,8 +461,8 @@ if __name__ == '__main__':
     if args.output:
         result = []
         # assumes that list of rqs and list of propgatedpths have same order
-        for i,p in enumerate(propagatedpths):
-            result.append(Result_element(rqs[i],p))
+        for i, pth in enumerate(propagatedpths):
+            result.append(Result_element(rqs[i], pth, reversed_propagatedpths[i]))
         temp = path_result_json(result)
         fnamecsv = f'{str(args.output)[0:len(str(args.output))-len(str(args.output.suffix))]}.csv'
         fnamejson = f'{str(args.output)[0:len(str(args.output))-len(str(args.output.suffix))]}.json'
