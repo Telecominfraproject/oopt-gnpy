@@ -131,16 +131,16 @@ def consistency_check(params, f_max_from_si):
                   f'{params["trx_type"]} {params["trx_mode"]} min spacing value ' +\
                   f'{params["min_spacing"]*1e-9}GHz.\nComputation stopped'
             print(msg)
-            exit()
             LOGGER.critical(msg)
+            raise ServiceError(msg)
         if f_max > f_max_from_si:
             msg = dedent(f'''
             Requested channel number {params["nb_channel"]}, baud rate {params["baud_rate"]} GHz and requested spacing {params["spacing"]*1e-9}GHz 
             is not consistent with frequency range {f_min*1e-12} THz, {f_max*1e-12} THz, min recommanded spacing {params["min_spacing"]*1e-9}GHz.
             max recommanded nb of channels is {max_recommanded_nb_channels}
             Computation stopped.''')
-            exit()
             LOGGER.critical(msg)
+            raise ServiceError(msg)
 
 
 def disjunctions_from_json(json_data):
@@ -169,8 +169,12 @@ def load_requests(filename, eqpt_filename, bidir):
     """ loads the requests from a json or an excel file into a data string
     """
     if filename.suffix.lower() == '.xls':
-        json_data = convert_service_sheet(filename, eqpt_filename, bidir=bidir)
         LOGGER.info('Automatically converting requests from XLS to JSON')
+        try:
+            json_data = convert_service_sheet(filename, eqpt_filename, bidir=bidir)
+        except ServiceError as this_e:
+            print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {this_e}')
+            exit(1)
     else:
         with open(filename, encoding='utf-8') as my_f:
             json_data = loads(my_f.read())
@@ -323,14 +327,14 @@ def correct_route_list(network, pathreqlist):
                   f' transponder source: {pathreq.source}.'+'\x1b[0m'
             LOGGER.critical(msg)
             print(f'{msg}\nComputation stopped.')
-            exit()
+            raise ServiceError(msg)
 
         if pathreq.destination not in transponders:
             msg = f'\x1b[1;31;40m'+f'Request: {pathreq.request_id}: could not find' +\
                   f' transponder destination: {pathreq.destination}.'+'\x1b[0m'
             LOGGER.critical(msg)
             print(f'{msg}\nComputation stopped.')
-            exit()
+            raise ServiceError(msg)
 
         # TODO remove endpoints from this list in case they were added by the user
         # in the xls or json files

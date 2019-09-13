@@ -22,6 +22,7 @@ from json import dumps
 from pathlib import Path
 from gnpy.core.equipment import load_equipment
 from gnpy.core.utils import db2lin, lin2db
+from gnpy.core.exceptions import ServiceError
 
 SERVICES_COLUMN = 12
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
@@ -77,14 +78,14 @@ class Request_element(Element):
             msg = f'Request Id: {self.request_id} - could not find tsp : \'{Request.trx_type}\' with mode: \'{Request.mode}\' in eqpt library \nComputation stopped.'
             #print(msg)
             logger.critical(msg)
-            exit()
+            raise ServiceError(msg)
         # excel input are in GHz and dBm
         if Request.spacing is not None:
             self.spacing = Request.spacing * 1e9
         else:
             msg = f'Request {self.request_id} missing spacing: spacing is mandatory.\ncomputation stopped'
             logger.critical(msg)
-            exit()
+            raise ServiceError(msg)
         if Request.power is not None:
             self.power =  db2lin(Request.power) * 1e-3
         else:
