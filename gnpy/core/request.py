@@ -451,6 +451,17 @@ def jsontoparams(my_p, tsp, mode, equipment):
             temp.append(elem['path-route-object']['num-unnum-hop']['node-id'])
     pth = ' | '.join(temp)
 
+    temp2 = []
+    for elem in my_p['path-properties']['path-route-objects']:
+        if 'label-hop' in elem['path-route-object'].keys():
+            temp2.append(f'{elem["path-route-object"]["label-hop"]["N"]}, ' + \
+                         f'{elem["path-route-object"]["label-hop"]["M"]}')
+    # OrderedDict.fromkeys returns the unique set of strings.
+    # TODO: if spectrum changes along the path, we should be able to give the segments
+    #       eg for regeneration case
+    temp2 = list(OrderedDict.fromkeys(temp2))
+    sptrm = ' | '.join(temp2)
+
     # find the tsp minOSNR, baud rate... from the eqpt library based on tsp (type) and mode (format)
     # loading equipment already tests the existence of tsp type and mode:
     if mode is not None:
@@ -472,7 +483,7 @@ def jsontoparams(my_p, tsp, mode, equipment):
     path_bandwidth = next(e['accumulative-value']
         for e in my_p['path-properties']['path-metric'] if e['metric-type'] == 'path_bandwidth')    
     return pth, minosnr, baud_rate, bit_rate, cost, output_snr, \
-        output_snrbandwidth, output_osnr, power, path_bandwidth
+        output_snrbandwidth, output_osnr, power, path_bandwidth, sptrm
 
 def jsontocsv(json_data, equipment, fileout):
     # read json path result file in accordance with:
@@ -484,13 +495,14 @@ def jsontocsv(json_data, equipment, fileout):
     mywriter.writerow(('response-id','source','destination','path_bandwidth','Pass?',\
         'nb of tsp pairs','total cost','transponder-type','transponder-mode',\
         'OSNR-0.1nm','SNR-0.1nm','SNR-bandwidth','baud rate (Gbaud)',\
-        'input power (dBm)','path'))
+        'input power (dBm)','path', 'spectrum (N,M)'))
 
     for pth_el in json_data['response']:
         path_id = pth_el['response-id']
         if 'no-path' in pth_el.keys():
             total_cost = ''
             nb_tsp = ''
+            sptrm = ''
             if pth_el['no-path']['no-path'] in BLOCKING_NOPATH:
                 source = ''
                 destination = ''
@@ -524,7 +536,8 @@ def jsontocsv(json_data, equipment, fileout):
                 if pth_el['no-path']['no-path'] in BLOCKING_NOMODE or \
                        pth_el['no-path']['no-path'] in BLOCKING_NOSPECTRUM:
                     pth, minosnr, baud_rate, bit_rate, cost, output_snr, output_snrbandwidth, \
-                        output_osnr, power, path_bandwidth = jsontoparams(pth_el['no-path'], tsp, mode, equipment)
+                        output_osnr, power, path_bandwidth, sptrm = \
+                            jsontoparams(pth_el['no-path'], tsp, mode, equipment)
                     pthbdbw = ''
                     rosnr = round(output_osnr, 2)
                     rsnr = round(output_snr, 2)
@@ -544,7 +557,8 @@ def jsontocsv(json_data, equipment, fileout):
             mode = temp_tsp['transponder-mode']
 
             pth, minosnr, baud_rate, bit_rate, cost, output_snr, output_snrbandwidth, \
-                output_osnr, power, path_bandwidth = jsontoparams(pth_el, tsp, mode, equipment)
+                output_osnr, power, path_bandwidth, sptrm = \
+                    jsontoparams(pth_el, tsp, mode, equipment)
             # this part only works if the request has a blocking_reason atribute, ie if it could not be satisfied
             isok = output_snr >= minosnr
             nb_tsp = ceil(path_bandwidth / bit_rate)
@@ -569,7 +583,8 @@ def jsontocsv(json_data, equipment, fileout):
             rsnrb,
             br,
             pw,
-            pth
+            pth,
+            sptrm
             ))
 
 
