@@ -21,3 +21,5 @@ class NetworkTopologyError(ConfigurationError):
 class ServiceError(Exception):
     '''Service of user-provided request is wrong'''
 
+class DisjunctionError(ServiceError):
+    '''Disjunction of user-provided request can not be satisfied'''

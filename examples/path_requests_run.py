@@ -436,7 +436,11 @@ def main(args):
     print(rqs)
 
     print('\x1b[1;34;40m' + f'Computing all paths with constraints' + '\x1b[0m')
-    pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
+    try:
+        pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
+    except DisjunctionError as this_e:
+        print(f'{ansi_escapes.red}Disjunction error:{ansi_escapes.reset} {this_e}')
+        exit(1)
 
     print('\x1b[1;34;40m' + f'Propagating on selected path' + '\x1b[0m')
     propagatedpths, reversed_pths, reversed_propagatedpths = \

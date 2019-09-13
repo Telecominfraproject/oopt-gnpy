@@ -24,7 +24,7 @@ from gnpy.core.service_sheet import convert_service_sheet, Request_element, Elem
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
-from gnpy.core.exceptions import ServiceError
+from gnpy.core.exceptions import ServiceError, DisjunctionError
 from copy import copy, deepcopy
 from csv import writer
 from math import ceil
@@ -878,7 +878,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
                 LOGGER.critical(msg)
                 print(f'{msg}\nComputation stopped.')
                 # TODO in this case: replay step 5  with the candidate without constraints
-                exit()
+                raise DisjunctionError(msg)
 
     # for i in disjunctions_list:
     #     print(i.disjunction_id)
