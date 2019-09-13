@@ -29,7 +29,7 @@ eqpt_library_name = Path(__file__).parent.parent / 'tests/data/eqpt_config.json'
 @pytest.mark.parametrize("eqpt", [eqpt_library_name])
 @pytest.mark.parametrize("serv",[service_file_name])
 def test_disjunction(net,eqpt,serv):
-    data = load_requests(serv,eqpt)
+    data = load_requests(serv, eqpt, bidir=False)
     equipment = load_equipment(eqpt)
     network = load_network(net,equipment)
 
@@ -56,7 +56,7 @@ def test_disjunction(net,eqpt,serv):
         rqs_id_list = [r.request_id for r in rqs]
         p1 = pths[rqs_id_list.index(e[0])][1:-1]
         p2 = pths[rqs_id_list.index(e[1])][1:-1]
-        if isdisjoint(p1,p2) + isdisjoint(p1,find_reversed_path(p2, network)) > 0:
+        if isdisjoint(p1, p2) + isdisjoint(p1, find_reversed_path(p2)) > 0:
             test = False
             print(f'Computed path (roadms):{[e.uid for e in p1  if isinstance(e, Roadm)]}\n')
             print(f'Computed path (roadms):{[e.uid for e in p2  if isinstance(e, Roadm)]}\n')
@@ -68,7 +68,7 @@ def test_disjunction(net,eqpt,serv):
 @pytest.mark.parametrize("eqpt", [eqpt_library_name])
 @pytest.mark.parametrize("serv",[service_file_name])
 def test_does_not_loop_back(net,eqpt,serv):
-    data = load_requests(serv,eqpt)
+    data = load_requests(serv, eqpt, bidir=False)
     equipment = load_equipment(eqpt)
     network = load_network(net,equipment)
 
