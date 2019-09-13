@@ -162,6 +162,10 @@ class Result_element(Element):
                     }
                 pro_list.append(temp)
                 index += 1
+            elif self.path_request.M == 0 and hasattr(self.path_request, 'blocking_reason'):
+                # if the path is blocked due to spectrum, no label object is created, but
+                # the json response includes a detailed path for user infromation.
+                pass
             else:
                 raise ServiceError('request {self.path_id} should have positive path bandwidth value.')
             if isinstance(element, Transceiver):
