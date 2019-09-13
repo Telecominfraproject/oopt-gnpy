@@ -18,20 +18,22 @@ from pathlib import Path
 from collections import namedtuple
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
 from json import dumps, loads
-from networkx import (draw_networkx_nodes, draw_networkx_edges,
-                      draw_networkx_labels)
 from numpy import mean
 from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
 from gnpy.core.utils import load_json
 from gnpy.core.network import load_network, build_network, save_network
-from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch, automatic_spacing
-from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused, Fiber
+from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch
+from gnpy.core.elements import Transceiver, Roadm
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.request import (Path_request, Result_element, compute_constrained_path,
-                              propagate, jsontocsv, Disjunction, compute_path_dsjctn, requests_aggregation,
-                              propagate_and_optimize_mode, BLOCKING_NOPATH, find_reversed_path)
+                               propagate, jsontocsv, Disjunction, compute_path_dsjctn,
+                               requests_aggregation, propagate_and_optimize_mode,
+                               BLOCKING_NOPATH, BLOCKING_NOMODE, BLOCKING_NOSPECTRUM,
+                               find_reversed_path)
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
-from gnpy.core.spectrum_assignment import build_oms_list, reversed_oms, spectrum_selection , pth_assign_spectrum
+import gnpy.core.ansi_escapes as ansi_escapes
+from gnpy.core.spectrum_assignment import (build_oms_list, reversed_oms, spectrum_selection,
+                                           pth_assign_spectrum)
 from copy import copy, deepcopy
 from textwrap import dedent
 from math import ceil
