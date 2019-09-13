@@ -21,6 +21,7 @@ from os import unlink
 from pandas import read_csv
 import pytest
 from tests.compare import compare_networks, compare_services
+from copy import deepcopy
 from gnpy.core.utils import lin2db
 from gnpy.core.network import save_network, build_network
 from gnpy.core.convert import convert_file
@@ -30,6 +31,7 @@ from gnpy.core.network import load_network
 from gnpy.core.request import (jsontocsv, requests_aggregation,
                                compute_path_dsjctn, Result_element)
 from gnpy.core.spectrum_assignment import build_oms_list, pth_assign_spectrum
+from gnpy.core.exceptions import ServiceError
 from examples.path_requests_run import (requests_from_json, disjunctions_from_json,
                                         correct_route_list, correct_disjn,
                                         compute_path_with_disjunction)
@@ -295,9 +297,24 @@ def test_json_response_generation(xls_input, expected_response_file):
     propagatedpths, reversed_pths, reversed_propagatedpths = \
         compute_path_with_disjunction(network, equipment, rqs, pths)
     pth_assign_spectrum(pths, rqs, oms_list, reversed_pths)
+
     result = []
     for i, pth in enumerate(propagatedpths):
+        # test ServiceError handling : when M is zero at this point, the
+        # json result should not be created if there is no blocking reason
+        if i == 1:
+            my_rq = deepcopy(rqs[i])
+            my_rq.M = 0
+            error_handled = False
+            try:
+                temp_result = {'response': Result_element(my_rq, pth).json}
+            except ServiceError:
+                error_handled = True
+            print(error_handled)
+            if not error_handled:
+                raise AssertionError()
         result.append(Result_element(rqs[i], pth))
+
     temp = {
         'response': [n.json for n in result]
     }
