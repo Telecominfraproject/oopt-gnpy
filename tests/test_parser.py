@@ -318,6 +318,18 @@ def test_json_response_generation(xls_input, expected_response_file):
             print(error_handled)
             if not error_handled:
                 raise AssertionError()
+            error_handled = False
+            my_rq.blocking_reason = 'NO_SPECTRUM'
+            try:
+                temp_result = {
+                    'response': Result_element(my_rq, pth, reversed_propagatedpths[i]).json}
+                print(temp_result)
+            except ServiceError:
+                error_handled = True
+            print(error_handled)
+            if error_handled:
+                raise AssertionError()
+
         result.append(Result_element(rqs[i], pth, reversed_propagatedpths[i]))
 
     temp = {
