@@ -57,6 +57,7 @@ def requests_from_json(json_data,equipment):
         params = {}
         params['request_id'] = req['request-id']
         params['source'] = req['source']
+        params['bidir'] = req['bidirectional']
         params['destination'] = req['destination']
         params['trx_type'] = req['path-constraints']['te-bandwidth']['trx_type']
         params['trx_mode'] = req['path-constraints']['te-bandwidth']['trx_mode']
@@ -146,10 +147,10 @@ def disjunctions_from_json(json_data):
     return disjunctions_list
 
 
-def load_requests(filename,eqpt_filename):
+def load_requests(filename, eqpt_filename, bidir):
     if filename.suffix.lower() == '.xls':
         logger.info('Automatically converting requests from XLS to JSON')
-        json_data = convert_service_sheet(filename,eqpt_filename)
+        json_data = convert_service_sheet(filename, eqpt_filename, bidir=bidir)
     else:
         with open(filename, encoding='utf-8') as f:
             json_data = loads(f.read())
@@ -298,8 +299,9 @@ if __name__ == '__main__':
     print('\x1b[1;34;40m'+f'Computing path requests {args.service_filename} into JSON format'+ '\x1b[0m')
     # for debug
     # print( args.eqpt_filename)
+
     try:
-        data = load_requests(args.service_filename,args.eqpt_filename)
+        data = load_requests(args.service_filename, args.eqpt_filename, args.bidir)
         equipment = load_equipment(args.eqpt_filename)
         network = load_network(args.network_filename,equipment)
     except EquipmentConfigError as e:
@@ -365,10 +367,9 @@ if __name__ == '__main__':
     # propagate on reversed path only if bidir option is activated (takes time)
     reversed_propagatedpths = []
     reversed_pths =[]
-    if args.bidir:
-        print('\x1b[1;34;40m'+f'Propagating on selected path reversed direction'+ '\x1b[0m')
+    print('\x1b[1;34;40m'+f'Propagating on selected path reversed direction'+ '\x1b[0m')
     for i,p in enumerate(pths):
-        if propagatedpths[i] and args.bidir:
+        if propagatedpths[i] and rqs[i].bidir:
             rp = find_reversed_path(p)
             print(f'request {rqs[i].request_id}')
             print(f'Propagating path from {rqs[i].destination} to {rqs[i].source}')
