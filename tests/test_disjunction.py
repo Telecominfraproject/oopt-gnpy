@@ -106,4 +106,4 @@ def test_does_not_loop_back(net,eqpt,serv):
 
     # check that the total agregated bandwidth is the same after aggregation
 
-    # 
+    #

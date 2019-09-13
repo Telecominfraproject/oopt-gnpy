@@ -18,10 +18,8 @@ from pathlib import Path
 import pytest
 from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch
 from gnpy.core.network import load_network, build_network
-from examples.path_requests_run import (requests_from_json , correct_route_list ,
-                                        load_requests , disjunctions_from_json)
-from gnpy.core.request import (compute_path_dsjctn, isdisjoint , find_reversed_path,
-                               propagate,propagate_and_optimize_mode) 
+from examples.path_requests_run import requests_from_json, correct_route_list, load_requests
+from gnpy.core.request import compute_path_dsjctn, propagate, propagate_and_optimize_mode
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.elements import Roadm
 

@@ -15,10 +15,9 @@ and feasibility
 See: draft-ietf-teas-yang-path-computation-01.txt
 """
 
-from sys import exit
 from collections import namedtuple, OrderedDict
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
-from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths, shortest_path_length)
+from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths)
 from networkx.utils import pairwise
 from numpy import mean
 from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
@@ -30,7 +29,7 @@ from copy import copy, deepcopy
 from csv import writer
 from math import ceil
 
-logger = getLogger(__name__)
+LOGGER = getLogger(__name__)
 
 RequestParams = namedtuple('RequestParams', 'request_id source destination bidir trx_type' +
                            ' trx_mode nodes_list loose_list spacing power nb_channel f_min' +
@@ -40,30 +39,32 @@ DisjunctionParams = namedtuple('DisjunctionParams', 'disjunction_id relaxable li
                                '_diverse node_diverse disjunctions_req')
 
 class Path_request:
+    """ the class that contains all attributes related to a request
+    """
     def __init__(self, *args, **params):
         params = RequestParams(**params)
         self.request_id = params.request_id
-        self.source     = params.source
+        self.source = params.source
         self.destination = params.destination
-        self.bidir      = params.bidir
-        self.tsp        = params.trx_type
-        self.tsp_mode   = params.trx_mode
-        self.baud_rate  = params.baud_rate
+        self.bidir = params.bidir
+        self.tsp = params.trx_type
+        self.tsp_mode = params.trx_mode
+        self.baud_rate = params.baud_rate
         self.nodes_list = params.nodes_list
         self.loose_list = params.loose_list
-        self.spacing    = params.spacing
-        self.power      = params.power
+        self.spacing = params.spacing
+        self.power = params.power
         self.nb_channel = params.nb_channel
-        self.f_min      = params.f_min
-        self.f_max      = params.f_max
-        self.format     = params.format
-        self.OSNR       = params.OSNR
-        self.bit_rate   = params.bit_rate
-        self.roll_off   = params.roll_off
-        self.tx_osnr    = params.tx_osnr
+        self.f_min = params.f_min
+        self.f_max = params.f_max
+        self.format = params.format
+        self.OSNR = params.OSNR
+        self.bit_rate = params.bit_rate
+        self.roll_off = params.roll_off
+        self.tx_osnr = params.tx_osnr
         self.min_spacing = params.min_spacing
-        self.cost       = params.cost
-        self.path_bandwidth  = params.path_bandwidth
+        self.cost = params.cost
+        self.path_bandwidth = params.path_bandwidth
 
     def __str__(self):
         return '\n\t'.join([f'{type(self).__name__} {self.request_id}',
@@ -92,6 +93,8 @@ class Path_request:
                             f'loose-list:\t{self.loose_list}'
                             '\n'])
 class Disjunction:
+    """ the class that contains all attributes related to disjunction constraints
+    """
     def __init__(self, *args, **params):
         params = DisjunctionParams(**params)
         self.disjunction_id = params.disjunction_id
@@ -130,6 +133,8 @@ class Result_element(Element):
     uid = property(lambda self: repr(self))
     @property
     def detailed_path_json(self):
+        """ a function that builds path object for normal and blocking cases
+        """
         index = 0
         pro_list = []
         for element in self.computed_path:
@@ -176,33 +181,33 @@ class Result_element(Element):
     def path_properties(self):
         """ a function that returns the path properties (metrics, crossed elements) into a dict
         """
-        def path_metric(p, r):
+        def path_metric(pth, req):
             """ creates the metrics dictionary
             """
             return [
                 {
                     'metric-type': 'SNR-bandwidth',
-                    'accumulative-value': round(mean(p[-1].snr), 2)
+                    'accumulative-value': round(mean(pth[-1].snr), 2)
                 },
                 {
                     'metric-type': 'SNR-0.1nm',
-                    'accumulative-value': round(mean(p[-1].snr+lin2db(r.baud_rate/12.5e9)), 2)
+                    'accumulative-value': round(mean(pth[-1].snr+lin2db(req.baud_rate/12.5e9)), 2)
                 },
                 {
                     'metric-type': 'OSNR-bandwidth',
-                    'accumulative-value': round(mean(p[-1].osnr_ase), 2)
+                    'accumulative-value': round(mean(pth[-1].osnr_ase), 2)
                 },
                 {
                     'metric-type': 'OSNR-0.1nm',
-                    'accumulative-value': round(mean(p[-1].osnr_ase_01nm), 2)
+                    'accumulative-value': round(mean(pth[-1].osnr_ase_01nm), 2)
                 },
                 {
                     'metric-type': 'reference_power',
-                    'accumulative-value': r.power
+                    'accumulative-value': req.power
                 },
                 {
                     'metric-type': 'path_bandwidth',
-                    'accumulative-value': r.path_bandwidth
+                    'accumulative-value': req.path_bandwidth
                 }
                 ]
         if self.path_request.bidir:
@@ -271,13 +276,13 @@ def compute_constrained_path(network, req):
     if nodes_list is None:
         msg = f'Request {req.request_id} problem in the constitution of nodes_list: ' +\
               'should at least include destination'
-        logger.critical(msg)
         exit()
+        LOGGER.critical(msg)
     if req.nodes_list[-1] != req.destination:
         msg = f'Request {req.request_id} malformed list of nodes: last node should '+\
               'be destination trx'
-        logger.critical(msg)
         exit()
+        LOGGER.critical(msg)
 
     if len(nodes_list) == 1:
         try:
@@ -293,7 +298,7 @@ def compute_constrained_path(network, req):
         except NetworkXNoPath:
             msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path from' +\
                   f' {source.uid} to node: {destination.uid} in network topology'+ '\x1b[0m'
-            logger.critical(msg)
+            LOGGER.critical(msg)
             print(msg)
             req.blocking_reason = 'NO_PATH'
             total_path = []
@@ -301,10 +306,10 @@ def compute_constrained_path(network, req):
         all_simp_pths = list(all_simple_paths(network, source=source,\
             target=destination, cutoff=120))
         candidate = []
-        for p in all_simp_pths:
-            if ispart(nodes_list, p):
+        for pth in all_simp_pths:
+            if ispart(nodes_list, pth):
                 # print(f'selection{[el.uid for el in p if el in roadm]}')
-                candidate.append(p)
+                candidate.append(pth)
         # select the shortest path (in nb of hops) -> changed to shortest path in km length
         if len(candidate) > 0:
             # candidate.sort(key=lambda x: len(x))
@@ -326,18 +331,19 @@ def compute_constrained_path(network, req):
             if 'STRICT' not in req.loose_list[:-len('STRICT')]:
                 msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path with user_' +\
                       f'include node constraints' + '\x1b[0m'
-                logger.info(msg)
+                LOGGER.info(msg)
                 print(f'constraint ignored')
                 total_path = dijkstra_path(network, source, destination, weight='weight')
             else:
                 msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path with user ' +\
                       f'include node constraints.\nNo path computed'+ '\x1b[0m'
-                logger.critical(msg)
+                LOGGER.critical(msg)
                 print(msg)
                 req.blocking_reason = 'NO_PATH_WITH_CONSTRAINT'
                 total_path = []
 
-    # obsolete method: this does not guaranty to avoid loops or correct results
+    # the following method was initially used but abandonned: compute per segment:
+    # this does not guaranty to avoid loops or correct results
     # Here is the demonstration:
     #         1     1
     # eg    a----b-----c
@@ -362,42 +368,6 @@ def compute_constrained_path(network, req):
     #       e----f  h  g
     #         1
     # then there is no more path to g destination
-    #
-    #
-    # total_path = [source]
-
-    # for n in req.nodes_list:
-    #     try:
-    #         node = next(el for el in trx if el.uid == n)
-    #     except StopIteration:
-    #         try:
-    #             node = next(el for el in anytypenode if el.uid == n)
-    #         except StopIteration:
-    #             try:
-    #                 # TODO this test is not giving good results: full name of the
-    #                 # amp is required to avoid ambiguity on the direction
-    #                 node = next(el for el in anytypenode
-    #                     if n in el.uid)
-    #             except StopIteration:
-    #                 msg = f'could not find node: {n} in network topology: \
-    #                     not a trx, roadm, edfa, fiber or fused element'
-    #                 logger.critical(msg)
-    #                 raise ValueError(msg)
-    #     # extend path list without repeating source -> skip first element in the list
-    #     try:
-    #         # to avoid looping back: use an alternate graph were current path edges and vertex are suppressed
-
-    #         total_path.extend(dijkstra_path(network, source, node)[1:])
-    #         source = node
-    #     except NetworkXNoPath:
-    #         if req.loose_list[req.nodes_list.index(n)] == 'loose':
-    #             print(f'could not find a path from {source.uid} to loose node: {n} in network topology')
-    #             print(f'node  {n} is skipped')
-    #         else:
-    #             msg = f'could not find a path from {source.uid} to node: {n} in network topology'
-    #             logger.critical(msg)
-    #             print(msg)
-    #             total_path = []
 
     return total_path
 
@@ -425,15 +395,17 @@ def propagate2(path, req, equipment):
 def propagate_and_optimize_mode(path, req, equipment):
     # if mode is unknown : loops on the modes starting from the highest baudrate fiting in the
     # step 1: create an ordered list of modes based on baudrate
-    baudrate_to_explore = list(set([m['baud_rate'] for m in equipment['Transceiver'][req.tsp].mode
-                                    if float(m['min_spacing']) <= req.spacing]))
-        # TODO be carefull on limits cases if spacing very close to req spacing eg 50.001 50.000
+    baudrate_to_explore = list(set([this_mode['baud_rate']
+                                    for this_mode in equipment['Transceiver'][req.tsp].mode
+                                    if float(this_mode['min_spacing']) <= req.spacing]))
+    # TODO be carefull on limits cases if spacing very close to req spacing eg 50.001 50.000
     baudrate_to_explore = sorted(baudrate_to_explore, reverse=True)
     if baudrate_to_explore:
         # at least 1 baudrate can be tested wrt spacing
-        for b in baudrate_to_explore:
-            modes_to_explore = [m for m in equipment['Transceiver'][req.tsp].mode
-                                if m['baud_rate'] == b and float(m['min_spacing']) <= req.spacing]
+        for this_br in baudrate_to_explore:
+            modes_to_explore = [this_mode for this_mode in equipment['Transceiver'][req.tsp].mode
+                                if this_mode['baud_rate'] == this_br and
+                                float(this_mode['min_spacing']) <= req.spacing]
             modes_to_explore = sorted(modes_to_explore,
                                       key=lambda x: x['bit_rate'], reverse=True)
             # print(modes_to_explore)
@@ -441,19 +413,19 @@ def propagate_and_optimize_mode(path, req, equipment):
             found_a_feasible_mode = False
             # TODO: the case of roll of is not included: for now use SI one
             # TODO: if the loop in mode optimization does not have a feasible path, then bugs
-            si = create_input_spectral_information(req.f_min, req.f_max,
+            spc_info = create_input_spectral_information(req.f_min, req.f_max,
                                                    equipment['SI']['default'].roll_off,
-                                                   b, req.power, req.spacing)
+                                                   this_br, req.power, req.spacing)
             for el in path:
-                si = el(si)
-            for m in modes_to_explore :
+                spc_info = el(spc_info)
+            for this_mode in modes_to_explore:
                 if path[-1].snr is not None:
-                    path[-1].update_snr(m['tx_osnr'], equipment['Roadm']['default'].add_drop_osnr)
-                    if round(min(path[-1].snr+lin2db(b/(12.5e9))), 2) > m['OSNR']:
+                    path[-1].update_snr(this_mode['tx_osnr'], equipment['Roadm']['default'].add_drop_osnr)
+                    if round(min(path[-1].snr+lin2db(this_br/(12.5e9))), 2) > this_mode['OSNR']:
                         found_a_feasible_mode = True
-                        return path, m
+                        return path, this_mode
                     else:
-                        last_explored_mode = m
+                        last_explored_mode = this_mode
                 else:
                     req.blocking_reason = 'NO_COMPUTED_SNR'
                     return path, None
@@ -463,14 +435,14 @@ def propagate_and_optimize_mode(path, req, equipment):
         # returns the last propagated path and mode
         msg = f'\tWarning! Request {req.request_id}: no mode satisfies path SNR requirement.\n'
         print(msg)
-        logger.info(msg)
+        LOGGER.info(msg)
         req.blocking_reason = 'NO_FEASIBLE_MODE'
         return path, last_explored_mode
     else:
         # no baudrate satisfying spacing
         msg = f'\tWarning! Request {req.request_id}: no baudrate satisfies spacing requirement.\n'
         print(msg)
-        logger.info(msg)
+        LOGGER.info(msg)
         req.blocking_reason = 'NO_FEASIBLE_BAUDRATE_WITH_SPACING'
         return [], None
 
@@ -494,7 +466,7 @@ def jsontopath_metric(path_metric):
 
 def jsontoparams(my_p, tsp, mode, equipment):
     """ a function that derives optical params from transponder type and mode
-        supports the no mode case  
+        supports the no mode case
     """
     temp = []
     for elem in my_p['path-properties']['path-route-objects']:
@@ -613,6 +585,9 @@ def jsontocsv(json_data, equipment, fileout):
             tsp = temp_tsp['transponder-type']
             mode = temp_tsp['transponder-mode']
 
+            # find the min  acceptable OSNR, baud rate from the eqpt library based
+            # on tsp (type) and mode (format).
+            # loading equipment already tests the existence of tsp type and mode:
             pth, minosnr, baud_rate, bit_rate, cost, output_snr, output_snrbandwidth, \
                 output_osnr, power, path_bandwidth, sptrm = \
                     jsontoparams(pth_el, tsp, mode, equipment)
@@ -731,22 +706,22 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
             all_simp_pths_reversed.append(find_reversed_path(pth))
         rqs[pathreq.request_id] = all_simp_pths
         temp = []
-        for p in all_simp_pths:
+        for pth in all_simp_pths:
             # build a short list representing each roadm+direction with the first item
             # start enumeration at 1 to avoid Trx in the list
-            s = [e.uid for i, e in enumerate(p[1:-1]) \
-                if isinstance(e, Roadm) | (isinstance(p[i], Roadm))]
-            temp.append(s)
-            # id(s) is unique even if path is the same: two objects with same
+            short_list = [e.uid for i, e in enumerate(pth[1:-1]) \
+                if isinstance(e, Roadm) | (isinstance(pth[i], Roadm))]
+            temp.append(short_list)
+            # id(short_list) is unique even if path is the same: two objects with same
             # path have two different ids
-            allpaths[id(s)] = Pth(pathreq, p, s)
+            allpaths[id(short_list)] = Pth(pathreq, pth, short_list)
         simple_rqs[pathreq.request_id] = temp
         temp = []
-        for p in all_simp_pths_reversed:
+        for pth in all_simp_pths_reversed:
             # build a short list representing each roadm+direction with the first item
             # start enumeration at 1 to avoid Trx in the list
-            temp.append([e.uid for i, e in enumerate(p[1:-1]) \
-                if isinstance(e, Roadm) | (isinstance(p[i], Roadm))])
+            temp.append([e.uid for i, e in enumerate(pth[1:-1]) \
+                if isinstance(e, Roadm) | (isinstance(pth[i], Roadm))])
         simple_rqs_reversed[pathreq.request_id] = temp
     # step 2
     # for each set of requests that need to be disjoint
@@ -757,8 +732,8 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
         dlist = d.disjunctions_req.copy()
         # each line of dpath is one combination of path that satisfies disjunction
         dpath = []
-        for i, p in enumerate(simple_rqs[dlist[0]]):
-            dpath.append([p])
+        for i, pth in enumerate(simple_rqs[dlist[0]]):
+            dpath.append([pth])
             # allpaths[id(p)].d_id = d.disjunction_id
         # in each loop, dpath is updated with a path for rq that satisfies
         # disjunction with each path in dpath
@@ -785,25 +760,24 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
         #        p3 and p4 are not disjoint
         #        p3 and p7 are not disjoint
 
-        for e1 in dlist[1:]:
+        for elem1 in dlist[1:]:
             temp = []
-            for j, p1 in enumerate(simple_rqs[e1]):
-                # allpaths[id(p1)].d_id = d.disjunction_id
+            for j, pth1 in enumerate(simple_rqs[elem1]):
                 # can use index j in simple_rqs_reversed because index
                 # of direct and reversed paths have been kept identical
-                p1_reversed = simple_rqs_reversed[e1][j]
-                # print(p1_reversed)
+                pth1_reversed = simple_rqs_reversed[elem1][j]
+                # print(pth1_reversed)
                 # print('\n\n')
-                for k, c in enumerate(dpath):
+                for cndt in dpath:
                     # print(f' c: \t{c}')
-                    temp2 = c.copy()
+                    temp2 = cndt.copy()
                     all_disjoint = 0
-                    for p in c:
-                        all_disjoint += isdisjoint(p1, p) + isdisjoint(p1_reversed, p)
+                    for pth in cndt:
+                        all_disjoint += isdisjoint(pth1, pth) + isdisjoint(pth1_reversed, pth)
                     if all_disjoint == 0:
-                        temp2.append(p1)
+                        temp2.append(pth1)
                         temp.append(temp2)
-                            # print(f' coucou {e1}: \t{temp}')
+                            # print(f' coucou {elem1}: \t{temp}')
             dpath = temp
         # print(dpath)
         candidates[d.disjunction_id] = dpath
@@ -823,29 +797,29 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
 
 
     for pathreq in pathreqlist_disjt:
-        concerned_d_id = [d.disjunction_id for d in disjunctions_list 
+        concerned_d_id = [d.disjunction_id for d in disjunctions_list
                           if pathreq.request_id in d.disjunctions_req]
         # for each set of solution, verify that the same path is used for the same request
         candidate_paths = simple_rqs[pathreq.request_id]
         # print('coucou')
         # print(pathreq.request_id)
-        for p in candidate_paths:
+        for pth in candidate_paths:
             iscandidate = 0
             for sol in concerned_d_id:
                 test = 1
-                # for each solution test if p is part of the solution
-                # if yes, then p can remain a candidate
-                for i, m in enumerate(candidates[sol]):
-                    if p in m:
-                        if allpaths[id(m[m.index(p)])].req.request_id == pathreq.request_id:
+                # for each solution test if pth is part of the solution
+                # if yes, then pth can remain a candidate
+                for cndt in candidates[sol]:
+                    if pth in cndt:
+                        if allpaths[id(cndt[cndt.index(pth)])].req.request_id == pathreq.request_id:
                             test = 0
                             break
                 iscandidate += test
             if iscandidate != 0:
-                for l in concerned_d_id:
-                    for m in candidates[l]:
-                        if p in m:
-                            candidates[l].remove(m)
+                for this_id in concerned_d_id:
+                    for cndt in candidates[this_id]:
+                        if pth in cndt:
+                            candidates[this_id].remove(cndt)
 
 #    for i in disjunctions_list:
 #        print(i.disjunction_id)
@@ -855,53 +829,53 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     # the constraint only in  the case of disjounction: the simple path is processed in
     # request.compute_constrained_path
     # TODO: keep a version without the loose constraint
-    for d in disjunctions_list:
+    for this_d in disjunctions_list:
         temp = []
-        for j, sol in enumerate(candidates[d.disjunction_id]):
+        for j, sol in enumerate(candidates[this_d.disjunction_id]):
             testispartok = True
-            for i, p in enumerate(sol):
-                # print(f'test {allpaths[id(p)].req.request_id}')
-                # print(f'length of route {len(allpaths[id(p)].req.nodes_list)}')
-                if allpaths[id(p)].req.nodes_list:
-                    # if p does not containt the ordered list node, remove sol from the candidate
+            for pth in sol:
+                # print(f'test {allpaths[id(pth)].req.request_id}')
+                # print(f'length of route {len(allpaths[id(pth)].req.nodes_list)}')
+                if allpaths[id(pth)].req.nodes_list:
+                    # if pth does not containt the ordered list node, remove sol from the candidate
                     # except if this was the last solution: then check if the constraint is loose
                     # or not
-                    if not ispart(allpaths[id(p)].req.nodes_list, p):
+                    if not ispart(allpaths[id(pth)].req.nodes_list, pth):
                         # print(f'nb of solutions {len(temp)}')
-                        if j < len(candidates[d.disjunction_id])-1:
+                        if j < len(candidates[this_d.disjunction_id])-1:
                             msg = f'removing {sol}'
-                            logger.info(msg)
+                            LOGGER.info(msg)
                             testispartok = False
                             #break
                         else:
-                            if 'LOOSE' in allpaths[id(p)].req.loose_list:
-                                logger.info(f'Could not apply route constraint'+
-                                            f'{allpaths[id(p)].req.nodes_list} on request' +\
-                                            f' {allpaths[id(p)].req.request_id}')
-                            else :
-                                logger.info(f'removing last solution from candidate paths\n{sol}')
+                            if 'LOOSE' in allpaths[id(pth)].req.loose_list:
+                                LOGGER.info(f'Could not apply route constraint'+
+                                            f'{allpaths[id(pth)].req.nodes_list} on request' +\
+                                            f' {allpaths[id(pth)].req.request_id}')
+                            else:
+                                LOGGER.info(f'removing last solution from candidate paths\n{sol}')
                                 testispartok = False
             if testispartok:
                 temp.append(sol)
-        candidates[d.disjunction_id] = temp
+        candidates[this_d.disjunction_id] = temp
 
     # step 5 select the first combination that works
     pathreslist_disjoint = {}
-    for d in disjunctions_list:
+    for dis in disjunctions_list:
         test_sol = True
         while test_sol:
             # print('coucou')
-            if candidates[d.disjunction_id]:
-                for p in candidates[d.disjunction_id][0]:
-                    if allpaths[id(p)].req in pathreqlist_disjt:
-                        # print(f'selected path:{p} for req {allpaths[id(p)].req.request_id}')
-                        pathreslist_disjoint[allpaths[id(p)].req] = allpaths[id(p)].pth
-                        pathreqlist_disjt.remove(allpaths[id(p)].req)
-                        candidates = remove_candidate(candidates, allpaths, allpaths[id(p)].req, p)
+            if candidates[dis.disjunction_id]:
+                for pth in candidates[dis.disjunction_id][0]:
+                    if allpaths[id(pth)].req in pathreqlist_disjt:
+                        # print(f'selected path:{pth} for req {allpaths[id(pth)].req.request_id}')
+                        pathreslist_disjoint[allpaths[id(pth)].req] = allpaths[id(pth)].pth
+                        pathreqlist_disjt.remove(allpaths[id(pth)].req)
+                        candidates = remove_candidate(candidates, allpaths, allpaths[id(pth)].req, pth)
                         test_sol = False
             else:
                 msg = f'No disjoint path found with added constraint'
-                logger.critical(msg)
+                LOGGER.critical(msg)
                 print(f'{msg}\nComputation stopped.')
                 # TODO in this case: replay step 5  with the candidate without constraints
                 exit()
@@ -921,12 +895,13 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
             path_res_list.append(pathreslist_disjoint[req])
     return path_res_list
 
-def isdisjoint(p1, p2):
-    # returns 0 if disjoint
-    edge1 = list(pairwise(p1))
-    edge2 = list(pairwise(p2))
-    for e in edge1:
-        if e in edge2:
+def isdisjoint(pth1, pth2):
+    """ returns 0 if disjoint
+    """
+    edge1 = list(pairwise(pth1))
+    edge2 = list(pairwise(pth2))
+    for edge in edge1:
+        if edge in edge2:
             return 1
     return 0
 
@@ -958,51 +933,56 @@ def find_reversed_path(pth):
         else:
             msg = f'Error while handling reversed path {pth[-1].uid} to {pth[0].uid}:' +\
                   ' can not handle unidir topology. TO DO.'
-            logger.critical(msg)
+            LOGGER.critical(msg)
             raise ValueError(msg)
     reversed_path.append(pth[0])
 
     return reversed_path
 
-def ispart(a, b):
-    # the functions takes two paths a and b and retrns True
-    # if all a elements are part of b and in the same order
+def ispart(ptha, pthb):
+    """ the functions takes two paths a and b and retrns True
+        if all a elements are part of b and in the same order
+    """
     j = 0
-    for i, el in enumerate(a):
-        if el in b:
-            if b.index(el) >= j:
-                j = b.index(el)
+    for elem in ptha:
+        if elem in pthb:
+            if pthb.index(elem) >= j:
+                j = pthb.index(elem)
             else:
                 return False
         else:
             return False
     return True
 
-def remove_candidate(candidates, allpaths, rq, pth):
-    # print(f'coucou {rq.request_id}')
+def remove_candidate(candidates, allpaths, rqst, pth):
+    """ filter duplicate candidates
+    """
+    # print(f'coucou {rqst.request_id}')
     for key, candidate  in candidates.items():
         temp = candidate.copy()
-        for i, sol in enumerate(candidate):
-            for p in sol:
-                if allpaths[id(p)].req.request_id == rq.request_id:
-                    if id(p) != id(pth):
+        for sol in candidate:
+            for this_p in sol:
+                if allpaths[id(this_p)].req.request_id == rqst.request_id:
+                    if id(this_p) != id(pth):
                         temp.remove(sol)
                         break
         candidates[key] = temp
     return candidates
 
 def compare_reqs(req1, req2, disjlist):
+    """ compare two requests: returns True or False
+    """
     dis1 = [d for d in disjlist if req1.request_id in d.disjunctions_req]
     dis2 = [d for d in disjlist if req2.request_id in d.disjunctions_req]
     same_disj = False
     if dis1 and dis2:
         temp1 = []
-        for d in dis1:
-            temp1.extend(d.disjunctions_req)
+        for this_d in dis1:
+            temp1.extend(this_d.disjunctions_req)
             temp1.remove(req1.request_id)
         temp2 = []
-        for d in dis2:
-            temp2.extend(d.disjunctions_req)
+        for this_d in dis2:
+            temp2.extend(this_d.disjunctions_req)
             temp2.remove(req2.request_id)
         if set(temp1) == set(temp2):
             same_disj = True
@@ -1030,28 +1010,29 @@ def compare_reqs(req1, req2, disjlist):
         return False
 
 def requests_aggregation(pathreqlist, disjlist):
-    # this function aggregates requests so that if several requests
-    # exist between same source and destination and with same transponder type
+    """ this function aggregates requests so that if several requests
+        exist between same source and destination and with same transponder type
+    """
     # todo maybe add conditions on mode ??, spacing ...
     # currently if undefined takes the default values
     local_list = pathreqlist.copy()
     for req in pathreqlist:
-        for r in local_list:
-            if  req.request_id != r.request_id and compare_reqs(req, r, disjlist):
+        for this_r in local_list:
+            if  req.request_id != this_r.request_id and compare_reqs(req, this_r, disjlist):
                 # aggregate
-                r.path_bandwidth += req.path_bandwidth
-                temp_r_id = r.request_id
-                r.request_id = ' | '.join((r.request_id, req.request_id))
+                this_r.path_bandwidth += req.path_bandwidth
+                temp_r_id = this_r.request_id
+                this_r.request_id = ' | '.join((this_r.request_id, req.request_id))
                 # remove request from list
                 local_list.remove(req)
                 # todo change also disjunction req with new demand
 
-                for d in disjlist:
-                    if req.request_id in d.disjunctions_req:
-                        d.disjunctions_req.remove(req.request_id)
-                        d.disjunctions_req.append(r.request_id)
-                for d in disjlist:
-                    if temp_r_id in d.disjunctions_req:
-                        disjlist.remove(d)
+                for this_d in disjlist:
+                    if req.request_id in this_d.disjunctions_req:
+                        this_d.disjunctions_req.remove(req.request_id)
+                        this_d.disjunctions_req.append(this_r.request_id)
+                for this_d in disjlist:
+                    if temp_r_id in this_d.disjunctions_req:
+                        disjlist.remove(this_d)
                 break
     return local_list, disjlist

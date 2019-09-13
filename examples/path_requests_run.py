@@ -28,10 +28,10 @@ from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.request import (Path_request, Result_element,
                                propagate, jsontocsv, Disjunction, compute_path_dsjctn,
                                requests_aggregation, propagate_and_optimize_mode,
-                               BLOCKING_NOPATH, BLOCKING_NOMODE, BLOCKING_NOSPECTRUM,
+                               BLOCKING_NOPATH, BLOCKING_NOMODE,
                                find_reversed_path)
 from gnpy.core.exceptions import (ConfigurationError, EquipmentConfigError, NetworkTopologyError,
-                                  ServiceError)
+                                  ServiceError, DisjunctionError)
 import gnpy.core.ansi_escapes as ansi_escapes
 from gnpy.core.spectrum_assignment import (build_oms_list, pth_assign_spectrum)
 from copy import copy, deepcopy
@@ -40,7 +40,7 @@ from math import ceil
 
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
 
-logger = getLogger(__name__)
+LOGGER = getLogger(__name__)
 
 PARSER = ArgumentParser(description='A function that computes performances for a list of ' +
                         'services provided in a json file or an excel sheet.')
@@ -131,16 +131,16 @@ def consistency_check(params, f_max_from_si):
                   f'{params["trx_type"]} {params["trx_mode"]} min spacing value ' +\
                   f'{params["min_spacing"]*1e-9}GHz.\nComputation stopped'
             print(msg)
-            logger.critical(msg)
             exit()
+            LOGGER.critical(msg)
         if f_max > f_max_from_si:
             msg = dedent(f'''
             Requested channel number {params["nb_channel"]}, baud rate {params["baud_rate"]} GHz and requested spacing {params["spacing"]*1e-9}GHz 
             is not consistent with frequency range {f_min*1e-12} THz, {f_max*1e-12} THz, min recommanded spacing {params["min_spacing"]*1e-9}GHz.
             max recommanded nb of channels is {max_recommanded_nb_channels}
             Computation stopped.''')
-            logger.critical(msg)
             exit()
+            LOGGER.critical(msg)
 
 
 def disjunctions_from_json(json_data):
@@ -169,8 +169,8 @@ def load_requests(filename, eqpt_filename, bidir):
     """ loads the requests from a json or an excel file into a data string
     """
     if filename.suffix.lower() == '.xls':
-        logger.info('Automatically converting requests from XLS to JSON')
         json_data = convert_service_sheet(filename, eqpt_filename, bidir=bidir)
+        LOGGER.info('Automatically converting requests from XLS to JSON')
     else:
         with open(filename, encoding='utf-8') as my_f:
             json_data = loads(my_f.read())
@@ -219,7 +219,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                           f' {pathreq.tsp_mode}\n\tcomputedSNR in 0.1nm = {temp_snr01nm} ' +\
                           f'- required osnr {pathreq.OSNR}'
                     print(msg)
-                    logger.warning(msg)
+                    LOGGER.warning(msg)
                     pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
             else:
                 total_path, mode = propagate_and_optimize_mode(total_path, pathreq, equipment)
@@ -265,7 +265,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                           f' {pathreq.tsp_mode}\n' +\
                           f'\tcomputedSNR in 0.1nm = {temp_snr01nm} - required osnr {pathreq.OSNR}'
                     print(msg)
-                    logger.warning(msg)
+                    LOGGER.warning(msg)
                     # TODO selection of mode should also be on reversed direction !!
                     pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
             else:
@@ -273,7 +273,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         else:
             msg = 'Total path is empty. No propagation'
             print(msg)
-            logger.info(msg)
+            LOGGER.info(msg)
             reversed_path = []
             propagated_reversed_path = []
 
@@ -316,19 +316,19 @@ def correct_route_list(network, pathreqlist):
                 else:
                     msg = f'\x1b[1;33;40m'+f'could not find node: {n_id} in network topology.' +\
                           f' Strict constraint can not be applied.' + '\x1b[0m'
-                    logger.critical(msg)
+                    LOGGER.critical(msg)
                     raise ValueError(msg)
         if pathreq.source not in transponders:
             msg = f'\x1b[1;31;40m' + f'Request: {pathreq.request_id}: could not find' +\
                   f' transponder source: {pathreq.source}.'+'\x1b[0m'
-            logger.critical(msg)
+            LOGGER.critical(msg)
             print(f'{msg}\nComputation stopped.')
             exit()
 
         if pathreq.destination not in transponders:
             msg = f'\x1b[1;31;40m'+f'Request: {pathreq.request_id}: could not find' +\
                   f' transponder destination: {pathreq.destination}.'+'\x1b[0m'
-            logger.critical(msg)
+            LOGGER.critical(msg)
             print(f'{msg}\nComputation stopped.')
             exit()
 

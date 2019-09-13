@@ -214,7 +214,7 @@ def convert_service_sheet(input_filename, eqpt_filename, output_filename='', bid
             'path-request': [n.json[0] for n in req]
             }
     with open(output_filename, 'w', encoding='utf-8') as f:
-            f.write(dumps(data, indent=2, ensure_ascii=False))
+        f.write(dumps(data, indent=2, ensure_ascii=False))
     return data
 
 def correct_xlrd_int_to_str_reading(v) :
@@ -239,25 +239,29 @@ def parse_excel(input_filename):
     return services
 
 def parse_service_sheet(service_sheet):
-        logger.info(f'Validating headers on {service_sheet.name!r}')
-        # add a test on field to enable the '' field case that arises when columns on the 
-        # right hand side are used as comments or drawing in the excel sheet
-        header = [x.value.strip() for x in service_sheet.row(4)[0:SERVICES_COLUMN] if len(x.value.strip())>0]
+    """ reads each column according to authorized fieldnames. order is not important.
+    """
+    logger.info(f'Validating headers on {service_sheet.name!r}')
+    # add a test on field to enable the '' field case that arises when columns on the
+    # right hand side are used as comments or drawing in the excel sheet
+    header = [x.value.strip() for x in service_sheet.row(4)[0:SERVICES_COLUMN]
+                if len(x.value.strip()) > 0]
 
-        # create a service_fieldname independant from the excel column order
-        # to be compatible with any version of the sheet
-        # the following dictionnary records the excel field names and the corresponding parameter's name
+    # create a service_fieldname independant from the excel column order
+    # to be compatible with any version of the sheet
+    # the following dictionnary records the excel field names and the corresponding parameter's name
 
-        authorized_fieldnames = {'route id':'request_id', 'Source':'source', 'Destination':'destination', \
-         'TRX type':'trx_type', 'Mode' : 'mode', 'System: spacing':'spacing', \
-         'System: input power (dBm)':'power', 'System: nb of channels':'nb_channel',\
-         'routing: disjoint from': 'disjoint_from', 'routing: path':'nodes_list',\
-         'routing: is loose?':'is_loose', 'path bandwidth':'path_bandwidth'}
-        try :
-            service_fieldnames = [authorized_fieldnames[e] for e in header]
-        except KeyError:
-            msg = f'Malformed header on Service sheet: {header} field not in {authorized_fieldnames}'
-            logger.critical(msg)
-            raise ValueError(msg)
-        for row in all_rows(service_sheet, start=5):
-            yield Request(**parse_row(row[0:SERVICES_COLUMN], service_fieldnames))
+    authorized_fieldnames = {
+        'route id':'request_id', 'Source':'source', 'Destination':'destination', \
+        'TRX type':'trx_type', 'Mode' : 'mode', 'System: spacing':'spacing', \
+        'System: input power (dBm)':'power', 'System: nb of channels':'nb_channel',\
+        'routing: disjoint from': 'disjoint_from', 'routing: path':'nodes_list',\
+        'routing: is loose?':'is_loose', 'path bandwidth':'path_bandwidth'}
+    try:
+        service_fieldnames = [authorized_fieldnames[e] for e in header]
+    except KeyError:
+        msg = f'Malformed header on Service sheet: {header} field not in {authorized_fieldnames}'
+        logger.critical(msg)
+        raise ValueError(msg)
+    for row in all_rows(service_sheet, start=5):
+        yield Request(**parse_row(row[0:SERVICES_COLUMN], service_fieldnames))
