@@ -260,12 +260,14 @@ def compute_constrained_path(network, req):
         # for debug excel print(n)
         nodes_list.append(next(el for el in anytypenode if el.uid == n))
     # nodes_list contains at least the destination
-        msg = f'Request {req.request_id} problem in the constitution of nodes_list: should at least include destination'
     if nodes_list is None:
+        msg = f'Request {req.request_id} problem in the constitution of nodes_list: ' +\
+              'should at least include destination'
         logger.critical(msg)
         exit()
     if req.nodes_list[-1] != req.destination:
-        msg = f'Request {req.request_id} malformed list of nodes: last node should be destination trx'
+        msg = f'Request {req.request_id} malformed list of nodes: last node should '+\
+              'be destination trx'
         logger.critical(msg)
         exit()
 
@@ -281,7 +283,8 @@ def compute_constrained_path(network, req):
             #     print(network.get_edge_data(s,e))
             #     s = e
         except NetworkXNoPath:
-            msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path from {source.uid} to node : {destination.uid} in network topology'+ '\x1b[0m'
+            msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path from' +\
+                  f' {source.uid} to node: {destination.uid} in network topology'+ '\x1b[0m'
             logger.critical(msg)
             print(msg)
             req.blocking_reason = 'NO_PATH'
@@ -297,7 +300,8 @@ def compute_constrained_path(network, req):
         # select the shortest path (in nb of hops) -> changed to shortest path in km length
         if len(candidate) > 0:
             # candidate.sort(key=lambda x: len(x))
-            candidate.sort(key=lambda x: sum(network.get_edge_data(x[i],x[i+1])['weight'] for i in range(len(x)-2)))
+            candidate.sort(key=lambda x: sum(network.get_edge_data(x[i], x[i+1])['weight']\
+                                         for i in range(len(x)-2)))
             total_path = candidate[0]
         else:
             # TODO: better account for individual loose and strict node
@@ -498,11 +502,13 @@ def jsontoparams(my_p, tsp, mode, equipment):
     temp2 = list(OrderedDict.fromkeys(temp2))
     sptrm = ' | '.join(temp2)
 
-    # find the tsp minOSNR, baud rate... from the eqpt library based on tsp (type) and mode (format)
+    # find the tsp minOSNR, baud rate... from the eqpt library based
+    # on tsp (type) and mode (format).
     # loading equipment already tests the existence of tsp type and mode:
     if mode is not None:
-        [minosnr, baud_rate, bit_rate, cost] = next([m['OSNR'], m['baud_rate'], m['bit_rate'], m['cost']]
-            for m in equipment['Transceiver'][tsp].mode if m['format'] == mode)
+        [minosnr, baud_rate, bit_rate, cost] = \
+            next([m['OSNR'], m['baud_rate'], m['bit_rate'], m['cost']]
+                 for m in equipment['Transceiver'][tsp].mode if  m['format'] == mode)
     else:
         [minosnr, baud_rate, bit_rate, cost] = ['', '', '', '']
     output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth = \
