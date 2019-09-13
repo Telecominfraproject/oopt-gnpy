@@ -549,8 +549,8 @@ def jsontocsv(json_data, equipment, fileout):
                 rosnr = ''
                 rsnr = ''
                 rsnrb = ''
-                br = ''
-                pw = ''
+                brate = ''
+                pwr = ''
                 pth = ''
                 revosnr  = ''
                 revsnr   = ''
@@ -581,8 +581,8 @@ def jsontocsv(json_data, equipment, fileout):
                     rosnr = round(output_osnr, 2)
                     rsnr = round(output_snr, 2)
                     rsnrb = round(output_snrbandwidth, 2)
-                    br = round(baud_rate * 1e-9, 2)
-                    pw = round(lin2db(power) + 30, 2)
+                    brate = round(baud_rate * 1e-9, 2)
+                    pwr = round(lin2db(power) + 30, 2)
                     if 'z-a-path-metric' in pth_el['no-path']['path-properties'].keys():
                         output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth = \
                             jsontopath_metric(pth_el['no-path']['path-properties']['z-a-path-metric'])
@@ -615,8 +615,8 @@ def jsontocsv(json_data, equipment, fileout):
             rosnr = round(output_osnr, 2)
             rsnr = round(output_snr, 2)
             rsnrb = round(output_snrbandwidth, 2)
-            br = round(baud_rate * 1e-9, 2)
-            pw = round(lin2db(power) + 30, 2)
+            brate = round(baud_rate * 1e-9, 2)
+            pwr = round(lin2db(power) + 30, 2)
             total_cost = nb_tsp * cost
             if 'z-a-path-metric' in pth_el['path-properties'].keys():
                 output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth = \
@@ -640,8 +640,8 @@ def jsontocsv(json_data, equipment, fileout):
             rosnr,
             rsnr,
             rsnrb,
-            br,
-            pw,
+            brate,
+            pwr,
             pth,
             sptrm,
             revosnr,
