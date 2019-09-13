@@ -42,16 +42,25 @@ from math import ceil
 
 logger = getLogger(__name__)
 
-parser = ArgumentParser(description = 'A function that computes performances for a list of services provided in a json file or an excel sheet.')
-parser.add_argument('network_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls', help='input topology file in xls or json')
-parser.add_argument('service_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls', help='input service file in xls or json')
-parser.add_argument('eqpt_filename', nargs='?', type = Path, default=Path(__file__).parent / 'eqpt_config.json', help='input equipment library in json. Default is eqpt_config.json')
-parser.add_argument('-bi', '--bidir', action='store_true', help='considers that all demands are bidir')
-parser.add_argument('-v', '--verbose', action='count', default=0, help='increases verbosity for each occurence')
-parser.add_argument('-o', '--output', type = Path)
+parser = ArgumentParser(description='A function that computes performances for a list of ' +
+                        'services provided in a json file or an excel sheet.')
+parser.add_argument('network_filename', nargs='?', type=Path,\
+                    default=Path(__file__).parent / 'meshTopologyExampleV2.xls',\
+                    help='input topology file in xls or json')
+parser.add_argument('service_filename', nargs='?', type=Path,\
+                    default=Path(__file__).parent / 'meshTopologyExampleV2.xls',\
+                    help='input service file in xls or json')
+parser.add_argument('eqpt_filename', nargs='?', type=Path,\
+                    default=Path(__file__).parent / 'eqpt_config.json',\
+                    help='input equipment library in json. Default is eqpt_config.json')
+parser.add_argument('-bi', '--bidir', action='store_true',\
+                    help='considers that all demands are bidir')
+parser.add_argument('-v', '--verbose', action='count', default=0,\
+                    help='increases verbosity for each occurence')
+parser.add_argument('-o', '--output', type=Path)
 
 
-def requests_from_json(json_data,equipment):
+def requests_from_json(json_data, equipment):
     requests_list = []
 
     for req in json_data['path-request']:
@@ -109,14 +118,13 @@ def requests_from_json(json_data,equipment):
 def consistency_check(params, f_max_from_si):
     f_min = params['f_min']
     f_max = params['f_max']
-    max_recommanded_nb_channels = automatic_nch(f_min,f_max,
-                params['spacing'])
+    max_recommanded_nb_channels = automatic_nch(f_min, f_max, params['spacing'])
     if params['baud_rate'] is not None:
         #implicitely means that a mode is defined with min_spacing
-        if params['min_spacing']>params['spacing'] : 
-            msg = f'Request {params["request_id"]} has spacing below transponder {params["trx_type"]}'+\
-                f' {params["trx_mode"]} min spacing value {params["min_spacing"]*1e-9}GHz.\n'+\
-                'Computation stopped'
+        if params['min_spacing'] > params['spacing']:
+            msg = f'Request {params["request_id"]} has spacing below transponder ' +\
+                  f'{params["trx_type"]} {params["trx_mode"]} min spacing value ' +\
+                  f'{params["min_spacing"]*1e-9}GHz.\nComputation stopped'
             print(msg)
             logger.critical(msg)
             exit()
@@ -154,26 +162,26 @@ def load_requests(filename, eqpt_filename, bidir):
         logger.info('Automatically converting requests from XLS to JSON')
         json_data = convert_service_sheet(filename, eqpt_filename, bidir=bidir)
     else:
-        with open(filename, encoding='utf-8') as f:
-            json_data = loads(f.read())
+        with open(filename, encoding='utf-8') as my_f:
+            json_data = loads(my_f.read())
     return json_data
 
 def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
-    
     # use a list but a dictionnary might be helpful to find path based on request_id
     # TODO change all these req, dsjct, res lists into dict !
     path_res_list = []
 
     for i,pathreq in enumerate(pathreqlist):
 
-        # use the power specified in requests but might be different from the one specified for design
-        # the power is an optional parameter for requests definition
-        # if optional, use the one defines in eqt_config.json
+        # use the power specified in requests but might be different from the one
+        # specified for design the power is an optional parameter for requests
+        # definition if optional, use the one defines in eqt_config.json
         p_db = lin2db(pathreq.power*1e3)
         p_total_db = p_db + lin2db(pathreq.nb_channel)
         print(f'request {pathreq.request_id}')
         print(f'Computing path from {pathreq.source} to {pathreq.destination}')
-        print(f'with path constraint: {[pathreq.source]+pathreq.nodes_list}') #adding first node to be clearer on the output
+        # adding first node to be clearer on the output
+        print(f'with path constraint: {[pathreq.source] + pathreq.nodes_list}')
 
         # pathlist[i] contains the whole path information for request i
         # last element is a transciver and where the result of the propagation is
@@ -189,11 +197,15 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         if total_path :
             if pathreq.baud_rate is not None:
                 # means that at this point the mode was entered/forced by user and thus a baud_rate was defined
-                total_path = propagate(total_path,pathreq,equipment)
+                total_path = propagate(total_path, pathreq, equipment)
                 temp_snr01nm = round(mean(total_path[-1].snr+lin2db(pathreq.baud_rate/(12.5e9))),2)
                 if temp_snr01nm < pathreq.OSNR :
-                    msg = f'\tWarning! Request {pathreq.request_id} computed path from {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}\n' +\
-                    f'\tcomputedSNR in 0.1nm = {temp_snr01nm} - required osnr {pathreq.OSNR}'
+                # means that at this point the mode was entered/forced by user and thus a 
+                # baud_rate was defined
+                    msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
+                          f' {pathreq.source} to {pathreq.destination} does not pass with' +\
+                          f' {pathreq.tsp_mode}\n\tcomputedSNR in 0.1nm = {temp_snr01nm} ' +\
+                          f'- required osnr {pathreq.OSNR}'
                     print(msg)
                     logger.warning(msg)
                     pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
@@ -202,8 +214,8 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 # if no baudrate satisfies spacing, no mode is returned and the last explored mode
                 # a warning is shown in the propagate_and_optimize_mode
                 # propagate_and_optimize_mode function returns the mode with the highest bitrate
-                # that passes. if no mode passes, then a attribute blocking_reason is added on pathreq
-                # that contains the reason for blocking: 'NO_PATH', 'NO_FEASIBLE_MODE', ...
+                # that passes. if no mode passes, then a attribute blocking_reason is added on
+                # pathreq that contains the reason for blocking: 'NO_PATH', 'NO_FEASIBLE_MODE', ...
                 try:
                     if pathreq.blocking_reason in BLOCKING_NOPATH:
                         total_path = []
@@ -236,8 +248,8 @@ def correct_route_list(network, pathreqlist):
     # remove wrong names, remove endpoints
     # also correct source and destination
     anytype = [n.uid for n in network.nodes()]
-    # TODO there is a problem of identification of fibers in case of parallel fibers bitween two adjacent roadms
-    # so fiber constraint is not supported
+    # TODO there is a problem of identification of fibers in case of parallel fibers
+    # between two adjacent roadms so fiber constraint is not supported
     transponders = [n.uid for n in network.nodes() if isinstance(n, Transceiver)]
     for pathreq in pathreqlist:
         for i,n_id in enumerate(pathreq.nodes_list):
@@ -255,26 +267,31 @@ def correct_route_list(network, pathreqlist):
                         \n\'{n_id}\', replaced with \'{new_n}\'')
                         pathreq.nodes_list[i] = new_n
                     else:
-                        print(f'\x1b[1;33;40m'+f'invalid route node specified \'{n_id}\', could not use it as constraint, skipped!'+'\x1b[0m')
+                        print(f'\x1b[1;33;40m'+f'invalid route node specified \'{n_id}\',' +\
+                              f' could not use it as constraint, skipped!'+'\x1b[0m')
                         pathreq.nodes_list.remove(n_id)
                         pathreq.loose_list.pop(i)
                 else:
-                    msg = f'\x1b[1;33;40m'+f'could not find node : {n_id} in network topology. Strict constraint can not be applied.'+'\x1b[0m'
+                    msg = f'\x1b[1;33;40m'+f'could not find node: {n_id} in network topology.' +\
+                          f' Strict constraint can not be applied.' + '\x1b[0m'
                     logger.critical(msg)
                     raise ValueError(msg)
         if pathreq.source not in transponders:
-            msg = f'\x1b[1;31;40m'+f'Request: {pathreq.request_id}: could not find transponder source : {pathreq.source}.'+'\x1b[0m'
-            logger.critical(msg)
-            print(f'{msg}\nComputation stopped.')
-            exit()
-            
-        if pathreq.destination not in transponders:
-            msg = f'\x1b[1;31;40m'+f'Request: {pathreq.request_id}: could not find transponder destination : {pathreq.destination}.'+'\x1b[0m'
+            msg = f'\x1b[1;31;40m' + f'Request: {pathreq.request_id}: could not find' +\
+                  f' transponder source: {pathreq.source}.'+'\x1b[0m'
             logger.critical(msg)
             print(f'{msg}\nComputation stopped.')
             exit()
 
-        # TODO remove endpoints from this list in case they were added by the user in the xls or json files
+        if pathreq.destination not in transponders:
+            msg = f'\x1b[1;31;40m'+f'Request: {pathreq.request_id}: could not find' +\
+                  f' transponder destination: {pathreq.destination}.'+'\x1b[0m'
+            logger.critical(msg)
+            print(f'{msg}\nComputation stopped.')
+            exit()
+
+        # TODO remove endpoints from this list in case they were added by the user 
+        # in the xls or json files
     return pathreqlist
 
 def correct_disjn(disjn):
@@ -298,7 +315,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
     basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(args.verbose, DEBUG))
     logger.info(f'Computing path requests {args.service_filename} into JSON format')
-    print('\x1b[1;34;40m'+f'Computing path requests {args.service_filename} into JSON format'+ '\x1b[0m')
+    print('\x1b[1;34;40m' +\
+          f'Computing path requests {args.service_filename} into JSON format'+ '\x1b[0m')
     # for debug
     # print( args.eqpt_filename)
 
@@ -386,8 +404,9 @@ if __name__ == '__main__':
     pth_assign_spectrum(pths, rqs, oms_list,reversed_pths)
 
     print('\x1b[1;34;40m'+f'Result summary'+ '\x1b[0m')
-    header = ['req id', '  demand','  snr@bandwidth A-Z (Z-A)', '  snr@0.1nm A-Z (Z-A)', 
-              '  Receiver minOSNR', '  mode', '  Gbit/s', '  nb of tsp pairs', 'N,M or blocking reason']
+    header = ['req id', '  demand', '  snr@bandwidth A-Z (Z-A)', '  snr@0.1nm A-Z (Z-A)',\
+              '  Receiver minOSNR', '  mode', '  Gbit/s', '  nb of tsp pairs',\
+              'N,M or blocking reason']
     data = []
     data.append(header)
     for i, p in enumerate(propagatedpths):
@@ -423,7 +442,8 @@ if __name__ == '__main__':
         secondcol = ''.join(row[1].ljust(secondcol_width))
         remainingcols = ''.join(word.center(col_width,' ') for word in row[2:])
         print(f'{firstcol} {secondcol} {remainingcols}')
-    print('\x1b[1;33;40m'+f'Result summary shows mean SNR and OSNR (average over all channels)'+ '\x1b[0m')
+    print('\x1b[1;33;40m'+f'Result summary shows mean SNR and OSNR (average over all channels)' +\
+          '\x1b[0m')
 
     if args.output :
         result = []
