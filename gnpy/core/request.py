@@ -485,6 +485,9 @@ def jsontopath_metric(path_metric):
     return output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth
 
 def jsontoparams(my_p, tsp, mode, equipment):
+    """ a function that derives optical params from transponder type and mode
+        supports the no mode case  
+    """
     temp = []
     for elem in my_p['path-properties']['path-route-objects']:
         if 'num-unnum-hop' in elem['path-route-object']:
@@ -518,11 +521,11 @@ def jsontoparams(my_p, tsp, mode, equipment):
         output_snrbandwidth, output_osnr, power, path_bandwidth, sptrm
 
 def jsontocsv(json_data, equipment, fileout):
-    # read json path result file in accordance with:
-    # Yang model for requesting Path Computation
-    # draft-ietf-teas-yang-path-computation-01.txt.
-    # and write results in an CSV file
-
+    """ reads json path result file in accordance with:
+        Yang model for requesting Path Computation
+        draft-ietf-teas-yang-path-computation-01.txt.
+        and write results in an CSV file
+    """
     mywriter = writer(fileout)
     mywriter.writerow(('response-id', 'source', 'destination', 'path_bandwidth', 'Pass?',\
                        'nb of tsp pairs', 'total cost', 'transponder-type', 'transponder-mode',\
