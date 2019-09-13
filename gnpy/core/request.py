@@ -234,8 +234,8 @@ class Result_element(Element):
                 return response
         except AttributeError:
             response = {
-                    'response-id': self.path_id,
-                    'path-properties': self.path_properties
+                'response-id': self.path_id,
+                'path-properties': self.path_properties
                 }
             return response
 
@@ -413,25 +413,25 @@ def propagate2(path, req, equipment):
 def propagate_and_optimize_mode(path, req, equipment):
     # if mode is unknown : loops on the modes starting from the highest baudrate fiting in the
     # step 1: create an ordered list of modes based on baudrate
-    baudrate_to_explore = list(set([m['baud_rate'] for m in equipment['Transceiver'][req.tsp].mode 
-        if float(m['min_spacing'])<= req.spacing]))
+    baudrate_to_explore = list(set([m['baud_rate'] for m in equipment['Transceiver'][req.tsp].mode
+                                    if float(m['min_spacing']) <= req.spacing]))
         # TODO be carefull on limits cases if spacing very close to req spacing eg 50.001 50.000
     baudrate_to_explore = sorted(baudrate_to_explore, reverse=True)
     if baudrate_to_explore:
         # at least 1 baudrate can be tested wrt spacing
-            modes_to_explore = [m for m in equipment['Transceiver'][req.tsp].mode 
-                if m['baud_rate'] == b and float(m['min_spacing'])<= req.spacing]
-            modes_to_explore = sorted(modes_to_explore, 
-                key = lambda x: x['bit_rate'], reverse=True)
         for b in baudrate_to_explore:
+            modes_to_explore = [m for m in equipment['Transceiver'][req.tsp].mode
+                                if m['baud_rate'] == b and float(m['min_spacing']) <= req.spacing]
+            modes_to_explore = sorted(modes_to_explore,
+                                      key=lambda x: x['bit_rate'], reverse=True)
             # print(modes_to_explore)
             # step2: computes propagation for each baudrate: stop and select the first that passes
             found_a_feasible_mode = False
-            si = create_input_spectral_information(
-            req.f_min, req.f_max, equipment['SI']['default'].roll_off,
-            b, req.power, req.spacing)
             # TODO: the case of roll of is not included: for now use SI one
             # TODO: if the loop in mode optimization does not have a feasible path, then bugs
+            si = create_input_spectral_information(req.f_min, req.f_max,
+                                                   equipment['SI']['default'].roll_off,
+                                                   b, req.power, req.spacing)
             for el in path:
                 si = el(si)
             for m in modes_to_explore :
@@ -587,9 +587,9 @@ def jsontocsv(json_data, equipment, fileout):
         else:
             # when label will be assigned destination will be with index -3, and transponder with index 2
             source = pth_el['path-properties']['path-route-objects'][0]\
-                     ['path-route-object']['num-unnum-hop']['node-id']
+                           ['path-route-object']['num-unnum-hop']['node-id']
             destination = pth_el['path-properties']['path-route-objects'][-3]\
-                          ['path-route-object']['num-unnum-hop']['node-id']
+                                ['path-route-object']['num-unnum-hop']['node-id']
             # selects only roadm nodes
             temp_tsp = pth_el['path-properties']['path-route-objects'][2]\
                        ['path-route-object']['transponder']
