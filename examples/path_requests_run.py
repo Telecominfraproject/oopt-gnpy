@@ -74,7 +74,7 @@ def requests_from_json(json_data, equipment):
         params['trx_mode'] = req['path-constraints']['te-bandwidth']['trx_mode']
         params['format'] = params['trx_mode']
         params['spacing'] = req['path-constraints']['te-bandwidth']['spacing']
-        try :
+        try:
             nd_list = req['explicit-route-objects']['route-object-include-exclude']
         except KeyError:
             nd_list = []
@@ -83,10 +83,10 @@ def requests_from_json(json_data, equipment):
         # recover trx physical param (baudrate, ...) from type and mode
         # in trx_mode_params optical power is read from equipment['SI']['default'] and
         # nb_channel is computed based on min max frequency and spacing
-        trx_params = trx_mode_params(equipment,params['trx_type'],params['trx_mode'],True)
+        trx_params = trx_mode_params(equipment, params['trx_type'], params['trx_mode'], True)
         params.update(trx_params)
         # print(trx_params['min_spacing'])
-        # optical power might be set differently in the request. if it is indicated then the 
+        # optical power might be set differently in the request. if it is indicated then the
         # params['power'] is updated
         try:
             if req['path-constraints']['te-bandwidth']['output-power']:
@@ -102,13 +102,13 @@ def requests_from_json(json_data, equipment):
                 params['nb_channel'] = nch
                 spacing = params['spacing']
                 params['f_max'] = f_min + nch*spacing
-            else :
-                params['nb_channel'] = automatic_nch(f_min,f_max_from_si,params['spacing'])
+            else:
+                params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
         except KeyError:
-            params['nb_channel'] = automatic_nch(f_min,f_max_from_si,params['spacing'])
+            params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
         consistency_check(params, f_max_from_si)
 
-        try :
+        try:
             params['path_bandwidth'] = req['path-constraints']['te-bandwidth']['path_bandwidth']
         except KeyError:
             pass
@@ -128,14 +128,14 @@ def consistency_check(params, f_max_from_si):
             print(msg)
             logger.critical(msg)
             exit()
-        if f_max>f_max_from_si:
+        if f_max > f_max_from_si:
             msg = dedent(f'''
             Requested channel number {params["nb_channel"]}, baud rate {params["baud_rate"]} GHz and requested spacing {params["spacing"]*1e-9}GHz 
             is not consistent with frequency range {f_min*1e-12} THz, {f_max*1e-12} THz, min recommanded spacing {params["min_spacing"]*1e-9}GHz.
             max recommanded nb of channels is {max_recommanded_nb_channels}
             Computation stopped.''')
             logger.critical(msg)
-            exit()    
+            exit()
 
 
 def disjunctions_from_json(json_data):
@@ -171,7 +171,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
     # TODO change all these req, dsjct, res lists into dict !
     path_res_list = []
 
-    for i,pathreq in enumerate(pathreqlist):
+    for i, pathreq in enumerate(pathreqlist):
 
         # use the power specified in requests but might be different from the one
         # specified for design the power is an optional parameter for requests
@@ -194,14 +194,13 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}')
         # for debug
         # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
-        if total_path :
+        if total_path:
             if pathreq.baud_rate is not None:
-                # means that at this point the mode was entered/forced by user and thus a baud_rate was defined
-                total_path = propagate(total_path, pathreq, equipment)
-                temp_snr01nm = round(mean(total_path[-1].snr+lin2db(pathreq.baud_rate/(12.5e9))),2)
-                if temp_snr01nm < pathreq.OSNR :
                 # means that at this point the mode was entered/forced by user and thus a 
                 # baud_rate was defined
+                total_path = propagate(total_path, pathreq, equipment)
+                temp_snr01nm = round(mean(total_path[-1].snr+lin2db(pathreq.baud_rate/(12.5e9))), 2)
+                if temp_snr01nm < pathreq.OSNR:
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
                           f' {pathreq.source} to {pathreq.destination} does not pass with' +\
                           f' {pathreq.tsp_mode}\n\tcomputedSNR in 0.1nm = {temp_snr01nm} ' +\
@@ -210,7 +209,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                     logger.warning(msg)
                     pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
             else:
-                total_path,mode = propagate_and_optimize_mode(total_path,pathreq,equipment)
+                total_path, mode = propagate_and_optimize_mode(total_path, pathreq, equipment)
                 # if no baudrate satisfies spacing, no mode is returned and the last explored mode
                 # a warning is shown in the propagate_and_optimize_mode
                 # propagate_and_optimize_mode function returns the mode with the highest bitrate
@@ -219,7 +218,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 try:
                     if pathreq.blocking_reason in BLOCKING_NOPATH:
                         total_path = []
-                    elif pathreq.blocking_reason in BLOCKING_NOMODE :
+                    elif pathreq.blocking_reason in BLOCKING_NOMODE:
                         pathreq.baud_rate = mode['baud_rate']
                         pathreq.tsp_mode = mode['format']
                         pathreq.format = mode['format']
@@ -252,16 +251,16 @@ def correct_route_list(network, pathreqlist):
     # between two adjacent roadms so fiber constraint is not supported
     transponders = [n.uid for n in network.nodes() if isinstance(n, Transceiver)]
     for pathreq in pathreqlist:
-        for i,n_id in enumerate(pathreq.nodes_list):
+        for i, n_id in enumerate(pathreq.nodes_list):
             # replace possibly wrong name with a formated roadm name
             # print(n_id)
-            if n_id not in anytype :
+            if n_id not in anytype:
                 # find nodes name that include constraint among all possible names except
                 # transponders (not yet supported as constraints).
                 nodes_suggestion = [uid for uid in anytype \
                     if n_id.lower() in uid.lower() and uid not in transponders]
                 if pathreq.loose_list[i] == 'LOOSE':
-                    if len(nodes_suggestion)>0 :
+                    if len(nodes_suggestion) > 0:
                         new_n = nodes_suggestion[0]
                         print(f'invalid route node specified:\
                         \n\'{n_id}\', replaced with \'{new_n}\'')
@@ -323,7 +322,7 @@ if __name__ == '__main__':
     try:
         data = load_requests(args.service_filename, args.eqpt_filename, args.bidir)
         equipment = load_equipment(args.eqpt_filename)
-        network = load_network(args.network_filename,equipment)
+        network = load_network(args.network_filename, equipment)
     except EquipmentConfigError as e:
         print(f'{ansi_escapes.red}Configuration error in the equipment library:{ansi_escapes.reset} {e}')
         exit(1)
@@ -335,7 +334,7 @@ if __name__ == '__main__':
         exit(1)
 
     # Build the network once using the default power defined in SI in eqpt config
-    # TODO power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
+    # TODO power density: db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
     # spacing, f_min and f_max
     p_db = equipment['SI']['default'].power_dbm
 
@@ -348,7 +347,7 @@ if __name__ == '__main__':
     rqs = requests_from_json(data, equipment)
 
     # check that request ids are unique. Non unique ids, may
-    # mess the computation : better to stop the computation
+    # mess the computation: better to stop the computation
     all_ids = [r.request_id for r in rqs]
     if len(all_ids) != len(set(all_ids)):
         for a in list(set(all_ids)):
@@ -361,25 +360,24 @@ if __name__ == '__main__':
     # pths = compute_path(network, equipment, rqs)
     dsjn = disjunctions_from_json(data)
 
-    print('\x1b[1;34;40m'+f'List of disjunctions'+ '\x1b[0m')
+    print('\x1b[1;34;40m' + f'List of disjunctions' + '\x1b[0m')
     print(dsjn)
     # need to warn or correct in case of wrong disjunction form
     # disjunction must not be repeated with same or different ids
     dsjn = correct_disjn(dsjn)
 
     # Aggregate demands with same exact constraints
-    print('\x1b[1;34;40m'+f'Aggregating similar requests'+ '\x1b[0m')
+    print('\x1b[1;34;40m' + f'Aggregating similar requests' + '\x1b[0m')
 
-    rqs,dsjn = requests_aggregation(rqs,dsjn)
+    rqs, dsjn = requests_aggregation(rqs, dsjn)
     # TODO export novel set of aggregated demands in a json file
 
-    print('\x1b[1;34;40m'+'The following services have been requested:'+ '\x1b[0m')
+    print('\x1b[1;34;40m' + 'The following services have been requested:' + '\x1b[0m')
     print(rqs)
 
-    print('\x1b[1;34;40m'+f'Computing all paths with constraints'+ '\x1b[0m')
+    print('\x1b[1;34;40m' + f'Computing all paths with constraints' + '\x1b[0m')
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
 
-    print('\x1b[1;34;40m'+f'Propagating on selected path'+ '\x1b[0m')
     propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
     # Note that deepcopy used in compute_path_with_disjunction retrns a list of nodes which are not belonging to 
     # network (they are copies of the node objects). so there can not be propagation on these nodes.
@@ -400,6 +398,7 @@ if __name__ == '__main__':
         else:
             reversed_propagatedpths.append([])
             reversed_pths.append([])
+    print('\x1b[1;34;40m' + f'Propagating on selected path' + '\x1b[0m')
 
     pth_assign_spectrum(pths, rqs, oms_list,reversed_pths)
 
@@ -435,17 +434,17 @@ if __name__ == '__main__':
         data.append(line)
 
     col_width = max(len(word) for row in data for word in row[2:])   # padding
-    firstcol_width = max(len(row[0]) for row in data )   # padding
-    secondcol_width = max(len(row[1]) for row in data )   # padding
+    firstcol_width = max(len(row[0]) for row in data)   # padding
+    secondcol_width = max(len(row[1]) for row in data)   # padding
     for row in data:
         firstcol = ''.join(row[0].ljust(firstcol_width))
         secondcol = ''.join(row[1].ljust(secondcol_width))
-        remainingcols = ''.join(word.center(col_width,' ') for word in row[2:])
+        remainingcols = ''.join(word.center(col_width, ' ') for word in row[2:])
         print(f'{firstcol} {secondcol} {remainingcols}')
     print('\x1b[1;33;40m'+f'Result summary shows mean SNR and OSNR (average over all channels)' +\
           '\x1b[0m')
 
-    if args.output :
+    if args.output:
         result = []
         # assumes that list of rqs and list of propgatedpths have same order
         for i,p in enumerate(propagatedpths):
@@ -455,6 +454,6 @@ if __name__ == '__main__':
         fnamejson = f'{str(args.output)[0:len(str(args.output))-len(str(args.output.suffix))]}.json'
         with open(fnamejson, 'w', encoding='utf-8') as f:
             f.write(dumps(path_result_json(result), indent=2, ensure_ascii=False))
-            with open(fnamecsv,"w", encoding='utf-8') as fcsv :
-                jsontocsv(temp,equipment,fcsv)
+            with open(fnamecsv, "w", encoding='utf-8') as fcsv:
+                jsontocsv(temp, equipment, fcsv)
                 print('\x1b[1;34;40m'+f'saving in {args.output} and {fnamecsv}'+ '\x1b[0m')
