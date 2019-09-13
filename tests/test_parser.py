@@ -29,6 +29,7 @@ from gnpy.core.equipment import load_equipment, automatic_nch
 from gnpy.core.network import load_network
 from gnpy.core.request import (jsontocsv, requests_aggregation,
                                compute_path_dsjctn, Result_element)
+from gnpy.core.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from examples.path_requests_run import (requests_from_json, disjunctions_from_json,
                                         correct_route_list, correct_disjn,
                                         compute_path_with_disjunction)
@@ -172,6 +173,8 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
     assert not results.synchronizations.extra
     assert not results.synchronizations.different
 
+    # TODO verify that requested bandwidth is not zero !
+
 # test xls answers creation
 @pytest.mark.parametrize('json_input, csv_output', {
     DATA_DIR / 'testTopology_response.json':     DATA_DIR / 'testTopology_response',
@@ -206,12 +209,18 @@ def test_csv_response_generation(json_input, csv_output):
     #  'SNR-bandwidth',
     #  'baud rate (Gbaud)',
     #  'input power (dBm)',
-    #  'path'
+    #  'path',
+    #  'spectrum (N,M)',
+    #  'reversed path OSNR-0.1nm',
+    #  'reversed path SNR-0.1nm',
+    #  'reversed path SNR-bandwidth'
     # ]
 
     resp = read_csv(csv_filename)
+    print(resp)
     unlink(csv_filename)
     expected_resp = read_csv(expected_csv_filename)
+    print(expected_resp)
     resp_header = list(resp.head(0))
     expected_resp_header = list(expected_resp.head(0))
     # check that headers are the same
@@ -276,13 +285,16 @@ def test_json_response_generation(xls_input, expected_response_file):
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
         equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
+    oms_list = build_oms_list(network, equipment)
     rqs = requests_from_json(data, equipment)
     rqs = correct_route_list(network, rqs)
     dsjn = disjunctions_from_json(data)
     dsjn = correct_disjn(dsjn)
     rqs, dsjn = requests_aggregation(rqs, dsjn)
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
-    propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
+    propagatedpths, reversed_pths, reversed_propagatedpths = \
+        compute_path_with_disjunction(network, equipment, rqs, pths)
+    pth_assign_spectrum(pths, rqs, oms_list, reversed_pths)
     result = []
     for i, pth in enumerate(propagatedpths):
         result.append(Result_element(rqs[i], pth))
