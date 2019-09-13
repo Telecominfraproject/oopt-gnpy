@@ -30,7 +30,8 @@ from gnpy.core.request import (Path_request, Result_element, compute_constrained
                                requests_aggregation, propagate_and_optimize_mode,
                                BLOCKING_NOPATH, BLOCKING_NOMODE, BLOCKING_NOSPECTRUM,
                                find_reversed_path)
-from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
+from gnpy.core.exceptions import (ConfigurationError, EquipmentConfigError, NetworkTopologyError,
+                                  ServiceError)
 import gnpy.core.ansi_escapes as ansi_escapes
 from gnpy.core.spectrum_assignment import (build_oms_list, reversed_oms, spectrum_selection,
                                            pth_assign_spectrum)
@@ -362,6 +363,9 @@ if __name__ == '__main__':
         exit(1)
     except ConfigurationError as e:
         print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
+        exit(1)
+    except ServiceError as e:
+        print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {e}')
         exit(1)
 
     # Build the network once using the default power defined in SI in eqpt config

@@ -17,3 +17,7 @@ class EquipmentConfigError(ConfigurationError):
 
 class NetworkTopologyError(ConfigurationError):
     '''Topology of user-provided network is wrong'''
+
+class ServiceError(Exception):
+    '''Service of user-provided request is wrong'''
+

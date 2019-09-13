@@ -26,6 +26,7 @@ from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
 from gnpy.core.spectrum_assignment import build_oms_list, reversed_oms
+from gnpy.core.exceptions import ServiceError
 from copy import copy, deepcopy
 from csv import writer
 from math import ceil
@@ -157,7 +158,9 @@ class Result_element(Element):
                     }
                 pro_list.append(temp)
                 index += 1
-            if isinstance(element, Transceiver) :
+            else:
+                raise ServiceError('request {self.path_id} should have positive path bandwidth value.')
+            if isinstance(element, Transceiver):
                 temp = {
                     'path-route-object': {
                         'index': index,
