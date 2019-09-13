@@ -189,7 +189,11 @@ class Request_element(Element):
     def json(self):
         return self.pathrequest , self.pathsync
 
-def convert_service_sheet(input_filename, eqpt_filename, output_filename='', bidir=False, filter_region=[]):
+def convert_service_sheet(input_filename, eqpt_filename, output_filename='', bidir=False, filter_region=None):
+    """ converts a service sheet into a json structure
+    """
+    if filter_region is None:
+        filter_region = []
     service = parse_excel(input_filename)
     req = [Request_element(n, eqpt_filename, bidir) for n in service]
     # dumps the output into a json file with name

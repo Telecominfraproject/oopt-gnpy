@@ -25,7 +25,6 @@ from gnpy.core.service_sheet import convert_service_sheet, Request_element, Elem
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
-from gnpy.core.spectrum_assignment import build_oms_list, reversed_oms
 from gnpy.core.exceptions import ServiceError
 from copy import copy, deepcopy
 from csv import writer
@@ -175,7 +174,11 @@ class Result_element(Element):
         return pro_list
     @property
     def path_properties(self):
+        """ a function that returns the path properties (metrics, crossed elements) into a dict
+        """
         def path_metric(p, r):
+            """ creates the metrics dictionary
+            """
             return [
                 {
                     'metric-type': 'SNR-bandwidth',
@@ -217,6 +220,8 @@ class Result_element(Element):
 
     @property
     def pathresult(self):
+        """ create the result dictionnary (response for a request)
+        """
         try:
             if self.path_request.blocking_reason in BLOCKING_NOPATH:
                 response = {
@@ -259,9 +264,9 @@ def compute_constrained_path(network, req):
     # It requires that the source, dest and nodes are correct (no error in the names)
     destination = next(el for el in trx if el.uid == req.destination)
     nodes_list = []
-    for n in req.nodes_list:
+    for n_elem in req.nodes_list:
         # for debug excel print(n)
-        nodes_list.append(next(el for el in anytypenode if el.uid == n))
+        nodes_list.append(next(el for el in anytypenode if el.uid == n_elem))
     # nodes_list contains at least the destination
     if nodes_list is None:
         msg = f'Request {req.request_id} problem in the constitution of nodes_list: ' +\

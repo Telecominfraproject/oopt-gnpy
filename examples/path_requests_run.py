@@ -25,7 +25,7 @@ from gnpy.core.network import load_network, build_network, save_network
 from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch
 from gnpy.core.elements import Transceiver, Roadm
 from gnpy.core.utils import db2lin, lin2db
-from gnpy.core.request import (Path_request, Result_element, compute_constrained_path,
+from gnpy.core.request import (Path_request, Result_element,
                                propagate, jsontocsv, Disjunction, compute_path_dsjctn,
                                requests_aggregation, propagate_and_optimize_mode,
                                BLOCKING_NOPATH, BLOCKING_NOMODE, BLOCKING_NOSPECTRUM,
@@ -33,8 +33,7 @@ from gnpy.core.request import (Path_request, Result_element, compute_constrained
 from gnpy.core.exceptions import (ConfigurationError, EquipmentConfigError, NetworkTopologyError,
                                   ServiceError)
 import gnpy.core.ansi_escapes as ansi_escapes
-from gnpy.core.spectrum_assignment import (build_oms_list, reversed_oms, spectrum_selection,
-                                           pth_assign_spectrum)
+from gnpy.core.spectrum_assignment import (build_oms_list, pth_assign_spectrum)
 from copy import copy, deepcopy
 from textwrap import dedent
 from math import ceil
@@ -43,25 +42,27 @@ from math import ceil
 
 logger = getLogger(__name__)
 
-parser = ArgumentParser(description='A function that computes performances for a list of ' +
+PARSER = ArgumentParser(description='A function that computes performances for a list of ' +
                         'services provided in a json file or an excel sheet.')
-parser.add_argument('network_filename', nargs='?', type=Path,\
+PARSER.add_argument('network_filename', nargs='?', type=Path,\
                     default=Path(__file__).parent / 'meshTopologyExampleV2.xls',\
                     help='input topology file in xls or json')
-parser.add_argument('service_filename', nargs='?', type=Path,\
+PARSER.add_argument('service_filename', nargs='?', type=Path,\
                     default=Path(__file__).parent / 'meshTopologyExampleV2.xls',\
                     help='input service file in xls or json')
-parser.add_argument('eqpt_filename', nargs='?', type=Path,\
+PARSER.add_argument('eqpt_filename', nargs='?', type=Path,\
                     default=Path(__file__).parent / 'eqpt_config.json',\
                     help='input equipment library in json. Default is eqpt_config.json')
-parser.add_argument('-bi', '--bidir', action='store_true',\
+PARSER.add_argument('-bi', '--bidir', action='store_true',\
                     help='considers that all demands are bidir')
-parser.add_argument('-v', '--verbose', action='count', default=0,\
+PARSER.add_argument('-v', '--verbose', action='count', default=0,\
                     help='increases verbosity for each occurence')
-parser.add_argument('-o', '--output', type=Path)
+PARSER.add_argument('-o', '--output', type=Path)
 
 
 def requests_from_json(json_data, equipment):
+    """ converts the json data into a list of requests elements
+    """
     requests_list = []
 
     for req in json_data['path-request']:
@@ -117,6 +118,9 @@ def requests_from_json(json_data, equipment):
     return requests_list
 
 def consistency_check(params, f_max_from_si):
+    """ checks that the requested parameters are consistant (spacing vs nb channel,
+        vs transponder mode...)
+    """
     f_min = params['f_min']
     f_max = params['f_max']
     max_recommanded_nb_channels = automatic_nch(f_min, f_max, params['spacing'])
@@ -140,6 +144,9 @@ def consistency_check(params, f_max_from_si):
 
 
 def disjunctions_from_json(json_data):
+    """ reads the disjunction requests from the json dict and create the list
+        of requested disjunctions for this set of requests
+    """
     disjunctions_list = []
     try:
         temp_test = json_data['synchronization']
@@ -159,6 +166,8 @@ def disjunctions_from_json(json_data):
 
 
 def load_requests(filename, eqpt_filename, bidir):
+    """ loads the requests from a json or an excel file into a data string
+    """
     if filename.suffix.lower() == '.xls':
         logger.info('Automatically converting requests from XLS to JSON')
         json_data = convert_service_sheet(filename, eqpt_filename, bidir=bidir)
@@ -168,8 +177,9 @@ def load_requests(filename, eqpt_filename, bidir):
     return json_data
 
 def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
-    # use a list but a dictionnary might be helpful to find path based on request_id
-    # TODO change all these req, dsjct, res lists into dict !
+    """ use a list but a dictionnary might be helpful to find path based on request_id
+        TODO change all these req, dsjct, res lists into dict !
+    """
     path_res_list = []
     reversed_path_res_list = []
     propagated_reversed_path_res_list = []
@@ -199,7 +209,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
         if total_path:
             if pathreq.baud_rate is not None:
-                # means that at this point the mode was entered/forced by user and thus a 
+                # means that at this point the mode was entered/forced by user and thus a
                 # baud_rate was defined
                 total_path = propagate(total_path, pathreq, equipment)
                 temp_snr01nm = round(mean(total_path[-1].snr+lin2db(pathreq.baud_rate/(12.5e9))), 2)
@@ -275,9 +285,10 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
     return path_res_list, reversed_path_res_list, propagated_reversed_path_res_list
 
 def correct_route_list(network, pathreqlist):
-    # prepares the format of route list of nodes to be consistant
-    # remove wrong names, remove endpoints
-    # also correct source and destination
+    """ prepares the format of route list of nodes to be consistant
+        remove wrong names, remove endpoints
+        also correct source and destination
+    """
     anytype = [n.uid for n in network.nodes()]
     # TODO there is a problem of identification of fibers in case of parallel fibers
     # between two adjacent roadms so fiber constraint is not supported
@@ -321,11 +332,13 @@ def correct_route_list(network, pathreqlist):
             print(f'{msg}\nComputation stopped.')
             exit()
 
-        # TODO remove endpoints from this list in case they were added by the user 
+        # TODO remove endpoints from this list in case they were added by the user
         # in the xls or json files
     return pathreqlist
 
 def correct_disjn(disjn):
+    """ clean disjunctions to remove possible repetition
+    """
     local_disjn = disjn.copy()
     for elem in local_disjn:
         for dis_elem in local_disjn:
@@ -336,6 +349,8 @@ def correct_disjn(disjn):
 
 
 def path_result_json(pathresult):
+    """ create the response dictionnary
+    """
     data = {
         'response': [n.json for n in pathresult]
     }
@@ -343,18 +358,18 @@ def path_result_json(pathresult):
 
 
 if __name__ == '__main__':
-    args = parser.parse_args()
-    basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(args.verbose, DEBUG))
-    logger.info(f'Computing path requests {args.service_filename} into JSON format')
+    ARGS = PARSER.parse_args()
+    basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(ARGS.verbose, DEBUG))
+    logger.info(f'Computing path requests {ARGS.service_filename} into JSON format')
     print('\x1b[1;34;40m' +\
-          f'Computing path requests {args.service_filename} into JSON format'+ '\x1b[0m')
+          f'Computing path requests {ARGS.service_filename} into JSON format'+ '\x1b[0m')
     # for debug
-    # print( args.eqpt_filename)
+    # print( ARGS.eqpt_filename)
 
     try:
-        data = load_requests(args.service_filename, args.eqpt_filename, args.bidir)
-        equipment = load_equipment(args.eqpt_filename)
-        network = load_network(args.network_filename, equipment)
+        data = load_requests(ARGS.service_filename, ARGS.eqpt_filename, ARGS.bidir)
+        equipment = load_equipment(ARGS.eqpt_filename)
+        network = load_network(ARGS.network_filename, equipment)
     except EquipmentConfigError as e:
         print(f'{ansi_escapes.red}Configuration error in the equipment library:{ansi_escapes.reset} {e}')
         exit(1)
@@ -376,7 +391,7 @@ if __name__ == '__main__':
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
         equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
-    save_network(args.network_filename, network)
+    save_network(ARGS.network_filename, network)
 
     oms_list = build_oms_list(network, equipment)
     rqs = requests_from_json(data, equipment)
@@ -420,7 +435,7 @@ if __name__ == '__main__':
     # a list of nodes which are not belonging to network (they are copies of the node objects).
     # so there can not be propagation on these nodes.
 
-    pth_assign_spectrum(pths, rqs, oms_list,reversed_pths)
+    pth_assign_spectrum(pths, rqs, oms_list, reversed_pths)
 
     print('\x1b[1;34;40m'+f'Result summary'+ '\x1b[0m')
     header = ['req id', '  demand', '  snr@bandwidth A-Z (Z-A)', '  snr@0.1nm A-Z (Z-A)',\
@@ -464,16 +479,16 @@ if __name__ == '__main__':
     print('\x1b[1;33;40m'+f'Result summary shows mean SNR and OSNR (average over all channels)' +\
           '\x1b[0m')
 
-    if args.output:
+    if ARGS.output:
         result = []
         # assumes that list of rqs and list of propgatedpths have same order
         for i, pth in enumerate(propagatedpths):
             result.append(Result_element(rqs[i], pth, reversed_propagatedpths[i]))
         temp = path_result_json(result)
-        fnamecsv = f'{str(args.output)[0:len(str(args.output))-len(str(args.output.suffix))]}.csv'
-        fnamejson = f'{str(args.output)[0:len(str(args.output))-len(str(args.output.suffix))]}.json'
+        fnamecsv = f'{str(ARGS.output)[0:len(str(ARGS.output))-len(str(ARGS.output.suffix))]}.csv'
+        fnamejson = f'{str(ARGS.output)[0:len(str(ARGS.output))-len(str(ARGS.output.suffix))]}.json'
         with open(fnamejson, 'w', encoding='utf-8') as f:
             f.write(dumps(path_result_json(result), indent=2, ensure_ascii=False))
             with open(fnamecsv, "w", encoding='utf-8') as fcsv:
                 jsontocsv(temp, equipment, fcsv)
-                print('\x1b[1;34;40m'+f'saving in {args.output} and {fnamecsv}'+ '\x1b[0m')
+                print('\x1b[1;34;40m'+f'saving in {ARGS.output} and {fnamecsv}'+ '\x1b[0m')
