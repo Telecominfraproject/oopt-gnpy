@@ -278,15 +278,19 @@ def compute_constrained_path(network, req):
         nodes_list.append(next(el for el in anytypenode if el.uid == n_elem))
     # nodes_list contains at least the destination
     if nodes_list is None:
+        # only arrive here if there is a bug in the program because route lists have
+        # been corrected and harmonized before
         msg = f'Request {req.request_id} problem in the constitution of nodes_list: ' +\
               'should at least include destination'
-        exit()
         LOGGER.critical(msg)
+        raise ValueError(msg)
     if req.nodes_list[-1] != req.destination:
+        # only arrive here if there is a bug in the program because route lists have
+        # been corrected and harmonized before
         msg = f'Request {req.request_id} malformed list of nodes: last node should '+\
               'be destination trx'
-        exit()
         LOGGER.critical(msg)
+        raise ValueError()
 
     if len(nodes_list) == 1:
         try:
