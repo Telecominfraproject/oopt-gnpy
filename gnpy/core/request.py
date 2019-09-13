@@ -459,6 +459,24 @@ def propagate_and_optimize_mode(path, req, equipment):
         req.blocking_reason = 'NO_FEASIBLE_BAUDRATE_WITH_SPACING'
         return [], None
 
+def jsontopath_metric(path_metric):
+    """ a functions that reads resulting metric  from json string
+    """
+    output_snr = next(e['accumulative-value']
+        for e in path_metric if e['metric-type'] == 'SNR-0.1nm')
+    output_snrbandwidth = next(e['accumulative-value']
+        for e in path_metric if e['metric-type'] == 'SNR-bandwidth')
+    output_osnr = next(e['accumulative-value']
+        for e in path_metric if e['metric-type'] == 'OSNR-0.1nm')
+    # ouput osnr@bandwidth is not used
+    # output_osnrbandwidth = next(e['accumulative-value']
+    #     for e in path_metric if e['metric-type'] == 'OSNR-bandwidth')
+    power = next(e['accumulative-value']
+        for e in path_metric if e['metric-type'] == 'reference_power')
+    path_bandwidth = next(e['accumulative-value']
+        for e in path_metric if e['metric-type'] == 'path_bandwidth')
+    return output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth
+
 def jsontoparams(my_p, tsp, mode, equipment):
     temp = []
     for elem in my_p['path-properties']['path-route-objects']:
@@ -484,19 +502,9 @@ def jsontoparams(my_p, tsp, mode, equipment):
             for m in equipment['Transceiver'][tsp].mode if m['format'] == mode)
     else:
         [minosnr, baud_rate, bit_rate, cost] = ['', '', '', '']
-    output_snr = next(e['accumulative-value']
-        for e in my_p['path-properties']['path-metric'] if e['metric-type'] == 'SNR-0.1nm')
-    output_snrbandwidth = next(e['accumulative-value']
-        for e in my_p['path-properties']['path-metric'] if e['metric-type'] == 'SNR-bandwidth')
-    output_osnr = next(e['accumulative-value']
-        for e in my_p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-0.1nm')
-    # ouput osnr@bandwidth is not used
-    # output_osnrbandwidth = next(e['accumulative-value']
-    #     for e in my_p['path-properties']['path-metric'] if e['metric-type'] == 'OSNR-bandwidth')
-    power = next(e['accumulative-value']
-        for e in my_p['path-properties']['path-metric'] if e['metric-type'] == 'reference_power')
-    path_bandwidth = next(e['accumulative-value']
-        for e in my_p['path-properties']['path-metric'] if e['metric-type'] == 'path_bandwidth')    
+    output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth = \
+        jsontopath_metric(my_p['path-properties']['path-metric'])
+
     return pth, minosnr, baud_rate, bit_rate, cost, output_snr, \
         output_snrbandwidth, output_osnr, power, path_bandwidth, sptrm
 
@@ -510,7 +518,8 @@ def jsontocsv(json_data, equipment, fileout):
     mywriter.writerow(('response-id','source','destination','path_bandwidth','Pass?',\
         'nb of tsp pairs','total cost','transponder-type','transponder-mode',\
         'OSNR-0.1nm','SNR-0.1nm','SNR-bandwidth','baud rate (Gbaud)',\
-        'input power (dBm)','path', 'spectrum (N,M)'))
+        'input power (dBm)', 'path', 'spectrum (N,M)', 'reversed path OSNR-0.1nm',\
+        'reversed path SNR-0.1nm', 'reversed path SNR-bandwidth'))
 
     for pth_el in json_data['response']:
         path_id = pth_el['response-id']
@@ -531,6 +540,9 @@ def jsontocsv(json_data, equipment, fileout):
                 br = ''
                 pw = ''
                 pth = ''
+                revosnr  = ''
+                revsnr   = ''
+                revsnrb  = ''
             else:
                 # the objects are listed with this order:
                 # - id of hop 
@@ -559,6 +571,16 @@ def jsontocsv(json_data, equipment, fileout):
                     rsnrb = round(output_snrbandwidth, 2)
                     br = round(baud_rate * 1e-9, 2)
                     pw = round(lin2db(power) + 30, 2)
+                    if 'z-a-path-metric' in pth_el['no-path']['path-properties'].keys():
+                        output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth = \
+                            jsontopath_metric(pth_el['no-path']['path-properties']['z-a-path-metric'])
+                        revosnr  = round(output_osnr, 2)
+                        revsnr   = round(output_snr, 2)
+                        revsnrb  = round(output_snrbandwidth, 2)
+                    else:
+                        revosnr  = ''
+                        revsnr   = ''
+                        revsnrb  = ''
         else:
             # when label will be assigned destination will be with index -3, and transponder with index 2
             source = pth_el['path-properties']['path-route-objects'][0]\
@@ -584,6 +606,16 @@ def jsontocsv(json_data, equipment, fileout):
             br = round(baud_rate * 1e-9, 2)
             pw = round(lin2db(power) + 30, 2)
             total_cost = nb_tsp * cost
+            if 'z-a-path-metric' in pth_el['path-properties'].keys():
+                output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth = \
+                    jsontopath_metric(pth_el['path-properties']['z-a-path-metric'])
+                revosnr  = round(output_osnr, 2)
+                revsnr   = round(output_snr, 2)
+                revsnrb  = round(output_snrbandwidth, 2)
+            else:
+                revosnr  = ''
+                revsnr   = ''
+                revsnrb  = ''
         mywriter.writerow((path_id,
             source,
             destination,
@@ -599,9 +631,11 @@ def jsontocsv(json_data, equipment, fileout):
             br,
             pw,
             pth,
-            sptrm
+            sptrm,
+            revosnr,
+            revsnr,
+            revsnrb
             ))
-
 
 def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     # pathreqlist is a list of Path_request objects
