@@ -227,8 +227,10 @@ def correct_route_list(network, pathreqlist):
             # replace possibly wrong name with a formated roadm name
             # print(n_id)
             if n_id not in anytype :
+                # find nodes name that include constraint among all possible names except
+                # transponders (not yet supported as constraints). 
                 nodes_suggestion = [uid for uid in anytype \
-                    if n_id.lower() in uid.lower()]
+                    if n_id.lower() in uid.lower() and uid not in transponders]
                 if pathreq.loose_list[i] == 'LOOSE':
                     if len(nodes_suggestion)>0 :
                         new_n = nodes_suggestion[0]

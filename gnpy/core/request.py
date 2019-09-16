@@ -248,10 +248,11 @@ def compute_constrained_path(network, req):
             total_path = candidate[0]
         else:
             # TODO: better account for individual oose and strict node
-            #to ease: suppose that one strict makes the whole liste strict
-            if 'STRICT' in req.loose_list[:-6]:
+            # to ease: suppose that one strict makes the whole liste strict (except for the
+            # last node which is the transceiver)
+            if 'STRICT' not in req.loose_list[:-6]:
                 print(f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing' +\
-                      f'{nodes_list} in network topology'+ '\x1b[0m')
+                      f'{[el.uid for el in nodes_list[:-6]]} in network topology'+ '\x1b[0m')
                 print(f'constraint ignored')
                 total_path = dijkstra_path(network, source, destination, weight = 'weight')
             else:
