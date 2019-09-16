@@ -247,8 +247,11 @@ def compute_constrained_path(network, req):
             candidate.sort(key=lambda x: sum(network.get_edge_data(x[i],x[i+1])['weight'] for i in range(len(x)-2)))
             total_path = candidate[0]
         else:
-            if req.loose_list[req.nodes_list.index(n)] == 'loose':
-                print(f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing {nodes_list} in network topology'+ '\x1b[0m')
+            # TODO: better account for individual oose and strict node
+            #to ease: suppose that one strict makes the whole liste strict
+            if 'STRICT' in req.loose_list[:-6]:
+                print(f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing' +\
+                      f'{nodes_list} in network topology'+ '\x1b[0m')
                 print(f'constraint ignored')
                 total_path = dijkstra_path(network, source, destination, weight = 'weight')
             else:
@@ -713,9 +716,10 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
                             testispartok = False
                             #break
                         else:
-                            if 'loose' in allpaths[id(p)].req.loose_list:
+                            if 'LOOSE' in allpaths[id(p)].req.loose_list:
                                 logger.info(f'Could not apply route constraint'+
-                                    f'{allpaths[id(p)].req.nodes_list} on request {allpaths[id(p)].req.request_id}')
+                                            f'{allpaths[id(p)].req.nodes_list} on request' +\
+                                            f' {allpaths[id(p)].req.request_id}')
                             else :
                                 logger.info(f'removing last solution from candidate paths\n{sol}')
                                 testispartok = False
@@ -752,7 +756,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     for req in pathreqlist :
         req.nodes_list.append(req.destination)
         # we assume that the destination is a strict constraint
-        req.loose_list.append('strict')
+        req.loose_list.append('STRICT')
         if req in pathreqlist_simple:
             path_res_list.append(compute_constrained_path(network, req))
         else:
