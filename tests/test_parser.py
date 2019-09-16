@@ -251,19 +251,19 @@ def compare_response(exp_resp, act_resp):
     print(act_resp)
     test = True
     for key in act_resp.keys():
-        print(key)
         if not key in exp_resp.keys():
-            print(key)
+            print(f'{key} is not expected')
             return False
         if isinstance(act_resp[key], dict):
             test = compare_response(exp_resp[key], act_resp[key])
     if test:
         for key in exp_resp.keys():
             if not key in act_resp.keys():
-                print(key)
+                print(f'{key} is expected')
                 return False
             if isinstance(exp_resp[key], dict):
                 test = compare_response(exp_resp[key], act_resp[key])
+
     # at this point exp_resp and act_resp have the same keys. Check if their values are the same
     for key in act_resp.keys():
         if not isinstance(act_resp[key], dict):
@@ -335,10 +335,11 @@ def test_json_response_generation(xls_input, expected_response_file):
     temp = {
         'response': [n.json for n in result]
     }
-    # load expected result and compare keys
-    # (not values at this stage)
+    # load expected result and compare keys and values
+
     with open(expected_response_file) as jsonfile:
         expected = load(jsonfile)
 
     for i, response in enumerate(temp['response']):
         assert compare_response(expected['response'][i], response)
+        print(f'response {response["response-id"]} is not correct')
