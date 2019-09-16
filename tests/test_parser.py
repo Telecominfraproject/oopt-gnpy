@@ -268,6 +268,7 @@ def compare_response(exp_resp, act_resp):
     for key in act_resp.keys():
         if not isinstance(act_resp[key], dict):
             if exp_resp[key] != act_resp[key]:
+                print(f'expected value :{exp_resp[key]}\n actual value: {act_resp[key]}')
                 return False
     return test
 
@@ -312,22 +313,20 @@ def test_json_response_generation(xls_input, expected_response_file):
             try:
                 temp_result = {
                     'response': Result_element(my_rq, pth, reversed_propagatedpths[i]).json}
-                print(temp_result)
             except ServiceError:
                 error_handled = True
-            print(error_handled)
             if not error_handled:
+                print('Service error with M=0 not correctly handled')
                 raise AssertionError()
             error_handled = False
             my_rq.blocking_reason = 'NO_SPECTRUM'
             try:
                 temp_result = {
                     'response': Result_element(my_rq, pth, reversed_propagatedpths[i]).json}
-                print(temp_result)
             except ServiceError:
                 error_handled = True
-            print(error_handled)
             if error_handled:
+                print('Service error with NO_SPECTRUM blocking reason not correctly handled')
                 raise AssertionError()
 
         result.append(Result_element(rqs[i], pth, reversed_propagatedpths[i]))
@@ -339,7 +338,23 @@ def test_json_response_generation(xls_input, expected_response_file):
 
     with open(expected_response_file) as jsonfile:
         expected = load(jsonfile)
+        # since we changes bidir attribute of request#2, need to add the corresponding
+        # metric in response
 
     for i, response in enumerate(temp['response']):
-        assert compare_response(expected['response'][i], response)
-        print(f'response {response["response-id"]} is not correct')
+        if i == 2:
+            # compare response must be False because z-a metric is missing
+            # (request with bidir option to cover bidir case)
+            assert not compare_response(expected['response'][i], response)
+            print(f'response {response["response-id"]} should not match')
+            expected['response'][2]['path-properties']['z-a-path-metric'] = [
+                {'metric-type': 'SNR-bandwidth', 'accumulative-value': 22.809999999999999},
+                {'metric-type': 'SNR-0.1nm', 'accumulative-value': 26.890000000000001},
+                {'metric-type': 'OSNR-bandwidth', 'accumulative-value': 26.239999999999998},
+                {'metric-type': 'OSNR-0.1nm', 'accumulative-value': 30.32},
+                {'metric-type': 'reference_power', 'accumulative-value': 0.0012589254117941673},
+                {'metric-type': 'path_bandwidth', 'accumulative-value': 60000000000.0}]
+            # test should be OK now
+        else:
+            assert compare_response(expected['response'][i], response)
+            print(f'response {response["response-id"]} is not correct')
