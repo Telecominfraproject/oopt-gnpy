@@ -412,6 +412,52 @@ def correct_xls_route_list(network_filename, network, pathreqlist):
 
     return pathreqlist
 
+def correct_json_route_list(network, pathreqlist):
+    """ all names in list should be exact name in the network, and there is no ambiguity
+        This function only checks that list is correct, warns user if the name is incorrect and
+        suppresses the constraint it it is loose or raise an error if it is strict
+    """
+    all_uid = [n.uid for n in network.nodes()]
+    transponders = [n.uid for n in network.nodes() if isinstance(n, Transceiver)]
+    for pathreq in pathreqlist:
+        if pathreq.source not in transponders:
+            msg = f'\x1b[1;31;40m'+f'Request: {pathreq.request_id}: could not find transponder ' +\
+                  f'source : {pathreq.source}.'+'\x1b[0m'
+            LOGGER.critical(msg)
+            print(f'{msg}\nComputation stopped.')
+            exit()
+
+        if pathreq.destination not in transponders:
+            msg = f'\x1b[1;31;40m'+f'Request: {pathreq.request_id}: could not find transponder' +\
+                  f' destination : {pathreq.destination}.'+'\x1b[0m'
+            LOGGER.critical(msg)
+            print(f'{msg}\nComputation stopped.')
+            exit()
+        # silently remove source and dest nodes from the list
+        if pathreq.nodes_list and pathreq.source == pathreq.nodes_list[0]:
+            pathreq.loose_list.pop(0)
+            pathreq.nodes_list.pop(0)
+        if pathreq.nodes_list and pathreq.destination == pathreq.nodes_list[-1]:
+            pathreq.loose_list.pop(-1)
+            pathreq.nodes_list.pop(-1)
+        temp = deepcopy(pathreq)
+        for i, n_id in enumerate(temp.nodes_list):
+            if n_id not in all_uid or n_id in transponders:
+                if temp.loose_list[i] == 'LOOSE':
+                    # if no matching can be found in the network just ignore this constraint
+                    # if it is a loose constraint
+                    # warns the user that this node is not part of the topology
+                    print(f'\x1b[1;33;40m'+f'invalid route node specified:' +\
+                          f'\n\t\'{n_id}\', could not use it as constraint, skipped!'+'\x1b[0m')
+                    pathreq.loose_list.pop(pathreq.nodes_list.index(n_id))
+                    pathreq.nodes_list.remove(n_id)
+                else:
+                    msg = f'\x1b[1;33;40m'+f'could not find node:\n\t \'{n_id}\' in network' +\
+                          f' topology. Strict constraint can not be applied.'+'\x1b[0m'
+                    LOGGER.critical(msg)
+                    raise ServiceError(msg)
+
+    return pathreqlist
 
 def corresp_next_node(network, corresp_ila, corresp_roadm):
     """ for each name in corresp dictionnaries find the next node in network and its name
