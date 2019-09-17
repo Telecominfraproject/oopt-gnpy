@@ -19,11 +19,12 @@ from collections import namedtuple
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
 from json import dumps, loads
 from numpy import mean
+from gnpy.core.convert import corresp_names
 from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
 from gnpy.core.utils import load_json
 from gnpy.core.network import load_network, build_network, save_network
 from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch
-from gnpy.core.elements import Transceiver, Roadm
+from gnpy.core.elements import Transceiver, Roadm, Fiber, Fused, Edfa
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.request import (Path_request, Result_element,
                                propagate, jsontocsv, Disjunction, compute_path_dsjctn,
@@ -336,9 +337,72 @@ def correct_route_list(network, pathreqlist):
             print(f'{msg}\nComputation stopped.')
             raise ServiceError(msg)
 
-        # TODO remove endpoints from this list in case they were added by the user
-        # in the xls or json files
     return pathreqlist
+
+
+def corresp_next_node(network, corresp_ila, corresp_roadm):
+    """ for each name in corresp dictionnaries find the next node in network and its name
+        given by user in excel. for meshTopology_exampleV2.xls:
+        user ILA name Stbrieuc covers the two direction. convert.py creates 2 different ILA
+        with possible names (depending on the direction and if the eqpt was defined in eqpt
+        sheet)
+            east edfa in Stbrieuc to Rennes_STA
+            west edfa in Stbrieuc to Rennes_STA
+            Edfa0_fiber (Lannion_CAS → Stbrieuc)-F056
+            Edfa0_fiber (Rennes_STA → Stbrieuc)-F057
+        next_nodes finds the user defined name of next node to be able to map the path constraints
+            east edfa in Stbrieuc to Rennes_STA      next node = Rennes_STA
+            west edfa in Stbrieuc to Rennes_STA      next node Lannion_CAS
+
+        Edfa0_fiber (Lannion_CAS → Stbrieuc)-F056 and Edfa0_fiber (Rennes_STA → Stbrieuc)-F057
+        do not exist
+        the function supports fiber splitting, fused nodes and shall only be called if
+        excel format is used for both network and service
+    """
+    next_node = {}
+    # consolidate tables and create next_node table
+    # for name, value in corresp_ila.items():
+    #     print(name)
+    #     for v in value:
+    #         print(f'\t{v}')
+    for ila_key, ila_list in corresp_ila.items(): #corresp_ila.items():
+        temp = copy(ila_list)
+        for ila_elem in ila_list:
+            # print(ila_elem)
+            try:
+                # find the node with ila_elem string _in_ the node uid. 'in' is used instead of
+                # '==' to find composed nodes due to fiber splitting in autodesign.
+                # eg if elem_ila is 'Edfa0_fiber (Lannion_CAS → Stbrieuc)-F056',
+                # node uid 'Edfa0_fiber (Lannion_CAS → Stbrieuc)-F056_(1/2)' is possible
+                correct_ila_name = next(n.uid for n in network.nodes() if ila_elem in n.uid)
+                temp.remove(ila_elem)
+                temp.append(correct_ila_name)
+                ila_nd = next(n for n in network.nodes() if ila_elem in n.uid)
+                next_nd = next(network.successors(ila_nd))
+                while isinstance(next_nd, Fiber) or isinstance(next_nd, Fused):
+                    next_nd = next(network.successors(next_nd))
+                for key, val in corresp_roadm.items():
+                    # val is a list of possible names associated with key
+                    if next_nd.uid in val:
+                        next_node[correct_ila_name] = key
+                        break
+                if ila_elem not in next_node.keys():
+                    for key, val in corresp_ila.items():
+                        # in case of splitted fibers the ila name might not be exact match
+                        if [e for e in val if e in next_nd.uid]:
+                            next_node[correct_ila_name] = key
+                            break
+            except StopIteration:
+                # simply ignore the node
+                pass
+        corresp_ila[ila_key] = temp
+    # for debug
+    # for name, value in corresp_ila.items():
+    #     print(name)
+    #     for v in value:
+    #         if v in next_node.keys():
+    #             print(f'\t{v} \t {next_node[v]}')
+    return corresp_ila, next_node
 
 def correct_disjn(disjn):
     """ clean disjunctions to remove possible repetition
