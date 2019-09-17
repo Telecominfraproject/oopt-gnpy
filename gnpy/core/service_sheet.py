@@ -104,21 +104,27 @@ class Request_element(Element):
         # cleaning the list of nodes to remove source and destination
         # (because the remaining of the program assumes that the nodes list are nodes 
         # on the path and should not include source and destination)
-        try :
-            self.nodes_list.remove(self.source)
-            msg = f'{self.source} removed from explicit path node-list'
-            logger.info(msg)
-        except ValueError:
-            msg = f'{self.source} already removed from explicit path node-list'
-            logger.info(msg)
+        # try :
+        #     self.nodes_list.remove(self.source)
+        #     msg = f'{self.source} removed from explicit path node-list'
+        #     logger.info(msg)
+        # except ValueError:
+        #     msg = f'{self.source} already removed from explicit path node-list'
+        #     logger.info(msg)
 
-        try :
-            self.nodes_list.remove(self.destination)
-            msg = f'{self.destination} removed from explicit path node-list'
-            logger.info(msg)
-        except ValueError:
-            msg = f'{self.destination} already removed from explicit path node-list'
-            logger.info(msg)
+        # with excel input, last and first node in the list must be a roadm
+        # TODO add a verification for consistency in service sheet + exception
+        # then no need to remove last node because destination that will be added next
+        # is the transciver node
+
+
+        # try :
+        #     self.nodes_list.remove(self.destination)
+        #     msg = f'{self.destination} removed from explicit path node-list'
+        #     logger.info(msg)
+        # except ValueError:
+        #     msg = f'{self.destination} already removed from explicit path node-list'
+        #     logger.info(msg)
 
         # the excel parser applies the same hop-type to all nodes in the route nodes_list.
         # user can change this per node in the generated json
