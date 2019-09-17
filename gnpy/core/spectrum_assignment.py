@@ -310,6 +310,9 @@ def spectrum_selection(pth, oms_list, requested_m, requested_n=None):
     # remove duplicate oms_id, order is not important
     path_oms = list(set(path_oms))
     # assuming all oms have same freq index
+    if not path_oms:
+        candidate = (None, None, None)
+        return candidate, path_oms
     freq_index = oms_list[path_oms[0]].spectrum_bitmap.freq_index
     freq_index_min = oms_list[path_oms[0]].spectrum_bitmap.freq_index_min
     freq_index_max = oms_list[path_oms[0]].spectrum_bitmap.freq_index_max
