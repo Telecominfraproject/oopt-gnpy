@@ -289,43 +289,116 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         print('')
     return path_res_list, reversed_path_res_list, propagated_reversed_path_res_list
 
-def correct_route_list(network, pathreqlist):
-    """ prepares the format of route list of nodes to be consistant
-        remove wrong names, remove endpoints
-        also correct source and destination
+def correct_xls_route_list(network_filename, network, pathreqlist):
+    """ prepares the format of route list of nodes to be consistant with nodes names:
+        remove wrong names, find correct names for ila, roadm and fused if the entry was
+        xls.
+        if it was not xls, all names in list should be exact name in the network.
     """
-    anytype = [n.uid for n in network.nodes()]
-    # TODO there is a problem of identification of fibers in case of parallel fibers
-    # between two adjacent roadms so fiber constraint is not supported
+    # first loads the base correspondance dict build with excel naming
+    corresp_roadm, corresp_fused, corresp_ila = corresp_names(network_filename)
+    # then correct dict names with names of the autodisign and find next_node name
+    # according to xls naming
+    corresp_ila, next_node = corresp_next_node(network, corresp_ila, corresp_roadm)
+    # finally correct constraints based on these dict
+    trxfibertype = [n.uid for n in network.nodes() if isinstance(n, Transceiver) or
+                    isinstance(n, Fiber)]
+    roadmtype = [n.uid for n in network.nodes() if isinstance(n, Roadm)]
+    edfatype = [n.uid for n in network.nodes() if isinstance(n, Edfa)]
+    # TODO there is a problem of identification of fibers in case of parallel
+    # fibers between two adjacent roadms so fiber constraint is not supported
     transponders = [n.uid for n in network.nodes() if isinstance(n, Transceiver)]
     for pathreq in pathreqlist:
-        for i, n_id in enumerate(pathreq.nodes_list):
-            # replace possibly wrong name with a formated roadm name
-            # print(n_id)
-            if n_id not in anytype:
-                # find nodes name that include constraint among all possible names except
-                # transponders (not yet supported as constraints).
-                nodes_suggestion = [uid for uid in anytype \
-                    if n_id.lower() in uid.lower() and uid not in transponders]
-                if pathreq.loose_list[i] == 'LOOSE':
-                    if len(nodes_suggestion) > 0:
-                        new_n = nodes_suggestion[0]
-                        print(f'invalid route node specified:\
-                        \n\'{n_id}\', replaced with \'{new_n}\'')
-                        pathreq.nodes_list[i] = new_n
-                    else:
-                        print(f'\x1b[1;33;40m'+f'invalid route node specified \'{n_id}\',' +\
-                              f' could not use it as constraint, skipped!'+'\x1b[0m')
-                        pathreq.nodes_list.remove(n_id)
-                        pathreq.loose_list.pop(i)
+        # silently remove source and dest nodes from the list
+        if pathreq.nodes_list and pathreq.source == pathreq.nodes_list[0]:
+            pathreq.loose_list.pop(0)
+            pathreq.nodes_list.pop(0)
+        if pathreq.nodes_list and pathreq.destination == pathreq.nodes_list[-1]:
+            pathreq.loose_list.pop(-1)
+            pathreq.nodes_list.pop(-1)
+        temp = deepcopy(pathreq)
+        # need a temporary object since wwe may suppress elements in the list while looping
+        # in the list
+        for i, n_id in enumerate(temp.nodes_list):
+            if n_id not in trxfibertype:
+                # check that n_id is in the node list, if not find a correpspondance name
+                if n_id in roadmtype + edfatype:
+                    # TODO
+                    nodes_suggestion = [n_id]
                 else:
-                    msg = f'\x1b[1;33;40m'+f'could not find node: {n_id} in network topology.' +\
-                          f' Strict constraint can not be applied.' + '\x1b[0m'
+                    # checks first roadm, fused, and ila in this order, because ila automatic name
+                    # contain roadm names. if it is a fused node, next ila names might be correct
+                    # suggestions, especially if following fibers wer splitted and ila names
+                    # created with the name of the fused node
+                    if n_id in corresp_roadm.keys():
+                        nodes_suggestion = corresp_roadm[n_id]
+                    elif n_id in corresp_roadm.items():
+                        nodes_suggestion = [n_id]
+                    elif n_id in corresp_fused.keys():
+                        nodes_suggestion = corresp_fused[n_id] + corresp_ila[n_id]
+                    elif n_id in corresp_ila.keys():
+                        nodes_suggestion = corresp_ila[n_id]
+                    else:
+                        nodes_suggestion = []
+                if nodes_suggestion:
+                    # TODO
+                    try:
+                        if len(nodes_suggestion) > 1:
+                            # if there is more than on suggestion, we need to choose the direction
+                            # we rely on the next node provided by the user for this purpose
+                            new_n = next(this_n for this_n in nodes_suggestion
+                                         if this_n in next_node.keys() and next_node[this_n]
+                                         in temp.nodes_list[i:]+[pathreq.destination] and
+                                         next_node[this_n] not in temp.nodes_list[:i])
+                        else:
+                            new_n = nodes_suggestion[0]
+                        if new_n != n_id:
+                            # warns the user when the name is changed,
+                            # eg 'a' is a roadm and name is 'roadm a' or when there was
+                            # too much ambiguity, 'b' is a ila, its name can be
+                            # Edfa0_fiber (a → b)-xx if next node is c or
+                            # Edfa0_fiber (c → b)-xx if next node is a
+                            print(f'\x1b[1;33;40m'+f'invalid route node specified:' +\
+                                  f'\n\t\'{n_id}\', replaced with \'{new_n}\''+'\x1b[0m')
+                            LOGGER.info(f'\x1b[1;33;40m'+f'invalid route node specified:' +\
+                                  f'\n\t\'{n_id}\', replaced with \'{new_n}\''+'\x1b[0m')
+                            pathreq.nodes_list[pathreq.nodes_list.index(n_id)] = new_n
+                    except StopIteration:
+                        # shall not come in this case, unless requested direction does not exist
+                        print(f'\x1b[1;33;40m'+f'invalid route node specified: this node,' +\
+                              f' skipped!'+'\x1b[0m')
+                        pathreq.loose_list.pop(pathreq.nodes_list.index(n_id))
+                        pathreq.nodes_list.remove(n_id)
+                else:
+                    if temp.loose_list[i] == 'LOOSE':
+                        # if no matching can be found in the network just ignore this constraint
+                        # if it is a loose constraint
+                        # warns the user that this node is not part of the topology
+                        print(f'\x1b[1;33;40m'+f'invalid route node specified:' +\
+                              f'\n\t\'{n_id}\', could not use it as constraint, skipped!'+'\x1b[0m')
+                        pathreq.loose_list.pop(pathreq.nodes_list.index(n_id))
+                        pathreq.nodes_list.remove(n_id)
+                    else:
+                        msg = f'\x1b[1;33;40m'+f'could not find node:\n\t \'{n_id}\' in network' +\
+                              f' topology. Strict constraint can not be applied.'+'\x1b[0m'
+                        LOGGER.critical(msg)
+                        raise ValueError(msg)
+            else:
+                if temp.loose_list[i] == 'LOOSE':
+                    print(f'\x1b[1;33;40m'+f'invalid route node specified:\n\t\'{n_id}\'' +\
+                          f' type is not supported as constraint with xls network input,' +\
+                          f' skipped!'+'\x1b[0m')
+                    pathreq.loose_list.pop(pathreq.nodes_list.index(n_id))
+                    pathreq.nodes_list.remove(n_id)
+                else:
+                    msg = f'\x1b[1;33;40m'+f'invalid route node specified \n\t\'{n_id}\'' +\
+                          f' type is not supported as constraint with xls network input,' +\
+                          f', Strict constraint can not be applied.'+'\x1b[0m'
                     LOGGER.critical(msg)
                     raise ValueError(msg)
         if pathreq.source not in transponders:
-            msg = f'\x1b[1;31;40m' + f'Request: {pathreq.request_id}: could not find' +\
-                  f' transponder source: {pathreq.source}.'+'\x1b[0m'
+            msg = f'\x1b[1;31;40m'+f'Request: {pathreq.request_id}: could not find transponder ' +\
+                  f'source : {pathreq.source}.'+'\x1b[0m'
             LOGGER.critical(msg)
             print(f'{msg}\nComputation stopped.')
             raise ServiceError(msg)
