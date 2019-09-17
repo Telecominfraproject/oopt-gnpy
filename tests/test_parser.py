@@ -215,9 +215,11 @@ def test_csv_response_generation(json_input, csv_output):
     resp_header = list(resp.head(0))
     expected_resp_header = list(expected_resp.head(0))
     # check that headers are the same
-    if resp_header.sort() != expected_resp_header.sort():
-        print(resp_header.sort())
-        print(expected_resp_header.sort())
+    resp_header.sort()
+    expected_resp_header.sort()
+    if resp_header != expected_resp_header:
+        print(resp_header)
+        print(expected_resp_header)
         raise AssertionError('headers are differents')
 
     # for each header checks that the output are as expected
