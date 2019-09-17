@@ -32,6 +32,7 @@ from json import dumps
 from pathlib import Path
 from difflib import get_close_matches
 from gnpy.core.utils import silent_remove
+from re import findall
 import time
 
 all_rows = lambda sh, start=0: (sh.row(x) for x in range(start, sh.nrows))
@@ -422,6 +423,60 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
     with  open(output_json_file_name, 'w', encoding='utf-8') as edfa_json_file:
         edfa_json_file.write(dumps(data, indent=2, ensure_ascii=False))
     return output_json_file_name
+
+def corresp_names(input_filename):
+    """ a function that buils the correspondance between names given in the excel,
+        and names used in the json, and created by the autodesign.
+        All names are listed but not all will be created
+    """
+    nodes, links, eqpts = parse_excel(input_filename)
+
+    corresp_roadm = {x.city: [f'roadm {x.city}'] for x in nodes
+                     if x.node_type.lower() == 'roadm'}
+    corresp_fused = {x.city: [f'west fused spans in {x.city}', f'east fused spans in {x.city}']
+                     for x in nodes if x.node_type.lower() == 'fused'}
+    # build corresp ila based on eqpt sheet
+    # east direction
+    corresp_ila = {e.from_city: [f'east edfa in {e.from_city} to {e.to_city}']
+                   for e in eqpts if e.east_amp_type.lower() != ''}
+    # west direction
+    for my_e in eqpts:
+        if my_e.west_amp_type.lower() != '':
+            if my_e.from_city in corresp_ila.keys():
+                corresp_ila[my_e.from_city].append(f'west edfa in {my_e.from_city} to ' +\
+                                                   f'{my_e.to_city}')
+            else:
+                corresp_ila[my_e.from_city] = [f'west edfa in {my_e.from_city} to ' +\
+                                               f'{my_e.to_city}']
+    # complete with potential autodesign names: amplifiers
+    for my_l in links:
+        if my_l.from_city in corresp_ila.keys():
+            # "east edfa in Stbrieuc to Rennes_STA"  is equivalent name as
+            # "Edfa0_fiber (Lannion_CAS → Stbrieuc)-F056"
+            # "west edfa in Stbrieuc to Rennes_STA"  is equivalent name as
+            # "Edfa0_fiber (Rennes_STA → Stbrieuc)-F057"
+            # does not filter names: all types (except boosters) are created.
+            # in case fibers are splitted the name here is a prefix
+            corresp_ila[my_l.from_city].append(f'Edfa0_fiber ({my_l.to_city} \u2192 ' +\
+                                               f'{my_l.from_city})-{my_l.west_cable}')
+        else:
+            corresp_ila[my_l.from_city] = [f'Edfa0_fiber ({my_l.to_city} \u2192 ' +\
+                                           f'{my_l.from_city})-{my_l.west_cable}']
+        if my_l.to_city in corresp_ila.keys():
+            corresp_ila[my_l.to_city].append(f'Edfa0_fiber ({my_l.from_city} \u2192 ' +\
+                                             f'{my_l.to_city})-{my_l.east_cable}')
+        else:
+            corresp_ila[my_l.to_city] = [f'Edfa0_fiber ({my_l.from_city} \u2192 ' +\
+                                         f'{my_l.to_city})-{my_l.east_cable}']
+
+    # merge fused with ila:
+    for key, val in corresp_fused.items():
+        if key in corresp_ila.keys():
+            corresp_ila[key].extend(val)
+        else:
+            corresp_ila[key] = val
+        # no need of roadm booster
+    return corresp_roadm, corresp_fused, corresp_ila
 
 def parse_excel(input_filename):
     link_headers = \
