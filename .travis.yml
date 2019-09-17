@@ -22,5 +22,6 @@ jobs:
     - stage: test
       name: Docker image
       script:
+        - git fetch --unshallow
         - ./.docker-travis.sh
         - docker images
