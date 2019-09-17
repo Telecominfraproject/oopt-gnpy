@@ -325,7 +325,7 @@ def spectrum_selection(pth, oms_list, requested_m, requested_n=None):
         candidates = [(freq_index[i]+requested_m, freq_index[i], freq_index[i]+2*requested_m-1)
                       for i in range(len(freq_availability))
                       if freq_availability[i:i+2*requested_m] == [1] * (2*requested_m)
-                      and freq_index[i] >=  freq_index_min
+                      and freq_index[i] >= freq_index_min
                       and freq_index[i+2*requested_m-1] <= freq_index_max]
 
         candidate = select_candidate(candidates, policy='first_fit')
@@ -335,7 +335,7 @@ def spectrum_selection(pth, oms_list, requested_m, requested_n=None):
         # print(freq_availability[i-m:i+m] )
         # print(freq_index[i-m:i+m])
         if (freq_availability[i-requested_m:i+requested_m] == [1] * (2*requested_m) and
-                freq_index[i-requested_m] >=  freq_index_min
+                freq_index[i-requested_m] >= freq_index_min
                       and freq_index[i+requested_m-1] <= freq_index_max):
             # candidate is the triplet center_n, startn and stopn
             candidate = (requested_n, requested_n-requested_m, requested_n+requested_m-1)

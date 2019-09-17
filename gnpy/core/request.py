@@ -545,7 +545,7 @@ def jsontocsv(json_data, equipment, fileout):
                 revsnrb  = ''
             else:
                 # the objects are listed with this order:
-                # - id of hop 
+                # - id of hop
                 # - label (N,M)
                 # - transponder for source and destination only
                 # as spectrum assignment is not performed for blocked demands: there is no label object in the answer
@@ -574,13 +574,13 @@ def jsontocsv(json_data, equipment, fileout):
                     if 'z-a-path-metric' in pth_el['no-path']['path-properties'].keys():
                         output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth = \
                             jsontopath_metric(pth_el['no-path']['path-properties']['z-a-path-metric'])
-                        revosnr  = round(output_osnr, 2)
-                        revsnr   = round(output_snr, 2)
-                        revsnrb  = round(output_snrbandwidth, 2)
+                        revosnr = round(output_osnr, 2)
+                        revsnr = round(output_snr, 2)
+                        revsnrb = round(output_snrbandwidth, 2)
                     else:
-                        revosnr  = ''
-                        revsnr   = ''
-                        revsnrb  = ''
+                        revosnr = ''
+                        revsnr = ''
+                        revsnrb = ''
         else:
             # when label will be assigned destination will be with index -3, and transponder with index 2
             source = pth_el['path-properties']['path-route-objects'][0]\
@@ -923,7 +923,7 @@ def find_reversed_path(pth):
 
     # we want the list of crossed oms and each item must be unique in the list:
     # since a succession of elements of the path can be in the same oms, a 'unique'
-    # function is needed 
+    # function is needed
     # the OrderedDict.fromkeys function does this. eg 
     # pth = [el1_oms1 el2_oms1 el3_oms1 el1_oms2 el2_oms2 el3_oms2]
     # p_oms should be = [oms1 oms2] 
