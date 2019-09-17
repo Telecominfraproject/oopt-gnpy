@@ -14,7 +14,7 @@ from pathlib import Path
 import pytest
 from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch
 from gnpy.core.network import load_network, build_network
-from examples.path_requests_run import (requests_from_json , correct_route_list ,
+from examples.path_requests_run import (requests_from_json , correct_json_route_list ,
                                         load_requests , disjunctions_from_json)
 from gnpy.core.request import compute_path_dsjctn, isdisjoint , find_reversed_path
 from gnpy.core.utils import db2lin, lin2db
@@ -44,7 +44,7 @@ def test_disjunction(net,eqpt,serv):
     build_oms_list(network, equipment)
 
     rqs = requests_from_json(data, equipment)
-    rqs = correct_route_list(network, rqs)
+    rqs = correct_json_route_list(network, rqs)
     dsjn = disjunctions_from_json(data)
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
     print(dsjn)
@@ -84,7 +84,7 @@ def test_does_not_loop_back(net,eqpt,serv):
     build_oms_list(network, equipment)
 
     rqs = requests_from_json(data, equipment)
-    rqs = correct_route_list(network, rqs)
+    rqs = correct_json_route_list(network, rqs)
     dsjn = disjunctions_from_json(data)
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
 
