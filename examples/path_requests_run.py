@@ -596,10 +596,17 @@ def main(args):
         LOGGER.critical(msg)
         exit()
     try:
-        rqs = correct_route_list(network, rqs)
+        if ARGS.network_filename.suffix.lower() == '.xls':
+            # only correct namings in route constraint if users entry is xls.
+            # else it is assumed that the constraints follow the json given name
+
+            rqs = correct_xls_route_list(ARGS.network_filename, network, rqs)
+        else:
+            rqs = correct_json_route_list(network, rqs)
     except ServiceError as this_e:
         print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {this_e}')
         exit(1)
+
     # pths = compute_path(network, equipment, rqs)
     dsjn = disjunctions_from_json(data)
 
