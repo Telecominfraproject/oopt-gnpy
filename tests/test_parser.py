@@ -323,6 +323,7 @@ def test_json_response_generation(xls_input, expected_response_file):
             try:
                 temp_result = {
                     'response': Result_element(my_rq, pth, reversed_propagatedpths[i]).json}
+                print(temp_result)
             except ServiceError:
                 error_handled = True
             if error_handled:

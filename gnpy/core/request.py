@@ -540,9 +540,9 @@ def jsontocsv(json_data, equipment, fileout):
                 brate = ''
                 pwr = ''
                 pth = ''
-                revosnr  = ''
-                revsnr   = ''
-                revsnrb  = ''
+                revosnr = ''
+                revsnr = ''
+                revsnrb = ''
             else:
                 # the objects are listed with this order:
                 # - id of hop
@@ -612,13 +612,13 @@ def jsontocsv(json_data, equipment, fileout):
             if 'z-a-path-metric' in pth_el['path-properties'].keys():
                 output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth = \
                     jsontopath_metric(pth_el['path-properties']['z-a-path-metric'])
-                revosnr  = round(output_osnr, 2)
-                revsnr   = round(output_snr, 2)
-                revsnrb  = round(output_snrbandwidth, 2)
+                revosnr = round(output_osnr, 2)
+                revsnr = round(output_snr, 2)
+                revsnrb = round(output_snrbandwidth, 2)
             else:
-                revosnr  = ''
-                revsnr   = ''
-                revsnrb  = ''
+                revosnr = ''
+                revsnr = ''
+                revsnrb = ''
         mywriter.writerow((path_id,
             source,
             destination,
@@ -918,15 +918,15 @@ def find_reversed_path(pth):
         note that this function may not give an exact result in case of multiple
         links between two adjacent nodes.
     """
-    # TODO add some indication on elements to indicate from which other they 
+    # TODO add some indication on elements to indicate from which other they
     # are the reversed direction. This is partly done with oms indication
 
     # we want the list of crossed oms and each item must be unique in the list:
     # since a succession of elements of the path can be in the same oms, a 'unique'
     # function is needed
-    # the OrderedDict.fromkeys function does this. eg 
+    # the OrderedDict.fromkeys function does this. eg
     # pth = [el1_oms1 el2_oms1 el3_oms1 el1_oms2 el2_oms2 el3_oms2]
-    # p_oms should be = [oms1 oms2] 
+    # p_oms should be = [oms1 oms2]
     p_oms = list(OrderedDict.fromkeys(reversed([el.oms.reversed_oms for el in pth \
                 if not isinstance(el, Transceiver) and not isinstance(el, Roadm)])))
     reversed_path = [pth[-1]]

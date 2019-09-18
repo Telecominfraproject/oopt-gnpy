@@ -407,8 +407,8 @@ def main(args):
     # mess the computation: better to stop the computation
     all_ids = [r.request_id for r in rqs]
     if len(all_ids) != len(set(all_ids)):
-        for a in list(set(all_ids)):
-            all_ids.remove(a)
+        for item in list(set(all_ids)):
+            all_ids.remove(item)
         msg = f'Requests id {all_ids} are not unique'
         LOGGER.critical(msg)
         exit()
@@ -501,8 +501,8 @@ def main(args):
         temp = path_result_json(result)
         fnamecsv = f'{str(args.output)[0:len(str(args.output))-len(str(args.output.suffix))]}.csv'
         fnamejson = f'{str(args.output)[0:len(str(args.output))-len(str(args.output.suffix))]}.json'
-        with open(fnamejson, 'w', encoding='utf-8') as f:
-            f.write(dumps(path_result_json(result), indent=2, ensure_ascii=False))
+        with open(fnamejson, 'w', encoding='utf-8') as fjson:
+            fjson.write(dumps(path_result_json(result), indent=2, ensure_ascii=False))
             with open(fnamecsv, "w", encoding='utf-8') as fcsv:
                 jsontocsv(temp, equipment, fcsv)
                 print('\x1b[1;34;40m'+f'saving in {args.output} and {fnamecsv}'+ '\x1b[0m')

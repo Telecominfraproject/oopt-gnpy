@@ -41,7 +41,7 @@ def test_disjunction(net,eqpt,serv):
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
         equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
-    oms_list = build_oms_list(network, equipment)
+    build_oms_list(network, equipment)
 
     rqs = requests_from_json(data, equipment)
     rqs = correct_route_list(network, rqs)
@@ -81,7 +81,7 @@ def test_does_not_loop_back(net,eqpt,serv):
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
         equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
-    oms_list = build_oms_list(network, equipment)
+    build_oms_list(network, equipment)
 
     rqs = requests_from_json(data, equipment)
     rqs = correct_route_list(network, rqs)

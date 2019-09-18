@@ -26,3 +26,4 @@ class DisjunctionError(ServiceError):
 
 class SpectrumError(Exception):
     '''Spectrum errors of the program'''
+
