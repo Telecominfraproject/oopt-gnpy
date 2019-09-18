@@ -168,7 +168,7 @@ def compute_path(network, equipment, pathreqlist):
         print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}\n')
 
         if total_path :
-            total_path = propagate(total_path,pathreq,equipment, show=False)
+            total_path = propagate(total_path,pathreq,equipment)
         else:
             total_path = []
         # we record the last tranceiver object in order to have th whole
@@ -205,7 +205,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
         if total_path :
             if pathreq.baud_rate is not None:
-                total_path = propagate(total_path,pathreq,equipment, show=False)
+                total_path = propagate(total_path,pathreq,equipment)
                 temp_snr01nm = round(mean(total_path[-1].snr+lin2db(pathreq.baud_rate/(12.5e9))),2)
                 if temp_snr01nm < pathreq.OSNR :
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}\n' +\

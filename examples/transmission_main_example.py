@@ -153,7 +153,10 @@ def main(network, equipment, source, destination, sim_params, req=None):
             print(f'\nPropagating with input power = {lin2db(req.power*1e3):.2f}dBm :')
         else:
             print(f'\nPropagating in gain mode: power cannot be set manually')
-        infos = propagate2(path, req, equipment, show=len(power_range)==1)
+        infos = propagate2(path, req, equipment)
+        if len(power_range) == 1:
+            for elem in path[:-1]:
+                print(elem)
         if power_mode:
             print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f}dBm :')
         else:
