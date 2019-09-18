@@ -736,13 +736,12 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     # select the disjoint path combination
 
     candidates = {}
-    for d in disjunctions_list:
-        dlist = d.disjunctions_req.copy()
+    for dis in disjunctions_list:
+        dlist = dis.disjunctions_req.copy()
         # each line of dpath is one combination of path that satisfies disjunction
         dpath = []
         for i, pth in enumerate(simple_rqs[dlist[0]]):
             dpath.append([pth])
-            # allpaths[id(p)].d_id = d.disjunction_id
         # in each loop, dpath is updated with a path for rq that satisfies
         # disjunction with each path in dpath
         # for example, assume set of requests in the vector (disjunction_list) is  {rq1,rq2, rq3}
@@ -788,7 +787,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
                             # print(f' coucou {elem1}: \t{temp}')
             dpath = temp
         # print(dpath)
-        candidates[d.disjunction_id] = dpath
+        candidates[dis.disjunction_id] = dpath
 
     # for i in disjunctions_list:
     #     print(f'\n{candidates[i.disjunction_id]}')
