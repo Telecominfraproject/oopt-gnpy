@@ -33,7 +33,7 @@ from gnpy.core.request import (jsontocsv, requests_aggregation,
 from gnpy.core.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.core.exceptions import ServiceError
 from examples.path_requests_run import (requests_from_json, disjunctions_from_json,
-                                        correct_route_list, correct_disjn,
+                                        correct_xls_route_list, correct_disjn,
                                         compute_path_with_disjunction)
 
 TEST_DIR = Path(__file__).parent
@@ -293,7 +293,7 @@ def test_json_response_generation(xls_input, expected_response_file):
     build_network(network, equipment, p_db, p_total_db)
     oms_list = build_oms_list(network, equipment)
     rqs = requests_from_json(data, equipment)
-    rqs = correct_route_list(network, rqs)
+    rqs = correct_xls_route_list(xls_input, network, rqs)
     dsjn = disjunctions_from_json(data)
     dsjn = correct_disjn(dsjn)
     rqs, dsjn = requests_aggregation(rqs, dsjn)
