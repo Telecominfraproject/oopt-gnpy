@@ -273,6 +273,8 @@ Spectral information with its parameters:
 Transceiver element with its parameters. **”mode”** can contain multiple
 Transceiver operation formats.
 
+Note that ``OSNR`` parameter refers to the receiver's minimal OSNR threshold for a given mode.
+
 .. code-block:: json-object
 
     "Transceiver":[{
