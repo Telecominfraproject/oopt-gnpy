@@ -393,18 +393,16 @@ def compute_constrained_path(network, req):
 
     return total_path
 
-def propagate(path, req, equipment, show=False):
+def propagate(path, req, equipment):
     si = create_input_spectral_information(
         req.f_min, req.f_max, req.roll_off, req.baud_rate,
         req.power, req.spacing)
     for el in path:
         si = el(si)
-        if show :
-            print(el)
     path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
     return path
 
-def propagate2(path, req, equipment, show=False):
+def propagate2(path, req, equipment):
     si = create_input_spectral_information(
         req.f_min, req.f_max, req.roll_off, req.baud_rate,
         req.power, req.spacing)
@@ -413,12 +411,10 @@ def propagate2(path, req, equipment, show=False):
         before_si = si
         after_si  = si = el(si)
         infos[el] = before_si, after_si
-        if show :
-            print(el)
     path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
     return infos
 
-def propagate_and_optimize_mode(path, req, equipment, show=False):
+def propagate_and_optimize_mode(path, req, equipment):
     # if mode is unknown : loops on the modes starting from the highest baudrate fiting in the
     # step 1: create an ordered list of modes based on baudrate
     baudrate_to_explore = list(set([m['baud_rate'] for m in equipment['Transceiver'][req.tsp].mode 
@@ -442,8 +438,6 @@ def propagate_and_optimize_mode(path, req, equipment, show=False):
             b, req.power, req.spacing)
             for el in path:
                 si = el(si)
-                if show:
-                    print(el)
             for m in modes_to_explore :
                 if path[-1].snr is not None:
                     path[-1].update_snr(m['tx_osnr'], equipment['Roadm']['default'].add_drop_osnr)
