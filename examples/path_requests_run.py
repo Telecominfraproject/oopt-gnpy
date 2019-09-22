@@ -144,44 +144,6 @@ def load_requests(filename,eqpt_filename):
             json_data = loads(f.read())
     return json_data
 
-def compute_path(network, equipment, pathreqlist):
-
-    # This function is obsolete and not relevant with respect to network building: suggest either to correct
-    # or to suppress it
-    
-    path_res_list = []
-
-    for pathreq in pathreqlist:
-        #need to rebuid the network for each path because the total power
-        #can be different and the choice of amplifiers in autodesign is power dependant
-        #but the design is the same if the total power is the same
-        #TODO parametrize the total spectrum power so the same design can be shared
-        p_db = lin2db(pathreq.power*1e3)
-        p_total_db = p_db + lin2db(pathreq.nb_channel)
-        build_network(network, equipment, p_db, p_total_db)
-        pathreq.nodes_list.append(pathreq.destination)
-        #we assume that the destination is a strict constraint
-        pathreq.loose_list.append('strict')
-        print(f'Computing path from {pathreq.source} to {pathreq.destination}')
-        print(f'with path constraint: {[pathreq.source]+pathreq.nodes_list}') #adding first node to be clearer on the output
-        total_path = compute_constrained_path(network, pathreq)
-        print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}\n')
-
-        if total_path :
-            total_path = propagate(total_path,pathreq,equipment)
-        else:
-            total_path = []
-        # we record the last tranceiver object in order to have th whole
-        # information about spectrum. Important Note: since transceivers
-        # attached to roadms are actually logical elements to simulate
-        # performance, several demands having the same destination may use
-        # the same transponder for the performance simaulation. This is why
-        # we use deepcopy: to ensure each propagation is recorded and not
-        # overwritten
-
-        path_res_list.append(deepcopy(total_path))
-    return path_res_list
-
 def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
     
     # use a list but a dictionnary might be helpful to find path bathsed on request_id
