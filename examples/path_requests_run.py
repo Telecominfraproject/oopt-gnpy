@@ -35,7 +35,6 @@ import gnpy.core.ansi_escapes as ansi_escapes
 from copy import copy, deepcopy
 from textwrap import dedent
 from math import ceil
-import time
 
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
 
@@ -263,7 +262,6 @@ def path_result_json(pathresult):
 
 
 if __name__ == '__main__':
-    start = time.time()
     args = parser.parse_args()
     basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(args.verbose, DEBUG))
     logger.info(f'Computing path requests {args.service_filename} into JSON format')
@@ -331,8 +329,6 @@ if __name__ == '__main__':
     print('\x1b[1;34;40m'+f'Propagating on selected path'+ '\x1b[0m')
     propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
 
-    end = time.time()
-    print(f'computation time {end-start}')
     print('\x1b[1;34;40m'+f'Result summary'+ '\x1b[0m')
 
     header = ['req id', '  demand','  snr@bandwidth','  snr@0.1nm','  Receiver minOSNR', '  mode', '  Gbit/s' , '  nb of tsp pairs']
