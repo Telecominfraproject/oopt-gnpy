@@ -41,6 +41,33 @@ Branches and Tagged Releases
 How to Install
 --------------
 
+Using prebuilt Docker images
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Our `Docker images <https://hub.docker.com/r/telecominfraproject/oopt-gnpy>`_ contain everything needed to run all examples from this guide.
+Docker transparently fetches the image over the network upon first use.
+On Linux and Mac, run:
+
+
+.. code-block:: shell-session
+
+    $ docker run -it --rm --volume $(pwd):/shared telecominfraproject/oopt-gnpy
+    root@bea050f186f7:/shared/examples#
+
+On Windows, launch from Powershell as:
+
+.. code-block:: powershell
+
+    PS C:\> docker run -it --rm --volume ${PWD}:/shared telecominfraproject/oopt-gnpy
+    root@89784e577d44:/shared/examples#
+
+In both cases, a directory named ``examples/`` will appear in your current working directory.
+GNPy automaticallly populates it with example files from the current release.
+Remove that directory if you want to start from scratch.
+
+Using Python on your computer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
    **Note**: `gnpy` supports Python 3 only. Python 2 is not supported.
    `gnpy` requires Python ≥3.6
 
