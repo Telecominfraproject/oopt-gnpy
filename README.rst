@@ -105,7 +105,6 @@ executes without a ``ModuleNotFoundError``, you have successfully installed
 
     $ python -c 'import gnpy' # attempt to import gnpy
 
-    $ cd oopt-gnpy
     $ pytest                  # run tests
 
 Instructions for First Use
