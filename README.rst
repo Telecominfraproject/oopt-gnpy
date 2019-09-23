@@ -7,7 +7,7 @@
 `gnpy`: mesh optical network route planning and optimization library
 ====================================================================
 
-|docs| |build|
+|docs| |build| |doi|
 
 **`gnpy` is an open-source, community-developed library for building route
 planning and optimization tools in real-world mesh optical networks.**
@@ -599,6 +599,11 @@ implementations.
 .. |build| image:: https://travis-ci.com/Telecominfraproject/oopt-gnpy.svg?branch=develop
   :target: https://travis-ci.com/Telecominfraproject/oopt-gnpy
   :alt: Build Status
+  :scale: 100%
+
+.. |doi| image:: https://zenodo.org/badge/96894149.svg
+  :target: https://zenodo.org/badge/latestdoi/96894149
+  :alt: DOI
   :scale: 100%
 
 TIP OOPT/PSE & PSE WG Charter
