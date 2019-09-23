@@ -41,6 +41,33 @@ Branches and Tagged Releases
 How to Install
 --------------
 
+Using prebuilt Docker images
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Our `Docker images <https://hub.docker.com/r/telecominfraproject/oopt-gnpy>`_ contain everything needed to run all examples from this guide.
+Docker transparently fetches the image over the network upon first use.
+On Linux and Mac, run:
+
+
+.. code-block:: shell-session
+
+    $ docker run -it --rm --volume $(pwd):/shared telecominfraproject/oopt-gnpy
+    root@bea050f186f7:/shared/examples#
+
+On Windows, launch from Powershell as:
+
+.. code-block:: powershell
+
+    PS C:\> docker run -it --rm --volume ${PWD}:/shared telecominfraproject/oopt-gnpy
+    root@89784e577d44:/shared/examples#
+
+In both cases, a directory named ``examples/`` will appear in your current working directory.
+GNPy automaticallly populates it with example files from the current release.
+Remove that directory if you want to start from scratch.
+
+Using Python on your computer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
    **Note**: `gnpy` supports Python 3 only. Python 2 is not supported.
    `gnpy` requires Python ≥3.6
 
@@ -105,7 +132,6 @@ executes without a ``ModuleNotFoundError``, you have successfully installed
 
     $ python -c 'import gnpy' # attempt to import gnpy
 
-    $ cd oopt-gnpy
     $ pytest                  # run tests
 
 Instructions for First Use
@@ -118,7 +144,7 @@ fully-functional programs.
 
     **Note**: *If you are a network operator or involved in route planning and
     optimization for your organization, please contact project maintainer Jan
-    Kundrát <jan.kundrat@telecominfraproject>. gnpy is looking for users with
+    Kundrát <jan.kundrat@telecominfraproject.com>. gnpy is looking for users with
     specific, delineated use cases to drive requirements for future
     development.*
 
@@ -417,10 +443,15 @@ existing parameters:
 +--------------------------+-----------+---------------------------------------------+
 | ``add_drop_osnr``        | (number)  | OSNR contribution from the add/drop ports   |
 +--------------------------+-----------+---------------------------------------------+
-| ``restrictions``         | (strings) | Authorized type_variety of amplifier for    |
-|                          |           | booster or preamp.                          |
-|                          |           | Listed type_variety MUST be defined in the  |
-|                          |           | Edfa catalog.                               |
+| ``restrictions``         | (dict of  | If non-empty, keys ``preamp_variety_list``  |
+|                          |  strings) | and ``booster_variety_list`` represent      |
+|                          |           | list of ``type_variety`` amplifiers which   |
+|                          |           | are allowed for auto-design within ROADM's  |
+|                          |           | line degrees.                               |
+|                          |           |                                             |
+|                          |           | If no booster should be placed on a degree, |
+|                          |           | insert a ``Fused`` node on the degree       |
+|                          |           | output.                                     |
 +--------------------------+-----------+---------------------------------------------+
 
 The ``SpectralInformation`` object can be configured as follows. The user can
@@ -469,6 +500,17 @@ The `transmission_main_example.py <examples/transmission_main_example.py>`_ scri
 Launch power can be overridden by using the ``--power`` argument.
 Spectrum information is not yet parametrized but can be modified directly in the ``eqpt_config.json`` (via the ``SpectralInformation`` -SI- structure) to accommodate any baud rate or spacing.
 The number of channel is computed based on ``spacing`` and ``f_min``, ``f_max`` values.
+
+An experimental support for Raman amplification is available:
+
+.. code-block:: shell
+
+     $ ./examples/transmission_main_example.py \
+       examples/raman_edfa_example_network.json \
+       --sim examples/sim_params.json --show-channels
+
+Configuration of Raman pumps (their frequencies, power and pumping direction) is done via the `RamanFiber element in the network topology <examples/raman_edfa_example_network.json>`_.
+General numeric parameters for simulaiton control are provided in the `examples/sim_params.json <examples/sim_params.json>`_.
 
 Use `examples/path_requests_run.py <examples/path_requests_run.py>`_ to run multiple optimizations as follows:
 

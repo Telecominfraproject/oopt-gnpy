@@ -1,15 +1,27 @@
 dist: xenial
 sudo: false
 language: python
+services: docker
 python:
   - "3.6"
   - "3.7"
-# command to install dependencies
-install:
+install: skip
+script:
   - python setup.py install
   - pip install pytest-cov rstcheck
-script:
   - pytest --cov-report=xml --cov=gnpy
   - rstcheck --ignore-roles cite --ignore-directives automodule --recursive --ignore-messages '(Duplicate explicit target name.*)' .
+  - ./examples/transmission_main_example.py
+  - ./examples/path_requests_run.py
+  - ./examples/transmission_main_example.py examples/raman_edfa_example_network.json --sim examples/sim_params.json --show-channels
+  - sphinx-build docs/ x-throwaway-location
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+jobs:
+  include:
+    - stage: test
+      name: Docker image
+      script:
+        - git fetch --unshallow
+        - ./.docker-travis.sh
+        - docker images

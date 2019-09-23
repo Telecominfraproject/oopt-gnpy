@@ -30,10 +30,11 @@ from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.request import (Path_request, Result_element, compute_constrained_path,
                               propagate, jsontocsv, Disjunction, compute_path_dsjctn, requests_aggregation,
                               propagate_and_optimize_mode)
+from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
+import gnpy.core.ansi_escapes as ansi_escapes
 from copy import copy, deepcopy
 from textwrap import dedent
 from math import ceil
-import time
 
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
 
@@ -142,44 +143,6 @@ def load_requests(filename,eqpt_filename):
             json_data = loads(f.read())
     return json_data
 
-def compute_path(network, equipment, pathreqlist):
-
-    # This function is obsolete and not relevant with respect to network building: suggest either to correct
-    # or to suppress it
-    
-    path_res_list = []
-
-    for pathreq in pathreqlist:
-        #need to rebuid the network for each path because the total power
-        #can be different and the choice of amplifiers in autodesign is power dependant
-        #but the design is the same if the total power is the same
-        #TODO parametrize the total spectrum power so the same design can be shared
-        p_db = lin2db(pathreq.power*1e3)
-        p_total_db = p_db + lin2db(pathreq.nb_channel)
-        build_network(network, equipment, p_db, p_total_db)
-        pathreq.nodes_list.append(pathreq.destination)
-        #we assume that the destination is a strict constraint
-        pathreq.loose_list.append('strict')
-        print(f'Computing path from {pathreq.source} to {pathreq.destination}')
-        print(f'with path constraint: {[pathreq.source]+pathreq.nodes_list}') #adding first node to be clearer on the output
-        total_path = compute_constrained_path(network, pathreq)
-        print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}\n')
-
-        if total_path :
-            total_path = propagate(total_path,pathreq,equipment, show=False)
-        else:
-            total_path = []
-        # we record the last tranceiver object in order to have th whole
-        # information about spectrum. Important Note: since transceivers
-        # attached to roadms are actually logical elements to simulate
-        # performance, several demands having the same destination may use
-        # the same transponder for the performance simaulation. This is why
-        # we use deepcopy: to ensure each propagation is recorded and not
-        # overwritten
-
-        path_res_list.append(deepcopy(total_path))
-    return path_res_list
-
 def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
     
     # use a list but a dictionnary might be helpful to find path bathsed on request_id
@@ -203,7 +166,8 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
         if total_path :
             if pathreq.baud_rate is not None:
-                total_path = propagate(total_path,pathreq,equipment, show=False)
+                total_path = propagate(total_path,pathreq,equipment)
+                # for el in total_path: print(el)
                 temp_snr01nm = round(mean(total_path[-1].snr+lin2db(pathreq.baud_rate/(12.5e9))),2)
                 if temp_snr01nm < pathreq.OSNR :
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}\n' +\
@@ -299,22 +263,31 @@ def path_result_json(pathresult):
 
 
 if __name__ == '__main__':
-    start = time.time()
     args = parser.parse_args()
     basicConfig(level={2: DEBUG, 1: INFO, 0: CRITICAL}.get(args.verbose, DEBUG))
     logger.info(f'Computing path requests {args.service_filename} into JSON format')
     print('\x1b[1;34;40m'+f'Computing path requests {args.service_filename} into JSON format'+ '\x1b[0m')
     # for debug
     # print( args.eqpt_filename)
-    data = load_requests(args.service_filename,args.eqpt_filename)
-    equipment = load_equipment(args.eqpt_filename)
-    network = load_network(args.network_filename,equipment)
+    try:
+        data = load_requests(args.service_filename,args.eqpt_filename)
+        equipment = load_equipment(args.eqpt_filename)
+        network = load_network(args.network_filename,equipment)
+    except EquipmentConfigError as e:
+        print(f'{ansi_escapes.red}Configuration error in the equipment library:{ansi_escapes.reset} {e}')
+        exit(1)
+    except NetworkTopologyError as e:
+        print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
+        exit(1)
+    except ConfigurationError as e:
+        print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
+        exit(1)
 
     # Build the network once using the default power defined in SI in eqpt config
     # TODO power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
-    # spacing, f_min and f_max 
+    # spacing, f_min and f_max
     p_db = equipment['SI']['default'].power_dbm
-    
+
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
         equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
@@ -322,7 +295,7 @@ if __name__ == '__main__':
 
     rqs = requests_from_json(data, equipment)
 
-    # check that request ids are unique. Non unique ids, may 
+    # check that request ids are unique. Non unique ids, may
     # mess the computation : better to stop the computation
     all_ids = [r.request_id for r in rqs]
     if len(all_ids) != len(set(all_ids)):
@@ -341,7 +314,7 @@ if __name__ == '__main__':
     # need to warn or correct in case of wrong disjunction form
     # disjunction must not be repeated with same or different ids
     dsjn = correct_disjn(dsjn)
-        
+
     # Aggregate demands with same exact constraints
     print('\x1b[1;34;40m'+f'Aggregating similar requests'+ '\x1b[0m')
 
@@ -350,17 +323,15 @@ if __name__ == '__main__':
 
     print('\x1b[1;34;40m'+'The following services have been requested:'+ '\x1b[0m')
     print(rqs)
-    
+
     print('\x1b[1;34;40m'+f'Computing all paths with constraints'+ '\x1b[0m')
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
 
     print('\x1b[1;34;40m'+f'Propagating on selected path'+ '\x1b[0m')
     propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
 
-    end = time.time()
-    print(f'computation time {end-start}')
     print('\x1b[1;34;40m'+f'Result summary'+ '\x1b[0m')
-    
+
     header = ['req id', '  demand','  snr@bandwidth','  snr@0.1nm','  Receiver minOSNR', '  mode', '  Gbit/s' , '  nb of tsp pairs']
     data = []
     data.append(header)
@@ -377,7 +348,7 @@ if __name__ == '__main__':
     firstcol_width = max(len(row[0]) for row in data )   # padding
     secondcol_width = max(len(row[1]) for row in data )   # padding
     for row in data:
-        firstcol = ''.join(row[0].ljust(firstcol_width)) 
+        firstcol = ''.join(row[0].ljust(firstcol_width))
         secondcol = ''.join(row[1].ljust(secondcol_width))
         remainingcols = ''.join(word.center(col_width,' ') for word in row[2:])
         print(f'{firstcol} {secondcol} {remainingcols}')
@@ -396,4 +367,3 @@ if __name__ == '__main__':
             with open(fnamecsv,"w", encoding='utf-8') as fcsv :
                 jsontocsv(temp,equipment,fcsv)
                 print('\x1b[1;34;40m'+f'saving in {args.output} and {fnamecsv}'+ '\x1b[0m')
-

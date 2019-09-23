@@ -7,18 +7,18 @@ gnpy.core.elements
 
 This module contains standard network elements.
 
-A network element is a Python callable. It takes a .info.SpectralInformation
+A network element is a Python callable. It takes a :class:`.info.SpectralInformation`
 object and returns a copy with appropriate fields affected. This structure
 represents spectral information that is "propogated" by this network element.
 Network elements must have only a local "view" of the network and propogate
-SpectralInformation using only this information. They should be independent and
+:class:`.info.SpectralInformation` using only this information. They should be independent and
 self-contained.
 
 Network elements MUST implement two attributes .uid and .name representing a
 unique identifier and a printable name.
 '''
 
-from numpy import abs, arange, arcsinh, array, exp, divide, errstate
+from numpy import abs, arange, array, exp, divide, errstate
 from numpy import interp, log10, mean, pi, polyfit, polyval, sum
 from scipy.constants import c, h
 from collections import namedtuple
@@ -26,6 +26,7 @@ from collections import namedtuple
 from gnpy.core.node import Node
 from gnpy.core.units import UNITS
 from gnpy.core.utils import lin2db, db2lin, itufs, itufl, snr_sum
+from gnpy.core.science_utils import propagate_raman_fiber, _psi
 
 class Transceiver(Node):
     def __init__(self, *args, **kwargs):
@@ -117,7 +118,7 @@ class Transceiver(Node):
         self._calc_snr(spectral_info)
         return spectral_info
 
-RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr')
+RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr restrictions')
 
 class Roadm(Node):
     def __init__(self, *args, params, **kwargs):
@@ -126,15 +127,19 @@ class Roadm(Node):
         self.effective_loss = None
         self.effective_pch_out_db = self.params.target_pch_out_db
         self.passive = True
+        self.restrictions = self.params.restrictions
 
     @property
     def to_json(self):
         return {'uid'       : self.uid,
                 'type'      : type(self).__name__,
-                'params'    : {'target_pch_out_db' : self.effective_pch_out_db},
+                'params'    : {
+                    'target_pch_out_db' : self.effective_pch_out_db,
+                    'restrictions'      : self.restrictions
+                    },
                 'metadata'      : {
                     'location': self.metadata['location']._asdict()
-                                    }
+                                }
                 }
 
     def __repr__(self):
@@ -150,8 +155,8 @@ class Roadm(Node):
         #all ingress channels in xpress are set to this power level
         #but add channels are not, so we define an effective loss
         #in the case of add channels
-        self.effective_pch_out_db = min(pref.pi, self.params.target_pch_out_db)
-        self.effective_loss = pref.pi - self.effective_pch_out_db
+        self.effective_pch_out_db = min(pref.p_spani, self.params.target_pch_out_db)
+        self.effective_loss = pref.p_spani - self.effective_pch_out_db
         carriers_power = array([c.power.signal +c.power.nli+c.power.ase for c in carriers])
         carriers_att = list(map(lambda x : lin2db(x*1e3)-self.params.target_pch_out_db, carriers_power))
         exceeding_att = -min(list(filter(lambda x: x < 0, carriers_att)), default = 0)
@@ -159,17 +164,17 @@ class Roadm(Node):
         for carrier_att, carrier in zip(carriers_att, carriers) :
             pwr = carrier.power
             pwr = pwr._replace( signal = pwr.signal/carrier_att,
-                                nonlinear_interference = pwr.nli/carrier_att,
-                                amplified_spontaneous_emission = pwr.ase/carrier_att)
+                                nli = pwr.nli/carrier_att,
+                                ase = pwr.ase/carrier_att)
             yield carrier._replace(power=pwr)
 
     def update_pref(self, pref):
-        return pref._replace(p_span0=pref.p0, p_spani=self.effective_pch_out_db)
+        return pref._replace(p_span0=pref.p_span0, p_spani=self.effective_pch_out_db)
 
     def __call__(self, spectral_info):
         carriers = tuple(self.propagate(spectral_info.pref, *spectral_info.carriers))
         pref = self.update_pref(spectral_info.pref)
-        return spectral_info.update(carriers=carriers, pref=pref)
+        return spectral_info._replace(carriers=carriers, pref=pref)
 
 FusedParams = namedtuple('FusedParams', 'loss')
 
@@ -186,6 +191,9 @@ class Fused(Node):
     def to_json(self):
         return {'uid'       : self.uid,
                 'type'      : type(self).__name__,
+                'params'    :{
+                    'loss': self.loss
+                },
                 'metadata'      : {
                     'location': self.metadata['location']._asdict()
                                     }
@@ -204,17 +212,17 @@ class Fused(Node):
         for carrier in carriers:
             pwr = carrier.power
             pwr = pwr._replace(signal=pwr.signal/attenuation,
-                               nonlinear_interference=pwr.nli/attenuation,
-                               amplified_spontaneous_emission=pwr.ase/attenuation)
+                               nli=pwr.nli/attenuation,
+                               ase=pwr.ase/attenuation)
             yield carrier._replace(power=pwr)
 
     def update_pref(self, pref):
-        return pref._replace(p_span0=pref.p0, p_spani=pref.pi - self.loss)
+        return pref._replace(p_span0=pref.p_span0, p_spani=pref.p_spani - self.loss)
 
     def __call__(self, spectral_info):
         carriers = tuple(self.propagate(*spectral_info.carriers))
         pref = self.update_pref(spectral_info.pref)
-        return spectral_info.update(carriers=carriers, pref=pref)
+        return spectral_info._replace(carriers=carriers, pref=pref)
 
 FiberParams = namedtuple('FiberParams', 'type_variety length loss_coef length_units \
                                          att_in con_in con_out dispersion gamma')
@@ -283,12 +291,12 @@ class Fiber(Node):
 
     @property
     def fiber_loss(self):
-        # dB fiber loss, not including padding attenuator
+        """Fiber loss in dB, not including padding attenuator"""
         return self.loss_coef * self.length + self.con_in + self.con_out
 
     @property
     def loss(self):
-        #total loss incluiding padding att_in: useful for polymorphism with roadm loss
+        """total loss including padding att_in: useful for polymorphism with roadm loss"""
         return self.loss_coef * self.length + self.con_in + self.con_out + self.att_in
 
     @property
@@ -313,16 +321,13 @@ class Fiber(Node):
 
     def carriers(self, loc, attr):
         """retrieve carriers information
-        loc = (in, out) of the class element
-        attr = (ase, nli, signal, total) power information"""
+
+        :param loc: (in, out) of the class element
+        :param attr: (ase, nli, signal, total) power information
+        """
         if not (loc in ('in', 'out') and attr in ('nli', 'signal', 'total', 'ase')):
             yield None
             return
-        power_dict = {
-                        'nli':      'nonlinear_interference',
-                        'ase':      'amplified_spontaneous_emission'
-                    }
-        attr = power_dict.get(attr, attr)
         loc_attr = 'carriers_'+loc
         for c in getattr(self, loc_attr) :
             if attr == 'total':
@@ -330,46 +335,30 @@ class Fiber(Node):
             else:
                 yield c.power._asdict().get(attr, None)
 
-    def beta2(self, ref_wavelength=None):
-        """ Returns beta2 from dispersion parameter.
+    def beta2(self, ref_wavelength=1550e-9):
+        """Returns beta2 from dispersion parameter.
         Dispersion is entered in ps/nm/km.
-        Disperion can be a numpy array or a single value.  If a
-        value ref_wavelength is not entered 1550e-9m will be assumed.
-        ref_wavelength can be a numpy array.
+        Disperion can be a numpy array or a single value.
+
+        :param ref_wavelength: can be a numpy array; default: 1550nm
         """
         # TODO|jla: discuss beta2 as method or attribute
-        wl = 1550e-9 if ref_wavelength is None else ref_wavelength
         D = abs(self.dispersion)
-        b2 = (wl ** 2) * D / (2 * pi * c)  # 10^21 scales [ps^2/km]
+        b2 = (ref_wavelength ** 2) * D / (2 * pi * c)  # 10^21 scales [ps^2/km]
         return b2 # s/Hz/m
 
     def dbkm_2_lin(self):
-        """ calculates the linear loss coefficient
-        """
-        # alpha_pcoef is linear loss coefficient in dB/km^-1
-        # alpha_acoef is linear loss field amplitude coefficient in m^-1
+        """calculates the linear loss coefficient"""
+        # linear loss coefficient in dB/km^-1
         alpha_pcoef = self.loss_coef
+        # linear loss field amplitude coefficient in m^-1
         alpha_acoef = alpha_pcoef / (2 * 10 * log10(exp(1)))
         return alpha_pcoef, alpha_acoef
 
-    def _psi(self, carrier, interfering_carrier):
-        """ Calculates eq. 123 from	arXiv:1209.0394.
-        """
-        if carrier.num_chan == interfering_carrier.num_chan: # SCI
-            psi = arcsinh(0.5 * pi**2 * self.asymptotic_length
-                              * abs(self.beta2()) * carrier.baud_rate**2)
-        else: # XCI
-            delta_f = carrier.freq - interfering_carrier.freq
-            psi = arcsinh(pi**2 * self.asymptotic_length * abs(self.beta2())
-                                * carrier.baud_rate * (delta_f + 0.5 * interfering_carrier.baud_rate))
-            psi -= arcsinh(pi**2 * self.asymptotic_length * abs(self.beta2())
-                                 * carrier.baud_rate * (delta_f - 0.5 * interfering_carrier.baud_rate))
-
-        return psi
-
     def _gn_analytic(self, carrier, *carriers):
-        """ Computes the nonlinear interference power on a single carrier.
-        The method uses eq. 120 from arXiv:1209.0394.
+        """Computes the nonlinear interference power on a single carrier.
+        The method uses eq. 120 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__.
+
         :param carrier: the signal under analysis
         :param carriers: the full WDM comb
         :return: carrier_nli: the amount of nonlinear interference in W on the under analysis
@@ -377,7 +366,7 @@ class Fiber(Node):
 
         g_nli = 0
         for interfering_carrier in carriers:
-            psi = self._psi(carrier, interfering_carrier)
+            psi = _psi(carrier, interfering_carrier, beta2=self.beta2(), asymptotic_length=self.asymptotic_length)
             g_nli += (interfering_carrier.power.signal/interfering_carrier.baud_rate)**2 \
                      * (carrier.power.signal/carrier.baud_rate) * psi
 
@@ -396,8 +385,8 @@ class Fiber(Node):
         for carrier in carriers:
             pwr = carrier.power
             pwr = pwr._replace(signal=pwr.signal/attenuation,
-                               nonlinear_interference=pwr.nli/attenuation,
-                               amplified_spontaneous_emission=pwr.ase/attenuation)
+                               nli=pwr.nli/attenuation,
+                               ase=pwr.ase/attenuation)
             carrier = carrier._replace(power=pwr)
             chan.append(carrier)
 
@@ -409,20 +398,77 @@ class Fiber(Node):
             pwr = carrier.power
             carrier_nli = self._gn_analytic(carrier, *carriers)
             pwr = pwr._replace(signal=pwr.signal/self.lin_attenuation/attenuation,
-                               nonlinear_interference=(pwr.nli+carrier_nli)/self.lin_attenuation/attenuation,
-                               amplified_spontaneous_emission=pwr.ase/self.lin_attenuation/attenuation)
+                               nli=(pwr.nli+carrier_nli)/self.lin_attenuation/attenuation,
+                               ase=pwr.ase/self.lin_attenuation/attenuation)
             yield carrier._replace(power=pwr)
 
     def update_pref(self, pref):
-        self.pch_out_db = round(pref.pi - self.loss, 2)
-        return pref._replace(p_span0=pref.p0, p_spani=self.pch_out_db)
+        self.pch_out_db = round(pref.p_spani - self.loss, 2)
+        return pref._replace(p_span0=pref.p_span0, p_spani=self.pch_out_db)
 
     def __call__(self, spectral_info):
         self.carriers_in = spectral_info.carriers
         carriers = tuple(self.propagate(*spectral_info.carriers))
         pref = self.update_pref(spectral_info.pref)
         self.carriers_out = carriers
-        return spectral_info.update(carriers=carriers, pref=pref)
+        return spectral_info._replace(carriers=carriers, pref=pref)
+
+RamanFiberParams = namedtuple('RamanFiberParams', 'type_variety length loss_coef length_units \
+                                         att_in con_in con_out dispersion gamma raman_efficiency')
+
+class RamanFiber(Fiber):
+    def __init__(self, *args, params=None, **kwargs):
+        if params is None:
+            params = {}
+        if 'con_in' not in params:
+            # if not defined in the network json connector loss in/out
+            # the None value will be updated in network.py[build_network]
+            # with default values from eqpt_config.json[Spans]
+            params['con_in'] = None
+            params['con_out'] = None
+        if 'att_in' not in params:
+            #fixed attenuator for padding
+            params['att_in'] = 0
+
+        # TODO: can we re-use the Fiber constructor in a better way?
+        Node.__init__(self, *args, params=RamanFiberParams(**params), **kwargs)
+        self.type_variety = self.params.type_variety
+        self.length = self.params.length * UNITS[self.params.length_units] # in m
+        self.loss_coef = self.params.loss_coef * 1e-3 # lineic loss dB/m
+        self.lin_loss_coef = self.params.loss_coef / (20 * log10(exp(1)))
+        self.att_in = self.params.att_in
+        self.con_in = self.params.con_in
+        self.con_out = self.params.con_out
+        self.dispersion = self.params.dispersion  # s/m/m
+        self.gamma = self.params.gamma # 1/W/m
+        self.pch_out_db = None
+        self.carriers_in = None
+        self.carriers_out = None
+        # TODO|jla: discuss factor 2 in the linear lineic attenuation
+
+    @property
+    def sim_params(self):
+        return self._sim_params
+
+    @sim_params.setter
+    def sim_params(self, sim_params=None):
+        self._sim_params = sim_params
+
+    def update_pref(self, pref, *carriers):
+        pch_out_db = lin2db(mean([carrier.power.signal for carrier in carriers])) + 30
+        self.pch_out_db = round(pch_out_db, 2)
+        return pref._replace(p_span0=pref.p_span0, p_spani=self.pch_out_db)
+
+    def __call__(self, spectral_info):
+        self.carriers_in = spectral_info.carriers
+        carriers = tuple(self.propagate(*spectral_info.carriers))
+        pref = self.update_pref(spectral_info.pref, *carriers)
+        self.carriers_out = carriers
+        return spectral_info._replace(carriers=carriers, pref=pref)
+
+    def propagate(self, *carriers):
+        for propagated_carrier in propagate_raman_fiber(self, *carriers):
+            yield propagated_carrier
 
 class EdfaParams:
     def __init__(self, **params):
@@ -469,12 +515,11 @@ class EdfaOperational:
                 f'tilt_target={self.tilt_target!r})')
 
 class Edfa(Node):
-    def __init__(self, *args, params={}, operational={}, **kwargs):
-        #TBC is this useful? put in comment for now:
-        #if params is None:
-        #    params = {}
-        #if operational is None:
-        #    operational = {}
+    def __init__(self, *args, params=None, operational=None, **kwargs):
+        if params is None:
+            params = {}
+        if operational is None:
+            operational = {}
         super().__init__(
             *args,
             params=EdfaParams(**params),
@@ -550,16 +595,13 @@ class Edfa(Node):
 
     def carriers(self, loc, attr):
         """retrieve carriers information
-        loc = (in, out) of the class element
-        attr = (ase, nli, signal, total) power information"""
+
+        :param loc: (in, out) of the class element
+        :param attr: (ase, nli, signal, total) power information
+        """
         if not (loc in ('in', 'out') and attr in ('nli', 'signal', 'total', 'ase')):
             yield None
             return
-        power_dict = {
-                        'nli':      'nonlinear_interference',
-                        'ase':      'amplified_spontaneous_emission'
-                    }
-        attr = power_dict.get(attr, attr)
         loc_attr = 'carriers_'+loc
         for c in getattr(self, loc_attr) :
             if attr == 'total':
@@ -568,12 +610,12 @@ class Edfa(Node):
                 yield c.power._asdict().get(attr, None)
 
     def interpol_params(self, frequencies, pin, baud_rates, pref):
-        """interpolate SI channel frequencies with the edfa dgt and gain_ripple frquencies from json
+        """interpolate SI channel frequencies with the edfa dgt and gain_ripple frquencies from JSON
         set the edfa class __init__ None parameters :
                 self.channel_freq, self.nf, self.interpol_dgt and self.interpol_gain_ripple
         """
         # TODO|jla: read amplifier actual frequencies from additional params in json
-        amplifier_freq = itufl(len(self.params.dgt), self.params.f_min, self.params.f_max) * 1e12 # Hz
+        amplifier_freq = itufl(len(self.params.dgt), self.params.f_min, self.params.f_max) # Hz
         self.channel_freq = frequencies
         self.interpol_dgt = interp(self.channel_freq, amplifier_freq, self.params.dgt)
 
@@ -586,19 +628,19 @@ class Edfa(Node):
         """in power mode: delta_p is defined and can be used to calculate the power target
         This power target is used calculate the amplifier gain"""
         if self.delta_p is not None:
-            self.target_pch_out_db = round(self.delta_p + pref.p0, 2)
-            self.effective_gain = self.target_pch_out_db - pref.pi
+            self.target_pch_out_db = round(self.delta_p + pref.p_span0, 2)
+            self.effective_gain = self.target_pch_out_db - pref.p_spani
 
         """check power saturation and correct effective gain & power accordingly:"""            
         self.effective_gain = min(  
                                     self.effective_gain, 
-                                    self.params.p_max - (pref.pi + pref.neq_ch)
+                                    self.params.p_max - (pref.p_spani + pref.neq_ch)
                                     )
         #print(self.uid, self.effective_gain, self.operational.gain_target)
-        self.effective_pch_out_db = round(pref.pi + self.effective_gain, 2)
+        self.effective_pch_out_db = round(pref.p_spani + self.effective_gain, 2)
 
         """check power saturation and correct target_gain accordingly:"""
-        #print(self.uid, self.effective_gain, self.pin_db, pref.pi)
+        #print(self.uid, self.effective_gain, self.pin_db, pref.p_spani)
         self.nf = self._calc_nf()
         self.gprofile = self._gain_profile(pin)
 
@@ -624,14 +666,8 @@ class Edfa(Node):
             nf_avg = pin_ch - polyval(nf_model.nf_coef, pin_ch) + 58
         elif type_def == 'advanced_model':
             nf_avg = polyval(nf_fit_coeff, -dg)
-        else :
-            print(
-                f'\x1b[1;31;40m'\
-                + f'CRITICAL: unrecognized type def _{self.params.type_def}_\n\
-                    => please check eqpt_config.json'\
-                + '\x1b[0m'
-                )                        
-            exit()            
+        else:
+            assert False, "Unrecognized amplifier type, this should have been checked by the JSON loader"
         return nf_avg+pad, pad
 
     def _calc_nf(self, avg = False):
@@ -673,7 +709,7 @@ class Edfa(Node):
             return self.interpol_nf_ripple + nf_avg # input VOA = 1 for 1 NF degradation
 
     def noise_profile(self, df):
-        """ noise_profile(bw) computes amplifier ase (W) in signal bw (Hz)
+        """noise_profile(bw) computes amplifier ase (W) in signal bw (Hz)
         noise is calculated at amplifier input
 
         :bw: signal bandwidth = baud rate in Hz
@@ -828,7 +864,7 @@ class Edfa(Node):
         return g1st - voa + array(self.interpol_dgt) * dgts3
 
     def propagate(self, pref, *carriers):
-        """add ase noise to the propagating carriers of SpectralInformation"""
+        """add ASE noise to the propagating carriers of :class:`.info.SpectralInformation`"""
         pin = array([c.power.signal+c.power.nli+c.power.ase for c in carriers]) # pin in W
         freq = array([c.frequency for c in carriers])
         brate = array([c.baud_rate for c in carriers])
@@ -842,17 +878,17 @@ class Edfa(Node):
         for gain, carrier_ase, carrier in zip(gains, carrier_ases, carriers):
             pwr = carrier.power
             pwr = pwr._replace(signal=pwr.signal*gain/att,
-                               nonlinear_interference=pwr.nli*gain/att,
-                               amplified_spontaneous_emission=(pwr.ase+carrier_ase)*gain/att)
+                               nli=pwr.nli*gain/att,
+                               ase=(pwr.ase+carrier_ase)*gain/att)
             yield carrier._replace(power=pwr)
 
     def update_pref(self, pref):
-        return pref._replace(p_span0=pref.p0,
-                            p_spani=pref.pi + self.effective_gain - self.out_voa)
+        return pref._replace(p_span0=pref.p_span0,
+                            p_spani=pref.p_spani + self.effective_gain - self.out_voa)
 
     def __call__(self, spectral_info):
         self.carriers_in = spectral_info.carriers
         carriers = tuple(self.propagate(spectral_info.pref, *spectral_info.carriers))
         pref = self.update_pref(spectral_info.pref)
         self.carriers_out = carriers
-        return spectral_info.update(carriers=carriers, pref=pref)
+        return spectral_info._replace(carriers=carriers, pref=pref)

@@ -18,6 +18,8 @@ from numpy import mean
 
 #network_file_name = 'tests/test_network.json'
 network_file_name = Path(__file__).parent.parent / 'tests/LinkforTest.json'
+#TODO: note that this json entries has a weird topology since EDfa1 has a possible branch on a receiver B
+# this might not pass future tests/ code updates
 #network_file_name = Path(__file__).parent.parent / 'examples/edfa_example_network.json'
 eqpt_library_name = Path(__file__).parent.parent / 'tests/data/eqpt_config.json'
 

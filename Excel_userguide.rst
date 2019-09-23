@@ -19,8 +19,8 @@ In order to work the excel file MUST contain at least 2 sheets:
 Nodes sheet
 -----------
 
-Nodes sheet contains seven columns.
-Each line represents a 'node' (ROADM site or an in line amplifier site ILA)::
+Nodes sheet contains nine columns.
+Each line represents a 'node' (ROADM site or an in line amplifier site ILA or a Fused)::
 
   City (Mandatory) ; State ; Country ; Region ; Latitude ; Longitude ; Type
 
@@ -37,6 +37,9 @@ Each line represents a 'node' (ROADM site or an in line amplifier site ILA)::
   "Region" is a holdover from the CORONET topology reference file `CORONET_Global_Topology.xls <examples/CORONET_Global_Topology.xls>`_. CORONET separates its network into geographical regions (Europe, Asia, Continental US.) This information is not used by gnpy.
 
 - *Longitude*, *Latitude* are not mandatory. If filled they should contain numbers.
+
+- **Booster_restriction** and **Preamp_restriction** are not mandatory.
+  If used, they must contain one or several amplifier type_variety names separated by ' | '. This information is used to restrict types of amplifiers used in a ROADM node during autodesign. If a ROADM booster or preamp is already specified in the Eqpt sheet , the field is ignored. The field is also ignored if the node is not a ROADM node.
 
 **There MUST NOT be empty line(s) between two nodes lines**
 
@@ -166,6 +169,7 @@ This generates a text file meshTopologyExampleV2_eqt_sheet.txt  whose content ca
 - **amp type** is not mandatory. 
   If filled it must contain types listed in `eqpt_config.json <examples/eqpt_config.json>`_ in "Edfa" list "type_variety".
   If not filled it takes "std_medium_gain" as default value.
+  If filled with fused, a fused element with 0.0 dB loss will be placed instead of an amplifier. This might be used to avoid booster amplifier on a ROADM direction.
 
 - **amp_gain** is not mandatory. It is the value to be set on the amplifier (in dB).
   If not filled, it will be determined with design rules in the convert.py file.
