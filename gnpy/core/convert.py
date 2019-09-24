@@ -284,13 +284,19 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
 
     nodes, links = sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city)
 
+    metadata = {x:
+                  {'location': {
+                      'city': x.city,
+                      'region': x.region,
+                      'latitude': x.latitude,
+                      'longitude': x.longitude}
+                  }
+                  for x in nodes_by_city.values()
+                }
+
     roadm_elements = {x:
                         {'uid': f'roadm {x.city}',
-                         'metadata': {'location': {
-                                          'city': x.city,
-                                          'region': x.region,
-                                          'latitude': x.latitude,
-                                          'longitude': x.longitude}},
+                         'metadata': metadata[x],
                          'type': 'Roadm'
                         }
                         for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'
@@ -316,26 +322,17 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
     data = {
         'elements':
             [{'uid': f'trx {x.city}',
-              'metadata': {'location': {'city':      x.city,
-                                        'region':    x.region,
-                                        'latitude':  x.latitude,
-                                        'longitude': x.longitude}},
+              'metadata': metadata[x],
               'type': 'Transceiver'}
              for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'] +
             [roadm_elements[x]
              for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'] +
             [{'uid': f'west fused spans in {x.city}',
-              'metadata': {'location': {'city':      x.city,
-                                        'region':    x.region,
-                                        'latitude':  x.latitude,
-                                        'longitude': x.longitude}},
+              'metadata': metadata[x],
               'type': 'Fused'}
              for x in nodes_by_city.values() if x.node_type.lower() == 'fused'] +
             [{'uid': f'east fused spans in {x.city}',
-              'metadata': {'location': {'city':      x.city,
-                                        'region':    x.region,
-                                        'latitude':  x.latitude,
-                                        'longitude': x.longitude}},
+              'metadata': metadata[x],
               'type': 'Fused'}
              for x in nodes_by_city.values() if x.node_type.lower() == 'fused'] +
             [{'uid': f'fiber ({x.from_city} \u2192 {x.to_city})-{x.east_cable}',
