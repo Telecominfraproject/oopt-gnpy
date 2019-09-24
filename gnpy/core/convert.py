@@ -56,7 +56,7 @@ class Node(object):
         'latitude':     0,
         'longitude':    0,
         'node_type':    'ILA',
-        'pout_target':  -18,
+        'pout_target':  '',
         'booster_restriction' : '',
         'preamp_restriction'  : ''
     }
@@ -284,6 +284,35 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
 
     nodes, links = sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city)
 
+    roadm_elements = {x:
+                        {'uid': f'roadm {x.city}',
+                         'metadata': {'location': {
+                                          'city': x.city,
+                                          'region': x.region,
+                                          'latitude': x.latitude,
+                                          'longitude': x.longitude}},
+                         'type': 'Roadm'
+                        }
+                        for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'
+                     }
+    for x in nodes_by_city.values():
+        if x.node_type.lower() == 'roadm':
+            if x.pout_target != '':
+                roadm_elements[x]['params'] = {'target_pch_out_db': x.pout_target}
+            if (x.booster_restriction != '' or x.preamp_restriction != ''):
+                if  'params' in roadm_elements[x].keys():
+                    roadm_elements[x]['params']['restrictions'] = {
+                        'preamp_variety_list': silent_remove(x.preamp_restriction.split(' | '),''),
+                        'booster_variety_list': silent_remove(x.booster_restriction.split(' | '),'')
+                        }
+                else:
+                    roadm_elements[x]['params'] = {
+                        'restrictions': {
+                            'preamp_variety_list': silent_remove(x.preamp_restriction.split(' | '),''),
+                            'booster_variety_list': silent_remove(x.booster_restriction.split(' | '),'')
+                            }
+                        }
+
     data = {
         'elements':
             [{'uid': f'trx {x.city}',
@@ -293,32 +322,8 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
                                         'longitude': x.longitude}},
               'type': 'Transceiver'}
              for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'] +
-            [{'uid': f'roadm {x.city}',
-              'params' : {
-                'target_pch_out_db': x.pout_target
-              },
-              'metadata': {'location': {'city':      x.city,
-                                        'region':    x.region,
-                                        'latitude':  x.latitude,
-                                        'longitude': x.longitude}},
-              'type': 'Roadm'}
-             for x in nodes_by_city.values() if x.node_type.lower() == 'roadm' \
-                 and x.booster_restriction == '' and x.preamp_restriction == ''] +
-            [{'uid': f'roadm {x.city}',
-              'params' : {
-                'restrictions': {
-                  'preamp_variety_list': silent_remove(x.preamp_restriction.split(' | '),''),
-                  'booster_variety_list': silent_remove(x.booster_restriction.split(' | '),'')
-                  },
-                'target_pch_out_db': x.pout_target
-              },
-              'metadata': {'location': {'city':      x.city,
-                                        'region':    x.region,
-                                        'latitude':  x.latitude,
-                                        'longitude': x.longitude}},
-              'type': 'Roadm'}
-             for x in nodes_by_city.values() if x.node_type.lower() == 'roadm' and \
-                 (x.booster_restriction != '' or x.preamp_restriction != '')] +
+            [roadm_elements[x]
+             for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'] +
             [{'uid': f'west fused spans in {x.city}',
               'metadata': {'location': {'city':      x.city,
                                         'region':    x.region,
