@@ -161,7 +161,7 @@ def main(network, equipment, source, destination, sim_params, req=None):
             print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f} dBm:')
         else:
             print(f'\nTransmission results:')
-        print(f'  Final SNR total (signal bw): {ansi_escapes.cyan}{mean(destination.snr):.02f} dB{ansi_escapes.reset}')
+        print(f'  Final SNR total (0.1 nm): {ansi_escapes.cyan}{mean(destination.snr_01nm):.02f} dB{ansi_escapes.reset}')
 
         #print(f'\n !!!!!!!!!!!!!!!!!     TEST POINT         !!!!!!!!!!!!!!!!!!!!!')
         #print(f'carriers ase output of {path[1]} =\n {list(path[1].carriers("out", "nli"))}')
