@@ -157,6 +157,8 @@ def main(network, equipment, source, destination, sim_params, req=None):
         if len(power_range) == 1:
             for elem in path:
                 print(elem)
+        else:
+            print(path[-1])
         if power_mode:
             print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f} dBm:')
         else:
