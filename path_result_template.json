@@ -1,40 +1,179 @@
 {
-  "paths": [
+  "response": [
     {
-      "path": {
-        "path-id": null,
-        "path-properties": {
-          "path-metric": [
-            {
-              "metric-type": null,
-              "accumulative-value": null
-            }
-          ],
-          "path-srlgs": {
-            "usage": "not used yet",
-            "values": ["not used yet"]
+      "response-id": "string same id as for the request",
+      "path-properties": {
+        "path-metric": [
+          {
+            "metric-type": "SNR-bandwidth",
+            "accumulative-value": 17.53  decimal values
           },
-          "path-route-objects": [
-            {
-              "path-route-object": {
-                "index": null,
-                "unnumbered-hop": {
-                  "node-id": null,
-                  "link-tp-id": null,
-                  "hop-type": null,
-                  "direction": "not used"
-                },
-                "label-hop": {
-                  "te-label": {
-                    "generic": "not used yet",
-                    "direction": "not used yet"
-                  }
+          {
+            "metric-type": "SNR-0.1nm",
+            "accumulative-value": 21.61
+          },
+          {
+            "metric-type": "OSNR-bandwidth",
+            "accumulative-value": 19.34
+          },
+          {
+            "metric-type": "OSNR-0.1nm",
+            "accumulative-value": 23.42
+          },
+          {
+            "metric-type": "reference_power",
+            "accumulative-value": 0.001
+          },
+          {
+            "metric-type": "path_bandwidth",
+            "accumulative-value": 1000000000000.0
+          }
+        ],
+        "path-route-objects": [  list of hop, label, transponder
+          {
+            "path-route-object": {
+              "index": 0,
+              "num-unnum-hop": {
+                "node-id": "trx Rennes_STA",
+                "link-tp-id": "trx Rennes_STA"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 1,
+              "label-hop": {
+                "N": -248,
+                "M": 40
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
+              "transponder": {
+                "transponder-type": "Voyager",
+                "transponder-mode": "mode 1"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 3,
+              "num-unnum-hop": {
+                "node-id": "roadm Rennes_STA",
+                "link-tp-id": "roadm Rennes_STA"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 4,
+              "label-hop": {
+                "N": -248,
+                "M": 40
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 5,
+              "num-unnum-hop": {
+                "node-id": "Edfa1_roadm Rennes_STA",
+                "link-tp-id": "Edfa1_roadm Rennes_STA"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 6,
+              "label-hop": {
+                "N": -248,
+                "M": 40
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 7,
+              "num-unnum-hop": {
+                "node-id": "fiber (Rennes_STA → Ploermel)-",
+                "link-tp-id": "fiber (Rennes_STA → Ploermel)-"
+              }
+            }
+          },
+        ...
+        ]
+      }
+    },
+    {
+      "path-id": "7c",
+      "path-properties": {
+        "path-metric": [
+          {
+            "metric-type": "SNR@bandwidth",
+            "accumulative-value": "None"
+          },
+          {
+            "metric-type": "SNR@0.1nm",
+            "accumulative-value": "None"
+          },
+          {
+            "metric-type": "OSNR@bandwidth",
+            "accumulative-value": "None"
+          },
+          {
+            "metric-type": "OSNR@0.1nm",
+            "accumulative-value": "None"
+          },
+          {
+            "metric-type": "reference_power",
+            "accumulative-value": 0.001
+          },
+          {
+            "metric-type": "path_bandwidth",
+            "accumulative-value": 400000000000.0
+          }
+        ],
+        "path-srlgs": {
+          "usage": "not used yet",
+          "values": "not used yet"
+        },
+        "path-route-objects": [
+          {
+            "path-route-object": {
+              "index": 0,
+              "unnumbered-hop": {
+                "node-id": "trx Lannion_CAS",
+                "link-tp-id": "trx Lannion_CAS",
+                "hop-type": "Voyager - not feasible with this transponder",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
                 }
               }
             }
-          ]
-        }
+          },
+          {
+            "path-route-object": {
+              "index": 1,
+              "unnumbered-hop": {
+                "node-id": "trx Lorient_KMA",
+                "link-tp-id": "trx Lorient_KMA",
+                "hop-type": "Voyager - not feasible with this transponder",
+                "direction": "not used"
+              },
+              "label-hop": {
+                "te-label": {
+                  "generic": "not used yet",
+                  "direction": "not used yet"
+                }
+              }
+            }
+          }
+        ]
       }
-    }
-  ]
-}
+    },      

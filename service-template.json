@@ -1,60 +1,57 @@
 {
   "path-request": [
-    {
-      "request-id": null,
-      "source": null,
-      "destination": null,
-      "src-tp-id": null,
-      "dst-tp-id": null,
+   {
+      "request-id": "string",
+      "source": "roadm name",
+      "destination": "roadm name",
+      "src-tp-id": "trx name",
+      "dst-tp-id": "trx name",
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
-          "trx_type": null,
-          "trx_mode": null,
+          "trx_type": "name of the tsp type_variety as listed in the library",
+          "trx_mode": "optional, name of the mode as listed in the tsp type_variety",
           "effective-freq-slot": [
             {
               "n": "null",
               "m": "null"
             }
           ],
-          "spacing": null,
-          "max-nb-of-channel": null,
-          "output-power": null,
-          "path_bandwidth": null
-          }
+          "spacing": mandatory 50000000000.0,
+          "max-nb-of-channel": optional 80,
+          "output-power": optional 0.0012589254117941673,
+          "path_bandwidth": optional 100000000000.0
+        }
       },
       "optimizations": {
-        "explicit-route-include-objects": {
-          "route-object-include-object": [
-          {
-            "index": null,
-            "unnumbered-hop": {
-              "node-id": null,
-              "link-tp-id": "link-tp-id is not used",
-              "hop-type": null,
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
-            }
-          }
-          ]
-        }
+        "explicit-route-include-objects": [] if no constraint or list of object if constraints
       }
-    }],
-  "synchronization": [
+    },
+  ],
+  "synchronization": [   list of disjunctions
     {
-      "synchronization-id": null,
+      "synchronization-id": "3",
       "svec": {
-        "relaxable": "True",
-        "link-diverse": "False",
-        "node-diverse": "False",
+        "relaxable": "False",
+        "link-diverse": "True",
+        "node-diverse": "True",
         "request-id-number": [
-         null ]
-        },
+          "3",
+          "1"
+        ]
+      }
+    },
+    {
+      "synchronization-id": "4",
+      "svec": {
+        "relaxable": "False",
+        "link-diverse": "True",
+        "node-diverse": "True",
+        "request-id-number": [
+          "4",
+          "5"
+        ]
+      }
     }
-    ]
+  ]  
 }
