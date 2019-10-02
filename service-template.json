@@ -47,24 +47,25 @@
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
-          "trx_type": null,
-          "trx_mode": null,
+          "trx_type": "name of the tsp type_variety as listed in the library",
+          "trx_mode": "optional, name of the mode as listed in the tsp type_variety",
           "effective-freq-slot": [
             {
               "n": "null",
               "m": "null"
             }
           ],
-          "spacing": null,
-          "max-nb-of-channel": null,
-          "output-power": null,
-          "path_bandwidth": null
-          }
+          "spacing": mandatory decimal Hz,
+          "max-nb-of-channel": optional integer,
+          "output-power": optional decimal W,
+          "path_bandwidth": optional bit/s
+        }
       }
-    }],
-  "synchronization": [
+    }
+  ],
+  "synchronization": [   list of disjunctions, optional
     {
-      "synchronization-id": null,
+      "synchronization-id": "3",
       "svec": {
         "relaxable": "True",
         "disjointness": "node link",
@@ -72,5 +73,5 @@
          null, null ]
         },
     }
-    ]
+  ]  
 }
