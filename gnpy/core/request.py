@@ -399,6 +399,7 @@ def propagate(path, req, equipment):
         req.power, req.spacing)
     for el in path:
         si = el(si)
+    path[0].update_snr(req.tx_osnr)
     path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
     return path
 
@@ -411,6 +412,7 @@ def propagate2(path, req, equipment):
         before_si = si
         after_si  = si = el(si)
         infos[el] = before_si, after_si
+    path[0].update_snr(req.tx_osnr)
     path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
     return infos
 
@@ -440,6 +442,7 @@ def propagate_and_optimize_mode(path, req, equipment):
                 si = el(si)
             for m in modes_to_explore :
                 if path[-1].snr is not None:
+                    path[0].update_snr(m['tx_osnr'])
                     path[-1].update_snr(m['tx_osnr'], equipment['Roadm']['default'].add_drop_osnr)
                     if round(min(path[-1].snr+lin2db(b/(12.5e9))),2) > m['OSNR'] :
                         found_a_feasible_mode = True
