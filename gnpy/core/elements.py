@@ -25,7 +25,7 @@ from collections import namedtuple
 
 from gnpy.core.node import Node
 from gnpy.core.units import UNITS
-from gnpy.core.utils import lin2db, db2lin, itufs, itufl, snr_sum
+from gnpy.core.utils import lin2db, db2lin, itufl, snr_sum
 from gnpy.core.science_utils import propagate_raman_fiber, _psi
 
 class Transceiver(Node):

@@ -73,21 +73,6 @@ def c():
     return constants.c
 
 
-def itufs(spacing, startf=191.35, stopf=196.10):
-    """Creates an array of frequencies whose default range is
-    191.35-196.10 THz
-
-    :param spacing: Frequency spacing in THz
-    :param starf: Start frequency in THz
-    :param stopf: Stop frequency in THz
-    :type spacing: float
-    :type startf: float
-    :type stopf: float
-    :return an array of frequnecies determined by the spacing parameter
-    :rtype: numpy.ndarray
-    """
-    return np.arange(startf, stopf + spacing / 2, spacing)
-
 def itufl(length, startf=191.35, stopf=196.10):
     """Creates an array of frequencies whose default range is
     191.35-196.10 THz
