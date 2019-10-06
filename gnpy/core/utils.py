@@ -73,19 +73,19 @@ def c():
     return constants.c
 
 
-def itufl(length, startf, stopf):
+def arrange_frequencies(length, start, stop):
     """Create an array of frequencies
 
     :param length: number of elements
-    :param starf: Start frequency in THz
-    :param stopf: Stop frequency in THz
+    :param star: Start frequency in THz
+    :param stop: Stop frequency in THz
     :type length: integer
-    :type startf: float
-    :type stopf: float
-    :return an array of frequnecies determined by the spacing parameter
+    :type start: float
+    :type stop: float
+    :return an array of frequencies determined by the spacing parameter
     :rtype: numpy.ndarray
     """
-    return np.linspace(startf, stopf, length)
+    return np.linspace(start, stop, length)
 
 def h():
     """
