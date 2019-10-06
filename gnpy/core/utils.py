@@ -73,9 +73,8 @@ def c():
     return constants.c
 
 
-def itufl(length, startf=191.35, stopf=196.10):
-    """Creates an array of frequencies whose default range is
-    191.35-196.10 THz
+def itufl(length, startf, stopf):
+    """Create an array of frequencies
 
     :param length: number of elements
     :param starf: Start frequency in THz
