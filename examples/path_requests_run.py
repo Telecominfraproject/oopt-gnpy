@@ -64,6 +64,7 @@ PARSER.add_argument('-v', '--verbose', action='count', default=0,\
 PARSER.add_argument('-o', '--output', type=Path)
 PARSER.add_argument('-r', '--rest', action='count', default=0, help='use the REST API')
 
+NETWORK_FILENAME = 'topoDemov1.json'
 
 app = Flask(__name__, static_url_path="")
 api = Api(app)
@@ -518,6 +519,8 @@ class GnpyAPI(Resource):
         content = request.get_json()
         content1 = content['gnpy-api']
         topoJson = content1['topology-file']
+        if not topoJson:
+            topoJson = load_json(NETWORK_FILENAME)
         svcJson = content1['service-file']
         # Load equipment
         equipment = load_equipment('eqpt_config.json')
