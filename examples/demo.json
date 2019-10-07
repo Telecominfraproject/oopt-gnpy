@@ -1,0 +1,1033 @@
+{
+  "response": [
+    {
+      "response-id": "0",
+      "path-properties": {
+        "path-metric": [
+          {
+            "metric-type": "SNR-bandwidth",
+            "accumulative-value": 23.65
+          },
+          {
+            "metric-type": "SNR-0.1nm",
+            "accumulative-value": 27.74
+          },
+          {
+            "metric-type": "OSNR-bandwidth",
+            "accumulative-value": 24.19
+          },
+          {
+            "metric-type": "OSNR-0.1nm",
+            "accumulative-value": 28.27
+          },
+          {
+            "metric-type": "reference_power",
+            "accumulative-value": 0.001
+          },
+          {
+            "metric-type": "path_bandwidth",
+            "accumulative-value": 100000000000.0
+          }
+        ],
+        "path-route-objects": [
+          {
+            "path-route-object": {
+              "index": 0,
+              "num-unnum-hop": {
+                "node-id": "trx site_a",
+                "link-tp-id": "trx site_a"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 1,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
+              "transponder": {
+                "transponder-type": "Voyager",
+                "transponder-mode": "mode 1"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 3,
+              "num-unnum-hop": {
+                "node-id": "roadm site_a",
+                "link-tp-id": "roadm site_a"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 4,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 5,
+              "num-unnum-hop": {
+                "node-id": "booster2 site_a",
+                "link-tp-id": "booster2 site_a"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 6,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 7,
+              "num-unnum-hop": {
+                "node-id": "Span2ab",
+                "link-tp-id": "Span2ab"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 8,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 9,
+              "num-unnum-hop": {
+                "node-id": "preamp2 site_b",
+                "link-tp-id": "preamp2 site_b"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 10,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 11,
+              "num-unnum-hop": {
+                "node-id": "roadm site_b",
+                "link-tp-id": "roadm site_b"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 12,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 13,
+              "num-unnum-hop": {
+                "node-id": "trx site_b",
+                "link-tp-id": "trx site_b"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 14,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 15,
+              "transponder": {
+                "transponder-type": "Voyager",
+                "transponder-mode": "mode 1"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "response-id": "1",
+      "path-properties": {
+        "path-metric": [
+          {
+            "metric-type": "SNR-bandwidth",
+            "accumulative-value": 22.22
+          },
+          {
+            "metric-type": "SNR-0.1nm",
+            "accumulative-value": 26.3
+          },
+          {
+            "metric-type": "OSNR-bandwidth",
+            "accumulative-value": 22.61
+          },
+          {
+            "metric-type": "OSNR-0.1nm",
+            "accumulative-value": 26.69
+          },
+          {
+            "metric-type": "reference_power",
+            "accumulative-value": 0.001
+          },
+          {
+            "metric-type": "path_bandwidth",
+            "accumulative-value": 200000000000.0
+          }
+        ],
+        "path-route-objects": [
+          {
+            "path-route-object": {
+              "index": 0,
+              "num-unnum-hop": {
+                "node-id": "trx site_a",
+                "link-tp-id": "trx site_a"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 1,
+              "label-hop": {
+                "N": -272,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
+              "transponder": {
+                "transponder-type": "Voyager",
+                "transponder-mode": "mode 1"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 3,
+              "num-unnum-hop": {
+                "node-id": "roadm site_a",
+                "link-tp-id": "roadm site_a"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 4,
+              "label-hop": {
+                "N": -272,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 5,
+              "num-unnum-hop": {
+                "node-id": "booster1 site_a",
+                "link-tp-id": "booster1 site_a"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 6,
+              "label-hop": {
+                "N": -272,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 7,
+              "num-unnum-hop": {
+                "node-id": "Span1ab",
+                "link-tp-id": "Span1ab"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 8,
+              "label-hop": {
+                "N": -272,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 9,
+              "num-unnum-hop": {
+                "node-id": "preamp site_b",
+                "link-tp-id": "preamp site_b"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 10,
+              "label-hop": {
+                "N": -272,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 11,
+              "num-unnum-hop": {
+                "node-id": "roadm site_b",
+                "link-tp-id": "roadm site_b"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 12,
+              "label-hop": {
+                "N": -272,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 13,
+              "num-unnum-hop": {
+                "node-id": "trx site_b",
+                "link-tp-id": "trx site_b"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 14,
+              "label-hop": {
+                "N": -272,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 15,
+              "transponder": {
+                "transponder-type": "Voyager",
+                "transponder-mode": "mode 1"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "response-id": "2",
+      "path-properties": {
+        "path-metric": [
+          {
+            "metric-type": "SNR-bandwidth",
+            "accumulative-value": 20.98
+          },
+          {
+            "metric-type": "SNR-0.1nm",
+            "accumulative-value": 25.07
+          },
+          {
+            "metric-type": "OSNR-bandwidth",
+            "accumulative-value": 21.56
+          },
+          {
+            "metric-type": "OSNR-0.1nm",
+            "accumulative-value": 25.65
+          },
+          {
+            "metric-type": "reference_power",
+            "accumulative-value": 0.001
+          },
+          {
+            "metric-type": "path_bandwidth",
+            "accumulative-value": 200000000000.0
+          }
+        ],
+        "path-route-objects": [
+          {
+            "path-route-object": {
+              "index": 0,
+              "num-unnum-hop": {
+                "node-id": "trx site_a",
+                "link-tp-id": "trx site_a"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 1,
+              "label-hop": {
+                "N": -280,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
+              "transponder": {
+                "transponder-type": "Voyager",
+                "transponder-mode": "mode 1"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 3,
+              "num-unnum-hop": {
+                "node-id": "roadm site_a",
+                "link-tp-id": "roadm site_a"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 4,
+              "label-hop": {
+                "N": -280,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 5,
+              "num-unnum-hop": {
+                "node-id": "booster3 site_a",
+                "link-tp-id": "booster3 site_a"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 6,
+              "label-hop": {
+                "N": -280,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 7,
+              "num-unnum-hop": {
+                "node-id": "Span1ac",
+                "link-tp-id": "Span1ac"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 8,
+              "label-hop": {
+                "N": -280,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 9,
+              "num-unnum-hop": {
+                "node-id": "preamp1 site_c",
+                "link-tp-id": "preamp1 site_c"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 10,
+              "label-hop": {
+                "N": -280,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 11,
+              "num-unnum-hop": {
+                "node-id": "roadm site_c",
+                "link-tp-id": "roadm site_c"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 12,
+              "label-hop": {
+                "N": -280,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 13,
+              "num-unnum-hop": {
+                "node-id": "booster1 site_c",
+                "link-tp-id": "booster1 site_c"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 14,
+              "label-hop": {
+                "N": -280,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 15,
+              "num-unnum-hop": {
+                "node-id": "Span1cb",
+                "link-tp-id": "Span1cb"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 16,
+              "label-hop": {
+                "N": -280,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 17,
+              "num-unnum-hop": {
+                "node-id": "preamp3 site_b",
+                "link-tp-id": "preamp3 site_b"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 18,
+              "label-hop": {
+                "N": -280,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 19,
+              "num-unnum-hop": {
+                "node-id": "roadm site_b",
+                "link-tp-id": "roadm site_b"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 20,
+              "label-hop": {
+                "N": -280,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 21,
+              "num-unnum-hop": {
+                "node-id": "trx site_b",
+                "link-tp-id": "trx site_b"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 22,
+              "label-hop": {
+                "N": -280,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 23,
+              "transponder": {
+                "transponder-type": "Voyager",
+                "transponder-mode": "mode 1"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "response-id": "3",
+      "path-properties": {
+        "path-metric": [
+          {
+            "metric-type": "SNR-bandwidth",
+            "accumulative-value": 22.22
+          },
+          {
+            "metric-type": "SNR-0.1nm",
+            "accumulative-value": 26.3
+          },
+          {
+            "metric-type": "OSNR-bandwidth",
+            "accumulative-value": 22.61
+          },
+          {
+            "metric-type": "OSNR-0.1nm",
+            "accumulative-value": 26.69
+          },
+          {
+            "metric-type": "reference_power",
+            "accumulative-value": 0.001
+          },
+          {
+            "metric-type": "path_bandwidth",
+            "accumulative-value": 100000000000.0
+          }
+        ],
+        "path-route-objects": [
+          {
+            "path-route-object": {
+              "index": 0,
+              "num-unnum-hop": {
+                "node-id": "trx site_a",
+                "link-tp-id": "trx site_a"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 1,
+              "label-hop": {
+                "N": -260,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
+              "transponder": {
+                "transponder-type": "Voyager",
+                "transponder-mode": "mode 1"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 3,
+              "num-unnum-hop": {
+                "node-id": "roadm site_a",
+                "link-tp-id": "roadm site_a"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 4,
+              "label-hop": {
+                "N": -260,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 5,
+              "num-unnum-hop": {
+                "node-id": "booster1 site_a",
+                "link-tp-id": "booster1 site_a"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 6,
+              "label-hop": {
+                "N": -260,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 7,
+              "num-unnum-hop": {
+                "node-id": "Span1ab",
+                "link-tp-id": "Span1ab"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 8,
+              "label-hop": {
+                "N": -260,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 9,
+              "num-unnum-hop": {
+                "node-id": "preamp site_b",
+                "link-tp-id": "preamp site_b"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 10,
+              "label-hop": {
+                "N": -260,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 11,
+              "num-unnum-hop": {
+                "node-id": "roadm site_b",
+                "link-tp-id": "roadm site_b"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 12,
+              "label-hop": {
+                "N": -260,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 13,
+              "num-unnum-hop": {
+                "node-id": "trx site_b",
+                "link-tp-id": "trx site_b"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 14,
+              "label-hop": {
+                "N": -260,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 15,
+              "transponder": {
+                "transponder-type": "Voyager",
+                "transponder-mode": "mode 1"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "response-id": "4",
+      "path-properties": {
+        "path-metric": [
+          {
+            "metric-type": "SNR-bandwidth",
+            "accumulative-value": 20.98
+          },
+          {
+            "metric-type": "SNR-0.1nm",
+            "accumulative-value": 25.07
+          },
+          {
+            "metric-type": "OSNR-bandwidth",
+            "accumulative-value": 21.56
+          },
+          {
+            "metric-type": "OSNR-0.1nm",
+            "accumulative-value": 25.65
+          },
+          {
+            "metric-type": "reference_power",
+            "accumulative-value": 0.001
+          },
+          {
+            "metric-type": "path_bandwidth",
+            "accumulative-value": 100000000000.0
+          }
+        ],
+        "path-route-objects": [
+          {
+            "path-route-object": {
+              "index": 0,
+              "num-unnum-hop": {
+                "node-id": "trx site_a",
+                "link-tp-id": "trx site_a"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 1,
+              "label-hop": {
+                "N": -268,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
+              "transponder": {
+                "transponder-type": "Voyager",
+                "transponder-mode": "mode 1"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 3,
+              "num-unnum-hop": {
+                "node-id": "roadm site_a",
+                "link-tp-id": "roadm site_a"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 4,
+              "label-hop": {
+                "N": -268,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 5,
+              "num-unnum-hop": {
+                "node-id": "booster3 site_a",
+                "link-tp-id": "booster3 site_a"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 6,
+              "label-hop": {
+                "N": -268,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 7,
+              "num-unnum-hop": {
+                "node-id": "Span1ac",
+                "link-tp-id": "Span1ac"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 8,
+              "label-hop": {
+                "N": -268,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 9,
+              "num-unnum-hop": {
+                "node-id": "preamp1 site_c",
+                "link-tp-id": "preamp1 site_c"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 10,
+              "label-hop": {
+                "N": -268,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 11,
+              "num-unnum-hop": {
+                "node-id": "roadm site_c",
+                "link-tp-id": "roadm site_c"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 12,
+              "label-hop": {
+                "N": -268,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 13,
+              "num-unnum-hop": {
+                "node-id": "booster1 site_c",
+                "link-tp-id": "booster1 site_c"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 14,
+              "label-hop": {
+                "N": -268,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 15,
+              "num-unnum-hop": {
+                "node-id": "Span1cb",
+                "link-tp-id": "Span1cb"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 16,
+              "label-hop": {
+                "N": -268,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 17,
+              "num-unnum-hop": {
+                "node-id": "preamp3 site_b",
+                "link-tp-id": "preamp3 site_b"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 18,
+              "label-hop": {
+                "N": -268,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 19,
+              "num-unnum-hop": {
+                "node-id": "roadm site_b",
+                "link-tp-id": "roadm site_b"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 20,
+              "label-hop": {
+                "N": -268,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 21,
+              "num-unnum-hop": {
+                "node-id": "trx site_b",
+                "link-tp-id": "trx site_b"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 22,
+              "label-hop": {
+                "N": -268,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 23,
+              "transponder": {
+                "transponder-type": "Voyager",
+                "transponder-mode": "mode 1"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
