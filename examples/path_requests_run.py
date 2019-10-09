@@ -132,7 +132,6 @@ def disjunctions_from_json(json_data):
         temp_test = json_data['synchronization']
     except KeyError:
         temp_test = []
-        pass
     if temp_test:
         for snc in json_data['synchronization']:
             params = {}
@@ -142,7 +141,6 @@ def disjunctions_from_json(json_data):
             params['node_diverse'] = 'node' in snc['svec']['disjointness']
             params['disjunctions_req'] = snc['svec']['request-id-number']
             disjunctions_list.append(Disjunction(**params))
-        print(disjunctions_list)
 
     return disjunctions_list
 
@@ -228,7 +226,7 @@ def correct_route_list(network, pathreqlist):
             # print(n_id)
             if n_id not in anytype :
                 # find nodes name that include constraint among all possible names except
-                # transponders (not yet supported as constraints). 
+                # transponders (not yet supported as constraints).
                 nodes_suggestion = [uid for uid in anytype \
                     if n_id.lower() in uid.lower() and uid not in transponders]
                 if pathreq.loose_list[i] == 'LOOSE':

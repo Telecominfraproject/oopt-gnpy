@@ -126,20 +126,20 @@ class Result_element(Element):
         else:
             index = 0
             pro_list = []
-            for nel in self.computed_path:
+            for element in self.computed_path:
                 temp = {
                     'path-route-object': {
                         'index': index,
                         'num-unnum-hop': {
-                            'node-id': nel.uid,
-                            'link-tp-id': nel.uid,
+                            'node-id': element.uid,
+                            'link-tp-id': element.uid,
                             # TODO change index in order to insert transponder attribute
                             }
                         }
                     }
                 pro_list.append(temp)
                 index += 1
-                if isinstance(nel, Transceiver):
+                if isinstance(element, Transceiver):
                     temp = {
                         'path-route-object': {
                             'index': index,
@@ -247,16 +247,26 @@ def compute_constrained_path(network, req):
             candidate.sort(key=lambda x: sum(network.get_edge_data(x[i],x[i+1])['weight'] for i in range(len(x)-2)))
             total_path = candidate[0]
         else:
-            # TODO: better account for individual oose and strict node
+            # TODO: better account for individual loose and strict node
             # to ease: suppose that one strict makes the whole liste strict (except for the
             # last node which is the transceiver)
-            if 'STRICT' not in req.loose_list[:-6]:
-                print(f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing' +\
-                      f'{[el.uid for el in nodes_list[:-6]]} in network topology'+ '\x1b[0m')
+            # if all nodes i n node_list are LOOSE constraint, skip the constraints and find
+            # a path w/o constraints, else there is no possible path
+            if nodes_list[:-len("STRICT")]:
+                print(f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing ' +\
+                      f'{[el.uid for el in nodes_list[:-len("STRICT")]]} in network topology'+ '\x1b[0m')
+            else:
+                print(f'\x1b[1;33;40m'+f'User include_node constraints could not be applied ' +\
+                      f'(invalid names specified)'+ '\x1b[0m')
+            if 'STRICT' not in req.loose_list[:-len('STRICT')]:
+                msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path with user_' +\
+                      f'include node constraints' + '\x1b[0m'
+                logger.info(msg)
                 print(f'constraint ignored')
                 total_path = dijkstra_path(network, source, destination, weight = 'weight')
             else:
-                msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing {nodes_list}.\nNo path computed'+ '\x1b[0m'
+                msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path with user ' +\
+                      f'include node constraints.\nNo path computed'+ '\x1b[0m'
                 logger.critical(msg)
                 print(msg)
                 total_path = []

@@ -217,21 +217,21 @@ def test_csv_response_generation(json_input, csv_output):
     # check that headers are the same
     resp_header.sort()
     expected_resp_header.sort()
-    if resp_header != expected_resp_header:
-        print(resp_header)
-        print(expected_resp_header)
-        raise AssertionError('headers are differents')
+    print('headers are differents')
+    print(resp_header)
+    print(expected_resp_header)
+    assert resp_header == expected_resp_header
 
     # for each header checks that the output are as expected
     resp.sort_values(by=['response-id'])
     expected_resp.sort_values(by=['response-id'])
 
     for column in expected_resp:
-        if list(resp[column].fillna('')) != list(expected_resp[column].fillna('')):
-            print(list(resp[column]))
-            print(list(expected_resp[column]))
-            print(type(list(resp[column])[-1]))
-            raise AssertionError('results are different')
+        assert list(resp[column].fillna('')) == list(expected_resp[column].fillna(''))
+        print('results are different')
+        print(list(resp[column]))
+        print(list(expected_resp[column]))
+        print(type(list(resp[column])[-1]))
 
 def compare_response(exp_resp, act_resp):
     """ False if the keys are different in the nested dicts as well
@@ -295,5 +295,4 @@ def test_json_response_generation(xls_input, expected_response_file):
         expected = load(jsonfile)
 
     for i, response in enumerate(temp['response']):
-        if not compare_response(expected['response'][i], response):
-            raise AssertionError()
+        assert compare_response(expected['response'][i], response)
