@@ -1,0 +1,180 @@
+{
+  "path-request": [
+    {
+      "request-id": "0",
+      "source": "trx site_a",
+      "destination": "trx site_b",
+      "src-tp-id": "trx site_a",
+      "dst-tp-id": "trx site_b",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": null,
+          "effective-freq-slot": [
+            {
+              "N": "null",
+              "M": "null"
+            }
+          ],
+          "spacing": 50000000000.0,
+          "max-nb-of-channel": null,
+          "output-power": null,
+          "path_bandwidth": 100000000000.0
+        }
+      }
+    },
+    {
+      "request-id": "1",
+      "source": "trx site_a",
+      "destination": "trx site_b",
+      "src-tp-id": "trx site_a",
+      "dst-tp-id": "trx site_b",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 1",
+          "effective-freq-slot": [
+            {
+              "N": "null",
+              "M": "null"
+            }
+          ],
+          "spacing": 50000000000.0,
+          "max-nb-of-channel": null,
+          "output-power": null,
+          "path_bandwidth": 200000000000.0
+        }
+      },
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 0,
+            "num-unnum-hop": {
+              "node-id": "Span1ab",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "STRICT"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request-id": "2",
+      "source": "trx site_a",
+      "destination": "trx site_b",
+      "src-tp-id": "trx site_a",
+      "dst-tp-id": "trx site_b",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 1",
+          "effective-freq-slot": [
+            {
+              "N": "null",
+              "M": "null"
+            }
+          ],
+          "spacing": 50000000000.0,
+          "max-nb-of-channel": null,
+          "output-power": null,
+          "path_bandwidth": 200000000000.0
+        }
+      },
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 0,
+            "num-unnum-hop": {
+              "node-id": "roadm site_c",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "STRICT"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request-id": "3",
+      "source": "trx site_a",
+      "destination": "trx site_b",
+      "src-tp-id": "trx site_a",
+      "dst-tp-id": "trx site_b",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": null,
+          "effective-freq-slot": [
+            {
+              "N": "null",
+              "M": "null"
+            }
+          ],
+          "spacing": 50000000000.0,
+          "max-nb-of-channel": null,
+          "output-power": null,
+          "path_bandwidth": 100000000000.0
+        }
+      }
+    },
+    {
+      "request-id": "4",
+      "source": "trx site_a",
+      "destination": "trx site_b",
+      "src-tp-id": "trx site_a",
+      "dst-tp-id": "trx site_b",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": null,
+          "effective-freq-slot": [
+            {
+              "N": "null",
+              "M": "null"
+            }
+          ],
+          "spacing": 50000000000.0,
+          "max-nb-of-channel": null,
+          "output-power": null,
+          "path_bandwidth": 100000000000.0
+        }
+      }
+    }
+  ],
+  "synchronization": [
+    {
+      "synchronization-id": "x",
+      "svec": {
+        "relaxable": "false",
+        "disjointness": "node link",
+        "request-id-number": [
+          "3",
+          "0"
+        ]
+      }
+    },
+    {
+      "synchronization-id": "y",
+      "svec": {
+        "relaxable": "false",
+        "disjointness": "node link",
+        "request-id-number": [
+          "4",
+          "3",
+          "0"
+        ]
+      }
+    }
+  ]
+}

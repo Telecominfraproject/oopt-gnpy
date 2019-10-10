@@ -1,0 +1,703 @@
+{
+  "elements": [
+    {
+      "uid": "trx site_a",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": "Site a",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "roadm site_a",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": "Site a",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "Span1ab",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "type_variety": "SSMF",
+        "length": 100.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.5,
+        "con_out": 0.5
+      },
+      "metadata": {
+        "location": {
+          "latitude": 1,
+          "longitude": 0,
+          "city": null,
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "Span1ba",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "type_variety": "SSMF",
+        "length": 100.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.5,
+        "con_out": 0.5
+      },
+      "metadata": {
+        "location": {
+          "latitude": 1,
+          "longitude": 0,
+          "city": null,
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "Span2ab",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "type_variety": "SSMF",
+        "length": 80.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.5,
+        "con_out": 0.5
+      },
+      "metadata": {
+        "location": {
+          "latitude": 1,
+          "longitude": 0,
+          "city": null,
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "Span2ba",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "type_variety": "SSMF",
+        "length": 80.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.5,
+        "con_out": 0.5
+      },
+      "metadata": {
+        "location": {
+          "latitude": 1,
+          "longitude": 0,
+          "city": null,
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "roadm site_b",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": "Site b",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "trx site_b",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 2,
+          "longitude": 0,
+          "city": "Site b",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "booster1 site_a",
+      "type": "Edfa",
+      "type_variety": "std_medium_gain",
+      "operational": {
+        "gain_target": 19.0,
+        "delta_p": -1.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 0.0,
+          "city": "Site a",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "preamp site_b",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 18.0,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 0.0,
+          "city": "Site b",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "booster1 site_b",
+      "type": "Edfa",
+      "type_variety": "std_medium_gain",
+      "operational": {
+        "gain_target": 19.0,
+        "delta_p": -1.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 0.0,
+          "city": "Site b",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "preamp1 site_a",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 18.0,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 0.0,
+          "city": "Site_a",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "booster2 site_a",
+      "type": "Edfa",
+      "type_variety": "std_medium_gain",
+      "operational": {
+        "gain_target": 19.0,
+        "delta_p": -1.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 0.0,
+          "city": "Site a",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "preamp2 site_b",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 18.0,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 0.0,
+          "city": "Site_b",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "booster2 site_b",
+      "type": "Edfa",
+      "type_variety": "std_medium_gain",
+      "operational": {
+        "gain_target": 19.0,
+        "delta_p": -1.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 0.0,
+          "city": "Site b",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "preamp2 site_a",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 18.0,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 0.0,
+          "city": "Site_a",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "booster3 site_a",
+      "type": "Edfa",
+      "type_variety": "std_medium_gain",
+      "operational": {
+        "gain_target": 19.0,
+        "delta_p": -1.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 0.0,
+          "city": "Site a",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "preamp3 site_b",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 18.0,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 0.0,
+          "city": "Site_b",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "booster3 site_b",
+      "type": "Edfa",
+      "type_variety": "std_medium_gain",
+      "operational": {
+        "gain_target": 19.0,
+        "delta_p": -1.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 0.0,
+          "city": "Site b",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "preamp3 site_a",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 18.0,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 0.0,
+          "city": "Site_a",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "roadm site_c",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": "Site c",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "booster1 site_c",
+      "type": "Edfa",
+      "type_variety": "std_medium_gain",
+      "operational": {
+        "gain_target": 19.0,
+        "delta_p": -1.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 0.0,
+          "city": "Site c",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "preamp1 site_c",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 18.0,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 0.0,
+          "city": "Site_c",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "booster2 site_c",
+      "type": "Edfa",
+      "type_variety": "std_medium_gain",
+      "operational": {
+        "gain_target": 19.0,
+        "delta_p": -1.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 0.0,
+          "city": "Site c",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "preamp2 site_c",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 18.0,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 0.0,
+          "city": "Site_c",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "Span1ac",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "type_variety": "SSMF",
+        "length": 80.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.5,
+        "con_out": 0.5
+      },
+      "metadata": {
+        "location": {
+          "latitude": 1,
+          "longitude": 0,
+          "city": null,
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "Span1ca",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "type_variety": "SSMF",
+        "length": 80.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.5,
+        "con_out": 0.5
+      },
+      "metadata": {
+        "location": {
+          "latitude": 1,
+          "longitude": 0,
+          "city": null,
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "Span1bc",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "type_variety": "SSMF",
+        "length": 80.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.5,
+        "con_out": 0.5
+      },
+      "metadata": {
+        "location": {
+          "latitude": 1,
+          "longitude": 0,
+          "city": null,
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "Span1cb",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "type_variety": "SSMF",
+        "length": 80.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.5,
+        "con_out": 0.5
+      },
+      "metadata": {
+        "location": {
+          "latitude": 1,
+          "longitude": 0,
+          "city": null,
+          "region": ""
+        }
+      }
+    }
+  ],
+  "connections": [
+    {
+      "from_node": "trx site_a",
+      "to_node": "roadm site_a"
+    },
+    {
+      "from_node": "roadm site_a",
+      "to_node": "booster1 site_a"
+    },
+    {
+      "from_node": "booster1 site_a",
+      "to_node": "Span1ab"
+    },
+    {
+      "from_node": "Span1ab",
+      "to_node": "preamp site_b"
+    },
+    {
+      "from_node": "preamp site_b",
+      "to_node": "roadm site_b"
+    },
+    {
+      "from_node": "roadm site_b",
+      "to_node": "trx site_b"
+    },
+    {
+      "from_node": "roadm site_a",
+      "to_node": "booster2 site_a"
+    },
+    {
+      "from_node": "booster2 site_a",
+      "to_node": "Span2ab"
+    },
+    {
+      "from_node": "Span2ab",
+      "to_node": "preamp2 site_b"
+    },
+    {
+      "from_node": "preamp2 site_b",
+      "to_node": "roadm site_b"
+    },
+    {
+      "from_node": "roadm site_b",
+      "to_node": "booster1 site_b"
+    },
+    {
+      "from_node": "booster1 site_b",
+      "to_node": "Span1ba"
+    },
+    {
+      "from_node": "Span1ba",
+      "to_node": "preamp1 site_a"
+    },
+    {
+      "from_node": "preamp1 site_a",
+      "to_node": "roadm site_a"
+    },
+    {
+      "from_node": "roadm site_b",
+      "to_node": "booster2 site_b"
+    },
+    {
+      "from_node": "booster2 site_b",
+      "to_node": "Span2ba"
+    },
+    {
+      "from_node": "Span2ba",
+      "to_node": "preamp2 site_a"
+    },
+    {
+      "from_node": "preamp2 site_a",
+      "to_node": "roadm site_a"
+    },
+    {
+      "from_node": "roadm site_a",
+      "to_node": "booster3 site_a"
+    },
+    {
+      "from_node": "booster3 site_a",
+      "to_node": "Span1ac"
+    },
+    {
+      "from_node": "Span1ac",
+      "to_node": "preamp1 site_c"
+    },
+    {
+      "from_node": "preamp1 site_c",
+      "to_node": "roadm site_c"
+    },
+    {
+      "from_node": "roadm site_c",
+      "to_node": "booster1 site_c"
+    },
+    {
+      "from_node": "booster1 site_c",
+      "to_node": "Span1cb"
+    },
+    {
+      "from_node": "Span1cb",
+      "to_node": "preamp3 site_b"
+    },
+    {
+      "from_node": "preamp3 site_b",
+      "to_node": "roadm site_b"
+    },
+    {
+      "from_node": "roadm site_b",
+      "to_node": "booster3 site_b"
+    },
+    {
+      "from_node": "booster3 site_b",
+      "to_node": "Span1bc"
+    },
+    {
+      "from_node": "Span1bc",
+      "to_node": "preamp2 site_c"
+    },
+    {
+      "from_node": "preamp2 site_c",
+      "to_node": "roadm site_c"
+    },
+    {
+      "from_node": "roadm site_c",
+      "to_node": "booster2 site_c"
+    },
+    {
+      "from_node": "booster2 site_c",
+      "to_node": "Span1ca"
+    },
+    {
+      "from_node": "Span1ca",
+      "to_node": "preamp3 site_a"
+    },
+    {
+      "from_node": "preamp3 site_a",
+      "to_node": "roadm site_a"
+    }
+  ]
+}
