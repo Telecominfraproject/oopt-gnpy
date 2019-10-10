@@ -38,8 +38,8 @@ from copy import copy, deepcopy
 from textwrap import dedent
 from math import ceil
 
-from flask import Flask, jsonify, abort, make_response, request
-from flask_restful import Api, Resource, reqparse, fields, marshal
+from flask import Flask, jsonify, make_response, request
+from flask_restful import Api, Resource, reqparse, fields
 from flask_httpauth import HTTPBasicAuth
 
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
@@ -66,9 +66,9 @@ PARSER.add_argument('-r', '--rest', action='count', default=0, help='use the RES
 
 NETWORK_FILENAME = 'topoDemov1.json'
 
-app = Flask(__name__, static_url_path="")
-api = Api(app)
-auth = HTTPBasicAuth()
+APP = Flask(__name__, static_url_path="")
+API = Api(APP)
+AUTH = HTTPBasicAuth()
 
 
 def requests_from_json(json_data, equipment):
@@ -372,6 +372,8 @@ def path_result_json(pathresult):
     return data
 
 def compute_requests(network, data, equipment):
+    """ Main program calling functions
+    """
     # Build the network once using the default power defined in SI in eqpt config
     # TODO power density: db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
     # spacing, f_min and f_max
@@ -483,7 +485,8 @@ def compute_requests(network, data, equipment):
 
 
 def launch_cli(network, data, equipment):
-    #Compute requests using network, data and equipment
+    """ Compute requests using network, data and equipment with client line interface
+    """
     propagatedpths, reversed_propagatedpths, rqs = compute_requests(network, data, equipment)
     #Generate the output
     if ARGS.output :
@@ -501,44 +504,51 @@ def launch_cli(network, data, equipment):
                 print('\x1b[1;34;40m'+f'saving in {ARGS.output} and {fnamecsv}'+ '\x1b[0m')
 
 class GnpyAPI(Resource):
-    decorators = [auth.login_required]
-    @auth.get_password
+    """ Compute requests using network, data and equipment with rest api
+    """
+    decorators = [AUTH.login_required]
+    @AUTH.get_password
     def get_password(username):
+        """ gets password (fixed to gnpy in this code)
+        """
         if username == 'gnpy':
             return 'gnpy'
         return None
 
-    @auth.error_handler
+    @AUTH.error_handler
     def unauthorized():
-        # return 403 instead of 401 to prevent browsers from displaying the default
-        # auth dialog
+        """ return 403 instead of 401 to prevent browsers from displaying the default
+            auth dialog
+        """
         return make_response(jsonify({'message': 'Unauthorized access'}), 403)
 
     def post(self):
-        print (request.is_json)
+        """ returns response
+        """
+        print(request.is_json)
         content = request.get_json()
         content1 = content['gnpy-api']
-        topoJson = content1['topology-file']
-        if not topoJson:
-            topoJson = load_json(NETWORK_FILENAME)
-        svcJson = content1['service-file']
+        topo_json = content1['topology-file']
+        if not topo_json:
+            topo_json = load_json(NETWORK_FILENAME)
+        svc_json = content1['service-file']
         # Load equipment
         equipment = load_equipment('eqpt_config.json')
         #Create load_requests
-        data = svcJson
+        data = svc_json
         #network = load_network(ARGS.network_filename, equipment)
-        network = network_from_json(topoJson, equipment)
+        network = network_from_json(topo_json, equipment)
         # Compute requests using network, data and equipment
         propagatedpths, reversed_propagatedpths, rqs = compute_requests(network, data, equipment)
         # Generate the output
         result = []
         #assumes that list of rqs and list of propgatedpths have same order
-        for i, p in enumerate(propagatedpths):
-            result.append(Result_element(rqs[i], p, reversed_propagatedpths[i]))
+        for i, pth in enumerate(propagatedpths):
+            result.append(Result_element(rqs[i], pth, reversed_propagatedpths[i]))
 
         return {"result":path_result_json(result)}, 201
 
-api.add_resource(GnpyAPI, '/gnpy/api/v1.0/files', endpoint='files')
+API.add_resource(GnpyAPI, '/gnpy/api/v1.0/files', endpoint='files')
 
 def main(args):
     """ main function that calls all functions
@@ -570,7 +580,7 @@ def main(args):
     #
     if ((args.rest == 1) and (args.output is None)):
         print('you have chosen the rest mode')
-        app.run(host='0.0.0.0', port=5000, debug=True)
+        APP.run(host='0.0.0.0', port=5000, debug=True)
     elif ((args.rest > 1) or ((args.rest == 1) and (args.output is not None))):
         print('command is not well formulated')
     else:
