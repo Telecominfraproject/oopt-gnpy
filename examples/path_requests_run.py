@@ -64,7 +64,7 @@ PARSER.add_argument('-v', '--verbose', action='count', default=0,\
 PARSER.add_argument('-o', '--output', type=Path)
 PARSER.add_argument('-r', '--rest', action='count', default=0, help='use the REST API')
 
-NETWORK_FILENAME = 'topoDemov1.json'
+NETWORK_FILENAME = 'topoDemov1.json' #'disagregatedTopoDemov1.json' #
 
 APP = Flask(__name__, static_url_path="")
 API = Api(APP)
@@ -390,7 +390,7 @@ def compute_requests(network, data, equipment):
         rqs = requests_from_json(data, equipment)
     except ServiceError as this_e:
         print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {this_e}')
-        exit(1)
+        raise this_e
     # check that request ids are unique. Non unique ids, may
     # mess the computation: better to stop the computation
     all_ids = [r.request_id for r in rqs]
@@ -399,12 +399,13 @@ def compute_requests(network, data, equipment):
             all_ids.remove(item)
         msg = f'Requests id {all_ids} are not unique'
         LOGGER.critical(msg)
-        exit()
+        raise ServiceError(msg)
     try:
         rqs = correct_route_list(network, rqs)
     except ServiceError as this_e:
         print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {this_e}')
-        exit(1)
+        raise this_e
+        #exit(1)
     # pths = compute_path(network, equipment, rqs)
     dsjn = disjunctions_from_json(data)
 
@@ -428,7 +429,7 @@ def compute_requests(network, data, equipment):
         pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
     except DisjunctionError as this_e:
         print(f'{ansi_escapes.red}Disjunction error:{ansi_escapes.reset} {this_e}')
-        exit(1)
+        raise this_e
 
     print('\x1b[1;34;40m' + f'Propagating on selected path' + '\x1b[0m')
     propagatedpths, reversed_pths, reversed_propagatedpths = \
@@ -539,14 +540,18 @@ class GnpyAPI(Resource):
         #network = load_network(ARGS.network_filename, equipment)
         network = network_from_json(topo_json, equipment)
         # Compute requests using network, data and equipment
-        propagatedpths, reversed_propagatedpths, rqs = compute_requests(network, data, equipment)
-        # Generate the output
-        result = []
-        #assumes that list of rqs and list of propgatedpths have same order
-        for i, pth in enumerate(propagatedpths):
-            result.append(Result_element(rqs[i], pth, reversed_propagatedpths[i]))
+        try:
+            propagatedpths, reversed_propagatedpths, rqs = compute_requests(network, data, equipment)
+            # Generate the output
+            result = []
+            #assumes that list of rqs and list of propgatedpths have same order
+            for i, pth in enumerate(propagatedpths):
+                result.append(Result_element(rqs[i], pth, reversed_propagatedpths[i]))
 
-        return {"result":path_result_json(result)}, 201
+            return {"result":path_result_json(result)}, 201
+        except ServiceError as this_e:
+            msg = f'Service error: {this_e}'
+            return {"result": msg}, 400
 
 API.add_resource(GnpyAPI, '/gnpy/api/v1.0/files', endpoint='files')
 
