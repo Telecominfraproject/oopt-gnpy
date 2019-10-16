@@ -55,16 +55,18 @@ def requests_from_json(json_data,equipment):
         # init all params from request
         params = {}
         params['request_id'] = req['request-id']
-        params['source'] = req['src-tp-id']
-        params['destination'] = req['dst-tp-id']
+        params['source'] = req['source']
+        params['destination'] = req['destination']
         params['trx_type'] = req['path-constraints']['te-bandwidth']['trx_type']
         params['trx_mode'] = req['path-constraints']['te-bandwidth']['trx_mode']
         params['format'] = params['trx_mode']
-        nd_list = req['optimizations']['explicit-route-include-objects']
-        params['nodes_list'] = [n['unnumbered-hop']['node-id'] for n in nd_list]
-        params['loose_list'] = [n['unnumbered-hop']['hop-type'] for n in nd_list]
         params['spacing'] = req['path-constraints']['te-bandwidth']['spacing']
-
+        try :
+            nd_list = req['explicit-route-objects']['route-object-include-exclude']
+        except KeyError:
+            nd_list = []
+        params['nodes_list'] = [n['num-unnum-hop']['node-id'] for n in nd_list]
+        params['loose_list'] = [n['num-unnum-hop']['hop-type'] for n in nd_list]
         # recover trx physical param (baudrate, ...) from type and mode
         # in trx_mode_params optical power is read from equipment['SI']['default'] and
         # nb_channel is computed based on min max frequency and spacing
@@ -73,20 +75,24 @@ def requests_from_json(json_data,equipment):
         # print(trx_params['min_spacing'])
         # optical power might be set differently in the request. if it is indicated then the 
         # params['power'] is updated
-        if req['path-constraints']['te-bandwidth']['output-power']:
-            params['power'] = req['path-constraints']['te-bandwidth']['output-power']
-
+        try:
+            if req['path-constraints']['te-bandwidth']['output-power']:
+                params['power'] = req['path-constraints']['te-bandwidth']['output-power']
+        except KeyError:
+            pass
         # same process for nb-channel
         f_min = params['f_min']
         f_max_from_si = params['f_max']
-        if req['path-constraints']['te-bandwidth']['max-nb-of-channel'] is not None :
-            nch = req['path-constraints']['te-bandwidth']['max-nb-of-channel'] 
-            params['nb_channel'] = nch         
-            spacing = params['spacing']
-            params['f_max'] = f_min + nch*spacing
-        else :
+        try:
+            if req['path-constraints']['te-bandwidth']['max-nb-of-channel'] is not None:
+                nch = req['path-constraints']['te-bandwidth']['max-nb-of-channel']
+                params['nb_channel'] = nch
+                spacing = params['spacing']
+                params['f_max'] = f_min + nch*spacing
+            else :
+                params['nb_channel'] = automatic_nch(f_min,f_max_from_si,params['spacing'])
+        except KeyError:
             params['nb_channel'] = automatic_nch(f_min,f_max_from_si,params['spacing'])
-
         consistency_check(params, f_max_from_si)
 
         try :
@@ -122,15 +128,20 @@ def consistency_check(params, f_max_from_si):
 
 def disjunctions_from_json(json_data):
     disjunctions_list = []
+    try:
+        temp_test = json_data['synchronization']
+    except KeyError:
+        temp_test = []
+    if temp_test:
+        for snc in json_data['synchronization']:
+            params = {}
+            params['disjunction_id'] = snc['synchronization-id']
+            params['relaxable'] = snc['svec']['relaxable']
+            params['link_diverse'] = 'link' in snc['svec']['disjointness']
+            params['node_diverse'] = 'node' in snc['svec']['disjointness']
+            params['disjunctions_req'] = snc['svec']['request-id-number']
+            disjunctions_list.append(Disjunction(**params))
 
-    for snc in json_data['synchronization']:
-        params = {}
-        params['disjunction_id'] = snc['synchronization-id']
-        params['relaxable'] = snc['svec']['relaxable']
-        params['link_diverse'] = snc['svec']['link-diverse']
-        params['node_diverse'] = snc['svec']['node-diverse']
-        params['disjunctions_req'] = snc['svec']['request-id-number']
-        disjunctions_list.append(Disjunction(**params))
     return disjunctions_list
 
 
@@ -205,7 +216,7 @@ def correct_route_list(network, pathreqlist):
     # prepares the format of route list of nodes to be consistant
     # remove wrong names, remove endpoints
     # also correct source and destination
-    anytype = [n.uid for n in network.nodes() if not isinstance(n, Transceiver) and not isinstance(n, Fiber)]
+    anytype = [n.uid for n in network.nodes()]
     # TODO there is a problem of identification of fibers in case of parallel fibers bitween two adjacent roadms
     # so fiber constraint is not supported
     transponders = [n.uid for n in network.nodes() if isinstance(n, Transceiver)]
@@ -214,9 +225,11 @@ def correct_route_list(network, pathreqlist):
             # replace possibly wrong name with a formated roadm name
             # print(n_id)
             if n_id not in anytype :
+                # find nodes name that include constraint among all possible names except
+                # transponders (not yet supported as constraints).
                 nodes_suggestion = [uid for uid in anytype \
-                    if n_id.lower() in uid.lower()]
-                if pathreq.loose_list[i] == 'loose':
+                    if n_id.lower() in uid.lower() and uid not in transponders]
+                if pathreq.loose_list[i] == 'LOOSE':
                     if len(nodes_suggestion)>0 :
                         new_n = nodes_suggestion[0]
                         print(f'invalid route node specified:\
@@ -257,7 +270,7 @@ def correct_disjn(disjn):
 
 def path_result_json(pathresult):
     data = {
-        'path': [n.json for n in pathresult]
+        'response': [n.json for n in pathresult]
     }
     return data
 
