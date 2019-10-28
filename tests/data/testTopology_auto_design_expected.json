@@ -164,7 +164,21 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
-        }
+        },
+        "per_degree_params": [
+          {
+            "to_node": "east edfa in Lannion_CAS to Corlay",
+            "target_pch_out_db": -20
+          },
+          {
+            "to_node": "east edfa in Lannion_CAS to Stbrieuc",
+            "target_pch_out_db": -20
+          },
+          {
+            "to_node": "east edfa in Lannion_CAS to Morlaix",
+            "target_pch_out_db": -20
+          }
+        ]
       },
       "metadata": {
         "location": {
@@ -183,7 +197,21 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
-        }
+        },
+        "per_degree_params": [
+          {
+            "to_node": "Edfa0_roadm Lorient_KMA",
+            "target_pch_out_db": -20
+          },
+          {
+            "to_node": "Edfa1_roadm Lorient_KMA",
+            "target_pch_out_db": -20
+          },
+          {
+            "to_node": "Edfa2_roadm Lorient_KMA",
+            "target_pch_out_db": -20
+          }
+        ]
       },
       "metadata": {
         "location": {
@@ -202,7 +230,17 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
-        }
+        },
+        "per_degree_params": [
+          {
+            "to_node": "Edfa0_roadm Vannes_KBE",
+            "target_pch_out_db": -20
+          },
+          {
+            "to_node": "Edfa1_roadm Vannes_KBE",
+            "target_pch_out_db": -20
+          }
+        ]
       },
       "metadata": {
         "location": {
@@ -221,7 +259,17 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
-        }
+        },
+        "per_degree_params": [
+          {
+            "to_node": "Edfa0_roadm Rennes_STA",
+            "target_pch_out_db": -20
+          },
+          {
+            "to_node": "Edfa1_roadm Rennes_STA",
+            "target_pch_out_db": -20
+          }
+        ]
       },
       "metadata": {
         "location": {
@@ -240,7 +288,17 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
-        }
+        },
+        "per_degree_params": [
+          {
+            "to_node": "east edfa in Brest_KLA to Quimper",
+            "target_pch_out_db": -20
+          },
+          {
+            "to_node": "Edfa0_roadm Brest_KLA",
+            "target_pch_out_db": -20
+          }
+        ]
       },
       "metadata": {
         "location": {
@@ -259,7 +317,21 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
-        }
+        },
+        "per_degree_params": [
+          {
+            "to_node": "east edfa in c to d",
+            "target_pch_out_db": -20
+          },
+          {
+            "to_node": "Edfa0_roadm c",
+            "target_pch_out_db": -20
+          },
+          {
+            "to_node": "Edfa1_roadm c",
+            "target_pch_out_db": -20
+          }
+        ]
       },
       "metadata": {
         "location": {
@@ -278,7 +350,17 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
-        }
+        },
+        "per_degree_params": [
+          {
+            "to_node": "Edfa0_roadm d",
+            "target_pch_out_db": -20
+          },
+          {
+            "to_node": "Edfa1_roadm d",
+            "target_pch_out_db": -20
+          }
+        ]
       },
       "metadata": {
         "location": {
@@ -297,7 +379,17 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
-        }
+        },
+        "per_degree_params": [
+          {
+            "to_node": "Edfa0_roadm e",
+            "target_pch_out_db": -20
+          },
+          {
+            "to_node": "Edfa1_roadm e",
+            "target_pch_out_db": -20
+          }
+        ]
       },
       "metadata": {
         "location": {
@@ -316,7 +408,21 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
-        }
+        },
+        "per_degree_params": [
+          {
+            "to_node": "Edfa0_roadm f",
+            "target_pch_out_db": -20
+          },
+          {
+            "to_node": "Edfa1_roadm f",
+            "target_pch_out_db": -20
+          },
+          {
+            "to_node": "Edfa2_roadm f",
+            "target_pch_out_db": -20
+          }
+        ]
       },
       "metadata": {
         "location": {
@@ -335,7 +441,17 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
-        }
+        },
+        "per_degree_params": [
+          {
+            "to_node": "Edfa0_roadm g",
+            "target_pch_out_db": -20
+          },
+          {
+            "to_node": "Edfa1_roadm g",
+            "target_pch_out_db": -20
+          }
+        ]
       },
       "metadata": {
         "location": {
@@ -354,7 +470,17 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
-        }
+        },
+        "per_degree_params": [
+          {
+            "to_node": "Edfa0_roadm h",
+            "target_pch_out_db": -20
+          },
+          {
+            "to_node": "Edfa1_roadm h",
+            "target_pch_out_db": -20
+          }
+        ]
       },
       "metadata": {
         "location": {
@@ -375,7 +501,17 @@
           "booster_variety_list": [
             "std_booster"
           ]
-        }
+        },
+        "per_degree_params": [
+          {
+            "to_node": "Edfa0_roadm a",
+            "target_pch_out_db": -20
+          },
+          {
+            "to_node": "Edfa1_roadm a",
+            "target_pch_out_db": -20
+          }
+        ]
       },
       "metadata": {
         "location": {
@@ -396,7 +532,17 @@
             "std_low_gain"
           ],
           "booster_variety_list": []
-        }
+        },
+        "per_degree_params": [
+          {
+            "to_node": "Edfa0_roadm b",
+            "target_pch_out_db": -20
+          },
+          {
+            "to_node": "Edfa1_roadm b",
+            "target_pch_out_db": -20
+          }
+        ]
       },
       "metadata": {
         "location": {

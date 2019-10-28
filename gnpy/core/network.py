@@ -240,18 +240,35 @@ def set_amplifier_voa(amp, power_target, power_mode):
         amp.out_voa = voa
 
 
-def set_egress_amplifier(network, roadm, equipment, pref_total_db):
+def set_egress_amplifier(network, this_node, equipment, pref_total_db):
+    """ this node can be a transceiver or a ROADM (same function called in both cases)
+    """
     power_mode = equipment['Span']['default'].power_mode
-    next_oms = (n for n in network.successors(roadm) if not isinstance(n, elements.Transceiver))
+    next_oms = (n for n in network.successors(this_node) if not isinstance(n, elements.Transceiver))
+    this_node_degree = {el['to_node']: el['target_pch_out_db'] for el in this_node.per_degree_params
+                    if 'target_pch_out_db' in el.keys()} if hasattr(this_node, 'per_degree_params') else {}
     for oms in next_oms:
-        # go through all the OMS departing from the Roadm
-        prev_node = roadm
+        # go through all the OMS departing from the ROADM
+        prev_node = this_node
         node = oms
         # if isinstance(next_node, elements.Fused): #support ROADM wo egress amp for metro applications
         #     node = find_last_node(next_node)
         #     next_node = next(n for n in network.successors(node))
         #     next_node = find_last_node(next_node)
-        prev_dp = getattr(roadm.params, 'target_pch_out_db', 0)
+        if this_node_degree:
+            # find the target power on this degree
+            if node.uid in this_node_degree.keys():
+                prev_dp = this_node_degree[node.uid]
+            else:
+                # if no target power is defined on this degree use the global one
+                # if target_pch_out_db  is not an attribute, then the element must be a transceiver
+                prev_dp = getattr(this_node.params, 'target_pch_out_db', 0)
+                this_node_degree[node.uid] = prev_dp
+        else:
+            # if no per degree target power is given use the global one
+            # if target_pch_out_db  is not an attribute, then the element must be a transceiver
+            prev_dp = getattr(this_node.params, 'target_pch_out_db', 0)
+            this_node_degree[node.uid] = prev_dp
         dp = prev_dp
         prev_voa = 0
         voa = 0
@@ -314,6 +331,8 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
             node = next_node
             # print(f'{node.uid}')
 
+    if isinstance(this_node, elements.Roadm):
+        this_node.per_degree_params = [{'to_node': k, 'target_pch_out_db': v} for k, v in this_node_degree.items()]
 
 def add_egress_amplifier(network, node):
     next_nodes = [n for n in network.successors(node)
