@@ -241,8 +241,12 @@ def set_amplifier_voa(amp, power_target, power_mode):
 
 
 def set_egress_amplifier(network, roadm, equipment, pref_total_db):
+    """ roadm can also be a transceiver (same function called in both cases)
+    """
     power_mode = equipment['Span']['default'].power_mode
     next_oms = (n for n in network.successors(roadm) if not isinstance(n, elements.Transceiver))
+    roadm_degree = {el['to_node']: el['target_pch_out_db'] for el in roadm.per_degree_params
+                    if 'target_pch_out_db' in el.keys()} if hasattr(roadm, 'per_degree_params') else {}
     for oms in next_oms:
         # go through all the OMS departing from the Roadm
         prev_node = roadm
@@ -251,7 +255,20 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
         #     node = find_last_node(next_node)
         #     next_node = next(n for n in network.successors(node))
         #     next_node = find_last_node(next_node)
-        prev_dp = getattr(roadm.params, 'target_pch_out_db', 0)
+        if roadm_degree:
+            # find the target power on this degree
+            if node.uid in roadm_degree.keys():
+                prev_dp = roadm_degree[node.uid]
+            else:
+                # if no target power is defined on this degree use the global one
+                # if target_pch_out_db  is not an attribute, then the element must be a transceiver
+                prev_dp = getattr(roadm.params, 'target_pch_out_db', 0)
+                roadm_degree[node.uid] = prev_dp
+        else:
+            # if no per degree target power is given use the global one
+            # if target_pch_out_db  is not an attribute, then the element must be a transceiver
+            prev_dp = getattr(roadm.params, 'target_pch_out_db', 0)
+            roadm_degree[node.uid] = prev_dp
         dp = prev_dp
         prev_voa = 0
         voa = 0
@@ -314,6 +331,8 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
             node = next_node
             # print(f'{node.uid}')
 
+    if isinstance(roadm, elements.Roadm):
+        roadm.per_degree_params = [{'to_node': k, 'target_pch_out_db': v} for k, v in roadm_degree.items()]
 
 def add_egress_amplifier(network, node):
     next_nodes = [n for n in network.successors(node)
