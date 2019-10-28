@@ -96,7 +96,7 @@ def test_auto_design_generation_fromxlsgainmode(xls_input, expected_json_output)
 
     with open(actual_json_output, encoding='utf-8') as f:
         actual = load(f)
-    unlink(actual_json_output)
+    #unlink(actual_json_output)
 
     with open(expected_json_output, encoding='utf-8') as f:
         expected = load(f)
@@ -136,7 +136,7 @@ def test_auto_design_generation_fromjson(json_input, expected_json_output):
 
     with open(actual_json_output, encoding='utf-8') as f:
         actual = load(f)
-    unlink(actual_json_output)
+    #unlink(actual_json_output)
 
     with open(expected_json_output, encoding='utf-8') as f:
         expected = load(f)
