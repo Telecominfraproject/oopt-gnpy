@@ -164,6 +164,11 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
+        },
+        "per_degree_pch_out_db": {
+          "east edfa in Lannion_CAS to Corlay": -20,
+          "east edfa in Lannion_CAS to Stbrieuc": -20,
+          "east edfa in Lannion_CAS to Morlaix": -20
         }
       },
       "metadata": {
@@ -183,6 +188,11 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
+        },
+        "per_degree_pch_out_db": {
+          "Edfa0_roadm Lorient_KMA": -20,
+          "Edfa1_roadm Lorient_KMA": -20,
+          "Edfa2_roadm Lorient_KMA": -20
         }
       },
       "metadata": {
@@ -202,6 +212,10 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
+        },
+        "per_degree_pch_out_db": {
+          "Edfa0_roadm Vannes_KBE": -20,
+          "Edfa1_roadm Vannes_KBE": -20
         }
       },
       "metadata": {
@@ -221,7 +235,12 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
+        },
+        "per_degree_pch_out_db": {
+          "Edfa0_roadm Rennes_STA": -20,
+          "Edfa1_roadm Rennes_STA": -20
         }
+
       },
       "metadata": {
         "location": {
@@ -240,6 +259,10 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
+        },
+        "per_degree_pch_out_db": {
+          "east edfa in Brest_KLA to Quimper": -20,
+          "Edfa0_roadm Brest_KLA": -20
         }
       },
       "metadata": {
@@ -259,6 +282,11 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
+        },
+        "per_degree_pch_out_db": {
+          "east edfa in c to d": -20,
+          "Edfa0_roadm c": -20,
+          "Edfa1_roadm c": -20
         }
       },
       "metadata": {
@@ -278,6 +306,10 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
+        },
+        "per_degree_pch_out_db":{
+          "Edfa0_roadm d": -20,
+          "Edfa1_roadm d": -20
         }
       },
       "metadata": {
@@ -297,6 +329,10 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
+        },
+        "per_degree_pch_out_db":{
+          "Edfa0_roadm e": -20,
+          "Edfa1_roadm e": -20
         }
       },
       "metadata": {
@@ -316,6 +352,11 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
+        },
+        "per_degree_pch_out_db": {
+          "Edfa0_roadm f": -20,
+          "Edfa1_roadm f": -20,
+          "Edfa2_roadm f": -20
         }
       },
       "metadata": {
@@ -335,6 +376,10 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
+        },
+        "per_degree_pch_out_db": {
+          "Edfa0_roadm g": -20,
+          "Edfa1_roadm g": -20
         }
       },
       "metadata": {
@@ -354,6 +399,10 @@
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
+        },
+        "per_degree_pch_out_db": {
+          "Edfa0_roadm h": -20,
+          "Edfa1_roadm h": -20
         }
       },
       "metadata": {
@@ -375,7 +424,11 @@
           "booster_variety_list": [
             "std_booster"
           ]
-        }
+        },
+        "per_degree_pch_out_db": {
+          "Edfa0_roadm a": -20,
+          "Edfa1_roadm a": -20
+         }
       },
       "metadata": {
         "location": {
@@ -396,6 +449,10 @@
             "std_low_gain"
           ],
           "booster_variety_list": []
+        },
+        "per_degree_pch_out_db": {
+          "Edfa0_roadm b": -20,
+          "Edfa1_roadm b": -20
         }
       },
       "metadata": {
