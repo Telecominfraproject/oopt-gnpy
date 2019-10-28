@@ -1,0 +1,124 @@
+{     "Edfa":[
+
+            {
+            "type_variety": "fixed27",
+            "type_def": "fixed_gain",
+            "gain_flatmax": 27,
+            "gain_min": 27,
+            "p_max": 21,
+            "nf0": 5.5,
+            "allowed_for_design": false
+            },
+
+            {
+            "type_variety": "fixed22",
+            "type_def": "fixed_gain",
+            "gain_flatmax": 22,
+            "gain_min": 22,
+            "p_max": 21,
+            "nf0": 5.5,
+            "allowed_for_design": false
+            }
+      ],
+      "Fiber":[{
+            "type_variety": "SSMF",
+            "dispersion": 1.67e-05,
+            "gamma": 0.00127
+            },
+            {
+            "type_variety": "NZDF",
+            "dispersion": 0.5e-05,
+            "gamma": 0.00146
+            },
+            {
+            "type_variety": "LOF",
+            "dispersion": 2.2e-05,
+            "gamma": 0.000843
+            }
+      ],
+      "Span":[{
+            "power_mode":true,
+            "delta_power_range_db": [-2,3,0.5],
+            "max_fiber_lineic_loss_for_raman": 0.25,
+            "target_extended_gain": 2.5,
+            "max_length": 150,
+            "length_units": "km",
+            "max_loss": 28,
+            "padding": 10,
+            "EOL": 0,
+            "con_in": 0,
+            "con_out": 0
+            }
+      ],
+      "Roadm":[{
+            "target_pch_out_db": -25,
+            "add_drop_osnr": 30.00,
+            "restrictions": {
+                            "preamp_variety_list":[],
+                            "booster_variety_list":[]
+                            }            
+            }],
+      "SI":[{
+            "f_min": 191.3e12,
+            "baud_rate": 32e9,
+            "f_max":195.1e12,
+            "spacing": 50e9,
+            "power_dbm": 0,
+            "power_range_db": [0,0,1],
+            "roll_off": 0.15,
+            "tx_osnr": 40,
+            "sys_margins": 2
+            }],
+      "Transceiver":[
+            {
+            "type_variety": "vendorA_trx-type1",
+            "frequency":{
+                        "min": 191.35e12,
+                        "max": 196.1e12
+                        },
+            "mode":[
+                       {
+
+                       "format": "mode 1",
+                       "baud_rate": 32e9,
+                       "OSNR": 11,
+                       "bit_rate": 100e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 40,
+                       "min_spacing": 37.5e9,
+                       "cost":1
+                       },
+                       {
+                       "format": "mode 2",
+                       "baud_rate": 66e9,
+                       "OSNR": 15,
+                       "bit_rate": 200e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 40,
+                       "min_spacing": 75e9,
+                       "cost":1
+                       }
+                   ]
+            },
+            {
+            "type_variety": "Voyager",
+            "frequency":{
+                        "min": 191.35e12,
+                        "max": 196.1e12
+                        },
+            "mode":[
+                       {
+                       "format": "mode 1",
+                       "baud_rate": 32e9,
+                       "OSNR": 12,
+                       "bit_rate": 100e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 40,
+                       "min_spacing": 37.5e9,
+                       "cost":1
+                       }
+                   ]
+            }
+      ]
+
+}
