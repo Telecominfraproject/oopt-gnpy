@@ -40,7 +40,6 @@ from math import ceil
 
 from flask import Flask, jsonify, make_response, request
 from flask_restful import Api, Resource, reqparse, fields
-from flask_httpauth import HTTPBasicAuth
 
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
 
@@ -68,8 +67,6 @@ NETWORK_FILENAME = 'topoDemov1.json' #'disagregatedTopoDemov1.json' #
 
 APP = Flask(__name__, static_url_path="")
 API = Api(APP)
-AUTH = HTTPBasicAuth()
-
 
 def requests_from_json(json_data, equipment):
     """ converts the json data into a list of requests elements
@@ -507,22 +504,6 @@ def launch_cli(network, data, equipment):
 class GnpyAPI(Resource):
     """ Compute requests using network, data and equipment with rest api
     """
-    decorators = [AUTH.login_required]
-    @AUTH.get_password
-    def get_password(username):
-        """ gets password (fixed to gnpy in this code)
-        """
-        if username == 'gnpy':
-            return 'gnpy'
-        return None
-
-    @AUTH.error_handler
-    def unauthorized():
-        """ return 403 instead of 401 to prevent browsers from displaying the default
-            auth dialog
-        """
-        return make_response(jsonify({'message': 'Unauthorized access'}), 403)
-
     def post(self):
         """ returns response
         """
