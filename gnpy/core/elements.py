@@ -118,16 +118,19 @@ class Transceiver(Node):
         self._calc_snr(spectral_info)
         return spectral_info
 
-RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr restrictions')
+RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr restrictions per_degree_target_pch_out_db')
 
 class Roadm(Node):
     def __init__(self, *args, params, **kwargs):
+        if 'per_degree_target_pch_out_db' not in params.keys():
+            params['per_degree_target_pch_out_db'] = []
         super().__init__(*args, params=RoadmParams(**params), **kwargs)
         self.loss = 0 #auto-design interest
         self.effective_loss = None
         self.effective_pch_out_db = self.params.target_pch_out_db
         self.passive = True
         self.restrictions = self.params.restrictions
+        self.per_degree_target_pch_out_db = self.params.per_degree_target_pch_out_db
 
     @property
     def to_json(self):
@@ -135,7 +138,8 @@ class Roadm(Node):
                 'type'      : type(self).__name__,
                 'params'    : {
                     'target_pch_out_db' : self.effective_pch_out_db,
-                    'restrictions'      : self.restrictions
+                    'restrictions'      : self.restrictions,
+                    'per_degree_target_pch_out_db': self.per_degree_target_pch_out_db
                     },
                 'metadata'      : {
                     'location': self.metadata['location']._asdict()
@@ -150,15 +154,20 @@ class Roadm(Node):
                           f'  effective loss (dB):  {self.effective_loss:.2f}',
                           f'  pch out (dBm):        {self.effective_pch_out_db!r}'])
 
-    def propagate(self, pref, *carriers):
+    def propagate(self, pref, *carriers, degree):
         #pin_target and loss are read from eqpt_config.json['Roadm']
         #all ingress channels in xpress are set to this power level
         #but add channels are not, so we define an effective loss
         #in the case of add channels
-        self.effective_pch_out_db = min(pref.p_spani, self.params.target_pch_out_db)
+        if self.per_degree_target_pch_out_db:
+            temp = next(el['target_pch_out_db'] \
+                for el in self.per_degree_target_pch_out_db if el['to_node']==degree)
+        else:
+            temp = self.params.target_pch_out_db
+        self.effective_pch_out_db = min(pref.p_spani, temp)
         self.effective_loss = pref.p_spani - self.effective_pch_out_db
         carriers_power = array([c.power.signal +c.power.nli+c.power.ase for c in carriers])
-        carriers_att = list(map(lambda x : lin2db(x*1e3)-self.params.target_pch_out_db, carriers_power))
+        carriers_att = list(map(lambda x : lin2db(x*1e3)-self.effective_pch_out_db, carriers_power))
         exceeding_att = -min(list(filter(lambda x: x < 0, carriers_att)), default = 0)
         carriers_att = list(map(lambda x: db2lin(x+exceeding_att), carriers_att))
         for carrier_att, carrier in zip(carriers_att, carriers) :
@@ -171,8 +180,8 @@ class Roadm(Node):
     def update_pref(self, pref):
         return pref._replace(p_span0=pref.p_span0, p_spani=self.effective_pch_out_db)
 
-    def __call__(self, spectral_info):
-        carriers = tuple(self.propagate(spectral_info.pref, *spectral_info.carriers))
+    def __call__(self, spectral_info, degree):
+        carriers = tuple(self.propagate(spectral_info.pref, *spectral_info.carriers, degree=degree))
         pref = self.update_pref(spectral_info.pref)
         return spectral_info._replace(carriers=carriers, pref=pref)
 
