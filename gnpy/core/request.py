@@ -394,8 +394,12 @@ def propagate(path, req, equipment):
     si = create_input_spectral_information(
         req.f_min, req.f_max, req.roll_off, req.baud_rate,
         req.power, req.spacing)
-    for el in path:
-        si = el(si)
+    for i, el in enumerate(path):
+        if isinstance(el, Roadm):
+            next_el = path[i+1]
+            si = el(si, degree=next_el.uid)
+        else:
+            si = el(si)
     path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
     return path
 
@@ -404,9 +408,13 @@ def propagate2(path, req, equipment):
         req.f_min, req.f_max, req.roll_off, req.baud_rate,
         req.power, req.spacing)
     infos = {}
-    for el in path:
+    for i, el in enumerate(path):
         before_si = si
-        after_si  = si = el(si)
+        if isinstance(el, Roadm):
+            next_el = path[i+1]
+            after_si  = si = el(si, degree=next_el.uid)
+        else:
+            after_si  = si = el(si)
         infos[el] = before_si, after_si
     path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
     return infos
@@ -435,8 +443,12 @@ def propagate_and_optimize_mode(path, req, equipment):
             spc_info = create_input_spectral_information(req.f_min, req.f_max,
                                                    equipment['SI']['default'].roll_off,
                                                    this_br, req.power, req.spacing)
-            for el in path:
-                spc_info = el(spc_info)
+            for i, el in enumerate(path):
+                if isinstance(el, Roadm):
+                    next_el = path[i+1]
+                    spc_info = el(spc_info, degree=next_el.uid)
+                else:
+                    spc_info = el(spc_info)
             for this_mode in modes_to_explore:
                 if path[-1].snr is not None:
                     path[-1].update_snr(this_mode['tx_osnr'], equipment['Roadm']['default'].add_drop_osnr)
