@@ -160,9 +160,15 @@ class Roadm(Node):
         #but add channels are not, so we define an effective loss
         #in the case of add channels
         if self.per_degree_target_pch_out_db:
-            temp = next(el['target_pch_out_db'] \
-                for el in self.per_degree_target_pch_out_db if el['to_node']==degree)
+            # find the target power on this degree
+            try:
+                temp = next(el['target_pch_out_db'] \
+                    for el in self.per_degree_target_pch_out_db if el['to_node']==degree)
+            except StopIteration:
+                # if no target power is defined on this degree use the global one
+                temp = self.params.target_pch_out_db
         else:
+            # if no per degree target power are defined, use the global one
             temp = self.params.target_pch_out_db
         self.effective_pch_out_db = min(pref.p_spani, temp)
         self.effective_loss = pref.p_spani - self.effective_pch_out_db

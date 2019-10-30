@@ -316,19 +316,17 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
         #     next_node = next(n for n in network.successors(node))
         #     next_node = find_last_node(next_node)
         
-        try:
-            if node.params.per_degree_target_pch_out_db:
-                #find the target power on this degree
-                # need to change this ! #############################
-                prev_dp = next(el["target_pch_out_db"] for el in node.params.per_degree_target_pch_out_db if el["to_node"]==next_node.uid)
-                node.params = node.params._replace(target_pch_out_db=prev_dp)
-            else:
+        if node.per_degree_target_pch_out_db:
+            # find the target power on this degree
+            try:
+                prev_dp = next(el["target_pch_out_db"] for el in \
+                    node.per_degree_target_pch_out_db if el["to_node"]==next_node.uid)
+            except StopIteration:
+                # if no target power is defined on this degree use the global one
                 prev_dp = getattr(node.params, 'target_pch_out_db', 0)
-                node.params = node.params._replace(target_pch_out_db=prev_dp)
-        except AttributeError:
+        else:
+            # if no per degree target power is given use the global one
             prev_dp = getattr(node.params, 'target_pch_out_db', 0)
-
-            ####### en fait change pas les elements !, faudrait plusieurs pchtarget dans le roadm
         dp = prev_dp
         prev_voa = 0
         voa = 0
