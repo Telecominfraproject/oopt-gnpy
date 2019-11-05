@@ -37,7 +37,7 @@
             }
       ],
       "Span":[{
-            "power_mode":true,
+            "power_mode": false,
             "delta_power_range_db": [-2,3,0.5],
             "max_fiber_lineic_loss_for_raman": 0.25,
             "target_extended_gain": 2.5,

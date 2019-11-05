@@ -6,7 +6,7 @@
       "destination": "trx-Bremen",
       "src-tp-id": "trx-Amsterdam",
       "dst-tp-id": "trx-Bremen",
-      "bidirectional": false,
+      "bidirectional": true,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -31,7 +31,7 @@
       "destination": "trx-Bremen",
       "src-tp-id": "trx-Amsterdam",
       "dst-tp-id": "trx-Bremen",
-      "bidirectional": false,
+      "bidirectional": true,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",

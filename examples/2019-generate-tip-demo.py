@@ -86,15 +86,30 @@ for CITY in (ALL_CITIES[x] for x in range(0, HOW_MANY)):
     J["elements"].append(
         {"uid": f"trx-{CITY}", "type": "Transceiver"}
     )
+    target_pwr = [
+        {"to_node": f"trx-{CITY}", "target_pch_out_db": -25},
+        {"to_node": f"splice-(roadm-{CITY}-AD)-(patch-(roadm-{CITY}-AD)-(roadm-{CITY}-L1))", "target_pch_out_db": -12},
+        {"to_node": f"splice-(roadm-{CITY}-AD)-(patch-(roadm-{CITY}-AD)-(roadm-{CITY}-L2))", "target_pch_out_db": -12},
+    ]
     J["elements"].append(
-        {"uid": f"roadm-{CITY}-AD", "type": "Roadm", "params": {"target_pch_out_db": -17.0}}
+        {"uid": f"roadm-{CITY}-AD", "type": "Roadm", "params": {"target_pch_out_db": -2.0, "per_degree_target_pch_out_db": target_pwr}}
     )
     unidir_join(f"trx-{CITY}", f"roadm-{CITY}-AD")
     unidir_join(f"roadm-{CITY}-AD", f"trx-{CITY}")
 
     for n in (1,2):
+        target_pwr = [
+            {"to_node": f"roadm-{CITY}-L{n}-booster", "target_pch_out_db": -23},
+            {"to_node": f"splice-(roadm-{CITY}-L{n})-(patch-(roadm-{CITY}-L{n})-(roadm-{CITY}-AD))", "target_pch_out_db": -12},
+        ]
+        for m in (1,2):
+            if m == n:
+                continue
+            target_pwr.append(
+              {"to_node": f"splice-(roadm-{CITY}-L{n})-(patch-(roadm-{CITY}-L{n})-(roadm-{CITY}-L{m}))", "target_pch_out_db": -12},
+            )
         J["elements"].append(
-            {"uid": f"roadm-{CITY}-L{n}", "type": "Roadm", "params": {"target_pch_out_db": -24.0}}
+            {"uid": f"roadm-{CITY}-L{n}", "type": "Roadm", "params": {"target_pch_out_db": -23.0, "per_degree_target_pch_out_db": target_pwr}}
         )
         mk_edfa(f"roadm-{CITY}-L{n}-booster", 22)
         mk_edfa(f"roadm-{CITY}-L{n}-preamp", 27)

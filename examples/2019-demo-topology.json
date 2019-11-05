@@ -8,14 +8,42 @@
       "uid": "roadm-Amsterdam-AD",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -17.0
+        "target_pch_out_db": -2.0,
+        "per_degree_target_pch_out_db": [
+          {
+            "to_node": "trx-Amsterdam",
+            "target_pch_out_db": -25
+          },
+          {
+            "to_node": "splice-(roadm-Amsterdam-AD)-(patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L1))",
+            "target_pch_out_db": -12
+          },
+          {
+            "to_node": "splice-(roadm-Amsterdam-AD)-(patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L2))",
+            "target_pch_out_db": -12
+          }
+        ]
       }
     },
     {
       "uid": "roadm-Amsterdam-L1",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -24.0
+        "target_pch_out_db": -23.0,
+        "per_degree_target_pch_out_db": [
+          {
+            "to_node": "roadm-Amsterdam-L1-booster",
+            "target_pch_out_db": -23
+          },
+          {
+            "to_node": "splice-(roadm-Amsterdam-L1)-(patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-AD))",
+            "target_pch_out_db": -12
+          },
+          {
+            "to_node": "splice-(roadm-Amsterdam-L1)-(patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-L2))",
+            "target_pch_out_db": -12
+          }
+        ]
       }
     },
     {
@@ -118,7 +146,21 @@
       "uid": "roadm-Amsterdam-L2",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -24.0
+        "target_pch_out_db": -23.0,
+        "per_degree_target_pch_out_db": [
+          {
+            "to_node": "roadm-Amsterdam-L2-booster",
+            "target_pch_out_db": -23
+          },
+          {
+            "to_node": "splice-(roadm-Amsterdam-L2)-(patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-AD))",
+            "target_pch_out_db": -12
+          },
+          {
+            "to_node": "splice-(roadm-Amsterdam-L2)-(patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-L1))",
+            "target_pch_out_db": -12
+          }
+        ]
       }
     },
     {
@@ -225,14 +267,42 @@
       "uid": "roadm-Bremen-AD",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -17.0
+        "target_pch_out_db": -2.0,
+        "per_degree_target_pch_out_db": [
+          {
+            "to_node": "trx-Bremen",
+            "target_pch_out_db": -25
+          },
+          {
+            "to_node": "splice-(roadm-Bremen-AD)-(patch-(roadm-Bremen-AD)-(roadm-Bremen-L1))",
+            "target_pch_out_db": -12
+          },
+          {
+            "to_node": "splice-(roadm-Bremen-AD)-(patch-(roadm-Bremen-AD)-(roadm-Bremen-L2))",
+            "target_pch_out_db": -12
+          }
+        ]
       }
     },
     {
       "uid": "roadm-Bremen-L1",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -24.0
+        "target_pch_out_db": -23.0,
+        "per_degree_target_pch_out_db": [
+          {
+            "to_node": "roadm-Bremen-L1-booster",
+            "target_pch_out_db": -23
+          },
+          {
+            "to_node": "splice-(roadm-Bremen-L1)-(patch-(roadm-Bremen-L1)-(roadm-Bremen-AD))",
+            "target_pch_out_db": -12
+          },
+          {
+            "to_node": "splice-(roadm-Bremen-L1)-(patch-(roadm-Bremen-L1)-(roadm-Bremen-L2))",
+            "target_pch_out_db": -12
+          }
+        ]
       }
     },
     {
@@ -335,7 +405,21 @@
       "uid": "roadm-Bremen-L2",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -24.0
+        "target_pch_out_db": -23.0,
+        "per_degree_target_pch_out_db": [
+          {
+            "to_node": "roadm-Bremen-L2-booster",
+            "target_pch_out_db": -23
+          },
+          {
+            "to_node": "splice-(roadm-Bremen-L2)-(patch-(roadm-Bremen-L2)-(roadm-Bremen-AD))",
+            "target_pch_out_db": -12
+          },
+          {
+            "to_node": "splice-(roadm-Bremen-L2)-(patch-(roadm-Bremen-L2)-(roadm-Bremen-L1))",
+            "target_pch_out_db": -12
+          }
+        ]
       }
     },
     {
@@ -442,14 +526,42 @@
       "uid": "roadm-Cologne-AD",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -17.0
+        "target_pch_out_db": -2.0,
+        "per_degree_target_pch_out_db": [
+          {
+            "to_node": "trx-Cologne",
+            "target_pch_out_db": -25
+          },
+          {
+            "to_node": "splice-(roadm-Cologne-AD)-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L1))",
+            "target_pch_out_db": -12
+          },
+          {
+            "to_node": "splice-(roadm-Cologne-AD)-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L2))",
+            "target_pch_out_db": -12
+          }
+        ]
       }
     },
     {
       "uid": "roadm-Cologne-L1",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -24.0
+        "target_pch_out_db": -23.0,
+        "per_degree_target_pch_out_db": [
+          {
+            "to_node": "roadm-Cologne-L1-booster",
+            "target_pch_out_db": -23
+          },
+          {
+            "to_node": "splice-(roadm-Cologne-L1)-(patch-(roadm-Cologne-L1)-(roadm-Cologne-AD))",
+            "target_pch_out_db": -12
+          },
+          {
+            "to_node": "splice-(roadm-Cologne-L1)-(patch-(roadm-Cologne-L1)-(roadm-Cologne-L2))",
+            "target_pch_out_db": -12
+          }
+        ]
       }
     },
     {
@@ -552,7 +664,21 @@
       "uid": "roadm-Cologne-L2",
       "type": "Roadm",
       "params": {
-        "target_pch_out_db": -24.0
+        "target_pch_out_db": -23.0,
+        "per_degree_target_pch_out_db": [
+          {
+            "to_node": "roadm-Cologne-L2-booster",
+            "target_pch_out_db": -23
+          },
+          {
+            "to_node": "splice-(roadm-Cologne-L2)-(patch-(roadm-Cologne-L2)-(roadm-Cologne-AD))",
+            "target_pch_out_db": -12
+          },
+          {
+            "to_node": "splice-(roadm-Cologne-L2)-(patch-(roadm-Cologne-L2)-(roadm-Cologne-L1))",
+            "target_pch_out_db": -12
+          }
+        ]
       }
     },
     {
