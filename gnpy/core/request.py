@@ -203,6 +203,20 @@ class Result_element(Element):
                     }
                 pro_list.append(temp)
                 index += 1
+            if isinstance(element, Edfa):
+                temp = {
+                    'path-route-object': {
+                        'index': index,
+                        'target-channel-power' : {
+                            'value': element.effective_pch_out_db,
+                        },
+                        'output-voa':  {
+                            'value': element.out_voa,
+                        }
+                    }
+                }
+                pro_list.append(temp)
+                index += 1
         return pro_list
     @property
     def path_properties(self):
