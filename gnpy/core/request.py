@@ -122,6 +122,15 @@ BLOCKING_NOPATH = ['NO_PATH', 'NO_PATH_WITH_CONSTRAINT',\
 BLOCKING_NOMODE = ['NO_FEASIBLE_MODE', 'MODE_NOT_FEASIBLE']
 BLOCKING_NOSPECTRUM = 'NO_SPECTRUM'
 
+def element_to_node_type(element):
+    if isinstance(element, Transceiver):
+        return "transceiver"
+    if isinstance(element, Edfa):
+        return "EDFA"
+    if isinstance(element, Roadm):
+        return "ROADM"
+    return None
+
 class Result_element(Element):
     def __init__(self, path_request, computed_path, reversed_computed_path=None):
         self.path_id = path_request.request_id
@@ -148,6 +157,9 @@ class Result_element(Element):
                         }
                     }
                 }
+            node_type = element_to_node_type(element)
+            if (node_type is not None):
+                temp['path-route-object']['num-unnum-hop']['gnpy-node-type'] = node_type
             pro_list.append(temp)
             index += 1
             if self.path_request.M > 0:
