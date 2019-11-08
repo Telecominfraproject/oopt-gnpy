@@ -140,13 +140,13 @@ class Result_element(Element):
         if reversed_computed_path is not None:
             self.reversed_computed_path = reversed_computed_path
     uid = property(lambda self: repr(self))
-    @property
-    def detailed_path_json(self):
+
+    def detailed_path_json(self, path):
         """ a function that builds path object for normal and blocking cases
         """
         index = 0
         pro_list = []
-        for element in self.computed_path:
+        for element in path:
             temp = {
                 'path-route-object': {
                     'index': index,
@@ -255,12 +255,13 @@ class Result_element(Element):
             path_properties = {
                 'path-metric': path_metric(self.computed_path, self.path_request),
                 'z-a-path-metric': path_metric(self.reversed_computed_path, self.path_request),
-                'path-route-objects': self.detailed_path_json
+                'path-route-objects': self.detailed_path_json(self.computed_path),
+                'reversed-path-route-objects': self.detailed_path_json(self.reversed_computed_path),
                 }
         else:
             path_properties = {
                 'path-metric': path_metric(self.computed_path, self.path_request),
-                'path-route-objects': self.detailed_path_json
+                'path-route-objects': self.detailed_path_json(self.computed_path)
                 }
         return path_properties
 
