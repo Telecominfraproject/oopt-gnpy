@@ -140,5 +140,33 @@ for _, E in enumerate(J["elements"]):
     #if uid.endswith("-AD-add"):
     #    E["operational"]["out_voa"] = 21
 
+translate = {
+    "trx-Amsterdam": "10.0.254.93",
+    "trx-Bremen": "10.0.254.94",
+
+    # coherent-v9u
+    "roadm-Amsterdam-AD": "10.0.254.107",
+    # -spi
+    "roadm-Bremen-AD": "10.0.254.225",
+
+    # Amsterdam -> Bremen ...QC8B
+    "roadm-Amsterdam-L1": "10.0.254.101",
+    # ...QCP9
+    "roadm-Bremen-L2": "10.0.254.102",
+
+    # WKP: Bremen -> Cologne
+    "roadm-Bremen-L1": "10.0.254.100",
+    # LK6: Cologne -> Bremen
+    "roadm-Cologne-L2": "10.0.254.104",
+
+    # TQQ: Cologne -> Amsterdam
+    "roadm-Cologne-L1": "10.0.254.99",
+    # NFP: Amsterdam -> Cologne
+    "roadm-Amsterdam-L1": "10.0.254.235",
+}
+
 import json
-print(json.dumps(J, indent=2))
+s = json.dumps(J, indent=2)
+for (old, new) in translate.items():
+    s = s.replace(f'"{old}"', f'"netconf:{new}:830"')
+print(s)
