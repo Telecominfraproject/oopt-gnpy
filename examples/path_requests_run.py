@@ -504,6 +504,9 @@ def launch_cli(network, data, equipment):
 class GnpyAPI(Resource):
     """ Compute requests using network, data and equipment with rest api
     """
+    def get(self):
+        return {"ping": True}, 200
+
     def post(self):
         data = request.get_json()
         equipment = load_equipment('examples/2019-demo-equipment.json')
