@@ -162,7 +162,7 @@ translate = {
     # TQQ: Cologne -> Amsterdam
     "roadm-Cologne-L1": "10.0.254.99",
     # NFP: Amsterdam -> Cologne
-    "roadm-Amsterdam-L1": "10.0.254.235",
+    "roadm-Amsterdam-L2": "10.0.254.235",
 }
 
 import json
