@@ -71,7 +71,7 @@
             }],
       "Transceiver":[
             {
-            "type_variety": "vendorA_trx-type1",
+            "type_variety": "Cassini",
             "frequency":{
                         "min": 191.35e12,
                         "max": 196.1e12
@@ -79,7 +79,7 @@
             "mode":[
                        {
 
-                       "format": "mode 1",
+                       "format": "dp-qpsk",
                        "baud_rate": 32e9,
                        "OSNR": 11,
                        "bit_rate": 100e9,
@@ -89,7 +89,7 @@
                        "cost":1
                        },
                        {
-                       "format": "mode 2",
+                       "format": "16-qam",
                        "baud_rate": 66e9,
                        "OSNR": 15,
                        "bit_rate": 200e9,
