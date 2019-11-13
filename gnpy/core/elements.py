@@ -27,7 +27,7 @@ from collections import namedtuple
 from gnpy.core.node import Node
 from gnpy.core.units import UNITS
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum
-from gnpy.core.parameters import FiberParams
+from gnpy.core.parameters import FiberParams, RamanFiberParams, PumpParams
 from gnpy.core.science_utils import propagate_raman_fiber, _psi
 
 class Transceiver(Node):
@@ -229,7 +229,7 @@ class Fused(Node):
 
 class Fiber(Node):
     def __init__(self, *args, params=None, **kwargs):
-        super().__init__(*args, params=FiberParams(**params), **kwargs)
+        super().__init__(*args, params=FiberParams(params), **kwargs)
         self.type_variety = self.params.type_variety
         self.length = self.params.length * UNITS[self.params.length_units] # in m
         self.att_in = self.params.att_in
@@ -375,12 +375,12 @@ class Fiber(Node):
 
         g_nli = 0
         for interfering_carrier in carriers:
-            psi = _psi(carrier, interfering_carrier, beta2=self.beta2(), asymptotic_length=self.asymptotic_length)
+            psi = _psi(carrier, interfering_carrier, beta2=self.beta2, asymptotic_length=self.asymptotic_length)
             g_nli += (interfering_carrier.power.signal/interfering_carrier.baud_rate)**2 \
                      * (carrier.power.signal/carrier.baud_rate) * psi
 
         g_nli *= (16 / 27) * (self.gamma * self.effective_length)**2 \
-                 / (2 * pi * abs(self.beta2()) * self.asymptotic_length)
+                 / (2 * pi * abs(self.beta2) * self.asymptotic_length)
 
         carrier_nli = carrier.baud_rate * g_nli
         return carrier_nli
@@ -425,8 +425,13 @@ class Fiber(Node):
 
 class RamanFiber(Fiber):
     def __init__(self, *args, params=None, **kwargs):
-        super().__init__(*args, params=FiberParams(**params), **kwargs)
+        super().__init__(*args, params=RamanFiberParams(params), **kwargs)
         self.raman_efficiency = self.params.raman_efficiency
+        if 'raman_pumps' in self.operational:
+            self.raman_pumps = tuple(PumpParams(p['power'], p['frequency'], p['propagation_direction'])
+                  for p in self.operational['raman_pumps'])
+        else:
+            self.raman_pumps = None
 
     @property
     def sim_params(self):

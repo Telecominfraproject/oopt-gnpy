@@ -6,7 +6,6 @@ from scipy.integrate import solve_bvp
 from scipy.integrate import cumtrapz
 from scipy.interpolate import interp1d
 from scipy.optimize import OptimizeResult
-from gnpy.core.parameters import PumpParams, RamanParams, NLIParams, SimParams, FiberParams
 from gnpy.core.utils import db2lin
 
 
@@ -30,14 +29,9 @@ def propagate_raman_fiber(fiber, *carriers):
     carriers = tuple(f for f in chan)
 
     # evaluate fiber attenuation involving also SRS if required by sim_params
-    if 'raman_pumps' in fiber.operational:
-        raman_pumps = tuple(PumpParams(p['power'], p['frequency'], p['propagation_direction'])
-                            for p in fiber.operational['raman_pumps'])
-    else:
-        raman_pumps = None
     raman_solver = RamanSolver(raman_params=raman_params, fiber=fiber)
     raman_solver.carriers = carriers
-    raman_solver.raman_pumps = raman_pumps
+    raman_solver.raman_pumps = fiber.raman_pumps
     stimulated_raman_scattering = raman_solver.stimulated_raman_scattering
 
     fiber_attenuation = (stimulated_raman_scattering.rho[:, -1])**-2
@@ -45,7 +39,7 @@ def propagate_raman_fiber(fiber, *carriers):
         fiber_attenuation = tuple(fiber.lin_attenuation for _ in carriers)
 
     # evaluate Raman ASE noise if required by sim_params and if raman pumps are present
-    if raman_params.flag_raman and raman_pumps:
+    if raman_params.flag_raman and fiber.raman_pumps:
         raman_ase = raman_solver.spontaneous_raman_scattering.power[:, -1]
     else:
         raman_ase = tuple(0 for _ in carriers)

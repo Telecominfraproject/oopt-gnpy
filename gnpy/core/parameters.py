@@ -130,11 +130,8 @@ class FiberParams():
             self._gamma = params['gamma']
             self._ref_wavelength = params['ref_wavelength'] if 'ref_wavelength' in params else 1550e-9
             self._beta3 = params['beta3'] if 'beta3' in params else 0
-            self._raman_efficiency = params['raman_efficiency'] if 'raman_efficiency' else None
         except KeyError:
             raise ParametersError
-
-        self._f_ref_beta = fiber.f_ref_beta if hasattr(fiber, 'f_ref_beta') else 0
 
     @property
     def type_variety(self):
@@ -183,3 +180,8 @@ class FiberParams():
     @property
     def raman_efficiency(self):
         return self._raman_efficiency
+
+class RamanFiberParams(FiberParams):
+    def __init__(self, params):
+        super().__init__(params)
+        self._raman_efficiency = params['raman_efficiency'] if 'raman_efficiency' else None
