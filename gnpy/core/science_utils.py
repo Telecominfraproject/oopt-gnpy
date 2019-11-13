@@ -1,155 +1,17 @@
 import numpy as np
 from operator import attrgetter
-from collections import namedtuple
 from logging import getLogger
 import scipy.constants as ph
 from scipy.integrate import solve_bvp
 from scipy.integrate import cumtrapz
 from scipy.interpolate import interp1d
 from scipy.optimize import OptimizeResult
-
+from gnpy.core.parameters import PumpParams, RamanParams, NLIParams, SimParams, FiberParams
 from gnpy.core.utils import db2lin
 
 
 logger = getLogger(__name__)
 
-
-class RamanParams():
-    def __init__(self, params):
-        self._flag_raman = params['flag_raman']
-        self._space_resolution = params['space_resolution']
-        self._tolerance = params['tolerance']
-
-    @property
-    def flag_raman(self):
-        return self._flag_raman
-
-    @property
-    def space_resolution(self):
-        return self._space_resolution
-
-    @property
-    def tolerance(self):
-        return self._tolerance
-
-class NLIParams():
-    def __init__(self, params):
-        self._nli_method_name = params['nli_method_name']
-        self._wdm_grid_size = params['wdm_grid_size']
-        self._dispersion_tolerance = params['dispersion_tolerance']
-        self._phase_shift_tollerance = params['phase_shift_tollerance']
-        self._f_cut_resolution = None
-        self._f_pump_resolution = None
-
-    @property
-    def nli_method_name(self):
-        return self._nli_method_name
-
-    @property
-    def wdm_grid_size(self):
-        return self._wdm_grid_size
-
-    @property
-    def dispersion_tolerance(self):
-        return self._dispersion_tolerance
-
-    @property
-    def phase_shift_tollerance(self):
-        return self._phase_shift_tollerance
-
-    @property
-    def f_cut_resolution(self):
-        return self._f_cut_resolution
-
-    @f_cut_resolution.setter
-    def f_cut_resolution(self, f_cut_resolution):
-        self._f_cut_resolution = f_cut_resolution
-
-    @property
-    def f_pump_resolution(self):
-        return self._f_pump_resolution
-
-    @f_pump_resolution.setter
-    def f_pump_resolution(self, f_pump_resolution):
-        self._f_pump_resolution = f_pump_resolution
-
-class SimParams():
-    def __init__(self, params):
-        self._raman_computed_channels = params['raman_computed_channels']
-        self._raman_params = RamanParams(params=params['raman_parameters'])
-        self._nli_params = NLIParams(params=params['nli_parameters'])
-
-    @property
-    def raman_computed_channels(self):
-        return self._raman_computed_channels
-
-    @property
-    def raman_params(self):
-        return self._raman_params
-
-    @property
-    def nli_params(self):
-        return self._nli_params
-
-class FiberParams():
-    def __init__(self, fiber):
-        self._loss_coef = 2 * fiber.dbkm_2_lin()[1]
-        self._length = fiber.length
-        self._gamma = fiber.gamma
-        self._beta2 = fiber.beta2()
-        self._beta3 = fiber.beta3 if hasattr(fiber, 'beta3') else 0
-        self._f_ref_beta = fiber.f_ref_beta if hasattr(fiber, 'f_ref_beta') else 0
-        self._raman_efficiency = fiber.params.raman_efficiency
-        self._temperature = fiber.operational['temperature']
-
-    @property
-    def loss_coef(self):
-        return self._loss_coef
-
-    @property
-    def length(self):
-        return self._length
-
-    @property
-    def gamma(self):
-        return self._gamma
-
-    @property
-    def beta2(self):
-        return self._beta2
-
-    @property
-    def beta3(self):
-        return self._beta3
-
-    @property
-    def f_ref_beta(self):
-        return self._f_ref_beta
-
-    @property
-    def raman_efficiency(self):
-        return self._raman_efficiency
-
-    @property
-    def temperature(self):
-        return self._temperature
-
-    def alpha0(self, f_ref=193.5e12):
-        """ It returns the zero element of the series expansion of attenuation coefficient alpha(f) in the
-        reference frequency f_ref
-
-        :param f_ref: reference frequency of series expansion [Hz]
-        :return: alpha0: power attenuation coefficient in f_ref [Neper/m]
-        """
-        if not hasattr(self.loss_coef, 'alpha_power'):
-            alpha0 = self.loss_coef
-        else:
-            alpha_interp = interp1d(self.loss_coef['frequency'],
-                                    self.loss_coef['alpha_power'])
-            alpha0 = alpha_interp(f_ref)
-        return alpha0
-
-pump = namedtuple('RamanPump', 'power frequency propagation_direction')
 
 def propagate_raman_fiber(fiber, *carriers):
     sim_params = fiber.sim_params
@@ -170,7 +32,7 @@ def propagate_raman_fiber(fiber, *carriers):
 
     # evaluate fiber attenuation involving also SRS if required by sim_params
     if 'raman_pumps' in fiber.operational:
-        raman_pumps = tuple(pump(p['power'], p['frequency'], p['propagation_direction'])
+        raman_pumps = tuple(PumpParams(p['power'], p['frequency'], p['propagation_direction'])
                             for p in fiber.operational['raman_pumps'])
     else:
         raman_pumps = None
@@ -457,11 +319,9 @@ class RamanSolver:
             # fiber parameters
             fiber_length = self.fiber_params.length
             loss_coef = self.fiber_params.loss_coef
-            if self.raman_params.flag_raman:
-                raman_efficiency = self.fiber_params.raman_efficiency
-            else:
-                raman_efficiency = self.fiber_params.raman_efficiency
-                raman_efficiency['cr'] = np.array(raman_efficiency['cr']) * 0
+            raman_efficiency = self.fiber_params.raman_efficiency
+            if not self.raman_params.flag_raman:
+                raman_efficiency['cr'] = np.zeros(len(raman_efficiency['cr']))
             # raman solver parameters
             z_resolution = self.raman_params.space_resolution
             tolerance = self.raman_params.tolerance

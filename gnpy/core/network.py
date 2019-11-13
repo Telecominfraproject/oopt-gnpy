@@ -22,7 +22,7 @@ from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.units import UNITS
 from gnpy.core.utils import (load_json, save_json, round2float, db2lin,
                             merge_amplifier_restrictions)
-from gnpy.core.science_utils import SimParams
+from gnpy.core.parameters import SimParams
 from collections import namedtuple
 
 logger = getLogger(__name__)
