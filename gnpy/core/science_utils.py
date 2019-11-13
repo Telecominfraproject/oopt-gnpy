@@ -132,8 +132,24 @@ def raised_cosine_comb(f, *carriers):
                           np.where(tf > 0, 1., 0.) * np.where(np.abs(ff) <= stopband, 1., 0.)) + psd
     return psd
 
+
+class SpontaneousRamanScattering:
+    def __init__(self, frequency, z, power):
+        self.frequency = frequency
+        self.z = z
+        self.power = power
+
+
+class StimulatedRamanScattering:
+    def __init__(self, frequency, z, rho, power):
+        self.frequency = frequency
+        self.z = z
+        self.rho = rho
+        self.power = power
+
+
 class RamanSolver:
-    def __init__(self, raman_params=None, fiber_params=None):
+    def __init__(self, raman_params=None, fiber=None):
         """ Initialize the fiber object with its physical parameters
         :param length: fiber length in m.
         :param alphap: fiber power attenuation coefficient vs frequency in 1/m. numpy array
@@ -142,20 +158,15 @@ class RamanSolver:
         :param freq_cr: reference frequency offset axis for cr_raman. numpy array
         :param raman_params: namedtuple containing the solver parameters (optional).
         """
-        self.fiber_params = fiber_params
-        self.raman_params = raman_params
+        self._fiber = fiber
+        self._raman_params = raman_params
         self._carriers = None
         self._stimulated_raman_scattering = None
         self._spontaneous_raman_scattering = None
 
     @property
-    def fiber_params(self):
-        return self._fiber_params
-
-    @fiber_params.setter
-    def fiber_params(self, fiber_params):
-        self._stimulated_raman_scattering = None
-        self._fiber_params = fiber_params
+    def fiber(self):
+        return self._fiber
 
     @property
     def carriers(self):
@@ -168,6 +179,7 @@ class RamanSolver:
         :return:
         """
         self._carriers = carriers
+        self._spontaneous_raman_scattering = None
         self._stimulated_raman_scattering = None
 
     @property
@@ -183,34 +195,20 @@ class RamanSolver:
     def raman_params(self):
         return self._raman_params
 
-    @raman_params.setter
-    def raman_params(self, raman_params):
-        """
-        :param raman_params: namedtuple containing the solver parameters (optional).
-        :return:
-        """
-        self._raman_params = raman_params
-        self._stimulated_raman_scattering = None
-        self._spontaneous_raman_scattering = None
-
     @property
     def spontaneous_raman_scattering(self):
         if self._spontaneous_raman_scattering is None:
             # SET STUFF
-            loss_coef = self.fiber_params.loss_coef
-            raman_efficiency = self.fiber_params.raman_efficiency
-            temperature = self.fiber_params.temperature
+
+            raman_efficiency = self.fiber.raman_efficiency
+            temperature = self.fiber.operational['temperature']
             carriers = self.carriers
             raman_pumps = self.raman_pumps
 
             logger.debug('Start computing fiber Spontaneous Raman Scattering')
             power_spectrum, freq_array, prop_direct, bn_array = self._compute_power_spectrum(carriers, raman_pumps)
 
-            if not hasattr(loss_coef, 'alpha_power'):
-                alphap_fiber = loss_coef * np.ones(freq_array.shape)
-            else:
-                interp_alphap = interp1d(loss_coef['frequency'], loss_coef['alpha_power'])
-                alphap_fiber = interp_alphap(freq_array)
+            alphap_fiber = self.fiber.alpha(freq_array)
 
             freq_diff = abs(freq_array - np.reshape(freq_array, (len(freq_array), 1)))
             interp_cr = interp1d(raman_efficiency['frequency_offset'], raman_efficiency['cr'])

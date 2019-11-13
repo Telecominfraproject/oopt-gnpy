@@ -134,9 +134,6 @@ class FiberParams():
         except KeyError:
             raise ParametersError
 
-
-
-        self._loss_coef = 2 * fiber.dbkm_2_lin()[1]
         self._f_ref_beta = fiber.f_ref_beta if hasattr(fiber, 'f_ref_beta') else 0
 
     @property

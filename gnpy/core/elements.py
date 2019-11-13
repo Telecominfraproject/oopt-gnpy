@@ -18,7 +18,7 @@ Network elements MUST implement two attributes .uid and .name representing a
 unique identifier and a printable name.
 '''
 
-from numpy import abs, arange, array, exp, divide, errstate
+from numpy import abs, arange, array, exp, divide, errstate, ones, squeeze
 from numpy import interp, log10, mean, pi, polyfit, polyval, sum
 from scipy.constants import c, h
 from scipy.interpolate import interp1d
@@ -232,8 +232,6 @@ class Fiber(Node):
         super().__init__(*args, params=FiberParams(**params), **kwargs)
         self.type_variety = self.params.type_variety
         self.length = self.params.length * UNITS[self.params.length_units] # in m
-        self.loss_coef = self.params.loss_coef * 1e-3 # lineic loss dB/m
-        self.lin_loss_coef = self.params.loss_coef / (20 * log10(exp(1)))
         self.att_in = self.params.att_in
         self.con_in = self.params.con_in
         self.con_out = self.params.con_out
@@ -243,7 +241,13 @@ class Fiber(Node):
         self.pch_out_db = None
         self.carriers_in = None
         self.carriers_out = None
-        # TODO|jla: discuss factor 2 in the linear lineic attenuation
+        if type(self.params.loss_coef) == dict:
+            self.loss_coef = squeeze(self.params.loss_coef['alpha_power']) * 1e-3  # lineic loss dB/m
+            self.f_loss_ref = squeeze(self.params.loss_coef['frequency']) # Hz
+        else:
+            self.loss_coef = self.params.loss_coef * 1e-3  # lineic loss dB/m
+            self.f_loss_ref = 193.5e12  # Hz
+        self.lin_loss_coef = self.loss_coef / (10 * log10(exp(1))) # POWER
 
     @property
     def to_json(self):
@@ -299,13 +303,13 @@ class Fiber(Node):
 
     @property
     def effective_length(self):
-        _, alpha = self.dbkm_2_lin()
+        alpha = self.lin_loss_coef
         leff = (1 - exp(-2 * alpha * self.length)) / (2 * alpha)
         return leff
 
     @property
     def asymptotic_length(self):
-        _, alpha = self.dbkm_2_lin()
+        alpha = self.lin_loss_coef
         aleff = 1 / (2 * alpha)
         return aleff
 
@@ -337,6 +341,20 @@ class Fiber(Node):
         b2 = (self.params.ref_wavelength ** 2) * D / (2 * pi * c)  # 10^21 scales [ps^2/km]
         return b2 # s/Hz/m
 
+    def alpha(self, frequencies):
+        """ It returns the values of the series expansion of attenuation coefficient alpha(f) for all f in frequencies
+
+        :param frequencies: frequencies of series expansion [Hz]
+        :return: alpha: power attenuation coefficient for f in frequencies [Neper/m]
+        """
+        if type(self.params.loss_coef) == dict:
+            alpha_interp = interp1d(self.loss_coef, self.f_loss_ref)
+            alpha = alpha_interp(frequencies)
+        else:
+            alpha = self.lin_loss_coef * ones(frequencies.shape)
+
+        return alpha
+
     def alpha0(self, f_ref=193.5e12):
         """ It returns the zero element of the series expansion of attenuation coefficient alpha(f) in the
         reference frequency f_ref
@@ -344,21 +362,7 @@ class Fiber(Node):
         :param f_ref: reference frequency of series expansion [Hz]
         :return: alpha0: power attenuation coefficient in f_ref [Neper/m]
         """
-        if not hasattr(self.loss_coef, 'alpha_power'):
-            alpha0 = self.loss_coef
-        else:
-            alpha_interp = interp1d(self.loss_coef['frequency'],
-                                    self.loss_coef['alpha_power'])
-            alpha0 = alpha_interp(f_ref)
-        return alpha0
-
-    def dbkm_2_lin(self):
-        """calculates the linear loss coefficient"""
-        # linear loss coefficient in dB/km^-1
-        alpha_pcoef = self.loss_coef
-        # linear loss field amplitude coefficient in m^-1
-        alpha_acoef = alpha_pcoef / (2 * 10 * log10(exp(1)))
-        return alpha_pcoef, alpha_acoef
+        return self.alpha(f_ref * ones(1))[0]
 
     def _gn_analytic(self, carrier, *carriers):
         """Computes the nonlinear interference power on a single carrier.
@@ -422,6 +426,7 @@ class Fiber(Node):
 class RamanFiber(Fiber):
     def __init__(self, *args, params=None, **kwargs):
         super().__init__(*args, params=FiberParams(**params), **kwargs)
+        self.raman_efficiency = self.params.raman_efficiency
 
     @property
     def sim_params(self):
