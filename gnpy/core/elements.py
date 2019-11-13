@@ -304,13 +304,13 @@ class Fiber(Node):
     @property
     def effective_length(self):
         alpha = self.lin_loss_coef
-        leff = (1 - exp(-2 * alpha * self.length)) / (2 * alpha)
+        leff = (1 - exp(- alpha * self.length)) / (alpha)
         return leff
 
     @property
     def asymptotic_length(self):
         alpha = self.lin_loss_coef
-        aleff = 1 / (2 * alpha)
+        aleff = 1 / alpha
         return aleff
 
     def carriers(self, loc, attr):
