@@ -6,6 +6,44 @@
       "destination": null,
       "src-tp-id": null,
       "dst-tp-id": null,
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
+          {
+            "explicit-route-usage": null,
+            "index": null,
+            "num-unnum-hop": {
+              "node-id": null,
+              "link-tp-id": null,
+              "hop-type": null
+            }
+          },
+          {
+            "explicit-route-usage": null,
+            "index": null,
+            "label-hop": {
+              "N": null,
+              "M": null
+            }
+          },
+          {
+            "explicit-route-usage": null,
+            "index": null,
+            "transponder": {
+              "transponder-type": null,
+              "transponder-mode": null
+            }
+          },
+          {
+            "explicit-route-usage": null,
+            "index": null,
+            "regenerator": {
+              "regenerator-id": null,
+              "transponder-type": null,
+              "transponder-mode": null
+            }
+          }
+        ]
+      },      
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -22,27 +60,6 @@
           "output-power": null,
           "path_bandwidth": null
           }
-      },
-      "optimizations": {
-        "explicit-route-include-objects": {
-          "route-object-include-object": [
-          {
-            "index": null,
-            "unnumbered-hop": {
-              "node-id": null,
-              "link-tp-id": "link-tp-id is not used",
-              "hop-type": null,
-              "direction": "direction is not used"
-            },
-            "label-hop": {
-              "te-label": {
-                "generic": "generic is not used",
-                "direction": "direction is not used"
-              }
-            }
-          }
-          ]
-        }
       }
     }],
   "synchronization": [
@@ -50,10 +67,9 @@
       "synchronization-id": null,
       "svec": {
         "relaxable": "True",
-        "link-diverse": "False",
-        "node-diverse": "False",
+        "disjointness": "node link",
         "request-id-number": [
-         null ]
+         null, null ]
         },
     }
     ]
