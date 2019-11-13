@@ -36,9 +36,11 @@ def propagate_raman_fiber(fiber, *carriers):
                             for p in fiber.operational['raman_pumps'])
     else:
         raman_pumps = None
-    raman_solver = RamanSolver(raman_params=raman_params, fiber_params=fiber_params)
-    stimulated_raman_scattering = raman_solver.stimulated_raman_scattering(carriers=carriers,
-                                                                           raman_pumps=raman_pumps)
+    raman_solver = RamanSolver(raman_params=raman_params, fiber=fiber)
+    raman_solver.carriers = carriers
+    raman_solver.raman_pumps = raman_pumps
+    stimulated_raman_scattering = raman_solver.stimulated_raman_scattering
+
     fiber_attenuation = (stimulated_raman_scattering.rho[:, -1])**-2
     if not raman_params.flag_raman:
         fiber_attenuation = tuple(fiber.lin_attenuation for _ in carriers)
@@ -196,43 +198,45 @@ class RamanSolver:
         return self._raman_params
 
     @property
+    def stimulated_raman_scattering(self):
+        if self._stimulated_raman_scattering is None:
+           self.calculate_stimulated_raman_scattering(self.carriers, self.raman_pumps)
+        return self._stimulated_raman_scattering
+
+    @property
     def spontaneous_raman_scattering(self):
         if self._spontaneous_raman_scattering is None:
-            # SET STUFF
-
-            raman_efficiency = self.fiber.raman_efficiency
-            temperature = self.fiber.operational['temperature']
-            carriers = self.carriers
-            raman_pumps = self.raman_pumps
-
-            logger.debug('Start computing fiber Spontaneous Raman Scattering')
-            power_spectrum, freq_array, prop_direct, bn_array = self._compute_power_spectrum(carriers, raman_pumps)
-
-            alphap_fiber = self.fiber.alpha(freq_array)
-
-            freq_diff = abs(freq_array - np.reshape(freq_array, (len(freq_array), 1)))
-            interp_cr = interp1d(raman_efficiency['frequency_offset'], raman_efficiency['cr'])
-            cr = interp_cr(freq_diff)
-
-            # z propagation axis
-            z_array = self._stimulated_raman_scattering.z
-            ase_bc = np.zeros(freq_array.shape)
-
-            # calculate ase power
-            spontaneous_raman_scattering = self._int_spontaneous_raman(z_array, self._stimulated_raman_scattering.power,
-                                                                       alphap_fiber, freq_array, cr, freq_diff, ase_bc,
-                                                                       bn_array, temperature)
-
-            setattr(spontaneous_raman_scattering, 'frequency', freq_array)
-            setattr(spontaneous_raman_scattering, 'z', z_array)
-            setattr(spontaneous_raman_scattering, 'power', spontaneous_raman_scattering.x)
-            delattr(spontaneous_raman_scattering, 'x')
-
-            logger.debug(spontaneous_raman_scattering.message)
-
-            self._spontaneous_raman_scattering = spontaneous_raman_scattering
-
+            self.calculate_spontaneous_raman_scattering()
         return self._spontaneous_raman_scattering
+
+    def calculate_spontaneous_raman_scattering(self):
+        raman_efficiency = self.fiber.raman_efficiency
+        temperature = self.fiber.operational['temperature']
+        carriers = self.carriers
+        raman_pumps = self.raman_pumps
+
+        logger.debug('Start computing fiber Spontaneous Raman Scattering')
+        power_spectrum, freq_array, prop_direct, bn_array = self._compute_power_spectrum(carriers, raman_pumps)
+
+        alphap_fiber = self.fiber.alpha(freq_array)
+
+        freq_diff = abs(freq_array - np.reshape(freq_array, (len(freq_array), 1)))
+        interp_cr = interp1d(raman_efficiency['frequency_offset'], raman_efficiency['cr'])
+        cr = interp_cr(freq_diff)
+
+        # z propagation axis
+        z_array = self.stimulated_raman_scattering.z
+        ase_bc = np.zeros(freq_array.shape)
+
+        # calculate ase power
+        int_spontaneous_raman = self._int_spontaneous_raman(z_array, self._stimulated_raman_scattering.power,
+                                                                   alphap_fiber, freq_array, cr, freq_diff, ase_bc,
+                                                                   bn_array, temperature)
+
+        spontaneous_raman_scattering = SpontaneousRamanScattering(freq_array, z_array, int_spontaneous_raman.x)
+        logger.debug("Spontaneous Raman Scattering evaluated successfully")
+        self._spontaneous_raman_scattering = spontaneous_raman_scattering
+
 
     @staticmethod
     def _compute_power_spectrum(carriers, raman_pumps=None):
@@ -301,67 +305,50 @@ class RamanSolver:
             power_ase[f_ind, :] = bc_evolution + ase_evolution
 
         spontaneous_raman_scattering.x = 2 * power_ase
-        spontaneous_raman_scattering.success = True
-        spontaneous_raman_scattering.message = "Spontaneous Raman Scattering evaluated successfully"
-
         return spontaneous_raman_scattering
 
-    def stimulated_raman_scattering(self, carriers, raman_pumps=None):
+    def calculate_stimulated_raman_scattering(self):
         """ Returns stimulated Raman scattering solution including 
         fiber gain/loss profile.
-        :return: self._stimulated_raman_scattering: the SRS problem solution.
-        scipy.interpolate.PPoly instance
+        :return: None
         """
+        carriers = self.carriers
+        raman_pumps = self.raman_pumps
+        # fiber parameters
+        fiber_length = self.fiber.length
+        loss_coef = self.fiber.lin_loss_coef
+        raman_efficiency = self.fiber.raman_efficiency
+        if not self.raman_params.flag_raman:
+            raman_efficiency['cr'] = np.zeros(len(raman_efficiency['cr']))
+        # raman solver parameters
+        z_resolution = self.raman_params.space_resolution
+        tolerance = self.raman_params.tolerance
 
-        if self._stimulated_raman_scattering is None:
-            # fiber parameters
-            fiber_length = self.fiber_params.length
-            loss_coef = self.fiber_params.loss_coef
-            raman_efficiency = self.fiber_params.raman_efficiency
-            if not self.raman_params.flag_raman:
-                raman_efficiency['cr'] = np.zeros(len(raman_efficiency['cr']))
-            # raman solver parameters
-            z_resolution = self.raman_params.space_resolution
-            tolerance = self.raman_params.tolerance
+        logger.debug('Start computing fiber Stimulated Raman Scattering')
 
-            logger.debug('Start computing fiber Stimulated Raman Scattering')
+        power_spectrum, freq_array, prop_direct, _ = self._compute_power_spectrum(carriers, raman_pumps)
 
-            power_spectrum, freq_array, prop_direct, _ = self._compute_power_spectrum(carriers, raman_pumps)
+        alphap_fiber = self.fiber.alpha(freq_array)
 
-            if not hasattr(loss_coef, 'alpha_power'):
-                alphap_fiber = loss_coef * np.ones(freq_array.shape)
-            else:
-                interp_alphap = interp1d(loss_coef['frequency'], loss_coef['alpha_power'])
-                alphap_fiber = interp_alphap(freq_array)
+        freq_diff = abs(freq_array - np.reshape(freq_array, (len(freq_array), 1)))
+        interp_cr = interp1d(raman_efficiency['frequency_offset'], raman_efficiency['cr'])
+        cr = interp_cr(freq_diff)
 
-            freq_diff = abs(freq_array - np.reshape(freq_array, (len(freq_array), 1)))
-            interp_cr = interp1d(raman_efficiency['frequency_offset'], raman_efficiency['cr'])
-            cr = interp_cr(freq_diff)
+        # z propagation axis
+        z = np.arange(0, fiber_length + 1, z_resolution)
 
-            # z propagation axis
-            z = np.arange(0, fiber_length+1, z_resolution)
+        ode_function = lambda z, p: self._ode_stimulated_raman(z, p, alphap_fiber, freq_array, cr, prop_direct)
+        boundary_residual = lambda ya, yb: self._residuals_stimulated_raman(ya, yb, power_spectrum, prop_direct)
+        initial_guess_conditions = self._initial_guess_stimulated_raman(z, power_spectrum, alphap_fiber, prop_direct)
 
-            ode_function = lambda z, p: self._ode_stimulated_raman(z, p, alphap_fiber, freq_array, cr, prop_direct)
-            boundary_residual = lambda ya, yb: self._residuals_stimulated_raman(ya, yb, power_spectrum, prop_direct)
-            initial_guess_conditions = self._initial_guess_stimulated_raman(z, power_spectrum, alphap_fiber, prop_direct)
+        # ODE SOLVER
+        bvp_solution = solve_bvp(ode_function, boundary_residual, z, initial_guess_conditions, tol=tolerance)
 
-            # ODE SOLVER
-            stimulated_raman_scattering = solve_bvp(ode_function, boundary_residual, z, initial_guess_conditions, tol=tolerance)
+        rho = (bvp_solution.y.transpose() / power_spectrum).transpose()
+        rho = np.sqrt(rho)    # From power attenuation to field attenuation
+        stimulated_raman_scattering = StimulatedRamanScattering(freq_array, bvp_solution.x, rho, bvp_solution.y)
 
-            rho = (stimulated_raman_scattering.y.transpose() / power_spectrum).transpose()
-            rho = np.sqrt(rho)    # From power attenuation to field attenuation
-            setattr(stimulated_raman_scattering, 'frequency', freq_array)
-            setattr(stimulated_raman_scattering, 'z', stimulated_raman_scattering.x)
-            setattr(stimulated_raman_scattering, 'rho', rho)
-            setattr(stimulated_raman_scattering, 'power', stimulated_raman_scattering.y)
-            delattr(stimulated_raman_scattering, 'x')
-            delattr(stimulated_raman_scattering, 'y')
-
-            self.carriers = carriers
-            self.raman_pumps = raman_pumps
-            self._stimulated_raman_scattering = stimulated_raman_scattering
-
-        return self._stimulated_raman_scattering
+        self._stimulated_raman_scattering = stimulated_raman_scattering
 
     def _residuals_stimulated_raman(self, ya, yb, power_spectrum, prop_direct):
 
