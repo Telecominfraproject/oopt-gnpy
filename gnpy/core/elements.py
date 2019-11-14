@@ -247,7 +247,8 @@ class Fiber(Node):
         else:
             self.loss_coef = self.params.loss_coef * 1e-3  # lineic loss dB/m
             self.f_loss_ref = 193.5e12  # Hz
-        self.lin_loss_coef = self.loss_coef / (10 * log10(exp(1))) # POWER
+        self.lin_loss_coef = self.loss_coef / (10 * log10(exp(1))) # linear power loss 1/m
+        # TODO|andrea: is lin_loss_coef really useful? it is equivalent to alpha
 
     @property
     def to_json(self):
