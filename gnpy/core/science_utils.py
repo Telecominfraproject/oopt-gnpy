@@ -562,7 +562,7 @@ class NliSolver:
         beta2 = self.fiber.beta2
         beta3 = self.fiber.beta3
         f_ref_beta = self.fiber.f_ref_beta if hasattr(self.fiber, 'f_ref_beta') else 0
-        # TODO|andrea: where this f_ref_should be defined? has it to be equivalent to ref_wavelength?
+        # TODO|andrea: where should f_ref_beta be defined? Must it be equivalent to ref_wavelength?
         z = self.stimulated_raman_scattering.z
         frequency_rho = self.stimulated_raman_scattering.frequency
         rho_norm = self.stimulated_raman_scattering.rho * np.exp(np.abs(alpha0) * z / 2)
@@ -596,7 +596,7 @@ class NliSolver:
         beta2 = self.fiber.beta2
         beta3 = self.fiber.beta3
         f_ref_beta = self.fiber.f_ref_beta if hasattr(self.fiber, 'f_ref_beta') else 0
-        # TODO|andrea: where this f_ref_should be defined? has it to be equivalent to ref_wavelength?
+        # TODO|andrea: where should f_ref_beta be defined? Must it be equivalent to ref_wavelength?
         z = self.stimulated_raman_scattering.z
         frequency_rho = self.stimulated_raman_scattering.frequency
         rho_norm = self.stimulated_raman_scattering.rho * np.exp(np.abs(alpha0) * z / 2)

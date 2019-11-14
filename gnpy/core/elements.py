@@ -28,7 +28,8 @@ from gnpy.core.node import Node
 from gnpy.core.units import UNITS
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum
 from gnpy.core.parameters import FiberParams, RamanFiberParams, PumpParams
-from gnpy.core.science_utils import propagate_raman_fiber, _psi
+from gnpy.core.science_utils import NliSolver, RamanSolver, propagate_raman_fiber, _psi
+
 
 class Transceiver(Node):
     def __init__(self, *args, **kwargs):
