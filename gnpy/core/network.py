@@ -549,12 +549,3 @@ def build_network(network, equipment, pref_ch_db, pref_total_db):
         trx = [t for t in network.nodes() if isinstance(t, Transceiver)]
         for t in trx:
             set_egress_amplifier(network, t, equipment, pref_total_db)
-
-def load_sim_params(filename):
-    sim_params = load_json(filename)
-    return SimParams(params=sim_params)
-
-def configure_network(network, sim_params):
-    for node in network.nodes:
-        if isinstance(node, RamanFiber):
-            node.sim_params = sim_params

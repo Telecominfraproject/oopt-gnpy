@@ -6,7 +6,9 @@ from scipy.integrate import solve_bvp
 from scipy.integrate import cumtrapz
 from scipy.interpolate import interp1d
 from scipy.optimize import OptimizeResult
+
 from gnpy.core.utils import db2lin
+from gnpy.core.parameters import SimParams
 
 
 logger = getLogger(__name__)
@@ -29,7 +31,7 @@ def propagate_raman_fiber(fiber, *carriers):
     carriers = tuple(f for f in chan)
 
     # evaluate fiber attenuation involving also SRS if required by sim_params
-    raman_solver = RamanSolver(raman_params=raman_params, fiber=fiber)
+    raman_solver = RamanSolver(fiber=fiber)
     raman_solver.carriers = carriers
     raman_solver.raman_pumps = fiber.raman_pumps
     stimulated_raman_scattering = raman_solver.stimulated_raman_scattering
@@ -46,12 +48,12 @@ def propagate_raman_fiber(fiber, *carriers):
 
     # evaluate nli and propagate in fiber
     attenuation_out = db2lin(fiber.con_out)
-    nli_solver = NliSolver(nli_params=nli_params, fiber=fiber)
+    nli_solver = NliSolver(fiber=fiber)
     nli_solver.stimulated_raman_scattering = stimulated_raman_scattering
 
     nli_frequencies = []
     computed_nli = []
-    for carrier in (c for c in carriers if c.channel_number in sim_params.raman_computed_channels):
+    for carrier in (c for c in carriers if c.channel_number in sim_params.raman_params.raman_computed_channels):
         resolution_param = frequency_resolution(carrier, carriers, sim_params, fiber)
         f_cut_resolution, f_pump_resolution, _, _ = resolution_param
         nli_params.f_cut_resolution = f_cut_resolution
@@ -144,7 +146,7 @@ class StimulatedRamanScattering:
 
 
 class RamanSolver:
-    def __init__(self, raman_params=None, fiber=None):
+    def __init__(self, fiber=None):
         """ Initialize the fiber object with its physical parameters
         :param length: fiber length in m.
         :param alphap: fiber power attenuation coefficient vs frequency in 1/m. numpy array
@@ -154,7 +156,7 @@ class RamanSolver:
         :param raman_params: namedtuple containing the solver parameters (optional).
         """
         self._fiber = fiber
-        self._raman_params = raman_params
+        self._raman_params = SimParams().raman_params
         self._carriers = None
         self._raman_pumps = None
         self._stimulated_raman_scattering = None
@@ -416,11 +418,11 @@ class NliSolver:
         'gn_model_analytic': brute force triple integral solution
         'ggn_spectrally_separated_xpm_spm': XPM plus SPM
     """
-    def __init__(self, nli_params=None, fiber=None):
+    def __init__(self, fiber=None):
         """ Initialize the fiber object with its physical parameters
         """
         self._fiber = fiber
-        self._nli_params = nli_params
+        self._nli_params = SimParams.nli_params
         self._stimulated_raman_scattering = None
 
     @property

@@ -13,9 +13,11 @@ from logging import getLogger
 
 from gnpy.core.exceptions import ParametersError
 
+
 logger = getLogger(__name__)
 
-class PumpParams():
+
+class PumpParams:
     def __init__(self, power, frequency, propagation_direction):
         self._power = power
         self._frequency = frequency
@@ -34,11 +36,12 @@ class PumpParams():
         return self._propagation_direction
 
 
-class RamanParams():
+class RamanParams:
     def __init__(self, params):
         self._flag_raman = params['flag_raman']
         self._space_resolution = params['space_resolution']
         self._tolerance = params['tolerance']
+        self._raman_computed_channels = params["raman_computed_channels"]
 
     @property
     def flag_raman(self):
@@ -52,7 +55,11 @@ class RamanParams():
     def tolerance(self):
         return self._tolerance
 
-class NLIParams():
+    @property
+    def raman_computed_channels(self):
+        return self.raman_computed_channels
+
+class NLIParams:
     def __init__(self, params):
         self._nli_method_name = params['nli_method_name']
         self._wdm_grid_size = params['wdm_grid_size']
@@ -93,26 +100,26 @@ class NLIParams():
     def f_pump_resolution(self, f_pump_resolution):
         self._f_pump_resolution = f_pump_resolution
 
-class SimParams():
-    def __init__(self, params):
-        self._raman_computed_channels = params['raman_computed_channels']
-        self._raman_params = RamanParams(params=params['raman_parameters'])
-        self._nli_params = NLIParams(params=params['nli_parameters'])
 
-    @property
-    def raman_computed_channels(self):
-        return self._raman_computed_channels
+class SimParams:
+    """A private mutable variable is shared across all class instances"""
+    _shared_dict = {}
+
+    def __init__(self, params=None):
+        if params is not None:
+            self._shared_dict["raman_parameters"] = RamanParams(params=params['raman_parameters'])
+            self._shared_dict["nli_parameters"] = NLIParams(params=params['nli_parameters'])
 
     @property
     def raman_params(self):
-        return self._raman_params
+        return self._shared_dict["raman_parameters"]
 
     @property
     def nli_params(self):
-        return self._nli_params
+        return self._shared_dict["nli_parameters"]
 
 
-class FiberParams():
+class FiberParams:
     def __init__(self, params):
         try:
             self._type_variety = params['type_variety']

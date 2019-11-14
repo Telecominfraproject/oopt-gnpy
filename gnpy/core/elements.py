@@ -249,6 +249,7 @@ class Fiber(Node):
             self.loss_coef = self.params.loss_coef * 1e-3  # lineic loss dB/m
             self.f_loss_ref = 193.5e12  # Hz
         self.lin_loss_coef = self.loss_coef / (10 * log10(exp(1))) # linear power loss 1/m
+        self.nli_solver = NliSolver(self)
         # TODO|andrea: is lin_loss_coef really useful? it is equivalent to alpha
 
     @property
@@ -434,14 +435,7 @@ class RamanFiber(Fiber):
                   for p in self.operational['raman_pumps'])
         else:
             self.raman_pumps = None
-
-    @property
-    def sim_params(self):
-        return self._sim_params
-
-    @sim_params.setter
-    def sim_params(self, sim_params=None):
-        self._sim_params = sim_params
+        self.raman_solver = RamanSolver(self)
 
     def update_pref(self, pref, *carriers):
         pch_out_db = lin2db(mean([carrier.power.signal for carrier in carriers])) + 30
