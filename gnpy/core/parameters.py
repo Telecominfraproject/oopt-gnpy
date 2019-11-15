@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-'''
+"""
 gnpy.core.parameters
 ==================
 
 This module contains all parameters to configure standard network elements.
 
-'''
+"""
 
 from logging import getLogger
 
@@ -58,6 +58,7 @@ class RamanParams:
     @property
     def raman_computed_channels(self):
         return self.raman_computed_channels
+
 
 class NLIParams:
     def __init__(self, params):
@@ -184,11 +185,12 @@ class FiberParams:
     def beta3(self):
         return self._beta3
 
-    @property
-    def raman_efficiency(self):
-        return self._raman_efficiency
 
 class RamanFiberParams(FiberParams):
     def __init__(self, params):
         super().__init__(params)
         self._raman_efficiency = params['raman_efficiency'] if 'raman_efficiency' else None
+
+    @property
+    def raman_efficiency(self):
+        return self._raman_efficiency
