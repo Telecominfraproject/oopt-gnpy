@@ -16,12 +16,6 @@ from gnpy.core.exceptions import ParametersError
 
 logger = getLogger(__name__)
 
-class Unique:
-    _shared_dict = {}
-    @classmethod
-    def init(cls):
-        return cls
-
 class Parameters:
     def asdict(self):
         class_dict = self.__class__.__dict__
@@ -117,7 +111,7 @@ class NLIParams(Parameters):
         self._f_pump_resolution = f_pump_resolution
 
 
-class SimParams(Parameters):
+class SimParams():
     """A private mutable variable is shared across all class instances. Cannot implement Parameters.asdict because
     attribute is _shared_dict"""
     _shared_dict = {}

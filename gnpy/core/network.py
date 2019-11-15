@@ -472,13 +472,13 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
                           },
                           params=fiber.params.asdict())
         if isinstance(prev_node, Fiber):
-            edgeweight = prev_node.length
+            edgeweight = prev_node.params.length
         else:
             edgeweight = 0.01
         network.add_edge(prev_node, new_span, weight=edgeweight)
         prev_node = new_span
     if isinstance(prev_node, Fiber):
-        edgeweight = prev_node.length
+        edgeweight = prev_node.params.length
     else:
         edgeweight = 0.01    
     network.add_edge(prev_node, next_node, weight=edgeweight)
