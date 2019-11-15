@@ -16,8 +16,23 @@ from gnpy.core.exceptions import ParametersError
 
 logger = getLogger(__name__)
 
+class Unique:
+    _shared_dict = {}
+    @classmethod
+    def init(cls):
+        return cls
 
-class PumpParams:
+class Parameters:
+    def asdict(self):
+        class_dict = self.__class__.__dict__
+        instance_dict = self.__dict__
+        new_dict = {}
+        for key in class_dict:
+            if isinstance(class_dict[key],property):
+                new_dict[key] = instance_dict['_' + key]
+        return new_dict
+
+class PumpParams(Parameters):
     def __init__(self, power, frequency, propagation_direction):
         self._power = power
         self._frequency = frequency
@@ -36,7 +51,7 @@ class PumpParams:
         return self._propagation_direction
 
 
-class RamanParams:
+class RamanParams(Parameters):
     def __init__(self, params):
         self._flag_raman = params['flag_raman']
         self._space_resolution = params['space_resolution']
@@ -60,7 +75,7 @@ class RamanParams:
         return self.raman_computed_channels
 
 
-class NLIParams:
+class NLIParams(Parameters):
     def __init__(self, params):
         self._nli_method_name = params['nli_method_name']
         self._wdm_grid_size = params['wdm_grid_size']
@@ -102,25 +117,27 @@ class NLIParams:
         self._f_pump_resolution = f_pump_resolution
 
 
-class SimParams:
-    """A private mutable variable is shared across all class instances"""
+class SimParams(Parameters):
+    """A private mutable variable is shared across all class instances. Cannot implement Parameters.asdict because
+    attribute is _shared_dict"""
     _shared_dict = {}
-
     def __init__(self, params=None):
-        if params is not None:
-            self._shared_dict["raman_parameters"] = RamanParams(params=params['raman_parameters'])
-            self._shared_dict["nli_parameters"] = NLIParams(params=params['nli_parameters'])
-
-    @property
-    def raman_params(self):
-        return self._shared_dict["raman_parameters"]
+        if params:
+            if 'nli_parameters' in params:
+                self._shared_dict['nli_parameters'] = params['nli_parameters']
+            if 'raman_parameters' in params:
+                self._shared_dict['raman_parameters'] = params['raman_parameters']
 
     @property
     def nli_params(self):
-        return self._shared_dict["nli_parameters"]
+        return NLIParams(self._shared_dict['nli_parameters'])
+
+    @property
+    def raman_params(self):
+        return RamanParams(self._shared_dict['raman_parameters'])
 
 
-class FiberParams:
+class FiberParams(Parameters):
     def __init__(self, params):
         try:
             self._type_variety = params['type_variety']
@@ -153,6 +170,10 @@ class FiberParams:
     def length(self):
         return self._length
 
+    @length.setter
+    def length(self, length):
+        self._length = length
+
     @property
     def length_units(self):
         return self._length_units
@@ -165,9 +186,17 @@ class FiberParams:
     def con_in(self):
         return self._con_in
 
+    @con_in.setter
+    def con_in(self, con_in):
+        self._con_in = con_in
+
     @property
     def con_out(self):
         return self._con_out
+
+    @con_out.setter
+    def con_out(self, con_out):
+        self._con_out = con_out
 
     @property
     def dispersion(self):
