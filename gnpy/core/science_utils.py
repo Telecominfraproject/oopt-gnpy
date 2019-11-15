@@ -1,6 +1,5 @@
 import numpy as np
 from operator import attrgetter
-from collections import namedtuple
 from logging import getLogger
 import scipy.constants as ph
 from scipy.integrate import solve_bvp
@@ -9,147 +8,11 @@ from scipy.interpolate import interp1d
 from scipy.optimize import OptimizeResult
 
 from gnpy.core.utils import db2lin
+from gnpy.core.parameters import SimParams
 
 
 logger = getLogger(__name__)
 
-
-class RamanParams():
-    def __init__(self, params):
-        self._flag_raman = params['flag_raman']
-        self._space_resolution = params['space_resolution']
-        self._tolerance = params['tolerance']
-
-    @property
-    def flag_raman(self):
-        return self._flag_raman
-
-    @property
-    def space_resolution(self):
-        return self._space_resolution
-
-    @property
-    def tolerance(self):
-        return self._tolerance
-
-class NLIParams():
-    def __init__(self, params):
-        self._nli_method_name = params['nli_method_name']
-        self._wdm_grid_size = params['wdm_grid_size']
-        self._dispersion_tolerance = params['dispersion_tolerance']
-        self._phase_shift_tollerance = params['phase_shift_tollerance']
-        self._f_cut_resolution = None
-        self._f_pump_resolution = None
-
-    @property
-    def nli_method_name(self):
-        return self._nli_method_name
-
-    @property
-    def wdm_grid_size(self):
-        return self._wdm_grid_size
-
-    @property
-    def dispersion_tolerance(self):
-        return self._dispersion_tolerance
-
-    @property
-    def phase_shift_tollerance(self):
-        return self._phase_shift_tollerance
-
-    @property
-    def f_cut_resolution(self):
-        return self._f_cut_resolution
-
-    @f_cut_resolution.setter
-    def f_cut_resolution(self, f_cut_resolution):
-        self._f_cut_resolution = f_cut_resolution
-
-    @property
-    def f_pump_resolution(self):
-        return self._f_pump_resolution
-
-    @f_pump_resolution.setter
-    def f_pump_resolution(self, f_pump_resolution):
-        self._f_pump_resolution = f_pump_resolution
-
-class SimParams():
-    def __init__(self, params):
-        self._raman_computed_channels = params['raman_computed_channels']
-        self._raman_params = RamanParams(params=params['raman_parameters'])
-        self._nli_params = NLIParams(params=params['nli_parameters'])
-
-    @property
-    def raman_computed_channels(self):
-        return self._raman_computed_channels
-
-    @property
-    def raman_params(self):
-        return self._raman_params
-
-    @property
-    def nli_params(self):
-        return self._nli_params
-
-class FiberParams():
-    def __init__(self, fiber):
-        self._loss_coef = 2 * fiber.dbkm_2_lin()[1]
-        self._length = fiber.length
-        self._gamma = fiber.gamma
-        self._beta2 = fiber.beta2()
-        self._beta3 = fiber.beta3 if hasattr(fiber, 'beta3') else 0
-        self._f_ref_beta = fiber.f_ref_beta if hasattr(fiber, 'f_ref_beta') else 0
-        self._raman_efficiency = fiber.params.raman_efficiency
-        self._temperature = fiber.operational['temperature']
-
-    @property
-    def loss_coef(self):
-        return self._loss_coef
-
-    @property
-    def length(self):
-        return self._length
-
-    @property
-    def gamma(self):
-        return self._gamma
-
-    @property
-    def beta2(self):
-        return self._beta2
-
-    @property
-    def beta3(self):
-        return self._beta3
-
-    @property
-    def f_ref_beta(self):
-        return self._f_ref_beta
-
-    @property
-    def raman_efficiency(self):
-        return self._raman_efficiency
-
-    @property
-    def temperature(self):
-        return self._temperature
-
-    def alpha0(self, f_ref=193.5e12):
-        """ It returns the zero element of the series expansion of attenuation coefficient alpha(f) in the
-        reference frequency f_ref
-
-        :param f_ref: reference frequency of series expansion [Hz]
-        :return: alpha0: power attenuation coefficient in f_ref [Neper/m]
-        """
-        if not hasattr(self.loss_coef, 'alpha_power'):
-            alpha0 = self.loss_coef
-        else:
-            alpha_interp = interp1d(self.loss_coef['frequency'],
-                                    self.loss_coef['alpha_power'])
-            alpha0 = alpha_interp(f_ref)
-        return alpha0
-
-pump = namedtuple('RamanPump', 'power frequency propagation_direction')
 
 def propagate_raman_fiber(fiber, *carriers):
     sim_params = fiber.sim_params
@@ -166,36 +29,32 @@ def propagate_raman_fiber(fiber, *carriers):
         carrier = carrier._replace(power=pwr)
         chan.append(carrier)
     carriers = tuple(f for f in chan)
-    fiber_params = FiberParams(fiber)
 
     # evaluate fiber attenuation involving also SRS if required by sim_params
-    if 'raman_pumps' in fiber.operational:
-        raman_pumps = tuple(pump(p['power'], p['frequency'], p['propagation_direction'])
-                            for p in fiber.operational['raman_pumps'])
-    else:
-        raman_pumps = None
-    raman_solver = RamanSolver(raman_params=raman_params, fiber_params=fiber_params)
-    stimulated_raman_scattering = raman_solver.stimulated_raman_scattering(carriers=carriers,
-                                                                           raman_pumps=raman_pumps)
+    raman_solver = RamanSolver(fiber=fiber)
+    raman_solver.carriers = carriers
+    raman_solver.raman_pumps = fiber.raman_pumps
+    stimulated_raman_scattering = raman_solver.stimulated_raman_scattering
+
     fiber_attenuation = (stimulated_raman_scattering.rho[:, -1])**-2
     if not raman_params.flag_raman:
         fiber_attenuation = tuple(fiber.lin_attenuation for _ in carriers)
 
     # evaluate Raman ASE noise if required by sim_params and if raman pumps are present
-    if raman_params.flag_raman and raman_pumps:
+    if raman_params.flag_raman and fiber.raman_pumps:
         raman_ase = raman_solver.spontaneous_raman_scattering.power[:, -1]
     else:
         raman_ase = tuple(0 for _ in carriers)
 
     # evaluate nli and propagate in fiber
     attenuation_out = db2lin(fiber.con_out)
-    nli_solver = NliSolver(nli_params=nli_params, fiber_params=fiber_params)
+    nli_solver = NliSolver(fiber=fiber)
     nli_solver.stimulated_raman_scattering = stimulated_raman_scattering
 
     nli_frequencies = []
     computed_nli = []
-    for carrier in (c for c in carriers if c.channel_number in sim_params.raman_computed_channels):
-        resolution_param = frequency_resolution(carrier, carriers, sim_params, fiber_params)
+    for carrier in (c for c in carriers if c.channel_number in sim_params.raman_params.raman_computed_channels):
+        resolution_param = frequency_resolution(carrier, carriers, sim_params, fiber)
         f_cut_resolution, f_pump_resolution, _, _ = resolution_param
         nli_params.f_cut_resolution = f_cut_resolution
         nli_params.f_pump_resolution = f_pump_resolution
@@ -212,7 +71,7 @@ def propagate_raman_fiber(fiber, *carriers):
         new_carriers.append(carrier._replace(power=pwr))
     return new_carriers
 
-def frequency_resolution(carrier, carriers, sim_params, fiber_params):
+def frequency_resolution(carrier, carriers, sim_params, fiber):
     def _get_freq_res_k_phi(delta_count, grid_size, alpha0, delta_z, beta2, k_tol, phi_tol):
         res_phi = _get_freq_res_phase_rotation(delta_count, grid_size, delta_z, beta2, phi_tol)
         res_k = _get_freq_res_dispersion_attenuation(delta_count, grid_size, alpha0, beta2, k_tol)
@@ -228,8 +87,8 @@ def frequency_resolution(carrier, carriers, sim_params, fiber_params):
 
     grid_size = sim_params.nli_params.wdm_grid_size
     delta_z = sim_params.raman_params.space_resolution
-    alpha0 = fiber_params.alpha0()
-    beta2 = fiber_params.beta2
+    alpha0 = fiber.alpha0()
+    beta2 = fiber.beta2
     k_tol = sim_params.nli_params.dispersion_tolerance
     phi_tol = sim_params.nli_params.phase_shift_tollerance
     f_pump_resolution, method_f_pump, res_dict_pump = \
@@ -270,8 +129,24 @@ def raised_cosine_comb(f, *carriers):
                           np.where(tf > 0, 1., 0.) * np.where(np.abs(ff) <= stopband, 1., 0.)) + psd
     return psd
 
+
+class SpontaneousRamanScattering:
+    def __init__(self, frequency, z, power):
+        self.frequency = frequency
+        self.z = z
+        self.power = power
+
+
+class StimulatedRamanScattering:
+    def __init__(self, frequency, z, rho, power):
+        self.frequency = frequency
+        self.z = z
+        self.rho = rho
+        self.power = power
+
+
 class RamanSolver:
-    def __init__(self, raman_params=None, fiber_params=None):
+    def __init__(self, fiber=None):
         """ Initialize the fiber object with its physical parameters
         :param length: fiber length in m.
         :param alphap: fiber power attenuation coefficient vs frequency in 1/m. numpy array
@@ -280,20 +155,16 @@ class RamanSolver:
         :param freq_cr: reference frequency offset axis for cr_raman. numpy array
         :param raman_params: namedtuple containing the solver parameters (optional).
         """
-        self.fiber_params = fiber_params
-        self.raman_params = raman_params
+        self._fiber = fiber
+        self._raman_params = SimParams().raman_params
         self._carriers = None
+        self._raman_pumps = None
         self._stimulated_raman_scattering = None
         self._spontaneous_raman_scattering = None
 
     @property
-    def fiber_params(self):
-        return self._fiber_params
-
-    @fiber_params.setter
-    def fiber_params(self, fiber_params):
-        self._stimulated_raman_scattering = None
-        self._fiber_params = fiber_params
+    def fiber(self):
+        return self._fiber
 
     @property
     def carriers(self):
@@ -306,6 +177,7 @@ class RamanSolver:
         :return:
         """
         self._carriers = carriers
+        self._spontaneous_raman_scattering = None
         self._stimulated_raman_scattering = None
 
     @property
@@ -321,58 +193,44 @@ class RamanSolver:
     def raman_params(self):
         return self._raman_params
 
-    @raman_params.setter
-    def raman_params(self, raman_params):
-        """
-        :param raman_params: namedtuple containing the solver parameters (optional).
-        :return:
-        """
-        self._raman_params = raman_params
-        self._stimulated_raman_scattering = None
-        self._spontaneous_raman_scattering = None
+    @property
+    def stimulated_raman_scattering(self):
+        if self._stimulated_raman_scattering is None:
+           self.calculate_stimulated_raman_scattering(self.carriers, self.raman_pumps)
+        return self._stimulated_raman_scattering
 
     @property
     def spontaneous_raman_scattering(self):
         if self._spontaneous_raman_scattering is None:
-            # SET STUFF
-            loss_coef = self.fiber_params.loss_coef
-            raman_efficiency = self.fiber_params.raman_efficiency
-            temperature = self.fiber_params.temperature
-            carriers = self.carriers
-            raman_pumps = self.raman_pumps
-
-            logger.debug('Start computing fiber Spontaneous Raman Scattering')
-            power_spectrum, freq_array, prop_direct, bn_array = self._compute_power_spectrum(carriers, raman_pumps)
-
-            if not hasattr(loss_coef, 'alpha_power'):
-                alphap_fiber = loss_coef * np.ones(freq_array.shape)
-            else:
-                interp_alphap = interp1d(loss_coef['frequency'], loss_coef['alpha_power'])
-                alphap_fiber = interp_alphap(freq_array)
-
-            freq_diff = abs(freq_array - np.reshape(freq_array, (len(freq_array), 1)))
-            interp_cr = interp1d(raman_efficiency['frequency_offset'], raman_efficiency['cr'])
-            cr = interp_cr(freq_diff)
-
-            # z propagation axis
-            z_array = self._stimulated_raman_scattering.z
-            ase_bc = np.zeros(freq_array.shape)
-
-            # calculate ase power
-            spontaneous_raman_scattering = self._int_spontaneous_raman(z_array, self._stimulated_raman_scattering.power,
-                                                                       alphap_fiber, freq_array, cr, freq_diff, ase_bc,
-                                                                       bn_array, temperature)
-
-            setattr(spontaneous_raman_scattering, 'frequency', freq_array)
-            setattr(spontaneous_raman_scattering, 'z', z_array)
-            setattr(spontaneous_raman_scattering, 'power', spontaneous_raman_scattering.x)
-            delattr(spontaneous_raman_scattering, 'x')
-
-            logger.debug(spontaneous_raman_scattering.message)
-
-            self._spontaneous_raman_scattering = spontaneous_raman_scattering
-
+            self.calculate_spontaneous_raman_scattering(self.carriers, self.raman_pumps)
         return self._spontaneous_raman_scattering
+
+    def calculate_spontaneous_raman_scattering(self, carriers, raman_pumps):
+        raman_efficiency = self.fiber.raman_efficiency
+        temperature = self.fiber.operational['temperature']
+
+        logger.debug('Start computing fiber Spontaneous Raman Scattering')
+        power_spectrum, freq_array, prop_direct, bn_array = self._compute_power_spectrum(carriers, raman_pumps)
+
+        alphap_fiber = self.fiber.alpha(freq_array)
+
+        freq_diff = abs(freq_array - np.reshape(freq_array, (len(freq_array), 1)))
+        interp_cr = interp1d(raman_efficiency['frequency_offset'], raman_efficiency['cr'])
+        cr = interp_cr(freq_diff)
+
+        # z propagation axis
+        z_array = self.stimulated_raman_scattering.z
+        ase_bc = np.zeros(freq_array.shape)
+
+        # calculate ase power
+        int_spontaneous_raman = self._int_spontaneous_raman(z_array, self._stimulated_raman_scattering.power,
+                                                                   alphap_fiber, freq_array, cr, freq_diff, ase_bc,
+                                                                   bn_array, temperature)
+
+        spontaneous_raman_scattering = SpontaneousRamanScattering(freq_array, z_array, int_spontaneous_raman.x)
+        logger.debug("Spontaneous Raman Scattering evaluated successfully")
+        self._spontaneous_raman_scattering = spontaneous_raman_scattering
+
 
     @staticmethod
     def _compute_power_spectrum(carriers, raman_pumps=None):
@@ -412,7 +270,8 @@ class RamanSolver:
 
         return pow_array, f_array, propagation_direction, noise_bandwidth_array
 
-    def _int_spontaneous_raman(self, z_array, raman_matrix, alphap_fiber, freq_array, cr_raman_matrix, freq_diff, ase_bc, bn_array, temperature):
+    def _int_spontaneous_raman(self, z_array, raman_matrix, alphap_fiber, freq_array,
+                               cr_raman_matrix, freq_diff, ase_bc, bn_array, temperature):
         spontaneous_raman_scattering = OptimizeResult()
 
         dx = self.raman_params.space_resolution
@@ -428,12 +287,14 @@ class RamanSolver:
             eta = 1/(np.exp((h*freq_diff[f_ind, f_ind+1:])/(kb*temperature)) - 1)
 
             int_fiber_loss = -alphap_fiber[f_ind] * z_array
-            int_raman_loss = np.sum((cr_raman[:f_ind] * vibrational_loss * int_pump[:f_ind, :].transpose()).transpose(), axis=0)
+            int_raman_loss = np.sum((cr_raman[:f_ind] * vibrational_loss * int_pump[:f_ind, :].transpose()).transpose(),
+                                    axis=0)
             int_raman_gain = np.sum((cr_raman[f_ind + 1:] * int_pump[f_ind + 1:, :].transpose()).transpose(), axis=0)
 
             int_gain_loss = int_fiber_loss + int_raman_gain + int_raman_loss
 
-            new_ase = np.sum((cr_raman[f_ind+1:] * (1 + eta) * raman_matrix[f_ind+1:, :].transpose()).transpose() * h * f_ase * bn_array[f_ind], axis=0)
+            new_ase = np.sum((cr_raman[f_ind+1:] * (1 + eta) * raman_matrix[f_ind+1:, :].transpose()).transpose()
+                             * h * f_ase * bn_array[f_ind], axis=0)
 
             bc_evolution = ase_bc[f_ind] * np.exp(int_gain_loss)
             ase_evolution = np.exp(int_gain_loss) * cumtrapz(new_ase*np.exp(-int_gain_loss), z_array, dx=dx, initial=0)
@@ -441,69 +302,48 @@ class RamanSolver:
             power_ase[f_ind, :] = bc_evolution + ase_evolution
 
         spontaneous_raman_scattering.x = 2 * power_ase
-        spontaneous_raman_scattering.success = True
-        spontaneous_raman_scattering.message = "Spontaneous Raman Scattering evaluated successfully"
-
         return spontaneous_raman_scattering
 
-    def stimulated_raman_scattering(self, carriers, raman_pumps=None):
+    def calculate_stimulated_raman_scattering(self, carriers, raman_pumps):
         """ Returns stimulated Raman scattering solution including 
         fiber gain/loss profile.
-        :return: self._stimulated_raman_scattering: the SRS problem solution.
-        scipy.interpolate.PPoly instance
+        :return: None
         """
+        # fiber parameters
+        fiber_length = self.fiber.length
+        loss_coef = self.fiber.lin_loss_coef
+        raman_efficiency = self.fiber.raman_efficiency
+        if not self.raman_params.flag_raman:
+            raman_efficiency['cr'] = np.zeros(len(raman_efficiency['cr']))
+        # raman solver parameters
+        z_resolution = self.raman_params.space_resolution
+        tolerance = self.raman_params.tolerance
 
-        if self._stimulated_raman_scattering is None:
-            # fiber parameters
-            fiber_length = self.fiber_params.length
-            loss_coef = self.fiber_params.loss_coef
-            if self.raman_params.flag_raman:
-                raman_efficiency = self.fiber_params.raman_efficiency
-            else:
-                raman_efficiency = self.fiber_params.raman_efficiency
-                raman_efficiency['cr'] = np.array(raman_efficiency['cr']) * 0
-            # raman solver parameters
-            z_resolution = self.raman_params.space_resolution
-            tolerance = self.raman_params.tolerance
+        logger.debug('Start computing fiber Stimulated Raman Scattering')
 
-            logger.debug('Start computing fiber Stimulated Raman Scattering')
+        power_spectrum, freq_array, prop_direct, _ = self._compute_power_spectrum(carriers, raman_pumps)
 
-            power_spectrum, freq_array, prop_direct, _ = self._compute_power_spectrum(carriers, raman_pumps)
+        alphap_fiber = self.fiber.alpha(freq_array)
 
-            if not hasattr(loss_coef, 'alpha_power'):
-                alphap_fiber = loss_coef * np.ones(freq_array.shape)
-            else:
-                interp_alphap = interp1d(loss_coef['frequency'], loss_coef['alpha_power'])
-                alphap_fiber = interp_alphap(freq_array)
+        freq_diff = abs(freq_array - np.reshape(freq_array, (len(freq_array), 1)))
+        interp_cr = interp1d(raman_efficiency['frequency_offset'], raman_efficiency['cr'])
+        cr = interp_cr(freq_diff)
 
-            freq_diff = abs(freq_array - np.reshape(freq_array, (len(freq_array), 1)))
-            interp_cr = interp1d(raman_efficiency['frequency_offset'], raman_efficiency['cr'])
-            cr = interp_cr(freq_diff)
+        # z propagation axis
+        z = np.arange(0, fiber_length + 1, z_resolution)
 
-            # z propagation axis
-            z = np.arange(0, fiber_length+1, z_resolution)
+        ode_function = lambda z, p: self._ode_stimulated_raman(z, p, alphap_fiber, freq_array, cr, prop_direct)
+        boundary_residual = lambda ya, yb: self._residuals_stimulated_raman(ya, yb, power_spectrum, prop_direct)
+        initial_guess_conditions = self._initial_guess_stimulated_raman(z, power_spectrum, alphap_fiber, prop_direct)
 
-            ode_function = lambda z, p: self._ode_stimulated_raman(z, p, alphap_fiber, freq_array, cr, prop_direct)
-            boundary_residual = lambda ya, yb: self._residuals_stimulated_raman(ya, yb, power_spectrum, prop_direct)
-            initial_guess_conditions = self._initial_guess_stimulated_raman(z, power_spectrum, alphap_fiber, prop_direct)
+        # ODE SOLVER
+        bvp_solution = solve_bvp(ode_function, boundary_residual, z, initial_guess_conditions, tol=tolerance)
 
-            # ODE SOLVER
-            stimulated_raman_scattering = solve_bvp(ode_function, boundary_residual, z, initial_guess_conditions, tol=tolerance)
+        rho = (bvp_solution.y.transpose() / power_spectrum).transpose()
+        rho = np.sqrt(rho)    # From power attenuation to field attenuation
+        stimulated_raman_scattering = StimulatedRamanScattering(freq_array, bvp_solution.x, rho, bvp_solution.y)
 
-            rho = (stimulated_raman_scattering.y.transpose() / power_spectrum).transpose()
-            rho = np.sqrt(rho)    # From power attenuation to field attenuation
-            setattr(stimulated_raman_scattering, 'frequency', freq_array)
-            setattr(stimulated_raman_scattering, 'z', stimulated_raman_scattering.x)
-            setattr(stimulated_raman_scattering, 'rho', rho)
-            setattr(stimulated_raman_scattering, 'power', stimulated_raman_scattering.y)
-            delattr(stimulated_raman_scattering, 'x')
-            delattr(stimulated_raman_scattering, 'y')
-
-            self.carriers = carriers
-            self.raman_pumps = raman_pumps
-            self._stimulated_raman_scattering = stimulated_raman_scattering
-
-        return self._stimulated_raman_scattering
+        self._stimulated_raman_scattering = stimulated_raman_scattering
 
     def _residuals_stimulated_raman(self, ya, yb, power_spectrum, prop_direct):
 
@@ -520,11 +360,14 @@ class RamanSolver:
     def _initial_guess_stimulated_raman(self, z, power_spectrum, alphap_fiber, prop_direct):
         """ Computes the initial guess knowing the boundary conditions
         :param z: patial axis [m]. numpy array
-        :param power_spectrum: power in each frequency slice [W].    Frequency axis is defined by freq_array. numpy array
-        :param alphap_fiber: frequency dependent fiber attenuation of signal power [1/m]. Frequency defined by freq_array. numpy array
+        :param power_spectrum: power in each frequency slice [W].
+        Frequency axis is defined by freq_array. numpy array
+        :param alphap_fiber: frequency dependent fiber attenuation of signal power [1/m].
+        Frequency defined by freq_array. numpy array
         :param prop_direct: indicates the propagation direction of each power slice in power_spectrum:
         +1 for forward propagation and -1 for backward propagation. Frequency defined by freq_array. numpy array
-        :return: power_guess: guess on the initial conditions [W]. The first ndarray index identifies the frequency slice,
+        :return: power_guess: guess on the initial conditions [W].
+        The first ndarray index identifies the frequency slice,
         the second ndarray index identifies the step in z. ndarray
         """
 
@@ -538,14 +381,19 @@ class RamanSolver:
         return power_guess
 
     def _ode_stimulated_raman(self, z, power_spectrum, alphap_fiber, freq_array, cr_raman_matrix, prop_direct):
-        """ Aim of ode_raman is to implement the set of ordinary differential equations (ODEs) describing the Raman effect.
+        """ Aim of ode_raman is to implement the set of ordinary differential equations (ODEs)
+        describing the Raman effect.
         :param z: spatial axis (unused).
-        :param power_spectrum: power in each frequency slice [W].    Frequency axis is defined by freq_array. numpy array. Size n
-        :param alphap_fiber: frequency dependent fiber attenuation of signal power [1/m]. Frequency defined by freq_array. numpy array. Size n
+        :param power_spectrum: power in each frequency slice [W].
+        Frequency axis is defined by freq_array. numpy array. Size n
+        :param alphap_fiber: frequency dependent fiber attenuation of signal power [1/m].
+        Frequency defined by freq_array. numpy array. Size n
         :param freq_array: reference frequency axis [Hz]. numpy array. Size n
-        :param cr_raman: Cr(f) Raman gain efficiency variation in frequency [1/W/m]. Frequency defined by freq_array. numpy ndarray. Size nxn
+        :param cr_raman: Cr(f) Raman gain efficiency variation in frequency [1/W/m].
+        Frequency defined by freq_array. numpy ndarray. Size nxn
         :param prop_direct: indicates the propagation direction of each power slice in power_spectrum:
-        +1 for forward propagation and -1 for backward propagation. Frequency defined by freq_array. numpy array. Size n
+        +1 for forward propagation and -1 for backward propagation.
+        Frequency defined by freq_array. numpy array. Size n
         :return: dP/dz: the power variation in dz [W/m]. numpy array. Size n
         """
 
@@ -570,21 +418,16 @@ class NliSolver:
         'gn_model_analytic': brute force triple integral solution
         'ggn_spectrally_separated_xpm_spm': XPM plus SPM
     """
-
-    def __init__(self, nli_params=None, fiber_params=None):
+    def __init__(self, fiber=None):
         """ Initialize the fiber object with its physical parameters
         """
-        self.fiber_params = fiber_params
-        self.nli_params = nli_params
-        self.stimulated_raman_scattering = None
+        self._fiber = fiber
+        self._nli_params = SimParams.nli_params
+        self._stimulated_raman_scattering = None
 
     @property
-    def fiber_params(self):
-        return self._fiber_params
-
-    @fiber_params.setter
-    def fiber_params(self, fiber_params):
-        self._fiber_params = fiber_params
+    def fiber(self):
+        return self._fiber
 
     @property
     def stimulated_raman_scattering(self):
@@ -670,19 +513,17 @@ class NliSolver:
         :param carriers: the full WDM comb
         :return: carrier_nli: the amount of nonlinear interference in W on the carrier under analysis
         """
-        alpha = self.fiber_params.alpha0() / 2
-        beta2 = self.fiber_params.beta2
-        gamma = self.fiber_params.gamma
-        length = self.fiber_params.length
-        effective_length = (1 - np.exp(-2 * alpha * length)) / (2 * alpha)
-        asymptotic_length = 1 / (2 * alpha)
+        beta2 = self.fiber.beta2
+        gamma = self.fiber.gamma
+        effective_length = self.fiber.effective_length
+        asymptotic_length = self.fiber.asymptotic_length
 
         g_nli = 0
         for interfering_carrier in carriers:
             g_interfearing = interfering_carrier.power.signal / interfering_carrier.baud_rate
             g_signal = carrier.power.signal / carrier.baud_rate
             g_nli += g_interfearing**2 * g_signal \
-                * _psi(carrier, interfering_carrier, beta2=self.fiber_params.beta2, asymptotic_length=1/self.fiber_params.alpha0())
+                * _psi(carrier, interfering_carrier, beta2=beta2, asymptotic_length=asymptotic_length)
         g_nli *= (16.0 / 27.0) * (gamma * effective_length)**2 /\
                  (2 * np.pi * abs(beta2) * asymptotic_length)
         carrier_nli = carrier.baud_rate * g_nli
@@ -694,7 +535,7 @@ class NliSolver:
         f_eval = carrier.frequency
         g_cut = (carrier.power.signal / carrier.baud_rate)
 
-        spm_nli = carrier.baud_rate * (16.0 / 27.0) * self.fiber_params.gamma**2 * g_cut**3 * \
+        spm_nli = carrier.baud_rate * (16.0 / 27.0) * self.fiber.gamma**2 * g_cut**3 * \
                   self._generalized_psi(carrier, carrier, f_eval, f_cut_resolution, f_cut_resolution)
         return spm_nli
 
@@ -707,10 +548,10 @@ class NliSolver:
         g_cut = (carrier_cut.power.signal / carrier_cut.baud_rate)
         frequency_offset_threshold = self._frequency_offset_threshold(pump_carrier.baud_rate)
         if abs(carrier_cut.frequency - pump_carrier.frequency) <= frequency_offset_threshold:
-            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * self.fiber_params.gamma**2 * g_pump**2 * g_cut * \
+            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * self.fiber.gamma**2 * g_pump**2 * g_cut * \
                       2 * self._generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution)
         else:
-            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * self.fiber_params.gamma**2 * g_pump**2 * g_cut * \
+            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * self.fiber.gamma**2 * g_pump**2 * g_cut * \
                       2 * self._fast_generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution)
         return xpm_nli
 
@@ -719,10 +560,11 @@ class NliSolver:
         :return: generalized_psi
         """
         # Fiber parameters
-        alpha0 = self.fiber_params.alpha0(f_eval)
-        beta2 = self.fiber_params.beta2
-        beta3 = self.fiber_params.beta3
-        f_ref_beta = self.fiber_params.f_ref_beta
+        alpha0 = self.fiber.alpha0(f_eval)
+        beta2 = self.fiber.beta2
+        beta3 = self.fiber.beta3
+        f_ref_beta = self.fiber.f_ref_beta if hasattr(self.fiber, 'f_ref_beta') else 0
+        # TODO|andrea: where should f_ref_beta be defined? Must it be equivalent to ref_wavelength?
         z = self.stimulated_raman_scattering.z
         frequency_rho = self.stimulated_raman_scattering.frequency
         rho_norm = self.stimulated_raman_scattering.rho * np.exp(np.abs(alpha0) * z / 2)
@@ -752,10 +594,11 @@ class NliSolver:
         :return: generalized_psi
         """
         # Fiber parameters
-        alpha0 = self.fiber_params.alpha0(f_eval)
-        beta2 = self.fiber_params.beta2
-        beta3 = self.fiber_params.beta3
-        f_ref_beta = self.fiber_params.f_ref_beta
+        alpha0 = self.fiber.alpha0(f_eval)
+        beta2 = self.fiber.beta2
+        beta3 = self.fiber.beta3
+        f_ref_beta = self.fiber.f_ref_beta if hasattr(self.fiber, 'f_ref_beta') else 0
+        # TODO|andrea: where should f_ref_beta be defined? Must it be equivalent to ref_wavelength?
         z = self.stimulated_raman_scattering.z
         frequency_rho = self.stimulated_raman_scattering.frequency
         rho_norm = self.stimulated_raman_scattering.rho * np.exp(np.abs(alpha0) * z / 2)
@@ -803,7 +646,7 @@ class NliSolver:
         beta2_ref = 21.3e-27
         delta_f_ref = 50e9
         rs_ref = 32e9
-        freq_offset_th = ((k_ref * delta_f_ref) * rs_ref * beta2_ref) / (self.fiber_params.beta2 * symbol_rate)
+        freq_offset_th = ((k_ref * delta_f_ref) * rs_ref * beta2_ref) / (self.params.beta2 * symbol_rate)
         return freq_offset_th
 
 def _psi(carrier, interfering_carrier, beta2, asymptotic_length):

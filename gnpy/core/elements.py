@@ -18,15 +18,18 @@ Network elements MUST implement two attributes .uid and .name representing a
 unique identifier and a printable name.
 '''
 
-from numpy import abs, arange, array, exp, divide, errstate
+from numpy import abs, arange, array, exp, divide, errstate, ones, squeeze
 from numpy import interp, log10, mean, pi, polyfit, polyval, sum
 from scipy.constants import c, h
+from scipy.interpolate import interp1d
 from collections import namedtuple
 
 from gnpy.core.node import Node
 from gnpy.core.units import UNITS
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum
-from gnpy.core.science_utils import propagate_raman_fiber, _psi
+from gnpy.core.parameters import FiberParams, RamanFiberParams, PumpParams
+from gnpy.core.science_utils import NliSolver, RamanSolver, propagate_raman_fiber, _psi
+
 
 class Transceiver(Node):
     def __init__(self, *args, **kwargs):
@@ -224,37 +227,30 @@ class Fused(Node):
         pref = self.update_pref(spectral_info.pref)
         return spectral_info._replace(carriers=carriers, pref=pref)
 
-FiberParams = namedtuple('FiberParams', 'type_variety length loss_coef length_units \
-                                         att_in con_in con_out dispersion gamma')
 
 class Fiber(Node):
     def __init__(self, *args, params=None, **kwargs):
-        if params is None:
-            params = {}
-        if 'con_in' not in params:
-            # if not defined in the network json connector loss in/out
-            # the None value will be updated in network.py[build_network]
-            # with default values from eqpt_config.json[Spans]
-            params['con_in'] = None
-            params['con_out'] = None
-        if 'att_in' not in params:
-            #fixed attenuator for padding
-            params['att_in'] = 0
-
-        super().__init__(*args, params=FiberParams(**params), **kwargs)
+        super().__init__(*args, params=FiberParams(params), **kwargs)
         self.type_variety = self.params.type_variety
         self.length = self.params.length * UNITS[self.params.length_units] # in m
-        self.loss_coef = self.params.loss_coef * 1e-3 # lineic loss dB/m
-        self.lin_loss_coef = self.params.loss_coef / (20 * log10(exp(1)))
         self.att_in = self.params.att_in
         self.con_in = self.params.con_in
         self.con_out = self.params.con_out
         self.dispersion = self.params.dispersion  # s/m/m
         self.gamma = self.params.gamma # 1/W/m
+        self.beta3 = self.params.beta3
         self.pch_out_db = None
         self.carriers_in = None
         self.carriers_out = None
-        # TODO|jla: discuss factor 2 in the linear lineic attenuation
+        if type(self.params.loss_coef) == dict:
+            self.loss_coef = squeeze(self.params.loss_coef['alpha_power']) * 1e-3  # lineic loss dB/m
+            self.f_loss_ref = squeeze(self.params.loss_coef['frequency']) # Hz
+        else:
+            self.loss_coef = self.params.loss_coef * 1e-3  # lineic loss dB/m
+            self.f_loss_ref = 193.5e12  # Hz
+        self.lin_loss_coef = self.loss_coef / (10 * log10(exp(1))) # linear power loss 1/m
+        self.nli_solver = NliSolver(self)
+        # TODO|andrea: is lin_loss_coef really useful? it is equivalent to alpha
 
     @property
     def to_json(self):
@@ -277,7 +273,8 @@ class Fiber(Node):
                 }
 
     def __repr__(self):
-        return f'{type(self).__name__}(uid={self.uid!r}, length={round(self.length*1e-3,1)!r}km, loss={round(self.loss,1)!r}dB)'
+        return f'{type(self).__name__}(uid={self.uid!r}, ' \
+               f'length={round(self.length*1e-3,1)!r}km, loss={round(self.loss,1)!r}dB)'
 
     def __str__(self):
         return '\n'.join([f'{type(self).__name__}          {self.uid}',
@@ -309,14 +306,14 @@ class Fiber(Node):
 
     @property
     def effective_length(self):
-        _, alpha = self.dbkm_2_lin()
-        leff = (1 - exp(-2 * alpha * self.length)) / (2 * alpha)
+        alpha = self.lin_loss_coef
+        leff = (1 - exp(- alpha * self.length)) / (alpha)
         return leff
 
     @property
     def asymptotic_length(self):
-        _, alpha = self.dbkm_2_lin()
-        aleff = 1 / (2 * alpha)
+        alpha = self.lin_loss_coef
+        aleff = 1 / alpha
         return aleff
 
     def carriers(self, loc, attr):
@@ -335,25 +332,40 @@ class Fiber(Node):
             else:
                 yield c.power._asdict().get(attr, None)
 
-    def beta2(self, ref_wavelength=1550e-9):
+    @property
+    def beta2(self):
         """Returns beta2 from dispersion parameter.
         Dispersion is entered in ps/nm/km.
         Disperion can be a numpy array or a single value.
 
         :param ref_wavelength: can be a numpy array; default: 1550nm
         """
-        # TODO|jla: discuss beta2 as method or attribute
         D = abs(self.dispersion)
-        b2 = (ref_wavelength ** 2) * D / (2 * pi * c)  # 10^21 scales [ps^2/km]
+        b2 = (self.params.ref_wavelength ** 2) * D / (2 * pi * c)  # 10^21 scales [ps^2/km]
         return b2 # s/Hz/m
 
-    def dbkm_2_lin(self):
-        """calculates the linear loss coefficient"""
-        # linear loss coefficient in dB/km^-1
-        alpha_pcoef = self.loss_coef
-        # linear loss field amplitude coefficient in m^-1
-        alpha_acoef = alpha_pcoef / (2 * 10 * log10(exp(1)))
-        return alpha_pcoef, alpha_acoef
+    def alpha(self, frequencies):
+        """ It returns the values of the series expansion of attenuation coefficient alpha(f) for all f in frequencies
+
+        :param frequencies: frequencies of series expansion [Hz]
+        :return: alpha: power attenuation coefficient for f in frequencies [Neper/m]
+        """
+        if type(self.params.loss_coef) == dict:
+            alpha_interp = interp1d(self.loss_coef, self.f_loss_ref)
+            alpha = alpha_interp(frequencies)
+        else:
+            alpha = self.lin_loss_coef * ones(frequencies.shape)
+
+        return alpha
+
+    def alpha0(self, f_ref=193.5e12):
+        """ It returns the zero element of the series expansion of attenuation coefficient alpha(f) in the
+        reference frequency f_ref
+
+        :param f_ref: reference frequency of series expansion [Hz]
+        :return: alpha0: power attenuation coefficient in f_ref [Neper/m]
+        """
+        return self.alpha(f_ref * ones(1))[0]
 
     def _gn_analytic(self, carrier, *carriers):
         """Computes the nonlinear interference power on a single carrier.
@@ -366,12 +378,12 @@ class Fiber(Node):
 
         g_nli = 0
         for interfering_carrier in carriers:
-            psi = _psi(carrier, interfering_carrier, beta2=self.beta2(), asymptotic_length=self.asymptotic_length)
+            psi = _psi(carrier, interfering_carrier, beta2=self.beta2, asymptotic_length=self.asymptotic_length)
             g_nli += (interfering_carrier.power.signal/interfering_carrier.baud_rate)**2 \
                      * (carrier.power.signal/carrier.baud_rate) * psi
 
         g_nli *= (16 / 27) * (self.gamma * self.effective_length)**2 \
-                 / (2 * pi * abs(self.beta2()) * self.asymptotic_length)
+                 / (2 * pi * abs(self.beta2) * self.asymptotic_length)
 
         carrier_nli = carrier.baud_rate * g_nli
         return carrier_nli
@@ -413,46 +425,17 @@ class Fiber(Node):
         self.carriers_out = carriers
         return spectral_info._replace(carriers=carriers, pref=pref)
 
-RamanFiberParams = namedtuple('RamanFiberParams', 'type_variety length loss_coef length_units \
-                                         att_in con_in con_out dispersion gamma raman_efficiency')
 
 class RamanFiber(Fiber):
     def __init__(self, *args, params=None, **kwargs):
-        if params is None:
-            params = {}
-        if 'con_in' not in params:
-            # if not defined in the network json connector loss in/out
-            # the None value will be updated in network.py[build_network]
-            # with default values from eqpt_config.json[Spans]
-            params['con_in'] = None
-            params['con_out'] = None
-        if 'att_in' not in params:
-            #fixed attenuator for padding
-            params['att_in'] = 0
-
-        # TODO: can we re-use the Fiber constructor in a better way?
-        Node.__init__(self, *args, params=RamanFiberParams(**params), **kwargs)
-        self.type_variety = self.params.type_variety
-        self.length = self.params.length * UNITS[self.params.length_units] # in m
-        self.loss_coef = self.params.loss_coef * 1e-3 # lineic loss dB/m
-        self.lin_loss_coef = self.params.loss_coef / (20 * log10(exp(1)))
-        self.att_in = self.params.att_in
-        self.con_in = self.params.con_in
-        self.con_out = self.params.con_out
-        self.dispersion = self.params.dispersion  # s/m/m
-        self.gamma = self.params.gamma # 1/W/m
-        self.pch_out_db = None
-        self.carriers_in = None
-        self.carriers_out = None
-        # TODO|jla: discuss factor 2 in the linear lineic attenuation
-
-    @property
-    def sim_params(self):
-        return self._sim_params
-
-    @sim_params.setter
-    def sim_params(self, sim_params=None):
-        self._sim_params = sim_params
+        super().__init__(*args, params=RamanFiberParams(params), **kwargs)
+        self.raman_efficiency = self.params.raman_efficiency
+        if 'raman_pumps' in self.operational:
+            self.raman_pumps = tuple(PumpParams(p['power'], p['frequency'], p['propagation_direction'])
+                  for p in self.operational['raman_pumps'])
+        else:
+            self.raman_pumps = None
+        self.raman_solver = RamanSolver(self)
 
     def update_pref(self, pref, *carriers):
         pch_out_db = lin2db(mean([carrier.power.signal for carrier in carriers])) + 30

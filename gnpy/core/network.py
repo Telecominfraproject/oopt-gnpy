@@ -22,7 +22,7 @@ from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.units import UNITS
 from gnpy.core.utils import (load_json, save_json, round2float, db2lin,
                             merge_amplifier_restrictions)
-from gnpy.core.science_utils import SimParams
+from gnpy.core.parameters import SimParams
 from collections import namedtuple
 
 logger = getLogger(__name__)
@@ -549,12 +549,3 @@ def build_network(network, equipment, pref_ch_db, pref_total_db):
         trx = [t for t in network.nodes() if isinstance(t, Transceiver)]
         for t in trx:
             set_egress_amplifier(network, t, equipment, pref_total_db)
-
-def load_sim_params(filename):
-    sim_params = load_json(filename)
-    return SimParams(params=sim_params)
-
-def configure_network(network, sim_params):
-    for node in network.nodes:
-        if isinstance(node, RamanFiber):
-            node.sim_params = sim_params
