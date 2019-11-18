@@ -28,6 +28,7 @@ from gnpy.core.info import create_input_spectral_information, SpectralInformatio
 from gnpy.core.request import Path_request, RequestParams, compute_constrained_path, propagate2
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
 from gnpy.core.parameters import SimParams
+from gnpy.core.science_utils import Simulation
 from gnpy.core.utils import load_json
 import gnpy.core.ansi_escapes as ansi_escapes
 
@@ -127,6 +128,9 @@ def main(network, equipment, source, destination, sim_params, req=None):
     pref_total_db = pref_ch_db + lin2db(req.nb_channel) #reference total power / span (SL=20dB)
     build_network(network, equipment, pref_ch_db, pref_total_db)
     path = compute_constrained_path(network, req)
+
+    if sim_params:
+        Simulation.set_params(sim_params)
 
     if len([s.length for s in path if isinstance(s, RamanFiber)]):
         if sim_params is None:

@@ -111,24 +111,25 @@ class NLIParams(Parameters):
         self._f_pump_resolution = f_pump_resolution
 
 
-class SimParams():
-    """A private mutable variable is shared across all class instances. Cannot implement Parameters.asdict because
-    attribute is _shared_dict"""
-    _shared_dict = {}
+class SimParams(Parameters):
     def __init__(self, params=None):
         if params:
             if 'nli_parameters' in params:
-                self._shared_dict['nli_parameters'] = params['nli_parameters']
+                self._nli_params = NLIParams(params['nli_parameters'])
+            else:
+                self._nli_params = None
             if 'raman_parameters' in params:
-                self._shared_dict['raman_parameters'] = params['raman_parameters']
+                self._raman_params = RamanParams(params['raman_parameters'])
+            else:
+                self._raman_params = None
 
     @property
     def nli_params(self):
-        return NLIParams(self._shared_dict['nli_parameters'])
+        return self._nli_params
 
     @property
     def raman_params(self):
-        return RamanParams(self._shared_dict['raman_parameters'])
+        return self._raman_params
 
 
 class FiberParams(Parameters):
