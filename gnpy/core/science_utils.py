@@ -15,8 +15,9 @@ logger = getLogger(__name__)
 
 
 def propagate_raman_fiber(fiber, *carriers):
-    sim_params = fiber.sim_params
-    raman_params = fiber.sim_params.raman_params
+    simulation = Simulation.get_simulation()
+    sim_params = simulation.sim_params
+    raman_params = sim_params.raman_params
     nli_params = fiber.sim_params.nli_params
     # apply input attenuation to carriers
     attenuation_in = db2lin(fiber.con_in + fiber.att_in)
@@ -130,6 +131,27 @@ def raised_cosine_comb(f, *carriers):
     return psd
 
 
+class Simulation:
+    _shared_dict = {}
+
+    def __init__(self):
+        if type(self) == Simulation:
+            raise NotImplementedError('Simulation cannot be instatiated')
+
+    @classmethod
+    def set_params(cls, sim_params):
+        cls._shared_dict['sim_params'] = sim_params
+
+    @classmethod
+    def get_simulation(cls):
+        self = cls.__new__(cls)
+        return self
+
+    @property
+    def sim_params(self):
+        return self._shared_dict['sim_params']
+
+
 class SpontaneousRamanScattering:
     def __init__(self, frequency, z, power):
         self.frequency = frequency
@@ -147,16 +169,12 @@ class StimulatedRamanScattering:
 
 class RamanSolver:
     def __init__(self, fiber=None):
-        """ Initialize the fiber object with its physical parameters
-        :param length: fiber length in m.
-        :param alphap: fiber power attenuation coefficient vs frequency in 1/m. numpy array
-        :param freq_alpha: frequency axis of alphap in Hz. numpy array
-        :param cr_raman: Raman efficiency vs frequency offset in 1/W/m. numpy array
-        :param freq_cr: reference frequency offset axis for cr_raman. numpy array
-        :param raman_params: namedtuple containing the solver parameters (optional).
+        """ Initialize the Raman solver object.
+        :param fiber: instance of elements.py/Fiber.
+        :param carriers: tuple of carrier objects
+        :param raman_pumps: tuple containing pumps characteristics
         """
         self._fiber = fiber
-        self._raman_params = SimParams().raman_params
         self._carriers = None
         self._raman_pumps = None
         self._stimulated_raman_scattering = None
@@ -172,10 +190,6 @@ class RamanSolver:
 
     @carriers.setter
     def carriers(self, carriers):
-        """
-        :param carriers: tuple of namedtuples containing information about carriers
-        :return:
-        """
         self._carriers = carriers
         self._spontaneous_raman_scattering = None
         self._stimulated_raman_scattering = None
@@ -188,10 +202,6 @@ class RamanSolver:
     def raman_pumps(self, raman_pumps):
         self._raman_pumps = raman_pumps
         self._stimulated_raman_scattering = None
-
-    @property
-    def raman_params(self):
-        return self._raman_params
 
     @property
     def stimulated_raman_scattering(self):
@@ -274,7 +284,10 @@ class RamanSolver:
                                cr_raman_matrix, freq_diff, ase_bc, bn_array, temperature):
         spontaneous_raman_scattering = OptimizeResult()
 
-        dx = self.raman_params.space_resolution
+        simulation = Simulation.get_simulation()
+        sim_params = simulation.sim_params
+
+        dx = sim_params.raman_params.space_resolution
         h = ph.value('Planck constant')
         kb = ph.value('Boltzmann constant')
 
@@ -313,11 +326,14 @@ class RamanSolver:
         fiber_length = self.fiber.length
         loss_coef = self.fiber.lin_loss_coef
         raman_efficiency = self.fiber.raman_efficiency
-        if not self.raman_params.flag_raman:
+        simulation = Simulation.get_simulation()
+        sim_params = simulation.sim_params
+
+        if not sim_params.raman_params.flag_raman:
             raman_efficiency['cr'] = np.zeros(len(raman_efficiency['cr']))
         # raman solver parameters
-        z_resolution = self.raman_params.space_resolution
-        tolerance = self.raman_params.tolerance
+        z_resolution = sim_params.raman_params.space_resolution
+        tolerance = sim_params.raman_params.tolerance
 
         logger.debug('Start computing fiber Stimulated Raman Scattering')
 
@@ -414,16 +430,16 @@ class RamanSolver:
 
 class NliSolver:
     """ This class implements the NLI models.
-        Model and method can be specified in `self.nli_params.method`.
+        Model and method can be specified in `sim_params.nli_params.method`.
         List of implemented methods:
         'gn_model_analytic': brute force triple integral solution
         'ggn_spectrally_separated_xpm_spm': XPM plus SPM
     """
     def __init__(self, fiber=None):
-        """ Initialize the fiber object with its physical parameters
+        """ Initialize the Nli solver object.
+        :param fiber: instance of elements.py/Fiber.
         """
         self._fiber = fiber
-        self._nli_params = SimParams.nli_params
         self._stimulated_raman_scattering = None
 
     @property
@@ -438,21 +454,19 @@ class NliSolver:
     def stimulated_raman_scattering(self, stimulated_raman_scattering):
         self._stimulated_raman_scattering = stimulated_raman_scattering
 
-    @property
-    def nli_params(self):
-        return self._nli_params
-
     def compute_nli(self, carrier, *carriers):
         """ Compute NLI power generated by the WDM comb `*carriers` on the channel under test `carrier`
         at the end of the fiber span.
         """
-        if 'gn_model_analytic' == self.nli_params.nli_method_name.lower():
+        simulation = Simulation.get_simulation()
+        sim_params = simulation.sim_params
+        if 'gn_model_analytic' == sim_params.nli_params.nli_method_name.lower():
             carrier_nli = self._gn_analytic(carrier, *carriers)
-        elif 'ggn_spectrally_separated' in self.nli_params.nli_method_name.lower():
+        elif 'ggn_spectrally_separated' in sim_params.nli_params.nli_method_name.lower():
             eta_matrix = self._compute_eta_matrix(carrier, *carriers)
             carrier_nli = self._carrier_nli_from_eta_matrix(eta_matrix, carrier, *carriers)
         else:
-            raise ValueError(f'Method {self.nli_params.method_nli} not implemented.')
+            raise ValueError(f'Method {sim_params.nli_params.method_nli} not implemented.')
 
         return carrier_nli
 
@@ -469,6 +483,8 @@ class NliSolver:
 
     def _compute_eta_matrix(self, carrier_cut, *carriers):
         cut_index = carrier_cut.channel_number - 1
+        simulation = Simulation.get_simulation()
+        sim_params = simulation.sim_params
         # Matrix initialization
         matrix_size = max(carriers, key=lambda x: getattr(x, 'channel_number')).channel_number
         eta_matrix = np.zeros(shape=(matrix_size, matrix_size))
@@ -476,10 +492,10 @@ class NliSolver:
         # SPM
         logger.debug(f'Start computing SPM on channel #{carrier_cut.channel_number}')
         # SPM GGN
-        if 'ggn' in self.nli_params.nli_method_name.lower():
+        if 'ggn' in sim_params.nli_params.nli_method_name.lower():
             partial_nli = self._generalized_spectrally_separated_spm(carrier_cut)
         # SPM GN
-        elif 'gn' in self.nli_params.nli_method_name.lower():
+        elif 'gn' in sim_params.nli_params.nli_method_name.lower():
             partial_nli = self._gn_analytic(carrier_cut, *[carrier_cut])
         eta_matrix[cut_index, cut_index] = partial_nli / (carrier_cut.power.signal**3)
 
@@ -490,10 +506,10 @@ class NliSolver:
                 logger.debug(f'Start computing XPM on channel #{carrier_cut.channel_number} '
                              f'from channel #{pump_carrier.channel_number}')
                 # XPM GGN
-                if 'ggn' in self.nli_params.nli_method_name.lower():
+                if 'ggn' in sim_params.nli_params.nli_method_name.lower():
                     partial_nli = self._generalized_spectrally_separated_xpm(carrier_cut, pump_carrier)
                 # XPM GGN
-                elif 'gn' in self.nli_params.nli_method_name.lower():
+                elif 'gn' in sim_params.nli_params.nli_method_name.lower():
                     partial_nli = self._gn_analytic(carrier_cut, *[pump_carrier])
                 eta_matrix[pump_index, pump_index] = partial_nli /\
                                                      (carrier_cut.power.signal * pump_carrier.power.signal**2)
@@ -525,7 +541,9 @@ class NliSolver:
 
     # Methods for computing the GGN-model
     def _generalized_spectrally_separated_spm(self, carrier):
-        f_cut_resolution = self.nli_params.f_cut_resolution['delta_0']
+        simulation = Simulation.get_simulation()
+        sim_params = simulation.sim_params
+        f_cut_resolution = sim_params.nli_params.f_cut_resolution['delta_0']
         f_eval = carrier.frequency
         g_cut = (carrier.power.signal / carrier.baud_rate)
 
@@ -534,9 +552,11 @@ class NliSolver:
         return spm_nli
 
     def _generalized_spectrally_separated_xpm(self, carrier_cut, pump_carrier):
+        simulation = Simulation.get_simulation()
+        sim_params = simulation.sim_params
         delta_index = pump_carrier.channel_number - carrier_cut.channel_number
-        f_cut_resolution = self.nli_params.f_cut_resolution[f'delta_{delta_index}']
-        f_pump_resolution = self.nli_params.f_pump_resolution
+        f_cut_resolution = sim_params.nli_params.f_cut_resolution[f'delta_{delta_index}']
+        f_pump_resolution = sim_params.nli_params.f_pump_resolution
         f_eval = carrier_cut.frequency
         g_pump = (pump_carrier.power.signal / pump_carrier.baud_rate)
         g_cut = (carrier_cut.power.signal / carrier_cut.baud_rate)

@@ -20,9 +20,7 @@ from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm, Fused, RamanFibe
 from gnpy.core.equipment import edfa_nf
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.units import UNITS
-from gnpy.core.utils import (load_json, save_json, round2float, db2lin,
-                            merge_amplifier_restrictions)
-from gnpy.core.parameters import SimParams
+from gnpy.core.utils import (load_json, save_json, round2float, db2lin, merge_amplifier_restrictions)
 from collections import namedtuple
 
 logger = getLogger(__name__)

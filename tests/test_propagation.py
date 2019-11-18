@@ -94,6 +94,6 @@ if __name__ == '__main__':
     logger = getLogger(__name__)
     basicConfig(level=INFO)
 
-    for a in test :
-        test_snr(a,'trx F')
+    for a in test:
+        test_snr(a, 'trx F')
     print('\n')

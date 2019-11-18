@@ -1,23 +1,26 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import pytest, json
+import json
 
-from gnpy.core.parameters import Parameters, SimParams, FiberParams
+from gnpy.core.parameters import SimParams
+from gnpy.core.science_utils import Simulation
 from gnpy.core.elements import Fiber
 
 class test_sim_parameters():
     f = open('data/test_sim_params.json')
     j = json.load(f)
-    s1 = SimParams(j)
-    assert s1.raman_params.flag_raman
-    s2 = SimParams(j)
-    assert s2.raman_params.flag_raman
+    sim_params = SimParams(j)
+    Simulation.set_params(sim_params)
+    s1 = Simulation.get_simulation()
+    assert s1.sim_params.raman_params.flag_raman
+    s2 = Simulation.get_simulation()
+    assert s2.sim_params.raman_params.flag_raman
     j['raman_parameters']['flag_raman'] = False
-    s3 = SimParams(j)
-    assert not s2.raman_params.flag_raman
-    assert not s1.raman_params.flag_raman
-    print(s1.__dict__)
+    sim_params = SimParams(j)
+    Simulation.set_params(sim_params)
+    assert not s2.sim_params.raman_params.flag_raman
+    assert not s1.sim_params.raman_params.flag_raman
 
 class test_asdict():
     f = open('data/test_network.json')
@@ -35,7 +38,6 @@ class test_asdict():
         else:
             break
     assert is_equal
-    print(fiber.params.length)
 
 
 
