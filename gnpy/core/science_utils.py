@@ -72,6 +72,7 @@ def propagate_raman_fiber(fiber, *carriers):
         new_carriers.append(carrier._replace(power=pwr))
     return new_carriers
 
+
 def frequency_resolution(carrier, carriers, sim_params, fiber):
     def _get_freq_res_k_phi(delta_count, grid_size, alpha0, delta_z, beta2, k_tol, phi_tol):
         res_phi = _get_freq_res_phase_rotation(delta_count, grid_size, delta_z, beta2, phi_tol)
@@ -524,7 +525,7 @@ class NliSolver:
         :return: carrier_nli: the amount of nonlinear interference in W on the carrier under analysis
         """
         beta2 = self.fiber.beta2
-        gamma = self.fiber.gamma
+        gamma = self.fiber.params.gamma
         effective_length = self.fiber.effective_length
         asymptotic_length = self.fiber.asymptotic_length
 
@@ -534,24 +535,26 @@ class NliSolver:
             g_signal = carrier.power.signal / carrier.baud_rate
             g_nli += g_interfearing**2 * g_signal \
                 * _psi(carrier, interfering_carrier, beta2=beta2, asymptotic_length=asymptotic_length)
-        g_nli *= (16.0 / 27.0) * (gamma * effective_length)**2 /\
+        g_nli *= (16.0 / 27.0) * (gamma * effective_length) ** 2 /\
                  (2 * np.pi * abs(beta2) * asymptotic_length)
         carrier_nli = carrier.baud_rate * g_nli
         return carrier_nli
 
     # Methods for computing the GGN-model
     def _generalized_spectrally_separated_spm(self, carrier):
+        gamma = self.fiber.params.gamma
         simulation = Simulation.get_simulation()
         sim_params = simulation.sim_params
         f_cut_resolution = sim_params.nli_params.f_cut_resolution['delta_0']
         f_eval = carrier.frequency
         g_cut = (carrier.power.signal / carrier.baud_rate)
 
-        spm_nli = carrier.baud_rate * (16.0 / 27.0) * self.fiber.gamma**2 * g_cut**3 * \
+        spm_nli = carrier.baud_rate * (16.0 / 27.0) * gamma ** 2 * g_cut ** 3 * \
                   self._generalized_psi(carrier, carrier, f_eval, f_cut_resolution, f_cut_resolution)
         return spm_nli
 
     def _generalized_spectrally_separated_xpm(self, carrier_cut, pump_carrier):
+        gamma = self.fiber.params.gamma
         simulation = Simulation.get_simulation()
         sim_params = simulation.sim_params
         delta_index = pump_carrier.channel_number - carrier_cut.channel_number
@@ -562,10 +565,10 @@ class NliSolver:
         g_cut = (carrier_cut.power.signal / carrier_cut.baud_rate)
         frequency_offset_threshold = self._frequency_offset_threshold(pump_carrier.baud_rate)
         if abs(carrier_cut.frequency - pump_carrier.frequency) <= frequency_offset_threshold:
-            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * self.fiber.gamma**2 * g_pump**2 * g_cut * \
+            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * gamma ** 2 * g_pump**2 * g_cut * \
                       2 * self._generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution)
         else:
-            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * self.fiber.gamma**2 * g_pump**2 * g_cut * \
+            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * gamma ** 2 * g_pump**2 * g_cut * \
                       2 * self._fast_generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution)
         return xpm_nli
 
@@ -660,7 +663,8 @@ class NliSolver:
         beta2_ref = 21.3e-27
         delta_f_ref = 50e9
         rs_ref = 32e9
-        freq_offset_th = ((k_ref * delta_f_ref) * rs_ref * beta2_ref) / (self.params.beta2 * symbol_rate)
+        beta2 = self.beta2
+        freq_offset_th = ((k_ref * delta_f_ref) * rs_ref * beta2_ref) / (beta2 * symbol_rate)
         return freq_offset_th
 
 def _psi(carrier, interfering_carrier, beta2, asymptotic_length):

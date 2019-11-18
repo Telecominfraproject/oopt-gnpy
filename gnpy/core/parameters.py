@@ -146,8 +146,8 @@ class FiberParams(Parameters):
             # with default values from eqpt_config.json[Spans]
             self._con_in = params['con_in'] if 'con_in' in params else None
             self._con_out = params['con_out'] if 'con_out' in params else None
-            self._dispersion = params['dispersion']
-            self._gamma = params['gamma']
+            self._dispersion = params['dispersion']  # s/m/m
+            self._gamma = params['gamma']  # 1/W/m
             self._ref_wavelength = params['ref_wavelength'] if 'ref_wavelength' in params else 1550e-9
             self._beta3 = params['beta3'] if 'beta3' in params else 0
         except KeyError:

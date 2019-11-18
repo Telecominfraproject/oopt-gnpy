@@ -236,9 +236,6 @@ class Fiber(Node):
         self.att_in = self.params.att_in
         self.con_in = self.params.con_in
         self.con_out = self.params.con_out
-        self.dispersion = self.params.dispersion  # s/m/m
-        self.gamma = self.params.gamma # 1/W/m
-        self.beta3 = self.params.beta3
         self.pch_out_db = None
         self.carriers_in = None
         self.carriers_out = None
@@ -340,9 +337,13 @@ class Fiber(Node):
 
         :param ref_wavelength: can be a numpy array; default: 1550nm
         """
-        D = abs(self.dispersion)
+        D = abs(self.params.dispersion)
         b2 = (self.params.ref_wavelength ** 2) * D / (2 * pi * c)  # 10^21 scales [ps^2/km]
-        return b2 # s/Hz/m
+        return b2  # s/Hz/m
+
+    @property
+    def beta3(self):
+        return self.params.beta3
 
     def alpha(self, frequencies):
         """ It returns the values of the series expansion of attenuation coefficient alpha(f) for all f in frequencies
@@ -382,7 +383,7 @@ class Fiber(Node):
             g_nli += (interfering_carrier.power.signal/interfering_carrier.baud_rate)**2 \
                      * (carrier.power.signal/carrier.baud_rate) * psi
 
-        g_nli *= (16 / 27) * (self.gamma * self.effective_length)**2 \
+        g_nli *= (16 / 27) * (self.params.gamma * self.effective_length)**2 \
                  / (2 * pi * abs(self.beta2) * self.asymptotic_length)
 
         carrier_nli = carrier.baud_rate * g_nli
