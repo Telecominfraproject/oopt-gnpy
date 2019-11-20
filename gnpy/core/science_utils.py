@@ -20,7 +20,7 @@ def propagate_raman_fiber(fiber, *carriers):
     raman_params = sim_params.raman_params
     nli_params = fiber.sim_params.nli_params
     # apply input attenuation to carriers
-    attenuation_in = db2lin(fiber.con_in + fiber.att_in)
+    attenuation_in = db2lin(fiber.params.con_in + fiber.params.att_in)
     chan = []
     for carrier in carriers:
         pwr = carrier.power
@@ -39,7 +39,7 @@ def propagate_raman_fiber(fiber, *carriers):
 
     fiber_attenuation = (stimulated_raman_scattering.rho[:, -1])**-2
     if not raman_params.flag_raman:
-        fiber_attenuation = tuple(fiber.lin_attenuation for _ in carriers)
+        fiber_attenuation = tuple(fiber.params.lin_attenuation for _ in carriers)
 
     # evaluate Raman ASE noise if required by sim_params and if raman pumps are present
     if raman_params.flag_raman and fiber.raman_pumps:
@@ -48,7 +48,7 @@ def propagate_raman_fiber(fiber, *carriers):
         raman_ase = tuple(0 for _ in carriers)
 
     # evaluate nli and propagate in fiber
-    attenuation_out = db2lin(fiber.con_out)
+    attenuation_out = db2lin(fiber.params.con_out)
     nli_solver = NliSolver(fiber=fiber)
     nli_solver.stimulated_raman_scattering = stimulated_raman_scattering
 
@@ -90,7 +90,7 @@ def frequency_resolution(carrier, carriers, sim_params, fiber):
     grid_size = sim_params.nli_params.wdm_grid_size
     delta_z = sim_params.raman_params.space_resolution
     alpha0 = fiber.alpha0()
-    beta2 = fiber.beta2
+    beta2 = fiber.params.beta2
     k_tol = sim_params.nli_params.dispersion_tolerance
     phi_tol = sim_params.nli_params.phase_shift_tollerance
     f_pump_resolution, method_f_pump, res_dict_pump = \
@@ -325,8 +325,8 @@ class RamanSolver:
         :return: None
         """
         # fiber parameters
-        fiber_length = self.fiber.length
-        loss_coef = self.fiber.lin_loss_coef
+        fiber_length = self.fiber.params.length
+        loss_coef = self.fiber.params.lin_loss_exp
         raman_efficiency = self.fiber.raman_efficiency
         simulation = Simulation.get_simulation()
         sim_params = simulation.sim_params
@@ -341,7 +341,7 @@ class RamanSolver:
 
         power_spectrum, freq_array, prop_direct, _ = self._compute_power_spectrum(carriers, raman_pumps)
 
-        alphap_fiber = self.fiber.alpha(freq_array)
+        alphap_fiber = self.fiber.params.alpha(freq_array)
 
         freq_diff = abs(freq_array - np.reshape(freq_array, (len(freq_array), 1)))
         interp_cr = interp1d(raman_efficiency['frequency_offset'], raman_efficiency['cr'])
@@ -525,10 +525,10 @@ class NliSolver:
         :param carriers: the full WDM comb
         :return: carrier_nli: the amount of nonlinear interference in W on the carrier under analysis
         """
-        beta2 = self.fiber.beta2
+        beta2 = self.fiber.params.beta2
         gamma = self.fiber.params.gamma
-        effective_length = self.fiber.effective_length
-        asymptotic_length = self.fiber.asymptotic_length
+        effective_length = self.fiber.params.effective_length
+        asymptotic_length = self.fiber.params.asymptotic_length
 
         g_nli = 0
         for interfering_carrier in carriers:
@@ -579,8 +579,8 @@ class NliSolver:
         """
         # Fiber parameters
         alpha0 = self.fiber.alpha0(f_eval)
-        beta2 = self.fiber.beta2
-        beta3 = self.fiber.beta3
+        beta2 = self.fiber.params.beta2
+        beta3 = self.fiber.params.beta3
         f_ref_beta = self.fiber.params.ref_frequency
         z = self.stimulated_raman_scattering.z
         frequency_rho = self.stimulated_raman_scattering.frequency

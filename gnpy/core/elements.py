@@ -229,19 +229,9 @@ class Fused(Node):
 
 class Fiber(Node):
     def __init__(self, *args, params=None, **kwargs):
-        self._type_variety = params.pop('type_variety')
-        super().__init__(*args, params=FiberParams(params), **kwargs)
-        self.type_variety = self.params.type_variety
+        super().__init__(*args, params=FiberParams(**params), **kwargs)
         self.carriers_in = None
         self.carriers_out = None
-        if type(self.params.loss_coef) == dict:
-            self.loss_coef = squeeze(self.params.loss_coef['alpha_power']) * 1e-3  # lineic loss dB/m
-            self.f_loss_ref = squeeze(self.params.loss_coef['frequency']) # Hz
-        else:
-            self.loss_coef = self.params.loss_coef * 1e-3  # lineic loss dB/m
-            self.f_loss_ref = 193.5e12  # Hz
-        self.lin_loss_coef = self.loss_coef / (10 * log10(exp(1))) # linear power loss 1/m
-        # TODO|andrea: is lin_loss_coef really useful? it is equivalent to alpha
         self.nli_solver = NliSolver(self)
 
     @property
@@ -251,13 +241,12 @@ class Fiber(Node):
                 'type_variety'  : self.type_variety,
                 'params'        : {
                 #have to specify each because namedtupple cannot be updated :(
-                    'type_variety'  : self.type_variety,
-                    'length'        : self.length/UNITS[self.params.length_units],
-                    'loss_coef'     : self.loss_coef*1e3,
+                    'length'        : self.params.length / self.params.length_units_factor,
+                    'loss_coef'     : self.params.loss_coef * self.params.length_units_factor,
                     'length_units'  : self.params.length_units,
-                    'att_in'        : self.att_in,
-                    'con_in'        : self.con_in,
-                    'con_out'       : self.con_out
+                    'att_in'        : self.params.att_in,
+                    'con_in'        : self.params.con_in,
+                    'con_out'       : self.params.con_out
                                 },
                 'metadata'      : {
                     'location': self.metadata['location']._asdict()
@@ -266,47 +255,34 @@ class Fiber(Node):
 
     def __repr__(self):
         return f'{type(self).__name__}(uid={self.uid!r}, ' \
-               f'length={round(self.length*1e-3,1)!r}km, loss={round(self.loss,1)!r}dB)'
+               f'length={round(self.params.length / self.params.length_units_factor,1)!r}km, ' \
+               f'loss={round(self.loss,1)!r}dB)'
 
     def __str__(self):
         return '\n'.join([f'{type(self).__name__}          {self.uid}',
                           f'  type_variety:                {self.type_variety}',
-                          f'  length (km):                 {round(self.length*1e-3):.2f}',
-                          f'  pad att_in (dB):             {self.att_in:.2f}',
+                          f'  length (km):                 '
+                          f'{round(self.params.length / self.params.length_units_factor):.2f}',
+                          f'  pad att_in (dB):             {self.params.att_in:.2f}',
                           f'  total loss (dB):             {self.loss:.2f}',
-                          f'  (includes conn loss (dB) in: {self.con_in:.2f} out: {self.con_out:.2f})',
+                          f'  (includes conn loss (dB) in: {self.params.con_in:.2f} out: {self.params.con_out:.2f})',
                           f'  (conn loss out includes EOL margin defined in eqpt_config.json)',
                           f'  pch out (dBm): {self.pch_out_db!r}'])
 
     @property
     def fiber_loss(self):
         """Fiber loss in dB, not including padding attenuator"""
-        return self.loss_coef * self.length + self.con_in + self.con_out
+        return self.params.loss_coef * self.params.length + self.params.con_in + self.params.con_out
 
     @property
     def loss(self):
         """total loss including padding att_in: useful for polymorphism with roadm loss"""
-        return self.loss_coef * self.length + self.con_in + self.con_out + self.att_in
+        return self.params.loss_coef * self.params.length + self.params.con_in\
+               + self.params.con_out + self.params.att_in
 
     @property
     def passive(self):
         return True
-
-    @property
-    def lin_attenuation(self):
-        return db2lin(self.length * self.loss_coef)
-
-    @property
-    def effective_length(self):
-        alpha = self.lin_loss_coef
-        leff = (1 - exp(- alpha * self.length)) / (alpha)
-        return leff
-
-    @property
-    def asymptotic_length(self):
-        alpha = self.lin_loss_coef
-        aleff = 1 / alpha
-        return aleff
 
     def carriers(self, loc, attr):
         """retrieve carriers information
@@ -332,10 +308,10 @@ class Fiber(Node):
         :return: alpha: power attenuation coefficient for f in frequencies [Neper/m]
         """
         if type(self.params.loss_coef) == dict:
-            alpha_interp = interp1d(self.loss_coef, self.f_loss_ref)
+            alpha_interp = interp1d(self.params.lin_loss_exp, self.params.f_loss_ref)
             alpha = alpha_interp(frequencies)
         else:
-            alpha = self.lin_loss_coef * ones(frequencies.shape)
+            alpha = self.params.lin_loss_exp * ones(frequencies.shape)
 
         return alpha
 
@@ -359,12 +335,13 @@ class Fiber(Node):
 
         g_nli = 0
         for interfering_carrier in carriers:
-            psi = _psi(carrier, interfering_carrier, beta2=self.beta2, asymptotic_length=self.asymptotic_length)
+            psi = _psi(carrier, interfering_carrier, beta2=self.params.beta2,
+                       asymptotic_length=self.params.asymptotic_length)
             g_nli += (interfering_carrier.power.signal/interfering_carrier.baud_rate)**2 \
                      * (carrier.power.signal/carrier.baud_rate) * psi
 
-        g_nli *= (16 / 27) * (self.params.gamma * self.effective_length)**2 \
-                 / (2 * pi * abs(self.beta2) * self.asymptotic_length)
+        g_nli *= (16 / 27) * (self.params.gamma * self.params.effective_length)**2 \
+                 / (2 * pi * abs(self.params.beta2) * self.params.asymptotic_length)
 
         carrier_nli = carrier.baud_rate * g_nli
         return carrier_nli
@@ -372,7 +349,7 @@ class Fiber(Node):
     def propagate(self, *carriers):
 
         # apply connector_att_in on all carriers before computing gn analytics  premiere partie pas bonne
-        attenuation = db2lin(self.con_in + self.att_in)
+        attenuation = db2lin(self.params.con_in + self.params.att_in)
 
         chan = []
         for carrier in carriers:
@@ -386,13 +363,13 @@ class Fiber(Node):
         carriers = tuple(f for f in chan)
 
         # propagate in the fiber and apply attenuation out
-        attenuation = db2lin(self.con_out)
+        attenuation = db2lin(self.params.con_out)
         for carrier in carriers:
             pwr = carrier.power
             carrier_nli = self._gn_analytic(carrier, *carriers)
-            pwr = pwr._replace(signal=pwr.signal/self.lin_attenuation/attenuation,
-                               nli=(pwr.nli+carrier_nli)/self.lin_attenuation/attenuation,
-                               ase=pwr.ase/self.lin_attenuation/attenuation)
+            pwr = pwr._replace(signal=pwr.signal/self.params.lin_attenuation/attenuation,
+                               nli=(pwr.nli+carrier_nli)/self.params.lin_attenuation/attenuation,
+                               ase=pwr.ase/self.params.lin_attenuation/attenuation)
             yield carrier._replace(power=pwr)
 
     def update_pref(self, pref):
@@ -409,7 +386,7 @@ class Fiber(Node):
 
 class RamanFiber(Fiber):
     def __init__(self, *args, params=None, **kwargs):
-        super().__init__(*args, params=RamanFiberParams(params), **kwargs)
+        super().__init__(*args, params=RamanFiberParams(**params), **kwargs)
         self.raman_efficiency = self.params.raman_efficiency
         if 'raman_pumps' in self.operational:
             self.raman_pumps = tuple(PumpParams(p['power'], p['frequency'], p['propagation_direction'])

@@ -10,10 +10,12 @@ This module contains all parameters to configure standard network elements.
 """
 
 from logging import getLogger
-from scipy.constants import c,pi
+from scipy.constants import c, pi
+from numpy import squeeze, log10, exp
 
 
 from gnpy.core.units import UNITS
+from gnpy.core.utils import db2lin
 from gnpy.core.exceptions import ParametersError
 
 
@@ -140,8 +142,9 @@ class SimParams(Parameters):
 class FiberParams(Parameters):
     def __init__(self, **kwargs):
         try:
-            self.length = kwargs['length'] * UNITS[kwargs['length_units']]  # m
-            self._loss_coef = kwargs['loss_coef']
+            self._length_units = kwargs['length_units']
+            self._length_units_factor = UNITS[self._length_units]
+            self._length = kwargs['length'] * self._length_units_factor  # m
             # fixed attenuator for padding
             self._att_in = kwargs['att_in'] if 'att_in' in kwargs else 0
             # if not defined in the network json connector loss in/out
@@ -160,14 +163,21 @@ class FiberParams(Parameters):
             else:
                 self._ref_wavelength = 1550e-9
                 self._ref_frequency = c / self._ref_wavelength
-            self._beta2 = (self._ref_wavelength ** 2) * abs(self._dispersion) / (2 * pi * c)  # 10^21 scales [ps^2/km]
+            self._beta2 = (self._ref_wavelength ** 2) * abs(self._dispersion) / (2 * pi * c)  # 1/(m * Hz^2)
             self._beta3 = kwargs['beta3'] if 'beta3' in kwargs else 0
+            if type(kwargs['loss_coef']) == dict:
+                self._loss_coef = squeeze(kwargs['loss_coef']['loss_coef_power']) \
+                                  / self._length_units_factor  # dB/m
+                self._f_loss_ref = squeeze(kwargs['loss_coef']['frequency'])  # Hz
+            else:
+                self._loss_coef = kwargs['loss_coef'] / self._length_units_factor  # dB/m
+                self._f_loss_ref = 193.5e12  # Hz
+            self._lin_attenuation = db2lin(self._length * self._loss_coef)
+            self._lin_loss_exp = self._loss_coef / (10 * log10(exp(1)))  # linear power exponent loss Neper/m
+            self._effective_length = (1 - exp(- self._lin_loss_exp * self._length)) / self._lin_loss_exp
+            self._asymptotic_length = 1 / self._lin_loss_exp
         except KeyError:
             raise ParametersError
-
-    @property
-    def loss_coef(self):
-        return self._loss_coef
 
     @property
     def length(self):
@@ -177,6 +187,14 @@ class FiberParams(Parameters):
     def length(self, length):
         """length must be in m"""
         self._length = length
+
+    @property
+    def length_units(self):
+        return self._length_units
+
+    @property
+    def length_units_factor(self):
+        return self._length_units_factor
 
     @property
     def att_in(self):
@@ -226,12 +244,36 @@ class FiberParams(Parameters):
     def beta3(self):
         return self._beta3
 
+    @property
+    def loss_coef(self):
+        return self._loss_coef
+
+    @property
+    def f_loss_ref(self):
+        return self._f_loss_ref
+
+    @property
+    def lin_loss_exp(self):
+        return self._lin_loss_exp
+
+    @property
+    def lin_attenuation(self):
+        return self._lin_attenuation
+
+    @property
+    def effective_length(self):
+        return self._effective_length
+
+    @property
+    def asymptotic_length(self):
+        return self._asymptotic_length
+
 
 class RamanFiberParams(FiberParams):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._raman_efficiency = kwargs['raman_efficiency'] if 'raman_efficiency' else None
-        self._pumps_loss_coef = kwargs['pumps_loss_coef'] if 'pumps_loss_coef' else None
+        self._raman_efficiency = kwargs['raman_efficiency'] if 'raman_efficiency' in kwargs else None
+        self._pumps_loss_coef = kwargs['pumps_loss_coef'] if 'pumps_loss_coef' in kwargs else None
 
     @property
     def raman_efficiency(self):
