@@ -231,7 +231,12 @@ class RamanFiberParams(FiberParams):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._raman_efficiency = kwargs['raman_efficiency'] if 'raman_efficiency' else None
+        self._pumps_loss_coef = kwargs['pumps_loss_coef'] if 'pumps_loss_coef' else None
 
     @property
     def raman_efficiency(self):
         return self._raman_efficiency
+
+    @property
+    def pumps_loss_coef(self):
+        return self._pumps_loss_coef
