@@ -54,7 +54,7 @@ def propagate_raman_fiber(fiber, *carriers):
 
     nli_frequencies = []
     computed_nli = []
-    for carrier in (c for c in carriers if c.channel_number in sim_params.raman_params.raman_computed_channels):
+    for carrier in (c for c in carriers if c.channel_number in sim_params.nli_params.computed_channels):
         resolution_param = frequency_resolution(carrier, carriers, sim_params, fiber)
         f_cut_resolution, f_pump_resolution, _, _ = resolution_param
         nli_params.f_cut_resolution = f_cut_resolution
@@ -107,6 +107,7 @@ def frequency_resolution(carrier, carriers, sim_params, fiber):
         method_f_cut[delta_number] = method
         res_dict_cut[delta_number] = res_dict
     return [f_cut_resolution, f_pump_resolution, (method_f_cut, method_f_pump), (res_dict_cut, res_dict_pump)]
+
 
 def raised_cosine_comb(f, *carriers):
     """ Returns an array storing the PSD of a WDM comb of raised cosine shaped
@@ -580,8 +581,7 @@ class NliSolver:
         alpha0 = self.fiber.alpha0(f_eval)
         beta2 = self.fiber.beta2
         beta3 = self.fiber.beta3
-        f_ref_beta = self.fiber.f_ref_beta if hasattr(self.fiber, 'f_ref_beta') else 0
-        # TODO|andrea: where should f_ref_beta be defined? Must it be equivalent to ref_wavelength?
+        f_ref_beta = self.fiber.params.ref_frequency
         z = self.stimulated_raman_scattering.z
         frequency_rho = self.stimulated_raman_scattering.frequency
         rho_norm = self.stimulated_raman_scattering.rho * np.exp(np.abs(alpha0) * z / 2)
@@ -612,10 +612,9 @@ class NliSolver:
         """
         # Fiber parameters
         alpha0 = self.fiber.alpha0(f_eval)
-        beta2 = self.fiber.beta2
-        beta3 = self.fiber.beta3
-        f_ref_beta = self.fiber.f_ref_beta if hasattr(self.fiber, 'f_ref_beta') else 0
-        # TODO|andrea: where should f_ref_beta be defined? Must it be equivalent to ref_wavelength?
+        beta2 = self.fiber.params.beta2
+        beta3 = self.fiber.params.beta3
+        f_ref_beta = self.fiber.params.ref_frequency
         z = self.stimulated_raman_scattering.z
         frequency_rho = self.stimulated_raman_scattering.frequency
         rho_norm = self.stimulated_raman_scattering.rho * np.exp(np.abs(alpha0) * z / 2)

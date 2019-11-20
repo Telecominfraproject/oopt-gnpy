@@ -25,7 +25,6 @@ from scipy.interpolate import interp1d
 from collections import namedtuple
 
 from gnpy.core.node import Node
-from gnpy.core.units import UNITS
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum
 from gnpy.core.parameters import FiberParams, RamanFiberParams, PumpParams
 from gnpy.core.science_utils import NliSolver, RamanSolver, propagate_raman_fiber, _psi
@@ -230,13 +229,9 @@ class Fused(Node):
 
 class Fiber(Node):
     def __init__(self, *args, params=None, **kwargs):
+        self._type_variety = params.pop('type_variety')
         super().__init__(*args, params=FiberParams(params), **kwargs)
         self.type_variety = self.params.type_variety
-        self.length = self.params.length * UNITS[self.params.length_units] # in m
-        self.att_in = self.params.att_in
-        self.con_in = self.params.con_in
-        self.con_out = self.params.con_out
-        self.pch_out_db = None
         self.carriers_in = None
         self.carriers_out = None
         if type(self.params.loss_coef) == dict:
@@ -329,21 +324,6 @@ class Fiber(Node):
             else:
                 yield c.power._asdict().get(attr, None)
 
-    @property
-    def beta2(self):
-        """Returns beta2 from dispersion parameter.
-        Dispersion is entered in ps/nm/km.
-        Disperion can be a numpy array or a single value.
-
-        :param ref_wavelength: can be a numpy array; default: 1550nm
-        """
-        D = abs(self.params.dispersion)
-        b2 = (self.params.ref_wavelength ** 2) * D / (2 * pi * c)  # 10^21 scales [ps^2/km]
-        return b2  # s/Hz/m
-
-    @property
-    def beta3(self):
-        return self.params.beta3
 
     def alpha(self, frequencies):
         """ It returns the values of the series expansion of attenuation coefficient alpha(f) for all f in frequencies
@@ -472,13 +452,11 @@ class EdfaParams:
             # self.allowed_for_design = None
 
     def update_params(self, kwargs):
-        for k,v in kwargs.items() :
-            setattr(self, k, update_params(**v)
-                if isinstance(v, dict) else v)
+        for k, v in kwargs.items():
+            setattr(self, k, self.update_params(**v) if isinstance(v, dict) else v)
 
 class EdfaOperational:
-    default_values = \
-    {
+    default_values = {
         'gain_target':      None,
         'delta_p':          None,
         'out_voa':          None,        
@@ -489,9 +467,9 @@ class EdfaOperational:
         self.update_attr(operational)
 
     def update_attr(self, kwargs):
-        clean_kwargs = {k:v for k,v in kwargs.items() if v !=''}
+        clean_kwargs = {k:v for k,v in kwargs.items() if v != ''}
         for k,v in self.default_values.items():
-            setattr(self, k, clean_kwargs.get(k,v))
+            setattr(self, k, clean_kwargs.get(k, v))
 
     def __repr__(self):
         return (f'{type(self).__name__}('

@@ -55,9 +55,9 @@ def network_from_json(json_data, equipment):
             temp = el_config.setdefault('params', {})
             temp = merge_amplifier_restrictions(temp, extra_params.__dict__)
             el_config['params'] = temp
-        elif typ in ['Edfa', 'Fiber']: # catch it now because the code will crash later!
+        elif typ in ['Edfa', 'Fiber', 'RamanFiber']:  # catch it now because the code will crash later!
             raise ConfigurationError(f'The {typ} of variety type {variety} was not recognized:'
-                    '\nplease check it is properly defined in the eqpt_config json file')
+                                     '\nplease check it is properly defined in the eqpt_config json file')
         cls = getattr(elements, typ)
         el = cls(**el_config)
         g.add_node(el)
