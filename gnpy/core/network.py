@@ -452,6 +452,8 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
 
     network.remove_node(fiber)
 
+    fiber.params.length = new_length
+
     f = interp1d([prev_node.lng, next_node.lng], [prev_node.lat, next_node.lat])
     xpos = [prev_node.lng + (next_node.lng - prev_node.lng) * (n+1)/(n_spans+1) for n in range(n_spans)]
     ypos = f(xpos)

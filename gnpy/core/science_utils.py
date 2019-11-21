@@ -18,7 +18,7 @@ def propagate_raman_fiber(fiber, *carriers):
     simulation = Simulation.get_simulation()
     sim_params = simulation.sim_params
     raman_params = sim_params.raman_params
-    nli_params = fiber.sim_params.nli_params
+    nli_params = sim_params.nli_params
     # apply input attenuation to carriers
     attenuation_in = db2lin(fiber.params.con_in + fiber.params.att_in)
     chan = []
@@ -218,7 +218,7 @@ class RamanSolver:
         return self._spontaneous_raman_scattering
 
     def calculate_spontaneous_raman_scattering(self, carriers, raman_pumps):
-        raman_efficiency = self.fiber.raman_efficiency
+        raman_efficiency = self.fiber.params.raman_efficiency
         temperature = self.fiber.operational['temperature']
 
         logger.debug('Start computing fiber Spontaneous Raman Scattering')
@@ -327,7 +327,7 @@ class RamanSolver:
         # fiber parameters
         fiber_length = self.fiber.params.length
         loss_coef = self.fiber.params.lin_loss_exp
-        raman_efficiency = self.fiber.raman_efficiency
+        raman_efficiency = self.fiber.params.raman_efficiency
         simulation = Simulation.get_simulation()
         sim_params = simulation.sim_params
 
@@ -341,7 +341,7 @@ class RamanSolver:
 
         power_spectrum, freq_array, prop_direct, _ = self._compute_power_spectrum(carriers, raman_pumps)
 
-        alphap_fiber = self.fiber.params.alpha(freq_array)
+        alphap_fiber = self.fiber.alpha(freq_array)
 
         freq_diff = abs(freq_array - np.reshape(freq_array, (len(freq_array), 1)))
         interp_cr = interp1d(raman_efficiency['frequency_offset'], raman_efficiency['cr'])
@@ -662,7 +662,7 @@ class NliSolver:
         beta2_ref = 21.3e-27
         delta_f_ref = 50e9
         rs_ref = 32e9
-        beta2 = self.beta2
+        beta2 = self.fiber.params.beta2
         freq_offset_th = ((k_ref * delta_f_ref) * rs_ref * beta2_ref) / (beta2 * symbol_rate)
         return freq_offset_th
 

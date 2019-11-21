@@ -79,6 +79,7 @@ class NLIParams(Parameters):
         self._phase_shift_tollerance = kwargs['phase_shift_tollerance']
         self._f_cut_resolution = None
         self._f_pump_resolution = None
+        self._computed_channels = kwargs['computed_channels'] if 'computed_channels' in kwargs else None
 
     @property
     def nli_method_name(self):
@@ -115,7 +116,7 @@ class NLIParams(Parameters):
 
     @property
     def computed_channels(self):
-        return self.computed_channels
+        return self._computed_channels
 
 
 class SimParams(Parameters):
@@ -142,9 +143,9 @@ class SimParams(Parameters):
 class FiberParams(Parameters):
     def __init__(self, **kwargs):
         try:
-            self._length_units = kwargs['length_units']
-            self._length_units_factor = UNITS[self._length_units]
+            self._length_units_factor = UNITS[kwargs['length_units']]
             self._length = kwargs['length'] * self._length_units_factor  # m
+            self._length_units = 'm'
             # fixed attenuator for padding
             self._att_in = kwargs['att_in'] if 'att_in' in kwargs else 0
             # if not defined in the network json connector loss in/out
@@ -176,8 +177,11 @@ class FiberParams(Parameters):
             self._lin_loss_exp = self._loss_coef / (10 * log10(exp(1)))  # linear power exponent loss Neper/m
             self._effective_length = (1 - exp(- self._lin_loss_exp * self._length)) / self._lin_loss_exp
             self._asymptotic_length = 1 / self._lin_loss_exp
-        except KeyError:
-            raise ParametersError
+            # raman parameters (not compulsory)
+            self._raman_efficiency = kwargs['raman_efficiency'] if 'raman_efficiency' in kwargs else None
+            self._pumps_loss_coef = kwargs['pumps_loss_coef'] if 'pumps_loss_coef' in kwargs else None
+        except KeyError as e:
+            raise ParametersError(f'Fiber configurations json must include {e}')
 
     @property
     def length(self):
@@ -267,13 +271,6 @@ class FiberParams(Parameters):
     @property
     def asymptotic_length(self):
         return self._asymptotic_length
-
-
-class RamanFiberParams(FiberParams):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self._raman_efficiency = kwargs['raman_efficiency'] if 'raman_efficiency' in kwargs else None
-        self._pumps_loss_coef = kwargs['pumps_loss_coef'] if 'pumps_loss_coef' in kwargs else None
 
     @property
     def raman_efficiency(self):

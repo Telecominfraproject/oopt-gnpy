@@ -26,7 +26,7 @@ from collections import namedtuple
 
 from gnpy.core.node import Node
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum
-from gnpy.core.parameters import FiberParams, RamanFiberParams, PumpParams
+from gnpy.core.parameters import FiberParams, PumpParams
 from gnpy.core.science_utils import NliSolver, RamanSolver, propagate_raman_fiber, _psi
 
 
@@ -229,6 +229,8 @@ class Fused(Node):
 
 class Fiber(Node):
     def __init__(self, *args, params=None, **kwargs):
+        if not params:
+            params = {}
         super().__init__(*args, params=FiberParams(**params), **kwargs)
         self.carriers_in = None
         self.carriers_out = None
@@ -241,9 +243,9 @@ class Fiber(Node):
                 'type_variety'  : self.type_variety,
                 'params'        : {
                 #have to specify each because namedtupple cannot be updated :(
-                    'length'        : self.params.length / self.params.length_units_factor,
-                    'loss_coef'     : self.params.loss_coef * self.params.length_units_factor,
-                    'length_units'  : self.params.length_units,
+                    'length'        : self.params.length * 1e-3,
+                    'loss_coef'     : self.params.loss_coef * 1e3,
+                    'length_units'  : 'km',
                     'att_in'        : self.params.att_in,
                     'con_in'        : self.params.con_in,
                     'con_out'       : self.params.con_out
@@ -255,14 +257,14 @@ class Fiber(Node):
 
     def __repr__(self):
         return f'{type(self).__name__}(uid={self.uid!r}, ' \
-               f'length={round(self.params.length / self.params.length_units_factor,1)!r}km, ' \
+               f'length={round(self.params.length * 1e-3,1)!r}km, ' \
                f'loss={round(self.loss,1)!r}dB)'
 
     def __str__(self):
         return '\n'.join([f'{type(self).__name__}          {self.uid}',
                           f'  type_variety:                {self.type_variety}',
                           f'  length (km):                 '
-                          f'{round(self.params.length / self.params.length_units_factor):.2f}',
+                          f'{round(self.params.length * 1e-3):.2f}',
                           f'  pad att_in (dB):             {self.params.att_in:.2f}',
                           f'  total loss (dB):             {self.loss:.2f}',
                           f'  (includes conn loss (dB) in: {self.params.con_in:.2f} out: {self.params.con_out:.2f})',
@@ -386,8 +388,7 @@ class Fiber(Node):
 
 class RamanFiber(Fiber):
     def __init__(self, *args, params=None, **kwargs):
-        super().__init__(*args, params=RamanFiberParams(**params), **kwargs)
-        self.raman_efficiency = self.params.raman_efficiency
+        super().__init__(*args, params=params, **kwargs)
         if 'raman_pumps' in self.operational:
             self.raman_pumps = tuple(PumpParams(p['power'], p['frequency'], p['propagation_direction'])
                   for p in self.operational['raman_pumps'])

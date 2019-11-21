@@ -220,7 +220,7 @@ if __name__ == '__main__':
     try:
         equipment = load_equipment(args.equipment)
         network = load_network(args.filename, equipment, args.names_matching)
-        sim_params = SimParams(load_json(args.sim_params)) if args.sim_params is not None else None
+        sim_params = SimParams(**load_json(args.sim_params)) if args.sim_params is not None else None
     except EquipmentConfigError as e:
         print(f'{ansi_escapes.red}Configuration error in the equipment library:{ansi_escapes.reset} {e}')
         exit(1)
