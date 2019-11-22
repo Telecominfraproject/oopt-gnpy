@@ -243,7 +243,7 @@ class Fiber(Node):
                 'type_variety'  : self.type_variety,
                 'params'        : {
                 #have to specify each because namedtupple cannot be updated :(
-                    'length'        : self.params.length * 1e-3,
+                    'length'        : round(self.params.length * 1e-3, 6),
                     'loss_coef'     : self.params.loss_coef * 1e3,
                     'length_units'  : 'km',
                     'att_in'        : self.params.att_in,
