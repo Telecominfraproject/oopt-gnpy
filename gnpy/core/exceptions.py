@@ -17,3 +17,8 @@ class EquipmentConfigError(ConfigurationError):
 
 class NetworkTopologyError(ConfigurationError):
     '''Topology of user-provided network is wrong'''
+
+class ParametersError(ConfigurationError):
+    '''Incomplete or wrong configurations within parameters json'''
+
+
