@@ -18,9 +18,9 @@ def propagate_raman_fiber(fiber, *carriers):
     simulation = Simulation.get_simulation()
     sim_params = simulation.sim_params
     raman_params = sim_params.raman_params
-    nli_params = fiber.sim_params.nli_params
+    nli_params = sim_params.nli_params
     # apply input attenuation to carriers
-    attenuation_in = db2lin(fiber.con_in + fiber.att_in)
+    attenuation_in = db2lin(fiber.params.con_in + fiber.params.att_in)
     chan = []
     for carrier in carriers:
         pwr = carrier.power
@@ -39,7 +39,7 @@ def propagate_raman_fiber(fiber, *carriers):
 
     fiber_attenuation = (stimulated_raman_scattering.rho[:, -1])**-2
     if not raman_params.flag_raman:
-        fiber_attenuation = tuple(fiber.lin_attenuation for _ in carriers)
+        fiber_attenuation = tuple(fiber.params.lin_attenuation for _ in carriers)
 
     # evaluate Raman ASE noise if required by sim_params and if raman pumps are present
     if raman_params.flag_raman and fiber.raman_pumps:
@@ -48,13 +48,13 @@ def propagate_raman_fiber(fiber, *carriers):
         raman_ase = tuple(0 for _ in carriers)
 
     # evaluate nli and propagate in fiber
-    attenuation_out = db2lin(fiber.con_out)
+    attenuation_out = db2lin(fiber.params.con_out)
     nli_solver = NliSolver(fiber=fiber)
     nli_solver.stimulated_raman_scattering = stimulated_raman_scattering
 
     nli_frequencies = []
     computed_nli = []
-    for carrier in (c for c in carriers if c.channel_number in sim_params.raman_params.raman_computed_channels):
+    for carrier in (c for c in carriers if c.channel_number in sim_params.nli_params.computed_channels):
         resolution_param = frequency_resolution(carrier, carriers, sim_params, fiber)
         f_cut_resolution, f_pump_resolution, _, _ = resolution_param
         nli_params.f_cut_resolution = f_cut_resolution
@@ -71,6 +71,7 @@ def propagate_raman_fiber(fiber, *carriers):
                            ase=((pwr.ase/attenuation)+rmn_ase)/attenuation_out)
         new_carriers.append(carrier._replace(power=pwr))
     return new_carriers
+
 
 def frequency_resolution(carrier, carriers, sim_params, fiber):
     def _get_freq_res_k_phi(delta_count, grid_size, alpha0, delta_z, beta2, k_tol, phi_tol):
@@ -89,7 +90,7 @@ def frequency_resolution(carrier, carriers, sim_params, fiber):
     grid_size = sim_params.nli_params.wdm_grid_size
     delta_z = sim_params.raman_params.space_resolution
     alpha0 = fiber.alpha0()
-    beta2 = fiber.beta2
+    beta2 = fiber.params.beta2
     k_tol = sim_params.nli_params.dispersion_tolerance
     phi_tol = sim_params.nli_params.phase_shift_tollerance
     f_pump_resolution, method_f_pump, res_dict_pump = \
@@ -106,6 +107,7 @@ def frequency_resolution(carrier, carriers, sim_params, fiber):
         method_f_cut[delta_number] = method
         res_dict_cut[delta_number] = res_dict
     return [f_cut_resolution, f_pump_resolution, (method_f_cut, method_f_pump), (res_dict_cut, res_dict_pump)]
+
 
 def raised_cosine_comb(f, *carriers):
     """ Returns an array storing the PSD of a WDM comb of raised cosine shaped
@@ -216,7 +218,7 @@ class RamanSolver:
         return self._spontaneous_raman_scattering
 
     def calculate_spontaneous_raman_scattering(self, carriers, raman_pumps):
-        raman_efficiency = self.fiber.raman_efficiency
+        raman_efficiency = self.fiber.params.raman_efficiency
         temperature = self.fiber.operational['temperature']
 
         logger.debug('Start computing fiber Spontaneous Raman Scattering')
@@ -323,9 +325,9 @@ class RamanSolver:
         :return: None
         """
         # fiber parameters
-        fiber_length = self.fiber.length
-        loss_coef = self.fiber.lin_loss_coef
-        raman_efficiency = self.fiber.raman_efficiency
+        fiber_length = self.fiber.params.length
+        loss_coef = self.fiber.params.lin_loss_exp
+        raman_efficiency = self.fiber.params.raman_efficiency
         simulation = Simulation.get_simulation()
         sim_params = simulation.sim_params
 
@@ -523,10 +525,10 @@ class NliSolver:
         :param carriers: the full WDM comb
         :return: carrier_nli: the amount of nonlinear interference in W on the carrier under analysis
         """
-        beta2 = self.fiber.beta2
-        gamma = self.fiber.gamma
-        effective_length = self.fiber.effective_length
-        asymptotic_length = self.fiber.asymptotic_length
+        beta2 = self.fiber.params.beta2
+        gamma = self.fiber.params.gamma
+        effective_length = self.fiber.params.effective_length
+        asymptotic_length = self.fiber.params.asymptotic_length
 
         g_nli = 0
         for interfering_carrier in carriers:
@@ -534,24 +536,26 @@ class NliSolver:
             g_signal = carrier.power.signal / carrier.baud_rate
             g_nli += g_interfearing**2 * g_signal \
                 * _psi(carrier, interfering_carrier, beta2=beta2, asymptotic_length=asymptotic_length)
-        g_nli *= (16.0 / 27.0) * (gamma * effective_length)**2 /\
+        g_nli *= (16.0 / 27.0) * (gamma * effective_length) ** 2 /\
                  (2 * np.pi * abs(beta2) * asymptotic_length)
         carrier_nli = carrier.baud_rate * g_nli
         return carrier_nli
 
     # Methods for computing the GGN-model
     def _generalized_spectrally_separated_spm(self, carrier):
+        gamma = self.fiber.params.gamma
         simulation = Simulation.get_simulation()
         sim_params = simulation.sim_params
         f_cut_resolution = sim_params.nli_params.f_cut_resolution['delta_0']
         f_eval = carrier.frequency
         g_cut = (carrier.power.signal / carrier.baud_rate)
 
-        spm_nli = carrier.baud_rate * (16.0 / 27.0) * self.fiber.gamma**2 * g_cut**3 * \
+        spm_nli = carrier.baud_rate * (16.0 / 27.0) * gamma ** 2 * g_cut ** 3 * \
                   self._generalized_psi(carrier, carrier, f_eval, f_cut_resolution, f_cut_resolution)
         return spm_nli
 
     def _generalized_spectrally_separated_xpm(self, carrier_cut, pump_carrier):
+        gamma = self.fiber.params.gamma
         simulation = Simulation.get_simulation()
         sim_params = simulation.sim_params
         delta_index = pump_carrier.channel_number - carrier_cut.channel_number
@@ -562,10 +566,10 @@ class NliSolver:
         g_cut = (carrier_cut.power.signal / carrier_cut.baud_rate)
         frequency_offset_threshold = self._frequency_offset_threshold(pump_carrier.baud_rate)
         if abs(carrier_cut.frequency - pump_carrier.frequency) <= frequency_offset_threshold:
-            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * self.fiber.gamma**2 * g_pump**2 * g_cut * \
+            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * gamma ** 2 * g_pump**2 * g_cut * \
                       2 * self._generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution)
         else:
-            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * self.fiber.gamma**2 * g_pump**2 * g_cut * \
+            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * gamma ** 2 * g_pump**2 * g_cut * \
                       2 * self._fast_generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution)
         return xpm_nli
 
@@ -575,10 +579,9 @@ class NliSolver:
         """
         # Fiber parameters
         alpha0 = self.fiber.alpha0(f_eval)
-        beta2 = self.fiber.beta2
-        beta3 = self.fiber.beta3
-        f_ref_beta = self.fiber.f_ref_beta if hasattr(self.fiber, 'f_ref_beta') else 0
-        # TODO|andrea: where should f_ref_beta be defined? Must it be equivalent to ref_wavelength?
+        beta2 = self.fiber.params.beta2
+        beta3 = self.fiber.params.beta3
+        f_ref_beta = self.fiber.params.ref_frequency
         z = self.stimulated_raman_scattering.z
         frequency_rho = self.stimulated_raman_scattering.frequency
         rho_norm = self.stimulated_raman_scattering.rho * np.exp(np.abs(alpha0) * z / 2)
@@ -609,10 +612,9 @@ class NliSolver:
         """
         # Fiber parameters
         alpha0 = self.fiber.alpha0(f_eval)
-        beta2 = self.fiber.beta2
-        beta3 = self.fiber.beta3
-        f_ref_beta = self.fiber.f_ref_beta if hasattr(self.fiber, 'f_ref_beta') else 0
-        # TODO|andrea: where should f_ref_beta be defined? Must it be equivalent to ref_wavelength?
+        beta2 = self.fiber.params.beta2
+        beta3 = self.fiber.params.beta3
+        f_ref_beta = self.fiber.params.ref_frequency
         z = self.stimulated_raman_scattering.z
         frequency_rho = self.stimulated_raman_scattering.frequency
         rho_norm = self.stimulated_raman_scattering.rho * np.exp(np.abs(alpha0) * z / 2)
@@ -660,7 +662,8 @@ class NliSolver:
         beta2_ref = 21.3e-27
         delta_f_ref = 50e9
         rs_ref = 32e9
-        freq_offset_th = ((k_ref * delta_f_ref) * rs_ref * beta2_ref) / (self.params.beta2 * symbol_rate)
+        beta2 = self.fiber.params.beta2
+        freq_offset_th = ((k_ref * delta_f_ref) * rs_ref * beta2_ref) / (beta2 * symbol_rate)
         return freq_offset_th
 
 def _psi(carrier, interfering_carrier, beta2, asymptotic_length):

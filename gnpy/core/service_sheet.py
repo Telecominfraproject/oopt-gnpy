@@ -192,7 +192,7 @@ def convert_service_sheet(input_filename, eqpt_filename, output_filename='', fil
     req = [Request_element(n,eqpt_filename) for n in service]
     # dumps the output into a json file with name
     # split_filename = [input_filename[0:len(input_filename)-len(suffix_filename)] , suffix_filename[1:]]
-    if output_filename=='':
+    if output_filename == '':
         output_filename = f'{str(input_filename)[0:len(str(input_filename))-len(str(input_filename.suffixes[0]))]}_services.json'
     # for debug
     # print(json_filename)

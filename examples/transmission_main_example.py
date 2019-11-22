@@ -132,13 +132,13 @@ def main(network, equipment, source, destination, sim_params, req=None):
     if sim_params:
         Simulation.set_params(sim_params)
 
-    if len([s.length for s in path if isinstance(s, RamanFiber)]):
+    if len([s.params.length for s in path if isinstance(s, RamanFiber)]):
         if sim_params is None:
             print(f'{ansi_escapes.red}Invocation error:{ansi_escapes.reset} '
                   f'RamanFiber requires passing simulation params via --sim-params')
             exit(1)
 
-    spans = [s.length for s in path if isinstance(s, RamanFiber) or isinstance(s, Fiber)]
+    spans = [s.params.length for s in path if isinstance(s, RamanFiber) or isinstance(s, Fiber)]
     print(f'\nThere are {len(spans)} fiber spans over {sum(spans)/1000:.0f} km between {source.uid} '
           f'and {destination.uid}')
     print(f'\nNow propagating between {source.uid} and {destination.uid}:')
@@ -220,7 +220,7 @@ if __name__ == '__main__':
     try:
         equipment = load_equipment(args.equipment)
         network = load_network(args.filename, equipment, args.names_matching)
-        sim_params = SimParams(load_json(args.sim_params)) if args.sim_params is not None else None
+        sim_params = SimParams(**load_json(args.sim_params)) if args.sim_params is not None else None
     except EquipmentConfigError as e:
         print(f'{ansi_escapes.red}Configuration error in the equipment library:{ansi_escapes.reset} {e}')
         exit(1)
