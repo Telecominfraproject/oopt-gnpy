@@ -55,8 +55,8 @@ class PumpParams(Parameters):
 class RamanParams(Parameters):
     def __init__(self, **kwargs):
         self._flag_raman = kwargs['flag_raman']
-        self._space_resolution = kwargs['space_resolution']
-        self._tolerance = kwargs['tolerance']
+        self._space_resolution = kwargs['space_resolution'] if 'space_resolution' in kwargs else None
+        self._tolerance = kwargs['tolerance'] if 'tolerance' in kwargs else None
 
     @property
     def flag_raman(self):

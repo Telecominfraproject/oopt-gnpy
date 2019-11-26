@@ -302,7 +302,6 @@ class Fiber(Node):
             else:
                 yield c.power._asdict().get(attr, None)
 
-
     def alpha(self, frequencies):
         """ It returns the values of the series expansion of attenuation coefficient alpha(f) for all f in frequencies
 
