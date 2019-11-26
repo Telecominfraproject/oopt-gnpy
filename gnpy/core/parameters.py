@@ -76,7 +76,7 @@ class NLIParams(Parameters):
         self._nli_method_name = kwargs['nli_method_name']
         self._wdm_grid_size = kwargs['wdm_grid_size']
         self._dispersion_tolerance = kwargs['dispersion_tolerance']
-        self._phase_shift_tollerance = kwargs['phase_shift_tollerance']
+        self._phase_shift_tolerance = kwargs['phase_shift_tolerance']
         self._f_cut_resolution = None
         self._f_pump_resolution = None
         self._computed_channels = kwargs['computed_channels'] if 'computed_channels' in kwargs else None
@@ -94,8 +94,8 @@ class NLIParams(Parameters):
         return self._dispersion_tolerance
 
     @property
-    def phase_shift_tollerance(self):
-        return self._phase_shift_tollerance
+    def phase_shift_tolerance(self):
+        return self._phase_shift_tolerance
 
     @property
     def f_cut_resolution(self):
