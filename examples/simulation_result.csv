@@ -1,9 +1,0 @@
-network
-network_name,source,destination
-CORONET_Global_Topology.json,trx Abilene,trx Albany
-design
-power_mode,span_power_range,design_pch,baud_rate
-True,"[-2, 3, 0.5]",0,32000000000.0
-simulation results
-Pch_dBm,OSNR_ASE_0.1nm,OSNR_ASE_signal_bw,SNR_nli_signal_bw,SNR_total_signal_bw
-0.0,15.16,11.08,15.74,9.8
