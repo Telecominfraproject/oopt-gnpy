@@ -554,6 +554,6 @@ Additional details of the simulation are controlled via ``sim_params.json``:
       "nli_method_name": "ggn_spectrally_separated",
       "wdm_grid_size": 50e9,
       "dispersion_tolerance": 1,
-      "phase_shift_tollerance": 0.1
+      "phase_shift_tolerance": 0.1
     }
   }

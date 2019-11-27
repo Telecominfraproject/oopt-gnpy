@@ -92,7 +92,7 @@ def frequency_resolution(carrier, carriers, sim_params, fiber):
     alpha0 = fiber.alpha0()
     beta2 = fiber.params.beta2
     k_tol = sim_params.nli_params.dispersion_tolerance
-    phi_tol = sim_params.nli_params.phase_shift_tollerance
+    phi_tol = sim_params.nli_params.phase_shift_tolerance
     f_pump_resolution, method_f_pump, res_dict_pump = \
         _get_freq_res_k_phi(0, grid_size, alpha0, delta_z, beta2, k_tol, phi_tol)
     f_cut_resolution = {}
