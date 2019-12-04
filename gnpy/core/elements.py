@@ -21,7 +21,6 @@ unique identifier and a printable name.
 from numpy import abs, arange, array, exp, divide, errstate, ones, squeeze
 from numpy import interp, log10, mean, pi, polyfit, polyval, sum
 from scipy.constants import c, h
-from scipy.interpolate import interp1d
 from collections import namedtuple
 
 from gnpy.core.node import Node
@@ -309,8 +308,7 @@ class Fiber(Node):
         :return: alpha: power attenuation coefficient for f in frequencies [Neper/m]
         """
         if type(self.params.loss_coef) == dict:
-            alpha_interp = interp1d(self.params.lin_loss_exp, self.params.f_loss_ref)
-            alpha = alpha_interp(frequencies)
+            alpha = interp(frequencies, self.params.f_loss_ref, self.params.lin_loss_exp)
         else:
             alpha = self.params.lin_loss_exp * ones(frequencies.shape)
 
