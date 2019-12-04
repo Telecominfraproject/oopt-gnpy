@@ -544,16 +544,16 @@ Additional details of the simulation are controlled via ``sim_params.json``:
 .. code-block:: json
 
   {
-    "raman_computed_channels": [1, 18, 37, 56, 75],
-    "raman_parameters": {
-      "flag_raman": true,
-      "space_resolution": 10e3,
-      "tolerance": 1e-8
-    },
-    "nli_parameters": {
-      "nli_method_name": "ggn_spectrally_separated",
-      "wdm_grid_size": 50e9,
-      "dispersion_tolerance": 1,
-      "phase_shift_tolerance": 0.1
-    }
+  "raman_parameters": {
+    "flag_raman": true,
+    "space_resolution": 10e3,
+    "tolerance": 1e-8
+  },
+  "nli_parameters": {
+  	"nli_method_name": "ggn_spectrally_separated",
+  	"wdm_grid_size": 50e9,
+  	"dispersion_tolerance": 1,
+  	"phase_shift_tolerance": 0.1,
+    "computed_channels": [1, 18, 37, 56, 75]
   }
+}
