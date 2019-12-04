@@ -9,7 +9,7 @@ from gnpy.core.elements import Fiber
 
 
 def test_sim_parameters():
-    f = open('data/test_sim_params.json')
+    f = open('tests/data/test_sim_params.json')
     j = json.load(f)
     sim_params = SimParams(**j)
     Simulation.set_params(sim_params)
