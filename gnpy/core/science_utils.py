@@ -32,7 +32,7 @@ def propagate_raman_fiber(fiber, *carriers):
     carriers = tuple(f for f in chan)
 
     # evaluate fiber attenuation involving also SRS if required by sim_params
-    raman_solver = RamanSolver(fiber=fiber)
+    raman_solver = fiber.raman_solver
     raman_solver.carriers = carriers
     raman_solver.raman_pumps = fiber.raman_pumps
     stimulated_raman_scattering = raman_solver.stimulated_raman_scattering
