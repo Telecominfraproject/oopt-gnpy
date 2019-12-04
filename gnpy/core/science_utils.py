@@ -49,7 +49,7 @@ def propagate_raman_fiber(fiber, *carriers):
 
     # evaluate nli and propagate in fiber
     attenuation_out = db2lin(fiber.params.con_out)
-    nli_solver = NliSolver(fiber=fiber)
+    nli_solver = fiber.nli_solver
     nli_solver.stimulated_raman_scattering = stimulated_raman_scattering
 
     nli_frequencies = []
