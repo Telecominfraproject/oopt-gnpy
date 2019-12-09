@@ -27,7 +27,7 @@ Documentation: https://gnpy.readthedocs.io
 Get In Touch
 ~~~~~~~~~~~~
 
-There are `weekly calls <https://telecominfraproject.workplace.com/events/458339931322799/>`__ about our progress.
+There are `weekly calls <https://telecominfraproject.workplace.com/events/702894886867547/>`__ about our progress.
 Newcomers, users and telecom operators are especially welcome there.
 We encourage all interested people outside the TIP to `join the project <https://telecominfraproject.com/apply-for-membership/>`__.
 
