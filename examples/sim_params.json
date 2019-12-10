@@ -9,6 +9,6 @@
   	"wdm_grid_size": 50e9,
   	"dispersion_tolerance": 1,
   	"phase_shift_tolerance": 0.1,
-    "computed_channels": [1, 18, 37, 56, 75]
+	"computed_channels": [1, 18, 37, 56, 75] 
   }
 }
