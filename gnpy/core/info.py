@@ -17,10 +17,21 @@ from gnpy.core.utils import load_json
 from gnpy.core.equipment import automatic_nch, automatic_spacing
 
 class Power(namedtuple('Power', 'signal nli ase')):
-    """carriers power in W"""
+    """Power information of a channel in W:
+    signal: signal power
+    nli: non-linear interference power in the signal -3 dB bandwidth (equal to the baud rate)
+    ase: ase noise power in the signal -3 dB bandwidth (equal to the baud rate)"""
+
 
 
 class Channel(namedtuple('Channel', 'channel_number frequency baud_rate roll_off power filter_penalty')):
+    """Object abstracting an optical signal:
+        channel_number: channel number
+        frequency: central frequency [Hz]
+        baud_rate: symbol rate [Baud]
+        roll_off: roll-off factor of root-raised-cosine shape, ∈ [0, 1]
+        power: Power object with signal, ase and nli power information
+        filter_penalty: an SNR penalty due to filtering [dB]"""
 
     def __new__(cls, channel_number, frequency, baud_rate, roll_off, power, filter_penalty=None):
         if not filter_penalty:
@@ -37,6 +48,9 @@ class Pref(namedtuple('Pref', 'p_span0, p_spani, neq_ch ')):
 
 
 class SpectralInformation(namedtuple('SpectralInformation', 'pref carriers')):
+    """Object abstracting a WDM comb:
+    pref: noiseless reference power
+    carriers: list of Channel objects containing detailed information of each channel"""
 
     def __new__(cls, pref, carriers):
         return super().__new__(cls, pref, carriers)
