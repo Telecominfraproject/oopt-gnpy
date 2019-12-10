@@ -2,14 +2,17 @@
 # -*- coding: utf-8 -*-
 
 import json, pytest
+from pathlib import Path
 
 from gnpy.core.parameters import SimParams
 from gnpy.core.science_utils import Simulation
 from gnpy.core.elements import Fiber
 
+TEST_DIR = Path(__file__).parent
+DATA_DIR = TEST_DIR / 'data'
 
 def test_sim_parameters():
-    f = open('tests/data/test_sim_params.json')
+    f = open(DATA_DIR / 'test_sim_params.json')
     j = json.load(f)
     sim_params = SimParams(**j)
     Simulation.set_params(sim_params)
