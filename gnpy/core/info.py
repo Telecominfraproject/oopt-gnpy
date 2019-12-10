@@ -20,12 +20,17 @@ class Power(namedtuple('Power', 'signal nli ase')):
     """carriers power in W"""
 
 
-class Channel(namedtuple('Channel', 'channel_number frequency baud_rate roll_off power')):
-    pass
+class Channel(namedtuple('Channel', 'channel_number frequency baud_rate roll_off power filter_penalty')):
+
+    def __new__(cls, channel_number, frequency, baud_rate, roll_off, power, filter_penalty=None):
+        if not filter_penalty:
+            filter_penalty = 0
+
+        return super().__new__(cls, channel_number, frequency, baud_rate, roll_off, power, filter_penalty)
 
 
 class Pref(namedtuple('Pref', 'p_span0, p_spani, neq_ch ')):
-    """noiseless reference power in dBm: 
+    """noiseless reference power in dBm:
     p_span0: inital target carrier power
     p_spani: carrier power after element i
     neq_ch: equivalent channel count in dB"""
