@@ -23,21 +23,14 @@ class Power(namedtuple('Power', 'signal nli ase')):
     ase: ase noise power in the signal -3 dB bandwidth (equal to the baud rate)"""
 
 
-
 class Channel(namedtuple('Channel', 'channel_number frequency baud_rate roll_off power filter_penalty')):
     """Object abstracting an optical signal:
-        channel_number: channel number
-        frequency: central frequency [Hz]
-        baud_rate: symbol rate [Baud]
-        roll_off: roll-off factor of root-raised-cosine shape, ∈ [0, 1]
-        power: Power object with signal, ase and nli power information
-        filter_penalty: an SNR penalty due to filtering [dB]"""
-
-    def __new__(cls, channel_number, frequency, baud_rate, roll_off, power, filter_penalty=None):
-        if not filter_penalty:
-            filter_penalty = 0
-
-        return super().__new__(cls, channel_number, frequency, baud_rate, roll_off, power, filter_penalty)
+    channel_number: channel number
+    frequency: central frequency [Hz]
+    baud_rate: symbol rate [Baud]
+    roll_off: roll-off factor of root-raised-cosine shape, ∈ [0, 1]
+    power: Power object with signal, ase and nli power information
+    filter_penalty: an SNR penalty due to filtering [dB]"""
 
 
 class Pref(namedtuple('Pref', 'p_span0, p_spani, neq_ch ')):
@@ -64,7 +57,7 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, 
         pref=Pref(pref, pref, lin2db(nb_channel)),
         carriers=[
             Channel(f, (f_min+spacing*f),
-            baud_rate, roll_off, Power(power, 0, 0)) for f in range(1,nb_channel+1)
+            baud_rate, roll_off, Power(power, 0, 0), 0) for f in range(1,nb_channel+1)
             ])
     return si
 
