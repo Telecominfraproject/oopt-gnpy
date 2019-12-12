@@ -167,11 +167,10 @@ class FiberParams(Parameters):
             self._beta2 = (self._ref_wavelength ** 2) * abs(self._dispersion) / (2 * pi * c)  # 1/(m * Hz^2)
             self._beta3 = kwargs['beta3'] if 'beta3' in kwargs else 0
             if type(kwargs['loss_coef']) == dict:
-                self._loss_coef = squeeze(kwargs['loss_coef']['loss_coef_power']) \
-                                  / self._length_units_factor  # dB/m
+                self._loss_coef = squeeze(kwargs['loss_coef']['loss_coef_power']) * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = squeeze(kwargs['loss_coef']['frequency'])  # Hz
             else:
-                self._loss_coef = kwargs['loss_coef'] / self._length_units_factor  # dB/m
+                self._loss_coef = kwargs['loss_coef'] * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = 193.5e12  # Hz
             self._lin_attenuation = db2lin(self._length * self._loss_coef)
             self._lin_loss_exp = self._loss_coef / (10 * log10(exp(1)))  # linear power exponent loss Neper/m
@@ -279,3 +278,9 @@ class FiberParams(Parameters):
     @property
     def pumps_loss_coef(self):
         return self._pumps_loss_coef
+
+    def asdict(self):
+        dictionary = super().asdict()
+        dictionary['loss_coef'] = self.loss_coef * 1e3
+        return dictionary
+
