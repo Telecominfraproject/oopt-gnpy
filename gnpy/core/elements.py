@@ -386,7 +386,7 @@ class Fiber(Node):
 class RamanFiber(Fiber):
     def __init__(self, *args, params=None, **kwargs):
         super().__init__(*args, params=params, **kwargs)
-        if 'raman_pumps' in self.operational:
+        if self.operational and 'raman_pumps' in self.operational:
             self.raman_pumps = tuple(PumpParams(p['power'], p['frequency'], p['propagation_direction'])
                   for p in self.operational['raman_pumps'])
         else:
