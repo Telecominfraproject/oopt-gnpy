@@ -20,7 +20,6 @@ from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm, Fused, RamanFibe
 from gnpy.core.equipment import edfa_nf
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.units import UNITS
-from gnpy.core.science_utils import SimParams
 from gnpy.core.utils import (load_json, save_json, round2float, db2lin, merge_amplifier_restrictions)
 from collections import namedtuple
 
@@ -56,9 +55,10 @@ def network_from_json(json_data, equipment):
             temp = el_config.setdefault('params', {})
             temp = merge_amplifier_restrictions(temp, extra_params.__dict__)
             el_config['params'] = temp
-        elif typ in ['Edfa', 'Fiber']: # catch it now because the code will crash later!
+            el_config['type_variety'] = variety
+        elif typ in ['Edfa', 'Fiber', 'RamanFiber']:  # catch it now because the code will crash later!
             raise ConfigurationError(f'The {typ} of variety type {variety} was not recognized:'
-                    '\nplease check it is properly defined in the eqpt_config json file')
+                                     '\nplease check it is properly defined in the eqpt_config json file')
         cls = getattr(elements, typ)
         el = cls(**el_config)
         g.add_node(el)
@@ -440,7 +440,7 @@ def calculate_new_length(fiber_length, bounds, target_length):
 
 
 def split_fiber(network, fiber, bounds, target_length, equipment):
-    new_length, n_spans = calculate_new_length(fiber.length, bounds, target_length)
+    new_length, n_spans = calculate_new_length(fiber.params.length, bounds, target_length)
     if n_spans == 1:
         return
 
@@ -452,17 +452,15 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
 
     network.remove_node(fiber)
 
-    fiber_params = fiber.params._asdict()
-    fiber_params['length'] = new_length / UNITS[fiber.params.length_units]
-    fiber_params['con_in'] = fiber.con_in
-    fiber_params['con_out'] = fiber.con_out
+    fiber.params.length = new_length
 
     f = interp1d([prev_node.lng, next_node.lng], [prev_node.lat, next_node.lat])
     xpos = [prev_node.lng + (next_node.lng - prev_node.lng) * (n+1)/(n_spans+1) for n in range(n_spans)]
     ypos = f(xpos)
     for span, lng, lat in zip(range(n_spans), xpos, ypos):
-        new_span = Fiber(uid = f'{fiber.uid}_({span+1}/{n_spans})',
-                          metadata = {
+        new_span = Fiber(uid=f'{fiber.uid}_({span+1}/{n_spans})',
+                         type_variety=fiber.type_variety,
+                          metadata={
                             'location': {
                                 'latitude':  lat,
                                 'longitude': lng,
@@ -470,8 +468,8 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
                                 'region':    fiber.loc.region,
                             }
                           },
-                          params = fiber_params)
-        if isinstance(prev_node,Fiber):
+                          params=fiber.params.asdict())
+        if isinstance(prev_node, Fiber):
             edgeweight = prev_node.params.length
         else:
             edgeweight = 0.01
@@ -485,11 +483,11 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
 
 def add_connector_loss(network, fibers, default_con_in, default_con_out, EOL):
     for fiber in fibers:
-        if fiber.con_in is None: fiber.con_in = default_con_in
-        if fiber.con_out is None: fiber.con_out = default_con_out
+        if fiber.params.con_in is None: fiber.params.con_in = default_con_in
+        if fiber.params.con_out is None: fiber.params.con_out = default_con_out
         next_node = next(n for n in network.successors(fiber))
         if not isinstance(next_node, Fused):
-            fiber.con_out += EOL
+            fiber.params.con_out += EOL
 
 def add_fiber_padding(network, fibers, padding):
     """last_fibers = (fiber for n in network.nodes()
@@ -509,10 +507,10 @@ def add_fiber_padding(network, fibers, padding):
             # in order to support no booster , fused might be placed
             # just after a roadm: need to check that first_fiber is really a fiber
             if isinstance(first_fiber,Fiber):
-                if first_fiber.att_in is None:
-                    first_fiber.att_in = padding - this_span_loss
+                if first_fiber.params.att_in is None:
+                    first_fiber.params.att_in = padding - this_span_loss
                 else:
-                    first_fiber.att_in = first_fiber.att_in + padding - this_span_loss
+                    first_fiber.params.att_in = first_fiber.params.att_in + padding - this_span_loss
 
 def build_network(network, equipment, pref_ch_db, pref_total_db):
     default_span_data = equipment['Span']['default']
@@ -547,12 +545,3 @@ def build_network(network, equipment, pref_ch_db, pref_total_db):
         trx = [t for t in network.nodes() if isinstance(t, Transceiver)]
         for t in trx:
             set_egress_amplifier(network, t, equipment, pref_total_db)
-
-def load_sim_params(filename):
-    sim_params = load_json(filename)
-    return SimParams(params=sim_params)
-
-def configure_network(network, sim_params):
-    for node in network.nodes:
-        if isinstance(node, RamanFiber):
-            node.sim_params = sim_params

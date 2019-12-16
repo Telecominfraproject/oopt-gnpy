@@ -22,11 +22,14 @@ from numpy import linspace, mean, log10
 from matplotlib.pyplot import show, axis, figure, title, text
 from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels, dijkstra_path)
-from gnpy.core.network import load_network, build_network, save_network, load_sim_params, configure_network
+from gnpy.core.network import load_network, build_network, save_network
 from gnpy.core.elements import Transceiver, Fiber, RamanFiber, Edfa, Roadm
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
 from gnpy.core.request import Path_request, RequestParams, compute_constrained_path, propagate2
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
+from gnpy.core.parameters import SimParams
+from gnpy.core.science_utils import Simulation
+from gnpy.core.utils import load_json
 import gnpy.core.ansi_escapes as ansi_escapes
 
 logger = getLogger(__name__)
@@ -126,14 +129,16 @@ def main(network, equipment, source, destination, sim_params, req=None):
     build_network(network, equipment, pref_ch_db, pref_total_db)
     path = compute_constrained_path(network, req)
 
-    if len([s.length for s in path if isinstance(s, RamanFiber)]):
+    if sim_params:
+        Simulation.set_params(sim_params)
+
+    if len([s.params.length for s in path if isinstance(s, RamanFiber)]):
         if sim_params is None:
             print(f'{ansi_escapes.red}Invocation error:{ansi_escapes.reset} '
                   f'RamanFiber requires passing simulation params via --sim-params')
             exit(1)
-        configure_network(network, sim_params)
 
-    spans = [s.length for s in path if isinstance(s, RamanFiber) or isinstance(s, Fiber)]
+    spans = [s.params.length for s in path if isinstance(s, RamanFiber) or isinstance(s, Fiber)]
     print(f'\nThere are {len(spans)} fiber spans over {sum(spans)/1000:.0f} km between {source.uid} '
           f'and {destination.uid}')
     print(f'\nNow propagating between {source.uid} and {destination.uid}:')
@@ -215,7 +220,7 @@ if __name__ == '__main__':
     try:
         equipment = load_equipment(args.equipment)
         network = load_network(args.filename, equipment, args.names_matching)
-        sim_params = load_sim_params(args.sim_params) if args.sim_params is not None else None
+        sim_params = SimParams(**load_json(args.sim_params)) if args.sim_params is not None else None
     except EquipmentConfigError as e:
         print(f'{ansi_escapes.red}Configuration error in the equipment library:{ansi_escapes.reset} {e}')
         exit(1)

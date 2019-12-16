@@ -412,7 +412,6 @@ parameters:
         "type_variety": "SSMF",
         "params":
         {
-              "type_variety": "SSMF",
               "length": 120.0,
               "loss_coef": 0.2,
               "length_units": "km",

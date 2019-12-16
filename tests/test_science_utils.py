@@ -11,7 +11,9 @@ from pandas import read_csv
 from numpy.testing import assert_allclose
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.elements import RamanFiber
-from gnpy.core.network import load_sim_params
+from gnpy.core.parameters import SimParams
+from gnpy.core.science_utils import Simulation
+from gnpy.core.utils import load_json
 from pathlib import Path
 TEST_DIR = Path(__file__).parent
 
@@ -29,12 +31,9 @@ def test_raman_fiber():
     spectral_info_params.pop('sys_margins')
     spectral_info_input = create_input_spectral_information(power=power, **spectral_info_params)
 
-    # RamanFiber
-    with open(TEST_DIR / 'data' / 'raman_fiber_config.json', 'r') as file:
-        raman_fiber_params = json.load(file)
-    sim_params = load_sim_params(TEST_DIR / 'data' / 'sim_params.json')
-    fiber = RamanFiber(**raman_fiber_params)
-    fiber.sim_params = sim_params
+    sim_params = SimParams(**load_json(TEST_DIR / 'data' / 'sim_params.json'))
+    Simulation.set_params(sim_params)
+    fiber = RamanFiber(**load_json(TEST_DIR / 'data' / 'raman_fiber_config.json'))
 
     # propagation
     spectral_info_out = fiber(spectral_info_input)
