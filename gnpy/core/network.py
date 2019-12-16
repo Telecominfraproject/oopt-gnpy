@@ -20,9 +20,8 @@ from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm, Fused, RamanFibe
 from gnpy.core.equipment import edfa_nf
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.units import UNITS
-from gnpy.core.utils import (load_json, save_json, round2float, db2lin,
-                            merge_amplifier_restrictions)
 from gnpy.core.science_utils import SimParams
+from gnpy.core.utils import (load_json, save_json, round2float, db2lin, merge_amplifier_restrictions)
 from collections import namedtuple
 
 logger = getLogger(__name__)
@@ -430,9 +429,9 @@ def calculate_new_length(fiber_length, bounds, target_length):
     delta2 = length2-target_length
     result2 = (length2, n_spans)
 
-    if (bounds.start<=length1<=bounds.stop) and not(bounds.start<=length2<=bounds.stop):
+    if (bounds.start <= length1 <= bounds.stop) and not(bounds.start <= length2 <= bounds.stop):
         result = result1
-    elif (bounds.start<=length2<=bounds.stop) and not(bounds.start<=length1<=bounds.stop):
+    elif (bounds.start <= length2 <= bounds.stop) and not(bounds.start <= length1 <= bounds.stop):
         result = result2
     else:
         result = result1 if delta1 < delta2 else result2
@@ -476,13 +475,13 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
             edgeweight = prev_node.params.length
         else:
             edgeweight = 0.01
-        network.add_edge(prev_node, new_span, weight = edgeweight)
+        network.add_edge(prev_node, new_span, weight=edgeweight)
         prev_node = new_span
-    if isinstance(prev_node,Fiber):
+    if isinstance(prev_node, Fiber):
         edgeweight = prev_node.params.length
     else:
         edgeweight = 0.01    
-    network.add_edge(prev_node, next_node, weight = edgeweight)
+    network.add_edge(prev_node, next_node, weight=edgeweight)
 
 def add_connector_loss(network, fibers, default_con_in, default_con_out, EOL):
     for fiber in fibers:
@@ -518,7 +517,7 @@ def add_fiber_padding(network, fibers, padding):
 def build_network(network, equipment, pref_ch_db, pref_total_db):
     default_span_data = equipment['Span']['default']
     max_length = int(default_span_data.max_length * UNITS[default_span_data.length_units])
-    min_length = max(int(default_span_data.padding/0.2*1e3),50_000)
+    min_length = max(int(default_span_data.padding/0.2*1e3), 50_000)
     bounds = range(min_length, max_length)
     target_length = max(min_length, 90_000)
     default_con_in = default_span_data.con_in
@@ -534,8 +533,7 @@ def build_network(network, equipment, pref_ch_db, pref_total_db):
     for fiber in fibers:
         split_fiber(network, fiber, bounds, target_length, equipment)
 
-    amplified_nodes = [n for n in network.nodes()
-                        if isinstance(n, Fiber) or isinstance(n, Roadm)]
+    amplified_nodes = [n for n in network.nodes() if isinstance(n, Fiber) or isinstance(n, Roadm)]
 
     for node in amplified_nodes:
         add_egress_amplifier(network, node)

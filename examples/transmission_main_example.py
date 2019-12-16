@@ -128,12 +128,14 @@ def main(network, equipment, source, destination, sim_params, req=None):
 
     if len([s.length for s in path if isinstance(s, RamanFiber)]):
         if sim_params is None:
-            print(f'{ansi_escapes.red}Invocation error:{ansi_escapes.reset} RamanFiber requires passing simulation params via --sim-params')
+            print(f'{ansi_escapes.red}Invocation error:{ansi_escapes.reset} '
+                  f'RamanFiber requires passing simulation params via --sim-params')
             exit(1)
         configure_network(network, sim_params)
 
     spans = [s.length for s in path if isinstance(s, RamanFiber) or isinstance(s, Fiber)]
-    print(f'\nThere are {len(spans)} fiber spans over {sum(spans)/1000:.0f} km between {source.uid} and {destination.uid}')
+    print(f'\nThere are {len(spans)} fiber spans over {sum(spans)/1000:.0f} km between {source.uid} '
+          f'and {destination.uid}')
     print(f'\nNow propagating between {source.uid} and {destination.uid}:')
 
     try:

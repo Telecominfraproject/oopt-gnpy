@@ -505,9 +505,9 @@ class EdfaOperational:
         self.update_attr(operational)
 
     def update_attr(self, kwargs):
-        clean_kwargs = {k:v for k,v in kwargs.items() if v !=''}
+        clean_kwargs = {k:v for k,v in kwargs.items() if v != ''}
         for k,v in self.default_values.items():
-            setattr(self, k, clean_kwargs.get(k,v))
+            setattr(self, k, clean_kwargs.get(k, v))
 
     def __repr__(self):
         return (f'{type(self).__name__}('

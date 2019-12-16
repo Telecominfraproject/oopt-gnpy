@@ -45,10 +45,10 @@ parser.add_argument('network_filename', nargs='?', type = Path, default= Path(__
 parser.add_argument('service_filename', nargs='?', type = Path, default= Path(__file__).parent / 'meshTopologyExampleV2.xls')
 parser.add_argument('eqpt_filename', nargs='?', type = Path, default=Path(__file__).parent / 'eqpt_config.json')
 parser.add_argument('-v', '--verbose', action='count', default=0, help='increases verbosity for each occurence')
-parser.add_argument('-o', '--output', type = Path)
+parser.add_argument('-o', '--output', type=Path)
 
 
-def requests_from_json(json_data,equipment):
+def requests_from_json(json_data, equipment):
     requests_list = []
 
     for req in json_data['path-request']:
@@ -175,19 +175,19 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}\n')
         # for debug
         # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
-        if total_path :
+        if total_path:
             if pathreq.baud_rate is not None:
-                total_path = propagate(total_path,pathreq,equipment)
+                total_path = propagate(total_path, pathreq, equipment)
                 # for el in total_path: print(el)
                 temp_snr01nm = round(mean(total_path[-1].snr+lin2db(pathreq.baud_rate/(12.5e9))),2)
-                if temp_snr01nm < pathreq.OSNR :
+                if temp_snr01nm < pathreq.OSNR:
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}\n' +\
                     f'\tcomputedSNR in 0.1nm = {temp_snr01nm} - required osnr {pathreq.OSNR}\n'
                     print(msg)
                     logger.warning(msg)
                     total_path = []
             else:
-                total_path,mode = propagate_and_optimize_mode(total_path,pathreq,equipment)
+                total_path, mode = propagate_and_optimize_mode(total_path,pathreq,equipment)
                 # if no baudrate satisfies spacing, no mode is returned and an empty path is returned
                 # a warning is shown in the propagate_and_optimize_mode
                 if mode is not None :
