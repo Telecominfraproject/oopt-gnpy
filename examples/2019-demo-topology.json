@@ -1,7 +1,7 @@
 {
   "elements": [
     {
-      "uid": "netconf:10.0.254.93:830",
+      "uid": "netconf:10.0.254.105:830",
       "type": "Transceiver"
     },
     {
@@ -11,7 +11,7 @@
         "target_pch_out_db": -2.0,
         "per_degree_target_pch_out_db": [
           {
-            "to_node": "netconf:10.0.254.93:830",
+            "to_node": "netconf:10.0.254.105:830",
             "target_pch_out_db": -25
           },
           {
@@ -260,7 +260,7 @@
       }
     },
     {
-      "uid": "netconf:10.0.254.94:830",
+      "uid": "netconf:10.0.254.103:830",
       "type": "Transceiver"
     },
     {
@@ -270,7 +270,7 @@
         "target_pch_out_db": -2.0,
         "per_degree_target_pch_out_db": [
           {
-            "to_node": "netconf:10.0.254.94:830",
+            "to_node": "netconf:10.0.254.103:830",
             "target_pch_out_db": -25
           },
           {
@@ -544,7 +544,7 @@
       }
     },
     {
-      "uid": "netconf:10.0.254.99:830",
+      "uid": "netconf:10.0.254.226:830",
       "type": "Roadm",
       "params": {
         "target_pch_out_db": -23.0,
@@ -661,7 +661,7 @@
       }
     },
     {
-      "uid": "netconf:10.0.254.104:830",
+      "uid": "netconf:10.0.254.236:830",
       "type": "Roadm",
       "params": {
         "target_pch_out_db": -23.0,
@@ -852,12 +852,12 @@
   ],
   "connections": [
     {
-      "from_node": "netconf:10.0.254.93:830",
+      "from_node": "netconf:10.0.254.105:830",
       "to_node": "netconf:10.0.254.107:830"
     },
     {
       "from_node": "netconf:10.0.254.107:830",
-      "to_node": "netconf:10.0.254.93:830"
+      "to_node": "netconf:10.0.254.105:830"
     },
     {
       "from_node": "netconf:10.0.254.101:830",
@@ -972,12 +972,12 @@
       "to_node": "netconf:10.0.254.101:830"
     },
     {
-      "from_node": "netconf:10.0.254.94:830",
+      "from_node": "netconf:10.0.254.103:830",
       "to_node": "netconf:10.0.254.225:830"
     },
     {
       "from_node": "netconf:10.0.254.225:830",
-      "to_node": "netconf:10.0.254.94:830"
+      "to_node": "netconf:10.0.254.103:830"
     },
     {
       "from_node": "netconf:10.0.254.100:830",
@@ -1100,12 +1100,12 @@
       "to_node": "trx-Cologne"
     },
     {
-      "from_node": "netconf:10.0.254.99:830",
+      "from_node": "netconf:10.0.254.226:830",
       "to_node": "roadm-Cologne-L1-booster"
     },
     {
       "from_node": "roadm-Cologne-L1-preamp",
-      "to_node": "netconf:10.0.254.99:830"
+      "to_node": "netconf:10.0.254.226:830"
     },
     {
       "from_node": "roadm-Cologne-AD",
@@ -1121,10 +1121,10 @@
     },
     {
       "from_node": "splice-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L1))-(roadm-Cologne-L1)",
-      "to_node": "netconf:10.0.254.99:830"
+      "to_node": "netconf:10.0.254.226:830"
     },
     {
-      "from_node": "netconf:10.0.254.99:830",
+      "from_node": "netconf:10.0.254.226:830",
       "to_node": "splice-(roadm-Cologne-L1)-(patch-(roadm-Cologne-L1)-(roadm-Cologne-AD))"
     },
     {
@@ -1140,7 +1140,7 @@
       "to_node": "roadm-Cologne-AD"
     },
     {
-      "from_node": "netconf:10.0.254.99:830",
+      "from_node": "netconf:10.0.254.226:830",
       "to_node": "splice-(roadm-Cologne-L1)-(patch-(roadm-Cologne-L1)-(roadm-Cologne-L2))"
     },
     {
@@ -1153,15 +1153,15 @@
     },
     {
       "from_node": "splice-(patch-(roadm-Cologne-L1)-(roadm-Cologne-L2))-(roadm-Cologne-L2)",
-      "to_node": "netconf:10.0.254.104:830"
+      "to_node": "netconf:10.0.254.236:830"
     },
     {
-      "from_node": "netconf:10.0.254.104:830",
+      "from_node": "netconf:10.0.254.236:830",
       "to_node": "roadm-Cologne-L2-booster"
     },
     {
       "from_node": "roadm-Cologne-L2-preamp",
-      "to_node": "netconf:10.0.254.104:830"
+      "to_node": "netconf:10.0.254.236:830"
     },
     {
       "from_node": "roadm-Cologne-AD",
@@ -1177,10 +1177,10 @@
     },
     {
       "from_node": "splice-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L2))-(roadm-Cologne-L2)",
-      "to_node": "netconf:10.0.254.104:830"
+      "to_node": "netconf:10.0.254.236:830"
     },
     {
-      "from_node": "netconf:10.0.254.104:830",
+      "from_node": "netconf:10.0.254.236:830",
       "to_node": "splice-(roadm-Cologne-L2)-(patch-(roadm-Cologne-L2)-(roadm-Cologne-AD))"
     },
     {
@@ -1196,7 +1196,7 @@
       "to_node": "roadm-Cologne-AD"
     },
     {
-      "from_node": "netconf:10.0.254.104:830",
+      "from_node": "netconf:10.0.254.236:830",
       "to_node": "splice-(roadm-Cologne-L2)-(patch-(roadm-Cologne-L2)-(roadm-Cologne-L1))"
     },
     {
@@ -1209,7 +1209,7 @@
     },
     {
       "from_node": "splice-(patch-(roadm-Cologne-L2)-(roadm-Cologne-L1))-(roadm-Cologne-L1)",
-      "to_node": "netconf:10.0.254.99:830"
+      "to_node": "netconf:10.0.254.226:830"
     },
     {
       "from_node": "roadm-Amsterdam-L1-booster",

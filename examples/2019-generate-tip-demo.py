@@ -141,8 +141,10 @@ for _, E in enumerate(J["elements"]):
     #    E["operational"]["out_voa"] = 21
 
 translate = {
-    "trx-Amsterdam": "10.0.254.93",
-    "trx-Bremen": "10.0.254.94",
+    #"trx-Amsterdam": "10.0.254.93",
+    #"trx-Bremen": "10.0.254.94",
+    "trx-Amsterdam": "10.0.254.105",
+    "trx-Bremen": "10.0.254.103",
 
     # coherent-v9u
     "roadm-Amsterdam-AD": "10.0.254.107",
@@ -157,10 +159,14 @@ translate = {
     # WKP: Bremen -> Cologne
     "roadm-Bremen-L1": "10.0.254.100",
     # LK6: Cologne -> Bremen
-    "roadm-Cologne-L2": "10.0.254.104",
+    #"roadm-Cologne-L2": "10.0.254.104",
+    # Q7N: Cologne -> Bremen
+    "roadm-Cologne-L2": "10.0.254.236",
 
     # TQQ: Cologne -> Amsterdam
-    "roadm-Cologne-L1": "10.0.254.99",
+    #"roadm-Cologne-L1": "10.0.254.99",
+    # M0N: Cologne -> Amsterdam
+    "roadm-Cologne-L1": "10.0.254.226",
     # NFP: Amsterdam -> Cologne
     "roadm-Amsterdam-L2": "10.0.254.235",
 }
