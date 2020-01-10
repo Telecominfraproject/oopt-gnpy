@@ -353,9 +353,9 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
         except AttributeError:
             nb_wl = ceil(rqs[i].path_bandwidth / rqs[i].bit_rate)
             # computes the total nb of slots according to requested spacing
-            # todo : express superchannels
+            # TODO : express superchannels
             # assumes that all channels must be grouped
-            # todo : enables non contiguous reservation in case of blocking
+            # TODO : enables non contiguous reservation in case of blocking
             requested_m = ceil(rqs[i].spacing / 0.0125e12) * nb_wl
             # concatenate all path and reversed path elements to derive slots availability
             (center_n, startn, stopn), path_oms = spectrum_selection(pth + rpths[i], oms_list, requested_m,
