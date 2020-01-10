@@ -72,7 +72,7 @@ class Bitmap:
 OMSParams = namedtuple('OMSParams', 'oms_id el_id_list el_list')
 
 class OMS:
-    """ OMS class is the logical container that represent a link betwoeen two adjacent ROADMs and
+    """ OMS class is the logical container that represent a link between two adjacent ROADMs and
         records the crossed elements and the occupied spectrum
     """
     def __init__(self, *args, **params):
@@ -102,7 +102,7 @@ class OMS:
         """ frequencies expressed in Hz
         """
         if existing_spectrum is None:
-            # add some 150 GHz margin to eable a center channel on f_min
+            # add some 150 GHz margin to enable a center channel on f_min
             # use ITU-T G694.1
             # Flexible DWDM grid definition
             # For the flexible DWDM grid, the allowed frequency slots have a nominal
