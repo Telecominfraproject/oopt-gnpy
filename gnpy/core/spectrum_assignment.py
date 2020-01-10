@@ -338,6 +338,8 @@ def select_candidate(candidates, policy):
             return candidates[0]
         else:
             return (None, None, None)
+    else:
+        raise ServiceError('Only first_fit spectrum assignment policy is implemented.')
 
 def pth_assign_spectrum(pths, rqs, oms_list, rpths):
     """ basic first fit assignment
