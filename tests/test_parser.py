@@ -309,26 +309,11 @@ def test_json_response_generation(xls_input, expected_response_file):
         if i == 1:
             my_rq = deepcopy(rqs[i])
             my_rq.M = 0
-            error_handled = False
-            try:
-                temp_result = {
-                    'response': Result_element(my_rq, pth, reversed_propagatedpths[i]).json}
-            except ServiceError:
-                error_handled = True
-            if not error_handled:
-                print('Service error with M=0 not correctly handled')
-                raise AssertionError()
-            error_handled = False
+            with pytest.raises(ServiceError):
+                Result_element(my_rq, pth, reversed_propagatedpths[i]).json
+
             my_rq.blocking_reason = 'NO_SPECTRUM'
-            try:
-                temp_result = {
-                    'response': Result_element(my_rq, pth, reversed_propagatedpths[i]).json}
-                print(temp_result)
-            except ServiceError:
-                error_handled = True
-            if error_handled:
-                print('Service error with NO_SPECTRUM blocking reason not correctly handled')
-                raise AssertionError()
+            Result_element(my_rq, pth, reversed_propagatedpths[i]).json
 
         result.append(Result_element(rqs[i], pth, reversed_propagatedpths[i]))
 
