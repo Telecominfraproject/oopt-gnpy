@@ -233,19 +233,8 @@ def build_oms_list(network, equipment):
                     nd_out.oms_list = []
                     nd_out.oms_list.append(oms_id)
 
-                # print(f'coucou2 {oms.oms_id} {oms.el_id_list[0]} {oms.el_id_list[-1]}')
-                # for e in oms.el_id_list:
-                #     print(f' {e}')
-
-                # TODO do not forget to correct next line !
-                # to test different grids
-                # TODO move this to test
-                if oms_id < 3:
-                    oms.update_spectrum(equipment['SI']['default'].f_min,
-                                        equipment['SI']['default'].f_max, grid=0.00625e12)
-                else:
-                    oms.update_spectrum(equipment['SI']['default'].f_min,
-                                        equipment['SI']['default'].f_max, grid=0.00625e12)
+                oms.update_spectrum(equipment['SI']['default'].f_min,
+                                    equipment['SI']['default'].f_max, grid=0.00625e12)
                 # oms.assign_spectrum(13,7) gives back (193137500000000.0, 193225000000000.0)
                 # as in the example in the standard
                 # oms.assign_spectrum(13,7)
