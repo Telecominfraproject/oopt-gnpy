@@ -37,14 +37,10 @@ class Bitmap:
         self.freq_index = list(range(n_min, n_max+1))
         if bitmap is None:
             self.bitmap = [1] * (n_max-n_min+1)
+        elif len(bitmap) == len(self.freq_index):
+            self.bitmap = bitmap
         else:
-            if len(bitmap) == len(self.freq_index):
-                self.bitmap = bitmap
-            else:
-                msg = f'bitmap is not consistant with f_min{f_min} - n :' +\
-                      f'{n_min} and f_max{f_max}- n :{n_max}'
-                LOGGER.critical(msg)
-                raise SpectrumError(msg)
+            raise SpectrumError(f'bitmap is not consistant with f_min{f_min} - n: {n_min} and f_max{f_max}- n :{n_max}')
 
     def getn(self, i):
         """ converts the n (itu grid) into a local index
@@ -122,13 +118,9 @@ class OMS:
     def assign_spectrum(self, nvalue, mvalue):
         """ change oms spectrum to mark spectrum assigned
         """
-        # print("assign_spectrum")
-        # print(f'n , m :{n},{m}')
         if (nvalue is None or mvalue is None or isinstance(nvalue, float)
                 or isinstance(mvalue, float) or mvalue == 0):
-            msg = f'could not assign None values'
-            LOGGER.critical(msg)
-            raise SpectrumError(msg)
+            raise SpectrumError('could not assign None values')
         startn, stopn = mvalue_to_slots(nvalue, mvalue)
         # print(f'startn stop n {startn} , {stopn}')
         # assumes that guardbands are sufficient to ensure that assigning a center channel
