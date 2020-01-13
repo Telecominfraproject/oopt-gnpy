@@ -1,0 +1,79 @@
+{
+  "path-request": [
+    {
+      "request-id": "0",
+      "source": "trx Lorient_KMA",
+      "destination": "trx Vannes_KBE",
+      "src-tp-id": "trx Lorient_KMA",
+      "dst-tp-id": "trx Vannes_KBE",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 1",
+          "effective-freq-slot": [
+            {
+              "N": "null",
+              "M": "null"
+            }
+          ],
+          "spacing": 50000000000.0,
+          "max-nb-of-channel": 80,
+          "output-power": null,
+          "path_bandwidth": 100000000000.0
+        }
+      }
+    },
+    {
+      "request-id": "1",
+      "source": "trx Brest_KLA",
+      "destination": "trx Vannes_KBE",
+      "src-tp-id": "trx Brest_KLA",
+      "dst-tp-id": "trx Vannes_KBE",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 1",
+          "effective-freq-slot": [
+            {
+              "N": "null",
+              "M": "null"
+            }
+          ],
+          "spacing": 50000000000.0,
+          "max-nb-of-channel": null,
+          "output-power": 0.0012589254117941673,
+          "path_bandwidth": 10000000000.0
+        }
+      }
+    },
+    {
+      "request-id": "3",
+      "source": "trx Lannion_CAS",
+      "destination": "trx Rennes_STA",
+      "src-tp-id": "trx Lannion_CAS",
+      "dst-tp-id": "trx Rennes_STA",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "vendorA_trx-type1",
+          "trx_mode": "mode 1",
+          "effective-freq-slot": [
+            {
+              "N": "null",
+              "M": "null"
+            }
+          ],
+          "spacing": 50000000000.0,
+          "max-nb-of-channel": 80,
+          "output-power": 0.0012589254117941673,
+          "path_bandwidth": 60000000000.0
+        }
+      }
+    }
+  ]
+}

@@ -42,6 +42,15 @@
           {
             "path-route-object": {
               "index": 1,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
               "transponder": {
                 "transponder-type": "Voyager",
                 "transponder-mode": "mode 1"
@@ -50,7 +59,7 @@
           },
           {
             "path-route-object": {
-              "index": 2,
+              "index": 3,
               "num-unnum-hop": {
                 "node-id": "roadm Lorient_KMA",
                 "link-tp-id": "roadm Lorient_KMA"
@@ -59,7 +68,16 @@
           },
           {
             "path-route-object": {
-              "index": 3,
+              "index": 4,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 5,
               "num-unnum-hop": {
                 "node-id": "Edfa1_roadm Lorient_KMA",
                 "link-tp-id": "Edfa1_roadm Lorient_KMA"
@@ -68,7 +86,16 @@
           },
           {
             "path-route-object": {
-              "index": 4,
+              "index": 6,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 7,
               "num-unnum-hop": {
                 "node-id": "fiber (Lorient_KMA → Vannes_KBE)-F055",
                 "link-tp-id": "fiber (Lorient_KMA → Vannes_KBE)-F055"
@@ -77,7 +104,16 @@
           },
           {
             "path-route-object": {
-              "index": 5,
+              "index": 8,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 9,
               "num-unnum-hop": {
                 "node-id": "Edfa0_fiber (Lorient_KMA → Vannes_KBE)-F055",
                 "link-tp-id": "Edfa0_fiber (Lorient_KMA → Vannes_KBE)-F055"
@@ -86,7 +122,16 @@
           },
           {
             "path-route-object": {
-              "index": 6,
+              "index": 10,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 11,
               "num-unnum-hop": {
                 "node-id": "roadm Vannes_KBE",
                 "link-tp-id": "roadm Vannes_KBE"
@@ -95,7 +140,16 @@
           },
           {
             "path-route-object": {
-              "index": 7,
+              "index": 12,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 13,
               "num-unnum-hop": {
                 "node-id": "trx Vannes_KBE",
                 "link-tp-id": "trx Vannes_KBE"
@@ -104,7 +158,16 @@
           },
           {
             "path-route-object": {
-              "index": 8,
+              "index": 14,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 15,
               "transponder": {
                 "transponder-type": "Voyager",
                 "transponder-mode": "mode 1"
@@ -140,7 +203,7 @@
           },
           {
             "metric-type": "path_bandwidth",
-            "accumulative-value": 0
+            "accumulative-value": 10000000000.0
           }
         ],
         "path-route-objects": [
@@ -156,6 +219,15 @@
           {
             "path-route-object": {
               "index": 1,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
               "transponder": {
                 "transponder-type": "Voyager",
                 "transponder-mode": "mode 1"
@@ -164,7 +236,7 @@
           },
           {
             "path-route-object": {
-              "index": 2,
+              "index": 3,
               "num-unnum-hop": {
                 "node-id": "roadm Brest_KLA",
                 "link-tp-id": "roadm Brest_KLA"
@@ -173,7 +245,16 @@
           },
           {
             "path-route-object": {
-              "index": 3,
+              "index": 4,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 5,
               "num-unnum-hop": {
                 "node-id": "Edfa0_roadm Brest_KLA",
                 "link-tp-id": "Edfa0_roadm Brest_KLA"
@@ -182,7 +263,16 @@
           },
           {
             "path-route-object": {
-              "index": 4,
+              "index": 6,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 7,
               "num-unnum-hop": {
                 "node-id": "fiber (Brest_KLA → Morlaix)-F060",
                 "link-tp-id": "fiber (Brest_KLA → Morlaix)-F060"
@@ -191,7 +281,16 @@
           },
           {
             "path-route-object": {
-              "index": 5,
+              "index": 8,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 9,
               "num-unnum-hop": {
                 "node-id": "east fused spans in Morlaix",
                 "link-tp-id": "east fused spans in Morlaix"
@@ -200,7 +299,16 @@
           },
           {
             "path-route-object": {
-              "index": 6,
+              "index": 10,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 11,
               "num-unnum-hop": {
                 "node-id": "fiber (Morlaix → Lannion_CAS)-F059",
                 "link-tp-id": "fiber (Morlaix → Lannion_CAS)-F059"
@@ -209,7 +317,16 @@
           },
           {
             "path-route-object": {
-              "index": 7,
+              "index": 12,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 13,
               "num-unnum-hop": {
                 "node-id": "west edfa in Lannion_CAS to Morlaix",
                 "link-tp-id": "west edfa in Lannion_CAS to Morlaix"
@@ -218,7 +335,16 @@
           },
           {
             "path-route-object": {
-              "index": 8,
+              "index": 14,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 15,
               "num-unnum-hop": {
                 "node-id": "roadm Lannion_CAS",
                 "link-tp-id": "roadm Lannion_CAS"
@@ -227,7 +353,16 @@
           },
           {
             "path-route-object": {
-              "index": 9,
+              "index": 16,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 17,
               "num-unnum-hop": {
                 "node-id": "east edfa in Lannion_CAS to Corlay",
                 "link-tp-id": "east edfa in Lannion_CAS to Corlay"
@@ -236,7 +371,16 @@
           },
           {
             "path-route-object": {
-              "index": 10,
+              "index": 18,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 19,
               "num-unnum-hop": {
                 "node-id": "fiber (Lannion_CAS → Corlay)-F061",
                 "link-tp-id": "fiber (Lannion_CAS → Corlay)-F061"
@@ -245,7 +389,16 @@
           },
           {
             "path-route-object": {
-              "index": 11,
+              "index": 20,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 21,
               "num-unnum-hop": {
                 "node-id": "west fused spans in Corlay",
                 "link-tp-id": "west fused spans in Corlay"
@@ -254,7 +407,16 @@
           },
           {
             "path-route-object": {
-              "index": 12,
+              "index": 22,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 23,
               "num-unnum-hop": {
                 "node-id": "fiber (Corlay → Loudeac)-F010",
                 "link-tp-id": "fiber (Corlay → Loudeac)-F010"
@@ -263,7 +425,16 @@
           },
           {
             "path-route-object": {
-              "index": 13,
+              "index": 24,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 25,
               "num-unnum-hop": {
                 "node-id": "west fused spans in Loudeac",
                 "link-tp-id": "west fused spans in Loudeac"
@@ -272,7 +443,16 @@
           },
           {
             "path-route-object": {
-              "index": 14,
+              "index": 26,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 27,
               "num-unnum-hop": {
                 "node-id": "fiber (Loudeac → Lorient_KMA)-F054",
                 "link-tp-id": "fiber (Loudeac → Lorient_KMA)-F054"
@@ -281,7 +461,16 @@
           },
           {
             "path-route-object": {
-              "index": 15,
+              "index": 28,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 29,
               "num-unnum-hop": {
                 "node-id": "Edfa0_fiber (Loudeac → Lorient_KMA)-F054",
                 "link-tp-id": "Edfa0_fiber (Loudeac → Lorient_KMA)-F054"
@@ -290,7 +479,16 @@
           },
           {
             "path-route-object": {
-              "index": 16,
+              "index": 30,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 31,
               "num-unnum-hop": {
                 "node-id": "roadm Lorient_KMA",
                 "link-tp-id": "roadm Lorient_KMA"
@@ -299,7 +497,16 @@
           },
           {
             "path-route-object": {
-              "index": 17,
+              "index": 32,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 33,
               "num-unnum-hop": {
                 "node-id": "Edfa1_roadm Lorient_KMA",
                 "link-tp-id": "Edfa1_roadm Lorient_KMA"
@@ -308,7 +515,16 @@
           },
           {
             "path-route-object": {
-              "index": 18,
+              "index": 34,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 35,
               "num-unnum-hop": {
                 "node-id": "fiber (Lorient_KMA → Vannes_KBE)-F055",
                 "link-tp-id": "fiber (Lorient_KMA → Vannes_KBE)-F055"
@@ -317,7 +533,16 @@
           },
           {
             "path-route-object": {
-              "index": 19,
+              "index": 36,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 37,
               "num-unnum-hop": {
                 "node-id": "Edfa0_fiber (Lorient_KMA → Vannes_KBE)-F055",
                 "link-tp-id": "Edfa0_fiber (Lorient_KMA → Vannes_KBE)-F055"
@@ -326,7 +551,16 @@
           },
           {
             "path-route-object": {
-              "index": 20,
+              "index": 38,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 39,
               "num-unnum-hop": {
                 "node-id": "roadm Vannes_KBE",
                 "link-tp-id": "roadm Vannes_KBE"
@@ -335,7 +569,16 @@
           },
           {
             "path-route-object": {
-              "index": 21,
+              "index": 40,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 41,
               "num-unnum-hop": {
                 "node-id": "trx Vannes_KBE",
                 "link-tp-id": "trx Vannes_KBE"
@@ -344,7 +587,16 @@
           },
           {
             "path-route-object": {
-              "index": 22,
+              "index": 42,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 43,
               "transponder": {
                 "transponder-type": "Voyager",
                 "transponder-mode": "mode 1"
@@ -396,6 +648,15 @@
           {
             "path-route-object": {
               "index": 1,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
               "transponder": {
                 "transponder-type": "vendorA_trx-type1",
                 "transponder-mode": "mode 1"
@@ -404,7 +665,7 @@
           },
           {
             "path-route-object": {
-              "index": 2,
+              "index": 3,
               "num-unnum-hop": {
                 "node-id": "roadm Lannion_CAS",
                 "link-tp-id": "roadm Lannion_CAS"
@@ -413,7 +674,16 @@
           },
           {
             "path-route-object": {
-              "index": 3,
+              "index": 4,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 5,
               "num-unnum-hop": {
                 "node-id": "east edfa in Lannion_CAS to Stbrieuc",
                 "link-tp-id": "east edfa in Lannion_CAS to Stbrieuc"
@@ -422,7 +692,16 @@
           },
           {
             "path-route-object": {
-              "index": 4,
+              "index": 6,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 7,
               "num-unnum-hop": {
                 "node-id": "fiber (Lannion_CAS → Stbrieuc)-F056",
                 "link-tp-id": "fiber (Lannion_CAS → Stbrieuc)-F056"
@@ -431,7 +710,16 @@
           },
           {
             "path-route-object": {
-              "index": 5,
+              "index": 8,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 9,
               "num-unnum-hop": {
                 "node-id": "east edfa in Stbrieuc to Rennes_STA",
                 "link-tp-id": "east edfa in Stbrieuc to Rennes_STA"
@@ -440,7 +728,16 @@
           },
           {
             "path-route-object": {
-              "index": 6,
+              "index": 10,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 11,
               "num-unnum-hop": {
                 "node-id": "fiber (Stbrieuc → Rennes_STA)-F057",
                 "link-tp-id": "fiber (Stbrieuc → Rennes_STA)-F057"
@@ -449,7 +746,16 @@
           },
           {
             "path-route-object": {
-              "index": 7,
+              "index": 12,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 13,
               "num-unnum-hop": {
                 "node-id": "Edfa0_fiber (Stbrieuc → Rennes_STA)-F057",
                 "link-tp-id": "Edfa0_fiber (Stbrieuc → Rennes_STA)-F057"
@@ -458,7 +764,16 @@
           },
           {
             "path-route-object": {
-              "index": 8,
+              "index": 14,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 15,
               "num-unnum-hop": {
                 "node-id": "roadm Rennes_STA",
                 "link-tp-id": "roadm Rennes_STA"
@@ -467,7 +782,16 @@
           },
           {
             "path-route-object": {
-              "index": 9,
+              "index": 16,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 17,
               "num-unnum-hop": {
                 "node-id": "trx Rennes_STA",
                 "link-tp-id": "trx Rennes_STA"
@@ -476,7 +800,16 @@
           },
           {
             "path-route-object": {
-              "index": 10,
+              "index": 18,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 19,
               "transponder": {
                 "transponder-type": "vendorA_trx-type1",
                 "transponder-mode": "mode 1"
@@ -528,6 +861,15 @@
           {
             "path-route-object": {
               "index": 1,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
               "transponder": {
                 "transponder-type": "vendorA_trx-type1",
                 "transponder-mode": "mode 2"
@@ -536,7 +878,7 @@
           },
           {
             "path-route-object": {
-              "index": 2,
+              "index": 3,
               "num-unnum-hop": {
                 "node-id": "roadm Rennes_STA",
                 "link-tp-id": "roadm Rennes_STA"
@@ -545,7 +887,16 @@
           },
           {
             "path-route-object": {
-              "index": 3,
+              "index": 4,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 5,
               "num-unnum-hop": {
                 "node-id": "Edfa1_roadm Rennes_STA",
                 "link-tp-id": "Edfa1_roadm Rennes_STA"
@@ -554,7 +905,16 @@
           },
           {
             "path-route-object": {
-              "index": 4,
+              "index": 6,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 7,
               "num-unnum-hop": {
                 "node-id": "fiber (Rennes_STA → Ploermel)-",
                 "link-tp-id": "fiber (Rennes_STA → Ploermel)-"
@@ -563,7 +923,16 @@
           },
           {
             "path-route-object": {
-              "index": 5,
+              "index": 8,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 9,
               "num-unnum-hop": {
                 "node-id": "east edfa in Ploermel to Vannes_KBE",
                 "link-tp-id": "east edfa in Ploermel to Vannes_KBE"
@@ -572,7 +941,16 @@
           },
           {
             "path-route-object": {
-              "index": 6,
+              "index": 10,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 11,
               "num-unnum-hop": {
                 "node-id": "fiber (Ploermel → Vannes_KBE)-",
                 "link-tp-id": "fiber (Ploermel → Vannes_KBE)-"
@@ -581,7 +959,16 @@
           },
           {
             "path-route-object": {
-              "index": 7,
+              "index": 12,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 13,
               "num-unnum-hop": {
                 "node-id": "Edfa0_fiber (Ploermel → Vannes_KBE)-",
                 "link-tp-id": "Edfa0_fiber (Ploermel → Vannes_KBE)-"
@@ -590,7 +977,16 @@
           },
           {
             "path-route-object": {
-              "index": 8,
+              "index": 14,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 15,
               "num-unnum-hop": {
                 "node-id": "roadm Vannes_KBE",
                 "link-tp-id": "roadm Vannes_KBE"
@@ -599,7 +995,16 @@
           },
           {
             "path-route-object": {
-              "index": 9,
+              "index": 16,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 17,
               "num-unnum-hop": {
                 "node-id": "Edfa0_roadm Vannes_KBE",
                 "link-tp-id": "Edfa0_roadm Vannes_KBE"
@@ -608,7 +1013,16 @@
           },
           {
             "path-route-object": {
-              "index": 10,
+              "index": 18,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 19,
               "num-unnum-hop": {
                 "node-id": "fiber (Vannes_KBE → Lorient_KMA)-F055",
                 "link-tp-id": "fiber (Vannes_KBE → Lorient_KMA)-F055"
@@ -617,7 +1031,16 @@
           },
           {
             "path-route-object": {
-              "index": 11,
+              "index": 20,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 21,
               "num-unnum-hop": {
                 "node-id": "Edfa0_fiber (Vannes_KBE → Lorient_KMA)-F055",
                 "link-tp-id": "Edfa0_fiber (Vannes_KBE → Lorient_KMA)-F055"
@@ -626,7 +1049,16 @@
           },
           {
             "path-route-object": {
-              "index": 12,
+              "index": 22,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 23,
               "num-unnum-hop": {
                 "node-id": "roadm Lorient_KMA",
                 "link-tp-id": "roadm Lorient_KMA"
@@ -635,7 +1067,16 @@
           },
           {
             "path-route-object": {
-              "index": 13,
+              "index": 24,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 25,
               "num-unnum-hop": {
                 "node-id": "Edfa0_roadm Lorient_KMA",
                 "link-tp-id": "Edfa0_roadm Lorient_KMA"
@@ -644,7 +1085,16 @@
           },
           {
             "path-route-object": {
-              "index": 14,
+              "index": 26,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 27,
               "num-unnum-hop": {
                 "node-id": "fiber (Lorient_KMA → Loudeac)-F054",
                 "link-tp-id": "fiber (Lorient_KMA → Loudeac)-F054"
@@ -653,7 +1103,16 @@
           },
           {
             "path-route-object": {
-              "index": 15,
+              "index": 28,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 29,
               "num-unnum-hop": {
                 "node-id": "east fused spans in Loudeac",
                 "link-tp-id": "east fused spans in Loudeac"
@@ -662,7 +1121,16 @@
           },
           {
             "path-route-object": {
-              "index": 16,
+              "index": 30,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 31,
               "num-unnum-hop": {
                 "node-id": "fiber (Loudeac → Corlay)-F010",
                 "link-tp-id": "fiber (Loudeac → Corlay)-F010"
@@ -671,7 +1139,16 @@
           },
           {
             "path-route-object": {
-              "index": 17,
+              "index": 32,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 33,
               "num-unnum-hop": {
                 "node-id": "east fused spans in Corlay",
                 "link-tp-id": "east fused spans in Corlay"
@@ -680,7 +1157,16 @@
           },
           {
             "path-route-object": {
-              "index": 18,
+              "index": 34,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 35,
               "num-unnum-hop": {
                 "node-id": "fiber (Corlay → Lannion_CAS)-F061",
                 "link-tp-id": "fiber (Corlay → Lannion_CAS)-F061"
@@ -689,7 +1175,16 @@
           },
           {
             "path-route-object": {
-              "index": 19,
+              "index": 36,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 37,
               "num-unnum-hop": {
                 "node-id": "west edfa in Lannion_CAS to Corlay",
                 "link-tp-id": "west edfa in Lannion_CAS to Corlay"
@@ -698,7 +1193,16 @@
           },
           {
             "path-route-object": {
-              "index": 20,
+              "index": 38,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 39,
               "num-unnum-hop": {
                 "node-id": "roadm Lannion_CAS",
                 "link-tp-id": "roadm Lannion_CAS"
@@ -707,7 +1211,16 @@
           },
           {
             "path-route-object": {
-              "index": 21,
+              "index": 40,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 41,
               "num-unnum-hop": {
                 "node-id": "trx Lannion_CAS",
                 "link-tp-id": "trx Lannion_CAS"
@@ -716,7 +1229,16 @@
           },
           {
             "path-route-object": {
-              "index": 22,
+              "index": 42,
+              "label-hop": {
+                "N": -266,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 43,
               "transponder": {
                 "transponder-type": "vendorA_trx-type1",
                 "transponder-mode": "mode 2"
@@ -768,6 +1290,15 @@
           {
             "path-route-object": {
               "index": 1,
+              "label-hop": {
+                "N": -274,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
               "transponder": {
                 "transponder-type": "vendorA_trx-type1",
                 "transponder-mode": "mode 2"
@@ -776,7 +1307,7 @@
           },
           {
             "path-route-object": {
-              "index": 2,
+              "index": 3,
               "num-unnum-hop": {
                 "node-id": "roadm Rennes_STA",
                 "link-tp-id": "roadm Rennes_STA"
@@ -785,7 +1316,16 @@
           },
           {
             "path-route-object": {
-              "index": 3,
+              "index": 4,
+              "label-hop": {
+                "N": -274,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 5,
               "num-unnum-hop": {
                 "node-id": "Edfa0_roadm Rennes_STA",
                 "link-tp-id": "Edfa0_roadm Rennes_STA"
@@ -794,7 +1334,16 @@
           },
           {
             "path-route-object": {
-              "index": 4,
+              "index": 6,
+              "label-hop": {
+                "N": -274,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 7,
               "num-unnum-hop": {
                 "node-id": "fiber (Rennes_STA → Stbrieuc)-F057",
                 "link-tp-id": "fiber (Rennes_STA → Stbrieuc)-F057"
@@ -803,7 +1352,16 @@
           },
           {
             "path-route-object": {
-              "index": 5,
+              "index": 8,
+              "label-hop": {
+                "N": -274,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 9,
               "num-unnum-hop": {
                 "node-id": "Edfa0_fiber (Rennes_STA → Stbrieuc)-F057",
                 "link-tp-id": "Edfa0_fiber (Rennes_STA → Stbrieuc)-F057"
@@ -812,7 +1370,16 @@
           },
           {
             "path-route-object": {
-              "index": 6,
+              "index": 10,
+              "label-hop": {
+                "N": -274,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 11,
               "num-unnum-hop": {
                 "node-id": "fiber (Stbrieuc → Lannion_CAS)-F056",
                 "link-tp-id": "fiber (Stbrieuc → Lannion_CAS)-F056"
@@ -821,7 +1388,16 @@
           },
           {
             "path-route-object": {
-              "index": 7,
+              "index": 12,
+              "label-hop": {
+                "N": -274,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 13,
               "num-unnum-hop": {
                 "node-id": "Edfa0_fiber (Stbrieuc → Lannion_CAS)-F056",
                 "link-tp-id": "Edfa0_fiber (Stbrieuc → Lannion_CAS)-F056"
@@ -830,7 +1406,16 @@
           },
           {
             "path-route-object": {
-              "index": 8,
+              "index": 14,
+              "label-hop": {
+                "N": -274,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 15,
               "num-unnum-hop": {
                 "node-id": "roadm Lannion_CAS",
                 "link-tp-id": "roadm Lannion_CAS"
@@ -839,7 +1424,16 @@
           },
           {
             "path-route-object": {
-              "index": 9,
+              "index": 16,
+              "label-hop": {
+                "N": -274,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 17,
               "num-unnum-hop": {
                 "node-id": "trx Lannion_CAS",
                 "link-tp-id": "trx Lannion_CAS"
@@ -848,7 +1442,16 @@
           },
           {
             "path-route-object": {
-              "index": 10,
+              "index": 18,
+              "label-hop": {
+                "N": -274,
+                "M": 6
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 19,
               "transponder": {
                 "transponder-type": "vendorA_trx-type1",
                 "transponder-mode": "mode 2"
@@ -860,7 +1463,9 @@
     },
     {
       "response-id": "6",
-      "no-path": "Response without path information, due to failure performing the path computation"
+      "no-path": {
+        "no-path": "NO_PATH"
+      }
     }
   ]
 }

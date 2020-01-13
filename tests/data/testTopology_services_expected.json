@@ -6,6 +6,7 @@
       "destination": "trx Vannes_KBE",
       "src-tp-id": "trx Lorient_KMA",
       "dst-tp-id": "trx Vannes_KBE",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -30,6 +31,7 @@
       "destination": "trx Vannes_KBE",
       "src-tp-id": "trx Brest_KLA",
       "dst-tp-id": "trx Vannes_KBE",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -44,7 +46,7 @@
           "spacing": 50000000000.0,
           "max-nb-of-channel": null,
           "output-power": 0.0012589254117941673,
-          "path_bandwidth": 0
+          "path_bandwidth": 10000000000.0
         }
       },
       "explicit-route-objects": {
@@ -94,6 +96,7 @@
       "destination": "trx Rennes_STA",
       "src-tp-id": "trx Lannion_CAS",
       "dst-tp-id": "trx Rennes_STA",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -118,6 +121,7 @@
       "destination": "trx Lannion_CAS",
       "src-tp-id": "trx Rennes_STA",
       "dst-tp-id": "trx Lannion_CAS",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -142,6 +146,7 @@
       "destination": "trx Lannion_CAS",
       "src-tp-id": "trx Rennes_STA",
       "dst-tp-id": "trx Lannion_CAS",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -166,6 +171,7 @@
       "destination": "trx a",
       "src-tp-id": "trx Lannion_CAS",
       "dst-tp-id": "trx a",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",

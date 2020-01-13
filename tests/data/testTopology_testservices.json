@@ -6,6 +6,7 @@
       "destination": "trx g",
       "src-tp-id": "trx a",
       "dst-tp-id": "trx g",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -30,6 +31,7 @@
       "destination": "trx h",
       "src-tp-id": "trx a",
       "dst-tp-id": "trx h",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -54,6 +56,7 @@
       "destination": "trx b",
       "src-tp-id": "trx f",
       "dst-tp-id": "trx b",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -78,6 +81,7 @@
       "destination": "trx f",
       "src-tp-id": "trx c",
       "dst-tp-id": "trx f",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -123,6 +127,7 @@
       "destination": "trx f",
       "src-tp-id": "trx c",
       "dst-tp-id": "trx f",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -147,6 +152,7 @@
       "destination": "trx g",
       "src-tp-id": "trx a",
       "dst-tp-id": "trx g",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -171,6 +177,7 @@
       "destination": "trx h",
       "src-tp-id": "trx a",
       "dst-tp-id": "trx h",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -208,6 +215,7 @@
       "destination": "trx b",
       "src-tp-id": "trx f",
       "dst-tp-id": "trx b",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -245,6 +253,7 @@
       "destination": "trx f",
       "src-tp-id": "trx c",
       "dst-tp-id": "trx f",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -269,6 +278,7 @@
       "destination": "trx f",
       "src-tp-id": "trx c",
       "dst-tp-id": "trx f",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -314,6 +324,7 @@
       "destination": "trx g",
       "src-tp-id": "trx a",
       "dst-tp-id": "trx g",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -338,6 +349,7 @@
       "destination": "trx h",
       "src-tp-id": "trx a",
       "dst-tp-id": "trx h",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -362,6 +374,7 @@
       "destination": "trx b",
       "src-tp-id": "trx f",
       "dst-tp-id": "trx b",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -386,6 +399,7 @@
       "destination": "trx f",
       "src-tp-id": "trx c",
       "dst-tp-id": "trx f",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -431,6 +445,7 @@
       "destination": "trx f",
       "src-tp-id": "trx c",
       "dst-tp-id": "trx f",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -455,6 +470,7 @@
       "destination": "trx g",
       "src-tp-id": "trx a",
       "dst-tp-id": "trx g",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -479,6 +495,7 @@
       "destination": "trx h",
       "src-tp-id": "trx a",
       "dst-tp-id": "trx h",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -503,6 +520,7 @@
       "destination": "trx b",
       "src-tp-id": "trx f",
       "dst-tp-id": "trx b",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
@@ -527,6 +545,7 @@
       "destination": "trx b",
       "src-tp-id": "trx f",
       "dst-tp-id": "trx b",
+      "bidirectional": false,
       "path-constraints": {
         "te-bandwidth": {
           "technology": "flexi-grid",
