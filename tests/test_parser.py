@@ -92,6 +92,12 @@ def test_auto_design_generation_fromxlsgainmode(xls_input, expected_json_output)
     build_network(network, equipment, p_db, p_total_db)
     save_network(xls_input, network)
 
+    # Note  that this test also passes through the gain saturation limit implemented in element,
+    # so thatthe user imposed gain in east edfa in Stbrieuc to Rennes_STA set to 18.5 is brought to
+    # 13.18 dB in gain mode because the total input power at his point is ~7.84 dBm and the imposed
+    # amplifier std_medium_gain has power limit of 21 dB.
+    # please keep the example as is to keep this test
+
     actual_json_output = f'{str(xls_input)[0:len(str(xls_input))-4]}_auto_design.json'
 
     with open(actual_json_output, encoding='utf-8') as f:
