@@ -282,6 +282,7 @@ if __name__ == '__main__':
     params['trx_mode'] = ''
     params['source'] = source.uid
     params['destination'] = destination.uid
+    params['bidir'] = False
     params['nodes_list'] = [destination.uid]
     params['loose_list'] = ['strict']
     params['format'] = ''

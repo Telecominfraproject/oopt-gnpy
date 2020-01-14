@@ -18,10 +18,8 @@ from pathlib import Path
 import pytest
 from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch
 from gnpy.core.network import load_network, build_network
-from examples.path_requests_run import (requests_from_json , correct_route_list ,
-                                        load_requests , disjunctions_from_json)
-from gnpy.core.request import (compute_path_dsjctn, isdisjoint , find_reversed_path,
-                               propagate,propagate_and_optimize_mode) 
+from examples.path_requests_run import requests_from_json, correct_route_list, load_requests
+from gnpy.core.request import compute_path_dsjctn, propagate, propagate_and_optimize_mode
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.elements import Roadm
 
@@ -35,7 +33,7 @@ eqpt_library_name = Path(__file__).parent.parent / 'tests/data/eqpt_config.json'
 @pytest.mark.parametrize("serv",[service_file_name])
 @pytest.mark.parametrize("expected_mode",[['16QAM', 'PS_SP64_1', 'PS_SP64_1', 'PS_SP64_1', 'mode 2 - fake', 'mode 2', 'PS_SP64_1', 'mode 3', 'PS_SP64_1', 'PS_SP64_1', '16QAM', 'mode 1', 'PS_SP64_1', 'PS_SP64_1', 'mode 1', 'mode 2', 'mode 1', 'mode 2', 'nok']])
 def test_automaticmodefeature(net,eqpt,serv,expected_mode):
-    data = load_requests(serv,eqpt)
+    data = load_requests(serv, eqpt, bidir=False)
     equipment = load_equipment(eqpt)
     network = load_network(net,equipment)
 

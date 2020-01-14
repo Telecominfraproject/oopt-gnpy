@@ -22,6 +22,7 @@ from json import dumps
 from pathlib import Path
 from gnpy.core.equipment import load_equipment
 from gnpy.core.utils import db2lin, lin2db
+from gnpy.core.exceptions import ServiceError
 
 SERVICES_COLUMN = 12
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
@@ -43,7 +44,7 @@ class Element:
         return hash((type(self), self.uid))
 
 class Request_element(Element):
-    def __init__(self,Request,eqpt_filename):
+    def __init__(self, Request, eqpt_filename, bidir):
         # request_id is str
         # excel has automatic number formatting that adds .0 on integer values
         # the next lines recover the pure int value, assuming this .0 is unwanted
@@ -54,6 +55,7 @@ class Request_element(Element):
         # be a string starting with 'trx' : this is manually added here.
         self.srctpid = f'trx {Request.source}'
         self.dsttpid = f'trx {Request.destination}'
+        self.bidir = bidir
         # test that trx_type belongs to eqpt_config.json
         # if not replace it with a default
         equipment = load_equipment(eqpt_filename)
@@ -76,14 +78,14 @@ class Request_element(Element):
             msg = f'Request Id: {self.request_id} - could not find tsp : \'{Request.trx_type}\' with mode: \'{Request.mode}\' in eqpt library \nComputation stopped.'
             #print(msg)
             logger.critical(msg)
-            exit()
+            raise ServiceError(msg)
         # excel input are in GHz and dBm
         if Request.spacing is not None:
             self.spacing = Request.spacing * 1e9
         else:
             msg = f'Request {self.request_id} missing spacing: spacing is mandatory.\ncomputation stopped'
             logger.critical(msg)
-            exit()
+            raise ServiceError(msg)
         if Request.power is not None:
             self.power =  db2lin(Request.power) * 1e-3
         else:
@@ -132,13 +134,14 @@ class Request_element(Element):
     uid = property(lambda self: repr(self))
     @property
     def pathrequest(self):
-
+        # Default assumption for bidir is False
         req_dictionnary = {
                     'request-id':self.request_id,
                     'source':    self.source,
                     'destination':  self.destination,
                     'src-tp-id': self.srctpid,
                     'dst-tp-id': self.dsttpid,
+                    'bidirectional': self.bidir,
                     'path-constraints':{
                         'te-bandwidth': {
                             'technology': 'flexi-grid',
@@ -187,9 +190,13 @@ class Request_element(Element):
     def json(self):
         return self.pathrequest , self.pathsync
 
-def convert_service_sheet(input_filename, eqpt_filename, output_filename='', filter_region=[]):
+def convert_service_sheet(input_filename, eqpt_filename, output_filename='', bidir=False, filter_region=None):
+    """ converts a service sheet into a json structure
+    """
+    if filter_region is None:
+        filter_region = []
     service = parse_excel(input_filename)
-    req = [Request_element(n,eqpt_filename) for n in service]
+    req = [Request_element(n, eqpt_filename, bidir) for n in service]
     # dumps the output into a json file with name
     # split_filename = [input_filename[0:len(input_filename)-len(suffix_filename)] , suffix_filename[1:]]
     if output_filename=='':
@@ -208,7 +215,7 @@ def convert_service_sheet(input_filename, eqpt_filename, output_filename='', fil
             'path-request': [n.json[0] for n in req]
             }
     with open(output_filename, 'w', encoding='utf-8') as f:
-            f.write(dumps(data, indent=2, ensure_ascii=False))
+        f.write(dumps(data, indent=2, ensure_ascii=False))
     return data
 
 def correct_xlrd_int_to_str_reading(v) :
@@ -233,25 +240,29 @@ def parse_excel(input_filename):
     return services
 
 def parse_service_sheet(service_sheet):
-        logger.info(f'Validating headers on {service_sheet.name!r}')
-        # add a test on field to enable the '' field case that arises when columns on the 
-        # right hand side are used as comments or drawing in the excel sheet
-        header = [x.value.strip() for x in service_sheet.row(4)[0:SERVICES_COLUMN] if len(x.value.strip())>0]
+    """ reads each column according to authorized fieldnames. order is not important.
+    """
+    logger.info(f'Validating headers on {service_sheet.name!r}')
+    # add a test on field to enable the '' field case that arises when columns on the
+    # right hand side are used as comments or drawing in the excel sheet
+    header = [x.value.strip() for x in service_sheet.row(4)[0:SERVICES_COLUMN]
+                if len(x.value.strip()) > 0]
 
-        # create a service_fieldname independant from the excel column order
-        # to be compatible with any version of the sheet
-        # the following dictionnary records the excel field names and the corresponding parameter's name
+    # create a service_fieldname independant from the excel column order
+    # to be compatible with any version of the sheet
+    # the following dictionnary records the excel field names and the corresponding parameter's name
 
-        authorized_fieldnames = {'route id':'request_id', 'Source':'source', 'Destination':'destination', \
-         'TRX type':'trx_type', 'Mode' : 'mode', 'System: spacing':'spacing', \
-         'System: input power (dBm)':'power', 'System: nb of channels':'nb_channel',\
-         'routing: disjoint from': 'disjoint_from', 'routing: path':'nodes_list',\
-         'routing: is loose?':'is_loose', 'path bandwidth':'path_bandwidth'}
-        try :
-            service_fieldnames = [authorized_fieldnames[e] for e in header]
-        except KeyError:
-            msg = f'Malformed header on Service sheet: {header} field not in {authorized_fieldnames}'
-            logger.critical(msg)
-            raise ValueError(msg)
-        for row in all_rows(service_sheet, start=5):
-            yield Request(**parse_row(row[0:SERVICES_COLUMN], service_fieldnames))
+    authorized_fieldnames = {
+        'route id':'request_id', 'Source':'source', 'Destination':'destination', \
+        'TRX type':'trx_type', 'Mode' : 'mode', 'System: spacing':'spacing', \
+        'System: input power (dBm)':'power', 'System: nb of channels':'nb_channel',\
+        'routing: disjoint from': 'disjoint_from', 'routing: path':'nodes_list',\
+        'routing: is loose?':'is_loose', 'path bandwidth':'path_bandwidth'}
+    try:
+        service_fieldnames = [authorized_fieldnames[e] for e in header]
+    except KeyError:
+        msg = f'Malformed header on Service sheet: {header} field not in {authorized_fieldnames}'
+        logger.critical(msg)
+        raise ValueError(msg)
+    for row in all_rows(service_sheet, start=5):
+        yield Request(**parse_row(row[0:SERVICES_COLUMN], service_fieldnames))

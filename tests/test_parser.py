@@ -21,6 +21,7 @@ from os import unlink
 from pandas import read_csv
 import pytest
 from tests.compare import compare_networks, compare_services
+from copy import deepcopy
 from gnpy.core.utils import lin2db
 from gnpy.core.network import save_network, build_network
 from gnpy.core.convert import convert_file
@@ -29,6 +30,8 @@ from gnpy.core.equipment import load_equipment, automatic_nch
 from gnpy.core.network import load_network
 from gnpy.core.request import (jsontocsv, requests_aggregation,
                                compute_path_dsjctn, Result_element)
+from gnpy.core.spectrum_assignment import build_oms_list, pth_assign_spectrum
+from gnpy.core.exceptions import ServiceError
 from examples.path_requests_run import (requests_from_json, disjunctions_from_json,
                                         correct_route_list, correct_disjn,
                                         compute_path_with_disjunction)
@@ -147,9 +150,9 @@ def test_auto_design_generation_fromjson(json_input, expected_json_output):
     assert not results.connections.different
 
 # test services creation
-
 @pytest.mark.parametrize('xls_input,expected_json_output', {
     DATA_DIR / 'testTopology.xls':     DATA_DIR / 'testTopology_services_expected.json',
+    DATA_DIR / 'testService.xls':     DATA_DIR / 'testService_services_expected.json'
     }.items())
 def test_excel_service_json_generation(xls_input, expected_json_output):
     """ test services creation
@@ -171,6 +174,8 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
     assert not results.synchronizations.missing
     assert not results.synchronizations.extra
     assert not results.synchronizations.different
+
+    # TODO verify that requested bandwidth is not zero !
 
 # test xls answers creation
 @pytest.mark.parametrize('json_input, csv_output', {
@@ -206,12 +211,18 @@ def test_csv_response_generation(json_input, csv_output):
     #  'SNR-bandwidth',
     #  'baud rate (Gbaud)',
     #  'input power (dBm)',
-    #  'path'
+    #  'path',
+    #  'spectrum (N,M)',
+    #  'reversed path OSNR-0.1nm',
+    #  'reversed path SNR-0.1nm',
+    #  'reversed path SNR-bandwidth'
     # ]
 
     resp = read_csv(csv_filename)
+    print(resp)
     unlink(csv_filename)
     expected_resp = read_csv(expected_csv_filename)
+    print(expected_resp)
     resp_header = list(resp.head(0))
     expected_resp_header = list(expected_resp.head(0))
     # check that headers are the same
@@ -240,23 +251,24 @@ def compare_response(exp_resp, act_resp):
     print(act_resp)
     test = True
     for key in act_resp.keys():
-        print(key)
         if not key in exp_resp.keys():
-            print(key)
+            print(f'{key} is not expected')
             return False
         if isinstance(act_resp[key], dict):
             test = compare_response(exp_resp[key], act_resp[key])
     if test:
         for key in exp_resp.keys():
             if not key in act_resp.keys():
-                print(key)
+                print(f'{key} is expected')
                 return False
             if isinstance(exp_resp[key], dict):
                 test = compare_response(exp_resp[key], act_resp[key])
+
     # at this point exp_resp and act_resp have the same keys. Check if their values are the same
     for key in act_resp.keys():
         if not isinstance(act_resp[key], dict):
             if exp_resp[key] != act_resp[key]:
+                print(f'expected value :{exp_resp[key]}\n actual value: {act_resp[key]}')
                 return False
     return test
 
@@ -269,6 +281,9 @@ def test_json_response_generation(xls_input, expected_response_file):
     """ tests if json response is correctly generated for all combinations of requests
     """
     data = convert_service_sheet(xls_input, eqpt_filename)
+    # change one of the request with bidir option to cover bidir case as well
+    data['path-request'][2]['bidirectional'] = True
+
     equipment = load_equipment(eqpt_filename)
     network = load_network(xls_input, equipment)
     p_db = equipment['SI']['default'].power_dbm
@@ -276,23 +291,56 @@ def test_json_response_generation(xls_input, expected_response_file):
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
         equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
+    oms_list = build_oms_list(network, equipment)
     rqs = requests_from_json(data, equipment)
     rqs = correct_route_list(network, rqs)
     dsjn = disjunctions_from_json(data)
     dsjn = correct_disjn(dsjn)
     rqs, dsjn = requests_aggregation(rqs, dsjn)
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
-    propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
+    propagatedpths, reversed_pths, reversed_propagatedpths = \
+        compute_path_with_disjunction(network, equipment, rqs, pths)
+    pth_assign_spectrum(pths, rqs, oms_list, reversed_pths)
+
     result = []
     for i, pth in enumerate(propagatedpths):
-        result.append(Result_element(rqs[i], pth))
+        # test ServiceError handling : when M is zero at this point, the
+        # json result should not be created if there is no blocking reason
+        if i == 1:
+            my_rq = deepcopy(rqs[i])
+            my_rq.M = 0
+            with pytest.raises(ServiceError):
+                Result_element(my_rq, pth, reversed_propagatedpths[i]).json
+
+            my_rq.blocking_reason = 'NO_SPECTRUM'
+            Result_element(my_rq, pth, reversed_propagatedpths[i]).json
+
+        result.append(Result_element(rqs[i], pth, reversed_propagatedpths[i]))
+
     temp = {
         'response': [n.json for n in result]
     }
-    # load expected result and compare keys
-    # (not values at this stage)
+    # load expected result and compare keys and values
+
     with open(expected_response_file) as jsonfile:
         expected = load(jsonfile)
+        # since we changes bidir attribute of request#2, need to add the corresponding
+        # metric in response
 
     for i, response in enumerate(temp['response']):
-        assert compare_response(expected['response'][i], response)
+        if i == 2:
+            # compare response must be False because z-a metric is missing
+            # (request with bidir option to cover bidir case)
+            assert not compare_response(expected['response'][i], response)
+            print(f'response {response["response-id"]} should not match')
+            expected['response'][2]['path-properties']['z-a-path-metric'] = [
+                {'metric-type': 'SNR-bandwidth', 'accumulative-value': 22.809999999999999},
+                {'metric-type': 'SNR-0.1nm', 'accumulative-value': 26.890000000000001},
+                {'metric-type': 'OSNR-bandwidth', 'accumulative-value': 26.239999999999998},
+                {'metric-type': 'OSNR-0.1nm', 'accumulative-value': 30.32},
+                {'metric-type': 'reference_power', 'accumulative-value': 0.0012589254117941673},
+                {'metric-type': 'path_bandwidth', 'accumulative-value': 60000000000.0}]
+            # test should be OK now
+        else:
+            assert compare_response(expected['response'][i], response)
+            print(f'response {response["response-id"]} is not correct')
