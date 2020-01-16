@@ -829,7 +829,7 @@
           },
           {
             "metric-type": "SNR-0.1nm",
-            "accumulative-value": 22.15
+            "accumulative-value": 22.14
           },
           {
             "metric-type": "OSNR-bandwidth",
