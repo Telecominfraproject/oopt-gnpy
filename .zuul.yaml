@@ -1,8 +1,14 @@
 ---
+# TODO: remove once https://review.opendev.org/c/712804/ gets merged upstream
+- job:
+    name: tox-py37
+    vars:
+      tox_prefer_python2: false
+
 - project:
     check:
       jobs:
-      - noop
+      - tox-py37
     gate:
       jobs:
-      - noop
+      - tox-py37
