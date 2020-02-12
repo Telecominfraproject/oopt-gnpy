@@ -11,7 +11,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='gnpy',
-    version='1.2.0',
+    version='2.1',
     description='route planning and optimization tool for mesh optical networks',
     long_description=long_description,
     long_description_content_type='text/x-rst; charset=UTF-8',

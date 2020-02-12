@@ -1,4 +1,5 @@
 alabaster>=0.7.12,<1
+docutils==0.15.2
 flask==1.0.2
 flask-restful==0.3.7
 matplotlib>=3.1.0,<4

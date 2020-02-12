@@ -37,14 +37,10 @@ class Bitmap:
         self.freq_index = list(range(n_min, n_max+1))
         if bitmap is None:
             self.bitmap = [1] * (n_max-n_min+1)
+        elif len(bitmap) == len(self.freq_index):
+            self.bitmap = bitmap
         else:
-            if len(bitmap) == len(self.freq_index):
-                self.bitmap = bitmap
-            else:
-                msg = f'bitmap is not consistant with f_min{f_min} - n :' +\
-                      f'{n_min} and f_max{f_max}- n :{n_max}'
-                LOGGER.critical(msg)
-                raise SpectrumError(msg)
+            raise SpectrumError(f'bitmap is not consistant with f_min{f_min} - n: {n_min} and f_max{f_max}- n :{n_max}')
 
     def getn(self, i):
         """ converts the n (itu grid) into a local index
@@ -72,7 +68,7 @@ class Bitmap:
 OMSParams = namedtuple('OMSParams', 'oms_id el_id_list el_list')
 
 class OMS:
-    """ OMS class is the logical container that represent a link betwoeen two adjacent ROADMs and
+    """ OMS class is the logical container that represent a link between two adjacent ROADMs and
         records the crossed elements and the occupied spectrum
     """
     def __init__(self, *args, **params):
@@ -102,7 +98,7 @@ class OMS:
         """ frequencies expressed in Hz
         """
         if existing_spectrum is None:
-            # add some 150 GHz margin to eable a center channel on f_min
+            # add some 150 GHz margin to enable a center channel on f_min
             # use ITU-T G694.1
             # Flexible DWDM grid definition
             # For the flexible DWDM grid, the allowed frequency slots have a nominal
@@ -122,13 +118,9 @@ class OMS:
     def assign_spectrum(self, nvalue, mvalue):
         """ change oms spectrum to mark spectrum assigned
         """
-        # print("assign_spectrum")
-        # print(f'n , m :{n},{m}')
         if (nvalue is None or mvalue is None or isinstance(nvalue, float)
                 or isinstance(mvalue, float) or mvalue == 0):
-            msg = f'could not assign None values'
-            LOGGER.critical(msg)
-            raise SpectrumError(msg)
+            raise SpectrumError('could not assign None values')
         startn, stopn = mvalue_to_slots(nvalue, mvalue)
         # print(f'startn stop n {startn} , {stopn}')
         # assumes that guardbands are sufficient to ensure that assigning a center channel
@@ -241,19 +233,8 @@ def build_oms_list(network, equipment):
                     nd_out.oms_list = []
                     nd_out.oms_list.append(oms_id)
 
-                # print(f'coucou2 {oms.oms_id} {oms.el_id_list[0]} {oms.el_id_list[-1]}')
-                # for e in oms.el_id_list:
-                #     print(f' {e}')
-
-                # TODO do not forget to correct next line !
-                # to test different grids
-                # TODO move this to test
-                if oms_id < 3:
-                    oms.update_spectrum(equipment['SI']['default'].f_min,
-                                        equipment['SI']['default'].f_max, grid=0.00625e12)
-                else:
-                    oms.update_spectrum(equipment['SI']['default'].f_min,
-                                        equipment['SI']['default'].f_max, grid=0.00625e12)
+                oms.update_spectrum(equipment['SI']['default'].f_min,
+                                    equipment['SI']['default'].f_max, grid=0.00625e12)
                 # oms.assign_spectrum(13,7) gives back (193137500000000.0, 193225000000000.0)
                 # as in the example in the standard
                 # oms.assign_spectrum(13,7)
@@ -357,6 +338,8 @@ def select_candidate(candidates, policy):
             return candidates[0]
         else:
             return (None, None, None)
+    else:
+        raise ServiceError('Only first_fit spectrum assignment policy is implemented.')
 
 def pth_assign_spectrum(pths, rqs, oms_list, rpths):
     """ basic first fit assignment
@@ -372,9 +355,9 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
         except AttributeError:
             nb_wl = ceil(rqs[i].path_bandwidth / rqs[i].bit_rate)
             # computes the total nb of slots according to requested spacing
-            # todo : express superchannels
+            # TODO : express superchannels
             # assumes that all channels must be grouped
-            # todo : enables non contiguous reservation in case of blocking
+            # TODO : enables non contiguous reservation in case of blocking
             requested_m = ceil(rqs[i].spacing / 0.0125e12) * nb_wl
             # concatenate all path and reversed path elements to derive slots availability
             (center_n, startn, stopn), path_oms = spectrum_selection(pth + rpths[i], oms_list, requested_m,

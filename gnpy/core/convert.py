@@ -32,6 +32,7 @@ from json import dumps
 from pathlib import Path
 from difflib import get_close_matches
 from gnpy.core.utils import silent_remove
+from gnpy.core.exceptions import NetworkTopologyError
 import time
 
 all_rows = lambda sh, start=0: (sh.row(x) for x in range(start, sh.nrows))
@@ -509,9 +510,12 @@ def parse_excel(input_filename):
     all_cities = Counter(n.city for n in nodes)
     if len(all_cities) != len(nodes):
         raise ValueError(f'Duplicate city: {all_cities}')
-    if any(ln.from_city not in all_cities or
-           ln.to_city   not in all_cities for ln in links):
-        raise ValueError(f'Bad link.')
+    bad_links = []
+    for lnk in links:
+        if lnk.from_city not in all_cities or lnk.to_city not in all_cities:
+            bad_links.append([lnk.from_city, lnk.to_city])
+    if bad_links:
+        raise NetworkTopologyError(f'Bad link(s): {bad_links}.')
 
     return nodes, links, eqpts
 
