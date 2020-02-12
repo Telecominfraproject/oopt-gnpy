@@ -146,29 +146,30 @@ translate = {
     "trx-Amsterdam": "10.0.254.105",
     "trx-Bremen": "10.0.254.103",
 
-    # coherent-v9u
+    # Amsterdam A/D: coherent-v9u
     "roadm-Amsterdam-AD": "10.0.254.107",
-    # -spi
+    # Bremen A/D: -spi
     "roadm-Bremen-AD": "10.0.254.225",
 
-    # Amsterdam -> Bremen ...QC8B
-    "roadm-Amsterdam-L1": "10.0.254.101",
-    # ...QCP9
+    # Amsterdam -> Bremen ...QR79
+    "roadm-Amsterdam-L1": "10.0.254.78",
+    # Bremen -> Amsterdam ...QCP9
     "roadm-Bremen-L2": "10.0.254.102",
 
-    # WKP: Bremen -> Cologne
+    # Bremen -> Cologne ...WKP
     "roadm-Bremen-L1": "10.0.254.100",
-    # LK6: Cologne -> Bremen
-    #"roadm-Cologne-L2": "10.0.254.104",
-    # Q7N: Cologne -> Bremen
-    "roadm-Cologne-L2": "10.0.254.236",
+    # Cologne -> Bremen ...QLK6
+    "roadm-Cologne-L2": "10.0.254.104",
 
-    # TQQ: Cologne -> Amsterdam
-    #"roadm-Cologne-L1": "10.0.254.99",
-    # M0N: Cologne -> Amsterdam
-    "roadm-Cologne-L1": "10.0.254.226",
-    # NFP: Amsterdam -> Cologne
-    "roadm-Amsterdam-L2": "10.0.254.235",
+    # Cologne -> Amsterdam ...TQQ
+    "roadm-Cologne-L1": "10.0.254.99",
+    # Amsterdam -> Cologne ...Q7JS
+    "roadm-Amsterdam-L2": "10.0.254.79",
+
+    # spare Line/Degree ...QC8B
+    "spare-line-degree": "10.0.254.101",
+    # spare Add/Drop: ...NNN
+    "spare-add-drop": "10.0.254.228",
 }
 
 import json
