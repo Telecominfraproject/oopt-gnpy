@@ -291,7 +291,7 @@ def compute_constrained_path(network, req):
               'be destination trx'
         LOGGER.critical(msg)
         raise ValueError()
-
+    # len(nodes_list) is 1 or more since it must include destination node
     if len(nodes_list) == 1:
         try:
             total_path = dijkstra_path(network, source, destination, weight='weight')
@@ -311,6 +311,7 @@ def compute_constrained_path(network, req):
             req.blocking_reason = 'NO_PATH'
             total_path = []
     else:
+        # len(nodes_list) is 2 or more (includes at list one include node apart from destination)
         all_simp_pths = list(all_simple_paths(network, source=source,\
             target=destination, cutoff=120))
         candidate = []
@@ -330,19 +331,19 @@ def compute_constrained_path(network, req):
             # last node which is the transceiver)
             # if all nodes i n node_list are LOOSE constraint, skip the constraints and find
             # a path w/o constraints, else there is no possible path
-            if nodes_list[:-len(['STRICT'])]:
-                print(f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing ' +\
-                      f'{[el.uid for el in nodes_list[:-len(["STRICT"])]]} in network topology'+ '\x1b[0m')
-            else:
-                print(f'\x1b[1;33;40m'+f'User include_node constraints could not be applied ' +\
-                      f'(invalid names specified)'+ '\x1b[0m')
-            if 'STRICT' not in req.loose_list[:-len(['STRICT'])]:
+
+            # no candidate can be found with the constraints
+            print(f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing ' +\
+                  f'{[el.uid for el in nodes_list[:-1]]} in network topology'+ '\x1b[0m')
+
+            if 'STRICT' not in req.loose_list[:-1]:
                 msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path with user_' +\
                       f'include node constraints' + '\x1b[0m'
                 LOGGER.info(msg)
                 print(f'constraint ignored')
                 total_path = dijkstra_path(network, source, destination, weight='weight')
             else:
+                # one STRICT makes the whole list STRICT
                 msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path with user ' +\
                       f'include node constraints.\nNo path computed'+ '\x1b[0m'
                 LOGGER.critical(msg)
