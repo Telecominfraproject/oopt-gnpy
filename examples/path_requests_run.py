@@ -321,7 +321,7 @@ def correct_route_list(network, pathreqlist):
                     msg = f'\x1b[1;33;40m'+f'could not find node: {n_id} in network topology.' +\
                           f' Strict constraint can not be applied.' + '\x1b[0m'
                     LOGGER.critical(msg)
-                    raise ValueError(msg)
+                    raise ServiceError(msg)
         if pathreq.source not in transponders:
             msg = f'\x1b[1;31;40m' + f'Request: {pathreq.request_id}: could not find' +\
                   f' transponder source: {pathreq.source}.'+'\x1b[0m'
