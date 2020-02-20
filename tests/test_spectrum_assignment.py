@@ -12,7 +12,7 @@
 
 from pathlib import Path
 from copy import deepcopy
-from json import loads
+import json
 from math import ceil
 import pytest
 from gnpy.core.equipment import load_equipment, automatic_nch
@@ -33,10 +33,14 @@ EQPT_FILENAME = DATA_DIR / 'eqpt_config.json'
 NETWORK_FILENAME = DATA_DIR / 'testTopology_auto_design_expected.json'
 SERVICE_FILENAME = DATA_DIR / 'testTopology_services_expected.json'
 
+grid = 0.00625e12
+slot = 0.0125e12
+guardband = 0.15e12
+freq_min = 191.3e12
+freq_max = 196.1e12
+
 @pytest.fixture()
 def eqpt():
-    """ common setup for tests: builds network, equipment and oms only once
-    """
     equipment = load_equipment(EQPT_FILENAME)
     return equipment
 
@@ -45,13 +49,11 @@ def setup(eqpt):
     """ common setup for tests: builds network, equipment and oms only once
     """
     equipment = eqpt
-    # fix band to be independant of changes in json file
-    equipment['SI']['default'].f_min = 191300000000000.0
-    equipment['SI']['default'].f_max = 196100000000000.0
     network = load_network(NETWORK_FILENAME, equipment)
-    p_db = equipment['SI']['default'].power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
-        equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    spectrum = equipment['SI']['default']
+    p_db = spectrum.power_dbm
+    p_total_db = p_db + lin2db(automatic_nch(spectrum.f_min,\
+        spectrum.f_max, spectrum.spacing))
     build_network(network, equipment, p_db, p_total_db)
     oms_list = build_oms_list(network, equipment)
     return network, oms_list
@@ -64,11 +66,10 @@ def test_oms(setup):
     network, oms_list = setup
     for oms in oms_list:
         assert isinstance(oms.el_list[0], Roadm) and isinstance(oms.el_list[-1], Roadm)
-        for i, elem in enumerate(oms.el_list[1:-2]):
+        for i, elem in enumerate(oms.el_list[1:-1]):
             assert not isinstance(elem, Roadm)
-            assert elem  in network.nodes()
+            assert elem in network.nodes()
             assert elem.oms.oms_id == oms.oms_id
-            print(f'expected {elem.uid}, obtained {oms.el_id_list[i+1]}')
             assert elem.uid == oms.el_id_list[i+1]
 
 @pytest.mark.parametrize('nmin', [-288, -260, -300])
@@ -79,64 +80,61 @@ def test_aligned(nmin, nmax, setup):
         -224, +223, which makes 223 -(-224) +1 frequencies
     """
     network, oms_list = setup
-    # f_min = 193.1e12 - 280 * 0.00625e12
-    # f_max = 193.1e12 + 320 * 0.00625e12
-    # f_min = 1931.1 f_max = 195.1
-    grid = 0.00625e12
-    guardband = 0.15e12
-    nguard = 24
-    freq_min = 193.1e12 + nmin * 0.00625e12
-    freq_max = 193.1e12 + nmax * 0.00625e12
+    nguard = guardband / grid
+    center = 193.1e12
+    freq_min = center + nmin * grid
+    freq_max = center + nmax * grid
+    random_oms = oms_list[10]
     print('initial spectrum')
-    print(nvalue_to_frequency(oms_list[10].spectrum_bitmap.freq_index_min) * 1e-12,
-          nvalue_to_frequency(oms_list[10].spectrum_bitmap.freq_index_max) * 1e-12)
+    assert pytest.approx(nvalue_to_frequency(random_oms.spectrum_bitmap.freq_index_min) * 1e-12, abs=1e-12) == 191.3
+    assert pytest.approx(nvalue_to_frequency(random_oms.spectrum_bitmap.freq_index_max) * 1e-12, abs=1e-12) == 196.1
     # checks initial values consistancy
-    ind_max = len(oms_list[10].spectrum_bitmap.bitmap) - 1
-    print('with guardband', oms_list[10].spectrum_bitmap.getn(0),
-          oms_list[10].spectrum_bitmap.getn(ind_max))
-    print('without guardband', oms_list[10].spectrum_bitmap.freq_index_min,
-          oms_list[10].spectrum_bitmap.freq_index_max)
-    nvalmin = oms_list[10].spectrum_bitmap.getn(0) + nguard
-    nvalmax = oms_list[10].spectrum_bitmap.getn(ind_max) - nguard + 1
+    ind_max = len(random_oms.spectrum_bitmap.bitmap) - 1
+    print('with guardband', random_oms.spectrum_bitmap.getn(0),
+          random_oms.spectrum_bitmap.getn(ind_max))
+    print('without guardband', random_oms.spectrum_bitmap.freq_index_min,
+          random_oms.spectrum_bitmap.freq_index_max)
+    nvalmin = random_oms.spectrum_bitmap.getn(0) + nguard
+    nvalmax = random_oms.spectrum_bitmap.getn(ind_max) - nguard + 1
 
     # min index in bitmap must be consistant with min freq attribute
     print(f'test1 expected: {nvalmin}')
-    print(f'freq_index_min: {oms_list[10].spectrum_bitmap.freq_index_min},')
-    assert nvalmin == oms_list[10].spectrum_bitmap.freq_index_min
+    print(f'freq_index_min: {random_oms.spectrum_bitmap.freq_index_min},')
+    assert nvalmin == random_oms.spectrum_bitmap.freq_index_min
     print(f'test2 expected: {nvalmax}')
-    print(f'freq_index_max: {oms_list[10].spectrum_bitmap.freq_index_max}')
-    assert nvalmax == oms_list[10].spectrum_bitmap.freq_index_max
-    oms_list[10].update_spectrum(freq_min, freq_max, grid=grid, guardband=guardband)
+    print(f'freq_index_max: {random_oms.spectrum_bitmap.freq_index_max}')
+    assert nvalmax == random_oms.spectrum_bitmap.freq_index_max
+    random_oms.update_spectrum(freq_min, freq_max, grid=grid, guardband=guardband)
     # checks that changes are applied on bitmap and freq attributes of Bitmap object
     print(f'expected: {nmin}, {nmax}')
-    print(f'test3 obtained: {oms_list[10].spectrum_bitmap.freq_index_min},' +\
-          f' {oms_list[10].spectrum_bitmap.freq_index_max}')
-    assert (nmin == oms_list[10].spectrum_bitmap.freq_index_min and
-            nmax == oms_list[10].spectrum_bitmap.freq_index_max)
+    print(f'test3 obtained: {random_oms.spectrum_bitmap.freq_index_min},' +\
+          f' {random_oms.spectrum_bitmap.freq_index_max}')
+    assert (nmin == random_oms.spectrum_bitmap.freq_index_min and
+            nmax == random_oms.spectrum_bitmap.freq_index_max)
 
     print('novel spectrum')
-    print(nvalue_to_frequency(oms_list[10].spectrum_bitmap.freq_index_min) * 1e-12,
-          nvalue_to_frequency(oms_list[10].spectrum_bitmap.freq_index_max) * 1e-12)
-    ind_max = len(oms_list[10].spectrum_bitmap.bitmap) - 1
-    print('with guardband', oms_list[10].spectrum_bitmap.getn(0),
-          oms_list[10].spectrum_bitmap.getn(ind_max))
-    print('without guardband', oms_list[10].spectrum_bitmap.freq_index_min,
-          oms_list[10].spectrum_bitmap.freq_index_max)
-    nvalmin = oms_list[10].spectrum_bitmap.getn(0) + nguard
-    nvalmax = oms_list[10].spectrum_bitmap.getn(ind_max) - nguard + 1
+    print(nvalue_to_frequency(random_oms.spectrum_bitmap.freq_index_min) * 1e-12,
+          nvalue_to_frequency(random_oms.spectrum_bitmap.freq_index_max) * 1e-12)
+    ind_max = len(random_oms.spectrum_bitmap.bitmap) - 1
+    print('with guardband', random_oms.spectrum_bitmap.getn(0),
+          random_oms.spectrum_bitmap.getn(ind_max))
+    print('without guardband', random_oms.spectrum_bitmap.freq_index_min,
+          random_oms.spectrum_bitmap.freq_index_max)
+    nvalmin = random_oms.spectrum_bitmap.getn(0) + nguard
+    nvalmax = random_oms.spectrum_bitmap.getn(ind_max) - nguard + 1
     # min index in bitmap must be consistant with min freq attribute
     print(f'expected: {nvalmin}')
-    print(f'freq_index_min: {oms_list[10].spectrum_bitmap.freq_index_min},')
+    print(f'freq_index_min: {random_oms.spectrum_bitmap.freq_index_min},')
     print('inconsistancy in Bitmap object')
-    assert nvalmin == oms_list[10].spectrum_bitmap.freq_index_min
+    assert nvalmin == random_oms.spectrum_bitmap.freq_index_min
     print(f'expected: {nvalmax}')
-    print(f'freq_index_max: {oms_list[10].spectrum_bitmap.freq_index_max}')
+    print(f'freq_index_max: {random_oms.spectrum_bitmap.freq_index_max}')
     print('inconsistancy in Bitmap object')
-    assert nvalmax == oms_list[10].spectrum_bitmap.freq_index_max
+    assert nvalmax == random_oms.spectrum_bitmap.freq_index_max
     oms_list = align_grids(oms_list)
-    ind_max = len(oms_list[10].spectrum_bitmap.bitmap) - 1
-    nvalmin = oms_list[10].spectrum_bitmap.getn(0)
-    nvalmax = oms_list[10].spectrum_bitmap.getn(ind_max)
+    ind_max = len(random_oms.spectrum_bitmap.bitmap) - 1
+    nvalmin = random_oms.spectrum_bitmap.getn(0)
+    nvalmax = random_oms.spectrum_bitmap.getn(ind_max)
     print(f'expected: {min(nmin, nvalmin)}, {max(nmax, nvalmax)}')
     print(f'expected: {nmin, nmax}')
     print(f'obtained after alignment: {nvalmin}, {nvalmax}')
@@ -148,11 +146,9 @@ def test_assign_and_sum(nval1, nval2, setup):
     """ checks that bitmap sum gives correct result
     """
     network, oms_list = setup
-    grid = 0.00625e12
     guardband = grid
     mval = 4 # slot in 12.5GHz
-    freq_min = 193.1e12
-    freq_max = 193.1e12 + 24 * 0.00625e12
+    freq_max = freq_min + 24 * grid
     # arbitrary test on oms #10 and #11
     # first reduce the grid to 24 center frequencies to ease reading when test fails
     oms1 = oms_list[10]
@@ -160,14 +156,14 @@ def test_assign_and_sum(nval1, nval2, setup):
     oms2 = oms_list[11]
     oms2.update_spectrum(freq_min, freq_max, grid=grid, guardband=guardband)
     print('initial spectrum')
-    print(nvalue_to_frequency(oms_list[10].spectrum_bitmap.freq_index_min) * 1e-12,
-          nvalue_to_frequency(oms_list[10].spectrum_bitmap.freq_index_max) * 1e-12)
+    print(nvalue_to_frequency(oms1.spectrum_bitmap.freq_index_min) * 1e-12,
+          nvalue_to_frequency(oms1.spectrum_bitmap.freq_index_max) * 1e-12)
     # checks initial values consistancy
-    ind_max = len(oms_list[10].spectrum_bitmap.bitmap) - 1
-    print('with guardband', oms_list[10].spectrum_bitmap.getn(0),
-          oms_list[10].spectrum_bitmap.getn(ind_max))
-    print('without guardband', oms_list[10].spectrum_bitmap.freq_index_min,
-          oms_list[10].spectrum_bitmap.freq_index_max)
+    ind_max = len(oms1.spectrum_bitmap.bitmap) - 1
+    print('with guardband', oms1.spectrum_bitmap.getn(0),
+          oms1.spectrum_bitmap.getn(ind_max))
+    print('without guardband', oms1.spectrum_bitmap.freq_index_min,
+          oms1.spectrum_bitmap.freq_index_max)
     test1 = oms1.assign_spectrum(nval1, mval)
     print(oms1.spectrum_bitmap.bitmap)
     # if requested slots exceed grid spectrum should not be assigned and assignment
@@ -201,34 +197,40 @@ def test_values(setup):
         https://www.itu.int/rec/T-REC-G.694.1-201202-I/en
     """
     network, oms_list = setup
-
-    oms_list[5].assign_spectrum(13, 7)
+    random_oms = oms_list[17]
+    random_oms.assign_spectrum(13, 7)
     fstart, fstop = m_to_freq(13, 7)
     print('expected: 193137500000000.0, 193225000000000.0')
     print(f'obtained: {fstart}, {fstop}')
-    assert fstart == 193.1375e12 and fstop == 193.225 * 1e12
+    assert fstart == 193.1375e12 and fstop == 193.225e12
     nstart = frequency_to_n(fstart)
     nstop = frequency_to_n(fstop)
-    # nval, mval = slots_to_m(7, 20)
+
     nval, mval = slots_to_m(nstart, nstop)
     print('expected n, m: 13, 7')
     print(f'obtained: {nval}, {mval}')
     assert nval == 13 or mval == 7
 
-@pytest.mark.parametrize('nval', [0, None, 0.5])
-@pytest.mark.parametrize('mval', [1, 0, None, 4.5])
+@pytest.mark.parametrize('nval', [0, 10, -255])
+@pytest.mark.parametrize('mval', [1, 8])
+def test_acceptable_values(nval, mval, setup):
+    """ test n or m not applicable values
+    """
+    network, oms_list = setup
+    random_oms = oms_list[5]
+    random_oms.assign_spectrum(nval, mval)
+    print(f'n, m values should not raise an error {nval}, {mval}')
+
+@pytest.mark.parametrize('nval', [0, 10, -10, None, 0.5, 9.001])
+@pytest.mark.parametrize('mval', [0, 4.5, None, -2])
 def test_exception(nval, mval, setup):
     """ test n or m not applicable values
     """
     network, oms_list = setup
-    try:
-        oms_list[5].assign_spectrum(nval, mval)
+    random_oms = oms_list[5]
+    with pytest.raises(SpectrumError):
+        random_oms.assign_spectrum(nval, mval)
         print(f'n, m values should raise an error {nval}, {mval}')
-        test = False
-    except SpectrumError:
-        test = True
-    print(nval, mval)
-    assert test or (nval + mval) == 1
 
 @pytest.mark.parametrize('nval', [0, -300, 500])
 @pytest.mark.parametrize('mval', [1, 600])
@@ -236,45 +238,38 @@ def test_wrong_values(nval, mval, setup):
     """ test n or m not applicable values
     """
     network, oms_list = setup
-    test = oms_list[5].assign_spectrum(nval, mval)
-    print(f'n, m values should raise an error {nval}, {mval}')
-    expected = False
-    if (nval + mval) == 1:
-        expected = True
-    print(nval, mval)
-    assert test is expected
+    random_oms = oms_list[8]
+    test = random_oms.assign_spectrum(nval, mval)
+    if nval != 0 or mval != 1:
+        print(f'n, m values should raise an error (exceed bitmap rane, so None assignment) {nval}, {mval}')
+        assert not test
+    else:
+        print(f'Except for the the couple 0, 1')
+        assert test
 
 def test_bitmap_assignment(setup):
     """ test that a bitmap can be assigned
     """
     network, oms_list = setup
+    random_oms = oms_list[2]
+    random_oms.assign_spectrum(13, 7)
 
-    oms_list[5].assign_spectrum(13, 7)
-
-    btmp = deepcopy(oms_list[5].spectrum_bitmap.bitmap)
-    freq_min = 191300000000000.0
-    freq_max = 196100000000000.0
+    btmp = deepcopy(random_oms.spectrum_bitmap.bitmap)
     # try a first assignment that must pass
     spectrum_btmp = Bitmap(freq_min, freq_max, grid=0.00625e12, guardband=0.15e12, bitmap=btmp)
 
     # try a wrong asignment that should not pass
     btmp = btmp[1:-1]
-    test = False
-    try:
+    with pytest.raises(SpectrumError):
         spectrum_btmp = Bitmap(freq_min, freq_max, grid=0.00625e12, guardband=0.15e12, bitmap=btmp)
-    except SpectrumError:
-        test = True
-
-    print('bitmap direct assignment should create an error if length is not consistant with' +\
-          'provided values')
-    assert test
+    print('bitmap direct assignment should create an error if length is not consistant with provided values')
 
 @pytest.fixture()
 def data(eqpt):
     """ common setup for service list: builds service only once
     """
     with open(SERVICE_FILENAME, encoding='utf-8') as my_f:
-        data = loads(my_f.read())
+        data = json.loads(my_f.read())
     return data
 
 @pytest.fixture()
@@ -291,11 +286,12 @@ def test_spectrum_assignment_on_path(eqpt, setup, requests):
     equipment = eqpt
     network, oms_list = setup
     rqs = requests
-    req = [rqs[1]]
+    req = [deepcopy(rqs[1])]
     pths = compute_path_dsjctn(network, equipment, req, [])
 
     print(req)
     for nval in range(100):
+        req = [deepcopy(rqs[1])]
         (center_n, startn, stopn), path_oms = spectrum_selection(pths[0], oms_list, 4)
         pth_assign_spectrum(pths, req, oms_list, [find_reversed_path(pths[0])])
         print(f'testing on following oms {path_oms}')
@@ -304,14 +300,11 @@ def test_spectrum_assignment_on_path(eqpt, setup, requests):
             print(center_n, startn, stopn)
             print('only 96 channels of 4 slots pass in this grid')
             assert center_n is None and startn is None and stopn is None
-        if nval < 96:
+        else:
             print(center_n, startn, stopn)
             print('at least 96 channels of 4 slots should pass in this grid')
             assert center_n is not None and startn is not None and stopn is not None
-        # reset req[0]: since pth_assign_spectrum adds N and M attribute to the class,
-        # removing N and M simulates a brand new request at each loop.
-        delattr(req[0],'N')
-        delattr(req[0],'M')
+
     req = [rqs[2]]
     pths = compute_path_dsjctn(network, equipment, req, [])
     (center_n, startn, stopn), path_oms = spectrum_selection(pths[0], oms_list, 4, 478)
@@ -319,7 +312,7 @@ def test_spectrum_assignment_on_path(eqpt, setup, requests):
     print(oms_list[0])
     print(center_n, startn, stopn)
     print('spectrum selection error: should be None')
-    assert center_n is  None and startn is None and stopn is None
+    assert center_n is None and startn is None and stopn is None
     (center_n, startn, stopn), path_oms = spectrum_selection(pths[0], oms_list, 4, 477)
     print(center_n, startn, stopn)
     print('spectrum selection error should not be None')
@@ -347,7 +340,7 @@ def test_reversed_direction(eqpt, setup, requests, data):
     for i, pth in enumerate(pths):
         if pth:
             number_wl = ceil(rqs[i].path_bandwidth / rqs[i].bit_rate)
-            requested_m = ceil(rqs[i].spacing / 0.0125e12) * number_wl
+            requested_m = ceil(rqs[i].spacing / slot) * number_wl
             (center_n, startn, stopn), path_oms = spectrum_selection(pth, oms_list, requested_m,
                                                                      requested_n=None)
             spectrum_list.append([center_n, startn, stopn])
