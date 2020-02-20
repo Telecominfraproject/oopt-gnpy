@@ -161,12 +161,11 @@ def test_include_constraints(test_setup, srce, dest, result, pth, nd_list, ls_li
     bdir = False
     rqs = create_rq(equipment, srce, dest, bdir, nd_list, ls_list)
     print(rqs)
-    try:
+    if result == 'fail':
+        with pytest.raises(ServiceError):
+            rqs = correct_route_list(network, rqs)
+    else:
         rqs = correct_route_list(network, rqs)
-        assert result == 'pass'
-    except ServiceError:
-        assert result == 'fail'
-    if result == 'pass':
         pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
         # if loose, one path can be returned
         if pths[0]:
