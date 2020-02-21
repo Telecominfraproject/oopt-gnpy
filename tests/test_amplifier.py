@@ -126,24 +126,39 @@ def test_compare_nf_models(gain, setup_edfa_variable_gain, si):
     assert pytest.approx(nf_model, abs=0.5) == nf_poly
 
 @pytest.mark.parametrize("gain", [13, 15, 17, 19, 21, 23, 25, 27])
-def test_ase_noise(gain, si, setup_edfa_variable_gain, setup_trx, bw):
+def test_ase_noise(gain, si, setup_trx, bw):
     """testing 3 different ways of calculating osnr:
     1-pin-edfa.nf+58 vs
     2-pout/pase afet propagate
     3-Transceiver osnr_ase_01nm
     => unitary test for Edfa.noise_profile (Edfa.interpol_params, Edfa.propagate)"""
-    edfa = setup_edfa_variable_gain
+    equipment = load_equipment(eqpt_library)
+    network = load_network(test_network, equipment)
+    edfa = next(n for n in network.nodes() if n.uid == 'Edfa1')
+    span = next(n for n in network.nodes() if n.uid == 'Span1')
+    # update span1 and Edfa1 according to new gain before building network
+    # updating span 1  avoids to overload amp
+    span.length = gain*1e3 / 0.2
+    edfa.operational.gain_target = gain
+    build_network(network, equipment,0, 20)
+    edfa.gain_ripple = zeros(96)
+    edfa.interpol_nf_ripple = zeros(96)
+    #propagate in span1 to have si with the correct power level
+    si = span(si)
+    print(span)
+
     frequencies = array([c.frequency for c in si.carriers])
     pin = array([c.power.signal+c.power.nli+c.power.ase for c in si.carriers])
     baud_rates = array([c.baud_rate for c in si.carriers])
-    edfa.operational.gain_target = gain
-    pref = Pref(0, 0, lin2db(len(frequencies)))
+    pref = Pref(0, -gain, lin2db(len(frequencies)))
     edfa.interpol_params(frequencies, pin, baud_rates, pref)
     nf = edfa.nf
+    print('nf', nf)
     pin = lin2db(pin[0]*1e3)
     osnr_expected = pin - nf[0] + 58
 
     si = edfa(si)
+    print(edfa)
     pout = array([c.power.signal for c in si.carriers])
     pase = array([c.power.ase for c in si.carriers])
     osnr = lin2db(pout[0] / pase[0]) - lin2db(12.5e9/bw)
