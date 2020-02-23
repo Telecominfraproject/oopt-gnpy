@@ -2,8 +2,8 @@
   "path-request": [
     {
       "request-id": "first",
-      "source": "netconf:10.0.254.93:830",
-      "destination": "netconf:10.0.254.94:830",
+      "source": "netconf:10.0.254.105:830",
+      "destination": "netconf:10.0.254.103:830",
       "src-tp-id": "trx-Amsterdam",
       "dst-tp-id": "trx-Bremen",
       "bidirectional": true,
@@ -21,14 +21,14 @@
           "spacing": 50000000000.0,
           "max-nb-of-channel": null,
           "output-power": null,
-          "path_bandwidth": 100000000000.0
+          "path_bandwidth": 200000000000.0
         }
       }
     },
     {
       "request-id": "second",
-      "source": "netconf:10.0.254.93:830",
-      "destination": "netconf:10.0.254.94:830",
+      "source": "netconf:10.0.254.105:830",
+      "destination": "netconf:10.0.254.103:830",
       "src-tp-id": "trx-Amsterdam",
       "dst-tp-id": "trx-Bremen",
       "bidirectional": true,
@@ -46,7 +46,7 @@
           "spacing": 50000000000.0,
           "max-nb-of-channel": null,
           "output-power": null,
-          "path_bandwidth": 100000000000.0
+          "path_bandwidth": 200000000000.0
         }
       }
     }

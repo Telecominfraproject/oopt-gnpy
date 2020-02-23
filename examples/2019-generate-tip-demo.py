@@ -1,16 +1,11 @@
-# How many nodes in the ring topology? Up to eight is supported, then I ran out of cities..
+# How many nodes in the ring topology?
 HOW_MANY = 3
 
 # city names
 ALL_CITIES = [
-    'Amsterdam',
-    'Bremen',
-    'Cologne',
-    'Dueseldorf',
-    'Eindhoven',
-    'Frankfurt',
-    'Ghent',
-    'Hague',
+    'Antwerp',
+    'Brussels',
+    'Leuven',
 ]
 # end of configurable parameters
 
@@ -100,8 +95,12 @@ for CITY in (ALL_CITIES[x] for x in range(0, HOW_MANY)):
     for n in (1,2):
         target_pwr = [
             {"to_node": f"roadm-{CITY}-L{n}-booster", "target_pch_out_db": -23},
-            {"to_node": f"splice-(roadm-{CITY}-L{n})-(patch-(roadm-{CITY}-L{n})-(roadm-{CITY}-AD))", "target_pch_out_db": -12},
+            {"to_node": f"splice-(roadm-{CITY}-L{n})-(patch-(roadm-{CITY}-L{n})-(roadm-{CITY}-AD))", "target_pch_out_db": -5 if CITY == 'Antwerp' else -12},
         ]
+        if CITY == 'Antwerp':
+            target_pwr.append(
+                {"to_node": f"netconf:10.0.254.105:830", "target_pch_out_db": -5},
+            )
         for m in (1,2):
             if m == n:
                 continue
@@ -142,34 +141,31 @@ for _, E in enumerate(J["elements"]):
 
 translate = {
     #"trx-Amsterdam": "10.0.254.93",
-    #"trx-Bremen": "10.0.254.94",
-    "trx-Amsterdam": "10.0.254.105",
-    "trx-Bremen": "10.0.254.103",
+    #"trx-Brussels": "10.0.254.94",
+    "trx-Antwerp": "10.0.254.105",
+    "trx-Brussels": "10.0.254.103",
 
-    # Amsterdam A/D: coherent-v9u
-    "roadm-Amsterdam-AD": "10.0.254.107",
-    # Bremen A/D: -spi
-    "roadm-Bremen-AD": "10.0.254.225",
+    # Antwerp A/D: a passive device -> nothing
+    #"roadm-Antwerp-AD": "nothing",
+    # Brussels A/D: add-drop-vot
+    "roadm-Brussels-AD": "10.0.254.246",
 
-    # Amsterdam -> Bremen ...QR79
-    "roadm-Amsterdam-L1": "10.0.254.78",
-    # Bremen -> Amsterdam ...QCP9
-    "roadm-Bremen-L2": "10.0.254.102",
+    # Antwerp -> Brussels ...Q7N
+    "roadm-Antwerp-L1": "10.0.254.236",
+    # Brussels -> Antwerp ...MPW
+    "roadm-Brussels-L2": "10.0.254.227",
 
-    # Bremen -> Cologne ...WKP
-    "roadm-Bremen-L1": "10.0.254.100",
-    # Cologne -> Bremen ...QLK6
-    "roadm-Cologne-L2": "10.0.254.104",
+    # Brussels -> Lueven ...M0N
+    "roadm-Brussels-L1": "10.0.254.226",
 
-    # Cologne -> Amsterdam ...TQQ
-    "roadm-Cologne-L1": "10.0.254.99",
-    # Amsterdam -> Cologne ...Q7JS
-    "roadm-Amsterdam-L2": "10.0.254.79",
+    # HACK: pretend that this ILA is a ROADM
+    # Lueven: inline-dq0011h0
+    #"roadm-Leuven-L1": "Leuven-ILA",
+    "roadm-Leuven-L1": "10.0.254.106",
+    #"Lueven-ILA": "10.0.254.106",
 
-    # spare Line/Degree ...QC8B
-    "spare-line-degree": "10.0.254.101",
-    # spare Add/Drop: ...NNN
-    "spare-add-drop": "10.0.254.228",
+    # Antwerp -> Lueven ...NFP
+    "roadm-Antwerp-L2": "10.0.254.235",
 }
 
 import json
