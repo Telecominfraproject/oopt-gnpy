@@ -6,8 +6,9 @@
 from gnpy.core.elements import Edfa
 from numpy import zeros, array
 from json import load
+from gnpy.core import elements
 from gnpy.core.elements import Transceiver, Fiber, Edfa
-from gnpy.core.utils import lin2db, db2lin
+from gnpy.core.utils import lin2db, db2lin, merge_amplifier_restrictions
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
 from gnpy.core.equipment import load_equipment, automatic_fmax, automatic_nch
 from gnpy.core.network import build_network, load_network
@@ -118,11 +119,39 @@ def test_compare_nf_models(gain, setup_edfa_variable_gain, si):
     pin = pin/db2lin(gain)
     baud_rates = array([c.baud_rate for c in si.carriers])
     edfa.operational.gain_target = gain
+    # edfa is variable gain type
     pref = Pref(0, -gain, lin2db(len(frequencies)))
     edfa.interpol_params(frequencies, pin, baud_rates, pref)
     nf_model = edfa.nf[0]
+
+
+    # change edfa type variety to a polynomial
+    el_config =    {
+            "uid": "Edfa1",
+            "operational": {
+                "gain_target": gain,
+                "tilt_target": 0
+            },
+            "metadata": {
+                "location": {
+                    "region": "",
+                    "latitude": 2,
+                    "longitude": 0
+                }
+            }
+        }
+    equipment = load_equipment(eqpt_library)
+    extra_params = equipment['Edfa']['CienaDB_medium_gain']
+    temp = el_config.setdefault('params', {})
+    temp = merge_amplifier_restrictions(temp, extra_params.__dict__)
+    el_config['params'] = temp
+    cls = getattr(elements, 'Edfa')
+    edfa = cls(**el_config)
+
+    # edfa is variable gain type
     edfa.interpol_params(frequencies, pin, baud_rates, pref)
     nf_poly = edfa.nf[0]
+    print(nf_poly, nf_model)
     assert pytest.approx(nf_model, abs=0.5) == nf_poly
 
 @pytest.mark.parametrize("gain", [13, 15, 17, 19, 21, 23, 25, 27])
