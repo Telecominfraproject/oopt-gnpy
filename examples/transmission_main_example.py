@@ -127,7 +127,7 @@ def main(network, equipment, source, destination, sim_params, req=None):
     pref_ch_db = lin2db(req.power*1e3) #reference channel power / span (SL=20dB)
     pref_total_db = pref_ch_db + lin2db(req.nb_channel) #reference total power / span (SL=20dB)
     build_network(network, equipment, pref_ch_db, pref_total_db)
-    path = compute_constrained_path(network, req)
+    path = compute_constrained_path(network, equipment, req)
 
     if sim_params:
         Simulation.set_params(sim_params)
