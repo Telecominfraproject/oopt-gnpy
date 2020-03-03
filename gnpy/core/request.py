@@ -17,7 +17,7 @@ See: draft-ietf-teas-yang-path-computation-01.txt
 
 from collections import namedtuple, OrderedDict
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
-from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths)
+from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths, DiGraph)
 from networkx.utils import pairwise
 from numpy import mean
 from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
@@ -25,6 +25,7 @@ from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
 from gnpy.core.exceptions import ServiceError, DisjunctionError
+from gnpy.core.network import save_network
 from copy import copy, deepcopy
 from csv import writer
 from math import ceil
@@ -260,7 +261,7 @@ class Result_element(Element):
     def json(self):
         return self.pathresult
 
-def compute_constrained_path(network, req):
+def compute_constrained_path(network, equipment, req):
     trx = [n for n in network.nodes() if isinstance(n, Transceiver)]
     roadm = [n for n in network.nodes() if isinstance(n, Roadm)]
     edfa = [n for n in network.nodes() if isinstance(n, Edfa)]
@@ -295,6 +296,7 @@ def compute_constrained_path(network, req):
     if len(nodes_list) == 1:
         try:
             total_path = dijkstra_path(network, source, destination, weight='weight')
+            #toto = list(my_all_simple_path(network, source, destination))
             # print('checking edges length is correct')
             # print(shortest_path_length(network,source,destination))
             # print(shortest_path_length(network,source,destination,weight ='weight'))
@@ -312,8 +314,10 @@ def compute_constrained_path(network, req):
             total_path = []
     else:
         # len(nodes_list) is 2 or more (includes at list one include node apart from destination)
-        all_simp_pths = list(all_simple_paths(network, source=source,\
-            target=destination, cutoff=120))
+        all_simp_pths = list(my_all_simple_paths(network, equipment, source=source,\
+            target=destination, cutoff=10))
+        # print(all_simp_pths)
+        # print('coucou5')
         candidate = []
         for pth in all_simp_pths:
             if ispart(nodes_list, pth):
@@ -701,10 +705,22 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     simple_rqs = {}
     simple_rqs_reversed = {}
     for pathreq in pathreqlist_disjt:
-        all_simp_pths = list(all_simple_paths(network,\
+        all_simp_pths = list(my_all_simple_paths(network, equipment, \
             source=next(el for el in network.nodes() if el.uid == pathreq.source),\
             target=next(el for el in network.nodes() if el.uid == pathreq.destination),\
-            cutoff=80))
+            cutoff=10))
+        # print('coucou6')
+        # print(all_simp_pths)
+        # all_simp_pths_old = list(my_all_simple_paths(network,\
+        #     source=next(el for el in network.nodes() if el.uid == pathreq.source),\
+        #     target=next(el for el in network.nodes() if el.uid == pathreq.destination),\
+        #     cutoff=80))
+        # for p in all_simp_pths:
+        #     for i, x in enumerate(p):
+        #         print(p[i].uid, p[i+1].uid)
+        #         print(network.get_edge_data(p[i], p[i+1])['weight'])
+
+
         # sort them in km length instead of hop
         # all_simp_pths = sorted(all_simp_pths, key=lambda path: len(path))
         all_simp_pths = sorted(all_simp_pths, key=lambda \
@@ -883,7 +899,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
                         candidates = remove_candidate(candidates, allpaths, allpaths[id(pth)].req, pth)
                         test_sol = False
             else:
-                msg = f'No disjoint path found with added constraint'
+                msg = f'No disjoint path found with added constraint {this_d.disjunction_id}'
                 LOGGER.critical(msg)
                 print(f'{msg}\nComputation stopped.')
                 # TODO in this case: replay step 5  with the candidate without constraints
@@ -899,7 +915,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
         # we assume that the destination is a strict constraint
         req.loose_list.append('STRICT')
         if req in pathreqlist_simple:
-            path_res_list.append(compute_constrained_path(network, req))
+            path_res_list.append(compute_constrained_path(network, equipment, req))
         else:
             path_res_list.append(pathreslist_disjoint[req])
     return path_res_list
@@ -1045,3 +1061,73 @@ def requests_aggregation(pathreqlist, disjlist):
                         disjlist.remove(this_d)
                 break
     return local_list, disjlist
+
+def my_all_simple_paths(net, equipment, source, target, cutoff):
+    """ create a network with OMS only to reduce the number of hops
+        run the initial all_simple_path function on it and returns the all_simple paths
+    """
+    # create the new network 
+    # print('coucoucoucoucocuocuocucouco')
+
+    network = deepcopy(net)
+    from gnpy.core.spectrum_assignment import build_oms_list
+    oms_list = build_oms_list(network, equipment)
+    g = DiGraph()
+    for oms in oms_list:
+        src = oms.el_list[0]
+        # print('1', src.uid)
+        drct = oms.el_list[1]
+        # print('2', drct.uid)
+        dest = oms.el_list[-1]
+        # print('3', dest.uid)
+        if src not in g.nodes():
+            g.add_node(src)
+            trx_src = next(n for n in network.successors(src) if isinstance(n, Transceiver))
+            g.add_node(trx_src)
+            g.add_edge(src, trx_src)
+            g.add_edge(trx_src, src)
+
+        if drct not in g.nodes():
+            g.add_node(drct)
+
+        if dest not in g.nodes():
+            g.add_node(dest)
+            trx_dest = next(n for n in network.successors(dest) if isinstance(n, Transceiver))
+            g.add_node(trx_dest)
+            g.add_edge(dest, trx_dest)
+            g.add_edge(trx_dest, dest)
+
+        g.add_edge(src,drct)
+        g.add_edge(drct, dest)
+
+    # print('coucou2')
+    # print(source.uid)
+    srce = next(n for n in g.nodes if n.uid == source.uid)
+    # print(srce)
+    dest = next(n for n in g.nodes if n.uid == target.uid)
+    # print(dest)
+
+    res = list(all_simple_paths(g, source=srce, target=dest, cutoff=cutoff))
+    # print('coucou3')
+    # print('coucou4', len(list(g.nodes())))
+    # print('coucou11', len(res))
+    all_simp_paths = []
+    for elem in res:
+        # print('coucou12', [n.uid for n in elem])
+        #for each segment find the corresponding oms in net
+        p_oms = list(OrderedDict.fromkeys([el.oms for el in elem \
+                if not isinstance(el, Transceiver) and not isinstance(el, Roadm)]))
+        pth = [elem[0]]
+        for oms in p_oms:
+            pth.extend(oms.el_list[:-1])
+        pth.extend([elem[-2]])
+        pth.extend([elem[-1]])
+        # print('coucou10', len(pth))
+        # print([p.uid for p in pth])
+
+        mypth = []
+        for nd in pth:
+            mypth.append(next(n for n in net if n.uid == nd.uid))
+        # print([p.uid for p in mypth])
+        all_simp_paths.append(mypth)
+        yield mypth
