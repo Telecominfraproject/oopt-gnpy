@@ -143,8 +143,8 @@ for _, E in enumerate(J["elements"]):
 translate = {
     #"trx-Amsterdam": "10.0.254.93",
     #"trx-Bremen": "10.0.254.94",
-    "trx-Amsterdam": "10.0.254.105",
-    "trx-Bremen": "10.0.254.103",
+    "trx-Amsterdam": "10.0.254.76",
+    "trx-Bremen": "10.0.254.77",
 
     # Amsterdam A/D: coherent-v9u
     "roadm-Amsterdam-AD": "10.0.254.107",

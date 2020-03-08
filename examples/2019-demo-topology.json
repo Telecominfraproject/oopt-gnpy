@@ -1,7 +1,7 @@
 {
   "elements": [
     {
-      "uid": "netconf:10.0.254.105:830",
+      "uid": "netconf:10.0.254.76:830",
       "type": "Transceiver"
     },
     {
@@ -11,7 +11,7 @@
         "target_pch_out_db": -2.0,
         "per_degree_target_pch_out_db": [
           {
-            "to_node": "netconf:10.0.254.105:830",
+            "to_node": "netconf:10.0.254.76:830",
             "target_pch_out_db": -25
           },
           {
@@ -260,7 +260,7 @@
       }
     },
     {
-      "uid": "netconf:10.0.254.103:830",
+      "uid": "netconf:10.0.254.77:830",
       "type": "Transceiver"
     },
     {
@@ -270,7 +270,7 @@
         "target_pch_out_db": -2.0,
         "per_degree_target_pch_out_db": [
           {
-            "to_node": "netconf:10.0.254.103:830",
+            "to_node": "netconf:10.0.254.77:830",
             "target_pch_out_db": -25
           },
           {
@@ -852,12 +852,12 @@
   ],
   "connections": [
     {
-      "from_node": "netconf:10.0.254.105:830",
+      "from_node": "netconf:10.0.254.76:830",
       "to_node": "netconf:10.0.254.107:830"
     },
     {
       "from_node": "netconf:10.0.254.107:830",
-      "to_node": "netconf:10.0.254.105:830"
+      "to_node": "netconf:10.0.254.76:830"
     },
     {
       "from_node": "netconf:10.0.254.78:830",
@@ -972,12 +972,12 @@
       "to_node": "netconf:10.0.254.78:830"
     },
     {
-      "from_node": "netconf:10.0.254.103:830",
+      "from_node": "netconf:10.0.254.77:830",
       "to_node": "netconf:10.0.254.225:830"
     },
     {
       "from_node": "netconf:10.0.254.225:830",
-      "to_node": "netconf:10.0.254.103:830"
+      "to_node": "netconf:10.0.254.77:830"
     },
     {
       "from_node": "netconf:10.0.254.100:830",
