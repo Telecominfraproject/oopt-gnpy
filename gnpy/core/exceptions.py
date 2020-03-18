@@ -27,3 +27,6 @@ class DisjunctionError(ServiceError):
 class SpectrumError(Exception):
     '''Spectrum errors of the program'''
 
+class ParametersError(ConfigurationError):
+    '''Incomplete or wrong configurations within parameters json'''
+
