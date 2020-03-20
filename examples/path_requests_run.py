@@ -168,7 +168,7 @@ def disjunctions_from_json(json_data):
 def load_requests(filename, eqpt_filename, bidir):
     """ loads the requests from a json or an excel file into a data string
     """
-    if filename.suffix.lower() == '.xls':
+    if filename.suffix.lower() in ('.xls', '.xlsx'):
         LOGGER.info('Automatically converting requests from XLS to JSON')
         try:
             json_data = convert_service_sheet(filename, eqpt_filename, bidir=bidir)
