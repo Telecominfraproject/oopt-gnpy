@@ -42,7 +42,7 @@ eqpt_filename = DATA_DIR / 'eqpt_config.json'
 
 
 @pytest.mark.parametrize('xls_input,expected_json_output', {
-    DATA_DIR / 'CORONET_Global_Topology.xls':   DATA_DIR / 'CORONET_Global_Topology_expected.json',
+    DATA_DIR / 'CORONET_Global_Topology.xlsx':   DATA_DIR / 'CORONET_Global_Topology_expected.json',
     DATA_DIR / 'testTopology.xls':     DATA_DIR / 'testTopology_expected.json',
     }.items())
 def test_excel_json_generation(xls_input, expected_json_output):
@@ -70,7 +70,7 @@ def test_excel_json_generation(xls_input, expected_json_output):
 # test that the build network gives correct results in gain mode
 
 @pytest.mark.parametrize('xls_input,expected_json_output',
-                         {DATA_DIR / 'CORONET_Global_Topology.xls':\
+                         {DATA_DIR / 'CORONET_Global_Topology.xlsx':\
                           DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json',
                           DATA_DIR / 'testTopology.xls':\
                           DATA_DIR / 'testTopology_auto_design_expected.json',
