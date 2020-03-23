@@ -42,7 +42,7 @@ eqpt_filename = DATA_DIR / 'eqpt_config.json'
 
 
 @pytest.mark.parametrize('xls_input,expected_json_output', {
-    DATA_DIR / 'CORONET_Global_Topology.xls':   DATA_DIR / 'CORONET_Global_Topology_expected.json',
+    DATA_DIR / 'CORONET_Global_Topology.xlsx':   DATA_DIR / 'CORONET_Global_Topology_expected.json',
     DATA_DIR / 'testTopology.xls':     DATA_DIR / 'testTopology_expected.json',
     }.items())
 def test_excel_json_generation(xls_input, expected_json_output):
@@ -70,7 +70,7 @@ def test_excel_json_generation(xls_input, expected_json_output):
 # test that the build network gives correct results in gain mode
 
 @pytest.mark.parametrize('xls_input,expected_json_output',
-                         {DATA_DIR / 'CORONET_Global_Topology.xls':\
+                         {DATA_DIR / 'CORONET_Global_Topology.xlsx':\
                           DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json',
                           DATA_DIR / 'testTopology.xls':\
                           DATA_DIR / 'testTopology_auto_design_expected.json',
@@ -92,7 +92,7 @@ def test_auto_design_generation_fromxlsgainmode(xls_input, expected_json_output)
     build_network(network, equipment, p_db, p_total_db)
     save_network(xls_input, network)
 
-    actual_json_output = f'{str(xls_input)[0:len(str(xls_input))-4]}_auto_design.json'
+    actual_json_output = xls_input.with_name(xls_input.stem + '_auto_design').with_suffix('.json')
 
     with open(actual_json_output, encoding='utf-8') as f:
         actual = load(f)
@@ -132,7 +132,7 @@ def test_auto_design_generation_fromjson(json_input, expected_json_output):
     build_network(network, equipment, p_db, p_total_db)
     save_network(json_input, network)
 
-    actual_json_output = f'{str(json_input)[0:len(str(json_input))-5]}_auto_design.json'
+    actual_json_output = json_input.with_name(json_input.stem + '_auto_design').with_suffix('.json')
 
     with open(actual_json_output, encoding='utf-8') as f:
         actual = load(f)
@@ -159,7 +159,7 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
     """
     convert_service_sheet(xls_input, eqpt_filename)
 
-    actual_json_output = f'{str(xls_input)[:-4]}_services.json'
+    actual_json_output = xls_input.with_name(xls_input.stem + '_services').with_suffix('.json')
     with open(actual_json_output, encoding='utf-8') as f:
         actual = load(f)
     unlink(actual_json_output)

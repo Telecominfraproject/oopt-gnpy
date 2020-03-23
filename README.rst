@@ -168,7 +168,7 @@ example, to use the CORONET Global network defined in
     $ ./examples/transmission_main_example.py examples/CORONET_Global_Topology.json
 
 It is also possible to use an Excel file input (for example
-`examples/CORONET_Global_Topology.xls <examples/CORONET_Global_Topology.xls>`_).
+`examples/CORONET_Global_Topology.xlsx <examples/CORONET_Global_Topology.xlsx>`_).
 The Excel file will be processed into a JSON file with the same prefix. For
 further instructions on how to prepare the Excel input file, see
 `Excel_userguide.rst <Excel_userguide.rst>`_.
@@ -362,7 +362,7 @@ parameters:
 |                                     |           | Interest to support high level              |
 |                                     |           | topologies that do not specify in line      |
 |                                     |           | amplification sites. For example the        |
-|                                     |           | CORONET_Global_Topology.xls defines         |
+|                                     |           | CORONET_Global_Topology.xlsx defines        |
 |                                     |           | links > 1000km between 2 sites: it          |
 |                                     |           | couldn't be simulated if these links        |
 |                                     |           | were not split in shorter span lengths.     |

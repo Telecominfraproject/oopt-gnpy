@@ -34,7 +34,7 @@ Each line represents a 'node' (ROADM site or an in line amplifier site ILA or a 
   - If filled, it can take "ROADM", "FUSED" or "ILA" values. If another string is used, it will be considered as not filled. FUSED means that ingress and egress spans will be fused together.  
 
 - *State*, *Country*, *Region* are not mandatory.
-  "Region" is a holdover from the CORONET topology reference file `CORONET_Global_Topology.xls <examples/CORONET_Global_Topology.xls>`_. CORONET separates its network into geographical regions (Europe, Asia, Continental US.) This information is not used by gnpy.
+  "Region" is a holdover from the CORONET topology reference file `CORONET_Global_Topology.xlsx <examples/CORONET_Global_Topology.xlsx>`_. CORONET separates its network into geographical regions (Europe, Asia, Continental US.) This information is not used by gnpy.
 
 - *Longitude*, *Latitude* are not mandatory. If filled they should contain numbers.
 
