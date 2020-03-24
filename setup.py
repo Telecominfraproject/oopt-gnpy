@@ -35,5 +35,5 @@ setup(
     keywords='optics network fiber communication route planning optimization',
     #packages=find_packages(exclude=['examples', 'docs', 'tests']),  # Required
     packages=find_packages(exclude=['docs', 'tests']),  # Required
-    install_requires=list(open('requirements.txt'))
+    install_requires=list(open(here / 'requirements.txt'))
 )
