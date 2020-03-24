@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 
 from codecs import open
-from os import path
+from pathlib import Path
 from setuptools import setup, find_packages
 
-here = path.abspath(path.dirname(__file__))
+ROOT = Path(__file__).parent
 
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+with open(ROOT / 'README.rst', encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
@@ -35,5 +35,5 @@ setup(
     keywords='optics network fiber communication route planning optimization',
     #packages=find_packages(exclude=['examples', 'docs', 'tests']),  # Required
     packages=find_packages(exclude=['docs', 'tests']),  # Required
-    install_requires=list(open('requirements.txt'))
+    install_requires=list(open(ROOT / 'requirements.txt'))
 )
