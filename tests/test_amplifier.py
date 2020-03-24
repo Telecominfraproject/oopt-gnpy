@@ -167,7 +167,7 @@ def test_ase_noise(gain, si, setup_trx, bw):
     span = next(n for n in network.nodes() if n.uid == 'Span1')
     # update span1 and Edfa1 according to new gain before building network
     # updating span 1  avoids to overload amp
-    span.length = gain*1e3 / 0.2
+    span.params.length = gain*1e3 / 0.2
     edfa.operational.gain_target = gain
     build_network(network, equipment,0, 20)
     edfa.gain_ripple = zeros(96)
