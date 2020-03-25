@@ -5,11 +5,25 @@
     parent: tox-py37
     vars:
       tox_prefer_python2: false
+- job:
+    name: tox-py36-oopt-gnpy
+    parent: tox-py36
+    vars:
+      tox_prefer_python2: false
+- job:
+    name: tox-py38-oopt-gnpy
+    parent: tox-py38
+    vars:
+      tox_prefer_python2: false
 
 - project:
     check:
       jobs:
+      - tox-py36-oopt-gnpy
       - tox-py37-oopt-gnpy
+      - tox-py38-oopt-gnpy
     gate:
       jobs:
+      - tox-py36-oopt-gnpy
       - tox-py37-oopt-gnpy
+      - tox-py38-oopt-gnpy
