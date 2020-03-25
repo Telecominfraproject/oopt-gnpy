@@ -14,8 +14,10 @@
         - tox-linters-diff:
             voting: false
         - tox-docs
+        - tox-py36
         - tox-py37-cover-previous
     gate:
       jobs:
+        - tox-py36
         - tox-py37
         - tox-docs
