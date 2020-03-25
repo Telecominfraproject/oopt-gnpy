@@ -14,7 +14,7 @@ script:
   - ./examples/transmission_main_example.py
   - ./examples/path_requests_run.py
   - ./examples/transmission_main_example.py examples/raman_edfa_example_network.json --sim examples/sim_params.json --show-channels
-  - sphinx-build docs/ x-throwaway-location
+  - sphinx-build -W --keep-going docs/ x-throwaway-location
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 jobs:

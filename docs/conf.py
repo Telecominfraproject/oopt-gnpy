@@ -166,4 +166,9 @@ texinfo_documents = [
      'Miscellaneous'),
 ]
 
-autodoc_default_flags = ['members', 'undoc-members', 'private-members', 'show-inheritance']
+autodoc_default_options = {
+    'members': True,
+    'undoc-members': True,
+    'private-members': True,
+    'show-inheritance': True,
+}
