@@ -548,8 +548,6 @@ class Edfa(Node):
 
     def interpol_params(self, frequencies, pin, baud_rates, pref):
         """interpolate SI channel frequencies with the edfa dgt and gain_ripple frquencies from JSON
-        set the edfa class __init__ None parameters :
-                self.channel_freq, self.nf, self.interpol_dgt and self.interpol_gain_ripple
         """
         # TODO|jla: read amplifier actual frequencies from additional params in json
         amplifier_freq = arrange_frequencies(len(self.params.dgt), self.params.f_min, self.params.f_max) # Hz
@@ -646,8 +644,9 @@ class Edfa(Node):
             return self.interpol_nf_ripple + nf_avg # input VOA = 1 for 1 NF degradation
 
     def noise_profile(self, df):
-        """noise_profile(bw) computes amplifier ase (W) in signal bw (Hz)
-        noise is calculated at amplifier input
+        """noise_profile(bw) computes amplifier ASE (W) in signal bandwidth (Hz)
+
+        Noise is calculated at amplifier input
 
         :bw: signal bandwidth = baud rate in Hz
         :type bw: float
@@ -655,21 +654,26 @@ class Edfa(Node):
         :return: the asepower in W in the signal bandwidth bw for 96 channels
         :return type: numpy array of float
 
-        ASE POWER USING PER CHANNEL GAIN PROFILE
-        INPUTS:
-        NF_dB - Noise figure in dB, vector of length number of channels or
-                spectral slices
-        G_dB  - Actual gain calculated for the EDFA, vector of length number of
-                channels or spectral slices
-        ffs     - Center frequency grid of the channels or spectral slices in
-                THz, vector of length number of channels or spectral slices
-        dF    - width of each channel or spectral slice in THz,
-                vector of length number of channels or spectral slices
+        ASE power using per channel gain profile inputs:
+
+            NF_dB - Noise figure in dB, vector of length number of channels or
+                    spectral slices
+            G_dB  - Actual gain calculated for the EDFA, vector of length number of
+                    channels or spectral slices
+            ffs     - Center frequency grid of the channels or spectral slices in
+                    THz, vector of length number of channels or spectral slices
+            dF    - width of each channel or spectral slice in THz,
+                    vector of length number of channels or spectral slices
+
         OUTPUT:
+
             ase_dBm - ase in dBm per channel or spectral slice
-        NOTE: the output is the total ASE in the channel or spectral slice. For
-        50GHz channels the ASE BW is effectively 0.4nm. To get to noise power
-        in 0.1nm, subtract 6dB.
+
+        NOTE:
+
+            The output is the total ASE in the channel or spectral slice. For
+            50GHz channels the ASE BW is effectively 0.4nm. To get to noise power
+            in 0.1nm, subtract 6dB.
 
         ONSR is usually quoted as channel power divided by
         the ASE power in 0.1nm RBW, regardless of the width of the actual
@@ -691,36 +695,22 @@ class Edfa(Node):
         :param gain_ripple: design flat gain
         :param dgt: design gain tilt
         :param Pin: total input power in W
-        :param gp: Average gain setpoint in dB units
-        :param gtp: gain tilt setting
+        :param gp: Average gain setpoint in dB units (provisioned gain)
+        :param gtp: gain tilt setting (provisioned tilt)
         :type gain_ripple: numpy.ndarray
         :type dgt: numpy.ndarray
         :type Pin: numpy.ndarray
         :type gp: float
         :type gtp: float
-        :return: gain profile in dBm
+        :return: gain profile in dBm, per channel or spectral slice
         :rtype: numpy.ndarray
 
-        AMPLIFICATION USING INPUT PROFILE
-        INPUTS:
-            gain_ripple - vector of length number of channels or spectral slices
-            DGT - vector of length number of channels or spectral slices
-            Pin - input powers vector of length number of channels or
-            spectral slices
-            Gp  - provisioned gain length 1
-            GTp - provisioned tilt length 1
 
-        OUTPUT:
-            amp gain per channel or spectral slice
-        NOTE: there is no checking done for violations of the total output
-            power capability of the amp.
-        EDIT OF PREVIOUS NOTE: power violation now added in interpol_params
-            Ported from Matlab version written by David Boerges at Ciena.
         Based on:
+
             R. di Muro, "The Er3+ fiber gain coefficient derived from a dynamic
-            gain
-            tilt technique", Journal of Lightwave Technology, Vol. 18, Iss. 3,
-            Pp. 343-347, 2000.
+            gain tilt technique", Journal of Lightwave Technology, Vol. 18,
+            Iss. 3, Pp. 343-347, 2000.
         """
 
         # TODO|jla: check what param should be used (currently length(dgt))

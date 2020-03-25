@@ -29,10 +29,10 @@ def save_json(obj, filename):
 
 def write_csv(obj, filename):
     """
-    convert dictionary items to a csv file
-    the dictionary format :
+    Convert dictionary items to a CSV file the dictionary format:
+    ::
 
-    {'result category 1':
+        {'result category 1':
                         [
                         # 1st line of results
                         {'header 1' : value_xxx,
@@ -41,19 +41,21 @@ def write_csv(obj, filename):
                         {'header 1' : value_www,
                          'header 2' : value_zzz}
                         ],
-    'result_category 2':
+        'result_category 2':
                         [
                         {},{}
                         ]
-    }
+        }
 
-    the generated csv file will be:
-    result_category 1
-    header 1    header 2
-    value_xxx   value_yyy
-    value_www   value_zzz
-    result_category 2
-    ...
+    The generated csv file will be:
+    ::
+
+        result_category 1
+        header 1    header 2
+        value_xxx   value_yyy
+        value_www   value_zzz
+        result_category 2
+        ...
     """
     with open(filename, 'w', encoding='utf-8') as f:
         w = writer(f)
@@ -77,12 +79,12 @@ def arrange_frequencies(length, start, stop):
     """Create an array of frequencies
 
     :param length: number of elements
-    :param star: Start frequency in THz
+    :param start: Start frequency in THz
     :param stop: Stop frequency in THz
     :type length: integer
     :type start: float
     :type stop: float
-    :return an array of frequencies determined by the spacing parameter
+    :return: an array of frequencies determined by the spacing parameter
     :rtype: numpy.ndarray
     """
     return np.linspace(start, stop, length)
