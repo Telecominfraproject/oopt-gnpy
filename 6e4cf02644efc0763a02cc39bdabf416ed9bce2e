@@ -65,6 +65,30 @@
     },
     {
       "key": {
+        "uuid": "ae0eae7e_ee6be728",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-03-26T23:42:40Z",
+      "side": 1,
+      "message": "(Gerrit demo here, so I\u0027m talking to myself)\n\nI think you meant \"ROADM\" instead of \"EDFA\". I\u0027ve changed this.",
+      "parentUuid": "52ff502c_8808041c",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 28
+      },
+      "revId": "6e4cf02644efc0763a02cc39bdabf416ed9bce2e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e43d0b71_818bcb5d",
         "filename": "tests/test_spectrum_assignment.py",
         "patchSetId": 3
