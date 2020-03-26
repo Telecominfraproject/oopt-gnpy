@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "55cca0cc_38a4d78b",
+        "filename": "gnpy/core/spectrum_assignment.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-03-26T23:29:20Z",
+      "side": 1,
+      "message": "I think that this line can be removed; it\u0027s not describing what this test is actually doing",
+      "revId": "6e4cf02644efc0763a02cc39bdabf416ed9bce2e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "49c36e97_4b88cb1d",
+        "filename": "gnpy/core/spectrum_assignment.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-03-26T23:29:20Z",
+      "side": 1,
+      "message": "same here, there are no frequencies as inputs in this function",
+      "range": {
+        "startLine": 183,
+        "startChar": 8,
+        "endLine": 183,
+        "endChar": 64
+      },
+      "revId": "6e4cf02644efc0763a02cc39bdabf416ed9bce2e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52ff502c_8808041c",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-03-26T23:29:20Z",
+      "side": 1,
+      "message": "nit: I would prefet if acronyms such as \"OMS\" and \"EDFA\" were capitalized, I think it makes it a bit easier to read",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 28
+      },
+      "revId": "6e4cf02644efc0763a02cc39bdabf416ed9bce2e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e43d0b71_818bcb5d",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-03-26T23:29:20Z",
+      "side": 1,
+      "message": "nit: \"range\" instead of \"rane\"",
+      "range": {
+        "startLine": 244,
+        "startChar": 65,
+        "endLine": 244,
+        "endChar": 69
+      },
+      "revId": "6e4cf02644efc0763a02cc39bdabf416ed9bce2e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
