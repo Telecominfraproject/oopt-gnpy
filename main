@@ -2,7 +2,7 @@
   title = Telecom Infra Project OOPT GNPy Patches
   foreach = project:${project}
 [section "Under review"]
-  query = is:open -is:wip -label:Code-Review<=-1 -label:Verified<=-1
+  query = is:open -(is:wip OR has:unresolved OR label:Code-Review<=-1 OR label:Verified<=-1)
 [section "Needs work"]
   query = is:open (is:wip OR has:unresolved OR label:Code-Review<=-1 OR label:Verified<=-1)
 [section "Recently merged"]
