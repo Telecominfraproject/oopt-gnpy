@@ -4,6 +4,12 @@
       jobs:
       - tox-py37
       - tox-docs
+      - build-docker-image:
+          vars: &tip_gnpy_docker_vars
+            docker_images:
+              - context: .
+                repository: telecominfraproject/oopt-gnpy
+
     gate:
       jobs:
       - tox-py37
