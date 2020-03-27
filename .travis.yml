@@ -7,7 +7,7 @@ python:
   - "3.7"
 install: skip
 script:
-  - python setup.py install
+  - python setup.py develop
   - pip install pytest-cov rstcheck
   - pytest --cov-report=xml --cov=gnpy
   - rstcheck --ignore-roles cite --ignore-directives automodule --recursive --ignore-messages '(Duplicate explicit target name.*)' .
