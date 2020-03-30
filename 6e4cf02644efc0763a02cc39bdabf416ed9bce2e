@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9ac991d5_a7e73590",
+        "filename": "gnpy/core/spectrum_assignment.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-03-30T11:42:11Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "55cca0cc_38a4d78b",
+      "revId": "6e4cf02644efc0763a02cc39bdabf416ed9bce2e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "49c36e97_4b88cb1d",
         "filename": "gnpy/core/spectrum_assignment.py",
         "patchSetId": 3
@@ -39,6 +57,30 @@
       "revId": "6e4cf02644efc0763a02cc39bdabf416ed9bce2e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d030bd28_e5a5058b",
+        "filename": "gnpy/core/spectrum_assignment.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-03-30T11:42:11Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "49c36e97_4b88cb1d",
+      "range": {
+        "startLine": 183,
+        "startChar": 8,
+        "endLine": 183,
+        "endChar": 64
+      },
+      "revId": "6e4cf02644efc0763a02cc39bdabf416ed9bce2e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     },
     {
       "key": {
