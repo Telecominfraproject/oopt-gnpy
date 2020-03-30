@@ -238,7 +238,7 @@ The fiber library currently describes SSMF and NZDF but additional fiber types c
 +----------------------+-----------+-----------------------------------------+
 | ``dispersion``       | (number)  | (s.m-1.m-1)                             |
 +----------------------+-----------+-----------------------------------------+
-| ``gamma``            | (number)  | 2pi.n2/(lambda*Aeff) (w-2.m-1)          |
+| ``gamma``            | (number)  | 2pi.n2/(lambda*Aeff) (w-1.m-1)          |
 +----------------------+-----------+-----------------------------------------+
 
 The transceiver equipment library is a list of supported transceivers. New
