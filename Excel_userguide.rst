@@ -180,6 +180,8 @@ This generates a text file meshTopologyExampleV2_eqt_sheet.txt  whose content ca
 
 - *tilt* --TODO--
 
+- *delta_p*, in dBm,  is not mandatory. If filled it is used to set the output target power per channel at the output of the amplifier, if power_mode is True. The output power is then set to power_dbm + delta_power.
+
 # to be completed #
 
 (in progress)
