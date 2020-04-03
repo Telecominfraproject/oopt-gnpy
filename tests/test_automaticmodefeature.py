@@ -18,7 +18,7 @@ from pathlib import Path
 import pytest
 from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch
 from gnpy.core.network import load_network, build_network
-from examples.path_requests_run import requests_from_json, correct_route_list, load_requests
+from examples.path_requests_run import requests_from_json, correct_json_route_list, load_requests
 from gnpy.core.request import compute_path_dsjctn, propagate, propagate_and_optimize_mode
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.elements import Roadm
@@ -47,7 +47,7 @@ def test_automaticmodefeature(net,eqpt,serv,expected_mode):
     build_network(network, equipment, p_db, p_total_db)
 
     rqs = requests_from_json(data, equipment)
-    rqs = correct_route_list(network, rqs)
+    rqs = correct_json_route_list(network, rqs)
     dsjn = []
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
     path_res_list = []

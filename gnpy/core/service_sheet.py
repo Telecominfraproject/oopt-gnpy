@@ -100,28 +100,6 @@ class Request_element(Element):
         self.nodes_list = []
         if Request.nodes_list :
             self.nodes_list = Request.nodes_list.split(' | ')
-
-        # cleaning the list of nodes to remove source and destination
-        # (because the remaining of the program assumes that the nodes list are nodes 
-        # on the path and should not include source and destination)
-        try :
-            self.nodes_list.remove(self.source)
-            msg = f'{self.source} removed from explicit path node-list'
-            logger.info(msg)
-        except ValueError:
-            msg = f'{self.source} already removed from explicit path node-list'
-            logger.info(msg)
-
-        try :
-            self.nodes_list.remove(self.destination)
-            msg = f'{self.destination} removed from explicit path node-list'
-            logger.info(msg)
-        except ValueError:
-            msg = f'{self.destination} already removed from explicit path node-list'
-            logger.info(msg)
-
-        # the excel parser applies the same hop-type to all nodes in the route nodes_list.
-        # user can change this per node in the generated json
         self.loose = 'LOOSE'
         if Request.is_loose == 'no' :
             self.loose = 'STRICT'

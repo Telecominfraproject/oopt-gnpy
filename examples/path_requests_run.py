@@ -23,13 +23,13 @@ from gnpy.core.service_sheet import convert_service_sheet, Request_element, Elem
 from gnpy.core.utils import load_json
 from gnpy.core.network import load_network, build_network, save_network
 from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch
-from gnpy.core.elements import Transceiver, Roadm
+from gnpy.core.elements import Roadm
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.request import (Path_request, Result_element,
                                propagate, jsontocsv, Disjunction, compute_path_dsjctn,
                                requests_aggregation, propagate_and_optimize_mode,
                                BLOCKING_NOPATH, BLOCKING_NOMODE,
-                               find_reversed_path)
+                               find_reversed_path, correct_xls_route_list, correct_json_route_list)
 from gnpy.core.exceptions import (ConfigurationError, EquipmentConfigError, NetworkTopologyError,
                                   ServiceError, DisjunctionError)
 import gnpy.core.ansi_escapes as ansi_escapes
@@ -288,58 +288,6 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         print('')
     return path_res_list, reversed_path_res_list, propagated_reversed_path_res_list
 
-def correct_route_list(network, pathreqlist):
-    """ prepares the format of route list of nodes to be consistant
-        remove wrong names, remove endpoints
-        also correct source and destination
-    """
-    anytype = [n.uid for n in network.nodes()]
-    # TODO there is a problem of identification of fibers in case of parallel fibers
-    # between two adjacent roadms so fiber constraint is not supported
-    transponders = [n.uid for n in network.nodes() if isinstance(n, Transceiver)]
-    for pathreq in pathreqlist:
-        for i, n_id in enumerate(pathreq.nodes_list):
-            # replace possibly wrong name with a formated roadm name
-            # print(n_id)
-            if n_id not in anytype:
-                # find nodes name that include constraint among all possible names except
-                # transponders (not yet supported as constraints).
-                nodes_suggestion = [uid for uid in anytype \
-                    if n_id.lower() in uid.lower() and uid not in transponders]
-                if pathreq.loose_list[i] == 'LOOSE':
-                    if len(nodes_suggestion) > 0:
-                        new_n = nodes_suggestion[0]
-                        print(f'invalid route node specified:\
-                        \n\'{n_id}\', replaced with \'{new_n}\'')
-                        pathreq.nodes_list[i] = new_n
-                    else:
-                        print(f'\x1b[1;33;40m'+f'invalid route node specified \'{n_id}\',' +\
-                              f' could not use it as constraint, skipped!'+'\x1b[0m')
-                        pathreq.nodes_list.remove(n_id)
-                        pathreq.loose_list.pop(i)
-                else:
-                    msg = f'\x1b[1;33;40m'+f'could not find node: {n_id} in network topology.' +\
-                          f' Strict constraint can not be applied.' + '\x1b[0m'
-                    LOGGER.critical(msg)
-                    raise ServiceError(msg)
-        if pathreq.source not in transponders:
-            msg = f'\x1b[1;31;40m' + f'Request: {pathreq.request_id}: could not find' +\
-                  f' transponder source: {pathreq.source}.'+'\x1b[0m'
-            LOGGER.critical(msg)
-            print(f'{msg}\nComputation stopped.')
-            raise ServiceError(msg)
-
-        if pathreq.destination not in transponders:
-            msg = f'\x1b[1;31;40m'+f'Request: {pathreq.request_id}: could not find' +\
-                  f' transponder destination: {pathreq.destination}.'+'\x1b[0m'
-            LOGGER.critical(msg)
-            print(f'{msg}\nComputation stopped.')
-            raise ServiceError(msg)
-
-        # TODO remove endpoints from this list in case they were added by the user
-        # in the xls or json files
-    return pathreqlist
-
 def correct_disjn(disjn):
     """ clean disjunctions to remove possible repetition
     """
@@ -413,10 +361,16 @@ def main(args):
         LOGGER.critical(msg)
         exit()
     try:
-        rqs = correct_route_list(network, rqs)
+        if ARGS.network_filename.suffix.lower() in ('.xls', '.xlsx'):
+            # only correct namings in route constraint if users entry is xls.
+            # else it is assumed that the constraints follow the json given name.
+            rqs = correct_xls_route_list(ARGS.network_filename, network, rqs)
+        else:
+            rqs = correct_json_route_list(network, rqs)
     except ServiceError as this_e:
         print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {this_e}')
         exit(1)
+
     # pths = compute_path(network, equipment, rqs)
     dsjn = disjunctions_from_json(data)
 

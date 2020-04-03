@@ -20,11 +20,13 @@ from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
 from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths)
 from networkx.utils import pairwise
 from numpy import mean
+from gnpy.core.convert import corresp_names
 from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
-from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
+from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused, Fiber
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
 from gnpy.core.exceptions import ServiceError, DisjunctionError
+import gnpy.core.ansi_escapes as ansi_escapes
 from copy import copy, deepcopy
 from csv import writer
 from math import ceil
@@ -1045,3 +1047,239 @@ def requests_aggregation(pathreqlist, disjlist):
                         disjlist.remove(this_d)
                 break
     return local_list, disjlist
+
+def correct_xls_route_list(network_filename, network, pathreqlist):
+    """ prepares the format of route list of nodes to be consistant with nodes names:
+        remove wrong names, find correct names for ila, roadm and fused if the entry was
+        xls.
+        if it was not xls, all names in list should be exact name in the network.
+    """
+    # first loads the base correspondance dict built with excel naming
+    corresp_roadm, corresp_fused, corresp_ila = corresp_names(network_filename)
+    # then correct dict names with names of the autodisign and find next_node name
+    # according to xls naming
+    corresp_ila, next_node = corresp_next_node(network, corresp_ila, corresp_roadm)
+    # finally correct constraints based on these dict
+    trxfibertype = [n.uid for n in network.nodes() if isinstance(n, (Transceiver, Fiber))]
+    roadmtype = [n.uid for n in network.nodes() if isinstance(n, Roadm)]
+    edfatype = [n.uid for n in network.nodes() if isinstance(n, Edfa)]
+    # TODO there is a problem of identification of fibers in case of parallel
+    # fibers between two adjacent roadms so fiber constraint is not supported
+    transponders = [n.uid for n in network.nodes() if isinstance(n, Transceiver)]
+    for pathreq in pathreqlist:
+        # first check that source and dest are transceivers
+        if pathreq.source not in transponders:
+            msg = f'{ansi_escapes.red}Request: {pathreq.request_id}: could not find' +\
+                  f' transponder source : {pathreq.source}.{ansi_escapes.reset}'
+            LOGGER.critical(msg)
+            raise ServiceError(msg)
+
+        if pathreq.destination not in transponders:
+            msg = f'{ansi_escapes.red}Request: {pathreq.request_id}: could not find' +\
+                  f' transponder destination: {pathreq.destination}.{ansi_escapes.reset}'
+            LOGGER.critical(msg)
+            raise ServiceError(msg)
+        # silently pop source and dest nodes from the list if they were added by the user as first
+        # and last elem in the constraints respectively. Other positions must lead to an error
+        # caught later on
+        if pathreq.nodes_list and pathreq.source == pathreq.nodes_list[0]:
+            pathreq.loose_list.pop(0)
+            pathreq.nodes_list.pop(0)
+        if pathreq.nodes_list and pathreq.destination == pathreq.nodes_list[-1]:
+            pathreq.loose_list.pop(-1)
+            pathreq.nodes_list.pop(-1)
+        # Then process user defined constraints with respect to automatic namings
+        temp = deepcopy(pathreq)
+        # This needs a temporary object since we may suppress/correct elements in the list
+        # during the process
+        for i, n_id in enumerate(temp.nodes_list):
+            # n_id must not be a transceiver and must not be a fiber (non supported, user
+            # can not enter fiber names in excel)
+            if n_id not in trxfibertype:
+                # check that n_id is in the node list, if not find a correspondance name
+                if n_id in roadmtype + edfatype:
+                    nodes_suggestion = [n_id]
+                else:
+                    # checks first roadm, fused, and ila in this order, because ila automatic name
+                    # contain roadm names. If it is a fused node, next ila names might be correct
+                    # suggestions, especially if following fibers were splitted and ila names
+                    # created with the name of the fused node
+                    if n_id in corresp_roadm.keys():
+                        nodes_suggestion = corresp_roadm[n_id]
+                    elif n_id in corresp_fused.keys():
+                        nodes_suggestion = corresp_fused[n_id] + corresp_ila[n_id]
+                    elif n_id in corresp_ila.keys():
+                        nodes_suggestion = corresp_ila[n_id]
+                    else:
+                        nodes_suggestion = []
+                if nodes_suggestion:
+                    try:
+                        if len(nodes_suggestion) > 1:
+                            # if there is more than one suggestion, we need to choose the direction
+                            # we rely on the next node provided by the user for this purpose
+                            new_n = next(n for n in nodes_suggestion
+                                         if n in next_node.keys() and next_node[n]
+                                         in temp.nodes_list[i:]+[pathreq.destination] and
+                                         next_node[n] not in temp.nodes_list[:i])
+                        else:
+                            new_n = nodes_suggestion[0]
+                        if new_n != n_id:
+                            # warns the user when the correct name is used only in verbose mode,
+                            # eg 'a' is a roadm and correct name is 'roadm a' or when there was
+                            # too much ambiguity, 'b' is an ila, its name can be:
+                            # Edfa0_fiber (a → b)-xx if next node is c or
+                            # Edfa0_fiber (c → b)-xx if next node is a
+                            msg = f'{ansi_escapes.yellow}Invalid route node specified:' +\
+                                  f'\n\t\'{n_id}\', replaced with \'{new_n}\'{ansi_escapes.reset}'
+                            LOGGER.info(msg)
+                            pathreq.nodes_list[pathreq.nodes_list.index(n_id)] = new_n
+                    except StopIteration:
+                        # shall not come in this case, unless requested direction does not exist
+                        msg = f'{ansi_escapes.yellow}Invalid route specified {n_id}: could' +\
+                              f' not decide on direction, skipped!.\nPlease add a valid' +\
+                              f' direction in constraints (neighbour node){ansi_escapes.reset}'
+                        print(msg)
+                        LOGGER.info(msg)
+                        pathreq.loose_list.pop(pathreq.nodes_list.index(n_id))
+                        pathreq.nodes_list.remove(n_id)
+                else:
+                    if temp.loose_list[i] == 'LOOSE':
+                        # if no matching can be found in the network just ignore this constraint
+                        # if it is a loose constraint
+                        # warns the user that this node is not part of the topology
+                        msg = f'{ansi_escapes.yellow}Invalid node specified:\n\t\'{n_id}\'' +\
+                              f', could not use it as constraint, skipped!{ansi_escapes.reset}'
+                        print(msg)
+                        LOGGER.info(msg)
+                        pathreq.loose_list.pop(pathreq.nodes_list.index(n_id))
+                        pathreq.nodes_list.remove(n_id)
+                    else:
+                        msg = f'{ansi_escapes.red}Could not find node:\n\t\'{n_id}\' in network' +\
+                              f' topology. Strict constraint can not be applied.{ansi_escapes.reset}'
+                        LOGGER.critical(msg)
+                        raise ServiceError(msg)
+            else:
+                if temp.loose_list[i] == 'LOOSE':
+                    print(f'{ansi_escapes.yellow}Invalid route node specified:\n\t\'{n_id}\'' +\
+                          f' type is not supported as constraint with xls network input,' +\
+                          f' skipped!{ansi_escapes.reset}')
+                    pathreq.loose_list.pop(pathreq.nodes_list.index(n_id))
+                    pathreq.nodes_list.remove(n_id)
+                else:
+                    msg = f'{ansi_escapes.red}Invalid route node specified \n\t\'{n_id}\'' +\
+                          f' type is not supported as constraint with xls network input,' +\
+                          f', Strict constraint can not be applied.{ansi_escapes.reset}'
+                    LOGGER.critical(msg)
+                    raise ServiceError(msg)
+
+
+    return pathreqlist
+
+def correct_json_route_list(network, pathreqlist):
+    """ all names in list should be exact name in the network, and there is no ambiguity
+        This function only checks that list is correct, warns user if the name is incorrect and
+        suppresses the constraint it it is loose or raises an error if it is strict
+    """
+    all_uid = [n.uid for n in network.nodes()]
+    transponders = [n.uid for n in network.nodes() if isinstance(n, Transceiver)]
+    for pathreq in pathreqlist:
+        if pathreq.source not in transponders:
+            msg = f'{ansi_escapes.red}Request: {pathreq.request_id}: could not find transponder' +\
+                  f' source : {pathreq.source}.{ansi_escapes.reset}'
+            LOGGER.critical(msg)
+            raise ServiceError(msg)
+
+        if pathreq.destination not in transponders:
+            msg = f'{ansi_escapes.red}Request: {pathreq.request_id}: could not find transponder' +\
+                  f' destination : {pathreq.destination}.{ansi_escapes.reset}'
+            LOGGER.critical(msg)
+            raise ServiceError(msg)
+
+        # silently remove source and dest nodes from the list
+        if pathreq.nodes_list and pathreq.source == pathreq.nodes_list[0]:
+            pathreq.loose_list.pop(0)
+            pathreq.nodes_list.pop(0)
+        if pathreq.nodes_list and pathreq.destination == pathreq.nodes_list[-1]:
+            pathreq.loose_list.pop(-1)
+            pathreq.nodes_list.pop(-1)
+        temp = deepcopy(pathreq)
+        for i, n_id in enumerate(temp.nodes_list):
+            # a node within this list must be part of the topology and should not be a transceiver,
+            # because only source and dest are transceivers
+            if n_id not in all_uid or n_id in transponders:
+                if temp.loose_list[i] == 'LOOSE':
+                    # if no matching can be found in the network just ignore this constraint
+                    # if it is a loose constraint
+                    # warns the user that this node is not part of the topology
+                    msg = f'{ansi_escapes.yellow}invalid route node specified:\n\t\'{n_id}\',' +\
+                          f' could not use it as constraint, skipped!{ansi_escapes.reset}'
+                    print(msg)
+                    LOGGER.info(msg)
+                    pathreq.loose_list.pop(pathreq.nodes_list.index(n_id))
+                    pathreq.nodes_list.remove(n_id)
+                else:
+                    msg = f'{ansi_escapes.red}could not find node:\n\t \'{n_id}\' in network' +\
+                          f' topology. Strict constraint can not be applied.{ansi_escapes.reset}'
+                    LOGGER.critical(msg)
+                    raise ServiceError(msg)
+
+    return pathreqlist
+
+def corresp_next_node(network, corresp_ila, corresp_roadm):
+    """ for each name in corresp dictionnaries find the next node in network and its name
+        given by user in excel. for meshTopology_exampleV2.xls:
+        user ILA name Stbrieuc covers the two direction. convert.py creates 2 different ILA
+        with possible names (depending on the direction and if the eqpt was defined in eqpt
+        sheet)
+        - east edfa in Stbrieuc to Rennes_STA
+        - west edfa in Stbrieuc to Rennes_STA
+        - Edfa0_fiber (Lannion_CAS → Stbrieuc)-F056
+        - Edfa0_fiber (Rennes_STA → Stbrieuc)-F057
+        next_nodes finds the user defined name of next node to be able to map the path constraints
+        - east edfa in Stbrieuc to Rennes_STA      next node = Rennes_STA
+        - west edfa in Stbrieuc to Rennes_STA      next node Lannion_CAS
+
+        Edfa0_fiber (Lannion_CAS → Stbrieuc)-F056 and Edfa0_fiber (Rennes_STA → Stbrieuc)-F057
+        do not exist
+        the function supports fiber splitting, fused nodes and shall only be called if
+        excel format is used for both network and service
+    """
+    next_node = {}
+    # consolidate tables and create next_node table
+    for ila_key, ila_list in corresp_ila.items():
+        temp = copy(ila_list)
+        for ila_elem in ila_list:
+            # print(ila_elem)
+            try:
+                # find the node with ila_elem string _in_ the node uid. 'in' is used instead of
+                # '==' to find composed nodes due to fiber splitting in autodesign.
+                # eg if elem_ila is 'Edfa0_fiber (Lannion_CAS → Stbrieuc)-F056',
+                # node uid 'Edfa0_fiber (Lannion_CAS → Stbrieuc)-F056_(1/2)' is possible
+                correct_ila_name = next(n.uid for n in network.nodes() if ila_elem in n.uid)
+                temp.remove(ila_elem)
+                temp.append(correct_ila_name)
+                ila_nd = next(n for n in network.nodes() if ila_elem in n.uid)
+                next_nd = next(network.successors(ila_nd))
+                # search for the next ILA or ROADM
+                while isinstance(next_nd, (Fiber, Fused)):
+                    next_nd = next(network.successors(next_nd))
+                # if next_nd is a ROADM, add the first found correspondance
+                for key, val in corresp_roadm.items():
+                    # val is a list of possible names associated with key
+                    if next_nd.uid in val:
+                        next_node[correct_ila_name] = key
+                        break
+                # if next_nd was not already added in the dict with the previous loop,
+                # add the first found correspondance in ila names
+                if correct_ila_name not in next_node.keys():
+                    for key, val in corresp_ila.items():
+                        # in case of splitted fibers the ila name might not be exact match
+                        if [e for e in val if e in next_nd.uid]:
+                            next_node[correct_ila_name] = key
+                            break
+            except StopIteration:
+                # if the name could not be found, simply ignore this name because it is
+                # finally not part of the topology
+                pass
+        corresp_ila[ila_key] = temp
+    return corresp_ila, next_node
