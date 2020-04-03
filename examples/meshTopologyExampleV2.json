@@ -644,44 +644,6 @@
       }
     },
     {
-      "uid": "east edfa in Corlay to Loudeac",
-      "metadata": {
-        "location": {
-          "city": "Corlay",
-          "region": "RLD",
-          "latitude": 2.0,
-          "longitude": 1.0
-        }
-      },
-      "type": "Edfa",
-      "type_variety": "std_low_gain",
-      "operational": {
-        "gain_target": null,
-        "delta_p": 1.0,
-        "tilt_target": 0,
-        "out_voa": null
-      }
-    },
-    {
-      "uid": "east edfa in Loudeac to Lorient_KMA",
-      "metadata": {
-        "location": {
-          "city": "Loudeac",
-          "region": "RLD",
-          "latitude": 2.0,
-          "longitude": 2.0
-        }
-      },
-      "type": "Edfa",
-      "type_variety": "std_low_gain",
-      "operational": {
-        "gain_target": null,
-        "delta_p": 1.0,
-        "tilt_target": 0,
-        "out_voa": null
-      }
-    },
-    {
       "uid": "east edfa in Lannion_CAS to Stbrieuc",
       "metadata": {
         "location": {
@@ -822,44 +784,6 @@
           "region": "RLD",
           "latitude": 2.0,
           "longitude": 0.0
-        }
-      },
-      "type": "Edfa",
-      "type_variety": "std_low_gain",
-      "operational": {
-        "gain_target": null,
-        "delta_p": 1.0,
-        "tilt_target": 0,
-        "out_voa": null
-      }
-    },
-    {
-      "uid": "west edfa in Corlay to Loudeac",
-      "metadata": {
-        "location": {
-          "city": "Corlay",
-          "region": "RLD",
-          "latitude": 2.0,
-          "longitude": 1.0
-        }
-      },
-      "type": "Edfa",
-      "type_variety": "std_low_gain",
-      "operational": {
-        "gain_target": null,
-        "delta_p": 1.0,
-        "tilt_target": 0,
-        "out_voa": null
-      }
-    },
-    {
-      "uid": "west edfa in Loudeac to Lorient_KMA",
-      "metadata": {
-        "location": {
-          "city": "Loudeac",
-          "region": "RLD",
-          "latitude": 2.0,
-          "longitude": 2.0
         }
       },
       "type": "Edfa",

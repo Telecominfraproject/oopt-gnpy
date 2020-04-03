@@ -25,20 +25,20 @@ from copy import deepcopy
 from gnpy.core.utils import lin2db
 from gnpy.core.network import save_network, build_network
 from gnpy.core.convert import convert_file
-from gnpy.core.service_sheet import convert_service_sheet
+from gnpy.core.service_sheet import convert_service_sheet, correct_xls_route_list
 from gnpy.core.equipment import load_equipment, automatic_nch
 from gnpy.core.network import load_network
-from gnpy.core.request import (jsontocsv, requests_aggregation,
-                               compute_path_dsjctn, Result_element)
+from gnpy.core.request import (jsontocsv, requests_aggregation, compute_path_dsjctn,
+                               Result_element, Path_request)
 from gnpy.core.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.core.exceptions import ServiceError
 from examples.path_requests_run import (requests_from_json, disjunctions_from_json,
-                                        correct_route_list, correct_disjn,
-                                        compute_path_with_disjunction)
+                                         correct_disjn, compute_path_with_disjunction)
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
 eqpt_filename = DATA_DIR / 'eqpt_config.json'
+equipment = load_equipment(eqpt_filename)
 
 
 @pytest.mark.parametrize('xls_input,expected_json_output', {
@@ -157,7 +157,14 @@ def test_auto_design_generation_fromjson(json_input, expected_json_output):
 def test_excel_service_json_generation(xls_input, expected_json_output):
     """ test services creation
     """
-    convert_service_sheet(xls_input, eqpt_filename)
+    equipment = load_equipment(eqpt_filename)
+    network = load_network(DATA_DIR / 'testTopology.xls', equipment)
+    # Build the network once using the default power defined in SI in eqpt config
+    p_db = equipment['SI']['default'].power_dbm
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
+        equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    build_network(network, equipment, p_db, p_total_db)
+    convert_service_sheet(xls_input, equipment, network, network_filename=DATA_DIR / 'testTopology.xls')
 
     actual_json_output = xls_input.with_name(xls_input.stem + '_services').with_suffix('.json')
     with open(actual_json_output, encoding='utf-8') as f:
@@ -280,9 +287,6 @@ def compare_response(exp_resp, act_resp):
 def test_json_response_generation(xls_input, expected_response_file):
     """ tests if json response is correctly generated for all combinations of requests
     """
-    data = convert_service_sheet(xls_input, eqpt_filename)
-    # change one of the request with bidir option to cover bidir case as well
-    data['path-request'][2]['bidirectional'] = True
 
     equipment = load_equipment(eqpt_filename)
     network = load_network(xls_input, equipment)
@@ -291,9 +295,13 @@ def test_json_response_generation(xls_input, expected_response_file):
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
         equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
+
+    data = convert_service_sheet(xls_input, equipment, network)
+    # change one of the request with bidir option to cover bidir case as well
+    data['path-request'][2]['bidirectional'] = True
+
     oms_list = build_oms_list(network, equipment)
     rqs = requests_from_json(data, equipment)
-    rqs = correct_route_list(network, rqs)
     dsjn = disjunctions_from_json(data)
     dsjn = correct_disjn(dsjn)
     rqs, dsjn = requests_aggregation(rqs, dsjn)
@@ -344,3 +352,94 @@ def test_json_response_generation(xls_input, expected_response_file):
         else:
             assert compare_response(expected['response'][i], response)
             print(f'response {response["response-id"]} is not correct')
+
+# test the correspondance names dict in case of excel input
+# test that using the created json network still works with excel input
+# test all configurations of names: trx names, roadm, fused, ila and fiber
+# as well as splitted case
+
+# initial network is based on the couple testTopology.xls/ testTopology_auto_design_expected.json
+# with added constraints to cover more test cases
+@pytest.mark.parametrize('source, destination, route_list, hoptype, expected_correction', [
+    ('trx Brest_KLA', 'trx Vannes_KBE',
+        'roadm Brest_KLA | roadm Lannion_CAS | roadm Lorient_KMA | roadm Vannes_KBE',
+        'STRICT',
+        ['roadm Brest_KLA', 'roadm Lannion_CAS', 'roadm Lorient_KMA', 'roadm Vannes_KBE']),
+    ('trx Brest_KLA', 'trx Vannes_KBE',
+        'trx Brest_KLA | roadm Lannion_CAS | roadm Lorient_KMA | roadm Vannes_KBE',
+        'STRICT',
+        ['roadm Lannion_CAS', 'roadm Lorient_KMA', 'roadm Vannes_KBE']),
+    ('trx Lannion_CAS', 'trx Rennes_STA', 'trx Rennes_STA', 'LOOSE', []),
+    ('trx Lannion_CAS', 'trx Lorient_KMA', 'toto', 'LOOSE', []),
+    ('trx Lannion_CAS', 'trx Lorient_KMA', 'toto', 'STRICT', 'Fail'),
+    ('trx Lannion_CAS', 'trx Lorient_KMA', 'Corlay | Loudeac | Lorient_KMA', 'LOOSE',
+        ['west fused spans in Corlay', 'west fused spans in Loudeac', 'roadm Lorient_KMA']),
+    ('trx Lannion_CAS', 'trx Lorient_KMA', 'Ploermel | Vannes_KBE', 'LOOSE',
+        ['east edfa in Ploermel to Vannes_KBE', 'roadm Vannes_KBE']),
+    ('trx Rennes_STA', 'trx Brest_KLA', 'Vannes_KBE | Quimper | Brest_KLA', 'LOOSE',
+        ['roadm Vannes_KBE', 'Edfa0_fiber (Lorient_KMA → Quimper)-', 'roadm Brest_KLA']),
+    ('trx Brest_KLA', 'trx Rennes_STA', 'Brest_KLA | Quimper | Lorient_KMA', 'LOOSE',
+        ['roadm Brest_KLA', 'Edfa0_fiber (Brest_KLA → Quimper)-', 'roadm Lorient_KMA']),
+    ('Brest_KLA', 'trx Rennes_STA', '', 'LOOSE', 'Fail'),
+    ('trx Brest_KLA', 'Rennes_STA', '', 'LOOSE', 'Fail'),
+    ('Brest_KLA', 'Rennes_STA', '', 'LOOSE', 'Fail'),
+    ('Brest_KLA', 'trx Rennes_STA', '', 'STRICT', 'Fail'),
+    ('trx Brest_KLA', 'trx Rennes_STA','trx Rennes_STA', 'STRICT', []),
+    ('trx Brest_KLA', 'trx Rennes_STA', None, '', []),
+    ('trx Brest_KLA', 'trx Rennes_STA', 'Brest_KLA | Quimper | Ploermel', 'LOOSE',
+        ['roadm Brest_KLA']),
+    ('trx Brest_KLA', 'trx Rennes_STA', 'Brest_KLA | Quimper | Ploermel', 'STRICT',
+        ['roadm Brest_KLA']),
+    ('trx Brest_KLA', 'trx Rennes_STA', 'Brest_KLA | trx Quimper', 'LOOSE', ['roadm Brest_KLA']),
+    ('trx Brest_KLA', 'trx Rennes_STA', 'Brest_KLA | trx Lannion_CAS', 'LOOSE', ['roadm Brest_KLA']),
+    ('trx Brest_KLA', 'trx Rennes_STA', 'Brest_KLA | trx Lannion_CAS', 'STRICT', 'Fail')
+    ])
+def test_excel_ila_constraints(source, destination, route_list, hoptype, expected_correction):
+    """ add different kind of constraints to test all correct_route cases
+    """
+    service_xls_input = DATA_DIR / 'testTopology.xls'
+    network_json_input = DATA_DIR / 'testTopology_auto_design_expected.json'
+    equipment = load_equipment(eqpt_filename)
+    network = load_network(network_json_input, equipment)
+    # increase length of one span to trigger automatic fiber splitting included by autodesign
+    # so that the test also covers this case
+    next(node for node in network.nodes() if node.uid == 'fiber (Brest_KLA → Quimper)-').length = 200000
+    next(node for node in network.nodes() if node.uid == 'fiber (Quimper → Brest_KLA)-').length = 200000
+    default_si = equipment['SI']['default']
+    p_db = default_si.power_dbm
+    p_total_db = p_db + lin2db(automatic_nch(default_si.f_min, default_si.f_max, default_si.spacing))
+    build_network(network, equipment, p_db, p_total_db)
+    # create params for a request based on input
+    nodes_list = route_list.split(' | ') if route_list is not None else []
+    params = {
+        'request_id': '0',
+        'source': source,
+        'bidir': False,
+        'destination': destination,
+        'trx_type': '',
+        'trx_mode': '',
+        'format': '',
+        'spacing': '',
+        'nodes_list': nodes_list,
+        'loose_list': [hoptype for node in nodes_list] if route_list is not None else '',
+        'f_min': 0,
+        'f_max': 0,
+        'baud_rate': 0,
+        'OSNR': None,
+        'bit_rate': None,
+        'cost': None,
+        'roll_off': 0,
+        'tx_osnr': 0,
+        'min_spacing': None,
+        'nb_channel': 0,
+        'power': 0,
+        'path_bandwidth': 0,
+    }
+    request = Path_request(**params)
+
+    if expected_correction != 'Fail':
+        [request] = correct_xls_route_list(service_xls_input, network, [request])
+        assert request.nodes_list == expected_correction
+    else:
+        with pytest.raises(ServiceError):
+            [request] = correct_xls_route_list(service_xls_input, network, [request])
