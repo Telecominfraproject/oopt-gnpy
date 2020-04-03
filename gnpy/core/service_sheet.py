@@ -105,7 +105,7 @@ class Request_element(Element):
         if Request.nodes_list :
             self.nodes_list = Request.nodes_list.split(' | ')
         self.loose = 'LOOSE'
-        if Request.is_loose == 'no' :
+        if Request.is_loose.lower() == 'no' :
             self.loose = 'STRICT'
         self.path_bandwidth = None
         if Request.path_bandwidth is not None:
