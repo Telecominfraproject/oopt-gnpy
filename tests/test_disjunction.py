@@ -17,9 +17,9 @@ import pytest
 from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch
 from gnpy.core.network import load_network, build_network
 from gnpy.core.exceptions import ServiceError
-from examples.path_requests_run import (requests_from_json, correct_route_list,
-                                        load_requests, disjunctions_from_json)
-from gnpy.core.request import compute_path_dsjctn, isdisjoint, find_reversed_path, Path_request
+from examples.path_requests_run import (requests_from_json, load_requests, disjunctions_from_json)
+from gnpy.core.request import (compute_path_dsjctn, isdisjoint, find_reversed_path, Path_request,
+                               correct_json_route_list)
 from gnpy.core.utils import lin2db
 from gnpy.core.elements import Roadm
 from gnpy.core.spectrum_assignment import build_oms_list
@@ -34,9 +34,9 @@ def serv(test_setup):
     """ common setup for service list
     """
     network, equipment = test_setup
-    data = load_requests(SERVICE_FILE_NAME, EQPT_LIBRARY_NAME, bidir=False)
+    data = load_requests(SERVICE_FILE_NAME, equipment, bidir=False, network=network, network_filename=NETWORK_FILE_NAME)
     rqs = requests_from_json(data, equipment)
-    rqs = correct_route_list(network, rqs)
+    rqs = correct_json_route_list(network, rqs)
     dsjn = disjunctions_from_json(data)
     return network, equipment, rqs, dsjn
 
@@ -130,6 +130,7 @@ def create_rq(equipment, srce, dest, bdir, nd_list, ls_list):
 
 @pytest.mark.parametrize('srce, dest, result, pth, nd_list, ls_list', [
     ['a', 'trx h', 'fail', 'no_path', [], []],
+    ['trx a', 'h', 'fail', 'no_path', [], []],
     ['trx a', 'trx h', 'pass', 'found_path', [], []],
     ['trx a', 'trx h', 'pass', 'found_path', ['roadm b', 'roadm a'], ['LOOSE', 'LOOSE']],
     ['trx a', 'trx h', 'pass', 'no_path', ['roadm b', 'roadm a'], ['STRICT', 'STRICT']],
@@ -163,9 +164,9 @@ def test_include_constraints(test_setup, srce, dest, result, pth, nd_list, ls_li
     print(rqs)
     if result == 'fail':
         with pytest.raises(ServiceError):
-            rqs = correct_route_list(network, rqs)
+            rqs = correct_json_route_list(network, rqs)
     else:
-        rqs = correct_route_list(network, rqs)
+        rqs = correct_json_route_list(network, rqs)
         pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
         # if loose, one path can be returned
         if pths[0]:
