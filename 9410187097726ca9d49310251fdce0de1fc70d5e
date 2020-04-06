@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "342bcd38_67a8d59a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-04-06T11:12:32Z",
+      "side": 1,
+      "message": "Do I understand it correctly that the root cause of the problem that this patch addresses is:\n\n- in GNPy, all elements are unidirectional, so the \"j\" amplifier in this diagram is in fact two separate elements in the JSON topology,\n- because the JSON topology is directly reflected in GNPy\u0027s in-memory topo representation, there are two ILAs in GNPy, let\u0027s call them \"J (for f -\u003e b)\" and \"J (for b -\u003e f)\",\n- in XLS, the user only sees the \"J\" node in some sheet, and the code somehow generates \"J east-to-west\" and \"J west-to-east\" into the resulting JSON,\n- but the code has no idea if the link (OMS) from B and F is \"east to west\" or \"west to east\",\n- the XLS sheet specifies requirements in a freetext form, such as \"a | b | f\", meaning that these particular nodes should be visited in-order, i.e., start somewhere, make sure you visit \"a\" before \"b\" before \"f\",\n- but now the problem is that the code cannot infer what \"j\" refers to because \"j\" is a \"virtual node\" that corresponds to both \"J east to-west\" and \"J west-to-east\".\n\n...right?\n\nIf so, then I think the proper fix should really be constrained to XLS parsing and the XLS -\u003e JSON conversion. Everything else that\u0027s in GNPy outside of the XLS-specific input reading should then receive a ready-to-use topology + service request with no ambiguity. There should be no fix-ups in the generic code of GNPy, in my opinion.\n\nIf this means changing the \"syntax\" of the \"routing: path\" field in the XLS file, so be it; one could perhaps use something like \"a | j (b -\u003e f)\". This is, in my opinion, a nice example of all the drawbacks that we get when working with not-machine-validation-friendly input formats such as XLS, and I have a strong preference for not introducing XLS workarounds into the \"other\" code.\n\nHope this makes sense :).",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 59
+      },
+      "revId": "9410187097726ca9d49310251fdce0de1fc70d5e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab3aa5e4_0e7a1a59",
+        "filename": "gnpy/core/convert.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-04-06T11:12:32Z",
+      "side": 1,
+      "message": "I don\u0027t understand this comment",
+      "range": {
+        "startLine": 430,
+        "startChar": 8,
+        "endLine": 430,
+        "endChar": 56
+      },
+      "revId": "9410187097726ca9d49310251fdce0de1fc70d5e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5dd6a4ed_c9697d28",
+        "filename": "gnpy/core/request.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-04-06T11:12:32Z",
+      "side": 1,
+      "message": "I would prefer to contain everything related to XLS input handling outside of our request processing code. In my opinion, code in current gnpy.core.request module should only operate on \"finished\" input topologies, and there should be no \"fuzzy matching\" for XLS input convenience.",
+      "revId": "9410187097726ca9d49310251fdce0de1fc70d5e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
