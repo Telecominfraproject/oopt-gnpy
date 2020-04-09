@@ -1,0 +1,7 @@
+- name: Prepare git submodules
+  shell: |
+    echo "{{ item.key }}"
+    git checkout -b "zuul_origin_{{ zuul.branch }}" "origin/{{ zuul.branch }}"
+  args:
+    chdir: "{{ ansible_user_dir }}/{{ item.value.src_dir }}"
+  loop: "{{ query('dict', zuul.projects) }}"
