@@ -1,0 +1,17 @@
+- name: Place for new version of sources
+  file:
+    path: "{{ new_source_prefix }}"
+    state: directory
+
+- name: Prepare copy of the new version of sources
+  command: git worktree add {{ new_source_prefix }}/{{ zuul.project.short_name }} {{ zuul.branch }}
+  args:
+    chdir: "{{ zuul.project.src_dir }}"
+
+- name: Retrieve coverage from parent jobs
+  include_tasks: download.yaml
+  loop: "{{ zuul.artifacts | json_query(artifact_seletcor) }}"
+  vars:
+    artifact_seletcor: "[([?metadata.type == 'cobertura_xml' && project == '{{ zuul.project.name }}'])[-1]]"
+  loop_control:
+    loop_var: artifact
