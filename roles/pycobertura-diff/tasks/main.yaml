@@ -1,0 +1,44 @@
+- name: Generate pycobertura report
+  shell: |
+    set -ex
+    pycobertura show --format html --output "{{ ansible_user_dir }}/zuul-output/logs/coverage.html" \
+      --source "{{ new_source_prefix }}/{{ zuul.project.short_name }}" "{{ new_source_prefix }}/{{ zuul.project.short_name }}/cover/coverage.xml"
+    pycobertura diff --format html --output "{{ ansible_user_dir }}/zuul-output/logs/coverage-diff.html" \
+      --source1 "{{ zuul.project.src_dir }}" "{{ coverage_xml_dir }}/coverage.xml" \
+      --source2 "{{ new_source_prefix }}/{{ zuul.project.short_name }}" "{{ new_source_prefix }}/{{ zuul.project.short_name }}/cover/coverage.xml"
+    sed -e 's;^  </body>$;    <p>Show <a href="coverage.html">final coverage</a> only</p>\n  </body>;' \
+      -i "{{ ansible_user_dir }}/zuul-output/logs/coverage-diff.html"
+
+- name: Check for coverage-diff.html
+  stat:
+    path: "{{ ansible_user_dir }}/zuul-output/logs/coverage-diff.html"
+    get_checksum: false
+    get_mime: false
+    get_md5: false
+  register: coverage_diff_html_stat
+
+- name: Check for coverage.html
+  stat:
+    path: "{{ ansible_user_dir }}/zuul-output/logs/coverage.html"
+    get_checksum: false
+    get_mime: false
+    get_md5: false
+  register: coverage_html_stat
+
+- name: Register coverage reports as artifacts
+  when: coverage_html_stat.stat.exists
+  zuul_return:
+    data:
+      zuul:
+        artifacts:
+          - name: "Full coverage report"
+            url: "coverage.html"
+
+- name: Register coverage reports as artifacts
+  when: coverage_diff_html_stat.stat.exists
+  zuul_return:
+    data:
+      zuul:
+        artifacts:
+          - name: "Change of code coverage report"
+            url: "coverage-diff.html"
