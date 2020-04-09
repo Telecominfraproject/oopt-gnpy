@@ -1,10 +1,41 @@
 ---
+
+- job:
+    name: tox-py37-cover
+    parent: tox-py37
+    description: |
+      Run unit tests for a Python project under cPython version 3.5 with coverage tests.
+    post-run:
+      - playbooks/tox/cover-post.yaml
+      - playbooks/coverage-diff/upload.yaml
+    vars:
+      coverage_xml_dir: "{{ zuul.project.src_dir }}/cover"
+      tox_envlist: py37-coverage
+
+- job:
+    name: tox-py37-cover-diff
+    parent: tox-py37
+    description: |
+      Report how coverage changed compared to the previous state of the repo.
+    pre-run: playbooks/coverage-diff/pre.yaml
+    run:
+      - playbooks/tox/run.yaml
+      - playbooks/coverage-diff/generate.yaml
+    success-url: coverage-diff.html
+    failure-url: coverage-diff.html
+    vars:
+      new_source_prefix: "{{ ansible_user_dir }}/new"
+      zuul_work_dir: "{{ ansible_user_dir }}/new/{{ zuul.project.short_name }}"
+      coverage_xml_dir: "{{ zuul.project.src_dir }}/cover"
+      tox_envlist: py37-coverage
+
 - project:
     check:
       jobs:
-      - tox-py37
-      - tox-docs
-    gate:
-      jobs:
-      - tox-py37
-      - tox-docs
+        - tox-py37-cover:
+            provides: coverage
+        - tox-py37-cover-diff:
+            voting: false
+            requires: coverage
+            dependencies:
+              - tox-py37-cover
