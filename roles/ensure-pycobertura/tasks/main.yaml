@@ -1,0 +1,3 @@
+- name: Ensure pycobertura is available
+  pip:
+    name: pycobertura
