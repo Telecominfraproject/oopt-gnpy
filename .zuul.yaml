@@ -3,7 +3,6 @@
     check:
       jobs:
       - tox-py37
-      - tox-docs
     gate:
       jobs:
       - tox-py37
