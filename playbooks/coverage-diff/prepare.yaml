@@ -1,0 +1,12 @@
+- hosts: all
+  roles:
+    - ensure-pycobertura
+    - prepare-previous-src
+    - name: download-coverage
+      vars:
+        job_name: '{{ coverage_job_name_previous }}'
+        coverage_destination: '{{ ansible_user_dir }}/coverage-previous.xml'
+    - name: download-coverage
+      vars:
+        job_name: '{{ coverage_job_name_current }}'
+        coverage_destination: '{{ ansible_user_dir }}/coverage-current.xml'

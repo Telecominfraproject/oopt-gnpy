@@ -1,0 +1,9 @@
+- name: Place for previous version of sources
+  file:
+    path: "{{ (previous_source_prefix + '/' + zuul.project.canonical_hostname + '/' + zuul.project.name) | dirname }}"
+    state: directory
+
+- name: Prepare copy of the previous version of sources
+  command: git worktree add {{ previous_source_prefix }}/{{ zuul.project.canonical_hostname }}/{{ zuul.project.name }} origin/{{ zuul.branch }}
+  args:
+    chdir: "{{ zuul.project.src_dir }}"

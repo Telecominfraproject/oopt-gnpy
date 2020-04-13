@@ -1,0 +1,53 @@
+- name: Generate pycobertura report
+  shell: |
+    set -ex
+
+    pycobertura show --format html --output "{{ ansible_user_dir }}/zuul-output/logs/coverage-previous.html" \
+      --source "{{ previous_source_prefix }}/{{ zuul.project.canonical_hostname }}/{{ zuul.project.name}}" \
+      "{{ ansible_user_dir }}/coverage-previous.xml"
+
+    pycobertura show --format html --output "{{ ansible_user_dir }}/zuul-output/logs/coverage-current.html" \
+      --source "{{ zuul.project.src_dir }}" \
+      "{{ ansible_user_dir }}/coverage-current.xml"
+
+    pycobertura diff --format html --output "{{ ansible_user_dir }}/zuul-output/logs/coverage-diff.html" \
+      --source1 "{{ previous_source_prefix }}/{{ zuul.project.canonical_hostname }}/{{ zuul.project.name}}" "{{ ansible_user_dir }}/coverage-previous.xml" \
+      --source2 "{{ zuul.project.src_dir }}" "{{ ansible_user_dir }}/coverage-current.xml"
+
+    sed -e 's;^  </body>$;    <p>Show <a href="coverage-current.html">previous</a> or <a href="coverage-current.html">final coverage</a> only</p>\n  </body>;' \
+      -i "{{ ansible_user_dir }}/zuul-output/logs/coverage-diff.html" || true
+
+- name: Check for coverage-diff.html
+  stat:
+    path: "{{ ansible_user_dir }}/zuul-output/logs/coverage-diff.html"
+    get_checksum: false
+    get_mime: false
+    get_md5: false
+  register: coverage_diff_html_stat
+
+- name: Register current coverage report as an artifact
+  when: coverage_diff_html_stat.stat.exists
+  zuul_return:
+    data:
+      zuul:
+        artifacts:
+          - name: "Full coverage report (current)"
+            url: "coverage-current.html"
+
+- name: Register previous coverage report as an artifact
+  when: coverage_diff_html_stat.stat.exists
+  zuul_return:
+    data:
+      zuul:
+        artifacts:
+          - name: "Full coverage report (previous)"
+            url: "coverage-previous.html"
+
+- name: Register coverage report diff as an artifact
+  when: coverage_diff_html_stat.stat.exists
+  zuul_return:
+    data:
+      zuul:
+        artifacts:
+          - name: "Coverage report: difference in coverage"
+            url: "coverage-diff.html"
