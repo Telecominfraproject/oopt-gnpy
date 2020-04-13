@@ -1,0 +1,31 @@
+---
+- name: Set coverage log path
+  set_fact:
+    log_path: "{{ zuul.executor.log_root }}/"
+  when: log_path is not defined
+
+- name: Check for coverage.xml
+  stat:
+    path: "{{ coverage_xml_dir }}/coverage.xml"
+    get_checksum: false
+    get_mime: false
+    get_md5: false
+  register: coverage_xml_stat
+
+- name: Collect coverage.xml
+  synchronize:
+    src: "{{ coverage_xml_dir }}/coverage.xml"
+    dest: "{{ log_path }}/coverage.xml"
+    mode: pull
+  when: coverage_xml_stat.stat.exists
+
+- name: Return site artifact location to Zuul
+  when: coverage_xml_stat.stat.exists
+  zuul_return:
+    data:
+      zuul:
+        artifacts:
+          - name: "{{ coverage_artifact_name }}"
+            metadata:
+              type: "cobertura_xml"
+            url: "coverage.xml"
