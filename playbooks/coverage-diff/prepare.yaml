@@ -1,5 +1,6 @@
 - hosts: all
   roles:
+    - ensure-pycobertura
     - prepare-previous-src
     - name: download-coverage
       vars:

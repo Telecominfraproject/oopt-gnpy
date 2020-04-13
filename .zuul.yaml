@@ -37,20 +37,11 @@
 - project:
     check:
       jobs:
-        - tox-py37-cover:
-            provides: coverage-new
         - coverage-diff:
             voting: false
             requires:
               - coverage-old
               - coverage-new
-            dependencies:
-              - tox-py37-cover-previous
-              - tox-py37-cover
-        - tox-docs
-        - tox-py37-cover-previous:
-            provides: coverage-old
-            voting: false
     gate:
       jobs:
         - tox-py37

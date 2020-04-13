@@ -1,16 +1,18 @@
 - name: Generate pycobertura report
   shell: |
     set -ex
+
     pycobertura show --format html --output "{{ ansible_user_dir }}/zuul-output/logs/coverage-previous.html" \
       --source "{{ previous_source_prefix }}/{{ zuul.project.canonical_hostname }}/{{ zuul.project.name}}" \
       "{{ ansible_user_dir }}/coverage-previous.xml"
+
     pycobertura show --format html --output "{{ ansible_user_dir }}/zuul-output/logs/coverage-current.html" \
       --source "{{ zuul.project.src_dir }}" \
       "{{ ansible_user_dir }}/coverage-current.xml"
 
     pycobertura diff --format html --output "{{ ansible_user_dir }}/zuul-output/logs/coverage-diff.html" \
       --source1 "{{ previous_source_prefix }}/{{ zuul.project.canonical_hostname }}/{{ zuul.project.name}}" "{{ ansible_user_dir }}/coverage-previous.xml" \
-      --source2 "{{ zuul.project.src_dir }} "{{ ansible_user_dir }}/coverage-current.xml"
+      --source2 "{{ zuul.project.src_dir }}" "{{ ansible_user_dir }}/coverage-current.xml"
 
     sed -e 's;^  </body>$;    <p>Show <a href="coverage.html">final coverage</a> only</p>\n  </body>;' \
       -i "{{ ansible_user_dir }}/zuul-output/logs/coverage-diff.html" || true
