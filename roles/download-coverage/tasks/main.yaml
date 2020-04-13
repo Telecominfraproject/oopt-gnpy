@@ -1,0 +1,7 @@
+- name: Retrieve coverage from parent jobs
+  include_tasks: download.yaml
+  loop: "{{ zuul.artifacts | json_query(artifact_selector) }}"
+  vars:
+    artifact_selector: "[([?metadata.type == 'cobertura_xml' && project == '{{ zuul.project.name }}' && job == '{{ job_name }}'])[-1]]"
+  loop_control:
+    loop_var: artifact

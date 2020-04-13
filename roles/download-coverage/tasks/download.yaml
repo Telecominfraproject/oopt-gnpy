@@ -1,0 +1,8 @@
+- name: Show artifact info
+  debug:
+    msg: "Artifact: {{ artifact.change }},{{ artifact.patchset }} {{ artifact.job }} -> {{ artifact.url }}"
+
+- name: Download one artifact
+  get_url:
+    url: "{{ artifact.url }}"
+    dest: "{{ coverage_destination }}"
