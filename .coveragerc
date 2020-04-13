@@ -1,0 +1,4 @@
+[run]
+source =
+	gnpy/
+	examples/
