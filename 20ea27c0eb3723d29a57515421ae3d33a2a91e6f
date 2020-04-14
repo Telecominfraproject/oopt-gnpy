@@ -16,6 +16,24 @@
       "revId": "20ea27c0eb3723d29a57515421ae3d33a2a91e6f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bea728dc_0e6de598",
+        "filename": "tox.ini",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-04-14T16:05:47Z",
+      "side": 1,
+      "message": "Yeah, this is about the tests showing verbose results of comparisons, so that if the test produces \"foo\" and it\u0027s actually suposed to say \"bar\", I would see \"foo !\u003d bar\".",
+      "parentUuid": "05935f74_a9d4e82e",
+      "revId": "20ea27c0eb3723d29a57515421ae3d33a2a91e6f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
