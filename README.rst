@@ -275,7 +275,9 @@ The modes are defined as follows:
 +----------------------+-----------+-----------------------------------------+
 | ``bit_rate``         | (number)  | in bit/s                                |
 +----------------------+-----------+-----------------------------------------+
-| ``roll_off``         | (number)  | Not used.                               |
+| ``roll_off``         | (number)  | Pure number between 0 and 1. TX signal  |
+|                      |           | roll-off shape. Used by Raman-aware     |
+|                      |           | simulation code.                        |
 +----------------------+-----------+-----------------------------------------+
 | ``tx_osnr``          | (number)  | In dB. OSNR out from transponder.       |
 +----------------------+-----------+-----------------------------------------+
@@ -469,7 +471,9 @@ one power/channel definition.
 +----------------------+-----------+-------------------------------------------+
 | ``spacing``          | (number)  | In Hz. Carrier spacing.                   |
 +----------------------+-----------+-------------------------------------------+
-| ``roll_off``         | (number)  | Not used.                                 |
+| ``roll_off``         | (number)  | Pure number between 0 and 1. TX signal    |
+|                      |           | roll-off shape. Used by Raman-aware       |
+|                      |           | simulation code.                          |
 +----------------------+-----------+-------------------------------------------+
 | ``tx_osnr``          | (number)  | In dB. OSNR out from transponder.         |
 +----------------------+-----------+-------------------------------------------+
