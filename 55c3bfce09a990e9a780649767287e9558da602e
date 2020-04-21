@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ee7ea1fd_83a384a0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-04-21T18:43:26Z",
+      "side": 1,
+      "message": "Alessio, it looks like git mangled your name here. Your past commits in the repo are fine, so perhaps this is an issue on a new machine?\n\nA fix should be just a matter of running:\n\n git config user.name \"Alessio Ferrari\"\n git commit --amend --no-edit\n git push gerrit HEAD:refs/for/develop",
+      "revId": "55c3bfce09a990e9a780649767287e9558da602e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "afd68e8d_88a13b8a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-04-21T18:43:26Z",
+      "side": 1,
+      "message": "nit: I\u0027m already in the \"git author\", so this line can be safely removed. No worries if it\u0027s left in, though.",
+      "revId": "55c3bfce09a990e9a780649767287e9558da602e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
