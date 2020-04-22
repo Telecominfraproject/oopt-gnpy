@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b85fc0e9_5743c274",
+        "filename": "tests/test_invocation.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-04-22T08:01:16Z",
+      "side": 1,
+      "message": "All tests can be run from any place (eg I can type pytest ../tests if I am in examples folder:\nI would prefer that this new test also uses the same kind of relative path that enables to run tests from any place eg using \nBASE_DIR \u003d Path(__file__).parent.parent\nEXAMPLE_DIR \u003d BASE_DIR / \u0027examples\u0027",
+      "revId": "f2217d8b2387cf6be53c37066fbc72ac28f969ed",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
