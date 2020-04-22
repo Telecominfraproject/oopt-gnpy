@@ -16,6 +16,24 @@
       "revId": "f2217d8b2387cf6be53c37066fbc72ac28f969ed",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2bd14cd_8bb1dafb",
+        "filename": "tests/test_invocation.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-04-22T10:54:18Z",
+      "side": 1,
+      "message": "Thanks, that\u0027s a good idea. I decided not to use `EXAMPLE_DIR`, though, because these paths are visible in the test output as-is. Even though our CI uses stable paths, chances are that my working directory and your working directory are different from VEXXHOST CI and Travis CI.",
+      "parentUuid": "b85fc0e9_5743c274",
+      "revId": "f2217d8b2387cf6be53c37066fbc72ac28f969ed",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
