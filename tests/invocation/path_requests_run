@@ -124,7 +124,7 @@ Computed path (roadms):['roadm Lannion_CAS', 'roadm Rennes_STA']
 
 request 4
 Computing path from trx Rennes_STA to trx Lannion_CAS
-with path constraint: ['trx Rennes_STA', 'trx Lannion_CAS']
+with path constraint: ['trx Rennes_STA', 'trx Lannion_CAS 666']
 Computed path (roadms):['roadm Rennes_STA', 'roadm Vannes_KBE', 'roadm Lorient_KMA', 'roadm Lannion_CAS']
 
 request 5
