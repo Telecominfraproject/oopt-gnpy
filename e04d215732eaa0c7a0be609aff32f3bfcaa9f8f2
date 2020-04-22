@@ -182,6 +182,30 @@
     },
     {
       "key": {
+        "uuid": "87739ce6_d4dc14ca",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-04-22T20:18:43Z",
+      "side": 1,
+      "message": "It could have been a bad day on my side, but this test was not easy to read for me. Anyway, I refactored this, removing those prints that I found superfluous, while -- I hope -- preserving the useful output. I appreciate feedback for that.",
+      "parentUuid": "4ffd4816_a1fd8b41",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 52
+      },
+      "revId": "e04d215732eaa0c7a0be609aff32f3bfcaa9f8f2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "73cebc90_facf2a02",
         "filename": "tests/test_spectrum_assignment.py",
         "patchSetId": 6
@@ -212,6 +236,144 @@
       "side": 1,
       "message": "OK",
       "parentUuid": "73cebc90_facf2a02",
+      "revId": "e04d215732eaa0c7a0be609aff32f3bfcaa9f8f2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2e6ddc4_6100f319",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-04-22T20:18:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "708e026c_d608546e",
+      "revId": "e04d215732eaa0c7a0be609aff32f3bfcaa9f8f2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "473b36ce_c97d8dc0",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-04-22T20:18:43Z",
+      "side": 1,
+      "message": "The code doesn\u0027t check that. It calls assign_spectrum(), but it never consults the OMS class for any effect as far as I can see. All other function invocations are already covered by the docstrings of the respective functions, so I\u0027ll just remove this test. (Please check if I missed something.)\n\n(And BTW, the doctests are skipped when pytest is launched from tests/ -- just a heads-up to keep that in mind in your workflow.)",
+      "revId": "e04d215732eaa0c7a0be609aff32f3bfcaa9f8f2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c214a10_14475c2c",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-04-22T20:18:43Z",
+      "side": 1,
+      "message": "I assume you meant `and` here. I think that splitting this into separate asserts is better.",
+      "range": {
+        "startLine": 212,
+        "startChar": 22,
+        "endLine": 212,
+        "endChar": 24
+      },
+      "revId": "e04d215732eaa0c7a0be609aff32f3bfcaa9f8f2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "94f6f0ca_7bc612d7",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-04-22T20:18:43Z",
+      "side": 1,
+      "message": "This comment disagrees with the actual test, so I\u0027ll be changing the comment. Can you please check that I have not made a mess?",
+      "revId": "e04d215732eaa0c7a0be609aff32f3bfcaa9f8f2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "93801ea0_6ada9772",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-04-22T20:18:43Z",
+      "side": 1,
+      "message": "I would prefer if we use type annotations for rejecting semantically meaningless input -- otherwise we could also test with strings and dicts and a bunch of other types, IMHO. Are you OK with me just removing non-integer inputs here?",
+      "range": {
+        "startLine": 224,
+        "startChar": 46,
+        "endLine": 224,
+        "endChar": 50
+      },
+      "revId": "e04d215732eaa0c7a0be609aff32f3bfcaa9f8f2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "79d4d799_fc3f3e56",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-04-22T20:18:43Z",
+      "side": 1,
+      "message": "10 used as an input to a test that is supposed to fail, while it\u0027s also an input to the previous test that is expected to succeed. My recommendation is to change this so that the fixture avoids the cartesian product which -- I think -- is not appropriate here. In other words, feed it with pre-made tuples like:\n\n- (M\u003dvalid, N\u003dinvalid1)\n- (M\u003dvalid, N\u003dinvalid2)\n- (M\u003dvalid, N\u003dinvalid3)\n- (M\u003dinvalid1, N\u003dvalid)\n- (M\u003dinvalid2, N\u003dvalid)\n- (M\u003dinvalid3, N\u003dvalid)",
+      "range": {
+        "startLine": 224,
+        "startChar": 37,
+        "endLine": 224,
+        "endChar": 39
+      },
+      "revId": "e04d215732eaa0c7a0be609aff32f3bfcaa9f8f2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6964ee71_2e1cfe8d",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-04-22T20:18:43Z",
+      "side": 1,
+      "message": "This test checks whether OMS.assign_spectrum returns false upon failure. I checked all callers of this method, and outside of the test suite it\u0027s only called from pth_assign_spectrum -- which does not check the return value, so we have a silent failure (ok, \"verbose failure\" because it\u0027s logged). Can we change that method to raise an exception when called with invalid input?",
       "revId": "e04d215732eaa0c7a0be609aff32f3bfcaa9f8f2",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
