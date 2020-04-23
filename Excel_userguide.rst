@@ -119,8 +119,8 @@ Eqpt sheet
 Eqt sheet is optional. It lists the amplifiers types and characteristics on each degree of the *Node A* line.
 Eqpt sheet must contain twelve columns::
 
-                   <--           east cable from a to z        --> <--        west from z to a                 -->
-  Node A ; Node Z ; amp type ; att_in ; amp gain ; tilt ; att_out ; amp type ; att_in ; amp gain ; tilt ; att_out
+                   <--           east cable from a to z                  --> <--        west from z to a                          -->
+  Node A ; Node Z ; amp type ; att_in ; amp gain ; tilt ; att_out ; delta_p ; amp type ; att_in ; amp gain ; tilt ; att_out ; delta_p
 
 If the sheet is present, it MUST have as many lines as egress directions of ROADMs defined in Links Sheet. 
 
@@ -175,12 +175,12 @@ This generates a text file meshTopologyExampleV2_eqt_sheet.txt  whose content ca
   If not filled, it will be determined with design rules in the convert.py file.
   If filled, it must contain positive numbers.
 
-- *att_in* and *att_out* are not mandatory and are not used yet. They are the value of the attenautor at input and output of amplifier (in dB).
+- *att_in* and *att_out* are not mandatory and are not used yet. They are the value of the attenuator at input and output of amplifier (in dB).
   If filled they must contain positive numbers.
 
 - *tilt* --TODO--
 
-- *delta_p*, in dBm,  is not mandatory. If filled it is used to set the output target power per channel at the output of the amplifier, if power_mode is True. The output power is then set to power_dbm + delta_power.
+- **delta_p**, in dBm,  is not mandatory. If filled it is used to set the output target power per channel at the output of the amplifier, if power_mode is True. The output power is then set to power_dbm + delta_power.
 
 # to be completed #
 
@@ -218,13 +218,20 @@ Service sheet must contain 11 columns::
   - path: is the set of ROADM nodes that must be used by the path. It must contain the list of ROADM names that the path must cross. TODO : only ROADM nodes are accepted in this release. Relax this with any type of nodes. If filled it must contain ROADM ids separated by ' | '. Exact names are required. 
   - is loose?  'no' value means that the list of nodes should be strictly followed, while any other value means that the constraint may be relaxed if the node is not reachable. 
 
-- ** path bandwidth** is optional. It is the amount of capacity required between source and destination in Gbit/s. Default value is 0.0 Gbit/s. 
+- **path bandwidth** is mandatory. It is the amount of capacity required between source and destination in Gbit/s. Value should be positive (non zero). It is used to compute the amount of required spectrum for the service.  
 
 path_requests_run.py
 ------------------------
 
-**Usage**: path_requests_run.py [-h] [-v] [-o OUTPUT]
+**Usage**: path_requests_run.py [-h] [-bi] [-v] [-o OUTPUT]
                             [network_filename xls or json] [service_filename xls or json] [eqpt_filename json]
+
+optional arguments::
+
+-h, --help            show the help message and exit
+-bi, --bidir          considers that all demands are bidir
+-v, --verbose         increases verbosity for each occurence
+-o OUTPUT, --output   OUTPUT file to record results (.json and .csv formats are created)
 
 .. code-block:: shell
 
@@ -245,6 +252,8 @@ A template for the result of computation json file can be found here: `path_resu
 
 Important note: path_requests_run.py is not a network dimensionning tool : each service does not reserve spectrum, or occupy ressources such as transponders. It only computes path feasibility assuming the spectrum (between defined frequencies) is loaded with "nb of channels" spaced by "spacing" values as specified in the system parameters input in the service file, each cannel having the same characteristics in terms of baudrate, format, ... as the service transponder. The transceiver element acts as a "logical starting/stopping point" for the spectral information propagation. At that point it is not meant to represent the capacity of add drop ports
 As a result transponder type is not part of the network info. it is related to the list of services requests.
+
+The current version includes a spectrum assigment features that enables to compute a candidate spectrum assignment for each service based on a first fit policy. Spectrum is assigned based on service specified spacing value, path_bandwidth value and selected mode for the transceiver. This spectrum assignment includes a basic capacity planning capability so that the spectrum resource is limited by the frequency min and max values defined for the links. If the requested services reach the link spectrum capacity, additional services feasibility are computed but marked as blocked due to spectrum reason.
 
 In a next step we plan to provide required features to enable dimensionning : alocation of ressources, counting channels, limitation of the number of channels, ...
 
