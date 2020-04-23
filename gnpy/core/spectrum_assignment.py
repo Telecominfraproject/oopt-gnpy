@@ -118,28 +118,22 @@ class OMS:
     def assign_spectrum(self, nvalue, mvalue):
         """ change oms spectrum to mark spectrum assigned
         """
-        if (nvalue is None or mvalue is None or isinstance(nvalue, float)
-                or isinstance(mvalue, float) or mvalue == 0):
-            raise SpectrumError(f'Could not assign N {nvalue}, M {mvalue}. N and M must be ' + \
-                                'integer, with M>0. N and M may be derived from service' + \
-                                ' path_bandwidth request. Please check that path_bandwidth is' + \
-                                ' positive and non zero.')
+        if not isinstance(nvalue, int):
+            raise SpectrumError(f'N must be a signed integer, got {nvalue}')
+        if not isinstance(mvalue, int):
+            raise SpectrumError(f'M must be an integer, got {mvalue}')
+        if mvalue <= 0:
+            raise SpectrumError(f'M must be positive, got {mvalue}')
+        if nvalue > self.spectrum_bitmap.freq_index_max:
+            raise SpectrumError(f'N {nvalue} over the upper spectrum boundary')
+        if nvalue < self.spectrum_bitmap.freq_index_min:
+            raise SpectrumError(f'N {nvalue} below the lower spectrum boundary')
         startn, stopn = mvalue_to_slots(nvalue, mvalue)
-        # print(f'startn stop n {startn} , {stopn}')
-        # assumes that guardbands are sufficient to ensure that assigning a center channel
-        # at fmin or fmax is OK is startn > self.spectrum_bitmap.n_min
-        if (nvalue <= self.spectrum_bitmap.freq_index_max and
-                nvalue >= self.spectrum_bitmap.freq_index_min and
-                stopn <= self.spectrum_bitmap.n_max and
-                startn > self.spectrum_bitmap.n_min):
-            # verification that both length are identical
-            self.spectrum_bitmap.bitmap[self.spectrum_bitmap.geti(startn):self.spectrum_bitmap.geti(stopn)+1] = [0] * (stopn-startn+1)
-            return True
-        else:
-            msg = f'Could not assign n {nvalue}, m {mvalue} values:' +\
-                  f' one or several slots are not available'
-            LOGGER.info(msg)
-            return False
+        if stopn > self.spectrum_bitmap.n_max:
+            raise SpectrumError(f'N {nvalue}, M {mvalue} over the N spectrum bitmap bounds')
+        if startn <= self.spectrum_bitmap.n_min:
+            raise SpectrumError(f'N {nvalue}, M {mvalue} below the N spectrum bitmap bounds')
+        self.spectrum_bitmap.bitmap[self.spectrum_bitmap.geti(startn):self.spectrum_bitmap.geti(stopn)+1] = [0] * (stopn-startn+1)
 
     def add_service(self, service_id, nb_wl):
         """ record service and mark spectrum as occupied
@@ -149,11 +143,27 @@ class OMS:
 
 def frequency_to_n(freq, grid=0.00625e12):
     """ converts frequency into the n value (ITU grid)
+        reference to Recommendation G.694.1 (02/12), Figure I.3
+        https://www.itu.int/rec/T-REC-G.694.1-201202-I/en
+
+    >>> frequency_to_n(193.1375e12)
+    6
+    >>> frequency_to_n(193.225e12)
+    20
+
     """
     return (int)((freq-193.1e12)/grid)
 
 def nvalue_to_frequency(nvalue, grid=0.00625e12):
     """ converts n value into a frequency
+        reference to Recommendation G.694.1 (02/12), Table 1
+        https://www.itu.int/rec/T-REC-G.694.1-201202-I/en
+
+    >>> nvalue_to_frequency(6)
+    193137500000000.0
+    >>> nvalue_to_frequency(-1, 0.1e12)
+    193000000000000.0
+
     """
     return 193.1e12 + nvalue * grid
 
@@ -166,6 +176,15 @@ def mvalue_to_slots(nvalue, mvalue):
 
 def slots_to_m(startn, stopn):
     """ converts the start and stop n values to the center n and m value
+        reference to Recommendation G.694.1 (02/12), Figure I.3
+        https://www.itu.int/rec/T-REC-G.694.1-201202-I/en
+
+    >>> nval, mval = slots_to_m(6, 20)
+    >>> nval
+    13
+    >>> mval
+    7
+
     """
     nvalue = (int)((startn+stopn+1)/2)
     mvalue = (int)((stopn-startn+1)/2)
@@ -173,6 +192,16 @@ def slots_to_m(startn, stopn):
 
 def m_to_freq(nvalue, mvalue, grid=0.00625e12):
     """ converts m into frequency range
+        spectrum(13,7) is (193137500000000.0, 193225000000000.0)
+        reference to Recommendation G.694.1 (02/12), Figure I.3
+        https://www.itu.int/rec/T-REC-G.694.1-201202-I/en
+
+    >>> fstart, fstop = m_to_freq(13, 7)
+    >>> fstart
+    193137500000000.0
+    >>> fstop
+    193225000000000.0
+
     """
     startn, stopn = mvalue_to_slots(nvalue, mvalue)
     fstart = nvalue_to_frequency(startn, grid)
