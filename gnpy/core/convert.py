@@ -218,11 +218,11 @@ def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
                 and (test_links == [] or test_links ==[''])\
                 and (test_eqpts == [] or test_eqpts ==[''])
     except AssertionError:
-        print(f'CRITICAL error: \nNames in Nodes and Links sheets do no match, check:\
+        msg = f'CRITICAL error in excel input: Names in Nodes and Links sheets do no match, check:\
             \n{test_nodes} in Nodes sheet\
             \n{test_links} in Links sheet\
-            \n{test_eqpts} in Eqpt sheet')
-        exit(1)
+            \n{test_eqpts} in Eqpt sheet'
+        raise NetworkTopologyError(msg)
 
     for city,link in links_by_city.items():
         if nodes_by_city[city].node_type.lower()=='ila' and len(link) != 2:
