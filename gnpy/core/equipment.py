@@ -25,6 +25,7 @@ Model_openroadm = namedtuple('Model_openroadm', 'nf_coef')
 Model_hybrid = namedtuple('Model_hybrid', 'nf_ram gain_ram edfa_variety')
 Model_dual_stage = namedtuple('Model_dual_stage', 'preamp_variety booster_variety')
 
+
 class common:
     def update_attr(self, default_values, kwargs, name):
         clean_kwargs = {k:v for k, v in kwargs.items() if v != ''}
@@ -36,6 +37,7 @@ class common:
                       f'\n default value is {k} = {v}'+
                       f'\x1b[0m')
                 time.sleep(1)
+
 
 class SI(common):
     default_values =\
@@ -53,6 +55,7 @@ class SI(common):
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'SI')
+
 
 class Span(common):
     default_values = \
@@ -73,6 +76,7 @@ class Span(common):
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Span')
 
+
 class Roadm(common):
     default_values = \
     {
@@ -87,6 +91,7 @@ class Roadm(common):
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Roadm')
 
+
 class Transceiver(common):
     default_values = \
     {
@@ -98,6 +103,7 @@ class Transceiver(common):
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Transceiver')
 
+
 class Fiber(common):
     default_values = \
     {
@@ -108,6 +114,7 @@ class Fiber(common):
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Fiber')
+
 
 class RamanFiber(common):
     default_values = \
@@ -125,6 +132,25 @@ class RamanFiber(common):
                 raise EquipmentConfigError(f'RamanFiber.raman_efficiency: missing "{param}" parameter')
         if self.raman_efficiency['frequency_offset'] != sorted(self.raman_efficiency['frequency_offset']):
             raise EquipmentConfigError(f'RamanFiber.raman_efficiency.frequency_offset is not sorted')
+
+
+class RamanFiberLosses(common):
+    default_values = \
+        {
+            'type_variety':  '',
+            'dispersion':    None,
+            'gamma':         0,
+            'raman_efficiency': None
+        }
+
+    def __init__(self, **kwargs):
+        self.update_attr(self.default_values, kwargs, 'RamanFiberLosses')
+        for param in ('cr', 'frequency_offset'):
+            if param not in self.raman_efficiency:
+                raise EquipmentConfigError(f'RamanFiberLosses.raman_efficiency: missing "{param}" parameter')
+        if self.raman_efficiency['frequency_offset'] != sorted(self.raman_efficiency['frequency_offset']):
+            raise EquipmentConfigError(f'RamanFiberLosses.raman_efficiency.frequency_offset is not sorted')
+
 
 class Amp(common):
     default_values = \
@@ -341,12 +367,14 @@ def load_equipment(filename):
     json_data = load_json(filename)
     return equipment_from_json(json_data, filename)
 
+
 def update_trx_osnr(equipment):
     """add sys_margins to all Transceivers OSNR values"""
     for trx in equipment['Transceiver'].values():
         for m in trx.mode:
             m['OSNR'] = m['OSNR'] + equipment['SI']['default'].sys_margins
     return equipment
+
 
 def update_dual_stage(equipment):
     edfa_dict = equipment['Edfa']
