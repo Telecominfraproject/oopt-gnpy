@@ -137,6 +137,24 @@ class RamanFiber(_JsonThing):
             raise EquipmentConfigError(f'RamanFiber.raman_efficiency.frequency_offset is not sorted')
 
 
+class RamanFiberLosses(_JsonThing):
+    default_values = \
+        {
+            'type_variety':  '',
+            'dispersion':    None,
+            'gamma':         0,
+            'raman_efficiency': None
+        }
+
+    def __init__(self, **kwargs):
+        self.update_attr(self.default_values, kwargs, 'RamanFiberLosses')
+        for param in ('cr', 'frequency_offset'):
+            if param not in self.raman_efficiency:
+                raise EquipmentConfigError(f'RamanFiberLosses.raman_efficiency: missing "{param}" parameter')
+        if self.raman_efficiency['frequency_offset'] != sorted(self.raman_efficiency['frequency_offset']):
+            raise EquipmentConfigError(f'RamanFiberLosses.raman_efficiency.frequency_offset is not sorted')
+
+
 class Amp(_JsonThing):
     default_values = {
         'f_min': 191.35e12,
@@ -295,6 +313,8 @@ def _equipment_from_json(json_data, filename):
                 equipment[key][subkey] = Transceiver(**entry)
             elif key == 'RamanFiber':
                 equipment[key][subkey] = RamanFiber(**entry)
+            elif key == 'RamanFiberLosses':
+                equipment[key][subkey] = RamanFiberLosses(**entry)
             else:
                 raise EquipmentConfigError(f'Unrecognized network element type "{key}"')
     equipment = _update_trx_osnr(equipment)
@@ -335,6 +355,8 @@ def _cls_for(equipment_type):
         return elements.Fiber
     elif equipment_type == 'RamanFiber':
         return elements.RamanFiber
+    elif equipment_type == 'RamanFiberLosses':
+        return elements.RamanFiberLosses
     else:
         raise ConfigurationError(f'Unknown network equipment "{equipment_type}"')
 
@@ -357,7 +379,7 @@ def network_from_json(json_data, equipment):
             temp = merge_amplifier_restrictions(temp, extra_params.__dict__)
             el_config['params'] = temp
             el_config['type_variety'] = variety
-        elif typ in ['Edfa', 'Fiber', 'RamanFiber']:  # catch it now because the code will crash later!
+        elif typ in ['Edfa', 'Fiber', 'RamanFiber', 'RamanFiberLosses']:  # catch it now because the code will crash later!
             raise ConfigurationError(f'The {typ} of variety type {variety} was not recognized:'
                                      '\nplease check it is properly defined in the eqpt_config json file')
         el = cls(**el_config)

@@ -464,6 +464,11 @@ class RamanFiber(Fiber):
             yield propagated_carrier
 
 
+class RamanFiberLosses(RamanFiber):
+    def __init__(self, *args, params=None, **kwargs):
+        super().__init__(*args, params=params, **kwargs)
+
+
 class EdfaParams:
     def __init__(self, **params):
         self.update_params(params)

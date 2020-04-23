@@ -7,6 +7,7 @@ from scipy.integrate import cumtrapz
 from scipy.interpolate import interp1d
 from scipy.optimize import OptimizeResult
 from math import isclose
+from copy import deepcopy
 
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.exceptions import EquipmentConfigError
@@ -209,7 +210,10 @@ class RamanSolver:
     @property
     def stimulated_raman_scattering(self):
         if self._stimulated_raman_scattering is None:
-            self.calculate_stimulated_raman_scattering(self.carriers, self.raman_pumps)
+            if self.fiber.params.lumped_losses:
+                self.calculate_stimulated_raman_scattering_losses(self.carriers, self.raman_pumps)
+            else:
+                self.calculate_stimulated_raman_scattering(self.carriers, self.raman_pumps)
         return self._stimulated_raman_scattering
 
     @property
@@ -348,7 +352,8 @@ class RamanSolver:
         cr = interp_cr(freq_diff)
 
         # z propagation axis
-        z = np.arange(0, fiber_length + 1, z_resolution)
+        z = np.arange(0, fiber_length, z_resolution)
+        z = np.concatenate((z, fiber_length), axis=None)
 
         def ode_function(z, p):
             return self._ode_stimulated_raman(z, p, alphap_fiber, freq_array, cr, prop_direct)
@@ -364,6 +369,226 @@ class RamanSolver:
         rho = (bvp_solution.y.transpose() / power_spectrum).transpose()
         rho = np.sqrt(rho)    # From power attenuation to field attenuation
         stimulated_raman_scattering = StimulatedRamanScattering(freq_array, bvp_solution.x, rho, bvp_solution.y)
+
+        self._stimulated_raman_scattering = stimulated_raman_scattering
+
+    def calculate_stimulated_raman_scattering_losses(self, carriers, raman_pumps):
+        """ Returns stimulated Raman scattering solution including
+        fiber gain/loss profile with lumped losses aloong the fiber.
+        :return: None
+        """
+        def defining_z_initial_phase(fiber_len, losses_obj):
+            position = losses_obj['position']
+            z_res = 50  # [m]
+            z_arr = np.arange(0, fiber_len, z_res)
+            z_arr = np.concatenate((z_arr, fiber_len), axis=None)
+            z_arr = np.sort(np.unique(np.concatenate((z_arr, position), axis=None)))
+            return z_arr
+
+        def defining_z_final_phase(z_res, fiber_len, losses_obj, power_surf, z_arr):
+            position = losses_obj['position']
+            z_arr_new = np.arange(0, fiber_len + 1, z_res)
+            z_arr_new = np.sort(np.unique(np.concatenate((z_arr_new, position), axis=None)))
+
+            power_surface_new = np.zeros((len(power_surf[:, 0]), len(z_arr_new)))
+            for f_ind, f in enumerate(power_surf):
+                func_z = interp1d(z_arr, power_surf[f_ind, :])
+                power_z_dummy = func_z(z_arr_new)
+                power_surface_new[f_ind, :] = power_z_dummy
+
+            return power_surface_new, z_arr_new
+
+        def defining_loss_array(losses_obj, z_arr):
+            loss = losses_obj['loss']
+            position = losses_obj['position']
+            loss_array = []
+            for ii in range(len(z_arr)):
+                if z_arr[ii] in position:
+                    ind_loss = np.where(position == z_arr[ii])
+                    loss_array.append(loss[np.min(ind_loss)])
+                else:
+                    loss_array.append(1)
+            return np.array(loss_array), position
+
+        def initial_guess_stimulated_raman_with_losses(z_arr, spectrum_pow, alphap, prop_dir, loss_arr):
+            power_guess = np.empty((spectrum_pow.size, z_arr.size))
+            for f_ind, pow_channel in enumerate(power_guess):
+
+                if prop_dir[f_ind] == +1:
+                    power_guess[f_ind][0] = spectrum_pow[f_ind]
+                    z_indices = range(1, len(pow_channel))
+                    diz = -1
+                    i_loss = 0
+                else:
+                    power_guess[f_ind][-1] = spectrum_pow[f_ind]
+                    z_indices = range(len(pow_channel) - 2, -1, -1)
+                    diz = +1
+                    i_loss = diz
+
+                for z_ind in z_indices:
+                    dz = abs(z_arr[z_ind] - z_arr[z_ind + diz])
+                    power_guess[f_ind][z_ind] =\
+                        power_guess[f_ind][z_ind + diz] * np.exp(-alphap[f_ind] * dz) / loss_arr[z_ind + i_loss]
+
+            return power_guess
+
+        def computing_next_order_v1(p_prev_ord, z_arr, f_array, prop_dir, alp, cr_fiber, loss_arr):
+            p_next_ord = np.zeros(p_prev_ord.shape)
+
+            dz = np.array([z_arr[i + 1] - z_arr[i] for i in range(len(z_arr) - 1)])
+            dz_inv = np.array([abs(z_arr[i - 1] - z_arr[i]) for i in range(len(z_arr) - 1, 0, -1)])
+
+            vibrational_loss = np.array([f_array[f_ind] / f_array[:f_ind] for f_ind in range(len(f_array))])
+            raman_gain = np.array([np.sum(np.transpose(p_prev_ord[f_ind + 1:, :]) * cr_fiber[f_ind, f_ind + 1:], 1)
+                                   for f_ind in range(len(f_array))])
+            raman_loss = np.array(
+                [np.sum(np.transpose(p_prev_ord[:f_ind, :]) * cr_fiber[f_ind, :f_ind] * vibrational_loss[f_ind], 1)
+                 for f_ind in range(len(f_array))])
+            alp_z = np.outer(-alp, np.ones(len(z_arr) - 1))
+
+            channels_indices = np.squeeze(np.argwhere(prop_dir == +1))
+            pumps_indices = np.squeeze(np.argwhere(prop_dir == -1))
+
+            channels = np.squeeze(p_prev_ord[channels_indices, :])
+            pumps = np.squeeze(p_prev_ord[pumps_indices, :])
+
+            power_channels = channels[:, :-1]
+            gamma_channels = raman_gain[channels_indices, :-1] - raman_loss[channels_indices, :-1]
+            p_next_ord[channels_indices, 0] = p_prev_ord[channels_indices, 0]
+            p_next_ord[channels_indices, 1:] = \
+                power_channels * (1 + (alp_z[channels_indices] + gamma_channels) * dz) / loss_arr[:-1]
+
+            power_pumps = np.flip(pumps[:, 1:], 1)
+            gamma_pumps = np.flip(raman_gain[pumps_indices, 1:] - raman_loss[pumps_indices, 1:], 1)
+            p_next_ord[pumps_indices, -1] = p_prev_ord[pumps_indices, -1]
+            p_next_ord[pumps_indices, :-1] = np.flip(
+                power_pumps * (1 + (alp_z[pumps_indices] + gamma_pumps) * dz_inv) / np.flip(loss_arr[1:]), 1)
+
+            return p_next_ord
+
+        def computing_next_order_v2(p_prev_ord_fast, z_arr, f_array, prop_dir, alp, cr_fiber, loss_arr):
+
+            cop_indices = np.squeeze(np.argwhere(prop_dir == +1))
+            cntp_indices = np.squeeze(np.argwhere(prop_dir == -1))
+            if not cop_indices.any():
+                loss_arr_inv = np.flip(loss_arr)
+                dz_inv = np.abs(np.outer(np.ones(len(cntp_indices)), (np.flip(z_arr)[1:] - np.flip(z_arr)[:-1])))
+
+                vibrational_loss = np.array([f_array[f_ind] / f_array[:f_ind] for f_ind in range(len(f_array))])
+                raman_gain = np.array([np.sum(np.transpose(p_prev_ord_fast[f_ind + 1:, :])
+                                              * cr_fiber[f_ind, f_ind + 1:], 1)
+                                       for f_ind in range(len(f_array))])
+                raman_loss = np.array([np.sum(np.transpose(p_prev_ord_fast[:f_ind, :]) * cr_fiber[f_ind, :f_ind] *
+                                              vibrational_loss[f_ind], 1)
+                                       for f_ind in range(len(f_array))])
+                alp_z = np.outer(alp, np.ones(len(z_arr) - 1))
+
+                gamma_cntp = -alp_z[cntp_indices] + np.flip(raman_gain[cntp_indices, 1:], 1)\
+                             - np.flip(raman_loss[cntp_indices, 1:], 1)
+                cntp_channels = np.squeeze(np.flip(p_prev_ord_fast[cntp_indices, :], 1))
+                cntp_power = cntp_channels[:, :-1]
+                cntp_dpdz_element = dz_inv * gamma_cntp * cntp_power
+
+                updating_next_order_cntp = np.zeros([len(cntp_indices), len(z_arr)])
+                updating_next_order_cntp[cntp_indices, -1] = p_prev_ord_fast[cntp_indices, -1]
+                updating_next_order_cntp = np.flip(updating_next_order_cntp, 1)
+                for i in range(1, len(z_arr)):
+                    updating_next_order_cntp[:, i] = (updating_next_order_cntp[:, i - 1] +
+                                                      cntp_dpdz_element[:, i - 1]) / loss_arr_inv[i - 1]
+                    indices_zero = np.argwhere(updating_next_order_cntp[:, i] < 0)
+                    updating_next_order_cntp[indices_zero, i] = 0
+
+                p_next_ord_fast = np.flip(updating_next_order_cntp, 1)
+            else:
+                dz = np.outer(np.ones(len(cop_indices)), (z_arr[1:] - z_arr[:-1]))
+
+                vibrational_loss = np.array([f_array[f_ind] / f_array[:f_ind] for f_ind in range(len(f_array))])
+                raman_gain = np.array([np.sum(np.transpose(p_prev_ord_fast[f_ind + 1:, :])
+                                              * cr_fiber[f_ind, f_ind + 1:], 1)
+                                       for f_ind in range(len(f_array))])
+                raman_loss = np.array([np.sum(np.transpose(p_prev_ord_fast[:f_ind, :]) * cr_fiber[f_ind, :f_ind] *
+                                              vibrational_loss[f_ind], 1)
+                                       for f_ind in range(len(f_array))])
+                alp_z = np.outer(alp, np.ones(len(z_arr) - 1))
+
+                gamma_cop = -alp_z[cop_indices] + raman_gain[cop_indices, :-1] - raman_loss[cop_indices, :-1]
+                cop_channels = np.squeeze(p_prev_ord_fast[cop_indices, :])
+                cop_power = cop_channels[:, :-1]
+                cop_dpdz_element = dz * gamma_cop * cop_power
+
+                updating_next_order_cop = np.zeros([len(cop_indices), len(z_arr)])
+                updating_next_order_cop[cop_indices, 0] = p_prev_ord_fast[cop_indices, 0]
+                for i in range(1, len(z_arr)):
+                    updating_next_order_cop[:, i] = (updating_next_order_cop[:, i - 1] + cop_dpdz_element[:, i - 1]) / \
+                                                    loss_arr[i - 1]
+                    indices_zero = np.argwhere(updating_next_order_cop[:, i] < 0)
+                    updating_next_order_cop[indices_zero, i] = 0
+
+                p_next_ord_fast = updating_next_order_cop
+
+            return p_next_ord_fast
+
+        def iterative_algorithm(pow_tol, prev_order, z_arr, f_array, propagation_direction, alpha, cr_fiber,
+                                loss_array, kind):
+            res_err_abs = 10
+            next_order = np.zeros(np.shape(prev_order))
+            while res_err_abs > pow_tol:
+                if kind == 'next':
+                    next_order = computing_next_order_v2(prev_order, z_arr, f_array, propagation_direction, alpha,
+                                                         cr_fiber, loss_array)
+                else:
+                    next_order = computing_next_order_v1(prev_order, z_arr, f_array, propagation_direction, alpha,
+                                                         cr_fiber, loss_array)
+
+                res_err_abs = np.max(np.abs(next_order - prev_order))
+                prev_order = next_order
+
+            return next_order
+
+        # fiber parameters
+        fiber_length = self.fiber.params.length
+        raman_efficiency = self.fiber.params.raman_efficiency
+        simulation = Simulation.get_simulation()
+        sim_params = simulation.sim_params
+        lumped_losses = self.fiber.params.lumped_losses
+
+        if not sim_params.raman_params.flag_raman:
+            raman_efficiency['cr'] = np.zeros(len(raman_efficiency['cr']))
+        # raman solver parameters
+        z_resolution = sim_params.raman_params.space_resolution
+        tolerance = sim_params.raman_params.tolerance
+
+        logger.debug('Start computing fiber Stimulated Raman Scattering')
+
+        if not raman_pumps or not carriers:
+            typ = 'next'
+        else:
+            typ = 'prev'
+
+        power_spectrum, freq_array, prop_direct, _ = self._compute_power_spectrum(carriers, raman_pumps)
+
+        alphap_fiber = self.fiber.alpha(freq_array)
+
+        freq_diff = abs(freq_array - np.reshape(freq_array, (len(freq_array), 1)))
+        interp_cr = interp1d(raman_efficiency['frequency_offset'], raman_efficiency['cr'])
+        cr = interp_cr(freq_diff)
+
+        # z propagation axis
+        z = defining_z_initial_phase(fiber_length, lumped_losses)
+        losses, z_loss = defining_loss_array(lumped_losses, z)
+
+        initial_guess_conditions = initial_guess_stimulated_raman_with_losses(z, power_spectrum, alphap_fiber,
+                                                                              prop_direct, losses)
+        prev_ord = deepcopy(initial_guess_conditions)
+
+        # ODE SOLVER
+        next_ord = iterative_algorithm(tolerance, prev_ord, z, freq_array, prop_direct, alphap_fiber, cr, losses, typ)
+
+        power_surface, z_new = defining_z_final_phase(z_resolution, fiber_length, lumped_losses, next_ord, z)
+
+        rho = (power_surface.transpose() / power_spectrum).transpose()
+        rho = np.sqrt(rho)  # From power attenuation to field attenuation
+        stimulated_raman_scattering = StimulatedRamanScattering(freq_array, z_new, rho, power_surface)
 
         self._stimulated_raman_scattering = stimulated_raman_scattering
 
