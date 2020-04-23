@@ -120,7 +120,10 @@ class OMS:
         """
         if (nvalue is None or mvalue is None or isinstance(nvalue, float)
                 or isinstance(mvalue, float) or mvalue == 0):
-            raise SpectrumError('could not assign None values')
+            raise SpectrumError(f'Could not assign N {nvalue}, M {mvalue}. N and M must be ' + \
+                                'integer, with M>0. N and M may be derived from service' + \
+                                ' path_bandwidth request. Please check that path_bandwidth is' + \
+                                ' positive and non zero.')
         startn, stopn = mvalue_to_slots(nvalue, mvalue)
         # print(f'startn stop n {startn} , {stopn}')
         # assumes that guardbands are sufficient to ensure that assigning a center channel
