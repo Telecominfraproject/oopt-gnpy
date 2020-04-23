@@ -70,7 +70,7 @@ class Request_element(Element):
                     msg = f'Request Id: {self.request_id} - could not find tsp : \'{Request.trx_type}\' with mode: \'{Requestmode}\' in eqpt library \nComputation stopped.'
                     #print(msg)
                     logger.critical(msg)
-                    exit(1)
+                    raise ServiceError(msg)
             else:
                 Requestmode = None
                 self.mode = Request.mode
