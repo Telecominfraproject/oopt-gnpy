@@ -11,7 +11,7 @@ This module contains all parameters to configure standard network elements.
 
 from logging import getLogger
 from scipy.constants import c, pi
-from numpy import squeeze, log10, exp
+from numpy import squeeze, log10, exp, delete
 
 
 from gnpy.core.units import UNITS
@@ -179,6 +179,43 @@ class FiberParams(Parameters):
             # raman parameters (not compulsory)
             self._raman_efficiency = kwargs['raman_efficiency'] if 'raman_efficiency' in kwargs else None
             self._pumps_loss_coef = kwargs['pumps_loss_coef'] if 'pumps_loss_coef' in kwargs else None
+            if 'lumped_losses' in kwargs:
+                try:
+                    z_lumped_losses_ref = squeeze([lumped['position'] for lumped in kwargs['lumped_losses']]) * 1e3
+                    lumped_losses_power = squeeze([lumped['loss'] for lumped in kwargs['lumped_losses']])
+                except TypeError:
+                    raise ParametersError(f'lumped losses has to be a list of dictionaries.')
+                except KeyError as e:
+                    raise ParametersError(f'An element in lumped losses list lacks the compulsory field: {e}.')
+                # Sorting elements along the z axis
+                indices = z_lumped_losses_ref.argsort()
+                lumped_losses_power = lumped_losses_power[indices]
+                z_lumped_losses_ref = z_lumped_losses_ref[indices]
+                # Checking if any loss position is within the span length
+                if z_lumped_losses_ref[0] < 0 or z_lumped_losses_ref[-1] > self.length:
+                    raise ParametersError('Lumped losses exceed the size of the fiber.')
+                # Check the match of input connector loss
+                if z_lumped_losses_ref[0] == 0:
+                    if lumped_losses_power[0] != self.con_in:
+                        raise ParametersError('Parameter mismatch: con_in differs from lumped_losses in position z=0.')
+                    else:
+                        lumped_losses_power = delete(lumped_losses_power, 0)
+                        z_lumped_losses_ref = delete(z_lumped_losses_ref, 0)
+                # Check the match of output connector loss
+                if z_lumped_losses_ref[-1] == self.length:
+                    if lumped_losses_power[-1] != self.con_out:
+                        message = f'Parameter mismatch: con_out differs from lumped_losses in position z={self.length}.'
+                        raise ParametersError(message)
+                    else:
+                        lumped_losses_power = delete(lumped_losses_power, -1)
+                        z_lumped_losses_ref = delete(z_lumped_losses_ref, -1)
+
+                lumped_losses_power_lin = db2lin(lumped_losses_power)  # [linear units]
+                self._lumped_losses = {}
+                self._lumped_losses['loss'] = lumped_losses_power_lin
+                self._lumped_losses['position'] = z_lumped_losses_ref
+            else:
+                self._lumped_losses = None
         except KeyError as e:
             raise ParametersError(f'Fiber configurations json must include {e}')
 
@@ -278,6 +315,10 @@ class FiberParams(Parameters):
     @property
     def pumps_loss_coef(self):
         return self._pumps_loss_coef
+
+    @property
+    def lumped_losses(self):
+        return self._lumped_losses
 
     def asdict(self):
         dictionary = super().asdict()

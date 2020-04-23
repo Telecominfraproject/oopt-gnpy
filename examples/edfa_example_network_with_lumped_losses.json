@@ -1,0 +1,63 @@
+{
+    "network_name": "EDFA Example Network - P2P",
+    "elements": [
+        {
+            "uid": "Site_A",
+            "type": "Transceiver",
+            "metadata": {
+                "location": {
+                    "city": "Site A",
+                    "region": "",
+                    "latitude": 0,
+                    "longitude": 0
+                }
+            }
+        },
+        {
+            "uid": "Span1",
+            "type": "RamanFiberLosses",
+            "type_variety": "SSMF",
+            "params": {
+                "length": 80,
+                "loss_coef": 0.2,
+                "length_units": "km",
+                "att_in": 0,
+                "con_in": 0.5,
+                "con_out": 0.5,
+                "lumped_losses": [
+                    {"position": 0, "loss": 0.5},
+                    {"position": 70, "loss": 3}
+                ]
+            },
+            "metadata": {
+                "location": {
+                    "region": "",
+                    "latitude": 1,
+                    "longitude": 0
+                }
+            }
+        },
+        {
+            "uid": "Site_B",
+            "type": "Transceiver",
+            "metadata": {
+                "location": {
+                    "city": "Site B",
+                    "region": "",
+                    "latitude": 2,
+                    "longitude": 0
+                }
+            }
+        }
+
+    ],
+    "connections": [{
+            "from_node": "Site_A",
+            "to_node": "Span1"
+        },
+        {
+            "from_node": "Span1",
+            "to_node": "Site_B"
+        }
+    ]
+}
