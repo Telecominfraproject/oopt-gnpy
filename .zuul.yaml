@@ -11,6 +11,8 @@
             vars:
               coverage_job_name_previous: tox-py37-cover-previous
               coverage_job_name_current: tox-py37-cover
+        - tox-linters-diff:
+            voting: false
         - tox-docs
         - tox-py37-cover-previous
     gate:
