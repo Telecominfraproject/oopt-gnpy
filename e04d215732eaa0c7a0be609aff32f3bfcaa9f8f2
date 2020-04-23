@@ -277,6 +277,24 @@
     },
     {
       "key": {
+        "uuid": "c3da967b_ff3d2e55",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-04-23T09:54:12Z",
+      "side": 1,
+      "message": "understood and agreed, thanks !",
+      "parentUuid": "473b36ce_c97d8dc0",
+      "revId": "e04d215732eaa0c7a0be609aff32f3bfcaa9f8f2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7c214a10_14475c2c",
         "filename": "tests/test_spectrum_assignment.py",
         "patchSetId": 6
@@ -300,6 +318,30 @@
     },
     {
       "key": {
+        "uuid": "c1ead38f_0e922c29",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-04-23T09:54:12Z",
+      "side": 1,
+      "message": "agreed (but this test is removed no ?)",
+      "parentUuid": "7c214a10_14475c2c",
+      "range": {
+        "startLine": 212,
+        "startChar": 22,
+        "endLine": 212,
+        "endChar": 24
+      },
+      "revId": "e04d215732eaa0c7a0be609aff32f3bfcaa9f8f2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "94f6f0ca_7bc612d7",
         "filename": "tests/test_spectrum_assignment.py",
         "patchSetId": 6
@@ -311,6 +353,24 @@
       "writtenOn": "2020-04-22T20:18:43Z",
       "side": 1,
       "message": "This comment disagrees with the actual test, so I\u0027ll be changing the comment. Can you please check that I have not made a mess?",
+      "revId": "e04d215732eaa0c7a0be609aff32f3bfcaa9f8f2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5a39675_40e88298",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-04-23T09:54:12Z",
+      "side": 1,
+      "message": "yes: bad comment due to copy... should be test n and m acceptable values",
+      "parentUuid": "94f6f0ca_7bc612d7",
       "revId": "e04d215732eaa0c7a0be609aff32f3bfcaa9f8f2",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
@@ -363,6 +423,30 @@
     },
     {
       "key": {
+        "uuid": "b1893692_3cd828fb",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-04-23T09:54:12Z",
+      "side": 1,
+      "message": "I added the non integer case in case the user inputs non integers values... I want to be sure that the program will still correctly reject non integer values if somebody changes the assignment functions later on (could be to support particular assignments off the grid  internal to a superchannel).I want to be sure that future changes be aware that the initial functions only work for integer, and the future development will have to properly change the assignment functions. may be the test could then just check the n is a signed integer and m a non null unssigned integer ?",
+      "parentUuid": "93801ea0_6ada9772",
+      "range": {
+        "startLine": 224,
+        "startChar": 46,
+        "endLine": 224,
+        "endChar": 50
+      },
+      "revId": "e04d215732eaa0c7a0be609aff32f3bfcaa9f8f2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6964ee71_2e1cfe8d",
         "filename": "tests/test_spectrum_assignment.py",
         "patchSetId": 6
@@ -374,6 +458,24 @@
       "writtenOn": "2020-04-22T20:18:43Z",
       "side": 1,
       "message": "This test checks whether OMS.assign_spectrum returns false upon failure. I checked all callers of this method, and outside of the test suite it\u0027s only called from pth_assign_spectrum -- which does not check the return value, so we have a silent failure (ok, \"verbose failure\" because it\u0027s logged). Can we change that method to raise an exception when called with invalid input?",
+      "revId": "e04d215732eaa0c7a0be609aff32f3bfcaa9f8f2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cdfffea4_5b11a8bd",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-04-23T09:54:12Z",
+      "side": 1,
+      "message": "good point: I agreed this should be changed",
+      "parentUuid": "6964ee71_2e1cfe8d",
       "revId": "e04d215732eaa0c7a0be609aff32f3bfcaa9f8f2",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
