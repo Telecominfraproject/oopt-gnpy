@@ -15,10 +15,11 @@ from gnpy.core.utils import db2lin, lin2db, write_csv
 from argparse import ArgumentParser
 from sys import exit
 from pathlib import Path
-from json import loads
+from json import  loads
 from collections import Counter
 from logging import getLogger, basicConfig, INFO, ERROR, DEBUG
-from numpy import linspace, mean, log10
+from numpy import linspace, mean, \
+        log10
 from matplotlib.pyplot import show, axis, figure, title, text
 from networkx import (draw_networkx_nodes, draw_networkx_edges,
                       draw_networkx_labels, dijkstra_path)
@@ -45,7 +46,7 @@ def plot_baseline(network):
             city_labels.add(n.location.city)
     label_pos = pos
 
-    fig = figure()
+    fig =    figure()
     kwargs = {'figure': fig, 'pos': pos}
     plot = draw_networkx_nodes(network, nodelist=network.nodes(), node_color='#ababab', **kwargs)
     draw_networkx_edges(network, edgelist=edges, edge_color='#ababab', **kwargs)
@@ -56,10 +57,10 @@ def plot_baseline(network):
 def plot_results(network, path, source, destination, infos):
     path_edges = set(zip(path[:-1], path[1:]))
     edges = set(network.edges()) - path_edges
-    pos = {n: (n.lng, n.lat) for n in network.nodes()}
+    pos = {n : (n.lng, n.lat) for n in network.nodes()}
     nodes = {}
     for k, (x, y) in pos.items():
-        nodes.setdefault((round(x, 1), round(y, 1)), []).append(k)
+            nodes.setdefault((round(x, 1), round(y, 1)), []).append(k)
     labels = {n: n.location.city for n in network.nodes() if isinstance(n, Transceiver)}
     city_labels = set(labels.values())
     for n in network.nodes():
