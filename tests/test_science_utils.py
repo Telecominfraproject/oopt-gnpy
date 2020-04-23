@@ -10,7 +10,7 @@ import json
 from pandas import read_csv
 from numpy.testing import assert_allclose
 from gnpy.core.info import create_input_spectral_information
-from gnpy.core.elements import RamanFiber
+from gnpy.core.elements import RamanFiber, RamanFiberLosses
 from gnpy.core.parameters import SimParams
 from gnpy.core.science_utils import Simulation
 from gnpy.core.utils import load_json
@@ -46,3 +46,34 @@ def test_raman_fiber():
     assert_allclose(p_signal, expected_results['signal'], rtol=1e-3)
     assert_allclose(p_ase, expected_results['ase'], rtol=1e-3)
     assert_allclose(p_nli, expected_results['nli'], rtol=1e-3)
+
+def test_raman_fiber_losses():
+    """ Test the accuracy of propagating the RamanFiber.
+    """
+    # spectral information generation
+    power = 1e-3
+    with open(TEST_DIR / 'data' / 'eqpt_config.json', 'r') as file:
+        eqpt_params = json.load(file)
+    spectral_info_params = eqpt_params['SI'][0]
+    spectral_info_params.pop('power_dbm')
+    spectral_info_params.pop('power_range_db')
+    spectral_info_params.pop('tx_osnr')
+    spectral_info_params.pop('sys_margins')
+    spectral_info_input = create_input_spectral_information(power=power, **spectral_info_params)
+
+    sim_params = SimParams(**load_json(TEST_DIR / 'data' / 'sim_params.json'))
+    Simulation.set_params(sim_params)
+    fiber = RamanFiber(**load_json(TEST_DIR / 'data' / 'raman_fiber_config.json'))
+    fiber_losses = RamanFiberLosses(**load_json(TEST_DIR / 'data' / 'raman_fiber_losses_config.json'))
+
+    # propagation
+    spectral_info_out = fiber(spectral_info_input)
+    spectral_info_out_losses = fiber_losses(spectral_info_input)
+
+    p_signal = [carrier.power.signal for carrier in spectral_info_out.carriers]
+    p_signal_losses = [carrier.power.signal for carrier in spectral_info_out_losses.carriers]
+    p_ase = [carrier.power.ase for carrier in spectral_info_out.carriers]
+    p_ase_losses = [carrier.power.ase for carrier in spectral_info_out.carriers]
+
+    assert_allclose(p_signal, p_signal_losses, rtol=1e-2)
+    assert_allclose(p_ase, p_ase_losses, rtol=1e-2)
