@@ -98,6 +98,30 @@
     },
     {
       "key": {
+        "uuid": "8a5048fc_39875dc3",
+        "filename": "gnpy/core/convert.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-04-23T11:30:23Z",
+      "side": 1,
+      "message": "on the first version I created all possible names (excel parser + autodesign) wether they could be used or not: for example if an ila is defined in eqpt sheet the east ila name will be named f\u0027east edfa in {e.from_city} to {e.to_city}\u0027, if it is not defined in eqpt sheet autodesign will create one with name: f\u0027Edfa0_fiber ({my_l.to_city} \\u2192 {my_l.from_city})-{my_l.west_cable}\u0027\n\nso the first version of this dictionnary recorded both names although only one of them is effectively in the topology.\nin the second patch set I have taken into account your comment and only recorded names that are effectively part of the final topology",
+      "parentUuid": "a332baf8_ce13de97",
+      "range": {
+        "startLine": 430,
+        "startChar": 8,
+        "endLine": 430,
+        "endChar": 56
+      },
+      "revId": "9410187097726ca9d49310251fdce0de1fc70d5e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5dd6a4ed_c9697d28",
         "filename": "gnpy/core/request.py",
         "patchSetId": 1
