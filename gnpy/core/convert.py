@@ -270,8 +270,6 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
 
     if names_matching:
         print('\ncity match dictionary:',city_match_dic)
-    with  open('name_match_dictionary.json', 'w', encoding='utf-8') as city_match_dic_file:
-        city_match_dic_file.write(dumps(city_match_dic, indent=2, ensure_ascii=False))
 
     global links_by_city
     links_by_city = defaultdict(list)
