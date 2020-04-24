@@ -46,6 +46,30 @@
       "revId": "e5ddd8d02078d629013bf0337ce02feaca09a9f0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad8d1cfd_519efaa2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-04-24T12:33:10Z",
+      "side": 1,
+      "message": "Well, again taking CORONET_CONUS_Topology as an example, the total number of nodes is 2088 but setting the cutoff higher than around 300 makes the algorithm take forever. On the other hand, the length of the shortest path between e.g. Seattle and Miami is 172 so cutoff\u003d120 was way too small. Another example is Seattle to Denver where the shortest path is length 56 but going through Los Angeles is length 122. Since 1.2*56 is smaller than 120, using 120 as minimum cutoff would not find this path. Anyway, this is just one network example and I agree that 150 is still an arbitrary number but I still think it\u0027s an improvement.",
+      "parentUuid": "6ffe3e04_5bbc3487",
+      "range": {
+        "startLine": 15,
+        "startChar": 39,
+        "endLine": 15,
+        "endChar": 101
+      },
+      "revId": "e5ddd8d02078d629013bf0337ce02feaca09a9f0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
