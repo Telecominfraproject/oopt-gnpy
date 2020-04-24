@@ -25,16 +25,3 @@ def test_sim_parameters():
     Simulation.set_params(sim_params)
     assert not s2.sim_params.raman_params.flag_raman
     assert not s1.sim_params.raman_params.flag_raman
-
-if __name__ == '__main__':
-    from logging import getLogger, basicConfig, INFO
-    logger = getLogger(__name__)
-    basicConfig(level=INFO)
-
-    test_sim_parameters()
-
-    print('\n')
-
-
-
-
