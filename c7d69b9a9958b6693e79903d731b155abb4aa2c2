@@ -16,6 +16,24 @@
       "revId": "c7d69b9a9958b6693e79903d731b155abb4aa2c2",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8dca3c23_bbf9de5f",
+        "filename": "tests/test_invocation.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-04-24T09:30:49Z",
+      "side": 1,
+      "message": "Yes, I introduced this bug in the previous patch. The previous patch (https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/489631, \"tests: Run examples via pytest\") moved execution of these demos/examples into the test suite. This patch only adds output checking.",
+      "parentUuid": "4e59f2a1_6afe71e9",
+      "revId": "c7d69b9a9958b6693e79903d731b155abb4aa2c2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
