@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4e59f2a1_6afe71e9",
+        "filename": "tests/test_invocation.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-04-24T07:35:02Z",
+      "side": 1,
+      "message": "So this test_invocation is corrected by the other commit ?\n489922: tests: Check if example code provides exact same output",
+      "revId": "c7d69b9a9958b6693e79903d731b155abb4aa2c2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
