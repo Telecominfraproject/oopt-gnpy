@@ -22,6 +22,30 @@
       "revId": "e5ddd8d02078d629013bf0337ce02feaca09a9f0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ffe3e04_5bbc3487",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-04-24T11:57:08Z",
+      "side": 1,
+      "message": "I used this value because it corresponded to the highest reasonable number found in the biggest topology we tested for non infinite computation time.\nThis was a quick patch to avoid allsimple_paths searching for ages. \nI have been working on a solution that would consider an alternate network only made of OMSs as link to reduce the number of crossed elements, but have not finished. I\u0027ll push it so that you can have a look...\nwith this solution if a link between two roadm is made of N elements (fibers fused and edfa) then it would be considered as a single element. In this case a ~100 cutoff value would cover existing feasible links. But this does not seem to reduce the computation time of all_simple_path. So I would like to also explore another possibility using the LRUcache decorator to speed up the function computation time.",
+      "parentUuid": "c81f76f9_6857c544",
+      "range": {
+        "startLine": 15,
+        "startChar": 39,
+        "endLine": 15,
+        "endChar": 101
+      },
+      "revId": "e5ddd8d02078d629013bf0337ce02feaca09a9f0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
