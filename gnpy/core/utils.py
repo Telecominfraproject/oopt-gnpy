@@ -131,6 +131,11 @@ freq2wavelength = constants.nu2lambda
 
 def freq2wavelength(value):
     """ Converts frequency units to wavelength units.
+
+    >>> round(freq2wavelength(191.35e12) * 1e9, 3)
+    1566.723
+    >>> round(freq2wavelength(196.1e12) * 1e9, 3)
+    1528.773
     """
     return constants.c / value
 
