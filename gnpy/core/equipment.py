@@ -8,8 +8,7 @@ gnpy.core.equipment
 This module contains functionality for specifying equipment.
 '''
 
-from numpy import clip, polyval
-from operator import itemgetter
+from numpy import clip
 from math import isclose
 from pathlib import Path
 from json import load

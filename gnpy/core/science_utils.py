@@ -8,7 +8,6 @@ from scipy.interpolate import interp1d
 from scipy.optimize import OptimizeResult
 
 from gnpy.core.utils import db2lin
-from gnpy.core.parameters import SimParams
 
 
 logger = getLogger(__name__)
