@@ -291,29 +291,30 @@ def compute_constrained_path(network, req):
               'be destination trx'
         LOGGER.critical(msg)
         raise ValueError()
-    # len(nodes_list) is 1 or more since it must include destination node
-    if len(nodes_list) == 1:
-        try:
-            total_path = dijkstra_path(network, source, destination, weight='weight')
-            # print('checking edges length is correct')
-            # print(shortest_path_length(network,source,destination))
-            # print(shortest_path_length(network,source,destination,weight ='weight'))
-            # s = total_path[0]
-            # for e in total_path[1:]:
-            #     print(s.uid)
-            #     print(network.get_edge_data(s,e))
-            #     s = e
-        except NetworkXNoPath:
-            msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path from' +\
-                  f' {source.uid} to node: {destination.uid} in network topology'+ '\x1b[0m'
-            LOGGER.critical(msg)
-            print(msg)
-            req.blocking_reason = 'NO_PATH'
-            total_path = []
-    else:
-        # len(nodes_list) is 2 or more (includes at list one include node apart from destination)
+    
+    try:
+        total_path = dijkstra_path(network, source, destination, weight='weight')
+        # print('checking edges length is correct')
+        # print(shortest_path_length(network,source,destination))
+        # print(shortest_path_length(network,source,destination,weight ='weight'))
+        # s = total_path[0]
+        # for e in total_path[1:]:
+        #     print(s.uid)
+        #     print(network.get_edge_data(s,e))
+        #     s = e
+    except NetworkXNoPath:
+        msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path from' +\
+              f' {source.uid} to node: {destination.uid} in network topology'+ '\x1b[0m'
+        LOGGER.critical(msg)
+        print(msg)
+        req.blocking_reason = 'NO_PATH'
+        return []
+    
+    if len(nodes_list) > 1:
+        # len(nodes_list) is 2 or more (includes at least one include node apart from destination)
+        cutoff = max(int(len(total_path) * 1.2), 150)
         all_simp_pths = list(all_simple_paths(network, source=source,\
-            target=destination, cutoff=120))
+            target=destination, cutoff=cutoff))
         candidate = []
         for pth in all_simp_pths:
             if ispart(nodes_list, pth):
@@ -341,7 +342,6 @@ def compute_constrained_path(network, req):
                       f'include node constraints' + '\x1b[0m'
                 LOGGER.info(msg)
                 print(f'constraint ignored')
-                total_path = dijkstra_path(network, source, destination, weight='weight')
             else:
                 # one STRICT makes the whole list STRICT
                 msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path with user ' +\
