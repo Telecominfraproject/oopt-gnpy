@@ -68,12 +68,6 @@ def write_csv(obj, filename):
             for data_dict in data_list:
                 w.writerow([_ for _ in data_dict.values()])
 
-def c():
-    """
-    Returns the speed of light in meters per second
-    """
-    return constants.c
-
 
 def arrange_frequencies(length, start, stop):
     """Create an array of frequencies
@@ -88,12 +82,6 @@ def arrange_frequencies(length, start, stop):
     :rtype: numpy.ndarray
     """
     return np.linspace(start, stop, length)
-
-def h():
-    """
-    Returns plank's constant in J*s
-    """
-    return constants.h
 
 
 def lin2db(value):
@@ -144,7 +132,7 @@ freq2wavelength = constants.nu2lambda
 def freq2wavelength(value):
     """ Converts frequency units to wavelength units.
     """
-    return c() / value
+    return constants.c / value
 
 def snr_sum(snr, bw, snr_added, bw_added=12.5e9):
     snr_added = snr_added - lin2db(bw/bw_added)
