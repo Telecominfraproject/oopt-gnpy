@@ -16,17 +16,17 @@ See: draft-ietf-teas-yang-path-computation-01.txt
 """
 
 from collections import namedtuple, OrderedDict
-from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
+from logging import getLogger
 from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths)
 from networkx.utils import pairwise
 from numpy import mean
-from gnpy.core.service_sheet import Request_element, Element
-from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused, Fiber
-from gnpy.core.utils import db2lin, lin2db
-from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
+from gnpy.core.service_sheet import Element
+from gnpy.core.elements import Transceiver, Roadm, Edfa
+from gnpy.core.utils import lin2db
+from gnpy.core.info import create_input_spectral_information
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 import gnpy.core.ansi_escapes as ansi_escapes
-from copy import copy, deepcopy
+from copy import deepcopy
 from csv import writer
 from math import ceil
 

@@ -10,17 +10,16 @@ This module contains functions for constructing networks of network elements.
 
 from gnpy.core.convert import convert_file
 from networkx import DiGraph
-from numpy import arange
 from scipy.interpolate import interp1d
 from logging import getLogger
 from os import path
-from operator import itemgetter, attrgetter
+from operator import attrgetter
 from gnpy.core import elements
-from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm, Fused, RamanFiber
+from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm, Fused
 from gnpy.core.equipment import edfa_nf
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.units import UNITS
-from gnpy.core.utils import (load_json, save_json, round2float, db2lin, merge_amplifier_restrictions)
+from gnpy.core.utils import (load_json, save_json, round2float, merge_amplifier_restrictions)
 from collections import namedtuple
 
 logger = getLogger(__name__)

@@ -18,7 +18,6 @@ This base class provides a more convenient way to define a network element
 via subclassing.
 '''
 
-from uuid import uuid4
 from collections import namedtuple
 
 class Location(namedtuple('Location', 'latitude longitude city region')):

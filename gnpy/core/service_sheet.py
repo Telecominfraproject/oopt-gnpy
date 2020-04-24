@@ -17,16 +17,13 @@ try:
 except ModuleNotFoundError:
     exit('Required: `pip install xlrd`')
 from collections import namedtuple
-from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
+from logging import getLogger
 from json import dumps
-from pathlib import Path
 from copy import deepcopy
-from gnpy.core.equipment import load_equipment, automatic_nch
-from gnpy.core.utils import db2lin, lin2db
+from gnpy.core.utils import db2lin
 from gnpy.core.exceptions import ServiceError
-from gnpy.core.network import load_network, build_network
 from gnpy.core.convert import corresp_names, corresp_next_node
-from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused, Fiber
+from gnpy.core.elements import Transceiver, Roadm, Edfa, Fiber
 import gnpy.core.ansi_escapes as ansi_escapes
 
 SERVICES_COLUMN = 12

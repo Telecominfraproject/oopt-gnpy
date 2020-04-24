@@ -34,8 +34,7 @@ from difflib import get_close_matches
 from copy import copy
 from gnpy.core.utils import silent_remove
 from gnpy.core.exceptions import NetworkTopologyError
-from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused, Fiber
-import time
+from gnpy.core.elements import Edfa, Fused, Fiber
 
 all_rows = lambda sh, start=0: (sh.row(x) for x in range(start, sh.nrows))
 
