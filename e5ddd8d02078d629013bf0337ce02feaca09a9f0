@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c81f76f9_6857c544",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-04-24T10:51:42Z",
+      "side": 1,
+      "message": "Why not, but to me that still looks like an arbitrary number, so I\u0027ll be thinking out loud on where this number might come from.\n\nThe worst case topology is an N-node ring where the shortest path between adjacent nodes has length\u003d1, while the only other path has a length\u003dN-1 (OK, that\u0027s a trivial observation, one cannot really have any longer path than crossing each node once). So this is the worst case, and the code tries to avoid bringing the limit to N-1 for some reason.\n\nEsther, when you wrote this, have you done some tests on what the practical limit on a \"typical HW\" is?",
+      "range": {
+        "startLine": 15,
+        "startChar": 39,
+        "endLine": 15,
+        "endChar": 101
+      },
+      "revId": "e5ddd8d02078d629013bf0337ce02feaca09a9f0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
