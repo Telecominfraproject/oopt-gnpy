@@ -10,11 +10,8 @@ This module contains classes for modelling :class:`SpectralInformation`.
 
 
 from collections import namedtuple
-from numpy import array
-from gnpy.core.utils import lin2db, db2lin
-from json import loads
-from gnpy.core.utils import load_json
-from gnpy.core.equipment import automatic_nch, automatic_spacing
+from gnpy.core.utils import lin2db
+from gnpy.core.equipment import automatic_nch
 
 class Power(namedtuple('Power', 'signal nli ase')):
     """carriers power in W"""

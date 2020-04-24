@@ -18,9 +18,9 @@ Network elements MUST implement two attributes .uid and .name representing a
 unique identifier and a printable name.
 '''
 
-from numpy import abs, arange, array, exp, divide, errstate, ones, squeeze
-from numpy import interp, log10, mean, pi, polyfit, polyval, sum
-from scipy.constants import c, h
+from numpy import abs, arange, array, divide, errstate, ones
+from numpy import interp, mean, pi, polyfit, polyval, sum
+from scipy.constants import h
 from collections import namedtuple
 
 from gnpy.core.node import Node

@@ -17,11 +17,10 @@ try:
 except ModuleNotFoundError:
     exit('Required: `pip install xlrd`')
 from collections import namedtuple
-from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
+from logging import getLogger
 from json import dumps
-from pathlib import Path
 from gnpy.core.equipment import load_equipment
-from gnpy.core.utils import db2lin, lin2db
+from gnpy.core.utils import db2lin
 from gnpy.core.exceptions import ServiceError
 
 SERVICES_COLUMN = 12

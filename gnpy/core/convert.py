@@ -33,7 +33,6 @@ from pathlib import Path
 from difflib import get_close_matches
 from gnpy.core.utils import silent_remove
 from gnpy.core.exceptions import NetworkTopologyError
-import time
 
 all_rows = lambda sh, start=0: (sh.row(x) for x in range(start, sh.nrows))
 
