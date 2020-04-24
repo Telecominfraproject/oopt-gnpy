@@ -71,7 +71,7 @@ def plot_results(network, path, source, destination, infos):
     fig = figure()
     kwargs = {'figure': fig, 'pos': pos}
     all_nodes = [n for n in network.nodes() if n not in path]
-    plot = draw_networkx_nodes(network, nodelist=all_nodes, node_color='#ababab', node_size=50, **kwargs)
+    plot = draw_networkx_nodes(network, nodelist=all_nodes, node_color='#ababab', node_size=50, vmax=None, **kwargs)
     draw_networkx_nodes(network, nodelist=path, node_color='#ff0000', node_size=55, **kwargs)
     draw_networkx_edges(network, edgelist=edges, edge_color='#ababab', **kwargs)
     draw_networkx_edges(network, edgelist=path_edges, edge_color='#ff0000', **kwargs)

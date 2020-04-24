@@ -3,19 +3,5 @@
     check:
       jobs:
         - tox-py37-cover
-        - coverage-diff:
-            voting: false
-            dependencies:
-              - tox-py37-cover-previous
-              - tox-py37-cover
-            vars:
-              coverage_job_name_previous: tox-py37-cover-previous
-              coverage_job_name_current: tox-py37-cover
         - tox-linters-diff:
             voting: false
-        - tox-docs
-        - tox-py37-cover-previous
-    gate:
-      jobs:
-        - tox-py37
-        - tox-docs
