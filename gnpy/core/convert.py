@@ -31,8 +31,10 @@ from itertools import chain
 from json import dumps
 from pathlib import Path
 from difflib import get_close_matches
+from copy import copy
 from gnpy.core.utils import silent_remove
 from gnpy.core.exceptions import NetworkTopologyError
+from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused, Fiber
 import time
 
 all_rows = lambda sh, start=0: (sh.row(x) for x in range(start, sh.nrows))
@@ -424,6 +426,80 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
         edfa_json_file.write(dumps(data, indent=2, ensure_ascii=False))
     return output_json_file_name
 
+def corresp_names(input_filename, network):
+    """ a function that builds the correspondance between names given in the excel,
+        and names used in the json, and created by the autodesign.
+        All names are listed
+    """
+    nodes, links, eqpts = parse_excel(input_filename)
+    fused = [n.uid for n in network.nodes() if isinstance(n, Fused)]
+    ila = [n.uid for n in network.nodes() if isinstance(n, Edfa)]
+
+    corresp_roadm = {x.city: [f'roadm {x.city}'] for x in nodes
+                     if x.node_type.lower() == 'roadm'}
+    corresp_fused = {x.city: [f'west fused spans in {x.city}', f'east fused spans in {x.city}']
+                     for x in nodes if x.node_type.lower() == 'fused' and
+                     f'west fused spans in {x.city}' in fused and
+                     f'east fused spans in {x.city}' in fused}
+
+    #add the special cases when an ila is changed into a fused
+    for my_e in eqpts:
+        name = f'east edfa in {my_e.from_city} to {my_e.to_city}'
+        if my_e.east_amp_type.lower() == 'fused' and name in fused:
+            if my_e.from_city in corresp_fused.keys():
+                corresp_fused[my_e.from_city].append(name)
+            else:
+                corresp_fused[my_e.from_city] = [name]
+        name = f'west edfa in {my_e.from_city} to {my_e.to_city}'
+        if my_e.west_amp_type.lower() == 'fused' and name in fused:
+            if my_e.from_city in corresp_fused.keys():
+                corresp_fused[my_e.from_city].append(name)
+            else:
+                corresp_fused[my_e.from_city] = [name]
+    # build corresp ila based on eqpt sheet
+    # start with east direction
+    corresp_ila = {e.from_city: [f'east edfa in {e.from_city} to {e.to_city}']
+                   for e in eqpts if e.east_amp_type.lower() != '' and
+                   f'east edfa in {e.from_city} to {e.to_city}' in ila}
+    # west direction, append name or create a new item in dict
+    for my_e in eqpts:
+        if my_e.west_amp_type.lower() != '':
+            name = f'west edfa in {my_e.from_city} to {my_e.to_city}'
+            if name in ila:
+                if my_e.from_city in corresp_ila.keys():
+                    corresp_ila[my_e.from_city].append(name)
+                else:
+                    corresp_ila[my_e.from_city] = [name]
+    # complete with potential autodesign names: amplifiers
+    for my_l in links:
+        name = f'Edfa0_fiber ({my_l.to_city} \u2192 {my_l.from_city})-{my_l.west_cable}'
+        if name in ila:
+            if my_l.from_city in corresp_ila.keys():
+                # "east edfa in Stbrieuc to Rennes_STA"  is equivalent name as
+                # "Edfa0_fiber (Lannion_CAS → Stbrieuc)-F056"
+                # "west edfa in Stbrieuc to Rennes_STA"  is equivalent name as
+                # "Edfa0_fiber (Rennes_STA → Stbrieuc)-F057"
+                # does not filter names: all types (except boosters) are created.
+                # in case fibers are splitted the name here is a prefix
+                corresp_ila[my_l.from_city].append(name)
+            else:
+                corresp_ila[my_l.from_city] = [name]
+        name = f'Edfa0_fiber ({my_l.from_city} \u2192 {my_l.to_city})-{my_l.east_cable}'
+        if name in ila:
+            if my_l.to_city in corresp_ila.keys():
+                corresp_ila[my_l.to_city].append(name)
+            else:
+                corresp_ila[my_l.to_city] = [name]
+
+    # merge fused with ila:
+    for key, val in corresp_fused.items():
+        if key in corresp_ila.keys():
+            corresp_ila[key].extend(val)
+        else:
+            corresp_ila[key] = val
+        # no need of roadm booster
+    return corresp_roadm, corresp_fused, corresp_ila
+
 def parse_excel(input_filename):
     link_headers = \
     {  'Node A': 'from_city',
@@ -574,6 +650,61 @@ def eqpt_in_city_to_city(in_city, to_city, direction='east'):
     if nodes_by_city[in_city].node_type.lower() == 'fused':
         return_eqpt = f'{direction} fused spans in {in_city}'
     return return_eqpt
+
+
+def corresp_next_node(network, corresp_ila, corresp_roadm):
+    """ for each name in corresp dictionnaries find the next node in network and its name
+        given by user in excel. for meshTopology_exampleV2.xls:
+        user ILA name Stbrieuc covers the two direction. convert.py creates 2 different ILA
+        with possible names (depending on the direction and if the eqpt was defined in eqpt
+        sheet)
+        - east edfa in Stbrieuc to Rennes_STA
+        - west edfa in Stbrieuc to Rennes_STA
+        - Edfa0_fiber (Lannion_CAS → Stbrieuc)-F056
+        - Edfa0_fiber (Rennes_STA → Stbrieuc)-F057
+        next_nodes finds the user defined name of next node to be able to map the path constraints
+        - east edfa in Stbrieuc to Rennes_STA      next node = Rennes_STA
+        - west edfa in Stbrieuc to Rennes_STA      next node Lannion_CAS
+
+        Edfa0_fiber (Lannion_CAS → Stbrieuc)-F056 and Edfa0_fiber (Rennes_STA → Stbrieuc)-F057
+        do not exist
+        the function supports fiber splitting, fused nodes and shall only be called if
+        excel format is used for both network and service
+    """
+    next_node = {}
+    # consolidate tables and create next_node table
+    for ila_key, ila_list in corresp_ila.items():
+        temp = copy(ila_list)
+        for ila_elem in ila_list:
+            # find the node with ila_elem string _in_ the node uid. 'in' is used instead of
+            # '==' to find composed nodes due to fiber splitting in autodesign.
+            # eg if elem_ila is 'Edfa0_fiber (Lannion_CAS → Stbrieuc)-F056',
+            # node uid 'Edfa0_fiber (Lannion_CAS → Stbrieuc)-F056_(1/2)' is possible
+            correct_ila_name = next(n.uid for n in network.nodes() if ila_elem in n.uid)
+            temp.remove(ila_elem)
+            temp.append(correct_ila_name)
+            ila_nd = next(n for n in network.nodes() if ila_elem in n.uid)
+            next_nd = next(network.successors(ila_nd))
+            # search for the next ILA or ROADM
+            while isinstance(next_nd, (Fiber, Fused)):
+                next_nd = next(network.successors(next_nd))
+            # if next_nd is a ROADM, add the first found correspondance
+            for key, val in corresp_roadm.items():
+                # val is a list of possible names associated with key
+                if next_nd.uid in val:
+                    next_node[correct_ila_name] = key
+                    break
+            # if next_nd was not already added in the dict with the previous loop,
+            # add the first found correspondance in ila names
+            if correct_ila_name not in next_node.keys():
+                for key, val in corresp_ila.items():
+                    # in case of splitted fibers the ila name might not be exact match
+                    if [e for e in val if e in next_nd.uid]:
+                        next_node[correct_ila_name] = key
+                        break
+
+        corresp_ila[ila_key] = temp
+    return corresp_ila, next_node
 
 
 def fiber_dest_from_source(city_name):

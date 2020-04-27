@@ -20,11 +20,12 @@ from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
 from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths)
 from networkx.utils import pairwise
 from numpy import mean
-from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
-from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused
+from gnpy.core.service_sheet import Request_element, Element
+from gnpy.core.elements import Transceiver, Roadm, Edfa, Fused, Fiber
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
 from gnpy.core.exceptions import ServiceError, DisjunctionError
+import gnpy.core.ansi_escapes as ansi_escapes
 from copy import copy, deepcopy
 from csv import writer
 from math import ceil
@@ -737,13 +738,12 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     # select the disjoint path combination
 
     candidates = {}
-    for d in disjunctions_list:
-        dlist = d.disjunctions_req.copy()
+    for dis in disjunctions_list:
+        dlist = dis.disjunctions_req.copy()
         # each line of dpath is one combination of path that satisfies disjunction
         dpath = []
         for i, pth in enumerate(simple_rqs[dlist[0]]):
             dpath.append([pth])
-            # allpaths[id(p)].d_id = d.disjunction_id
         # in each loop, dpath is updated with a path for rq that satisfies
         # disjunction with each path in dpath
         # for example, assume set of requests in the vector (disjunction_list) is  {rq1,rq2, rq3}
@@ -789,7 +789,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
                             # print(f' coucou {elem1}: \t{temp}')
             dpath = temp
         # print(dpath)
-        candidates[d.disjunction_id] = dpath
+        candidates[dis.disjunction_id] = dpath
 
     # for i in disjunctions_list:
     #     print(f'\n{candidates[i.disjunction_id]}')
@@ -1045,3 +1045,56 @@ def requests_aggregation(pathreqlist, disjlist):
                         disjlist.remove(this_d)
                 break
     return local_list, disjlist
+
+
+
+def correct_json_route_list(network, pathreqlist):
+    """ all names in list should be exact name in the network, and there is no ambiguity
+        This function only checks that list is correct, warns user if the name is incorrect and
+        suppresses the constraint it it is loose or raises an error if it is strict
+    """
+    all_uid = [n.uid for n in network.nodes()]
+    transponders = [n.uid for n in network.nodes() if isinstance(n, Transceiver)]
+    for pathreq in pathreqlist:
+        if pathreq.source not in transponders:
+            msg = f'{ansi_escapes.red}Request: {pathreq.request_id}: could not find transponder' +\
+                  f' source : {pathreq.source}.{ansi_escapes.reset}'
+            LOGGER.critical(msg)
+            raise ServiceError(msg)
+
+        if pathreq.destination not in transponders:
+            msg = f'{ansi_escapes.red}Request: {pathreq.request_id}: could not find transponder' +\
+                  f' destination : {pathreq.destination}.{ansi_escapes.reset}'
+            LOGGER.critical(msg)
+            raise ServiceError(msg)
+
+        # silently remove source and dest nodes from the list
+        if pathreq.nodes_list and pathreq.source == pathreq.nodes_list[0]:
+            pathreq.loose_list.pop(0)
+            pathreq.nodes_list.pop(0)
+        if pathreq.nodes_list and pathreq.destination == pathreq.nodes_list[-1]:
+            pathreq.loose_list.pop(-1)
+            pathreq.nodes_list.pop(-1)
+        temp = deepcopy(pathreq)
+        for i, n_id in enumerate(temp.nodes_list):
+            # a node within this list must be part of the topology and should not be a transceiver,
+            # because only source and dest are transceivers
+            if n_id not in all_uid or n_id in transponders:
+                if temp.loose_list[i] == 'LOOSE':
+                    # if no matching can be found in the network just ignore this constraint
+                    # if it is a loose constraint
+                    # warns the user that this node is not part of the topology
+                    msg = f'{ansi_escapes.yellow}invalid route node specified:\n\t\'{n_id}\',' +\
+                          f' could not use it as constraint, skipped!{ansi_escapes.reset}'
+                    print(msg)
+                    LOGGER.info(msg)
+                    pathreq.loose_list.pop(pathreq.nodes_list.index(n_id))
+                    pathreq.nodes_list.remove(n_id)
+                else:
+                    msg = f'{ansi_escapes.red}could not find node:\n\t \'{n_id}\' in network' +\
+                          f' topology. Strict constraint can not be applied.{ansi_escapes.reset}'
+                    LOGGER.critical(msg)
+                    raise ServiceError(msg)
+
+    return pathreqlist
+
