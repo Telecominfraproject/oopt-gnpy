@@ -70,6 +70,30 @@
       "revId": "e5ddd8d02078d629013bf0337ce02feaca09a9f0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5326cdd8_8813588d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-04-28T16:42:00Z",
+      "side": 1,
+      "message": "OK, thanks, this makes sense. Let\u0027s stick with this.",
+      "parentUuid": "ad8d1cfd_519efaa2",
+      "range": {
+        "startLine": 15,
+        "startChar": 39,
+        "endLine": 15,
+        "endChar": 101
+      },
+      "revId": "e5ddd8d02078d629013bf0337ce02feaca09a9f0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
