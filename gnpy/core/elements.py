@@ -147,6 +147,9 @@ class Roadm(Node):
         return f'{type(self).__name__}(uid={self.uid!r}, loss={self.loss!r})'
 
     def __str__(self):
+        if self.effective_loss is None:
+            return f'{type(self).__name__} {self.uid}'
+
         return '\n'.join([f'{type(self).__name__} {self.uid}',
                           f'  effective loss (dB):  {self.effective_loss:.2f}',
                           f'  pch out (dBm):        {self.effective_pch_out_db!r}'])
@@ -233,6 +236,7 @@ class Fiber(Node):
         super().__init__(*args, params=FiberParams(**params), **kwargs)
         self.carriers_in = None
         self.carriers_out = None
+        self.pch_out_db = None
         self.nli_solver = NliSolver(self)
 
     @property
@@ -260,6 +264,9 @@ class Fiber(Node):
                f'loss={round(self.loss,1)!r}dB)'
 
     def __str__(self):
+        if self.pch_out_db is None:
+            return f'{type(self).__name__} {self.uid}'
+
         return '\n'.join([f'{type(self).__name__}          {self.uid}',
                           f'  type_variety:                {self.type_variety}',
                           f'  length (km):                 '
