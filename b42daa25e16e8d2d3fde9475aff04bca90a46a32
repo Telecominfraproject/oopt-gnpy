@@ -1,0 +1,118 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e4bf923_320947e3",
+        "filename": "examples/edfa_example_network_with_lumped_losses.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-04T22:51:34Z",
+      "side": 1,
+      "message": "This new element type has no documentation.",
+      "revId": "b42daa25e16e8d2d3fde9475aff04bca90a46a32",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dddeaf4d_3723318e",
+        "filename": "examples/edfa_example_network_with_lumped_losses.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-04T22:51:34Z",
+      "side": 1,
+      "message": "I think that this is rather user-unfriendly. Instead of having two separate lists which then require quite a few open-coded checks, please use either:\n\n- a dict mapping position to loss, i.e.: {0: 0.5, 70: 3}\n- a list of two-item dicts, i.e.: [{\"position\": 0, \"loss\": 0.5}, {\"position\": 70, \"loss\": 3},]\n\nI think that the second option is more readable.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 17
+      },
+      "revId": "b42daa25e16e8d2d3fde9475aff04bca90a46a32",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b2adb64b_205443fb",
+        "filename": "gnpy/core/equipment.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-04T22:51:34Z",
+      "side": 1,
+      "message": "nit: Thanks for respecting the existing coding style. I would prefer these coding style changes being done in a separate commit, though. It\u0027s still possible for linters to check the coding style just on that part of files that you\u0027re changing (something like `git diff -U0 origin/develop | flake8 --diff`, at least that\u0027s what the CI is doing).",
+      "revId": "b42daa25e16e8d2d3fde9475aff04bca90a46a32",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9eb4f5f5_d9803883",
+        "filename": "gnpy/core/equipment.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-04T22:51:34Z",
+      "side": 1,
+      "message": "nit: no need for an f-string here",
+      "range": {
+        "startLine": 152,
+        "startChar": 39,
+        "endLine": 152,
+        "endChar": 40
+      },
+      "revId": "b42daa25e16e8d2d3fde9475aff04bca90a46a32",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5eb8d413_a85794c7",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-04T22:51:34Z",
+      "side": 1,
+      "message": "nit: I don\u0027t think this extra blank line improves readability here",
+      "revId": "b42daa25e16e8d2d3fde9475aff04bca90a46a32",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2eea9a36_e357da34",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-04T22:51:34Z",
+      "side": 1,
+      "message": "nit: done to silence PEP8, right? I think better move it to within the elif block (just before raise ...)",
+      "revId": "b42daa25e16e8d2d3fde9475aff04bca90a46a32",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
