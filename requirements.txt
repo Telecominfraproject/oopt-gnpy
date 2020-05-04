@@ -1,8 +1,10 @@
 alabaster>=0.7.12,<1
+dash>=1.11.0
 docutils==0.15.2
 matplotlib>=3.1.0,<4
 networkx>=2.3,<3
 numpy>=1.16.1,<2
+oyaml>=0.9
 pandas==0.24.2
 pbr>=5.4.4,<6
 Pygments>=2.4.2,<3
