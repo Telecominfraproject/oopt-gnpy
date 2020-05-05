@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a1729b8_3d792f41",
+        "filename": "gnpy/core/convert.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-05-05T15:05:19Z",
+      "side": 1,
+      "message": "seems that all these lines could be removed as well:\nI could not find a situation where a city would not be in cities_to_match, so that matches is always empty.\nIf there is a name mismatch between nodes and links this is catched as an error in the parse_excel function.\nthe only case I could find to fill  city_match_dic is the case where two nodes having the same lowercase would exist. but this does not seem to be usefull\nbeside lines 264 and 269 are never tested...\n\ndid you find how to use this name matching feature ?",
+      "range": {
+        "startLine": 256,
+        "startChar": 0,
+        "endLine": 272,
+        "endChar": 56
+      },
+      "revId": "e0d5cd2fe460e58c0adcf9c66b8222af5bad6087",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
