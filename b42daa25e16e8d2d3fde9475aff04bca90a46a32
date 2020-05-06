@@ -42,6 +42,23 @@
     },
     {
       "key": {
+        "uuid": "295960c8_791165a8",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-05-06T18:26:38Z",
+      "side": 1,
+      "message": "Why do you need to define a separate element class for this?",
+      "revId": "b42daa25e16e8d2d3fde9475aff04bca90a46a32",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b2adb64b_205443fb",
         "filename": "gnpy/core/equipment.py",
         "patchSetId": 5
