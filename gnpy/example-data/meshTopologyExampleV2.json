@@ -644,6 +644,21 @@
       }
     },
     {
+      "uid": "east edfa in Lorient_KMA to Vannes_KBE",
+      "metadata": {
+        "location": {
+          "city": "Lorient_KMA",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 3.0
+        }
+      },
+      "type": "Fused",
+      "params": {
+        "loss": 0
+      }
+    },
+    {
       "uid": "east edfa in Lannion_CAS to Stbrieuc",
       "metadata": {
         "location": {
@@ -945,21 +960,6 @@
         "delta_p": 1.0,
         "tilt_target": 0,
         "out_voa": null
-      }
-    },
-    {
-      "uid": "east edfa in Lorient_KMA to Vannes_KBE",
-      "metadata": {
-        "location": {
-          "city": "Lorient_KMA",
-          "region": "RLD",
-          "latitude": 2.0,
-          "longitude": 3.0
-        }
-      },
-      "type": "Fused",
-      "params": {
-        "loss": 0
       }
     }
   ],
