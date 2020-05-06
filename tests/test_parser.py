@@ -53,7 +53,7 @@ def test_excel_json_generation(xls_input, expected_json_output):
     actual_json_output = xls_input.with_suffix('.json')
     with open(actual_json_output, encoding='utf-8') as f:
         actual = load(f)
-    unlink(actual_json_output)
+    #unlink(actual_json_output)
 
     with open(expected_json_output, encoding='utf-8') as f:
         expected = load(f)
@@ -96,7 +96,7 @@ def test_auto_design_generation_fromxlsgainmode(xls_input, expected_json_output)
 
     with open(actual_json_output, encoding='utf-8') as f:
         actual = load(f)
-    unlink(actual_json_output)
+    #unlink(actual_json_output)
 
     with open(expected_json_output, encoding='utf-8') as f:
         expected = load(f)
@@ -169,7 +169,7 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
     actual_json_output = xls_input.with_name(xls_input.stem + '_services').with_suffix('.json')
     with open(actual_json_output, encoding='utf-8') as f:
         actual = load(f)
-    unlink(actual_json_output)
+    #unlink(actual_json_output)
 
     with open(expected_json_output, encoding='utf-8') as f:
         expected = load(f)
@@ -350,6 +350,8 @@ def test_json_response_generation(xls_input, expected_response_file):
                 {'metric-type': 'path_bandwidth', 'accumulative-value': 60000000000.0}]
             # test should be OK now
         else:
+            #print(expected['response'][i]['path-properties']['path-metric'])
+            #print(response['path-properties']['path-metric'])
             assert compare_response(expected['response'][i], response)
             print(f'response {response["response-id"]} is not correct')
 
@@ -377,9 +379,9 @@ def test_json_response_generation(xls_input, expected_response_file):
     ('trx Lannion_CAS', 'trx Lorient_KMA', 'Ploermel | Vannes_KBE', 'LOOSE',
         ['east edfa in Ploermel to Vannes_KBE', 'roadm Vannes_KBE']),
     ('trx Rennes_STA', 'trx Brest_KLA', 'Vannes_KBE | Quimper | Brest_KLA', 'LOOSE',
-        ['roadm Vannes_KBE', 'Edfa0_fiber (Lorient_KMA → Quimper)-', 'roadm Brest_KLA']),
+        ['roadm Vannes_KBE', 'west edfa in Quimper to Lorient_KMA', 'roadm Brest_KLA']),
     ('trx Brest_KLA', 'trx Rennes_STA', 'Brest_KLA | Quimper | Lorient_KMA', 'LOOSE',
-        ['roadm Brest_KLA', 'Edfa0_fiber (Brest_KLA → Quimper)-', 'roadm Lorient_KMA']),
+        ['roadm Brest_KLA', 'east edfa in Quimper to Lorient_KMA', 'roadm Lorient_KMA']),
     ('Brest_KLA', 'trx Rennes_STA', '', 'LOOSE', 'Fail'),
     ('trx Brest_KLA', 'Rennes_STA', '', 'LOOSE', 'Fail'),
     ('Brest_KLA', 'Rennes_STA', '', 'LOOSE', 'Fail'),
