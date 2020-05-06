@@ -16,6 +16,24 @@
       "revId": "9a54dbab43cb485162bb526857210eea7c5cd3f4",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40a00cd8_84c6314b",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-06T09:12:40Z",
+      "side": 0,
+      "message": "Highlighting via @username does not work here, one has to explicitly add people to the list of reviewers (when replying, it\u0027s the first line in the reply dialog).\n\nTo be honest, I don\u0027t think there\u0027s much value in this test. It never executed AFAICT, and the code contained no comparisons. But feel free to propose a followup change if there\u0027s something valuable in here that I\u0027m missing.",
+      "parentUuid": "cf7d9f9d_d27e71dc",
+      "revId": "9a54dbab43cb485162bb526857210eea7c5cd3f4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
