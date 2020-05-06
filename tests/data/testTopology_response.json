@@ -79,8 +79,8 @@
             "path-route-object": {
               "index": 5,
               "num-unnum-hop": {
-                "node-id": "Edfa1_roadm Lorient_KMA",
-                "link-tp-id": "Edfa1_roadm Lorient_KMA"
+                "node-id": "east edfa in Lorient_KMA to Vannes_KBE",
+                "link-tp-id": "east edfa in Lorient_KMA to Vannes_KBE"
               }
             }
           },
@@ -115,8 +115,8 @@
             "path-route-object": {
               "index": 9,
               "num-unnum-hop": {
-                "node-id": "Edfa0_fiber (Lorient_KMA → Vannes_KBE)-F055",
-                "link-tp-id": "Edfa0_fiber (Lorient_KMA → Vannes_KBE)-F055"
+                "node-id": "west edfa in Vannes_KBE to Lorient_KMA",
+                "link-tp-id": "west edfa in Vannes_KBE to Lorient_KMA"
               }
             }
           },
@@ -256,8 +256,8 @@
             "path-route-object": {
               "index": 5,
               "num-unnum-hop": {
-                "node-id": "Edfa0_roadm Brest_KLA",
-                "link-tp-id": "Edfa0_roadm Brest_KLA"
+                "node-id": "east edfa in Brest_KLA to Morlaix",
+                "link-tp-id": "east edfa in Brest_KLA to Morlaix"
               }
             }
           },
@@ -472,8 +472,8 @@
             "path-route-object": {
               "index": 29,
               "num-unnum-hop": {
-                "node-id": "Edfa0_fiber (Loudeac → Lorient_KMA)-F054",
-                "link-tp-id": "Edfa0_fiber (Loudeac → Lorient_KMA)-F054"
+                "node-id": "west edfa in Lorient_KMA to Loudeac",
+                "link-tp-id": "west edfa in Lorient_KMA to Loudeac"
               }
             }
           },
@@ -508,8 +508,8 @@
             "path-route-object": {
               "index": 33,
               "num-unnum-hop": {
-                "node-id": "Edfa1_roadm Lorient_KMA",
-                "link-tp-id": "Edfa1_roadm Lorient_KMA"
+                "node-id": "east edfa in Lorient_KMA to Vannes_KBE",
+                "link-tp-id": "east edfa in Lorient_KMA to Vannes_KBE"
               }
             }
           },
@@ -544,8 +544,8 @@
             "path-route-object": {
               "index": 37,
               "num-unnum-hop": {
-                "node-id": "Edfa0_fiber (Lorient_KMA → Vannes_KBE)-F055",
-                "link-tp-id": "Edfa0_fiber (Lorient_KMA → Vannes_KBE)-F055"
+                "node-id": "west edfa in Vannes_KBE to Lorient_KMA",
+                "link-tp-id": "west edfa in Vannes_KBE to Lorient_KMA"
               }
             }
           },
@@ -757,8 +757,8 @@
             "path-route-object": {
               "index": 13,
               "num-unnum-hop": {
-                "node-id": "Edfa0_fiber (Stbrieuc → Rennes_STA)-F057",
-                "link-tp-id": "Edfa0_fiber (Stbrieuc → Rennes_STA)-F057"
+                "node-id": "west edfa in Rennes_STA to Stbrieuc",
+                "link-tp-id": "west edfa in Rennes_STA to Stbrieuc"
               }
             }
           },
@@ -898,8 +898,8 @@
             "path-route-object": {
               "index": 5,
               "num-unnum-hop": {
-                "node-id": "Edfa1_roadm Rennes_STA",
-                "link-tp-id": "Edfa1_roadm Rennes_STA"
+                "node-id": "east edfa in Rennes_STA to Ploermel",
+                "link-tp-id": "east edfa in Rennes_STA to Ploermel"
               }
             }
           },
@@ -970,8 +970,8 @@
             "path-route-object": {
               "index": 13,
               "num-unnum-hop": {
-                "node-id": "Edfa0_fiber (Ploermel → Vannes_KBE)-",
-                "link-tp-id": "Edfa0_fiber (Ploermel → Vannes_KBE)-"
+                "node-id": "west edfa in Vannes_KBE to Ploermel",
+                "link-tp-id": "west edfa in Vannes_KBE to Ploermel"
               }
             }
           },
@@ -1006,8 +1006,8 @@
             "path-route-object": {
               "index": 17,
               "num-unnum-hop": {
-                "node-id": "Edfa0_roadm Vannes_KBE",
-                "link-tp-id": "Edfa0_roadm Vannes_KBE"
+                "node-id": "east edfa in Vannes_KBE to Lorient_KMA",
+                "link-tp-id": "east edfa in Vannes_KBE to Lorient_KMA"
               }
             }
           },
@@ -1042,8 +1042,8 @@
             "path-route-object": {
               "index": 21,
               "num-unnum-hop": {
-                "node-id": "Edfa0_fiber (Vannes_KBE → Lorient_KMA)-F055",
-                "link-tp-id": "Edfa0_fiber (Vannes_KBE → Lorient_KMA)-F055"
+                "node-id": "west edfa in Lorient_KMA to Vannes_KBE",
+                "link-tp-id": "west edfa in Lorient_KMA to Vannes_KBE"
               }
             }
           },
@@ -1078,8 +1078,8 @@
             "path-route-object": {
               "index": 25,
               "num-unnum-hop": {
-                "node-id": "Edfa0_roadm Lorient_KMA",
-                "link-tp-id": "Edfa0_roadm Lorient_KMA"
+                "node-id": "east edfa in Lorient_KMA to Loudeac",
+                "link-tp-id": "east edfa in Lorient_KMA to Loudeac"
               }
             }
           },
@@ -1327,8 +1327,8 @@
             "path-route-object": {
               "index": 5,
               "num-unnum-hop": {
-                "node-id": "Edfa0_roadm Rennes_STA",
-                "link-tp-id": "Edfa0_roadm Rennes_STA"
+                "node-id": "east edfa in Rennes_STA to Stbrieuc",
+                "link-tp-id": "east edfa in Rennes_STA to Stbrieuc"
               }
             }
           },
@@ -1363,8 +1363,8 @@
             "path-route-object": {
               "index": 9,
               "num-unnum-hop": {
-                "node-id": "Edfa0_fiber (Rennes_STA → Stbrieuc)-F057",
-                "link-tp-id": "Edfa0_fiber (Rennes_STA → Stbrieuc)-F057"
+                "node-id": "west edfa in Stbrieuc to Rennes_STA",
+                "link-tp-id": "west edfa in Stbrieuc to Rennes_STA"
               }
             }
           },
@@ -1399,8 +1399,8 @@
             "path-route-object": {
               "index": 13,
               "num-unnum-hop": {
-                "node-id": "Edfa0_fiber (Stbrieuc → Lannion_CAS)-F056",
-                "link-tp-id": "Edfa0_fiber (Stbrieuc → Lannion_CAS)-F056"
+                "node-id": "west edfa in Lannion_CAS to Stbrieuc",
+                "link-tp-id": "west edfa in Lannion_CAS to Stbrieuc"
               }
             }
           },
