@@ -95,7 +95,7 @@ class Link(object):
         'east_con_out': None,
         'east_pmd': 0.1,
         'east_cable': ''
-    }
+                     }
 
 
 class Eqpt(object):
@@ -122,6 +122,25 @@ class Eqpt(object):
         'east_tilt': 0,
         'east_att_out': None
     }
+
+
+class Roadm(object):
+    def __init__(self, **kwargs):
+        super(Roadm, self).__init__()
+        self.update_attr(kwargs)
+
+    def update_attr(self, kwargs):
+        clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
+        for k, v in self.default_values.items():
+            v = clean_kwargs.get(k, v)
+            setattr(self, k, v)
+
+    default_values = \
+        {
+            'from_node':        '',
+            'to_node':          '',
+            'target_pch_out_db':    None
+        }
 
 
 def read_header(my_sheet, line, slice_):
@@ -226,7 +245,7 @@ def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
             # => correct to make it a ROADM and remove entry in links_by_city
             # TODO: put in log rather than print
             print(f'invalid node type ({nodes_by_city[city].node_type})\
- specified in {city}, replaced by ROADM')
+                  specified in {city}, replaced by ROADM')
             nodes_by_city[city].node_type = 'ROADM'
             for n in nodes:
                 if n.city == city:
@@ -234,8 +253,99 @@ def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
     return nodes, links
 
 
+def create_roadm_element(node, roadms_by_city):
+    """ create the json element for a roadm node, including the different cases:
+    - if there are restrictions
+    - if there are per degree target power defined on a direction
+    direction is defined by the booster name, so that booster must also be created in eqpt sheet
+    if the direction is defined in roadm
+    """
+    roadm = {'uid': f'roadm {node.city}'}
+    if node.preamp_restriction != '' or node.booster_restriction != '':
+        roadm['params'] = {
+            'restrictions': {
+               'preamp_variety_list': silent_remove(node.preamp_restriction.split(' | '), ''),
+               'booster_variety_list': silent_remove(node.booster_restriction.split(' | '), '')}
+                          }
+    if node.city in roadms_by_city.keys():
+        if 'params' not in roadm.keys():
+            roadm['params'] = {}
+        roadm['params']['per_degree_params'] = []
+        for elem in roadms_by_city[node.city]:
+            to_node = f'east edfa in {node.city} to {elem.to_node}'
+            if elem.target_pch_out_db is not None:
+                roadm['params']['per_degree_params'].append({'to_node': to_node,
+                                                             'target_pch_out_db': elem.target_pch_out_db})
+    roadm['metadata'] = {'location': {'city':      node.city,
+                                      'region':    node.region,
+                                      'latitude':  node.latitude,
+                                      'longitude': node.longitude}}
+    roadm['type'] = 'Roadm'
+    return roadm
+
+
+def create_east_eqpt_element(node):
+    """ create amplifiers json elements for the east direction.
+    this includes the case where the case of a fused element defined instead of an
+    ILA in eqpt sheet
+    """
+    eqpt = {'uid': f'east edfa in {node.from_city} to {node.to_city}',
+            'metadata': {'location': {'city':      nodes_by_city[node.from_city].city,
+                                      'region':    nodes_by_city[node.from_city].region,
+                                      'latitude':  nodes_by_city[node.from_city].latitude,
+                                      'longitude': nodes_by_city[node.from_city].longitude}}}
+    if node.east_amp_type.lower() != '' and node.east_amp_type.lower() != 'fused':
+        eqpt['type'] = 'Edfa'
+        eqpt['type_variety'] = f'{node.east_amp_type}'
+        eqpt['operational'] = {'gain_target': node.east_amp_gain,
+                               'delta_p':     node.east_amp_dp,
+                               'tilt_target': node.east_tilt,
+                               'out_voa':     node.east_att_out}
+    elif node.east_amp_type.lower() == '':
+        eqpt['type'] = 'Edfa'
+        eqpt['operational'] = {'gain_target': node.east_amp_gain,
+                               'delta_p':     node.east_amp_dp,
+                               'tilt_target': node.east_tilt,
+                               'out_voa':     node.east_att_out}
+    elif node.east_amp_type.lower() == 'fused':
+        # fused edfa variety is a hack to indicate that there should not be
+        # booster amplifier out the roadm.
+        # If user specifies ILA in Nodes sheet and fused in Eqpt sheet, then assumes that
+        # this is a fused nodes.
+        eqpt['type'] = 'Fused'
+        eqpt['params'] = {'loss': 0}
+    return eqpt
+
+
+def create_west_eqpt_element(node):
+    """ create amplifiers json elements for the west direction.
+    this includes the case where the case of a fused element defined instead of an
+    ILA in eqpt sheet
+    """
+    eqpt = {'uid': f'west edfa in {node.from_city} to {node.to_city}',
+            'metadata': {'location': {'city':      nodes_by_city[node.from_city].city,
+                                      'region':    nodes_by_city[node.from_city].region,
+                                      'latitude':  nodes_by_city[node.from_city].latitude,
+                                      'longitude': nodes_by_city[node.from_city].longitude}},
+            'type': 'Edfa'}
+    if node.west_amp_type.lower() != '' and node.west_amp_type.lower() != 'fused':
+        eqpt['type_variety'] = f'{node.west_amp_type}'
+        eqpt['operational'] = {'gain_target': node.west_amp_gain,
+                               'delta_p':     node.west_amp_dp,
+                               'tilt_target': node.west_tilt,
+                               'out_voa':     node.west_att_out}
+    elif node.west_amp_type.lower() == '':
+        eqpt['operational'] = {'gain_target': node.west_amp_gain,
+                               'delta_p':     node.west_amp_dp,
+                               'tilt_target': node.west_tilt,
+                               'out_voa':     node.west_att_out}
+    elif node.west_amp_type.lower() == 'fused':
+        eqpt['type'] = 'Fused'
+        eqpt['params'] = {'loss': 0}
+    return eqpt
+
 def xls_to_json_data(input_filename, filter_region=[]):
-    nodes, links, eqpts = parse_excel(input_filename)
+    nodes, links, eqpts, roadms = parse_excel(input_filename)
     if filter_region:
         nodes = [n for n in nodes if n.region.lower() in filter_region]
         cities = {n.city for n in nodes}
@@ -258,6 +368,10 @@ def xls_to_json_data(input_filename, filter_region=[]):
     for eqpt in eqpts:
         eqpts_by_city[eqpt.from_city].append(eqpt)
 
+    roadms_by_city = defaultdict(list)
+    for roadm in roadms:
+        roadms_by_city[roadm.from_node].append(roadm)
+
     nodes, links = sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city)
 
     return {
@@ -269,28 +383,8 @@ def xls_to_json_data(input_filename, filter_region=[]):
                                         'longitude': x.longitude}},
               'type': 'Transceiver'}
              for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'] +
-            [{'uid': f'roadm {x.city}',
-              'metadata': {'location': {'city': x.city,
-                                        'region': x.region,
-                                        'latitude': x.latitude,
-                                        'longitude': x.longitude}},
-              'type': 'Roadm'}
-             for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'
-             and x.booster_restriction == '' and x.preamp_restriction == ''] +
-            [{'uid': f'roadm {x.city}',
-              'params': {
-                  'restrictions': {
-                      'preamp_variety_list': silent_remove(x.preamp_restriction.split(' | '), ''),
-                      'booster_variety_list': silent_remove(x.booster_restriction.split(' | '), '')
-                  }
-              },
-              'metadata': {'location': {'city': x.city,
-                                        'region': x.region,
-                                        'latitude': x.latitude,
-                                        'longitude': x.longitude}},
-              'type': 'Roadm'}
-             for x in nodes_by_city.values() if x.node_type.lower() == 'roadm' and
-             (x.booster_restriction != '' or x.preamp_restriction != '')] +
+            [create_roadm_element(x, roadms_by_city)
+             for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'] +
             [{'uid': f'west fused spans in {x.city}',
               'metadata': {'location': {'city': x.city,
                                         'region': x.region,
@@ -325,60 +419,12 @@ def xls_to_json_data(input_filename, filter_region=[]):
               'params': {'length': round(x.west_distance, 3),
                          'length_units': x.distance_units,
                          'loss_coef': x.west_lineic,
-                         'con_in': x.west_con_in,
-                         'con_out': x.west_con_out}
-              }  # missing ILA construction
-             for x in links] +
-            [{'uid': f'east edfa in {e.from_city} to {e.to_city}',
-              'metadata': {'location': {'city': nodes_by_city[e.from_city].city,
-                                        'region': nodes_by_city[e.from_city].region,
-                                        'latitude': nodes_by_city[e.from_city].latitude,
-                                        'longitude': nodes_by_city[e.from_city].longitude}},
-              'type': 'Edfa',
-              'type_variety': e.east_amp_type,
-              'operational': {'gain_target': e.east_amp_gain,
-                              'delta_p': e.east_amp_dp,
-                              'tilt_target': e.east_tilt,
-                              'out_voa': e.east_att_out}
-              }
-             for e in eqpts if (e.east_amp_type.lower() != '' and \
-                                e.east_amp_type.lower() != 'fused')] +
-            [{'uid': f'west edfa in {e.from_city} to {e.to_city}',
-              'metadata': {'location': {'city': nodes_by_city[e.from_city].city,
-                                        'region': nodes_by_city[e.from_city].region,
-                                        'latitude': nodes_by_city[e.from_city].latitude,
-                                        'longitude': nodes_by_city[e.from_city].longitude}},
-              'type': 'Edfa',
-              'type_variety': e.west_amp_type,
-              'operational': {'gain_target': e.west_amp_gain,
-                              'delta_p': e.west_amp_dp,
-                              'tilt_target': e.west_tilt,
-                              'out_voa': e.west_att_out}
-              }
-             for e in eqpts if (e.west_amp_type.lower() != '' and \
-                                e.west_amp_type.lower() != 'fused')] +
-            # fused edfa variety is a hack to indicate that there should not be
-            # booster amplifier out the roadm.
-            # If user specifies ILA in Nodes sheet and fused in Eqpt sheet, then assumes that
-            # this is a fused nodes.
-            [{'uid': f'east edfa in {e.from_city} to {e.to_city}',
-              'metadata': {'location': {'city': nodes_by_city[e.from_city].city,
-                                        'region': nodes_by_city[e.from_city].region,
-                                        'latitude': nodes_by_city[e.from_city].latitude,
-                                        'longitude': nodes_by_city[e.from_city].longitude}},
-              'type': 'Fused',
-              'params': {'loss': 0}
-              }
-             for e in eqpts if e.east_amp_type.lower() == 'fused'] +
-            [{'uid': f'west edfa in {e.from_city} to {e.to_city}',
-              'metadata': {'location': {'city': nodes_by_city[e.from_city].city,
-                                        'region': nodes_by_city[e.from_city].region,
-                                        'latitude': nodes_by_city[e.from_city].latitude,
-                                        'longitude': nodes_by_city[e.from_city].longitude}},
-              'type': 'Fused',
-              'params': {'loss': 0}
-              }
-             for e in eqpts if e.west_amp_type.lower() == 'fused'],
+                         'con_in':x.west_con_in,
+                         'con_out':x.west_con_out}
+            } # missing ILA construction
+              for x in links] +
+            [create_east_eqpt_element(e) for e in eqpts] +
+            [create_west_eqpt_element(e) for e in eqpts],
         'connections':
             list(chain.from_iterable([eqpt_connection_by_city(n.city)
                                       for n in nodes]))
@@ -399,6 +445,7 @@ def convert_file(input_filename, filter_region=[], output_json_file_name=None):
         output_json_file_name = input_filename.with_suffix('.json')
     with open(output_json_file_name, 'w', encoding='utf-8') as edfa_json_file:
         edfa_json_file.write(dumps(data, indent=2, ensure_ascii=False))
+        edfa_json_file.write('\n')   # add end of file newline because json dumps does not.
     return output_json_file_name
 
 
@@ -407,7 +454,7 @@ def corresp_names(input_filename, network):
         and names used in the json, and created by the autodesign.
         All names are listed
     """
-    nodes, links, eqpts = parse_excel(input_filename)
+    nodes, links, eqpts, roadms = parse_excel(input_filename)
     fused = [n.uid for n in network.nodes() if isinstance(n, Fused)]
     ila = [n.uid for n in network.nodes() if isinstance(n, Edfa)]
 
@@ -435,17 +482,15 @@ def corresp_names(input_filename, network):
     # build corresp ila based on eqpt sheet
     # start with east direction
     corresp_ila = {e.from_city: [f'east edfa in {e.from_city} to {e.to_city}']
-                   for e in eqpts if e.east_amp_type.lower() != '' and
-                   f'east edfa in {e.from_city} to {e.to_city}' in ila}
+                   for e in eqpts if f'east edfa in {e.from_city} to {e.to_city}' in ila}
     # west direction, append name or create a new item in dict
     for my_e in eqpts:
-        if my_e.west_amp_type.lower() != '':
-            name = f'west edfa in {my_e.from_city} to {my_e.to_city}'
-            if name in ila:
-                if my_e.from_city in corresp_ila.keys():
-                    corresp_ila[my_e.from_city].append(name)
-                else:
-                    corresp_ila[my_e.from_city] = [name]
+        name = f'west edfa in {my_e.from_city} to {my_e.to_city}'
+        if name in ila:
+            if my_e.from_city in corresp_ila.keys():
+                corresp_ila[my_e.from_city].append(name)
+            else:
+                corresp_ila[my_e.from_city] = [name]
     # complete with potential autodesign names: amplifiers
     for my_l in links:
         name = f'Edfa0_fiber ({my_l.to_city} \u2192 {my_l.from_city})-{my_l.west_cable}'
@@ -466,7 +511,6 @@ def corresp_names(input_filename, network):
                 corresp_ila[my_l.to_city].append(name)
             else:
                 corresp_ila[my_l.to_city] = [name]
-
     # merge fused with ila:
     for key, val in corresp_fused.items():
         if key in corresp_ila.keys():
@@ -531,6 +575,10 @@ def parse_excel(input_filename):
             'att_out': 'west_att_out'
         }
     }
+    roadm_headers = {'Node A': 'from_node',
+                     'Node Z': 'to_node',
+                     'per degree target power (dBm)': 'target_pch_out_db'
+                    }
 
     with open_workbook(input_filename) as wb:
         nodes_sheet = wb.sheet_by_name('Nodes')
@@ -540,6 +588,11 @@ def parse_excel(input_filename):
         except Exception:
             # eqpt_sheet is optional
             eqpt_sheet = None
+        try:
+            roadm_sheet = wb.sheet_by_name('Roadms')
+        except Exception:
+            # roadm_sheet is optional
+            roadm_sheet = None
 
         nodes = []
         for node in parse_sheet(nodes_sheet, node_headers, NODES_LINE, NODES_LINE + 1, NODES_COLUMN):
@@ -558,6 +611,11 @@ def parse_excel(input_filename):
             for eqpt in parse_sheet(eqpt_sheet, eqpt_headers, EQPTS_LINE, EQPTS_LINE + 2, EQPTS_COLUMN):
                 eqpts.append(Eqpt(**eqpt))
 
+        roadms = []
+        if roadm_sheet is not None:
+            for roadm in parse_sheet(roadm_sheet, roadm_headers, ROADMS_LINE, ROADMS_LINE+2, ROADMS_COLUMN):
+                roadms.append(Roadm(**roadm))
+
     # sanity check
     all_cities = Counter(n.city for n in nodes)
     if len(all_cities) != len(nodes):
@@ -569,7 +627,7 @@ def parse_excel(input_filename):
     if bad_links:
         raise NetworkTopologyError(f'Bad link(s): {bad_links}.')
 
-    return nodes, links, eqpts
+    return nodes, links, eqpts, roadms
 
 
 def eqpt_connection_by_city(city_name):
@@ -615,14 +673,13 @@ def eqpt_in_city_to_city(in_city, to_city, direction='east'):
     if in_city in eqpts_by_city:
         for e in eqpts_by_city[in_city]:
             if nodes_by_city[in_city].node_type.lower() == 'roadm':
-                if e.to_city == to_city and getattr(e, amp_direction) != '':
+                if e.to_city == to_city:
                     return_eqpt = f'{direction} edfa in {e.from_city} to {e.to_city}'
             elif nodes_by_city[in_city].node_type.lower() == 'ila':
                 if e.to_city != to_city:
                     direction = rev_direction
                     amp_direction = amp_rev_direction
-                if getattr(e, amp_direction) != '':
-                    return_eqpt = f'{direction} edfa in {e.from_city} to {e.to_city}'
+                return_eqpt = f'{direction} edfa in {e.from_city} to {e.to_city}'
     if nodes_by_city[in_city].node_type.lower() == 'fused':
         return_eqpt = f'{direction} fused spans in {in_city}'
     return return_eqpt
@@ -729,6 +786,8 @@ LINKS_COLUMN = 16
 LINKS_LINE = 3
 EQPTS_LINE = 3
 EQPTS_COLUMN = 14
+ROADMS_LINE = 3
+ROADMS_COLUMN = 3
 
 
 def _do_convert():
