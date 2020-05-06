@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cf7d9f9d_d27e71dc",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-05-06T07:24:35Z",
+      "side": 0,
+      "message": "this piece of code looks like a test. Could be nice to create such a test , no ? @alessio?",
+      "revId": "9a54dbab43cb485162bb526857210eea7c5cd3f4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
