@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "24023d29_789a246f",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-05-06T18:13:31Z",
+      "side": 1,
+      "message": "So far the assumption with the call functions of all elements in GNPy has been that they take in spectral info and return spectral info (and nothing else). This breaks that assumption. It makes propagation more complicated. I seems to me that if we want to support per degree parameters it would be better to define a degree as a standalone element.",
+      "revId": "09fa9bcc4fd06a2135884a77ed042ad9c8dcd0df",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
