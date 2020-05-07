@@ -59,6 +59,24 @@
     },
     {
       "key": {
+        "uuid": "a185ffcb_221b3b4a",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2020-05-07T10:15:31Z",
+      "side": 1,
+      "message": "Being a new feature for Raman computation, we decide during the calls to introduce this feature in this way. Surely, ones the code is made steady, we might prosecute collapsing the Raman computation in a unique object.",
+      "parentUuid": "295960c8_791165a8",
+      "revId": "b42daa25e16e8d2d3fde9475aff04bca90a46a32",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b2adb64b_205443fb",
         "filename": "gnpy/core/equipment.py",
         "patchSetId": 5
