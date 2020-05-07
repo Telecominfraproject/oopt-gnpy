@@ -16,6 +16,24 @@
       "revId": "09fa9bcc4fd06a2135884a77ed042ad9c8dcd0df",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "82527bc7_c7e7b600",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-05-07T07:46:14Z",
+      "side": 1,
+      "message": "I understand your concern and this makes sense to me. \nthe advantage would be to keep the call function as it is. \nthe drawback is that it adds many elements (a 3 degree roadm should then be made of as many elements as ingress egress degree (6) and add/drop ports (2 or more if many add/drop blocks) + their interconnexion).\nThis is more or less what we did for the demo to represent cesnet ROADM, and we still had to introduce this change because of the different target powers between degrees and stages.\ndid you find a way to solve that ?\nMaybe we could take some moment to discuss that on the next call ?",
+      "parentUuid": "24023d29_789a246f",
+      "revId": "09fa9bcc4fd06a2135884a77ed042ad9c8dcd0df",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
