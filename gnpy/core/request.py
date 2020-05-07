@@ -39,9 +39,11 @@ RequestParams = namedtuple('RequestParams', 'request_id source destination bidir
 DisjunctionParams = namedtuple('DisjunctionParams', 'disjunction_id relaxable link' +
                                '_diverse node_diverse disjunctions_req')
 
+
 class Path_request:
     """ the class that contains all attributes related to a request
     """
+
     def __init__(self, *args, **params):
         params = RequestParams(**params)
         self.request_id = params.request_id
@@ -71,6 +73,7 @@ class Path_request:
         return '\n\t'.join([f'{type(self).__name__} {self.request_id}',
                             f'source:       {self.source}',
                             f'destination:  {self.destination}'])
+
     def __repr__(self):
         if self.baud_rate is not None:
             temp = self.baud_rate * 1e-9
@@ -93,9 +96,12 @@ class Path_request:
                             f'nodes-list:\t{self.nodes_list}',
                             f'loose-list:\t{self.loose_list}'
                             '\n'])
+
+
 class Disjunction:
     """ the class that contains all attributes related to disjunction constraints
     """
+
     def __init__(self, *args, **params):
         params = DisjunctionParams(**params)
         self.disjunction_id = params.disjunction_id
@@ -109,6 +115,7 @@ class Disjunction:
                             f'link-diverse:  {self.link_diverse}',
                             f'node-diverse:  {self.node_diverse}',
                             f'request-id-numbers: {self.disjunctions_req}'])
+
     def __repr__(self):
         return '\n\t'.join([f'{type(self).__name__} {self.disjunction_id}',
                             f'relaxable:    {self.relaxable}',
@@ -117,11 +124,13 @@ class Disjunction:
                             f'request-id-numbers: {self.disjunctions_req}'
                             '\n'])
 
-BLOCKING_NOPATH = ['NO_PATH', 'NO_PATH_WITH_CONSTRAINT',\
-                   'NO_FEASIBLE_BAUDRATE_WITH_SPACING',\
+
+BLOCKING_NOPATH = ['NO_PATH', 'NO_PATH_WITH_CONSTRAINT',
+                   'NO_FEASIBLE_BAUDRATE_WITH_SPACING',
                    'NO_COMPUTED_SNR']
 BLOCKING_NOMODE = ['NO_FEASIBLE_MODE', 'MODE_NOT_FEASIBLE']
 BLOCKING_NOSPECTRUM = 'NO_SPECTRUM'
+
 
 class Result_element(Element):
     def __init__(self, path_request, computed_path, reversed_computed_path=None):
@@ -146,9 +155,9 @@ class Result_element(Element):
                         'node-id': element.uid,
                         'link-tp-id': element.uid,
                         # TODO change index in order to insert transponder attribute
-                        }
                     }
                 }
+            }
             pro_list.append(temp)
             index += 1
             if self.path_request.M > 0:
@@ -158,9 +167,9 @@ class Result_element(Element):
                         "label-hop": {
                             "N": self.path_request.N,
                             "M": self.path_request.M
-                            },
-                        }
+                        },
                     }
+                }
                 pro_list.append(temp)
                 index += 1
             elif self.path_request.M == 0 and hasattr(self.path_request, 'blocking_reason'):
@@ -173,15 +182,16 @@ class Result_element(Element):
                 temp = {
                     'path-route-object': {
                         'index': index,
-                        'transponder' : {
-                           'transponder-type' : self.path_request.tsp,
-                           'transponder-mode' : self.path_request.tsp_mode
-                            }
+                        'transponder': {
+                            'transponder-type': self.path_request.tsp,
+                            'transponder-mode': self.path_request.tsp_mode
                         }
                     }
+                }
                 pro_list.append(temp)
                 index += 1
         return pro_list
+
     @property
     def path_properties(self):
         """ a function that returns the path properties (metrics, crossed elements) into a dict
@@ -214,18 +224,18 @@ class Result_element(Element):
                     'metric-type': 'path_bandwidth',
                     'accumulative-value': req.path_bandwidth
                 }
-                ]
+            ]
         if self.path_request.bidir:
             path_properties = {
                 'path-metric': path_metric(self.computed_path, self.path_request),
                 'z-a-path-metric': path_metric(self.reversed_computed_path, self.path_request),
                 'path-route-objects': self.detailed_path_json
-                }
+            }
         else:
             path_properties = {
                 'path-metric': path_metric(self.computed_path, self.path_request),
                 'path-route-objects': self.detailed_path_json
-                }
+            }
         return path_properties
 
     @property
@@ -238,8 +248,8 @@ class Result_element(Element):
                     'response-id': self.path_id,
                     'no-path': {
                         'no-path': self.path_request.blocking_reason
-                        }
                     }
+                }
                 return response
             else:
                 response = {
@@ -247,19 +257,20 @@ class Result_element(Element):
                     'no-path': {
                         'no-path': self.path_request.blocking_reason,
                         'path-properties': self.path_properties
-                        }
                     }
+                }
                 return response
         except AttributeError:
             response = {
                 'response-id': self.path_id,
                 'path-properties': self.path_properties
-                }
+            }
             return response
 
     @property
     def json(self):
         return self.pathresult
+
 
 def compute_constrained_path(network, req):
     trx = [n for n in network.nodes() if isinstance(n, Transceiver)]
@@ -282,14 +293,14 @@ def compute_constrained_path(network, req):
         # only arrive here if there is a bug in the program because route lists have
         # been corrected and harmonized before
         msg = f'Request {req.request_id} problem in the constitution of nodes_list: ' +\
-              'should at least include destination'
+            'should at least include destination'
         LOGGER.critical(msg)
         raise ValueError(msg)
     if req.nodes_list[-1] != req.destination:
         # only arrive here if there is a bug in the program because route lists have
         # been corrected and harmonized before
-        msg = f'Request {req.request_id} malformed list of nodes: last node should '+\
-              'be destination trx'
+        msg = f'Request {req.request_id} malformed list of nodes: last node should ' +\
+            'be destination trx'
         LOGGER.critical(msg)
         raise ValueError()
 
@@ -305,7 +316,7 @@ def compute_constrained_path(network, req):
         #     s = e
     except NetworkXNoPath:
         msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path from' +\
-              f' {source.uid} to node: {destination.uid} in network topology' + '\x1b[0m'
+            f' {source.uid} to node: {destination.uid} in network topology' + '\x1b[0m'
         LOGGER.critical(msg)
         print(msg)
         req.blocking_reason = 'NO_PATH'
@@ -323,8 +334,8 @@ def compute_constrained_path(network, req):
         # select the shortest path (in nb of hops) -> changed to shortest path in km length
         if len(candidate) > 0:
             # candidate.sort(key=lambda x: len(x))
-            candidate.sort(key=lambda x: sum(network.get_edge_data(x[i], x[i+1])['weight']\
-                                         for i in range(len(x)-2)))
+            candidate.sort(key=lambda x: sum(network.get_edge_data(x[i], x[i+1])['weight']
+                                             for i in range(len(x)-2)))
             total_path = candidate[0]
         else:
             # TODO: better account for individual loose and strict node
@@ -334,18 +345,18 @@ def compute_constrained_path(network, req):
             # a path w/o constraints, else there is no possible path
 
             # no candidate can be found with the constraints
-            print(f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing ' +\
-                  f'{[el.uid for el in nodes_list[:-1]]} in network topology'+ '\x1b[0m')
+            print(f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing ' +
+                  f'{[el.uid for el in nodes_list[:-1]]} in network topology' + '\x1b[0m')
 
             if 'STRICT' not in req.loose_list[:-1]:
                 msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path with user_' +\
-                      f'include node constraints' + '\x1b[0m'
+                    f'include node constraints' + '\x1b[0m'
                 LOGGER.info(msg)
                 print(f'constraint ignored')
             else:
                 # one STRICT makes the whole list STRICT
                 msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path with user ' +\
-                      f'include node constraints.\nNo path computed'+ '\x1b[0m'
+                    f'include node constraints.\nNo path computed' + '\x1b[0m'
                 LOGGER.critical(msg)
                 print(msg)
                 req.blocking_reason = 'NO_PATH_WITH_CONSTRAINT'
@@ -380,6 +391,7 @@ def compute_constrained_path(network, req):
 
     return total_path
 
+
 def propagate(path, req, equipment):
     si = create_input_spectral_information(
         req.f_min, req.f_max, req.roll_off, req.baud_rate,
@@ -389,6 +401,7 @@ def propagate(path, req, equipment):
     path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
     return path
 
+
 def propagate2(path, req, equipment):
     si = create_input_spectral_information(
         req.f_min, req.f_max, req.roll_off, req.baud_rate,
@@ -396,10 +409,11 @@ def propagate2(path, req, equipment):
     infos = {}
     for el in path:
         before_si = si
-        after_si  = si = el(si)
+        after_si = si = el(si)
         infos[el] = before_si, after_si
     path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
     return infos
+
 
 def propagate_and_optimize_mode(path, req, equipment):
     # if mode is unknown : loops on the modes starting from the highest baudrate fiting in the
@@ -423,8 +437,8 @@ def propagate_and_optimize_mode(path, req, equipment):
             # TODO: the case of roll of is not included: for now use SI one
             # TODO: if the loop in mode optimization does not have a feasible path, then bugs
             spc_info = create_input_spectral_information(req.f_min, req.f_max,
-                                                   equipment['SI']['default'].roll_off,
-                                                   this_br, req.power, req.spacing)
+                                                         equipment['SI']['default'].roll_off,
+                                                         this_br, req.power, req.spacing)
             for el in path:
                 spc_info = el(spc_info)
             for this_mode in modes_to_explore:
@@ -455,23 +469,25 @@ def propagate_and_optimize_mode(path, req, equipment):
         req.blocking_reason = 'NO_FEASIBLE_BAUDRATE_WITH_SPACING'
         return [], None
 
+
 def jsontopath_metric(path_metric):
     """ a functions that reads resulting metric  from json string
     """
     output_snr = next(e['accumulative-value']
-        for e in path_metric if e['metric-type'] == 'SNR-0.1nm')
+                      for e in path_metric if e['metric-type'] == 'SNR-0.1nm')
     output_snrbandwidth = next(e['accumulative-value']
-        for e in path_metric if e['metric-type'] == 'SNR-bandwidth')
+                               for e in path_metric if e['metric-type'] == 'SNR-bandwidth')
     output_osnr = next(e['accumulative-value']
-        for e in path_metric if e['metric-type'] == 'OSNR-0.1nm')
+                       for e in path_metric if e['metric-type'] == 'OSNR-0.1nm')
     # ouput osnr@bandwidth is not used
     # output_osnrbandwidth = next(e['accumulative-value']
     #     for e in path_metric if e['metric-type'] == 'OSNR-bandwidth')
     power = next(e['accumulative-value']
-        for e in path_metric if e['metric-type'] == 'reference_power')
+                 for e in path_metric if e['metric-type'] == 'reference_power')
     path_bandwidth = next(e['accumulative-value']
-        for e in path_metric if e['metric-type'] == 'path_bandwidth')
+                          for e in path_metric if e['metric-type'] == 'path_bandwidth')
     return output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth
+
 
 def jsontoparams(my_p, tsp, mode, equipment):
     """ a function that derives optical params from transponder type and mode
@@ -486,7 +502,7 @@ def jsontoparams(my_p, tsp, mode, equipment):
     temp2 = []
     for elem in my_p['path-properties']['path-route-objects']:
         if 'label-hop' in elem['path-route-object'].keys():
-            temp2.append(f'{elem["path-route-object"]["label-hop"]["N"]}, ' + \
+            temp2.append(f'{elem["path-route-object"]["label-hop"]["N"]}, ' +
                          f'{elem["path-route-object"]["label-hop"]["M"]}')
     # OrderedDict.fromkeys returns the unique set of strings.
     # TODO: if spectrum changes along the path, we should be able to give the segments
@@ -500,7 +516,7 @@ def jsontoparams(my_p, tsp, mode, equipment):
     if mode is not None:
         [minosnr, baud_rate, bit_rate, cost] = \
             next([m['OSNR'], m['baud_rate'], m['bit_rate'], m['cost']]
-                 for m in equipment['Transceiver'][tsp].mode if  m['format'] == mode)
+                 for m in equipment['Transceiver'][tsp].mode if m['format'] == mode)
     else:
         [minosnr, baud_rate, bit_rate, cost] = ['', '', '', '']
     output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth = \
@@ -509,6 +525,7 @@ def jsontoparams(my_p, tsp, mode, equipment):
     return pth, minosnr, baud_rate, bit_rate, cost, output_snr, \
         output_snrbandwidth, output_osnr, power, path_bandwidth, sptrm
 
+
 def jsontocsv(json_data, equipment, fileout):
     """ reads json path result file in accordance with:
         Yang model for requesting Path Computation
@@ -516,10 +533,10 @@ def jsontocsv(json_data, equipment, fileout):
         and write results in an CSV file
     """
     mywriter = writer(fileout)
-    mywriter.writerow(('response-id', 'source', 'destination', 'path_bandwidth', 'Pass?',\
-                       'nb of tsp pairs', 'total cost', 'transponder-type', 'transponder-mode',\
-                       'OSNR-0.1nm', 'SNR-0.1nm', 'SNR-bandwidth', 'baud rate (Gbaud)',\
-                       'input power (dBm)', 'path', 'spectrum (N,M)', 'reversed path OSNR-0.1nm',\
+    mywriter.writerow(('response-id', 'source', 'destination', 'path_bandwidth', 'Pass?',
+                       'nb of tsp pairs', 'total cost', 'transponder-type', 'transponder-mode',
+                       'OSNR-0.1nm', 'SNR-0.1nm', 'SNR-bandwidth', 'baud rate (Gbaud)',
+                       'input power (dBm)', 'path', 'spectrum (N,M)', 'reversed path OSNR-0.1nm',
                        'reversed path SNR-0.1nm', 'reversed path SNR-bandwidth'))
 
     for pth_el in json_data['response']:
@@ -552,20 +569,17 @@ def jsontocsv(json_data, equipment, fileout):
                 # as spectrum assignment is not performed for blocked demands: there is no label object in the answer
                 # so the hop_attribute with tsp and mode is second object or last object, while id of hop is first and
                 # penultimate
-                source = pth_el['no-path']['path-properties']['path-route-objects'][0]\
-                               ['path-route-object']['num-unnum-hop']['node-id']
-                destination = pth_el['no-path']['path-properties']['path-route-objects'][-2]\
-                                    ['path-route-object']['num-unnum-hop']['node-id']
-                temp_tsp = pth_el['no-path']['path-properties']['path-route-objects'][1]\
-                                 ['path-route-object']['transponder']
+                source = pth_el['no-path']['path-properties']['path-route-objects'][0]['path-route-object']['num-unnum-hop']['node-id']
+                destination = pth_el['no-path']['path-properties']['path-route-objects'][-2]['path-route-object']['num-unnum-hop']['node-id']
+                temp_tsp = pth_el['no-path']['path-properties']['path-route-objects'][1]['path-route-object']['transponder']
                 tsp = temp_tsp['transponder-type']
                 mode = temp_tsp['transponder-mode']
                 isok = pth_el['no-path']['no-path']
                 if pth_el['no-path']['no-path'] in BLOCKING_NOMODE or \
-                       pth_el['no-path']['no-path'] in BLOCKING_NOSPECTRUM:
+                        pth_el['no-path']['no-path'] in BLOCKING_NOSPECTRUM:
                     pth, minosnr, baud_rate, bit_rate, cost, output_snr, output_snrbandwidth, \
                         output_osnr, power, path_bandwidth, sptrm = \
-                            jsontoparams(pth_el['no-path'], tsp, mode, equipment)
+                        jsontoparams(pth_el['no-path'], tsp, mode, equipment)
                     pthbdbw = ''
                     rosnr = round(output_osnr, 2)
                     rsnr = round(output_snr, 2)
@@ -584,13 +598,10 @@ def jsontocsv(json_data, equipment, fileout):
                         revsnrb = ''
         else:
             # when label will be assigned destination will be with index -3, and transponder with index 2
-            source = pth_el['path-properties']['path-route-objects'][0]\
-                           ['path-route-object']['num-unnum-hop']['node-id']
-            destination = pth_el['path-properties']['path-route-objects'][-3]\
-                                ['path-route-object']['num-unnum-hop']['node-id']
+            source = pth_el['path-properties']['path-route-objects'][0]['path-route-object']['num-unnum-hop']['node-id']
+            destination = pth_el['path-properties']['path-route-objects'][-3]['path-route-object']['num-unnum-hop']['node-id']
             # selects only roadm nodes
-            temp_tsp = pth_el['path-properties']['path-route-objects'][2]\
-                       ['path-route-object']['transponder']
+            temp_tsp = pth_el['path-properties']['path-route-objects'][2]['path-route-object']['transponder']
             tsp = temp_tsp['transponder-type']
             mode = temp_tsp['transponder-mode']
 
@@ -599,7 +610,7 @@ def jsontocsv(json_data, equipment, fileout):
             # loading equipment already tests the existence of tsp type and mode:
             pth, minosnr, baud_rate, bit_rate, cost, output_snr, output_snrbandwidth, \
                 output_osnr, power, path_bandwidth, sptrm = \
-                    jsontoparams(pth_el, tsp, mode, equipment)
+                jsontoparams(pth_el, tsp, mode, equipment)
             # this part only works if the request has a blocking_reason atribute, ie if it could not be satisfied
             isok = output_snr >= minosnr
             nb_tsp = ceil(path_bandwidth / bit_rate)
@@ -621,25 +632,26 @@ def jsontocsv(json_data, equipment, fileout):
                 revsnr = ''
                 revsnrb = ''
         mywriter.writerow((path_id,
-            source,
-            destination,
-            pthbdbw,
-            isok,
-            nb_tsp,
-            total_cost,
-            tsp,
-            mode,
-            rosnr,
-            rsnr,
-            rsnrb,
-            brate,
-            pwr,
-            pth,
-            sptrm,
-            revosnr,
-            revsnr,
-            revsnrb
-            ))
+                           source,
+                           destination,
+                           pthbdbw,
+                           isok,
+                           nb_tsp,
+                           total_cost,
+                           tsp,
+                           mode,
+                           rosnr,
+                           rsnr,
+                           rsnrb,
+                           brate,
+                           pwr,
+                           pth,
+                           sptrm,
+                           revosnr,
+                           revsnr,
+                           revsnrb
+                           ))
+
 
 def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     # pathreqlist is a list of Path_request objects
@@ -701,14 +713,15 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     simple_rqs = {}
     simple_rqs_reversed = {}
     for pathreq in pathreqlist_disjt:
-        all_simp_pths = list(all_simple_paths(network,\
-            source=next(el for el in network.nodes() if el.uid == pathreq.source),\
-            target=next(el for el in network.nodes() if el.uid == pathreq.destination),\
-            cutoff=80))
+        all_simp_pths = list(all_simple_paths(network,
+                                              source=next(el for el in network.nodes() if el.uid == pathreq.source),
+                                              target=next(el for el in network.nodes()
+                                                          if el.uid == pathreq.destination),
+                                              cutoff=80))
         # sort them in km length instead of hop
         # all_simp_pths = sorted(all_simp_pths, key=lambda path: len(path))
-        all_simp_pths = sorted(all_simp_pths, key=lambda \
-            x: sum(network.get_edge_data(x[i], x[i+1])['weight'] for i in range(len(x)-2)))
+        all_simp_pths = sorted(all_simp_pths, key=lambda
+                               x: sum(network.get_edge_data(x[i], x[i+1])['weight'] for i in range(len(x)-2)))
         # reversed direction paths required to check disjunction on both direction
         all_simp_pths_reversed = []
         for pth in all_simp_pths:
@@ -718,8 +731,8 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
         for pth in all_simp_pths:
             # build a short list representing each roadm+direction with the first item
             # start enumeration at 1 to avoid Trx in the list
-            short_list = [e.uid for i, e in enumerate(pth[1:-1]) \
-                if isinstance(e, Roadm) | (isinstance(pth[i], Roadm))]
+            short_list = [e.uid for i, e in enumerate(pth[1:-1])
+                          if isinstance(e, Roadm) | (isinstance(pth[i], Roadm))]
             temp.append(short_list)
             # id(short_list) is unique even if path is the same: two objects with same
             # path have two different ids
@@ -729,8 +742,8 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
         for pth in all_simp_pths_reversed:
             # build a short list representing each roadm+direction with the first item
             # start enumeration at 1 to avoid Trx in the list
-            temp.append([e.uid for i, e in enumerate(pth[1:-1]) \
-                if isinstance(e, Roadm) | (isinstance(pth[i], Roadm))])
+            temp.append([e.uid for i, e in enumerate(pth[1:-1])
+                         if isinstance(e, Roadm) | (isinstance(pth[i], Roadm))])
         simple_rqs_reversed[pathreq.request_id] = temp
     # step 2
     # for each set of requests that need to be disjoint
@@ -785,7 +798,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
                     if all_disjoint == 0:
                         temp2.append(pth1)
                         temp.append(temp2)
-                            # print(f' coucou {elem1}: \t{temp}')
+                        # print(f' coucou {elem1}: \t{temp}')
             dpath = temp
         # print(dpath)
         candidates[dis.disjunction_id] = dpath
@@ -802,7 +815,6 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     #                    [p3 p8]]
     #   candidate[s2] = [[p3 p6]]
     #   for rq1 p3 should be preferred
-
 
     for pathreq in pathreqlist_disjt:
         concerned_d_id = [d.disjunction_id for d in disjunctions_list
@@ -854,11 +866,11 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
                             msg = f'removing {sol}'
                             LOGGER.info(msg)
                             testispartok = False
-                            #break
+                            # break
                         else:
                             if 'LOOSE' in allpaths[id(pth)].req.loose_list:
-                                LOGGER.info(f'Could not apply route constraint'+
-                                            f'{allpaths[id(pth)].req.nodes_list} on request' +\
+                                LOGGER.info(f'Could not apply route constraint' +
+                                            f'{allpaths[id(pth)].req.nodes_list} on request' +
                                             f' {allpaths[id(pth)].req.request_id}')
                             else:
                                 LOGGER.info(f'removing last solution from candidate paths\n{sol}')
@@ -903,6 +915,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
             path_res_list.append(pathreslist_disjoint[req])
     return path_res_list
 
+
 def isdisjoint(pth1, pth2):
     """ returns 0 if disjoint
     """
@@ -912,6 +925,7 @@ def isdisjoint(pth1, pth2):
         if edge in edge2:
             return 1
     return 0
+
 
 def find_reversed_path(pth):
     """ select of intermediate roadms and find the path between them
@@ -927,8 +941,8 @@ def find_reversed_path(pth):
     # the OrderedDict.fromkeys function does this. eg
     # pth = [el1_oms1 el2_oms1 el3_oms1 el1_oms2 el2_oms2 el3_oms2]
     # p_oms should be = [oms1 oms2]
-    p_oms = list(OrderedDict.fromkeys(reversed([el.oms.reversed_oms for el in pth \
-                if not isinstance(el, Transceiver) and not isinstance(el, Roadm)])))
+    p_oms = list(OrderedDict.fromkeys(reversed([el.oms.reversed_oms for el in pth
+                                                if not isinstance(el, Transceiver) and not isinstance(el, Roadm)])))
     reversed_path = [pth[-1]]
     for oms in p_oms:
         if oms is not None:
@@ -940,12 +954,13 @@ def find_reversed_path(pth):
             reversed_path = list(OrderedDict.fromkeys(reversed_path))
         else:
             msg = f'Error while handling reversed path {pth[-1].uid} to {pth[0].uid}:' +\
-                  ' can not handle unidir topology. TO DO.'
+                ' can not handle unidir topology. TO DO.'
             LOGGER.critical(msg)
             raise ValueError(msg)
     reversed_path.append(pth[0])
 
     return reversed_path
+
 
 def ispart(ptha, pthb):
     """ the functions takes two paths a and b and retrns True
@@ -962,11 +977,12 @@ def ispart(ptha, pthb):
             return False
     return True
 
+
 def remove_candidate(candidates, allpaths, rqst, pth):
     """ filter duplicate candidates
     """
     # print(f'coucou {rqst.request_id}')
-    for key, candidate  in candidates.items():
+    for key, candidate in candidates.items():
         temp = candidate.copy()
         for sol in candidate:
             for this_p in sol:
@@ -976,6 +992,7 @@ def remove_candidate(candidates, allpaths, rqst, pth):
                         break
         candidates[key] = temp
     return candidates
+
 
 def compare_reqs(req1, req2, disjlist):
     """ compare two requests: returns True or False
@@ -997,25 +1014,26 @@ def compare_reqs(req1, req2, disjlist):
     elif not dis2 and not dis1:
         same_disj = True
 
-    if req1.source     == req2.source and \
-        req1.destination == req2.destination and  \
-        req1.tsp        == req2.tsp and \
-        req1.tsp_mode   == req2.tsp_mode and \
-        req1.baud_rate  == req2.baud_rate and \
-        req1.nodes_list == req2.nodes_list and \
-        req1.loose_list == req2.loose_list and \
-        req1.spacing    == req2.spacing and \
-        req1.power      == req2.power and \
-        req1.nb_channel == req2.nb_channel and \
-        req1.f_min  == req2.f_min and \
-        req1.f_max  == req2.f_max and \
-        req1.format     == req2.format and \
-        req1.OSNR       == req2.OSNR and \
-        req1.roll_off   == req2.roll_off and \
-        same_disj:
+    if req1.source == req2.source and \
+            req1.destination == req2.destination and  \
+            req1.tsp == req2.tsp and \
+            req1.tsp_mode == req2.tsp_mode and \
+            req1.baud_rate == req2.baud_rate and \
+            req1.nodes_list == req2.nodes_list and \
+            req1.loose_list == req2.loose_list and \
+            req1.spacing == req2.spacing and \
+            req1.power == req2.power and \
+            req1.nb_channel == req2.nb_channel and \
+            req1.f_min == req2.f_min and \
+            req1.f_max == req2.f_max and \
+            req1.format == req2.format and \
+            req1.OSNR == req2.OSNR and \
+            req1.roll_off == req2.roll_off and \
+            same_disj:
         return True
     else:
         return False
+
 
 def requests_aggregation(pathreqlist, disjlist):
     """ this function aggregates requests so that if several requests
@@ -1026,7 +1044,7 @@ def requests_aggregation(pathreqlist, disjlist):
     local_list = pathreqlist.copy()
     for req in pathreqlist:
         for this_r in local_list:
-            if  req.request_id != this_r.request_id and compare_reqs(req, this_r, disjlist):
+            if req.request_id != this_r.request_id and compare_reqs(req, this_r, disjlist):
                 # aggregate
                 this_r.path_bandwidth += req.path_bandwidth
                 temp_r_id = this_r.request_id
@@ -1046,7 +1064,6 @@ def requests_aggregation(pathreqlist, disjlist):
     return local_list, disjlist
 
 
-
 def correct_json_route_list(network, pathreqlist):
     """ all names in list should be exact name in the network, and there is no ambiguity
         This function only checks that list is correct, warns user if the name is incorrect and
@@ -1057,13 +1074,13 @@ def correct_json_route_list(network, pathreqlist):
     for pathreq in pathreqlist:
         if pathreq.source not in transponders:
             msg = f'{ansi_escapes.red}Request: {pathreq.request_id}: could not find transponder' +\
-                  f' source : {pathreq.source}.{ansi_escapes.reset}'
+                f' source : {pathreq.source}.{ansi_escapes.reset}'
             LOGGER.critical(msg)
             raise ServiceError(msg)
 
         if pathreq.destination not in transponders:
             msg = f'{ansi_escapes.red}Request: {pathreq.request_id}: could not find transponder' +\
-                  f' destination : {pathreq.destination}.{ansi_escapes.reset}'
+                f' destination : {pathreq.destination}.{ansi_escapes.reset}'
             LOGGER.critical(msg)
             raise ServiceError(msg)
 
@@ -1084,16 +1101,15 @@ def correct_json_route_list(network, pathreqlist):
                     # if it is a loose constraint
                     # warns the user that this node is not part of the topology
                     msg = f'{ansi_escapes.yellow}invalid route node specified:\n\t\'{n_id}\',' +\
-                          f' could not use it as constraint, skipped!{ansi_escapes.reset}'
+                        f' could not use it as constraint, skipped!{ansi_escapes.reset}'
                     print(msg)
                     LOGGER.info(msg)
                     pathreq.loose_list.pop(pathreq.nodes_list.index(n_id))
                     pathreq.nodes_list.remove(n_id)
                 else:
                     msg = f'{ansi_escapes.red}could not find node:\n\t \'{n_id}\' in network' +\
-                          f' topology. Strict constraint can not be applied.{ansi_escapes.reset}'
+                        f' topology. Strict constraint can not be applied.{ansi_escapes.reset}'
                     LOGGER.critical(msg)
                     raise ServiceError(msg)
 
     return pathreqlist
-
