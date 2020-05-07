@@ -18,7 +18,7 @@ from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch
 from gnpy.core.network import load_network, build_network
 from gnpy.core.exceptions import ServiceError
 from examples.path_requests_run import (requests_from_json, load_requests, disjunctions_from_json)
-from gnpy.core.request import (compute_path_dsjctn, isdisjoint, find_reversed_path, Path_request,
+from gnpy.core.request import (compute_path_dsjctn, isdisjoint, find_reversed_path, PathRequest,
                                correct_json_route_list)
 from gnpy.core.utils import lin2db
 from gnpy.core.elements import Roadm
@@ -125,7 +125,7 @@ def create_rq(equipment, srce, dest, bdir, nd_list, ls_list):
     f_max_from_si = params['f_max']
     params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
     params['path_bandwidth'] = 100000000000.0
-    requests_list.append(Path_request(**params))
+    requests_list.append(PathRequest(**params))
     return requests_list
 
 @pytest.mark.parametrize('srce, dest, result, pth, nd_list, ls_list', [

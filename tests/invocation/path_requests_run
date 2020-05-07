@@ -13,7 +13,7 @@
 ]
 [1;34;40mAggregating similar requests[0m
 [1;34;40mThe following services have been requested:[0m
-[Path_request 0
+[PathRequest 0
 	source: 	trx Lorient_KMA
 	destination:	trx Vannes_KBE
 	trx type:	Voyager
@@ -26,7 +26,7 @@
 	path_bandwidth: 	100.0 Gbit/s
 	nodes-list:	[]
 	loose-list:	[]
-, Path_request 1
+, PathRequest 1
 	source: 	trx Brest_KLA
 	destination:	trx Vannes_KBE
 	trx type:	Voyager
@@ -39,7 +39,7 @@
 	path_bandwidth: 	200.0 Gbit/s
 	nodes-list:	['roadm Brest_KLA', 'roadm Lannion_CAS', 'roadm Lorient_KMA', 'roadm Vannes_KBE']
 	loose-list:	['LOOSE', 'LOOSE', 'LOOSE', 'LOOSE']
-, Path_request 3
+, PathRequest 3
 	source: 	trx Lannion_CAS
 	destination:	trx Rennes_STA
 	trx type:	vendorA_trx-type1
@@ -52,7 +52,7 @@
 	path_bandwidth: 	60.0 Gbit/s
 	nodes-list:	[]
 	loose-list:	[]
-, Path_request 4
+, PathRequest 4
 	source: 	trx Rennes_STA
 	destination:	trx Lannion_CAS
 	trx type:	vendorA_trx-type1
@@ -65,7 +65,7 @@
 	path_bandwidth: 	150.0 Gbit/s
 	nodes-list:	[]
 	loose-list:	[]
-, Path_request 5
+, PathRequest 5
 	source: 	trx Rennes_STA
 	destination:	trx Lannion_CAS
 	trx type:	vendorA_trx-type1
@@ -78,7 +78,7 @@
 	path_bandwidth: 	20.0 Gbit/s
 	nodes-list:	[]
 	loose-list:	[]
-, Path_request 7 | 6
+, PathRequest 7 | 6
 	source: 	trx Lannion_CAS
 	destination:	trx Lorient_KMA
 	trx type:	Voyager
@@ -91,7 +91,7 @@
 	path_bandwidth: 	700.0 Gbit/s
 	nodes-list:	[]
 	loose-list:	[]
-, Path_request 7b
+, PathRequest 7b
 	source: 	trx Lannion_CAS
 	destination:	trx Lorient_KMA
 	trx type:	Voyager

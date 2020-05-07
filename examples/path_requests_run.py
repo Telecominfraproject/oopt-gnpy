@@ -25,7 +25,7 @@ from gnpy.core.network import load_network, build_network, save_network
 from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch
 from gnpy.core.elements import Roadm
 from gnpy.core.utils import db2lin, lin2db
-from gnpy.core.request import (Path_request, Result_element,
+from gnpy.core.request import (PathRequest, ResultElement,
                                propagate, jsontocsv, Disjunction, compute_path_dsjctn,
                                requests_aggregation, propagate_and_optimize_mode,
                                BLOCKING_NOPATH, BLOCKING_NOMODE,
@@ -114,7 +114,7 @@ def requests_from_json(json_data, equipment):
             params['path_bandwidth'] = req['path-constraints']['te-bandwidth']['path_bandwidth']
         except KeyError:
             pass
-        requests_list.append(Path_request(**params))
+        requests_list.append(PathRequest(**params))
     return requests_list
 
 def consistency_check(params, f_max_from_si):
@@ -441,7 +441,7 @@ def main(args):
         result = []
         # assumes that list of rqs and list of propgatedpths have same order
         for i, pth in enumerate(propagatedpths):
-            result.append(Result_element(rqs[i], pth, reversed_propagatedpths[i]))
+            result.append(ResultElement(rqs[i], pth, reversed_propagatedpths[i]))
         temp = path_result_json(result)
         fnamecsv = f'{str(args.output)[0:len(str(args.output))-len(str(args.output.suffix))]}.csv'
         fnamejson = f'{str(args.output)[0:len(str(args.output))-len(str(args.output.suffix))]}.json'
