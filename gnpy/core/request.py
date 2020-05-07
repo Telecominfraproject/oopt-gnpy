@@ -40,7 +40,7 @@ DisjunctionParams = namedtuple('DisjunctionParams', 'disjunction_id relaxable li
                                '_diverse node_diverse disjunctions_req')
 
 
-class Path_request:
+class PathRequest:
     """ the class that contains all attributes related to a request
     """
 
@@ -132,7 +132,7 @@ BLOCKING_NOMODE = ['NO_FEASIBLE_MODE', 'MODE_NOT_FEASIBLE']
 BLOCKING_NOSPECTRUM = 'NO_SPECTRUM'
 
 
-class Result_element(Element):
+class ResultElement(Element):
     def __init__(self, path_request, computed_path, reversed_computed_path=None):
         self.path_id = path_request.request_id
         self.path_request = path_request
@@ -654,7 +654,7 @@ def jsontocsv(json_data, equipment, fileout):
 
 
 def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
-    # pathreqlist is a list of Path_request objects
+    # pathreqlist is a list of PathRequest objects
     # disjunctions_list a list of Disjunction objects
 
     # given a network, a list of requests with the set of disjunction features between

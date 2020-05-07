@@ -28,7 +28,7 @@ from gnpy.core.service_sheet import convert_service_sheet, correct_xls_route_lis
 from gnpy.core.equipment import load_equipment, automatic_nch
 from gnpy.core.network import load_network
 from gnpy.core.request import (jsontocsv, requests_aggregation, compute_path_dsjctn,
-                               Result_element, Path_request)
+                               ResultElement, PathRequest)
 from gnpy.core.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.core.exceptions import ServiceError
 from gnpy.tools.convert import convert_file
@@ -318,12 +318,12 @@ def test_json_response_generation(xls_input, expected_response_file):
             my_rq = deepcopy(rqs[i])
             my_rq.M = 0
             with pytest.raises(ServiceError):
-                Result_element(my_rq, pth, reversed_propagatedpths[i]).json
+                ResultElement(my_rq, pth, reversed_propagatedpths[i]).json
 
             my_rq.blocking_reason = 'NO_SPECTRUM'
-            Result_element(my_rq, pth, reversed_propagatedpths[i]).json
+            ResultElement(my_rq, pth, reversed_propagatedpths[i]).json
 
-        result.append(Result_element(rqs[i], pth, reversed_propagatedpths[i]))
+        result.append(ResultElement(rqs[i], pth, reversed_propagatedpths[i]))
 
     temp = {
         'response': [n.json for n in result]
@@ -435,7 +435,7 @@ def test_excel_ila_constraints(source, destination, route_list, hoptype, expecte
         'power': 0,
         'path_bandwidth': 0,
     }
-    request = Path_request(**params)
+    request = PathRequest(**params)
 
     if expected_correction != 'Fail':
         [request] = correct_xls_route_list(service_xls_input, network, [request])

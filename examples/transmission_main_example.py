@@ -25,7 +25,7 @@ from networkx import (draw_networkx_nodes, draw_networkx_edges,
 from gnpy.core.network import load_network, build_network, save_network
 from gnpy.core.elements import Transceiver, Fiber, RamanFiber, Edfa, Roadm
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
-from gnpy.core.request import Path_request, RequestParams, compute_constrained_path, propagate2
+from gnpy.core.request import PathRequest, RequestParams, compute_constrained_path, propagate2
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
 from gnpy.core.parameters import SimParams
 from gnpy.core.science_utils import Simulation
@@ -298,7 +298,7 @@ if __name__ == '__main__':
     if args.power:
         trx_params['power'] = db2lin(float(args.power))*1e-3
     params.update(trx_params)
-    req = Path_request(**params)
+    req = PathRequest(**params)
     path, infos = main(network, equipment, source, destination, sim_params, req)
     save_network(args.filename, network)
 
