@@ -25,15 +25,15 @@ from gnpy.core.network import load_network, build_network, save_network
 from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch
 from gnpy.core.elements import Roadm
 from gnpy.core.utils import db2lin, lin2db
-from gnpy.core.request import (PathRequest, ResultElement,
-                               propagate, jsontocsv, Disjunction, compute_path_dsjctn,
-                               requests_aggregation, propagate_and_optimize_mode,
-                               BLOCKING_NOPATH, BLOCKING_NOMODE,
-                               find_reversed_path, correct_json_route_list)
 from gnpy.core.exceptions import (ConfigurationError, EquipmentConfigError, NetworkTopologyError,
                                   ServiceError, DisjunctionError)
 import gnpy.core.ansi_escapes as ansi_escapes
 from gnpy.core.spectrum_assignment import (build_oms_list, pth_assign_spectrum)
+from gnpy.topology.request import (PathRequest, ResultElement,
+                                   propagate, jsontocsv, Disjunction, compute_path_dsjctn,
+                                   requests_aggregation, propagate_and_optimize_mode,
+                                   BLOCKING_NOPATH, BLOCKING_NOMODE,
+                                   find_reversed_path, correct_json_route_list)
 from copy import copy, deepcopy
 from textwrap import dedent
 from math import ceil

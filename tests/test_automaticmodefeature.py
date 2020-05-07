@@ -19,9 +19,9 @@ import pytest
 from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch
 from gnpy.core.network import load_network, build_network
 from examples.path_requests_run import requests_from_json, correct_json_route_list, load_requests
-from gnpy.core.request import compute_path_dsjctn, propagate, propagate_and_optimize_mode
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.elements import Roadm
+from gnpy.topology.request import compute_path_dsjctn, propagate, propagate_and_optimize_mode
 
 network_file_name = Path(__file__).parent.parent / 'tests/data/testTopology_expected.json'
 service_file_name = Path(__file__).parent.parent / 'tests/data/testTopology_testservices.json'
@@ -41,7 +41,7 @@ def test_automaticmodefeature(net,eqpt,serv,expected_mode):
     # power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
     # spacing, f_min and f_max 
     p_db = equipment['SI']['default'].power_dbm
-    
+
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
         equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)

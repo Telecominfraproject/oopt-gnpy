@@ -18,11 +18,11 @@ from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch
 from gnpy.core.network import load_network, build_network
 from gnpy.core.exceptions import ServiceError
 from examples.path_requests_run import (requests_from_json, load_requests, disjunctions_from_json)
-from gnpy.core.request import (compute_path_dsjctn, isdisjoint, find_reversed_path, PathRequest,
-                               correct_json_route_list)
 from gnpy.core.utils import lin2db
 from gnpy.core.elements import Roadm
 from gnpy.core.spectrum_assignment import build_oms_list
+from gnpy.topology.request import (compute_path_dsjctn, isdisjoint, find_reversed_path, PathRequest,
+                                   correct_json_route_list)
 
 NETWORK_FILE_NAME = Path(__file__).parent.parent / 'tests/data/testTopology_expected.json'
 SERVICE_FILE_NAME = Path(__file__).parent.parent / 'tests/data/testTopology_testservices.json'
