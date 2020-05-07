@@ -10,3 +10,4 @@ API Reference Documentation
 .. toctree::
 
    gnpy-api-core
+   gnpy-api-tools

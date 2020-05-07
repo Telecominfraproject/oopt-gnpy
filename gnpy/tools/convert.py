@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """
-gnpy.core.convert
-=================
+gnpy.tools.convert
+==================
 
 This module contains utilities for converting between XLS and JSON.
 
