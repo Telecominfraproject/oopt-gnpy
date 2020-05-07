@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "03373242_63a10f6e",
+        "filename": "yang/tip-photonic-equipment.yang",
+        "patchSetId": 2
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-05-07T19:12:23Z",
+      "side": 1,
+      "message": "This doesn\u0027t really match the current implementation, right? We don\u0027t have a Raman amplifier model with specified gain and nf. On the other hand, the RamanFiber parameters (raman_efficiency) are not represented in this yang module.",
+      "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d283d22f_5b0e8dc1",
+        "filename": "yang/tip-photonic-equipment.yang",
+        "patchSetId": 2
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-05-07T19:12:23Z",
+      "side": 1,
+      "message": "baud is usually spelled with lower case b",
+      "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
