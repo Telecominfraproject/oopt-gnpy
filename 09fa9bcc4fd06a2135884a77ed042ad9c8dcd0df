@@ -34,6 +34,24 @@
       "revId": "09fa9bcc4fd06a2135884a77ed042ad9c8dcd0df",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8d7288d_a6ecb94e",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-07T10:58:21Z",
+      "side": 1,
+      "message": "+1 for explicit per-degree elements, as Jonas suggested, in general :).\n\nThe demo used route-and-select topology with \"disaggregated ROADMs\", where there was a 1U pizza-box for each Line Degree (with dual WSS, booster and preamp integrated inside), and one 1U pizza-box for each Add/Drop SRG (once again for an amp for Add and an amp for Drop), etc. We had three \"ROADM sites\" (cities), A, B and C, connected to a ring. Each \"ROADM site\" used two Line Degree ROADM 1U devices, and A and B had an Add/Drop as well.\n\nBecause of the difference in what \"an element\" means to GNPy (\"something that I can propagate spectrum through\"), and what it is to ONOS (\"something that I can connect to over NETCONF\"), we decided to model each of our \"1U pizza boxes\" as a separate element in GNPy. Even with this, it was still a problem for booster and preamp in the line card because both were of a different type, yet for ONOS they were hidden in just one box (along with the WSSes that also affect their functionality). So our \"Line Degree ROADM 1U pizza box\" was modeled by three GNPy elements. Not pretty, but doable, and it required a fix-up in GNPy when it came to propagating power settings.\n\nA much bigger problem was \"directionality\" of GNPy\u0027s ROADM element. All other GNPy elements but ROADM simply propagate spectrum from input to output, but a GNPy ROADM has multiple possible inputs and outputs. Even though our (physical) ROADMs use the same EDFA model in Line Degrees and Add Drops, we still needed different power targets as shown here:\n\nhttps://github.com/Telecominfraproject/oopt-gnpy/blob/experimental/2019-summit/examples/2019-demo-topology.json#L12-L25\n\n...simply because the path taken, as shown by GNPy, is one of these:\n\n- Line1_preamp -\u003e Line1_ROADM -\u003e Drop_ROADM\n- Add_ROADM -\u003e Line1_ROADM -\u003e Line1_booster\n\n...and in this particular example, we had to feed -12dBm/ch for the \"ROADM to ROADM\" connection, while it was -25dBm/ch for the Line1_ROADM to Line1_booster. So I *think* one can say that our problem was a direct ROADM-to-ROADM connection within our topology. But even if that was not the case, I do not think that in the real world, a full-ROADM-node will always have the same power targets in their \"mid-stage\" or \"express\" connection for all directions all the time...",
+      "parentUuid": "82527bc7_c7e7b600",
+      "revId": "09fa9bcc4fd06a2135884a77ed042ad9c8dcd0df",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
