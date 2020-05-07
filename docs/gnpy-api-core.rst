@@ -3,7 +3,6 @@
 
 .. automodule:: gnpy.core
 .. automodule:: gnpy.core.ansi_escapes
-.. automodule:: gnpy.core.convert
 .. automodule:: gnpy.core.elements
 .. automodule:: gnpy.core.equipment
 .. automodule:: gnpy.core.exceptions

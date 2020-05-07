@@ -8,7 +8,6 @@ gnpy.core.network
 This module contains functions for constructing networks of network elements.
 '''
 
-from gnpy.core.convert import convert_file
 from networkx import DiGraph
 from scipy.interpolate import interp1d
 from logging import getLogger
@@ -20,6 +19,7 @@ from gnpy.core.equipment import edfa_nf
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.units import UNITS
 from gnpy.core.utils import (load_json, save_json, round2float, merge_amplifier_restrictions)
+from gnpy.tools.convert import convert_file
 from collections import namedtuple
 
 logger = getLogger(__name__)

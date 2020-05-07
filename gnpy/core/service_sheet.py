@@ -22,9 +22,9 @@ from json import dumps
 from copy import deepcopy
 from gnpy.core.utils import db2lin
 from gnpy.core.exceptions import ServiceError
-from gnpy.core.convert import corresp_names, corresp_next_node
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fiber
 import gnpy.core.ansi_escapes as ansi_escapes
+from gnpy.tools.convert import corresp_names, corresp_next_node
 
 SERVICES_COLUMN = 12
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
