@@ -37,7 +37,8 @@ from gnpy.core.exceptions import NetworkTopologyError
 from gnpy.core.elements import Edfa, Fused, Fiber
 
 
-def all_rows(sh, start=0): return (sh.row(x) for x in range(start, sh.nrows))
+def all_rows(sh, start=0):
+    return (sh.row(x) for x in range(start, sh.nrows))
 
 
 class Node(object):
@@ -51,18 +52,17 @@ class Node(object):
             v = clean_kwargs.get(k, v)
             setattr(self, k, v)
 
-    default_values = \
-        {
-            'city':         '',
-            'state':        '',
-            'country':      '',
-            'region':       '',
-            'latitude':     0,
-            'longitude':    0,
-            'node_type':    'ILA',
-            'booster_restriction': '',
-            'preamp_restriction': ''
-        }
+    default_values = {
+        'city':         '',
+        'state':        '',
+        'country':      '',
+        'region':       '',
+        'latitude':     0,
+        'longitude':    0,
+        'node_type':    'ILA',
+        'booster_restriction': '',
+        'preamp_restriction': ''
+    }
 
 
 class Link(object):
@@ -88,18 +88,17 @@ class Link(object):
         return (self.from_city == link.from_city and self.to_city == link.to_city) \
             or (self.from_city == link.to_city and self.to_city == link.from_city)
 
-    default_values = \
-        {
-            'from_city':            '',
-            'to_city':              '',
-            'east_distance':        80,
-            'east_fiber':           'SSMF',
-            'east_lineic':          0.2,
-            'east_con_in':          None,
-            'east_con_out':         None,
-            'east_pmd':             0.1,
-            'east_cable':           ''
-        }
+    default_values = {
+        'from_city':            '',
+        'to_city':              '',
+        'east_distance':        80,
+        'east_fiber':           'SSMF',
+        'east_lineic':          0.2,
+        'east_con_in':          None,
+        'east_con_out':         None,
+        'east_pmd':             0.1,
+        'east_cable':           ''
+    }
 
 
 class Eqpt(object):
@@ -116,17 +115,16 @@ class Eqpt(object):
             v_west = clean_kwargs.get(k, v)
             setattr(self, k, v_west)
 
-    default_values = \
-        {
-            'from_city':        '',
-            'to_city':          '',
-            'east_amp_type':    '',
-            'east_att_in':      0,
-            'east_amp_gain':    None,
-            'east_amp_dp':      None,
-            'east_tilt':        0,
-            'east_att_out':     None
-        }
+    default_values = {
+        'from_city':        '',
+        'to_city':          '',
+        'east_amp_type':    '',
+        'east_att_in':      0,
+        'east_amp_gain':    None,
+        'east_amp_dp':      None,
+        'east_tilt':        0,
+        'east_att_out':     None
+    }
 
 
 def read_header(my_sheet, line, slice_):
@@ -137,7 +135,7 @@ def read_header(my_sheet, line, slice_):
     Param_header = namedtuple('Param_header', 'header colindex')
     try:
         header = [x.value.strip() for x in my_sheet.row_slice(line, slice_[0], slice_[1])]
-        header_i = [Param_header(header, i+slice_[0]) for i, header in enumerate(header) if header != '']
+        header_i = [Param_header(header, i + slice_[0]) for i, header in enumerate(header) if header != '']
     except Exception:
         header_i = []
     if header_i != [] and header_i[-1].colindex != slice_[1]:
@@ -169,7 +167,6 @@ def parse_headers(my_sheet, input_headers_dict, headers, start_line, slice_in):
         iteration = 1
         while slice_out == (-1, -1) and iteration < 10:
             # try next lines
-            #print(h0, iteration)
             slice_out = read_slice(my_sheet, start_line+iteration, slice_in, h0)
             iteration += 1
         if slice_out == (-1, -1):
@@ -183,18 +180,14 @@ def parse_headers(my_sheet, input_headers_dict, headers, start_line, slice_in):
         else:
             headers = parse_headers(my_sheet, input_headers_dict[h0], headers, start_line+1, slice_out)
     if headers == {}:
-        print(f'\x1b[1;31;40m'+f'CRITICAL ERROR: could not find any header to read _ ABORT' + '\x1b[0m')
+        print('\x1b[1;31;40m'+f'CRITICAL ERROR: could not find any header to read _ ABORT' + '\x1b[0m')
         exit()
     return headers
 
 
 def parse_row(row, headers):
-    #print([label for label in ept.values()])
-    #print([i for i in ept.keys()])
-    # print(row[i for i in ept.keys()])
     return {f: r.value for f, r in
             zip([label for label in headers.values()], [row[i] for i in headers])}
-    # if r.ctype != XL_CELL_EMPTY}
 
 
 def parse_sheet(my_sheet, input_headers_dict, header_line, start_line, column):
@@ -213,15 +206,13 @@ def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
                     link {l1.from_city}-{l1.to_city} is duplicate \
                     \nthe 1st duplicate link will be removed but you should check Links sheet input')
                 duplicate_links.append(l1)
-    # if duplicate_links != []:
-        # time.sleep(3)
     for l in duplicate_links:
         links.remove(l)
 
     try:
-        test_nodes = [n for n in nodes_by_city if not n in links_by_city]
-        test_links = [n for n in links_by_city if not n in nodes_by_city]
-        test_eqpts = [n for n in eqpts_by_city if not n in nodes_by_city]
+        test_nodes = [n for n in nodes_by_city if n not in links_by_city]
+        test_links = [n for n in links_by_city if n not in nodes_by_city]
+        test_eqpts = [n for n in eqpts_by_city if n not in nodes_by_city]
         assert (test_nodes == [] or test_nodes == [''])\
             and (test_links == [] or test_links == [''])\
             and (test_eqpts == [] or test_eqpts == [''])
@@ -236,7 +227,7 @@ def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
         if nodes_by_city[city].node_type.lower() == 'ila' and len(link) != 2:
             # wrong input: ILA sites can only be Degree 2
             # => correct to make it a ROADM and remove entry in links_by_city
-            # TODO : put in log rather than print
+            # TODO: put in log rather than print
             print(f'invalid node type ({nodes_by_city[city].node_type})\
  specified in {city}, replaced by ROADM')
             nodes_by_city[city].node_type = 'ROADM'
@@ -489,19 +480,19 @@ def corresp_names(input_filename, network):
 
 
 def parse_excel(input_filename):
-    link_headers = \
-        {'Node A': 'from_city',
-         'Node Z': 'to_city',
-         'east': {
-             'Distance (km)':        'east_distance',
-             'Fiber type':           'east_fiber',
-             'lineic att':           'east_lineic',
-             'Con_in':               'east_con_in',
-             'Con_out':              'east_con_out',
-             'PMD':                  'east_pmd',
-             'Cable id':             'east_cable'
-         },
-            'west': {
+    link_headers = {
+        'Node A': 'from_city',
+        'Node Z': 'to_city',
+        'east': {
+            'Distance (km)':        'east_distance',
+            'Fiber type':           'east_fiber',
+            'lineic att':           'east_lineic',
+            'Con_in':               'east_con_in',
+            'Con_out':              'east_con_out',
+            'PMD':                  'east_pmd',
+            'Cable id':             'east_cable'
+        },
+        'west': {
             'Distance (km)':        'west_distance',
             'Fiber type':           'west_fiber',
             'lineic att':           'west_lineic',
@@ -509,39 +500,39 @@ def parse_excel(input_filename):
             'Con_out':              'west_con_out',
             'PMD':                  'west_pmd',
             'Cable id':             'west_cable'
-         }
-         }
-    node_headers = \
-        {'City':         'city',
-         'State':        'state',
-         'Country':      'country',
-         'Region':       'region',
-         'Latitude':     'latitude',
-         'Longitude':    'longitude',
-         'Type':         'node_type',
-         'Booster_restriction': 'booster_restriction',
-         'Preamp_restriction': 'preamp_restriction'
-         }
-    eqpt_headers = \
-        {'Node A': 'from_city',
-         'Node Z': 'to_city',
-         'east': {
-             'amp type':         'east_amp_type',
-             'att_in':           'east_att_in',
-             'amp gain':         'east_amp_gain',
-             'delta p':          'east_amp_dp',
-             'tilt':             'east_tilt',
-             'att_out':          'east_att_out'
-         },
-            'west': {
-             'amp type':         'west_amp_type',
-             'att_in':           'west_att_in',
-             'amp gain':         'west_amp_gain',
+        }
+    }
+    node_headers = {
+        'City':         'city',
+        'State':        'state',
+        'Country':      'country',
+        'Region':       'region',
+        'Latitude':     'latitude',
+        'Longitude':    'longitude',
+        'Type':         'node_type',
+        'Booster_restriction': 'booster_restriction',
+        'Preamp_restriction': 'preamp_restriction'
+    }
+    eqpt_headers = {
+        'Node A': 'from_city',
+        'Node Z': 'to_city',
+        'east': {
+            'amp type':         'east_amp_type',
+            'att_in':           'east_att_in',
+            'amp gain':         'east_amp_gain',
+            'delta p':          'east_amp_dp',
+            'tilt':             'east_tilt',
+            'att_out':          'east_att_out'
+        },
+        'west': {
+            'amp type':         'west_amp_type',
+            'att_in':           'west_att_in',
+            'amp gain':         'west_amp_gain',
             'delta p':          'west_amp_dp',
             'tilt':             'west_tilt',
             'att_out':          'west_att_out'
-         }
-         }
+        }
+    }
 
     with open_workbook(input_filename) as wb:
         nodes_sheet = wb.sheet_by_name('Nodes')
@@ -549,7 +540,7 @@ def parse_excel(input_filename):
         try:
             eqpt_sheet = wb.sheet_by_name('Eqpt')
         except Exception:
-            #eqpt_sheet is optional
+            # eqpt_sheet is optional
             eqpt_sheet = None
 
         nodes = []
@@ -563,10 +554,9 @@ def parse_excel(input_filename):
         links = []
         for link in parse_sheet(links_sheet, link_headers, LINKS_LINE, LINKS_LINE+2, LINKS_COLUMN):
             links.append(Link(**link))
-        #print('\n', [l.__dict__ for l in links])
 
         eqpts = []
-        if eqpt_sheet != None:
+        if eqpt_sheet is not None:
             for eqpt in parse_sheet(eqpt_sheet, eqpt_headers, EQPTS_LINE, EQPTS_LINE+2, EQPTS_COLUMN):
                 eqpts.append(Eqpt(**eqpt))
 
@@ -708,12 +698,12 @@ def fiber_dest_from_source(city_name):
 
 def fiber_link(from_city, to_city):
     source_dest = (from_city, to_city)
-    link = links_by_city[from_city]
-    l = next(l for l in link if l.from_city in source_dest and l.to_city in source_dest)
-    if l.from_city == from_city:
-        fiber = f'fiber ({l.from_city} \u2192 {l.to_city})-{l.east_cable}'
+    links = links_by_city[from_city]
+    link = next(l for l in links if l.from_city in source_dest and l.to_city in source_dest)
+    if link.from_city == from_city:
+        fiber = f'fiber ({link.from_city} \u2192 {link.to_city})-{link.east_cable}'
     else:
-        fiber = f'fiber ({l.to_city} \u2192 {l.from_city})-{l.west_cable}'
+        fiber = f'fiber ({link.to_city} \u2192 {link.from_city})-{link.west_cable}'
     return fiber
 
 
@@ -725,14 +715,13 @@ def midpoint(city_a, city_b):
             'latitude':  sum(lats) / 2,
             'longitude': sum(longs) / 2
         }
-    except:
+    except TypeError:
         result = {
             'latitude':  0,
             'longitude': 0
         }
     return result
 
-#output_json_file_name = 'coronet_conus_example.json'
 # TODO get column size automatically from tupple size
 
 
