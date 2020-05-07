@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """
-gnpy.core.request
-=================
+gnpy.topology.request
+=====================
 
 This module contains path request functionality.
 

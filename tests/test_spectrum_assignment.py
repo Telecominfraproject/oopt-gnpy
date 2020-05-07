@@ -22,7 +22,7 @@ from gnpy.core.elements import Roadm, Transceiver
 from gnpy.core.spectrum_assignment import (build_oms_list, align_grids, nvalue_to_frequency,
                                            bitmap_sum, Bitmap, spectrum_selection, pth_assign_spectrum)
 from gnpy.core.exceptions import SpectrumError
-from gnpy.core.request import compute_path_dsjctn, find_reversed_path
+from gnpy.topology.request import compute_path_dsjctn, find_reversed_path
 from examples.path_requests_run import requests_from_json, disjunctions_from_json, correct_disjn
 
 TEST_DIR = Path(__file__).parent

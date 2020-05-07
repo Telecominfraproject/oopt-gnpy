@@ -25,12 +25,12 @@ from networkx import (draw_networkx_nodes, draw_networkx_edges,
 from gnpy.core.network import load_network, build_network, save_network
 from gnpy.core.elements import Transceiver, Fiber, RamanFiber, Edfa, Roadm
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
-from gnpy.core.request import PathRequest, compute_constrained_path, propagate2
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
 from gnpy.core.parameters import SimParams
 from gnpy.core.science_utils import Simulation
 from gnpy.core.utils import load_json
 import gnpy.core.ansi_escapes as ansi_escapes
+from gnpy.topology.request import PathRequest, compute_constrained_path, propagate2
 
 logger = getLogger(__name__)
 
