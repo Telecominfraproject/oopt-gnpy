@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b7e3e027_495eb784",
+        "filename": "yang/tip-photonic-topology.yang",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-05-07T19:34:56Z",
+      "side": 1,
+      "message": "Raman fiber parameters are not currently represented in the yang module.",
+      "revId": "7c41922eeb55b9da371377a2cc96971d79966f77",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f4876804_64324911",
+        "filename": "yang/tip-photonic-topology.yang",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-05-07T19:34:56Z",
+      "side": 1,
+      "message": "Why is it called \"model\" here and \"type\" in the equipment model (fiber is using \"type\" for both)?",
+      "revId": "7c41922eeb55b9da371377a2cc96971d79966f77",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
