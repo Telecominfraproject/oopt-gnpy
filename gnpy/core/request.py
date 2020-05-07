@@ -21,7 +21,7 @@ from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths)
 from networkx.utils import pairwise
 from numpy import mean
 from gnpy.core.service_sheet import Element
-from gnpy.core.elements import Transceiver, Roadm, Edfa
+from gnpy.core.elements import Transceiver, Roadm
 from gnpy.core.utils import lin2db
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.exceptions import ServiceError, DisjunctionError
@@ -274,8 +274,6 @@ class ResultElement(Element):
 
 def compute_constrained_path(network, req):
     trx = [n for n in network.nodes() if isinstance(n, Transceiver)]
-    roadm = [n for n in network.nodes() if isinstance(n, Roadm)]
-    edfa = [n for n in network.nodes() if isinstance(n, Edfa)]
     anytypenode = [n for n in network.nodes()]
 
     source = next(el for el in trx if el.uid == req.source)
@@ -433,7 +431,6 @@ def propagate_and_optimize_mode(path, req, equipment):
                                       key=lambda x: x['bit_rate'], reverse=True)
             # print(modes_to_explore)
             # step2: computes propagation for each baudrate: stop and select the first that passes
-            found_a_feasible_mode = False
             # TODO: the case of roll of is not included: for now use SI one
             # TODO: if the loop in mode optimization does not have a feasible path, then bugs
             spc_info = create_input_spectral_information(req.f_min, req.f_max,
@@ -445,7 +442,6 @@ def propagate_and_optimize_mode(path, req, equipment):
                 if path[-1].snr is not None:
                     path[-1].update_snr(this_mode['tx_osnr'], equipment['Roadm']['default'].add_drop_osnr)
                     if round(min(path[-1].snr+lin2db(this_br/(12.5e9))), 2) > this_mode['OSNR']:
-                        found_a_feasible_mode = True
                         return path, this_mode
                     else:
                         last_explored_mode = this_mode
