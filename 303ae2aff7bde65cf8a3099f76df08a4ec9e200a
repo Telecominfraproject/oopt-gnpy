@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "9f9d06c3_2d652d56",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-05-08T08:55:33Z",
+      "side": 1,
+      "message": "I am still not happy with this solution because the eqpt config json contains the list of ripple an tilt. The json example does not show the difficulty here because it contains only a list of 2 item [0, 2.4] (??), but if we use dgt of current default_edfa_config , it has 96 values that would be listed in each amp !\nOr maybe this is not showing the indirection ?",
+      "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "03373242_63a10f6e",
         "filename": "yang/tip-photonic-equipment.yang",
         "patchSetId": 2
@@ -13,6 +30,58 @@
       "writtenOn": "2020-05-07T19:12:23Z",
       "side": 1,
       "message": "This doesn\u0027t really match the current implementation, right? We don\u0027t have a Raman amplifier model with specified gain and nf. On the other hand, the RamanFiber parameters (raman_efficiency) are not represented in this yang module.",
+      "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e85c6f72_67304eb7",
+        "filename": "yang/tip-photonic-equipment.yang",
+        "patchSetId": 2
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-05-08T08:55:33Z",
+      "side": 1,
+      "message": "In fact we have such a simple model : it is using fixed gain model and can be used withdual stage amp feature to model raman hybrid amplifiers . So I would rather call it fixed gain ...",
+      "parentUuid": "03373242_63a10f6e",
+      "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e7d6434d_be411d51",
+        "filename": "yang/tip-photonic-equipment.yang",
+        "patchSetId": 2
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-05-08T08:55:33Z",
+      "side": 1,
+      "message": "missing boolean \"allowed for design\"",
+      "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2af1d80e_eb3867b2",
+        "filename": "yang/tip-photonic-equipment.yang",
+        "patchSetId": 2
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-05-08T08:55:33Z",
+      "side": 1,
+      "message": "W-1m-1",
       "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
