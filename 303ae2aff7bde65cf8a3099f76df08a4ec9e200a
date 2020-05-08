@@ -19,6 +19,23 @@
     },
     {
       "key": {
+        "uuid": "44cf93e2_957caa95",
+        "filename": "yang/tip-photonic-equipment.yang",
+        "patchSetId": 2
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-05-08T09:46:09Z",
+      "side": 1,
+      "message": "Thinking more about this I think it is confusing to have this amp-common grouping (which includes gain and power related parameters) below the choice statement since the different cases  refer to different NF models. So I think it makes more sense to move amp-common to above the choice and call it \"choice noise-model\" or \"choice nf-model\"  instead of \"choice simulation\".",
+      "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "03373242_63a10f6e",
         "filename": "yang/tip-photonic-equipment.yang",
         "patchSetId": 2
