@@ -557,11 +557,15 @@ class Edfa(Node):
         """interpolate SI channel frequencies with the edfa dgt and gain_ripple frquencies from JSON
         """
         # TODO|jla: read amplifier actual frequencies from additional params in json
-        amplifier_freq = arrange_frequencies(len(self.params.dgt), self.params.f_min, self.params.f_max) # Hz
         self.channel_freq = frequencies
+
+        amplifier_freq = arrange_frequencies(len(self.params.dgt), self.params.f_min, self.params.f_max) # Hz 
         self.interpol_dgt = interp(self.channel_freq, amplifier_freq, self.params.dgt)
 
+        amplifier_freq = arrange_frequencies(len(self.params.gain_ripple), self.params.f_min, self.params.f_max) # Hz
         self.interpol_gain_ripple = interp(self.channel_freq, amplifier_freq, self.params.gain_ripple)
+
+        amplifier_freq = arrange_frequencies(len(self.params.nf_ripple), self.params.f_min, self.params.f_max) # Hz
         self.interpol_nf_ripple =interp(self.channel_freq, amplifier_freq, self.params.nf_ripple)
 
         self.nch = frequencies.size
