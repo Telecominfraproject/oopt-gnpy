@@ -3,13 +3,10 @@
 # @Author: Jean-Luc Auge
 # @Date:   2018-02-02 14:06:55
 
-from gnpy.core.elements import Edfa
-import numpy as np
-from json import load
 import pytest
 from gnpy.core.elements import Transceiver, Fiber, Edfa
-from gnpy.core.utils import lin2db, db2lin
-from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
+from gnpy.core.utils import db2lin
+from gnpy.core.info import create_input_spectral_information
 from gnpy.core.equipment import load_equipment
 from gnpy.core.network import build_network, load_network
 from pathlib import Path

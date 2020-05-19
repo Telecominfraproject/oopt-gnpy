@@ -3,14 +3,12 @@
 # @Author: Jean-Luc Auge
 # @Date:   2018-02-02 14:06:55
 
-from gnpy.core.elements import Edfa
 from numpy import zeros, array
-from json import load
 from gnpy.core import elements
-from gnpy.core.elements import Transceiver, Fiber, Edfa
+from gnpy.core.elements import Transceiver, Edfa
 from gnpy.core.utils import lin2db, db2lin, merge_amplifier_restrictions
-from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
-from gnpy.core.equipment import load_equipment, automatic_fmax, automatic_nch
+from gnpy.core.info import create_input_spectral_information, Pref
+from gnpy.core.equipment import load_equipment, automatic_fmax
 from gnpy.core.network import build_network, load_network
 from pathlib import Path
 import pytest

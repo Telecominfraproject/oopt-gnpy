@@ -2,12 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import json
-import pytest
 from pathlib import Path
 
 from gnpy.core.parameters import SimParams
 from gnpy.core.science_utils import Simulation
-from gnpy.core.elements import Fiber
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'

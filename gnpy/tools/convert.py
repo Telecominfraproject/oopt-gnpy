@@ -30,7 +30,6 @@ from collections import namedtuple, Counter, defaultdict
 from itertools import chain
 from json import dumps
 from pathlib import Path
-from difflib import get_close_matches
 from copy import copy
 from gnpy.core.utils import silent_remove
 from gnpy.core.exceptions import NetworkTopologyError
