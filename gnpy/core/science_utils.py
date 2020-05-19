@@ -325,7 +325,6 @@ class RamanSolver:
         """
         # fiber parameters
         fiber_length = self.fiber.params.length
-        loss_coef = self.fiber.params.lin_loss_exp
         raman_efficiency = self.fiber.params.raman_efficiency
         simulation = Simulation.get_simulation()
         sim_params = simulation.sim_params

@@ -208,7 +208,6 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
 def target_power(network, node, equipment):  # get_fiber_dp
     SPAN_LOSS_REF = 20
     POWER_SLOPE = 0.3
-    power_mode = equipment['Span']['default'].power_mode
     dp_range = list(equipment['Span']['default'].delta_power_range_db)
     node_loss = span_loss(network, node)
 
@@ -299,7 +298,6 @@ def set_amplifier_voa(amp, power_target, power_mode):
     VOA_MARGIN = 1  # do not maximize the VOA optimization
     if amp.out_voa is None:
         if power_mode:
-            gain_target = amp.effective_gain
             voa = min(amp.params.p_max - power_target,
                       amp.params.gain_flatmax - amp.effective_gain)
             voa = max(round2float(max(voa, 0), 0.5) - VOA_MARGIN, 0) if amp.params.out_voa_auto else 0
