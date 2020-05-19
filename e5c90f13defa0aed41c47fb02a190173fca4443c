@@ -16,6 +16,24 @@
       "revId": "e5c90f13defa0aed41c47fb02a190173fca4443c",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c20bde6a_3f23bc13",
+        "filename": "examples/transmission_main_example.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-19T10:11:36Z",
+      "side": 1,
+      "message": "Done in a follow-up commit.",
+      "parentUuid": "7184310e_9815187d",
+      "revId": "e5c90f13defa0aed41c47fb02a190173fca4443c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
