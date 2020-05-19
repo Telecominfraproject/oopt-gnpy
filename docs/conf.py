@@ -80,8 +80,17 @@ todo_include_todos = False
 on_rtd = os.environ.get('READTHEDOCS') == 'True'
 if on_rtd:
     html_theme = 'default'
+    html_theme_options = {
+        'logo_only': True,
+    }
 else:
     html_theme = 'alabaster'
+    html_theme_options = {
+        'logo': 'images/GNPy-logo.png',
+        'logo_only': True,
+    }
+
+html_logo = 'images/GNPy-logo.png'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
