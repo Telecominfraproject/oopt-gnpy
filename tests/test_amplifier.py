@@ -21,6 +21,8 @@ test_network = DATA_DIR / 'test_network.json'
 eqpt_library = DATA_DIR / 'eqpt_config.json'
 
 # TODO in elements.py code: pytests doesn't pass with 1 channel: interpolate fail
+
+
 @pytest.fixture(
     params=[(96, 0.05e12), (60, 0.075e12), (45, 0.1e12), (2, 0.1e12)],
     ids=['50GHz spacing', '75GHz spacing', '100GHz spacing', '2 channels'])
@@ -28,10 +30,12 @@ def nch_and_spacing(request):
     """parametrize channel count vs channel spacing (Hz)"""
     yield request.param
 
+
 @pytest.fixture()
 def bw():
     """parametrize signal bandwidth (Hz)"""
     return 45e9
+
 
 @pytest.fixture()
 def setup_edfa_variable_gain():
@@ -39,11 +43,12 @@ def setup_edfa_variable_gain():
     remove all gain and nf ripple"""
     equipment = load_equipment(eqpt_library)
     network = load_network(test_network, equipment)
-    build_network(network, equipment,0, 20)
+    build_network(network, equipment, 0, 20)
     edfa = [n for n in network.nodes() if isinstance(n, Edfa)][0]
     edfa.gain_ripple = zeros(96)
     edfa.interpol_nf_ripple = zeros(96)
     yield edfa
+
 
 @pytest.fixture()
 def setup_edfa_fixed_gain():
@@ -54,6 +59,7 @@ def setup_edfa_fixed_gain():
     edfa = [n for n in network.nodes() if isinstance(n, Edfa)][1]
     yield edfa
 
+
 @pytest.fixture()
 def setup_trx():
     """init transceiver class to access snr and osnr calculations"""
@@ -63,6 +69,7 @@ def setup_trx():
     trx = [n for n in network.nodes() if isinstance(n, Transceiver)][0]
     return trx
 
+
 @pytest.fixture()
 def si(nch_and_spacing, bw):
     """parametrize a channel comb with nb_channel, spacing and signal bw"""
@@ -70,6 +77,7 @@ def si(nch_and_spacing, bw):
     f_min = 191.3e12
     f_max = automatic_fmax(f_min, spacing, nb_channel)
     return create_input_spectral_information(f_min, f_max, 0.15, bw, 1e-3, spacing)
+
 
 @pytest.mark.parametrize("gain, nf_expected", [(10, 15), (15, 10), (25, 5.8)])
 def test_variable_gain_nf(gain, nf_expected, setup_edfa_variable_gain, si):
@@ -85,6 +93,7 @@ def test_variable_gain_nf(gain, nf_expected, setup_edfa_variable_gain, si):
     result = edfa.nf
     assert pytest.approx(nf_expected, abs=0.01) == result[0]
 
+
 @pytest.mark.parametrize("gain, nf_expected", [(15, 10), (20, 5), (25, 5)])
 def test_fixed_gain_nf(gain, nf_expected, setup_edfa_fixed_gain, si):
     """=> unitary test for fixed gain model Edfa._calc_nf() (and Edfa.interpol_params)"""
@@ -99,6 +108,7 @@ def test_fixed_gain_nf(gain, nf_expected, setup_edfa_fixed_gain, si):
 
     assert pytest.approx(nf_expected, abs=0.01) == edfa.nf[0]
 
+
 def test_si(si, nch_and_spacing):
     """basic total power check of the channel comb generation"""
     nb_channel = nch_and_spacing[0]
@@ -106,6 +116,7 @@ def test_si(si, nch_and_spacing):
     p_tot = pin.sum()
     expected_p_tot = si.carriers[0].power.signal * nb_channel
     assert pytest.approx(expected_p_tot, abs=0.01) == p_tot
+
 
 @pytest.mark.parametrize("gain", [17, 19, 21, 23])
 def test_compare_nf_models(gain, setup_edfa_variable_gain, si):
@@ -124,22 +135,21 @@ def test_compare_nf_models(gain, setup_edfa_variable_gain, si):
     edfa.interpol_params(frequencies, pin, baud_rates, pref)
     nf_model = edfa.nf[0]
 
-
     # change edfa type variety to a polynomial
-    el_config =    {
-            "uid": "Edfa1",
-            "operational": {
-                "gain_target": gain,
-                "tilt_target": 0
-            },
-            "metadata": {
-                "location": {
-                    "region": "",
-                    "latitude": 2,
-                    "longitude": 0
-                }
+    el_config = {
+        "uid": "Edfa1",
+        "operational": {
+            "gain_target": gain,
+            "tilt_target": 0
+        },
+        "metadata": {
+            "location": {
+                "region": "",
+                "latitude": 2,
+                "longitude": 0
             }
         }
+    }
     equipment = load_equipment(eqpt_library)
     extra_params = equipment['Edfa']['CienaDB_medium_gain']
     temp = el_config.setdefault('params', {})
@@ -153,6 +163,7 @@ def test_compare_nf_models(gain, setup_edfa_variable_gain, si):
     nf_poly = edfa.nf[0]
     print(nf_poly, nf_model)
     assert pytest.approx(nf_model, abs=0.5) == nf_poly
+
 
 @pytest.mark.parametrize("gain", [13, 15, 17, 19, 21, 23, 25, 27])
 def test_ase_noise(gain, si, setup_trx, bw):
@@ -169,10 +180,10 @@ def test_ase_noise(gain, si, setup_trx, bw):
     # updating span 1  avoids to overload amp
     span.params.length = gain*1e3 / 0.2
     edfa.operational.gain_target = gain
-    build_network(network, equipment,0, 20)
+    build_network(network, equipment, 0, 20)
     edfa.gain_ripple = zeros(96)
     edfa.interpol_nf_ripple = zeros(96)
-    #propagate in span1 to have si with the correct power level
+    # propagate in span1 to have si with the correct power level
     si = span(si)
     print(span)
 

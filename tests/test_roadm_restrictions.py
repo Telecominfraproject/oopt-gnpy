@@ -35,24 +35,24 @@ def test_no_amp_feature(node_uid):
 
     for elem in json_network['elements']:
         if elem['uid'] == node_uid:
-            #replace edfa node by a fused node in the topology
+            # replace edfa node by a fused node in the topology
             elem['type'] = 'Fused'
             elem.pop('type_variety')
             elem.pop('operational')
             elem['params'] = {'loss': 0}
 
-            next_node_uid = next(conn['to_node'] for conn in json_network['connections'] \
+            next_node_uid = next(conn['to_node'] for conn in json_network['connections']
                                  if conn['from_node'] == node_uid)
-            previous_node_uid = next(conn['from_node'] for conn in json_network['connections'] \
-                                 if conn['to_node'] == node_uid)
+            previous_node_uid = next(conn['from_node'] for conn in json_network['connections']
+                                     if conn['to_node'] == node_uid)
 
     network = network_from_json(json_network, equipment)
     # Build the network once using the default power defined in SI in eqpt config
     # power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
     # spacing, f_min and f_max
     p_db = equipment['SI']['default'].power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
-        equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
+                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
 
     build_network(network, equipment, p_db, p_total_db)
 
@@ -68,6 +68,7 @@ def test_no_amp_feature(node_uid):
         raise AssertionError()
     if not previous_node_uid == previous_node.uid:
         raise AssertionError()
+
 
 @pytest.fixture()
 def equipment():
@@ -127,15 +128,15 @@ def equipment():
 
 @pytest.mark.parametrize("restrictions", [
     {
-        'preamp_variety_list':[],
+        'preamp_variety_list': [],
         'booster_variety_list':[]
     },
     {
-        'preamp_variety_list':[],
+        'preamp_variety_list': [],
         'booster_variety_list':['booster_medium_gain']
     },
     {
-        'preamp_variety_list':['preamp_medium_gain', 'preamp_high_gain', 'preamp_low_gain'],
+        'preamp_variety_list': ['preamp_medium_gain', 'preamp_high_gain', 'preamp_low_gain'],
         'booster_variety_list':[]
     }])
 def test_restrictions(restrictions, equipment):
@@ -148,32 +149,32 @@ def test_restrictions(restrictions, equipment):
     json_network = load_json(NETWORK_FILE_NAME)
     network = network_from_json(json_network, equipment)
 
-    amp_nodes_nobuild_uid = [nd.uid for nd in network.nodes() \
-        if isinstance(nd, Edfa) and isinstance(next(network.predecessors(nd)), Roadm)]
-    preamp_nodes_nobuild_uid = [nd.uid for nd in network.nodes() \
-        if isinstance(nd, Edfa) and isinstance(next(network.successors(nd)), Roadm)]
-    amp_nodes_nobuild = {nd.uid : nd for nd in network.nodes() \
-        if isinstance(nd, Edfa) and isinstance(next(network.predecessors(nd)), Roadm)}
-    preamp_nodes_nobuild = {nd.uid : nd for nd in network.nodes() \
-        if isinstance(nd, Edfa) and isinstance(next(network.successors(nd)), Roadm)}
+    amp_nodes_nobuild_uid = [nd.uid for nd in network.nodes()
+                             if isinstance(nd, Edfa) and isinstance(next(network.predecessors(nd)), Roadm)]
+    preamp_nodes_nobuild_uid = [nd.uid for nd in network.nodes()
+                                if isinstance(nd, Edfa) and isinstance(next(network.successors(nd)), Roadm)]
+    amp_nodes_nobuild = {nd.uid: nd for nd in network.nodes()
+                         if isinstance(nd, Edfa) and isinstance(next(network.predecessors(nd)), Roadm)}
+    preamp_nodes_nobuild = {nd.uid: nd for nd in network.nodes()
+                            if isinstance(nd, Edfa) and isinstance(next(network.successors(nd)), Roadm)}
     # roadm dict with restrictions before build
     roadms = {nd.uid: nd for nd in network.nodes() if isinstance(nd, Roadm)}
     # Build the network once using the default power defined in SI in eqpt config
     # power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
     # spacing, f_min and f_max
     p_db = equipment['SI']['default'].power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
-        equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
+                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
 
     build_network(network, equipment, p_db, p_total_db)
 
-    amp_nodes = [nd for nd in network.nodes() \
-        if isinstance(nd, Edfa) and isinstance(next(network.predecessors(nd)), Roadm)\
-           and next(network.predecessors(nd)).restrictions['booster_variety_list']]
+    amp_nodes = [nd for nd in network.nodes()
+                 if isinstance(nd, Edfa) and isinstance(next(network.predecessors(nd)), Roadm)
+                 and next(network.predecessors(nd)).restrictions['booster_variety_list']]
 
-    preamp_nodes = [nd for nd in network.nodes() \
-        if isinstance(nd, Edfa) and isinstance(next(network.successors(nd)), Roadm)\
-           and next(network.successors(nd)).restrictions['preamp_variety_list']]
+    preamp_nodes = [nd for nd in network.nodes()
+                    if isinstance(nd, Edfa) and isinstance(next(network.successors(nd)), Roadm)
+                    and next(network.successors(nd)).restrictions['preamp_variety_list']]
 
     # check that previously existing amp are not changed
     for amp in amp_nodes:
@@ -191,13 +192,13 @@ def test_restrictions(restrictions, equipment):
             # and if roadm had no restrictions before build:
             if restrictions['booster_variety_list'] and \
                not roadms[next(network.predecessors(amp)).uid]\
-                         .restrictions['booster_variety_list']:
+               .restrictions['booster_variety_list']:
                 if not amp.params.type_variety in restrictions['booster_variety_list']:
 
                     raise AssertionError()
     for amp in preamp_nodes:
         if amp.uid not in preamp_nodes_nobuild_uid:
             if restrictions['preamp_variety_list'] and\
-            not roadms[next(network.successors(amp)).uid].restrictions['preamp_variety_list']:
+                    not roadms[next(network.successors(amp)).uid].restrictions['preamp_variety_list']:
                 if not amp.params.type_variety in restrictions['preamp_variety_list']:
                     raise AssertionError()

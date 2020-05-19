@@ -27,6 +27,7 @@ def save_json(obj, filename):
     with open(filename, 'w', encoding='utf-8') as f:
         json.dump(obj, f, indent=2, ensure_ascii=False)
 
+
 def write_csv(obj, filename):
     """
     Convert dictionary items to a CSV file the dictionary format:
@@ -60,9 +61,9 @@ def write_csv(obj, filename):
     with open(filename, 'w', encoding='utf-8') as f:
         w = writer(f)
         for data_key, data_list in obj.items():
-            #main header
+            # main header
             w.writerow([data_key])
-            #sub headers:
+            # sub headers:
             headers = [_ for _ in data_list[0].keys()]
             w.writerow(headers)
             for data_dict in data_list:
@@ -117,6 +118,7 @@ def db2lin(value):
     """
     return 10**(value / 10)
 
+
 def round2float(number, step):
     step = round(step, 1)
     if step >= 0.01:
@@ -126,8 +128,10 @@ def round2float(number, step):
         number = round(number, 2)
     return number
 
+
 wavelength2freq = constants.lambda2nu
 freq2wavelength = constants.nu2lambda
+
 
 def freq2wavelength(value):
     """ Converts frequency units to wavelength units.
@@ -139,10 +143,12 @@ def freq2wavelength(value):
     """
     return constants.c / value
 
+
 def snr_sum(snr, bw, snr_added, bw_added=12.5e9):
     snr_added = snr_added - lin2db(bw/bw_added)
     snr = -lin2db(db2lin(-snr)+db2lin(-snr_added))
     return snr
+
 
 def deltawl2deltaf(delta_wl, wavelength):
     """ deltawl2deltaf(delta_wl, wavelength):
@@ -205,6 +211,7 @@ def rrc(ffs, baud_rate, alpha):
     hf[p_inds] = 1
     return sqrt(hf)
 
+
 def merge_amplifier_restrictions(dict1, dict2):
     """Updates contents of dicts recursively
 
@@ -226,6 +233,7 @@ def merge_amplifier_restrictions(dict1, dict2):
         else:
             copy_dict1[key] = dict2[key]
     return copy_dict1
+
 
 def silent_remove(this_list, elem):
     """Remove matching elements from a list without raising ValueError

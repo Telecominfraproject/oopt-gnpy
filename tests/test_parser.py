@@ -33,7 +33,7 @@ from gnpy.topology.request import (jsontocsv, requests_aggregation, compute_path
                                    ResultElement, PathRequest)
 from gnpy.tools.convert import convert_file
 from examples.path_requests_run import (requests_from_json, disjunctions_from_json,
-                                         correct_disjn, compute_path_with_disjunction)
+                                        correct_disjn, compute_path_with_disjunction)
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
@@ -44,7 +44,7 @@ equipment = load_equipment(eqpt_filename)
 @pytest.mark.parametrize('xls_input,expected_json_output', {
     DATA_DIR / 'CORONET_Global_Topology.xlsx':   DATA_DIR / 'CORONET_Global_Topology_expected.json',
     DATA_DIR / 'testTopology.xls':     DATA_DIR / 'testTopology_expected.json',
-    }.items())
+}.items())
 def test_excel_json_generation(xls_input, expected_json_output):
     """ tests generation of topology json
     """
@@ -69,12 +69,13 @@ def test_excel_json_generation(xls_input, expected_json_output):
 # assume xls entries
 # test that the build network gives correct results in gain mode
 
+
 @pytest.mark.parametrize('xls_input,expected_json_output',
-                         {DATA_DIR / 'CORONET_Global_Topology.xlsx':\
+                         {DATA_DIR / 'CORONET_Global_Topology.xlsx':
                           DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json',
-                          DATA_DIR / 'testTopology.xls':\
+                          DATA_DIR / 'testTopology.xls':
                           DATA_DIR / 'testTopology_auto_design_expected.json',
-                         }.items())
+                          }.items())
 def test_auto_design_generation_fromxlsgainmode(xls_input, expected_json_output):
     """ tests generation of topology json
         test that the build network gives correct results in gain mode
@@ -87,8 +88,8 @@ def test_auto_design_generation_fromxlsgainmode(xls_input, expected_json_output)
     # Build the network once using the default power defined in SI in eqpt config
 
     p_db = equipment['SI']['default'].power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
-        equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
+                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
     save_network(xls_input, network)
 
@@ -109,13 +110,15 @@ def test_auto_design_generation_fromxlsgainmode(xls_input, expected_json_output)
     assert not results.connections.extra
     assert not results.connections.different
 
-#test that autodesign creates same file as an input file already autodesigned
+# test that autodesign creates same file as an input file already autodesigned
+
+
 @pytest.mark.parametrize('json_input,expected_json_output',
-                         {DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json':\
+                         {DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json':
                           DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json',
-                          DATA_DIR / 'testTopology_auto_design_expected.json':\
+                          DATA_DIR / 'testTopology_auto_design_expected.json':
                           DATA_DIR / 'testTopology_auto_design_expected.json',
-                         }.items())
+                          }.items())
 def test_auto_design_generation_fromjson(json_input, expected_json_output):
     """test that autodesign creates same file as an input file already autodesigned
     """
@@ -127,8 +130,8 @@ def test_auto_design_generation_fromjson(json_input, expected_json_output):
     # Build the network once using the default power defined in SI in eqpt config
 
     p_db = equipment['SI']['default'].power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
-        equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
+                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
     save_network(json_input, network)
 
@@ -150,10 +153,12 @@ def test_auto_design_generation_fromjson(json_input, expected_json_output):
     assert not results.connections.different
 
 # test services creation
+
+
 @pytest.mark.parametrize('xls_input,expected_json_output', {
     DATA_DIR / 'testTopology.xls':     DATA_DIR / 'testTopology_services_expected.json',
     DATA_DIR / 'testService.xls':     DATA_DIR / 'testService_services_expected.json'
-    }.items())
+}.items())
 def test_excel_service_json_generation(xls_input, expected_json_output):
     """ test services creation
     """
@@ -161,8 +166,8 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
     network = load_network(DATA_DIR / 'testTopology.xls', equipment)
     # Build the network once using the default power defined in SI in eqpt config
     p_db = equipment['SI']['default'].power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
-        equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
+                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
     convert_service_sheet(xls_input, equipment, network, network_filename=DATA_DIR / 'testTopology.xls')
 
@@ -185,6 +190,8 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
     # TODO verify that requested bandwidth is not zero !
 
 # test xls answers creation
+
+
 @pytest.mark.parametrize('json_input, csv_output', {
     DATA_DIR / 'testTopology_response.json':     DATA_DIR / 'testTopology_response',
 }.items())
@@ -251,6 +258,7 @@ def test_csv_response_generation(json_input, csv_output):
         print(list(expected_resp[column]))
         print(type(list(resp[column])[-1]))
 
+
 def compare_response(exp_resp, act_resp):
     """ False if the keys are different in the nested dicts as well
     """
@@ -292,8 +300,8 @@ def test_json_response_generation(xls_input, expected_response_file):
     network = load_network(xls_input, equipment)
     p_db = equipment['SI']['default'].power_dbm
 
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
-        equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
+                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
 
     data = convert_service_sheet(xls_input, equipment, network)
@@ -360,6 +368,8 @@ def test_json_response_generation(xls_input, expected_response_file):
 
 # initial network is based on the couple testTopology.xls/ testTopology_auto_design_expected.json
 # with added constraints to cover more test cases
+
+
 @pytest.mark.parametrize('source, destination, route_list, hoptype, expected_correction', [
     ('trx Brest_KLA', 'trx Vannes_KBE',
         'roadm Brest_KLA | roadm Lannion_CAS | roadm Lorient_KMA | roadm Vannes_KBE',
@@ -384,7 +394,7 @@ def test_json_response_generation(xls_input, expected_response_file):
     ('trx Brest_KLA', 'Rennes_STA', '', 'LOOSE', 'Fail'),
     ('Brest_KLA', 'Rennes_STA', '', 'LOOSE', 'Fail'),
     ('Brest_KLA', 'trx Rennes_STA', '', 'STRICT', 'Fail'),
-    ('trx Brest_KLA', 'trx Rennes_STA','trx Rennes_STA', 'STRICT', []),
+    ('trx Brest_KLA', 'trx Rennes_STA', 'trx Rennes_STA', 'STRICT', []),
     ('trx Brest_KLA', 'trx Rennes_STA', None, '', []),
     ('trx Brest_KLA', 'trx Rennes_STA', 'Brest_KLA | Quimper | Ploermel', 'LOOSE',
         ['roadm Brest_KLA']),
@@ -393,7 +403,7 @@ def test_json_response_generation(xls_input, expected_response_file):
     ('trx Brest_KLA', 'trx Rennes_STA', 'Brest_KLA | trx Quimper', 'LOOSE', ['roadm Brest_KLA']),
     ('trx Brest_KLA', 'trx Rennes_STA', 'Brest_KLA | trx Lannion_CAS', 'LOOSE', ['roadm Brest_KLA']),
     ('trx Brest_KLA', 'trx Rennes_STA', 'Brest_KLA | trx Lannion_CAS', 'STRICT', 'Fail')
-    ])
+])
 def test_excel_ila_constraints(source, destination, route_list, hoptype, expected_correction):
     """ add different kind of constraints to test all correct_route cases
     """

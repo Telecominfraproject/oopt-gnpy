@@ -17,6 +17,7 @@ from gnpy.core.utils import load_json
 from pathlib import Path
 TEST_DIR = Path(__file__).parent
 
+
 def test_raman_fiber():
     """ Test the accuracy of propagating the RamanFiber.
     """

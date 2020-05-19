@@ -21,9 +21,11 @@ from gnpy.core.exceptions import SpectrumError
 
 LOGGER = getLogger(__name__)
 
+
 class Bitmap:
     """ records the spectrum occupation
     """
+
     def __init__(self, f_min, f_max, grid, guardband=0.15e12, bitmap=None):
         # n is the min index including guardband. Guardband is require to be sure
         # that a channel can be assigned  with center frequency fmin (means that its
@@ -46,10 +48,12 @@ class Bitmap:
         """ converts the n (itu grid) into a local index
         """
         return self.freq_index[i]
+
     def geti(self, nvalue):
         """ converts the local index into n (itu grid)
         """
         return self.freq_index.index(nvalue)
+
     def insert_left(self, newbitmap):
         """ insert bitmap on the left to align oms bitmaps if their start frequencies are different
         """
@@ -57,6 +61,7 @@ class Bitmap:
         temp = list(range(self.n_min-len(newbitmap), self.n_min))
         self.freq_index = temp + self.freq_index
         self.n_min = self.freq_index[0]
+
     def insert_right(self, newbitmap):
         """ insert bitmap on the right to align oms bitmaps if their stop frequencies are different
         """
@@ -64,13 +69,16 @@ class Bitmap:
         self.freq_index = self.freq_index + list(range(self.n_max, self.n_max+len(newbitmap)))
         self.n_max = self.freq_index[-1]
 
+
 #    +'grid available_slots f_min f_max services_list')
 OMSParams = namedtuple('OMSParams', 'oms_id el_id_list el_list')
+
 
 class OMS:
     """ OMS class is the logical container that represent a link between two adjacent ROADMs and
         records the crossed elements and the occupied spectrum
     """
+
     def __init__(self, *args, **params):
         params = OMSParams(**params)
         self.oms_id = params.oms_id
@@ -80,12 +88,14 @@ class OMS:
         self.nb_channels = 0
         self.service_list = []
     # TODO
+
     def __str__(self):
         return '\n\t'.join([f'{type(self).__name__} {self.oms_id}',
-                               f'{self.el_id_list[0]} - {self.el_id_list[-1]}'])
+                            f'{self.el_id_list[0]} - {self.el_id_list[-1]}'])
+
     def __repr__(self):
         return '\n\t'.join([f'{type(self).__name__} {self.oms_id}',
-                               f'{self.el_id_list[0]} - {self.el_id_list[-1]}', '\n'])
+                            f'{self.el_id_list[0]} - {self.el_id_list[-1]}', '\n'])
 
     def add_element(self, elem):
         """ records oms elements
@@ -133,13 +143,15 @@ class OMS:
             raise SpectrumError(f'N {nvalue}, M {mvalue} over the N spectrum bitmap bounds')
         if startn <= self.spectrum_bitmap.n_min:
             raise SpectrumError(f'N {nvalue}, M {mvalue} below the N spectrum bitmap bounds')
-        self.spectrum_bitmap.bitmap[self.spectrum_bitmap.geti(startn):self.spectrum_bitmap.geti(stopn)+1] = [0] * (stopn-startn+1)
+        self.spectrum_bitmap.bitmap[self.spectrum_bitmap.geti(
+            startn):self.spectrum_bitmap.geti(stopn)+1] = [0] * (stopn-startn+1)
 
     def add_service(self, service_id, nb_wl):
         """ record service and mark spectrum as occupied
         """
         self.service_list.append(service_id)
         self.nb_channels += nb_wl
+
 
 def frequency_to_n(freq, grid=0.00625e12):
     """ converts frequency into the n value (ITU grid)
@@ -154,6 +166,7 @@ def frequency_to_n(freq, grid=0.00625e12):
     """
     return (int)((freq-193.1e12)/grid)
 
+
 def nvalue_to_frequency(nvalue, grid=0.00625e12):
     """ converts n value into a frequency
         reference to Recommendation G.694.1 (02/12), Table 1
@@ -167,12 +180,14 @@ def nvalue_to_frequency(nvalue, grid=0.00625e12):
     """
     return 193.1e12 + nvalue * grid
 
+
 def mvalue_to_slots(nvalue, mvalue):
     """ convert center n an m into start and stop n
     """
     startn = nvalue - mvalue
-    stopn = nvalue + mvalue -1
+    stopn = nvalue + mvalue - 1
     return startn, stopn
+
 
 def slots_to_m(startn, stopn):
     """ converts the start and stop n values to the center n and m value
@@ -189,6 +204,7 @@ def slots_to_m(startn, stopn):
     nvalue = (int)((startn+stopn+1)/2)
     mvalue = (int)((stopn-startn+1)/2)
     return nvalue, mvalue
+
 
 def m_to_freq(nvalue, mvalue, grid=0.00625e12):
     """ converts m into frequency range
@@ -208,6 +224,7 @@ def m_to_freq(nvalue, mvalue, grid=0.00625e12):
     fstop = nvalue_to_frequency(stopn+1, grid)
     return fstart, fstop
 
+
 def align_grids(oms_list):
     """ used to apply same grid to all oms : same starting n, stop n and slot size
         out of grid slots are set to 0
@@ -220,6 +237,7 @@ def align_grids(oms_list):
         if (n_max - this_o.spectrum_bitmap.n_max) > 0:
             this_o.spectrum_bitmap.insert_right([0] * (n_max - this_o.spectrum_bitmap.n_max))
     return oms_list
+
 
 def build_oms_list(network, equipment):
     """ initialization of OMS list in the network
@@ -234,7 +252,7 @@ def build_oms_list(network, equipment):
     for node in [n for n in network.nodes() if isinstance(n, Roadm)]:
         for edge in network.edges([node]):
             if not isinstance(edge[1], Transceiver):
-                nd_in = edge[0] # nd_in is a Roadm
+                nd_in = edge[0]  # nd_in is a Roadm
                 try:
                     nd_in.oms_list.append(oms_id)
                 except AttributeError:
@@ -277,6 +295,7 @@ def build_oms_list(network, equipment):
     reversed_oms(oms_list)
     return oms_list
 
+
 def reversed_oms(oms_list):
     """ identifies reversed OMS
         only applicable for non parallel OMS
@@ -303,6 +322,7 @@ def bitmap_sum(band1, band2):
         else:
             res.append(1)
     return res
+
 
 def spectrum_selection(pth, oms_list, requested_m, requested_n=None):
     """ collects spectrum availability and call the select_candidate function
@@ -349,7 +369,7 @@ def spectrum_selection(pth, oms_list, requested_m, requested_n=None):
         # print(freq_index[i-m:i+m])
         if (freq_availability[i-requested_m:i+requested_m] == [1] * (2*requested_m) and
                 freq_index[i-requested_m] >= freq_index_min
-                      and freq_index[i+requested_m-1] <= freq_index_max):
+                and freq_index[i+requested_m-1] <= freq_index_max):
             # candidate is the triplet center_n, startn and stopn
             candidate = (requested_n, requested_n-requested_m, requested_n+requested_m-1)
         else:
@@ -362,6 +382,7 @@ def spectrum_selection(pth, oms_list, requested_m, requested_n=None):
     # print(candidate)
     return candidate, path_oms
 
+
 def select_candidate(candidates, policy):
     """ selects a candidate among all available spectrum
     """
@@ -372,6 +393,7 @@ def select_candidate(candidates, policy):
             return (None, None, None)
     else:
         raise ServiceError('Only first_fit spectrum assignment policy is implemented.')
+
 
 def pth_assign_spectrum(pths, rqs, oms_list, rpths):
     """ basic first fit assignment
@@ -401,7 +423,7 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
                 # checks that requested_m is fitting startm and stopm
                 if 2 * requested_m > (stopn - startn + 1):
                     msg = f'candidate: {(center_n, startn, stopn)} is not consistant ' +\
-                          f'with {requested_m}'
+                        f'with {requested_m}'
                     LOGGER.critical(msg)
                     raise ValueError(msg)
 

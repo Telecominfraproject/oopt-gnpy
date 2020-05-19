@@ -7,6 +7,7 @@ import subprocess
 
 SRC_ROOT = Path(__file__).parent.parent
 
+
 @pytest.mark.parametrize("output, invocation", (
     ('transmission_main_example',
         ('./examples/transmission_main_example.py',)),

@@ -28,7 +28,7 @@ class Parameters:
         instance_dict = self.__dict__
         new_dict = {}
         for key in class_dict:
-            if isinstance(class_dict[key],property):
+            if isinstance(class_dict[key], property):
                 new_dict[key] = instance_dict['_' + key]
         return new_dict
 
@@ -112,7 +112,6 @@ class NLIParams(Parameters):
     @f_pump_resolution.setter
     def f_pump_resolution(self, f_pump_resolution):
         self._f_pump_resolution = f_pump_resolution
-
 
     @property
     def computed_channels(self):
@@ -283,4 +282,3 @@ class FiberParams(Parameters):
         dictionary = super().asdict()
         dictionary['loss_coef'] = self.loss_coef * 1e3
         return dictionary
-

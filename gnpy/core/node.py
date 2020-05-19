@@ -20,9 +20,11 @@ via subclassing.
 
 from collections import namedtuple
 
+
 class Location(namedtuple('Location', 'latitude longitude city region')):
     def __new__(cls, latitude=0, longitude=0, city=None, region=None):
         return super().__new__(cls, latitude, longitude, city, region)
+
 
 class Node:
     def __init__(self, uid, name=None, params=None, metadata=None, operational=None, type_variety=None):

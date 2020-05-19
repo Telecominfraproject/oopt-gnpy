@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # TelecomInfraProject/gnpy/examples
 # Module name : test_automaticmodefeature.py
-# Version : 
+# Version :
 # License : BSD 3-Clause Licence
 # Copyright (c) 2018, Telecom Infra Project
 
@@ -25,25 +25,26 @@ from gnpy.topology.request import compute_path_dsjctn, propagate, propagate_and_
 
 network_file_name = Path(__file__).parent.parent / 'tests/data/testTopology_expected.json'
 service_file_name = Path(__file__).parent.parent / 'tests/data/testTopology_testservices.json'
-result_file_name  = Path(__file__).parent.parent / 'tests/data/testTopology_testresults.json'
+result_file_name = Path(__file__).parent.parent / 'tests/data/testTopology_testresults.json'
 eqpt_library_name = Path(__file__).parent.parent / 'tests/data/eqpt_config.json'
 
-@pytest.mark.parametrize("net",[network_file_name])
+
+@pytest.mark.parametrize("net", [network_file_name])
 @pytest.mark.parametrize("eqpt", [eqpt_library_name])
-@pytest.mark.parametrize("serv",[service_file_name])
-@pytest.mark.parametrize("expected_mode",[['16QAM', 'PS_SP64_1', 'PS_SP64_1', 'PS_SP64_1', 'mode 2 - fake', 'mode 2', 'PS_SP64_1', 'mode 3', 'PS_SP64_1', 'PS_SP64_1', '16QAM', 'mode 1', 'PS_SP64_1', 'PS_SP64_1', 'mode 1', 'mode 2', 'mode 1', 'mode 2', 'nok']])
-def test_automaticmodefeature(net,eqpt,serv,expected_mode):
+@pytest.mark.parametrize("serv", [service_file_name])
+@pytest.mark.parametrize("expected_mode", [['16QAM', 'PS_SP64_1', 'PS_SP64_1', 'PS_SP64_1', 'mode 2 - fake', 'mode 2', 'PS_SP64_1', 'mode 3', 'PS_SP64_1', 'PS_SP64_1', '16QAM', 'mode 1', 'PS_SP64_1', 'PS_SP64_1', 'mode 1', 'mode 2', 'mode 1', 'mode 2', 'nok']])
+def test_automaticmodefeature(net, eqpt, serv, expected_mode):
     equipment = load_equipment(eqpt)
-    network = load_network(net,equipment)
+    network = load_network(net, equipment)
     data = load_requests(serv, eqpt, bidir=False, network=network, network_filename=net)
 
     # Build the network once using the default power defined in SI in eqpt config
     # power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
-    # spacing, f_min and f_max 
+    # spacing, f_min and f_max
     p_db = equipment['SI']['default'].power_dbm
 
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
-        equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
+                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
 
     rqs = requests_from_json(data, equipment)
@@ -52,7 +53,7 @@ def test_automaticmodefeature(net,eqpt,serv,expected_mode):
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
     path_res_list = []
 
-    for i,pathreq in enumerate(rqs):
+    for i, pathreq in enumerate(rqs):
 
         # use the power specified in requests but might be different from the one specified for design
         # the power is an optional parameter for requests definition
@@ -61,7 +62,8 @@ def test_automaticmodefeature(net,eqpt,serv,expected_mode):
         p_total_db = p_db + lin2db(pathreq.nb_channel)
         print(f'request {pathreq.request_id}')
         print(f'Computing path from {pathreq.source} to {pathreq.destination}')
-        print(f'with path constraint: {[pathreq.source]+pathreq.nodes_list}') #adding first node to be clearer on the output
+        # adding first node to be clearer on the output
+        print(f'with path constraint: {[pathreq.source]+pathreq.nodes_list}')
 
         total_path = pths[i]
         print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}\n')
@@ -70,17 +72,16 @@ def test_automaticmodefeature(net,eqpt,serv,expected_mode):
         if pathreq.baud_rate is not None:
             print(pathreq.format)
             path_res_list.append(pathreq.format)
-            total_path = propagate(total_path,pathreq,equipment)
+            total_path = propagate(total_path, pathreq, equipment)
         else:
-            total_path,mode = propagate_and_optimize_mode(total_path,pathreq,equipment)
+            total_path, mode = propagate_and_optimize_mode(total_path, pathreq, equipment)
             # if no baudrate satisfies spacing, no mode is returned and an empty path is returned
             # a warning is shown in the propagate_and_optimize_mode
-            if mode is not None :
+            if mode is not None:
                 print (mode['format'])
                 path_res_list.append(mode['format'])
-            else :
+            else:
                 print('nok')
                 path_res_list.append('nok')
     print(path_res_list)
-    assert path_res_list==expected_mode
-
+    assert path_res_list == expected_mode

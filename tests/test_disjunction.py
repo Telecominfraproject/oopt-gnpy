@@ -29,6 +29,7 @@ SERVICE_FILE_NAME = Path(__file__).parent.parent / 'tests/data/testTopology_test
 RESULT_FILE_NAME = Path(__file__).parent.parent / 'tests/data/testTopology_testresults.json'
 EQPT_LIBRARY_NAME = Path(__file__).parent.parent / 'tests/data/eqpt_config.json'
 
+
 @pytest.fixture()
 def serv(test_setup):
     """ common setup for service list
@@ -39,6 +40,7 @@ def serv(test_setup):
     rqs = correct_json_route_list(network, rqs)
     dsjn = disjunctions_from_json(data)
     return network, equipment, rqs, dsjn
+
 
 @pytest.fixture()
 def test_setup():
@@ -51,12 +53,13 @@ def test_setup():
     # spacing, f_min and f_max
     p_db = equipment['SI']['default'].power_dbm
 
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
-        equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
+                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
     build_oms_list(network, equipment)
 
     return network, equipment
+
 
 def test_disjunction(serv):
     """ service_file contains sevaral combination of disjunction constraint. The test checks
@@ -82,6 +85,7 @@ def test_disjunction(serv):
     print(dsjn_list)
     assert test
 
+
 def test_does_not_loop_back(serv):
     """ check that computed paths do not loop back ie each element appears only once
     """
@@ -102,6 +106,7 @@ def test_does_not_loop_back(serv):
     # check that requests with different parameters are not aggregated
     # check that the total agregated bandwidth is the same after aggregation
     #
+
 
 def create_rq(equipment, srce, dest, bdir, nd_list, ls_list):
     """ create the usual request list according to parameters
@@ -127,6 +132,7 @@ def create_rq(equipment, srce, dest, bdir, nd_list, ls_list):
     params['path_bandwidth'] = 100000000000.0
     requests_list.append(PathRequest(**params))
     return requests_list
+
 
 @pytest.mark.parametrize('srce, dest, result, pth, nd_list, ls_list', [
     ['a', 'trx h', 'fail', 'no_path', [], []],

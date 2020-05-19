@@ -24,7 +24,8 @@ from collections import namedtuple
 
 logger = getLogger(__name__)
 
-def load_network(filename, equipment, name_matching = False):
+
+def load_network(filename, equipment, name_matching=False):
     json_filename = ''
     if filename.suffix.lower() in ('.xls', '.xlsx'):
         logger.info('Automatically generating topology JSON file')
@@ -36,10 +37,12 @@ def load_network(filename, equipment, name_matching = False):
     json_data = load_json(json_filename)
     return network_from_json(json_data, equipment)
 
+
 def save_network(filename, network):
     filename_output = path.splitext(filename)[0] + '_auto_design.json'
     json_data = network_to_json(network)
     save_json(json_data, filename_output)
+
 
 def network_from_json(json_data, equipment):
     # NOTE|dutc: we could use the following, but it would tie our data format
@@ -71,24 +74,26 @@ def network_from_json(json_data, equipment):
                 edge_length = nodes[from_node].params.length
             else:
                 edge_length = 0.01
-            g.add_edge(nodes[from_node], nodes[to_node], weight = edge_length)
+            g.add_edge(nodes[from_node], nodes[to_node], weight=edge_length)
         except KeyError:
             raise NetworkTopologyError(f'can not find {from_node} or {to_node} defined in {cx}')
 
     return g
 
+
 def network_to_json(network):
     data = {
         'elements': [n.to_json for n in network]
-        }
+    }
     connections = {
         'connections': [{"from_node": n.uid,
                          "to_node": next_n.uid}
                         for n in network
                         for next_n in network.successors(n) if next_n is not None]
-        }
+    }
     data.update(connections)
     return data
+
 
 def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restrictions=None):
     """amplifer selection algorithm
@@ -101,7 +106,7 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
     # because main use case is to have specific radm amp which are not allowed for ILA
     # with the auto design
     edfa_dict = {name: amp for (name, amp) in equipment['Edfa'].items()
-        if restrictions is None or name in restrictions}
+                 if restrictions is None or name in restrictions}
 
     pin = power_target - gain_target
 
@@ -112,51 +117,49 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
     # extended gain max allowance TARGET_EXTENDED_GAIN is coming from eqpt_config.json
     # power attribut include power AND gain limitations
     edfa_list = [Edfa_list(
-                variety=edfa_variety,
-                power=min(
-                    pin
-                    +edfa.gain_flatmax
-                    +TARGET_EXTENDED_GAIN,
-                    edfa.p_max
-                    )
-                    -power_target,
-                gain_min=
-                    gain_target+3
-                    -edfa.gain_min,
-                nf=edfa_nf(gain_target, edfa_variety, equipment)) \
-                for edfa_variety, edfa in edfa_dict.items()
-                if ((edfa.allowed_for_design or restrictions is not None) and not edfa.raman)]
+        variety=edfa_variety,
+        power=min(
+            pin
+            + edfa.gain_flatmax
+            + TARGET_EXTENDED_GAIN,
+            edfa.p_max
+        )
+        - power_target,
+        gain_min=gain_target+3
+        - edfa.gain_min,
+        nf=edfa_nf(gain_target, edfa_variety, equipment))
+        for edfa_variety, edfa in edfa_dict.items()
+        if ((edfa.allowed_for_design or restrictions is not None) and not edfa.raman)]
 
-    #consider a Raman list because of different gain_min requirement: 
-    #do not allow extended gain min for Raman
+    # consider a Raman list because of different gain_min requirement:
+    # do not allow extended gain min for Raman
     raman_list = [Edfa_list(
-                variety=edfa_variety,
-                power=min(
-                    pin
-                    +edfa.gain_flatmax
-                    +TARGET_EXTENDED_GAIN,
-                    edfa.p_max
-                    )
-                    -power_target,
-                gain_min=
-                    gain_target
-                    -edfa.gain_min,
-                nf=edfa_nf(gain_target, edfa_variety, equipment))
-                for edfa_variety, edfa in edfa_dict.items()
-                if (edfa.allowed_for_design and edfa.raman)] \
-                if raman_allowed else []
+        variety=edfa_variety,
+        power=min(
+            pin
+            + edfa.gain_flatmax
+            + TARGET_EXTENDED_GAIN,
+            edfa.p_max
+        )
+        - power_target,
+        gain_min=gain_target
+        - edfa.gain_min,
+        nf=edfa_nf(gain_target, edfa_variety, equipment))
+        for edfa_variety, edfa in edfa_dict.items()
+        if (edfa.allowed_for_design and edfa.raman)] \
+        if raman_allowed else []
 
-    #merge raman and edfa lists
+    # merge raman and edfa lists
     amp_list = edfa_list + raman_list
 
-    #filter on min gain limitation: 
-    acceptable_gain_min_list = [x for x in amp_list if x.gain_min>0]
+    # filter on min gain limitation:
+    acceptable_gain_min_list = [x for x in amp_list if x.gain_min > 0]
 
     if len(acceptable_gain_min_list) < 1:
-        #do not take this empty list into account for the rest of the code
-        #but issue a warning to the user and do not consider Raman
-        #Raman below min gain should not be allowed because i is meant to be a design requirement
-        #and raman padding at the amplifier input is impossible!
+        # do not take this empty list into account for the rest of the code
+        # but issue a warning to the user and do not consider Raman
+        # Raman below min gain should not be allowed because i is meant to be a design requirement
+        # and raman padding at the amplifier input is impossible!
 
         if len(edfa_list) < 1:
             raise ConfigurationError(f'auto_design could not find any amplifier \
@@ -165,45 +168,44 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
         else:
             # TODO: convert to logging
             print(
-                f'\x1b[1;31;40m'\
+                f'\x1b[1;31;40m'
                 + f'WARNING: target gain in node {uid} is below all available amplifiers min gain: \
-                    amplifier input padding will be assumed, consider increase span fiber padding instead'\
+                    amplifier input padding will be assumed, consider increase span fiber padding instead'
                 + '\x1b[0m'
-                )
+            )
             acceptable_gain_min_list = edfa_list
 
-    #filter on gain+power limitation:
-    #this list checks both the gain and the power requirement
-    #because of the way .power is calculated in the list
-    acceptable_power_list = [x for x in acceptable_gain_min_list if x.power>0]
+    # filter on gain+power limitation:
+    # this list checks both the gain and the power requirement
+    # because of the way .power is calculated in the list
+    acceptable_power_list = [x for x in acceptable_gain_min_list if x.power > 0]
     if len(acceptable_power_list) < 1:
-        #no amplifier satisfies the required power, so pick the highest power(s):
+        # no amplifier satisfies the required power, so pick the highest power(s):
         power_max = max(acceptable_gain_min_list, key=attrgetter('power')).power
-        #check and pick if other amplifiers may have a similar gain/power
-        #allow a 0.3dB power range 
-        #this allows to chose an amplifier with a better NF subsequentely
+        # check and pick if other amplifiers may have a similar gain/power
+        # allow a 0.3dB power range
+        # this allows to chose an amplifier with a better NF subsequentely
         acceptable_power_list = [x for x in acceptable_gain_min_list
-                                 if x.power-power_max>-0.3]
+                                 if x.power-power_max > -0.3]
 
-    
     # gain and power requirements are resolved,
     #       =>chose the amp with the best NF among the acceptable ones:
-    selected_edfa = min(acceptable_power_list, key=attrgetter('nf')) #filter on NF
-    #check what are the gain and power limitations of this amp
-    power_reduction = round(min(selected_edfa.power, 0),2)
+    selected_edfa = min(acceptable_power_list, key=attrgetter('nf'))  # filter on NF
+    # check what are the gain and power limitations of this amp
+    power_reduction = round(min(selected_edfa.power, 0), 2)
     if power_reduction < -0.5:
         print(
-            f'\x1b[1;31;40m'\
+            f'\x1b[1;31;40m'
             + f'WARNING: target gain and power in node {uid}\n \
     is beyond all available amplifiers capabilities and/or extended_gain_range:\n\
-    a power reduction of {power_reduction} is applied\n'\
+    a power reduction of {power_reduction} is applied\n'
             + '\x1b[0m'
-            )
-
+        )
 
     return selected_edfa.variety, power_reduction
 
-def target_power(network, node, equipment): #get_fiber_dp
+
+def target_power(network, node, equipment):  # get_fiber_dp
     SPAN_LOSS_REF = 20
     POWER_SLOPE = 0.3
     power_mode = equipment['Span']['default'].power_mode
@@ -216,12 +218,13 @@ def target_power(network, node, equipment): #get_fiber_dp
         dp = min(dp_range[1], dp)
     except KeyError:
         raise ConfigurationError(f'invalid delta_power_range_db definition in eqpt_config[Span]'
-              f'delta_power_range_db: [lower_bound, upper_bound, step]')
+                                 f'delta_power_range_db: [lower_bound, upper_bound, step]')
 
     if isinstance(node, Roadm):
         dp = 0
 
     return dp
+
 
 def prev_node_generator(network, node):
     """fused spans interest:
@@ -237,6 +240,7 @@ def prev_node_generator(network, node):
     else:
         StopIteration
 
+
 def next_node_generator(network, node):
     """fused spans interest:
     iterate over all successors while they are Fused or Fiber type"""
@@ -250,6 +254,7 @@ def next_node_generator(network, node):
         yield from next_node_generator(network, next_node)
     else:
         StopIteration
+
 
 def span_loss(network, node):
     """Fused span interest:
@@ -269,6 +274,7 @@ def span_loss(network, node):
         pass
     return loss
 
+
 def find_first_node(network, node):
     """Fused node interest:
     returns the 1st node at the origin of a succession of fused nodes
@@ -277,6 +283,7 @@ def find_first_node(network, node):
     for this_node in prev_node_generator(network, node):
         pass
     return this_node
+
 
 def find_last_node(network, node):
     """Fused node interest:
@@ -287,8 +294,9 @@ def find_last_node(network, node):
         pass
     return this_node
 
+
 def set_amplifier_voa(amp, power_target, power_mode):
-    VOA_MARGIN = 1 #do not maximize the VOA optimization
+    VOA_MARGIN = 1  # do not maximize the VOA optimization
     if amp.out_voa is None:
         if power_mode:
             gain_target = amp.effective_gain
@@ -298,14 +306,15 @@ def set_amplifier_voa(amp, power_target, power_mode):
             amp.delta_p = amp.delta_p + voa
             amp.effective_gain = amp.effective_gain + voa
         else:
-            voa = 0 # no output voa optimization in gain mode
+            voa = 0  # no output voa optimization in gain mode
         amp.out_voa = voa
+
 
 def set_egress_amplifier(network, roadm, equipment, pref_total_db):
     power_mode = equipment['Span']['default'].power_mode
     next_oms = (n for n in network.successors(roadm) if not isinstance(n, Transceiver))
     for oms in next_oms:
-        #go through all the OMS departing from the Roadm
+        # go through all the OMS departing from the Roadm
         node = roadm
         prev_node = roadm
         next_node = oms
@@ -318,7 +327,7 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
         prev_voa = 0
         voa = 0
         while True:
-        #go through all nodes in the OMS (loop until next Roadm instance)
+            # go through all nodes in the OMS (loop until next Roadm instance)
             if isinstance(node, Edfa):
                 node_loss = span_loss(network, prev_node)
                 voa = node.out_voa if node.out_voa else 0
@@ -329,25 +338,25 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
                 gain_from_dp = node_loss + dp - prev_dp + prev_voa
                 if node.effective_gain is None or power_mode:
                     gain_target = gain_from_dp
-                else: #gain mode with effective_gain 
+                else:  # gain mode with effective_gain
                     gain_target = node.effective_gain
                     dp = prev_dp - node_loss + gain_target
 
-                power_target = pref_total_db + dp         
+                power_target = pref_total_db + dp
 
                 raman_allowed = False
                 if isinstance(prev_node, Fiber):
                     max_fiber_lineic_loss_for_raman = \
-                            equipment['Span']['default'].max_fiber_lineic_loss_for_raman
+                        equipment['Span']['default'].max_fiber_lineic_loss_for_raman
                     raman_allowed = prev_node.params.loss_coef < max_fiber_lineic_loss_for_raman
 
                 # implementation of restrictions on roadm boosters
-                if isinstance(prev_node,Roadm):
+                if isinstance(prev_node, Roadm):
                     if prev_node.restrictions['booster_variety_list']:
                         restrictions = prev_node.restrictions['booster_variety_list']
                     else:
                         restrictions = None
-                elif isinstance(next_node,Roadm):
+                elif isinstance(next_node, Roadm):
                     # implementation of restrictions on roadm preamp
                     if next_node.restrictions['preamp_variety_list']:
                         restrictions = next_node.restrictions['preamp_variety_list']
@@ -356,21 +365,21 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
                 else:
                     restrictions = None
 
-                if node.params.type_variety == '':                   
-                    edfa_variety, power_reduction = select_edfa(raman_allowed, 
-                                   gain_target, power_target, equipment, node.uid, restrictions)
+                if node.params.type_variety == '':
+                    edfa_variety, power_reduction = select_edfa(raman_allowed,
+                                                                gain_target, power_target, equipment, node.uid, restrictions)
                     extra_params = equipment['Edfa'][edfa_variety]
                     node.params.update_params(extra_params.__dict__)
                     dp += power_reduction
                     gain_target += power_reduction
                 elif node.params.raman and not raman_allowed:
                     print(
-                        f'\x1b[1;31;40m'\
+                        f'\x1b[1;31;40m'
                         + f'WARNING: raman is used in node {node.uid}\n \
-                but fiber lineic loss is above threshold\n'\
+                but fiber lineic loss is above threshold\n'
                         + '\x1b[0m'
-                        )                    
-                                
+                    )
+
                 node.delta_p = dp if power_mode else None
                 node.effective_gain = gain_target
                 set_amplifier_voa(node, power_target, power_mode)
@@ -386,32 +395,32 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
 
 def add_egress_amplifier(network, node):
     next_nodes = [n for n in network.successors(node)
-        if not (isinstance(n, Transceiver) or isinstance(n, Fused) or isinstance(n, Edfa))]
-        #no amplification for fused spans or TRX
+                  if not (isinstance(n, Transceiver) or isinstance(n, Fused) or isinstance(n, Edfa))]
+    # no amplification for fused spans or TRX
     for i, next_node in enumerate(next_nodes):
         network.remove_edge(node, next_node)
         amp = Edfa(
-                    uid = f'Edfa{i}_{node.uid}',
-                    params = {},
-                    metadata = {
-                        'location': {
-                            'latitude':  (node.lat * 2 + next_node.lat * 2) / 4,
-                            'longitude': (node.lng * 2 + next_node.lng * 2) / 4,
-                            'city':      node.loc.city,
-                            'region':    node.loc.region,
-                        }
-                    },
-                    operational = {
-                        'gain_target': None,
-                        'tilt_target': 0,
-                    })
+            uid=f'Edfa{i}_{node.uid}',
+            params={},
+            metadata={
+                'location': {
+                    'latitude':  (node.lat * 2 + next_node.lat * 2) / 4,
+                    'longitude': (node.lng * 2 + next_node.lng * 2) / 4,
+                    'city':      node.loc.city,
+                    'region':    node.loc.region,
+                }
+            },
+            operational={
+                'gain_target': None,
+                'tilt_target': 0,
+            })
         network.add_node(amp)
-        if isinstance(node,Fiber):
+        if isinstance(node, Fiber):
             edgeweight = node.params.length
         else:
             edgeweight = 0.01
-        network.add_edge(node, amp, weight = edgeweight)
-        network.add_edge(amp, next_node, weight = 0.01)
+        network.add_edge(node, amp, weight=edgeweight)
+        network.add_edge(amp, next_node, weight=0.01)
 
 
 def calculate_new_length(fiber_length, bounds, target_length):
@@ -459,15 +468,15 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
     for span, lng, lat in zip(range(n_spans), xpos, ypos):
         new_span = Fiber(uid=f'{fiber.uid}_({span+1}/{n_spans})',
                          type_variety=fiber.type_variety,
-                          metadata={
-                            'location': {
-                                'latitude':  lat,
-                                'longitude': lng,
-                                'city':      fiber.loc.city,
-                                'region':    fiber.loc.region,
-                            }
-                          },
-                          params=fiber.params.asdict())
+                         metadata={
+                              'location': {
+                                  'latitude':  lat,
+                                  'longitude': lng,
+                                  'city':      fiber.loc.city,
+                                  'region':    fiber.loc.region,
+                              }
+                         },
+                         params=fiber.params.asdict())
         if isinstance(prev_node, Fiber):
             edgeweight = prev_node.params.length
         else:
@@ -477,16 +486,20 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
     if isinstance(prev_node, Fiber):
         edgeweight = prev_node.params.length
     else:
-        edgeweight = 0.01    
+        edgeweight = 0.01
     network.add_edge(prev_node, next_node, weight=edgeweight)
+
 
 def add_connector_loss(network, fibers, default_con_in, default_con_out, EOL):
     for fiber in fibers:
-        if fiber.params.con_in is None: fiber.params.con_in = default_con_in
-        if fiber.params.con_out is None: fiber.params.con_out = default_con_out
+        if fiber.params.con_in is None:
+            fiber.params.con_in = default_con_in
+        if fiber.params.con_out is None:
+            fiber.params.con_out = default_con_out
         next_node = next(n for n in network.successors(fiber))
         if not isinstance(next_node, Fused):
             fiber.params.con_out += EOL
+
 
 def add_fiber_padding(network, fibers, padding):
     """last_fibers = (fiber for n in network.nodes()
@@ -500,16 +513,17 @@ def add_fiber_padding(network, fibers, padding):
         except StopIteration:
             raise NetworkTopologyError(f'Fiber {fiber.uid} is not properly connected, please check network topology')
         if this_span_loss < padding and not (isinstance(next_node, Fused)):
-            #add a padding att_in at the input of the 1st fiber:
-            #address the case when several fibers are spliced together
+            # add a padding att_in at the input of the 1st fiber:
+            # address the case when several fibers are spliced together
             first_fiber = find_first_node(network, fiber)
             # in order to support no booster , fused might be placed
             # just after a roadm: need to check that first_fiber is really a fiber
-            if isinstance(first_fiber,Fiber):
+            if isinstance(first_fiber, Fiber):
                 if first_fiber.params.att_in is None:
                     first_fiber.params.att_in = padding - this_span_loss
                 else:
                     first_fiber.params.att_in = first_fiber.params.att_in + padding - this_span_loss
+
 
 def build_network(network, equipment, pref_ch_db, pref_total_db):
     default_span_data = equipment['Span']['default']
@@ -521,7 +535,7 @@ def build_network(network, equipment, pref_ch_db, pref_total_db):
     default_con_out = default_span_data.con_out
     padding = default_span_data.padding
 
-    #set roadm loss for gain_mode before to build network
+    # set roadm loss for gain_mode before to build network
     fibers = [f for f in network.nodes() if isinstance(f, Fiber)]
     add_connector_loss(network, fibers, default_con_in, default_con_out, default_span_data.EOL)
     add_fiber_padding(network, fibers, padding)
@@ -539,7 +553,7 @@ def build_network(network, equipment, pref_ch_db, pref_total_db):
     for roadm in roadms:
         set_egress_amplifier(network, roadm, equipment, pref_total_db)
 
-    #support older json input topology wo Roadms:
+    # support older json input topology wo Roadms:
     if len(roadms) == 0:
         trx = [t for t in network.nodes() if isinstance(t, Transceiver)]
         for t in trx:

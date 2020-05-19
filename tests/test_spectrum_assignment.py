@@ -37,10 +37,12 @@ guardband = 0.15e12
 cband_freq_min = 191.3e12
 cband_freq_max = 196.1e12
 
+
 @pytest.fixture()
 def equipment():
     equipment = load_equipment(EQPT_FILENAME)
     return equipment
+
 
 @pytest.fixture()
 def setup(equipment):
@@ -53,6 +55,7 @@ def setup(equipment):
     build_network(network, equipment, p_db, p_total_db)
     oms_list = build_oms_list(network, equipment)
     return network, oms_list
+
 
 def test_oms(setup):
     """ tests that the OMS is between two ROADMs, that there is no ROADM or transceivers in the OMS
@@ -68,6 +71,7 @@ def test_oms(setup):
             assert elem.oms.oms_id == oms.oms_id
             assert elem.uid == oms.el_id_list[i+1]
 
+
 @pytest.mark.parametrize('nval', [0, 10, -255])
 @pytest.mark.parametrize('mval', [1, 8])
 def test_acceptable_values(nval, mval, setup):
@@ -75,6 +79,7 @@ def test_acceptable_values(nval, mval, setup):
     network, oms_list = setup
     random_oms = oms_list[5]
     random_oms.assign_spectrum(nval, mval)
+
 
 @pytest.mark.parametrize('nval,mval', (
     (0, 600),
@@ -90,6 +95,7 @@ def test_wrong_values(nval, mval, setup):
     random_oms = oms_list[5]
     with pytest.raises(SpectrumError):
         random_oms.assign_spectrum(nval, mval)
+
 
 @pytest.mark.parametrize('nmin', [-288, -260, -300])
 @pytest.mark.parametrize('nmax', [480, 320, 450])
@@ -141,6 +147,7 @@ def test_aligned(nmin, nmax, setup):
     nvalmax = random_oms.spectrum_bitmap.getn(ind_max)
     assert nvalmin <= nmin and nvalmax >= nmax
 
+
 @pytest.mark.parametrize('nval1', [0, 15, 24])
 @pytest.mark.parametrize('nval2', [8, 12])
 def test_assign_and_sum(nval1, nval2, setup):
@@ -148,7 +155,7 @@ def test_assign_and_sum(nval1, nval2, setup):
     """
     network, oms_list = setup
     guardband = grid
-    mval = 4 # slot in 12.5GHz
+    mval = 4  # slot in 12.5GHz
     freq_max = cband_freq_min + 24 * grid
     # arbitrary test on oms #10 and #11
     # first reduce the grid to 24 center frequencies to ease reading when test fails
@@ -179,9 +186,9 @@ def test_assign_and_sum(nval1, nval2, setup):
         test2 = bitmap_sum(oms1.spectrum_bitmap.bitmap, oms2.spectrum_bitmap.bitmap)
         print(test2)
         range1 = range(oms1.spectrum_bitmap.geti(nval1) - mval,
-                       oms1.spectrum_bitmap.geti(nval1) + mval -1)
+                       oms1.spectrum_bitmap.geti(nval1) + mval - 1)
         range2 = range(oms2.spectrum_bitmap.geti(nval2) - mval,
-                       oms2.spectrum_bitmap.geti(nval2) + mval -1)
+                       oms2.spectrum_bitmap.geti(nval2) + mval - 1)
         for elem in range1:
             print(f'value should be zero at index {elem}')
             assert test2[elem] == 0
@@ -189,6 +196,7 @@ def test_assign_and_sum(nval1, nval2, setup):
         for elem in range2:
             print(f'value should be zero at index {elem}')
             assert test2[elem] == 0
+
 
 def test_bitmap_assignment(setup):
     """ test that a bitmap can be assigned
@@ -206,6 +214,7 @@ def test_bitmap_assignment(setup):
     with pytest.raises(SpectrumError):
         spectrum_btmp = Bitmap(cband_freq_min, cband_freq_max, grid=0.00625e12, guardband=0.15e12, bitmap=btmp)
 
+
 @pytest.fixture()
 def services(equipment):
     """ common setup for service list: builds service only once
@@ -214,12 +223,14 @@ def services(equipment):
         services = json.loads(my_f.read())
     return services
 
+
 @pytest.fixture()
 def requests(equipment, services):
     """ common setup for requests, builds requests list only once
     """
     requests = requests_from_json(services, equipment)
     return requests
+
 
 def test_spectrum_assignment_on_path(equipment, setup, requests):
     """ test assignment functions on path and network
@@ -257,6 +268,7 @@ def test_spectrum_assignment_on_path(equipment, setup, requests):
     print('spectrum selection error should not be None')
     assert center_n is not None and startn is not None and stopn is not None
 
+
 def test_reversed_direction(equipment, setup, requests, services):
     """ checks that if spectrum is selected on one direction it is also selected on reversed
         direction
@@ -289,11 +301,11 @@ def test_reversed_direction(equipment, setup, requests, services):
         # verifies that each element (not trx and not roadm) in the path has same
         # spectrum occupation
         if pth:
-            this_path = [elem for elem in pth if not isinstance(elem, Roadm) and\
+            this_path = [elem for elem in pth if not isinstance(elem, Roadm) and
                          not isinstance(elem, Transceiver)]
             print(f'path {[el.uid for el in this_path]}')
-            this_revpath = [elem for elem in rev_pths[i] if not isinstance(elem, Roadm) and\
-                         not isinstance(elem, Transceiver)]
+            this_revpath = [elem for elem in rev_pths[i] if not isinstance(elem, Roadm) and
+                            not isinstance(elem, Transceiver)]
             print(f'rev_path {[el.uid for el in this_revpath]}')
             print('')
             for j, elem in enumerate(this_revpath):
@@ -302,7 +314,7 @@ def test_reversed_direction(equipment, setup, requests, services):
                 print(f'rev_elem {elem.uid}')
                 print(f'    elem {this_path[len(this_path)-j-1].uid}')
                 print(f'\trev_spectrum: {elem.oms.spectrum_bitmap.bitmap[imin:imax]}')
-                print(f'\t    spectrum: ' +\
+                print(f'\t    spectrum: ' +
                       f'{this_path[len(this_path)-j-1].oms.spectrum_bitmap.bitmap[imin:imax]}')
                 assert elem.oms.spectrum_bitmap.bitmap[imin:imax] == \
-                   this_path[len(this_path)-j-1].oms.spectrum_bitmap.bitmap[imin:imax]
+                    this_path[len(this_path)-j-1].oms.spectrum_bitmap.bitmap[imin:imax]
