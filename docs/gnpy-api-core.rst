@@ -9,7 +9,6 @@
 .. automodule:: gnpy.core.execute
 .. automodule:: gnpy.core.info
 .. automodule:: gnpy.core.network
-.. automodule:: gnpy.core.node
 .. automodule:: gnpy.core.parameters
 .. automodule:: gnpy.core.science_utils
 .. automodule:: gnpy.core.service_sheet

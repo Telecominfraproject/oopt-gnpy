@@ -5,7 +5,7 @@
 gnpy.core.elements
 ==================
 
-This module contains standard network elements.
+Standard network elements which propagate optical spectrum
 
 A network element is a Python callable. It takes a :class:`.info.SpectralInformation`
 object and returns a copy with appropriate fields affected. This structure
@@ -14,8 +14,10 @@ Network elements must have only a local "view" of the network and propogate
 :class:`.info.SpectralInformation` using only this information. They should be independent and
 self-contained.
 
-Network elements MUST implement two attributes .uid and .name representing a
-unique identifier and a printable name.
+Network elements MUST implement two attributes :py:attr:`uid` and :py:attr:`name` representing a
+unique identifier and a printable name, and provide the :py:meth:`__call__` method taking a
+:class:`SpectralInformation` as an input and returning another :class:`SpectralInformation`
+instance as a result.
 '''
 
 from numpy import abs, arange, array, divide, errstate, ones
@@ -23,13 +25,55 @@ from numpy import interp, mean, pi, polyfit, polyval, sum
 from scipy.constants import h
 from collections import namedtuple
 
-from gnpy.core.node import Node
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum
 from gnpy.core.parameters import FiberParams, PumpParams
 from gnpy.core.science_utils import NliSolver, RamanSolver, propagate_raman_fiber, _psi
 
 
-class Transceiver(Node):
+class Location(namedtuple('Location', 'latitude longitude city region')):
+    def __new__(cls, latitude=0, longitude=0, city=None, region=None):
+        return super().__new__(cls, latitude, longitude, city, region)
+
+
+class _Node:
+    '''Convenience class for providing common functionality of all network elements
+
+    This class is just an internal implementation detail; do **not** assume that all network elements
+    inherit from :class:`_Node`.
+    '''
+    def __init__(self, uid, name=None, params=None, metadata=None, operational=None, type_variety=None):
+        if name is None:
+            name = uid
+        self.uid, self.name = uid, name
+        if metadata is None:
+            metadata = {'location': {}}
+        if metadata and not isinstance(metadata.get('location'), Location):
+            metadata['location'] = Location(**metadata.pop('location', {}))
+        self.params, self.metadata, self.operational = params, metadata, operational
+        if type_variety:
+            self.type_variety = type_variety
+
+    @property
+    def coords(self):
+        return self.lng, self.lat
+
+    @property
+    def location(self):
+        return self.metadata['location']
+    loc = location
+
+    @property
+    def longitude(self):
+        return self.location.longitude
+    lng = longitude
+
+    @property
+    def latitude(self):
+        return self.location.latitude
+    lat = latitude
+
+
+class Transceiver(_Node):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.osnr_ase_01nm = None
@@ -123,7 +167,7 @@ class Transceiver(Node):
 RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr restrictions')
 
 
-class Roadm(Node):
+class Roadm(_Node):
     def __init__(self, *args, params, **kwargs):
         super().__init__(*args, params=RoadmParams(**params), **kwargs)
         self.loss = 0  # auto-design interest
@@ -186,7 +230,7 @@ class Roadm(Node):
 FusedParams = namedtuple('FusedParams', 'loss')
 
 
-class Fused(Node):
+class Fused(_Node):
     def __init__(self, *args, params=None, **kwargs):
         if params is None:
             # default loss value if not mentioned in loaded network json
@@ -233,7 +277,7 @@ class Fused(Node):
         return spectral_info._replace(carriers=carriers, pref=pref)
 
 
-class Fiber(Node):
+class Fiber(_Node):
     def __init__(self, *args, params=None, **kwargs):
         if not params:
             params = {}
@@ -464,7 +508,7 @@ class EdfaOperational:
                 f'tilt_target={self.tilt_target!r})')
 
 
-class Edfa(Node):
+class Edfa(_Node):
     def __init__(self, *args, params=None, operational=None, **kwargs):
         if params is None:
             params = {}
