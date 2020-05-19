@@ -348,8 +348,12 @@ class RamanSolver:
         # z propagation axis
         z = np.arange(0, fiber_length + 1, z_resolution)
 
-        def ode_function(z, p): return self._ode_stimulated_raman(z, p, alphap_fiber, freq_array, cr, prop_direct)
-        def boundary_residual(ya, yb): return self._residuals_stimulated_raman(ya, yb, power_spectrum, prop_direct)
+        def ode_function(z, p):
+            return self._ode_stimulated_raman(z, p, alphap_fiber, freq_array, cr, prop_direct)
+
+        def boundary_residual(ya, yb):
+            return self._residuals_stimulated_raman(ya, yb, power_spectrum, prop_direct)
+
         initial_guess_conditions = self._initial_guess_stimulated_raman(z, power_spectrum, alphap_fiber, prop_direct)
 
         # ODE SOLVER

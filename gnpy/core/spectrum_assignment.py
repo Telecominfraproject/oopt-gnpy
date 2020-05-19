@@ -143,8 +143,7 @@ class OMS:
             raise SpectrumError(f'N {nvalue}, M {mvalue} over the N spectrum bitmap bounds')
         if startn <= self.spectrum_bitmap.n_min:
             raise SpectrumError(f'N {nvalue}, M {mvalue} below the N spectrum bitmap bounds')
-        self.spectrum_bitmap.bitmap[self.spectrum_bitmap.geti(
-            startn):self.spectrum_bitmap.geti(stopn) + 1] = [0] * (stopn - startn + 1)
+        self.spectrum_bitmap.bitmap[self.spectrum_bitmap.geti(startn):self.spectrum_bitmap.geti(stopn) + 1] = [0] * (stopn - startn + 1)
 
     def add_service(self, service_id, nb_wl):
         """ record service and mark spectrum as occupied

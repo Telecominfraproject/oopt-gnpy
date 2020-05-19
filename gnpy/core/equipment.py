@@ -14,6 +14,7 @@ from pathlib import Path
 from json import load
 from gnpy.core.utils import lin2db, db2lin, load_json
 from collections import namedtuple
+from gnpy.core import ansi_escapes
 from gnpy.core.elements import Edfa
 from gnpy.core.exceptions import EquipmentConfigError
 import time
@@ -31,98 +32,92 @@ class common:
         for k, v in default_values.items():
             setattr(self, k, clean_kwargs.get(k, v))
             if k not in clean_kwargs and name != 'Amp':
-                print(f'\x1b[1;31;40m' +
+                print(ansi_escapes.red +
                       f'\n WARNING missing {k} attribute in eqpt_config.json[{name}]' +
                       f'\n default value is {k} = {v}' +
-                      f'\x1b[0m')
+                      ansi_escapes.reset)
                 time.sleep(1)
 
 
 class SI(common):
-    default_values =\
-        {
-            "f_min": 191.35e12,
-            "f_max": 196.1e12,
-            "baud_rate": 32e9,
-            "spacing": 50e9,
-            "power_dbm": 0,
-            "power_range_db": [0, 0, 0.5],
-            "roll_off": 0.15,
-            "tx_osnr": 45,
-            "sys_margins": 0
-        }
+    default_values = {
+        "f_min": 191.35e12,
+        "f_max": 196.1e12,
+        "baud_rate": 32e9,
+        "spacing": 50e9,
+        "power_dbm": 0,
+        "power_range_db": [0, 0, 0.5],
+        "roll_off": 0.15,
+        "tx_osnr": 45,
+        "sys_margins": 0
+    }
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'SI')
 
 
 class Span(common):
-    default_values = \
-        {
-            'power_mode': True,
-            'delta_power_range_db': None,
-            'max_fiber_lineic_loss_for_raman': 0.25,
-            'target_extended_gain': 2.5,
-            'max_length': 150,
-            'length_units': 'km',
-            'max_loss': None,
-            'padding': 10,
-            'EOL': 0,
-            'con_in': 0,
-            'con_out': 0
-        }
+    default_values = {
+        'power_mode': True,
+        'delta_power_range_db': None,
+        'max_fiber_lineic_loss_for_raman': 0.25,
+        'target_extended_gain': 2.5,
+        'max_length': 150,
+        'length_units': 'km',
+        'max_loss': None,
+        'padding': 10,
+        'EOL': 0,
+        'con_in': 0,
+        'con_out': 0
+    }
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Span')
 
 
 class Roadm(common):
-    default_values = \
-        {
-            'target_pch_out_db': -17,
-            'add_drop_osnr': 100,
-            'restrictions': {
-                'preamp_variety_list': [],
-                'booster_variety_list': []
-            }
+    default_values = {
+        'target_pch_out_db': -17,
+        'add_drop_osnr': 100,
+        'restrictions': {
+            'preamp_variety_list': [],
+            'booster_variety_list': []
         }
+    }
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Roadm')
 
 
 class Transceiver(common):
-    default_values = \
-        {
-            'type_variety': None,
-            'frequency': None,
-            'mode': {}
-        }
+    default_values = {
+        'type_variety': None,
+        'frequency': None,
+        'mode': {}
+    }
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Transceiver')
 
 
 class Fiber(common):
-    default_values = \
-        {
-            'type_variety': '',
-            'dispersion': None,
-            'gamma': 0
-        }
+    default_values = {
+        'type_variety': '',
+        'dispersion': None,
+        'gamma': 0
+    }
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Fiber')
 
 
 class RamanFiber(common):
-    default_values = \
-        {
-            'type_variety': '',
-            'dispersion': None,
-            'gamma': 0,
-            'raman_efficiency': None
-        }
+    default_values = {
+        'type_variety': '',
+        'dispersion': None,
+        'gamma': 0,
+        'raman_efficiency': None
+    }
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'RamanFiber')
@@ -134,25 +129,24 @@ class RamanFiber(common):
 
 
 class Amp(common):
-    default_values = \
-        {
-            'f_min': 191.35e12,
-            'f_max': 196.1e12,
-            'type_variety': '',
-            'type_def': '',
-            'gain_flatmax': None,
-            'gain_min': None,
-            'p_max': None,
-            'nf_model': None,
-            'dual_stage_model': None,
-            'nf_fit_coeff': None,
-            'nf_ripple': None,
-            'dgt': None,
-            'gain_ripple': None,
-            'out_voa_auto': False,
-            'allowed_for_design': False,
-            'raman': False
-        }
+    default_values = {
+        'f_min': 191.35e12,
+        'f_max': 196.1e12,
+        'type_variety': '',
+        'type_def': '',
+        'gain_flatmax': None,
+        'gain_min': None,
+        'p_max': None,
+        'nf_model': None,
+        'dual_stage_model': None,
+        'nf_fit_coeff': None,
+        'nf_ripple': None,
+        'dgt': None,
+        'gain_ripple': None,
+        'out_voa_auto': False,
+        'allowed_for_design': False,
+        'raman': False
+    }
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Amp')
@@ -262,7 +256,7 @@ def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
 def edfa_nf(gain_target, variety_type, equipment):
     amp_params = equipment['Edfa'][variety_type]
     amp = Edfa(
-        uid=f'calc_NF',
+        uid='calc_NF',
         params=amp_params.__dict__,
         operational={
             'gain_target': gain_target,

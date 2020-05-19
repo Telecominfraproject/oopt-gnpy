@@ -13,7 +13,7 @@ from scipy.interpolate import interp1d
 from logging import getLogger
 from os import path
 from operator import attrgetter
-from gnpy.core import elements
+from gnpy.core import ansi_escapes, elements
 from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm, Fused
 from gnpy.core.equipment import edfa_nf
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
@@ -168,10 +168,8 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
         else:
             # TODO: convert to logging
             print(
-                f'\x1b[1;31;40m'
-                + f'WARNING: target gain in node {uid} is below all available amplifiers min gain: \
-                    amplifier input padding will be assumed, consider increase span fiber padding instead'
-                + '\x1b[0m'
+                f'{ansi_escapes.red}WARNING:{ansi_escapes.reset} target gain in node {uid} is below all available amplifiers min gain: \
+                  amplifier input padding will be assumed, consider increase span fiber padding instead'
             )
             acceptable_gain_min_list = edfa_list
 
@@ -195,11 +193,9 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
     power_reduction = round(min(selected_edfa.power, 0), 2)
     if power_reduction < -0.5:
         print(
-            f'\x1b[1;31;40m'
-            + f'WARNING: target gain and power in node {uid}\n \
+            f'{ansi_escapes.red}WARNING:{ansi_escapes.reset} target gain and power in node {uid}\n \
     is beyond all available amplifiers capabilities and/or extended_gain_range:\n\
     a power reduction of {power_reduction} is applied\n'
-            + '\x1b[0m'
         )
 
     return selected_edfa.variety, power_reduction
@@ -364,19 +360,13 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
                     restrictions = None
 
                 if node.params.type_variety == '':
-                    edfa_variety, power_reduction = select_edfa(
-                        raman_allowed, gain_target, power_target, equipment, node.uid, restrictions)
+                    edfa_variety, power_reduction = select_edfa(raman_allowed, gain_target, power_target, equipment, node.uid, restrictions)
                     extra_params = equipment['Edfa'][edfa_variety]
                     node.params.update_params(extra_params.__dict__)
                     dp += power_reduction
                     gain_target += power_reduction
                 elif node.params.raman and not raman_allowed:
-                    print(
-                        f'\x1b[1;31;40m'
-                        + f'WARNING: raman is used in node {node.uid}\n \
-                but fiber lineic loss is above threshold\n'
-                        + '\x1b[0m'
-                    )
+                    print(f'{ansi_escapes.red}WARNING{ansi_escapes.reset}: raman is used in node {node.uid}\n but fiber lineic loss is above threshold\n')
 
                 node.delta_p = dp if power_mode else None
                 node.effective_gain = gain_target

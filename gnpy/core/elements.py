@@ -43,7 +43,7 @@ class Transceiver(Node):
         with errstate(divide='ignore'):
             self.baud_rate = [c.baud_rate for c in spectral_info.carriers]
             ratio_01nm = [lin2db(12.5e9 / b_rate) for b_rate in self.baud_rate]
-        # set raw values to record original calculation, before update_snr()
+            # set raw values to record original calculation, before update_snr()
             self.raw_osnr_ase = [lin2db(divide(c.power.signal, c.power.ase))
                                  for c in spectral_info.carriers]
             self.raw_osnr_ase_01nm = [ase - ratio for ase, ratio
@@ -68,7 +68,7 @@ class Transceiver(Node):
         only applied in request.py / propagate on the last Trasceiver node of the path
         all penalties are added in a single call because to avoid uncontrolled cumul
         """
-        # use raw_values so that the added snr penalties are not cumulated
+        # use raw_values so that the added SNR penalties are not cumulated
         snr_added = 0
         for s in args:
             snr_added += db2lin(-s)
@@ -289,8 +289,7 @@ class Fiber(Node):
     @property
     def loss(self):
         """total loss including padding att_in: useful for polymorphism with roadm loss"""
-        return self.params.loss_coef * self.params.length + self.params.con_in\
-            + self.params.con_out + self.params.att_in
+        return self.params.loss_coef * self.params.length + self.params.con_in + self.params.con_out + self.params.att_in
 
     @property
     def passive(self):
