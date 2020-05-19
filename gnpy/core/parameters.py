@@ -3,7 +3,7 @@
 
 """
 gnpy.core.parameters
-==================
+====================
 
 This module contains all parameters to configure standard network elements.
 
