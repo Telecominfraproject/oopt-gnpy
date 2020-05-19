@@ -250,27 +250,6 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
 
     global nodes_by_city
     nodes_by_city = {n.city: n for n in nodes}
-    #create matching dictionary for node name mismatch analysis
-
-    cities = {''.join(c.strip() for c in n.city.split('C+L')).lower(): n.city for n in nodes}
-    cities_to_match = [k for k in cities]
-    city_match_dic = defaultdict(list)
-    for city in cities:
-        if city in cities_to_match:
-            cities_to_match.remove(city)
-        matches = get_close_matches(city, cities_to_match, 4, 0.85)
-        for m in matches:
-            city_match_dic[cities[city]].append(cities[m])
-    #check lower case/upper case
-    for city in nodes_by_city:
-        for match_city in nodes_by_city:
-            if match_city.lower() == city.lower() and match_city != city:
-                city_match_dic[city].append(match_city)
-
-    if names_matching:
-        print('\ncity match dictionary:',city_match_dic)
-    with  open('name_match_dictionary.json', 'w', encoding='utf-8') as city_match_dic_file:
-        city_match_dic_file.write(dumps(city_match_dic, indent=2, ensure_ascii=False))
 
     global links_by_city
     links_by_city = defaultdict(list)
