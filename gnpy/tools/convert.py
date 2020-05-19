@@ -31,6 +31,7 @@ from itertools import chain
 from json import dumps
 from pathlib import Path
 from copy import copy
+from gnpy.core import ansi_escapes
 from gnpy.core.utils import silent_remove
 from gnpy.core.exceptions import NetworkTopologyError
 from gnpy.core.elements import Edfa, Fused, Fiber
@@ -170,7 +171,7 @@ def parse_headers(my_sheet, input_headers_dict, headers, start_line, slice_in):
             iteration += 1
         if slice_out == (-1, -1):
             if h0 in ('east', 'Node A', 'Node Z', 'City'):
-                print(f'\x1b[1;31;40m' + f'CRITICAL: missing _{h0}_ header: EXECUTION ENDS' + '\x1b[0m')
+                print(f'{ansi_escapes.red}CRITICAL{ansi_escapes.reset}: missing _{h0}_ header: EXECUTION ENDS')
                 exit()
             else:
                 print(f'missing header {h0}')
@@ -179,7 +180,7 @@ def parse_headers(my_sheet, input_headers_dict, headers, start_line, slice_in):
         else:
             headers = parse_headers(my_sheet, input_headers_dict[h0], headers, start_line + 1, slice_out)
     if headers == {}:
-        print('\x1b[1;31;40m' + f'CRITICAL ERROR: could not find any header to read _ ABORT' + '\x1b[0m')
+        print(f'{ansi_escapes.red}CRITICAL ERROR{ansi_escapes.reset}: could not find any header to read _ ABORT')
         exit()
     return headers
 

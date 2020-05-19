@@ -313,8 +313,8 @@ def compute_constrained_path(network, req):
         #     print(network.get_edge_data(s,e))
         #     s = e
     except NetworkXNoPath:
-        msg = f'\x1b[1;33;40m' + f'Request {req.request_id} could not find a path from' +\
-            f' {source.uid} to node: {destination.uid} in network topology' + '\x1b[0m'
+        msg = f'{ansi_escapes.yellow}Request {req.request_id} could not find a path from' +\
+            f' {source.uid} to node: {destination.uid} in network topology{ansi_escapes.reset}'
         LOGGER.critical(msg)
         print(msg)
         req.blocking_reason = 'NO_PATH'
@@ -343,18 +343,18 @@ def compute_constrained_path(network, req):
             # a path w/o constraints, else there is no possible path
 
             # no candidate can be found with the constraints
-            print(f'\x1b[1;33;40m' + f'Request {req.request_id} could not find a path crossing ' +
-                  f'{[el.uid for el in nodes_list[:-1]]} in network topology' + '\x1b[0m')
+            print(f'{ansi_escapes.yellow}Request {req.request_id} could not find a path crossing ' +
+                  f'{[el.uid for el in nodes_list[:-1]]} in network topology{ansi_escapes.reset}')
 
             if 'STRICT' not in req.loose_list[:-1]:
-                msg = f'\x1b[1;33;40m' + f'Request {req.request_id} could not find a path with user_' +\
-                    f'include node constraints' + '\x1b[0m'
+                msg = f'{ansi_escapes.yellow}Request {req.request_id} could not find a path with user_' +\
+                    f'include node constraints{ansi_escapes.reset}'
                 LOGGER.info(msg)
                 print(f'constraint ignored')
             else:
                 # one STRICT makes the whole list STRICT
-                msg = f'\x1b[1;33;40m' + f'Request {req.request_id} could not find a path with user ' +\
-                    f'include node constraints.\nNo path computed' + '\x1b[0m'
+                msg = f'{ansi_escapes.yellow}Request {req.request_id} could not find a path with user ' +\
+                    f'include node constraints.\nNo path computed{ansi_escapes.reset}'
                 LOGGER.critical(msg)
                 print(msg)
                 req.blocking_reason = 'NO_PATH_WITH_CONSTRAINT'

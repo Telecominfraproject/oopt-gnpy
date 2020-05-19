@@ -19,6 +19,7 @@ from collections import namedtuple
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
 from json import dumps, loads
 from numpy import mean
+from gnpy.core import ansi_escapes
 from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
 from gnpy.core.utils import load_json
 from gnpy.core.network import load_network, build_network, save_network
@@ -27,7 +28,6 @@ from gnpy.core.elements import Roadm
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.exceptions import (ConfigurationError, EquipmentConfigError, NetworkTopologyError,
                                   ServiceError, DisjunctionError)
-import gnpy.core.ansi_escapes as ansi_escapes
 from gnpy.core.spectrum_assignment import (build_oms_list, pth_assign_spectrum)
 from gnpy.topology.request import (PathRequest, ResultElement,
                                    propagate, jsontocsv, Disjunction, compute_path_dsjctn,
@@ -312,8 +312,7 @@ def main(args):
     """ main function that calls all functions
     """
     LOGGER.info(f'Computing path requests {args.service_filename} into JSON format')
-    print('\x1b[1;34;40m' +\
-          f'Computing path requests {args.service_filename} into JSON format'+ '\x1b[0m')
+    print(f'{ansi_escapes.blue}Computing path requests {args.service_filename} into JSON format{ansi_escapes.reset}')
     # for debug
     # print( args.eqpt_filename)
 
@@ -364,29 +363,29 @@ def main(args):
     # pths = compute_path(network, equipment, rqs)
     dsjn = disjunctions_from_json(data)
 
-    print('\x1b[1;34;40m' + f'List of disjunctions' + '\x1b[0m')
+    print(f'{ansi_escapes.blue}List of disjunctions{ansi_escapes.reset}')
     print(dsjn)
     # need to warn or correct in case of wrong disjunction form
     # disjunction must not be repeated with same or different ids
     dsjn = correct_disjn(dsjn)
 
     # Aggregate demands with same exact constraints
-    print('\x1b[1;34;40m' + f'Aggregating similar requests' + '\x1b[0m')
+    print(f'{ansi_escapes.blue}Aggregating similar requests{ansi_escapes.reset}')
 
     rqs, dsjn = requests_aggregation(rqs, dsjn)
     # TODO export novel set of aggregated demands in a json file
 
-    print('\x1b[1;34;40m' + 'The following services have been requested:' + '\x1b[0m')
+    print(f'{ansi_escapes.blue}The following services have been requested:{ansi_escapes.reset}')
     print(rqs)
 
-    print('\x1b[1;34;40m' + f'Computing all paths with constraints' + '\x1b[0m')
+    print(f'{ansi_escapes.blue}Computing all paths with constraints{ansi_escapes.reset}')
     try:
         pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
     except DisjunctionError as this_e:
         print(f'{ansi_escapes.red}Disjunction error:{ansi_escapes.reset} {this_e}')
         exit(1)
 
-    print('\x1b[1;34;40m' + f'Propagating on selected path' + '\x1b[0m')
+    print(f'{ansi_escapes.blue}Propagating on selected path{ansi_escapes.reset}')
     propagatedpths, reversed_pths, reversed_propagatedpths = \
         compute_path_with_disjunction(network, equipment, rqs, pths)
     # Note that deepcopy used in compute_path_with_disjunction returns
@@ -395,7 +394,7 @@ def main(args):
 
     pth_assign_spectrum(pths, rqs, oms_list, reversed_pths)
 
-    print('\x1b[1;34;40m'+f'Result summary'+ '\x1b[0m')
+    print(f'{ansi_escapes.blue}Result summary{ansi_escapes.reset}')
     header = ['req id', '  demand', '  snr@bandwidth A-Z (Z-A)', '  snr@0.1nm A-Z (Z-A)',\
               '  Receiver minOSNR', '  mode', '  Gbit/s', '  nb of tsp pairs',\
               'N,M or blocking reason']
@@ -434,8 +433,7 @@ def main(args):
         secondcol = ''.join(row[1].ljust(secondcol_width))
         remainingcols = ''.join(word.center(col_width, ' ') for word in row[2:])
         print(f'{firstcol} {secondcol} {remainingcols}')
-    print('\x1b[1;33;40m'+f'Result summary shows mean SNR and OSNR (average over all channels)' +\
-          '\x1b[0m')
+    print(f'{ansi_escapes.yellow}Result summary shows mean SNR and OSNR (average over all channels){ansi_escapes.reset}')
 
     if args.output:
         result = []
