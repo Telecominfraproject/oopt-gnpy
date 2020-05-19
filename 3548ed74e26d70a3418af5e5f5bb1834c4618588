@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "55e776c6_2b289269",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-19T12:02:33Z",
+      "side": 1,
+      "message": "this is an example of a change which -- I think -- reduces readability of the code, so I\u0027ll fixing this up in a follow-up commit",
+      "revId": "3548ed74e26d70a3418af5e5f5bb1834c4618588",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0d5ff901_d7a2e9fa",
+        "filename": "gnpy/core/spectrum_assignment.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-19T12:02:33Z",
+      "side": 1,
+      "message": "another ugly bit",
+      "range": {
+        "startLine": 146,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 80
+      },
+      "revId": "3548ed74e26d70a3418af5e5f5bb1834c4618588",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
