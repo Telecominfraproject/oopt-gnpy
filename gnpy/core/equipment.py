@@ -41,15 +41,15 @@ class common:
 class SI(common):
     default_values =\
         {
-            "f_min":            191.35e12,
-            "f_max":            196.1e12,
-            "baud_rate":        32e9,
-            "spacing":          50e9,
-            "power_dbm":        0,
-            "power_range_db":   [0, 0, 0.5],
-            "roll_off":         0.15,
-            "tx_osnr":          45,
-            "sys_margins":      0
+            "f_min": 191.35e12,
+            "f_max": 196.1e12,
+            "baud_rate": 32e9,
+            "spacing": 50e9,
+            "power_dbm": 0,
+            "power_range_db": [0, 0, 0.5],
+            "roll_off": 0.15,
+            "tx_osnr": 45,
+            "sys_margins": 0
         }
 
     def __init__(self, **kwargs):
@@ -59,17 +59,17 @@ class SI(common):
 class Span(common):
     default_values = \
         {
-            'power_mode':                       True,
-            'delta_power_range_db':             None,
-            'max_fiber_lineic_loss_for_raman':  0.25,
-            'target_extended_gain':             2.5,
-            'max_length':                       150,
-            'length_units':                     'km',
-            'max_loss':                         None,
-            'padding':                          10,
-            'EOL':                              0,
-            'con_in':                           0,
-            'con_out':                          0
+            'power_mode': True,
+            'delta_power_range_db': None,
+            'max_fiber_lineic_loss_for_raman': 0.25,
+            'target_extended_gain': 2.5,
+            'max_length': 150,
+            'length_units': 'km',
+            'max_loss': None,
+            'padding': 10,
+            'EOL': 0,
+            'con_in': 0,
+            'con_out': 0
         }
 
     def __init__(self, **kwargs):
@@ -80,7 +80,7 @@ class Roadm(common):
     default_values = \
         {
             'target_pch_out_db': -17,
-            'add_drop_osnr':       100,
+            'add_drop_osnr': 100,
             'restrictions': {
                 'preamp_variety_list': [],
                 'booster_variety_list': []
@@ -95,8 +95,8 @@ class Transceiver(common):
     default_values = \
         {
             'type_variety': None,
-            'frequency':    None,
-            'mode':         {}
+            'frequency': None,
+            'mode': {}
         }
 
     def __init__(self, **kwargs):
@@ -106,9 +106,9 @@ class Transceiver(common):
 class Fiber(common):
     default_values = \
         {
-            'type_variety':  '',
-            'dispersion':    None,
-            'gamma':         0
+            'type_variety': '',
+            'dispersion': None,
+            'gamma': 0
         }
 
     def __init__(self, **kwargs):
@@ -118,9 +118,9 @@ class Fiber(common):
 class RamanFiber(common):
     default_values = \
         {
-            'type_variety':  '',
-            'dispersion':    None,
-            'gamma':         0,
+            'type_variety': '',
+            'dispersion': None,
+            'gamma': 0,
             'raman_efficiency': None
         }
 
@@ -136,22 +136,22 @@ class RamanFiber(common):
 class Amp(common):
     default_values = \
         {
-            'f_min':                191.35e12,
-            'f_max':                196.1e12,
-            'type_variety':         '',
-            'type_def':             '',
-            'gain_flatmax':         None,
-            'gain_min':             None,
-            'p_max':                None,
-            'nf_model':             None,
-            'dual_stage_model':     None,
-            'nf_fit_coeff':         None,
-            'nf_ripple':            None,
-            'dgt':                  None,
-            'gain_ripple':          None,
-            'out_voa_auto':         False,
-            'allowed_for_design':   False,
-            'raman':                False
+            'f_min': 191.35e12,
+            'f_max': 196.1e12,
+            'type_variety': '',
+            'type_def': '',
+            'gain_flatmax': None,
+            'gain_min': None,
+            'p_max': None,
+            'nf_model': None,
+            'dual_stage_model': None,
+            'nf_fit_coeff': None,
+            'nf_ripple': None,
+            'dgt': None,
+            'gain_ripple': None,
+            'out_voa_auto': False,
+            'allowed_for_design': False,
+            'raman': False
         }
 
     def __init__(self, **kwargs):
@@ -228,8 +228,8 @@ def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
     g1a_min = gain_min - (gain_max - gain_min) - delta_p
     g1a_max = gain_max - delta_p
     nf2 = lin2db((db2lin(nf_min) - db2lin(nf_max)) /
-                 (1/db2lin(g1a_max) - 1/db2lin(g1a_min)))
-    nf1 = lin2db(db2lin(nf_min) - db2lin(nf2)/db2lin(g1a_max))
+                 (1 / db2lin(g1a_max) - 1 / db2lin(g1a_min)))
+    nf1 = lin2db(db2lin(nf_min) - db2lin(nf2) / db2lin(g1a_max))
 
     if nf1 < 4:
         raise EquipmentConfigError(f'First coil value too low {nf1} for amplifier {type_variety}')
@@ -242,17 +242,17 @@ def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
         nf2 = clip(nf2, nf1 + 0.3, nf1 + 2)
         g1a_max = lin2db(db2lin(nf2) / (db2lin(nf_min) - db2lin(nf1)))
         delta_p = gain_max - g1a_max
-        g1a_min = gain_min - (gain_max-gain_min) - delta_p
+        g1a_min = gain_min - (gain_max - gain_min) - delta_p
         if not 1 < delta_p < 11:
             raise EquipmentConfigError(f'Computed \N{greek capital letter delta}P invalid \
                 \n 1st coil vs 2nd coil calculated DeltaP {delta_p:.2f} for \
                 \n amplifier {type_variety} is not valid: revise inputs \
                 \n calculated 1st coil NF = {nf1:.2f}, 2nd coil NF = {nf2:.2f}')
     # Check calculated values for nf1 and nf2
-    calc_nf_min = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_max))
+    calc_nf_min = lin2db(db2lin(nf1) + db2lin(nf2) / db2lin(g1a_max))
     if not isclose(nf_min, calc_nf_min, abs_tol=0.01):
         raise EquipmentConfigError(f'nf_min does not match calc_nf_min, {nf_min} vs {calc_nf_min} for amp {type_variety}')
-    calc_nf_max = lin2db(db2lin(nf1) + db2lin(nf2)/db2lin(g1a_min))
+    calc_nf_max = lin2db(db2lin(nf1) + db2lin(nf2) / db2lin(g1a_min))
     if not isclose(nf_max, calc_nf_max, abs_tol=0.01):
         raise EquipmentConfigError(f'nf_max does not match calc_nf_max, {nf_max} vs {calc_nf_max} for amp {type_variety}')
 
@@ -330,7 +330,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             trx_params['nb_channel'] = nch
             print(f'There are {nch} channels propagating')
 
-    trx_params['power'] = db2lin(default_si_data.power_dbm)*1e-3
+    trx_params['power'] = db2lin(default_si_data.power_dbm) * 1e-3
 
     return trx_params
 
@@ -340,11 +340,11 @@ def automatic_spacing(baud_rate):
     # TODO : this should parametrized in a cfg file
     # list of possible tuples [(max_baud_rate, spacing_for_this_baud_rate)]
     spacing_list = [(33e9, 37.5e9), (38e9, 50e9), (50e9, 62.5e9), (67e9, 75e9), (92e9, 100e9)]
-    return min((s[1] for s in spacing_list if s[0] > baud_rate), default=baud_rate*1.2)
+    return min((s[1] for s in spacing_list if s[0] > baud_rate), default=baud_rate * 1.2)
 
 
 def automatic_nch(f_min, f_max, spacing):
-    return int((f_max - f_min)//spacing)
+    return int((f_max - f_min) // spacing)
 
 
 def automatic_fmax(f_min, spacing, nch):

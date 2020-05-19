@@ -125,7 +125,7 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
             edfa.p_max
         )
         - power_target,
-        gain_min=gain_target+3
+        gain_min=gain_target + 3
         - edfa.gain_min,
         nf=edfa_nf(gain_target, edfa_variety, equipment))
         for edfa_variety, edfa in edfa_dict.items()
@@ -186,7 +186,7 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
         # allow a 0.3dB power range
         # this allows to chose an amplifier with a better NF subsequentely
         acceptable_power_list = [x for x in acceptable_gain_min_list
-                                 if x.power-power_max > -0.3]
+                                 if x.power - power_max > -0.3]
 
     # gain and power requirements are resolved,
     #       =>chose the amp with the best NF among the acceptable ones:
@@ -300,8 +300,8 @@ def set_amplifier_voa(amp, power_target, power_mode):
     if amp.out_voa is None:
         if power_mode:
             gain_target = amp.effective_gain
-            voa = min(amp.params.p_max-power_target,
-                      amp.params.gain_flatmax-amp.effective_gain)
+            voa = min(amp.params.p_max - power_target,
+                      amp.params.gain_flatmax - amp.effective_gain)
             voa = max(round2float(max(voa, 0), 0.5) - VOA_MARGIN, 0) if amp.params.out_voa_auto else 0
             amp.delta_p = amp.delta_p + voa
             amp.effective_gain = amp.effective_gain + voa
@@ -366,8 +366,8 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
                     restrictions = None
 
                 if node.params.type_variety == '':
-                    edfa_variety, power_reduction = select_edfa(raman_allowed,
-                                                                gain_target, power_target, equipment, node.uid, restrictions)
+                    edfa_variety, power_reduction = select_edfa(
+                        raman_allowed, gain_target, power_target, equipment, node.uid, restrictions)
                     extra_params = equipment['Edfa'][edfa_variety]
                     node.params.update_params(extra_params.__dict__)
                     dp += power_reduction
@@ -404,10 +404,10 @@ def add_egress_amplifier(network, node):
             params={},
             metadata={
                 'location': {
-                    'latitude':  (node.lat * 2 + next_node.lat * 2) / 4,
+                    'latitude': (node.lat * 2 + next_node.lat * 2) / 4,
                     'longitude': (node.lng * 2 + next_node.lng * 2) / 4,
-                    'city':      node.loc.city,
-                    'region':    node.loc.region,
+                    'city': node.loc.city,
+                    'region': node.loc.region,
                 }
             },
             operational={
@@ -429,12 +429,12 @@ def calculate_new_length(fiber_length, bounds, target_length):
 
     n_spans = int(fiber_length // target_length)
 
-    length1 = fiber_length / (n_spans+1)
-    delta1 = target_length-length1
-    result1 = (length1, n_spans+1)
+    length1 = fiber_length / (n_spans + 1)
+    delta1 = target_length - length1
+    result1 = (length1, n_spans + 1)
 
     length2 = fiber_length / n_spans
-    delta2 = length2-target_length
+    delta2 = length2 - target_length
     result2 = (length2, n_spans)
 
     if (bounds.start <= length1 <= bounds.stop) and not(bounds.start <= length2 <= bounds.stop):
@@ -463,17 +463,17 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
     fiber.params.length = new_length
 
     f = interp1d([prev_node.lng, next_node.lng], [prev_node.lat, next_node.lat])
-    xpos = [prev_node.lng + (next_node.lng - prev_node.lng) * (n+1)/(n_spans+1) for n in range(n_spans)]
+    xpos = [prev_node.lng + (next_node.lng - prev_node.lng) * (n + 1) / (n_spans + 1) for n in range(n_spans)]
     ypos = f(xpos)
     for span, lng, lat in zip(range(n_spans), xpos, ypos):
         new_span = Fiber(uid=f'{fiber.uid}_({span+1}/{n_spans})',
                          type_variety=fiber.type_variety,
                          metadata={
                               'location': {
-                                  'latitude':  lat,
+                                  'latitude': lat,
                                   'longitude': lng,
-                                  'city':      fiber.loc.city,
-                                  'region':    fiber.loc.region,
+                                  'city': fiber.loc.city,
+                                  'region': fiber.loc.region,
                               }
                          },
                          params=fiber.params.asdict())
@@ -528,7 +528,7 @@ def add_fiber_padding(network, fibers, padding):
 def build_network(network, equipment, pref_ch_db, pref_total_db):
     default_span_data = equipment['Span']['default']
     max_length = int(default_span_data.max_length * UNITS[default_span_data.length_units])
-    min_length = max(int(default_span_data.padding/0.2*1e3), 50_000)
+    min_length = max(int(default_span_data.padding / 0.2 * 1e3), 50_000)
     bounds = range(min_length, max_length)
     target_length = max(min_length, 90_000)
     default_con_in = default_span_data.con_in

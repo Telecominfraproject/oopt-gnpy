@@ -51,7 +51,7 @@ def propagation(input_power, con_in, con_out, dest):
     p = input_power
     p = db2lin(p) * 1e-3
     spacing = 50e9  # THz
-    si = create_input_spectral_information(191.3e12, 191.3e12+79*spacing, 0.15, 32e9, p, spacing)
+    si = create_input_spectral_information(191.3e12, 191.3e12 + 79 * spacing, 0.15, 32e9, p, spacing)
     source = next(transceivers[uid] for uid in transceivers if uid == 'trx A')
     sink = next(transceivers[uid] for uid in transceivers if uid == dest)
     path = dijkstra_path(network, source, sink)
@@ -79,16 +79,16 @@ def test_snr(osnr_test, dest):
     conn_out = test[osnr_test][2]
     sink, nf = propagation(pw, conn_in, conn_out, dest)
     osnr = round(mean(sink.osnr_ase), 3)
-    nli = 1.0/db2lin(round(mean(sink.snr), 3)) - 1.0/db2lin(osnr)
+    nli = 1.0 / db2lin(round(mean(sink.snr), 3)) - 1.0 / db2lin(osnr)
     pw = expected[osnr_test][0]
     conn_in = expected[osnr_test][1]
     conn_out = expected[osnr_test][2]
     sink, exp_nf = propagation(pw, conn_in, conn_out, dest)
     expected_osnr = round(mean(sink.osnr_ase), 3)
-    expected_nli = 1.0/db2lin(round(mean(sink.snr), 3)) - 1.0/db2lin(expected_osnr)
+    expected_nli = 1.0 / db2lin(round(mean(sink.snr), 3)) - 1.0 / db2lin(expected_osnr)
     # compare OSNR taking into account nf change of amps
     osnr_diff = abs(osnr - expected_osnr + nf - exp_nf)
-    nli_diff = abs((nli-expected_nli)/nli)
+    nli_diff = abs((nli - expected_nli) / nli)
     assert osnr_diff < 0.01 and nli_diff < 0.01
 
 

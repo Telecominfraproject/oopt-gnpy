@@ -42,8 +42,8 @@ equipment = load_equipment(eqpt_filename)
 
 
 @pytest.mark.parametrize('xls_input,expected_json_output', {
-    DATA_DIR / 'CORONET_Global_Topology.xlsx':   DATA_DIR / 'CORONET_Global_Topology_expected.json',
-    DATA_DIR / 'testTopology.xls':     DATA_DIR / 'testTopology_expected.json',
+    DATA_DIR / 'CORONET_Global_Topology.xlsx': DATA_DIR / 'CORONET_Global_Topology_expected.json',
+    DATA_DIR / 'testTopology.xls': DATA_DIR / 'testTopology_expected.json',
 }.items())
 def test_excel_json_generation(xls_input, expected_json_output):
     """ tests generation of topology json
@@ -156,8 +156,8 @@ def test_auto_design_generation_fromjson(json_input, expected_json_output):
 
 
 @pytest.mark.parametrize('xls_input,expected_json_output', {
-    DATA_DIR / 'testTopology.xls':     DATA_DIR / 'testTopology_services_expected.json',
-    DATA_DIR / 'testService.xls':     DATA_DIR / 'testService_services_expected.json'
+    DATA_DIR / 'testTopology.xls': DATA_DIR / 'testTopology_services_expected.json',
+    DATA_DIR / 'testService.xls': DATA_DIR / 'testService_services_expected.json'
 }.items())
 def test_excel_service_json_generation(xls_input, expected_json_output):
     """ test services creation
@@ -193,7 +193,7 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
 
 
 @pytest.mark.parametrize('json_input, csv_output', {
-    DATA_DIR / 'testTopology_response.json':     DATA_DIR / 'testTopology_response',
+    DATA_DIR / 'testTopology_response.json': DATA_DIR / 'testTopology_response',
 }.items())
 def test_csv_response_generation(json_input, csv_output):
     """ tests if generated csv is consistant with expected generation
@@ -202,11 +202,11 @@ def test_csv_response_generation(json_input, csv_output):
     with open(json_input) as jsonfile:
         json_data = load(jsonfile)
     equipment = load_equipment(eqpt_filename)
-    csv_filename = str(csv_output)+'.csv'
+    csv_filename = str(csv_output) + '.csv'
     with open(csv_filename, 'w', encoding='utf-8') as fcsv:
         jsontocsv(json_data, equipment, fcsv)
 
-    expected_csv_filename = str(csv_output)+'_expected.csv'
+    expected_csv_filename = str(csv_output) + '_expected.csv'
 
     # expected header
     # csv_header = \
@@ -266,14 +266,14 @@ def compare_response(exp_resp, act_resp):
     print(act_resp)
     test = True
     for key in act_resp.keys():
-        if not key in exp_resp.keys():
+        if key not in exp_resp.keys():
             print(f'{key} is not expected')
             return False
         if isinstance(act_resp[key], dict):
             test = compare_response(exp_resp[key], act_resp[key])
     if test:
         for key in exp_resp.keys():
-            if not key in act_resp.keys():
+            if key not in act_resp.keys():
                 print(f'{key} is expected')
                 return False
             if isinstance(exp_resp[key], dict):
@@ -290,7 +290,7 @@ def compare_response(exp_resp, act_resp):
 
 # test json answers creation
 @pytest.mark.parametrize('xls_input, expected_response_file', {
-    DATA_DIR / 'testTopology.xls':     DATA_DIR / 'testTopology_response.json',
+    DATA_DIR / 'testTopology.xls': DATA_DIR / 'testTopology_response.json',
 }.items())
 def test_json_response_generation(xls_input, expected_response_file):
     """ tests if json response is correctly generated for all combinations of requests

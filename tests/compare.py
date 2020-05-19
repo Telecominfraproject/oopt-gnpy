@@ -7,8 +7,8 @@ from collections import namedtuple
 
 class Results(namedtuple('Results', 'missing extra different expected actual')):
     def _asdict(self):
-        return {'missing':   self.missing,
-                'extra':     self.extra,
+        return {'missing': self.missing,
+                'extra': self.extra,
                 'different': self.different}
 
     def __str__(self):
@@ -29,7 +29,7 @@ class Results(namedtuple('Results', 'missing extra different expected actual')):
 
 class NetworksResults(namedtuple('NetworksResult', 'elements connections')):
     def _asdict(self):
-        return {'elements':    self.elements._asdict(),
+        return {'elements': self.elements._asdict(),
                 'connections': self.connections._asdict()}
 
     def __str__(self):
@@ -43,7 +43,7 @@ class NetworksResults(namedtuple('NetworksResult', 'elements connections')):
 
 class ServicesResults(namedtuple('ServicesResult', 'requests synchronizations')):
     def _asdict(self):
-        return {'requests':         self.requests.asdict(),
+        return {'requests': self.requests.asdict(),
                 'synchronizations': self.synchronizations.asdict()}
 
     def __str__(self):
@@ -104,13 +104,13 @@ def compare_paths(expected_output, actual_output):
 COMPARISONS = {
     'networks': compare_networks,
     'services': compare_services,
-    'paths':    compare_paths,
+    'paths': compare_paths,
 }
 
 parser = ArgumentParser()
 parser.add_argument('expected_output', type=Path, metavar='FILE')
-parser.add_argument('actual_output',   type=Path, metavar='FILE')
-parser.add_argument('-o', '--output',  default=None)
+parser.add_argument('actual_output', type=Path, metavar='FILE')
+parser.add_argument('-o', '--output', default=None)
 parser.add_argument('-c', '--comparison', choices=COMPARISONS, default='networks')
 
 

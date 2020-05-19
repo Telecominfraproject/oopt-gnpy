@@ -42,7 +42,7 @@ class Transceiver(Node):
     def _calc_snr(self, spectral_info):
         with errstate(divide='ignore'):
             self.baud_rate = [c.baud_rate for c in spectral_info.carriers]
-            ratio_01nm = [lin2db(12.5e9/b_rate) for b_rate in self.baud_rate]
+            ratio_01nm = [lin2db(12.5e9 / b_rate) for b_rate in self.baud_rate]
         # set raw values to record original calculation, before update_snr()
             self.raw_osnr_ase = [lin2db(divide(c.power.signal, c.power.ase))
                                  for c in spectral_info.carriers]
@@ -50,7 +50,7 @@ class Transceiver(Node):
                                       in zip(self.raw_osnr_ase, ratio_01nm)]
             self.raw_osnr_nli = [lin2db(divide(c.power.signal, c.power.nli))
                                  for c in spectral_info.carriers]
-            self.raw_snr = [lin2db(divide(c.power.signal, c.power.nli+c.power.ase))
+            self.raw_snr = [lin2db(divide(c.power.signal, c.power.nli + c.power.ase))
                             for c in spectral_info.carriers]
             self.raw_snr_01nm = [snr - ratio for snr, ratio
                                  in zip(self.raw_snr, ratio_01nm)]
@@ -163,15 +163,15 @@ class Roadm(Node):
         # in the case of add channels
         self.effective_pch_out_db = min(pref.p_spani, self.params.target_pch_out_db)
         self.effective_loss = pref.p_spani - self.effective_pch_out_db
-        carriers_power = array([c.power.signal + c.power.nli+c.power.ase for c in carriers])
-        carriers_att = list(map(lambda x: lin2db(x*1e3)-self.params.target_pch_out_db, carriers_power))
+        carriers_power = array([c.power.signal + c.power.nli + c.power.ase for c in carriers])
+        carriers_att = list(map(lambda x: lin2db(x * 1e3) - self.params.target_pch_out_db, carriers_power))
         exceeding_att = -min(list(filter(lambda x: x < 0, carriers_att)), default=0)
-        carriers_att = list(map(lambda x: db2lin(x+exceeding_att), carriers_att))
+        carriers_att = list(map(lambda x: db2lin(x + exceeding_att), carriers_att))
         for carrier_att, carrier in zip(carriers_att, carriers):
             pwr = carrier.power
-            pwr = pwr._replace(signal=pwr.signal/carrier_att,
-                               nli=pwr.nli/carrier_att,
-                               ase=pwr.ase/carrier_att)
+            pwr = pwr._replace(signal=pwr.signal / carrier_att,
+                               nli=pwr.nli / carrier_att,
+                               ase=pwr.ase / carrier_att)
             yield carrier._replace(power=pwr)
 
     def update_pref(self, pref):
@@ -219,9 +219,9 @@ class Fused(Node):
 
         for carrier in carriers:
             pwr = carrier.power
-            pwr = pwr._replace(signal=pwr.signal/attenuation,
-                               nli=pwr.nli/attenuation,
-                               ase=pwr.ase/attenuation)
+            pwr = pwr._replace(signal=pwr.signal / attenuation,
+                               nli=pwr.nli / attenuation,
+                               ase=pwr.ase / attenuation)
             yield carrier._replace(power=pwr)
 
     def update_pref(self, pref):
@@ -305,10 +305,10 @@ class Fiber(Node):
         if not (loc in ('in', 'out') and attr in ('nli', 'signal', 'total', 'ase')):
             yield None
             return
-        loc_attr = 'carriers_'+loc
+        loc_attr = 'carriers_' + loc
         for c in getattr(self, loc_attr):
             if attr == 'total':
-                yield c.power.ase+c.power.nli+c.power.signal
+                yield c.power.ase + c.power.nli + c.power.signal
             else:
                 yield c.power._asdict().get(attr, None)
 
@@ -347,8 +347,8 @@ class Fiber(Node):
         for interfering_carrier in carriers:
             psi = _psi(carrier, interfering_carrier, beta2=self.params.beta2,
                        asymptotic_length=self.params.asymptotic_length)
-            g_nli += (interfering_carrier.power.signal/interfering_carrier.baud_rate)**2 \
-                * (carrier.power.signal/carrier.baud_rate) * psi
+            g_nli += (interfering_carrier.power.signal / interfering_carrier.baud_rate)**2 \
+                * (carrier.power.signal / carrier.baud_rate) * psi
 
         g_nli *= (16 / 27) * (self.params.gamma * self.params.effective_length)**2 \
             / (2 * pi * abs(self.params.beta2) * self.params.asymptotic_length)
@@ -364,9 +364,9 @@ class Fiber(Node):
         chan = []
         for carrier in carriers:
             pwr = carrier.power
-            pwr = pwr._replace(signal=pwr.signal/attenuation,
-                               nli=pwr.nli/attenuation,
-                               ase=pwr.ase/attenuation)
+            pwr = pwr._replace(signal=pwr.signal / attenuation,
+                               nli=pwr.nli / attenuation,
+                               ase=pwr.ase / attenuation)
             carrier = carrier._replace(power=pwr)
             chan.append(carrier)
 
@@ -377,9 +377,9 @@ class Fiber(Node):
         for carrier in carriers:
             pwr = carrier.power
             carrier_nli = self._gn_analytic(carrier, *carriers)
-            pwr = pwr._replace(signal=pwr.signal/self.params.lin_attenuation/attenuation,
-                               nli=(pwr.nli+carrier_nli)/self.params.lin_attenuation/attenuation,
-                               ase=pwr.ase/self.params.lin_attenuation/attenuation)
+            pwr = pwr._replace(signal=pwr.signal / self.params.lin_attenuation / attenuation,
+                               nli=(pwr.nli + carrier_nli) / self.params.lin_attenuation / attenuation,
+                               ase=pwr.ase / self.params.lin_attenuation / attenuation)
             yield carrier._replace(power=pwr)
 
     def update_pref(self, pref):
@@ -445,10 +445,10 @@ class EdfaParams:
 
 class EdfaOperational:
     default_values = {
-        'gain_target':      None,
-        'delta_p':          None,
-        'out_voa':          None,
-        'tilt_target':      0
+        'gain_target': None,
+        'delta_p': None,
+        'out_voa': None,
+        'tilt_target': 0
     }
 
     def __init__(self, **operational):
@@ -553,10 +553,10 @@ class Edfa(Node):
         if not (loc in ('in', 'out') and attr in ('nli', 'signal', 'total', 'ase')):
             yield None
             return
-        loc_attr = 'carriers_'+loc
+        loc_attr = 'carriers_' + loc
         for c in getattr(self, loc_attr):
             if attr == 'total':
-                yield c.power.ase+c.power.nli+c.power.signal
+                yield c.power.ase + c.power.nli + c.power.signal
             else:
                 yield c.power._asdict().get(attr, None)
 
@@ -576,7 +576,7 @@ class Edfa(Node):
         self.interpol_nf_ripple = interp(self.channel_freq, amplifier_freq, self.params.nf_ripple)
 
         self.nch = frequencies.size
-        self.pin_db = lin2db(sum(pin*1e3))
+        self.pin_db = lin2db(sum(pin * 1e3))
 
         """in power mode: delta_p is defined and can be used to calculate the power target
         This power target is used calculate the amplifier gain"""
@@ -597,8 +597,8 @@ class Edfa(Node):
         self.nf = self._calc_nf()
         self.gprofile = self._gain_profile(pin)
 
-        pout = (pin + self.noise_profile(baud_rates))*db2lin(self.gprofile)
-        self.pout_db = lin2db(sum(pout*1e3))
+        pout = (pin + self.noise_profile(baud_rates)) * db2lin(self.gprofile)
+        self.pout_db = lin2db(sum(pout * 1e3))
         # ase & nli are only calculated in signal bandwidth
         #    pout_db is not the absolute full output power (negligible if sufficient channels)
 
@@ -610,7 +610,7 @@ class Edfa(Node):
         dg = max(gain_flatmax - gain_target, 0)
         if type_def == 'variable_gain':
             g1a = gain_target - nf_model.delta_p - dg
-            nf_avg = lin2db(db2lin(nf_model.nf1) + db2lin(nf_model.nf2)/db2lin(g1a))
+            nf_avg = lin2db(db2lin(nf_model.nf1) + db2lin(nf_model.nf2) / db2lin(g1a))
         elif type_def == 'fixed_gain':
             nf_avg = nf_model.nf0
         elif type_def == 'openroadm':
@@ -621,7 +621,7 @@ class Edfa(Node):
             nf_avg = polyval(nf_fit_coeff, -dg)
         else:
             assert False, "Unrecognized amplifier type, this should have been checked by the JSON loader"
-        return nf_avg+pad, pad
+        return nf_avg + pad, pad
 
     def _calc_nf(self, avg=False):
         """nf calculation based on 2 models: self.params.nf_model.enabled from json import:
@@ -644,7 +644,7 @@ class Edfa(Node):
                                     self.params.booster_gain_min,
                                     self.params.booster_gain_flatmax,
                                     g2)
-            nf_avg = lin2db(db2lin(nf1_avg) + db2lin(nf2_avg-g1))
+            nf_avg = lin2db(db2lin(nf1_avg) + db2lin(nf2_avg - g1))
             # no padding expected for the 1stage because g1 = gain_max
             pad = 0
         else:
@@ -772,13 +772,13 @@ class Edfa(Node):
         # second estimate of amp ch gain using the channel input profile
         g2nd = g1st - voa
 
-        pout_db = lin2db(sum(pin*1e3*db2lin(g2nd)))
+        pout_db = lin2db(sum(pin * 1e3 * db2lin(g2nd)))
         dgts2 = self.effective_gain - (pout_db - tot_in_power_db)
 
         # center estimate of amp ch gain
         xcent = dgts2
         gcent = g1st - voa + array(self.interpol_dgt) * xcent
-        pout_db = lin2db(sum(pin*1e3*db2lin(gcent)))
+        pout_db = lin2db(sum(pin * 1e3 * db2lin(gcent)))
         gavg_cent = pout_db - tot_in_power_db
 
         # Lower estimate of amp ch gain
@@ -814,7 +814,7 @@ class Edfa(Node):
 
     def propagate(self, pref, *carriers):
         """add ASE noise to the propagating carriers of :class:`.info.SpectralInformation`"""
-        pin = array([c.power.signal+c.power.nli+c.power.ase for c in carriers])  # pin in W
+        pin = array([c.power.signal + c.power.nli + c.power.ase for c in carriers])  # pin in W
         freq = array([c.frequency for c in carriers])
         brate = array([c.baud_rate for c in carriers])
         # interpolate the amplifier vectors with the carriers freq, calculate nf & gain profile
@@ -826,9 +826,9 @@ class Edfa(Node):
 
         for gain, carrier_ase, carrier in zip(gains, carrier_ases, carriers):
             pwr = carrier.power
-            pwr = pwr._replace(signal=pwr.signal*gain/att,
-                               nli=pwr.nli*gain/att,
-                               ase=(pwr.ase+carrier_ase)*gain/att)
+            pwr = pwr._replace(signal=pwr.signal * gain / att,
+                               nli=pwr.nli * gain / att,
+                               ase=(pwr.ase + carrier_ase) * gain / att)
             yield carrier._replace(power=pwr)
 
     def update_pref(self, pref):

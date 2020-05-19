@@ -65,9 +65,9 @@ def propagate_raman_fiber(fiber, *carriers):
     for carrier, attenuation, rmn_ase in zip(carriers, fiber_attenuation, raman_ase):
         carrier_nli = np.interp(carrier.frequency, nli_frequencies, computed_nli)
         pwr = carrier.power
-        pwr = pwr._replace(signal=pwr.signal/attenuation/attenuation_out,
-                           nli=(pwr.nli+carrier_nli)/attenuation/attenuation_out,
-                           ase=((pwr.ase/attenuation)+rmn_ase)/attenuation_out)
+        pwr = pwr._replace(signal=pwr.signal / attenuation / attenuation_out,
+                           nli=(pwr.nli + carrier_nli) / attenuation / attenuation_out,
+                           ase=((pwr.ase / attenuation) + rmn_ase) / attenuation_out)
         new_carriers.append(carrier._replace(power=pwr))
     return new_carriers
 
@@ -297,7 +297,7 @@ class RamanSolver:
         for f_ind, f_ase in enumerate(freq_array):
             cr_raman = cr_raman_matrix[f_ind, :]
             vibrational_loss = f_ase / freq_array[:f_ind]
-            eta = 1/(np.exp((h*freq_diff[f_ind, f_ind+1:])/(kb*temperature)) - 1)
+            eta = 1 / (np.exp((h * freq_diff[f_ind, f_ind + 1:]) / (kb * temperature)) - 1)
 
             int_fiber_loss = -alphap_fiber[f_ind] * z_array
             int_raman_loss = np.sum((cr_raman[:f_ind] * vibrational_loss * int_pump[:f_ind, :].transpose()).transpose(),
@@ -306,11 +306,12 @@ class RamanSolver:
 
             int_gain_loss = int_fiber_loss + int_raman_gain + int_raman_loss
 
-            new_ase = np.sum((cr_raman[f_ind+1:] * (1 + eta) * raman_matrix[f_ind+1:, :].transpose()).transpose()
+            new_ase = np.sum((cr_raman[f_ind + 1:] * (1 + eta) * raman_matrix[f_ind + 1:, :].transpose()).transpose()
                              * h * f_ase * bn_array[f_ind], axis=0)
 
             bc_evolution = ase_bc[f_ind] * np.exp(int_gain_loss)
-            ase_evolution = np.exp(int_gain_loss) * cumtrapz(new_ase*np.exp(-int_gain_loss), z_array, dx=dx, initial=0)
+            ase_evolution = np.exp(int_gain_loss) * cumtrapz(new_ase *
+                                                             np.exp(-int_gain_loss), z_array, dx=dx, initial=0)
 
             power_ase[f_ind, :] = bc_evolution + ase_evolution
 
@@ -318,7 +319,7 @@ class RamanSolver:
         return spontaneous_raman_scattering
 
     def calculate_stimulated_raman_scattering(self, carriers, raman_pumps):
-        """ Returns stimulated Raman scattering solution including 
+        """ Returns stimulated Raman scattering solution including
         fiber gain/loss profile.
         :return: None
         """
@@ -419,7 +420,7 @@ class RamanSolver:
             vibrational_loss = freq_array[f_ind] / freq_array[:f_ind]
 
             for z_ind, power_sample in enumerate(power):
-                raman_gain = np.sum(cr_raman[f_ind+1:] * power_spectrum[f_ind+1:, z_ind])
+                raman_gain = np.sum(cr_raman[f_ind + 1:] * power_spectrum[f_ind + 1:, z_ind])
                 raman_loss = np.sum(vibrational_loss * cr_raman[:f_ind] * power_spectrum[:f_ind, z_ind])
 
                 dpdz_element = prop_direct[f_ind] * (-alphap_fiber[f_ind] + raman_gain - raman_loss) * power_sample
@@ -476,7 +477,7 @@ class NliSolver:
         carrier_nli = 0
         for pump_carrier_1 in carriers:
             for pump_carrier_2 in carriers:
-                carrier_nli += eta_matrix[pump_carrier_1.channel_number-1, pump_carrier_2.channel_number-1] * \
+                carrier_nli += eta_matrix[pump_carrier_1.channel_number - 1, pump_carrier_2.channel_number - 1] * \
                     pump_carrier_1.power.signal * pump_carrier_2.power.signal
         carrier_nli *= carrier.power.signal
 

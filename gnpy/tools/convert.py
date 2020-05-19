@@ -53,13 +53,13 @@ class Node(object):
             setattr(self, k, v)
 
     default_values = {
-        'city':         '',
-        'state':        '',
-        'country':      '',
-        'region':       '',
-        'latitude':     0,
-        'longitude':    0,
-        'node_type':    'ILA',
+        'city': '',
+        'state': '',
+        'country': '',
+        'region': '',
+        'latitude': 0,
+        'longitude': 0,
+        'node_type': 'ILA',
         'booster_restriction': '',
         'preamp_restriction': ''
     }
@@ -89,15 +89,15 @@ class Link(object):
             or (self.from_city == link.to_city and self.to_city == link.from_city)
 
     default_values = {
-        'from_city':            '',
-        'to_city':              '',
-        'east_distance':        80,
-        'east_fiber':           'SSMF',
-        'east_lineic':          0.2,
-        'east_con_in':          None,
-        'east_con_out':         None,
-        'east_pmd':             0.1,
-        'east_cable':           ''
+        'from_city': '',
+        'to_city': '',
+        'east_distance': 80,
+        'east_fiber': 'SSMF',
+        'east_lineic': 0.2,
+        'east_con_in': None,
+        'east_con_out': None,
+        'east_pmd': 0.1,
+        'east_cable': ''
     }
 
 
@@ -116,14 +116,14 @@ class Eqpt(object):
             setattr(self, k, v_west)
 
     default_values = {
-        'from_city':        '',
-        'to_city':          '',
-        'east_amp_type':    '',
-        'east_att_in':      0,
-        'east_amp_gain':    None,
-        'east_amp_dp':      None,
-        'east_tilt':        0,
-        'east_att_out':     None
+        'from_city': '',
+        'to_city': '',
+        'east_amp_type': '',
+        'east_att_in': 0,
+        'east_amp_gain': None,
+        'east_amp_dp': None,
+        'east_tilt': 0,
+        'east_att_out': None
     }
 
 
@@ -150,7 +150,7 @@ def read_slice(my_sheet, line, slice_, header):
     slice_range = (-1, -1)
     if header_i != []:
         try:
-            slice_range = next((h.colindex, header_i[i+1].colindex)
+            slice_range = next((h.colindex, header_i[i + 1].colindex)
                                for i, h in enumerate(header_i) if header in h.header)
         except Exception:
             pass
@@ -167,20 +167,20 @@ def parse_headers(my_sheet, input_headers_dict, headers, start_line, slice_in):
         iteration = 1
         while slice_out == (-1, -1) and iteration < 10:
             # try next lines
-            slice_out = read_slice(my_sheet, start_line+iteration, slice_in, h0)
+            slice_out = read_slice(my_sheet, start_line + iteration, slice_in, h0)
             iteration += 1
         if slice_out == (-1, -1):
             if h0 in ('east', 'Node A', 'Node Z', 'City'):
-                print(f'\x1b[1;31;40m'+f'CRITICAL: missing _{h0}_ header: EXECUTION ENDS' + '\x1b[0m')
+                print(f'\x1b[1;31;40m' + f'CRITICAL: missing _{h0}_ header: EXECUTION ENDS' + '\x1b[0m')
                 exit()
             else:
                 print(f'missing header {h0}')
         elif not isinstance(input_headers_dict[h0], dict):
             headers[slice_out[0]] = input_headers_dict[h0]
         else:
-            headers = parse_headers(my_sheet, input_headers_dict[h0], headers, start_line+1, slice_out)
+            headers = parse_headers(my_sheet, input_headers_dict[h0], headers, start_line + 1, slice_out)
     if headers == {}:
-        print('\x1b[1;31;40m'+f'CRITICAL ERROR: could not find any header to read _ ABORT' + '\x1b[0m')
+        print('\x1b[1;31;40m' + f'CRITICAL ERROR: could not find any header to read _ ABORT' + '\x1b[0m')
         exit()
     return headers
 
@@ -266,16 +266,16 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
     data = {
         'elements':
             [{'uid': f'trx {x.city}',
-              'metadata': {'location': {'city':      x.city,
-                                        'region':    x.region,
-                                        'latitude':  x.latitude,
+              'metadata': {'location': {'city': x.city,
+                                        'region': x.region,
+                                        'latitude': x.latitude,
                                         'longitude': x.longitude}},
               'type': 'Transceiver'}
              for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'] +
             [{'uid': f'roadm {x.city}',
-              'metadata': {'location': {'city':      x.city,
-                                        'region':    x.region,
-                                        'latitude':  x.latitude,
+              'metadata': {'location': {'city': x.city,
+                                        'region': x.region,
+                                        'latitude': x.latitude,
                                         'longitude': x.longitude}},
               'type': 'Roadm'}
              for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'
@@ -287,24 +287,24 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
                       'booster_variety_list': silent_remove(x.booster_restriction.split(' | '), '')
                   }
               },
-              'metadata': {'location': {'city':      x.city,
-                                        'region':    x.region,
-                                        'latitude':  x.latitude,
+              'metadata': {'location': {'city': x.city,
+                                        'region': x.region,
+                                        'latitude': x.latitude,
                                         'longitude': x.longitude}},
               'type': 'Roadm'}
              for x in nodes_by_city.values() if x.node_type.lower() == 'roadm' and
              (x.booster_restriction != '' or x.preamp_restriction != '')] +
             [{'uid': f'west fused spans in {x.city}',
-              'metadata': {'location': {'city':      x.city,
-                                        'region':    x.region,
-                                        'latitude':  x.latitude,
+              'metadata': {'location': {'city': x.city,
+                                        'region': x.region,
+                                        'latitude': x.latitude,
                                         'longitude': x.longitude}},
               'type': 'Fused'}
              for x in nodes_by_city.values() if x.node_type.lower() == 'fused'] +
             [{'uid': f'east fused spans in {x.city}',
-              'metadata': {'location': {'city':      x.city,
-                                        'region':    x.region,
-                                        'latitude':  x.latitude,
+              'metadata': {'location': {'city': x.city,
+                                        'region': x.region,
+                                        'latitude': x.latitude,
                                         'longitude': x.longitude}},
               'type': 'Fused'}
              for x in nodes_by_city.values() if x.node_type.lower() == 'fused'] +
@@ -313,8 +313,8 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
                                                 nodes_by_city[x.to_city])},
               'type': 'Fiber',
               'type_variety': x.east_fiber,
-              'params': {'length':   round(x.east_distance, 3),
-                         'length_units':    x.distance_units,
+              'params': {'length': round(x.east_distance, 3),
+                         'length_units': x.distance_units,
                          'loss_coef': x.east_lineic,
                          'con_in': x.east_con_in,
                          'con_out': x.east_con_out}
@@ -325,36 +325,36 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
                                                 nodes_by_city[x.to_city])},
               'type': 'Fiber',
               'type_variety': x.west_fiber,
-              'params': {'length':   round(x.west_distance, 3),
-                         'length_units':    x.distance_units,
+              'params': {'length': round(x.west_distance, 3),
+                         'length_units': x.distance_units,
                          'loss_coef': x.west_lineic,
                          'con_in': x.west_con_in,
                          'con_out': x.west_con_out}
               }  # missing ILA construction
              for x in links] +
             [{'uid': f'east edfa in {e.from_city} to {e.to_city}',
-              'metadata': {'location': {'city':      nodes_by_city[e.from_city].city,
-                                        'region':    nodes_by_city[e.from_city].region,
-                                        'latitude':  nodes_by_city[e.from_city].latitude,
+              'metadata': {'location': {'city': nodes_by_city[e.from_city].city,
+                                        'region': nodes_by_city[e.from_city].region,
+                                        'latitude': nodes_by_city[e.from_city].latitude,
                                         'longitude': nodes_by_city[e.from_city].longitude}},
               'type': 'Edfa',
               'type_variety': e.east_amp_type,
               'operational': {'gain_target': e.east_amp_gain,
-                              'delta_p':     e.east_amp_dp,
+                              'delta_p': e.east_amp_dp,
                               'tilt_target': e.east_tilt,
                               'out_voa': e.east_att_out}
               }
              for e in eqpts if (e.east_amp_type.lower() != '' and \
                                 e.east_amp_type.lower() != 'fused')] +
             [{'uid': f'west edfa in {e.from_city} to {e.to_city}',
-              'metadata': {'location': {'city':      nodes_by_city[e.from_city].city,
-                                        'region':    nodes_by_city[e.from_city].region,
-                                        'latitude':  nodes_by_city[e.from_city].latitude,
+              'metadata': {'location': {'city': nodes_by_city[e.from_city].city,
+                                        'region': nodes_by_city[e.from_city].region,
+                                        'latitude': nodes_by_city[e.from_city].latitude,
                                         'longitude': nodes_by_city[e.from_city].longitude}},
               'type': 'Edfa',
               'type_variety': e.west_amp_type,
               'operational': {'gain_target': e.west_amp_gain,
-                              'delta_p':     e.west_amp_dp,
+                              'delta_p': e.west_amp_dp,
                               'tilt_target': e.west_tilt,
                               'out_voa': e.west_att_out}
               }
@@ -365,18 +365,18 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
             # If user specifies ILA in Nodes sheet and fused in Eqpt sheet, then assumes that
             # this is a fused nodes.
             [{'uid': f'east edfa in {e.from_city} to {e.to_city}',
-              'metadata': {'location': {'city':      nodes_by_city[e.from_city].city,
-                                        'region':    nodes_by_city[e.from_city].region,
-                                        'latitude':  nodes_by_city[e.from_city].latitude,
+              'metadata': {'location': {'city': nodes_by_city[e.from_city].city,
+                                        'region': nodes_by_city[e.from_city].region,
+                                        'latitude': nodes_by_city[e.from_city].latitude,
                                         'longitude': nodes_by_city[e.from_city].longitude}},
               'type': 'Fused',
               'params': {'loss': 0}
               }
              for e in eqpts if e.east_amp_type.lower() == 'fused'] +
             [{'uid': f'west edfa in {e.from_city} to {e.to_city}',
-              'metadata': {'location': {'city':      nodes_by_city[e.from_city].city,
-                                        'region':    nodes_by_city[e.from_city].region,
-                                        'latitude':  nodes_by_city[e.from_city].latitude,
+              'metadata': {'location': {'city': nodes_by_city[e.from_city].city,
+                                        'region': nodes_by_city[e.from_city].region,
+                                        'latitude': nodes_by_city[e.from_city].latitude,
                                         'longitude': nodes_by_city[e.from_city].longitude}},
               'type': 'Fused',
               'params': {'loss': 0}
@@ -388,17 +388,17 @@ def convert_file(input_filename, names_matching=False, filter_region=[]):
             +
             list(chain.from_iterable(zip(
                 [{'from_node': f'trx {x.city}',
-                  'to_node':   f'roadm {x.city}'}
+                  'to_node': f'roadm {x.city}'}
                  for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'],
                 [{'from_node': f'roadm {x.city}',
-                  'to_node':   f'trx {x.city}'}
+                  'to_node': f'trx {x.city}'}
                  for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'])))
     }
 
     suffix_filename = str(input_filename.suffixes[0])
     full_input_filename = str(input_filename)
-    split_filename = [full_input_filename[0:len(full_input_filename)-len(suffix_filename)], suffix_filename[1:]]
-    output_json_file_name = split_filename[0]+'.json'
+    split_filename = [full_input_filename[0:len(full_input_filename) - len(suffix_filename)], suffix_filename[1:]]
+    output_json_file_name = split_filename[0] + '.json'
     with open(output_json_file_name, 'w', encoding='utf-8') as edfa_json_file:
         edfa_json_file.write(dumps(data, indent=2, ensure_ascii=False))
     return output_json_file_name
@@ -484,32 +484,32 @@ def parse_excel(input_filename):
         'Node A': 'from_city',
         'Node Z': 'to_city',
         'east': {
-            'Distance (km)':        'east_distance',
-            'Fiber type':           'east_fiber',
-            'lineic att':           'east_lineic',
-            'Con_in':               'east_con_in',
-            'Con_out':              'east_con_out',
-            'PMD':                  'east_pmd',
-            'Cable id':             'east_cable'
+            'Distance (km)': 'east_distance',
+            'Fiber type': 'east_fiber',
+            'lineic att': 'east_lineic',
+            'Con_in': 'east_con_in',
+            'Con_out': 'east_con_out',
+            'PMD': 'east_pmd',
+            'Cable id': 'east_cable'
         },
         'west': {
-            'Distance (km)':        'west_distance',
-            'Fiber type':           'west_fiber',
-            'lineic att':           'west_lineic',
-            'Con_in':               'west_con_in',
-            'Con_out':              'west_con_out',
-            'PMD':                  'west_pmd',
-            'Cable id':             'west_cable'
+            'Distance (km)': 'west_distance',
+            'Fiber type': 'west_fiber',
+            'lineic att': 'west_lineic',
+            'Con_in': 'west_con_in',
+            'Con_out': 'west_con_out',
+            'PMD': 'west_pmd',
+            'Cable id': 'west_cable'
         }
     }
     node_headers = {
-        'City':         'city',
-        'State':        'state',
-        'Country':      'country',
-        'Region':       'region',
-        'Latitude':     'latitude',
-        'Longitude':    'longitude',
-        'Type':         'node_type',
+        'City': 'city',
+        'State': 'state',
+        'Country': 'country',
+        'Region': 'region',
+        'Latitude': 'latitude',
+        'Longitude': 'longitude',
+        'Type': 'node_type',
         'Booster_restriction': 'booster_restriction',
         'Preamp_restriction': 'preamp_restriction'
     }
@@ -517,20 +517,20 @@ def parse_excel(input_filename):
         'Node A': 'from_city',
         'Node Z': 'to_city',
         'east': {
-            'amp type':         'east_amp_type',
-            'att_in':           'east_att_in',
-            'amp gain':         'east_amp_gain',
-            'delta p':          'east_amp_dp',
-            'tilt':             'east_tilt',
-            'att_out':          'east_att_out'
+            'amp type': 'east_amp_type',
+            'att_in': 'east_att_in',
+            'amp gain': 'east_amp_gain',
+            'delta p': 'east_amp_dp',
+            'tilt': 'east_tilt',
+            'att_out': 'east_att_out'
         },
         'west': {
-            'amp type':         'west_amp_type',
-            'att_in':           'west_att_in',
-            'amp gain':         'west_amp_gain',
-            'delta p':          'west_amp_dp',
-            'tilt':             'west_tilt',
-            'att_out':          'west_att_out'
+            'amp type': 'west_amp_type',
+            'att_in': 'west_att_in',
+            'amp gain': 'west_amp_gain',
+            'delta p': 'west_amp_dp',
+            'tilt': 'west_tilt',
+            'att_out': 'west_att_out'
         }
     }
 
@@ -544,7 +544,7 @@ def parse_excel(input_filename):
             eqpt_sheet = None
 
         nodes = []
-        for node in parse_sheet(nodes_sheet, node_headers, NODES_LINE, NODES_LINE+1, NODES_COLUMN):
+        for node in parse_sheet(nodes_sheet, node_headers, NODES_LINE, NODES_LINE + 1, NODES_COLUMN):
             nodes.append(Node(**node))
         expected_node_types = {'ROADM', 'ILA', 'FUSED'}
         for n in nodes:
@@ -552,12 +552,12 @@ def parse_excel(input_filename):
                 n.node_type = 'ILA'
 
         links = []
-        for link in parse_sheet(links_sheet, link_headers, LINKS_LINE, LINKS_LINE+2, LINKS_COLUMN):
+        for link in parse_sheet(links_sheet, link_headers, LINKS_LINE, LINKS_LINE + 2, LINKS_COLUMN):
             links.append(Link(**link))
 
         eqpts = []
         if eqpt_sheet is not None:
-            for eqpt in parse_sheet(eqpt_sheet, eqpt_headers, EQPTS_LINE, EQPTS_LINE+2, EQPTS_COLUMN):
+            for eqpt in parse_sheet(eqpt_sheet, eqpt_headers, EQPTS_LINE, EQPTS_LINE + 2, EQPTS_COLUMN):
                 eqpts.append(Eqpt(**eqpt))
 
     # sanity check
@@ -583,7 +583,7 @@ def eqpt_connection_by_city(city_name):
         for i in range(2):
             from_ = fiber_link(other_cities[i], city_name)
             in_ = eqpt_in_city_to_city(city_name, other_cities[0], direction[i])
-            to_ = fiber_link(city_name, other_cities[1-i])
+            to_ = fiber_link(city_name, other_cities[1 - i])
             subdata += connect_eqpt(from_, in_, to_)
     elif nodes_by_city[city_name].node_type.lower() == 'roadm':
         for other_city in other_cities:
@@ -712,12 +712,12 @@ def midpoint(city_a, city_b):
     longs = city_a.longitude, city_b.longitude
     try:
         result = {
-            'latitude':  sum(lats) / 2,
+            'latitude': sum(lats) / 2,
             'longitude': sum(longs) / 2
         }
     except TypeError:
         result = {
-            'latitude':  0,
+            'latitude': 0,
             'longitude': 0
         }
     return result

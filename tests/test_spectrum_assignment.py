@@ -69,7 +69,7 @@ def test_oms(setup):
             assert not isinstance(elem, Roadm)
             assert elem in network.nodes()
             assert elem.oms.oms_id == oms.oms_id
-            assert elem.uid == oms.el_id_list[i+1]
+            assert elem.uid == oms.el_id_list[i + 1]
 
 
 @pytest.mark.parametrize('nval', [0, 10, -255])
@@ -175,7 +175,7 @@ def test_assign_and_sum(nval1, nval2, setup):
     # if requested slots exceed grid spectrum should not be assigned and assignment
     # should return False
     if ((nval1 - mval) < oms1.spectrum_bitmap.getn(0) or
-            (nval1 + mval-1) > oms1.spectrum_bitmap.getn(ind_max)):
+            (nval1 + mval - 1) > oms1.spectrum_bitmap.getn(ind_max)):
         with pytest.raises(SpectrumError):
             oms1.assign_spectrum(nval1, mval)
         for elem in oms1.spectrum_bitmap.bitmap:
@@ -317,4 +317,4 @@ def test_reversed_direction(equipment, setup, requests, services):
                 print(f'\t    spectrum: ' +
                       f'{this_path[len(this_path)-j-1].oms.spectrum_bitmap.bitmap[imin:imax]}')
                 assert elem.oms.spectrum_bitmap.bitmap[imin:imax] == \
-                    this_path[len(this_path)-j-1].oms.spectrum_bitmap.bitmap[imin:imax]
+                    this_path[len(this_path) - j - 1].oms.spectrum_bitmap.bitmap[imin:imax]

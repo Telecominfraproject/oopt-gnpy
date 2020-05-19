@@ -30,7 +30,8 @@ SERVICES_COLUMN = 12
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
 
 
-def all_rows(sheet, start=0): return (sheet.row(x) for x in range(start, sheet.nrows))
+def all_rows(sheet, start=0):
+    return (sheet.row(x) for x in range(start, sheet.nrows))
 
 
 logger = getLogger(__name__)
@@ -125,8 +126,8 @@ class Request_element(Element):
         # Default assumption for bidir is False
         req_dictionnary = {
             'request-id': self.request_id,
-            'source':    self.source,
-            'destination':  self.destination,
+            'source': self.source,
+            'destination': self.destination,
             'src-tp-id': self.srctpid,
             'dst-tp-id': self.dsttpid,
             'bidirectional': self.bidir,
@@ -181,7 +182,14 @@ class Request_element(Element):
         return self.pathrequest, self.pathsync
 
 
-def convert_service_sheet(input_filename, eqpt, network, network_filename=None, output_filename='', bidir=False, filter_region=None):
+def convert_service_sheet(
+        input_filename,
+        eqpt,
+        network,
+        network_filename=None,
+        output_filename='',
+        bidir=False,
+        filter_region=None):
     """ converts a service sheet into a json structure
     """
     if filter_region is None:
@@ -339,7 +347,7 @@ def correct_xls_route_list(network_filename, network, pathreqlist):
                             # we rely on the next node provided by the user for this purpose
                             new_n = next(n for n in nodes_suggestion
                                          if n in next_node.keys() and next_node[n]
-                                         in temp.nodes_list[i:]+[pathreq.destination] and
+                                         in temp.nodes_list[i:] + [pathreq.destination] and
                                          next_node[n] not in temp.nodes_list[:i])
                         else:
                             new_n = nodes_suggestion[0]

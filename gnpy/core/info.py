@@ -23,7 +23,7 @@ class Channel(namedtuple('Channel', 'channel_number frequency baud_rate roll_off
 
 
 class Pref(namedtuple('Pref', 'p_span0, p_spani, neq_ch ')):
-    """noiseless reference power in dBm: 
+    """noiseless reference power in dBm:
     p_span0: inital target carrier power
     p_spani: carrier power after element i
     neq_ch: equivalent channel count in dB"""
@@ -42,7 +42,7 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, 
     si = SpectralInformation(
         pref=Pref(pref, pref, lin2db(nb_channel)),
         carriers=[
-            Channel(f, (f_min+spacing*f),
-                    baud_rate, roll_off, Power(power, 0, 0)) for f in range(1, nb_channel+1)
+            Channel(f, (f_min + spacing * f),
+                    baud_rate, roll_off, Power(power, 0, 0)) for f in range(1, nb_channel + 1)
         ])
     return si

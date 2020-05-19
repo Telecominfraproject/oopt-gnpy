@@ -193,12 +193,12 @@ def test_restrictions(restrictions, equipment):
             if restrictions['booster_variety_list'] and \
                not roadms[next(network.predecessors(amp)).uid]\
                .restrictions['booster_variety_list']:
-                if not amp.params.type_variety in restrictions['booster_variety_list']:
+                if amp.params.type_variety not in restrictions['booster_variety_list']:
 
                     raise AssertionError()
     for amp in preamp_nodes:
         if amp.uid not in preamp_nodes_nobuild_uid:
             if restrictions['preamp_variety_list'] and\
                     not roadms[next(network.successors(amp)).uid].restrictions['preamp_variety_list']:
-                if not amp.params.type_variety in restrictions['preamp_variety_list']:
+                if amp.params.type_variety not in restrictions['preamp_variety_list']:
                     raise AssertionError()

@@ -30,15 +30,15 @@ class Bitmap:
         # n is the min index including guardband. Guardband is require to be sure
         # that a channel can be assigned  with center frequency fmin (means that its
         # slot occupation goes below freq_index_min
-        n_min = frequency_to_n(f_min-guardband, grid)
-        n_max = frequency_to_n(f_max+guardband, grid) - 1
+        n_min = frequency_to_n(f_min - guardband, grid)
+        n_max = frequency_to_n(f_max + guardband, grid) - 1
         self.n_min = n_min
         self.n_max = n_max
         self.freq_index_min = frequency_to_n(f_min)
         self.freq_index_max = frequency_to_n(f_max)
-        self.freq_index = list(range(n_min, n_max+1))
+        self.freq_index = list(range(n_min, n_max + 1))
         if bitmap is None:
-            self.bitmap = [1] * (n_max-n_min+1)
+            self.bitmap = [1] * (n_max - n_min + 1)
         elif len(bitmap) == len(self.freq_index):
             self.bitmap = bitmap
         else:
@@ -58,7 +58,7 @@ class Bitmap:
         """ insert bitmap on the left to align oms bitmaps if their start frequencies are different
         """
         self.bitmap = newbitmap + self.bitmap
-        temp = list(range(self.n_min-len(newbitmap), self.n_min))
+        temp = list(range(self.n_min - len(newbitmap), self.n_min))
         self.freq_index = temp + self.freq_index
         self.n_min = self.freq_index[0]
 
@@ -66,7 +66,7 @@ class Bitmap:
         """ insert bitmap on the right to align oms bitmaps if their stop frequencies are different
         """
         self.bitmap = self.bitmap + newbitmap
-        self.freq_index = self.freq_index + list(range(self.n_max, self.n_max+len(newbitmap)))
+        self.freq_index = self.freq_index + list(range(self.n_max, self.n_max + len(newbitmap)))
         self.n_max = self.freq_index[-1]
 
 
@@ -144,7 +144,7 @@ class OMS:
         if startn <= self.spectrum_bitmap.n_min:
             raise SpectrumError(f'N {nvalue}, M {mvalue} below the N spectrum bitmap bounds')
         self.spectrum_bitmap.bitmap[self.spectrum_bitmap.geti(
-            startn):self.spectrum_bitmap.geti(stopn)+1] = [0] * (stopn-startn+1)
+            startn):self.spectrum_bitmap.geti(stopn) + 1] = [0] * (stopn - startn + 1)
 
     def add_service(self, service_id, nb_wl):
         """ record service and mark spectrum as occupied
@@ -164,7 +164,7 @@ def frequency_to_n(freq, grid=0.00625e12):
     20
 
     """
-    return (int)((freq-193.1e12)/grid)
+    return (int)((freq - 193.1e12) / grid)
 
 
 def nvalue_to_frequency(nvalue, grid=0.00625e12):
@@ -201,8 +201,8 @@ def slots_to_m(startn, stopn):
     7
 
     """
-    nvalue = (int)((startn+stopn+1)/2)
-    mvalue = (int)((stopn-startn+1)/2)
+    nvalue = (int)((startn + stopn + 1) / 2)
+    mvalue = (int)((stopn - startn + 1) / 2)
     return nvalue, mvalue
 
 
@@ -221,7 +221,7 @@ def m_to_freq(nvalue, mvalue, grid=0.00625e12):
     """
     startn, stopn = mvalue_to_slots(nvalue, mvalue)
     fstart = nvalue_to_frequency(startn, grid)
-    fstop = nvalue_to_frequency(stopn+1, grid)
+    fstop = nvalue_to_frequency(stopn + 1, grid)
     return fstart, fstop
 
 
@@ -355,11 +355,11 @@ def spectrum_selection(pth, oms_list, requested_m, requested_n=None):
         freq_availability = bitmap_sum(oms_list[oms].spectrum_bitmap.bitmap, freq_availability)
     if requested_n is None:
         # avoid slots reserved on the edge 0.15e-12 on both sides -> 24
-        candidates = [(freq_index[i]+requested_m, freq_index[i], freq_index[i]+2*requested_m-1)
+        candidates = [(freq_index[i] + requested_m, freq_index[i], freq_index[i] + 2 * requested_m - 1)
                       for i in range(len(freq_availability))
-                      if freq_availability[i:i+2*requested_m] == [1] * (2*requested_m)
+                      if freq_availability[i:i + 2 * requested_m] == [1] * (2 * requested_m)
                       and freq_index[i] >= freq_index_min
-                      and freq_index[i+2*requested_m-1] <= freq_index_max]
+                      and freq_index[i + 2 * requested_m - 1] <= freq_index_max]
 
         candidate = select_candidate(candidates, policy='first_fit')
     else:
@@ -367,11 +367,11 @@ def spectrum_selection(pth, oms_list, requested_m, requested_n=None):
         # print(f'N {requested_n} i {i}')
         # print(freq_availability[i-m:i+m] )
         # print(freq_index[i-m:i+m])
-        if (freq_availability[i-requested_m:i+requested_m] == [1] * (2*requested_m) and
-                freq_index[i-requested_m] >= freq_index_min
-                and freq_index[i+requested_m-1] <= freq_index_max):
+        if (freq_availability[i - requested_m:i + requested_m] == [1] * (2 * requested_m) and
+                freq_index[i - requested_m] >= freq_index_min
+                and freq_index[i + requested_m - 1] <= freq_index_max):
             # candidate is the triplet center_n, startn and stopn
-            candidate = (requested_n, requested_n-requested_m, requested_n+requested_m-1)
+            candidate = (requested_n, requested_n - requested_m, requested_n + requested_m - 1)
         else:
             candidate = (None, None, None)
         # print("coucou11")

@@ -206,7 +206,7 @@ class ResultElement(Element):
                 },
                 {
                     'metric-type': 'SNR-0.1nm',
-                    'accumulative-value': round(mean(pth[-1].snr+lin2db(req.baud_rate/12.5e9)), 2)
+                    'accumulative-value': round(mean(pth[-1].snr + lin2db(req.baud_rate / 12.5e9)), 2)
                 },
                 {
                     'metric-type': 'OSNR-bandwidth',
@@ -313,7 +313,7 @@ def compute_constrained_path(network, req):
         #     print(network.get_edge_data(s,e))
         #     s = e
     except NetworkXNoPath:
-        msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path from' +\
+        msg = f'\x1b[1;33;40m' + f'Request {req.request_id} could not find a path from' +\
             f' {source.uid} to node: {destination.uid} in network topology' + '\x1b[0m'
         LOGGER.critical(msg)
         print(msg)
@@ -332,8 +332,8 @@ def compute_constrained_path(network, req):
         # select the shortest path (in nb of hops) -> changed to shortest path in km length
         if len(candidate) > 0:
             # candidate.sort(key=lambda x: len(x))
-            candidate.sort(key=lambda x: sum(network.get_edge_data(x[i], x[i+1])['weight']
-                                             for i in range(len(x)-2)))
+            candidate.sort(key=lambda x: sum(network.get_edge_data(x[i], x[i + 1])['weight']
+                                             for i in range(len(x) - 2)))
             total_path = candidate[0]
         else:
             # TODO: better account for individual loose and strict node
@@ -343,17 +343,17 @@ def compute_constrained_path(network, req):
             # a path w/o constraints, else there is no possible path
 
             # no candidate can be found with the constraints
-            print(f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path crossing ' +
+            print(f'\x1b[1;33;40m' + f'Request {req.request_id} could not find a path crossing ' +
                   f'{[el.uid for el in nodes_list[:-1]]} in network topology' + '\x1b[0m')
 
             if 'STRICT' not in req.loose_list[:-1]:
-                msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path with user_' +\
+                msg = f'\x1b[1;33;40m' + f'Request {req.request_id} could not find a path with user_' +\
                     f'include node constraints' + '\x1b[0m'
                 LOGGER.info(msg)
                 print(f'constraint ignored')
             else:
                 # one STRICT makes the whole list STRICT
-                msg = f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path with user ' +\
+                msg = f'\x1b[1;33;40m' + f'Request {req.request_id} could not find a path with user ' +\
                     f'include node constraints.\nNo path computed' + '\x1b[0m'
                 LOGGER.critical(msg)
                 print(msg)
@@ -441,7 +441,7 @@ def propagate_and_optimize_mode(path, req, equipment):
             for this_mode in modes_to_explore:
                 if path[-1].snr is not None:
                     path[-1].update_snr(this_mode['tx_osnr'], equipment['Roadm']['default'].add_drop_osnr)
-                    if round(min(path[-1].snr+lin2db(this_br/(12.5e9))), 2) > this_mode['OSNR']:
+                    if round(min(path[-1].snr + lin2db(this_br / (12.5e9))), 2) > this_mode['OSNR']:
                         return path, this_mode
                     else:
                         last_explored_mode = this_mode
@@ -717,7 +717,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
         # sort them in km length instead of hop
         # all_simp_pths = sorted(all_simp_pths, key=lambda path: len(path))
         all_simp_pths = sorted(all_simp_pths, key=lambda
-                               x: sum(network.get_edge_data(x[i], x[i+1])['weight'] for i in range(len(x)-2)))
+                               x: sum(network.get_edge_data(x[i], x[i + 1])['weight'] for i in range(len(x) - 2)))
         # reversed direction paths required to check disjunction on both direction
         all_simp_pths_reversed = []
         for pth in all_simp_pths:
@@ -858,7 +858,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
                     # or not
                     if not ispart(allpaths[id(pth)].req.nodes_list, pth):
                         # print(f'nb of solutions {len(temp)}')
-                        if j < len(candidates[this_d.disjunction_id])-1:
+                        if j < len(candidates[this_d.disjunction_id]) - 1:
                             msg = f'removing {sol}'
                             LOGGER.info(msg)
                             testispartok = False

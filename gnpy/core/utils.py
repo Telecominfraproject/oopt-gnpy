@@ -145,8 +145,8 @@ def freq2wavelength(value):
 
 
 def snr_sum(snr, bw, snr_added, bw_added=12.5e9):
-    snr_added = snr_added - lin2db(bw/bw_added)
-    snr = -lin2db(db2lin(-snr)+db2lin(-snr_added))
+    snr_added = snr_added - lin2db(bw / bw_added)
+    snr = -lin2db(db2lin(-snr) + db2lin(-snr_added))
     return snr
 
 
