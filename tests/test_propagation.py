@@ -12,6 +12,7 @@ from gnpy.tools.json_io import load_network, load_equipment
 from pathlib import Path
 from networkx import dijkstra_path
 from numpy import mean
+from pytest import approx
 
 #network_file_name = 'tests/test_network.json'
 network_file_name = Path(__file__).parent.parent / 'tests/LinkforTest.json'
@@ -61,7 +62,8 @@ def propagation(input_power, con_in, con_out, dest):
     print(f'pw: {input_power} conn in: {con_in} con out: {con_out}',
           f'OSNR@0.1nm: {round(mean(sink.osnr_ase_01nm),2)}',
           f'SNR@bandwitdth: {round(mean(sink.snr),2)}')
-    return sink, nf
+    return sink, nf, path
+
 
 
 test = {'a': (-1, 1, 0), 'b': (-1, 1, 1), 'c': (0, 1, 0), 'd': (1, 1, 1)}
@@ -74,19 +76,37 @@ def test_snr(osnr_test, dest):
     pw = test[osnr_test][0]
     conn_in = test[osnr_test][1]
     conn_out = test[osnr_test][2]
-    sink, nf = propagation(pw, conn_in, conn_out, dest)
+    sink, nf, _ = propagation(pw, conn_in, conn_out, dest)
     osnr = round(mean(sink.osnr_ase), 3)
     nli = 1.0 / db2lin(round(mean(sink.snr), 3)) - 1.0 / db2lin(osnr)
     pw = expected[osnr_test][0]
     conn_in = expected[osnr_test][1]
     conn_out = expected[osnr_test][2]
-    sink, exp_nf = propagation(pw, conn_in, conn_out, dest)
+    sink, exp_nf, _ = propagation(pw, conn_in, conn_out, dest)
     expected_osnr = round(mean(sink.osnr_ase), 3)
     expected_nli = 1.0 / db2lin(round(mean(sink.snr), 3)) - 1.0 / db2lin(expected_osnr)
     # compare OSNR taking into account nf change of amps
     osnr_diff = abs(osnr - expected_osnr + nf - exp_nf)
     nli_diff = abs((nli - expected_nli) / nli)
     assert osnr_diff < 0.01 and nli_diff < 0.01
+
+
+@pytest.mark.parametrize("dest", ['trx B', 'trx F'])
+@pytest.mark.parametrize("osnr_test", ['a', 'b', 'c', 'd'])
+def test_chromatic_dispersion(osnr_test, dest):
+    pw = test[osnr_test][0]
+    conn_in = test[osnr_test][1]
+    conn_out = test[osnr_test][2]
+    sink, _, path = propagation(pw, conn_in, conn_out, dest)
+
+    chromatic_dispersion = sink.chromatic_dispersion
+
+    num_ch = len(chromatic_dispersion)
+    expected_cd = 0
+    for el in path:
+        expected_cd += el.params.dispersion * el.params.length if isinstance(el, Fiber) else 0
+    expected_cd = expected_cd * np.ones(num_ch)
+    assert chromatic_dispersion == approx(expected_cd)
 
 
 if __name__ == '__main__':
