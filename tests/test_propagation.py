@@ -63,7 +63,7 @@ def propagation(input_power, con_in, con_out,dest):
     print(f'pw: {input_power} conn in: {con_in} con out: {con_out}',
           f'OSNR@0.1nm: {round(mean(sink.osnr_ase_01nm),2)}',
           f'SNR@bandwitdth: {round(mean(sink.snr),2)}')
-    return sink, nf
+    return sink, nf, path
 
 test = {'a':(-1,1,0),'b':(-1,1,1),'c':(0,1,0),'d':(1,1,1)}
 expected = {'a': (-2, 0, 0), 'b': (-2, 0, 1), 'c': (-1, 0, 0), 'd': (0, 0, 1)}
@@ -74,13 +74,13 @@ def test_snr(osnr_test, dest):
     pw = test[osnr_test][0]
     conn_in = test[osnr_test][1]
     conn_out = test[osnr_test][2]
-    sink, nf = propagation(pw, conn_in, conn_out, dest)
+    sink, nf, _ = propagation(pw, conn_in, conn_out, dest)
     osnr = round(mean(sink.osnr_ase), 3)
     nli = 1.0/db2lin(round(mean(sink.snr), 3)) - 1.0/db2lin(osnr)
     pw = expected[osnr_test][0]
     conn_in = expected[osnr_test][1]
     conn_out = expected[osnr_test][2]
-    sink,exp_nf = propagation(pw, conn_in, conn_out, dest)
+    sink, exp_nf, _ = propagation(pw, conn_in, conn_out, dest)
     expected_osnr = round(mean(sink.osnr_ase), 3)
     expected_nli = 1.0/db2lin(round(mean(sink.snr), 3)) - 1.0/db2lin(expected_osnr)
     # compare OSNR taking into account nf change of amps
@@ -88,6 +88,23 @@ def test_snr(osnr_test, dest):
     nli_diff = abs((nli-expected_nli)/nli)
     assert osnr_diff < 0.01 and nli_diff < 0.01
 
+@pytest.mark.parametrize("dest",['trx B','trx F'])
+@pytest.mark.parametrize("osnr_test", ['a', 'b', 'c', 'd'])
+def test_chromatic_dispersion(osnr_test, dest):
+    pw = test[osnr_test][0]
+    conn_in = test[osnr_test][1]
+    conn_out = test[osnr_test][2]
+    sink, _, path = propagation(pw, conn_in, conn_out, dest)
+
+    chromatic_dispersion = round(mean(sink.chromatic_dispersion), 3)
+
+    expected_cd = 0
+    for el in path:
+        expected_cd += el.params.dispersion * el.params.length if isinstance(el, Fiber) else 0
+    expected_cd = round(expected_cd, 3)
+    # compare chromatic dispersion
+    cd_diff = abs(chromatic_dispersion - expected_cd)
+    assert cd_diff < 0.01
 
 if __name__ == '__main__':
     from logging import getLogger, basicConfig, INFO
