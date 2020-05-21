@@ -20,7 +20,7 @@ unique identifier and a printable name.
 
 from numpy import abs, arange, array, divide, errstate, ones
 from numpy import interp, mean, pi, polyfit, polyval, sum
-from scipy.constants import h
+from scipy.constants import h, c
 from collections import namedtuple
 
 from gnpy.core.node import Node
@@ -38,12 +38,18 @@ class Transceiver(Node):
         self.snr = None
         self.passive = False
         self.baud_rate = None
+        self.chromatic_dispersion = None
+
+    def _calc_cd(self, spectral_info):
+        """ Updates the Transceiver property with the CD of the received channels. CD in ns/nm.
+        """
+        self.chromatic_dispersion = [carrier.chromatic_dispersion for carrier in spectral_info.carriers]
 
     def _calc_snr(self, spectral_info):    
         with errstate(divide='ignore'):
             self.baud_rate = [c.baud_rate for c in spectral_info.carriers]
             ratio_01nm = [lin2db(12.5e9/b_rate) for b_rate in self.baud_rate]
-        #set raw values to record original calculation, before update_snr()            
+        #set raw values to record original calculation, before update_snr()
             self.raw_osnr_ase = [lin2db(divide(c.power.signal, c.power.ase))
                             for c in spectral_info.carriers]
             self.raw_osnr_ase_01nm = [ase - ratio for ase, ratio
@@ -97,26 +103,30 @@ class Transceiver(Node):
                 f'osnr_ase_01nm={self.osnr_ase_01nm!r}, '
                 f'osnr_ase={self.osnr_ase!r}, '
                 f'osnr_nli={self.osnr_nli!r}, '
-                f'snr={self.snr!r})')
+                f'snr={self.snr!r}, '
+                f'chromatic_dispersion={self.chromatic_dispersion!r})')
 
     def __str__(self):
         if self.snr is None or self.osnr_ase is None:
             return f'{type(self).__name__} {self.uid}'
 
-        snr = round(mean(self.snr),2)
-        osnr_ase = round(mean(self.osnr_ase),2)
+        snr = round(mean(self.snr), 2)
+        osnr_ase = round(mean(self.osnr_ase), 2)
         osnr_ase_01nm = round(mean(self.osnr_ase_01nm), 2)
-        snr_01nm = round(mean(self.snr_01nm),2)
+        snr_01nm = round(mean(self.snr_01nm), 2)
+        cd = mean(self.chromatic_dispersion)
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
 
                           f'  OSNR ASE (0.1nm, dB):      {osnr_ase_01nm:.2f}',
                           f'  OSNR ASE (signal bw, dB):  {osnr_ase:.2f}',
                           f'  SNR total (signal bw, dB): {snr:.2f}',
-                          f'  SNR total (0.1nm, dB): {snr_01nm:.2f}'])
+                          f'  SNR total (0.1nm, dB):     {snr_01nm:.2f}',
+                          f'  CD (ns/nm):                {cd:.2f}'])
 
     def __call__(self, spectral_info):
         self._calc_snr(spectral_info)
+        self._calc_cd(spectral_info)
         return spectral_info
 
 RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr restrictions')
@@ -330,6 +340,20 @@ class Fiber(Node):
         """
         return self.alpha(f_ref * ones(1))[0]
 
+    def chromatic_dispersion(self, freq=193.5e12):
+        """ Returns accumulated chromatic dispersion (CD).
+
+        :param freq: the frequency at which the chromatic dispersion is computed
+        :return: chromatic dispersion: the accumulated dispersion [s/m]
+        """
+        beta2 = self.params.beta2
+        beta3 = self.params.beta3
+        ref_f = self.params.ref_frequency
+        length = self.params.length
+        beta = beta2 + beta3 * (freq - ref_f)
+        dispersion = -beta * 2 * pi * ref_f**2 / c
+        return dispersion * length
+
     def _gn_analytic(self, carrier, *carriers):
         """Computes the nonlinear interference power on a single carrier.
         The method uses eq. 120 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__.
@@ -376,7 +400,8 @@ class Fiber(Node):
             pwr = pwr._replace(signal=pwr.signal/self.params.lin_attenuation/attenuation,
                                nli=(pwr.nli+carrier_nli)/self.params.lin_attenuation/attenuation,
                                ase=pwr.ase/self.params.lin_attenuation/attenuation)
-            yield carrier._replace(power=pwr)
+            chromatic_dispersion = carrier.chromatic_dispersion + self.chromatic_dispersion(carrier.frequency)
+            yield carrier._replace(power=pwr, chromatic_dispersion=chromatic_dispersion)
 
     def update_pref(self, pref):
         self.pch_out_db = round(pref.p_spani - self.loss, 2)
@@ -414,6 +439,9 @@ class RamanFiber(Fiber):
 
     def propagate(self, *carriers):
         for propagated_carrier in propagate_raman_fiber(self, *carriers):
+            chromatic_dispersion = propagated_carrier.chromatic_dispersion + \
+                                   self.chromatic_dispersion(propagated_carrier.frequency)
+            propagated_carrier = propagated_carrier._replace(chromatic_dispersion=chromatic_dispersion)
             yield propagated_carrier
 
 class EdfaParams:
