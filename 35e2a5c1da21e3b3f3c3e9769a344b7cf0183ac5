@@ -1,0 +1,170 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e0fcc34a_a7bca2d3",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-21T11:16:32Z",
+      "side": 1,
+      "message": "nit: please consider shortening these summaries as much as possible; I think that the docs are easier to read that way. In this case, what about just:\n\n \"\"\"Returns accumulated chromatic dispersion (CD)\n\nPrefixes such as \"this function\" or even \"it\" are redundant, IMHO, and the parameter list is visible in the docs.",
+      "revId": "35e2a5c1da21e3b3f3c3e9769a344b7cf0183ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "abb49572_b79fcdac",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-21T11:16:32Z",
+      "side": 1,
+      "message": "The `:param` block requires an empty line above",
+      "revId": "35e2a5c1da21e3b3f3c3e9769a344b7cf0183ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f0abcdf_ede7fd30",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-21T11:16:32Z",
+      "side": 1,
+      "message": "nit: my preference is to simplify these \"trivial returns\":\n\n  return dispersion * length",
+      "range": {
+        "startLine": 352,
+        "startChar": 0,
+        "endLine": 353,
+        "endChar": 35
+      },
+      "revId": "35e2a5c1da21e3b3f3c3e9769a344b7cf0183ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d6a8f016_d20062f3",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-21T11:16:32Z",
+      "side": 1,
+      "message": "nit: I think it\u0027s actually cleaner to write `carrier.frequency` instead of introducing a variable `carrier_freq` above",
+      "range": {
+        "startLine": 402,
+        "startChar": 92,
+        "endLine": 402,
+        "endChar": 104
+      },
+      "revId": "35e2a5c1da21e3b3f3c3e9769a344b7cf0183ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b52c316a_2280ff64",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-21T11:16:32Z",
+      "side": 1,
+      "message": "nit: same as above",
+      "range": {
+        "startLine": 442,
+        "startChar": 103,
+        "endLine": 442,
+        "endChar": 115
+      },
+      "revId": "35e2a5c1da21e3b3f3c3e9769a344b7cf0183ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e3a331df_5b42e3fc",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-21T11:16:32Z",
+      "side": 1,
+      "message": "please convert this to using the `:param` stanzas",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 56
+      },
+      "revId": "35e2a5c1da21e3b3f3c3e9769a344b7cf0183ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0ae8650_13549d90",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-21T11:16:32Z",
+      "side": 1,
+      "message": "Once the docstring is there, `pass` becomes redundant",
+      "revId": "35e2a5c1da21e3b3f3c3e9769a344b7cf0183ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d2ee66d3_716a6ab5",
+        "filename": "tests/test_propagation.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-21T11:16:32Z",
+      "side": 1,
+      "message": "I suggest using https://docs.pytest.org/en/latest/reference.html#pytest-approx for these comparisons.\n\nAlso, when you use these, there\u0027s no need to normalize the CD among all the wavelengths because it supports comparing numpy arrays (at least per the docs).",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 25
+      },
+      "revId": "35e2a5c1da21e3b3f3c3e9769a344b7cf0183ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
