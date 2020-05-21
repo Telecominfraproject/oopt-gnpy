@@ -209,7 +209,7 @@ def merge_amplifier_restrictions(dict1, dict2):
     """Updates contents of dicts recursively
 
     >>> d1 = {'params': {'restrictions': {'preamp_variety_list': [], 'booster_variety_list': []}}}
-    >>> d2 = {'params': {'target_pch_out_db': -20}}
+    >>> d2 = {'params': {'target_pch_out_db': -202}}
     >>> merge_amplifier_restrictions(d1, d2)
     {'params': {'restrictions': {'preamp_variety_list': [], 'booster_variety_list': []}, 'target_pch_out_db': -20}}
 
