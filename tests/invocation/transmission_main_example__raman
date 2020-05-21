@@ -11,7 +11,8 @@ Transceiver Site_A
   OSNR ASE (0.1nm, dB):      inf
   OSNR ASE (signal bw, dB):  inf
   SNR total (signal bw, dB): inf
-  SNR total (0.1nm, dB): inf
+  SNR total (0.1nm, dB):     inf
+  CD (ns/nm):                0.00
 RamanFiber          Span1
   type_variety:                SSMF
   length (km):                 80.00
@@ -37,7 +38,8 @@ Transceiver Site_B
   OSNR ASE (0.1nm, dB):      32.65
   OSNR ASE (signal bw, dB):  28.57
   SNR total (signal bw, dB): 26.48
-  SNR total (0.1nm, dB): 30.56
+  SNR total (0.1nm, dB):     30.56
+  CD (ns/nm):                1.34
 
 Transmission result for input power = 0.00 dBm:
   Final SNR total (0.1 nm): [1;36;40m30.56 dB[0m
