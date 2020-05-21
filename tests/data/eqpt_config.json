@@ -63,7 +63,8 @@
       "Fiber":[{
             "type_variety": "SSMF",
             "dispersion": 1.67e-05,
-            "gamma": 0.00127
+            "gamma": 0.00127,
+            "pmd_coef": 1.265e-15
             }
       ],
       "Span":[{
@@ -83,6 +84,7 @@
       "Roadm":[{
             "target_pch_out_db": -20,
             "add_drop_osnr": 38,
+            "pmd": 0,
             "restrictions": {
                             "preamp_variety_list":[],
                             "booster_variety_list":[]

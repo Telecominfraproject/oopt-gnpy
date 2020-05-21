@@ -4,14 +4,14 @@
 # @Date:   2018-02-02 14:06:55
 
 import pytest
-from gnpy.core.elements import Transceiver, Fiber, Edfa
+from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
 from gnpy.core.utils import db2lin
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.network import build_network
 from gnpy.tools.json_io import load_network, load_equipment
 from pathlib import Path
 from networkx import dijkstra_path
-from numpy import mean
+from numpy import mean, sqrt, ones
 
 #network_file_name = 'tests/test_network.json'
 network_file_name = Path(__file__).parent.parent / 'tests/LinkforTest.json'
@@ -19,6 +19,7 @@ network_file_name = Path(__file__).parent.parent / 'tests/LinkforTest.json'
 # this might not pass future tests/ code updates
 #network_file_name = Path(__file__).parent.parent / 'examples/edfa_example_network.json'
 eqpt_library_name = Path(__file__).parent.parent / 'tests/data/eqpt_config.json'
+
 
 @pytest.fixture(params=[(96, 0.05e12), (60, 0.075e12), (45, 0.1e12), (2, 0.1e12)],
                 ids=['50GHz spacing', '75GHz spacing', '100GHz spacing', '2 channels'])
@@ -61,7 +62,7 @@ def propagation(input_power, con_in, con_out, dest):
     print(f'pw: {input_power} conn in: {con_in} con out: {con_out}',
           f'OSNR@0.1nm: {round(mean(sink.osnr_ase_01nm),2)}',
           f'SNR@bandwitdth: {round(mean(sink.snr),2)}')
-    return sink, nf
+    return sink, nf, path
 
 
 test = {'a': (-1, 1, 0), 'b': (-1, 1, 1), 'c': (0, 1, 0), 'd': (1, 1, 1)}
@@ -74,19 +75,56 @@ def test_snr(osnr_test, dest):
     pw = test[osnr_test][0]
     conn_in = test[osnr_test][1]
     conn_out = test[osnr_test][2]
-    sink, nf = propagation(pw, conn_in, conn_out, dest)
+    sink, nf, _ = propagation(pw, conn_in, conn_out, dest)
     osnr = round(mean(sink.osnr_ase), 3)
     nli = 1.0 / db2lin(round(mean(sink.snr), 3)) - 1.0 / db2lin(osnr)
     pw = expected[osnr_test][0]
     conn_in = expected[osnr_test][1]
     conn_out = expected[osnr_test][2]
-    sink, exp_nf = propagation(pw, conn_in, conn_out, dest)
+    sink, exp_nf, _ = propagation(pw, conn_in, conn_out, dest)
     expected_osnr = round(mean(sink.osnr_ase), 3)
     expected_nli = 1.0 / db2lin(round(mean(sink.snr), 3)) - 1.0 / db2lin(expected_osnr)
     # compare OSNR taking into account nf change of amps
     osnr_diff = abs(osnr - expected_osnr + nf - exp_nf)
     nli_diff = abs((nli - expected_nli) / nli)
     assert osnr_diff < 0.01 and nli_diff < 0.01
+
+
+@pytest.mark.parametrize("dest", ['trx B', 'trx F'])
+@pytest.mark.parametrize("cd_test", ['a', 'b', 'c', 'd'])
+def test_chromatic_dispersion(cd_test, dest):
+    pw = test[cd_test][0]
+    conn_in = test[cd_test][1]
+    conn_out = test[cd_test][2]
+    sink, _, path = propagation(pw, conn_in, conn_out, dest)
+
+    chromatic_dispersion = sink.chromatic_dispersion
+
+    num_ch = len(chromatic_dispersion)
+    expected_cd = 0
+    for el in path:
+        expected_cd += el.params.dispersion * el.params.length if isinstance(el, Fiber) else 0
+    expected_cd = expected_cd * ones(num_ch) * 1e3
+    assert chromatic_dispersion == pytest.approx(expected_cd)
+
+
+@pytest.mark.parametrize("dest", ['trx B', 'trx F'])
+@pytest.mark.parametrize("dgd_test", ['a', 'b', 'c', 'd'])
+def test_dgd(dgd_test, dest):
+    pw = test[dgd_test][0]
+    conn_in = test[dgd_test][1]
+    conn_out = test[dgd_test][2]
+    sink, _, path = propagation(pw, conn_in, conn_out, dest)
+
+    pmd = sink.pmd
+
+    num_ch = len(pmd)
+    expected_pmd = 0
+    for el in path:
+        expected_pmd += el.params.pmd_coef**2 * el.params.length if isinstance(el, Fiber) else 0
+        expected_pmd += el.params.pmd**2 if isinstance(el, Roadm) else 0
+    expected_pmd = sqrt(expected_pmd) * ones(num_ch) * 1e12
+    assert pmd == pytest.approx(expected_pmd)
 
 
 if __name__ == '__main__':
