@@ -667,7 +667,7 @@ class NliSolver:
         beta2_ref = 21.3e-27
         delta_f_ref = 50e9
         rs_ref = 32e9
-        beta2 = self.fiber.params.beta2
+        beta2 = abs(self.fiber.params.beta2)
         freq_offset_th = ((k_ref * delta_f_ref) * rs_ref * beta2_ref) / (beta2 * symbol_rate)
         return freq_offset_th
 
