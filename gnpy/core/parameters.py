@@ -151,14 +151,14 @@ class FiberParams(Parameters):
             self._dispersion = kwargs['dispersion']  # s/m/m
             if 'ref_wavelength' in kwargs:
                 self._ref_wavelength = kwargs['ref_wavelength']
-                self._ref_frequency = c / self._ref_wavelength
+                self._ref_frequency = c / self.ref_wavelength
             elif 'ref_frequency' in kwargs:
                 self._ref_frequency = kwargs['ref_frequency']
-                self._ref_wavelength = c / self._ref_frequency
+                self._ref_wavelength = c / self.ref_frequency
             else:
                 self._ref_wavelength = 1550e-9
-                self._ref_frequency = c / self._ref_wavelength
-            self._beta2 = (self._ref_wavelength ** 2) * abs(self._dispersion) / (2 * pi * c)  # 1/(m * Hz^2)
+                self._ref_frequency = c / self.ref_wavelength
+            self._beta2 = -(self.ref_wavelength ** 2) * self.dispersion / (2 * pi * c)  # 1/(m * Hz^2)
             self._beta3 = kwargs['beta3'] if 'beta3' in kwargs else 0
             if type(kwargs['loss_coef']) == dict:
                 self._loss_coef = squeeze(kwargs['loss_coef']['loss_coef_power']) * 1e-3  # lineic loss dB/m
@@ -166,10 +166,10 @@ class FiberParams(Parameters):
             else:
                 self._loss_coef = kwargs['loss_coef'] * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = 193.5e12  # Hz
-            self._lin_attenuation = db2lin(self._length * self._loss_coef)
-            self._lin_loss_exp = self._loss_coef / (10 * log10(exp(1)))  # linear power exponent loss Neper/m
-            self._effective_length = (1 - exp(- self._lin_loss_exp * self._length)) / self._lin_loss_exp
-            self._asymptotic_length = 1 / self._lin_loss_exp
+            self._lin_attenuation = db2lin(self.length * self.loss_coef)
+            self._lin_loss_exp = self.loss_coef / (10 * log10(exp(1)))  # linear power exponent loss Neper/m
+            self._effective_length = (1 - exp(- self.lin_loss_exp * self.length)) / self.lin_loss_exp
+            self._asymptotic_length = 1 / self.lin_loss_exp
             # raman parameters (not compulsory)
             self._raman_efficiency = kwargs['raman_efficiency'] if 'raman_efficiency' in kwargs else None
             self._pumps_loss_coef = kwargs['pumps_loss_coef'] if 'pumps_loss_coef' in kwargs else None
