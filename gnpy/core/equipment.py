@@ -72,11 +72,13 @@ class Span(common):
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Span')
 
+
 class Roadm(common):
     default_values = \
     {
-        'target_pch_out_db':   -17,
-        'add_drop_osnr':       100,
+        'target_pch_out_db': -17,
+        'add_drop_osnr':     100,
+        "dgd":               0,
         'restrictions': {
             'preamp_variety_list':[],
             'booster_variety_list':[]
@@ -85,6 +87,7 @@ class Roadm(common):
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Roadm')
+
 
 class Transceiver(common):
     default_values = \
@@ -100,9 +103,10 @@ class Transceiver(common):
 class Fiber(common):
     default_values = \
     {
-        'type_variety':  '',
-        'dispersion':    None,
-        'gamma':         0
+        'type_variety': '',
+        'dispersion': None,
+        'gamma': 0,
+        'pmd': 0
     }
 
     def __init__(self, **kwargs):
@@ -114,6 +118,7 @@ class RamanFiber(common):
         'type_variety':  '',
         'dispersion':    None,
         'gamma':         0,
+        'pmd': 0,
         'raman_efficiency': None
     }
 
