@@ -11,6 +11,7 @@ This module contains functionality for specifying equipment.
 from gnpy.core.utils import automatic_nch, db2lin
 from gnpy.core.exceptions import EquipmentConfigError
 
+
 def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=False):
     """return the trx and SI parameters from eqpt_config for a given type_variety and mode (ie format)"""
     trx_params = {}
