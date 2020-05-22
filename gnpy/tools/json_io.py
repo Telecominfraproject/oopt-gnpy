@@ -88,6 +88,7 @@ class Roadm(_JsonThing):
     default_values = {
         'target_pch_out_db': -17,
         'add_drop_osnr': 100,
+        'dgd': 0,
         'restrictions': {
             'preamp_variety_list': [],
             'booster_variety_list': []
@@ -113,7 +114,8 @@ class Fiber(_JsonThing):
     default_values = {
         'type_variety': '',
         'dispersion': None,
-        'gamma': 0
+        'gamma': 0,
+        'pmd': 0
     }
 
     def __init__(self, **kwargs):
@@ -125,6 +127,7 @@ class RamanFiber(_JsonThing):
         'type_variety': '',
         'dispersion': None,
         'gamma': 0,
+        'pmd': 0,
         'raman_efficiency': None
     }
 
