@@ -240,6 +240,9 @@ The fiber library currently describes SSMF and NZDF but additional fiber types c
 +----------------------+-----------+-----------------------------------------+
 | ``gamma``            | (number)  | 2pi.n2/(lambda*Aeff) (w-1.m-1)          |
 +----------------------+-----------+-----------------------------------------+
+| ``pmd``              | (number)  | Polarization mode dispersion (PMD)      |
+|                      |           | coefficient. (s.sqrt(m)-1)              |
++----------------------+-----------+-----------------------------------------+
 
 The transceiver equipment library is a list of supported transceivers. New
 transceivers can be added and existing ones removed at will by the user. It is
@@ -443,6 +446,8 @@ existing parameters:
 |                          |           | the topology for a given ROADM.             |
 +--------------------------+-----------+---------------------------------------------+
 | ``add_drop_osnr``        | (number)  | OSNR contribution from the add/drop ports   |
++--------------------------+-----------+---------------------------------------------+
+| ``dgd``                  | (number)  | Differential group delay (DGD). (s)         |
 +--------------------------+-----------+---------------------------------------------+
 | ``restrictions``         | (dict of  | If non-empty, keys ``preamp_variety_list``  |
 |                          |  strings) | and ``booster_variety_list`` represent      |
