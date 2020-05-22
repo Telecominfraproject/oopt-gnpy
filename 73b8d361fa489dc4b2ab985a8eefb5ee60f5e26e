@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "882398ad_c7898e9c",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-05-22T19:01:03Z",
+      "side": 1,
+      "message": "I don\u0027t think this is how you sum PMD from different fibers or components. Aren\u0027t you supposed to take the sqrt of the sum of the squares?",
+      "revId": "73b8d361fa489dc4b2ab985a8eefb5ee60f5e26e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
