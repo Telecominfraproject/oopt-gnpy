@@ -3,18 +3,17 @@
 # @Author: Jean-Luc Auge
 # @Date:   2018-02-02 14:06:55
 
-from gnpy.core.elements import Edfa
 import numpy as np
 from json import load
 import pytest
-from gnpy.core.elements import Transceiver, Fiber, Edfa
+from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
 from gnpy.core.utils import lin2db, db2lin
 from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power
 from gnpy.core.equipment import load_equipment
 from gnpy.core.network import build_network, load_network
 from pathlib import Path
 from networkx import dijkstra_path
-from numpy import mean
+from numpy import mean, sqrt
 from pytest import approx
 
 #network_file_name = 'tests/test_network.json'
@@ -108,6 +107,26 @@ def test_chromatic_dispersion(osnr_test, dest):
         expected_cd += el.params.dispersion * el.params.length if isinstance(el, Fiber) else 0
     expected_cd = expected_cd * np.ones(num_ch)
     assert chromatic_dispersion == approx(expected_cd)
+
+
+@pytest.mark.parametrize("dest", ['trx B', 'trx F'])
+@pytest.mark.parametrize("osnr_test", ['a', 'b', 'c', 'd'])
+def test_dgd(osnr_test, dest):
+    pw = test[osnr_test][0]
+    conn_in = test[osnr_test][1]
+    conn_out = test[osnr_test][2]
+    sink, _, path = propagation(pw, conn_in, conn_out, dest)
+
+    dgd = sink.dgd
+
+    num_ch = len(dgd)
+    expected_dgd = 0
+    for el in path:
+        expected_dgd += el.params.pmd * sqrt(el.params.length) if isinstance(el, Fiber) else 0
+        expected_dgd += el.params.dgd if isinstance(el, Roadm) else 0
+    expected_dgd = expected_dgd * np.ones(num_ch) * 1e12
+    # compare DGD
+    assert dgd == approx(expected_dgd)
 
 
 if __name__ == '__main__':

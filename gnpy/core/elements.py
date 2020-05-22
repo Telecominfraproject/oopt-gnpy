@@ -19,7 +19,7 @@ unique identifier and a printable name.
 '''
 
 from numpy import abs, arange, array, divide, errstate, ones
-from numpy import interp, mean, pi, polyfit, polyval, sum
+from numpy import interp, mean, pi, polyfit, polyval, sum, sqrt
 from scipy.constants import h, c
 from collections import namedtuple
 
@@ -39,11 +39,17 @@ class Transceiver(Node):
         self.passive = False
         self.baud_rate = None
         self.chromatic_dispersion = None
+        self.dgd = None
 
     def _calc_cd(self, spectral_info):
         """ Updates the Transceiver property with the CD of the received channels. CD in ns/nm.
         """
         self.chromatic_dispersion = [carrier.chromatic_dispersion for carrier in spectral_info.carriers]
+
+    def _calc_dgd(self, spectral_info):
+        """ Updates the Transceiver property with the DGD of the received channels. DGD in ps.
+        """
+        self.dgd = [carrier.dgd*1e12 for carrier in spectral_info.carriers]
 
     def _calc_snr(self, spectral_info):    
         with errstate(divide='ignore'):
@@ -104,7 +110,8 @@ class Transceiver(Node):
                 f'osnr_ase={self.osnr_ase!r}, '
                 f'osnr_nli={self.osnr_nli!r}, '
                 f'snr={self.snr!r}, '
-                f'chromatic_dispersion={self.chromatic_dispersion!r})')
+                f'chromatic_dispersion={self.chromatic_dispersion!r}, '
+                f'dgd={self.dgd!r})')
 
     def __str__(self):
         if self.snr is None or self.osnr_ase is None:
@@ -115,6 +122,7 @@ class Transceiver(Node):
         osnr_ase_01nm = round(mean(self.osnr_ase_01nm), 2)
         snr_01nm = round(mean(self.snr_01nm), 2)
         cd = mean(self.chromatic_dispersion)
+        dgd = mean(self.dgd)
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
 
@@ -122,19 +130,23 @@ class Transceiver(Node):
                           f'  OSNR ASE (signal bw, dB):  {osnr_ase:.2f}',
                           f'  SNR total (signal bw, dB): {snr:.2f}',
                           f'  SNR total (0.1nm, dB):     {snr_01nm:.2f}',
-                          f'  CD (ns/nm):                {cd:.2f}'])
+                          f'  CD (ns/nm):                {cd:.2f}',
+                          f'  DGD (ps):                  {dgd:.2f}'])
 
     def __call__(self, spectral_info):
         self._calc_snr(spectral_info)
         self._calc_cd(spectral_info)
+        self._calc_dgd(spectral_info)
         return spectral_info
 
-RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr restrictions')
+
+RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr dgd restrictions')
+
 
 class Roadm(Node):
     def __init__(self, *args, params, **kwargs):
         super().__init__(*args, params=RoadmParams(**params), **kwargs)
-        self.loss = 0 #auto-design interest
+        self.loss = 0  # auto-design interest
         self.effective_loss = None
         self.effective_pch_out_db = self.params.target_pch_out_db
         self.passive = True
@@ -180,7 +192,8 @@ class Roadm(Node):
             pwr = pwr._replace( signal = pwr.signal/carrier_att,
                                 nli = pwr.nli/carrier_att,
                                 ase = pwr.ase/carrier_att)
-            yield carrier._replace(power=pwr)
+            dgd = carrier.dgd + self.params.dgd
+            yield carrier._replace(power=pwr, dgd=dgd)
 
     def update_pref(self, pref):
         return pref._replace(p_span0=pref.p_span0, p_spani=self.effective_pch_out_db)
@@ -354,6 +367,14 @@ class Fiber(Node):
         dispersion = -beta * 2 * pi * ref_f**2 / c
         return dispersion * length
 
+    @property
+    def dgd(self):
+        """ Returns the differential group delay (DGD).
+
+        :return: dgd: the differential group delay [s]
+        """
+        return self.params.pmd * sqrt(self.params.length)
+
     def _gn_analytic(self, carrier, *carriers):
         """Computes the nonlinear interference power on a single carrier.
         The method uses eq. 120 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__.
@@ -377,6 +398,12 @@ class Fiber(Node):
         return carrier_nli
 
     def propagate(self, *carriers):
+        """ Generator that computes the fiber propagation: attenuation, non-linear interference generation, CD
+        accumulation and DGD accumulation.
+
+        params: *carriers: the channels at the input of the fiber
+        :yield: carrier: the next channel at the output of the fiber
+        """
 
         # apply connector_att_in on all carriers before computing gn analytics  premiere partie pas bonne
         attenuation = db2lin(self.params.con_in + self.params.att_in)
@@ -401,7 +428,8 @@ class Fiber(Node):
                                nli=(pwr.nli+carrier_nli)/self.params.lin_attenuation/attenuation,
                                ase=pwr.ase/self.params.lin_attenuation/attenuation)
             chromatic_dispersion = carrier.chromatic_dispersion + self.chromatic_dispersion(carrier.frequency)
-            yield carrier._replace(power=pwr, chromatic_dispersion=chromatic_dispersion)
+            dgd = carrier.dgd + self.dgd
+            yield carrier._replace(power=pwr, chromatic_dispersion=chromatic_dispersion, dgd=dgd)
 
     def update_pref(self, pref):
         self.pch_out_db = round(pref.p_spani - self.loss, 2)
@@ -441,7 +469,8 @@ class RamanFiber(Fiber):
         for propagated_carrier in propagate_raman_fiber(self, *carriers):
             chromatic_dispersion = propagated_carrier.chromatic_dispersion + \
                                    self.chromatic_dispersion(propagated_carrier.frequency)
-            propagated_carrier = propagated_carrier._replace(chromatic_dispersion=chromatic_dispersion)
+            dgd = propagated_carrier.dgd + self.dgd
+            propagated_carrier = propagated_carrier._replace(chromatic_dispersion=chromatic_dispersion, dgd=dgd)
             yield propagated_carrier
 
 class EdfaParams:
