@@ -146,23 +146,27 @@
       "Fiber":[{
             "type_variety": "SSMF",
             "dispersion": 1.67e-05,
-            "gamma": 0.00127
+            "gamma": 0.00127,
+            "pmd": 1.265e-15
             },
             {
             "type_variety": "NZDF",
             "dispersion": 0.5e-05,
-            "gamma": 0.00146
+            "gamma": 0.00146,
+            "pmd": 1.265e-15
             },
             {
             "type_variety": "LOF",
             "dispersion": 2.2e-05,
-            "gamma": 0.000843
+            "gamma": 0.000843,
+            "pmd": 1.265e-15
             }
       ],
       "RamanFiber":[{
             "type_variety": "SSMF",
             "dispersion": 1.67e-05,
             "gamma": 0.00127,
+            "pmd": 1.265e-15,
             "raman_efficiency": {
               "cr":[
                   0, 9.4E-06, 2.92E-05, 4.88E-05, 6.82E-05, 8.31E-05, 9.4E-05, 0.0001014, 0.0001069, 0.0001119,

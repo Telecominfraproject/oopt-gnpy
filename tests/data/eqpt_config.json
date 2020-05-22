@@ -63,7 +63,8 @@
       "Fiber":[{
             "type_variety": "SSMF",
             "dispersion": 1.67e-05,
-            "gamma": 0.00127
+            "gamma": 0.00127,
+            "pmd": 1.265e-15
             }
       ],
       "Span":[{
