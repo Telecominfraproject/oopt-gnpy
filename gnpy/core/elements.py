@@ -21,7 +21,7 @@ instance as a result.
 '''
 
 from numpy import abs, arange, array, divide, errstate, ones
-from numpy import interp, mean, pi, polyfit, polyval, sum
+from numpy import interp, mean, pi, polyfit, polyval, sum, sqrt
 from scipy.constants import h, c
 from collections import namedtuple
 
@@ -83,11 +83,17 @@ class Transceiver(_Node):
         self.passive = False
         self.baud_rate = None
         self.chromatic_dispersion = None
+        self.pmd = None
 
     def _calc_cd(self, spectral_info):
         """ Updates the Transceiver property with the CD of the received channels. CD in ps/nm.
         """
         self.chromatic_dispersion = [carrier.chromatic_dispersion * 1e3 for carrier in spectral_info.carriers]
+
+    def _calc_pmd(self, spectral_info):
+        """Updates the Transceiver property with the PMD of the received channels. PMD in ps.
+        """
+        self.pmd = [carrier.pmd*1e12 for carrier in spectral_info.carriers]
 
     def _calc_snr(self, spectral_info):
         with errstate(divide='ignore'):
@@ -148,7 +154,8 @@ class Transceiver(_Node):
                 f'osnr_ase={self.osnr_ase!r}, '
                 f'osnr_nli={self.osnr_nli!r}, '
                 f'snr={self.snr!r}, '
-                f'chromatic_dispersion={self.chromatic_dispersion!r})')
+                f'chromatic_dispersion={self.chromatic_dispersion!r}, '
+                f'pmd={self.pmd!r})')
 
     def __str__(self):
         if self.snr is None or self.osnr_ase is None:
@@ -159,6 +166,7 @@ class Transceiver(_Node):
         osnr_ase_01nm = round(mean(self.osnr_ase_01nm), 2)
         snr_01nm = round(mean(self.snr_01nm), 2)
         cd = mean(self.chromatic_dispersion)
+        pmd = mean(self.pmd)
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
 
@@ -166,15 +174,17 @@ class Transceiver(_Node):
                           f'  OSNR ASE (signal bw, dB):  {osnr_ase:.2f}',
                           f'  SNR total (signal bw, dB): {snr:.2f}',
                           f'  SNR total (0.1nm, dB):     {snr_01nm:.2f}',
-                          f'  CD (ps/nm):                {cd:.2f}'])
+                          f'  CD (ps/nm):                {cd:.2f}',
+                          f'  PMD (ps):                  {pmd:.2f}'])
 
     def __call__(self, spectral_info):
         self._calc_snr(spectral_info)
         self._calc_cd(spectral_info)
+        self._calc_pmd(spectral_info)
         return spectral_info
 
 
-RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr restrictions')
+RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr pmd restrictions')
 
 
 class Roadm(_Node):
@@ -226,7 +236,8 @@ class Roadm(_Node):
             pwr = pwr._replace(signal=pwr.signal / carrier_att,
                                nli=pwr.nli / carrier_att,
                                ase=pwr.ase / carrier_att)
-            yield carrier._replace(power=pwr)
+            pmd = sqrt(carrier.pmd**2 + self.params.pmd**2)
+            yield carrier._replace(power=pwr, pmd=pmd)
 
     def update_pref(self, pref):
         return pref._replace(p_span0=pref.p_span0, p_spani=self.effective_pch_out_db)
@@ -366,7 +377,7 @@ class Fiber(_Node):
                 yield carrier.power._asdict().get(attr, None)
 
     def alpha(self, frequencies):
-        """ It returns the values of the series expansion of attenuation coefficient alpha(f) for all f in frequencies
+        """It returns the values of the series expansion of attenuation coefficient alpha(f) for all f in frequencies
 
         :param frequencies: frequencies of series expansion [Hz]
         :return: alpha: power attenuation coefficient for f in frequencies [Neper/m]
@@ -379,7 +390,7 @@ class Fiber(_Node):
         return alpha
 
     def alpha0(self, f_ref=193.5e12):
-        """ It returns the zero element of the series expansion of attenuation coefficient alpha(f) in the
+        """It returns the zero element of the series expansion of attenuation coefficient alpha(f) in the
         reference frequency f_ref
 
         :param f_ref: reference frequency of series expansion [Hz]
@@ -388,7 +399,7 @@ class Fiber(_Node):
         return self.alpha(f_ref * ones(1))[0]
 
     def chromatic_dispersion(self, freq=193.5e12):
-        """ Returns accumulated chromatic dispersion (CD).
+        """Returns accumulated chromatic dispersion (CD).
 
         :param freq: the frequency at which the chromatic dispersion is computed
         :return: chromatic dispersion: the accumulated dispersion [s/m]
@@ -400,6 +411,11 @@ class Fiber(_Node):
         beta = beta2 + 2 * pi * beta3 * (freq - ref_f)
         dispersion = -beta * 2 * pi * ref_f**2 / c
         return dispersion * length
+
+    @property
+    def pmd(self):
+        """differential group delay (PMD) [s]"""
+        return self.params.pmd_coef * sqrt(self.params.length)
 
     def _gn_analytic(self, carrier, *carriers):
         """Computes the nonlinear interference power on a single carrier.
@@ -424,6 +440,12 @@ class Fiber(_Node):
         return carrier_nli
 
     def propagate(self, *carriers):
+        """Generator that computes the fiber propagation: attenuation, non-linear interference generation, CD
+        accumulation and PMD accumulation.
+
+        :param: carriers: the channels at the input of the fiber
+        :yield: carrier: the next channel at the output of the fiber
+        """
 
         # apply connector_att_in on all carriers before computing gn analytics  premiere partie pas bonne
         attenuation = db2lin(self.params.con_in + self.params.att_in)
@@ -448,7 +470,8 @@ class Fiber(_Node):
                                nli=(pwr.nli + carrier_nli) / self.params.lin_attenuation / attenuation,
                                ase=pwr.ase / self.params.lin_attenuation / attenuation)
             chromatic_dispersion = carrier.chromatic_dispersion + self.chromatic_dispersion(carrier.frequency)
-            yield carrier._replace(power=pwr, chromatic_dispersion=chromatic_dispersion)
+            pmd = sqrt(carrier.pmd**2 + self.pmd**2)
+            yield carrier._replace(power=pwr, chromatic_dispersion=chromatic_dispersion, pmd=pmd)
 
     def update_pref(self, pref):
         self.pch_out_db = round(pref.p_spani - self.loss, 2)
@@ -488,7 +511,8 @@ class RamanFiber(Fiber):
         for propagated_carrier in propagate_raman_fiber(self, *carriers):
             chromatic_dispersion = propagated_carrier.chromatic_dispersion + \
                                    self.chromatic_dispersion(propagated_carrier.frequency)
-            propagated_carrier = propagated_carrier._replace(chromatic_dispersion=chromatic_dispersion)
+            pmd = sqrt(propagated_carrier.pmd**2 + self.pmd**2)
+            propagated_carrier = propagated_carrier._replace(chromatic_dispersion=chromatic_dispersion, pmd=pmd)
             yield propagated_carrier
 
 

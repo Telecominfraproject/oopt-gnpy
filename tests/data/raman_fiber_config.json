@@ -10,6 +10,7 @@
     "type_variety": "SSMF",
     "dispersion": 0.0000167,
     "gamma": 0.00127,
+    "pmd_coef": 1.265e-15,
     "raman_efficiency": {
       "cr": [
         0,
