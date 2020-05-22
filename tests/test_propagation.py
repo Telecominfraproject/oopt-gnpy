@@ -3,7 +3,6 @@
 # @Author: Jean-Luc Auge
 # @Date:   2018-02-02 14:06:55
 
-from gnpy.core.elements import Edfa
 import numpy as np
 from json import load
 import pytest
@@ -126,7 +125,6 @@ def test_dgd(osnr_test, dest):
         expected_dgd += el.params.pmd * sqrt(el.params.length) if isinstance(el, Fiber) else 0
         expected_dgd += el.params.dgd if isinstance(el, Roadm) else 0
     expected_dgd = expected_dgd * np.ones(num_ch) * 1e12
-    # compare DGD
     assert dgd == approx(expected_dgd)
 
 
