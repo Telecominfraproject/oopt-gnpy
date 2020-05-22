@@ -13,6 +13,7 @@ Transceiver Site_A
   SNR total (signal bw, dB): inf
   SNR total (0.1nm, dB):     inf
   CD (ns/nm):                0.00
+  DGD (ps):                  0.00
 Fiber          Span1
   type_variety:                SSMF
   length (km):                 80.00
@@ -40,6 +41,7 @@ Transceiver Site_B
   SNR total (signal bw, dB): 26.27
   SNR total (0.1nm, dB):     30.35
   CD (ns/nm):                1.34
+  DGD (ps):                  0.36
 
 Transmission result for input power = 0.00 dBm:
   Final SNR total (0.1 nm): [1;36;40m30.35 dB[0m
