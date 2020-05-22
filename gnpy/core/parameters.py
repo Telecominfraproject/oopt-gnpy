@@ -158,7 +158,7 @@ class FiberParams(Parameters):
             else:
                 self._ref_wavelength = 1550e-9
                 self._ref_frequency = c / self._ref_wavelength
-            self._beta2 = (self._ref_wavelength ** 2) * abs(self._dispersion) / (2 * pi * c)  # 1/(m * Hz^2)
+            self._beta2 = -(self._ref_wavelength ** 2) * self._dispersion / (2 * pi * c)  # 1/(m * Hz^2)
             self._beta3 = kwargs['beta3'] if 'beta3' in kwargs else 0
             if type(kwargs['loss_coef']) == dict:
                 self._loss_coef = squeeze(kwargs['loss_coef']['loss_coef_power']) * 1e-3  # lineic loss dB/m
