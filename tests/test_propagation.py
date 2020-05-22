@@ -126,7 +126,6 @@ def test_dgd(osnr_test, dest):
         expected_dgd += el.params.pmd * sqrt(el.params.length) if isinstance(el, Fiber) else 0
         expected_dgd += el.params.dgd if isinstance(el, Roadm) else 0
     expected_dgd = expected_dgd * np.ones(num_ch) * 1e12
-    # compare DGD
     assert dgd == approx(expected_dgd)
 
 

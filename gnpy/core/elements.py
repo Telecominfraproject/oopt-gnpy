@@ -122,6 +122,7 @@ class Transceiver(Node):
         osnr_ase_01nm = round(mean(self.osnr_ase_01nm), 2)
         snr_01nm = round(mean(self.snr_01nm), 2)
         cd = mean(self.chromatic_dispersion)
+        dgd = mean(self.dgd)
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
 
