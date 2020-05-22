@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "76522520_9b84b1ff",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-22T12:44:28Z",
+      "side": 1,
+      "message": "nit: I\u0027m fixing all of these issues in that parallel branch, so you can ignore these (that way I\u0027ll have fewer merge conflicts to worry about)",
+      "revId": "95dd1837fc0097cce95c5ff1f98c6a6cd520666e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1d30a3f2_dae6373b",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-22T12:44:28Z",
+      "side": 1,
+      "message": "I think one doesn\u0027t have to round() if the print already formats that number to two decimals",
+      "revId": "95dd1837fc0097cce95c5ff1f98c6a6cd520666e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ca068b05_5dfe3a6f",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-22T12:44:28Z",
+      "side": 1,
+      "message": "It seems that it\u0027s in Baud, not GBaud (see e.g. here: https://github.com/Telecominfraproject/oopt-gnpy/blob/2766e37438156e4577f513528e54a06031deaee5/tests/test_propagation.py#L53)",
+      "range": {
+        "startLine": 25,
+        "startChar": 57,
+        "endLine": 25,
+        "endChar": 62
+      },
+      "revId": "95dd1837fc0097cce95c5ff1f98c6a6cd520666e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b0620b5_d94c47fb",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-22T12:44:28Z",
+      "side": 1,
+      "message": "I\u0027ll take your word that this is correct, but I would prefer these changes to be done like this:\n\n1) You discovered that some parameters are wrong. Here it looks that the _beta2 was set with a wrong sign, and this was compensated for in science_utils._frequency_offset_threshold. The sign was wrong because add-your-reasoning-here-because-Jan-has-no-clue. This gets fixed in a separate commit which says all of the above in its commit message.\n\n2) Now that the code doesn\u0027t contain that annoying _beta2_has_wrong_sign bug, you can implement this feature for CD simulation on top of that. That commit should get a Change-Id from this change (https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/493926).",
+      "revId": "95dd1837fc0097cce95c5ff1f98c6a6cd520666e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a7f1891_5008c5f3",
+        "filename": "tests/test_propagation.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-22T12:44:28Z",
+      "side": 1,
+      "message": "nit: please remove this comment, in my opinion it doesn\u0027t add value because the next line is obvious already",
+      "revId": "95dd1837fc0097cce95c5ff1f98c6a6cd520666e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
