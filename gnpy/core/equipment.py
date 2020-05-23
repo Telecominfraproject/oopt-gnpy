@@ -285,7 +285,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
         trx_params['f_max'] = equipment['Transceiver'][trx_type_variety].frequency['max']
 
         # TODO: novel automatic feature maybe unwanted if spacing is specified
-        # trx_params['spacing'] = automatic_spacing(trx_params['baud_rate'])
+        # trx_params['spacing'] = _automatic_spacing(trx_params['baud_rate'])
         # temp = trx_params['spacing']
         # print(f'spacing {temp}')
     except StopIteration:
@@ -313,7 +313,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
     return trx_params
 
 
-def automatic_spacing(baud_rate):
+def _automatic_spacing(baud_rate):
     """return the min possible channel spacing for a given baud rate"""
     # TODO : this should parametrized in a cfg file
     # list of possible tuples [(max_baud_rate, spacing_for_this_baud_rate)]
@@ -323,10 +323,10 @@ def automatic_spacing(baud_rate):
 
 def load_equipment(filename):
     json_data = load_json(filename)
-    return equipment_from_json(json_data, filename)
+    return _equipment_from_json(json_data, filename)
 
 
-def update_trx_osnr(equipment):
+def _update_trx_osnr(equipment):
     """add sys_margins to all Transceivers OSNR values"""
     for trx in equipment['Transceiver'].values():
         for m in trx.mode:
@@ -334,7 +334,7 @@ def update_trx_osnr(equipment):
     return equipment
 
 
-def update_dual_stage(equipment):
+def _update_dual_stage(equipment):
     edfa_dict = equipment['Edfa']
     for edfa in edfa_dict.values():
         if edfa.type_def == 'dual_stage':
@@ -353,7 +353,7 @@ def update_dual_stage(equipment):
     return equipment
 
 
-def roadm_restrictions_sanity_check(equipment):
+def _roadm_restrictions_sanity_check(equipment):
     """ verifies that booster and preamp restrictions specified in roadm equipment are listed
     in the edfa.
     """
@@ -364,7 +364,7 @@ def roadm_restrictions_sanity_check(equipment):
             raise EquipmentConfigError(f'ROADM restriction {amp_name} does not refer to a defined EDFA name')
 
 
-def equipment_from_json(json_data, filename):
+def _equipment_from_json(json_data, filename):
     """build global dictionnary eqpt_library that stores all eqpt characteristics:
     edfa type type_variety, fiber type_variety
     from the eqpt_config.json (filename parameter)
@@ -394,7 +394,7 @@ def equipment_from_json(json_data, filename):
                 equipment[key][subkey] = RamanFiber(**entry)
             else:
                 raise EquipmentConfigError(f'Unrecognized network element type "{key}"')
-    equipment = update_trx_osnr(equipment)
-    equipment = update_dual_stage(equipment)
-    roadm_restrictions_sanity_check(equipment)
+    equipment = _update_trx_osnr(equipment)
+    equipment = _update_dual_stage(equipment)
+    _roadm_restrictions_sanity_check(equipment)
     return equipment
