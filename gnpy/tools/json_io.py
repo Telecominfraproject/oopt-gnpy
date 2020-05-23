@@ -15,10 +15,13 @@ from pathlib import Path
 import json
 from collections import namedtuple
 from gnpy.core import ansi_escapes, elements
-from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
+from gnpy.core.equipment import trx_mode_params
+from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError, ServiceError
 from gnpy.core.science_utils import estimate_nf_model
-from gnpy.core.utils import merge_amplifier_restrictions
+from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions
+from gnpy.topology.request import PathRequest, Disjunction
 from gnpy.tools.convert import convert_file
+from gnpy.tools.service_sheet import convert_service_sheet
 import time
 
 
@@ -399,3 +402,119 @@ def load_json(filename):
 def save_json(obj, filename):
     with open(filename, 'w', encoding='utf-8') as f:
         json.dump(obj, f, indent=2, ensure_ascii=False)
+
+
+def load_requests(filename, eqpt, bidir, network, network_filename):
+    """ loads the requests from a json or an excel file into a data string
+    """
+    if filename.suffix.lower() in ('.xls', '.xlsx'):
+        _logger.info('Automatically converting requests from XLS to JSON')
+        try:
+            return convert_service_sheet(filename, eqpt, network, network_filename=network_filename, bidir=bidir)
+        except ServiceError as this_e:
+            print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {this_e}')
+            exit(1)
+    else:
+        return load_json(filename)
+
+
+def requests_from_json(json_data, equipment):
+    """Extract list of requests from data parsed from JSON"""
+    requests_list = []
+
+    for req in json_data['path-request']:
+        # init all params from request
+        params = {}
+        params['request_id'] = req['request-id']
+        params['source'] = req['source']
+        params['bidir'] = req['bidirectional']
+        params['destination'] = req['destination']
+        params['trx_type'] = req['path-constraints']['te-bandwidth']['trx_type']
+        params['trx_mode'] = req['path-constraints']['te-bandwidth']['trx_mode']
+        params['format'] = params['trx_mode']
+        params['spacing'] = req['path-constraints']['te-bandwidth']['spacing']
+        try:
+            nd_list = req['explicit-route-objects']['route-object-include-exclude']
+        except KeyError:
+            nd_list = []
+        params['nodes_list'] = [n['num-unnum-hop']['node-id'] for n in nd_list]
+        params['loose_list'] = [n['num-unnum-hop']['hop-type'] for n in nd_list]
+        # recover trx physical param (baudrate, ...) from type and mode
+        # in trx_mode_params optical power is read from equipment['SI']['default'] and
+        # nb_channel is computed based on min max frequency and spacing
+        trx_params = trx_mode_params(equipment, params['trx_type'], params['trx_mode'], True)
+        params.update(trx_params)
+        # print(trx_params['min_spacing'])
+        # optical power might be set differently in the request. if it is indicated then the
+        # params['power'] is updated
+        try:
+            if req['path-constraints']['te-bandwidth']['output-power']:
+                params['power'] = req['path-constraints']['te-bandwidth']['output-power']
+        except KeyError:
+            pass
+        # same process for nb-channel
+        f_min = params['f_min']
+        f_max_from_si = params['f_max']
+        try:
+            if req['path-constraints']['te-bandwidth']['max-nb-of-channel'] is not None:
+                nch = req['path-constraints']['te-bandwidth']['max-nb-of-channel']
+                params['nb_channel'] = nch
+                spacing = params['spacing']
+                params['f_max'] = automatic_fmax(f_min, spacing, nch)
+            else:
+                params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
+        except KeyError:
+            params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
+        _check_one_request(params, f_max_from_si)
+
+        try:
+            params['path_bandwidth'] = req['path-constraints']['te-bandwidth']['path_bandwidth']
+        except KeyError:
+            pass
+        requests_list.append(PathRequest(**params))
+    return requests_list
+
+
+def _check_one_request(params, f_max_from_si):
+    """Checks that the requested parameters are consistant (spacing vs nb channel vs transponder mode...)"""
+    f_min = params['f_min']
+    f_max = params['f_max']
+    max_recommanded_nb_channels = automatic_nch(f_min, f_max, params['spacing'])
+    if params['baud_rate'] is not None:
+        # implicitly means that a mode is defined with min_spacing
+        if params['min_spacing'] > params['spacing']:
+            msg = f'Request {params["request_id"]} has spacing below transponder ' +\
+                  f'{params["trx_type"]} {params["trx_mode"]} min spacing value ' +\
+                  f'{params["min_spacing"]*1e-9}GHz.\nComputation stopped'
+            print(msg)
+            _logger.critical(msg)
+            raise ServiceError(msg)
+        if f_max > f_max_from_si:
+            msg = f'''Requested channel number {params["nb_channel"]}, baud rate {params["baud_rate"]} GHz
+            and requested spacing {params["spacing"]*1e-9}GHz is not consistent with frequency range
+            {f_min*1e-12} THz, {f_max*1e-12} THz, min recommanded spacing {params["min_spacing"]*1e-9}GHz.
+            max recommanded nb of channels is {max_recommanded_nb_channels}.'''
+            _logger.critical(msg)
+            raise ServiceError(msg)
+
+
+def disjunctions_from_json(json_data):
+    """ reads the disjunction requests from the json dict and create the list
+        of requested disjunctions for this set of requests
+    """
+    disjunctions_list = []
+    try:
+        temp_test = json_data['synchronization']
+    except KeyError:
+        temp_test = []
+    if temp_test:
+        for snc in json_data['synchronization']:
+            params = {}
+            params['disjunction_id'] = snc['synchronization-id']
+            params['relaxable'] = snc['svec']['relaxable']
+            params['link_diverse'] = 'link' in snc['svec']['disjointness']
+            params['node_diverse'] = 'node' in snc['svec']['disjointness']
+            params['disjunctions_req'] = snc['svec']['request-id-number']
+            disjunctions_list.append(Disjunction(**params))
+
+    return disjunctions_list
