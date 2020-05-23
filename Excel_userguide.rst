@@ -2,7 +2,7 @@
 How to prepare the Excel input file
 -----------------------------------
 
-`examples/transmission_main_example.py <examples/transmission_main_example.py>`_ gives the possibility to use an excel input file instead of a json file. The program then will generate the corresponding json file for you.
+``gnpy-transmission-example`` gives the possibility to use an excel input file instead of a json file. The program then will generate the corresponding json file for you.
 
 The file named 'meshTopologyExampleV2.xls' is an example.
 
@@ -80,7 +80,7 @@ and a fiber span from node3 to node6::
 
   - If filled it MUST contain numbers. If empty it is replaced by a default "80" km value. 
   - If value is below 150 km, it is considered as a single (bidirectional) fiber span.
-  - If value is over 150 km the `transmission_main_example.py <examples/transmission_main_example.py>`_ program will automatically suppose that intermediate span description are required and will generate fiber spans elements with "_1","_2", ... trailing strings which are not visible in the json output. The reason for the splitting is that current edfa usually do not support large span loss. The current assumption is that links larger than 150km will require intermediate amplification. This value will be revisited when Raman amplification is added”
+  - If value is over 150 km the `gnpy-transmission-example`` program will automatically suppose that intermediate span description are required and will generate fiber spans elements with "_1","_2", ... trailing strings which are not visible in the json output. The reason for the splitting is that current edfa usually do not support large span loss. The current assumption is that links larger than 150km will require intermediate amplification. This value will be revisited when Raman amplification is added”
 
 - **Fiber type** is not mandatory. 
 
@@ -189,7 +189,7 @@ This generates a text file meshTopologyExampleV2_eqt_sheet.txt  whose content ca
 Service sheet 
 -------------
 
-Service sheet is optional. It lists the services for which path and feasibility must be computed with path_requests_run.py.
+Service sheet is optional. It lists the services for which path and feasibility must be computed with ``gnpy-path_request``.
 
 Service sheet must contain 11 columns::  
 
@@ -220,10 +220,10 @@ Service sheet must contain 11 columns::
 
 - **path bandwidth** is mandatory. It is the amount of capacity required between source and destination in Gbit/s. Value should be positive (non zero). It is used to compute the amount of required spectrum for the service.  
 
-path_requests_run.py
-------------------------
+gnpy-path_request
+-----------------
 
-**Usage**: path_requests_run.py [-h] [-bi] [-v] [-o OUTPUT]
+**Usage**: gnpy-path-request [-h] [-bi] [-v] [-o OUTPUT]
                             [network_filename xls or json] [service_filename xls or json] [eqpt_filename json]
 
 optional arguments::
@@ -236,11 +236,11 @@ optional arguments::
 .. code-block:: shell
 
     $ cd examples
-    $ python path_requests_run.py meshTopologyExampleV2.xls service_file.json eqpt_file -o output_file.json
+    $ gnpy-path-request meshTopologyExampleV2.xls service_file.json eqpt_file -o output_file.json
 
 A function that computes performances for a list of services provided in the service file (accepts json or excel format.
 
-if the service <file.xls> is in xls format, path_requests_run.py converts it to a json file <file_services.json> following the Yang model for requesting Path Computation defined in `draft-ietf-teas-yang-path-computation-01.txt <https://www.ietf.org/id/draft-ietf-teas-yang-path-computation-01.pdf>`_. For PSE use, additional fields with trx type and mode have been added to the te-bandwidth field. 
+if the service <file.xls> is in xls format, ``gnpy-path-request`` converts it to a json file <file_services.json> following the Yang model for requesting Path Computation defined in `draft-ietf-teas-yang-path-computation-01.txt <https://www.ietf.org/id/draft-ietf-teas-yang-path-computation-01.pdf>`_. For PSE use, additional fields with trx type and mode have been added to the te-bandwidth field. 
 
 A template for the json file can be found here: `service_template.json <service_template.json>`_
 
@@ -250,7 +250,7 @@ If a file is specified with the optional -o argument, the result of the computat
 
 A template for the result of computation json file can be found here: `path_result_template.json <path_result_template.json>`_
 
-Important note: path_requests_run.py is not a network dimensionning tool : each service does not reserve spectrum, or occupy ressources such as transponders. It only computes path feasibility assuming the spectrum (between defined frequencies) is loaded with "nb of channels" spaced by "spacing" values as specified in the system parameters input in the service file, each cannel having the same characteristics in terms of baudrate, format, ... as the service transponder. The transceiver element acts as a "logical starting/stopping point" for the spectral information propagation. At that point it is not meant to represent the capacity of add drop ports
+Important note: ``gnpy-path-request`` is not a network dimensionning tool : each service does not reserve spectrum, or occupy ressources such as transponders. It only computes path feasibility assuming the spectrum (between defined frequencies) is loaded with "nb of channels" spaced by "spacing" values as specified in the system parameters input in the service file, each cannel having the same characteristics in terms of baudrate, format, ... as the service transponder. The transceiver element acts as a "logical starting/stopping point" for the spectral information propagation. At that point it is not meant to represent the capacity of add drop ports
 As a result transponder type is not part of the network info. it is related to the list of services requests.
 
 The current version includes a spectrum assigment features that enables to compute a candidate spectrum assignment for each service based on a first fit policy. Spectrum is assigned based on service specified spacing value, path_bandwidth value and selected mode for the transceiver. This spectrum assignment includes a basic capacity planning capability so that the spectrum resource is limited by the frequency min and max values defined for the links. If the requested services reach the link spectrum capacity, additional services feasibility are computed but marked as blocked due to spectrum reason.
