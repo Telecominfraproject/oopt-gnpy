@@ -22,8 +22,7 @@ from gnpy.core import ansi_escapes
 from gnpy.core.utils import automatic_nch
 from gnpy.core.network import build_network
 from gnpy.core.utils import lin2db
-from gnpy.core.exceptions import (ConfigurationError, EquipmentConfigError, NetworkTopologyError,
-                                  ServiceError, DisjunctionError)
+import gnpy.core.exceptions as exceptions
 from gnpy.topology.request import (ResultElement, jsontocsv, compute_path_dsjctn, requests_aggregation,
                                    BLOCKING_NOPATH, correct_json_route_list,
                                    deduplicate_disjunctions, compute_path_with_disjunction)
@@ -72,17 +71,17 @@ def main(args):
     try:
         equipment = load_equipment(args.eqpt_filename)
         network = load_network(args.network_filename, equipment)
-    except EquipmentConfigError as this_e:
-        print(f'{ansi_escapes.red}Configuration error in the equipment library:{ansi_escapes.reset} {this_e}')
+    except exceptions.EquipmentConfigError as e:
+        print(f'{ansi_escapes.red}Configuration error in the equipment library:{ansi_escapes.reset} {e}')
         exit(1)
-    except NetworkTopologyError as this_e:
-        print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {this_e}')
+    except exceptions.NetworkTopologyError as e:
+        print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
         exit(1)
-    except ConfigurationError as this_e:
-        print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {this_e}')
+    except exceptions.ConfigurationError as e:
+        print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
         exit(1)
-    except ServiceError as this_e:
-        print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {this_e}')
+    except exceptions.ServiceError as e:
+        print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {e}')
         exit(1)
 
     # Build the network once using the default power defined in SI in eqpt config
@@ -99,8 +98,8 @@ def main(args):
     try:
         data = load_requests(args.service_filename, equipment, bidir=args.bidir, network=network, network_filename=args.network_filename)
         rqs = requests_from_json(data, equipment)
-    except ServiceError as this_e:
-        print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {this_e}')
+    except exceptions.ServiceError as e:
+        print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {e}')
         exit(1)
     # check that request ids are unique. Non unique ids, may
     # mess the computation: better to stop the computation
@@ -134,7 +133,7 @@ def main(args):
     print(f'{ansi_escapes.blue}Computing all paths with constraints{ansi_escapes.reset}')
     try:
         pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
-    except DisjunctionError as this_e:
+    except exceptions.DisjunctionError as this_e:
         print(f'{ansi_escapes.red}Disjunction error:{ansi_escapes.reset} {this_e}')
         exit(1)
 
