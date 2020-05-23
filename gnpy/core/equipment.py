@@ -286,7 +286,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             # sanity check: spacing baudrate must be smaller than min spacing
             if trx_params['baud_rate'] > trx_params['min_spacing']:
                 raise EquipmentConfigError(f'Inconsistency in equipment library:\n Transpoder "{trx_type_variety}" mode "{trx_params["format"]}" ' +
-                                           f'has baud rate: {trx_params["baud_rate"]*1e-9} GHz greater than min_spacing {trx_params["min_spacing"]*1e-9}.')
+                                           f'has baud rate {trx_params["baud_rate"]*1e-9} GHz greater than min_spacing {trx_params["min_spacing"]*1e-9}.')
         else:
             mode_params = {"format": "undetermined",
                            "baud_rate": None,
@@ -306,7 +306,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
         # print(f'spacing {temp}')
     except StopIteration:
         if error_message:
-            raise EquipmentConfigError(f'Computation stoped: could not find tsp : {trx_type_variety} with mode: {trx_mode} in eqpt library')
+            raise EquipmentConfigError(f'Could not find transponder "{trx_type_variety}" with mode "{trx_mode}" in equipment library')
         else:
             # default transponder charcteristics
             # mainly used with transmission_main_example.py
@@ -365,7 +365,7 @@ def update_dual_stage(equipment):
             edfa.p_max = edfa_booster.p_max
             edfa.gain_flatmax = edfa_booster.gain_flatmax + edfa_preamp.gain_flatmax
             if edfa.gain_min < edfa_preamp.gain_min:
-                raise EquipmentConfigError(f'Dual stage {edfa.type_variety} min gain is lower than its preamp min gain')
+                raise EquipmentConfigError(f'Dual stage {edfa.type_variety} minimal gain is lower than its preamp minimal gain')
     return equipment
 
 
