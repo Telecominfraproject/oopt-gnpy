@@ -15,7 +15,6 @@ from os import path
 from operator import attrgetter
 from gnpy.core import ansi_escapes, elements
 from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm, Fused
-from gnpy.core.equipment import edfa_nf
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.utils import load_json, save_json, round2float, merge_amplifier_restrictions, convert_length
 from gnpy.tools.convert import convert_file
@@ -92,6 +91,21 @@ def network_to_json(network):
     }
     data.update(connections)
     return data
+
+
+def edfa_nf(gain_target, variety_type, equipment):
+    amp_params = equipment['Edfa'][variety_type]
+    amp = Edfa(
+        uid='calc_NF',
+        params=amp_params.__dict__,
+        operational={
+            'gain_target': gain_target,
+            'tilt_target': 0
+        }
+    )
+    amp.pin_db = 0
+    amp.nch = 88
+    return amp._calc_nf(True)
 
 
 def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restrictions=None):

@@ -15,7 +15,6 @@ from json import load
 from gnpy.core.utils import automatic_nch, lin2db, db2lin, load_json
 from collections import namedtuple
 from gnpy.core import ansi_escapes
-from gnpy.core.elements import Edfa
 from gnpy.core.exceptions import EquipmentConfigError
 import time
 
@@ -251,21 +250,6 @@ def nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
         raise EquipmentConfigError(f'nf_max does not match calc_nf_max, {nf_max} vs {calc_nf_max} for amp {type_variety}')
 
     return nf1, nf2, delta_p
-
-
-def edfa_nf(gain_target, variety_type, equipment):
-    amp_params = equipment['Edfa'][variety_type]
-    amp = Edfa(
-        uid='calc_NF',
-        params=amp_params.__dict__,
-        operational={
-            'gain_target': gain_target,
-            'tilt_target': 0
-        }
-    )
-    amp.pin_db = 0
-    amp.nch = 88
-    return amp._calc_nf(True)
 
 
 def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=False):
