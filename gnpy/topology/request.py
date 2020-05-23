@@ -25,7 +25,6 @@ from gnpy.core.utils import lin2db
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 import gnpy.core.ansi_escapes as ansi_escapes
-from gnpy.tools.service_sheet import Element
 from copy import deepcopy
 from csv import writer
 from math import ceil
@@ -132,7 +131,7 @@ BLOCKING_NOMODE = ['NO_FEASIBLE_MODE', 'MODE_NOT_FEASIBLE']
 BLOCKING_NOSPECTRUM = 'NO_SPECTRUM'
 
 
-class ResultElement(Element):
+class ResultElement:
     def __init__(self, path_request, computed_path, reversed_computed_path=None):
         self.path_id = path_request.request_id
         self.path_request = path_request
