@@ -18,20 +18,18 @@ from numpy import linspace, mean
 from gnpy.core.equipment import trx_mode_params
 from gnpy.core.network import build_network
 from gnpy.core.elements import Transceiver, Fiber, RamanFiber
-import gnpy.core.exceptions as exceptions
-from gnpy.core.parameters import SimParams
-from gnpy.core.science_utils import Simulation
 from gnpy.core.utils import db2lin, lin2db, write_csv
 import gnpy.core.ansi_escapes as ansi_escapes
 from gnpy.topology.request import PathRequest, compute_constrained_path, propagate2
-from gnpy.tools.json_io import load_equipment, load_network, save_network, load_json
+import gnpy.tools.cli_examples as cli_examples
+from gnpy.tools.json_io import save_network
 from gnpy.tools.plots import plot_baseline, plot_results
 
 
 logger = getLogger(__name__)
 
 
-def main(network, equipment, source, destination, sim_params, req=None):
+def main(network, equipment, source, destination, req=None):
     result_dicts = {}
     network_data = [{
                     'network_name'  : str(args.filename),
@@ -57,15 +55,6 @@ def main(network, equipment, source, destination, sim_params, req=None):
     pref_total_db = pref_ch_db + lin2db(req.nb_channel) #reference total power / span (SL=20dB)
     build_network(network, equipment, pref_ch_db, pref_total_db)
     path = compute_constrained_path(network, req)
-
-    if sim_params:
-        Simulation.set_params(sim_params)
-
-    if len([s.params.length for s in path if isinstance(s, RamanFiber)]):
-        if sim_params is None:
-            print(f'{ansi_escapes.red}Invocation error:{ansi_escapes.reset} '
-                  f'RamanFiber requires passing simulation params via --sim-params')
-            exit(1)
 
     spans = [s.params.length for s in path if isinstance(s, RamanFiber) or isinstance(s, Fiber)]
     print(f'\nThere are {len(spans)} fiber spans over {sum(spans)/1000:.0f} km between {source.uid} '
@@ -146,22 +135,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
     basicConfig(level={0: ERROR, 1: INFO, 2: DEBUG}.get(args.verbose, DEBUG))
 
-    try:
-        equipment = load_equipment(args.equipment)
-        network = load_network(args.filename, equipment, args.names_matching)
-        sim_params = SimParams(**load_json(args.sim_params)) if args.sim_params is not None else None
-    except exceptions.EquipmentConfigError as e:
-        print(f'{ansi_escapes.red}Configuration error in the equipment library:{ansi_escapes.reset} {e}')
-        exit(1)
-    except exceptions.NetworkTopologyError as e:
-        print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
-        exit(1)
-    except exceptions.ConfigurationError as e:
-        print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
-        exit(1)
-    except exceptions.ParametersError as e:
-        print(f'{ansi_escapes.red}Simulation parameters error:{ansi_escapes.reset} {e}')
-        exit(1)
+    (equipment, network) = cli_examples.load_common_data(args.equipment, args.filename, args.sim_params,
+                                                         fuzzy_name_matching=args.names_matching)
 
     if args.plot:
         plot_baseline(network)
@@ -231,7 +206,7 @@ if __name__ == '__main__':
         trx_params['power'] = db2lin(float(args.power))*1e-3
     params.update(trx_params)
     req = PathRequest(**params)
-    path, infos = main(network, equipment, source, destination, sim_params, req)
+    path, infos = main(network, equipment, source, destination, req)
     save_network(args.filename, network)
 
     if args.show_channels:
