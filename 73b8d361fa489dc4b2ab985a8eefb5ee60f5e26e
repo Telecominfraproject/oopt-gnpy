@@ -2,6 +2,92 @@
   "comments": [
     {
       "key": {
+        "uuid": "7165da14_2520cbf5",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-23T10:03:18Z",
+      "side": 1,
+      "message": "better just:\n\n   \"\"\"diferential group delay (DGD) [s]\"\"\"\n\nThe generated docs recognize the `@property` decorator, and when the `:return:` is present in addition to this one-line summary, the generated docs just show the same info twice.",
+      "revId": "73b8d361fa489dc4b2ab985a8eefb5ee60f5e26e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4bf88eef_4964f40a",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-23T10:03:18Z",
+      "side": 1,
+      "message": "nit: extra space at the start of the docstring (also everywhere else)",
+      "range": {
+        "startLine": 401,
+        "startChar": 11,
+        "endLine": 401,
+        "endChar": 12
+      },
+      "revId": "73b8d361fa489dc4b2ab985a8eefb5ee60f5e26e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c28a05fb_ec7b7d50",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-23T10:03:18Z",
+      "side": 1,
+      "message": "This should read `:param:` (leading colon)",
+      "range": {
+        "startLine": 404,
+        "startChar": 8,
+        "endLine": 404,
+        "endChar": 14
+      },
+      "revId": "73b8d361fa489dc4b2ab985a8eefb5ee60f5e26e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7bc34df_ade3b12b",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-23T10:03:18Z",
+      "side": 1,
+      "message": "This one needs escaping -- use `\\*carriers`. That\u0027s the reason for the Sphinx build warning.",
+      "range": {
+        "startLine": 404,
+        "startChar": 16,
+        "endLine": 404,
+        "endChar": 25
+      },
+      "revId": "73b8d361fa489dc4b2ab985a8eefb5ee60f5e26e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "882398ad_c7898e9c",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 6
@@ -13,6 +99,23 @@
       "writtenOn": "2020-05-22T19:01:03Z",
       "side": 1,
       "message": "I don\u0027t think this is how you sum PMD from different fibers or components. Aren\u0027t you supposed to take the sqrt of the sum of the squares?",
+      "revId": "73b8d361fa489dc4b2ab985a8eefb5ee60f5e26e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1000e5d1_89671b70",
+        "filename": "tests/test_propagation.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-05-23T10:03:18Z",
+      "side": 1,
+      "message": "nit: this comment can be removed, in my opinion",
       "revId": "73b8d361fa489dc4b2ab985a8eefb5ee60f5e26e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
