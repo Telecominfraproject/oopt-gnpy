@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "09b297fd_f37e5c85",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-05-23T12:02:48Z",
+      "side": 1,
+      "message": "I think beta in this formula should be replaced by beta2. The definition of the dispersion coefficient (D) does not depend on beta3 (see also the formula for calculating beta2 from D in parameters.py).",
+      "revId": "437bc532aa98acec0e4cc2565396f844a4a3b7fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
