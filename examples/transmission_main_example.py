@@ -18,7 +18,7 @@ from numpy import linspace, mean
 from gnpy.core.equipment import trx_mode_params
 from gnpy.core.network import build_network
 from gnpy.core.elements import Transceiver, Fiber, RamanFiber
-from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
+import gnpy.core.exceptions as exceptions
 from gnpy.core.parameters import SimParams
 from gnpy.core.science_utils import Simulation
 from gnpy.core.utils import db2lin, lin2db, write_csv
@@ -150,14 +150,17 @@ if __name__ == '__main__':
         equipment = load_equipment(args.equipment)
         network = load_network(args.filename, equipment, args.names_matching)
         sim_params = SimParams(**load_json(args.sim_params)) if args.sim_params is not None else None
-    except EquipmentConfigError as e:
+    except exceptions.EquipmentConfigError as e:
         print(f'{ansi_escapes.red}Configuration error in the equipment library:{ansi_escapes.reset} {e}')
         exit(1)
-    except NetworkTopologyError as e:
+    except exceptions.NetworkTopologyError as e:
         print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
         exit(1)
-    except ConfigurationError as e:
+    except exceptions.ConfigurationError as e:
         print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
+        exit(1)
+    except exceptions.ParametersError as e:
+        print(f'{ansi_escapes.red}Simulation parameters error:{ansi_escapes.reset} {e}')
         exit(1)
 
     if args.plot:
