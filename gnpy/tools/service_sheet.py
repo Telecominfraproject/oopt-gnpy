@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-gnpy.core.service_sheet
+gnpy.tools.service_sheet
 ========================
 
 XLS parser that can be called to create a JSON request file in accordance with

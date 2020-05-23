@@ -20,12 +20,12 @@ from logging import getLogger
 from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths)
 from networkx.utils import pairwise
 from numpy import mean
-from gnpy.core.service_sheet import Element
 from gnpy.core.elements import Transceiver, Roadm
 from gnpy.core.utils import lin2db
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 import gnpy.core.ansi_escapes as ansi_escapes
+from gnpy.tools.service_sheet import Element
 from copy import deepcopy
 from csv import writer
 from math import ceil

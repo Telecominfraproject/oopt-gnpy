@@ -10,5 +10,4 @@
 .. automodule:: gnpy.core.network
 .. automodule:: gnpy.core.parameters
 .. automodule:: gnpy.core.science_utils
-.. automodule:: gnpy.core.service_sheet
 .. automodule:: gnpy.core.utils

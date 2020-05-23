@@ -24,7 +24,6 @@ from tests.compare import compare_networks, compare_services
 from copy import deepcopy
 from gnpy.core.utils import automatic_nch, lin2db
 from gnpy.core.network import save_network, build_network
-from gnpy.core.service_sheet import convert_service_sheet, correct_xls_route_list
 from gnpy.core.equipment import load_equipment
 from gnpy.core.network import load_network
 from gnpy.core.exceptions import ServiceError
@@ -32,6 +31,7 @@ from gnpy.topology.request import (jsontocsv, requests_aggregation, compute_path
                                    ResultElement, PathRequest)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.convert import convert_file
+from gnpy.tools.service_sheet import convert_service_sheet, correct_xls_route_list
 from examples.path_requests_run import (requests_from_json, disjunctions_from_json,
                                         correct_disjn, compute_path_with_disjunction)
 
