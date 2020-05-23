@@ -17,7 +17,8 @@ See: draft-ietf-teas-yang-path-computation-01.txt
 
 from collections import namedtuple, OrderedDict
 from logging import getLogger
-from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths)
+from networkx import (dijkstra_path, NetworkXNoPath,
+                      all_simple_paths, shortest_simple_paths)
 from networkx.utils import pairwise
 from numpy import mean
 from gnpy.core.service_sheet import Element
@@ -379,6 +380,40 @@ def compute_constrained_path(network, req):
     # then there is no more path to g destination
 
     return total_path
+
+def compute_k_constrained_paths(network, req, k=1, early_stop=-1):
+    trx = [n for n in network if isinstance(n, Transceiver)]
+    source = next(el for el in trx if el.uid == req.source)
+    destination = next(el for el in trx if el.uid == req.destination)
+
+    nodes_list = []
+    for node in req.nodes_list:
+        nodes_list.append(next(el for el in network if el.uid == node))
+
+    k_total_paths = []
+    try:
+        path_generator = shortest_simple_paths(network, source, destination, weight='weight')
+        for i, path in enumerate(path_generator):
+            if i == early_stop:
+                break
+            if ispart(nodes_list, path):
+                k_total_paths.append(path)
+                if len(k_total_paths) == k:
+                    break
+        if not k_total_paths:
+            msg = (f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path with user '
+                   f'include node constraints.\nNo path computed'+ '\x1b[0m')
+            LOGGER.critical(msg)
+            print(msg)
+            req.blocking_reason = 'NO_PATH_WITH_CONSTRAINT'
+    except NetworkXNoPath:
+        msg = (f'\x1b[1;33;40m'+f'Request {req.request_id} could not find a path from'
+               f' {source.uid} to node: {destination.uid} in network topology' + '\x1b[0m')
+        LOGGER.critical(msg)
+        print(msg)
+        req.blocking_reason = 'NO_PATH'
+
+    return k_total_paths
 
 def propagate(path, req, equipment):
     si = create_input_spectral_information(
