@@ -70,8 +70,6 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         # use the power specified in requests but might be different from the one
         # specified for design the power is an optional parameter for requests
         # definition if optional, use the one defines in eqt_config.json
-        p_db = lin2db(pathreq.power*1e3)
-        p_total_db = p_db + lin2db(pathreq.nb_channel)
         print(f'request {pathreq.request_id}')
         print(f'Computing path from {pathreq.source} to {pathreq.destination}')
         # adding first node to be clearer on the output
