@@ -23,10 +23,10 @@ from gnpy.core.elements import Transceiver, Fiber, RamanFiber
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
 from gnpy.core.parameters import SimParams
 from gnpy.core.science_utils import Simulation
-from gnpy.core.utils import db2lin, lin2db, write_csv, load_json
+from gnpy.core.utils import db2lin, lin2db, write_csv
 import gnpy.core.ansi_escapes as ansi_escapes
 from gnpy.topology.request import PathRequest, compute_constrained_path, propagate2
-from gnpy.tools.json_io import load_equipment, load_network, save_network
+from gnpy.tools.json_io import load_equipment, load_network, save_network, load_json
 
 logger = getLogger(__name__)
 

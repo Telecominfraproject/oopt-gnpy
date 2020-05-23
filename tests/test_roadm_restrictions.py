@@ -12,10 +12,10 @@ checks that restrictions in roadms are correctly applied during autodesign
 
 from pathlib import Path
 import pytest
-from gnpy.core.utils import lin2db, load_json, automatic_nch
+from gnpy.core.utils import lin2db, automatic_nch
 from gnpy.core.elements import Fused, Roadm, Edfa
 from gnpy.core.network import build_network
-from gnpy.tools.json_io import network_from_json, load_equipment, Amp
+from gnpy.tools.json_io import network_from_json, load_equipment, load_json, Amp
 
 
 TEST_DIR = Path(__file__).parent
