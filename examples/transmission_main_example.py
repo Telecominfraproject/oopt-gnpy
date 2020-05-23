@@ -15,16 +15,12 @@ from gnpy.core.utils import db2lin, lin2db, write_csv
 from argparse import ArgumentParser
 from sys import exit
 from pathlib import Path
-from json import loads
-from collections import Counter
 from logging import getLogger, basicConfig, INFO, ERROR, DEBUG
-from numpy import linspace, mean, log10
+from numpy import linspace, mean
 from matplotlib.pyplot import show, axis, figure, title, text
-from networkx import (draw_networkx_nodes, draw_networkx_edges,
-                      draw_networkx_labels, dijkstra_path)
+from networkx import draw_networkx_nodes, draw_networkx_edges, draw_networkx_labels
 from gnpy.core.network import load_network, build_network, save_network
-from gnpy.core.elements import Transceiver, Fiber, RamanFiber, Edfa, Roadm
-from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
+from gnpy.core.elements import Transceiver, Fiber, RamanFiber
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
 from gnpy.core.parameters import SimParams
 from gnpy.core.science_utils import Simulation

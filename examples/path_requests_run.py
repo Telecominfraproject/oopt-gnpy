@@ -15,16 +15,15 @@ See: draft-ietf-teas-yang-path-computation-01.txt
 from sys import exit
 from argparse import ArgumentParser
 from pathlib import Path
-from collections import namedtuple
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
 from json import dumps, loads
 from numpy import mean
 from gnpy.core import ansi_escapes
-from gnpy.core.utils import automatic_nch, automatic_fmax, load_json
+from gnpy.core.utils import automatic_nch, automatic_fmax
 from gnpy.core.network import load_network, build_network, save_network
 from gnpy.core.equipment import load_equipment, trx_mode_params
 from gnpy.core.elements import Roadm
-from gnpy.core.utils import db2lin, lin2db
+from gnpy.core.utils import lin2db
 from gnpy.core.exceptions import (ConfigurationError, EquipmentConfigError, NetworkTopologyError,
                                   ServiceError, DisjunctionError)
 from gnpy.topology.request import (PathRequest, ResultElement,
@@ -33,8 +32,8 @@ from gnpy.topology.request import (PathRequest, ResultElement,
                                    BLOCKING_NOPATH, BLOCKING_NOMODE,
                                    find_reversed_path, correct_json_route_list)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
-from gnpy.tools.service_sheet import convert_service_sheet, Request_element, Element
-from copy import copy, deepcopy
+from gnpy.tools.service_sheet import convert_service_sheet
+from copy import deepcopy
 from textwrap import dedent
 from math import ceil
 
