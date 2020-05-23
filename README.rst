@@ -165,7 +165,7 @@ example, to use the CORONET Global network defined in
 
 .. code-block:: shell-session
 
-    $ ./examples/transmission_main_example.py examples/CORONET_Global_Topology.json
+    $ gnpy-transmission-example examples/CORONET_Global_Topology.json
 
 It is also possible to use an Excel file input (for example
 `examples/CORONET_Global_Topology.xlsx <examples/CORONET_Global_Topology.xlsx>`_).
@@ -175,7 +175,7 @@ further instructions on how to prepare the Excel input file, see
 
 The main transmission example will calculate the average signal OSNR and SNR
 across network elements (transceiver, ROADMs, fibers, and amplifiers)
-between two transceivers selected by the user. Additional details are provided by doing ``transmission_main_example.py -h``. (By default, for the CORONET Global
+between two transceivers selected by the user. Additional details are provided by doing ``gnpy-transmission-example -h``. (By default, for the CORONET Global
 network, it will show the transmission of spectral information between Abilene and Albany)
 
 This script calculates the average signal OSNR = |OSNR| and SNR = |SNR|.
@@ -189,8 +189,8 @@ interference noise.
 .. |Pase| replace:: P\ :sub:`ase`
 .. |Pnli| replace:: P\ :sub:`nli`
 
-Further Instructions for Use (`transmission_main_example.py`, `path_requests_run.py`)
--------------------------------------------------------------------------------------
+Further Instructions for Use
+----------------------------
 
 Design and transmission parameters are defined in a dedicated json file. By
 default, this information is read from `examples/eqpt_config.json
@@ -499,7 +499,7 @@ one power/channel definition.
 |                      |           | transceiver OSNR.                         |         
 +----------------------+-----------+-------------------------------------------+
 
-The `transmission_main_example.py <examples/transmission_main_example.py>`_ script propagates a spectrum of channels at 32 Gbaud, 50 GHz spacing and 0 dBm/channel. 
+The ``gnpy-transmission-example`` script propagates a spectrum of channels at 32 Gbaud, 50 GHz spacing and 0 dBm/channel. 
 Launch power can be overridden by using the ``--power`` argument.
 Spectrum information is not yet parametrized but can be modified directly in the ``eqpt_config.json`` (via the ``SpectralInformation`` -SI- structure) to accommodate any baud rate or spacing.
 The number of channel is computed based on ``spacing`` and ``f_min``, ``f_max`` values.
@@ -508,19 +508,19 @@ An experimental support for Raman amplification is available:
 
 .. code-block:: shell
 
-     $ ./examples/transmission_main_example.py \
+     $ gnpy-transmission-example \
        examples/raman_edfa_example_network.json \
        --sim examples/sim_params.json --show-channels
 
 Configuration of Raman pumps (their frequencies, power and pumping direction) is done via the `RamanFiber element in the network topology <examples/raman_edfa_example_network.json>`_.
 General numeric parameters for simulaiton control are provided in the `examples/sim_params.json <examples/sim_params.json>`_.
 
-Use `examples/path_requests_run.py <examples/path_requests_run.py>`_ to run multiple optimizations as follows:
+Use ``gnpy-path-request`` to run multiple optimizations as follows:
 
 .. code-block:: shell
 
-     $ python path_requests_run.py -h
-     Usage: path_requests_run.py [-h] [-v] [-o OUTPUT] [network_filename] [service_filename] [eqpt_filename]
+     $ gnpy-path-request -h
+     Usage: gnpy-path-requests [-h] [-v] [-o OUTPUT] [network_filename] [service_filename] [eqpt_filename]
 
 The ``network_filename`` and ``service_filename`` can be an XLS or JSON file. The ``eqpt_filename`` must be a JSON file.
 
@@ -529,12 +529,12 @@ To see an example of it, run:
 .. code-block:: shell
 
     $ cd examples
-    $ python path_requests_run.py meshTopologyExampleV2.xls meshTopologyExampleV2_services.json eqpt_config.json -o output_file.json
+    $ gnpy-path-request meshTopologyExampleV2.xls meshTopologyExampleV2_services.json eqpt_config.json -o output_file.json
 
 This program requires a list of connections to be estimated and the equipment
 library. The program computes performances for the list of services (accepts
 JSON or Excel format) using the same spectrum propagation modules as
-``transmission_main_example.py``. Explanation on the Excel template is provided in
+``gnpy-transmission-example``. Explanation on the Excel template is provided in
 the `Excel_userguide.rst <Excel_userguide.rst#service-sheet>`_. Template for
 the JSON format can be found here: `service-template.json
 <service-template.json>`_.

@@ -15,7 +15,7 @@ if [[ $ALREADY_FOUND == 0 ]]; then
   # shared directory setup: do not clobber the real data
   mkdir trash
   cd trash
-  docker run -it --rm --volume $(pwd):/shared ${IMAGE_NAME} ./transmission_main_example.py
+  docker run -it --rm --volume $(pwd):/shared ${IMAGE_NAME} gnpy-transmission-example
 else
   echo "Image ${IMAGE_NAME}:${IMAGE_TAG} already available, will just update the other tags"
 fi
