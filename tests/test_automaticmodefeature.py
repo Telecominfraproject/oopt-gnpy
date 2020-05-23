@@ -16,10 +16,10 @@ checks that empty info on mode, power, nbchannel in service file are supported
 
 from pathlib import Path
 import pytest
-from gnpy.core.equipment import load_equipment, automatic_nch
+from gnpy.core.equipment import load_equipment
 from gnpy.core.network import load_network, build_network
 from examples.path_requests_run import requests_from_json, correct_json_route_list, load_requests
-from gnpy.core.utils import lin2db
+from gnpy.core.utils import automatic_nch, lin2db
 from gnpy.core.elements import Roadm
 from gnpy.topology.request import compute_path_dsjctn, propagate, propagate_and_optimize_mode
 

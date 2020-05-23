@@ -15,9 +15,9 @@ from copy import deepcopy
 import json
 from math import ceil
 import pytest
-from gnpy.core.equipment import load_equipment, automatic_nch
+from gnpy.core.equipment import load_equipment
 from gnpy.core.network import load_network, build_network
-from gnpy.core.utils import lin2db
+from gnpy.core.utils import lin2db, automatic_nch
 from gnpy.core.elements import Roadm, Transceiver
 from gnpy.core.spectrum_assignment import (build_oms_list, align_grids, nvalue_to_frequency,
                                            bitmap_sum, Bitmap, spectrum_selection, pth_assign_spectrum)

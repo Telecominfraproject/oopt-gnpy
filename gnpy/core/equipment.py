@@ -12,7 +12,7 @@ from numpy import clip
 from math import isclose
 from pathlib import Path
 from json import load
-from gnpy.core.utils import lin2db, db2lin, load_json
+from gnpy.core.utils import automatic_nch, lin2db, db2lin, load_json
 from collections import namedtuple
 from gnpy.core import ansi_escapes
 from gnpy.core.elements import Edfa
@@ -335,36 +335,6 @@ def automatic_spacing(baud_rate):
     # list of possible tuples [(max_baud_rate, spacing_for_this_baud_rate)]
     spacing_list = [(33e9, 37.5e9), (38e9, 50e9), (50e9, 62.5e9), (67e9, 75e9), (92e9, 100e9)]
     return min((s[1] for s in spacing_list if s[0] > baud_rate), default=baud_rate * 1.2)
-
-
-def automatic_nch(f_min, f_max, spacing):
-    """How many channels are available in the spectrum
-
-    :param f_min Lowest frequenecy [Hz]
-    :param f_max Highest frequency [Hz]
-    :param spacing Channel width [Hz]
-    :return Number of uniform channels
-
-    >>> automatic_nch(191.325e12, 196.125e12, 50e9)
-    96
-    >>> automatic_nch(193.475e12, 193.525e12, 50e9)
-    1
-    """
-    return int((f_max - f_min) // spacing)
-
-
-def automatic_fmax(f_min, spacing, nch):
-    """Find the high-frequenecy boundary of a spectrum
-
-    :param f_min Start of the spectrum (lowest frequency edge) [Hz]
-    :param spacing Grid/channel spacing [Hz]
-    :param nch Number of channels
-    :return End of the spectrum (highest frequency) [Hz]
-
-    >>> automatic_fmax(191.325e12, 50e9, 96)
-    196125000000000.0
-    """
-    return f_min + spacing * nch
 
 
 def load_equipment(filename):

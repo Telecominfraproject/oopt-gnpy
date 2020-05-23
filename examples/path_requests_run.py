@@ -21,9 +21,9 @@ from json import dumps, loads
 from numpy import mean
 from gnpy.core import ansi_escapes
 from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
-from gnpy.core.utils import load_json
+from gnpy.core.utils import automatic_nch, load_json
 from gnpy.core.network import load_network, build_network, save_network
-from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch
+from gnpy.core.equipment import load_equipment, trx_mode_params
 from gnpy.core.elements import Roadm
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.exceptions import (ConfigurationError, EquipmentConfigError, NetworkTopologyError,

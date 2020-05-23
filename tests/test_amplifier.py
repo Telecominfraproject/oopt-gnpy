@@ -6,9 +6,9 @@
 from numpy import zeros, array
 from gnpy.core import elements
 from gnpy.core.elements import Transceiver, Edfa
-from gnpy.core.utils import lin2db, db2lin, merge_amplifier_restrictions
+from gnpy.core.utils import automatic_fmax, lin2db, db2lin, merge_amplifier_restrictions
 from gnpy.core.info import create_input_spectral_information, Pref
-from gnpy.core.equipment import load_equipment, automatic_fmax
+from gnpy.core.equipment import load_equipment
 from gnpy.core.network import build_network, load_network
 from pathlib import Path
 import pytest

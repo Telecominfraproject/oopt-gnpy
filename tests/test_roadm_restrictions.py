@@ -12,9 +12,9 @@ checks that restrictions in roadms are correctly applied during autodesign
 
 from pathlib import Path
 import pytest
-from gnpy.core.utils import lin2db, load_json
+from gnpy.core.utils import lin2db, load_json, automatic_nch
 from gnpy.core.elements import Fused, Roadm, Edfa
-from gnpy.core.equipment import load_equipment, Amp, automatic_nch
+from gnpy.core.equipment import load_equipment, Amp
 from gnpy.core.network import network_from_json, build_network
 
 
