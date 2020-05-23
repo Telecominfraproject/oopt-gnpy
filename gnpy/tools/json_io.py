@@ -12,12 +12,12 @@ from networkx import DiGraph
 from logging import getLogger
 from os import path
 from pathlib import Path
-from json import load
+import json
 from collections import namedtuple
 from gnpy.core import ansi_escapes, elements
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
 from gnpy.core.science_utils import estimate_nf_model
-from gnpy.core.utils import load_json, save_json, merge_amplifier_restrictions
+from gnpy.core.utils import merge_amplifier_restrictions
 from gnpy.tools.convert import convert_file
 import time
 
@@ -207,7 +207,7 @@ class Amp(_JsonThing):
             dual_stage_def = Model_dual_stage(preamp_variety, booster_variety)
 
         with open(config, encoding='utf-8') as f:
-            json_data = load(f)
+            json_data = json.load(f)
 
         return cls(**{**kwargs, **json_data,
                       'nf_model': nf_def, 'dual_stage_model': dual_stage_def})
@@ -390,3 +390,12 @@ def network_to_json(network):
     return data
 
 
+def load_json(filename):
+    with open(filename, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    return data
+
+
+def save_json(obj, filename):
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(obj, f, indent=2, ensure_ascii=False)
