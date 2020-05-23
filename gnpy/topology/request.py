@@ -140,7 +140,9 @@ class ResultElement(Element):
         # starting implementing reversed properties in case of bidir demand
         if reversed_computed_path is not None:
             self.reversed_computed_path = reversed_computed_path
+
     uid = property(lambda self: repr(self))
+
     @property
     def detailed_path_json(self):
         """ a function that builds path object for normal and blocking cases

@@ -121,6 +121,7 @@ class Request_element(Element):
             self.path_bandwidth = 0
 
     uid = property(lambda self: repr(self))
+
     @property
     def pathrequest(self):
         # Default assumption for bidir is False
