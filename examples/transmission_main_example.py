@@ -10,8 +10,6 @@ Main example for transmission simulation.
 Reads from network JSON (by default, `edfa_example_network.json`)
 '''
 
-from gnpy.core.equipment import load_equipment, trx_mode_params
-from gnpy.core.utils import db2lin, lin2db, write_csv
 from argparse import ArgumentParser
 from sys import exit
 from pathlib import Path
@@ -19,14 +17,16 @@ from logging import getLogger, basicConfig, INFO, ERROR, DEBUG
 from numpy import linspace, mean
 from matplotlib.pyplot import show, axis, figure, title, text
 from networkx import draw_networkx_nodes, draw_networkx_edges, draw_networkx_labels
-from gnpy.core.network import load_network, build_network, save_network
+from gnpy.core.equipment import trx_mode_params
+from gnpy.core.network import build_network
 from gnpy.core.elements import Transceiver, Fiber, RamanFiber
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
 from gnpy.core.parameters import SimParams
 from gnpy.core.science_utils import Simulation
-from gnpy.core.utils import load_json
+from gnpy.core.utils import db2lin, lin2db, write_csv, load_json
 import gnpy.core.ansi_escapes as ansi_escapes
 from gnpy.topology.request import PathRequest, compute_constrained_path, propagate2
+from gnpy.tools.json_io import load_equipment, load_network, save_network
 
 logger = getLogger(__name__)
 

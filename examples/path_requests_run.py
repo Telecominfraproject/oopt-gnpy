@@ -20,8 +20,8 @@ from json import dumps, loads
 from numpy import mean
 from gnpy.core import ansi_escapes
 from gnpy.core.utils import automatic_nch, automatic_fmax
-from gnpy.core.network import load_network, build_network, save_network
-from gnpy.core.equipment import load_equipment, trx_mode_params
+from gnpy.core.network import build_network
+from gnpy.core.equipment import trx_mode_params
 from gnpy.core.elements import Roadm
 from gnpy.core.utils import lin2db
 from gnpy.core.exceptions import (ConfigurationError, EquipmentConfigError, NetworkTopologyError,
@@ -32,6 +32,7 @@ from gnpy.topology.request import (PathRequest, ResultElement,
                                    BLOCKING_NOPATH, BLOCKING_NOMODE,
                                    find_reversed_path, correct_json_route_list)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
+from gnpy.tools.json_io import load_equipment, load_network, save_network
 from gnpy.tools.service_sheet import convert_service_sheet
 from copy import deepcopy
 from textwrap import dedent
