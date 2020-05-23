@@ -27,7 +27,8 @@ from gnpy.topology.request import (ResultElement, jsontocsv, compute_path_dsjctn
                                    BLOCKING_NOPATH, correct_json_route_list,
                                    deduplicate_disjunctions, compute_path_with_disjunction)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
-from gnpy.tools.json_io import load_equipment, load_network, load_requests, save_network, requests_from_json, disjunctions_from_json
+import gnpy.tools.cli_examples as cli_examples
+from gnpy.tools.json_io import load_requests, save_network, requests_from_json, disjunctions_from_json
 from math import ceil
 
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
@@ -68,21 +69,7 @@ def main(args):
     # for debug
     # print( args.eqpt_filename)
 
-    try:
-        equipment = load_equipment(args.eqpt_filename)
-        network = load_network(args.network_filename, equipment)
-    except exceptions.EquipmentConfigError as e:
-        print(f'{ansi_escapes.red}Configuration error in the equipment library:{ansi_escapes.reset} {e}')
-        exit(1)
-    except exceptions.NetworkTopologyError as e:
-        print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
-        exit(1)
-    except exceptions.ConfigurationError as e:
-        print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
-        exit(1)
-    except exceptions.ServiceError as e:
-        print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {e}')
-        exit(1)
+    (equipment, network) = cli_examples.load_common_data(args.eqpt_filename, args.network_filename)
 
     # Build the network once using the default power defined in SI in eqpt config
     # TODO power density: db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
