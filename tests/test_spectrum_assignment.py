@@ -19,11 +19,10 @@ from gnpy.core.network import build_network
 from gnpy.core.utils import lin2db, automatic_nch
 from gnpy.core.elements import Roadm, Transceiver
 from gnpy.core.exceptions import SpectrumError
-from gnpy.topology.request import compute_path_dsjctn, find_reversed_path
+from gnpy.topology.request import compute_path_dsjctn, find_reversed_path, deduplicate_disjunctions
 from gnpy.topology.spectrum_assignment import (build_oms_list, align_grids, nvalue_to_frequency,
                                            bitmap_sum, Bitmap, spectrum_selection, pth_assign_spectrum)
 from gnpy.tools.json_io import load_equipment, load_network, requests_from_json, disjunctions_from_json
-from examples.path_requests_run import correct_disjn
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
@@ -275,7 +274,7 @@ def test_reversed_direction(equipment, setup, requests, services):
     """
     network, oms_list = setup
     dsjn = disjunctions_from_json(services)
-    dsjn = correct_disjn(dsjn)
+    dsjn = deduplicate_disjunctions(dsjn)
     paths = compute_path_dsjctn(network, equipment, requests, dsjn)
     rev_pths = []
     for pth in paths:

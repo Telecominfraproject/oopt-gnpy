@@ -19,7 +19,7 @@ from gnpy.core.equipment import trx_mode_params
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError, ServiceError
 from gnpy.core.science_utils import estimate_nf_model
 from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions
-from gnpy.topology.request import PathRequest
+from gnpy.topology.request import PathRequest, Disjunction
 from gnpy.tools.convert import convert_file
 from gnpy.tools.service_sheet import convert_service_sheet
 import time
