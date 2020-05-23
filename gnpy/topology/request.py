@@ -1110,3 +1110,122 @@ def correct_json_route_list(network, pathreqlist):
                     raise ServiceError(msg)
 
     return pathreqlist
+
+
+def deduplicate_disjunctions(disjn):
+    """ clean disjunctions to remove possible repetition
+    """
+    local_disjn = disjn.copy()
+    for elem in local_disjn:
+        for dis_elem in local_disjn:
+            if set(elem.disjunctions_req) == set(dis_elem.disjunctions_req) and \
+                    elem.disjunction_id != dis_elem.disjunction_id:
+                local_disjn.remove(dis_elem)
+    return local_disjn
+
+
+def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
+    """ use a list but a dictionnary might be helpful to find path based on request_id
+        TODO change all these req, dsjct, res lists into dict !
+    """
+    path_res_list = []
+    reversed_path_res_list = []
+    propagated_reversed_path_res_list = []
+
+    for i, pathreq in enumerate(pathreqlist):
+
+        # use the power specified in requests but might be different from the one
+        # specified for design the power is an optional parameter for requests
+        # definition if optional, use the one defines in eqt_config.json
+        print(f'request {pathreq.request_id}')
+        print(f'Computing path from {pathreq.source} to {pathreq.destination}')
+        # adding first node to be clearer on the output
+        print(f'with path constraint: {[pathreq.source] + pathreq.nodes_list}')
+
+        # pathlist[i] contains the whole path information for request i
+        # last element is a transciver and where the result of the propagation is
+        # recorded.
+        # Important Note: since transceivers attached to roadms are actually logical
+        # elements to simulate performance, several demands having the same destination
+        # may use the same transponder for the performance simulation. This is why
+        # we use deepcopy: to ensure that each propagation is recorded and not overwritten
+        total_path = deepcopy(pathlist[i])
+        print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}')
+        # for debug
+        # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
+        if total_path:
+            if pathreq.baud_rate is not None:
+                # means that at this point the mode was entered/forced by user and thus a
+                # baud_rate was defined
+                total_path = propagate(total_path, pathreq, equipment)
+                temp_snr01nm = round(mean(total_path[-1].snr+lin2db(pathreq.baud_rate/(12.5e9))), 2)
+                if temp_snr01nm < pathreq.OSNR:
+                    msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
+                          f' {pathreq.source} to {pathreq.destination} does not pass with' +\
+                          f' {pathreq.tsp_mode}\n\tcomputedSNR in 0.1nm = {temp_snr01nm} ' +\
+                          f'- required osnr {pathreq.OSNR}'
+                    print(msg)
+                    LOGGER.warning(msg)
+                    pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
+            else:
+                total_path, mode = propagate_and_optimize_mode(total_path, pathreq, equipment)
+                # if no baudrate satisfies spacing, no mode is returned and the last explored mode
+                # a warning is shown in the propagate_and_optimize_mode
+                # propagate_and_optimize_mode function returns the mode with the highest bitrate
+                # that passes. if no mode passes, then a attribute blocking_reason is added on
+                # pathreq that contains the reason for blocking: 'NO_PATH', 'NO_FEASIBLE_MODE', ...
+                try:
+                    if pathreq.blocking_reason in BLOCKING_NOPATH:
+                        total_path = []
+                    elif pathreq.blocking_reason in BLOCKING_NOMODE:
+                        pathreq.baud_rate = mode['baud_rate']
+                        pathreq.tsp_mode = mode['format']
+                        pathreq.format = mode['format']
+                        pathreq.OSNR = mode['OSNR']
+                        pathreq.tx_osnr = mode['tx_osnr']
+                        pathreq.bit_rate = mode['bit_rate']
+                    # other blocking reason should not appear at this point
+                except AttributeError:
+                    pathreq.baud_rate = mode['baud_rate']
+                    pathreq.tsp_mode = mode['format']
+                    pathreq.format = mode['format']
+                    pathreq.OSNR = mode['OSNR']
+                    pathreq.tx_osnr = mode['tx_osnr']
+                    pathreq.bit_rate = mode['bit_rate']
+
+            # reversed path is needed for correct spectrum assignment
+            reversed_path = find_reversed_path(pathlist[i])
+            if pathreq.bidir:
+                # only propagate if bidir is true, but needs the reversed path anyway for
+                # correct spectrum assignment
+                rev_p = deepcopy(reversed_path)
+
+                print(f'\n\tPropagating Z to A direction {pathreq.destination} to {pathreq.source}')
+                print(f'\tPath (roadsm) {[r.uid for r in rev_p if isinstance(r,Roadm)]}\n')
+                propagated_reversed_path = propagate(rev_p, pathreq, equipment)
+                temp_snr01nm = round(mean(propagated_reversed_path[-1].snr +\
+                                          lin2db(pathreq.baud_rate/(12.5e9))), 2)
+                if temp_snr01nm < pathreq.OSNR:
+                    msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
+                          f' {pathreq.source} to {pathreq.destination} does not pass with' +\
+                          f' {pathreq.tsp_mode}\n' +\
+                          f'\tcomputedSNR in 0.1nm = {temp_snr01nm} - required osnr {pathreq.OSNR}'
+                    print(msg)
+                    LOGGER.warning(msg)
+                    # TODO selection of mode should also be on reversed direction !!
+                    pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
+            else:
+                propagated_reversed_path = []
+        else:
+            msg = 'Total path is empty. No propagation'
+            print(msg)
+            LOGGER.info(msg)
+            reversed_path = []
+            propagated_reversed_path = []
+
+        path_res_list.append(total_path)
+        reversed_path_res_list.append(reversed_path)
+        propagated_reversed_path_res_list.append(propagated_reversed_path)
+        # print to have a nice output
+        print('')
+    return path_res_list, reversed_path_res_list, propagated_reversed_path_res_list
