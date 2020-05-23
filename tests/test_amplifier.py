@@ -7,8 +7,8 @@ from numpy import zeros, array
 from gnpy.core.elements import Transceiver, Edfa
 from gnpy.core.utils import automatic_fmax, lin2db, db2lin, merge_amplifier_restrictions
 from gnpy.core.info import create_input_spectral_information, Pref
-from gnpy.core.equipment import load_equipment
-from gnpy.core.network import build_network, load_network
+from gnpy.core.network import build_network
+from gnpy.tools.json_io import load_network, load_equipment
 from pathlib import Path
 import pytest
 

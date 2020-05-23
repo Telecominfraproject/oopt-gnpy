@@ -14,7 +14,7 @@ See: draft-ietf-teas-yang-path-computation-01.txt
 from argparse import ArgumentParser
 from pathlib import Path
 from json import loads
-from gnpy.core.equipment import load_equipment
+from gnpy.tools.json_io import load_equipment
 from gnpy.topology.request import jsontocsv
 
 
