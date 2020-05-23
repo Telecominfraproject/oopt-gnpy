@@ -392,13 +392,24 @@ def equipment_from_json(json_data, filename):
     equipment = {}
     for key, entries in json_data.items():
         equipment[key] = {}
-        typ = globals()[key]
         for entry in entries:
             subkey = entry.get('type_variety', 'default')
             if key == 'Edfa':
                 equipment[key][subkey] = Amp.from_json(filename, **entry)
+            elif key == 'Fiber':
+                equipment[key][subkey] = Fiber(**entry)
+            elif key == 'Span':
+                equipment[key][subkey] = Span(**entry)
+            elif key == 'Roadm':
+                equipment[key][subkey] = Roadm(**entry)
+            elif key == 'SI':
+                equipment[key][subkey] = SI(**entry)
+            elif key == 'Transceiver':
+                equipment[key][subkey] = Transceiver(**entry)
+            elif key == 'RamanFiber':
+                equipment[key][subkey] = RamanFiber(**entry)
             else:
-                equipment[key][subkey] = typ(**entry)
+                raise EquipmentConfigError(f'Unrecognized network element type "{key}"')
     equipment = update_trx_osnr(equipment)
     equipment = update_dual_stage(equipment)
     roadm_restrictions_sanity_check(equipment)
