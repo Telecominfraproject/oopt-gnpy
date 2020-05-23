@@ -5,9 +5,9 @@
 gnpy.core.spectrum_assignment
 =============================
 
-This module contains the Oms and Bitmap classes and the different method to
-select and assign spectrum. Spectrum_selection function identifies the free
-slots and select_candidate selects the candidate spectrum according to
+This module contains the :class:`Oms` and :class:`Bitmap` classes and methods to
+select and assign spectrum. The :func:`spectrum_selection` function identifies the free
+slots and :func:`select_candidate` selects the candidate spectrum according to
 strategy: for example first fit
 oms records its elements, and elements are updated with an oms to have
 element/oms correspondace
@@ -312,8 +312,7 @@ def reversed_oms(oms_list):
 
 
 def bitmap_sum(band1, band2):
-    """ a functions that marks occupied bitmap by 0 if the slot is occupied in band1 or in band2
-    """
+    """mark occupied bitmap by 0 if the slot is occupied in band1 or in band2"""
     res = []
     for i, elem in enumerate(band1):
         if band2[i] * elem == 0:
