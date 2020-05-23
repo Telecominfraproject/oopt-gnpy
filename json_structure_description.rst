@@ -7,7 +7,7 @@ Equipment and Network description definitions
 
 Equipment description defines equipment types and those parameters.
 Description is made in JSON file with predefined structure. By default
-**transmission_main_example.py** uses **eqpt_config.json** file and that
+**gnpy-transmission-example** uses **eqpt_config.json** file and that
 can be changed with **-e** or **--equipment** command line parameter.
 Parsing of JSON file is made with
 **gnpy.core.equipment.load_equipment(equipment_description)** and return
@@ -82,7 +82,7 @@ it will be marked with **”default”** value.
 *******************
 
 Four types of EDFA definition are possible. Description JSON file
-location is in **transmission_main_example.py** folder:
+location is in **gnpy-transmission-example** folder:
 
 -  Advanced – with JSON file describing gain/noise figure tilt and
    gain/noise figure ripple. **"advanced_config_from_json"** value
@@ -314,7 +314,7 @@ Note that ``OSNR`` parameter refers to the receiver's minimal OSNR threshold for
 Network description defines network elements with additional to
 equipment description parameters, metadata and elements interconnection.
 Description is made in JSON file with predefined structure. By default
-**transmission_main_example.py** uses **edfa_example_network.json** file
+**gnpy-transmission-example** uses **edfa_example_network.json** file
 and can be changed from command line. Parsing of JSON file is made with
 **gnpy.core.network.load_network(network_description,
 equipment_description)** and return value is **DiGraph** object which

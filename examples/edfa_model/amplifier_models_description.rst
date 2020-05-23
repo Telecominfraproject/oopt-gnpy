@@ -8,7 +8,7 @@ Amplifier models and configuration
 
 Equipment description defines equipment types and parameters.
 It takes place in the default **eqpt_config.json** file. 
-By default **transmission_main_example.py** uses **eqpt_config.json** file and that
+By default **gnpy-transmission-example** uses **eqpt_config.json** file and that
 can be changed with **-e** or **--equipment** command line parameter.
 
 2. Amplifier parameters and subtypes
