@@ -324,14 +324,7 @@ def bitmap_sum(band1, band2):
 
 
 def spectrum_selection(pth, oms_list, requested_m, requested_n=None):
-    """ collects spectrum availability and call the select_candidate function
-    # step 1 collects pth spectrum availability
-    # step 2 if n is not None try to assign the spectrum
-    #            if the spectrum is not available then sends back an "error"
-    #        if n is None selects candidate spectrum
-    #            select spectrum that fits the policy ( first fit, random, ABP...)
-    # step3 returns the selection
-    """
+    """Collects spectrum availability and call the select_candidate function"""
 
     # use indexes instead of ITU-T n values
     path_oms = []
