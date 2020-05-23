@@ -17,11 +17,11 @@ checks that empty info on mode, power, nbchannel in service file are supported
 from pathlib import Path
 import pytest
 from gnpy.core.network import build_network
-from examples.path_requests_run import requests_from_json, correct_json_route_list, load_requests
+from examples.path_requests_run import correct_json_route_list
 from gnpy.core.utils import automatic_nch, lin2db
 from gnpy.core.elements import Roadm
 from gnpy.topology.request import compute_path_dsjctn, propagate, propagate_and_optimize_mode
-from gnpy.tools.json_io import load_network, load_equipment
+from gnpy.tools.json_io import load_network, load_equipment, requests_from_json, load_requests
 
 network_file_name = Path(__file__).parent.parent / 'tests/data/testTopology_expected.json'
 service_file_name = Path(__file__).parent.parent / 'tests/data/testTopology_testservices.json'

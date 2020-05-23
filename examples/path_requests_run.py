@@ -16,26 +16,23 @@ from sys import exit
 from argparse import ArgumentParser
 from pathlib import Path
 from logging import getLogger, basicConfig, CRITICAL, DEBUG, INFO
-from json import dumps, loads
+from json import dumps
 from numpy import mean
 from gnpy.core import ansi_escapes
-from gnpy.core.utils import automatic_nch, automatic_fmax
+from gnpy.core.utils import automatic_nch
 from gnpy.core.network import build_network
-from gnpy.core.equipment import trx_mode_params
 from gnpy.core.elements import Roadm
 from gnpy.core.utils import lin2db
 from gnpy.core.exceptions import (ConfigurationError, EquipmentConfigError, NetworkTopologyError,
                                   ServiceError, DisjunctionError)
-from gnpy.topology.request import (PathRequest, ResultElement,
+from gnpy.topology.request import (ResultElement,
                                    propagate, jsontocsv, Disjunction, compute_path_dsjctn,
                                    requests_aggregation, propagate_and_optimize_mode,
                                    BLOCKING_NOPATH, BLOCKING_NOMODE,
                                    find_reversed_path, correct_json_route_list)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
-from gnpy.tools.json_io import load_equipment, load_network, save_network
-from gnpy.tools.service_sheet import convert_service_sheet
+from gnpy.tools.json_io import load_equipment, load_network, load_requests, save_network, requests_from_json, disjunctions_from_json
 from copy import deepcopy
-from textwrap import dedent
 from math import ceil
 
 #EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
@@ -59,126 +56,6 @@ PARSER.add_argument('-v', '--verbose', action='count', default=0,\
                     help='increases verbosity for each occurence')
 PARSER.add_argument('-o', '--output', type=Path)
 
-
-def requests_from_json(json_data, equipment):
-    """ converts the json data into a list of requests elements
-    """
-    requests_list = []
-
-    for req in json_data['path-request']:
-        # init all params from request
-        params = {}
-        params['request_id'] = req['request-id']
-        params['source'] = req['source']
-        params['bidir'] = req['bidirectional']
-        params['destination'] = req['destination']
-        params['trx_type'] = req['path-constraints']['te-bandwidth']['trx_type']
-        params['trx_mode'] = req['path-constraints']['te-bandwidth']['trx_mode']
-        params['format'] = params['trx_mode']
-        params['spacing'] = req['path-constraints']['te-bandwidth']['spacing']
-        try:
-            nd_list = req['explicit-route-objects']['route-object-include-exclude']
-        except KeyError:
-            nd_list = []
-        params['nodes_list'] = [n['num-unnum-hop']['node-id'] for n in nd_list]
-        params['loose_list'] = [n['num-unnum-hop']['hop-type'] for n in nd_list]
-        # recover trx physical param (baudrate, ...) from type and mode
-        # in trx_mode_params optical power is read from equipment['SI']['default'] and
-        # nb_channel is computed based on min max frequency and spacing
-        trx_params = trx_mode_params(equipment, params['trx_type'], params['trx_mode'], True)
-        params.update(trx_params)
-        # print(trx_params['min_spacing'])
-        # optical power might be set differently in the request. if it is indicated then the
-        # params['power'] is updated
-        try:
-            if req['path-constraints']['te-bandwidth']['output-power']:
-                params['power'] = req['path-constraints']['te-bandwidth']['output-power']
-        except KeyError:
-            pass
-        # same process for nb-channel
-        f_min = params['f_min']
-        f_max_from_si = params['f_max']
-        try:
-            if req['path-constraints']['te-bandwidth']['max-nb-of-channel'] is not None:
-                nch = req['path-constraints']['te-bandwidth']['max-nb-of-channel']
-                params['nb_channel'] = nch
-                spacing = params['spacing']
-                params['f_max'] = automatic_fmax(f_min, spacing, nch)
-            else:
-                params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
-        except KeyError:
-            params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
-        consistency_check(params, f_max_from_si)
-
-        try:
-            params['path_bandwidth'] = req['path-constraints']['te-bandwidth']['path_bandwidth']
-        except KeyError:
-            pass
-        requests_list.append(PathRequest(**params))
-    return requests_list
-
-def consistency_check(params, f_max_from_si):
-    """ checks that the requested parameters are consistant (spacing vs nb channel,
-        vs transponder mode...)
-    """
-    f_min = params['f_min']
-    f_max = params['f_max']
-    max_recommanded_nb_channels = automatic_nch(f_min, f_max, params['spacing'])
-    if params['baud_rate'] is not None:
-        #implicitely means that a mode is defined with min_spacing
-        if params['min_spacing'] > params['spacing']:
-            msg = f'Request {params["request_id"]} has spacing below transponder ' +\
-                  f'{params["trx_type"]} {params["trx_mode"]} min spacing value ' +\
-                  f'{params["min_spacing"]*1e-9}GHz.\nComputation stopped'
-            print(msg)
-            LOGGER.critical(msg)
-            raise ServiceError(msg)
-        if f_max > f_max_from_si:
-            msg = dedent(f'''
-            Requested channel number {params["nb_channel"]}, baud rate {params["baud_rate"]} GHz and requested spacing {params["spacing"]*1e-9}GHz 
-            is not consistent with frequency range {f_min*1e-12} THz, {f_max*1e-12} THz, min recommanded spacing {params["min_spacing"]*1e-9}GHz.
-            max recommanded nb of channels is {max_recommanded_nb_channels}
-            Computation stopped.''')
-            LOGGER.critical(msg)
-            raise ServiceError(msg)
-
-
-def disjunctions_from_json(json_data):
-    """ reads the disjunction requests from the json dict and create the list
-        of requested disjunctions for this set of requests
-    """
-    disjunctions_list = []
-    try:
-        temp_test = json_data['synchronization']
-    except KeyError:
-        temp_test = []
-    if temp_test:
-        for snc in json_data['synchronization']:
-            params = {}
-            params['disjunction_id'] = snc['synchronization-id']
-            params['relaxable'] = snc['svec']['relaxable']
-            params['link_diverse'] = 'link' in snc['svec']['disjointness']
-            params['node_diverse'] = 'node' in snc['svec']['disjointness']
-            params['disjunctions_req'] = snc['svec']['request-id-number']
-            disjunctions_list.append(Disjunction(**params))
-
-    return disjunctions_list
-
-
-def load_requests(filename, eqpt, bidir, network, network_filename):
-    """ loads the requests from a json or an excel file into a data string
-    """
-    if filename.suffix.lower() in ('.xls', '.xlsx'):
-        LOGGER.info('Automatically converting requests from XLS to JSON')
-        try:
-            json_data = convert_service_sheet(filename, eqpt, network, network_filename=network_filename, bidir=bidir)
-        except ServiceError as this_e:
-            print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {this_e}')
-            exit(1)
-    else:
-        with open(filename, encoding='utf-8') as my_f:
-            json_data = loads(my_f.read())
-    return json_data
 
 def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
     """ use a list but a dictionnary might be helpful to find path based on request_id
@@ -341,10 +218,10 @@ def main(args):
         equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
     save_network(args.network_filename, network)
-    data = load_requests(args.service_filename, equipment, bidir=args.bidir, network=network, network_filename=args.network_filename)
     oms_list = build_oms_list(network, equipment)
 
     try:
+        data = load_requests(args.service_filename, equipment, bidir=args.bidir, network=network, network_filename=args.network_filename)
         rqs = requests_from_json(data, equipment)
     except ServiceError as this_e:
         print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {this_e}')

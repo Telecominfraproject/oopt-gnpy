@@ -22,8 +22,8 @@ from gnpy.core.exceptions import SpectrumError
 from gnpy.topology.request import compute_path_dsjctn, find_reversed_path
 from gnpy.topology.spectrum_assignment import (build_oms_list, align_grids, nvalue_to_frequency,
                                            bitmap_sum, Bitmap, spectrum_selection, pth_assign_spectrum)
-from gnpy.tools.json_io import load_equipment, load_network
-from examples.path_requests_run import requests_from_json, disjunctions_from_json, correct_disjn
+from gnpy.tools.json_io import load_equipment, load_network, requests_from_json, disjunctions_from_json
+from examples.path_requests_run import correct_disjn
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
