@@ -5,111 +5,15 @@
 gnpy.core.network
 =================
 
-This module contains functions for constructing networks of network elements.
+Working with networks which consist of network elements
 '''
 
-from networkx import DiGraph
 from scipy.interpolate import interp1d
-from logging import getLogger
-from os import path
 from operator import attrgetter
 from gnpy.core import ansi_escapes, elements
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
-from gnpy.core.utils import load_json, save_json, round2float, merge_amplifier_restrictions, convert_length
-from gnpy.tools.convert import convert_file
+from gnpy.core.utils import round2float, convert_length
 from collections import namedtuple
-
-logger = getLogger(__name__)
-
-
-def load_network(filename, equipment, name_matching=False):
-    json_filename = ''
-    if filename.suffix.lower() in ('.xls', '.xlsx'):
-        logger.info('Automatically generating topology JSON file')
-        json_filename = convert_file(filename, name_matching)
-    elif filename.suffix.lower() == '.json':
-        json_filename = filename
-    else:
-        raise ValueError(f'unsuported topology filename extension {filename.suffix.lower()}')
-    json_data = load_json(json_filename)
-    return network_from_json(json_data, equipment)
-
-
-def save_network(filename, network):
-    filename_output = path.splitext(filename)[0] + '_auto_design.json'
-    json_data = network_to_json(network)
-    save_json(json_data, filename_output)
-
-
-def _cls_for(equipment_type):
-    if equipment_type == 'Edfa':
-        return elements.Edfa
-    if equipment_type == 'Fused':
-        return elements.Fused
-    elif equipment_type == 'Roadm':
-        return elements.Roadm
-    elif equipment_type == 'Transceiver':
-        return elements.Transceiver
-    elif equipment_type == 'Fiber':
-        return elements.Fiber
-    elif equipment_type == 'RamanFiber':
-        return elements.RamanFiber
-    else:
-        raise ConfigurationError(f'Unknown network equipment "{equipment_type}"')
-
-
-def network_from_json(json_data, equipment):
-    # NOTE|dutc: we could use the following, but it would tie our data format
-    #            too closely to the graph library
-    # from networkx import node_link_graph
-    g = DiGraph()
-    for el_config in json_data['elements']:
-        typ = el_config.pop('type')
-        variety = el_config.pop('type_variety', 'default')
-        cls = _cls_for(typ)
-        if typ == 'Fused':
-            # well, there's no variety for the 'Fused' node type
-            pass
-        elif variety in equipment[typ]:
-            extra_params = equipment[typ][variety]
-            temp = el_config.setdefault('params', {})
-            temp = merge_amplifier_restrictions(temp, extra_params.__dict__)
-            el_config['params'] = temp
-            el_config['type_variety'] = variety
-        elif typ in ['Edfa', 'Fiber', 'RamanFiber']:  # catch it now because the code will crash later!
-            raise ConfigurationError(f'The {typ} of variety type {variety} was not recognized:'
-                                     '\nplease check it is properly defined in the eqpt_config json file')
-        el = cls(**el_config)
-        g.add_node(el)
-
-    nodes = {k.uid: k for k in g.nodes()}
-
-    for cx in json_data['connections']:
-        from_node, to_node = cx['from_node'], cx['to_node']
-        try:
-            if isinstance(nodes[from_node], elements.Fiber):
-                edge_length = nodes[from_node].params.length
-            else:
-                edge_length = 0.01
-            g.add_edge(nodes[from_node], nodes[to_node], weight=edge_length)
-        except KeyError:
-            raise NetworkTopologyError(f'can not find {from_node} or {to_node} defined in {cx}')
-
-    return g
-
-
-def network_to_json(network):
-    data = {
-        'elements': [n.to_json for n in network]
-    }
-    connections = {
-        'connections': [{"from_node": n.uid,
-                         "to_node": next_n.uid}
-                        for n in network
-                        for next_n in network.successors(n) if next_n is not None]
-    }
-    data.update(connections)
-    return data
 
 
 def edfa_nf(gain_target, variety_type, equipment):

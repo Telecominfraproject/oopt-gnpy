@@ -14,8 +14,8 @@ from pathlib import Path
 import pytest
 from gnpy.core.utils import lin2db, load_json, automatic_nch
 from gnpy.core.elements import Fused, Roadm, Edfa
-from gnpy.core.equipment import load_equipment, Amp
-from gnpy.core.network import network_from_json, build_network
+from gnpy.core.network import build_network
+from gnpy.tools.json_io import network_from_json, load_equipment, Amp
 
 
 TEST_DIR = Path(__file__).parent
