@@ -9,16 +9,12 @@ This module contains all parameters to configure standard network elements.
 
 """
 
-from logging import getLogger
 from scipy.constants import c, pi
 from numpy import squeeze, log10, exp
 
 
 from gnpy.core.utils import db2lin, convert_length
 from gnpy.core.exceptions import ParametersError
-
-
-logger = getLogger(__name__)
 
 
 class Parameters:
