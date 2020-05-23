@@ -4,7 +4,6 @@
 # @Date:   2018-02-02 14:06:55
 
 from numpy import zeros, array
-from gnpy.core import elements
 from gnpy.core.elements import Transceiver, Edfa
 from gnpy.core.utils import automatic_fmax, lin2db, db2lin, merge_amplifier_restrictions
 from gnpy.core.info import create_input_spectral_information, Pref
@@ -153,8 +152,7 @@ def test_compare_nf_models(gain, setup_edfa_variable_gain, si):
     temp = el_config.setdefault('params', {})
     temp = merge_amplifier_restrictions(temp, extra_params.__dict__)
     el_config['params'] = temp
-    cls = getattr(elements, 'Edfa')
-    edfa = cls(**el_config)
+    edfa = Edfa(**el_config)
 
     # edfa is variable gain type
     edfa.interpol_params(frequencies, pin, baud_rates, pref)
