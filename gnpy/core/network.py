@@ -41,6 +41,23 @@ def save_network(filename, network):
     save_json(json_data, filename_output)
 
 
+def _cls_for(equipment_type):
+    if equipment_type == 'Edfa':
+        return elements.Edfa
+    if equipment_type == 'Fused':
+        return elements.Fused
+    elif equipment_type == 'Roadm':
+        return elements.Roadm
+    elif equipment_type == 'Transceiver':
+        return elements.Transceiver
+    elif equipment_type == 'Fiber':
+        return elements.Fiber
+    elif equipment_type == 'RamanFiber':
+        return elements.RamanFiber
+    else:
+        raise ConfigurationError(f'Unknown network equipment "{equipment_type}"')
+
+
 def network_from_json(json_data, equipment):
     # NOTE|dutc: we could use the following, but it would tie our data format
     #            too closely to the graph library
@@ -49,7 +66,11 @@ def network_from_json(json_data, equipment):
     for el_config in json_data['elements']:
         typ = el_config.pop('type')
         variety = el_config.pop('type_variety', 'default')
-        if typ in equipment and variety in equipment[typ]:
+        cls = _cls_for(typ)
+        if typ == 'Fused':
+            # well, there's no variety for the 'Fused' node type
+            pass
+        elif variety in equipment[typ]:
             extra_params = equipment[typ][variety]
             temp = el_config.setdefault('params', {})
             temp = merge_amplifier_restrictions(temp, extra_params.__dict__)
@@ -58,7 +79,6 @@ def network_from_json(json_data, equipment):
         elif typ in ['Edfa', 'Fiber', 'RamanFiber']:  # catch it now because the code will crash later!
             raise ConfigurationError(f'The {typ} of variety type {variety} was not recognized:'
                                      '\nplease check it is properly defined in the eqpt_config json file')
-        cls = getattr(elements, typ)
         el = cls(**el_config)
         g.add_node(el)
 
