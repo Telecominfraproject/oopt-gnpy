@@ -6,7 +6,6 @@
 .. automodule:: gnpy.core.elements
 .. automodule:: gnpy.core.equipment
 .. automodule:: gnpy.core.exceptions
-.. automodule:: gnpy.core.execute
 .. automodule:: gnpy.core.info
 .. automodule:: gnpy.core.network
 .. automodule:: gnpy.core.parameters
