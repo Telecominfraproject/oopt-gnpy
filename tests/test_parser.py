@@ -25,13 +25,12 @@ from copy import deepcopy
 from gnpy.core.utils import automatic_nch, lin2db
 from gnpy.core.network import build_network
 from gnpy.core.exceptions import ServiceError
-from gnpy.topology.request import (jsontocsv, requests_aggregation, compute_path_dsjctn,
-                                   ResultElement, PathRequest)
+from gnpy.topology.request import (jsontocsv, requests_aggregation, compute_path_dsjctn, deduplicate_disjunctions,
+                                   compute_path_with_disjunction, ResultElement, PathRequest)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.convert import convert_file
 from gnpy.tools.json_io import load_network, save_network, load_equipment, requests_from_json, disjunctions_from_json
 from gnpy.tools.service_sheet import convert_service_sheet, correct_xls_route_list
-from examples.path_requests_run import correct_disjn, compute_path_with_disjunction
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
@@ -309,7 +308,7 @@ def test_json_response_generation(xls_input, expected_response_file):
     oms_list = build_oms_list(network, equipment)
     rqs = requests_from_json(data, equipment)
     dsjn = disjunctions_from_json(data)
-    dsjn = correct_disjn(dsjn)
+    dsjn = deduplicate_disjunctions(dsjn)
     rqs, dsjn = requests_aggregation(rqs, dsjn)
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
     propagatedpths, reversed_pths, reversed_propagatedpths = \
