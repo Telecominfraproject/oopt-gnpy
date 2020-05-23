@@ -7,8 +7,8 @@ import pytest
 from gnpy.core.elements import Transceiver, Fiber, Edfa
 from gnpy.core.utils import db2lin
 from gnpy.core.info import create_input_spectral_information
-from gnpy.core.equipment import load_equipment
-from gnpy.core.network import build_network, load_network
+from gnpy.core.network import build_network
+from gnpy.tools.json_io import load_network, load_equipment
 from pathlib import Path
 from networkx import dijkstra_path
 from numpy import mean
