@@ -17,8 +17,7 @@ from gnpy.core import ansi_escapes, elements
 from gnpy.core.elements import Fiber, Edfa, Transceiver, Roadm, Fused
 from gnpy.core.equipment import edfa_nf
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
-from gnpy.core.units import UNITS
-from gnpy.core.utils import (load_json, save_json, round2float, merge_amplifier_restrictions)
+from gnpy.core.utils import load_json, save_json, round2float, merge_amplifier_restrictions, convert_length
 from gnpy.tools.convert import convert_file
 from collections import namedtuple
 
@@ -515,7 +514,7 @@ def add_fiber_padding(network, fibers, padding):
 
 def build_network(network, equipment, pref_ch_db, pref_total_db):
     default_span_data = equipment['Span']['default']
-    max_length = int(default_span_data.max_length * UNITS[default_span_data.length_units])
+    max_length = int(convert_length(default_span_data.max_length, default_span_data.length_units))
     min_length = max(int(default_span_data.padding / 0.2 * 1e3), 50_000)
     bounds = range(min_length, max_length)
     target_length = max(min_length, 90_000)

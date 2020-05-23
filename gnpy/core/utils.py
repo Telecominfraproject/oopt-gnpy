@@ -15,6 +15,7 @@ from csv import writer
 import numpy as np
 from numpy import pi, cos, sqrt, log10
 from scipy import constants
+from gnpy.core.exceptions import ConfigurationError
 
 
 def load_json(filename):
@@ -282,3 +283,29 @@ def automatic_fmax(f_min, spacing, nch):
     196125000000000.0
     """
     return f_min + spacing * nch
+
+
+def convert_length(value, units):
+    """Convert length into basic SI units
+
+    >>> convert_length(1, 'km')
+    1000.0
+    >>> convert_length(2.0, 'km')
+    2000.0
+    >>> convert_length(123, 'm')
+    123.0
+    >>> convert_length(123.0, 'm')
+    123.0
+    >>> convert_length(42.1, 'km')
+    42100.0
+    >>> convert_length(666, 'yards')
+    Traceback (most recent call last):
+        ...
+    gnpy.core.exceptions.ConfigurationError: Cannot convert length in "yards" into meters
+    """
+    if units == 'm':
+        return value * 1e0
+    elif units == 'km':
+        return value * 1e3
+    else:
+        raise ConfigurationError(f'Cannot convert length in "{units}" into meters')

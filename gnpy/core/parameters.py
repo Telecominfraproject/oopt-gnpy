@@ -14,8 +14,7 @@ from scipy.constants import c, pi
 from numpy import squeeze, log10, exp
 
 
-from gnpy.core.units import UNITS
-from gnpy.core.utils import db2lin
+from gnpy.core.utils import db2lin, convert_length
 from gnpy.core.exceptions import ParametersError
 
 
@@ -142,9 +141,7 @@ class SimParams(Parameters):
 class FiberParams(Parameters):
     def __init__(self, **kwargs):
         try:
-            self._length_units_factor = UNITS[kwargs['length_units']]
-            self._length = kwargs['length'] * self._length_units_factor  # m
-            self._length_units = 'm'
+            self._length = convert_length(kwargs['length'], kwargs['length_units'])
             # fixed attenuator for padding
             self._att_in = kwargs['att_in'] if 'att_in' in kwargs else 0
             # if not defined in the network json connector loss in/out
@@ -189,14 +186,6 @@ class FiberParams(Parameters):
     def length(self, length):
         """length must be in m"""
         self._length = length
-
-    @property
-    def length_units(self):
-        return self._length_units
-
-    @property
-    def length_units_factor(self):
-        return self._length_units_factor
 
     @property
     def att_in(self):
@@ -281,4 +270,5 @@ class FiberParams(Parameters):
     def asdict(self):
         dictionary = super().asdict()
         dictionary['loss_coef'] = self.loss_coef * 1e3
+        dictionary['length_units'] = 'm'
         return dictionary
