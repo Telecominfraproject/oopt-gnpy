@@ -26,7 +26,7 @@ from gnpy.tools.plots import plot_baseline, plot_results
 
 from argparse import ArgumentParser
 from pathlib import Path
-from sys import exit
+import sys
 import os
 import logging
 from math import ceil
@@ -48,24 +48,24 @@ def load_common_data(equipment_filename, topology_filename, simulation_filename=
             if next((node for node in network if isinstance(node, RamanFiber)), None) is not None:
                 print(f'{ansi_escapes.red}Invocation error:{ansi_escapes.reset} '
                       f'RamanFiber requires passing simulation params via --sim-params')
-                exit(1)
+                sys.exit(1)
         else:
             Simulation.set_params(sim_params)
     except exceptions.EquipmentConfigError as e:
         print(f'{ansi_escapes.red}Configuration error in the equipment library:{ansi_escapes.reset} {e}')
-        exit(1)
+        sys.exit(1)
     except exceptions.NetworkTopologyError as e:
         print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
-        exit(1)
+        sys.exit(1)
     except exceptions.ConfigurationError as e:
         print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
-        exit(1)
+        sys.exit(1)
     except exceptions.ParametersError as e:
         print(f'{ansi_escapes.red}Simulation parameters error:{ansi_escapes.reset} {e}')
-        exit(1)
+        sys.exit(1)
     except exceptions.ServiceError as e:
         print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {e}')
-        exit(1)
+        sys.exit(1)
 
     return (equipment, network)
 
@@ -74,7 +74,7 @@ def _setup_logging(args):
     logging.basicConfig(level={2: logging.DEBUG, 1: logging.INFO, 0: logging.CRITICAL}.get(args.verbose, logging.DEBUG))
 
 
-def transmission_main_example():
+def transmission_main_example(args=None):
     parser = ArgumentParser()
     parser.add_argument('-e', '--equipment', type=Path,
                         default=_examples_dir / 'eqpt_config.json')
@@ -90,7 +90,7 @@ def transmission_main_example():
                         default=_examples_dir / 'edfa_example_network.json')
     parser.add_argument('source', nargs='?', help='source node')
     parser.add_argument('destination',   nargs='?', help='destination node')
-    args = parser.parse_args()
+    args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
 
     (equipment, network) = load_common_data(args.equipment, args.filename, args.sim_params, fuzzy_name_matching=args.names_matching)
@@ -101,14 +101,14 @@ def transmission_main_example():
     transceivers = {n.uid: n for n in network.nodes() if isinstance(n, Transceiver)}
 
     if not transceivers:
-        exit('Network has no transceivers!')
+        sys.exit('Network has no transceivers!')
     if len(transceivers) < 2:
-        exit('Network has only one transceiver!')
+        sys.exit('Network has only one transceiver!')
 
     if args.list_nodes:
         for uid in transceivers:
             print(uid)
-        exit()
+        sys.exit()
 
     #First try to find exact match if source/destination provided
     if args.source:
@@ -281,7 +281,7 @@ def path_result_json(pathresult):
     return data
 
 
-def path_requests_run():
+def path_requests_run(args=None):
     parser = ArgumentParser(description='A function that computes performances for a list of services provided in a JSON file or an Excel sheet.')
     parser.add_argument('network_filename', nargs='?', type=Path,\
                         default=_examples_dir / 'meshTopologyExampleV2.xls',\
@@ -297,7 +297,7 @@ def path_requests_run():
     parser.add_argument('-v', '--verbose', action='count', default=0,\
                         help='increases verbosity for each occurence')
     parser.add_argument('-o', '--output', type=Path)
-    args = parser.parse_args()
+    args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging
 
     _logger.info(f'Computing path requests {os.path.relpath(args.service_filename)} into JSON format')
@@ -323,7 +323,7 @@ def path_requests_run():
         rqs = requests_from_json(data, equipment)
     except exceptions.ServiceError as e:
         print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {e}')
-        exit(1)
+        sys.exit(1)
     # check that request ids are unique. Non unique ids, may
     # mess the computation: better to stop the computation
     all_ids = [r.request_id for r in rqs]
@@ -332,7 +332,7 @@ def path_requests_run():
             all_ids.remove(item)
         msg = f'Requests id {all_ids} are not unique'
         _logger.critical(msg)
-        exit()
+        sys.exit()
     rqs = correct_json_route_list(network, rqs)
 
     # pths = compute_path(network, equipment, rqs)
@@ -358,7 +358,7 @@ def path_requests_run():
         pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
     except exceptions.DisjunctionError as this_e:
         print(f'{ansi_escapes.red}Disjunction error:{ansi_escapes.reset} {this_e}')
-        exit(1)
+        sys.exit(1)
 
     print(f'{ansi_escapes.blue}Propagating on selected path{ansi_escapes.reset}')
     propagatedpths, reversed_pths, reversed_propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
