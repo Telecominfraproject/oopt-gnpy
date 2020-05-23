@@ -179,7 +179,7 @@ class FiberParams(Parameters):
             self._raman_efficiency = kwargs['raman_efficiency'] if 'raman_efficiency' in kwargs else None
             self._pumps_loss_coef = kwargs['pumps_loss_coef'] if 'pumps_loss_coef' in kwargs else None
         except KeyError as e:
-            raise ParametersError(f'Fiber configurations json must include {e}')
+            raise ParametersError(f'Fiber configurations json must include {e}. Configuration: {kwargs}')
 
     @property
     def length(self):
