@@ -21,10 +21,7 @@ the "east" information so that it is possible to input undirected data.
 """
 
 from sys import exit
-try:
-    from xlrd import open_workbook
-except ModuleNotFoundError:
-    exit('Required: `pip install xlrd`')
+from xlrd import open_workbook
 from argparse import ArgumentParser
 from collections import namedtuple, Counter, defaultdict
 from itertools import chain

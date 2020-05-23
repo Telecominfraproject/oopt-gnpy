@@ -12,10 +12,7 @@ See: draft-ietf-teas-yang-path-computation-01.txt
 """
 
 from sys import exit
-try:
-    from xlrd import open_workbook, XL_CELL_EMPTY
-except ModuleNotFoundError:
-    exit('Required: `pip install xlrd`')
+from xlrd import open_workbook, XL_CELL_EMPTY
 from collections import namedtuple
 from logging import getLogger
 from json import dumps
