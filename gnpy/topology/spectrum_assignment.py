@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """
-gnpy.core.spectrum_assignment
-=============================
+gnpy.topology.spectrum_assignment
+=================================
 
 This module contains the :class:`Oms` and :class:`Bitmap` classes and methods to
 select and assign spectrum. The :func:`spectrum_selection` function identifies the free

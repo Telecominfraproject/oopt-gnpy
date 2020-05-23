@@ -28,12 +28,12 @@ from gnpy.core.elements import Roadm
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.exceptions import (ConfigurationError, EquipmentConfigError, NetworkTopologyError,
                                   ServiceError, DisjunctionError)
-from gnpy.core.spectrum_assignment import (build_oms_list, pth_assign_spectrum)
 from gnpy.topology.request import (PathRequest, ResultElement,
                                    propagate, jsontocsv, Disjunction, compute_path_dsjctn,
                                    requests_aggregation, propagate_and_optimize_mode,
                                    BLOCKING_NOPATH, BLOCKING_NOMODE,
                                    find_reversed_path, correct_json_route_list)
+from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from copy import copy, deepcopy
 from textwrap import dedent
 from math import ceil
