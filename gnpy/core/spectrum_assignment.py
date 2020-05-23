@@ -17,7 +17,7 @@ from collections import namedtuple
 from logging import getLogger
 from math import ceil
 from gnpy.core.elements import Roadm, Transceiver
-from gnpy.core.exceptions import SpectrumError
+from gnpy.core.exceptions import ServiceError, SpectrumError
 
 LOGGER = getLogger(__name__)
 
