@@ -9,24 +9,11 @@ This module contains utility functions that are used with gnpy.
 '''
 
 
-import json
-
 from csv import writer
 import numpy as np
 from numpy import pi, cos, sqrt, log10
 from scipy import constants
 from gnpy.core.exceptions import ConfigurationError
-
-
-def load_json(filename):
-    with open(filename, 'r', encoding='utf-8') as f:
-        data = json.load(f)
-    return data
-
-
-def save_json(obj, filename):
-    with open(filename, 'w', encoding='utf-8') as f:
-        json.dump(obj, f, indent=2, ensure_ascii=False)
 
 
 def write_csv(obj, filename):
