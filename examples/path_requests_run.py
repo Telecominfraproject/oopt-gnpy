@@ -21,7 +21,7 @@ from json import dumps, loads
 from numpy import mean
 from gnpy.core import ansi_escapes
 from gnpy.core.service_sheet import convert_service_sheet, Request_element, Element
-from gnpy.core.utils import automatic_nch, load_json
+from gnpy.core.utils import automatic_nch, automatic_fmax, load_json
 from gnpy.core.network import load_network, build_network, save_network
 from gnpy.core.equipment import load_equipment, trx_mode_params
 from gnpy.core.elements import Roadm
@@ -103,7 +103,7 @@ def requests_from_json(json_data, equipment):
                 nch = req['path-constraints']['te-bandwidth']['max-nb-of-channel']
                 params['nb_channel'] = nch
                 spacing = params['spacing']
-                params['f_max'] = f_min + nch*spacing
+                params['f_max'] = automatic_fmax(f_min, spacing, nch)
             else:
                 params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
         except KeyError:
