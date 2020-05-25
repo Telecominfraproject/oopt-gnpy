@@ -213,6 +213,24 @@
     },
     {
       "key": {
+        "uuid": "f62fdde3_7a0c207b",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-05-25T18:57:01Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b808ad92_2980d5b9",
+      "revId": "73b8d361fa489dc4b2ab985a8eefb5ee60f5e26e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1000e5d1_89671b70",
         "filename": "tests/test_propagation.py",
         "patchSetId": 6
