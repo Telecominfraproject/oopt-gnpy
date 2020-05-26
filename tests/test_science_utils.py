@@ -35,6 +35,7 @@ def test_raman_fiber():
     sim_params = SimParams(**load_json(TEST_DIR / 'data' / 'sim_params.json'))
     Simulation.set_params(sim_params)
     fiber = RamanFiber(**load_json(TEST_DIR / 'data' / 'raman_fiber_config.json'))
+    fiber.params._beta3 = 0
 
     # propagation
     spectral_info_out = fiber(spectral_info_input)
