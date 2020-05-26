@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "347d1cf3_64ea200d",
+        "filename": "examples/path_requests_run.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-05-26T15:12:59Z",
+      "side": 1,
+      "message": "I changed e to this_e to comply with pep8 naming, but I guess that is not usefull here: change this one back to e ?",
+      "revId": "b96ffe6c7b82a0481015cf760334f026a99a5875",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
