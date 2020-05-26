@@ -148,7 +148,6 @@ class FiberParams(Parameters):
             self._con_in = kwargs['con_in'] if 'con_in' in kwargs else None
             self._con_out = kwargs['con_out'] if 'con_out' in kwargs else None
             self._gamma = kwargs['gamma']  # 1/W/m
-            self._dispersion = kwargs['dispersion']  # s/m/m
             if 'ref_wavelength' in kwargs:
                 self._ref_wavelength = kwargs['ref_wavelength']
                 self._ref_frequency = c / self.ref_wavelength
@@ -158,8 +157,15 @@ class FiberParams(Parameters):
             else:
                 self._ref_wavelength = 1550e-9
                 self._ref_frequency = c / self.ref_wavelength
+            self._dispersion = kwargs['dispersion']  # s/m/m
+            self._dispersion_slope = kwargs['dispersion_slope'] if 'dispersion_slope' in kwargs else \
+                -2 * self._dispersion/self.ref_wavelength  # s/m/m/m
             self._beta2 = -(self.ref_wavelength ** 2) * self.dispersion / (2 * pi * c)  # 1/(m * Hz^2)
-            self._beta3 = kwargs['beta3'] if 'beta3' in kwargs else 0
+            # Eq. (3.23) in  Abramczyk, Halina. "Dispersion phenomena in optical fibers." Virtual European University
+            # on Lasers. Available online: http://mitr.p.lodz.pl/evu/lectures/Abramczyk3.pdf
+            # (accessed on 25 March 2018) (2005).
+            self._beta3 = ((self.dispersion_slope - (4*pi*c/self.ref_wavelength**3) * self.beta2) /
+                           (2*pi*c/self.ref_wavelength**2)**2)
             if type(kwargs['loss_coef']) == dict:
                 self._loss_coef = squeeze(kwargs['loss_coef']['loss_coef_power']) * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = squeeze(kwargs['loss_coef']['frequency'])  # Hz
@@ -212,6 +218,10 @@ class FiberParams(Parameters):
     @property
     def dispersion(self):
         return self._dispersion
+
+    @property
+    def dispersion_slope(self):
+        return self._dispersion_slope
 
     @property
     def gamma(self):
