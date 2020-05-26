@@ -10,99 +10,26 @@ Main example for transmission simulation.
 Reads from network JSON (by default, `edfa_example_network.json`)
 '''
 
-from gnpy.core.equipment import load_equipment, trx_mode_params
-from gnpy.core.utils import db2lin, lin2db, write_csv
 from argparse import ArgumentParser
 from sys import exit
 from pathlib import Path
-from json import loads
-from collections import Counter
 from logging import getLogger, basicConfig, INFO, ERROR, DEBUG
-from numpy import linspace, mean, log10
-from matplotlib.pyplot import show, axis, figure, title, text
-from networkx import (draw_networkx_nodes, draw_networkx_edges,
-                      draw_networkx_labels, dijkstra_path)
-from gnpy.core.network import load_network, build_network, save_network
-from gnpy.core.elements import Transceiver, Fiber, RamanFiber, Edfa, Roadm
-from gnpy.core.info import create_input_spectral_information, SpectralInformation, Channel, Power, Pref
-from gnpy.core.request import Path_request, RequestParams, compute_constrained_path, propagate2
-from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError
-from gnpy.core.parameters import SimParams
-from gnpy.core.science_utils import Simulation
-from gnpy.core.utils import load_json
+from numpy import linspace, mean
+from gnpy.core.equipment import trx_mode_params
+from gnpy.core.network import build_network
+from gnpy.core.elements import Transceiver, Fiber, RamanFiber
+from gnpy.core.utils import db2lin, lin2db, write_csv
 import gnpy.core.ansi_escapes as ansi_escapes
+from gnpy.topology.request import PathRequest, compute_constrained_path, propagate2
+import gnpy.tools.cli_examples as cli_examples
+from gnpy.tools.json_io import save_network
+from gnpy.tools.plots import plot_baseline, plot_results
+
 
 logger = getLogger(__name__)
 
-def plot_baseline(network):
-    edges = set(network.edges())
-    pos = {n: (n.lng, n.lat) for n in network.nodes()}
-    labels = {n: n.location.city for n in network.nodes() if isinstance(n, Transceiver)}
-    city_labels = set(labels.values())
-    for n in network.nodes():
-        if n.location.city and n.location.city not in city_labels:
-            labels[n] = n.location.city
-            city_labels.add(n.location.city)
-    label_pos = pos
 
-    fig = figure()
-    kwargs = {'figure': fig, 'pos': pos}
-    plot = draw_networkx_nodes(network, nodelist=network.nodes(), node_color='#ababab', **kwargs)
-    draw_networkx_edges(network, edgelist=edges, edge_color='#ababab', **kwargs)
-    draw_networkx_labels(network, labels=labels, font_size=14, **{**kwargs, 'pos': label_pos})
-    axis('off')
-    show()
-
-def plot_results(network, path, source, destination, infos):
-    path_edges = set(zip(path[:-1], path[1:]))
-    edges = set(network.edges()) - path_edges
-    pos = {n: (n.lng, n.lat) for n in network.nodes()}
-    nodes = {}
-    for k, (x, y) in pos.items():
-        nodes.setdefault((round(x, 1), round(y, 1)), []).append(k)
-    labels = {n: n.location.city for n in network.nodes() if isinstance(n, Transceiver)}
-    city_labels = set(labels.values())
-    for n in network.nodes():
-        if n.location.city and n.location.city not in city_labels:
-            labels[n] = n.location.city
-            city_labels.add(n.location.city)
-    label_pos = pos
-
-    fig = figure()
-    kwargs = {'figure': fig, 'pos': pos}
-    all_nodes = [n for n in network.nodes() if n not in path]
-    plot = draw_networkx_nodes(network, nodelist=all_nodes, node_color='#ababab', node_size=50, **kwargs)
-    draw_networkx_nodes(network, nodelist=path, node_color='#ff0000', node_size=55, **kwargs)
-    draw_networkx_edges(network, edgelist=edges, edge_color='#ababab', **kwargs)
-    draw_networkx_edges(network, edgelist=path_edges, edge_color='#ff0000', **kwargs)
-    draw_networkx_labels(network, labels=labels, font_size=14, **{**kwargs, 'pos': label_pos})
-    title(f'Propagating from {source.loc.city} to {destination.loc.city}')
-    axis('off')
-
-    heading = 'Spectral Information\n\n'
-    textbox = text(0.85, 0.20, heading, fontsize=14, fontname='Ubuntu Mono',
-                   verticalalignment='top', transform=fig.axes[0].transAxes,
-                   bbox={'boxstyle': 'round', 'facecolor': 'wheat', 'alpha': 0.5})
-
-    msgs = {(x, y): heading + '\n\n'.join(str(n) for n in ns if n in path)
-            for (x, y), ns in nodes.items()}
-
-    def hover(event):
-        if event.xdata is None or event.ydata is None:
-            return
-        if fig.contains(event):
-            x, y = round(event.xdata, 1), round(event.ydata, 1)
-            if (x, y) in msgs:
-                textbox.set_text(msgs[x, y])
-            else:
-                textbox.set_text(heading)
-            fig.canvas.draw_idle()
-
-    fig.canvas.mpl_connect('motion_notify_event', hover)
-    show()
-
-
-def main(network, equipment, source, destination, sim_params, req=None):
+def main(network, equipment, source, destination, req=None):
     result_dicts = {}
     network_data = [{
                     'network_name'  : str(args.filename),
@@ -128,15 +55,6 @@ def main(network, equipment, source, destination, sim_params, req=None):
     pref_total_db = pref_ch_db + lin2db(req.nb_channel) #reference total power / span (SL=20dB)
     build_network(network, equipment, pref_ch_db, pref_total_db)
     path = compute_constrained_path(network, req)
-
-    if sim_params:
-        Simulation.set_params(sim_params)
-
-    if len([s.params.length for s in path if isinstance(s, RamanFiber)]):
-        if sim_params is None:
-            print(f'{ansi_escapes.red}Invocation error:{ansi_escapes.reset} '
-                  f'RamanFiber requires passing simulation params via --sim-params')
-            exit(1)
 
     spans = [s.params.length for s in path if isinstance(s, RamanFiber) or isinstance(s, Fiber)]
     print(f'\nThere are {len(spans)} fiber spans over {sum(spans)/1000:.0f} km between {source.uid} '
@@ -217,19 +135,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
     basicConfig(level={0: ERROR, 1: INFO, 2: DEBUG}.get(args.verbose, DEBUG))
 
-    try:
-        equipment = load_equipment(args.equipment)
-        network = load_network(args.filename, equipment, args.names_matching)
-        sim_params = SimParams(**load_json(args.sim_params)) if args.sim_params is not None else None
-    except EquipmentConfigError as e:
-        print(f'{ansi_escapes.red}Configuration error in the equipment library:{ansi_escapes.reset} {e}')
-        exit(1)
-    except NetworkTopologyError as e:
-        print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
-        exit(1)
-    except ConfigurationError as e:
-        print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
-        exit(1)
+    (equipment, network) = cli_examples.load_common_data(args.equipment, args.filename, args.sim_params,
+                                                         fuzzy_name_matching=args.names_matching)
 
     if args.plot:
         plot_baseline(network)
@@ -298,8 +205,8 @@ if __name__ == '__main__':
     if args.power:
         trx_params['power'] = db2lin(float(args.power))*1e-3
     params.update(trx_params)
-    req = Path_request(**params)
-    path, infos = main(network, equipment, source, destination, sim_params, req)
+    req = PathRequest(**params)
+    path, infos = main(network, equipment, source, destination, req)
     save_network(args.filename, network)
 
     if args.show_channels:

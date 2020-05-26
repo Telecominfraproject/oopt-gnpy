@@ -11,10 +11,7 @@ If not present in the "Nodes" sheet, the "Type" column will be implicitly
 determined based on the topology.
 """
 
-try:
-    from xlrd import open_workbook
-except ModuleNotFoundError:
-    exit('Required: `pip install xlrd`')
+from xlrd import open_workbook
 from argparse import ArgumentParser
 
 PARSER = ArgumentParser()

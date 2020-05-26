@@ -14,20 +14,21 @@ that include node constraints are correctly taken into account
 
 from pathlib import Path
 import pytest
-from gnpy.core.equipment import load_equipment, trx_mode_params, automatic_nch
-from gnpy.core.network import load_network, build_network
+from gnpy.core.equipment import trx_mode_params
+from gnpy.core.network import build_network
 from gnpy.core.exceptions import ServiceError
-from examples.path_requests_run import (requests_from_json, load_requests, disjunctions_from_json)
-from gnpy.core.request import (compute_path_dsjctn, isdisjoint, find_reversed_path, Path_request,
-                               correct_json_route_list)
-from gnpy.core.utils import lin2db
+from gnpy.core.utils import automatic_nch, lin2db
 from gnpy.core.elements import Roadm
-from gnpy.core.spectrum_assignment import build_oms_list
+from gnpy.topology.request import (compute_path_dsjctn, isdisjoint, find_reversed_path, PathRequest,
+                                   correct_json_route_list)
+from gnpy.topology.spectrum_assignment import build_oms_list
+from gnpy.tools.json_io import requests_from_json, load_requests, load_network, load_equipment, disjunctions_from_json
 
 NETWORK_FILE_NAME = Path(__file__).parent.parent / 'tests/data/testTopology_expected.json'
 SERVICE_FILE_NAME = Path(__file__).parent.parent / 'tests/data/testTopology_testservices.json'
 RESULT_FILE_NAME = Path(__file__).parent.parent / 'tests/data/testTopology_testresults.json'
 EQPT_LIBRARY_NAME = Path(__file__).parent.parent / 'tests/data/eqpt_config.json'
+
 
 @pytest.fixture()
 def serv(test_setup):
@@ -40,6 +41,7 @@ def serv(test_setup):
     dsjn = disjunctions_from_json(data)
     return network, equipment, rqs, dsjn
 
+
 @pytest.fixture()
 def test_setup():
     """ common setup for tests: builds network, equipment and oms only once
@@ -51,12 +53,13 @@ def test_setup():
     # spacing, f_min and f_max
     p_db = equipment['SI']['default'].power_dbm
 
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
-        equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
+                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
     build_oms_list(network, equipment)
 
     return network, equipment
+
 
 def test_disjunction(serv):
     """ service_file contains sevaral combination of disjunction constraint. The test checks
@@ -82,6 +85,7 @@ def test_disjunction(serv):
     print(dsjn_list)
     assert test
 
+
 def test_does_not_loop_back(serv):
     """ check that computed paths do not loop back ie each element appears only once
     """
@@ -102,6 +106,7 @@ def test_does_not_loop_back(serv):
     # check that requests with different parameters are not aggregated
     # check that the total agregated bandwidth is the same after aggregation
     #
+
 
 def create_rq(equipment, srce, dest, bdir, nd_list, ls_list):
     """ create the usual request list according to parameters
@@ -125,8 +130,9 @@ def create_rq(equipment, srce, dest, bdir, nd_list, ls_list):
     f_max_from_si = params['f_max']
     params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
     params['path_bandwidth'] = 100000000000.0
-    requests_list.append(Path_request(**params))
+    requests_list.append(PathRequest(**params))
     return requests_list
+
 
 @pytest.mark.parametrize('srce, dest, result, pth, nd_list, ls_list', [
     ['a', 'trx h', 'fail', 'no_path', [], []],

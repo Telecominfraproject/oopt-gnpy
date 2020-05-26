@@ -13,9 +13,10 @@ from gnpy.core.info import create_input_spectral_information
 from gnpy.core.elements import RamanFiber
 from gnpy.core.parameters import SimParams
 from gnpy.core.science_utils import Simulation
-from gnpy.core.utils import load_json
+from gnpy.tools.json_io import load_json
 from pathlib import Path
 TEST_DIR = Path(__file__).parent
+
 
 def test_raman_fiber():
     """ Test the accuracy of propagating the RamanFiber.

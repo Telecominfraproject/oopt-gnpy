@@ -9,17 +9,12 @@ This module contains all parameters to configure standard network elements.
 
 """
 
-from logging import getLogger
 from scipy.constants import c, pi
 from numpy import squeeze, log10, exp
 
 
-from gnpy.core.units import UNITS
-from gnpy.core.utils import db2lin
+from gnpy.core.utils import db2lin, convert_length
 from gnpy.core.exceptions import ParametersError
-
-
-logger = getLogger(__name__)
 
 
 class Parameters:
@@ -28,7 +23,7 @@ class Parameters:
         instance_dict = self.__dict__
         new_dict = {}
         for key in class_dict:
-            if isinstance(class_dict[key],property):
+            if isinstance(class_dict[key], property):
                 new_dict[key] = instance_dict['_' + key]
         return new_dict
 
@@ -113,7 +108,6 @@ class NLIParams(Parameters):
     def f_pump_resolution(self, f_pump_resolution):
         self._f_pump_resolution = f_pump_resolution
 
-
     @property
     def computed_channels(self):
         return self._computed_channels
@@ -121,7 +115,7 @@ class NLIParams(Parameters):
 
 class SimParams(Parameters):
     def __init__(self, **kwargs):
-        if kwargs:
+        try:
             if 'nli_parameters' in kwargs:
                 self._nli_params = NLIParams(**kwargs['nli_parameters'])
             else:
@@ -130,6 +124,8 @@ class SimParams(Parameters):
                 self._raman_params = RamanParams(**kwargs['raman_parameters'])
             else:
                 self._raman_params = None
+        except KeyError as e:
+            raise ParametersError(f'Simulation parameters must include {e}. Configuration: {kwargs}')
 
     @property
     def nli_params(self):
@@ -143,9 +139,7 @@ class SimParams(Parameters):
 class FiberParams(Parameters):
     def __init__(self, **kwargs):
         try:
-            self._length_units_factor = UNITS[kwargs['length_units']]
-            self._length = kwargs['length'] * self._length_units_factor  # m
-            self._length_units = 'm'
+            self._length = convert_length(kwargs['length'], kwargs['length_units'])
             # fixed attenuator for padding
             self._att_in = kwargs['att_in'] if 'att_in' in kwargs else 0
             # if not defined in the network json connector loss in/out
@@ -180,7 +174,7 @@ class FiberParams(Parameters):
             self._raman_efficiency = kwargs['raman_efficiency'] if 'raman_efficiency' in kwargs else None
             self._pumps_loss_coef = kwargs['pumps_loss_coef'] if 'pumps_loss_coef' in kwargs else None
         except KeyError as e:
-            raise ParametersError(f'Fiber configurations json must include {e}')
+            raise ParametersError(f'Fiber configurations json must include {e}. Configuration: {kwargs}')
 
     @property
     def length(self):
@@ -190,14 +184,6 @@ class FiberParams(Parameters):
     def length(self, length):
         """length must be in m"""
         self._length = length
-
-    @property
-    def length_units(self):
-        return self._length_units
-
-    @property
-    def length_units_factor(self):
-        return self._length_units_factor
 
     @property
     def att_in(self):
@@ -282,5 +268,5 @@ class FiberParams(Parameters):
     def asdict(self):
         dictionary = super().asdict()
         dictionary['loss_coef'] = self.loss_coef * 1e3
+        dictionary['length_units'] = 'm'
         return dictionary
-
