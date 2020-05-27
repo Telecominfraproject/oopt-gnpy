@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "21d64f5e_0f66f9dc",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-05-27T15:54:48Z",
+      "side": 1,
+      "message": "Sorry for being nit-picky but this formula cannot be correct. See for example eq. (3.23) here http://www.mitr.p.lodz.pl/evu/lectures/Abramczyk3.pdf for how dispersion slope (S) is related to beta3 and beta2.",
+      "revId": "572509a8387360084fdc2cfb3c7846b2add6c73a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
