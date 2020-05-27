@@ -1,4 +1,11 @@
 ---
+- job:
+    name: tox-py36
+    nodeset:
+      nodes:
+        - name: el8
+          label: centos-8-1c-1g
+
 - project:
     check:
       jobs:
