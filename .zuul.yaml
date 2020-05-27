@@ -1,4 +1,14 @@
 ---
+- job:
+    name: tox-py36-el8
+    parent: tox-py36
+    vars:
+      python_use_pyenv: false
+    nodeset:
+      nodes:
+        - name: el8
+          label: centos-8-1c-1g
+
 - project:
     check:
       jobs:
@@ -14,10 +24,10 @@
         - tox-linters-diff:
             voting: false
         - tox-docs
-        - tox-py36
+        - tox-py36-el8
         - tox-py37-cover-previous
     gate:
       jobs:
-        - tox-py36
+        - tox-py36-el8
         - tox-py37
         - tox-docs
