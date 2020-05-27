@@ -14,10 +14,15 @@
         - tox-linters-diff:
             voting: false
         - tox-docs
-        - tox-py36
+        - tox-py36:
+            nodeset: &nodeset-el8
+              nodes:
+                - name: el8
+                  label: centos-8-1c-1g
         - tox-py37-cover-previous
     gate:
       jobs:
-        - tox-py36
+        - tox-py36:
+            nodeset: &nodeset-el8
         - tox-py37
         - tox-docs
