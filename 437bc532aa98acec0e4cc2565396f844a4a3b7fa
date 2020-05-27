@@ -16,6 +16,24 @@
       "revId": "437bc532aa98acec0e4cc2565396f844a4a3b7fa",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b6e1877_453c957e",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1017851
+      },
+      "writtenOn": "2020-05-27T00:51:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09b297fd_f37e5c85",
+      "revId": "437bc532aa98acec0e4cc2565396f844a4a3b7fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
