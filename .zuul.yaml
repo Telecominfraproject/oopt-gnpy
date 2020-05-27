@@ -2,7 +2,9 @@
 - project:
     check:
       jobs:
-        - tox-py37-cover
+        - tox-py37-cover:
+            vars:
+              python_use_pyenv: false
         - coverage-diff:
             voting: false
             dependencies:
@@ -15,7 +17,9 @@
             voting: false
         - tox-docs
         - tox-py36
-        - tox-py37-cover-previous
+        - tox-py37-cover-previous:
+            vars:
+              python_use_pyenv: false
     gate:
       jobs:
         - tox-py36
