@@ -199,6 +199,7 @@ if __name__ == '__main__':
     params['bidir'] = False
     params['nodes_list'] = [destination.uid]
     params['loose_list'] = ['strict']
+    params['exclude_nodes_list'] = []
     params['format'] = ''
     params['path_bandwidth'] = 0
     trx_params = trx_mode_params(equipment)

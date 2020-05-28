@@ -123,6 +123,7 @@ def create_rq(equipment, srce, dest, bdir, nd_list, ls_list):
     params['spacing'] = 50000000000.0
     params['nodes_list'] = nd_list
     params['loose_list'] = ls_list
+    params['exclude_nodes_list'] = []
     trx_params = trx_mode_params(equipment, params['trx_type'], params['trx_mode'], True)
     params.update(trx_params)
     params['power'] = 1.0

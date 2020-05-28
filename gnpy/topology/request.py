@@ -32,9 +32,9 @@ from math import ceil
 LOGGER = getLogger(__name__)
 
 RequestParams = namedtuple('RequestParams', 'request_id source destination bidir trx_type' +
-                           ' trx_mode nodes_list loose_list spacing power nb_channel f_min' +
-                           ' f_max format baud_rate OSNR bit_rate roll_off tx_osnr' +
-                           ' min_spacing cost path_bandwidth')
+                           ' trx_mode nodes_list loose_list exclude_nodes_list spacing power' + 
+                           ' nb_channel f_min f_max format baud_rate OSNR bit_rate roll_off' +
+                           ' tx_osnr min_spacing cost path_bandwidth')
 DisjunctionParams = namedtuple('DisjunctionParams', 'disjunction_id relaxable link' +
                                '_diverse node_diverse disjunctions_req')
 
@@ -54,6 +54,7 @@ class PathRequest:
         self.baud_rate = params.baud_rate
         self.nodes_list = params.nodes_list
         self.loose_list = params.loose_list
+        self.exclude_nodes_list = params.exclude_nodes_list
         self.spacing = params.spacing
         self.power = params.power
         self.nb_channel = params.nb_channel
@@ -399,6 +400,14 @@ def compute_k_constrained_paths(network, req, k=1, early_stop=-1):
     nodes_list = []
     for node in req.nodes_list[:-1]:
         nodes_list.append(next(el for el in network if el.uid == node))
+
+    exclude_nodes_list = []
+    for node in req.exclude_nodes_list:
+        exclude_nodes_list.append(next(el for el in network if el.uid == node))
+
+    if exclude_nodes_list:
+        network = network.copy()
+        network.remove_nodes_from(exclude_nodes_list)
 
     k_total_paths = []
     try:
