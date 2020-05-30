@@ -779,6 +779,9 @@ class Edfa(_Node):
         """
 
         # TODO|jla: check what param should be used (currently length(dgt))
+        if len(self.interpol_dgt) == 1:
+            return array([self.effective_gain])
+
         nb_channel = arange(len(self.interpol_dgt))
 
         # TODO|jla: find a way to use these or lose them. Primarily we should have
