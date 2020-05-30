@@ -2,22 +2,20 @@
 - project:
     check:
       jobs:
-        - tox-py37-cover
+        - tox-py36-cover
         - coverage-diff:
             voting: false
             dependencies:
-              - tox-py37-cover-previous
-              - tox-py37-cover
+              - tox-py36-cover-previous
+              - tox-py36-cover
             vars:
-              coverage_job_name_previous: tox-py37-cover-previous
-              coverage_job_name_current: tox-py37-cover
+              coverage_job_name_previous: tox-py36-cover-previous
+              coverage_job_name_current: tox-py36-cover
         - tox-linters-diff:
             voting: false
-        - tox-docs
-        - tox-py36
-        - tox-py37-cover-previous
+        - tox-docs-el8
+        - tox-py36-cover-previous
     gate:
       jobs:
-        - tox-py36
-        - tox-py37
-        - tox-docs
+        - tox-py36-el8
+        - tox-docs-el8
