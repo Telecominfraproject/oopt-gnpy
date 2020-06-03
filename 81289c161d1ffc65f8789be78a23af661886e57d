@@ -1,0 +1,22 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "214ba2cf_560cafb5",
+        "filename": "tests/test_propagation.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-03T15:24:58Z",
+      "side": 1,
+      "message": "\u003e linters-diff: F821 undefined name \u0027np\u0027\n\nNumPy is not imported, that also causes these NameErrors.",
+      "parentUuid": "790c4728_772ff27c",
+      "revId": "81289c161d1ffc65f8789be78a23af661886e57d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
