@@ -9,10 +9,12 @@ Common code for CLI examples
 '''
 
 from argparse import ArgumentParser
+from json import dumps
+import logging
 import os.path
 from sys import exit
+from math import ceil
 from numpy import linspace, mean
-import logging
 from pathlib import Path
 import gnpy.core.ansi_escapes as ansi_escapes
 from gnpy.core.elements import Transceiver, Fiber, RamanFiber
@@ -21,9 +23,13 @@ import gnpy.core.exceptions as exceptions
 from gnpy.core.network import build_network
 from gnpy.core.parameters import SimParams
 from gnpy.core.science_utils import Simulation
-from gnpy.core.utils import db2lin, lin2db, write_csv
-from gnpy.tools.json_io import load_equipment, load_network, load_json, save_network
-from gnpy.topology.request import PathRequest, compute_constrained_path, propagate2
+from gnpy.core.utils import db2lin, lin2db, write_csv, automatic_nch
+from gnpy.topology.request import (ResultElement, jsontocsv, compute_path_dsjctn, requests_aggregation,
+                                   BLOCKING_NOPATH, correct_json_route_list,
+                                   deduplicate_disjunctions, compute_path_with_disjunction,
+                                   PathRequest, compute_constrained_path, propagate2)
+from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
+from gnpy.tools.json_io import load_equipment, load_network, load_json, load_requests, save_network,  requests_from_json, disjunctions_from_json
 from gnpy.tools.plots import plot_baseline, plot_results
 
 _logger = logging.getLogger(__name__)
@@ -277,3 +283,153 @@ def transmission_main_example():
 
     if args.plot:
         plot_results(network, path, source, destination, infos)
+
+
+def _path_result_json(pathresult):
+    return {'response': [n.json for n in pathresult]}
+
+
+def path_requests_run():
+    parser = ArgumentParser(description='Compute performance for a list of services provided in a json file or an excel sheet.')
+    parser.add_argument('network_filename', nargs='?', type=Path,
+                        default=_examples_dir / 'meshTopologyExampleV2.xls',
+                        help='input topology file in xls or json')
+    parser.add_argument('service_filename', nargs='?', type=Path,
+                        default=_examples_dir / 'meshTopologyExampleV2.xls',
+                        help='input service file in xls or json')
+    parser.add_argument('eqpt_filename', nargs='?', type=Path,
+                        default=_examples_dir / 'eqpt_config.json',
+                        help='input equipment library in json. Default is eqpt_config.json')
+    parser.add_argument('-bi', '--bidir', action='store_true',
+                        help='considers that all demands are bidir')
+    parser.add_argument('-v', '--verbose', action='count', default=0,
+                        help='increases verbosity for each occurence')
+    parser.add_argument('-o', '--output', type=Path)
+
+    args = parser.parse_args()
+    _setup_logging(args)
+
+    _logger.info(f'Computing path requests {args.service_filename} into JSON format')
+    print(f'{ansi_escapes.blue}Computing path requests {os.path.relpath(args.service_filename)} into JSON format{ansi_escapes.reset}')
+    # for debug
+    # print( args.eqpt_filename)
+
+    (equipment, network) = load_common_data(args.eqpt_filename, args.network_filename)
+
+    # Build the network once using the default power defined in SI in eqpt config
+    # TODO power density: db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
+    # spacing, f_min and f_max
+    p_db = equipment['SI']['default'].power_dbm
+
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
+                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    build_network(network, equipment, p_db, p_total_db)
+    save_network(args.network_filename, network)
+    oms_list = build_oms_list(network, equipment)
+
+    try:
+        data = load_requests(args.service_filename, equipment, bidir=args.bidir,
+                             network=network, network_filename=args.network_filename)
+        rqs = requests_from_json(data, equipment)
+    except exceptions.ServiceError as e:
+        print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {e}')
+        exit(1)
+    # check that request ids are unique. Non unique ids, may
+    # mess the computation: better to stop the computation
+    all_ids = [r.request_id for r in rqs]
+    if len(all_ids) != len(set(all_ids)):
+        for item in list(set(all_ids)):
+            all_ids.remove(item)
+        msg = f'Requests id {all_ids} are not unique'
+        _logger.critical(msg)
+        exit()
+    rqs = correct_json_route_list(network, rqs)
+
+    # pths = compute_path(network, equipment, rqs)
+    dsjn = disjunctions_from_json(data)
+
+    print(f'{ansi_escapes.blue}List of disjunctions{ansi_escapes.reset}')
+    print(dsjn)
+    # need to warn or correct in case of wrong disjunction form
+    # disjunction must not be repeated with same or different ids
+    dsjn = deduplicate_disjunctions(dsjn)
+
+    # Aggregate demands with same exact constraints
+    print(f'{ansi_escapes.blue}Aggregating similar requests{ansi_escapes.reset}')
+
+    rqs, dsjn = requests_aggregation(rqs, dsjn)
+    # TODO export novel set of aggregated demands in a json file
+
+    print(f'{ansi_escapes.blue}The following services have been requested:{ansi_escapes.reset}')
+    print(rqs)
+
+    print(f'{ansi_escapes.blue}Computing all paths with constraints{ansi_escapes.reset}')
+    try:
+        pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
+    except exceptions.DisjunctionError as this_e:
+        print(f'{ansi_escapes.red}Disjunction error:{ansi_escapes.reset} {this_e}')
+        exit(1)
+
+    print(f'{ansi_escapes.blue}Propagating on selected path{ansi_escapes.reset}')
+    propagatedpths, reversed_pths, reversed_propagatedpths = compute_path_with_disjunction(
+        network, equipment, rqs, pths)
+    # Note that deepcopy used in compute_path_with_disjunction returns
+    # a list of nodes which are not belonging to network (they are copies of the node objects).
+    # so there can not be propagation on these nodes.
+
+    pth_assign_spectrum(pths, rqs, oms_list, reversed_pths)
+
+    print(f'{ansi_escapes.blue}Result summary{ansi_escapes.reset}')
+    header = ['req id', '  demand', '  snr@bandwidth A-Z (Z-A)', '  snr@0.1nm A-Z (Z-A)',
+              '  Receiver minOSNR', '  mode', '  Gbit/s', '  nb of tsp pairs',
+              'N,M or blocking reason']
+    data = []
+    data.append(header)
+    for i, this_p in enumerate(propagatedpths):
+        rev_pth = reversed_propagatedpths[i]
+        if rev_pth and this_p:
+            psnrb = f'{round(mean(this_p[-1].snr),2)} ({round(mean(rev_pth[-1].snr),2)})'
+            psnr = f'{round(mean(this_p[-1].snr_01nm), 2)}' +\
+                f' ({round(mean(rev_pth[-1].snr_01nm),2)})'
+        elif this_p:
+            psnrb = f'{round(mean(this_p[-1].snr),2)}'
+            psnr = f'{round(mean(this_p[-1].snr_01nm),2)}'
+
+        try:
+            if rqs[i].blocking_reason in BLOCKING_NOPATH:
+                line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} :',
+                        f'-', f'-', f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}',
+                        f'-', f'{rqs[i].blocking_reason}']
+            else:
+                line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,
+                        psnr, f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
+                        f'-', f'{rqs[i].blocking_reason}']
+        except AttributeError:
+            line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,
+                    psnr, f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}',
+                    f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }', f'({rqs[i].N},{rqs[i].M})']
+        data.append(line)
+
+    col_width = max(len(word) for row in data for word in row[2:])   # padding
+    firstcol_width = max(len(row[0]) for row in data)   # padding
+    secondcol_width = max(len(row[1]) for row in data)   # padding
+    for row in data:
+        firstcol = ''.join(row[0].ljust(firstcol_width))
+        secondcol = ''.join(row[1].ljust(secondcol_width))
+        remainingcols = ''.join(word.center(col_width, ' ') for word in row[2:])
+        print(f'{firstcol} {secondcol} {remainingcols}')
+    print(f'{ansi_escapes.yellow}Result summary shows mean SNR and OSNR (average over all channels){ansi_escapes.reset}')
+
+    if args.output:
+        result = []
+        # assumes that list of rqs and list of propgatedpths have same order
+        for i, pth in enumerate(propagatedpths):
+            result.append(ResultElement(rqs[i], pth, reversed_propagatedpths[i]))
+        temp = _path_result_json(result)
+        fnamecsv = f'{str(args.output)[0:len(str(args.output))-len(str(args.output.suffix))]}.csv'
+        fnamejson = f'{str(args.output)[0:len(str(args.output))-len(str(args.output.suffix))]}.json'
+        with open(fnamejson, 'w', encoding='utf-8') as fjson:
+            fjson.write(dumps(_path_result_json(result), indent=2, ensure_ascii=False))
+            with open(fnamecsv, "w", encoding='utf-8') as fcsv:
+                jsontocsv(temp, equipment, fcsv)
+                print(f'{ansi_escapes.blue}saving in {args.output} and {fnamecsv}{ansi_escapes.reset}')
