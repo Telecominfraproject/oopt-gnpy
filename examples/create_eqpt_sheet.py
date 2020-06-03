@@ -19,7 +19,8 @@ PARSER.add_argument('workbook', nargs='?', default='meshTopologyExampleV2.xls',
                     help='create the mandatory columns in Eqpt sheet')
 
 
-def ALL_ROWS(sh, start=0): return (sh.row(x) for x in range(start, sh.nrows))
+def ALL_ROWS(sh, start=0):
+    return (sh.row(x) for x in range(start, sh.nrows))
 
 
 class Node:

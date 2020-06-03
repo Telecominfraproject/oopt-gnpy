@@ -51,7 +51,7 @@ def main(network, equipment, source, destination, req=None):
     print('\n'.join([f'Power mode is set to {power_mode}',
                      f'=> it can be modified in eqpt_config.json - Span']))
 
-    pref_ch_db = lin2db(req.power*1e3)  # reference channel power / span (SL=20dB)
+    pref_ch_db = lin2db(req.power * 1e3)  # reference channel power / span (SL=20dB)
     pref_total_db = pref_ch_db + lin2db(req.nb_channel)  # reference total power / span (SL=20dB)
     build_network(network, equipment, pref_ch_db, pref_total_db)
     path = compute_constrained_path(network, req)
@@ -63,7 +63,7 @@ def main(network, equipment, source, destination, req=None):
 
     try:
         p_start, p_stop, p_step = equipment['SI']['default'].power_range_db
-        p_num = abs(int(round((p_stop - p_start)/p_step))) + 1 if p_step != 0 else 1
+        p_num = abs(int(round((p_stop - p_start) / p_step))) + 1 if p_step != 0 else 1
         power_range = list(linspace(p_start, p_stop, p_num))
     except TypeError:
         print('invalid power range definition in eqpt_config, should be power_range_db: [lower, upper, step]')
@@ -73,7 +73,7 @@ def main(network, equipment, source, destination, req=None):
         # power cannot be changed in gain mode
         power_range = [0]
     for dp_db in power_range:
-        req.power = db2lin(pref_ch_db + dp_db)*1e-3
+        req.power = db2lin(pref_ch_db + dp_db) * 1e-3
         if power_mode:
             print(f'\nPropagating with input power = {ansi_escapes.cyan}{lin2db(req.power*1e3):.2f} dBm{ansi_escapes.reset}:')
         else:
@@ -129,7 +129,7 @@ parser.add_argument('-names', '--names-matching', action='store_true',
 parser.add_argument('filename', nargs='?', type=Path,
                     default=Path(__file__).parent / 'edfa_example_network.json')
 parser.add_argument('source', nargs='?', help='source node')
-parser.add_argument('destination',   nargs='?', help='destination node')
+parser.add_argument('destination', nargs='?', help='destination node')
 
 
 if __name__ == '__main__':
@@ -204,7 +204,7 @@ if __name__ == '__main__':
     params['path_bandwidth'] = 0
     trx_params = trx_mode_params(equipment)
     if args.power:
-        trx_params['power'] = db2lin(float(args.power))*1e-3
+        trx_params['power'] = db2lin(float(args.power)) * 1e-3
     params.update(trx_params)
     req = PathRequest(**params)
     path, infos = main(network, equipment, source, destination, req)
@@ -212,13 +212,26 @@ if __name__ == '__main__':
 
     if args.show_channels:
         print('\nThe total SNR per channel at the end of the line is:')
-        print('{:>5}{:>26}{:>26}{:>28}{:>28}{:>28}'
-              .format('Ch. #', 'Channel frequency (THz)', 'Channel power (dBm)', 'OSNR ASE (signal bw, dB)', 'SNR NLI (signal bw, dB)', 'SNR total (signal bw, dB)'))
-        for final_carrier, ch_osnr, ch_snr_nl, ch_snr in zip(infos[path[-1]][1].carriers, path[-1].osnr_ase, path[-1].osnr_nli, path[-1].snr):
+        print(
+            '{:>5}{:>26}{:>26}{:>28}{:>28}{:>28}' .format(
+                'Ch. #',
+                'Channel frequency (THz)',
+                'Channel power (dBm)',
+                'OSNR ASE (signal bw, dB)',
+                'SNR NLI (signal bw, dB)',
+                'SNR total (signal bw, dB)'))
+        for final_carrier, ch_osnr, ch_snr_nl, ch_snr in zip(
+                infos[path[-1]][1].carriers, path[-1].osnr_ase, path[-1].osnr_nli, path[-1].snr):
             ch_freq = final_carrier.frequency * 1e-12
-            ch_power = lin2db(final_carrier.power.signal*1e3)
-            print('{:5}{:26.2f}{:26.2f}{:28.2f}{:28.2f}{:28.2f}'
-                  .format(final_carrier.channel_number, round(ch_freq, 2), round(ch_power, 2), round(ch_osnr, 2), round(ch_snr_nl, 2), round(ch_snr, 2)))
+            ch_power = lin2db(final_carrier.power.signal * 1e3)
+            print(
+                '{:5}{:26.2f}{:26.2f}{:28.2f}{:28.2f}{:28.2f}' .format(
+                    final_carrier.channel_number, round(
+                        ch_freq, 2), round(
+                        ch_power, 2), round(
+                        ch_osnr, 2), round(
+                        ch_snr_nl, 2), round(
+                            ch_snr, 2)))
 
     if not args.source:
         print(f'\n(No source node specified: picked {source.uid})')

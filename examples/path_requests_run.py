@@ -188,7 +188,7 @@ def main(args):
             fjson.write(dumps(path_result_json(result), indent=2, ensure_ascii=False))
             with open(fnamecsv, "w", encoding='utf-8') as fcsv:
                 jsontocsv(temp, equipment, fcsv)
-                print('\x1b[1;34;40m'+f'saving in {args.output} and {fnamecsv}' + '\x1b[0m')
+                print('\x1b[1;34;40m' + f'saving in {args.output} and {fnamecsv}' + '\x1b[0m')
 
 
 if __name__ == '__main__':

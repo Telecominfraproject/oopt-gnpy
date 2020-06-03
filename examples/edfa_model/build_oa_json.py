@@ -28,7 +28,7 @@ input json file in argument (defult = 'OA.json')
 the json input file should have the following fields:
 {
     "nf_fit_coeff": "nf_filename.txt",
-    "nf_ripple": "nf_ripple_filename.txt", 
+    "nf_ripple": "nf_ripple_filename.txt",
     "gain_ripple": "DFG_filename.txt",
     "dgt": "DGT_filename.txt",
 }
