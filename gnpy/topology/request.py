@@ -17,7 +17,8 @@ See: draft-ietf-teas-yang-path-computation-01.txt
 
 from collections import namedtuple, OrderedDict
 from logging import getLogger
-from networkx import (dijkstra_path, NetworkXNoPath, all_simple_paths)
+from networkx import (dijkstra_path, NetworkXNoPath,
+                      all_simple_paths, shortest_simple_paths)
 from networkx.utils import pairwise
 from numpy import mean
 from gnpy.core.elements import Transceiver, Roadm
@@ -274,119 +275,56 @@ class ResultElement:
 
 
 def compute_constrained_path(network, req):
-    trx = [n for n in network.nodes() if isinstance(n, Transceiver)]
-    anytypenode = [n for n in network.nodes()]
-
-    source = next(el for el in trx if el.uid == req.source)
-
-    # This method ensures that the constraint can be satisfied without loops
-    # except when it is not possible: eg if constraints makes a loop
-    # It requires that the source, dest and nodes are correct (no error in the names)
-    destination = next(el for el in trx if el.uid == req.destination)
-    nodes_list = []
-    for n_elem in req.nodes_list:
-        # for debug excel print(n)
-        nodes_list.append(next(el for el in anytypenode if el.uid == n_elem))
     # nodes_list contains at least the destination
-    if nodes_list is None:
-        # only arrive here if there is a bug in the program because route lists have
-        # been corrected and harmonized before
-        msg = f'Request {req.request_id} problem in the constitution of nodes_list: ' +\
-            'should at least include destination'
-        LOGGER.critical(msg)
-        raise ValueError(msg)
     if req.nodes_list[-1] != req.destination:
         # only arrive here if there is a bug in the program because route lists have
         # been corrected and harmonized before
-        msg = f'Request {req.request_id} malformed list of nodes: last node should ' +\
-            'be destination trx'
+        msg = (f'Request {req.request_id} malformed list of nodes: last node should '
+               'be destination trx')
         LOGGER.critical(msg)
         raise ValueError()
 
+    trx = [n for n in network if isinstance(n, Transceiver)]
+    source = next(el for el in trx if el.uid == req.source)
+    destination = next(el for el in trx if el.uid == req.destination)
+
+    nodes_list = []
+    for node in req.nodes_list[:-1]:
+        nodes_list.append(next(el for el in network if el.uid == node))
+
     try:
-        total_path = dijkstra_path(network, source, destination, weight='weight')
-        # print('checking edges length is correct')
-        # print(shortest_path_length(network,source,destination))
-        # print(shortest_path_length(network,source,destination,weight ='weight'))
-        # s = total_path[0]
-        # for e in total_path[1:]:
-        #     print(s.uid)
-        #     print(network.get_edge_data(s,e))
-        #     s = e
+        path_generator = shortest_simple_paths(network, source, destination, weight='weight')
+        total_path = next(path for path in path_generator if ispart(nodes_list, path))
     except NetworkXNoPath:
-        msg = f'{ansi_escapes.yellow}Request {req.request_id} could not find a path from' +\
-            f' {source.uid} to node: {destination.uid} in network topology{ansi_escapes.reset}'
+        msg = (f'{ansi_escapes.yellow}Request {req.request_id} could not find a path from'
+               f' {source.uid} to node: {destination.uid} in network topology{ansi_escapes.reset}')
         LOGGER.critical(msg)
         print(msg)
         req.blocking_reason = 'NO_PATH'
-        return []
+        total_path = []
+    except StopIteration:
+        # TODO: better account for individual loose and strict node
+        # to ease: suppose that one strict makes the whole liste strict (except for the
+        # last node which is the transceiver)
+        # if all nodes i n node_list are LOOSE constraint, skip the constraints and find
+        # a path w/o constraints, else there is no possible path
+        print(f'{ansi_escapes.yellow}Request {req.request_id} could not find a path crossing '
+              f'{[el.uid for el in nodes_list[:-1]]} in network topology{ansi_escapes.reset}')
 
-    if len(nodes_list) > 1:
-        # len(nodes_list) is 2 or more (includes at least one include node apart from destination)
-        cutoff = max(int(len(total_path) * 1.2), 150)
-        all_simp_pths = list(all_simple_paths(network, source=source, target=destination, cutoff=cutoff))
-        candidate = []
-        for pth in all_simp_pths:
-            if ispart(nodes_list, pth):
-                # print(f'selection{[el.uid for el in p if el in roadm]}')
-                candidate.append(pth)
-        # select the shortest path (in nb of hops) -> changed to shortest path in km length
-        if len(candidate) > 0:
-            # candidate.sort(key=lambda x: len(x))
-            candidate.sort(key=lambda x: sum(network.get_edge_data(x[i], x[i + 1])['weight']
-                                             for i in range(len(x) - 2)))
-            total_path = candidate[0]
+        if 'STRICT' not in req.loose_list[:-1]:
+            msg = (f'{ansi_escapes.yellow}Request {req.request_id} could not find a path with user_'
+                   f'include node constraints{ansi_escapes.reset}')
+            LOGGER.info(msg)
+            print(f'constraint ignored')
+            total_path = dijkstra_path(network, source, destination, weight='weight')
         else:
-            # TODO: better account for individual loose and strict node
-            # to ease: suppose that one strict makes the whole liste strict (except for the
-            # last node which is the transceiver)
-            # if all nodes i n node_list are LOOSE constraint, skip the constraints and find
-            # a path w/o constraints, else there is no possible path
-
-            # no candidate can be found with the constraints
-            print(f'{ansi_escapes.yellow}Request {req.request_id} could not find a path crossing ' +
-                  f'{[el.uid for el in nodes_list[:-1]]} in network topology{ansi_escapes.reset}')
-
-            if 'STRICT' not in req.loose_list[:-1]:
-                msg = f'{ansi_escapes.yellow}Request {req.request_id} could not find a path with user_' +\
-                    f'include node constraints{ansi_escapes.reset}'
-                LOGGER.info(msg)
-                print(f'constraint ignored')
-            else:
-                # one STRICT makes the whole list STRICT
-                msg = f'{ansi_escapes.yellow}Request {req.request_id} could not find a path with user ' +\
-                    f'include node constraints.\nNo path computed{ansi_escapes.reset}'
-                LOGGER.critical(msg)
-                print(msg)
-                req.blocking_reason = 'NO_PATH_WITH_CONSTRAINT'
-                total_path = []
-
-    # the following method was initially used but abandonned: compute per segment:
-    # this does not guaranty to avoid loops or correct results
-    # Here is the demonstration:
-    #         1     1
-    # eg    a----b-----c
-    #       |1   |0.5  |1
-    #       e----f--h--g
-    #         1  0.5 0.5
-    # if I have to compute a to g with constraint f-c
-    # result will be a concatenation of: a-b-f and f-b-c and c-g
-    # which means a loop.
-    # if to avoid loops I iteratively suppress edges of the segments in the topo
-    # segment 1 = a-b-f
-    #               1
-    # eg    a    b-----c
-    #       |1         |1
-    #       e----f--h--g
-    #         1  0.5 0.5
-    # then
-    # segment 2 = f-h-g-c
-    #               1
-    # eg    a    b-----c
-    #       |1
-    #       e----f  h  g
-    #         1
-    # then there is no more path to g destination
+            # one STRICT makes the whole list STRICT
+            msg = (f'{ansi_escapes.yellow}Request {req.request_id} could not find a path with user '
+                   f'include node constraints.\nNo path computed{ansi_escapes.reset}')
+            LOGGER.critical(msg)
+            print(msg)
+            req.blocking_reason = 'NO_PATH_WITH_CONSTRAINT'
+            total_path = []
 
     return total_path
 
