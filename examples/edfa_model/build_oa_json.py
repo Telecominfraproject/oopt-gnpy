@@ -13,7 +13,6 @@ import re
 import sys
 import json
 import numpy as np
-from gnpy.core.utils import lin2db, db2lin
 
 """amplifier file names
 convert a set of amplifier files + input json definiton file into a valid edfa_json_file:

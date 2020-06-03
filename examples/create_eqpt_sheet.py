@@ -96,8 +96,7 @@ def create_eqt_template(nodes, input_filename):
                 for to_node in node.to_node:
                     my_file.write(f'{node.uid}\t{to_node}\n')
 
-        print(f'File {output_filename} successfully created with Node A - Node Z ' +
-              ' entries for Eqpt sheet in excel file.')
+        print(f'File {output_filename} successfully created with Node A - Node Z entries for Eqpt sheet in excel file.')
 
 
 if __name__ == '__main__':

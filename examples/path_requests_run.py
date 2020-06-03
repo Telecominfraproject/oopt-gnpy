@@ -31,12 +31,9 @@ import gnpy.tools.cli_examples as cli_examples
 from gnpy.tools.json_io import load_requests, save_network, requests_from_json, disjunctions_from_json
 from math import ceil
 
-#EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
-
 LOGGER = getLogger(__name__)
 
-PARSER = ArgumentParser(description='A function that computes performances for a list of ' +
-                        'services provided in a json file or an excel sheet.')
+PARSER = ArgumentParser(description='Compute performance for a list of services provided in a json file or an excel sheet.')
 PARSER.add_argument('network_filename', nargs='?', type=Path,
                     default=Path(__file__).parent / 'meshTopologyExampleV2.xls',
                     help='input topology file in xls or json')
