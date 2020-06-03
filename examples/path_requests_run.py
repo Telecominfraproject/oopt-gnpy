@@ -37,18 +37,18 @@ LOGGER = getLogger(__name__)
 
 PARSER = ArgumentParser(description='A function that computes performances for a list of ' +
                         'services provided in a json file or an excel sheet.')
-PARSER.add_argument('network_filename', nargs='?', type=Path,\
-                    default=Path(__file__).parent / 'meshTopologyExampleV2.xls',\
+PARSER.add_argument('network_filename', nargs='?', type=Path,
+                    default=Path(__file__).parent / 'meshTopologyExampleV2.xls',
                     help='input topology file in xls or json')
-PARSER.add_argument('service_filename', nargs='?', type=Path,\
-                    default=Path(__file__).parent / 'meshTopologyExampleV2.xls',\
+PARSER.add_argument('service_filename', nargs='?', type=Path,
+                    default=Path(__file__).parent / 'meshTopologyExampleV2.xls',
                     help='input service file in xls or json')
-PARSER.add_argument('eqpt_filename', nargs='?', type=Path,\
-                    default=Path(__file__).parent / 'eqpt_config.json',\
+PARSER.add_argument('eqpt_filename', nargs='?', type=Path,
+                    default=Path(__file__).parent / 'eqpt_config.json',
                     help='input equipment library in json. Default is eqpt_config.json')
-PARSER.add_argument('-bi', '--bidir', action='store_true',\
+PARSER.add_argument('-bi', '--bidir', action='store_true',
                     help='considers that all demands are bidir')
-PARSER.add_argument('-v', '--verbose', action='count', default=0,\
+PARSER.add_argument('-v', '--verbose', action='count', default=0,
                     help='increases verbosity for each occurence')
 PARSER.add_argument('-o', '--output', type=Path)
 
@@ -60,6 +60,7 @@ def path_result_json(pathresult):
         'response': [n.json for n in pathresult]
     }
     return data
+
 
 def main(args):
     """ main function that calls all functions
@@ -76,14 +77,15 @@ def main(args):
     # spacing, f_min and f_max
     p_db = equipment['SI']['default'].power_dbm
 
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,\
-        equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
+                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
     save_network(args.network_filename, network)
     oms_list = build_oms_list(network, equipment)
 
     try:
-        data = load_requests(args.service_filename, equipment, bidir=args.bidir, network=network, network_filename=args.network_filename)
+        data = load_requests(args.service_filename, equipment, bidir=args.bidir,
+                             network=network, network_filename=args.network_filename)
         rqs = requests_from_json(data, equipment)
     except exceptions.ServiceError as e:
         print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {e}')
@@ -125,7 +127,8 @@ def main(args):
         exit(1)
 
     print(f'{ansi_escapes.blue}Propagating on selected path{ansi_escapes.reset}')
-    propagatedpths, reversed_pths, reversed_propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
+    propagatedpths, reversed_pths, reversed_propagatedpths = compute_path_with_disjunction(
+        network, equipment, rqs, pths)
     # Note that deepcopy used in compute_path_with_disjunction returns
     # a list of nodes which are not belonging to network (they are copies of the node objects).
     # so there can not be propagation on these nodes.
@@ -133,8 +136,8 @@ def main(args):
     pth_assign_spectrum(pths, rqs, oms_list, reversed_pths)
 
     print(f'{ansi_escapes.blue}Result summary{ansi_escapes.reset}')
-    header = ['req id', '  demand', '  snr@bandwidth A-Z (Z-A)', '  snr@0.1nm A-Z (Z-A)',\
-              '  Receiver minOSNR', '  mode', '  Gbit/s', '  nb of tsp pairs',\
+    header = ['req id', '  demand', '  snr@bandwidth A-Z (Z-A)', '  snr@0.1nm A-Z (Z-A)',
+              '  Receiver minOSNR', '  mode', '  Gbit/s', '  nb of tsp pairs',
               'N,M or blocking reason']
     data = []
     data.append(header)
@@ -143,23 +146,23 @@ def main(args):
         if rev_pth and this_p:
             psnrb = f'{round(mean(this_p[-1].snr),2)} ({round(mean(rev_pth[-1].snr),2)})'
             psnr = f'{round(mean(this_p[-1].snr_01nm), 2)}' +\
-                   f' ({round(mean(rev_pth[-1].snr_01nm),2)})'
+                f' ({round(mean(rev_pth[-1].snr_01nm),2)})'
         elif this_p:
             psnrb = f'{round(mean(this_p[-1].snr),2)}'
             psnr = f'{round(mean(this_p[-1].snr_01nm),2)}'
 
-        try :
-            if rqs[i].blocking_reason in  BLOCKING_NOPATH:
-                line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} :',\
-                        f'-', f'-', f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}',\
+        try:
+            if rqs[i].blocking_reason in BLOCKING_NOPATH:
+                line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} :',
+                        f'-', f'-', f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}',
                         f'-', f'{rqs[i].blocking_reason}']
             else:
-                line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,\
-                        psnr, f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',\
+                line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,
+                        psnr, f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
                         f'-', f'{rqs[i].blocking_reason}']
         except AttributeError:
-            line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,\
-                    psnr, f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}',\
+            line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,
+                    psnr, f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}',
                     f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }', f'({rqs[i].N},{rqs[i].M})']
         data.append(line)
 
@@ -185,7 +188,7 @@ def main(args):
             fjson.write(dumps(path_result_json(result), indent=2, ensure_ascii=False))
             with open(fnamecsv, "w", encoding='utf-8') as fcsv:
                 jsontocsv(temp, equipment, fcsv)
-                print('\x1b[1;34;40m'+f'saving in {args.output} and {fnamecsv}'+ '\x1b[0m')
+                print('\x1b[1;34;40m'+f'saving in {args.output} and {fnamecsv}' + '\x1b[0m')
 
 
 if __name__ == '__main__':
