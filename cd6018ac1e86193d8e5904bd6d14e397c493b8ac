@@ -69,6 +69,24 @@
       "revId": "cd6018ac1e86193d8e5904bd6d14e397c493b8ac",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f0450900_6aa2b720",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-06-04T12:26:02Z",
+      "side": 1,
+      "message": "I disagree with that terminology. PMD can used both as in PMD coefficient (in ps/sqrt(km)) and PMD value (in ps). PMD is a statistical process and the instantaneous DGD (i.e. what is measured by the DSP in the receiver) varies in time and frequency. What is given in line 178 above is the average of the DGD, i.e. the PMD value. See e.g. the definitions in ITU-T recommendation G.650.2:\n\n3.1.4 PMD value: PMD_AVG is defined as the linear average 〈Δτ〉 of the DGD values Δτ(ν) over a\ngiven optical frequency range ν1 to ν2,",
+      "parentUuid": "f18c416e_f735df54",
+      "revId": "cd6018ac1e86193d8e5904bd6d14e397c493b8ac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
