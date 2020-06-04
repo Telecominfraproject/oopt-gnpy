@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f90a2acb_6581b083",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-04T09:55:53Z",
+      "side": 1,
+      "message": "Please fix the URL",
+      "range": {
+        "startLine": 165,
+        "startChar": 43,
+        "endLine": 165,
+        "endChar": 85
+      },
+      "revId": "ac7185299af4b0f0d9424420be2b3fd7d8e0ced8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e7183720_fb83e783",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-04T09:55:53Z",
+      "side": 1,
+      "message": "nit: I think it would actually be more readable to merge this equation into a single line",
+      "range": {
+        "startLine": 166,
+        "startChar": 98,
+        "endLine": 166,
+        "endChar": 99
+      },
+      "revId": "ac7185299af4b0f0d9424420be2b3fd7d8e0ced8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
