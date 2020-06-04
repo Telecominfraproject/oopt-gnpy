@@ -45,6 +45,23 @@
       "revId": "ac7185299af4b0f0d9424420be2b3fd7d8e0ced8",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f493e52_1ac1b673",
+        "filename": "tests/test_science_utils.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-04T09:57:24Z",
+      "side": 1,
+      "message": "Can you please elaborate on this one a bit -- why is it getting changed here and not in the JSON file?",
+      "revId": "ac7185299af4b0f0d9424420be2b3fd7d8e0ced8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
