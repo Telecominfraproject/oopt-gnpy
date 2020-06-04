@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e3a8a138_42f27558",
+        "filename": "examples/eqpt_config.json",
+        "patchSetId": 14
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1017851
+      },
+      "writtenOn": "2020-06-04T12:12:06Z",
+      "side": 1,
+      "message": "It would be wrong as PMD is a dispersion coefficient, while DGD is a delay. They are physically different and, here DGD parameter describes the differential group delay contribution added by the ROADM node. If I use a PMD parameter here I should multiply it for sqrt of a length which, for a ROADM node doesn\u0027t make sense.",
+      "parentUuid": "450c8382_7a6ae188",
+      "revId": "cd6018ac1e86193d8e5904bd6d14e397c493b8ac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "674dce53_f337796e",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 14
@@ -30,6 +48,24 @@
       "writtenOn": "2020-06-04T12:02:37Z",
       "side": 1,
       "message": "I would prefer PMD instead of DGD.",
+      "revId": "cd6018ac1e86193d8e5904bd6d14e397c493b8ac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f18c416e_f735df54",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1017851
+      },
+      "writtenOn": "2020-06-04T12:12:06Z",
+      "side": 1,
+      "message": "As PMD is a dispersion coefficient while DGD a delay it wouldn\u0027t make sense to have information on a dispersion coefficient at the receiver. At the DSP you actually have an information on the DGD and not on a PMD. It would be like having the chromatic dispersion instead of the accumulated chromatic dispersion at the receiver.",
+      "parentUuid": "674dce53_f337796e",
       "revId": "cd6018ac1e86193d8e5904bd6d14e397c493b8ac",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
