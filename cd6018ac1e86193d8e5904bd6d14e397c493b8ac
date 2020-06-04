@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "450c8382_7a6ae188",
+        "filename": "examples/eqpt_config.json",
+        "patchSetId": 14
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-06-04T12:02:37Z",
+      "side": 1,
+      "message": "I think it would make more sense to use the same name for the parameter here, i.e. pmd instead of dgd.",
+      "revId": "cd6018ac1e86193d8e5904bd6d14e397c493b8ac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "674dce53_f337796e",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-06-04T12:02:37Z",
+      "side": 1,
+      "message": "I would prefer PMD instead of DGD.",
+      "revId": "cd6018ac1e86193d8e5904bd6d14e397c493b8ac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
