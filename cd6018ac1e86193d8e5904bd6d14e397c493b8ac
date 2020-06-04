@@ -87,6 +87,24 @@
       "revId": "cd6018ac1e86193d8e5904bd6d14e397c493b8ac",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ddf366f9_c57eb5b6",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1017851
+      },
+      "writtenOn": "2020-06-04T12:39:16Z",
+      "side": 1,
+      "message": "In the ITU-T recommmendation, actually, in 3.1.4 they define the quantity PMD_AVG as the average DGD, not the PMD. So, maybe it is is better to call it PMD average (or similar).\nThe ITU-T recommendation reports, in fact:\n3.1.5: PMD coefficient: The PMD value normalized to the measurement length.\n\nIn any case I think it is important to keep separate the PMD in ps/sqrt(km) and the PMD in ps by using different names as they refer to different physical quantities.\nSo if you prefer a different name for DGD just let me know and I will change it but I think it is important to not use PMD as, in the fiber it indicates the PMD coefficient (unless you want to change the name of PMD in the fiber).",
+      "parentUuid": "f0450900_6aa2b720",
+      "revId": "cd6018ac1e86193d8e5904bd6d14e397c493b8ac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
