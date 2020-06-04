@@ -105,6 +105,24 @@
       "revId": "cd6018ac1e86193d8e5904bd6d14e397c493b8ac",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ab4e9a9_4bb738c5",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-06-04T12:48:43Z",
+      "side": 1,
+      "message": "\u003e In the ITU-T recommmendation, actually, in 3.1.4 they define the quantity PMD_AVG as the average DGD\n\nYes, and PMD_AVG is also known as \"PMD value\" (the first words in bold letters of section 3.1.4).\n\nIf you want separate terms I would prefer PMD_coef for the fiber coefficient and PMD for the PMD value but it would be nice to hear the opinion of others.",
+      "parentUuid": "ddf366f9_c57eb5b6",
+      "revId": "cd6018ac1e86193d8e5904bd6d14e397c493b8ac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
