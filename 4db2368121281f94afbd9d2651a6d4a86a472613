@@ -69,6 +69,24 @@
       "revId": "4db2368121281f94afbd9d2651a6d4a86a472613",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "50a97438_8d0b5417",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-06-04T12:11:06Z",
+      "side": 1,
+      "message": "No, the 2pi in line 401 is used for converting between beta2 and D. I\u0027m talking about taking the frequency (freq\u003d2pi*w) dependency of beta2 into account by the term beta3*(freq-ref_f). It\u0027s a differenct 2pi.",
+      "parentUuid": "e6e11319_43557e28",
+      "revId": "4db2368121281f94afbd9d2651a6d4a86a472613",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
