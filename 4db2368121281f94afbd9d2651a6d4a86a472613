@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bf041828_c93d64e4",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-06-04T11:51:30Z",
+      "side": 1,
+      "message": "Personally, I think I would prefer ps/nm here.",
+      "revId": "4db2368121281f94afbd9d2651a6d4a86a472613",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "48934a01_da512c60",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-06-04T11:51:30Z",
+      "side": 1,
+      "message": "Actually, shouldn\u0027t there be a 2*pi in here (since beta3 \u003d dbeta2/dw and w \u003d 2*pi*f)? Maybe it would be simpler to use the dispersion and slope parameters directly instead of taking the detour over beta2 and beta3.",
+      "revId": "4db2368121281f94afbd9d2651a6d4a86a472613",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
