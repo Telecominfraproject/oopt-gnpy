@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f2eacea8_6b47d28a",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1017851
+      },
+      "writtenOn": "2020-06-04T10:20:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f90a2acb_6581b083",
+      "range": {
+        "startLine": 165,
+        "startChar": 43,
+        "endLine": 165,
+        "endChar": 85
+      },
+      "revId": "ac7185299af4b0f0d9424420be2b3fd7d8e0ced8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e7183720_fb83e783",
         "filename": "gnpy/core/parameters.py",
         "patchSetId": 4
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "657ff9f3_bfa56092",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1017851
+      },
+      "writtenOn": "2020-06-04T10:20:08Z",
+      "side": 1,
+      "message": "If I put the equation in one single line it would exceed the border. If it doesn\u0027t matter for you, I\u0027ll do the modification.",
+      "parentUuid": "e7183720_fb83e783",
+      "range": {
+        "startLine": 166,
+        "startChar": 98,
+        "endLine": 166,
+        "endChar": 99
+      },
+      "revId": "ac7185299af4b0f0d9424420be2b3fd7d8e0ced8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8f493e52_1ac1b673",
         "filename": "tests/test_science_utils.py",
         "patchSetId": 4
@@ -59,6 +107,24 @@
       "writtenOn": "2020-06-04T09:57:24Z",
       "side": 1,
       "message": "Can you please elaborate on this one a bit -- why is it getting changed here and not in the JSON file?",
+      "revId": "ac7185299af4b0f0d9424420be2b3fd7d8e0ced8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "354c9e82_a2c09d1f",
+        "filename": "tests/test_science_utils.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1017851
+      },
+      "writtenOn": "2020-06-04T10:20:08Z",
+      "side": 1,
+      "message": "This is because the test is compared to results obtained with beta3\u003d0.\nThe reason why I didn\u0027t change the JSON file is that the dispersion slope goes in the equipment file (together with dispersion), so I should declare that SSMF has a dispersion slope such that beta3 is equal to zero, but this is not true.",
+      "parentUuid": "8f493e52_1ac1b673",
       "revId": "ac7185299af4b0f0d9424420be2b3fd7d8e0ced8",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
