@@ -128,6 +128,24 @@
       "revId": "ac7185299af4b0f0d9424420be2b3fd7d8e0ced8",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "91b41dbf_d5342960",
+        "filename": "tests/test_science_utils.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-06-04T13:53:29Z",
+      "side": 1,
+      "message": "I\u0027m not sure I follow the discussion. Currently there is no slope defined in the equipment file, right? In this case, if I understand the code correctly, parameters.py by default sets the slope so that beta3\u003d0. So line 38 above should have no effect and it would be a better test if the line were removed. On the other hand, if you want a test with more realistic slope parameter I guess you should set the slope in the configuration file and update the results the test is comparing to.",
+      "parentUuid": "354c9e82_a2c09d1f",
+      "revId": "ac7185299af4b0f0d9424420be2b3fd7d8e0ced8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
