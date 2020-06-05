@@ -18,6 +18,7 @@
 from json import load
 from pathlib import Path
 from os import unlink
+import shutil
 from pandas import read_csv
 import pytest
 from tests.compare import compare_networks, compare_services
@@ -42,12 +43,14 @@ equipment = load_equipment(eqpt_filename)
     DATA_DIR / 'CORONET_Global_Topology.xlsx': DATA_DIR / 'CORONET_Global_Topology_expected.json',
     DATA_DIR / 'testTopology.xls': DATA_DIR / 'testTopology_expected.json',
 }.items())
-def test_excel_json_generation(xls_input, expected_json_output):
+def test_excel_json_generation(tmpdir, xls_input, expected_json_output):
     """ tests generation of topology json
     """
-    convert_file(xls_input)
+    xls_copy = Path(tmpdir) / xls_input.name
+    shutil.copyfile(xls_input, xls_copy)
+    convert_file(xls_copy)
 
-    actual_json_output = xls_input.with_suffix('.json')
+    actual_json_output = xls_copy.with_suffix('.json')
     with open(actual_json_output, encoding='utf-8') as f:
         actual = load(f)
     unlink(actual_json_output)
