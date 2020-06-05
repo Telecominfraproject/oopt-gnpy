@@ -20,7 +20,7 @@ from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, Netwo
 from gnpy.core.science_utils import estimate_nf_model
 from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions
 from gnpy.topology.request import PathRequest, Disjunction
-from gnpy.tools.convert import convert_file
+from gnpy.tools.convert import convert_file, xls_to_json_data
 from gnpy.tools.service_sheet import convert_service_sheet
 import time
 
@@ -304,15 +304,12 @@ def _equipment_from_json(json_data, filename):
 
 
 def load_network(filename, equipment):
-    json_filename = ''
     if filename.suffix.lower() in ('.xls', '.xlsx'):
-        _logger.info('Automatically generating topology JSON file')
-        json_filename = convert_file(filename)
+        json_data = xls_to_json_data(filename)
     elif filename.suffix.lower() == '.json':
-        json_filename = filename
+        json_data = load_json(filename)
     else:
-        raise ValueError(f'unsuported topology filename extension {filename.suffix.lower()}')
-    json_data = load_json(json_filename)
+        raise ValueError(f'unsupported topology filename extension {filename.suffix.lower()}')
     return network_from_json(json_data, equipment)
 
 
