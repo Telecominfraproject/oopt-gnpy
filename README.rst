@@ -52,16 +52,16 @@ On Linux and Mac, run:
 .. code-block:: shell-session
 
     $ docker run -it --rm --volume $(pwd):/shared telecominfraproject/oopt-gnpy
-    root@bea050f186f7:/shared/examples#
+    root@bea050f186f7:/shared/example-data#
 
 On Windows, launch from Powershell as:
 
 .. code-block:: powershell
 
     PS C:\> docker run -it --rm --volume ${PWD}:/shared telecominfraproject/oopt-gnpy
-    root@89784e577d44:/shared/examples#
+    root@89784e577d44:/shared/example-data#
 
-In both cases, a directory named ``examples/`` will appear in your current working directory.
+In both cases, a directory named ``example-data/`` will appear in your current working directory.
 GNPy automaticallly populates it with example files from the current release.
 Remove that directory if you want to start from scratch.
 
@@ -157,18 +157,18 @@ This example demonstrates how GNPy can be used to check the expected SNR at the 
    :target: https://asciinema.org/a/252295
 
 By default, this script operates on a single span network defined in
-`examples/edfa_example_network.json <examples/edfa_example_network.json>`_
+`gnpy/example-data/edfa_example_network.json <gnpy/example-data/edfa_example_network.json>`_
 
 You can specify a different network at the command line as follows. For
 example, to use the CORONET Global network defined in
-`examples/CORONET_Global_Topology.json <examples/CORONET_Global_Topology.json>`_:
+`gnpy/example-data/CORONET_Global_Topology.json <gnpy/example-data/CORONET_Global_Topology.json>`_:
 
 .. code-block:: shell-session
 
-    $ gnpy-transmission-example examples/CORONET_Global_Topology.json
+    $ gnpy-transmission-example $(gnpy-example-data)/CORONET_Global_Topology.json
 
 It is also possible to use an Excel file input (for example
-`examples/CORONET_Global_Topology.xlsx <examples/CORONET_Global_Topology.xlsx>`_).
+`gnpy/example-data/CORONET_Global_Topology.xlsx <gnpy/example-data/CORONET_Global_Topology.xlsx>`_).
 The Excel file will be processed into a JSON file with the same prefix. For
 further instructions on how to prepare the Excel input file, see
 `Excel_userguide.rst <Excel_userguide.rst>`_.
@@ -193,8 +193,8 @@ Further Instructions for Use
 ----------------------------
 
 Design and transmission parameters are defined in a dedicated json file. By
-default, this information is read from `examples/eqpt_config.json
-<examples/eqpt_config.json>`_. This file defines the equipment libraries that
+default, this information is read from `gnpy/example-data/eqpt_config.json
+<gnpy/example-data/eqpt_config.json>`_. This file defines the equipment libraries that
 can be customized (EDFAs, fibers, and transceivers).
 
 It also defines the simulation parameters (spans, ROADMs, and the spectral
@@ -205,7 +205,7 @@ can be added and existing ones removed. Three different noise models are availab
 
 1. ``'type_def': 'variable_gain'`` is a simplified model simulating a 2-coil EDFA with internal, input and output VOAs. The NF vs gain response is calculated accordingly based on the input parameters: ``nf_min``, ``nf_max``, and ``gain_flatmax``. It is not a simple interpolation but a 2-stage NF calculation.
 2. ``'type_def': 'fixed_gain'`` is a fixed gain model.  `NF == Cte == nf0` if `gain_min < gain < gain_flatmax`
-3. ``'type_def': None`` is an advanced model. A detailed JSON configuration file is required (by default `examples/std_medium_gain_advanced_config.json <examples/std_medium_gain_advanced_config.json>`_). It uses a 3rd order polynomial where NF = f(gain), NF_ripple = f(frequency), gain_ripple = f(frequency), N-array dgt = f(frequency). Compared to the previous models, NF ripple and gain ripple are modelled.
+3. ``'type_def': None`` is an advanced model. A detailed JSON configuration file is required (by default `gnpy/example-data/std_medium_gain_advanced_config.json <gnpy/example-data/std_medium_gain_advanced_config.json>`_). It uses a 3rd order polynomial where NF = f(gain), NF_ripple = f(frequency), gain_ripple = f(frequency), N-array dgt = f(frequency). Compared to the previous models, NF ripple and gain ripple are modelled.
 
 For all amplifier models:
 
@@ -244,7 +244,7 @@ The fiber library currently describes SSMF and NZDF but additional fiber types c
 The transceiver equipment library is a list of supported transceivers. New
 transceivers can be added and existing ones removed at will by the user. It is
 used to determine the service list path feasibility when running the
-`path_request_run.py routine <examples/path_request_run.py>`_.
+`path_request_run.py routine <gnpy/example-data/path_request_run.py>`_.
 
 +----------------------+-----------+-----------------------------------------+
 | field                | type      | description                             |
@@ -509,11 +509,11 @@ An experimental support for Raman amplification is available:
 .. code-block:: shell
 
      $ gnpy-transmission-example \
-       examples/raman_edfa_example_network.json \
-       --sim examples/sim_params.json --show-channels
+       $(gnpy-example-data)/raman_edfa_example_network.json \
+       --sim $(gnpy-example-data)/sim_params.json --show-channels
 
-Configuration of Raman pumps (their frequencies, power and pumping direction) is done via the `RamanFiber element in the network topology <examples/raman_edfa_example_network.json>`_.
-General numeric parameters for simulaiton control are provided in the `examples/sim_params.json <examples/sim_params.json>`_.
+Configuration of Raman pumps (their frequencies, power and pumping direction) is done via the `RamanFiber element in the network topology <gnpy/example-data/raman_edfa_example_network.json>`_.
+General numeric parameters for simulaiton control are provided in the `gnpy/example-data/sim_params.json <gnpy/example-data/sim_params.json>`_.
 
 Use ``gnpy-path-request`` to run multiple optimizations as follows:
 
@@ -528,7 +528,7 @@ To see an example of it, run:
 
 .. code-block:: shell
 
-    $ cd examples
+    $ cd $(gnpy-example-data)
     $ gnpy-path-request meshTopologyExampleV2.xls meshTopologyExampleV2_services.json eqpt_config.json -o output_file.json
 
 This program requires a list of connections to be estimated and the equipment

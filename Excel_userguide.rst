@@ -34,7 +34,7 @@ Each line represents a 'node' (ROADM site or an in line amplifier site ILA or a 
   - If filled, it can take "ROADM", "FUSED" or "ILA" values. If another string is used, it will be considered as not filled. FUSED means that ingress and egress spans will be fused together.  
 
 - *State*, *Country*, *Region* are not mandatory.
-  "Region" is a holdover from the CORONET topology reference file `CORONET_Global_Topology.xlsx <examples/CORONET_Global_Topology.xlsx>`_. CORONET separates its network into geographical regions (Europe, Asia, Continental US.) This information is not used by gnpy.
+  "Region" is a holdover from the CORONET topology reference file `CORONET_Global_Topology.xlsx <gnpy/example-data/CORONET_Global_Topology.xlsx>`_. CORONET separates its network into geographical regions (Europe, Asia, Continental US.) This information is not used by gnpy.
 
 - *Longitude*, *Latitude* are not mandatory. If filled they should contain numbers.
 
@@ -84,7 +84,7 @@ and a fiber span from node3 to node6::
 
 - **Fiber type** is not mandatory. 
 
-  If filled it must contain types listed in `eqpt_config.json <examples/eqpt_config.json>`_ in "Fiber" list "type_variety".
+  If filled it must contain types listed in `eqpt_config.json <gnpy/example-data/eqpt_config.json>`_ in "Fiber" list "type_variety".
   If not filled it takes "SSMF" as default value.
 
 - **Lineic att** is not mandatory. 
@@ -150,11 +150,11 @@ then Eqpt sheet should contain:
   C    - amp3
 
 
-In case you already have filled Nodes and Links sheets `create_eqpt_sheet.py <examples/create_eqpt_sheet.py>`_  can be used to automatically create a template for the mandatory entries of the list.
+In case you already have filled Nodes and Links sheets `create_eqpt_sheet.py <gnpy/example-data/create_eqpt_sheet.py>`_  can be used to automatically create a template for the mandatory entries of the list.
 
 .. code-block:: shell
 
-    $ cd examples
+    $ cd $(gnpy-example-data)
     $ python create_eqpt_sheet.py meshTopologyExampleV2.xls
 
 This generates a text file meshTopologyExampleV2_eqt_sheet.txt  whose content can be directly copied into the Eqt sheet of the excel file. The user then can fill the values in the rest of the columns.
@@ -167,7 +167,7 @@ This generates a text file meshTopologyExampleV2_eqt_sheet.txt  whose content ca
 - **Node Z** is mandatory. It is the egress direction from the *Node A* site. Multiple Links between the same Node A and NodeZ is not supported.
 
 - **amp type** is not mandatory. 
-  If filled it must contain types listed in `eqpt_config.json <examples/eqpt_config.json>`_ in "Edfa" list "type_variety".
+  If filled it must contain types listed in `eqpt_config.json <gnpy/example-data/eqpt_config.json>`_ in "Edfa" list "type_variety".
   If not filled it takes "std_medium_gain" as default value.
   If filled with fused, a fused element with 0.0 dB loss will be placed instead of an amplifier. This might be used to avoid booster amplifier on a ROADM direction.
 
@@ -235,7 +235,7 @@ optional arguments::
 
 .. code-block:: shell
 
-    $ cd examples
+    $ cd $(gnpy-example-data)
     $ gnpy-path-request meshTopologyExampleV2.xls service_file.json eqpt_file -o output_file.json
 
 A function that computes performances for a list of services provided in the service file (accepts json or excel format.
