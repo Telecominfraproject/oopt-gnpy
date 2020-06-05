@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# TelecomInfraProject/gnpy/examples
 # Module name : test_disjunction.py
 # Version:
 # License: BSD 3-Clause Licence
