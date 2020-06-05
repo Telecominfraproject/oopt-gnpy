@@ -234,7 +234,7 @@ def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
     return nodes, links
 
 
-def convert_file(input_filename, names_matching=False, filter_region=[]):
+def convert_file(input_filename, filter_region=[]):
     nodes, links, eqpts = parse_excel(input_filename)
     if filter_region:
         nodes = [n for n in nodes if n.region.lower() in filter_region]

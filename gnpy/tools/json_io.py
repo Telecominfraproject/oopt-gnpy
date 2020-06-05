@@ -303,11 +303,11 @@ def _equipment_from_json(json_data, filename):
     return equipment
 
 
-def load_network(filename, equipment, name_matching=False):
+def load_network(filename, equipment):
     json_filename = ''
     if filename.suffix.lower() in ('.xls', '.xlsx'):
         _logger.info('Automatically generating topology JSON file')
-        json_filename = convert_file(filename, name_matching)
+        json_filename = convert_file(filename)
     elif filename.suffix.lower() == '.json':
         json_filename = filename
     else:

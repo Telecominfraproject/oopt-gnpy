@@ -46,11 +46,11 @@ def show_example_data_dir():
     print(f'{_examples_dir}/')
 
 
-def load_common_data(equipment_filename, topology_filename, simulation_filename=None, fuzzy_name_matching=False):
+def load_common_data(equipment_filename, topology_filename, simulation_filename=None):
     '''Load common configuration from JSON files'''
     try:
         equipment = load_equipment(equipment_filename)
-        network = load_network(topology_filename, equipment, fuzzy_name_matching)
+        network = load_network(topology_filename, equipment)
         sim_params = SimParams(**load_json(simulation_filename)) if simulation_filename is not None else None
         if not sim_params:
             if next((node for node in network if isinstance(node, RamanFiber)), None) is not None:
@@ -96,8 +96,6 @@ def transmission_main_example(args=None):
     parser.add_argument('-v', '--verbose', action='count', default=0, help='increases verbosity for each occurence')
     parser.add_argument('-l', '--list-nodes', action='store_true', help='list all transceiver nodes')
     parser.add_argument('-po', '--power', default=0, help='channel ref power in dBm')
-    parser.add_argument('-names', '--names-matching', action='store_true',
-                        help='display network names that are closed matches')
     parser.add_argument('filename', nargs='?', type=Path,
                         default=_examples_dir / 'edfa_example_network.json')
     parser.add_argument('source', nargs='?', help='source node')
@@ -107,7 +105,7 @@ def transmission_main_example(args=None):
     args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
 
-    (equipment, network) = load_common_data(args.equipment, args.filename, args.sim_params, fuzzy_name_matching=args.names_matching)
+    (equipment, network) = load_common_data(args.equipment, args.filename, args.sim_params)
 
     if args.plot:
         plot_baseline(network)
