@@ -33,13 +33,17 @@ from gnpy.tools.json_io import load_equipment, load_network, load_json, load_req
 from gnpy.tools.plots import plot_baseline, plot_results
 
 _logger = logging.getLogger(__name__)
-_examples_dir = Path(__file__).parent.parent.parent / 'examples'
+_examples_dir = Path(__file__).parent.parent / 'example-data'
 _help_footer = '''
 This program is part of GNPy, https://github.com/TelecomInfraProject/oopt-gnpy
 
 Learn more at https://gnpy.readthedocs.io/
 
 '''
+
+
+def show_example_data_dir():
+    print(f'{_examples_dir}/')
 
 
 def load_common_data(equipment_filename, topology_filename, simulation_filename=None, fuzzy_name_matching=False):
