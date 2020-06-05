@@ -34,6 +34,12 @@ from gnpy.tools.plots import plot_baseline, plot_results
 
 _logger = logging.getLogger(__name__)
 _examples_dir = Path(__file__).parent.parent.parent / 'examples'
+_help_footer = '''
+This program is part of GNPy, https://github.com/TelecomInfraProject/oopt-gnpy
+
+Learn more at https://gnpy.readthedocs.io/
+
+'''
 
 
 def load_common_data(equipment_filename, topology_filename, simulation_filename=None, fuzzy_name_matching=False):
@@ -73,7 +79,10 @@ def _setup_logging(args):
 
 
 def transmission_main_example(args=None):
-    parser = ArgumentParser()
+    parser = ArgumentParser(
+        description='Send a full spectrum load through the network from point A to point B',
+        epilog=_help_footer,
+        )
     parser.add_argument('-e', '--equipment', type=Path,
                         default=_examples_dir / 'eqpt_config.json')
     parser.add_argument('--sim-params', type=Path,
@@ -290,7 +299,10 @@ def _path_result_json(pathresult):
 
 
 def path_requests_run(args=None):
-    parser = ArgumentParser(description='Compute performance for a list of services provided in a json file or an excel sheet.')
+    parser = ArgumentParser(
+        description='Compute performance for a list of services provided in a json file or an excel sheet',
+        epilog=_help_footer,
+        )
     parser.add_argument('network_filename', nargs='?', type=Path,
                         default=_examples_dir / 'meshTopologyExampleV2.xls',
                         help='input topology file in xls or json')
