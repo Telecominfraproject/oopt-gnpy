@@ -29,7 +29,7 @@ from gnpy.topology.request import (ResultElement, jsontocsv, compute_path_dsjctn
                                    deduplicate_disjunctions, compute_path_with_disjunction,
                                    PathRequest, compute_constrained_path, propagate2)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
-from gnpy.tools.json_io import load_equipment, load_network, load_json, load_requests, save_network,  requests_from_json, disjunctions_from_json
+from gnpy.tools.json_io import load_equipment, load_network, load_json, load_requests, save_network, requests_from_json, disjunctions_from_json
 from gnpy.tools.plots import plot_baseline, plot_results
 
 _logger = logging.getLogger(__name__)
@@ -98,6 +98,7 @@ def transmission_main_example(args=None):
                         default=_examples_dir / 'edfa_example_network.json')
     parser.add_argument('source', nargs='?', help='source node')
     parser.add_argument('destination', nargs='?', help='destination node')
+    parser.add_argument('--save-network', type=Path, help='Save the network as a JSON file')
 
     args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
@@ -255,7 +256,8 @@ def transmission_main_example(args=None):
             })
     write_csv(result_dicts, 'simulation_result.csv')
 
-    save_network(args.filename, network)
+    if args.save_network is not None:
+        save_network(network, args.save_network)
 
     if args.show_channels:
         print('\nThe total SNR per channel at the end of the line is:')
@@ -317,6 +319,7 @@ def path_requests_run(args=None):
     parser.add_argument('-v', '--verbose', action='count', default=0,
                         help='increases verbosity for each occurence')
     parser.add_argument('-o', '--output', type=Path)
+    parser.add_argument('--save-network', type=Path, help='Save the network as a JSON file')
 
     args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
@@ -336,7 +339,8 @@ def path_requests_run(args=None):
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
                                              equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
-    save_network(args.network_filename, network)
+    if args.save_network is not None:
+        save_network(network, args.save_network)
     oms_list = build_oms_list(network, equipment)
 
     try:

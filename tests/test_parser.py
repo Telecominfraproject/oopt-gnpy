@@ -73,7 +73,7 @@ def test_excel_json_generation(xls_input, expected_json_output):
                           DATA_DIR / 'testTopology.xls':
                           DATA_DIR / 'testTopology_auto_design_expected.json',
                           }.items())
-def test_auto_design_generation_fromxlsgainmode(xls_input, expected_json_output):
+def test_auto_design_generation_fromxlsgainmode(tmpdir, xls_input, expected_json_output):
     """ tests generation of topology json
         test that the build network gives correct results in gain mode
     """
@@ -88,9 +88,8 @@ def test_auto_design_generation_fromxlsgainmode(xls_input, expected_json_output)
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
                                              equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
-    save_network(xls_input, network)
-
-    actual_json_output = xls_input.with_name(xls_input.stem + '_auto_design').with_suffix('.json')
+    actual_json_output = tmpdir / xls_input.with_name(xls_input.stem + '_auto_design').with_suffix('.json').name
+    save_network(network, actual_json_output)
 
     with open(actual_json_output, encoding='utf-8') as f:
         actual = load(f)
@@ -116,7 +115,7 @@ def test_auto_design_generation_fromxlsgainmode(xls_input, expected_json_output)
                           DATA_DIR / 'testTopology_auto_design_expected.json':
                           DATA_DIR / 'testTopology_auto_design_expected.json',
                           }.items())
-def test_auto_design_generation_fromjson(json_input, expected_json_output):
+def test_auto_design_generation_fromjson(tmpdir, json_input, expected_json_output):
     """test that autodesign creates same file as an input file already autodesigned
     """
     equipment = load_equipment(eqpt_filename)
@@ -130,9 +129,8 @@ def test_auto_design_generation_fromjson(json_input, expected_json_output):
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
                                              equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
-    save_network(json_input, network)
-
-    actual_json_output = json_input.with_name(json_input.stem + '_auto_design').with_suffix('.json')
+    actual_json_output = tmpdir / json_input.with_name(json_input.stem + '_auto_design').with_suffix('.json').name
+    save_network(network, actual_json_output)
 
     with open(actual_json_output, encoding='utf-8') as f:
         actual = load(f)

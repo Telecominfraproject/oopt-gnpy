@@ -316,10 +316,13 @@ def load_network(filename, equipment, name_matching=False):
     return network_from_json(json_data, equipment)
 
 
-def save_network(filename, network):
-    filename_output = path.splitext(filename)[0] + '_auto_design.json'
-    json_data = network_to_json(network)
-    save_json(json_data, filename_output)
+def save_network(network: DiGraph, filename: str):
+    '''Dump the network into a JSON file
+
+    :param network: network to work on
+    :param filename: file to write to
+    '''
+    save_json(network_to_json(network), filename)
 
 
 def _cls_for(equipment_type):
