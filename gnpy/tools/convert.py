@@ -234,7 +234,7 @@ def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
     return nodes, links
 
 
-def convert_file(input_filename, filter_region=[]):
+def xls_to_json_data(input_filename, filter_region=[]):
     nodes, links, eqpts = parse_excel(input_filename)
     if filter_region:
         nodes = [n for n in nodes if n.region.lower() in filter_region]
@@ -260,7 +260,7 @@ def convert_file(input_filename, filter_region=[]):
 
     nodes, links = sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city)
 
-    data = {
+    return {
         'elements':
             [{'uid': f'trx {x.city}',
               'metadata': {'location': {'city': x.city,
@@ -392,6 +392,9 @@ def convert_file(input_filename, filter_region=[]):
                  for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'])))
     }
 
+
+def convert_file(input_filename, filter_region=[]):
+    data = xls_to_json_data(input_filename, filter_region)
     suffix_filename = str(input_filename.suffixes[0])
     full_input_filename = str(input_filename)
     split_filename = [full_input_filename[0:len(full_input_filename) - len(suffix_filename)], suffix_filename[1:]]
