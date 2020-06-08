@@ -349,11 +349,11 @@ class Fiber(_Node):
             yield None
             return
         loc_attr = 'carriers_' + loc
-        for c in getattr(self, loc_attr):
+        for carrier in getattr(self, loc_attr):
             if attr == 'total':
-                yield c.power.ase + c.power.nli + c.power.signal
+                yield carrier.power.ase + carrier.power.nli + carrier.power.signal
             else:
-                yield c.power._asdict().get(attr, None)
+                yield carrier.power._asdict().get(attr, None)
 
     def alpha(self, frequencies):
         """ It returns the values of the series expansion of attenuation coefficient alpha(f) for all f in frequencies
@@ -597,11 +597,11 @@ class Edfa(_Node):
             yield None
             return
         loc_attr = 'carriers_' + loc
-        for c in getattr(self, loc_attr):
+        for carrier in getattr(self, loc_attr):
             if attr == 'total':
-                yield c.power.ase + c.power.nli + c.power.signal
+                yield carrier.power.ase + carrier.power.nli + carrier.power.signal
             else:
-                yield c.power._asdict().get(attr, None)
+                yield carrier.power._asdict().get(attr, None)
 
     def interpol_params(self, frequencies, pin, baud_rates, pref):
         """interpolate SI channel frequencies with the edfa dgt and gain_ripple frquencies from JSON
