@@ -73,6 +73,24 @@
     },
     {
       "key": {
+        "uuid": "66cc7a85_bb66b500",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-08T20:16:35Z",
+      "side": 1,
+      "message": "just for the record -- I don\u0027t have no preference here.",
+      "parentUuid": "55a46235_334bbe52",
+      "revId": "4db2368121281f94afbd9d2651a6d4a86a472613",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "48934a01_da512c60",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 20
