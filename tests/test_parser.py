@@ -15,7 +15,6 @@
     - writing of results in json (same keys)
 """
 
-from json import load
 from pathlib import Path
 from os import unlink
 import shutil
@@ -30,7 +29,7 @@ from gnpy.topology.request import (jsontocsv, requests_aggregation, compute_path
                                    compute_path_with_disjunction, ResultElement, PathRequest)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.convert import convert_file
-from gnpy.tools.json_io import load_network, save_network, load_equipment, requests_from_json, disjunctions_from_json
+from gnpy.tools.json_io import load_json, load_network, save_network, load_equipment, requests_from_json, disjunctions_from_json
 from gnpy.tools.service_sheet import read_service_sheet, correct_xls_route_list
 
 TEST_DIR = Path(__file__).parent
@@ -51,12 +50,9 @@ def test_excel_json_generation(tmpdir, xls_input, expected_json_output):
     convert_file(xls_copy)
 
     actual_json_output = xls_copy.with_suffix('.json')
-    with open(actual_json_output, encoding='utf-8') as f:
-        actual = load(f)
+    actual = load_json(actual_json_output)
     unlink(actual_json_output)
-
-    with open(expected_json_output, encoding='utf-8') as f:
-        expected = load(f)
+    expected = load_json(expected_json_output)
 
     results = compare_networks(expected, actual)
     assert not results.elements.missing
@@ -93,13 +89,9 @@ def test_auto_design_generation_fromxlsgainmode(tmpdir, xls_input, expected_json
     build_network(network, equipment, p_db, p_total_db)
     actual_json_output = tmpdir / xls_input.with_name(xls_input.stem + '_auto_design').with_suffix('.json').name
     save_network(network, actual_json_output)
-
-    with open(actual_json_output, encoding='utf-8') as f:
-        actual = load(f)
+    actual = load_json(actual_json_output)
     unlink(actual_json_output)
-
-    with open(expected_json_output, encoding='utf-8') as f:
-        expected = load(f)
+    expected = load_json(expected_json_output)
 
     results = compare_networks(expected, actual)
     assert not results.elements.missing
@@ -134,13 +126,9 @@ def test_auto_design_generation_fromjson(tmpdir, json_input, expected_json_outpu
     build_network(network, equipment, p_db, p_total_db)
     actual_json_output = tmpdir / json_input.with_name(json_input.stem + '_auto_design').with_suffix('.json').name
     save_network(network, actual_json_output)
-
-    with open(actual_json_output, encoding='utf-8') as f:
-        actual = load(f)
+    actual = load_json(actual_json_output)
     unlink(actual_json_output)
-
-    with open(expected_json_output, encoding='utf-8') as f:
-        expected = load(f)
+    expected = load_json(expected_json_output)
 
     results = compare_networks(expected, actual)
     assert not results.elements.missing
@@ -168,9 +156,7 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
                                              equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
     from_xls = read_service_sheet(xls_input, equipment, network, network_filename=DATA_DIR / 'testTopology.xls')
-
-    with open(expected_json_output, encoding='utf-8') as f:
-        expected = load(f)
+    expected = load_json(expected_json_output)
 
     results = compare_services(expected, from_xls)
     assert not results.requests.missing
@@ -192,8 +178,7 @@ def test_csv_response_generation(json_input, csv_output):
     """ tests if generated csv is consistant with expected generation
         same columns (order not important)
     """
-    with open(json_input) as jsonfile:
-        json_data = load(jsonfile)
+    json_data = load_json(json_input)
     equipment = load_equipment(eqpt_filename)
     csv_filename = str(csv_output) + '.csv'
     with open(csv_filename, 'w', encoding='utf-8') as fcsv:
@@ -329,12 +314,8 @@ def test_json_response_generation(xls_input, expected_response_file):
     temp = {
         'response': [n.json for n in result]
     }
-    # load expected result and compare keys and values
 
-    with open(expected_response_file) as jsonfile:
-        expected = load(jsonfile)
-        # since we changes bidir attribute of request#2, need to add the corresponding
-        # metric in response
+    expected = load_json(expected_response_file)
 
     for i, response in enumerate(temp['response']):
         if i == 2:

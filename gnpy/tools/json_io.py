@@ -208,8 +208,7 @@ class Amp(_JsonThing):
                 raise EquipmentConfigError(f'missing preamp/booster variety input for amplifier: {type_variety} in equipment config')
             dual_stage_def = Model_dual_stage(preamp_variety, booster_variety)
 
-        with open(config, encoding='utf-8') as f:
-            json_data = json.load(f)
+        json_data = load_json(config)
 
         return cls(**{**kwargs, **json_data,
                       'nf_model': nf_def, 'dual_stage_model': dual_stage_def})
