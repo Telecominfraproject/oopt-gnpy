@@ -30,8 +30,8 @@ from gnpy.topology.request import (jsontocsv, requests_aggregation, compute_path
                                    compute_path_with_disjunction, ResultElement, PathRequest)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.convert import convert_file
-from gnpy.tools.json_io import convert_service_sheet, load_network, save_network, load_equipment, requests_from_json, disjunctions_from_json
-from gnpy.tools.service_sheet import correct_xls_route_list
+from gnpy.tools.json_io import load_network, save_network, load_equipment, requests_from_json, disjunctions_from_json
+from gnpy.tools.service_sheet import read_service_sheet, correct_xls_route_list
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
@@ -153,7 +153,7 @@ def test_auto_design_generation_fromjson(tmpdir, json_input, expected_json_outpu
 # test services creation
 
 
-@pytest.mark.parametrize('xls_input,expected_json_output', {
+@pytest.mark.parametrize('xls_input, expected_json_output', {
     DATA_DIR / 'testTopology.xls': DATA_DIR / 'testTopology_services_expected.json',
     DATA_DIR / 'testService.xls': DATA_DIR / 'testService_services_expected.json'
 }.items())
@@ -167,17 +167,12 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
                                              equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
-    convert_service_sheet(xls_input, equipment, network, network_filename=DATA_DIR / 'testTopology.xls')
-
-    actual_json_output = xls_input.with_name(xls_input.stem + '_services').with_suffix('.json')
-    with open(actual_json_output, encoding='utf-8') as f:
-        actual = load(f)
-    unlink(actual_json_output)
+    from_xls = read_service_sheet(xls_input, equipment, network, network_filename=DATA_DIR / 'testTopology.xls')
 
     with open(expected_json_output, encoding='utf-8') as f:
         expected = load(f)
 
-    results = compare_services(expected, actual)
+    results = compare_services(expected, from_xls)
     assert not results.requests.missing
     assert not results.requests.extra
     assert not results.requests.different
@@ -302,7 +297,7 @@ def test_json_response_generation(xls_input, expected_response_file):
                                              equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
 
-    data = convert_service_sheet(xls_input, equipment, network)
+    data = read_service_sheet(xls_input, equipment, network)
     # change one of the request with bidir option to cover bidir case as well
     data['path-request'][2]['bidirectional'] = True
 
