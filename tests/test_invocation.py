@@ -33,3 +33,11 @@ def test_run_wrapper(program):
     assert proc.stderr == ''
     assert 'https://github.com/telecominfraproject/oopt-gnpy' in proc.stdout.lower()
     assert 'https://gnpy.readthedocs.io/' in proc.stdout.lower()
+
+
+def test_conversion_xls():
+    proc = subprocess.run(
+        ('gnpy-convert-xls', SRC_ROOT / 'tests' / 'data' / 'testTopology.xls', '--output', '/dev/null'),
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, universal_newlines=True)
+    assert proc.stderr == ''
+    assert '/dev/null' in proc.stdout
