@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "50c53f07_b1a79b52",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-08T21:04:03Z",
+      "side": 1,
+      "message": "This causes a few warnings in my linter that is built in into the IDE that I\u0027m using. Those functions which use `c` as a variable name now get flagged as variables shadowing global imports. List comprehension is fine.\n\nI\u0027ve pushed a new parent which fixes this, please keep that in mind when rebasing this change.",
+      "revId": "3dfcef869de13c818e32eb7e9d90dd6aed9a53f5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
