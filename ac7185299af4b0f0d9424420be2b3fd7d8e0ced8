@@ -164,6 +164,24 @@
       "revId": "ac7185299af4b0f0d9424420be2b3fd7d8e0ced8",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97cc5434_7ebd55ad",
+        "filename": "tests/test_science_utils.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-08T20:10:38Z",
+      "side": 1,
+      "message": "It\u0027s test data, so we can make it in any way we would like to. Keeping the test data in two places looks like a worst solution to me.\n\nPlease either move beta3\u003d0 into the JSON file, or (and this makes more sense to me without knowing the physics involved) update the simulation values with \"realistic values\".",
+      "parentUuid": "6cda5275_cddaeab8",
+      "revId": "ac7185299af4b0f0d9424420be2b3fd7d8e0ced8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
