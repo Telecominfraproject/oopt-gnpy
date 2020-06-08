@@ -171,20 +171,20 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
 # test xls answers creation
 
 
-@pytest.mark.parametrize('json_input, csv_output', {
-    DATA_DIR / 'testTopology_response.json': DATA_DIR / 'testTopology_response',
-}.items())
-def test_csv_response_generation(json_input, csv_output):
+@pytest.mark.parametrize('json_input',
+    (DATA_DIR / 'testTopology_response.json', )
+)
+def test_csv_response_generation(tmpdir, json_input):
     """ tests if generated csv is consistant with expected generation
         same columns (order not important)
     """
     json_data = load_json(json_input)
     equipment = load_equipment(eqpt_filename)
-    csv_filename = str(csv_output) + '.csv'
+    csv_filename = Path(tmpdir / json_input.name).with_suffix('.csv')
     with open(csv_filename, 'w', encoding='utf-8') as fcsv:
         jsontocsv(json_data, equipment, fcsv)
 
-    expected_csv_filename = str(csv_output) + '_expected.csv'
+    expected_csv_filename = json_input.parent / (json_input.stem + '_expected.csv')
 
     # expected header
     # csv_header = \
