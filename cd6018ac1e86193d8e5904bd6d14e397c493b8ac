@@ -141,6 +141,42 @@
       "revId": "cd6018ac1e86193d8e5904bd6d14e397c493b8ac",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "613fc7ed_2e8a6929",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-08T21:04:03Z",
+      "side": 1,
+      "message": "I like both points here:\n\n- separate names for values where the units are different,\n- alignment with what the ITU-t says.\n\nI don\u0027t have any preference on naming, so PMD_coef looks good to me.",
+      "parentUuid": "d9b905f4_14eee61c",
+      "revId": "cd6018ac1e86193d8e5904bd6d14e397c493b8ac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab6ae353_b64f2ac0",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-08T21:04:03Z",
+      "side": 1,
+      "message": "\u003e linters-diff: W605 invalid escape sequence \u0027\\*\u0027\n\nSorry for giving a wrong advice, fixed now.",
+      "parentUuid": "57c45eaf_0e94b6cb",
+      "revId": "cd6018ac1e86193d8e5904bd6d14e397c493b8ac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
