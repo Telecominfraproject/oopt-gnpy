@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "00b7a4e4_83ff7a20",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-08T20:32:20Z",
+      "side": 1,
+      "message": "nit: I missed this in Gerrit\u0027s web UI, but it\u0027s very visible in the terminal -- please wrap the git log conservatively. I believe that the widespread recommendation is \u003c50chars for the summary (great here, thanks!) and the rest at 72 chars. Not sure what editor you\u0027re on.",
+      "revId": "cc11bd186cfe771e5ab076300865b14a40f2e21b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
