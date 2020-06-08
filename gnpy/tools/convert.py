@@ -393,12 +393,10 @@ def xls_to_json_data(input_filename, filter_region=[]):
     }
 
 
-def convert_file(input_filename, filter_region=[]):
+def convert_file(input_filename, filter_region=[], output_json_file_name=None):
     data = xls_to_json_data(input_filename, filter_region)
-    suffix_filename = str(input_filename.suffixes[0])
-    full_input_filename = str(input_filename)
-    split_filename = [full_input_filename[0:len(full_input_filename) - len(suffix_filename)], suffix_filename[1:]]
-    output_json_file_name = split_filename[0] + '.json'
+    if output_json_file_name is None:
+        output_json_file_name = input_filename.with_suffix('.json')
     with open(output_json_file_name, 'w', encoding='utf-8') as edfa_json_file:
         edfa_json_file.write(dumps(data, indent=2, ensure_ascii=False))
     return output_json_file_name
@@ -731,10 +729,17 @@ LINKS_COLUMN = 16
 LINKS_LINE = 3
 EQPTS_LINE = 3
 EQPTS_COLUMN = 14
-parser = ArgumentParser()
-parser.add_argument('workbook', nargs='?', type=Path, default='meshTopologyExampleV2.xls')
-parser.add_argument('-f', '--filter-region', action='append', default=[])
+
+
+def _do_convert():
+    parser = ArgumentParser()
+    parser.add_argument('workbook', type=Path)
+    parser.add_argument('-f', '--filter-region', action='append', default=[])
+    parser.add_argument('--output', type=Path, help='Name of the generated JSON file')
+    args = parser.parse_args()
+    res = convert_file(args.workbook, args.filter_region, args.output)
+    print(f'XLS -> JSON saved to {res}')
+
 
 if __name__ == '__main__':
-    args = parser.parse_args()
-    convert_file(args.workbook, args.filter_region)
+    _do_convert()
