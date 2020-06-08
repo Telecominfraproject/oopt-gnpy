@@ -180,12 +180,11 @@ class Request_element(Element):
         return self.pathrequest, self.pathsync
 
 
-def convert_service_sheet(
+def read_service_sheet(
         input_filename,
         eqpt,
         network,
         network_filename=None,
-        output_filename='',
         bidir=False,
         filter_region=None):
     """ converts a service sheet into a json structure
@@ -197,12 +196,6 @@ def convert_service_sheet(
     service = parse_excel(input_filename)
     req = [Request_element(n, eqpt, bidir) for n in service]
     req = correct_xls_route_list(network_filename, network, req)
-    # dumps the output into a json file with name
-    # split_filename = [input_filename[0:len(input_filename)-len(suffix_filename)] , suffix_filename[1:]]
-    if output_filename == '':
-        output_filename = f'{str(input_filename)[0:len(str(input_filename))-len(str(input_filename.suffixes[0]))]}_services.json'
-    # for debug
-    # print(json_filename)
     # if there is no sync vector , do not write any synchronization
     synchro = [n.json[1] for n in req if n.json[1] is not None]
     if synchro:
@@ -214,8 +207,6 @@ def convert_service_sheet(
         data = {
             'path-request': [n.json[0] for n in req]
         }
-    with open(output_filename, 'w', encoding='utf-8') as f:
-        f.write(dumps(data, indent=2, ensure_ascii=False))
     return data
 
 

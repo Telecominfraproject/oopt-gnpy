@@ -30,8 +30,8 @@ from gnpy.topology.request import (jsontocsv, requests_aggregation, compute_path
                                    compute_path_with_disjunction, ResultElement, PathRequest)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.convert import convert_file
-from gnpy.tools.json_io import load_network, save_network, load_equipment, requests_from_json, disjunctions_from_json
-from gnpy.tools.service_sheet import convert_service_sheet, correct_xls_route_list
+from gnpy.tools.json_io import convert_service_sheet, load_network, save_network, load_equipment, requests_from_json, disjunctions_from_json
+from gnpy.tools.service_sheet import correct_xls_route_list
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'

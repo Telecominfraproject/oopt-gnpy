@@ -20,7 +20,7 @@ from gnpy.core.science_utils import estimate_nf_model
 from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions
 from gnpy.topology.request import PathRequest, Disjunction
 from gnpy.tools.convert import xls_to_json_data
-from gnpy.tools.service_sheet import convert_service_sheet
+from gnpy.tools.service_sheet import read_service_sheet
 import time
 
 
@@ -517,3 +517,18 @@ def disjunctions_from_json(json_data):
             disjunctions_list.append(Disjunction(**params))
 
     return disjunctions_list
+
+
+def convert_service_sheet(
+        input_filename,
+        eqpt,
+        network,
+        network_filename=None,
+        output_filename='',
+        bidir=False,
+        filter_region=None):
+    if output_filename == '':
+        output_filename = f'{str(input_filename)[0:len(str(input_filename))-len(str(input_filename.suffixes[0]))]}_services.json'
+    data = read_service_sheet(input_filename, eqpt, network, network_filename, bidir, filter_region)
+    save_json(data, output_filename)
+    return data
