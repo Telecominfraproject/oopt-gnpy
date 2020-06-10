@@ -8,7 +8,7 @@ gnpy.tools.cli_examples
 Common code for CLI examples
 '''
 
-from argparse import ArgumentParser
+import argparse
 from json import dumps
 import logging
 import os.path
@@ -83,7 +83,7 @@ def _setup_logging(args):
     logging.basicConfig(level={2: logging.DEBUG, 1: logging.INFO, 0: logging.CRITICAL}.get(args.verbose, logging.DEBUG))
 
 
-def _add_common_options(parser: ArgumentParser):
+def _add_common_options(parser: argparse.ArgumentParser):
     parser.add_argument('-v', '--verbose', action='count', default=0,
                         help='Increase verbosity (can be specified several times)')
     parser.add_argument('-e', '--equipment', type=Path, metavar=_help_fname_json,
@@ -93,9 +93,10 @@ def _add_common_options(parser: ArgumentParser):
 
 
 def transmission_main_example(args=None):
-    parser = ArgumentParser(
+    parser = argparse.ArgumentParser(
         description='Send a full spectrum load through the network from point A to point B',
         epilog=_help_footer,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         )
     _add_common_options(parser)
     parser.add_argument('--sim-params', type=Path, metavar=_help_fname_json,
@@ -309,9 +310,10 @@ def _path_result_json(pathresult):
 
 
 def path_requests_run(args=None):
-    parser = ArgumentParser(
+    parser = argparse.ArgumentParser(
         description='Compute performance for a list of services provided in a json file or an excel sheet',
         epilog=_help_footer,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         )
     _add_common_options(parser)
     parser.add_argument('network_filename', nargs='?', type=Path, metavar='NETWORK-TOPOLOGY.(json|xls|xlsx)',
