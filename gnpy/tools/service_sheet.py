@@ -11,11 +11,9 @@ Yang model for requesting path computation.
 See: draft-ietf-teas-yang-path-computation-01.txt
 """
 
-from sys import exit
 from xlrd import open_workbook, XL_CELL_EMPTY
 from collections import namedtuple
 from logging import getLogger
-from json import dumps
 from copy import deepcopy
 from gnpy.core.utils import db2lin
 from gnpy.core.exceptions import ServiceError
@@ -24,7 +22,6 @@ import gnpy.core.ansi_escapes as ansi_escapes
 from gnpy.tools.convert import corresp_names, corresp_next_node
 
 SERVICES_COLUMN = 12
-#EQPT_LIBRARY_FILENAME = Path(__file__).parent / 'eqpt_config.json'
 
 
 def all_rows(sheet, start=0):
@@ -33,15 +30,11 @@ def all_rows(sheet, start=0):
 
 logger = getLogger(__name__)
 
-# Type for input data
-
 
 class Request(namedtuple('Request', 'request_id source destination trx_type mode \
     spacing power nb_channel disjoint_from nodes_list is_loose path_bandwidth')):
     def __new__(cls, request_id, source, destination, trx_type,  mode=None, spacing=None, power=None, nb_channel=None, disjoint_from='',  nodes_list=None, is_loose='', path_bandwidth=None):
         return super().__new__(cls, request_id, source, destination, trx_type, mode, spacing, power, nb_channel, disjoint_from,  nodes_list, is_loose, path_bandwidth)
-
-# Type for output data:  // from dutc
 
 
 class Element:
@@ -219,13 +212,10 @@ def correct_xlrd_int_to_str_reading(v):
         value = v
     return value
 
-# to be used from dutc
-
 
 def parse_row(row, fieldnames):
     return {f: r.value for f, r in zip(fieldnames, row[0:SERVICES_COLUMN])
             if r.ctype != XL_CELL_EMPTY}
-#
 
 
 def parse_excel(input_filename):
