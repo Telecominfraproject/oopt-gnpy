@@ -34,6 +34,24 @@
       "revId": "3857ab1dbb9858cc8ca8b0157e6299a2db691e39",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f99758a_bcfe0676",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-06-10T14:45:15Z",
+      "side": 1,
+      "message": "OK, I will remember: no magic 😂\nYes this is something we can add with Orange internal tooling.\nLet\u0027s see if somebody else requests both after your merge it ...\nthe use of both format is because of the web server: our user get the csv, but the web API uses json, so both formats are used",
+      "parentUuid": "ca392c61_348262f7",
+      "revId": "3857ab1dbb9858cc8ca8b0157e6299a2db691e39",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
