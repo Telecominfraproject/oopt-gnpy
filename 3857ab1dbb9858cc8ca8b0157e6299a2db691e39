@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "08d05277_5e1ac95f",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-06-10T13:55:23Z",
+      "side": 1,
+      "message": "but if I want both json and csv, then I need to run the program twice with option to csv and option to json ? whatif no suffix means both format ?",
+      "revId": "3857ab1dbb9858cc8ca8b0157e6299a2db691e39",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
