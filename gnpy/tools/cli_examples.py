@@ -184,23 +184,6 @@ def transmission_main_example(args=None):
     params.update(trx_params)
     req = PathRequest(**params)
 
-    result_dicts = {}
-    network_data = [{
-                    'network_name': str(args.filename),
-                    'source': source.uid,
-                    'destination': destination.uid
-                    }]
-    result_dicts.update({'network': network_data})
-    design_data = [{
-        'power_mode': equipment['Span']['default'].power_mode,
-        'span_power_range': equipment['Span']['default'].delta_power_range_db,
-        'design_pch': equipment['SI']['default'].power_dbm,
-        'baud_rate': equipment['SI']['default'].baud_rate
-    }]
-    result_dicts.update({'design': design_data})
-    simulation_data = []
-    result_dicts.update({'simulation results': simulation_data})
-
     power_mode = equipment['Span']['default'].power_mode
     print('\n'.join([f'Power mode is set to {power_mode}',
                      f'=> it can be modified in eqpt_config.json - Span']))
@@ -248,22 +231,6 @@ def transmission_main_example(args=None):
         # print(f'carriers ase output of {path[1]} =\n {list(path[1].carriers("out", "nli"))}')
         # => use "in" or "out" parameter
         # => use "nli" or "ase" or "signal" or "total" parameter
-        if power_mode:
-            simulation_data.append({
-                'Pch_dBm': pref_ch_db + dp_db,
-                'OSNR_ASE_0.1nm': round(mean(destination.osnr_ase_01nm), 2),
-                'OSNR_ASE_signal_bw': round(mean(destination.osnr_ase), 2),
-                'SNR_nli_signal_bw': round(mean(destination.osnr_nli), 2),
-                'SNR_total_signal_bw': round(mean(destination.snr), 2)
-            })
-        else:
-            simulation_data.append({
-                'gain_mode': 'power canot be set',
-                'OSNR_ASE_0.1nm': round(mean(destination.osnr_ase_01nm), 2),
-                'OSNR_ASE_signal_bw': round(mean(destination.osnr_ase), 2),
-                'SNR_nli_signal_bw': round(mean(destination.osnr_nli), 2),
-                'SNR_total_signal_bw': round(mean(destination.snr), 2)
-            })
 
     if args.save_network is not None:
         save_network(network, args.save_network)
