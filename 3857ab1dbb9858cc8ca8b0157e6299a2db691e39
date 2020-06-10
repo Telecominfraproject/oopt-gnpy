@@ -16,6 +16,24 @@
       "revId": "3857ab1dbb9858cc8ca8b0157e6299a2db691e39",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ca392c61_348262f7",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-10T14:11:20Z",
+      "side": 1,
+      "message": "I would prefer not to have an option so magic. To me, saying `gnpy-do-something --output foo` means that I want to have a file \"foo\" as the output, not \"foo.json\" and \"foo.csv\" (why these two, why not JSON and XLS, for example?). Anyway, my preferred outcome is dealing with just one I/O format, not writing out duplicate info in two formats at the same time.\n\nIs the CSV output used outside of Orange? If not, would it make sense to move it to Orange\u0027s internal tooling? If we have some other user(s) or if it\u0027s a very realistic use case, then I would (reluctantly) add --output-json and --output-csv, but I would love to hear more about that use case behind this.",
+      "parentUuid": "08d05277_5e1ac95f",
+      "revId": "3857ab1dbb9858cc8ca8b0157e6299a2db691e39",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
