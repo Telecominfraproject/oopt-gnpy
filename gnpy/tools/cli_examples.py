@@ -256,7 +256,6 @@ def transmission_main_example(args=None):
                 'SNR_nli_signal_bw': round(mean(destination.osnr_nli), 2),
                 'SNR_total_signal_bw': round(mean(destination.snr), 2)
             })
-    write_csv(result_dicts, 'simulation_result.csv')
 
     if args.save_network is not None:
         save_network(network, args.save_network)
