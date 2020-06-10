@@ -86,6 +86,8 @@ def _setup_logging(args):
 def _add_common_options(parser: ArgumentParser):
     parser.add_argument('-v', '--verbose', action='count', default=0,
                         help='Increase verbosity (can be specified several times)')
+    parser.add_argument('-e', '--equipment', type=Path, metavar=_help_fname_json,
+                        default=_examples_dir / 'eqpt_config.json', help='Equipment library')
     parser.add_argument('--save-network', type=Path, metavar=_help_fname_json,
                         help='Save the final network as a JSON file')
 
@@ -96,8 +98,6 @@ def transmission_main_example(args=None):
         epilog=_help_footer,
         )
     _add_common_options(parser)
-    parser.add_argument('-e', '--equipment', type=Path, metavar=_help_fname_json,
-                        default=_examples_dir / 'eqpt_config.json', help='Equipment library')
     parser.add_argument('--sim-params', type=Path, metavar=_help_fname_json,
                         default=None, help='Path to the JSON containing simulation parameters (required for Raman)')
     parser.add_argument('--show-channels', action='store_true', help='Show final per-channel OSNR summary')
@@ -320,9 +320,6 @@ def path_requests_run(args=None):
     parser.add_argument('service_filename', nargs='?', type=Path, metavar='SERVICES-REQUESTS.(json|xls|xlsx)',
                         default=_examples_dir / 'meshTopologyExampleV2.xls',
                         help='Input service file')
-    parser.add_argument('eqpt_filename', nargs='?', type=Path, metavar=_help_fname_json,
-                        default=_examples_dir / 'eqpt_config.json',
-                        help='Equipment library')
     parser.add_argument('-bi', '--bidir', action='store_true',
                         help='considers that all demands are bidir')
     parser.add_argument('-o', '--output', type=Path)
@@ -332,10 +329,8 @@ def path_requests_run(args=None):
 
     _logger.info(f'Computing path requests {args.service_filename} into JSON format')
     print(f'{ansi_escapes.blue}Computing path requests {os.path.relpath(args.service_filename)} into JSON format{ansi_escapes.reset}')
-    # for debug
-    # print( args.eqpt_filename)
 
-    (equipment, network) = load_common_data(args.eqpt_filename, args.network_filename)
+    (equipment, network) = load_common_data(args.equipment, args.network_filename)
 
     # Build the network once using the default power defined in SI in eqpt config
     # TODO power density: db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
