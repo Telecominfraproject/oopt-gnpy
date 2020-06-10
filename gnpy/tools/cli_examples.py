@@ -84,7 +84,10 @@ def _setup_logging(args):
     logging.basicConfig(level={2: logging.DEBUG, 1: logging.INFO, 0: logging.CRITICAL}.get(args.verbose, logging.DEBUG))
 
 
-def _add_common_options(parser: argparse.ArgumentParser):
+def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
+    parser.add_argument('topology', nargs='?', type=Path, metavar=_help_fname_json_xls,
+                        default=network_default,
+                        help='Input network topology')
     parser.add_argument('-v', '--verbose', action='count', default=0,
                         help='Increase verbosity (can be specified several times)')
     parser.add_argument('-e', '--equipment', type=Path, metavar=_help_fname_json,
@@ -99,22 +102,20 @@ def transmission_main_example(args=None):
         epilog=_help_footer,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         )
-    _add_common_options(parser)
+    _add_common_options(parser, network_default=_examples_dir / 'edfa_example_network.json')
     parser.add_argument('--sim-params', type=Path, metavar=_help_fname_json,
                         default=None, help='Path to the JSON containing simulation parameters (required for Raman)')
     parser.add_argument('--show-channels', action='store_true', help='Show final per-channel OSNR summary')
     parser.add_argument('-pl', '--plot', action='store_true')
     parser.add_argument('-l', '--list-nodes', action='store_true', help='list all transceiver nodes')
     parser.add_argument('-po', '--power', default=0, help='channel ref power in dBm')
-    parser.add_argument('filename', nargs='?', type=Path, metavar=_help_fname_json_xls,
-                        default=_examples_dir / 'edfa_example_network.json')
     parser.add_argument('source', nargs='?', help='source node')
     parser.add_argument('destination', nargs='?', help='destination node')
 
     args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
 
-    (equipment, network) = load_common_data(args.equipment, args.filename, args.sim_params)
+    (equipment, network) = load_common_data(args.equipment, args.topology, args.sim_params)
 
     if args.plot:
         plot_baseline(network)
@@ -283,10 +284,7 @@ def path_requests_run(args=None):
         epilog=_help_footer,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         )
-    _add_common_options(parser)
-    parser.add_argument('network_filename', nargs='?', type=Path, metavar=_help_fname_json_xls,
-                        default=_examples_dir / 'meshTopologyExampleV2.xls',
-                        help='Input topology file')
+    _add_common_options(parser, network_default=_examples_dir / 'meshTopologyExampleV2.xls')
     parser.add_argument('service_filename', nargs='?', type=Path, metavar=_help_fname_json_xls,
                         default=_examples_dir / 'meshTopologyExampleV2.xls',
                         help='Input service file')
@@ -300,7 +298,7 @@ def path_requests_run(args=None):
     _logger.info(f'Computing path requests {args.service_filename} into JSON format')
     print(f'{ansi_escapes.blue}Computing path requests {os.path.relpath(args.service_filename)} into JSON format{ansi_escapes.reset}')
 
-    (equipment, network) = load_common_data(args.equipment, args.network_filename)
+    (equipment, network) = load_common_data(args.equipment, args.topology)
 
     # Build the network once using the default power defined in SI in eqpt config
     # TODO power density: db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
@@ -316,7 +314,7 @@ def path_requests_run(args=None):
 
     try:
         data = load_requests(args.service_filename, equipment, bidir=args.bidir,
-                             network=network, network_filename=args.network_filename)
+                             network=network, network_filename=args.network)
         rqs = requests_from_json(data, equipment)
     except exceptions.ServiceError as e:
         print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {e}')
