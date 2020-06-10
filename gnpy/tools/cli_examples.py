@@ -49,12 +49,15 @@ def show_example_data_dir():
     print(f'{_examples_dir}/')
 
 
-def load_common_data(equipment_filename, topology_filename, simulation_filename):
+def load_common_data(equipment_filename, topology_filename, simulation_filename, save_raw_network_filename):
     '''Load common configuration from JSON files'''
 
     try:
         equipment = load_equipment(equipment_filename)
         network = load_network(topology_filename, equipment)
+        if save_raw_network_filename is not None:
+            save_network(network, save_raw_network_filename)
+            print(f'{ansi_escapes.blue}Raw network (no optimizations) saved to {save_raw_network_filename}{ansi_escapes.reset}')
         sim_params = SimParams(**load_json(simulation_filename)) if simulation_filename is not None else None
         if not sim_params:
             if next((node for node in network if isinstance(node, RamanFiber)), None) is not None:
@@ -99,6 +102,8 @@ def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
                                            f'Example: {_examples_dir / "sim_params.json"}')
     parser.add_argument('--save-network', type=Path, metavar=_help_fname_json,
                         help='Save the final network as a JSON file')
+    parser.add_argument('--save-network-before-autodesign', type=Path, metavar=_help_fname_json,
+                        help='Dump the network into a JSON file prior to autodesign')
 
 
 def transmission_main_example(args=None):
@@ -118,7 +123,7 @@ def transmission_main_example(args=None):
     args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
 
-    (equipment, network) = load_common_data(args.equipment, args.topology, args.sim_params)
+    (equipment, network) = load_common_data(args.equipment, args.topology, args.sim_params, args.save_network_before_autodesign)
 
     if args.plot:
         plot_baseline(network)
@@ -239,6 +244,7 @@ def transmission_main_example(args=None):
 
     if args.save_network is not None:
         save_network(network, args.save_network)
+        print(f'{ansi_escapes.blue}Network (after autodesign) saved to {args.save_network}{ansi_escapes.reset}')
 
     if args.show_channels:
         print('\nThe total SNR per channel at the end of the line is:')
@@ -302,7 +308,7 @@ def path_requests_run(args=None):
     _logger.info(f'Computing path requests {args.service_filename} into JSON format')
     print(f'{ansi_escapes.blue}Computing path requests {os.path.relpath(args.service_filename)} into JSON format{ansi_escapes.reset}')
 
-    (equipment, network) = load_common_data(args.equipment, args.topology, args.sim_params)
+    (equipment, network) = load_common_data(args.equipment, args.topology, args.sim_params, args.save_network_before_autodesign)
 
     # Build the network once using the default power defined in SI in eqpt config
     # TODO power density: db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
@@ -314,6 +320,7 @@ def path_requests_run(args=None):
     build_network(network, equipment, p_db, p_total_db)
     if args.save_network is not None:
         save_network(network, args.save_network)
+        print(f'{ansi_escapes.blue}Network (after autodesign) saved to {args.save_network}{ansi_escapes.reset}')
     oms_list = build_oms_list(network, equipment)
 
     try:
