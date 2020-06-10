@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cfce3f40_a734fa42",
+        "filename": "tests/test_parser.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-06-10T17:42:24Z",
+      "side": 1,
+      "message": "I have run the test, seems to run OK, but I do not understand how this tmpdir works since it is not defined ... could you please explain ?",
+      "revId": "5bc42332cdb5964f97c22dc403b70966bec772ab",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
