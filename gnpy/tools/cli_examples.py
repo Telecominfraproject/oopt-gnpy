@@ -84,26 +84,31 @@ def _setup_logging(args):
     logging.basicConfig(level={2: logging.DEBUG, 1: logging.INFO, 0: logging.CRITICAL}.get(args.verbose, logging.DEBUG))
 
 
+def _add_common_options(parser: ArgumentParser):
+    parser.add_argument('-v', '--verbose', action='count', default=0,
+                        help='Increase verbosity (can be specified several times)')
+    parser.add_argument('--save-network', type=Path, metavar=_help_fname_json,
+                        help='Save the final network as a JSON file')
+
+
 def transmission_main_example(args=None):
     parser = ArgumentParser(
         description='Send a full spectrum load through the network from point A to point B',
         epilog=_help_footer,
         )
+    _add_common_options(parser)
     parser.add_argument('-e', '--equipment', type=Path, metavar=_help_fname_json,
                         default=_examples_dir / 'eqpt_config.json', help='Equipment library')
     parser.add_argument('--sim-params', type=Path, metavar=_help_fname_json,
                         default=None, help='Path to the JSON containing simulation parameters (required for Raman)')
     parser.add_argument('--show-channels', action='store_true', help='Show final per-channel OSNR summary')
     parser.add_argument('-pl', '--plot', action='store_true')
-    parser.add_argument('-v', '--verbose', action='count', default=0, help='increases verbosity for each occurence')
     parser.add_argument('-l', '--list-nodes', action='store_true', help='list all transceiver nodes')
     parser.add_argument('-po', '--power', default=0, help='channel ref power in dBm')
     parser.add_argument('filename', nargs='?', type=Path, metavar=_help_fname_json_xls,
                         default=_examples_dir / 'edfa_example_network.json')
     parser.add_argument('source', nargs='?', help='source node')
     parser.add_argument('destination', nargs='?', help='destination node')
-    parser.add_argument('--save-network', type=Path, metavar=_help_fname_json,
-                        help='Save the final network as a JSON file')
 
     args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
@@ -309,6 +314,7 @@ def path_requests_run(args=None):
         description='Compute performance for a list of services provided in a json file or an excel sheet',
         epilog=_help_footer,
         )
+    _add_common_options(parser)
     parser.add_argument('network_filename', nargs='?', type=Path, metavar=_help_fname_json_xls,
                         default=_examples_dir / 'meshTopologyExampleV2.xls',
                         help='Input topology file')
@@ -320,11 +326,7 @@ def path_requests_run(args=None):
                         help='Equipment library')
     parser.add_argument('-bi', '--bidir', action='store_true',
                         help='considers that all demands are bidir')
-    parser.add_argument('-v', '--verbose', action='count', default=0,
-                        help='increases verbosity for each occurence')
     parser.add_argument('-o', '--output', type=Path)
-    parser.add_argument('--save-network', type=Path, metavar=_help_fname_json,
-                        help='Save the final network as a JSON file')
 
     args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
