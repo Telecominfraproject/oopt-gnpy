@@ -29,7 +29,8 @@ from gnpy.topology.request import (ResultElement, jsontocsv, compute_path_dsjctn
                                    deduplicate_disjunctions, compute_path_with_disjunction,
                                    PathRequest, compute_constrained_path, propagate2)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
-from gnpy.tools.json_io import load_equipment, load_network, load_json, load_requests, save_network, requests_from_json, disjunctions_from_json
+from gnpy.tools.json_io import load_equipment, load_network, load_json, load_requests, save_network, \
+                               requests_from_json, disjunctions_from_json, save_json
 from gnpy.tools.plots import plot_baseline, plot_results
 
 _logger = logging.getLogger(__name__)
@@ -41,6 +42,7 @@ Learn more at https://gnpy.readthedocs.io/
 
 '''
 _help_fname_json = 'FILE.json'
+_help_fname_json_csv = 'FILE.(json|csv)'
 
 
 def show_example_data_dir():
@@ -291,7 +293,8 @@ def path_requests_run(args=None):
                         help='Input service file')
     parser.add_argument('-bi', '--bidir', action='store_true',
                         help='considers that all demands are bidir')
-    parser.add_argument('-o', '--output', type=Path)
+    parser.add_argument('-o', '--output', type=Path, metavar=_help_fname_json_csv,
+                        help='Store satisifed requests into a JSON or CSV file')
 
     args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
@@ -411,10 +414,13 @@ def path_requests_run(args=None):
         for i, pth in enumerate(propagatedpths):
             result.append(ResultElement(rqs[i], pth, reversed_propagatedpths[i]))
         temp = _path_result_json(result)
-        fnamecsv = f'{str(args.output)[0:len(str(args.output))-len(str(args.output.suffix))]}.csv'
-        fnamejson = f'{str(args.output)[0:len(str(args.output))-len(str(args.output.suffix))]}.json'
-        with open(fnamejson, 'w', encoding='utf-8') as fjson:
-            fjson.write(dumps(_path_result_json(result), indent=2, ensure_ascii=False))
-            with open(fnamecsv, "w", encoding='utf-8') as fcsv:
+        if args.output.suffix.lower() == '.json':
+            save_json(temp, args.output)
+            print(f'{ansi_escapes.blue}Saved JSON to {args.output}{ansi_escapes.reset}')
+        elif args.output.suffix.lower() == '.csv':
+            with open(args.output, "w", encoding='utf-8') as fcsv:
                 jsontocsv(temp, equipment, fcsv)
-                print(f'{ansi_escapes.blue}saving in {args.output} and {fnamecsv}{ansi_escapes.reset}')
+            print(f'{ansi_escapes.blue}Saved CSV to {args.output}{ansi_escapes.reset}')
+        else:
+            print(f'{ansi_escapes.red}Cannot save output: neither JSON nor CSV file{ansi_escapes.reset}')
+            sys.exit(1)
