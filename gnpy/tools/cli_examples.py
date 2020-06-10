@@ -23,7 +23,7 @@ import gnpy.core.exceptions as exceptions
 from gnpy.core.network import build_network
 from gnpy.core.parameters import SimParams
 from gnpy.core.science_utils import Simulation
-from gnpy.core.utils import db2lin, lin2db, write_csv, automatic_nch
+from gnpy.core.utils import db2lin, lin2db, automatic_nch
 from gnpy.topology.request import (ResultElement, jsontocsv, compute_path_dsjctn, requests_aggregation,
                                    BLOCKING_NOPATH, correct_json_route_list,
                                    deduplicate_disjunctions, compute_path_with_disjunction,
@@ -256,7 +256,6 @@ def transmission_main_example(args=None):
                 'SNR_nli_signal_bw': round(mean(destination.osnr_nli), 2),
                 'SNR_total_signal_bw': round(mean(destination.snr), 2)
             })
-    write_csv(result_dicts, 'simulation_result.csv')
 
     if args.save_network is not None:
         save_network(network, args.save_network)
