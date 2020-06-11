@@ -182,6 +182,24 @@
       "revId": "ac7185299af4b0f0d9424420be2b3fd7d8e0ced8",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "88b8aa33_b948c572",
+        "filename": "tests/test_science_utils.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1017851
+      },
+      "writtenOn": "2020-06-11T08:16:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97cc5434_7ebd55ad",
+      "revId": "ac7185299af4b0f0d9424420be2b3fd7d8e0ced8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
