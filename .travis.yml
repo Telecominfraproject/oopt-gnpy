@@ -9,7 +9,7 @@ install: skip
 script:
   - python setup.py develop
   - pip install pytest-cov rstcheck
-  - pytest --cov-report=xml --cov=gnpy --cov=examples -v
+  - pytest --cov-report=xml --cov=gnpy -v
   - rstcheck --ignore-roles cite --ignore-directives automodule --recursive --ignore-messages '(Duplicate explicit target name.*)' .
   - sphinx-build -W --keep-going docs/ x-throwaway-location
 after_success:

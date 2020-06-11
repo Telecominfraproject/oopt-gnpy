@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-from json import load, dump
+from json import dump
 from pathlib import Path
 from argparse import ArgumentParser
 from collections import namedtuple
+from gnpy.tools.json_io import load_json
 
 
 class Results(namedtuple('Results', 'missing extra different expected actual')):
@@ -122,12 +123,8 @@ def encode_sets(obj):
 
 if __name__ == '__main__':
     args = parser.parse_args()
-
-    with open(args.expected_output, encoding='utf-8') as f:
-        expected = load(f)
-
-    with open(args.actual_output, encoding='utf-8') as f:
-        actual = load(f)
+    expected = load_json(args.expected_output)
+    actual = load_json(args.actual_output)
 
     result = COMPARISONS[args.comparison](expected, actual)
 

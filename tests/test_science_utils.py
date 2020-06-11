@@ -6,7 +6,6 @@ checks that RamanFiber propagates properly the spectral information. In this way
  are tested.
 """
 
-import json
 from pandas import read_csv
 from numpy.testing import assert_allclose
 from gnpy.core.info import create_input_spectral_information
@@ -23,8 +22,7 @@ def test_raman_fiber():
     """
     # spectral information generation
     power = 1e-3
-    with open(TEST_DIR / 'data' / 'eqpt_config.json', 'r') as file:
-        eqpt_params = json.load(file)
+    eqpt_params = load_json(TEST_DIR / 'data' / 'eqpt_config.json')
     spectral_info_params = eqpt_params['SI'][0]
     spectral_info_params.pop('power_dbm')
     spectral_info_params.pop('power_range_db')

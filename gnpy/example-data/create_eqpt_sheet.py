@@ -17,11 +17,16 @@ from argparse import ArgumentParser
 PARSER = ArgumentParser()
 PARSER.add_argument('workbook', nargs='?', default='meshTopologyExampleV2.xls',
                     help='create the mandatory columns in Eqpt sheet')
-ALL_ROWS = lambda sh, start=0: (sh.row(x) for x in range(start, sh.nrows))
+
+
+def ALL_ROWS(sh, start=0):
+    return (sh.row(x) for x in range(start, sh.nrows))
+
 
 class Node:
     """ Node element contains uid, list of connected nodes and eqpt type
     """
+
     def __init__(self, uid, to_node):
         self.uid = uid
         self.to_node = to_node
@@ -32,6 +37,7 @@ class Node:
 
     def __str__(self):
         return f'uid {self.uid} \nto_node {[node for node in self.to_node]}\neqpt {self.eqpt}\n'
+
 
 def read_excel(input_filename):
     """ read excel Nodes and Links sheets and create a dict of nodes with
@@ -70,6 +76,7 @@ def read_excel(input_filename):
                 exit()
         return nodes
 
+
 def create_eqt_template(nodes, input_filename):
     """ writes list of node A node Z corresponding to Nodes and Links sheets in order
     to help user populating Eqpt
@@ -82,7 +89,6 @@ def create_eqt_template(nodes, input_filename):
            \nNode A \tNode Z \tamp type \tatt_in \tamp gain \ttilt \tatt_out\
            amp type   \tatt_in \tamp gain   \ttilt   \tatt_out\n')
 
-
         for node in nodes.values():
             if node.eqpt == 'ILA':
                 my_file.write(f'{node.uid}\t{node.to_node[0]}\n')
@@ -90,8 +96,8 @@ def create_eqt_template(nodes, input_filename):
                 for to_node in node.to_node:
                     my_file.write(f'{node.uid}\t{to_node}\n')
 
-        print(f'File {output_filename} successfully created with Node A - Node Z ' +
-              ' entries for Eqpt sheet in excel file.')
+        print(f'File {output_filename} successfully created with Node A - Node Z entries for Eqpt sheet in excel file.')
+
 
 if __name__ == '__main__':
     ARGS = PARSER.parse_args()

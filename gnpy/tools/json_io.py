@@ -10,7 +10,6 @@ Loading and saving data from JSON files in GNPy's internal data format
 
 from networkx import DiGraph
 from logging import getLogger
-from os import path
 from pathlib import Path
 import json
 from collections import namedtuple
@@ -20,8 +19,8 @@ from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, Netwo
 from gnpy.core.science_utils import estimate_nf_model
 from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions
 from gnpy.topology.request import PathRequest, Disjunction
-from gnpy.tools.convert import convert_file
-from gnpy.tools.service_sheet import convert_service_sheet
+from gnpy.tools.convert import xls_to_json_data
+from gnpy.tools.service_sheet import read_service_sheet
 import time
 
 
@@ -209,8 +208,7 @@ class Amp(_JsonThing):
                 raise EquipmentConfigError(f'missing preamp/booster variety input for amplifier: {type_variety} in equipment config')
             dual_stage_def = Model_dual_stage(preamp_variety, booster_variety)
 
-        with open(config, encoding='utf-8') as f:
-            json_data = json.load(f)
+        json_data = load_json(config)
 
         return cls(**{**kwargs, **json_data,
                       'nf_model': nf_def, 'dual_stage_model': dual_stage_def})
@@ -303,23 +301,23 @@ def _equipment_from_json(json_data, filename):
     return equipment
 
 
-def load_network(filename, equipment, name_matching=False):
-    json_filename = ''
+def load_network(filename, equipment):
     if filename.suffix.lower() in ('.xls', '.xlsx'):
-        _logger.info('Automatically generating topology JSON file')
-        json_filename = convert_file(filename, name_matching)
+        json_data = xls_to_json_data(filename)
     elif filename.suffix.lower() == '.json':
-        json_filename = filename
+        json_data = load_json(filename)
     else:
-        raise ValueError(f'unsuported topology filename extension {filename.suffix.lower()}')
-    json_data = load_json(json_filename)
+        raise ValueError(f'unsupported topology filename extension {filename.suffix.lower()}')
     return network_from_json(json_data, equipment)
 
 
-def save_network(filename, network):
-    filename_output = path.splitext(filename)[0] + '_auto_design.json'
-    json_data = network_to_json(network)
-    save_json(json_data, filename_output)
+def save_network(network: DiGraph, filename: str):
+    '''Dump the network into a JSON file
+
+    :param network: network to work on
+    :param filename: file to write to
+    '''
+    save_json(network_to_json(network), filename)
 
 
 def _cls_for(equipment_type):
@@ -518,3 +516,18 @@ def disjunctions_from_json(json_data):
             disjunctions_list.append(Disjunction(**params))
 
     return disjunctions_list
+
+
+def convert_service_sheet(
+        input_filename,
+        eqpt,
+        network,
+        network_filename=None,
+        output_filename='',
+        bidir=False,
+        filter_region=None):
+    if output_filename == '':
+        output_filename = f'{str(input_filename)[0:len(str(input_filename))-len(str(input_filename.suffixes[0]))]}_services.json'
+    data = read_service_sheet(input_filename, eqpt, network, network_filename, bidir, filter_region)
+    save_json(data, output_filename)
+    return data

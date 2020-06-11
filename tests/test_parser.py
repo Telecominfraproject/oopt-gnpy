@@ -15,9 +15,9 @@
     - writing of results in json (same keys)
 """
 
-from json import load
 from pathlib import Path
 from os import unlink
+import shutil
 from pandas import read_csv
 import pytest
 from tests.compare import compare_networks, compare_services
@@ -29,8 +29,8 @@ from gnpy.topology.request import (jsontocsv, requests_aggregation, compute_path
                                    compute_path_with_disjunction, ResultElement, PathRequest)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.convert import convert_file
-from gnpy.tools.json_io import load_network, save_network, load_equipment, requests_from_json, disjunctions_from_json
-from gnpy.tools.service_sheet import convert_service_sheet, correct_xls_route_list
+from gnpy.tools.json_io import load_json, load_network, save_network, load_equipment, requests_from_json, disjunctions_from_json
+from gnpy.tools.service_sheet import read_service_sheet, correct_xls_route_list
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
@@ -42,18 +42,17 @@ equipment = load_equipment(eqpt_filename)
     DATA_DIR / 'CORONET_Global_Topology.xlsx': DATA_DIR / 'CORONET_Global_Topology_expected.json',
     DATA_DIR / 'testTopology.xls': DATA_DIR / 'testTopology_expected.json',
 }.items())
-def test_excel_json_generation(xls_input, expected_json_output):
+def test_excel_json_generation(tmpdir, xls_input, expected_json_output):
     """ tests generation of topology json
     """
-    convert_file(xls_input)
+    xls_copy = Path(tmpdir) / xls_input.name
+    shutil.copyfile(xls_input, xls_copy)
+    convert_file(xls_copy)
 
-    actual_json_output = xls_input.with_suffix('.json')
-    with open(actual_json_output, encoding='utf-8') as f:
-        actual = load(f)
+    actual_json_output = xls_copy.with_suffix('.json')
+    actual = load_json(actual_json_output)
     unlink(actual_json_output)
-
-    with open(expected_json_output, encoding='utf-8') as f:
-        expected = load(f)
+    expected = load_json(expected_json_output)
 
     results = compare_networks(expected, actual)
     assert not results.elements.missing
@@ -73,7 +72,7 @@ def test_excel_json_generation(xls_input, expected_json_output):
                           DATA_DIR / 'testTopology.xls':
                           DATA_DIR / 'testTopology_auto_design_expected.json',
                           }.items())
-def test_auto_design_generation_fromxlsgainmode(xls_input, expected_json_output):
+def test_auto_design_generation_fromxlsgainmode(tmpdir, xls_input, expected_json_output):
     """ tests generation of topology json
         test that the build network gives correct results in gain mode
     """
@@ -88,16 +87,11 @@ def test_auto_design_generation_fromxlsgainmode(xls_input, expected_json_output)
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
                                              equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
-    save_network(xls_input, network)
-
-    actual_json_output = xls_input.with_name(xls_input.stem + '_auto_design').with_suffix('.json')
-
-    with open(actual_json_output, encoding='utf-8') as f:
-        actual = load(f)
+    actual_json_output = tmpdir / xls_input.with_name(xls_input.stem + '_auto_design').with_suffix('.json').name
+    save_network(network, actual_json_output)
+    actual = load_json(actual_json_output)
     unlink(actual_json_output)
-
-    with open(expected_json_output, encoding='utf-8') as f:
-        expected = load(f)
+    expected = load_json(expected_json_output)
 
     results = compare_networks(expected, actual)
     assert not results.elements.missing
@@ -116,7 +110,7 @@ def test_auto_design_generation_fromxlsgainmode(xls_input, expected_json_output)
                           DATA_DIR / 'testTopology_auto_design_expected.json':
                           DATA_DIR / 'testTopology_auto_design_expected.json',
                           }.items())
-def test_auto_design_generation_fromjson(json_input, expected_json_output):
+def test_auto_design_generation_fromjson(tmpdir, json_input, expected_json_output):
     """test that autodesign creates same file as an input file already autodesigned
     """
     equipment = load_equipment(eqpt_filename)
@@ -130,16 +124,11 @@ def test_auto_design_generation_fromjson(json_input, expected_json_output):
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
                                              equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
-    save_network(json_input, network)
-
-    actual_json_output = json_input.with_name(json_input.stem + '_auto_design').with_suffix('.json')
-
-    with open(actual_json_output, encoding='utf-8') as f:
-        actual = load(f)
+    actual_json_output = tmpdir / json_input.with_name(json_input.stem + '_auto_design').with_suffix('.json').name
+    save_network(network, actual_json_output)
+    actual = load_json(actual_json_output)
     unlink(actual_json_output)
-
-    with open(expected_json_output, encoding='utf-8') as f:
-        expected = load(f)
+    expected = load_json(expected_json_output)
 
     results = compare_networks(expected, actual)
     assert not results.elements.missing
@@ -152,7 +141,7 @@ def test_auto_design_generation_fromjson(json_input, expected_json_output):
 # test services creation
 
 
-@pytest.mark.parametrize('xls_input,expected_json_output', {
+@pytest.mark.parametrize('xls_input, expected_json_output', {
     DATA_DIR / 'testTopology.xls': DATA_DIR / 'testTopology_services_expected.json',
     DATA_DIR / 'testService.xls': DATA_DIR / 'testService_services_expected.json'
 }.items())
@@ -166,17 +155,10 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
                                              equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
-    convert_service_sheet(xls_input, equipment, network, network_filename=DATA_DIR / 'testTopology.xls')
+    from_xls = read_service_sheet(xls_input, equipment, network, network_filename=DATA_DIR / 'testTopology.xls')
+    expected = load_json(expected_json_output)
 
-    actual_json_output = xls_input.with_name(xls_input.stem + '_services').with_suffix('.json')
-    with open(actual_json_output, encoding='utf-8') as f:
-        actual = load(f)
-    unlink(actual_json_output)
-
-    with open(expected_json_output, encoding='utf-8') as f:
-        expected = load(f)
-
-    results = compare_services(expected, actual)
+    results = compare_services(expected, from_xls)
     assert not results.requests.missing
     assert not results.requests.extra
     assert not results.requests.different
@@ -189,21 +171,20 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
 # test xls answers creation
 
 
-@pytest.mark.parametrize('json_input, csv_output', {
-    DATA_DIR / 'testTopology_response.json': DATA_DIR / 'testTopology_response',
-}.items())
-def test_csv_response_generation(json_input, csv_output):
+@pytest.mark.parametrize('json_input',
+    (DATA_DIR / 'testTopology_response.json', )
+)
+def test_csv_response_generation(tmpdir, json_input):
     """ tests if generated csv is consistant with expected generation
         same columns (order not important)
     """
-    with open(json_input) as jsonfile:
-        json_data = load(jsonfile)
+    json_data = load_json(json_input)
     equipment = load_equipment(eqpt_filename)
-    csv_filename = str(csv_output) + '.csv'
+    csv_filename = Path(tmpdir / json_input.name).with_suffix('.csv')
     with open(csv_filename, 'w', encoding='utf-8') as fcsv:
         jsontocsv(json_data, equipment, fcsv)
 
-    expected_csv_filename = str(csv_output) + '_expected.csv'
+    expected_csv_filename = json_input.parent / (json_input.stem + '_expected.csv')
 
     # expected header
     # csv_header = \
@@ -301,7 +282,7 @@ def test_json_response_generation(xls_input, expected_response_file):
                                              equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
 
-    data = convert_service_sheet(xls_input, equipment, network)
+    data = read_service_sheet(xls_input, equipment, network)
     # change one of the request with bidir option to cover bidir case as well
     data['path-request'][2]['bidirectional'] = True
 
@@ -333,12 +314,8 @@ def test_json_response_generation(xls_input, expected_response_file):
     temp = {
         'response': [n.json for n in result]
     }
-    # load expected result and compare keys and values
 
-    with open(expected_response_file) as jsonfile:
-        expected = load(jsonfile)
-        # since we changes bidir attribute of request#2, need to add the corresponding
-        # metric in response
+    expected = load_json(expected_response_file)
 
     for i, response in enumerate(temp['response']):
         if i == 2:
