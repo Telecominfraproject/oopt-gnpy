@@ -282,8 +282,6 @@ class Fiber(_Node):
         if not params:
             params = {}
         super().__init__(*args, params=FiberParams(**params), **kwargs)
-        self.carriers_in = None
-        self.carriers_out = None
         self.pch_out_db = None
         self.nli_solver = NliSolver(self)
 
@@ -338,22 +336,6 @@ class Fiber(_Node):
     @property
     def passive(self):
         return True
-
-    def carriers(self, loc, attr):
-        """retrieve carriers information
-
-        :param loc: (in, out) of the class element
-        :param attr: (ase, nli, signal, total) power information
-        """
-        if not (loc in ('in', 'out') and attr in ('nli', 'signal', 'total', 'ase')):
-            yield None
-            return
-        loc_attr = 'carriers_' + loc
-        for c in getattr(self, loc_attr):
-            if attr == 'total':
-                yield c.power.ase + c.power.nli + c.power.signal
-            else:
-                yield c.power._asdict().get(attr, None)
 
     def alpha(self, frequencies):
         """ It returns the values of the series expansion of attenuation coefficient alpha(f) for all f in frequencies
@@ -430,10 +412,8 @@ class Fiber(_Node):
         return pref._replace(p_span0=pref.p_span0, p_spani=self.pch_out_db)
 
     def __call__(self, spectral_info):
-        self.carriers_in = spectral_info.carriers
         carriers = tuple(self.propagate(*spectral_info.carriers))
         pref = self.update_pref(spectral_info.pref)
-        self.carriers_out = carriers
         return spectral_info._replace(carriers=carriers, pref=pref)
 
 
@@ -453,10 +433,8 @@ class RamanFiber(Fiber):
         return pref._replace(p_span0=pref.p_span0, p_spani=self.pch_out_db)
 
     def __call__(self, spectral_info):
-        self.carriers_in = spectral_info.carriers
         carriers = tuple(self.propagate(*spectral_info.carriers))
         pref = self.update_pref(spectral_info.pref, *carriers)
-        self.carriers_out = carriers
         return spectral_info._replace(carriers=carriers, pref=pref)
 
     def propagate(self, *carriers):
@@ -534,8 +512,6 @@ class Edfa(_Node):
         self.effective_pch_out_db = None
         self.passive = False
         self.att_in = None
-        self.carriers_in = None
-        self.carriers_out = None
         self.effective_gain = self.operational.gain_target
         self.delta_p = self.operational.delta_p  # delta P with Pref (power swwep) in power mode
         self.tilt_target = self.operational.tilt_target
@@ -586,22 +562,6 @@ class Edfa(_Node):
                           f'  target pch (dBm):       {self.target_pch_out_db!r}',
                           f'  effective pch (dBm):    {self.effective_pch_out_db!r}',
                           f'  output VOA (dB):        {self.out_voa:.2f}'])
-
-    def carriers(self, loc, attr):
-        """retrieve carriers information
-
-        :param loc: (in, out) of the class element
-        :param attr: (ase, nli, signal, total) power information
-        """
-        if not (loc in ('in', 'out') and attr in ('nli', 'signal', 'total', 'ase')):
-            yield None
-            return
-        loc_attr = 'carriers_' + loc
-        for c in getattr(self, loc_attr):
-            if attr == 'total':
-                yield c.power.ase + c.power.nli + c.power.signal
-            else:
-                yield c.power._asdict().get(attr, None)
 
     def interpol_params(self, frequencies, pin, baud_rates, pref):
         """interpolate SI channel frequencies with the edfa dgt and gain_ripple frquencies from JSON
@@ -882,8 +842,6 @@ class Edfa(_Node):
                              p_spani=pref.p_spani + self.effective_gain - self.out_voa)
 
     def __call__(self, spectral_info):
-        self.carriers_in = spectral_info.carriers
         carriers = tuple(self.propagate(spectral_info.pref, *spectral_info.carriers))
         pref = self.update_pref(spectral_info.pref)
-        self.carriers_out = carriers
         return spectral_info._replace(carriers=carriers, pref=pref)
