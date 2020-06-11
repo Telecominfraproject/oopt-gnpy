@@ -237,11 +237,6 @@ def transmission_main_example(args=None):
         else:
             print(path[-1])
 
-        # print(f'\n !!!!!!!!!!!!!!!!!     TEST POINT         !!!!!!!!!!!!!!!!!!!!!')
-        # print(f'carriers ase output of {path[1]} =\n {list(path[1].carriers("out", "nli"))}')
-        # => use "in" or "out" parameter
-        # => use "nli" or "ase" or "signal" or "total" parameter
-
     if args.save_network is not None:
         save_network(network, args.save_network)
         print(f'{ansi_escapes.blue}Network (after autodesign) saved to {args.save_network}{ansi_escapes.reset}')
