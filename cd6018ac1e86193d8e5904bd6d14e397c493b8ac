@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "30cd4c74_1bae1b27",
+        "filename": "examples/eqpt_config.json",
+        "patchSetId": 14
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-12T06:55:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e3a8a138_42f27558",
+      "revId": "cd6018ac1e86193d8e5904bd6d14e397c493b8ac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "674dce53_f337796e",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 14
@@ -159,6 +177,24 @@
       "revId": "cd6018ac1e86193d8e5904bd6d14e397c493b8ac",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44180ec6_f8040a01",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-12T06:55:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "613fc7ed_2e8a6929",
+      "revId": "cd6018ac1e86193d8e5904bd6d14e397c493b8ac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     },
     {
       "key": {

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "49a57f08_fd47bba2",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-12T06:55:16Z",
+      "side": 1,
+      "message": "This commit reverted back my change from PS15, so I\u0027ll be adding it back.",
+      "revId": "1f3bbf99d33cdf7f8eb5d22b90d57b39e429c240",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
