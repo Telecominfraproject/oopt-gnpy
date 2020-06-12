@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "eda5c8a7_0cfb892c",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-06-12T14:20:52Z",
+      "side": 1,
+      "message": "From a functional perspective, yes, but I think it could be worth having this slight optimization for the most common case of k\u003d1.",
+      "parentUuid": "2c0cbb4f_12aa9da8",
+      "range": {
+        "startLine": 287,
+        "startChar": 0,
+        "endLine": 304,
+        "endChar": 23
+      },
+      "revId": "fcfd632dde8562f40b92d97cc6f9736fe19309e2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a8c40c3e_3ffd3d3a",
         "filename": "gnpy/topology/request.py",
         "patchSetId": 2
@@ -53,6 +77,30 @@
       "writtenOn": "2020-06-12T09:39:21Z",
       "side": 1,
       "message": "I wonder what the use case behind this is -- in other words, did you need to use it in some scenario? When?",
+      "range": {
+        "startLine": 345,
+        "startChar": 0,
+        "endLine": 346,
+        "endChar": 21
+      },
+      "revId": "fcfd632dde8562f40b92d97cc6f9736fe19309e2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f395c4fd_9b4414a7",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-06-12T14:20:52Z",
+      "side": 1,
+      "message": "The issue is that if you have a very large network, looping through all possible paths will take a long time (similar to the case with the all_simple_paths without cutoff) so I added this option to have have it termínate early. But it\u0027s not a great solution and I can remove it if you prefer.",
+      "parentUuid": "273ad0c4_136efba7",
       "range": {
         "startLine": 345,
         "startChar": 0,
