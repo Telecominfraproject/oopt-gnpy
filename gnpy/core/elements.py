@@ -418,11 +418,11 @@ class Fiber(_Node):
         return self.params.pmd_coef * sqrt(self.params.length)
 
     def _gn_analytic(self, carrier, *carriers):
-        """Computes the nonlinear interference power on a single carrier.
+        r"""Computes the nonlinear interference power on a single carrier.
         The method uses eq. 120 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__.
 
         :param carrier: the signal under analysis
-        :param carriers: the full WDM comb
+        :param \*carriers: the full WDM comb
         :return: carrier_nli: the amount of nonlinear interference in W on the under analysis
         """
 
