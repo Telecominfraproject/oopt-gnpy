@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "85196ab9_ef0654da",
+        "filename": "tests/test_propagation.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-12T06:52:57Z",
+      "side": 1,
+      "message": "whole pytest is already getting imported, so I\u0027ll change this to use pytest.approx",
+      "revId": "d91e12e4cff6d6e24b04c632e24dc1eb7f006601",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
