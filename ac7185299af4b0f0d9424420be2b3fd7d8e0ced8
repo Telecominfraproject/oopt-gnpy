@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "01fc7652_5c584c2e",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-12T06:52:57Z",
+      "side": 1,
+      "message": "I\u0027ll be changing this one to use parentheses, I think that\u0027s the best option here.",
+      "parentUuid": "657ff9f3_bfa56092",
+      "range": {
+        "startLine": 166,
+        "startChar": 98,
+        "endLine": 166,
+        "endChar": 99
+      },
+      "revId": "ac7185299af4b0f0d9424420be2b3fd7d8e0ced8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8f493e52_1ac1b673",
         "filename": "tests/test_science_utils.py",
         "patchSetId": 4
