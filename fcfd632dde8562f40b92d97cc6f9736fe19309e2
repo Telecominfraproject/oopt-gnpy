@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2c0cbb4f_12aa9da8",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-12T09:39:21Z",
+      "side": 1,
+      "message": "This part can be replaced with the following:\n\n total_path \u003d compute_k_contrained_paths(network, req, k\u003d1)[0]\n total_path \u003d total_path[0] if total_path else []\n\nOr am I missing something?",
+      "range": {
+        "startLine": 287,
+        "startChar": 0,
+        "endLine": 304,
+        "endChar": 23
+      },
+      "revId": "fcfd632dde8562f40b92d97cc6f9736fe19309e2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a8c40c3e_3ffd3d3a",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-12T09:39:21Z",
+      "side": 1,
+      "message": "Can you add a docstring, please?\n\n- `k` asks for K paths\n- `early_stop` is asking to only *consider* that many paths prior to checking the required constraints",
+      "revId": "fcfd632dde8562f40b92d97cc6f9736fe19309e2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "273ad0c4_136efba7",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-12T09:39:21Z",
+      "side": 1,
+      "message": "I wonder what the use case behind this is -- in other words, did you need to use it in some scenario? When?",
+      "range": {
+        "startLine": 345,
+        "startChar": 0,
+        "endLine": 346,
+        "endChar": 21
+      },
+      "revId": "fcfd632dde8562f40b92d97cc6f9736fe19309e2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5b156f5c_30d89041",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-12T09:39:21Z",
+      "side": 1,
+      "message": "I think the code will be a little bit more readable if the logic is inverted, i.e., use an early-break to limit the nesting level:\n\n if !ispart(nodes_list, path):\n     continue\n k_total_paths.append(path)\n if len(k_total_paths) \u003d\u003d k:\n     break",
+      "range": {
+        "startLine": 347,
+        "startChar": 0,
+        "endLine": 350,
+        "endChar": 25
+      },
+      "revId": "fcfd632dde8562f40b92d97cc6f9736fe19309e2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c02386b_1d3e93ee",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-12T09:39:21Z",
+      "side": 1,
+      "message": "I think this code is not expected to throw NetworkXNoPath upon no available path, so please move it outside of the try/except block",
+      "range": {
+        "startLine": 344,
+        "startChar": 0,
+        "endLine": 356,
+        "endChar": 59
+      },
+      "revId": "fcfd632dde8562f40b92d97cc6f9736fe19309e2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
