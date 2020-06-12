@@ -635,6 +635,19 @@ performance requirements for the TIP OLS building blocks.
   OLS working groups.
 - The PSE represents a step along the journey towards multi-layer optimization.
 
+Publications
+------------
+
+GNPy structure and its most recent and extensive experimental validation held
+in Microsoft Labs have been published on the open access JOCN Ferrari, A., Filer, M.,
+Balasubramanian, K., Yin, Y., Le Rouzic, E., Kundrát, J., Grammel, G., Galimberti,
+G. and Curri, V., 2020. GNPy: an open source application for physical layer aware
+open optical networks. Journal of Optical Communications and Networking, 12(6),
+pp.C31-C40. DOI: https://doi.org/10.1364/JOCN.382906
+
+The paper is freely accessible here:
+https://www.osapublishing.org/jocn/abstract.cfm?uri=jocn-12-6-C31
+
 License
 -------
 
