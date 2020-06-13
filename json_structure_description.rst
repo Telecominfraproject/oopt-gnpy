@@ -7,7 +7,7 @@ Equipment and Network description definitions
 
 Equipment description defines equipment types and those parameters.
 Description is made in JSON file with predefined structure. By default
-**transmission_main_example.py** uses **eqpt_config.json** file and that
+**gnpy-transmission-example** uses **eqpt_config.json** file and that
 can be changed with **-e** or **--equipment** command line parameter.
 Parsing of JSON file is made with
 **gnpy.core.equipment.load_equipment(equipment_description)** and return
@@ -82,7 +82,7 @@ it will be marked with **”default”** value.
 *******************
 
 Four types of EDFA definition are possible. Description JSON file
-location is in **transmission_main_example.py** folder:
+location is in **gnpy-transmission-example** folder:
 
 -  Advanced – with JSON file describing gain/noise figure tilt and
    gain/noise figure ripple. **"advanced_config_from_json"** value
@@ -314,7 +314,7 @@ Note that ``OSNR`` parameter refers to the receiver's minimal OSNR threshold for
 Network description defines network elements with additional to
 equipment description parameters, metadata and elements interconnection.
 Description is made in JSON file with predefined structure. By default
-**transmission_main_example.py** uses **edfa_example_network.json** file
+**gnpy-transmission-example** uses **edfa_example_network.json** file
 and can be changed from command line. Parsing of JSON file is made with
 **gnpy.core.network.load_network(network_description,
 equipment_description)** and return value is **DiGraph** object which
@@ -544,7 +544,6 @@ Additional details of the simulation are controlled via ``sim_params.json``:
 .. code-block:: json
 
   {
-    "raman_computed_channels": [1, 18, 37, 56, 75],
     "raman_parameters": {
       "flag_raman": true,
       "space_resolution": 10e3,
@@ -554,6 +553,7 @@ Additional details of the simulation are controlled via ``sim_params.json``:
       "nli_method_name": "ggn_spectrally_separated",
       "wdm_grid_size": 50e9,
       "dispersion_tolerance": 1,
-      "phase_shift_tollerance": 0.1
+      "phase_shift_tolerance": 0.1,
+      "computed_channels": [1, 18, 37, 56, 75]
     }
   }

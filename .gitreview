@@ -1,0 +1,5 @@
+[gerrit]
+host=review.gerrithub.io
+project=Telecominfraproject/oopt-gnpy
+defaultrebase=0
+defaultbranch=develop

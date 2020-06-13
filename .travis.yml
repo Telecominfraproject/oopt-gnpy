@@ -7,14 +7,11 @@ python:
   - "3.7"
 install: skip
 script:
-  - python setup.py install
+  - python setup.py develop
   - pip install pytest-cov rstcheck
-  - pytest --cov-report=xml --cov=gnpy
+  - pytest --cov-report=xml --cov=gnpy -v
   - rstcheck --ignore-roles cite --ignore-directives automodule --recursive --ignore-messages '(Duplicate explicit target name.*)' .
-  - ./examples/transmission_main_example.py
-  - ./examples/path_requests_run.py
-  - ./examples/transmission_main_example.py examples/raman_edfa_example_network.json --sim examples/sim_params.json --show-channels
-  - sphinx-build docs/ x-throwaway-location
+  - sphinx-build -W --keep-going docs/ x-throwaway-location
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 jobs:

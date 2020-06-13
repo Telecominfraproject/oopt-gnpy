@@ -2,7 +2,7 @@
 How to prepare the Excel input file
 -----------------------------------
 
-`examples/transmission_main_example.py <examples/transmission_main_example.py>`_ gives the possibility to use an excel input file instead of a json file. The program then will generate the corresponding json file for you.
+``gnpy-transmission-example`` gives the possibility to use an excel input file instead of a json file. The program then will generate the corresponding json file for you.
 
 The file named 'meshTopologyExampleV2.xls' is an example.
 
@@ -34,7 +34,7 @@ Each line represents a 'node' (ROADM site or an in line amplifier site ILA or a 
   - If filled, it can take "ROADM", "FUSED" or "ILA" values. If another string is used, it will be considered as not filled. FUSED means that ingress and egress spans will be fused together.  
 
 - *State*, *Country*, *Region* are not mandatory.
-  "Region" is a holdover from the CORONET topology reference file `CORONET_Global_Topology.xls <examples/CORONET_Global_Topology.xls>`_. CORONET separates its network into geographical regions (Europe, Asia, Continental US.) This information is not used by gnpy.
+  "Region" is a holdover from the CORONET topology reference file `CORONET_Global_Topology.xlsx <gnpy/example-data/CORONET_Global_Topology.xlsx>`_. CORONET separates its network into geographical regions (Europe, Asia, Continental US.) This information is not used by gnpy.
 
 - *Longitude*, *Latitude* are not mandatory. If filled they should contain numbers.
 
@@ -80,11 +80,11 @@ and a fiber span from node3 to node6::
 
   - If filled it MUST contain numbers. If empty it is replaced by a default "80" km value. 
   - If value is below 150 km, it is considered as a single (bidirectional) fiber span.
-  - If value is over 150 km the `transmission_main_example.py <examples/transmission_main_example.py>`_ program will automatically suppose that intermediate span description are required and will generate fiber spans elements with "_1","_2", ... trailing strings which are not visible in the json output. The reason for the splitting is that current edfa usually do not support large span loss. The current assumption is that links larger than 150km will require intermediate amplification. This value will be revisited when Raman amplification is added”
+  - If value is over 150 km the `gnpy-transmission-example`` program will automatically suppose that intermediate span description are required and will generate fiber spans elements with "_1","_2", ... trailing strings which are not visible in the json output. The reason for the splitting is that current edfa usually do not support large span loss. The current assumption is that links larger than 150km will require intermediate amplification. This value will be revisited when Raman amplification is added”
 
 - **Fiber type** is not mandatory. 
 
-  If filled it must contain types listed in `eqpt_config.json <examples/eqpt_config.json>`_ in "Fiber" list "type_variety".
+  If filled it must contain types listed in `eqpt_config.json <gnpy/example-data/eqpt_config.json>`_ in "Fiber" list "type_variety".
   If not filled it takes "SSMF" as default value.
 
 - **Lineic att** is not mandatory. 
@@ -119,8 +119,8 @@ Eqpt sheet
 Eqt sheet is optional. It lists the amplifiers types and characteristics on each degree of the *Node A* line.
 Eqpt sheet must contain twelve columns::
 
-                   <--           east cable from a to z        --> <--        west from z to a                 -->
-  Node A ; Node Z ; amp type ; att_in ; amp gain ; tilt ; att_out ; amp type ; att_in ; amp gain ; tilt ; att_out
+                   <--           east cable from a to z                  --> <--        west from z to a                          -->
+  Node A ; Node Z ; amp type ; att_in ; amp gain ; tilt ; att_out ; delta_p ; amp type ; att_in ; amp gain ; tilt ; att_out ; delta_p
 
 If the sheet is present, it MUST have as many lines as egress directions of ROADMs defined in Links Sheet. 
 
@@ -150,11 +150,11 @@ then Eqpt sheet should contain:
   C    - amp3
 
 
-In case you already have filled Nodes and Links sheets `create_eqpt_sheet.py <examples/create_eqpt_sheet.py>`_  can be used to automatically create a template for the mandatory entries of the list.
+In case you already have filled Nodes and Links sheets `create_eqpt_sheet.py <gnpy/example-data/create_eqpt_sheet.py>`_  can be used to automatically create a template for the mandatory entries of the list.
 
 .. code-block:: shell
 
-    $ cd examples
+    $ cd $(gnpy-example-data)
     $ python create_eqpt_sheet.py meshTopologyExampleV2.xls
 
 This generates a text file meshTopologyExampleV2_eqt_sheet.txt  whose content can be directly copied into the Eqt sheet of the excel file. The user then can fill the values in the rest of the columns.
@@ -167,7 +167,7 @@ This generates a text file meshTopologyExampleV2_eqt_sheet.txt  whose content ca
 - **Node Z** is mandatory. It is the egress direction from the *Node A* site. Multiple Links between the same Node A and NodeZ is not supported.
 
 - **amp type** is not mandatory. 
-  If filled it must contain types listed in `eqpt_config.json <examples/eqpt_config.json>`_ in "Edfa" list "type_variety".
+  If filled it must contain types listed in `eqpt_config.json <gnpy/example-data/eqpt_config.json>`_ in "Edfa" list "type_variety".
   If not filled it takes "std_medium_gain" as default value.
   If filled with fused, a fused element with 0.0 dB loss will be placed instead of an amplifier. This might be used to avoid booster amplifier on a ROADM direction.
 
@@ -175,10 +175,12 @@ This generates a text file meshTopologyExampleV2_eqt_sheet.txt  whose content ca
   If not filled, it will be determined with design rules in the convert.py file.
   If filled, it must contain positive numbers.
 
-- *att_in* and *att_out* are not mandatory and are not used yet. They are the value of the attenautor at input and output of amplifier (in dB).
+- *att_in* and *att_out* are not mandatory and are not used yet. They are the value of the attenuator at input and output of amplifier (in dB).
   If filled they must contain positive numbers.
 
 - *tilt* --TODO--
+
+- **delta_p**, in dBm,  is not mandatory. If filled it is used to set the output target power per channel at the output of the amplifier, if power_mode is True. The output power is then set to power_dbm + delta_power.
 
 # to be completed #
 
@@ -187,7 +189,7 @@ This generates a text file meshTopologyExampleV2_eqt_sheet.txt  whose content ca
 Service sheet 
 -------------
 
-Service sheet is optional. It lists the services for which path and feasibility must be computed with path_requests_run.py.
+Service sheet is optional. It lists the services for which path and feasibility must be computed with ``gnpy-path_request``.
 
 Service sheet must contain 11 columns::  
 
@@ -216,22 +218,29 @@ Service sheet must contain 11 columns::
   - path: is the set of ROADM nodes that must be used by the path. It must contain the list of ROADM names that the path must cross. TODO : only ROADM nodes are accepted in this release. Relax this with any type of nodes. If filled it must contain ROADM ids separated by ' | '. Exact names are required. 
   - is loose?  'no' value means that the list of nodes should be strictly followed, while any other value means that the constraint may be relaxed if the node is not reachable. 
 
-- ** path bandwidth** is optional. It is the amount of capacity required between source and destination in Gbit/s. Default value is 0.0 Gbit/s. 
+- **path bandwidth** is mandatory. It is the amount of capacity required between source and destination in Gbit/s. Value should be positive (non zero). It is used to compute the amount of required spectrum for the service.  
 
-path_requests_run.py
-------------------------
+gnpy-path_request
+-----------------
 
-**Usage**: path_requests_run.py [-h] [-v] [-o OUTPUT]
+**Usage**: gnpy-path-request [-h] [-bi] [-v] [-o OUTPUT]
                             [network_filename xls or json] [service_filename xls or json] [eqpt_filename json]
+
+optional arguments::
+
+-h, --help            show the help message and exit
+-bi, --bidir          considers that all demands are bidir
+-v, --verbose         increases verbosity for each occurence
+-o OUTPUT, --output   OUTPUT file to record results (.json and .csv formats are created)
 
 .. code-block:: shell
 
-    $ cd examples
-    $ python path_requests_run.py meshTopologyExampleV2.xls service_file.json eqpt_file -o output_file.json
+    $ cd $(gnpy-example-data)
+    $ gnpy-path-request meshTopologyExampleV2.xls service_file.json eqpt_file -o output_file.json
 
 A function that computes performances for a list of services provided in the service file (accepts json or excel format.
 
-if the service <file.xls> is in xls format, path_requests_run.py converts it to a json file <file_services.json> following the Yang model for requesting Path Computation defined in `draft-ietf-teas-yang-path-computation-01.txt <https://www.ietf.org/id/draft-ietf-teas-yang-path-computation-01.pdf>`_. For PSE use, additional fields with trx type and mode have been added to the te-bandwidth field. 
+if the service <file.xls> is in xls format, ``gnpy-path-request`` converts it to a json file <file_services.json> following the Yang model for requesting Path Computation defined in `draft-ietf-teas-yang-path-computation-01.txt <https://www.ietf.org/id/draft-ietf-teas-yang-path-computation-01.pdf>`_. For PSE use, additional fields with trx type and mode have been added to the te-bandwidth field. 
 
 A template for the json file can be found here: `service_template.json <service_template.json>`_
 
@@ -241,8 +250,10 @@ If a file is specified with the optional -o argument, the result of the computat
 
 A template for the result of computation json file can be found here: `path_result_template.json <path_result_template.json>`_
 
-Important note: path_requests_run.py is not a network dimensionning tool : each service does not reserve spectrum, or occupy ressources such as transponders. It only computes path feasibility assuming the spectrum (between defined frequencies) is loaded with "nb of channels" spaced by "spacing" values as specified in the system parameters input in the service file, each cannel having the same characteristics in terms of baudrate, format, ... as the service transponder. The transceiver element acts as a "logical starting/stopping point" for the spectral information propagation. At that point it is not meant to represent the capacity of add drop ports
+Important note: ``gnpy-path-request`` is not a network dimensionning tool : each service does not reserve spectrum, or occupy ressources such as transponders. It only computes path feasibility assuming the spectrum (between defined frequencies) is loaded with "nb of channels" spaced by "spacing" values as specified in the system parameters input in the service file, each cannel having the same characteristics in terms of baudrate, format, ... as the service transponder. The transceiver element acts as a "logical starting/stopping point" for the spectral information propagation. At that point it is not meant to represent the capacity of add drop ports
 As a result transponder type is not part of the network info. it is related to the list of services requests.
+
+The current version includes a spectrum assigment features that enables to compute a candidate spectrum assignment for each service based on a first fit policy. Spectrum is assigned based on service specified spacing value, path_bandwidth value and selected mode for the transceiver. This spectrum assignment includes a basic capacity planning capability so that the spectrum resource is limited by the frequency min and max values defined for the links. If the requested services reach the link spectrum capacity, additional services feasibility are computed but marked as blocked due to spectrum reason.
 
 In a next step we plan to provide required features to enable dimensionning : alocation of ressources, counting channels, limitation of the number of channels, ...
 

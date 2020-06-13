@@ -1,0 +1,154 @@
+[1;34;40mComputing path requests gnpy/example-data/meshTopologyExampleV2.xls into JSON format[0m
+[1;34;40mList of disjunctions[0m
+[Disjunction 3
+	relaxable:    false
+	link-diverse: True
+	node-diverse: True
+	request-id-numbers: ['3', '1']
+, Disjunction 4
+	relaxable:    false
+	link-diverse: True
+	node-diverse: True
+	request-id-numbers: ['4', '5']
+]
+[1;34;40mAggregating similar requests[0m
+[1;34;40mThe following services have been requested:[0m
+[PathRequest 0
+	source: 	trx Lorient_KMA
+	destination:	trx Vannes_KBE
+	trx type:	Voyager
+	trx mode:	None
+	baud_rate:	None Gbaud
+	bit_rate:	None Gb/s
+	spacing:	50.0 GHz
+	power:  	1.0 dBm
+	nb channels: 	80
+	path_bandwidth: 	100.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 1
+	source: 	trx Brest_KLA
+	destination:	trx Vannes_KBE
+	trx type:	Voyager
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	50.0 GHz
+	power:  	1.0 dBm
+	nb channels: 	95
+	path_bandwidth: 	200.0 Gbit/s
+	nodes-list:	['roadm Brest_KLA', 'roadm Lannion_CAS', 'roadm Lorient_KMA', 'roadm Vannes_KBE']
+	loose-list:	['LOOSE', 'LOOSE', 'LOOSE', 'LOOSE']
+, PathRequest 3
+	source: 	trx Lannion_CAS
+	destination:	trx Rennes_STA
+	trx type:	vendorA_trx-type1
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	50.0 GHz
+	power:  	0.0 dBm
+	nb channels: 	95
+	path_bandwidth: 	60.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 4
+	source: 	trx Rennes_STA
+	destination:	trx Lannion_CAS
+	trx type:	vendorA_trx-type1
+	trx mode:	None
+	baud_rate:	None Gbaud
+	bit_rate:	None Gb/s
+	spacing:	75.0 GHz
+	power:  	3.0 dBm
+	nb channels: 	63
+	path_bandwidth: 	150.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 5
+	source: 	trx Rennes_STA
+	destination:	trx Lannion_CAS
+	trx type:	vendorA_trx-type1
+	trx mode:	mode 2
+	baud_rate:	66.0 Gbaud
+	bit_rate:	200.0 Gb/s
+	spacing:	75.0 GHz
+	power:  	3.0 dBm
+	nb channels: 	63
+	path_bandwidth: 	20.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 7 | 6
+	source: 	trx Lannion_CAS
+	destination:	trx Lorient_KMA
+	trx type:	Voyager
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	50.0 GHz
+	power:  	0.0 dBm
+	nb channels: 	76
+	path_bandwidth: 	700.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 7b
+	source: 	trx Lannion_CAS
+	destination:	trx Lorient_KMA
+	trx type:	Voyager
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	75.0 GHz
+	power:  	0.0 dBm
+	nb channels: 	50
+	path_bandwidth: 	400.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+]
+[1;34;40mComputing all paths with constraints[0m
+[1;34;40mPropagating on selected path[0m
+request 0
+Computing path from trx Lorient_KMA to trx Vannes_KBE
+with path constraint: ['trx Lorient_KMA', 'trx Vannes_KBE']
+Computed path (roadms):['roadm Lorient_KMA', 'roadm Vannes_KBE']
+
+request 1
+Computing path from trx Brest_KLA to trx Vannes_KBE
+with path constraint: ['trx Brest_KLA', 'roadm Brest_KLA', 'roadm Lannion_CAS', 'roadm Lorient_KMA', 'roadm Vannes_KBE', 'trx Vannes_KBE']
+Computed path (roadms):['roadm Brest_KLA', 'roadm Lannion_CAS', 'roadm Lorient_KMA', 'roadm Vannes_KBE']
+
+request 3
+Computing path from trx Lannion_CAS to trx Rennes_STA
+with path constraint: ['trx Lannion_CAS', 'trx Rennes_STA']
+Computed path (roadms):['roadm Lannion_CAS', 'roadm Rennes_STA']
+
+request 4
+Computing path from trx Rennes_STA to trx Lannion_CAS
+with path constraint: ['trx Rennes_STA', 'trx Lannion_CAS']
+Computed path (roadms):['roadm Rennes_STA', 'roadm Vannes_KBE', 'roadm Lorient_KMA', 'roadm Lannion_CAS']
+
+request 5
+Computing path from trx Rennes_STA to trx Lannion_CAS
+with path constraint: ['trx Rennes_STA', 'trx Lannion_CAS']
+Computed path (roadms):['roadm Rennes_STA', 'roadm Lannion_CAS']
+
+request 7 | 6
+Computing path from trx Lannion_CAS to trx Lorient_KMA
+with path constraint: ['trx Lannion_CAS', 'trx Lorient_KMA']
+Computed path (roadms):['roadm Lannion_CAS', 'roadm Lorient_KMA']
+
+request 7b
+Computing path from trx Lannion_CAS to trx Lorient_KMA
+with path constraint: ['trx Lannion_CAS', 'trx Lorient_KMA']
+Computed path (roadms):['roadm Lannion_CAS', 'roadm Lorient_KMA']
+
+[1;34;40mResult summary[0m
+req id   demand                                 snr@bandwidth A-Z (Z-A)    snr@0.1nm A-Z (Z-A)        Receiver minOSNR               mode                    Gbit/s              nb of tsp pairs      N,M or blocking reason 
+0       trx Lorient_KMA to trx Vannes_KBE :             24.62                     28.7                      14                     mode 1                   100.0                      1                     (-284,4)        
+1       trx Brest_KLA to trx Vannes_KBE :               17.59                    21.68                      14                     mode 1                   200.0                      2                     (-272,8)        
+3       trx Lannion_CAS to trx Rennes_STA :             22.21                    26.29                      13                     mode 1                    60.0                      1                     (-284,4)        
+4       trx Rennes_STA to trx Lannion_CAS :             15.94                    23.16                      17                     mode 2                   150.0                      1                     (-258,6)        
+5       trx Rennes_STA to trx Lannion_CAS :             20.22                    27.44                      17                     mode 2                    20.0                      1                     (-274,6)        
+7 | 6   trx Lannion_CAS to trx Lorient_KMA :            19.24                    23.32                      14                     mode 1                   700.0                      7                    (-224,28)        
+7b      trx Lannion_CAS to trx Lorient_KMA :            19.32                     23.4                      14                     mode 1                   400.0                      4                    (-172,24)        
+[1;33;40mResult summary shows mean SNR and OSNR (average over all channels)[0m
