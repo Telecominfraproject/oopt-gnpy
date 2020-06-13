@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
-from json import load, dump
+from json import dump
 from pathlib import Path
 from argparse import ArgumentParser
 from collections import namedtuple
+from gnpy.tools.json_io import load_json
+
 
 class Results(namedtuple('Results', 'missing extra different expected actual')):
     def _asdict(self):
-        return {'missing':   self.missing,
-                'extra':     self.extra,
+        return {'missing': self.missing,
+                'extra': self.extra,
                 'different': self.different}
+
     def __str__(self):
         rv = []
         if self.missing:
@@ -24,10 +27,12 @@ class Results(namedtuple('Results', 'missing extra different expected actual')):
             rv.append('All match!')
         return '\n'.join(rv)
 
+
 class NetworksResults(namedtuple('NetworksResult', 'elements connections')):
     def _asdict(self):
-        return {'elements':    self.elements._asdict(),
+        return {'elements': self.elements._asdict(),
                 'connections': self.connections._asdict()}
+
     def __str__(self):
         return '\n'.join([
             'Elements'.center(40, '='),
@@ -36,10 +41,12 @@ class NetworksResults(namedtuple('NetworksResult', 'elements connections')):
             str(self.connections),
         ])
 
+
 class ServicesResults(namedtuple('ServicesResult', 'requests synchronizations')):
     def _asdict(self):
-        return {'requests':         self.requests.asdict(),
+        return {'requests': self.requests.asdict(),
                 'synchronizations': self.synchronizations.asdict()}
+
     def __str__(self):
         return '\n'.join([
             'Requests'.center(40, '='),
@@ -48,24 +55,28 @@ class ServicesResults(namedtuple('ServicesResult', 'requests synchronizations'))
             str(self.synchronizations),
         ])
 
+
 class PathsResults(namedtuple('PathsResults', 'paths')):
     def _asdict(self):
         return {'paths': self.paths.asdict()}
+
     def __str__(self):
         return '\n'.join([
             'Paths'.center(40, '='),
             str(self.paths),
         ])
 
+
 def compare(expected, actual, key=lambda x: x):
-    expected  = {key(el): el for el in expected}
-    actual    = {key(el): el for el in actual}
-    missing   = set(expected) - set(actual)
-    extra     = set(actual) - set(expected)
+    expected = {key(el): el for el in expected}
+    actual = {key(el): el for el in actual}
+    missing = set(expected) - set(actual)
+    extra = set(actual) - set(expected)
     different = [(expected[x], actual[x]) for
                  x in set(expected) & set(actual)
                  if expected[x] != actual[x]]
     return Results(missing, extra, different, expected, actual)
+
 
 def compare_networks(expected, actual):
     elements = compare(expected['elements'], actual['elements'],
@@ -73,6 +84,7 @@ def compare_networks(expected, actual):
     connections = compare(expected['connections'], actual['connections'],
                           key=lambda el: (el['from_node'], el['to_node']))
     return NetworksResults(elements, connections)
+
 
 def compare_services(expected, actual):
     requests = compare(expected['path-request'], actual['path-request'],
@@ -84,35 +96,35 @@ def compare_services(expected, actual):
                                    key=lambda el: el['synchronization-id'])
     return ServicesResults(requests, synchronizations)
 
+
 def compare_paths(expected_output, actual_output):
     paths = compare(expected['path'], actual['path'], key=lambda el: el['path-id'])
     return PathsResults(paths)
 
+
 COMPARISONS = {
     'networks': compare_networks,
     'services': compare_services,
-    'paths':    compare_paths,
+    'paths': compare_paths,
 }
 
 parser = ArgumentParser()
 parser.add_argument('expected_output', type=Path, metavar='FILE')
-parser.add_argument('actual_output',   type=Path, metavar='FILE')
-parser.add_argument('-o', '--output',  default=None)
+parser.add_argument('actual_output', type=Path, metavar='FILE')
+parser.add_argument('-o', '--output', default=None)
 parser.add_argument('-c', '--comparison', choices=COMPARISONS, default='networks')
+
 
 def encode_sets(obj):
     if isinstance(obj, set):
         return list(obj)
     raise TypeError(f'{obj!r} is not JSON serializable!')
 
+
 if __name__ == '__main__':
     args = parser.parse_args()
-
-    with open(args.expected_output, encoding='utf-8') as f:
-        expected = load(f)
-
-    with open(args.actual_output, encoding='utf-8') as f:
-        actual = load(f)
+    expected = load_json(args.expected_output)
+    actual = load_json(args.actual_output)
 
     result = COMPARISONS[args.comparison](expected, actual)
 

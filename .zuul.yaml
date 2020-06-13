@@ -1,3 +1,24 @@
-project:
-  check:
-    - noop
+---
+- project:
+    check:
+      jobs:
+        - tox-py36-cover
+        - coverage-diff:
+            voting: false
+            dependencies:
+              - tox-py36-cover-previous
+              - tox-py36-cover
+            vars:
+              coverage_job_name_previous: tox-py36-cover-previous
+              coverage_job_name_current: tox-py36-cover
+        - tox-linters-diff:
+            voting: false
+        - tox-docs-el8
+        - tox-py36-cover-previous
+    gate:
+      jobs:
+        - tox-py36-el8
+        - tox-docs-el8
+    tag:
+      jobs:
+        - oopt-release-python

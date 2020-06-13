@@ -6,22 +6,23 @@ checks that RamanFiber propagates properly the spectral information. In this way
  are tested.
 """
 
-import json
 from pandas import read_csv
 from numpy.testing import assert_allclose
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.elements import RamanFiber
-from gnpy.core.network import load_sim_params
+from gnpy.core.parameters import SimParams
+from gnpy.core.science_utils import Simulation
+from gnpy.tools.json_io import load_json
 from pathlib import Path
 TEST_DIR = Path(__file__).parent
+
 
 def test_raman_fiber():
     """ Test the accuracy of propagating the RamanFiber.
     """
     # spectral information generation
     power = 1e-3
-    with open(TEST_DIR / 'data' / 'eqpt_config.json', 'r') as file:
-        eqpt_params = json.load(file)
+    eqpt_params = load_json(TEST_DIR / 'data' / 'eqpt_config.json')
     spectral_info_params = eqpt_params['SI'][0]
     spectral_info_params.pop('power_dbm')
     spectral_info_params.pop('power_range_db')
@@ -29,12 +30,9 @@ def test_raman_fiber():
     spectral_info_params.pop('sys_margins')
     spectral_info_input = create_input_spectral_information(power=power, **spectral_info_params)
 
-    # RamanFiber
-    with open(TEST_DIR / 'data' / 'raman_fiber_config.json', 'r') as file:
-        raman_fiber_params = json.load(file)
-    sim_params = load_sim_params(TEST_DIR / 'data' / 'sim_params.json')
-    fiber = RamanFiber(**raman_fiber_params)
-    fiber.sim_params = sim_params
+    sim_params = SimParams(**load_json(TEST_DIR / 'data' / 'sim_params.json'))
+    Simulation.set_params(sim_params)
+    fiber = RamanFiber(**load_json(TEST_DIR / 'data' / 'raman_fiber_config.json'))
 
     # propagation
     spectral_info_out = fiber(spectral_info_input)

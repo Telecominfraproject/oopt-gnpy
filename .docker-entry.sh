@@ -1,3 +1,3 @@
 #!/bin/bash
-cp -nr /oopt-gnpy/examples /shared
+cp -nr /oopt-gnpy/gnpy/example-data /shared
 exec "$@"
