@@ -19,3 +19,6 @@
       jobs:
         - tox-py36-el8
         - tox-docs-el8
+    tag:
+      jobs:
+        - oopt-release-python
