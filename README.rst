@@ -194,12 +194,12 @@ working group set out to disrupt the planning landscape by providing an open
 source simulation model which can be used freely across multiple vendor
 implementations.
 
-.. |docs| image:: https://readthedocs.org/projects/gnpy/badge/?version=develop
-  :target: http://gnpy.readthedocs.io/en/develop/?badge=develop
+.. |docs| image:: https://readthedocs.org/projects/gnpy/badge/?version=master
+  :target: http://gnpy.readthedocs.io/en/master/?badge=master
   :alt: Documentation Status
   :scale: 100%
 
-.. |build| image:: https://travis-ci.com/Telecominfraproject/oopt-gnpy.svg?branch=develop
+.. |build| image:: https://travis-ci.com/Telecominfraproject/oopt-gnpy.svg?branch=master
   :target: https://travis-ci.com/Telecominfraproject/oopt-gnpy
   :alt: Build Status
   :scale: 100%
