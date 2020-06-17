@@ -8,6 +8,7 @@ in real-world mesh optical networks. It is based on the Gaussian Noise Model.
 .. toctree::
    :maxdepth: 4
 
+   install
    json
    excel
    model
