@@ -86,14 +86,14 @@ https://conda.io/docs/user-guide/tasks/manage-environments.html)
 To activate your Anaconda virtual environment, you may need to do the
 following:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
     $ source /path/to/anaconda/bin/activate # activate Anaconda base environment
     (base) $                                # note the change to the prompt
 
 You can check which Anaconda environment you are using with:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
     (base) $ conda env list                          # list all environments
     # conda environments:
@@ -108,7 +108,7 @@ Anaconda's Python 3, you should see similar output as below. Your results may
 be slightly different depending on your Anaconda installation path and the
 exact version of Python you are using.
 
-.. code-block:: shell
+.. code-block:: shell-session
 
     $ which python                   # check which Python executable is used
     /path/to/anaconda/bin/python
@@ -118,7 +118,7 @@ exact version of Python you are using.
 From within your Anaconda Python 3 environment, you can clone the master branch
 of the `gnpy` repo and install it with:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
     $ git clone https://github.com/Telecominfraproject/oopt-gnpy # clone the repo
     $ cd oopt-gnpy
@@ -128,7 +128,7 @@ To test that `gnpy` was successfully installed, you can run this command. If it
 executes without a ``ModuleNotFoundError``, you have successfully installed
 `gnpy`.
 
-.. code-block:: shell
+.. code-block:: shell-session
 
     $ python -c 'import gnpy' # attempt to import gnpy
 
@@ -201,7 +201,7 @@ The number of channel is computed based on ``spacing`` and ``f_min``, ``f_max`` 
 
 An experimental support for Raman amplification is available:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
      $ gnpy-transmission-example \
        $(gnpy-example-data)/raman_edfa_example_network.json \
@@ -212,7 +212,7 @@ General numeric parameters for simulaiton control are provided in the `gnpy/exam
 
 Use ``gnpy-path-request`` to run multiple optimizations as follows:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
      $ gnpy-path-request -h
      Usage: gnpy-path-requests [-h] [-v] [-o OUTPUT] [network_filename] [service_filename] [eqpt_filename]
@@ -221,7 +221,7 @@ The ``network_filename`` and ``service_filename`` can be an XLS or JSON file. Th
 
 To see an example of it, run:
 
-.. code-block:: shell
+.. code-block:: shell-session
 
     $ cd $(gnpy-example-data)
     $ gnpy-path-request meshTopologyExampleV2.xls meshTopologyExampleV2_services.json eqpt_config.json -o output_file.json
