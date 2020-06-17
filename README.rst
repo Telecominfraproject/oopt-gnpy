@@ -138,6 +138,14 @@ This program requires a list of connections to be estimated and the equipment
 library. The program computes performances for the list of services (accepts
 `JSON <docs/json.rst>`__ or `Excel <docs/excel.rst>`__ format) using the same spectrum propagation modules as
 ``gnpy-transmission-example``.
+The output format is based on `draft-ietf-teas-yang-path-computation-01 <https://tools.ietf.org/html/draft-ietf-teas-yang-path-computation-01>`_ with custom extensions (e.g., for transponder modes).
+An example of the JSON input is provided in file `service-template.json`, while results are shown in `path_result_template.json`.
+
+Important note: ``gnpy-path-request`` is not a network dimensionning tool: each service does not reserve spectrum, or occupy ressources such as transponders. It only computes path feasibility assuming the spectrum (between defined frequencies) is loaded with "nb of channels" spaced by "spacing" values as specified in the system parameters input in the service file, each cannel having the same characteristics in terms of baudrate, format,... as the service transponder. The transceiver element acts as a "logical starting/stopping point" for the spectral information propagation. At that point it is not meant to represent the capacity of add drop ports.
+As a result transponder type is not part of the network info. it is related to the list of services requests.
+
+The current version includes a spectrum assigment features that enables to compute a candidate spectrum assignment for each service based on a first fit policy. Spectrum is assigned based on service specified spacing value, path_bandwidth value and selected mode for the transceiver. This spectrum assignment includes a basic capacity planning capability so that the spectrum resource is limited by the frequency min and max values defined for the links. If the requested services reach the link spectrum capacity, additional services feasibility are computed but marked as blocked due to spectrum reason.
+
 
 Contributing
 ------------
