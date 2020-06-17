@@ -1,6 +1,5 @@
-
-How to prepare the Excel input file
------------------------------------
+Excel (XLS, XLSX) input files
+=============================
 
 ``gnpy-transmission-example`` gives the possibility to use an excel input file instead of a json file. The program then will generate the corresponding json file for you.
 
@@ -15,6 +14,8 @@ In order to work the excel file MUST contain at least 2 sheets:
 
 - Eqt
 - Service
+
+.. _excel-nodes-sheet:
 
 Nodes sheet
 -----------
@@ -43,6 +44,8 @@ Each line represents a 'node' (ROADM site or an in line amplifier site ILA or a 
 
 **There MUST NOT be empty line(s) between two nodes lines**
 
+
+.. _excel-links-sheet:
 
 Links sheet
 -----------
@@ -112,6 +115,8 @@ and a fiber span from node3 to node6::
 
 
 (in progress)
+
+.. _excel-equipment-sheet:
 
 Eqpt sheet 
 ----------
@@ -185,6 +190,8 @@ This generates a text file meshTopologyExampleV2_eqt_sheet.txt  whose content ca
 # to be completed #
 
 (in progress)
+
+.. _excel-service-sheet:
 
 Service sheet 
 -------------
