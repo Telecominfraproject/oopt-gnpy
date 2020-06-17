@@ -10,7 +10,7 @@ script:
   - python setup.py develop
   - pip install pytest-cov rstcheck
   - pytest --cov-report=xml --cov=gnpy -v
-  - rstcheck --ignore-roles cite --ignore-directives automodule --recursive --ignore-messages '(Duplicate explicit target name.*)' .
+  - rstcheck --ignore-roles cite *.rst
   - sphinx-build -W --keep-going docs/ x-throwaway-location
 after_success:
   - bash <(curl -s https://codecov.io/bash)
