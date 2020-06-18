@@ -31,13 +31,6 @@ There are `weekly calls <https://telecominfraproject.workplace.com/events/702894
 Newcomers, users and telecom operators are especially welcome there.
 We encourage all interested people outside the TIP to `join the project <https://telecominfraproject.com/apply-for-membership/>`__.
 
-Branches and Tagged Releases
-----------------------------
-
-- all releases are `available via GitHub <https://github.com/Telecominfraproject/oopt-gnpy/releases>`_
-- the `master <https://github.com/Telecominfraproject/oopt-gnpy/tree/master>`_ branch contains stable, `validated code <https://github.com/Telecominfraproject/oopt-gnpy/wiki/Testing-for-Quality>`_. It is updated from develop on a release schedule determined by the OOPT-PSE Working Group.
-- the `develop <https://github.com/Telecominfraproject/oopt-gnpy/tree/develop>`_ branch contains the latest code under active development, which may not be fully validated and tested.
-
 How to Install
 --------------
 
