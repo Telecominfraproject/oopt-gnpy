@@ -194,8 +194,8 @@ implementations.
   :alt: Build Status via Travis CI
   :scale: 100%
 
-.. |doi| image:: https://zenodo.org/badge/96894149.svg
-  :target: https://zenodo.org/badge/latestdoi/96894149
+.. |doi| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3458319.svg
+  :target: https://doi.org/10.5281/zenodo.3458319
   :alt: DOI
   :scale: 100%
 
