@@ -111,27 +111,16 @@ An experimental support for Raman amplification is available:
 Configuration of Raman pumps (their frequencies, power and pumping direction) is done via the `RamanFiber element in the network topology <gnpy/example-data/raman_edfa_example_network.json>`_.
 General numeric parameters for simulaiton control are provided in the `gnpy/example-data/sim_params.json <gnpy/example-data/sim_params.json>`_.
 
-Use ``gnpy-path-request`` to run multiple optimizations as follows:
+Use ``gnpy-path-request`` to request several paths at once:
 
 .. code-block:: shell-session
 
-     $ gnpy-path-request -h
-     Usage: gnpy-path-requests [-h] [-v] [-o OUTPUT] [network_filename] [service_filename] [eqpt_filename]
+     $ cd $(gnpy-example-data)
+     $ gnpy-path-request -o output_file.json \
+       meshTopologyExampleV2.xls meshTopologyExampleV2_services.json
 
-The ``network_filename`` and ``service_filename`` can be an XLS or JSON file. The ``eqpt_filename`` must be a JSON file.
-
-To see an example of it, run:
-
-.. code-block:: shell-session
-
-    $ cd $(gnpy-example-data)
-    $ gnpy-path-request meshTopologyExampleV2.xls meshTopologyExampleV2_services.json eqpt_config.json -o output_file.json
-
-This program requires a list of connections to be estimated and the equipment
-library. The program computes performances for the list of services (accepts
-`JSON <docs/json.rst>`__ or `Excel <docs/excel.rst>`__ format) using the same spectrum propagation modules as
-``gnpy-transmission-example``.
-The output format is based on `draft-ietf-teas-yang-path-computation-01 <https://tools.ietf.org/html/draft-ietf-teas-yang-path-computation-01>`_ with custom extensions (e.g., for transponder modes).
+This program operates on a network topology (`JSON <docs/json.rst>`__ or `Excel <docs/excel.rst>`__ format), processing the list of service requests (JSON or XLS again).
+The service requests and reply formats are based on the `draft-ietf-teas-yang-path-computation-01 <https://tools.ietf.org/html/draft-ietf-teas-yang-path-computation-01>`__ with custom extensions (e.g., for transponder modes).
 An example of the JSON input is provided in file `service-template.json`, while results are shown in `path_result_template.json`.
 
 Important note: ``gnpy-path-request`` is not a network dimensionning tool: each service does not reserve spectrum, or occupy ressources such as transponders. It only computes path feasibility assuming the spectrum (between defined frequencies) is loaded with "nb of channels" spaced by "spacing" values as specified in the system parameters input in the service file, each cannel having the same characteristics in terms of baudrate, format,... as the service transponder. The transceiver element acts as a "logical starting/stopping point" for the spectral information propagation. At that point it is not meant to represent the capacity of add drop ports.
