@@ -8,10 +8,10 @@ Now propagating between Site_A and Site_B:
 
 Propagating with input power = [1;36;40m0.00 dBm[0m:
 Transceiver Site_A
-  OSNR ASE (0.1nm, dB):      inf
-  OSNR ASE (signal bw, dB):  inf
-  SNR total (signal bw, dB): inf
-  SNR total (0.1nm, dB):     inf
+  OSNR ASE (0.1nm, dB):      40.00
+  OSNR ASE (signal bw, dB):  35.92
+  SNR total (signal bw, dB): 35.92
+  SNR total (0.1nm, dB):     40.00
   CD (ps/nm):                0.00
   PMD (ps):                  0.00
 RamanFiber          Span1
