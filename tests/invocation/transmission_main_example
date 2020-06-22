@@ -36,15 +36,15 @@ Edfa Edfa1
   effective pch (dBm):    -2.0
   output VOA (dB):        0.00
 Transceiver Site_B
-  OSNR ASE (0.1nm, dB):      32.03
-  OSNR ASE (signal bw, dB):  27.95
-  SNR total (signal bw, dB): 26.27
-  SNR total (0.1nm, dB):     30.35
+  OSNR ASE (0.1nm, dB):      33.30
+  OSNR ASE (signal bw, dB):  29.21
+  SNR total (signal bw, dB): 27.09
+  SNR total (0.1nm, dB):     31.17
   CD (ps/nm):                1336.00
   PMD (ps):                  0.36
 
 Transmission result for input power = 0.00 dBm:
-  Final SNR total (0.1 nm): [1;36;40m30.35 dB[0m
+  Final SNR total (0.1 nm): [1;36;40m31.17 dB[0m
 
 (No source node specified: picked Site_A)
 

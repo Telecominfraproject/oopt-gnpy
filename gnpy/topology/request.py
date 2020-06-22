@@ -336,7 +336,10 @@ def propagate(path, req, equipment):
     for el in path:
         si = el(si)
     path[0].update_snr(req.tx_osnr)
-    path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
+    if any(isinstance(el, Roadm) for el in path):
+        path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
+    else:
+        path[-1].update_snr(req.tx_osnr)
     return path
 
 
@@ -350,7 +353,10 @@ def propagate2(path, req, equipment):
         after_si = si = el(si)
         infos[el] = before_si, after_si
     path[0].update_snr(req.tx_osnr)
-    path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
+    if any(isinstance(el, Roadm) for el in path):
+        path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
+    else:
+        path[-1].update_snr(req.tx_osnr)
     return infos
 
 
@@ -382,7 +388,10 @@ def propagate_and_optimize_mode(path, req, equipment):
             for this_mode in modes_to_explore:
                 if path[-1].snr is not None:
                     path[0].update_snr(this_mode['tx_osnr'])
-                    path[-1].update_snr(this_mode['tx_osnr'], equipment['Roadm']['default'].add_drop_osnr)
+                    if any(isinstance(el, Roadm) for el in path):
+                        path[-1].update_snr(this_mode['tx_osnr'], equipment['Roadm']['default'].add_drop_osnr)
+                    else:
+                        path[-1].update_snr(this_mode['tx_osnr'])
                     if round(min(path[-1].snr + lin2db(this_br / (12.5e9))), 2) > this_mode['OSNR']:
                         return path, this_mode
                     else:
