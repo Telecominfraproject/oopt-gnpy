@@ -27,7 +27,7 @@ from gnpy.core.utils import db2lin, lin2db, automatic_nch
 from gnpy.topology.request import (ResultElement, jsontocsv, compute_path_dsjctn, requests_aggregation,
                                    BLOCKING_NOPATH, correct_json_route_list,
                                    deduplicate_disjunctions, compute_path_with_disjunction,
-                                   PathRequest, compute_constrained_path, propagate2)
+                                   PathRequest, compute_constrained_path, propagate)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.json_io import load_equipment, load_network, load_json, load_requests, save_network, \
                                requests_from_json, disjunctions_from_json, save_json
@@ -225,7 +225,7 @@ def transmission_main_example(args=None):
             print(f'\nPropagating with input power = {ansi_escapes.cyan}{lin2db(req.power*1e3):.2f} dBm{ansi_escapes.reset}:')
         else:
             print(f'\nPropagating in {ansi_escapes.cyan}gain mode{ansi_escapes.reset}: power cannot be set manually')
-        infos = propagate2(path, req, equipment)
+        infos = propagate(path, req, equipment)
         if len(power_range) == 1:
             for elem in path:
                 print(elem)
@@ -257,7 +257,7 @@ def transmission_main_example(args=None):
                 'SNR NLI (signal bw, dB)',
                 'SNR total (signal bw, dB)'))
         for final_carrier, ch_osnr, ch_snr_nl, ch_snr in zip(
-                infos[path[-1]][1].carriers, path[-1].osnr_ase, path[-1].osnr_nli, path[-1].snr):
+                infos.carriers, path[-1].osnr_ase, path[-1].osnr_nli, path[-1].snr):
             ch_freq = final_carrier.frequency * 1e-12
             ch_power = lin2db(final_carrier.power.signal * 1e3)
             print(
@@ -280,7 +280,7 @@ def transmission_main_example(args=None):
         print(f'\n(Invalid destination node {args.destination!r} replaced with {destination.uid})')
 
     if args.plot:
-        plot_results(network, path, source, destination, infos)
+        plot_results(network, path, source, destination)
 
 
 def _path_result_json(pathresult):
