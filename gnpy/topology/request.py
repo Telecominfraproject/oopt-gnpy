@@ -340,7 +340,7 @@ def propagate(path, req, equipment):
         path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
     else:
         path[-1].update_snr(req.tx_osnr)
-    return path
+    return si
 
 
 def propagate2(path, req, equipment):
@@ -1107,7 +1107,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
             if pathreq.baud_rate is not None:
                 # means that at this point the mode was entered/forced by user and thus a
                 # baud_rate was defined
-                total_path = propagate(total_path, pathreq, equipment)
+                propagate(total_path, pathreq, equipment)
                 temp_snr01nm = round(mean(total_path[-1].snr+lin2db(pathreq.baud_rate/(12.5e9))), 2)
                 if temp_snr01nm < pathreq.OSNR:
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
@@ -1152,7 +1152,8 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
 
                 print(f'\n\tPropagating Z to A direction {pathreq.destination} to {pathreq.source}')
                 print(f'\tPath (roadsm) {[r.uid for r in rev_p if isinstance(r,Roadm)]}\n')
-                propagated_reversed_path = propagate(rev_p, pathreq, equipment)
+                propagate(rev_p, pathreq, equipment)
+                propagated_reversed_path = rev_p
                 temp_snr01nm = round(mean(propagated_reversed_path[-1].snr +\
                                           lin2db(pathreq.baud_rate/(12.5e9))), 2)
                 if temp_snr01nm < pathreq.OSNR:

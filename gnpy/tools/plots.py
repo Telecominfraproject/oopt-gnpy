@@ -33,7 +33,7 @@ def plot_baseline(network):
     show()
 
 
-def plot_results(network, path, source, destination, infos):
+def plot_results(network, path, source, destination):
     path_edges = set(zip(path[:-1], path[1:]))
     edges = set(network.edges()) - path_edges
     pos = {n: (n.lng, n.lat) for n in network.nodes()}
