@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "da5ae463_496c1feb",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-25T18:46:35Z",
+      "side": 1,
+      "message": "My comment applies to the highlighted part of the code. STRICT/LOOSE checking/handling happens after that, so that should not be a problem.\n\n(When this patch gets merged, we will have two similarly named functions which perform the same thing, yet they are slightly different because one of them tries to respect (some) STRICT/LOOSE mapping, while the other does not do that. I think I need to talk with Esther about this interface.)\n\nI think I don\u0027t follow re \"slight optimization\" because the code is almost identical. It calls the same networkx function, the only difference is that the existing compute_constrained_path() yields form the generator just once, while it\u0027s an option for the new addition. I don\u0027t think this is going to affect performance.",
+      "parentUuid": "d98e85a0_e0951e60",
+      "range": {
+        "startLine": 287,
+        "startChar": 0,
+        "endLine": 304,
+        "endChar": 23
+      },
+      "revId": "fcfd632dde8562f40b92d97cc6f9736fe19309e2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a8c40c3e_3ffd3d3a",
         "filename": "gnpy/topology/request.py",
         "patchSetId": 2
@@ -87,6 +111,24 @@
       "revId": "fcfd632dde8562f40b92d97cc6f9736fe19309e2",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16ce2cb7_fa8d0999",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-25T18:46:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a8c40c3e_3ffd3d3a",
+      "revId": "fcfd632dde8562f40b92d97cc6f9736fe19309e2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     },
     {
       "key": {
@@ -161,6 +203,30 @@
     },
     {
       "key": {
+        "uuid": "874c8486_26f3a13e",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-25T18:46:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85e99003_a487c4f0",
+      "range": {
+        "startLine": 345,
+        "startChar": 0,
+        "endLine": 346,
+        "endChar": 21
+      },
+      "revId": "fcfd632dde8562f40b92d97cc6f9736fe19309e2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5b156f5c_30d89041",
         "filename": "gnpy/topology/request.py",
         "patchSetId": 2
@@ -184,6 +250,30 @@
     },
     {
       "key": {
+        "uuid": "536c610d_b07b5e2a",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-25T18:46:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b156f5c_30d89041",
+      "range": {
+        "startLine": 347,
+        "startChar": 0,
+        "endLine": 350,
+        "endChar": 25
+      },
+      "revId": "fcfd632dde8562f40b92d97cc6f9736fe19309e2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3c02386b_1d3e93ee",
         "filename": "gnpy/topology/request.py",
         "patchSetId": 2
@@ -204,6 +294,30 @@
       "revId": "fcfd632dde8562f40b92d97cc6f9736fe19309e2",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4776d8bf_8eebed40",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-25T18:46:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c02386b_1d3e93ee",
+      "range": {
+        "startLine": 344,
+        "startChar": 0,
+        "endLine": 356,
+        "endChar": 59
+      },
+      "revId": "fcfd632dde8562f40b92d97cc6f9736fe19309e2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
