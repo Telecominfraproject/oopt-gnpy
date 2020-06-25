@@ -22,6 +22,30 @@
       "revId": "6e9ee62c375a13b2c2c0f236e8c578b48d3127f0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a1e50b9c_20afb724",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-06-25T18:37:39Z",
+      "side": 1,
+      "message": "Maybe it\u0027s ok to remove it but I think we should be careful with removing stuff with the only motivation that it\u0027s not used by our own \"example code\". I guess it relates to the question of what GNPy actually is but if we consider it a library that anyone can use in their code we can\u0027t know if someone is actually using a specific function. So the cost of maintaining it should be weighed against the risk of breaking someones code (I think this risk is currently very low).",
+      "parentUuid": "8ab1384f_a244eb45",
+      "range": {
+        "startLine": 346,
+        "startChar": 0,
+        "endLine": 360,
+        "endChar": 16
+      },
+      "revId": "6e9ee62c375a13b2c2c0f236e8c578b48d3127f0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
