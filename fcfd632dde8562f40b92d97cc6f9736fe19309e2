@@ -97,6 +97,30 @@
     },
     {
       "key": {
+        "uuid": "96d199e6_79b43033",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-06-25T20:59:53Z",
+      "side": 1,
+      "message": "I\u0027m confused because the STRICT/LOOSE handling is in an exception clause. I don\u0027t understand how to implement what you propose.\n\nYeah, my \"slight optimization\" comment does not apply anymore with the latest version of the code since now, as you say, it is almost identical.",
+      "parentUuid": "da5ae463_496c1feb",
+      "range": {
+        "startLine": 287,
+        "startChar": 0,
+        "endLine": 304,
+        "endChar": 23
+      },
+      "revId": "fcfd632dde8562f40b92d97cc6f9736fe19309e2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a8c40c3e_3ffd3d3a",
         "filename": "gnpy/topology/request.py",
         "patchSetId": 2
