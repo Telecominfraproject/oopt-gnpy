@@ -46,6 +46,30 @@
       "revId": "6e9ee62c375a13b2c2c0f236e8c578b48d3127f0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fb559a81_ee67a59f",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-25T18:56:05Z",
+      "side": 1,
+      "message": "I agree with this point of view, but I am convinced that \"propagate\" vs. \"propagate2\" is a pure technical debt on our side.\n\nIf we\u0027re to solve this \"properly\" (as I see it, anyway), we should:\n\n- start documenting what we would like to commit to as a stable interface,\n- review how a reasonable API should look like,\n- eliminate duplication,\n- realize the costs of doing this.\n\nFeel free to bring this up during the coders call, please.",
+      "parentUuid": "a1e50b9c_20afb724",
+      "range": {
+        "startLine": 346,
+        "startChar": 0,
+        "endLine": 360,
+        "endChar": 16
+      },
+      "revId": "6e9ee62c375a13b2c2c0f236e8c578b48d3127f0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
