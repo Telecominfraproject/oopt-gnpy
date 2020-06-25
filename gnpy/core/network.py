@@ -138,6 +138,9 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
 
 
 def target_power(network, node, equipment):  # get_fiber_dp
+    if isinstance(node, elements.Roadm):
+        return 0
+
     SPAN_LOSS_REF = 20
     POWER_SLOPE = 0.3
     dp_range = list(equipment['Span']['default'].delta_power_range_db)
@@ -147,12 +150,9 @@ def target_power(network, node, equipment):  # get_fiber_dp
         dp = round2float((node_loss - SPAN_LOSS_REF) * POWER_SLOPE, dp_range[2])
         dp = max(dp_range[0], dp)
         dp = min(dp_range[1], dp)
-    except KeyError:
+    except IndexError:
         raise ConfigurationError(f'invalid delta_power_range_db definition in eqpt_config[Span]'
                                  f'delta_power_range_db: [lower_bound, upper_bound, step]')
-
-    if isinstance(node, elements.Roadm):
-        dp = 0
 
     return dp
 
@@ -161,7 +161,7 @@ def prev_node_generator(network, node):
     """fused spans interest:
     iterate over all predecessors while they are Fused or Fiber type"""
     try:
-        prev_node = next(n for n in network.predecessors(node))
+        prev_node = next(network.predecessors(node))
     except StopIteration:
         raise NetworkTopologyError(f'Node {node.uid} is not properly connected, please check network topology')
     # yield and re-iterate
@@ -176,7 +176,7 @@ def next_node_generator(network, node):
     """fused spans interest:
     iterate over all successors while they are Fused or Fiber type"""
     try:
-        next_node = next(n for n in network.successors(node))
+        next_node = next(network.successors(node))
     except StopIteration:
         raise NetworkTopologyError('Node {node.uid} is not properly connected, please check network topology')
     # yield and re-iterate
@@ -192,13 +192,13 @@ def span_loss(network, node):
     return the total span loss of all the fibers spliced by a Fused node"""
     loss = node.loss if node.passive else 0
     try:
-        prev_node = next(n for n in network.predecessors(node))
+        prev_node = next(network.predecessors(node))
         if isinstance(prev_node, elements.Fused):
             loss += sum(n.loss for n in prev_node_generator(network, node))
     except StopIteration:
         pass
     try:
-        next_node = next(n for n in network.successors(node))
+        next_node = next(network.successors(node))
         if isinstance(next_node, elements.Fused):
             loss += sum(n.loss for n in next_node_generator(network, node))
     except StopIteration:
@@ -229,10 +229,10 @@ def find_last_node(network, node):
 def set_amplifier_voa(amp, power_target, power_mode):
     VOA_MARGIN = 1  # do not maximize the VOA optimization
     if amp.out_voa is None:
-        if power_mode:
+        if power_mode and amp.params.out_voa_auto:
             voa = min(amp.params.p_max - power_target,
                       amp.params.gain_flatmax - amp.effective_gain)
-            voa = max(round2float(max(voa, 0), 0.5) - VOA_MARGIN, 0) if amp.params.out_voa_auto else 0
+            voa = max(round2float(voa, 0.5) - VOA_MARGIN, 0)
             amp.delta_p = amp.delta_p + voa
             amp.effective_gain = amp.effective_gain + voa
         else:
@@ -245,19 +245,19 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
     next_oms = (n for n in network.successors(roadm) if not isinstance(n, elements.Transceiver))
     for oms in next_oms:
         # go through all the OMS departing from the Roadm
-        node = roadm
         prev_node = roadm
-        next_node = oms
+        node = oms
         # if isinstance(next_node, elements.Fused): #support ROADM wo egress amp for metro applications
         #     node = find_last_node(next_node)
         #     next_node = next(n for n in network.successors(node))
         #     next_node = find_last_node(next_node)
-        prev_dp = getattr(node.params, 'target_pch_out_db', 0)
+        prev_dp = getattr(roadm.params, 'target_pch_out_db', 0)
         dp = prev_dp
         prev_voa = 0
         voa = 0
-        while True:
+        while not (isinstance(node, elements.Roadm) or isinstance(node, elements.Transceiver)):
             # go through all nodes in the OMS (loop until next Roadm instance)
+            next_node = next(network.successors(node))
             if isinstance(node, elements.Edfa):
                 node_loss = span_loss(network, prev_node)
                 voa = node.out_voa if node.out_voa else 0
@@ -265,20 +265,20 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
                     dp = target_power(network, next_node, equipment)
                 else:
                     dp = node.delta_p
-                gain_from_dp = node_loss + dp - prev_dp + prev_voa
                 if node.effective_gain is None or power_mode:
-                    gain_target = gain_from_dp
+                    gain_target = node_loss + dp - prev_dp + prev_voa
                 else:  # gain mode with effective_gain
                     gain_target = node.effective_gain
                     dp = prev_dp - node_loss + gain_target
 
                 power_target = pref_total_db + dp
 
-                raman_allowed = False
                 if isinstance(prev_node, elements.Fiber):
                     max_fiber_lineic_loss_for_raman = \
                         equipment['Span']['default'].max_fiber_lineic_loss_for_raman
                     raman_allowed = prev_node.params.loss_coef < max_fiber_lineic_loss_for_raman
+                else:
+                    raman_allowed = False
 
                 # implementation of restrictions on roadm boosters
                 if isinstance(prev_node, elements.Roadm):
@@ -307,14 +307,13 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
                 node.delta_p = dp if power_mode else None
                 node.effective_gain = gain_target
                 set_amplifier_voa(node, power_target, power_mode)
-            if isinstance(next_node, elements.Roadm) or isinstance(next_node, elements.Transceiver):
-                break
+
             prev_dp = dp
             prev_voa = voa
             prev_node = node
             node = next_node
             # print(f'{node.uid}')
-            next_node = next(n for n in network.successors(node))
+            
 
 
 def add_egress_amplifier(network, node):
@@ -328,8 +327,8 @@ def add_egress_amplifier(network, node):
             params={},
             metadata={
                 'location': {
-                    'latitude': (node.lat * 2 + next_node.lat * 2) / 4,
-                    'longitude': (node.lng * 2 + next_node.lng * 2) / 4,
+                    'latitude': (node.lat  + next_node.lat) / 2,
+                    'longitude': (node.lng + next_node.lng) / 2,
                     'city': node.loc.city,
                     'region': node.loc.region,
                 }
@@ -351,22 +350,20 @@ def calculate_new_length(fiber_length, bounds, target_length):
     if fiber_length < bounds.stop:
         return fiber_length, 1
 
-    n_spans = int(fiber_length // target_length)
+    n_spans2 = int(fiber_length // target_length)
+    n_spans1 = n_spans2 + 1
 
-    length1 = fiber_length / (n_spans + 1)
-    delta1 = target_length - length1
-    result1 = (length1, n_spans + 1)
-
-    length2 = fiber_length / n_spans
-    delta2 = length2 - target_length
-    result2 = (length2, n_spans)
+    length1 = fiber_length / n_spans1
+    length2 = fiber_length / n_spans2
 
     if (bounds.start <= length1 <= bounds.stop) and not(bounds.start <= length2 <= bounds.stop):
-        result = result1
+        result = (length1, n_spans1)
     elif (bounds.start <= length2 <= bounds.stop) and not(bounds.start <= length1 <= bounds.stop):
-        result = result2
+        result = (length2, n_spans2)
+    elif target_length - length1 < length2 - target_length:
+        result = (length1, n_spans1)
     else:
-        result = result1 if delta1 < delta2 else result2
+        result = (length2, n_spans2)
 
     return result
 
@@ -420,7 +417,7 @@ def add_connector_loss(network, fibers, default_con_in, default_con_out, EOL):
             fiber.params.con_in = default_con_in
         if fiber.params.con_out is None:
             fiber.params.con_out = default_con_out
-        next_node = next(n for n in network.successors(fiber))
+        next_node = next(network.successors(fiber))
         if not isinstance(next_node, elements.Fused):
             fiber.params.con_out += EOL
 
@@ -431,22 +428,21 @@ def add_fiber_padding(network, fibers, padding):
                          for fiber in network.predecessors(n)
                          if isinstance(fiber, elements.Fiber))"""
     for fiber in fibers:
-        this_span_loss = span_loss(network, fiber)
         try:
             next_node = next(network.successors(fiber))
         except StopIteration:
             raise NetworkTopologyError(f'Fiber {fiber.uid} is not properly connected, please check network topology')
-        if this_span_loss < padding and not (isinstance(next_node, elements.Fused)):
+        if isinstance(next_node, elements.Fused):
+            continue
+        this_span_loss = span_loss(network, fiber)
+        if this_span_loss < padding:
             # add a padding att_in at the input of the 1st fiber:
             # address the case when several fibers are spliced together
             first_fiber = find_first_node(network, fiber)
             # in order to support no booster , fused might be placed
             # just after a roadm: need to check that first_fiber is really a fiber
             if isinstance(first_fiber, elements.Fiber):
-                if first_fiber.params.att_in is None:
-                    first_fiber.params.att_in = padding - this_span_loss
-                else:
-                    first_fiber.params.att_in = first_fiber.params.att_in + padding - this_span_loss
+                first_fiber.params.att_in = first_fiber.params.att_in + padding - this_span_loss
 
 
 def build_network(network, equipment, pref_ch_db, pref_total_db):
@@ -455,14 +451,11 @@ def build_network(network, equipment, pref_ch_db, pref_total_db):
     min_length = max(int(default_span_data.padding / 0.2 * 1e3), 50_000)
     bounds = range(min_length, max_length)
     target_length = max(min_length, 90_000)
-    default_con_in = default_span_data.con_in
-    default_con_out = default_span_data.con_out
-    padding = default_span_data.padding
 
     # set roadm loss for gain_mode before to build network
     fibers = [f for f in network.nodes() if isinstance(f, elements.Fiber)]
-    add_connector_loss(network, fibers, default_con_in, default_con_out, default_span_data.EOL)
-    add_fiber_padding(network, fibers, padding)
+    add_connector_loss(network, fibers, default_span_data.con_in, default_span_data.con_out, default_span_data.EOL)
+    add_fiber_padding(network, fibers, default_span_data.padding)
     # don't group split fiber and add amp in the same loop
     # =>for code clarity (at the expense of speed):
     for fiber in fibers:
@@ -473,7 +466,7 @@ def build_network(network, equipment, pref_ch_db, pref_total_db):
     for node in amplified_nodes:
         add_egress_amplifier(network, node)
 
-    roadms = [r for r in network.nodes() if isinstance(r, elements.Roadm)]
+    roadms = [r for r in amplified_nodes if isinstance(r, elements.Roadm)]
     for roadm in roadms:
         set_egress_amplifier(network, roadm, equipment, pref_total_db)
 
