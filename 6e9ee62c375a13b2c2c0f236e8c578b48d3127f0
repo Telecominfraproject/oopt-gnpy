@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8ab1384f_a244eb45",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-25T17:45:49Z",
+      "side": 1,
+      "message": "I\u0027ve taken the liberty of removing this function because it\u0027s effectively unused now.",
+      "range": {
+        "startLine": 346,
+        "startChar": 0,
+        "endLine": 360,
+        "endChar": 16
+      },
+      "revId": "6e9ee62c375a13b2c2c0f236e8c578b48d3127f0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
