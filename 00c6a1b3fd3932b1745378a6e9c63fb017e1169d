@@ -69,6 +69,24 @@
       "revId": "00c6a1b3fd3932b1745378a6e9c63fb017e1169d",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f5b77687_415a65dd",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-06-26T18:32:51Z",
+      "side": 1,
+      "message": "\u003e Yes (which is why my comment was marked as \"Resolved\" in the web UI, i.e., not requiring any action, and why I put a CR+2 there).\nOk, I was just trying to make sense of the comment :)\n\u003e I was referring to a (possible) future state when the input topology file distinguishes between \"a link to be split, maybe\" and \"here are my fibers and my amplifier huts\".\nAnd I\u0027m trying to understand what is preventing this with the existing code but maybe I don\u0027t understand what you want to achieve? Do you want to specify this on a per fiber basis so that sometimes e.g. a 150 km fiber is split and sometimes it is not?",
+      "parentUuid": "72f3bcaf_b4d06785",
+      "revId": "00c6a1b3fd3932b1745378a6e9c63fb017e1169d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
