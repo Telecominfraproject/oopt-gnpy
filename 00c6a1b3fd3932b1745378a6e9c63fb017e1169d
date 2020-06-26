@@ -33,6 +33,24 @@
       "revId": "00c6a1b3fd3932b1745378a6e9c63fb017e1169d",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c350f109_29f2512c",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-06-26T17:52:19Z",
+      "side": 1,
+      "message": "What point? What is this comment referring to? This change does not have any impact on the functionality.\n\nAbout \"this is the topology as-is\", you can already have that by simply not calling build_network.",
+      "parentUuid": "d4182e5a_002e9b7e",
+      "revId": "00c6a1b3fd3932b1745378a6e9c63fb017e1169d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
