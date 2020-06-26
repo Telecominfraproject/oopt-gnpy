@@ -7,7 +7,7 @@ python:
   - "3.7"
 install: skip
 script:
-  - python setup.py develop
+  - pip install --editable .
   - pip install pytest-cov rstcheck
   - pytest --cov-report=xml --cov=gnpy -v
   - rstcheck --ignore-roles cite *.rst
