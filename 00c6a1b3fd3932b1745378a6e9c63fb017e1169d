@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8dd7d918_0bfc490a",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-26T17:32:34Z",
+      "side": 1,
+      "message": "I\u0027ve used an early return here.",
+      "revId": "00c6a1b3fd3932b1745378a6e9c63fb017e1169d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d4182e5a_002e9b7e",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-26T17:32:34Z",
+      "side": 1,
+      "message": "I see the point, but I think that we should anyway try to better separate \"a fiber that can be, maybe, split into smaller chunks while adding amplifiers\" and \"this is the topology as-is, do not split it in any way\". Well, we can revert by then.",
+      "revId": "00c6a1b3fd3932b1745378a6e9c63fb017e1169d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
