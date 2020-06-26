@@ -51,6 +51,24 @@
       "revId": "00c6a1b3fd3932b1745378a6e9c63fb017e1169d",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "72f3bcaf_b4d06785",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-06-26T17:57:07Z",
+      "side": 1,
+      "message": "\u003e What point? What is this comment referring to? This change does not have any impact on the functionality.\n\nYes (which is why my comment was marked as \"Resolved\" in the web UI, i.e., not requiring any action, and why I put a CR+2 there).\n\n\u003e About \"this is the topology as-is\", you can already have that by simply not calling build_network.\n\nI was referring to a (possible) future state when the input topology file distinguishes between \"a link to be split, maybe\" and \"here are my fibers and my amplifier huts\". We\u0027ll have to revisit this code that gets changed here, and the optimization will be effectively undone. But that\u0027s for future work and I suppose it\u0027s hard to see into my head when I have not provided that patch yet :).",
+      "parentUuid": "c350f109_29f2512c",
+      "revId": "00c6a1b3fd3932b1745378a6e9c63fb017e1169d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
