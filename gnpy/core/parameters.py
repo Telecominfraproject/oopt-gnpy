@@ -116,14 +116,8 @@ class NLIParams(Parameters):
 class SimParams(Parameters):
     def __init__(self, **kwargs):
         try:
-            if 'nli_parameters' in kwargs:
-                self._nli_params = NLIParams(**kwargs['nli_parameters'])
-            else:
-                self._nli_params = None
-            if 'raman_parameters' in kwargs:
-                self._raman_params = RamanParams(**kwargs['raman_parameters'])
-            else:
-                self._raman_params = None
+            self._nli_params = NLIParams(**kwargs['nli_parameters'])
+            self._raman_params = RamanParams(**kwargs['raman_parameters'])
         except KeyError as e:
             raise ParametersError(f'Simulation parameters must include {e}. Configuration: {kwargs}')
 
