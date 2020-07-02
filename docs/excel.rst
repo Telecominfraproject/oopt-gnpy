@@ -196,7 +196,7 @@ This generates a text file meshTopologyExampleV2_eqt_sheet.txt  whose content ca
 Service sheet 
 -------------
 
-Service sheet is optional. It lists the services for which path and feasibility must be computed with ``gnpy-path_request``.
+Service sheet is optional. It lists the services for which path and feasibility must be computed with ``gnpy-path-request``.
 
 Service sheet must contain 11 columns::  
 
