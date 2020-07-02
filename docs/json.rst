@@ -73,7 +73,7 @@ Transceiver
 The transceiver equipment library is a list of supported transceivers. New
 transceivers can be added and existing ones removed at will by the user. It is
 used to determine the service list path feasibility when running the
-`path_request_run.py routine <gnpy/example-data/path_request_run.py>`_.
+``gnpy-path-request`` script.
 
 +----------------------+-----------+-----------------------------------------+
 | field                | type      | description                             |
