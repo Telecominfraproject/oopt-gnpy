@@ -9,6 +9,7 @@ This module contains utility functions that are used with gnpy.
 '''
 
 
+from itertools import tee
 from csv import writer
 import numpy as np
 from numpy import pi, cos, sqrt, log10
@@ -296,3 +297,14 @@ def convert_length(value, units):
         return value * 1e3
     else:
         raise ConfigurationError(f'Cannot convert length in "{units}" into meters')
+
+
+def pairwise(iterable):
+    '''Iterate over overlapping pairs from the input iterator, in order
+
+    >>> [x for x in pairwise(range(5))]
+    [(0, 1), (1, 2), (2, 3), (3, 4)]
+    '''
+    (a, b) = tee(iterable)
+    next(b)
+    return zip(a, b)
