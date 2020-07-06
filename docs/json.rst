@@ -314,6 +314,16 @@ one power/channel definition.
 |                      |           | roll-off shape. Used by Raman-aware       |
 |                      |           | simulation code.                          |
 +----------------------+-----------+-------------------------------------------+
+| ``carriers``         | (list of  | If provided, this should be a list of     |
+|                      | dicts)    | dicts where each item correspond to an    |
+|                      |           | individual channel.                       |
+|                      |           |                                           |
+|                      |           | Each channel must provide its             |
+|                      |           | ``frequency``. If desired, it is also     |
+|                      |           | possible to set  ``baud_rate`` and        |
+|                      |           | ``roll_off``, otherwise these are         |
+|                      |           | inherited from the SpectralInformation.   |
++----------------------+-----------+-------------------------------------------+
 | ``tx_osnr``          | (number)  | In dB. OSNR out from transponder.         |
 +----------------------+-----------+-------------------------------------------+
 | ``power_dbm``        | (number)  | Reference channel power. In gain mode     |

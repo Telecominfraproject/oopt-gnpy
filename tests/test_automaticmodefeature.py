@@ -70,7 +70,7 @@ def test_automaticmodefeature(net, eqpt, serv, expected_mode):
         if pathreq.baud_rate is not None:
             print(pathreq.format)
             path_res_list.append(pathreq.format)
-            total_path = propagate(total_path, pathreq, equipment)
+            total_path = propagate(total_path, pathreq, equipment, spectrum=None)
         else:
             total_path, mode = propagate_and_optimize_mode(total_path, pathreq, equipment)
             # if no baudrate satisfies spacing, no mode is returned and an empty path is returned

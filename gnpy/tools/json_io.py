@@ -39,7 +39,10 @@ class _JsonThing:
         clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
         for k, v in default_values.items():
             setattr(self, k, clean_kwargs.get(k, v))
-            if k not in clean_kwargs and name != 'Amp':
+            if k not in clean_kwargs and (
+                    name != 'Amp'
+                    and not (name == 'SI' and k == 'carriers')  # yes, this is ugly; let's use YANG.
+                    ):
                 print(ansi_escapes.red +
                       f'\n WARNING missing {k} attribute in eqpt_config.json[{name}]' +
                       f'\n default value is {k} = {v}' +
@@ -57,7 +60,8 @@ class SI(_JsonThing):
         "power_range_db": [0, 0, 0.5],
         "roll_off": 0.15,
         "tx_osnr": 45,
-        "sys_margins": 0
+        "sys_margins": 0,
+        "carriers": None,
     }
 
     def __init__(self, **kwargs):

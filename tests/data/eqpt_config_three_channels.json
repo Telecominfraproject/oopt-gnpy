@@ -1,0 +1,111 @@
+{
+    "Edfa": [
+        {
+            "allowed_for_design": true,
+            "gain_flatmax": 25,
+            "gain_min": 15,
+            "nf_max": 10,
+            "nf_min": 5.8,
+            "out_voa_auto": false,
+            "p_max": 21,
+            "type_def": "variable_gain",
+            "type_variety": "test"
+        },
+        {
+            "allowed_for_design": true,
+            "gain_flatmax": 21,
+            "gain_min": 20,
+            "nf0": 5,
+            "p_max": 21,
+            "type_def": "fixed_gain",
+            "type_variety": "test_fixed_gain"
+        }
+    ],
+    "Fiber": [
+        {
+            "dispersion": 1.67e-05,
+            "gamma": 0.00127,
+            "pmd_coef": 1.265e-15,
+            "type_variety": "SSMF"
+        }
+    ],
+    "Roadm": [
+        {
+            "add_drop_osnr": 38,
+            "pmd": 0,
+            "restrictions": {
+                "booster_variety_list": [],
+                "preamp_variety_list": []
+            },
+            "target_pch_out_db": -20
+        }
+    ],
+    "SI": [
+        {
+            "baud_rate": 32000000000.0,
+            "carriers": [
+                {
+                    "frequency": 192500000000000.0
+                },
+                {
+                    "frequency": 193550000000000.0
+                },
+                {
+                    "frequency": 194700000000000.0
+                }
+            ],
+            "f_max": 196100000000000.0,
+            "f_min": 191300000000000.0,
+            "power_dbm": 0,
+            "power_range_db": [
+                0,
+                0,
+                0.5
+            ],
+            "roll_off": 0.15,
+            "spacing": 50000000000.0,
+            "sys_margins": 0,
+            "tx_osnr": 100
+        }
+    ],
+    "Span": [
+        {
+            "EOL": 0,
+            "con_in": 0,
+            "con_out": 0,
+            "delta_power_range_db": [
+                0,
+                0,
+                0.5
+            ],
+            "length_units": "km",
+            "max_fiber_lineic_loss_for_raman": 0.25,
+            "max_length": 150,
+            "max_loss": 28,
+            "padding": 10,
+            "power_mode": true,
+            "target_extended_gain": 2.5
+        }
+    ],
+    "Transceiver": [
+        {
+            "frequency": {
+                "max": 196100000000000.0,
+                "min": 191350000000000.0
+            },
+            "mode": [
+                {
+                    "OSNR": 11,
+                    "baud_rate": 32000000000.0,
+                    "bit_rate": 100000000000.0,
+                    "cost": 1,
+                    "format": "mode 1",
+                    "min_spacing": 50000000000.0,
+                    "roll_off": 0.15,
+                    "tx_osnr": 100
+                }
+            ],
+            "type_variety": "vendorA_trx-type1"
+        }
+    ]
+}

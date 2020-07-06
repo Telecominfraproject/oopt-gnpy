@@ -329,18 +329,19 @@ def compute_constrained_path(network, req):
     return total_path
 
 
-def propagate(path, req, equipment):
-    si = create_input_spectral_information(
-        req.f_min, req.f_max, req.roll_off, req.baud_rate,
-        req.power, req.spacing)
+def propagate(path, req, equipment, spectrum):
+    if spectrum is None:
+        spectrum = create_input_spectral_information(
+            req.f_min, req.f_max, req.roll_off, req.baud_rate,
+            req.power, req.spacing)
     for el in path:
-        si = el(si)
+        spectrum = el(spectrum)
     path[0].update_snr(req.tx_osnr)
     if any(isinstance(el, Roadm) for el in path):
         path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
     else:
         path[-1].update_snr(req.tx_osnr)
-    return si
+    return spectrum
 
 
 def propagate_and_optimize_mode(path, req, equipment):
@@ -1090,7 +1091,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
             if pathreq.baud_rate is not None:
                 # means that at this point the mode was entered/forced by user and thus a
                 # baud_rate was defined
-                propagate(total_path, pathreq, equipment)
+                propagate(total_path, pathreq, equipment, spectrum=None)
                 temp_snr01nm = round(mean(total_path[-1].snr+lin2db(pathreq.baud_rate/(12.5e9))), 2)
                 if temp_snr01nm < pathreq.OSNR:
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
@@ -1135,7 +1136,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
 
                 print(f'\n\tPropagating Z to A direction {pathreq.destination} to {pathreq.source}')
                 print(f'\tPath (roadsm) {[r.uid for r in rev_p if isinstance(r,Roadm)]}\n')
-                propagate(rev_p, pathreq, equipment)
+                propagate(rev_p, pathreq, equipment, spectrum=None)
                 propagated_reversed_path = rev_p
                 temp_snr01nm = round(mean(propagated_reversed_path[-1].snr +\
                                           lin2db(pathreq.baud_rate/(12.5e9))), 2)

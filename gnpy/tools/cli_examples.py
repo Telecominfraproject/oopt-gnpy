@@ -20,6 +20,7 @@ import gnpy.core.ansi_escapes as ansi_escapes
 from gnpy.core.elements import Transceiver, Fiber, RamanFiber
 from gnpy.core.equipment import trx_mode_params
 import gnpy.core.exceptions as exceptions
+from gnpy.core.info import Channel, Power, Pref, SpectralInformation
 from gnpy.core.network import build_network
 from gnpy.core.parameters import SimParams
 from gnpy.core.science_utils import Simulation
@@ -192,13 +193,29 @@ def transmission_main_example(args=None):
     if args.power:
         trx_params['power'] = db2lin(float(args.power)) * 1e-3
     params.update(trx_params)
+
+    pref_ch_db = lin2db(params['power'] * 1e3)  # reference channel power / span (SL=20dB)
+
+    carriers = equipment['SI']['default'].carriers
+    if carriers:
+        params['nb_channel'] = len(carriers)
+        params['f_min'] = min(c['frequency'] for c in carriers)
+        params['f_max'] = max(c['frequency'] for c in carriers)
+        carriers = [Channel(num, c['frequency'], c.get('baud_rate', trx_params['baud_rate']),
+                            c.get('roll_off', trx_params['roll_off']),
+                            Power(params['power'], 0, 0),
+                            0, 0)
+                    for num, c in enumerate(carriers)]
+        spectrum = SpectralInformation(Pref(pref_ch_db, pref_ch_db, lin2db(len(carriers))), carriers)
+    else:
+        spectrum = None
+
     req = PathRequest(**params)
 
     power_mode = equipment['Span']['default'].power_mode
     print('\n'.join([f'Power mode is set to {power_mode}',
                      f'=> it can be modified in eqpt_config.json - Span']))
 
-    pref_ch_db = lin2db(req.power * 1e3)  # reference channel power / span (SL=20dB)
     pref_total_db = pref_ch_db + lin2db(req.nb_channel)  # reference total power / span (SL=20dB)
     build_network(network, equipment, pref_ch_db, pref_total_db)
     path = compute_constrained_path(network, req)
@@ -225,7 +242,7 @@ def transmission_main_example(args=None):
             print(f'\nPropagating with input power = {ansi_escapes.cyan}{lin2db(req.power*1e3):.2f} dBm{ansi_escapes.reset}:')
         else:
             print(f'\nPropagating in {ansi_escapes.cyan}gain mode{ansi_escapes.reset}: power cannot be set manually')
-        infos = propagate(path, req, equipment)
+        infos = propagate(path, req, equipment, spectrum)
         if len(power_range) == 1:
             for elem in path:
                 print(elem)

@@ -1,0 +1,80 @@
+There are 96 channels propagating
+Power mode is set to True
+=> it can be modified in eqpt_config.json - Span
+
+There are 2 fiber spans over 160 km between Site_A and Site_B
+
+Now propagating between Site_A and Site_B:
+
+Propagating with input power = [1;36;40m0.00 dBm[0m:
+Transceiver Site_A
+  OSNR ASE (0.1nm, dB):      100.00
+  OSNR ASE (signal bw, dB):  95.92
+  SNR total (signal bw, dB): 95.92
+  SNR total (0.1nm, dB):     100.00
+  CD (ps/nm):                0.00
+  PMD (ps):                  0.00
+Fiber          Span1
+  type_variety:                SSMF
+  length (km):                 80.00
+  pad att_in (dB):             0.00
+  total loss (dB):             16.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -16.0
+Edfa Edfa1
+  type_variety:           test
+  effective gain(dB):     16.00
+  (before att_in and before output VOA)
+  noise figure (dB):      8.86
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         -11.23
+  Power Out (dBm):        4.78
+  Delta_P (dB):           0
+  target pch (dBm):       0.0
+  effective pch (dBm):    0.0
+  output VOA (dB):        0.00
+Fiber          Span2
+  type_variety:                SSMF
+  length (km):                 80.00
+  pad att_in (dB):             0.00
+  total loss (dB):             16.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -16.0
+Edfa Edfa2
+  type_variety:           test_fixed_gain
+  effective gain(dB):     16.00
+  (before att_in and before output VOA)
+  noise figure (dB):      9.00
+  (including att_in)
+  pad att_in (dB):        4.00
+  Power In (dBm):         -11.22
+  Power Out (dBm):        4.78
+  Delta_P (dB):           0
+  target pch (dBm):       0.0
+  effective pch (dBm):    0.0
+  output VOA (dB):        0.00
+Fused Att_B
+  loss (dB): 16.00
+Transceiver Site_B
+  OSNR ASE (0.1nm, dB):      30.01
+  OSNR ASE (signal bw, dB):  25.93
+  SNR total (signal bw, dB): 25.19
+  SNR total (0.1nm, dB):     29.28
+  CD (ps/nm):                2672.00
+  PMD (ps):                  0.51
+
+Transmission result for input power = 0.00 dBm:
+  Final SNR total (0.1 nm): [1;36;40m29.28 dB[0m
+
+The total SNR per channel at the end of the line is:
+Ch. #   Channel frequency (THz)       Channel power (dBm)    OSNR ASE (signal bw, dB)     SNR NLI (signal bw, dB)   SNR total (signal bw, dB)
+    0                    192.50                    -16.00                       25.95                       33.29                       25.22
+    1                    193.55                    -16.00                       25.93                       33.25                       25.19
+    2                    194.70                    -16.00                       25.90                       33.29                       25.17
+
+(No source node specified: picked Site_A)
+
+(No destination node specified: picked Site_B)
