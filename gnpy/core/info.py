@@ -10,7 +10,9 @@ This module contains classes for modelling :class:`SpectralInformation`.
 
 
 from collections import namedtuple
-from gnpy.core.utils import automatic_nch, lin2db
+from typing import List
+import gnpy.core.exceptions as exceptions
+from gnpy.core.utils import automatic_nch, lin2db, pairwise
 
 
 class Power(namedtuple('Power', 'signal nli ase')):
@@ -38,9 +40,36 @@ class Pref(namedtuple('Pref', 'p_span0, p_spani, neq_ch ')):
 
 
 class SpectralInformation(namedtuple('SpectralInformation', 'pref carriers')):
+    '''
+    >>> pref = Pref(0, 0, lin2db(10))
+    >>> c_20 = Channel(0, 192e12, 33e9, 0.15, Power(.001, 0, 0), 0, 0)
+    >>> c_20_5 = Channel(1, 192.05e12, 33e9, 0.15, Power(.001, 0, 0), 0, 0)
+    >>> c_21 = Channel(2, 192.1e12, 33e9, 0.15, Power(.001, 0, 0), 0, 0)
+    >>> c_21_100 = Channel(2, 192.1e12, 100e9, 0.15, Power(.001, 0, 0), 0, 0)
+    >>> _ = SpectralInformation(pref, [c_20])
+    >>> _ = SpectralInformation(pref, [c_20, c_20_5, c_21])
+    >>> _ = SpectralInformation(pref, [c_21, c_20])
+    Traceback (most recent call last):
+    ...
+    gnpy.core.exceptions.SpectrumError: Channels in SpectralInformation are not sorted: 192.1 THz >= 192.0 THz
+    >>> _ = SpectralInformation(pref, [c_20, c_20_5, c_21_100])
+    Traceback (most recent call last):
+    ...
+    gnpy.core.exceptions.SpectrumError: Channel overlap between 192.05 (+0.0165) THz and 192.1 (-0.05) THz
+    '''
 
-    def __new__(cls, pref, carriers):
-        return super().__new__(cls, pref, carriers)
+    def __new__(cls, pref: Pref, carriers: List[Channel]):
+        res = super().__new__(cls, pref, carriers)
+        for (a, b) in pairwise(carriers):
+            if a.frequency >= b.frequency:
+                raise exceptions.SpectrumError('Channels in SpectralInformation are not sorted: '
+                                               f'{a.frequency / 1e12} THz >= {b.frequency / 1e12} THz')
+            # assume that the baud_rate is also the effective channel width
+            if a.frequency + a.baud_rate / 2 > b.frequency - b.baud_rate / 2:
+                raise exceptions.SpectrumError('Channel overlap between '
+                                               f'{a.frequency / 1e12} (+{a.baud_rate / 2e12}) THz and '
+                                               f'{b.frequency / 1e12} (-{b.baud_rate / 2e12}) THz')
+        return res
 
 
 def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing):
