@@ -475,23 +475,37 @@ class RamanFiber(Fiber):
             self.raman_pumps = None
         self.raman_solver = RamanSolver(self)
 
-    def update_pref(self, pref, *carriers):
-        pch_out_db = lin2db(mean([carrier.power.signal for carrier in carriers])) + 30
+    def propagate(self, spectral_info):
+
+        # apply connector_att_in
+        attenuation_in = db2lin(self.params.con_in + self.params.att_in)
+        spectral_info.signal *= 1 / attenuation_in
+        spectral_info.nli *= 1 / attenuation_in
+        spectral_info.ase *= 1 / attenuation_in
+
+        # Nli generation, chromatic dispersion and pmd accumulation
+        spectral_info = propagate_raman_fiber(self, spectral_info)
+        spectral_info.chromatic_dispersion += self.chromatic_dispersion(spectral_info.frequency)
+        spectral_info.pmd = sqrt(spectral_info.pmd**2 + self.pmd**2)
+
+        # apply connector_att_out
+        attenuation_out = db2lin(self.params.con_out)
+        spectral_info.signal *= 1 / attenuation_out
+        spectral_info.nli *= 1 / attenuation_out
+        spectral_info.ase *= 1 / attenuation_out
+
+        return spectral_info
+
+    def update_pref(self, spectral_info):
+        pch_out_db = lin2db(mean(spectral_info.signal)) + 30
         self.pch_out_db = round(pch_out_db, 2)
+        pref = spectral_info.pref
         return pref._replace(p_span0=pref.p_span0, p_spani=self.pch_out_db)
 
     def __call__(self, spectral_info):
-        carriers = tuple(self.propagate(*spectral_info.carriers))
-        pref = self.update_pref(spectral_info.pref, *carriers)
-        return spectral_info._replace(carriers=carriers, pref=pref)
-
-    def propagate(self, *carriers):
-        for propagated_carrier in propagate_raman_fiber(self, *carriers):
-            chromatic_dispersion = propagated_carrier.chromatic_dispersion + \
-                                   self.chromatic_dispersion(propagated_carrier.frequency)
-            pmd = sqrt(propagated_carrier.pmd**2 + self.pmd**2)
-            propagated_carrier = propagated_carrier._replace(chromatic_dispersion=chromatic_dispersion, pmd=pmd)
-            yield propagated_carrier
+        spectral_info = self.propagate(spectral_info)
+        spectral_info.pref = self.update_pref(spectral_info)
+        return spectral_info
 
 
 class EdfaParams:

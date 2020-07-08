@@ -15,22 +15,12 @@ from gnpy.core.exceptions import EquipmentConfigError
 logger = getLogger(__name__)
 
 
-def propagate_raman_fiber(fiber, *carriers):
+def propagate_raman_fiber(fiber, spectral_info):
+    carriers = spectral_info.carriers
     simulation = Simulation.get_simulation()
     sim_params = simulation.sim_params
     raman_params = sim_params.raman_params
     nli_params = sim_params.nli_params
-    # apply input attenuation to carriers
-    attenuation_in = db2lin(fiber.params.con_in + fiber.params.att_in)
-    chan = []
-    for carrier in carriers:
-        pwr = carrier.power
-        pwr = pwr._replace(signal=pwr.signal / attenuation_in,
-                           nli=pwr.nli / attenuation_in,
-                           ase=pwr.ase / attenuation_in)
-        carrier = carrier._replace(power=pwr)
-        chan.append(carrier)
-    carriers = tuple(f for f in chan)
 
     # evaluate fiber attenuation involving also SRS if required by sim_params
     raman_solver = fiber.raman_solver
@@ -49,7 +39,6 @@ def propagate_raman_fiber(fiber, *carriers):
         raman_ase = tuple(0 for _ in carriers)
 
     # evaluate nli and propagate in fiber
-    attenuation_out = db2lin(fiber.params.con_out)
     nli_solver = fiber.nli_solver
     nli_solver.stimulated_raman_scattering = stimulated_raman_scattering
 
@@ -67,11 +56,11 @@ def propagate_raman_fiber(fiber, *carriers):
     for carrier, attenuation, rmn_ase in zip(carriers, fiber_attenuation, raman_ase):
         carrier_nli = np.interp(carrier.frequency, nli_frequencies, computed_nli)
         pwr = carrier.power
-        pwr = pwr._replace(signal=pwr.signal / attenuation / attenuation_out,
-                           nli=(pwr.nli + carrier_nli) / attenuation / attenuation_out,
-                           ase=((pwr.ase / attenuation) + rmn_ase) / attenuation_out)
+        pwr = pwr._replace(signal=pwr.signal / attenuation,
+                           nli=(pwr.nli + carrier_nli) / attenuation,
+                           ase=((pwr.ase / attenuation) + rmn_ase))
         new_carriers.append(carrier._replace(power=pwr))
-    return new_carriers
+    return spectral_info._replace(new_carriers, spectral_info.pref)
 
 
 def frequency_resolution(carrier, carriers, sim_params, fiber):
