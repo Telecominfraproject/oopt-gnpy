@@ -98,7 +98,7 @@ of the `gnpy` repo and install it with:
 
     $ git clone https://github.com/Telecominfraproject/oopt-gnpy # clone the repo
     $ cd oopt-gnpy
-    $ pip install --editable .
+    $ pip install --editable . # note the trailing dot
 
 To test that `gnpy` was successfully installed, you can run this command. If it
 executes without a ``ModuleNotFoundError``, you have successfully installed
