@@ -29,7 +29,7 @@ from gnpy.topology.request import (jsontocsv, requests_aggregation, compute_path
                                    compute_path_with_disjunction, ResultElement, PathRequest)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.convert import convert_file
-from gnpy.tools.json_io import load_json, load_network, save_network, load_equipment, requests_from_json, disjunctions_from_json
+from gnpy.tools.json_io import load_json, load_network, save_network, load_equipment, requests_from_json, disjunctions_from_json, network_to_json, network_from_json
 from gnpy.tools.service_sheet import read_service_sheet, correct_xls_route_list
 
 TEST_DIR = Path(__file__).parent
@@ -427,3 +427,89 @@ def test_excel_ila_constraints(source, destination, route_list, hoptype, expecte
     else:
         with pytest.raises(ServiceError):
             [request] = correct_xls_route_list(service_xls_input, network, [request])
+
+
+def setup_per_degree(case):
+    """ common setup for degree: returns the dict network for different cases
+    """
+    json_network = load_json(DATA_DIR / 'testTopology_expected.json')
+    json_network_auto = load_json(DATA_DIR / 'testTopology_auto_design_expected.json')
+    if case == 'no':
+        return json_network
+    elif case == 'all':
+        return json_network_auto
+    elif case == 'Lannion_CAS and all':
+        elem = next(e for e in json_network['elements'] if e['uid'] == 'roadm Lannion_CAS')
+        elem['params'] = {'per_degree_params': [
+        {
+            "to_node": "east edfa in Lannion_CAS to Corlay",
+            "target_pch_out_db": -17
+        },
+        {
+            "to_node": "east edfa in Lannion_CAS to Stbrieuc",
+            "target_pch_out_db": -18
+        },
+        {
+            "to_node": "east edfa in Lannion_CAS to Morlaix",
+            "target_pch_out_db": -21
+        }]}
+        return json_network
+    elif case == 'Lannion_CAS and one':
+        elem = next(e for e in json_network['elements'] if e['uid'] == 'roadm Lannion_CAS')
+        elem['params'] = {'per_degree_params': [
+        {
+            "to_node": "east edfa in Lannion_CAS to Corlay",
+            "target_pch_out_db": -17
+        },
+        {
+            "to_node": "east edfa in Lannion_CAS to Stbrieuc",
+            "target_pch_out_db": -18
+        }]}
+        return json_network
+
+
+@pytest.mark.parametrize('case', ['no', 'all', 'Lannion_CAS and all', 'Lannion_CAS and one'])
+def test_target_pch_out_db_global(case):
+    """ check that per degree attributes are correctly created with global values if none are given
+    """
+    equipment = load_equipment(eqpt_filename)
+    json_network = setup_per_degree(case)
+    per_degree = {}
+    for elem in json_network['elements']:
+        if 'type' in elem.keys() and elem['type'] == 'Roadm' and 'params' in elem.keys() and 'per_degree_params' in elem['params']:
+            # records roadms that have a per degree target
+            per_degree[elem['uid']] = {deg['to_node']: deg['target_pch_out_db'] for deg in elem['params']['per_degree_params']}
+    network = network_from_json(json_network, equipment)
+    # Build the network once using the default power defined in SI in eqpt config
+    # power density: db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
+    # spacing, f_min and f_max
+    p_db = equipment['SI']['default'].power_dbm
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
+                                             equipment['SI']['default'].f_max,
+                                             equipment['SI']['default'].spacing))
+    build_network(network, equipment, p_db, p_total_db)
+
+    data = network_to_json(network)
+    for elem in data['elements']:
+        if 'type' in elem.keys() and elem['type'] == 'Roadm':
+            # check that power target attributes exist and are filled with correct values
+            # first check that global 'target_pch_out_db' is correctly filled
+            assert elem['params']['target_pch_out_db'] == equipment['Roadm']['default'].target_pch_out_db
+            for degree in elem['params']['per_degree_params']:
+                if elem['uid'] not in per_degree.keys():
+                    # second: check that per degree 'target_pch_out_db' is correctly filled with global value
+                    # when there was no per degree specification on network input
+                    assert degree['target_pch_out_db'] == equipment['Roadm']['default'].target_pch_out_db
+                else:
+                    if degree['to_node'] not in per_degree[elem['uid']].keys():
+                        # third: check that per degree 'target_pch_out_db' is correctly filled with global value
+                        # on degrees that had no specification when other degrees are filled
+                        assert degree['target_pch_out_db'] == equipment['Roadm']['default'].target_pch_out_db
+                    else:
+                        # fourth: check that per degree 'target_pch_out_db' is correctly filled with specified values
+                        assert degree['target_pch_out_db'] == per_degree[elem['uid']][degree['to_node']]
+
+# TODO s
+# check that the roadm sheet is correctly loaded
+# check that an eqpt is create if the line in the eqpt sheet exists
+# check that no eqpt is create if no line exist in eqpt
