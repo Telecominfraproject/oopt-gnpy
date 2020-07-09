@@ -19,6 +19,7 @@ from pathlib import Path
 from os import unlink
 import shutil
 from pandas import read_csv
+from xlrd import open_workbook
 import pytest
 from tests.compare import compare_networks, compare_services
 from copy import deepcopy
@@ -29,7 +30,8 @@ from gnpy.topology.request import (jsontocsv, requests_aggregation, compute_path
                                    compute_path_with_disjunction, ResultElement, PathRequest)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.convert import convert_file
-from gnpy.tools.json_io import load_json, load_network, save_network, load_equipment, requests_from_json, disjunctions_from_json
+from gnpy.tools.json_io import (load_json, load_network, save_network, load_equipment, requests_from_json,
+                                disjunctions_from_json, network_to_json, network_from_json)
 from gnpy.tools.service_sheet import read_service_sheet, correct_xls_route_list
 
 TEST_DIR = Path(__file__).parent
@@ -41,6 +43,8 @@ equipment = load_equipment(eqpt_filename)
 @pytest.mark.parametrize('xls_input,expected_json_output', {
     DATA_DIR / 'CORONET_Global_Topology.xlsx': DATA_DIR / 'CORONET_Global_Topology_expected.json',
     DATA_DIR / 'testTopology.xls': DATA_DIR / 'testTopology_expected.json',
+    DATA_DIR / 'perdegreemeshTopologyExampleV2.xls': DATA_DIR / 'perdegreemeshTopologyExampleV2_expected.json'
+
 }.items())
 def test_excel_json_generation(tmpdir, xls_input, expected_json_output):
     """ tests generation of topology json
@@ -104,20 +108,22 @@ def test_auto_design_generation_fromxlsgainmode(tmpdir, xls_input, expected_json
 # test that autodesign creates same file as an input file already autodesigned
 
 
-@pytest.mark.parametrize('json_input,expected_json_output',
+@pytest.mark.parametrize('json_input, power_mode',
                          {DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json':
-                          DATA_DIR / 'CORONET_Global_Topology_auto_design_expected.json',
+                          False,
                           DATA_DIR / 'testTopology_auto_design_expected.json':
-                          DATA_DIR / 'testTopology_auto_design_expected.json',
+                          False,
+                          DATA_DIR / 'perdegreemeshTopologyExampleV2_auto_design_expected.json':
+                          True
                           }.items())
-def test_auto_design_generation_fromjson(tmpdir, json_input, expected_json_output):
+def test_auto_design_generation_fromjson(tmpdir, json_input, power_mode):
     """test that autodesign creates same file as an input file already autodesigned
     """
     equipment = load_equipment(eqpt_filename)
     network = load_network(json_input, equipment)
     # in order to test the Eqpt sheet and load gain target,
     # change the power-mode to False (to be in gain mode)
-    equipment['Span']['default'].power_mode = False
+    equipment['Span']['default'].power_mode = power_mode
     # Build the network once using the default power defined in SI in eqpt config
 
     p_db = equipment['SI']['default'].power_dbm
@@ -128,7 +134,7 @@ def test_auto_design_generation_fromjson(tmpdir, json_input, expected_json_outpu
     save_network(network, actual_json_output)
     actual = load_json(actual_json_output)
     unlink(actual_json_output)
-    expected = load_json(expected_json_output)
+    expected = load_json(json_input)
 
     results = compare_networks(expected, actual)
     assert not results.elements.missing
@@ -427,3 +433,136 @@ def test_excel_ila_constraints(source, destination, route_list, hoptype, expecte
     else:
         with pytest.raises(ServiceError):
             [request] = correct_xls_route_list(service_xls_input, network, [request])
+
+
+def setup_per_degree(case):
+    """ common setup for degree: returns the dict network for different cases
+    """
+    json_network = load_json(DATA_DIR / 'testTopology_expected.json')
+    json_network_auto = load_json(DATA_DIR / 'testTopology_auto_design_expected.json')
+    if case == 'no':
+        return json_network
+    elif case == 'all':
+        return json_network_auto
+    elif case == 'Lannion_CAS and all':
+        elem = next(e for e in json_network['elements'] if e['uid'] == 'roadm Lannion_CAS')
+        elem['params'] = {'per_degree_pch_out_db': {
+            "east edfa in Lannion_CAS to Corlay": -17,
+            "east edfa in Lannion_CAS to Stbrieuc": -18,
+            "east edfa in Lannion_CAS to Morlaix": -21}}
+        return json_network
+    elif case == 'Lannion_CAS and one':
+        elem = next(e for e in json_network['elements'] if e['uid'] == 'roadm Lannion_CAS')
+        elem['params'] = {'per_degree_pch_out_db': {
+            "east edfa in Lannion_CAS to Corlay": -17,
+            "east edfa in Lannion_CAS to Stbrieuc": -18}}
+        return json_network
+
+
+@pytest.mark.parametrize('case', ['no', 'all', 'Lannion_CAS and all', 'Lannion_CAS and one'])
+def test_target_pch_out_db_global(case):
+    """ check that per degree attributes are correctly created with global values if none are given
+    """
+    json_network = setup_per_degree(case)
+    per_degree = {}
+    for elem in json_network['elements']:
+        if 'type' in elem.keys() and elem['type'] == 'Roadm' and 'params' in elem.keys() \
+                and 'per_degree_pch_out_db' in elem['params']:
+            # records roadms that have a per degree target
+            per_degree[elem['uid']] = elem['params']['per_degree_pch_out_db']
+    network = network_from_json(json_network, equipment)
+    # Build the network once using the default power defined in SI in eqpt config
+    # power density: db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
+    # spacing, f_min and f_max
+    p_db = equipment['SI']['default'].power_dbm
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
+                                             equipment['SI']['default'].f_max,
+                                             equipment['SI']['default'].spacing))
+    build_network(network, equipment, p_db, p_total_db)
+
+    data = network_to_json(network)
+    for elem in data['elements']:
+        if 'type' in elem.keys() and elem['type'] == 'Roadm':
+            # check that power target attributes exist and are filled with correct values
+            # first check that global 'target_pch_out_db' is correctly filled
+            assert elem['params']['target_pch_out_db'] == equipment['Roadm']['default'].target_pch_out_db
+            for degree, power in elem['params']['per_degree_pch_out_db'].items():
+                if elem['uid'] not in per_degree.keys():
+                    # second: check that per degree 'target_pch_out_db' is correctly filled with global value
+                    # when there was no per degree specification on network input
+                    assert power == equipment['Roadm']['default'].target_pch_out_db
+                else:
+                    if degree not in per_degree[elem['uid']].keys():
+                        # third: check that per degree 'target_pch_out_db' is correctly filled with global value
+                        # on degrees that had no specification when other degrees are filled
+                        assert power == equipment['Roadm']['default'].target_pch_out_db
+                    else:
+                        # fourth: check that per degree 'target_pch_out_db' is correctly filled with specified values
+                        assert power == per_degree[elem['uid']][degree]
+
+
+def all_rows(sh, start=0):
+    """ reads excel sheet row per row
+    """
+    return (sh.row(x) for x in range(start, sh.nrows))
+
+
+class Amp:
+    """ Node element contains uid, list of connected nodes and eqpt type
+    """
+
+    def __init__(self, uid, to_node, eqpt=None, west=None):
+        self.uid = uid
+        self.to_node = to_node
+        self.eqpt = eqpt
+        self.west = west
+
+
+def test_eqpt_creation(tmpdir):
+    """ tests that convert correctly creates equipment according to equipment sheet
+    including all cominations in testTopologyconvert.xls: if a line exists the amplifier
+    should be created even if no values are provided.
+    """
+    xls_input = DATA_DIR / 'testTopologyconvert.xls'
+
+    xls_copy = Path(tmpdir) / xls_input.name
+    shutil.copyfile(xls_input, xls_copy)
+    convert_file(xls_copy)
+
+    actual_json_output = xls_copy.with_suffix('.json')
+    actual = load_json(actual_json_output)
+    unlink(actual_json_output)
+
+    connections = {elem['from_node']: elem['to_node'] for elem in actual['connections']}
+    jsonconverted = {}
+    for elem in actual['elements']:
+        if 'type' in elem.keys() and elem['type'] == 'Edfa':
+            print(elem['uid'])
+            if 'type_variety' in elem.keys():
+                jsonconverted[elem['uid']] = Amp(elem['uid'], connections[elem['uid']], elem['type_variety'])
+            else:
+                jsonconverted[elem['uid']] = Amp(elem['uid'], connections[elem['uid']])
+
+    with open_workbook(xls_input) as wobo:
+        # reading Eqpt sheet assuming header is node A, Node Z, amp variety
+        # fused should not be recorded as an amp
+        eqpt_sheet = wobo.sheet_by_name('Eqpt')
+        raw_eqpts = {}
+        for row in all_rows(eqpt_sheet, start=5):
+            if row[0].value not in raw_eqpts.keys():
+                raw_eqpts[row[0].value] = Amp(row[0].value, [row[1].value], [row[2].value], [row[7].value])
+            else:
+                raw_eqpts[row[0].value].to_node.append(row[1].value)
+                raw_eqpts[row[0].value].eqpt.append(row[2].value)
+                raw_eqpts[row[0].value].west.append(row[7].value)
+    # create the possible names similarly to what convert should do
+    possiblename = [f'east edfa in {xlsname} to {node}' for xlsname, value in raw_eqpts.items()
+                    for i, node in enumerate(value.to_node) if value.eqpt[i] != 'fused'] +\
+                   [f'west edfa in {xlsname} to {node}' for xlsname, value in raw_eqpts.items()
+                    for i, node in enumerate(value.to_node) if value.west[i] != 'fused']
+    # check that all lines in eqpt sheet correctly converts to an amp element
+    for name in possiblename:
+        assert name in jsonconverted.keys()
+    # check that all amp in the converted files corresponds to an eqpt line
+    for ampuid in jsonconverted.keys():
+        assert ampuid in possiblename
