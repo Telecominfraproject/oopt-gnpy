@@ -1,0 +1,16 @@
+node_a,node_z,amp_type,att_in,amp_gain,tilt,att_out,amp_type,att_in,amp_gain,tilt,att_out
+Lannion_CAS,Corlay
+Lannion_CAS,Stbrieuc
+Lannion_CAS,Morlaix
+Lorient_KMA,Loudeac
+Lorient_KMA,Vannes_KBE
+Lorient_KMA,Quimper
+Vannes_KBE,Lorient_KMA
+Vannes_KBE,Ploermel
+Stbrieuc,Lannion_CAS
+Rennes_STA,Stbrieuc
+Rennes_STA,Ploermel
+Brest_KLA,Morlaix
+Brest_KLA,Quimper
+Quimper,Brest_KLA
+Ploermel,Vannes_KBE
