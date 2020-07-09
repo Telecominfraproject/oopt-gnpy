@@ -34,7 +34,7 @@ from gnpy.tools.json_io import load_equipment, load_network, load_json, load_req
 from gnpy.tools.plots import plot_baseline, plot_results
 
 _logger = logging.getLogger(__name__)
-_examples_dir = Path(__file__).parent.parent / 'example-data'
+_examples_dir = Path(__file__).parent.parent / 'example_data'
 _help_footer = '''
 This program is part of GNPy, https://github.com/TelecomInfraProject/oopt-gnpy
 

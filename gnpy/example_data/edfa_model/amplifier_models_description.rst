@@ -266,7 +266,7 @@ In an opensource and multi-vendor environnement, it is needed to support differe
 4. advanced_config_from_json 
 #######################################
 
-The build_oa_json.py library in ``gnpy/example-data/edfa_model/`` can be used to build the json file required for the amplifier advanced_model type_def:
+The build_oa_json.py library in ``gnpy/example_data/edfa_model/`` can be used to build the json file required for the amplifier advanced_model type_def:
 
 Update an existing json file with all the 96ch txt files for a given amplifier type
 amplifier type 'OA_type1' is hard coded but can be modified and other types added

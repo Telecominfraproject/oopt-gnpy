@@ -19,16 +19,16 @@ On Linux and Mac, run:
 .. code-block:: shell-session
 
     $ docker run -it --rm --volume $(pwd):/shared telecominfraproject/oopt-gnpy
-    root@bea050f186f7:/shared/example-data#
+    root@bea050f186f7:/shared/example_data#
 
 On Windows, launch from Powershell as:
 
 .. code-block:: console
 
     PS C:\> docker run -it --rm --volume ${PWD}:/shared telecominfraproject/oopt-gnpy
-    root@89784e577d44:/shared/example-data#
+    root@89784e577d44:/shared/example_data#
 
-In both cases, a directory named ``example-data/`` will appear in your current working directory.
+In both cases, a directory named ``example_data/`` will appear in your current working directory.
 GNPy automaticallly populates it with example files from the current release.
 Remove that directory if you want to start from scratch.
 

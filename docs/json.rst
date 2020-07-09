@@ -8,8 +8,8 @@ Equipment Library
 -----------------
 
 Design and transmission parameters are defined in a dedicated json file. By
-default, this information is read from `gnpy/example-data/eqpt_config.json
-<gnpy/example-data/eqpt_config.json>`_. This file defines the equipment libraries that
+default, this information is read from `gnpy/example_data/eqpt_config.json
+<gnpy/example_data/eqpt_config.json>`_. This file defines the equipment libraries that
 can be customized (EDFAs, fibers, and transceivers).
 
 It also defines the simulation parameters (spans, ROADMs, and the spectral
@@ -23,7 +23,7 @@ can be added and existing ones removed. Three different noise models are availab
 
 1. ``'type_def': 'variable_gain'`` is a simplified model simulating a 2-coil EDFA with internal, input and output VOAs. The NF vs gain response is calculated accordingly based on the input parameters: ``nf_min``, ``nf_max``, and ``gain_flatmax``. It is not a simple interpolation but a 2-stage NF calculation.
 2. ``'type_def': 'fixed_gain'`` is a fixed gain model.  `NF == Cte == nf0` if `gain_min < gain < gain_flatmax`
-3. ``'type_def': None`` is an advanced model. A detailed JSON configuration file is required (by default `gnpy/example-data/std_medium_gain_advanced_config.json <gnpy/example-data/std_medium_gain_advanced_config.json>`_). It uses a 3rd order polynomial where NF = f(gain), NF_ripple = f(frequency), gain_ripple = f(frequency), N-array dgt = f(frequency). Compared to the previous models, NF ripple and gain ripple are modelled.
+3. ``'type_def': None`` is an advanced model. A detailed JSON configuration file is required (by default `gnpy/example_data/std_medium_gain_advanced_config.json <gnpy/example_data/std_medium_gain_advanced_config.json>`_). It uses a 3rd order polynomial where NF = f(gain), NF_ripple = f(frequency), gain_ripple = f(frequency), N-array dgt = f(frequency). Compared to the previous models, NF ripple and gain ripple are modelled.
 
 For all amplifier models:
 

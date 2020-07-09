@@ -36,6 +36,7 @@ How to Install
 
 Install either via `Docker <docs/install.rst#install-docker>`__, or as a `Python package <docs/install.rst#install-pip>`__.
 
+
 Instructions for First Use
 --------------------------
 
@@ -59,20 +60,21 @@ This example demonstrates how GNPy can be used to check the expected SNR at the 
    :target: https://asciinema.org/a/252295
 
 By default, this script operates on a single span network defined in
-`gnpy/example-data/edfa_example_network.json <gnpy/example-data/edfa_example_network.json>`_
+`gnpy/example_data/edfa_example_network.json <gnpy/example_data/edfa_example_network.json>`_
 
 You can specify a different network at the command line as follows. For
 example, to use the CORONET Global network defined in
-`gnpy/example-data/CORONET_Global_Topology.json <gnpy/example-data/CORONET_Global_Topology.json>`_:
+`gnpy/example_data/CORONET_Global_Topology.json <gnpy/example_data/CORONET_Global_Topology.json>`_:
 
 .. code-block:: shell-session
 
     $ gnpy-transmission-example $(gnpy-example-data)/CORONET_Global_Topology.json
 
 It is also possible to use an Excel file input (for example
-`gnpy/example-data/CORONET_Global_Topology.xlsx <gnpy/example-data/CORONET_Global_Topology.xlsx>`_).
+`gnpy/example_data/CORONET_Global_Topology.xlsx <gnpy/example_data/CORONET_Global_Topology.xlsx>`_).
 The Excel file will be processed into a JSON file with the same prefix.
 Further details about the Excel data structure are available `in the documentation <docs/excel.rst>`__.
+
 
 The main transmission example will calculate the average signal OSNR and SNR
 across network elements (transceiver, ROADMs, fibers, and amplifiers)
@@ -95,6 +97,7 @@ Further Instructions for Use
 
 Simulations are driven by a set of `JSON <docs/json.rst>`__ or `XLS <docs/excel.rst>`__ files.
 
+
 The ``gnpy-transmission-example`` script propagates a spectrum of channels at 32 Gbaud, 50 GHz spacing and 0 dBm/channel. 
 Launch power can be overridden by using the ``--power`` argument.
 Spectrum information is not yet parametrized but can be modified directly in the ``eqpt_config.json`` (via the ``SpectralInformation`` -SI- structure) to accommodate any baud rate or spacing.
@@ -108,8 +111,8 @@ An experimental support for Raman amplification is available:
        $(gnpy-example-data)/raman_edfa_example_network.json \
        --sim $(gnpy-example-data)/sim_params.json --show-channels
 
-Configuration of Raman pumps (their frequencies, power and pumping direction) is done via the `RamanFiber element in the network topology <gnpy/example-data/raman_edfa_example_network.json>`_.
-General numeric parameters for simulaiton control are provided in the `gnpy/example-data/sim_params.json <gnpy/example-data/sim_params.json>`_.
+Configuration of Raman pumps (their frequencies, power and pumping direction) is done via the `RamanFiber element in the network topology <gnpy/example_data/raman_edfa_example_network.json>`_.
+General numeric parameters for simulaiton control are provided in the `gnpy/example_data/sim_params.json <gnpy/example_data/sim_params.json>`_.
 
 Use ``gnpy-path-request`` to request several paths at once:
 
