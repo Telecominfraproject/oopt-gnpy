@@ -11,41 +11,46 @@ If not present in the "Nodes" sheet, the "Type" column will be implicitly
 determined based on the topology.
 """
 
-from xlrd import open_workbook
 from argparse import ArgumentParser
+from xlrd import open_workbook
+import csv
+
+EXAMPLE_DATA_DIR = '../example_data/'
 
 PARSER = ArgumentParser()
-PARSER.add_argument('workbook', nargs='?', default='meshTopologyExampleV2.xls',
+PARSER.add_argument('workbook', nargs='?', default=f'{EXAMPLE_DATA_DIR}meshTopologyExampleV2.xls',
                     help='create the mandatory columns in Eqpt sheet')
 
 
-def ALL_ROWS(sh, start=0):
-    return (sh.row(x) for x in range(start, sh.nrows))
+def ALL_ROWS(sheet, start=0):
+    return (sheet.row(x) for x in range(start, sheet.nrows))
 
 
 class Node:
-    """ Node element contains uid, list of connected nodes and eqpt type
-    """
-
-    def __init__(self, uid, to_node):
+    """Node element contains uid, list of connected nodes and eqpt type."""
+    def __init__(self, uid, to_node, eqpt=None):
         self.uid = uid
         self.to_node = to_node
-        self.eqpt = None
+        self.eqpt = eqpt
 
     def __repr__(self):
-        return f'uid {self.uid} \nto_node {[node for node in self.to_node]}\neqpt {self.eqpt}\n'
+        return f'Node(uid={self.uid}, to_node={self.to_node}, eqpt={self.eqpt})'
 
     def __str__(self):
-        return f'uid {self.uid} \nto_node {[node for node in self.to_node]}\neqpt {self.eqpt}\n'
-
+        return {'uid': self.uid, 'to_node': self.to_node, 'eqpt': self.eqpt}
+        
 
 def read_excel(input_filename):
-    """ read excel Nodes and Links sheets and create a dict of nodes with
-    their to_nodes and type of eqpt
+    """Read excel Nodes and Links sheets and create a dict of nodes with
+    their 'to_node' and 'eqpt'.
     """
     with open_workbook(input_filename) as wobo:
-        # reading Links sheet
-        links_sheet = wobo.sheet_by_name('Links')
+        try:
+            links_sheet = wobo.sheet_by_name('Links')
+        except Exception:
+            print(f'Error: no Links sheet on file {input_filename}.')
+            exit()
+        
         nodes = {}
         for row in ALL_ROWS(links_sheet, start=5):
             try:
@@ -57,14 +62,19 @@ def read_excel(input_filename):
             except KeyError:
                 nodes[row[1].value] = Node(row[1].value, [row[0].value])
 
-        nodes_sheet = wobo.sheet_by_name('Nodes')
+        try:
+            nodes_sheet = wobo.sheet_by_name('Nodes')
+        except Exception:
+            print(f'Error: no Nodes sheet on file {input_filename}.')
+            exit()
         for row in ALL_ROWS(nodes_sheet, start=5):
             node = row[0].value
             eqpt = row[6].value
             try:
                 if eqpt == 'ILA' and len(nodes[node].to_node) != 2:
-                    print(f'Inconsistancy ILA node with degree > 2: {node} ')
-                    exit()
+                    print(f'Error: node {node} has an incompatible node degree ({len(nodes[node].to_node)}) for its equipment type (ILA).')
+                    nodes = {}
+                    break
                 if eqpt == '' and len(nodes[node].to_node) == 2:
                     nodes[node].eqpt = 'ILA'
                 elif eqpt == '' and len(nodes[node].to_node) != 2:
@@ -72,31 +82,30 @@ def read_excel(input_filename):
                 else:
                     nodes[node].eqpt = eqpt
             except KeyError:
-                print(f'inconsistancy between nodes and links sheet: {node} is not listed in links')
-                exit()
+                print(f'Error: node {node} is not listed on the links sheet.')
+                nodes = {}
+                break
+        
         return nodes
 
 
-def create_eqt_template(nodes, input_filename):
-    """ writes list of node A node Z corresponding to Nodes and Links sheets in order
-    to help user populating Eqpt
+def create_eqpt_template(nodes, input_filename):
+    """Write list of node A node Z corresponding to Nodes and Links sheets in order
+    to help user populate Eqpt.
     """
-    output_filename = f'{input_filename[:-4]}_eqpt_sheet.txt'
-    with open(output_filename, 'w', encoding='utf-8') as my_file:
-        # print header similar to excel
-        my_file.write('OPTIONAL\n\n\n\
-           \t\tNode a egress amp (from a to z)\t\t\t\t\tNode a ingress amp (from z to a) \
-           \nNode A \tNode Z \tamp type \tatt_in \tamp gain \ttilt \tatt_out\
-           amp type   \tatt_in \tamp gain   \ttilt   \tatt_out\n')
-
+    if not nodes:
+        exit()
+    output_filename = f'{input_filename[:-4]}_eqpt_sheet.csv'
+    with open(output_filename, mode='w', encoding='utf-8') as output_file:
+        output_writer = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        output_writer.writerow(['node_a', 'node_z', 'amp_type', 'att_in', 'amp_gain', 'tilt', 'att_out', 'amp_type', 'att_in', 'amp_gain', 'tilt', 'att_out'])
         for node in nodes.values():
             if node.eqpt == 'ILA':
-                my_file.write(f'{node.uid}\t{node.to_node[0]}\n')
+                output_writer.writerow([node.uid, node.to_node[0]])
             if node.eqpt == 'ROADM':
                 for to_node in node.to_node:
-                    my_file.write(f'{node.uid}\t{to_node}\n')
-
-        print(f'File {output_filename} successfully created with Node A - Node Z entries for Eqpt sheet in excel file.')
+                    output_writer.writerow([node.uid, to_node])
+    print(f'File {output_filename} successfully created.')
 
 
 if __name__ == '__main__':
