@@ -228,6 +228,59 @@
             "sys_margins": 2
             }],
       "Transceiver":[
+        {
+            "type_variety": "lumentum_trx-CFP2-ACO",
+            "frequency":{
+                        "min": 191.35e12,
+                        "max": 196.1e12
+                        },
+            "mode": [
+                       {
+                       "format": "PM-QPSK",
+                       "baud_rate": 33e9,
+                       "OSNR": 12.5,
+                       "prx_min": 0.01584893192e-3,
+                       "prx_max": 1e-3,
+                       "cd_limit": 50,
+                       "cd_penalty": {
+                         "cd_threshold": 25,
+                         "osnr_penalty": 1
+                       },
+                       "pmd_limit": 100e-12,
+                       "pmd_penalty": {
+                         "pmd_threshold": 50e-12,
+                         "osnr_penalty": 0.5
+                       },
+                       "bit_rate": 100e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 100,
+                       "min_spacing": 50e9,
+                       "cost":1
+                       },
+                       {
+                       "format": "PM-16QAM",
+                       "baud_rate": 33e9,
+                       "OSNR": 21,
+                       "prx_min": 0.01584893192e-3,
+                       "prx_max": 1e-3,
+                       "cd_limit": 20,
+                       "cd_penalty": {
+                         "cd_threshold": 5,
+                         "osnr_penalty": 1
+                       },
+                       "pmd_limit": 100e-12,
+                       "pmd_penalty": {
+                         "pmd_threshold": 50e-12,
+                         "osnr_penalty": 0.5
+                       },
+                       "bit_rate": 200e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 100,
+                       "min_spacing": 50e9,
+                       "cost":1
+                       }
+                   ]
+            },
             {
             "type_variety": "vendorA_trx-type1",
             "frequency":{

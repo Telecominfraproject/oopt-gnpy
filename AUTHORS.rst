@@ -23,7 +23,10 @@ To learn how to contribute, please see CONTRIBUTING.md
 - Miguel Garrich (University Catalunya) <miquel.garrich@upct.es>
 - Raj Nagarajan (Lumentum) <raj.nagarajan@lumentum.com>
 - Roberts Miculens (Lattelecom) <roberts.miculens@lattelecom.lv>
+- Scott Swail (Lumentum) <Scott.Swail@lumentum.com>
 - Shengxiang Zhu (University of Arizona) <szhu@email.arizona.edu>
 - Stefan Melin (Telia Company) <Stefan.Melin@teliacompany.com>
+- Stefano Bottacchi (Lumentum) <Stefano.Bottacchi@lumentum.com>
 - Vittorio Curri (Politecnico di Torino) <vittorio.curri@polito.it>
 - Xufeng Liu (Jabil) <xufeng_liu@jabil.com>
+
