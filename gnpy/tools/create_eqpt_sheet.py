@@ -18,7 +18,9 @@ import csv
 EXAMPLE_DATA_DIR = '../example_data/'
 
 PARSER = ArgumentParser()
-PARSER.add_argument('workbook', nargs='?', default=f'{EXAMPLE_DATA_DIR}meshTopologyExampleV2.xls',
+PARSER.add_argument('workbook', \
+                    nargs='?', \
+                    default=f'{EXAMPLE_DATA_DIR}meshTopologyExampleV2.xls', \
                     help='create the mandatory columns in Eqpt sheet')
 
 
@@ -72,7 +74,9 @@ def read_excel(input_filename):
             eqpt = row[6].value
             try:
                 if eqpt == 'ILA' and len(nodes[node].to_node) != 2:
-                    print(f'Error: node {node} has an incompatible node degree ({len(nodes[node].to_node)}) for its equipment type (ILA).')
+                    print(f'Error: node {node} has an incompatible node degree ' +
+                          f'({len(nodes[node].to_node)}) ' +
+                          'for its equipment type (ILA).')
                     nodes = {}
                     break
                 if eqpt == '' and len(nodes[node].to_node) == 2:
@@ -90,15 +94,29 @@ def read_excel(input_filename):
 
 
 def create_eqpt_template(nodes, input_filename):
-    """Write list of node A node Z corresponding to Nodes and Links sheets in order
-    to help user populate Eqpt.
+    """Write list of node A node Z corresponding to Nodes and Links sheets
+    in order to help user populate Eqpt.
     """
     if not nodes:
         exit()
     output_filename = f'{input_filename[:-4]}_eqpt_sheet.csv'
     with open(output_filename, mode='w', encoding='utf-8') as output_file:
-        output_writer = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        output_writer.writerow(['node_a', 'node_z', 'amp_type', 'att_in', 'amp_gain', 'tilt', 'att_out', 'amp_type', 'att_in', 'amp_gain', 'tilt', 'att_out'])
+        output_writer = csv.writer(output_file,
+                                   delimiter=',',
+                                   quotechar='"',
+                                   quoting=csv.QUOTE_MINIMAL)
+        output_writer.writerow(['node_a', 
+                                'node_z',
+                                'amp_type',
+                                'att_in',
+                                'amp_gain',
+                                'tilt',
+                                'att_out',
+                                'amp_type',
+                                'att_in',
+                                'amp_gain',
+                                'tilt',
+                                'att_out'])
         for node in nodes.values():
             if node.eqpt == 'ILA':
                 output_writer.writerow([node.uid, node.to_node[0]])
