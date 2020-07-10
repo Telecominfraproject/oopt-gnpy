@@ -21,7 +21,7 @@ instance as a result.
 '''
 
 from numpy import abs, arange, array, divide, errstate, ones
-from numpy import interp, mean, pi, polyfit, polyval, sum, sqrt
+from numpy import interp, mean, pi, polyfit, polyval, sum, sqrt, log10
 from scipy.constants import h, c
 from collections import namedtuple
 
@@ -84,6 +84,7 @@ class Transceiver(_Node):
         self.baud_rate = None
         self.chromatic_dispersion = None
         self.pmd = None
+        self.mode = None
 
     def _calc_cd(self, spectral_info):
         """ Updates the Transceiver property with the CD of the received channels. CD in ps/nm.
@@ -138,6 +139,41 @@ class Transceiver(_Node):
         self.snr_01nm = list(map(lambda x: snr_sum(x, 12.5e9, snr_added),
                                  self.raw_snr_01nm))
 
+    def _calc_mode(self, spectral_info):
+        """ Chooses the transceiver mode of each channel maximizing the bit_rate taking into account the SNR and
+        receiver power limits and CD and PMD penalties.
+        This algorithm has been developed under the addressing of Stefano Bottacchi <Stefano.Bottacchi@lumentum.com>
+        and Scott Swail <Scott.Swail@lumentum.com>
+        """
+        list_modes = sorted(self.params['mode'], key=lambda mode: mode['bit_rate'], reverse=True)
+        self.mode = []
+        for carrier, snr_01nm in zip(spectral_info.carriers, self.snr_01nm):
+            mode_name = None
+            for mode in list_modes:
+                # Check the mode feasibility according to the power at the receiver, CD limit and PMD limit
+                if mode['prx_min'] > carrier.power.signal or carrier.power.signal > mode['prx_max']:
+                    continue
+                if abs(carrier.chromatic_dispersion) > mode['cd_limit']:
+                    continue
+                if abs(carrier.pmd) > mode['pmd_limit']:
+                    continue
+
+                # Check the SNR feasibility
+                cd_penalty = interp(carrier.chromatic_dispersion, [mode['cd_penalty']['cd_threshold'], mode['cd_limit']],
+                                    [0, mode['cd_penalty']['osnr_penalty']]) \
+                    if carrier.chromatic_dispersion > mode['cd_penalty']['cd_threshold'] else 0
+
+                dgd_penalty = interp(carrier.pmd, [mode['dgd_penalty']['dgd_threshold'], mode['dgd_limit']],
+                                     [0, mode['dgd_penalty']['osnr_penalty']]) \
+                    if carrier.pmd > mode['pmd_penalty']['pmd_threshold'] else 0
+
+                tot_snr = -lin2db(db2lin(-snr_01nm) + db2lin(-mode['tx_osnr']))
+                if mode['OSNR'] < tot_snr - cd_penalty - dgd_penalty:
+                    mode_name = mode['format']
+                    break
+            self.mode.append(mode_name)
+
+
     @property
     def to_json(self):
         return {'uid': self.uid,
@@ -181,6 +217,10 @@ class Transceiver(_Node):
         self._calc_snr(spectral_info)
         self._calc_cd(spectral_info)
         self._calc_pmd(spectral_info)
+        # If statement for compatibility with .json files without type_variety
+        if isinstance(self.params, dict):
+            if 'mode' in self.params.keys():
+                self._calc_mode(spectral_info)
         return spectral_info
 
 
