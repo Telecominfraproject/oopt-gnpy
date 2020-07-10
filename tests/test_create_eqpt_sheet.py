@@ -1,5 +1,7 @@
 import pytest
-from gnpy.tools.create_eqpt_sheet import Node, read_excel, create_eqpt_template
+from gnpy.tools.create_eqpt_sheet import Node, \
+                                         read_excel, \
+                                         create_eqpt_template
 from pathlib import Path
 
 TEST_DIR = Path(__file__).parent
@@ -58,24 +60,23 @@ def test_read_excel(test_nodes_list):
     assert set(test_nodes_list) == set(expected)
 
 
-def test_read_excel_node_degree_err():
-    """Test node degree error (eqpt == 'ILA' and len(nodes[node].to_node) != 2)."""
+def test_read_excel_node_degree_and_key_err():
+    """Test node degree error (node with incompatile node degree)
+    and key error (node not listed on links sheet).
+    """
     expected = {}
-    nodes = read_excel(TEST_FILE_NODE_DEGREE_ERR)
-    assert set(nodes) == set(expected)
-
-
-def test_read_excel_key_err():
-    """Test node not listed on the links sheets."""
-    expected = {}
-    nodes = read_excel(TEST_FILE_KEY_ERR)
-    assert set(nodes) == set(expected)
+    nodes_deg_err = read_excel(TEST_FILE_NODE_DEGREE_ERR)
+    nodes_key_err = read_excel(TEST_FILE_KEY_ERR)
+    assert set(nodes_deg_err) == set(expected)
+    assert set(nodes_key_err) == set(expected)
 
 
 def test_create_eqpt_template(tmpdir, test_nodes_list):
     """Test method create_eqt_template()."""
-    create_eqpt_template(test_nodes_list, (tmpdir / PYTEST_OUTPUT_FILE_NAME).strpath)
-    with open((tmpdir / PYTEST_OUTPUT_FILE_CSV).strpath, 'r') as f1, open(TEST_OUTPUT_FILE_CSV, 'r') as f2:
+    create_eqpt_template(test_nodes_list, 
+                         (tmpdir / PYTEST_OUTPUT_FILE_NAME).strpath)
+    with open((tmpdir / PYTEST_OUTPUT_FILE_CSV).strpath, 'r') as f1, \
+         open(TEST_OUTPUT_FILE_CSV, 'r') as f2:
         output = f1.readlines()
         expected = f2.readlines()
     assert set(output) == set(expected)
