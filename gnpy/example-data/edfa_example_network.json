@@ -3,6 +3,7 @@
     "elements": [{
             "uid": "Site_A",
             "type": "Transceiver",
+            "type_variety": "lumentum_trx-CFP2-ACO",
             "metadata": {
                 "location": {
                     "city": "Site A",
@@ -52,6 +53,7 @@
         {
             "uid": "Site_B",
             "type": "Transceiver",
+            "type_variety": "lumentum_trx-CFP2-ACO",
             "metadata": {
                 "location": {
                     "city": "Site B",

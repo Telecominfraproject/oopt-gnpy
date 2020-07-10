@@ -113,6 +113,7 @@ def transmission_main_example(args=None):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         )
     _add_common_options(parser, network_default=_examples_dir / 'edfa_example_network.json')
+    parser.add_argument('--show-transceiver-mode', action='store_true', help='Show final per-channel transceiver mode')
     parser.add_argument('--show-channels', action='store_true', help='Show final per-channel OSNR summary')
     parser.add_argument('-pl', '--plot', action='store_true')
     parser.add_argument('-l', '--list-nodes', action='store_true', help='list all transceiver nodes')
@@ -263,6 +264,13 @@ def transmission_main_example(args=None):
                         ch_osnr, 2), round(
                         ch_snr_nl, 2), round(
                             ch_snr, 2)))
+
+    if args.show_transceiver_mode:
+        print('\nThe total transceiver mode per channel at the end of the line is:')
+        print('{:>5}{:>26}{:>26}' .format('Ch. #', 'Channel frequency (THz)', 'Tranceiver mode'))
+        for final_carrier, mode in zip(infos.carriers, path[-1].mode):
+            ch_freq = final_carrier.frequency * 1e-12
+            print('{:5}{:26.2f}{:>26}' .format(final_carrier.channel_number, round(ch_freq, 2), mode))
 
     if not args.source:
         print(f'\n(No source node specified: picked {source.uid})')
