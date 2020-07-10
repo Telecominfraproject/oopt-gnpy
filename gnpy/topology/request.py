@@ -369,7 +369,8 @@ def propagate_and_optimize_mode(path, req, equipment):
             for el in path:
                 spc_info = el(spc_info)
             for this_mode in modes_to_explore:
-                if path[-1].snr is not None:
+                #in case there is not spectrum the snr list will be empty so there will be no computed snr
+                if path[-1].snr is not None and len(path[-1].snr) != 0:
                     path[0].update_snr(this_mode['tx_osnr'])
                     if any(isinstance(el, Roadm) for el in path):
                         path[-1].update_snr(this_mode['tx_osnr'], equipment['Roadm']['default'].add_drop_osnr)
