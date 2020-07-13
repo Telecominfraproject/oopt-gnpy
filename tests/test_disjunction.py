@@ -18,15 +18,32 @@ from gnpy.core.network import build_network
 from gnpy.core.exceptions import ServiceError
 from gnpy.core.utils import automatic_nch, lin2db
 from gnpy.core.elements import Roadm
-from gnpy.topology.request import (compute_path_dsjctn, isdisjoint, find_reversed_path, PathRequest,
-                                   correct_json_route_list)
+from gnpy.topology.request import (compute_path_dsjctn,
+                                   isdisjoint,
+                                   find_reversed_path,
+                                   PathRequest,
+                                   correct_json_route_list,
+                                   compute_constrained_path)
 from gnpy.topology.spectrum_assignment import build_oms_list
-from gnpy.tools.json_io import requests_from_json, load_requests, load_network, load_equipment, disjunctions_from_json
+from gnpy.tools.json_io import (requests_from_json,
+                                load_requests,
+                                load_network,
+                                load_equipment,
+                                disjunctions_from_json)
 
-NETWORK_FILE_NAME = Path(__file__).parent.parent / 'tests/data/testTopology_expected.json'
-SERVICE_FILE_NAME = Path(__file__).parent.parent / 'tests/data/testTopology_testservices.json'
-RESULT_FILE_NAME = Path(__file__).parent.parent / 'tests/data/testTopology_testresults.json'
-EQPT_LIBRARY_NAME = Path(__file__).parent.parent / 'tests/data/eqpt_config.json'
+
+PARENT_PATH = Path(__file__).parent.parent
+NETWORK_FILE_NAME = PARENT_PATH / 'tests/data/testTopology_expected.json'
+SERVICE_FILE_NAME = PARENT_PATH / 'tests/data/testTopology_testservices.json'
+RESULT_FILE_NAME = PARENT_PATH / 'tests/data/testTopology_testresults.json'
+EQPT_LIBRARY_NAME = PARENT_PATH / 'tests/data/eqpt_config.json'
+
+
+class Req:
+    def __init__(self, request_id, nodes_list, destination):
+        self.request_id = request_id
+        self.nodes_list = nodes_list
+        self.destination = destination
 
 
 @pytest.fixture()
@@ -34,7 +51,11 @@ def serv(test_setup):
     """ common setup for service list
     """
     network, equipment = test_setup
-    data = load_requests(SERVICE_FILE_NAME, equipment, bidir=False, network=network, network_filename=NETWORK_FILE_NAME)
+    data = load_requests(SERVICE_FILE_NAME,
+                         equipment,
+                         bidir=False,
+                         network=network,
+                         network_filename=NETWORK_FILE_NAME)
     rqs = requests_from_json(data, equipment)
     rqs = correct_json_route_list(network, rqs)
     dsjn = disjunctions_from_json(data)
@@ -53,7 +74,8 @@ def test_setup():
     p_db = equipment['SI']['default'].power_dbm
 
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
-                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+                                             equipment['SI']['default'].f_max,
+                                             equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
     build_oms_list(network, equipment)
 
@@ -178,3 +200,12 @@ def test_include_constraints(test_setup, srce, dest, result, pth, nd_list, ls_li
             assert pth == 'found_path'
         else:
             assert pth == 'no_path'
+
+def test_destination():
+    """Test if code raises the exception correctly in case of the
+    destination is not the last element on the nodes list.
+    """
+    network = []
+    req = Req(1, ['a', 'b', 'c'], 'b')
+    with pytest.raises(ValueError):
+        compute_constrained_path(network, req)
