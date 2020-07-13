@@ -1,0 +1,355 @@
+{
+    "response": [
+        {
+            "response-id": "1",
+            "no-path": {
+                "no-path": "NO_FEASIBLE_MODE",
+                "path-properties": {
+                    "path-route-objects": [
+                        {
+                            "path-route-object": {
+                                "num-unnum-hop": {
+                                    "node-id": "1"
+                                }
+                            }
+                        },
+                        {
+                            "path-route-object": {
+                                "transponder": {
+                                    "transponder-type": "Voyager",
+                                    "transponder-mode": "mode 1"
+                                },
+                                "num-unnum-hop": {
+                                    "node-id": "2"
+                                }
+                            }
+                        },
+                        {
+                            "path-route-object": {
+                                "num-unnum-hop": {
+                                    "node-id": "3"
+                                }
+                            }
+                        }
+                    ],
+                    "path-metric": [
+                        {
+                          "metric-type": "SNR-bandwidth",
+                          "accumulative-value": 26.75
+                        },
+                        {
+                          "metric-type": "SNR-0.1nm",
+                          "accumulative-value": 30.84
+                        },
+                        {
+                          "metric-type": "OSNR-bandwidth",
+                          "accumulative-value": 26.76
+                        },
+                        {
+                          "metric-type": "OSNR-0.1nm",
+                          "accumulative-value": 30.84
+                        },
+                        {
+                          "metric-type": "reference_power",
+                          "accumulative-value": 0.001
+                        },
+                        {
+                          "metric-type": "path_bandwidth",
+                          "accumulative-value": 100000000000.0
+                        }
+                      ],
+                      "z-a-path-metric": [
+                        {
+                          "metric-type": "SNR-bandwidth",
+                          "accumulative-value": 26.75
+                        },
+                        {
+                          "metric-type": "SNR-0.1nm",
+                          "accumulative-value": 30.84
+                        },
+                        {
+                          "metric-type": "OSNR-bandwidth",
+                          "accumulative-value": 26.76
+                        },
+                        {
+                          "metric-type": "OSNR-0.1nm",
+                          "accumulative-value": 30.84
+                        },
+                        {
+                          "metric-type": "reference_power",
+                          "accumulative-value": 0.001
+                        },
+                        {
+                          "metric-type": "path_bandwidth",
+                          "accumulative-value": 100000000000.0
+                        }
+                      ]
+                }
+            }
+        },
+        {
+            "response-id": "2",
+            "no-path": {
+                "no-path": "NO_FEASIBLE_MODE",
+                "path-properties": {
+                    "path-route-objects": [
+                        {
+                            "path-route-object": {
+                                "num-unnum-hop": {
+                                    "node-id": "1"
+                                }
+                            }
+                        },
+                        {
+                            "path-route-object": {
+                                "transponder": {
+                                    "transponder-type": "Voyager",
+                                    "transponder-mode": "mode 1"
+                                },
+                                "num-unnum-hop": {
+                                    "node-id": "2"
+                                }
+                            }
+                        },
+                        {
+                            "path-route-object": {
+                                "num-unnum-hop": {
+                                    "node-id": "3"
+                                }
+                            }
+                        }
+                    ],
+                    "path-metric": [
+                        {
+                          "metric-type": "SNR-bandwidth",
+                          "accumulative-value": 26.75
+                        },
+                        {
+                          "metric-type": "SNR-0.1nm",
+                          "accumulative-value": 30.84
+                        },
+                        {
+                          "metric-type": "OSNR-bandwidth",
+                          "accumulative-value": 26.76
+                        },
+                        {
+                          "metric-type": "OSNR-0.1nm",
+                          "accumulative-value": 30.84
+                        },
+                        {
+                          "metric-type": "reference_power",
+                          "accumulative-value": 0.001
+                        },
+                        {
+                          "metric-type": "path_bandwidth",
+                          "accumulative-value": 100000000000.0
+                        }
+                      ]
+                }
+            }
+        },
+        {
+          "response-id": "3",
+          "path-properties": {
+            "path-metric": [
+              {
+                "metric-type": "SNR-bandwidth",
+                "accumulative-value": 26.75
+              },
+              {
+                "metric-type": "SNR-0.1nm",
+                "accumulative-value": 30.84
+              },
+              {
+                "metric-type": "OSNR-bandwidth",
+                "accumulative-value": 26.76
+              },
+              {
+                "metric-type": "OSNR-0.1nm",
+                "accumulative-value": 30.84
+              },
+              {
+                "metric-type": "reference_power",
+                "accumulative-value": 0.001
+              },
+              {
+                "metric-type": "path_bandwidth",
+                "accumulative-value": 100000000000.0
+              }
+            ],
+            "path-route-objects": [
+              {
+                "path-route-object": {
+                  "index": 0,
+                  "num-unnum-hop": {
+                    "node-id": "trx Lorient_KMA",
+                    "link-tp-id": "trx Lorient_KMA"
+                  }
+                }
+              },
+              {
+                "path-route-object": {
+                  "index": 1,
+                  "label-hop": {
+                    "N": -284,
+                    "M": 4
+                  }
+                }
+              },
+              {
+                "path-route-object": {
+                  "index": 2,
+                  "transponder": {
+                    "transponder-type": "Voyager",
+                    "transponder-mode": "mode 1"
+                  }
+                }
+              },
+              {
+                "path-route-object": {
+                  "index": 3,
+                  "num-unnum-hop": {
+                    "node-id": "roadm Lorient_KMA",
+                    "link-tp-id": "roadm Lorient_KMA"
+                  }
+                }
+              },
+              {
+                "path-route-object": {
+                  "index": 4,
+                  "label-hop": {
+                    "N": -284,
+                    "M": 4
+                  }
+                }
+              },
+              {
+                "path-route-object": {
+                  "index": 5,
+                  "num-unnum-hop": {
+                    "node-id": "Edfa1_roadm Lorient_KMA",
+                    "link-tp-id": "Edfa1_roadm Lorient_KMA"
+                  }
+                }
+              },
+              {
+                "path-route-object": {
+                  "index": 6,
+                  "label-hop": {
+                    "N": -284,
+                    "M": 4
+                  }
+                }
+              },
+              {
+                "path-route-object": {
+                  "index": 7,
+                  "num-unnum-hop": {
+                    "node-id": "fiber (Lorient_KMA → Vannes_KBE)-F055",
+                    "link-tp-id": "fiber (Lorient_KMA → Vannes_KBE)-F055"
+                  }
+                }
+              },
+              {
+                "path-route-object": {
+                  "index": 8,
+                  "label-hop": {
+                    "N": -284,
+                    "M": 4
+                  }
+                }
+              },
+              {
+                "path-route-object": {
+                  "index": 9,
+                  "num-unnum-hop": {
+                    "node-id": "Edfa0_fiber (Lorient_KMA → Vannes_KBE)-F055",
+                    "link-tp-id": "Edfa0_fiber (Lorient_KMA → Vannes_KBE)-F055"
+                  }
+                }
+              },
+              {
+                "path-route-object": {
+                  "index": 10,
+                  "label-hop": {
+                    "N": -284,
+                    "M": 4
+                  }
+                }
+              },
+              {
+                "path-route-object": {
+                  "index": 11,
+                  "num-unnum-hop": {
+                    "node-id": "roadm Vannes_KBE",
+                    "link-tp-id": "roadm Vannes_KBE"
+                  }
+                }
+              },
+              {
+                "path-route-object": {
+                  "index": 12,
+                  "label-hop": {
+                    "N": -284,
+                    "M": 4
+                  }
+                }
+              },
+              {
+                "path-route-object": {
+                  "index": 13,
+                  "num-unnum-hop": {
+                    "node-id": "trx Vannes_KBE",
+                    "link-tp-id": "trx Vannes_KBE"
+                  }
+                }
+              },
+              {
+                "path-route-object": {
+                  "index": 14,
+                  "label-hop": {
+                    "N": -284,
+                    "M": 4
+                  }
+                }
+              },
+              {
+                "path-route-object": {
+                  "index": 15,
+                  "transponder": {
+                    "transponder-type": "Voyager",
+                    "transponder-mode": "mode 1"
+                  }
+                }
+              }
+            ],
+            "z-a-path-metric": [
+              {
+                "metric-type": "SNR-bandwidth",
+                "accumulative-value": 26.75
+              },
+              {
+                "metric-type": "SNR-0.1nm",
+                "accumulative-value": 30.84
+              },
+              {
+                "metric-type": "OSNR-bandwidth",
+                "accumulative-value": 26.76
+              },
+              {
+                "metric-type": "OSNR-0.1nm",
+                "accumulative-value": 30.84
+              },
+              {
+                "metric-type": "reference_power",
+                "accumulative-value": 0.001
+              },
+              {
+                "metric-type": "path_bandwidth",
+                "accumulative-value": 100000000000.0
+              }
+            ]
+          }
+        }
+    ]
+}
