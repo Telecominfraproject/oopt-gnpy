@@ -25,17 +25,28 @@ from copy import deepcopy
 from gnpy.core.utils import automatic_nch, lin2db
 from gnpy.core.network import build_network
 from gnpy.core.exceptions import ServiceError
-from gnpy.topology.request import (jsontocsv, requests_aggregation, compute_path_dsjctn, deduplicate_disjunctions,
-                                   compute_path_with_disjunction, ResultElement, PathRequest)
+from gnpy.topology.request import (jsontoparams,
+                                   jsontocsv,
+                                   requests_aggregation,
+                                   compute_path_dsjctn,
+                                   deduplicate_disjunctions,
+                                   compute_path_with_disjunction,
+                                   ResultElement,
+                                   PathRequest)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.convert import convert_file
-from gnpy.tools.json_io import load_json, load_network, save_network, load_equipment, requests_from_json, disjunctions_from_json
+from gnpy.tools.json_io import (load_json,
+                                load_network,
+                                save_network,
+                                load_equipment,
+                                requests_from_json,
+                                disjunctions_from_json)
 from gnpy.tools.service_sheet import read_service_sheet, correct_xls_route_list
+
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
-eqpt_filename = DATA_DIR / 'eqpt_config.json'
-equipment = load_equipment(eqpt_filename)
+EQPT_FILENAME = DATA_DIR / 'eqpt_config.json'
 
 
 @pytest.mark.parametrize('xls_input,expected_json_output', {
@@ -76,7 +87,7 @@ def test_auto_design_generation_fromxlsgainmode(tmpdir, xls_input, expected_json
     """ tests generation of topology json
         test that the build network gives correct results in gain mode
     """
-    equipment = load_equipment(eqpt_filename)
+    equipment = load_equipment(EQPT_FILENAME)
     network = load_network(xls_input, equipment)
     # in order to test the Eqpt sheet and load gain target,
     # change the power-mode to False (to be in gain mode)
@@ -113,7 +124,7 @@ def test_auto_design_generation_fromxlsgainmode(tmpdir, xls_input, expected_json
 def test_auto_design_generation_fromjson(tmpdir, json_input, expected_json_output):
     """test that autodesign creates same file as an input file already autodesigned
     """
-    equipment = load_equipment(eqpt_filename)
+    equipment = load_equipment(EQPT_FILENAME)
     network = load_network(json_input, equipment)
     # in order to test the Eqpt sheet and load gain target,
     # change the power-mode to False (to be in gain mode)
@@ -148,7 +159,7 @@ def test_auto_design_generation_fromjson(tmpdir, json_input, expected_json_outpu
 def test_excel_service_json_generation(xls_input, expected_json_output):
     """ test services creation
     """
-    equipment = load_equipment(eqpt_filename)
+    equipment = load_equipment(EQPT_FILENAME)
     network = load_network(DATA_DIR / 'testTopology.xls', equipment)
     # Build the network once using the default power defined in SI in eqpt config
     p_db = equipment['SI']['default'].power_dbm
@@ -179,7 +190,7 @@ def test_csv_response_generation(tmpdir, json_input):
         same columns (order not important)
     """
     json_data = load_json(json_input)
-    equipment = load_equipment(eqpt_filename)
+    equipment = load_equipment(EQPT_FILENAME)
     csv_filename = Path(tmpdir / json_input.name).with_suffix('.csv')
     with open(csv_filename, 'w', encoding='utf-8') as fcsv:
         jsontocsv(json_data, equipment, fcsv)
@@ -274,7 +285,7 @@ def test_json_response_generation(xls_input, expected_response_file):
     """ tests if json response is correctly generated for all combinations of requests
     """
 
-    equipment = load_equipment(eqpt_filename)
+    equipment = load_equipment(EQPT_FILENAME)
     network = load_network(xls_input, equipment)
     p_db = equipment['SI']['default'].power_dbm
 
@@ -383,7 +394,7 @@ def test_excel_ila_constraints(source, destination, route_list, hoptype, expecte
     """
     service_xls_input = DATA_DIR / 'testTopology.xls'
     network_json_input = DATA_DIR / 'testTopology_auto_design_expected.json'
-    equipment = load_equipment(eqpt_filename)
+    equipment = load_equipment(EQPT_FILENAME)
     network = load_network(network_json_input, equipment)
     # increase length of one span to trigger automatic fiber splitting included by autodesign
     # so that the test also covers this case
