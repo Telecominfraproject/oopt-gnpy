@@ -24,7 +24,7 @@ from tests.compare import compare_networks, compare_services
 from copy import deepcopy
 from gnpy.core.utils import automatic_nch, lin2db
 from gnpy.core.network import build_network
-from gnpy.core.exceptions import ServiceError
+from gnpy.core.exceptions import ServiceError, DisjunctionError
 from gnpy.topology.request import (jsontoparams,
                                    jsontocsv,
                                    requests_aggregation,
@@ -472,3 +472,22 @@ def test_jsontocsv_no_path(tmpdir, json_input):
         output = f1.readlines()
         expected = f2.readlines()
     assert set(output) == set(expected)
+
+
+@pytest.mark.parametrize('xls_input', 
+    (DATA_DIR / 'test_disjunction_error.xls', )
+)
+def test_error(xls_input):
+    """Test to check if code raises a DisjunctionError correctly at
+    the end of step 5 on request.py::compute_path_dsjctn.
+    """
+    equipment = load_equipment(EQPT_FILENAME)
+    network = load_network(xls_input, equipment)
+    data = read_service_sheet(xls_input, equipment, network)
+    oms_list = build_oms_list(network, equipment)
+    rqs = requests_from_json(data, equipment)
+    dsjn = disjunctions_from_json(data)
+    dsjn = deduplicate_disjunctions(dsjn)
+    rqs, dsjn = requests_aggregation(rqs, dsjn)
+    with pytest.raises(DisjunctionError):
+        pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
