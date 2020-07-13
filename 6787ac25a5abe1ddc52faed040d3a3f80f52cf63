@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "5e603e1e_0acafa19",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1017851
+      },
+      "writtenOn": "2020-07-13T09:20:11Z",
+      "side": 1,
+      "message": "Right. I used the syntax used in Matlab thinking that is was the same. Thanks for noticing it.",
+      "parentUuid": "a1a365ee_612e26a3",
+      "revId": "6787ac25a5abe1ddc52faed040d3a3f80f52cf63",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2cb2424a_dfe75afd",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2020-07-10T17:49:24Z",
       "side": 1,
       "message": "Why not use the values already calculated by _calc_snr? Also, you are not taking Tx OSNR and add/drop OSNR into account.",
+      "revId": "6787ac25a5abe1ddc52faed040d3a3f80f52cf63",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fb00b383_d6f1b1a0",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1017851
+      },
+      "writtenOn": "2020-07-13T09:20:11Z",
+      "side": 1,
+      "message": "It is now using self.snr and it also includes Tx OSNR. About add/drop OSNR, if I\u0027m not wrong it is a ROADM parameter. How do you suggest to fix it?",
+      "parentUuid": "2cb2424a_dfe75afd",
       "revId": "6787ac25a5abe1ddc52faed040d3a3f80f52cf63",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
@@ -50,6 +86,24 @@
       "revId": "6787ac25a5abe1ddc52faed040d3a3f80f52cf63",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4bdbfb02_5ee13299",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1017851
+      },
+      "writtenOn": "2020-07-13T09:20:11Z",
+      "side": 1,
+      "message": "Right, I\u0027ve fixed it",
+      "parentUuid": "89413f22_7cd22440",
+      "revId": "6787ac25a5abe1ddc52faed040d3a3f80f52cf63",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
