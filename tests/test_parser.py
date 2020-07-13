@@ -456,3 +456,19 @@ def test_jsontoparams_no_mode(json_input):
     assert bit_rate == ''
     assert cost == ''
 
+
+@pytest.mark.parametrize('json_input',
+    (DATA_DIR / 'testTopology_no_path.json', )
+)
+def test_jsontocsv_no_path(tmpdir, json_input):
+    """Test return when path selected is not feasible."""
+    json_data = load_json(json_input)
+    equipment = load_equipment(EQPT_FILENAME)
+    csv_filename = Path(tmpdir / json_input.name).with_suffix('.csv')
+    with open(csv_filename, 'w', encoding='utf-8') as file_csv:
+        jsontocsv(json_data, equipment, file_csv)
+    with open(csv_filename, 'r') as f1, \
+         open(DATA_DIR / 'testTopology_no_path.csv', 'r') as f2:
+        output = f1.readlines()
+        expected = f2.readlines()
+    assert set(output) == set(expected)
