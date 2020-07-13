@@ -438,3 +438,21 @@ def test_excel_ila_constraints(source, destination, route_list, hoptype, expecte
     else:
         with pytest.raises(ServiceError):
             [request] = correct_xls_route_list(service_xls_input, network, [request])
+
+
+@pytest.mark.parametrize('json_input',
+    (DATA_DIR / 'testTopology_response.json', )
+)
+def test_jsontoparams_no_mode(json_input):
+    """Test return values in case there is no feasible mode to explore."""
+    json_data = load_json(json_input)
+    equipment = load_equipment(EQPT_FILENAME)
+    path = json_data['response'][0]
+    transponder_type = 'Voyager'
+    _, min_osnr, baud_rate, bit_rate, cost, \
+        _, _, _, _, _, _ = jsontoparams(path, transponder_type, None, equipment)
+    assert min_osnr == ''
+    assert baud_rate == ''
+    assert bit_rate == ''
+    assert cost == ''
+
