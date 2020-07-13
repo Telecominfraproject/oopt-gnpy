@@ -491,3 +491,21 @@ def test_error(xls_input):
     rqs, dsjn = requests_aggregation(rqs, dsjn)
     with pytest.raises(DisjunctionError):
         pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
+
+
+@pytest.mark.parametrize('xls_input', 
+    (DATA_DIR / 'test_request_aggregate_disjunction.xls', )
+)
+def test_compare_reqs(xls_input):
+    """Test if code correctly aggregates duplicate disjunctions
+    in case of aggregation of duplicate requests.
+    """
+    equipment = load_equipment(EQPT_FILENAME)
+    network = load_network(xls_input, equipment)
+    service = read_service_sheet(xls_input, equipment, network)
+    oms_list = build_oms_list(network, equipment)
+    requests = requests_from_json(service, equipment)
+    disjunctions = deduplicate_disjunctions(disjunctions_from_json(service))
+    local_list, disjunction_list = requests_aggregation(requests, disjunctions)
+    assert local_list[0].request_id == '1 | 0'
+    assert disjunction_list[0].disjunctions_req[1] == '1 | 0'
