@@ -509,3 +509,35 @@ def test_compare_reqs(xls_input):
     local_list, disjunction_list = requests_aggregation(requests, disjunctions)
     assert local_list[0].request_id == '1 | 0'
     assert disjunction_list[0].disjunctions_req[1] == '1 | 0'
+
+
+@pytest.mark.parametrize('xls_input', 
+    (DATA_DIR / 'test_path_with_disjunction.xls', )
+)
+def test_compute_path_with_disjunction(xls_input):
+    """Test code behaviour in case of low mode snr0.1nm and blocking."""
+    equipment = load_equipment(EQPT_FILENAME)
+    network = load_network(xls_input, equipment)
+    power_db = equipment['SI']['default'].power_dbm
+    power_total_db = power_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
+                                       equipment['SI']['default'].f_max,
+                                       equipment['SI']['default'].spacing))
+    build_network(network, equipment, power_db, power_total_db)
+    service = read_service_sheet(xls_input, equipment, network)
+    oms_list = build_oms_list(network, equipment)
+    requests = requests_from_json(service, equipment)
+    disjunctions = disjunctions_from_json(service)
+    requests, disjunctions = requests_aggregation(requests, disjunctions)
+    paths = compute_path_dsjctn(network, equipment, requests, disjunctions)
+    #conditions to 'force modes by user' as stated inside 'compute_path_with_disjunction()'
+    requests[0].baud_rate = 12.5e8
+    requests[0].bidir = True
+    requests[1].baud_rate = None
+    requests[1].blocking_reason = 'NO_PATH' 
+    requests[2].baud_rate = None
+    requests[2].blocking_reason = 'NO_FEASIBLE_MODE' 
+    propagated_paths, reversed_paths, reversed_propagated_paths = \
+        compute_path_with_disjunction(network, equipment, requests, paths)
+    #differences from results without 'forced modes'    
+    assert len(propagated_paths[1]) == 0
+    assert len(reversed_paths[2]) != 0
