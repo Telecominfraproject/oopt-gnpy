@@ -512,9 +512,9 @@ def test_compare_reqs(xls_input):
 
 
 @pytest.mark.parametrize('xls_input', 
-    (DATA_DIR / 'test_path_with_disjunction.xls', )
+    (DATA_DIR / 'test_mode_low_snr.xls', )
 )
-def test_compute_path_with_disjunction(xls_input):
+def test_mode_low_snr(xls_input):
     """Test code behaviour in case of low mode snr0.1nm and blocking."""
     equipment = load_equipment(EQPT_FILENAME)
     network = load_network(xls_input, equipment)
