@@ -209,3 +209,12 @@ def test_destination():
     req = Req(1, ['a', 'b', 'c'], 'b')
     with pytest.raises(ValueError):
         compute_constrained_path(network, req)
+
+
+def test_oms_none(serv):
+    """Test if code raises exception correctly in case of no OMS."""
+    network, equipment, requests, disjunctions = serv
+    paths = compute_path_dsjctn(network, equipment, requests, disjunctions)
+    paths[0][2].oms.reversed_oms = None
+    with pytest.raises(ValueError):
+        find_reversed_path(paths[0])
