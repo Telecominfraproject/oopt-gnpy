@@ -589,3 +589,21 @@ def test_path_request_str():
     path_request = PathRequest(**params)
     path_request_str = path_request.__str__()
     assert path_request_str == expected
+
+
+def test_disjunction_str():
+    """Test Disjunction string representation."""
+    expected = {'disjunction_id': '0',
+                'relaxable': 'false',
+                'link_diverse': True,
+                'node_diverse': True,
+                'disjunctions_req': ['0', '1']}
+    params = {}
+    params['disjunction_id'] = '0'
+    params['relaxable'] = 'false'
+    params['link_diverse'] = True
+    params['node_diverse'] = True
+    params['disjunctions_req'] = ['0', '1']
+    disjunction = Disjunction(**params)
+    disjunction_str = disjunction.__str__()
+    assert disjunction_str == expected
