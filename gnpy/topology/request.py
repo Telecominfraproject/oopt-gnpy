@@ -70,9 +70,9 @@ class PathRequest:
         self.path_bandwidth = params.path_bandwidth
 
     def __str__(self):
-        return '\n\t'.join([f'{type(self).__name__} {self.request_id}',
-                            f'source:       {self.source}',
-                            f'destination:  {self.destination}'])
+        return {'request_id': self.request_id, 
+                'source': self.source, 
+                'destination': self.destination}
 
     def __repr__(self):
         if self.baud_rate is not None:
@@ -111,10 +111,11 @@ class Disjunction:
         self.disjunctions_req = params.disjunctions_req
 
     def __str__(self):
-        return '\n\t'.join([f'relaxable:     {self.relaxable}',
-                            f'link-diverse:  {self.link_diverse}',
-                            f'node-diverse:  {self.node_diverse}',
-                            f'request-id-numbers: {self.disjunctions_req}'])
+        return {'disjunction_id': self.disjunction_id, 
+                'relaxable': self.relaxable, 
+                'link_diverse': self.link_diverse,
+                'node_diverse': self.node_diverse,
+                'disjunctions_req': self.disjunctions_req}
 
     def __repr__(self):
         return '\n\t'.join([f'{type(self).__name__} {self.disjunction_id}',
