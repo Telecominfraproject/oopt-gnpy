@@ -32,7 +32,8 @@ from gnpy.topology.request import (jsontoparams,
                                    deduplicate_disjunctions,
                                    compute_path_with_disjunction,
                                    ResultElement,
-                                   PathRequest)
+                                   PathRequest,
+                                   Disjunction)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.convert import convert_file
 from gnpy.tools.json_io import (load_json,
@@ -557,3 +558,34 @@ def test_compute_route_constraint(xls_input):
     requests, disjunctions = requests_aggregation(requests, disjunctions)
     with pytest.raises(DisjunctionError):
         paths = compute_path_dsjctn(network, equipment, requests, disjunctions)
+
+
+def test_path_request_str():
+    """Test PathRequest string representation."""
+    expected = {'request_id': '0', 'source': 'a', 'destination': 'z'}
+    params = {}
+    params['request_id'] = '0'
+    params['source'] = 'a'
+    params['destination'] = 'z'
+    params['bidir'] = ''
+    params['trx_type'] = ''
+    params['trx_mode'] = ''
+    params['baud_rate'] = ''
+    params['nodes_list'] = ''
+    params['loose_list'] = ''
+    params['spacing'] = ''
+    params['power'] = ''
+    params['nb_channel'] = ''
+    params['f_min'] = ''
+    params['f_max'] = ''
+    params['format'] = ''
+    params['OSNR'] = ''
+    params['bit_rate'] = ''
+    params['roll_off'] = ''
+    params['tx_osnr'] = ''
+    params['min_spacing'] = ''
+    params['cost'] = ''
+    params['path_bandwidth'] = ''
+    path_request = PathRequest(**params)
+    path_request_str = path_request.__str__()
+    assert path_request_str == expected
