@@ -1,0 +1,91 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f31e0895_9a197f8b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-07-16T16:10:29Z",
+      "side": 1,
+      "message": "These footers cannot have a blank line in between them, they are ignored by e.g. github now. Just remove that blank line.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 52
+      },
+      "revId": "420e3c48ae22ffb490e21448acc908e5c035baed",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "41985c01_80a0cf0f",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-07-16T16:10:29Z",
+      "side": 1,
+      "message": "\u003e linters-diff: F401 \u0027numpy.log10\u0027 imported but unused\n\nPlease fix.",
+      "parentUuid": "37beec69_bacb3182",
+      "revId": "420e3c48ae22ffb490e21448acc908e5c035baed",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7a96d1b_9c70c172",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-07-16T16:10:29Z",
+      "side": 1,
+      "message": "I think it\u0027s enough to give credit in the commit message and in the author\u0027s list. I don\u0027t think it\u0027s needed to put that information into code comments or into the end-user generated docs (which is where these \"\"\"docstrings\"\"\" ends up in).",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 146,
+        "endChar": 50
+      },
+      "revId": "420e3c48ae22ffb490e21448acc908e5c035baed",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a536eae_867b223e",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-07-16T16:10:29Z",
+      "side": 1,
+      "message": "Better ensure from the constructor that the required data are always in there. That way we cleanly separate data instantiation (which is currently tied into JSON) from actual computation (here, which should be totally JSON-oblivious).",
+      "range": {
+        "startLine": 220,
+        "startChar": 0,
+        "endLine": 223,
+        "endChar": 46
+      },
+      "revId": "420e3c48ae22ffb490e21448acc908e5c035baed",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
