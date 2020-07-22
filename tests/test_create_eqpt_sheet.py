@@ -29,14 +29,14 @@ def test_nodes_list():
 
 def test_node_repr(test_node):
     """Test node representation."""
-    expected = "Node(uid=1, to_node=['A', 'B'], eqpt=ROADM)"
+    expected = {'uid': 1, 'to_node': ['A', 'B'], 'eqpt': 'ROADM'}
     tn_repr = test_node.__repr__()
     assert tn_repr == expected
 
 
 def test_node_str(test_node):
     """Test Node string."""
-    expected = {'uid': 1, 'to_node': ['A', 'B'], 'eqpt': 'ROADM'}
+    expected = "Node(uid=1, to_node=['A', 'B'], eqpt=ROADM)"
     tn_str = test_node.__str__()
     assert tn_str == expected
 
@@ -45,7 +45,7 @@ def test_node_append(test_node):
     """Test Node's append method."""
     expected = {'uid': 1, 'to_node': ['A', 'B', 'C'], 'eqpt': 'ROADM'}
     test_node.to_node.append('C')
-    tn_after = test_node.__str__()
+    tn_after = test_node.__repr__()
     assert tn_after == expected
 
 

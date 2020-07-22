@@ -36,10 +36,10 @@ class Node:
         self.eqpt = eqpt
 
     def __repr__(self):
-        return f'Node(uid={self.uid}, to_node={self.to_node}, eqpt={self.eqpt})'
+        return {'uid': self.uid, 'to_node': self.to_node, 'eqpt': self.eqpt}
 
     def __str__(self):
-        return {'uid': self.uid, 'to_node': self.to_node, 'eqpt': self.eqpt}
+        return f'Node(uid={self.uid}, to_node={self.to_node}, eqpt={self.eqpt})'
         
 
 def read_excel(input_filename):
