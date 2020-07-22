@@ -114,11 +114,52 @@ def test_path_low_osnr(test_network):
     path_request = requests[0]
     total_path = [paths[0][-1]]
     equipment = test_network[2]
-    equipment['Transceiver']['Voyager_16QAM'].mode[0]['OSNR'] = 100 
-    total_path, mode = propagate_and_optimize_mode(total_path, \
-                                                   path_request, \
+    modes = [{
+        'format': 'a',
+        'baud_rate': 32e9,
+        'OSNR': 100,
+        'bit_rate': 200e9,
+        'roll_off': 0.15,
+        'tx_osnr': 100,
+        'min_spacing': 50e9,
+        'cost': 1
+        },
+        {
+        'format': 'b',
+        'baud_rate': 32e9,
+        'OSNR': 50,
+        'bit_rate': 100e9,
+        'roll_off': 0.15,
+        'tx_osnr': 100,
+        'min_spacing': 50e9,
+        'cost': 1
+        },
+        {
+        'format': 'c',
+        'baud_rate': 40e9,
+        'OSNR': 100,
+        'bit_rate': 400e9,
+        'roll_off': 0.15,
+        'tx_osnr': 100,
+        'min_spacing': 50e9,
+        'cost': 1
+        },
+        {
+        'format': 'd',
+        'baud_rate': 40e9,
+        'OSNR': 50,
+        'bit_rate': 300e9,
+        'roll_off': 0.15,
+        'tx_osnr': 100,
+        'min_spacing': 50e9,
+        'cost': 1
+        }]
+    equipment['Transceiver']['Voyager_16QAM'].mode = modes
+    mode_expected = equipment['Transceiver']['Voyager_16QAM'].mode[1]
+    # equipment['Transceiver']['Voyager_16QAM'].mode[0]['OSNR'] = 100 
+    total_path, mode = propagate_and_optimize_mode(total_path,
+                                                   path_request,
                                                    equipment)
-    mode_expected = equipment['Transceiver']['Voyager_16QAM'].mode[0]
     assert mode == mode_expected
 
 
@@ -126,13 +167,15 @@ def test_no_computed_snr(test_network):
     """Test if path's SNR is zero (empty list in the code),
     resulting in 'NO_COMPUTED_SNR'.
     """
+    mode_expected = None
     requests, paths, equipment = test_network
     path_request = requests[0]
-    #Condition to achieve path.snr == []
-    path_request.spacing = 5000000000000
+    # condition to achieve path.snr == []
+    # can only be achivied via large spacing,
+    # which will result in no channel propagating
+    path_request.spacing = 5e12
     total_path = [paths[0][-1]]
     total_path, mode = propagate_and_optimize_mode(total_path, \
                                                    path_request, \
                                                    equipment)
-    mode_expected = None
     assert mode == mode_expected
