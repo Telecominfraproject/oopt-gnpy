@@ -59,16 +59,15 @@ def test_read_excel(test_nodes_list):
     expected['e'] = Node('e', ['a', 'c'], 'ILA')
     assert set(test_nodes_list) == set(expected)
 
-
-def test_read_excel_node_degree_and_key_err():
+@pytest.mark.parametrize('xls_err_file, expected',
+                         {TEST_FILE_NODE_DEGREE_ERR: {},
+                          TEST_FILE_KEY_ERR: {}}.items())
+def test_read_excel_node_degree_and_key_err(xls_err_file, expected):
     """Test node degree error (node with incompatile node degree)
     and key error (node not listed on links sheet).
     """
-    expected = {}
-    nodes_deg_err = read_excel(TEST_FILE_NODE_DEGREE_ERR)
-    nodes_key_err = read_excel(TEST_FILE_KEY_ERR)
-    assert set(nodes_deg_err) == set(expected)
-    assert set(nodes_key_err) == set(expected)
+    err_result = read_excel(xls_err_file)
+    assert set(err_result) == set(expected)
 
 
 def test_create_eqpt_template(tmpdir, test_nodes_list):
