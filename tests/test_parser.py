@@ -562,7 +562,7 @@ def test_compute_route_constraint(xls_input):
 
 def test_path_request_str():
     """Test PathRequest string representation."""
-    expected = {'request_id': '0', 'source': 'a', 'destination': 'z'}
+    expected = 'PathRequest(request_id=0, source=a, destination=z)'
     params = {}
     params['request_id'] = '0'
     params['source'] = 'a'
@@ -593,11 +593,11 @@ def test_path_request_str():
 
 def test_disjunction_str():
     """Test Disjunction string representation."""
-    expected = {'disjunction_id': '0',
-                'relaxable': 'false',
-                'link_diverse': True,
-                'node_diverse': True,
-                'disjunctions_req': ['0', '1']}
+    expected = 'Disjunction(disjunction_id=0, ' \
+               + 'relaxable=false, ' \
+               + 'link_diverse=True, ' \
+               + 'node_diverse=True, ' \
+               + "disjunctions_req=['0', '1'])"
     params = {}
     params['disjunction_id'] = '0'
     params['relaxable'] = 'false'
