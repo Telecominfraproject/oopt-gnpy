@@ -12,3 +12,4 @@ API Reference Documentation
    gnpy-api-core
    gnpy-api-topology
    gnpy-api-tools
+   gnpy-api-yang
