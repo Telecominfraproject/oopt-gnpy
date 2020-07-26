@@ -1,0 +1,37 @@
+{
+  "ietf-yang-library:modules-state": {
+    "module-set-id": "",
+    "module": [
+      {
+        "name": "ietf-inet-types",
+        "revision": "2013-07-15",
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-inet-types",
+        "conformance-type": "import"
+      },
+      {
+        "name": "ietf-yang-types",
+        "revision": "2013-07-15",
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-yang-types",
+        "conformance-type": "import"
+      },
+      {
+        "name": "ietf-network-topology",
+        "revision": "2018-02-26",
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-network-topology",
+        "conformance-type": "implement"
+      },
+      {
+        "name": "ietf-network",
+        "revision": "2018-02-26",
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-network",
+        "conformance-type": "implement"
+      },
+      {
+        "name": "ietf-geo-location",
+        "revision": "2019-02-17",
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-geo-location",
+        "conformance-type": "import"
+      }
+    ]
+  }
+}
