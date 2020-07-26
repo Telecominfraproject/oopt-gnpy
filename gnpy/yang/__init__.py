@@ -7,6 +7,7 @@
 #
 
 from pathlib import Path
+from yangson import DataModel
 
 
 def model_path() -> Path:
@@ -17,3 +18,13 @@ def model_path() -> Path:
 def external_path() -> Path:
     '''Filesystem path to third-party YANG models that are shipped with GNPy'''
     return Path(__file__).parent / 'ext'
+
+
+def _yang_library() -> Path:
+    '''Filesystem path the the ietf-yanglib JSON file'''
+    return Path(__file__).parent / 'yanglib.json'
+
+
+def create_datamodel() -> DataModel:
+    '''Create a new yangson.DataModel'''
+    return DataModel.from_file(_yang_library(), (external_path(), model_path()))
