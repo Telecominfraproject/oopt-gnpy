@@ -6,11 +6,12 @@
 # see LICENSE.md for a list of contributors
 #
 
-from gnpy.yang import external_path, model_path
+from gnpy.yang import external_path, model_path, create_datamodel
 from pathlib import Path
 from typing import List
 import pytest
 import subprocess
+import json
 
 
 def _get_basename(filename: Path) -> str:
@@ -44,3 +45,18 @@ def _validate_yang_model(filename: Path, options: List[str]):
         stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, universal_newlines=True)
     assert proc.stderr == ''
     assert proc.stdout == ''
+
+
+@pytest.fixture
+def _yangson_datamodel():
+    return create_datamodel
+
+
+@pytest.mark.parametrize("filename", (Path(__file__).parent / 'yang').glob('*.json'), ids=_get_basename)
+def test_validate_yang_data(_yangson_datamodel, filename: Path):
+    '''Validate a JSON file against our YANG models'''
+    dm = _yangson_datamodel()
+    with open(filename, 'r') as f:
+        raw_json = json.load(f)
+    data = dm.from_raw(raw_json)
+    data.validate()
