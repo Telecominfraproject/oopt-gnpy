@@ -3,5 +3,6 @@ networkx>=2.5,<3
 numpy>=1.19.4,<2
 pandas>=1.1.5,<2
 pbr>=5.5.1,<6
+pyang>=2.4.0,<3
 scipy>=1.5.4,<2
 xlrd>=1.2.0,<2
