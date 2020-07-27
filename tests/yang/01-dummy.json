@@ -482,5 +482,29 @@
       "target-channel-out-power": "-20",
       "polarization-mode-dispersion": "0"
     }
-  ]
+  ],
+
+  "tip-photonic-simulation:simulation": {
+    "autodesign": {
+      "power-adjustment-for-span-loss": {
+        "maximal-reduction": "-2.0",
+        "maximal-boost": "3.0",
+        "excursion-step-size": "0.5"
+      },
+      "gain-mode": [null]
+    },
+    "grid": {
+      "frequency-min": "191.8",
+      "frequency-max": "195.5",
+      "spacing": "50",
+      "baud-rate": "37.5",
+      "tx-roll-off": "0.5",
+      "tx-osnr": "40",
+      "power": "0"
+    },
+    "nli": {
+      "raman": {
+      }
+    }
+  }
 }
