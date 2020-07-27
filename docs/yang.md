@@ -323,3 +323,93 @@ In $\text{Hz}$.
 
 : Roll-off parameter ($\beta$) of the TX pulse shaping filter.
 This assumes a raised-cosine filter.
+
+(yang-simulation)=
+## Simulation Parameters
+
+The `tip-photonic-simulation` model holds options which control how a simulation behaves.
+These include information such as the spectral allocation to work on, the initial launch power, or the desired precision of the Raman engine.
+
+### Propagated spectrum
+
+Channel allocation is controlled via `/tip-photonic-simulation:simulation/grid`.
+This input structure does not support flexgrid (yet), and it assumes homogeneous channel allocation in a worst-case scenario (all channels allocated):
+
+`frequency-min` and `frequency-max`
+
+: Define the range of central channel frequencies.
+
+`spacing`
+
+: How far apart from each other to place channels.
+
+`baud-rate`
+
+: Modulation speed.
+
+`power`
+
+: Launch power, per-channel.
+
+`tx-osnr`
+
+: The initial OSNR of a signal at the transponder's TX port.
+
+`tx-roll-off`
+
+: Roll-off parameter (β) of the TX pulse shaping filter.
+This assumes a raised-cosine filter.
+
+### Autodesign
+
+Autodesign is controlled via `/tip-photonic-simulation:autodesign`.
+
+`power-adjustment-for-span-loss`
+
+: This adjusts the launch power of each span depending on the span's loss.
+When in effect, launch powers to spans are adjusted based on the total span loss.
+The span loss is compared to a reference span of 20 dB, and the launch power is adjusted by about 0.3 * `loss_difference`, up to a provided maximal adjustment.
+This adjustment is performed for all spans when running in the `power-mode` (see below).
+When in `gain-mode`, it affects only EDFAs which do not have an explicitly assigned `delta-p`.
+
+FIXME: there are more.
+
+#### Power mode
+
+FIXME: This is currently mostly undocumented.
+Sorry.
+
+In power mode, GNPy can try out several initial launch powers.
+This is controlled via the `/tip-photonic-simulation:autodesign/power-mode/power-sweep`:
+
+`start`
+
+: Initial delta from the reference power when determining the best initial launch power.
+
+`stop`
+
+: Final delta from the reference power when determining the best initial launch power
+
+`step-size`
+
+: Step size when determining the best initial launch power
+
+#### Gain mode
+
+FIXME: This is currently mostly undocumented.
+Sorry.
+
+In the gain mode, EDFA gain is based on the previous span loss.
+For all EDFAs whose gain has not been set manually, set the gain based on the following rules:
+
+1) Set gain to the preceding span loss.
+2) Offset the gains around the reference power (FIXME: what does it mean?
+
+This will leave the gain of EDFAs which have their gains set manually in the network topology unchanged.
+
+### Miscellaneous parameters
+
+`/tip-photonic-simulation:system-margin`
+
+: How many $\text{dB}$ of headroom to require.
+This parameter is useful to account for component aging, fiber repairs, etc.
