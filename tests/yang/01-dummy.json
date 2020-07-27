@@ -219,5 +219,19 @@
         ]
       }
     ]
+  },
+  "tip-photonic-simulation:simulation": {
+    "autodesign": {
+      "gain-mode": [null]
+    },
+    "grid": {
+      "frequency-min": "191800000000000",
+      "frequency-max": "195500000000000",
+      "spacing": "50000000000",
+      "baud-rate": "37500000000",
+      "tx-roll-off": "0.5",
+      "tx-osnr": "40",
+      "power": "0"
+    }
   }
 }
