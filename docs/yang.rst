@@ -303,3 +303,38 @@ A lot of transponders can operate in a variety of modes, which are described via
 ``tx-roll-off``
   Roll-off parameter (:math:`\beta`) of the TX pulse shaping filter.
   This assumes a raised-cosine filter.
+
+.. _yang-simulation:
+
+
+Simulation Parameters
+---------------------
+
+The ``tip-photonic-simulation`` model holds options which control how a simulation behaves.
+These include information such as the spectral allocation to work on, the initial launch power, or the desired precision of the Raman engine.
+
+Channel allocation is controlled via ``/tip-photonic-simulation:simulation/grid``.
+This input structure does not support flexgrid (yet), and it assumes homogeneous channel allocation in a worst-case scenario (all channels allocated):
+
+``frequency-min`` and ``frequency-max``
+  Define the range of central channel frequencies.
+``spacing``
+  How far apart from each other to place channels.
+``baud-rate``
+  Modulation speed.
+``power``
+  Launch power, per-channel.
+``tx-osnr``
+  The initial OSNR of a signal at the transponder's TX port.
+``tx-roll-off``
+  Roll-off parameter (β) of the TX pulse shaping filter.
+  This assumes a raised-cosine filter.
+
+Autodesign is controlled via ``/tip-photonic-simulation:autodesign``.
+FIXME: document it.
+
+There are also additional simulation parameters:
+
+``/tip-photonic-simulation:system-margin``
+  How many :math:`\text{dB}` of headroom to require.
+  This parameter is useful to account for component aging, fiber repairs, etc.

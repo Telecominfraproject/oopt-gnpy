@@ -482,5 +482,24 @@
       "target-channel-out-power": "-20",
       "pmd": "0"
     }
-  ]
+  ],
+
+  "tip-photonic-simulation:simulation": {
+    "autodesign": {
+      "gain-mode": [null]
+    },
+    "grid": {
+      "frequency-min": "191.8",
+      "frequency-max": "195.5",
+      "spacing": "50",
+      "baud-rate": "37.5",
+      "tx-roll-off": "0.5",
+      "tx-osnr": "40",
+      "power": "0"
+    },
+    "nli": {
+      "raman": {
+      }
+    }
+  }
 }
