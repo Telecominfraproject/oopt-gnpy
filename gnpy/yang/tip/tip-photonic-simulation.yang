@@ -1,0 +1,216 @@
+module tip-photonic-simulation {
+  yang-version 1.1;
+  namespace "https://oopt.telecominfraproject.com/yang/simulation";
+  prefix "tip-sim";
+
+  import tip-photonic-equipment {
+    prefix tip-pe;
+    revision-date 2020-09-01;
+  }
+
+  organization "Telecom Infrastructure Project";
+  contact "https://github.com/Telecominfraproject/oopt-gnpy";
+  description "Simuilation settings for GNPy";
+
+  revision 2020-09-01 {
+    description "Initial release";
+    reference "Internal documentation";
+  }
+
+  grouping one-channel-common-properties {
+    description "Common properties to be filed by each channel in a flexgrid spectrum, or once per a fixed grid";
+
+    leaf baud-rate {
+      type uint64;
+      units "baud";
+      mandatory true;
+      description "Symbol baud rate";
+    }
+
+    leaf tx-osnr {
+      type tip-pe:db-ratio;
+      mandatory true;
+      description "Transponder TX signal OSNR";
+    }
+
+    leaf tx-roll-off {
+      type decimal64 {
+        fraction-digits 4;
+        range 0..1;
+      }
+      mandatory true;
+      description "Roll-off parameter (β) of the TX pulse shaping filter. This assumes a raised-cosine filter.";
+    }
+
+    leaf power {
+      type tip-pe:power;
+      mandatory true;
+      description "";
+    }
+  }
+
+  container simulation {
+    presence "Activates a GNPy simulation";
+    description "Simulation settings and per-run input parameters";
+    // FIXME: make this a grouping so that it can be reused as an RPC for RESTCONF?
+
+    choice spectrum {
+      mandatory true;
+      description "Spectral load for planning considerations
+
+      This is the channel allocation for which GNPy will optimize. It should represent the end-of-life spectrum allocation.";
+
+      case grid {
+        container grid {
+          description "Homogeneous channel allocation on a fixed grid";
+
+          leaf frequency-min {
+            type tip-pe:frequency;
+            default 191350000000000;
+            description "Central frequency of the first (lowest) channel";
+          }
+
+          leaf frequency-max {
+            type tip-pe:frequency;
+            default 196100000000000;
+            description "Central frequency of the last (highest) channel";
+          }
+
+          leaf spacing {
+            type tip-pe:frequency;
+            default 50000000000;
+            description "Grid spacing";
+          }
+
+          uses one-channel-common-properties;
+        }
+      }
+
+      case flexgrid {
+        // FIXME: somehow turn this into online spectrum tracking -- at least make sure that the same data structure gets reused
+        container flexgrid {
+          description "Arbitrary channel allocation. Specify a list of carriers to optimize for.";
+
+          list carrier {
+            key "frequency";
+            description "List of optical channels/carriers";
+
+            leaf frequency {
+              type tip-pe:frequency;
+              description "Central frequency of a carrier";
+            }
+
+            leaf width {
+              type tip-pe:frequency;
+              mandatory true;
+              description "Channel width";
+            }
+            // FIXME: add a check for channel overlap
+
+            uses one-channel-common-properties;
+          }
+
+        }
+      }
+    }
+
+    container autodesign {
+      description "Optimization parameters";
+
+      choice edfa-gain-strategy {
+        mandatory true;
+        description "Optimization strategy for setting amplifier operating mode";
+
+        case gain-mode {
+          leaf gain-mode {
+            type empty;
+            mandatory true;
+            description "Set amplifier gain to compensate for the previous span's attenuation";
+          }
+        }
+
+        case power-mode {
+          container power-mode {
+            description "Activate power sweep optimization";
+
+            leaf short-span-power-reduction {
+              type tip-pe:power;
+              mandatory true;
+              description "Per-channel launch power reduction for the shortest spans";
+            }
+
+            leaf long-span-power-boost {
+              type tip-pe:power;
+              mandatory true;
+              description "Per-channel launch power increase for the longest spans";
+            }
+
+            leaf power-sweep-stepping {
+              type tip-pe:power;
+              mandatory true;
+              description "Step size when determining the optimal launch power for each span";
+            }
+          }
+        }
+      }
+
+      leaf-list allowed-inline-edfa {
+        type leafref {
+          path "/tip-pe:amplifier/tip-pe:type";
+        }
+        description "Allowed EDFA types to be used as inline amplifiers";
+      }
+    }
+
+    leaf system-margin {
+      type tip-pe:power {
+        range 0..10;
+      }
+      default 2;
+      description "Require this many dBm of GSNR headroom as a safety margin for End-of-Life component deterioration";
+    }
+
+    leaf edfa-maximal-extended-power {
+      type tip-pe:power {
+        range 0..6;
+      }
+      default 2.5;
+      description "Allow up to this many dB increase of an amplifier's gain into its extended power range";
+      // FIXME: should we squash this into tip-photonic-equipment -> amplifier? Does it make sense as a global setting for all EDFAs?
+    }
+
+    leaf maximal-span-length {
+      type uint64 {
+        range 10000..300000;
+      }
+      units "m";
+      default 100000;
+      description "Distance threshold for inserting amplifiers into tenative links
+
+      When working with not-fully-specified fiber links (tenative links), keep the individual fiber below this length. Extra
+      inline amplifiers will be automatically inserted in between.";
+    }
+
+    leaf shortest-span-without-extra-attenuation {
+      type tip-pe:db-ratio;
+      default 10.0;
+      description "When a fiber span has a lower attenuation than this, automatically insert an attenuator at its beginning";
+
+      // FIXME: can we get rid of this now that there's a "tenative link"?
+    }
+
+    // FIXME: revisit max_fiber_lineic_loss_for_raman; it might not make sense with extra Raman fiber
+
+  }
+
+  augment "/tip-pe:transceiver/tip-pe:mode" {
+    description "Transponder mode selection: cost of a particular mode";
+
+    leaf cost {
+      type uint32;
+      units "Arbitrary units";
+      default 1;
+      description "Cost of selecting this mode when determining path feasibility";
+    }
+  }
+}
