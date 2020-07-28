@@ -200,7 +200,14 @@ def transmission_main_example(args=None):
 
     pref_ch_db = lin2db(req.power * 1e3)  # reference channel power / span (SL=20dB)
     pref_total_db = pref_ch_db + lin2db(req.nb_channel)  # reference total power / span (SL=20dB)
-    build_network(network, equipment, pref_ch_db, pref_total_db)
+    try:
+        build_network(network, equipment, pref_ch_db, pref_total_db)
+    except exceptions.NetworkTopologyError as e:
+        print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
+        sys.exit(1)
+    except exceptions.ConfigurationError as e:
+        print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
+        sys.exit(1)
     path = compute_constrained_path(network, req)
 
     spans = [s.params.length for s in path if isinstance(s, RamanFiber) or isinstance(s, Fiber)]
@@ -312,7 +319,14 @@ def path_requests_run(args=None):
 
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
                                              equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
-    build_network(network, equipment, p_db, p_total_db)
+    try:
+        build_network(network, equipment, p_db, p_total_db)
+    except exceptions.NetworkTopologyError as e:
+        print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
+        sys.exit(1)
+    except exceptions.ConfigurationError as e:
+        print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
+        sys.exit(1)
     if args.save_network is not None:
         save_network(network, args.save_network)
         print(f'{ansi_escapes.blue}Network (after autodesign) saved to {args.save_network}{ansi_escapes.reset}')
