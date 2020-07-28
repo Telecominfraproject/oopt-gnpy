@@ -8,6 +8,11 @@ module tip-photonic-topology {
     revision-date 2020-09-01;
   }
 
+  import tip-photonic-simulation {
+    prefix tip-sim;
+    revision-date 2020-09-01;
+  }
+
   import ietf-network {
     prefix nw;
     revision-date 2018-02-26;
@@ -118,6 +123,59 @@ module tip-photonic-topology {
             }
             default 0;
             description "Attenuation of the connector at the fiber's end";
+          }
+
+          container raman {
+            must "count(/tip-sim:simulation/tip-sim:nli/tip-sim:raman) = 1" {
+              error-message "Raman-aware fiber requires a Raman-aware model in global simulation parameters";
+            }
+
+            must "count(deref(../type)/../tip-pe:raman-efficiency) > 0" {
+              error-message "Raman simulation requires specification of fiber's Raman efficiency in the equipment library";
+            }
+
+            presence "If present, activate Raman-aware modeling for this fiber";
+            description "Raman parameters: SRS awareness and explicit pumping";
+
+            leaf temperature {
+              type uint16 {
+                range 273..373;
+              }
+              units "K";
+              mandatory true;
+              description "Temperature of the fiber";
+            }
+
+            list pump {
+              key "frequency";
+
+              leaf frequency {
+                type tip-pe:frequency;
+                mandatory true;
+                description "Frequency of this Raman pump laser";
+              }
+
+              leaf power {
+                type tip-pe:power;
+                mandatory true;
+                description "Pumping power";
+              }
+
+              leaf direction {
+                type enumeration {
+                  enum co-propagating {
+                    description "Co-propagating Raman pump pumps the power in the same direction as the carried optical signal payload";
+                  }
+                  enum counter-propagating {
+                    description "Coounter-propagating Raman pump pumps the power in the opposite direction to the carried optical signal payload";
+                  }
+                }
+                mandatory true;
+                description "Direction of propagation of this Raman pump";
+              }
+
+              description "Raman pump lasers";
+            }
           }
         }
       }
