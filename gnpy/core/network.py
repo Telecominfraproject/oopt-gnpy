@@ -410,11 +410,14 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
 
 def add_connector_loss(network, fibers, default_con_in, default_con_out, EOL):
     for fiber in fibers:
+        try:
+            next_node = next(network.successors(fiber))
+        except StopIteration:
+            raise NetworkTopologyError(f'Fiber {fiber.uid} is not properly connected, please check network topology')
         if fiber.params.con_in is None:
             fiber.params.con_in = default_con_in
         if fiber.params.con_out is None:
             fiber.params.con_out = default_con_out
-        next_node = next(network.successors(fiber))
         if not isinstance(next_node, elements.Fused):
             fiber.params.con_out += EOL
 
