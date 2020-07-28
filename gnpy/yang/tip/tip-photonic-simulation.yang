@@ -201,6 +201,39 @@ module tip-photonic-simulation {
 
     // FIXME: revisit max_fiber_lineic_loss_for_raman; it might not make sense with extra Raman fiber
 
+    container nli {
+      description "Non-linear interference (NLI) simulation options";
+
+      leaf algorithm {
+        type enumeration {
+          enum analytic-gn-model {
+            description ""; // FIXME: to be filed by Polito
+          }
+          enum generalized-gn-spectrally-separated {
+            description ""; // FIXME: to be filed by Polito
+          }
+        }
+        default generalized-gn-spectrally-separated;
+        description "What simulation model to use for calculating NLI contribution to the GSNR";
+      }
+
+      container raman {
+        presence "If present, enable Raman-aware simulation";
+        description "Global options for Raman-aware simulation";
+        // FIXME: this really needs docs! CHeck with Alessio and Andrea et al
+
+        leaf space-resolution {
+          type tip-pe:frequency;
+          default 10000;
+          description "FIXME: to be filed by Polito";
+        }
+      }
+
+      // FIXME: grid-size
+      // FIXME: dispersion-tolerance
+      // FIXME: phase-shift-tolerance
+      // FIXME: computed-channels
+    }
   }
 
   augment "/tip-pe:transceiver/tip-pe:mode" {

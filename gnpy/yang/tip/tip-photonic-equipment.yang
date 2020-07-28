@@ -348,6 +348,29 @@ module tip-photonic-equipment {
       mandatory true;
       description "Polarization mode dispersion (PMD) coefficient";
     }
+
+    list raman-efficiency {
+        key "delta-frequency";
+        description "Efficiency of Raman amplification per operating frequency
+
+        FIXME URL";
+
+        leaf delta-frequency {
+          type frequency {
+            range 0..50000000000000;
+          }
+          description "Spectral difference between the pumping photon and the one receiving energy";
+        }
+
+        leaf cr {
+          type decimal64 {
+            fraction-digits 12;
+            range 0..1; // FIXME
+          }
+          mandatory true;
+          description "Normalized Raman efficiency";
+        }
+    }
   }
 
 

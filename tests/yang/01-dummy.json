@@ -68,7 +68,369 @@
       "type": "SSMF",
       "dispersion": "1.67e-05",
       "gamma": "0.00127",
-      "pmd-coefficient": "1.265e-15"
+      "pmd-coefficient": "1.265e-15",
+      "raman-efficiency": [
+        {
+          "delta-frequency": "0",
+          "cr": "0"
+        },
+        {
+          "delta-frequency": "500000000000",
+          "cr": "9.4e-06"
+        },
+        {
+          "delta-frequency": "1000000000000",
+          "cr": "2.92e-05"
+        },
+        {
+          "delta-frequency": "1500000000000",
+          "cr": "4.88e-05"
+        },
+        {
+          "delta-frequency": "2000000000000",
+          "cr": "6.82e-05"
+        },
+        {
+          "delta-frequency": "2500000000000",
+          "cr": "8.31e-05"
+        },
+        {
+          "delta-frequency": "3000000000000",
+          "cr": "9.4e-05"
+        },
+        {
+          "delta-frequency": "3500000000000",
+          "cr": "0.0001014"
+        },
+        {
+          "delta-frequency": "4000000000000",
+          "cr": "0.0001069"
+        },
+        {
+          "delta-frequency": "4500000000000",
+          "cr": "0.0001119"
+        },
+        {
+          "delta-frequency": "5000000000000",
+          "cr": "0.0001217"
+        },
+        {
+          "delta-frequency": "5500000000000",
+          "cr": "0.0001268"
+        },
+        {
+          "delta-frequency": "6000000000000",
+          "cr": "0.0001365"
+        },
+        {
+          "delta-frequency": "6500000000000",
+          "cr": "0.000149"
+        },
+        {
+          "delta-frequency": "7000000000000",
+          "cr": "0.000165"
+        },
+        {
+          "delta-frequency": "7500000000000",
+          "cr": "0.000181"
+        },
+        {
+          "delta-frequency": "8000000000000",
+          "cr": "0.0001977"
+        },
+        {
+          "delta-frequency": "8500000000000",
+          "cr": "0.0002192"
+        },
+        {
+          "delta-frequency": "9000000000000",
+          "cr": "0.0002469"
+        },
+        {
+          "delta-frequency": "9500000000000",
+          "cr": "0.0002749"
+        },
+        {
+          "delta-frequency": "10000000000000",
+          "cr": "0.0002999"
+        },
+        {
+          "delta-frequency": "10500000000000",
+          "cr": "0.0003206"
+        },
+        {
+          "delta-frequency": "11000000000000",
+          "cr": "0.0003405"
+        },
+        {
+          "delta-frequency": "11500000000000",
+          "cr": "0.0003592"
+        },
+        {
+          "delta-frequency": "12000000000000",
+          "cr": "0.000374"
+        },
+        {
+          "delta-frequency": "12500000000000",
+          "cr": "0.0003826"
+        },
+        {
+          "delta-frequency": "12750000000000",
+          "cr": "0.0003841"
+        },
+        {
+          "delta-frequency": "13000000000000",
+          "cr": "0.0003826"
+        },
+        {
+          "delta-frequency": "13250000000000",
+          "cr": "0.0003802"
+        },
+        {
+          "delta-frequency": "13500000000000",
+          "cr": "0.0003756"
+        },
+        {
+          "delta-frequency": "14000000000000",
+          "cr": "0.0003549"
+        },
+        {
+          "delta-frequency": "14500000000000",
+          "cr": "0.0003795"
+        },
+        {
+          "delta-frequency": "14750000000000",
+          "cr": "0.000344"
+        },
+        {
+          "delta-frequency": "15000000000000",
+          "cr": "0.0002933"
+        },
+        {
+          "delta-frequency": "15500000000000",
+          "cr": "0.0002024"
+        },
+        {
+          "delta-frequency": "16000000000000",
+          "cr": "0.0001158"
+        },
+        {
+          "delta-frequency": "16500000000000",
+          "cr": "8.46e-05"
+        },
+        {
+          "delta-frequency": "17000000000000",
+          "cr": "7.14e-05"
+        },
+        {
+          "delta-frequency": "17500000000000",
+          "cr": "6.86e-05"
+        },
+        {
+          "delta-frequency": "18000000000000",
+          "cr": "8.5e-05"
+        },
+        {
+          "delta-frequency": "18250000000000",
+          "cr": "8.93e-05"
+        },
+        {
+          "delta-frequency": "18500000000000",
+          "cr": "9.01e-05"
+        },
+        {
+          "delta-frequency": "18750000000000",
+          "cr": "8.15e-05"
+        },
+        {
+          "delta-frequency": "19000000000000",
+          "cr": "6.67e-05"
+        },
+        {
+          "delta-frequency": "19500000000000",
+          "cr": "4.37e-05"
+        },
+        {
+          "delta-frequency": "20000000000000",
+          "cr": "3.28e-05"
+        },
+        {
+          "delta-frequency": "20500000000000",
+          "cr": "2.96e-05"
+        },
+        {
+          "delta-frequency": "21000000000000",
+          "cr": "2.65e-05"
+        },
+        {
+          "delta-frequency": "21500000000000",
+          "cr": "2.57e-05"
+        },
+        {
+          "delta-frequency": "22000000000000",
+          "cr": "2.81e-05"
+        },
+        {
+          "delta-frequency": "22500000000000",
+          "cr": "3.08e-05"
+        },
+        {
+          "delta-frequency": "23000000000000",
+          "cr": "3.67e-05"
+        },
+        {
+          "delta-frequency": "23500000000000",
+          "cr": "5.85e-05"
+        },
+        {
+          "delta-frequency": "24000000000000",
+          "cr": "6.63e-05"
+        },
+        {
+          "delta-frequency": "24500000000000",
+          "cr": "6.36e-05"
+        },
+        {
+          "delta-frequency": "25000000000000",
+          "cr": "5.5e-05"
+        },
+        {
+          "delta-frequency": "25500000000000",
+          "cr": "4.06e-05"
+        },
+        {
+          "delta-frequency": "26000000000000",
+          "cr": "2.77e-05"
+        },
+        {
+          "delta-frequency": "26500000000000",
+          "cr": "2.42e-05"
+        },
+        {
+          "delta-frequency": "27000000000000",
+          "cr": "1.87e-05"
+        },
+        {
+          "delta-frequency": "27500000000000",
+          "cr": "1.6e-05"
+        },
+        {
+          "delta-frequency": "28000000000000",
+          "cr": "1.4e-05"
+        },
+        {
+          "delta-frequency": "28500000000000",
+          "cr": "1.13e-05"
+        },
+        {
+          "delta-frequency": "29000000000000",
+          "cr": "1.05e-05"
+        },
+        {
+          "delta-frequency": "29500000000000",
+          "cr": "9.8e-06"
+        },
+        {
+          "delta-frequency": "30000000000000",
+          "cr": "9.8e-06"
+        },
+        {
+          "delta-frequency": "30500000000000",
+          "cr": "1.13e-05"
+        },
+        {
+          "delta-frequency": "31000000000000",
+          "cr": "1.64e-05"
+        },
+        {
+          "delta-frequency": "31500000000000",
+          "cr": "1.95e-05"
+        },
+        {
+          "delta-frequency": "32000000000000",
+          "cr": "2.38e-05"
+        },
+        {
+          "delta-frequency": "32500000000000",
+          "cr": "2.26e-05"
+        },
+        {
+          "delta-frequency": "33000000000000",
+          "cr": "2.03e-05"
+        },
+        {
+          "delta-frequency": "33500000000000",
+          "cr": "1.48e-05"
+        },
+        {
+          "delta-frequency": "34000000000000",
+          "cr": "1.09e-05"
+        },
+        {
+          "delta-frequency": "34500000000000",
+          "cr": "9.8e-06"
+        },
+        {
+          "delta-frequency": "35000000000000",
+          "cr": "1.05e-05"
+        },
+        {
+          "delta-frequency": "35500000000000",
+          "cr": "1.17e-05"
+        },
+        {
+          "delta-frequency": "36000000000000",
+          "cr": "1.25e-05"
+        },
+        {
+          "delta-frequency": "36500000000000",
+          "cr": "1.21e-05"
+        },
+        {
+          "delta-frequency": "37000000000000",
+          "cr": "1.09e-05"
+        },
+        {
+          "delta-frequency": "37500000000000",
+          "cr": "9.8e-06"
+        },
+        {
+          "delta-frequency": "38000000000000",
+          "cr": "8.2e-06"
+        },
+        {
+          "delta-frequency": "38500000000000",
+          "cr": "6.6e-06"
+        },
+        {
+          "delta-frequency": "39000000000000",
+          "cr": "4.7e-06"
+        },
+        {
+          "delta-frequency": "39500000000000",
+          "cr": "2.7e-06"
+        },
+        {
+          "delta-frequency": "40000000000000",
+          "cr": "1.9e-06"
+        },
+        {
+          "delta-frequency": "40500000000000",
+          "cr": "1.2e-06"
+        },
+        {
+          "delta-frequency": "41000000000000",
+          "cr": "4e-07"
+        },
+        {
+          "delta-frequency": "41500000000000",
+          "cr": "2e-07"
+        },
+        {
+          "delta-frequency": "42000000000000",
+          "cr": "1e-07"
+        }
+      ]
     },
     {
       "type": "NZDF",
@@ -160,6 +522,26 @@
               "x": "20.0",
               "y": "10.0"
             }
+          },
+          {
+            "node-id": "trx-200",
+            "tip-photonic-topology:transceiver": {
+              "model": "Voyager"
+            },
+            "tip-photonic-topology:geo-location": {
+              "x": "0.0",
+              "y": "20.0"
+            }
+          },
+          {
+            "node-id": "trx-201",
+            "tip-photonic-topology:transceiver": {
+              "model": "Voyager"
+            },
+            "tip-photonic-topology:geo-location": {
+              "x": "20.0",
+              "y": "20.0"
+            }
           }
         ],
         "ietf-network-topology:link": [
@@ -201,6 +583,34 @@
               "type": "SSMF",
               "length": "200"
             }
+          },
+          {
+            "link-id": "A Raman fiber",
+            "source": {
+              "source-node": "trx-200"
+            },
+            "destination": {
+              "dest-node": "trx-201"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "150",
+              "raman": {
+                "temperature": 293,
+                "pump": [
+                  {
+                    "frequency": "205000000000000",
+                    "power": "0.2",
+                    "direction": "counter-propagating"
+                  },
+                  {
+                    "frequency": "201000000000000",
+                    "power": "0.25",
+                    "direction": "counter-propagating"
+                  }
+                ]
+              }
+            }
           }
         ]
       }
@@ -218,6 +628,10 @@
       "tx-roll-off": "0.5",
       "tx-osnr": "40",
       "power": "0"
+    },
+    "nli": {
+      "raman": {
+      }
     }
   }
 }
