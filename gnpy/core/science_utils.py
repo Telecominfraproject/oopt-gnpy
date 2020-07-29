@@ -471,58 +471,12 @@ class NliSolver:
             if 'gn_model_analytic' == sim_params.nli_params.nli_method_name.lower():
                 carrier_nli = self._gn_analytic(carrier, *carriers)
             elif 'ggn_spectrally_separated' in sim_params.nli_params.nli_method_name.lower():
-                eta_matrix = self._compute_eta_matrix(carrier, *carriers)
-                carrier_nli = self._carrier_nli_from_eta_matrix(eta_matrix, carrier, *carriers)
+                carrier_nli = self._ggn_numerical(carrier, *carriers)
             else:
                 raise ValueError(f'Method {sim_params.nli_params.method_nli} not implemented.')
         except:
             carrier_nli = self._gn_analytic(carrier, *carriers)
         return carrier_nli
-
-    @staticmethod
-    def _carrier_nli_from_eta_matrix(eta_matrix, carrier, *carriers):
-        carrier_nli = 0
-        for pump_carrier_1 in carriers:
-            for pump_carrier_2 in carriers:
-                carrier_nli += eta_matrix[pump_carrier_1.channel_number - 1, pump_carrier_2.channel_number - 1] * \
-                    pump_carrier_1.power.signal * pump_carrier_2.power.signal
-        carrier_nli *= carrier.power.signal
-
-        return carrier_nli
-
-    def _compute_eta_matrix(self, carrier_cut, *carriers):
-        cut_index = carrier_cut.channel_number - 1
-        simulation = Simulation.get_simulation()
-        sim_params = simulation.sim_params
-        # Matrix initialization
-        matrix_size = max(carriers, key=lambda x: getattr(x, 'channel_number')).channel_number
-        eta_matrix = np.zeros(shape=(matrix_size, matrix_size))
-
-        # SPM
-        logger.debug(f'Start computing SPM on channel #{carrier_cut.channel_number}')
-        # SPM GGN
-        if 'ggn' in sim_params.nli_params.nli_method_name.lower():
-            partial_nli = self._generalized_spectrally_separated_spm(carrier_cut)
-        # SPM GN
-        elif 'gn' in sim_params.nli_params.nli_method_name.lower():
-            partial_nli = self._gn_analytic(carrier_cut, *[carrier_cut])
-        eta_matrix[cut_index, cut_index] = partial_nli / (carrier_cut.power.signal**3)
-
-        # XPM
-        for pump_carrier in carriers:
-            pump_index = pump_carrier.channel_number - 1
-            if not (cut_index == pump_index):
-                logger.debug(f'Start computing XPM on channel #{carrier_cut.channel_number} '
-                             f'from channel #{pump_carrier.channel_number}')
-                # XPM GGN
-                if 'ggn' in sim_params.nli_params.nli_method_name.lower():
-                    partial_nli = self._generalized_spectrally_separated_xpm(carrier_cut, pump_carrier)
-                # XPM GGN
-                elif 'gn' in sim_params.nli_params.nli_method_name.lower():
-                    partial_nli = self._gn_analytic(carrier_cut, *[pump_carrier])
-                eta_matrix[pump_index, pump_index] = partial_nli /\
-                    (carrier_cut.power.signal * pump_carrier.power.signal**2)
-        return eta_matrix
 
     # Methods for computing GN-model
     def _gn_analytic(self, carrier_cut, *carriers):
@@ -562,6 +516,18 @@ class NliSolver:
         return psi
 
     # Methods for computing the GGN-model
+
+    def _ggn_numerical(self, carrier_cut, *carriers):
+        nli = 0
+        for pump_carrier in carriers:
+            dn = pump_carrier.channel_number - carrier_cut.channel_number
+            if dn == 0:
+                nli += self._generalized_spectrally_separated_spm(carrier_cut)
+            else:
+                nli += self._generalized_spectrally_separated_xpm(carrier_cut, pump_carrier)
+        return nli
+
+
     def _generalized_spectrally_separated_spm(self, carrier):
         gamma = self.fiber.params.gamma
         simulation = Simulation.get_simulation()
