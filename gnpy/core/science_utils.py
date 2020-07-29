@@ -466,15 +466,17 @@ class NliSolver:
         at the end of the fiber span.
         """
         simulation = Simulation.get_simulation()
-        sim_params = simulation.sim_params
-        if 'gn_model_analytic' == sim_params.nli_params.nli_method_name.lower():
+        try:
+            sim_params = simulation.sim_params
+            if 'gn_model_analytic' == sim_params.nli_params.nli_method_name.lower():
+                carrier_nli = self._gn_analytic(carrier, *carriers)
+            elif 'ggn_spectrally_separated' in sim_params.nli_params.nli_method_name.lower():
+                eta_matrix = self._compute_eta_matrix(carrier, *carriers)
+                carrier_nli = self._carrier_nli_from_eta_matrix(eta_matrix, carrier, *carriers)
+            else:
+                raise ValueError(f'Method {sim_params.nli_params.method_nli} not implemented.')
+        except:
             carrier_nli = self._gn_analytic(carrier, *carriers)
-        elif 'ggn_spectrally_separated' in sim_params.nli_params.nli_method_name.lower():
-            eta_matrix = self._compute_eta_matrix(carrier, *carriers)
-            carrier_nli = self._carrier_nli_from_eta_matrix(eta_matrix, carrier, *carriers)
-        else:
-            raise ValueError(f'Method {sim_params.nli_params.method_nli} not implemented.')
-
         return carrier_nli
 
     @staticmethod
