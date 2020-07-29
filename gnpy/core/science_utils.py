@@ -525,28 +525,41 @@ class NliSolver:
         return eta_matrix
 
     # Methods for computing GN-model
-    def _gn_analytic(self, carrier, *carriers):
+    def _gn_analytic(self, carrier_cut, *carriers):
         """ Computes the nonlinear interference power on a single carrier.
         The method uses eq. 120 from arXiv:1209.0394.
-        :param carrier: the signal under analysis
+        :param carrier_cut: the signal under analysis
         :param carriers: the full WDM comb
         :return: carrier_nli: the amount of nonlinear interference in W on the carrier under analysis
         """
-        beta2 = self.fiber.params.beta2
         gamma = self.fiber.params.gamma
+
+        g_nli = 0
+        for pump_carrier in carriers:
+            g_interfearing = pump_carrier.power.signal / pump_carrier.baud_rate
+            g_signal = carrier_cut.power.signal / carrier_cut.baud_rate
+            g_nli += g_interfearing**2 * g_signal \
+                * self._psi(carrier_cut, pump_carrier)
+        g_nli *= (16.0 / 27.0) * gamma ** 2
+        carrier_nli = carrier_cut.baud_rate * g_nli
+        return carrier_nli
+
+    def _psi(self, carrier_cut, pump_carrier):
+        """Calculates eq. 123 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__"""
+        beta2 = self.fiber.params.beta2
         effective_length = self.fiber.params.effective_length
         asymptotic_length = self.fiber.params.asymptotic_length
 
-        g_nli = 0
-        for interfering_carrier in carriers:
-            g_interfearing = interfering_carrier.power.signal / interfering_carrier.baud_rate
-            g_signal = carrier.power.signal / carrier.baud_rate
-            g_nli += g_interfearing**2 * g_signal \
-                * _psi(carrier, interfering_carrier, beta2=beta2, asymptotic_length=asymptotic_length)
-        g_nli *= (16.0 / 27.0) * (gamma * effective_length) ** 2 /\
-                 (2 * np.pi * abs(beta2) * asymptotic_length)
-        carrier_nli = carrier.baud_rate * g_nli
-        return carrier_nli
+        if carrier_cut.channel_number == pump_carrier.channel_number:  # SCI, SPM
+            psi = np.arcsinh(0.5 * np.pi ** 2 * asymptotic_length * abs(beta2) * carrier_cut.baud_rate ** 2)
+        else:  # XCI, XPM
+            delta_f = carrier_cut.frequency - pump_carrier.frequency
+            psi = np.arcsinh(np.pi ** 2 * asymptotic_length * abs(beta2) *
+                             carrier_cut.baud_rate * (delta_f + 0.5 * pump_carrier.baud_rate))
+            psi -= np.arcsinh(np.pi ** 2 * asymptotic_length * abs(beta2) *
+                              carrier_cut.baud_rate * (delta_f - 0.5 * pump_carrier.baud_rate))
+        psi *= effective_length ** 2 / (2 * np.pi * abs(beta2) * asymptotic_length)
+        return psi
 
     # Methods for computing the GGN-model
     def _generalized_spectrally_separated_spm(self, carrier):
@@ -672,20 +685,6 @@ class NliSolver:
         beta2 = abs(self.fiber.params.beta2)
         freq_offset_th = ((k_ref * delta_f_ref) * rs_ref * beta2_ref) / (beta2 * symbol_rate)
         return freq_offset_th
-
-
-def _psi(carrier, interfering_carrier, beta2, asymptotic_length):
-    """Calculates eq. 123 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__"""
-
-    if carrier.channel_number == interfering_carrier.channel_number:  # SCI, SPM
-        psi = np.arcsinh(0.5 * np.pi**2 * asymptotic_length * abs(beta2) * carrier.baud_rate**2)
-    else:  # XCI, XPM
-        delta_f = carrier.frequency - interfering_carrier.frequency
-        psi = np.arcsinh(np.pi**2 * asymptotic_length * abs(beta2) *
-                         carrier.baud_rate * (delta_f + 0.5 * interfering_carrier.baud_rate))
-        psi -= np.arcsinh(np.pi**2 * asymptotic_length * abs(beta2) *
-                          carrier.baud_rate * (delta_f - 0.5 * interfering_carrier.baud_rate))
-    return psi
 
 
 def estimate_nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
