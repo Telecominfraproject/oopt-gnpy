@@ -479,10 +479,10 @@ class NliSolver:
         return carrier_nli
 
     # Methods for computing GN-model
-    def _gn_analytic(self, carrier_cut, *carriers):
+    def _gn_analytic(self, cut_carrier, *carriers):
         """ Computes the nonlinear interference power on a single carrier.
         The method uses eq. 120 from arXiv:1209.0394.
-        :param carrier_cut: the signal under analysis
+        :param cut_carrier: the signal under analysis
         :param carriers: the full WDM comb
         :return: carrier_nli: the amount of nonlinear interference in W on the carrier under analysis
         """
@@ -491,40 +491,40 @@ class NliSolver:
         g_nli = 0
         for pump_carrier in carriers:
             g_interfearing = pump_carrier.power.signal / pump_carrier.baud_rate
-            g_signal = carrier_cut.power.signal / carrier_cut.baud_rate
+            g_signal = cut_carrier.power.signal / cut_carrier.baud_rate
             g_nli += g_interfearing**2 * g_signal \
-                * self._psi(carrier_cut, pump_carrier)
+                * self._psi(cut_carrier, pump_carrier)
         g_nli *= (16.0 / 27.0) * gamma ** 2
-        carrier_nli = carrier_cut.baud_rate * g_nli
+        carrier_nli = cut_carrier.baud_rate * g_nli
         return carrier_nli
 
-    def _psi(self, carrier_cut, pump_carrier):
+    def _psi(self, cut_carrier, pump_carrier):
         """Calculates eq. 123 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__"""
         beta2 = self.fiber.params.beta2
         effective_length = self.fiber.params.effective_length
         asymptotic_length = self.fiber.params.asymptotic_length
 
-        if carrier_cut.channel_number == pump_carrier.channel_number:  # SCI, SPM
-            psi = np.arcsinh(0.5 * np.pi ** 2 * asymptotic_length * abs(beta2) * carrier_cut.baud_rate ** 2)
+        if cut_carrier.channel_number == pump_carrier.channel_number:  # SCI, SPM
+            psi = np.arcsinh(0.5 * np.pi ** 2 * asymptotic_length * abs(beta2) * cut_carrier.baud_rate ** 2)
         else:  # XCI, XPM
-            delta_f = carrier_cut.frequency - pump_carrier.frequency
+            delta_f = cut_carrier.frequency - pump_carrier.frequency
             psi = np.arcsinh(np.pi ** 2 * asymptotic_length * abs(beta2) *
-                             carrier_cut.baud_rate * (delta_f + 0.5 * pump_carrier.baud_rate))
+                             cut_carrier.baud_rate * (delta_f + 0.5 * pump_carrier.baud_rate))
             psi -= np.arcsinh(np.pi ** 2 * asymptotic_length * abs(beta2) *
-                              carrier_cut.baud_rate * (delta_f - 0.5 * pump_carrier.baud_rate))
+                              cut_carrier.baud_rate * (delta_f - 0.5 * pump_carrier.baud_rate))
         psi *= effective_length ** 2 / (2 * np.pi * abs(beta2) * asymptotic_length)
         return psi
 
     # Methods for computing the GGN-model
 
-    def _ggn_numerical(self, carrier_cut, *carriers):
+    def _ggn_numerical(self, cut_carrier, *carriers):
         nli = 0
         for pump_carrier in carriers:
-            dn = pump_carrier.channel_number - carrier_cut.channel_number
+            dn = pump_carrier.channel_number - cut_carrier.channel_number
             if dn == 0:
-                nli += self._generalized_spectrally_separated_spm(carrier_cut)
+                nli += self._generalized_spectrally_separated_spm(cut_carrier)
             else:
-                nli += self._generalized_spectrally_separated_xpm(carrier_cut, pump_carrier)
+                nli += self._generalized_spectrally_separated_xpm(cut_carrier, pump_carrier)
         return nli
 
 
@@ -559,7 +559,7 @@ class NliSolver:
                 2 * self._fast_generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution)
         return xpm_nli
 
-    def _fast_generalized_psi(self, carrier_cut, pump_carrier, f_eval, f_cut_resolution):
+    def _fast_generalized_psi(self, cut_carrier, pump_carrier, f_eval, f_cut_resolution):
         """ It computes the generalized psi function similarly to the one used in the GN model
         :return: generalized_psi
         """
@@ -579,8 +579,8 @@ class NliSolver:
 
         f1_array = np.array([pump_carrier.frequency - (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2),
                              pump_carrier.frequency + (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2)])
-        f2_array = np.arange(carrier_cut.frequency,
-                             carrier_cut.frequency + (carrier_cut.baud_rate * (1 + carrier_cut.roll_off) / 2),
+        f2_array = np.arange(cut_carrier.frequency,
+                             cut_carrier.frequency + (cut_carrier.baud_rate * (1 + cut_carrier.roll_off) / 2),
                              f_cut_resolution)  # Only positive f2 is used since integrand_f2 is symmetric
 
         integrand_f1 = np.zeros(len(f1_array))
@@ -592,7 +592,7 @@ class NliSolver:
         generalized_psi = 0.5 * sum(integrand_f1) * pump_carrier.baud_rate
         return generalized_psi
 
-    def _generalized_psi(self, carrier_cut, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution):
+    def _generalized_psi(self, cut_carrier, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution):
         """ It computes the generalized psi function similarly to the one used in the GN model
         :return: generalized_psi
         """
@@ -613,15 +613,15 @@ class NliSolver:
         f1_array = np.arange(pump_carrier.frequency - (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2),
                              pump_carrier.frequency + (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2),
                              f_pump_resolution)
-        f2_array = np.arange(carrier_cut.frequency - (carrier_cut.baud_rate * (1 + carrier_cut.roll_off) / 2),
-                             carrier_cut.frequency + (carrier_cut.baud_rate * (1 + carrier_cut.roll_off) / 2),
+        f2_array = np.arange(cut_carrier.frequency - (cut_carrier.baud_rate * (1 + cut_carrier.roll_off) / 2),
+                             cut_carrier.frequency + (cut_carrier.baud_rate * (1 + cut_carrier.roll_off) / 2),
                              f_cut_resolution)
         psd1 = raised_cosine_comb(f1_array, pump_carrier) * (pump_carrier.baud_rate / pump_carrier.power.signal)
 
         integrand_f1 = np.zeros(len(f1_array))
         for f1_index, (f1, psd1_sample) in enumerate(zip(f1_array, psd1)):
             f3_array = f1 + f2_array - f_eval
-            psd2 = raised_cosine_comb(f2_array, carrier_cut) * (carrier_cut.baud_rate / carrier_cut.power.signal)
+            psd2 = raised_cosine_comb(f2_array, cut_carrier) * (cut_carrier.baud_rate / cut_carrier.power.signal)
             psd3 = raised_cosine_comb(f3_array, pump_carrier) * (pump_carrier.baud_rate / pump_carrier.power.signal)
             ggg = psd1_sample * psd2 * psd3
 
