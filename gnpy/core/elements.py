@@ -447,7 +447,7 @@ class Fiber(_Node):
         attenuation = db2lin(self.params.con_out)
         for carrier in carriers:
             pwr = carrier.power
-            carrier_nli = self._gn_analytic(carrier, *carriers)
+            carrier_nli = self.nli_solver.compute_nli(carrier, *carriers)
             pwr = pwr._replace(signal=pwr.signal / self.params.lin_attenuation / attenuation,
                                nli=(pwr.nli + carrier_nli) / self.params.lin_attenuation / attenuation,
                                ase=pwr.ase / self.params.lin_attenuation / attenuation)

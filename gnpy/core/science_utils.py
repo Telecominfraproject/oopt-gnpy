@@ -152,7 +152,11 @@ class Simulation:
 
     @property
     def sim_params(self):
-        return self._shared_dict['sim_params']
+        if 'sim_params' in self._shared_dict:
+            sim_params = self._shared_dict['sim_params']
+        else:
+            sim_params = None
+        return sim_params
 
 
 class SpontaneousRamanScattering:
@@ -467,14 +471,16 @@ class NliSolver:
         """
         simulation = Simulation.get_simulation()
         sim_params = simulation.sim_params
-        if 'gn_model_analytic' == sim_params.nli_params.nli_method_name.lower():
-            carrier_nli = self._gn_analytic(carrier, *carriers)
-        elif 'ggn_spectrally_separated' in sim_params.nli_params.nli_method_name.lower():
-            eta_matrix = self._compute_eta_matrix(carrier, *carriers)
-            carrier_nli = self._carrier_nli_from_eta_matrix(eta_matrix, carrier, *carriers)
+        if sim_params:
+            if 'gn_model_analytic' == sim_params.nli_params.nli_method_name.lower():
+                carrier_nli = self._gn_analytic(carrier, *carriers)
+            elif 'ggn_spectrally_separated' in sim_params.nli_params.nli_method_name.lower():
+                eta_matrix = self._compute_eta_matrix(carrier, *carriers)
+                carrier_nli = self._carrier_nli_from_eta_matrix(eta_matrix, carrier, *carriers)
+            else:
+                raise ValueError(f'Method {sim_params.nli_params.method_nli} not implemented.')
         else:
-            raise ValueError(f'Method {sim_params.nli_params.method_nli} not implemented.')
-
+            carrier_nli = self._gn_analytic(carrier, *carriers)
         return carrier_nli
 
     @staticmethod
