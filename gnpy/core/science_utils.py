@@ -471,7 +471,7 @@ class NliSolver:
             if 'gn_model_analytic' == sim_params.nli_params.nli_method_name.lower():
                 carrier_nli = self._gn_analytic(carrier, *carriers)
             elif 'ggn_spectrally_separated' in sim_params.nli_params.nli_method_name.lower():
-                carrier_nli = self._ggn_numerical(carrier, *carriers)
+                carrier_nli = self._ggn_spectrally_separated(carrier, *carriers)
             else:
                 raise ValueError(f'Method {sim_params.nli_params.method_nli} not implemented.')
         except:
@@ -516,48 +516,33 @@ class NliSolver:
         return psi
 
     # Methods for computing the GGN-model
-
-    def _ggn_numerical(self, cut_carrier, *carriers):
+    def _ggn_spectrally_separated(self, cut_carrier, *carriers):
+        gamma = self.fiber.params.gamma
+        simulation = Simulation.get_simulation()
+        sim_params = simulation.sim_params
+        f_eval = cut_carrier.frequency
+        g_cut = (cut_carrier.power.signal / cut_carrier.baud_rate)
         nli = 0
         for pump_carrier in carriers:
             dn = pump_carrier.channel_number - cut_carrier.channel_number
-            if dn == 0:
-                nli += self._generalized_spectrally_separated_spm(cut_carrier)
-            else:
-                nli += self._generalized_spectrally_separated_xpm(cut_carrier, pump_carrier)
+            Df = cut_carrier.frequency - pump_carrier.frequency
+            f_cut_resolution = sim_params.nli_params.f_cut_resolution[f'delta_{dn}']
+            if dn == 0:     # SPM
+                nli += g_cut ** 3 * \
+                  self._generalized_psi(cut_carrier, cut_carrier, f_eval, f_cut_resolution, f_cut_resolution)
+            else:           # XPM
+                f_pump_resolution = sim_params.nli_params.f_pump_resolution
+                g_pump = (pump_carrier.power.signal / pump_carrier.baud_rate)
+                frequency_offset_threshold = self._frequency_offset_threshold(pump_carrier.baud_rate)
+                if abs(Df) <= frequency_offset_threshold:
+                    nli += g_pump ** 2 * g_cut * \
+                              2 * self._generalized_psi(cut_carrier, pump_carrier, f_eval, f_cut_resolution,
+                                                        f_pump_resolution)
+                else:
+                    nli += g_pump ** 2 * g_cut * \
+                              2 * self._fast_generalized_psi(cut_carrier, pump_carrier, f_eval, f_cut_resolution)
+        nli *= cut_carrier.baud_rate * (16.0 / 27.0) * gamma ** 2
         return nli
-
-
-    def _generalized_spectrally_separated_spm(self, carrier):
-        gamma = self.fiber.params.gamma
-        simulation = Simulation.get_simulation()
-        sim_params = simulation.sim_params
-        f_cut_resolution = sim_params.nli_params.f_cut_resolution['delta_0']
-        f_eval = carrier.frequency
-        g_cut = (carrier.power.signal / carrier.baud_rate)
-
-        spm_nli = carrier.baud_rate * (16.0 / 27.0) * gamma ** 2 * g_cut ** 3 * \
-            self._generalized_psi(carrier, carrier, f_eval, f_cut_resolution, f_cut_resolution)
-        return spm_nli
-
-    def _generalized_spectrally_separated_xpm(self, carrier_cut, pump_carrier):
-        gamma = self.fiber.params.gamma
-        simulation = Simulation.get_simulation()
-        sim_params = simulation.sim_params
-        delta_index = pump_carrier.channel_number - carrier_cut.channel_number
-        f_cut_resolution = sim_params.nli_params.f_cut_resolution[f'delta_{delta_index}']
-        f_pump_resolution = sim_params.nli_params.f_pump_resolution
-        f_eval = carrier_cut.frequency
-        g_pump = (pump_carrier.power.signal / pump_carrier.baud_rate)
-        g_cut = (carrier_cut.power.signal / carrier_cut.baud_rate)
-        frequency_offset_threshold = self._frequency_offset_threshold(pump_carrier.baud_rate)
-        if abs(carrier_cut.frequency - pump_carrier.frequency) <= frequency_offset_threshold:
-            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * gamma ** 2 * g_pump**2 * g_cut * \
-                2 * self._generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution)
-        else:
-            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * gamma ** 2 * g_pump**2 * g_cut * \
-                2 * self._fast_generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution)
-        return xpm_nli
 
     def _fast_generalized_psi(self, cut_carrier, pump_carrier, f_eval, f_cut_resolution):
         """ It computes the generalized psi function similarly to the one used in the GN model
