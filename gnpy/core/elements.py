@@ -27,7 +27,7 @@ from collections import namedtuple
 
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum
 from gnpy.core.parameters import FiberParams, PumpParams
-from gnpy.core.science_utils import NliSolver, RamanSolver, propagate_raman_fiber, _psi
+from gnpy.core.science_utils import NliSolver, RamanSolver, propagate_raman_fiber
 
 
 class Location(namedtuple('Location', 'latitude longitude city region')):
@@ -398,28 +398,6 @@ class Fiber(_Node):
     def pmd(self):
         """differential group delay (PMD) [s]"""
         return self.params.pmd_coef * sqrt(self.params.length)
-
-    def _gn_analytic(self, carrier, *carriers):
-        r"""Computes the nonlinear interference power on a single carrier.
-        The method uses eq. 120 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__.
-
-        :param carrier: the signal under analysis
-        :param \*carriers: the full WDM comb
-        :return: carrier_nli: the amount of nonlinear interference in W on the under analysis
-        """
-
-        g_nli = 0
-        for interfering_carrier in carriers:
-            psi = _psi(carrier, interfering_carrier, beta2=self.params.beta2,
-                       asymptotic_length=self.params.asymptotic_length)
-            g_nli += (interfering_carrier.power.signal / interfering_carrier.baud_rate)**2 \
-                * (carrier.power.signal / carrier.baud_rate) * psi
-
-        g_nli *= (16 / 27) * (self.params.gamma * self.params.effective_length)**2 \
-            / (2 * pi * abs(self.params.beta2) * self.params.asymptotic_length)
-
-        carrier_nli = carrier.baud_rate * g_nli
-        return carrier_nli
 
     def propagate(self, *carriers):
         r"""Generator that computes the fiber propagation: attenuation, non-linear interference generation, CD
