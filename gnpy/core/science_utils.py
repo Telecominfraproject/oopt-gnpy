@@ -487,14 +487,20 @@ class NliSolver:
         :return: carrier_nli: the amount of nonlinear interference in W on the carrier under analysis
         """
         gamma = self.fiber.params.gamma
+        g_cut = cut_carrier.power.signal / cut_carrier.baud_rate
+        spm_weight = (16.0 / 27.0) * gamma ** 2
+        xpm_weight = 2 * (16.0 / 27.0) * gamma ** 2
 
         g_nli = 0
         for pump_carrier in carriers:
-            g_interfearing = pump_carrier.power.signal / pump_carrier.baud_rate
-            g_signal = cut_carrier.power.signal / cut_carrier.baud_rate
-            g_nli += g_interfearing**2 * g_signal \
-                * self._psi(cut_carrier, pump_carrier)
-        g_nli *= (16.0 / 27.0) * gamma ** 2
+            dn = pump_carrier.channel_number - cut_carrier.channel_number
+            if dn == 0:       # SPM
+                ggg = g_cut ** 3
+                g_nli += spm_weight * ggg * self._psi(cut_carrier, cut_carrier)
+            else:             # XPM
+                g_pump = pump_carrier.power.signal / pump_carrier.baud_rate
+                ggg = g_cut * g_pump ** 2
+                g_nli += xpm_weight * ggg * self._psi(cut_carrier, pump_carrier)
         carrier_nli = cut_carrier.baud_rate * g_nli
         return carrier_nli
 
@@ -508,9 +514,9 @@ class NliSolver:
             psi = np.arcsinh(0.5 * np.pi ** 2 * asymptotic_length * abs(beta2) * cut_carrier.baud_rate ** 2)
         else:  # XCI, XPM
             delta_f = cut_carrier.frequency - pump_carrier.frequency
-            psi = np.arcsinh(np.pi ** 2 * asymptotic_length * abs(beta2) *
+            psi = 0.5 * np.arcsinh(np.pi ** 2 * asymptotic_length * abs(beta2) *
                              cut_carrier.baud_rate * (delta_f + 0.5 * pump_carrier.baud_rate))
-            psi -= np.arcsinh(np.pi ** 2 * asymptotic_length * abs(beta2) *
+            psi -= 0.5 * np.arcsinh(np.pi ** 2 * asymptotic_length * abs(beta2) *
                               cut_carrier.baud_rate * (delta_f - 0.5 * pump_carrier.baud_rate))
         psi *= effective_length ** 2 / (2 * np.pi * abs(beta2) * asymptotic_length)
         return psi
@@ -522,27 +528,31 @@ class NliSolver:
         sim_params = simulation.sim_params
         f_eval = cut_carrier.frequency
         g_cut = (cut_carrier.power.signal / cut_carrier.baud_rate)
-        nli = 0
+        spm_weight = (16.0 / 27.0) * gamma ** 2
+        xpm_weight = 2 * (16.0 / 27.0) * gamma ** 2
+
+        g_nli = 0
         for pump_carrier in carriers:
             dn = pump_carrier.channel_number - cut_carrier.channel_number
             Df = cut_carrier.frequency - pump_carrier.frequency
             f_cut_resolution = sim_params.nli_params.f_cut_resolution[f'delta_{dn}']
             if dn == 0:     # SPM
-                nli += g_cut ** 3 * \
+                ggg = g_cut ** 3
+                g_nli += spm_weight * ggg * \
                   self._generalized_psi(cut_carrier, cut_carrier, f_eval, f_cut_resolution, f_cut_resolution)
             else:           # XPM
                 f_pump_resolution = sim_params.nli_params.f_pump_resolution
                 g_pump = (pump_carrier.power.signal / pump_carrier.baud_rate)
+                ggg = g_cut * g_pump ** 2
                 frequency_offset_threshold = self._frequency_offset_threshold(pump_carrier.baud_rate)
                 if abs(Df) <= frequency_offset_threshold:
-                    nli += g_pump ** 2 * g_cut * \
-                              2 * self._generalized_psi(cut_carrier, pump_carrier, f_eval, f_cut_resolution,
-                                                        f_pump_resolution)
+                    g_nli += xpm_weight * ggg * self._generalized_psi(cut_carrier, pump_carrier,
+                                                                      f_eval, f_cut_resolution, f_pump_resolution)
                 else:
-                    nli += g_pump ** 2 * g_cut * \
-                              2 * self._fast_generalized_psi(cut_carrier, pump_carrier, f_eval, f_cut_resolution)
-        nli *= cut_carrier.baud_rate * (16.0 / 27.0) * gamma ** 2
-        return nli
+                    g_nli += xpm_weight * ggg * self._fast_generalized_psi(cut_carrier, pump_carrier,
+                                                                           f_eval, f_cut_resolution)
+        carrier_nli = g_nli * cut_carrier.baud_rate
+        return carrier_nli
 
     def _fast_generalized_psi(self, cut_carrier, pump_carrier, f_eval, f_cut_resolution):
         """ It computes the generalized psi function similarly to the one used in the GN model
