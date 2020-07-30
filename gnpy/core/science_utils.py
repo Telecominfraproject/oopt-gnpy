@@ -525,7 +525,7 @@ class NliSolver:
 
     # Fast approximation of the GGN-model
     def _ggn_fast_approx(self, cut_carrier, *carriers):
-        if False:#hasattr(self.fiber, 'raman_solver'):
+        if hasattr(self.fiber, 'raman_solver'):
             carrier_nli = self._ggn_spectrally_separated(cut_carrier, *carriers)
         else:
             gamma = self.fiber.params.gamma
