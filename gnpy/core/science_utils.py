@@ -472,6 +472,8 @@ class NliSolver:
                 carrier_nli = self._gn_analytic(carrier, *carriers)
             elif 'ggn_spectrally_separated' in sim_params.nli_params.nli_method_name.lower():
                 carrier_nli = self._ggn_spectrally_separated(carrier, *carriers)
+            elif 'ggn_fast_aproximation' in sim_params.nli_params.nli_method_name.lower():
+                carrier_nli = self._ggn_fast_approx(carrier, *carriers)
             else:
                 raise ValueError(f'Method {sim_params.nli_params.method_nli} not implemented.')
         except:
@@ -520,6 +522,65 @@ class NliSolver:
                               cut_carrier.baud_rate * (delta_f - 0.5 * pump_carrier.baud_rate))
         psi *= effective_length ** 2 / (2 * np.pi * abs(beta2) * asymptotic_length)
         return psi
+
+    # Fast approximation of the GGN-model
+    def _ggn_fast_approx(self, cut_carrier, *carriers):
+        if False:#hasattr(self.fiber, 'raman_solver'):
+            carrier_nli = self._ggn_spectrally_separated(cut_carrier, *carriers)
+        else:
+            gamma = self.fiber.params.gamma
+            g_cut = cut_carrier.power.signal / cut_carrier.baud_rate
+            spm_weight = (16.0 / 27.0) * gamma ** 2
+            xpm_weight = 2 * (16.0 / 27.0) * gamma ** 2
+            g_nli = 0
+            for pump_carrier in carriers:
+                dn = pump_carrier.channel_number - cut_carrier.channel_number
+                if dn == 0:  # SPM
+                    ggg = g_cut ** 3
+                    g_nli += spm_weight * ggg * self._ggn_fast_psi(cut_carrier, pump_carrier)
+                else:  # XPM
+                    g_pump = pump_carrier.power.signal / pump_carrier.baud_rate
+                    ggg = g_cut * g_pump ** 2
+                    g_nli += xpm_weight * ggg * self._ggn_fast_psi(cut_carrier, pump_carrier)
+            carrier_nli = cut_carrier.baud_rate * g_nli
+        return carrier_nli
+
+    def _ggn_fast_psi(self, cut_carrier, pump_carrier):
+        length = self.fiber.params.length
+        alpha0 = self.fiber.alpha0(cut_carrier.frequency)
+        effective_length = (1 - np.exp(-alpha0 * length))/alpha0
+        beta2 = self.fiber.params.beta2
+        Rs_cut = cut_carrier.baud_rate
+        Rs_pump = pump_carrier.baud_rate
+        Df = cut_carrier.frequency - pump_carrier.frequency
+        threshold = alpha0/ abs(beta2) / Rs_cut
+        n = 100
+        f_cut = Rs_cut * np.linspace(0, 1 / 2, n)
+        df_cut = Rs_cut / n
+        f_pump = Rs_pump * np.linspace(-1 / 2, 1 / 2, n)
+        df_pump = Rs_pump / n
+        ff = np.ones([len(f_pump), len(f_cut)])
+        ff = f_pump * ff - np.transpose(ff * f_cut)
+        ggg = (-Rs_cut / 2 < ff) & (ff < Rs_cut / 2)
+        # SPM
+        if cut_carrier.channel_number == pump_carrier.channel_number:
+            f2 = np.ones([len(f_pump), len(f_cut)])
+            f2 = f_pump * f2 * np.transpose(f2 * f_cut)
+            delta_beta = 4 * np.pi**2 * f2 * beta2
+            integrand = ggg * effective_length /alpha0 * 1/(1 + (delta_beta)**2/alpha0**2)
+            generalized_psi = np.sum(integrand) * df_cut**2
+        #XPM
+        elif abs(Df) < threshold:
+            f2 = np.ones([len(f_pump), len(f_cut)])
+            f2 = (f_pump + Df) * f2 * np.transpose(f2 * f_cut)
+            delta_beta = 4 * np.pi**2 * f2 * beta2
+            integrand = ggg * effective_length /alpha0 * 1/(1 + (delta_beta)**2/alpha0**2)
+            generalized_psi = np.sum(integrand) * df_cut * df_pump
+        else:
+            delta_beta = 4 * np.pi ** 2 * Df * beta2
+            generalized_psi = 2 * effective_length / delta_beta * \
+                              np.arctan((delta_beta * Rs_cut / 2) / alpha0) * Rs_pump
+        return generalized_psi
 
     # Methods for computing the GGN-model
     def _ggn_spectrally_separated(self, cut_carrier, *carriers):
