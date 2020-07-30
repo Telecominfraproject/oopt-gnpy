@@ -476,7 +476,7 @@ class NliSolver:
                 carrier_nli = self._ggn_fast_approx(carrier, *carriers)
             else:
                 raise ValueError(f'Method {sim_params.nli_params.method_nli} not implemented.')
-        except:
+        except KeyError:
             carrier_nli = self._gn_analytic(carrier, *carriers)
         return carrier_nli
 
