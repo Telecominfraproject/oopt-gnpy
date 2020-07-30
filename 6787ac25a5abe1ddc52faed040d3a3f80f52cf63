@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "da105e24_d10d45f9",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-07-30T15:03:13Z",
+      "side": 1,
+      "message": "Yes, add/drop OSNR is a ROADM parameter that contributes to the total OSNR. It should be taken into account when the signal is added/dropped through a ROADM.",
+      "parentUuid": "fb00b383_d6f1b1a0",
+      "revId": "6787ac25a5abe1ddc52faed040d3a3f80f52cf63",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "89413f22_7cd22440",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 1
