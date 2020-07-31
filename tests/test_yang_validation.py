@@ -7,6 +7,7 @@
 #
 
 from gnpy.yang import load_data, Error as YangError
+from gnpy.yang.io import _load_equipment
 import json
 from pathlib import Path
 import pytest
@@ -19,10 +20,24 @@ def _get_basename(filename: Path) -> str:
         return filename
 
 
+def _dump_equipment(equipment):
+    for type_, models in equipment.items():
+        for name, definition in models.items():
+            print(f'{type_} "{name}":')
+            for k in dir(definition):
+                attr = getattr(definition, k)
+                if k.startswith('__') or k == 'default_values' or callable(attr):
+                    continue
+                print(f' {k}: {attr}')
+
+
 @pytest.mark.parametrize("filename", (Path(__file__).parent / 'yang').glob('*.json'), ids=_get_basename)
 def test_validate_yang_data(filename: Path):
     '''Validate a JSON file against our YANG models'''
     data = load_data(filename.read_text())
+    equipment = _load_equipment(data)
+    _dump_equipment(equipment)
+    assert False
 
 
 @pytest.mark.parametrize("data, error_message, where", (
