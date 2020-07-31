@@ -1,0 +1,136 @@
+{
+  "tip-photonic-equipment:amplifier": [
+    {
+      "type": "fixed-22",
+      "gain-min": "22",
+      "gain-flatmax": "22",
+      "max-power-out": "21.9",
+      "polynomial-NF": {
+        "a": "0",
+        "b": "0",
+        "c": "0",
+        "d": "4.8"
+      }
+    }
+  ],
+  "tip-photonic-equipment:fiber": [
+    {
+      "type": "SSMF",
+      "dispersion": "1.67e-05",
+      "gamma": "0.00127",
+      "pmd-coefficient": "1.265e-15"
+    }
+  ],
+  "tip-photonic-equipment:transceiver": [
+    {
+      "type": "Voyager",
+      "mode": [
+        {
+          "name": "DP-QPSK",
+          "bit-rate": "100000000000",
+          "baud-rate": "32000000000",
+          "required-osnr": "12",
+          "tx-osnr": "40",
+          "grid-spacing": "37500000000",
+          "tx-roll-off": "0.15"
+        }
+      ]
+    }
+  ],
+  "tip-photonic-equipment:roadm": [
+    {
+      "type": "default",
+      "add-drop-osnr": "50.0",
+      "channel-tx-power": "-20",
+      "pmd": "0"
+    }
+  ],
+
+  "ietf-network:networks": {
+    "network": [
+      {
+        "network-id": "Two transponders, one EDFA, two fibers",
+        "network-types": {
+          "tip-photonic-topology:photonic-topology": {
+          }
+        },
+        "node": [
+          {
+            "node-id": "trx-1",
+            "tip-photonic-topology:transceiver": {
+              "model": "Voyager"
+            },
+            "tip-photonic-topology:geo-location": {
+              "x": "-3.0",
+              "y": "0.0"
+            }
+          },
+          {
+            "node-id": "trx-2",
+            "tip-photonic-topology:transceiver": {
+              "model": "Voyager"
+            },
+            "tip-photonic-topology:geo-location": {
+              "x": "3.0",
+              "y": "0.0"
+            }
+          },
+          {
+            "node-id": "edfa-A",
+            "tip-photonic-topology:amplifier": {
+              "model": "fixed-22",
+              "gain-target": "19.0",
+              "tilt-target": "10.0"
+            },
+            "tip-photonic-topology:geo-location": {
+              "x": "0.5",
+              "y": "0.0"
+            }
+          }
+        ],
+        "ietf-network-topology:link": [
+          {
+            "link-id": "fiber trx-1 edfa-1",
+            "source": {
+              "source-node": "trx-1"
+            },
+            "destination": {
+              "dest-node": "edfa-A"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "105"
+            }
+          },
+          {
+            "link-id": "fiber trx-2",
+            "source": {
+              "source-node": "edfa-A"
+            },
+            "destination": {
+              "dest-node": "trx-2"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "70"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "tip-photonic-simulation:simulation": {
+    "autodesign": {
+      "gain-mode": [null]
+    },
+    "grid": {
+      "frequency-min": "191800000000000",
+      "frequency-max": "195500000000000",
+      "spacing": "50000000000",
+      "baud-rate": "37500000000",
+      "tx-roll-off": "0.5",
+      "tx-osnr": "40",
+      "power": "0"
+    }
+  }
+}
