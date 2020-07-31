@@ -9,7 +9,7 @@ Common code for CLI examples
 '''
 
 import argparse
-from json import dumps
+import json
 import logging
 import os.path
 import sys
@@ -32,6 +32,7 @@ from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectru
 from gnpy.tools.json_io import load_equipment, load_network, load_json, load_requests, save_network, \
                                requests_from_json, disjunctions_from_json, save_json
 from gnpy.tools.plots import plot_baseline, plot_results
+from gnpy.yang import load_from_yang
 
 _logger = logging.getLogger(__name__)
 _examples_dir = Path(__file__).parent.parent / 'example-data'
@@ -43,6 +44,7 @@ Learn more at https://gnpy.readthedocs.io/
 '''
 _help_fname_json = 'FILE.json'
 _help_fname_json_csv = 'FILE.(json|csv)'
+_help_fname_yangjson = 'FILE-with-YANG.json'
 
 
 def show_example_data_dir():
@@ -104,6 +106,8 @@ def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
                         help='Save the final network as a JSON file')
     parser.add_argument('--save-network-before-autodesign', type=Path, metavar=_help_fname_json,
                         help='Dump the network into a JSON file prior to autodesign')
+    parser.add_argument('--from-yang', type=Path, metavar=_help_fname_yangjson,
+                        help='Load equipment, topology and simulation parameters from a YANG-formatted JSON file')
 
 
 def transmission_main_example(args=None):
@@ -123,7 +127,13 @@ def transmission_main_example(args=None):
     args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
 
-    (equipment, network) = load_common_data(args.equipment, args.topology, args.sim_params, args.save_network_before_autodesign)
+    if args.from_yang:
+        # FIXME: move this into a better place, it does not belong to a CLI frontend
+        with open(args.from_yang, 'r') as f:
+            raw_json = json.load(f)
+        (equipment, network) = load_from_yang(raw_json)
+    else:
+        (equipment, network) = load_common_data(args.equipment, args.topology, args.sim_params, args.save_network_before_autodesign)
 
     if args.plot:
         plot_baseline(network)
