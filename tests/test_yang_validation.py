@@ -6,7 +6,8 @@
 # see LICENSE.md for a list of contributors
 #
 
-from gnpy.yang import external_path, model_path, create_datamodel
+from gnpy.yang import external_path, model_path
+from gnpy.yang.io import create_datamodel
 from pathlib import Path
 from typing import List
 import pytest

@@ -9,7 +9,7 @@ Common code for CLI examples
 '''
 
 import argparse
-from json import dumps
+import json
 import logging
 import os.path
 import sys
@@ -32,6 +32,7 @@ from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectru
 from gnpy.tools.json_io import load_equipment, load_network, load_json, load_requests, save_network, \
                                requests_from_json, disjunctions_from_json, save_json
 from gnpy.tools.plots import plot_baseline, plot_results
+from gnpy.yang.io import load_from_yang, save_equipment
 
 _logger = logging.getLogger(__name__)
 _examples_dir = Path(__file__).parent.parent / 'example-data'
@@ -43,10 +44,19 @@ Learn more at https://gnpy.readthedocs.io/
 '''
 _help_fname_json = 'FILE.json'
 _help_fname_json_csv = 'FILE.(json|csv)'
+_help_fname_yangjson = 'FILE-with-YANG.json'
 
 
 def show_example_data_dir():
     print(f'{_examples_dir}/')
+
+
+def _load_network_legacy(topology_filename, equipment, save_raw_network_filename):
+    network = load_network(topology_filename, equipment)
+    if save_raw_network_filename is not None:
+        save_network(network, save_raw_network_filename)
+        print(f'{ansi_escapes.blue}Raw network (no optimizations) saved to {save_raw_network_filename}{ansi_escapes.reset}')
+    return network
 
 
 def load_common_data(equipment_filename, topology_filename, simulation_filename, save_raw_network_filename):
@@ -54,11 +64,8 @@ def load_common_data(equipment_filename, topology_filename, simulation_filename,
 
     try:
         equipment = load_equipment(equipment_filename)
-        network = load_network(topology_filename, equipment)
-        if save_raw_network_filename is not None:
-            save_network(network, save_raw_network_filename)
-            print(f'{ansi_escapes.blue}Raw network (no optimizations) saved to {save_raw_network_filename}{ansi_escapes.reset}')
         sim_params = SimParams(**load_json(simulation_filename)) if simulation_filename is not None else None
+        network = _load_network_legacy(topology_filename, equipment, save_raw_network_filename)
         if not sim_params:
             if next((node for node in network if isinstance(node, RamanFiber)), None) is not None:
                 print(f'{ansi_escapes.red}Invocation error:{ansi_escapes.reset} '
@@ -89,14 +96,17 @@ def _setup_logging(args):
     logging.basicConfig(level={2: logging.DEBUG, 1: logging.INFO, 0: logging.CRITICAL}.get(args.verbose, logging.DEBUG))
 
 
+def _parser_add_equipment(parser: argparse.ArgumentParser):
+    parser.add_argument('-e', '--equipment', type=Path, metavar=_help_fname_json,
+                        default=_examples_dir / 'eqpt_config.json', help='Equipment library')
+
 def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
     parser.add_argument('topology', nargs='?', type=Path, metavar='NETWORK-TOPOLOGY.(json|xls|xlsx)',
                         default=network_default,
                         help='Input network topology')
     parser.add_argument('-v', '--verbose', action='count', default=0,
                         help='Increase verbosity (can be specified several times)')
-    parser.add_argument('-e', '--equipment', type=Path, metavar=_help_fname_json,
-                        default=_examples_dir / 'eqpt_config.json', help='Equipment library')
+    _parser_add_equipment(parser)
     parser.add_argument('--sim-params', type=Path, metavar=_help_fname_json,
                         default=None, help='Path to the JSON containing simulation parameters (required for Raman). '
                                            f'Example: {_examples_dir / "sim_params.json"}')
@@ -104,6 +114,8 @@ def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
                         help='Save the final network as a JSON file')
     parser.add_argument('--save-network-before-autodesign', type=Path, metavar=_help_fname_json,
                         help='Dump the network into a JSON file prior to autodesign')
+    parser.add_argument('--from-yang', type=Path, metavar=_help_fname_yangjson,
+                        help='Load equipment, (in future also topology) and simulation parameters from a YANG-formatted JSON file')
 
 
 def transmission_main_example(args=None):
@@ -123,7 +135,14 @@ def transmission_main_example(args=None):
     args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
 
-    (equipment, network) = load_common_data(args.equipment, args.topology, args.sim_params, args.save_network_before_autodesign)
+    if args.from_yang:
+        # FIXME: move this into a better place, it does not belong to a CLI frontend
+        with open(args.from_yang, 'r') as f:
+            raw_json = json.load(f)
+        (equipment, network) = load_from_yang(raw_json)
+        network = _load_network_legacy(args.topology, equipment, args.save_network_before_autodesign)
+    else:
+        (equipment, network) = load_common_data(args.equipment, args.topology, args.sim_params, args.save_network_before_autodesign)
 
     if args.plot:
         plot_baseline(network)
@@ -441,3 +460,18 @@ def path_requests_run(args=None):
         else:
             print(f'{ansi_escapes.red}Cannot save output: neither JSON nor CSV file{ansi_escapes.reset}')
             sys.exit(1)
+
+
+def convert_to_yang(args=None):
+    parser = argparse.ArgumentParser(
+        description='Convert data to the YANG+JSON data format',
+        epilog=_help_footer,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        )
+    _parser_add_equipment(parser)
+
+    args = parser.parse_args(args if args is not None else sys.argv[1:])
+
+    equipment = load_equipment(args.equipment)
+    data = save_equipment(equipment)
+    print(json.dumps(data, indent=2))

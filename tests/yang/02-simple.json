@@ -1,0 +1,63 @@
+{
+  "tip-photonic-equipment:amplifier": [
+    {
+      "type": "fixed-22",
+      "gain-min": "22",
+      "gain-flatmax": "22",
+      "max-power-out": "21.9",
+      "polynomial-NF": {
+        "a": "0",
+        "b": "0",
+        "c": "0",
+        "d": "4.8"
+      }
+    }
+  ],
+  "tip-photonic-equipment:fiber": [
+    {
+      "type": "SSMF",
+      "dispersion": "16.7",
+      "gamma": "1.27",
+      "pmd-coefficient": "0.0400028124"
+    }
+  ],
+  "tip-photonic-equipment:transceiver": [
+    {
+      "type": "Voyager",
+      "mode": [
+        {
+          "name": "DP-QPSK",
+          "bit-rate": 100,
+          "baud-rate": "32.0",
+          "required-osnr": "12",
+          "tx-osnr": "40",
+          "grid-spacing": "37.5",
+          "tx-roll-off": "0.15"
+        }
+      ]
+    }
+  ],
+  "tip-photonic-equipment:roadm": [
+    {
+      "type": "default",
+      "add-drop-osnr": "50.0",
+      "target-channel-out-power": "-20",
+      "pmd": "0"
+    }
+  ],
+
+  "tip-photonic-simulation:simulation": {
+    "autodesign": {
+      "gain-mode": [null]
+    },
+    "grid": {
+      "frequency-min": "191.8",
+      "frequency-max": "195.5",
+      "spacing": "50.0",
+      "baud-rate": "37.5",
+      "tx-roll-off": "0.5",
+      "tx-osnr": "40",
+      "power": "0"
+    }
+  }
+}
