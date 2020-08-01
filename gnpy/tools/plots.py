@@ -13,10 +13,14 @@ from networkx import draw_networkx_nodes, draw_networkx_edges, draw_networkx_lab
 from gnpy.core.elements import Transceiver
 
 
+def _try_city(node):
+    return node.location.city if node.location.city else node.uid
+
+
 def plot_baseline(network):
     edges = set(network.edges())
     pos = {n: (n.lng, n.lat) for n in network.nodes()}
-    labels = {n: n.location.city for n in network.nodes() if isinstance(n, Transceiver)}
+    labels = {n: _try_city(n) for n in network.nodes() if isinstance(n, Transceiver)}
     city_labels = set(labels.values())
     for n in network.nodes():
         if n.location.city and n.location.city not in city_labels:
@@ -40,7 +44,8 @@ def plot_results(network, path, source, destination):
     nodes = {}
     for k, (x, y) in pos.items():
         nodes.setdefault((round(x, 1), round(y, 1)), []).append(k)
-    labels = {n: n.location.city for n in network.nodes() if isinstance(n, Transceiver)}
+
+    labels = {n: _try_city(n) for n in network.nodes() if isinstance(n, Transceiver)}
     city_labels = set(labels.values())
     for n in network.nodes():
         if n.location.city and n.location.city not in city_labels:
@@ -56,7 +61,7 @@ def plot_results(network, path, source, destination):
     draw_networkx_edges(network, edgelist=edges, edge_color='#ababab', **kwargs)
     draw_networkx_edges(network, edgelist=path_edges, edge_color='#ff0000', **kwargs)
     draw_networkx_labels(network, labels=labels, font_size=14, **{**kwargs, 'pos': label_pos})
-    title(f'Propagating from {source.loc.city} to {destination.loc.city}')
+    title(f'Propagating from {_try_city(source)} to {_try_city(destination)}')
     axis('off')
 
     heading = 'Spectral Information\n\n'
