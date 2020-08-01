@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "37c12f1e_ff97217b",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-08-01T22:12:57Z",
+      "side": 1,
+      "message": "@Alessio, how many digits do we need here?",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c53c6ae2_9703305c",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-08-01T22:12:57Z",
+      "side": 1,
+      "message": "@Alessio, how many digits do we need here?",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "805d7031_1790068f",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-08-01T22:12:57Z",
+      "side": 1,
+      "message": "@Alessio, is there a default value that we can use? I think that when using the \"legacy\" JSON, we currently get 0, which might be wrong...",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9830c60e_0b783236",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-08-01T22:12:57Z",
+      "side": 1,
+      "message": "@Alessio, how many digits do we need here?",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1cb18cfc_2e06ed0c",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-08-01T22:12:57Z",
+      "side": 1,
+      "message": "@Alessio, how many digits do we need here?",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5102ecb9_5abd33ff",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-08-01T22:12:57Z",
+      "side": 1,
+      "message": "@Alessio, how many digits do we need here?",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
