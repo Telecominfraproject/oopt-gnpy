@@ -19,6 +19,41 @@
     },
     {
       "key": {
+        "uuid": "5293809d_c3a55e29",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-08-01T21:16:07Z",
+      "side": 1,
+      "message": "Right, that version did not contain the indirection that we agreed to; it seems that I never pushed that fixed YANG. However, in light of some recent discussions at the coders calls, I *think* that Vittorio (et al) and Jonas have confirmed that these \"typical values\" that we currently ship do not really match \"all EDFAs\". The way I remember these discussions, the correct approach is to ship with these measurements for all EDFA types that we ship other data for.\n\nBased on that, I would like to revisit our past decision when we decided to store these vectors in a separate list, \"outside of\" the actual amplifier definition (in another YANG list). Now that all EDFA type_varieties will have to have their own vectors, I think that the indirection doesn\u0027t help. Of course I\u0027m open to discussing this, it\u0027s just a proposal from my side. I\u0027m also not happy that I\u0027m essentially proposing revisiting a decision that we made. *If* we agree that there\u0027s a set of default tilt\u0026ripple values which make sense for \"a lot of EDFAs\", then I\u0027ll take this back and just add the indirection back.\n\nRe \"just two elements\" -- the code uses linear interpolation, so specifying the (start, end) pair will just set up a simple linear curve. I wanted to highlight that in the example data. It\u0027s still possible to specify e.g. 96 values which will be uniformly mapped to the standard C-band@50GHz grid.",
+      "parentUuid": "9f9d06c3_2d652d56",
+      "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af624607_73c9f613",
+        "filename": "yang/tip-photonic-equipment.yang",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-08-01T21:16:07Z",
+      "side": 1,
+      "message": "I\u0027ve changed these to use Hz, not THz, to be aligned with how we have always preferred SI units everywhere in I/O formats. However, I\u0027m a bit undecided on this because I think that reading \"191.35\" is a much clearer than \"191350000000000\", and YANG contains real support for units anyway.\n\nAlso, the YANG-over-JSON says that 191350000000000 (if we use .e.g uint64) *cannot* be represented as a \"191.35e12\". On the other hand, if we go the decimal64 route, it will always require quoting...\n\nPerhaps we could make this into a union of just-the-number-in-Hz or decimal64-in-THz-as-a-string? The rules look like something that is allowed, at least in JSON. In XML the situation could be different because there\u0027s no mandatory quoting of decimal64 in XML...",
+      "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "44cf93e2_957caa95",
         "filename": "yang/tip-photonic-equipment.yang",
         "patchSetId": 2
@@ -33,6 +68,24 @@
       "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db22a453_ddaebc84",
+        "filename": "yang/tip-photonic-equipment.yang",
+        "patchSetId": 2
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-08-01T21:16:07Z",
+      "side": 1,
+      "message": "I did it that way because of the dual-stage amplifier which actually consists of two real amplifiers underneath, and for that \"virtual aggregated amplifier\" some of these values do not really make sense. You raise a good point, so I changed this to use the \"uses\" statement with a \"when\" condition.",
+      "parentUuid": "44cf93e2_957caa95",
+      "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     },
     {
       "key": {
@@ -89,6 +142,24 @@
     },
     {
       "key": {
+        "uuid": "da2da35a_f88c371b",
+        "filename": "yang/tip-photonic-equipment.yang",
+        "patchSetId": 2
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-08-01T21:16:07Z",
+      "side": 1,
+      "message": "I\u0027ve removed this \"trivial Raman implementation\" because, as you said, it\u0027s controlled via the RamanFiber these days. Given that there\u0027s no autodesign for placing Raman amps, it makes more sense to treat them as specials.",
+      "parentUuid": "f5df12bd_ed4d7d4b",
+      "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e7d6434d_be411d51",
         "filename": "yang/tip-photonic-equipment.yang",
         "patchSetId": 2
@@ -103,6 +174,24 @@
       "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b9bf244_daeb9293",
+        "filename": "yang/tip-photonic-equipment.yang",
+        "patchSetId": 2
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-08-01T21:16:07Z",
+      "side": 1,
+      "message": "From my point of view, equipment library should describe physical properties of devices. Whether to allow or disallow a particular amplifier at a certain link (or even globally in \"the current network\") is a policy decision that is specific to each operator. Therefore I\u0027d like to move it to yet another model which passes these \"global options\" to the \"simulation or optimization\" (see the follow-up commits).",
+      "parentUuid": "e7d6434d_be411d51",
+      "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     },
     {
       "key": {
@@ -123,6 +212,24 @@
     },
     {
       "key": {
+        "uuid": "98366c80_8c46c043",
+        "filename": "yang/tip-photonic-equipment.yang",
+        "patchSetId": 2
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-08-01T21:16:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2af1d80e_eb3867b2",
+      "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d283d22f_5b0e8dc1",
         "filename": "yang/tip-photonic-equipment.yang",
         "patchSetId": 2
@@ -137,6 +244,47 @@
       "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ac0945a2_38c36511",
+        "filename": "yang/tip-photonic-equipment.yang",
+        "patchSetId": 2
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-08-01T21:16:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d283d22f_5b0e8dc1",
+      "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dd53cadc_dac9a8e9",
+        "filename": "yang/tip-photonic-equipment.yang",
+        "patchSetId": 2
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-08-01T21:16:07Z",
+      "side": 1,
+      "message": "I\u0027ve moved this one into a separate YANG model for driving the \"simulation settings\".",
+      "range": {
+        "startLine": 403,
+        "startChar": 0,
+        "endLine": 408,
+        "endChar": 7
+      },
+      "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
