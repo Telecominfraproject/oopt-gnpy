@@ -2,6 +2,40 @@
   "comments": [
     {
       "key": {
+        "uuid": "99365b42_2b845758",
+        "filename": "gnpy/yang/__init__.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T14:16:51Z",
+      "side": 1,
+      "message": "is this one the fixed gain type ?\nand polynomial-NF, the variable gain ?\nwhat about the advanced model ?\nI am a little bit lost with the namings changes",
+      "revId": "8fbbda695f6b57045b8d12dc6bb3cf1ac4436c7c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e667b2bf_6363577e",
+        "filename": "gnpy/yang/__init__.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T14:16:51Z",
+      "side": 1,
+      "message": "I expect that baudrate, min OSNR, roll-off, should not be part of the description, if this is confidential data. See my mail of today.",
+      "revId": "8fbbda695f6b57045b8d12dc6bb3cf1ac4436c7c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d6689521_912ebcf3",
         "filename": "gnpy/yang/__init__.py",
         "patchSetId": 1
@@ -16,6 +50,23 @@
       "revId": "8fbbda695f6b57045b8d12dc6bb3cf1ac4436c7c",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8e0b189d_675a0de3",
+        "filename": "gnpy/yang/__init__.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T14:16:51Z",
+      "side": 1,
+      "message": "Not sure I understand your questions: this is a system specification. this is the value for the system design (independant from the set of transceivers you will use later on).",
+      "revId": "8fbbda695f6b57045b8d12dc6bb3cf1ac4436c7c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
