@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "339492cb_3d6965ef",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T14:55:20Z",
+      "side": 1,
+      "message": "Not sure this is a good place for channel power: it may change at each OMS start for a given channel spanning several OMS. so this is rather something to be specified per degree out of ROADM. or as a general value as it was in the SI container (again, this is well described in the IETF model)",
+      "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aac878dc_f260ff22",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T14:55:20Z",
+      "side": 1,
+      "message": "The gain mode should not be used this way: it is used to apply user defined gains, and avoid autodesign to change gain values according to inconsistent power targets. by the way it does not compensate exactly the span loss: this depends on the power target. change to : apply user defined gain and if none is defined, use default target power to compute gain",
+      "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ac10e695_78f93347",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T14:55:20Z",
+      "side": 1,
+      "message": "power mode is independent of per span power optimization, and the range does not exactly correspond to short/long spans, since it depends on loss and not on km. It is also not really proportional to the dB difference, since it adapts to each amp max power. So I think that the inclusion of \"delta_power_range_db\" in this container is misleading and the naming does not make sense. why not keeping the initial names ? \npower-range-optimization-max-value?  or something more close to the current naming?",
+      "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dff27a6b_59b39d1c",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T14:55:20Z",
+      "side": 1,
+      "message": "wrong name ?",
+      "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5485bb81_9819664f",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T14:55:20Z",
+      "side": 1,
+      "message": "wrong name?",
+      "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "92495658_7b334d45",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T14:55:20Z",
+      "side": 1,
+      "message": "wrong name ? power sweep is also used for another",
+      "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "de18cdec_f7a4d23b",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T14:55:20Z",
+      "side": 1,
+      "message": "but the list may also contain no authorized amplifiers ! such as booster types... how do you filter ?",
+      "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b5028cd3_b1e45bfa",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T14:55:20Z",
+      "side": 1,
+      "message": "It would make sense to have an extended gain range per amp type in my opinion",
+      "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "41fba720_cafb3a60",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T14:55:20Z",
+      "side": 1,
+      "message": "euh, nope... this is a different thing: this is padding, not splitting",
+      "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2209499e_d6d5980f",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T14:55:20Z",
+      "side": 1,
+      "message": "we still have pending the merging work from Jean -luc that introduced the possibility to use raman amplifier in autodesign, and the work from polito that effectively propagates with the raman effects. We use the first one in Orange (simplified noide accumulation only) and this value is needed.",
+      "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
