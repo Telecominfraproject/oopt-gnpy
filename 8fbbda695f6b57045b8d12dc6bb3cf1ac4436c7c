@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d6689521_912ebcf3",
+        "filename": "gnpy/yang/__init__.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T14:00:34Z",
+      "side": 1,
+      "message": "We use this one both for autodesign (placement of Raman pumps only possible if lineic loss is below this value), and to raise warnings when a given topo uses raman on fibers spans that have a lineic loss above this value. So this is a needed value in my opinion.",
+      "revId": "8fbbda695f6b57045b8d12dc6bb3cf1ac4436c7c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
