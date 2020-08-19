@@ -2,6 +2,57 @@
   "comments": [
     {
       "key": {
+        "uuid": "4527866b_d8e569c5",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T15:43:51Z",
+      "side": 1,
+      "message": "new to add an extended gain range per amp type ?",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d1cfa3a_21eff757",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T15:43:51Z",
+      "side": 1,
+      "message": "is this the variable gain one ?\n\nwhere is the fixed gain one ?",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0bf383c_2ef18889",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T15:43:51Z",
+      "side": 1,
+      "message": "maybe remove internally, since other amps also use dual stages internal amps: this one is rather to concatenate other fixed or min/max/nf amps",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "37c12f1e_ff97217b",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 3
@@ -81,6 +132,40 @@
       "writtenOn": "2020-08-01T22:12:57Z",
       "side": 1,
       "message": "@Alessio, how many digits do we need here?",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8640582d_0aea7ec9",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T15:43:51Z",
+      "side": 1,
+      "message": "do you mean channel target power ? this is out of a roadm WSS and it is a target so the naming is not clear, I prefer keeping the original name\n\n+ maybe prepare for the per degree target",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8c882d4a_7c998eae",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T15:43:51Z",
+      "side": 1,
+      "message": "euh no yet, only if the per degree commit is adopted",
       "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
