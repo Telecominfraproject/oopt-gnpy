@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "82540f1b_c8638427",
+        "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T15:05:51Z",
+      "side": 1,
+      "message": "this is the only way to represent a direct connection between a roadm and its booster. Am I right ?\nso it means that when translating to the usual gnpyjson topo this patch will disappear, and its loss as well... so why specifying a loss here ?\n\nagain an argument to modve to OMS :) where this ambiguity will not exist",
+      "revId": "21c9878f039c7c9e567fc066a0a82423972739c9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f9125398_0d76e030",
+        "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T15:05:51Z",
+      "side": 1,
+      "message": "argh! yes this is very important to support fused, because it is really representing reality, where fiber spans are made of seeral pieces and sometimes with high loss du to concentrated loss in between that imply restrictions on system design !",
+      "revId": "21c9878f039c7c9e567fc066a0a82423972739c9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
