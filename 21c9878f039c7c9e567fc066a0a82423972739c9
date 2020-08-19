@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "fe0b5a17_288d9388",
+        "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-08-19T15:54:29Z",
+      "side": 1,
+      "message": "not used ?",
+      "revId": "21c9878f039c7c9e567fc066a0a82423972739c9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "82540f1b_c8638427",
         "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
         "patchSetId": 3
