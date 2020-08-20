@@ -152,7 +152,15 @@ class Simulation:
 
     @property
     def sim_params(self):
-        return self._shared_dict['sim_params']
+        if 'sim_params' in self._shared_dict:
+            sim_params = self._shared_dict['sim_params']
+        else:
+            sim_params = None
+        return sim_params
+
+    @classmethod
+    def reset(cls):
+        cls._shared_dict = {}
 
 
 class SpontaneousRamanScattering:
@@ -466,8 +474,8 @@ class NliSolver:
         at the end of the fiber span.
         """
         simulation = Simulation.get_simulation()
-        try:
-            sim_params = simulation.sim_params
+        sim_params = simulation.sim_params
+        if sim_params:
             if 'gn_model_analytic' == sim_params.nli_params.nli_method_name.lower():
                 carrier_nli = self._gn_analytic(carrier, *carriers)
             elif 'ggn_spectrally_separated' in sim_params.nli_params.nli_method_name.lower():
@@ -476,7 +484,7 @@ class NliSolver:
                 carrier_nli = self._ggn_fast_approx(carrier, *carriers)
             else:
                 raise ValueError(f'Method {sim_params.nli_params.method_nli} not implemented.')
-        except:
+        else:
             carrier_nli = self._gn_analytic(carrier, *carriers)
         return carrier_nli
 
