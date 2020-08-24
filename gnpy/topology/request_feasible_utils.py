@@ -40,7 +40,26 @@ def check_service_modes(service0, service1):
         return service1, service0
 
 
-def find_feasible_pair_mode_selected(equipment, network, service0, service1):
+def find_feasible_path(equipment, network, service):
+    """."""
+    shortest_simple_paths = find_shortest_simple_paths(network, service)
+    alternative_paths = []
+    for path in shortest_simple_paths:
+        if is_routing_node_in_path(path, service.nodes_list):
+            propagated_path = find_propagated_path(equipment, path, service)
+            if propagated_path:
+                return propagated_path
+        else:
+            if 'STRICT' not in service.loose_list:
+                alternative_paths.append(path)
+    for path in alternative_paths:
+        propagated_path = find_propagated_path(equipment, path, service)
+        if propagated_path:
+            return propagated_path
+    return []
+
+
+def find_feasible_paths_disjunction(equipment, network, service0, service1):
     """."""
     shortest_simple_paths0 = find_shortest_simple_paths(network, service0)
     shortest_simple_paths1 = find_shortest_simple_paths(network, service1)
@@ -65,25 +84,6 @@ def find_feasible_pair_mode_selected(equipment, network, service0, service1):
         propagated_path1 = find_propagated_path(equipment, pair['1'], service1)
         if propagated_path0 and propagated_path1:
             return propagated_path0, propagated_path1
-
-
-def find_feasible_path(equipment, network, service):
-    """."""
-    shortest_simple_paths = find_shortest_simple_paths(network, service)
-    alternative_paths = []
-    for path in shortest_simple_paths:
-        if is_routing_node_in_path(path, service.nodes_list):
-            propagated_path = find_propagated_path(equipment, path, service)
-            if propagated_path:
-                return propagated_path
-        else:
-            if 'STRICT' not in service.loose_list:
-                alternative_paths.append(path)
-    for path in alternative_paths:
-        propagated_path = find_propagated_path(equipment, path, service)
-        if propagated_path:
-            return propagated_path
-    return []
 
 
 def find_propagated_path(equipment, path, service):

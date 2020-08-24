@@ -1,7 +1,7 @@
 from gnpy.topology.request_feasible_utils import (build_service_no_mode,
                                                   check_service_modes,
-                                                  find_feasible_pair_mode_selected,
                                                   find_feasible_path,
+                                                  find_feasible_paths_disjunction,
                                                   find_service_not_in_disjunction)
 
 def find_feasible_paths(disjunction_list, equipment, network, service_list):
@@ -27,14 +27,32 @@ def find_feasible_paths(disjunction_list, equipment, network, service_list):
         path_per_mode0 = {}
         path_per_mode1 = {}
         if service0.baud_rate is not None and service1.baud_rate is not None:
-            path0, path1 = find_feasible_pair_mode_selected(equipment, network, service0, service1)
+            path0, path1 = find_feasible_paths_disjunction(equipment, network, service0, service1)
             path_per_mode0[service0.tsp_mode] = path0
             path_per_mode1[service1.tsp_mode] = path1
             feasible_paths[service0.request_id] = path_per_mode0
             feasible_paths[service1.request_id] = path_per_mode1
         elif service0.baud_rate is None and service1.baud_rate is None:
-            break
+            modes_list0 = equipment['Transceiver'][service0.tsp].mode
+            modes_list1 = equipment['Transceiver'][service1.tsp].mode
+            for mode0 in modes_list0:
+                service0 = build_service_no_mode(mode0, service0)
+                for mode1 in modes_list1:
+                    service1 = build_service_no_mode(mode1, service1)
+                    path0, path1 = find_feasible_paths_disjunction(equipment, network, service0, service1)
+                    path_per_mode0[service0.tsp_mode + '|' + service1.tsp_mode] = path0
+                    path_per_mode1[service0.tsp_mode + '|' + service1.tsp_mode] = path1
+                    feasible_paths[service0.request_id] = path_per_mode0
+                    feasible_paths[service1.request_id] = path_per_mode1
         else:
             service0, service1 = check_service_modes(service0, service1)
+            modes_list0 = equipment['Transceiver'][service0.tsp].mode
+            for mode0 in modes_list0:
+                service0 = build_service_no_mode(mode0, service0)
+                path0, path1 = find_feasible_paths_disjunction(equipment, network, service0, service1)
+                path_per_mode0[service0.tsp_mode + '|' + service1.tsp_mode] = path0
+                path_per_mode1[service0.tsp_mode + '|' + service1.tsp_mode] = path1
+                feasible_paths[service0.request_id] = path_per_mode0
+                feasible_paths[service1.request_id] = path_per_mode1
     #return final dictionary
     return feasible_paths
