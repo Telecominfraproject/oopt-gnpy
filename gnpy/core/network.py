@@ -8,7 +8,6 @@ gnpy.core.network
 Working with networks which consist of network elements
 '''
 
-from scipy.interpolate import interp1d
 from operator import attrgetter
 from gnpy.core import ansi_escapes, elements
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
@@ -380,9 +379,8 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
 
     fiber.params.length = new_length
 
-    f = interp1d([prev_node.lng, next_node.lng], [prev_node.lat, next_node.lat])
     xpos = [prev_node.lng + (next_node.lng - prev_node.lng) * (n + 1) / (n_spans + 1) for n in range(n_spans)]
-    ypos = f(xpos)
+    ypos = [prev_node.lat + (next_node.lat - prev_node.lat) * (n + 1) / (n_spans + 1) for n in range(n_spans)]
     for span, lng, lat in zip(range(n_spans), xpos, ypos):
         new_span = elements.Fiber(uid=f'{fiber.uid}_({span+1}/{n_spans})',
                          type_variety=fiber.type_variety,
