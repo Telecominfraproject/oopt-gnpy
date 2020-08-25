@@ -138,6 +138,23 @@
     },
     {
       "key": {
+        "uuid": "711ca3fa_57d5f1bf",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-08-25T07:08:12Z",
+      "side": 1,
+      "message": "This is not really true with the current implementation. Individual fiber spans can still be longer than maximal-span-length (max_length in eqpt_config.json) even after splitting fibers by autodesign.",
+      "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "41fba720_cafb3a60",
         "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
         "patchSetId": 1
