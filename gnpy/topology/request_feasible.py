@@ -6,7 +6,7 @@ from gnpy.topology.request_feasible_utils import (build_service_no_mode,
 
 def find_feasible_paths(disjunction_list, equipment, network, service_list):
     """."""
-    # find a feasible path for all services not associated with a disjunction
+    # find a feasible path for services not associated with a disjunction
     service_not_in_disjunction = find_service_not_in_disjunction(disjunction_list, service_list)
     feasible_paths = {}
     for service in service_not_in_disjunction:
@@ -20,7 +20,7 @@ def find_feasible_paths(disjunction_list, equipment, network, service_list):
                 service = build_service_no_mode(mode, service)
                 path_per_mode[service.tsp_mode] = find_feasible_path(equipment, network, service)
             feasible_paths[service.request_id] = path_per_mode
-    # find a feasible path for all services associated with a disjunction
+    # find a feasible path for services associated with a disjunction
     for disjunction in disjunction_list:
         service0 = next(service for service in service_list if service.request_id == disjunction.disjunctions_req[0])
         service1 = next(service for service in service_list if service.request_id == disjunction.disjunctions_req[1])

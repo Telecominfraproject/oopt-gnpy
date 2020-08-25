@@ -1,11 +1,10 @@
+import networkx as nx
+import numpy as np
+
 from gnpy.core.elements import Roadm, Transceiver
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.utils import lin2db
 from gnpy.topology.request import propagate
-
-from networkx.utils import pairwise
-import networkx as nx
-import numpy as np
 
 
 def are_paths_disjointed(path0, path1):
@@ -77,13 +76,16 @@ def find_feasible_paths_disjunction(equipment, network, service0, service1):
                     if 'STRICT' not in service0.loose_list and 'STRICT' not in service1.loose_list:
                         alternative_path['0'] = path0
                         alternative_path['1'] = path1
-                        alternative_pairs.append(alternative_pair)
+                        alternative_pairs.append(alternative_path)
         shortest_simple_paths1 = find_shortest_simple_paths(network, service1)
-    for pair in alternative_pairs:
-        propagated_path0 = find_propagated_path(equipment, pair['0'], service0)
-        propagated_path1 = find_propagated_path(equipment, pair['1'], service1)
-        if propagated_path0 and propagated_path1:
-            return propagated_path0, propagated_path1
+    if alternative_pairs:
+        for pair in alternative_pairs:
+            propagated_path0 = find_propagated_path(equipment, pair['0'], service0)
+            propagated_path1 = find_propagated_path(equipment, pair['1'], service1)
+            if propagated_path0 and propagated_path1:
+                return propagated_path0, propagated_path1
+    else:
+        return [], []
 
 
 def find_propagated_path(equipment, path, service):
