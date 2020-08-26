@@ -1,0 +1,719 @@
+[1;34;40mComputing path requests examples/test.xls into JSON format[0m
+[1;34;40mList of disjunctions[0m
+[]
+[1;34;40mAggregating similar requests[0m
+[1;34;40mThe following services have been requested:[0m
+[PathRequest 0
+	source: 	trx Brest_KLA
+	destination:	trx Lorient_KMA
+	trx type:	Voyager
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	50.0 GHz
+	power:  	1.0 dBm
+	nb channels: 	95
+	path_bandwidth: 	100.0 Gbit/s
+	nodes-list:	['roadm Rennes_STA']
+	loose-list:	['LOOSE']
+, PathRequest 1
+	source: 	trx Brest_KLA
+	destination:	trx Lorient_KMA
+	trx type:	Voyager
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	50.0 GHz
+	power:  	3.0 dBm
+	nb channels: 	95
+	path_bandwidth: 	200.0 Gbit/s
+	nodes-list:	['roadm Rennes_STA']
+	loose-list:	['LOOSE']
+, PathRequest 3
+	source: 	trx Brest_KLA
+	destination:	trx Lorient_KMA
+	trx type:	Voyager
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	50.0 GHz
+	power:  	0.0 dBm
+	nb channels: 	95
+	path_bandwidth: 	60.0 Gbit/s
+	nodes-list:	['roadm Rennes_STA']
+	loose-list:	['LOOSE']
+]
+[1;34;40mComputing all paths with constraints[0m
+[1;34;40mPropagating on selected path[0m
+request 0
+Computing path from trx Brest_KLA to trx Lorient_KMA
+with path constraint: ['trx Brest_KLA', 'roadm Rennes_STA', 'trx Lorient_KMA']
+Computed path (roadms):['roadm Brest_KLA', 'roadm Lannion_CAS', 'roadm Rennes_STA', 'roadm Vannes_KBE', 'roadm Lorient_KMA']
+Transceiver trx Brest_KLA
+  OSNR ASE (0.1nm, dB):      inf
+  OSNR ASE (signal bw, dB):  inf
+  SNR total (signal bw, dB): inf
+  SNR total (0.1nm, dB):     inf
+  CD (ps/nm):                0.00
+  PMD (ps):                  0.00
+Roadm roadm Brest_KLA
+  effective loss (dB):  20.00
+  pch out (dBm):        -19.0
+Edfa east edfa in Brest_KLA to Morlaix
+  type_variety:           std_low_gain
+  effective gain(dB):     21.00
+  (before att_in and before output VOA)
+  noise figure (dB):      6.36
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         0.78
+  Power Out (dBm):        21.78
+  Delta_P (dB):           1.0
+  target pch (dBm):       2.0
+  effective pch (dBm):    2.0
+  output VOA (dB):        0.00
+Fiber          fiber (Brest_KLA → Morlaix)-F060
+  type_variety:                SSMF
+  length (km):                 35.00
+  pad att_in (dB):             0.00
+  total loss (dB):             7.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -5.0
+Fused east fused spans in Morlaix
+  loss (dB): 1.00
+Fiber          fiber (Morlaix → Lannion_CAS)-F059
+  type_variety:                SSMF
+  length (km):                 40.00
+  pad att_in (dB):             0.00
+  total loss (dB):             8.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -14.0
+Edfa west edfa in Lannion_CAS to Morlaix
+  type_variety:           std_low_gain
+  effective gain(dB):     16.00
+  (before att_in and before output VOA)
+  noise figure (dB):      6.50
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         5.79
+  Power Out (dBm):        21.79
+  Delta_P (dB):           1.0
+  target pch (dBm):       2.0
+  effective pch (dBm):    2.0
+  output VOA (dB):        0.00
+Roadm roadm Lannion_CAS
+  effective loss (dB):  21.00
+  pch out (dBm):        -19.0
+Edfa east edfa in Lannion_CAS to Stbrieuc
+  type_variety:           std_low_gain
+  effective gain(dB):     21.00
+  (before att_in and before output VOA)
+  noise figure (dB):      6.36
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         0.78
+  Power Out (dBm):        21.78
+  Delta_P (dB):           1.0
+  target pch (dBm):       2.0
+  effective pch (dBm):    2.0
+  output VOA (dB):        0.00
+Fiber          fiber (Lannion_CAS → Stbrieuc)-F056
+  type_variety:                SSMF
+  length (km):                 60.00
+  pad att_in (dB):             0.00
+  total loss (dB):             12.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -10.0
+Edfa east edfa in Stbrieuc to Rennes_STA
+  type_variety:           std_low_gain
+  effective gain(dB):     12.00
+  (before att_in and before output VOA)
+  noise figure (dB):      7.46
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         9.79
+  Power Out (dBm):        21.79
+  Delta_P (dB):           1.0
+  target pch (dBm):       2.0
+  effective pch (dBm):    2.0
+  output VOA (dB):        0.00
+Fiber          fiber (Stbrieuc → Rennes_STA)-F057
+  type_variety:                SSMF
+  length (km):                 65.00
+  pad att_in (dB):             0.00
+  total loss (dB):             13.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -11.0
+Edfa west edfa in Rennes_STA to Stbrieuc
+  type_variety:           std_low_gain
+  effective gain(dB):     13.00
+  (before att_in and before output VOA)
+  noise figure (dB):      7.07
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         8.80
+  Power Out (dBm):        21.81
+  Delta_P (dB):           1.0
+  target pch (dBm):       2.0
+  effective pch (dBm):    2.0
+  output VOA (dB):        0.00
+Roadm roadm Rennes_STA
+  effective loss (dB):  21.00
+  pch out (dBm):        -19.0
+Edfa Edfa0_roadm Rennes_STA
+  type_variety:           std_low_gain
+  effective gain(dB):     18.00
+  (before att_in and before output VOA)
+  noise figure (dB):      6.42
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         0.78
+  Power Out (dBm):        18.78
+  Delta_P (dB):           -2
+  target pch (dBm):       -1.0
+  effective pch (dBm):    -1.0
+  output VOA (dB):        0.00
+Fiber          fiber (Rennes_STA → Ploermel)-
+  type_variety:                SSMF
+  length (km):                 55.00
+  pad att_in (dB):             0.00
+  total loss (dB):             11.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -12.0
+Edfa Edfa0_fiber (Rennes_STA → Ploermel)-
+  type_variety:           std_low_gain
+  effective gain(dB):     11.00
+  (before att_in and before output VOA)
+  noise figure (dB):      8.03
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         7.79
+  Power Out (dBm):        18.79
+  Delta_P (dB):           -2
+  target pch (dBm):       -1.0
+  effective pch (dBm):    -1.0
+  output VOA (dB):        0.00
+Fiber          fiber (Ploermel → Vannes_KBE)-
+  type_variety:                SSMF
+  length (km):                 50.00
+  pad att_in (dB):             0.00
+  total loss (dB):             10.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -11.0
+Edfa Edfa0_fiber (Ploermel → Vannes_KBE)-
+  type_variety:           std_low_gain
+  effective gain(dB):     12.00
+  (before att_in and before output VOA)
+  noise figure (dB):      7.46
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         8.79
+  Power Out (dBm):        20.79
+  Delta_P (dB):           0
+  target pch (dBm):       1.0
+  effective pch (dBm):    1.0
+  output VOA (dB):        0.00
+Roadm roadm Vannes_KBE
+  effective loss (dB):  20.00
+  pch out (dBm):        -19.0
+Edfa east edfa in Vannes_KBE to Lorient_KMA
+  type_variety:           std_low_gain
+  effective gain(dB):     21.00
+  (before att_in and before output VOA)
+  noise figure (dB):      6.36
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         0.78
+  Power Out (dBm):        21.78
+  Delta_P (dB):           1.0
+  target pch (dBm):       2.0
+  effective pch (dBm):    2.0
+  output VOA (dB):        0.00
+Fiber          fiber (Vannes_KBE → Lorient_KMA)-F055
+  type_variety:                SSMF
+  length (km):                 10.00
+  pad att_in (dB):             8.00
+  total loss (dB):             10.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -8.0
+Edfa west edfa in Lorient_KMA to Vannes_KBE
+  type_variety:           std_low_gain
+  effective gain(dB):     10.00
+  (before att_in and before output VOA)
+  noise figure (dB):      8.79
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         11.78
+  Power Out (dBm):        21.78
+  Delta_P (dB):           1.0
+  target pch (dBm):       2.0
+  effective pch (dBm):    2.0
+  output VOA (dB):        0.00
+Roadm roadm Lorient_KMA
+  effective loss (dB):  21.00
+  pch out (dBm):        -19.0
+Transceiver trx Lorient_KMA
+  OSNR ASE (0.1nm, dB):      25.29
+  OSNR ASE (signal bw, dB):  21.21
+  SNR total (signal bw, dB): 18.23
+  SNR total (0.1nm, dB):     22.32
+  CD (ps/nm):                5260.50
+  PMD (ps):                  0.71
+
+request 1
+Computing path from trx Brest_KLA to trx Lorient_KMA
+with path constraint: ['trx Brest_KLA', 'roadm Rennes_STA', 'trx Lorient_KMA']
+Computed path (roadms):['roadm Brest_KLA', 'roadm Lannion_CAS', 'roadm Rennes_STA', 'roadm Vannes_KBE', 'roadm Lorient_KMA']
+Transceiver trx Brest_KLA
+  OSNR ASE (0.1nm, dB):      inf
+  OSNR ASE (signal bw, dB):  inf
+  SNR total (signal bw, dB): inf
+  SNR total (0.1nm, dB):     inf
+  CD (ps/nm):                0.00
+  PMD (ps):                  0.00
+Roadm roadm Brest_KLA
+  effective loss (dB):  20.00
+  pch out (dBm):        -17.0
+Edfa east edfa in Brest_KLA to Morlaix
+  type_variety:           std_low_gain
+  effective gain(dB):     20.22
+  (before att_in and before output VOA)
+  noise figure (dB):      6.37
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         2.78
+  Power Out (dBm):        23.00
+  Delta_P (dB):           1.0
+  target pch (dBm):       4.0
+  effective pch (dBm):    3.22
+  output VOA (dB):        0.00
+Fiber          fiber (Brest_KLA → Morlaix)-F060
+  type_variety:                SSMF
+  length (km):                 35.00
+  pad att_in (dB):             0.00
+  total loss (dB):             7.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -3.78
+Fused east fused spans in Morlaix
+  loss (dB): 1.00
+Fiber          fiber (Morlaix → Lannion_CAS)-F059
+  type_variety:                SSMF
+  length (km):                 40.00
+  pad att_in (dB):             0.00
+  total loss (dB):             8.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -12.78
+Edfa west edfa in Lannion_CAS to Morlaix
+  type_variety:           std_low_gain
+  effective gain(dB):     16.00
+  (before att_in and before output VOA)
+  noise figure (dB):      6.50
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         7.02
+  Power Out (dBm):        23.02
+  Delta_P (dB):           1.0
+  target pch (dBm):       4.0
+  effective pch (dBm):    3.22
+  output VOA (dB):        0.00
+Roadm roadm Lannion_CAS
+  effective loss (dB):  20.22
+  pch out (dBm):        -17.0
+Edfa east edfa in Lannion_CAS to Stbrieuc
+  type_variety:           std_low_gain
+  effective gain(dB):     20.22
+  (before att_in and before output VOA)
+  noise figure (dB):      6.37
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         2.78
+  Power Out (dBm):        23.00
+  Delta_P (dB):           1.0
+  target pch (dBm):       4.0
+  effective pch (dBm):    3.22
+  output VOA (dB):        0.00
+Fiber          fiber (Lannion_CAS → Stbrieuc)-F056
+  type_variety:                SSMF
+  length (km):                 60.00
+  pad att_in (dB):             0.00
+  total loss (dB):             12.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -8.78
+Edfa east edfa in Stbrieuc to Rennes_STA
+  type_variety:           std_low_gain
+  effective gain(dB):     12.00
+  (before att_in and before output VOA)
+  noise figure (dB):      7.46
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         11.02
+  Power Out (dBm):        23.02
+  Delta_P (dB):           1.0
+  target pch (dBm):       4.0
+  effective pch (dBm):    3.22
+  output VOA (dB):        0.00
+Fiber          fiber (Stbrieuc → Rennes_STA)-F057
+  type_variety:                SSMF
+  length (km):                 65.00
+  pad att_in (dB):             0.00
+  total loss (dB):             13.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -9.78
+Edfa west edfa in Rennes_STA to Stbrieuc
+  type_variety:           std_low_gain
+  effective gain(dB):     13.00
+  (before att_in and before output VOA)
+  noise figure (dB):      7.07
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         10.04
+  Power Out (dBm):        23.05
+  Delta_P (dB):           1.0
+  target pch (dBm):       4.0
+  effective pch (dBm):    3.22
+  output VOA (dB):        0.00
+Roadm roadm Rennes_STA
+  effective loss (dB):  20.22
+  pch out (dBm):        -17.0
+Edfa Edfa0_roadm Rennes_STA
+  type_variety:           std_low_gain
+  effective gain(dB):     18.00
+  (before att_in and before output VOA)
+  noise figure (dB):      6.42
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         2.78
+  Power Out (dBm):        20.78
+  Delta_P (dB):           -2
+  target pch (dBm):       1.0
+  effective pch (dBm):    1.0
+  output VOA (dB):        0.00
+Fiber          fiber (Rennes_STA → Ploermel)-
+  type_variety:                SSMF
+  length (km):                 55.00
+  pad att_in (dB):             0.00
+  total loss (dB):             11.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -10.0
+Edfa Edfa0_fiber (Rennes_STA → Ploermel)-
+  type_variety:           std_low_gain
+  effective gain(dB):     11.00
+  (before att_in and before output VOA)
+  noise figure (dB):      8.03
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         9.79
+  Power Out (dBm):        20.79
+  Delta_P (dB):           -2
+  target pch (dBm):       1.0
+  effective pch (dBm):    1.0
+  output VOA (dB):        0.00
+Fiber          fiber (Ploermel → Vannes_KBE)-
+  type_variety:                SSMF
+  length (km):                 50.00
+  pad att_in (dB):             0.00
+  total loss (dB):             10.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -9.0
+Edfa Edfa0_fiber (Ploermel → Vannes_KBE)-
+  type_variety:           std_low_gain
+  effective gain(dB):     12.00
+  (before att_in and before output VOA)
+  noise figure (dB):      7.46
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         10.79
+  Power Out (dBm):        22.79
+  Delta_P (dB):           0
+  target pch (dBm):       3.0
+  effective pch (dBm):    3.0
+  output VOA (dB):        0.00
+Roadm roadm Vannes_KBE
+  effective loss (dB):  20.00
+  pch out (dBm):        -17.0
+Edfa east edfa in Vannes_KBE to Lorient_KMA
+  type_variety:           std_low_gain
+  effective gain(dB):     20.22
+  (before att_in and before output VOA)
+  noise figure (dB):      6.37
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         2.78
+  Power Out (dBm):        23.00
+  Delta_P (dB):           1.0
+  target pch (dBm):       4.0
+  effective pch (dBm):    3.22
+  output VOA (dB):        0.00
+Fiber          fiber (Vannes_KBE → Lorient_KMA)-F055
+  type_variety:                SSMF
+  length (km):                 10.00
+  pad att_in (dB):             8.00
+  total loss (dB):             10.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -6.78
+Edfa west edfa in Lorient_KMA to Vannes_KBE
+  type_variety:           std_low_gain
+  effective gain(dB):     10.00
+  (before att_in and before output VOA)
+  noise figure (dB):      8.79
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         13.00
+  Power Out (dBm):        23.01
+  Delta_P (dB):           1.0
+  target pch (dBm):       4.0
+  effective pch (dBm):    3.22
+  output VOA (dB):        0.00
+Roadm roadm Lorient_KMA
+  effective loss (dB):  20.22
+  pch out (dBm):        -17.0
+Transceiver trx Lorient_KMA
+  OSNR ASE (0.1nm, dB):      27.15
+  OSNR ASE (signal bw, dB):  23.07
+  SNR total (signal bw, dB): 17.26
+  SNR total (0.1nm, dB):     21.34
+  CD (ps/nm):                5260.50
+  PMD (ps):                  0.71
+
+request 3
+Computing path from trx Brest_KLA to trx Lorient_KMA
+with path constraint: ['trx Brest_KLA', 'roadm Rennes_STA', 'trx Lorient_KMA']
+Computed path (roadms):['roadm Brest_KLA', 'roadm Lannion_CAS', 'roadm Rennes_STA', 'roadm Vannes_KBE', 'roadm Lorient_KMA']
+Transceiver trx Brest_KLA
+  OSNR ASE (0.1nm, dB):      inf
+  OSNR ASE (signal bw, dB):  inf
+  SNR total (signal bw, dB): inf
+  SNR total (0.1nm, dB):     inf
+  CD (ps/nm):                0.00
+  PMD (ps):                  0.00
+Roadm roadm Brest_KLA
+  effective loss (dB):  20.00
+  pch out (dBm):        -20.0
+Edfa east edfa in Brest_KLA to Morlaix
+  type_variety:           std_low_gain
+  effective gain(dB):     21.00
+  (before att_in and before output VOA)
+  noise figure (dB):      6.36
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         -0.22
+  Power Out (dBm):        20.78
+  Delta_P (dB):           1.0
+  target pch (dBm):       1.0
+  effective pch (dBm):    1.0
+  output VOA (dB):        0.00
+Fiber          fiber (Brest_KLA → Morlaix)-F060
+  type_variety:                SSMF
+  length (km):                 35.00
+  pad att_in (dB):             0.00
+  total loss (dB):             7.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -6.0
+Fused east fused spans in Morlaix
+  loss (dB): 1.00
+Fiber          fiber (Morlaix → Lannion_CAS)-F059
+  type_variety:                SSMF
+  length (km):                 40.00
+  pad att_in (dB):             0.00
+  total loss (dB):             8.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -15.0
+Edfa west edfa in Lannion_CAS to Morlaix
+  type_variety:           std_low_gain
+  effective gain(dB):     16.00
+  (before att_in and before output VOA)
+  noise figure (dB):      6.50
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         4.79
+  Power Out (dBm):        20.79
+  Delta_P (dB):           1.0
+  target pch (dBm):       1.0
+  effective pch (dBm):    1.0
+  output VOA (dB):        0.00
+Roadm roadm Lannion_CAS
+  effective loss (dB):  21.00
+  pch out (dBm):        -20.0
+Edfa east edfa in Lannion_CAS to Stbrieuc
+  type_variety:           std_low_gain
+  effective gain(dB):     21.00
+  (before att_in and before output VOA)
+  noise figure (dB):      6.36
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         -0.22
+  Power Out (dBm):        20.78
+  Delta_P (dB):           1.0
+  target pch (dBm):       1.0
+  effective pch (dBm):    1.0
+  output VOA (dB):        0.00
+Fiber          fiber (Lannion_CAS → Stbrieuc)-F056
+  type_variety:                SSMF
+  length (km):                 60.00
+  pad att_in (dB):             0.00
+  total loss (dB):             12.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -11.0
+Edfa east edfa in Stbrieuc to Rennes_STA
+  type_variety:           std_low_gain
+  effective gain(dB):     12.00
+  (before att_in and before output VOA)
+  noise figure (dB):      7.46
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         8.79
+  Power Out (dBm):        20.79
+  Delta_P (dB):           1.0
+  target pch (dBm):       1.0
+  effective pch (dBm):    1.0
+  output VOA (dB):        0.00
+Fiber          fiber (Stbrieuc → Rennes_STA)-F057
+  type_variety:                SSMF
+  length (km):                 65.00
+  pad att_in (dB):             0.00
+  total loss (dB):             13.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -12.0
+Edfa west edfa in Rennes_STA to Stbrieuc
+  type_variety:           std_low_gain
+  effective gain(dB):     13.00
+  (before att_in and before output VOA)
+  noise figure (dB):      7.07
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         7.80
+  Power Out (dBm):        20.80
+  Delta_P (dB):           1.0
+  target pch (dBm):       1.0
+  effective pch (dBm):    1.0
+  output VOA (dB):        0.00
+Roadm roadm Rennes_STA
+  effective loss (dB):  21.00
+  pch out (dBm):        -20.0
+Edfa Edfa0_roadm Rennes_STA
+  type_variety:           std_low_gain
+  effective gain(dB):     18.00
+  (before att_in and before output VOA)
+  noise figure (dB):      6.42
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         -0.22
+  Power Out (dBm):        17.79
+  Delta_P (dB):           -2
+  target pch (dBm):       -2.0
+  effective pch (dBm):    -2.0
+  output VOA (dB):        0.00
+Fiber          fiber (Rennes_STA → Ploermel)-
+  type_variety:                SSMF
+  length (km):                 55.00
+  pad att_in (dB):             0.00
+  total loss (dB):             11.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -13.0
+Edfa Edfa0_fiber (Rennes_STA → Ploermel)-
+  type_variety:           std_low_gain
+  effective gain(dB):     11.00
+  (before att_in and before output VOA)
+  noise figure (dB):      8.03
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         6.79
+  Power Out (dBm):        17.79
+  Delta_P (dB):           -2
+  target pch (dBm):       -2.0
+  effective pch (dBm):    -2.0
+  output VOA (dB):        0.00
+Fiber          fiber (Ploermel → Vannes_KBE)-
+  type_variety:                SSMF
+  length (km):                 50.00
+  pad att_in (dB):             0.00
+  total loss (dB):             10.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -12.0
+Edfa Edfa0_fiber (Ploermel → Vannes_KBE)-
+  type_variety:           std_low_gain
+  effective gain(dB):     12.00
+  (before att_in and before output VOA)
+  noise figure (dB):      7.46
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         7.79
+  Power Out (dBm):        19.79
+  Delta_P (dB):           0
+  target pch (dBm):       0.0
+  effective pch (dBm):    0.0
+  output VOA (dB):        0.00
+Roadm roadm Vannes_KBE
+  effective loss (dB):  20.00
+  pch out (dBm):        -20.0
+Edfa east edfa in Vannes_KBE to Lorient_KMA
+  type_variety:           std_low_gain
+  effective gain(dB):     21.00
+  (before att_in and before output VOA)
+  noise figure (dB):      6.36
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         -0.22
+  Power Out (dBm):        20.78
+  Delta_P (dB):           1.0
+  target pch (dBm):       1.0
+  effective pch (dBm):    1.0
+  output VOA (dB):        0.00
+Fiber          fiber (Vannes_KBE → Lorient_KMA)-F055
+  type_variety:                SSMF
+  length (km):                 10.00
+  pad att_in (dB):             8.00
+  total loss (dB):             10.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm): -9.0
+Edfa west edfa in Lorient_KMA to Vannes_KBE
+  type_variety:           std_low_gain
+  effective gain(dB):     10.00
+  (before att_in and before output VOA)
+  noise figure (dB):      8.79
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         10.78
+  Power Out (dBm):        20.79
+  Delta_P (dB):           1.0
+  target pch (dBm):       1.0
+  effective pch (dBm):    1.0
+  output VOA (dB):        0.00
+Roadm roadm Lorient_KMA
+  effective loss (dB):  21.00
+  pch out (dBm):        -20.0
+Transceiver trx Lorient_KMA
+  OSNR ASE (0.1nm, dB):      24.30
+  OSNR ASE (signal bw, dB):  20.21
+  SNR total (signal bw, dB): 18.47
+  SNR total (0.1nm, dB):     22.55
+  CD (ps/nm):                5260.50
+  PMD (ps):                  0.71
+
+[1;34;40mResult summary[0m
+req id   demand                               snr@bandwidth A-Z (Z-A)    snr@0.1nm A-Z (Z-A)        Receiver minOSNR               mode                    Gbit/s              nb of tsp pairs      N,M or blocking reason 
+0       trx Brest_KLA to trx Lorient_KMA :            18.05                    22.13                      14                     mode 1                   100.0                      1                     (-284,4)        
+1       trx Brest_KLA to trx Lorient_KMA :            17.11                    21.19                      14                     mode 1                   200.0                      2                     (-272,8)        
+3       trx Brest_KLA to trx Lorient_KMA :            18.27                    22.35                      14                     mode 1                    60.0                      1                     (-260,4)        
+[1;33;40mResult summary shows mean SNR and OSNR (average over all channels)[0m

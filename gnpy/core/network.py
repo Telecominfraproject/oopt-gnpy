@@ -441,6 +441,8 @@ def add_fiber_padding(network, fibers, padding):
             if isinstance(first_fiber, elements.Fiber):
                 first_fiber.params.att_in = first_fiber.params.att_in + padding - this_span_loss
 
+def set_roadm_design_pch(roadm, pref_ch_db):
+    roadm.design_pch = pref_ch_db
 
 def build_network(network, equipment, pref_ch_db, pref_total_db):
     default_span_data = equipment['Span']['default']
@@ -466,6 +468,7 @@ def build_network(network, equipment, pref_ch_db, pref_total_db):
     roadms = [r for r in amplified_nodes if isinstance(r, elements.Roadm)]
     for roadm in roadms:
         set_egress_amplifier(network, roadm, equipment, pref_total_db)
+        set_roadm_design_pch(roadm, pref_ch_db)
 
     # support older json input topology wo Roadms:
     if len(roadms) == 0:
