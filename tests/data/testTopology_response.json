@@ -183,19 +183,19 @@
         "path-metric": [
           {
             "metric-type": "SNR-bandwidth",
-            "accumulative-value": 18.03
+            "accumulative-value": 18.26
           },
           {
             "metric-type": "SNR-0.1nm",
-            "accumulative-value": 22.11
+            "accumulative-value": 22.34
           },
           {
             "metric-type": "OSNR-bandwidth",
-            "accumulative-value": 18.57
+            "accumulative-value": 18.83
           },
           {
             "metric-type": "OSNR-0.1nm",
-            "accumulative-value": 22.65
+            "accumulative-value": 22.91
           },
           {
             "metric-type": "reference_power",
@@ -612,19 +612,19 @@
         "path-metric": [
           {
             "metric-type": "SNR-bandwidth",
-            "accumulative-value": 21.77
+            "accumulative-value": 22.04
           },
           {
             "metric-type": "SNR-0.1nm",
-            "accumulative-value": 25.85
+            "accumulative-value": 26.12
           },
           {
             "metric-type": "OSNR-bandwidth",
-            "accumulative-value": 24.2
+            "accumulative-value": 24.69
           },
           {
             "metric-type": "OSNR-0.1nm",
-            "accumulative-value": 28.29
+            "accumulative-value": 28.78
           },
           {
             "metric-type": "reference_power",
@@ -1254,19 +1254,19 @@
         "path-metric": [
           {
             "metric-type": "SNR-bandwidth",
-            "accumulative-value": 21.68
+            "accumulative-value": 22.6
           },
           {
             "metric-type": "SNR-0.1nm",
-            "accumulative-value": 28.77
+            "accumulative-value": 29.69
           },
           {
             "metric-type": "OSNR-bandwidth",
-            "accumulative-value": 23.7
+            "accumulative-value": 25.28
           },
           {
             "metric-type": "OSNR-0.1nm",
-            "accumulative-value": 30.79
+            "accumulative-value": 32.37
           },
           {
             "metric-type": "reference_power",

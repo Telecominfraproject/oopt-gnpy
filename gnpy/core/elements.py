@@ -195,6 +195,7 @@ class Roadm(_Node):
         self.effective_pch_out_db = self.params.target_pch_out_db
         self.passive = True
         self.restrictions = self.params.restrictions
+        self.design_pch = None
 
     @property
     def to_json(self):
@@ -225,10 +226,15 @@ class Roadm(_Node):
         # all ingress channels in xpress are set to this power level
         # but add channels are not, so we define an effective loss
         # in the case of add channels
-        self.effective_pch_out_db = min(pref.p_spani, self.params.target_pch_out_db)
+        # use the per request power to adjust roadm loss wrt design power;
+        # difference is pref.p_span0 - self.design_pch
+        # (per definition of create_spectrum_information, p_span0 is the initial request power)
+        deltap = pref.p_span0 - self.design_pch
+        self.effective_pch_out_db = min(pref.p_spani, self.params.target_pch_out_db + deltap)
         self.effective_loss = pref.p_spani - self.effective_pch_out_db
+        #update effective pch out with the design
         carriers_power = array([c.power.signal + c.power.nli + c.power.ase for c in carriers])
-        carriers_att = list(map(lambda x: lin2db(x * 1e3) - self.params.target_pch_out_db, carriers_power))
+        carriers_att = list(map(lambda x: lin2db(x * 1e3) - (self.params.target_pch_out_db + deltap), carriers_power))
         exceeding_att = -min(list(filter(lambda x: x < 0, carriers_att)), default=0)
         carriers_att = list(map(lambda x: db2lin(x + exceeding_att), carriers_att))
         for carrier_att, carrier in zip(carriers_att, carriers):
