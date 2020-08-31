@@ -1,24 +1,4 @@
 [1;34;40mComputing path requests gnpy/example-data/meshTopologyExampleV2.xls into JSON format[0m
-[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Lannion_CAS to Corlay is above user specified amplifier std_low_gain
-max flat gain: 16dB ; required gain: 21.0dB. Please check amplifier type.
-[1;31;40mWARNING[0m: WARNING: effective gain in Node west edfa in Lorient_KMA to Loudeac is above user specified amplifier std_low_gain
-max flat gain: 16dB ; required gain: 28.0dB. Please check amplifier type.
-[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Lannion_CAS to Stbrieuc is above user specified amplifier std_low_gain
-max flat gain: 16dB ; required gain: 21.0dB. Please check amplifier type.
-[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Lannion_CAS to Morlaix is above user specified amplifier std_low_gain
-max flat gain: 16dB ; required gain: 21.0dB. Please check amplifier type.
-[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Lorient_KMA to Loudeac is above user specified amplifier std_low_gain
-max flat gain: 16dB ; required gain: 21.0dB. Please check amplifier type.
-[1;31;40mWARNING[0m: WARNING: effective gain in Node west edfa in Lannion_CAS to Corlay is above user specified amplifier std_low_gain
-max flat gain: 16dB ; required gain: 28.0dB. Please check amplifier type.
-[1;31;40mWARNING[0m: WARNING: effective gain in Node west edfa in Vannes_KBE to Lorient_KMA is above user specified amplifier std_low_gain
-max flat gain: 16dB ; required gain: 23.0dB. Please check amplifier type.
-[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Vannes_KBE to Lorient_KMA is above user specified amplifier std_low_gain
-max flat gain: 16dB ; required gain: 21.0dB. Please check amplifier type.
-[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Rennes_STA to Stbrieuc is above user specified amplifier std_low_gain
-max flat gain: 16dB ; required gain: 21.0dB. Please check amplifier type.
-[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Brest_KLA to Morlaix is above user specified amplifier std_low_gain
-max flat gain: 16dB ; required gain: 21.0dB. Please check amplifier type.
 [1;34;40mList of disjunctions[0m
 [Disjunction 3
 	relaxable:    false
@@ -164,11 +144,11 @@ Computed path (roadms):['roadm Lannion_CAS', 'roadm Lorient_KMA']
 
 [1;34;40mResult summary[0m
 req id   demand                                 snr@bandwidth A-Z (Z-A)    snr@0.1nm A-Z (Z-A)        Receiver minOSNR               mode                    Gbit/s              nb of tsp pairs      N,M or blocking reason 
-0       trx Lorient_KMA to trx Vannes_KBE :             24.62                     28.7                      14                     mode 1                   100.0                      1                     (-284,4)        
-1       trx Brest_KLA to trx Vannes_KBE :               17.59                    21.68                      14                     mode 1                   200.0                      2                     (-272,8)        
+0       trx Lorient_KMA to trx Vannes_KBE :             24.83                    28.92                      14                     mode 1                   100.0                      1                     (-284,4)        
+1       trx Brest_KLA to trx Vannes_KBE :               17.75                    21.83                      14                     mode 1                   200.0                      2                     (-272,8)        
 3       trx Lannion_CAS to trx Rennes_STA :             22.21                    26.29                      13                     mode 1                    60.0                      1                     (-284,4)        
-4       trx Rennes_STA to trx Lannion_CAS :             15.94                    23.16                      17                     mode 2                   150.0                      1                     (-258,6)        
-5       trx Rennes_STA to trx Lannion_CAS :             20.22                    27.44                      17                     mode 2                    20.0                      1                     (-274,6)        
-7 | 6   trx Lannion_CAS to trx Lorient_KMA :            19.24                    23.32                      14                     mode 1                   700.0                      7                    (-224,28)        
-7b      trx Lannion_CAS to trx Lorient_KMA :            19.32                     23.4                      14                     mode 1                   400.0                      4                    (-172,24)        
+4       trx Rennes_STA to trx Lannion_CAS :             16.07                    23.29                      17                     mode 2                   150.0                      1                     (-258,6)        
+5       trx Rennes_STA to trx Lannion_CAS :             20.31                    27.54                      17                     mode 2                    20.0                      1                     (-274,6)        
+7 | 6   trx Lannion_CAS to trx Lorient_KMA :            19.52                    23.61                      14                     mode 1                   700.0                      7                    (-224,28)        
+7b      trx Lannion_CAS to trx Lorient_KMA :            19.61                    23.69                      14                     mode 1                   400.0                      4                    (-172,24)        
 [1;33;40mResult summary shows mean SNR and OSNR (average over all channels)[0m
