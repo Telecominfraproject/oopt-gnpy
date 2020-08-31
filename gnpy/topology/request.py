@@ -781,33 +781,34 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     # TODO: keep a version without the loose constraint
     for this_d in disjunctions_list:
         temp = []
+        alternatetemp = []
         for j, sol in enumerate(candidates[this_d.disjunction_id]):
             testispartok = True
+            testispartnokloose = True
             for pth in sol:
                 # print(f'test {allpaths[id(pth)].req.request_id}')
                 # print(f'length of route {len(allpaths[id(pth)].req.nodes_list)}')
                 if allpaths[id(pth)].req.nodes_list:
-                    # if pth does not containt the ordered list node, remove sol from the candidate
-                    # except if this was the last solution: then check if the constraint is loose
-                    # or not
+                    # if any pth from sol does not contain the ordered list node,
+                    # remove sol from the candidate, except if constraint was loose:
+                    # then keep sol as an alternate solution
                     if not ispart(allpaths[id(pth)].req.nodes_list, pth):
-                        # print(f'nb of solutions {len(temp)}')
-                        if j < len(candidates[this_d.disjunction_id]) - 1:
-                            msg = f'removing {sol}'
-                            LOGGER.info(msg)
-                            testispartok = False
-                            # break
-                        else:
-                            if 'LOOSE' in allpaths[id(pth)].req.loose_list:
-                                LOGGER.info(f'Could not apply route constraint' +
-                                            f'{allpaths[id(pth)].req.nodes_list} on request' +
-                                            f' {allpaths[id(pth)].req.request_id}')
-                            else:
-                                LOGGER.info(f'removing last solution from candidate paths\n{sol}')
-                                testispartok = False
+                        testispartok = False
+                        if 'STRICT' in allpaths[id(pth)].req.loose_list:
+                            LOGGER.info(f'removing solution from candidate paths\n{pth}')
+                            testispartnokloose = False
+                            break
             if testispartok:
                 temp.append(sol)
-        candidates[this_d.disjunction_id] = temp
+            elif testispartnokloose:
+                LOGGER.info(f'Adding solution as alternate solution not satisfying constraint\n{pth}')
+                alternatetemp.append(sol)
+        if temp:
+            candidates[this_d.disjunction_id] = temp
+        elif alternatetemp:
+            candidates[this_d.disjunction_id] = alternatetemp
+        else:
+            candidates[this_d.disjunction_id] = []
 
     # step 5 select the first combination that works
     pathreslist_disjoint = {}
