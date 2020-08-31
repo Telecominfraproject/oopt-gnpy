@@ -143,7 +143,8 @@ To get involved, please contact Jan Kundrát
 
 See the `Onboarding Guide
 <https://github.com/Telecominfraproject/gnpy/wiki/Onboarding-Guide>`_ for
-specific details on code contributions.
+specific details on code contributions, or just `upload patches to our Gerrit
+<https://review.gerrithub.io/Documentation/intro-gerrit-walkthrough-github.html>`_.
 
 See `AUTHORS.rst <AUTHORS.rst>`_ for past and present contributors.
 
