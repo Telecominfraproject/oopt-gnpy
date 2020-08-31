@@ -31,8 +31,8 @@ EQPT_LIBRARY_NAME = Path(__file__).parent.parent / 'tests/data/eqpt_config.json'
 
 @pytest.fixture()
 def serv(test_setup):
-    """ common setup for service list
-    """
+    ''' common setup for service list
+    '''
     network, equipment = test_setup
     data = load_requests(SERVICE_FILE_NAME, equipment, bidir=False, network=network, network_filename=NETWORK_FILE_NAME)
     rqs = requests_from_json(data, equipment)
@@ -43,12 +43,12 @@ def serv(test_setup):
 
 @pytest.fixture()
 def test_setup():
-    """ common setup for tests: builds network, equipment and oms only once
-    """
+    ''' common setup for tests: builds network, equipment and oms only once
+    '''
     equipment = load_equipment(EQPT_LIBRARY_NAME)
     network = load_network(NETWORK_FILE_NAME, equipment)
     # Build the network once using the default power defined in SI in eqpt config
-    # power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
+    # power density : db2linp(ower_dbm': 0)/power_dbm': 0 * nb channels as defined by
     # spacing, f_min and f_max
     p_db = equipment['SI']['default'].power_dbm
 
@@ -61,9 +61,9 @@ def test_setup():
 
 
 def test_disjunction(serv):
-    """ service_file contains sevaral combination of disjunction constraint. The test checks
+    ''' service_file contains sevaral combination of disjunction constraint. The test checks
         that computed paths with disjunction constraint are effectively disjoint
-    """
+    '''
     network, equipment, rqs, dsjn = serv
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
     print(dsjn)
@@ -86,8 +86,8 @@ def test_disjunction(serv):
 
 
 def test_does_not_loop_back(serv):
-    """ check that computed paths do not loop back ie each element appears only once
-    """
+    ''' check that computed paths do not loop back ie each element appears only once
+    '''
     network, equipment, rqs, dsjn = serv
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
     test = True
@@ -107,12 +107,12 @@ def test_does_not_loop_back(serv):
     #
 
 
-def create_rq(equipment, srce, dest, bdir, nd_list, ls_list):
-    """ create the usual request list according to parameters
-    """
+def create_rq(equipment, srce, dest, bdir, nd_list, ls_list, rqid='test_request'):
+    ''' create the usual request list according to parameters
+    '''
     requests_list = []
     params = {}
-    params['request_id'] = 'test_request'
+    params['request_id'] = rqid
     params['source'] = srce
     params['bidir'] = bdir
     params['destination'] = dest
@@ -149,7 +149,7 @@ def create_rq(equipment, srce, dest, bdir, nd_list, ls_list):
     ['trx a', 'trx h', 'pass', 'found_path', ['trx h'], ['STRICT']],
     ['trx a', 'trx h', 'pass', 'found_path', ['roadm a'], ['STRICT']]])
 def test_include_constraints(test_setup, srce, dest, result, pth, nd_list, ls_list):
-    """ check that all combinations of constraints are correctly handled:
+    ''' check that all combinations of constraints are correctly handled:
         - STRICT/LOOSE
         - correct names/incorrect names -> pass/fail
         - possible include/impossible include
@@ -161,7 +161,7 @@ def test_include_constraints(test_setup, srce, dest, result, pth, nd_list, ls_li
                                 | cannot be applied | no_path           | found_path
             ----------------------------------------------------------------------------------
             0                   |                   |          computation stops
-    """
+    '''
     network, equipment = test_setup
     dsjn = []
     bdir = False
