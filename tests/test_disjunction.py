@@ -4,18 +4,18 @@
 # License: BSD 3-Clause Licence
 # Copyright (c) 2018, Telecom Infra Project
 
-"""
+'''
 @author: esther.lerouzic
 checks that computed paths are disjoint as specified in the json service file
 that computed paths do not loop
 that include node constraints are correctly taken into account
-"""
+'''
 
 from pathlib import Path
 import pytest
 from gnpy.core.equipment import trx_mode_params
 from gnpy.core.network import build_network
-from gnpy.core.exceptions import ServiceError
+from gnpy.core.exceptions import ServiceError, DisjunctionError
 from gnpy.core.utils import automatic_nch, lin2db
 from gnpy.core.elements import Roadm
 from gnpy.topology.request import (compute_path_dsjctn, isdisjoint, find_reversed_path, PathRequest,
@@ -178,3 +178,67 @@ def test_include_constraints(test_setup, srce, dest, result, pth, nd_list, ls_li
             assert pth == 'found_path'
         else:
             assert pth == 'no_path'
+
+@pytest.mark.parametrize('dis1, dis2, nd_list1, ls_list1, result, sol', [
+    [['1', '2', '3'], ['2', '3'], [], [], 'pass',
+     [['roadm a', 'roadm c', 'roadm d', 'roadm e', 'roadm g'],
+      ['roadm c', 'roadm f'],
+      ['roadm a', 'roadm b', 'roadm f', 'roadm h']]],
+    [['1', '2', '3'], ['2', '3'], ['b'], ['STRICT'], 'fail', []],
+    [['1', '2'], ['2', '3'], [], [], 'pass',
+     [['roadm a', 'roadm c', 'roadm d', 'roadm e', 'roadm g'],
+      ['roadm c', 'roadm f'],
+      ['roadm a', 'roadm b', 'roadm f', 'roadm h']]],
+    [['1', '2'], ['2', '3'], ['roadm e'], ['LOOSE'], 'pass',
+     [['roadm a', 'roadm c', 'roadm d', 'roadm e', 'roadm g'],
+      ['roadm c', 'roadm f'],
+      ['roadm a', 'roadm b', 'roadm f', 'roadm h']]],
+    [['1', '2'], ['2', '3'], ['roadm c | roadm f'], ['LOOSE'], 'pass',
+     [['roadm a', 'roadm c', 'roadm d', 'roadm e', 'roadm g'],
+      ['roadm c', 'roadm f'],
+      ['roadm a', 'roadm b', 'roadm f', 'roadm h']]]])
+def test_create_disjunction(test_setup, dis1, dis2, nd_list1, ls_list1, result, sol):
+    """ verifies that the expected result is obtained for a set of particular constraints:
+    in particular, verifies that:
+    - multiple disjunction constraints are correcly handled
+    - in case a loose constraint can not be met, the first alternate candidate is selected
+    instead of the last one (last case).
+    """
+    network, equipment = test_setup
+
+    json_data = {
+        'synchronization': [{
+            'synchronization-id': 'x',
+            'svec': {
+                'relaxable': 'false',
+                'disjointness': 'node link',
+                'request-id-number': dis1
+            }
+        }, {
+            'synchronization-id': 'y',
+            'svec': {
+                'relaxable': 'false',
+                'disjointness': 'node link',
+                'request-id-number': dis2
+            }
+        }]}
+    dsjn = disjunctions_from_json(json_data)
+    print(dsjn)
+    bdir = False
+    rqs = create_rq(equipment, 'trx a', 'trx g', bdir, nd_list1, ls_list1, '1') +\
+        create_rq(equipment, 'trx c', 'trx f', bdir, [], [], '2') +\
+        create_rq(equipment, 'trx a', 'trx h', bdir, [], [], '3')
+
+    print(rqs)
+    if result == 'fail':
+        with pytest.raises(DisjunctionError):
+            pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
+    else:
+        pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
+        pthnames = []
+        for path in pths:
+            temp = [e.uid for e in path if isinstance(e, Roadm)]
+            print(temp)
+            pthnames.append(temp)
+        assert pthnames == sol
+        # if loose, one path can be returned
