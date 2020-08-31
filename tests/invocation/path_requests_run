@@ -1,4 +1,24 @@
 [1;34;40mComputing path requests gnpy/example-data/meshTopologyExampleV2.xls into JSON format[0m
+[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Lannion_CAS to Corlay is above user specified amplifier std_low_gain
+max flat gain: 16dB ; required gain: 21.0dB. Please check amplifier type.
+[1;31;40mWARNING[0m: WARNING: effective gain in Node west edfa in Lorient_KMA to Loudeac is above user specified amplifier std_low_gain
+max flat gain: 16dB ; required gain: 28.0dB. Please check amplifier type.
+[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Lannion_CAS to Stbrieuc is above user specified amplifier std_low_gain
+max flat gain: 16dB ; required gain: 21.0dB. Please check amplifier type.
+[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Lannion_CAS to Morlaix is above user specified amplifier std_low_gain
+max flat gain: 16dB ; required gain: 21.0dB. Please check amplifier type.
+[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Lorient_KMA to Loudeac is above user specified amplifier std_low_gain
+max flat gain: 16dB ; required gain: 21.0dB. Please check amplifier type.
+[1;31;40mWARNING[0m: WARNING: effective gain in Node west edfa in Lannion_CAS to Corlay is above user specified amplifier std_low_gain
+max flat gain: 16dB ; required gain: 28.0dB. Please check amplifier type.
+[1;31;40mWARNING[0m: WARNING: effective gain in Node west edfa in Vannes_KBE to Lorient_KMA is above user specified amplifier std_low_gain
+max flat gain: 16dB ; required gain: 23.0dB. Please check amplifier type.
+[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Vannes_KBE to Lorient_KMA is above user specified amplifier std_low_gain
+max flat gain: 16dB ; required gain: 21.0dB. Please check amplifier type.
+[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Rennes_STA to Stbrieuc is above user specified amplifier std_low_gain
+max flat gain: 16dB ; required gain: 21.0dB. Please check amplifier type.
+[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Brest_KLA to Morlaix is above user specified amplifier std_low_gain
+max flat gain: 16dB ; required gain: 21.0dB. Please check amplifier type.
 [1;34;40mList of disjunctions[0m
 [Disjunction 3
 	relaxable:    false
