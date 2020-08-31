@@ -302,6 +302,17 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
                     gain_target += power_reduction
                 elif node.params.raman and not raman_allowed:
                     print(f'{ansi_escapes.red}WARNING{ansi_escapes.reset}: raman is used in node {node.uid}\n but fiber lineic loss is above threshold\n')
+                elif node.params.type_variety != '':
+                    # if variety is imposed by user, and if the gain_target (computed or imposed) is also above
+                    # variety max gain + extended range, then warn that gain > max_gain + extended range
+                    if gain_target - equipment['Edfa'][node.params.type_variety].gain_flatmax - \
+                            equipment['Span']['default'].target_extended_gain > 1e-2:
+                        # 1e-2 to allow a small margin according to round2float min step
+                        print(f'{ansi_escapes.red}WARNING{ansi_escapes.reset}: '+
+                              f'WARNING: effective gain in Node {node.uid} is above user ' +
+                              f'specified amplifier {node.params.type_variety}\n' +
+                              f'max flat gain: {equipment["Edfa"][node.params.type_variety].gain_flatmax}dB ; ' +
+                              f'required gain: {gain_target}dB. Please check amplifier type.')
 
                 node.delta_p = dp if power_mode else None
                 node.effective_gain = gain_target
