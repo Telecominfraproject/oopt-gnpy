@@ -813,23 +813,21 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     # step 5 select the first combination that works
     pathreslist_disjoint = {}
     for dis in disjunctions_list:
-        test_sol = True
-        while test_sol:
-            # print('coucou')
-            if candidates[dis.disjunction_id]:
-                for pth in candidates[dis.disjunction_id][0]:
-                    if allpaths[id(pth)].req in pathreqlist_disjt:
-                        # print(f'selected path:{pth} for req {allpaths[id(pth)].req.request_id}')
-                        pathreslist_disjoint[allpaths[id(pth)].req] = allpaths[id(pth)].pth
-                        pathreqlist_disjt.remove(allpaths[id(pth)].req)
-                        candidates = remove_candidate(candidates, allpaths, allpaths[id(pth)].req, pth)
-                        test_sol = False
-            else:
-                msg = f'No disjoint path found with added constraint'
-                LOGGER.critical(msg)
-                print(f'{msg}\nComputation stopped.')
-                # TODO in this case: replay step 5  with the candidate without constraints
-                raise DisjunctionError(msg)
+        if candidates[dis.disjunction_id]:
+            for pth in candidates[dis.disjunction_id][0]:
+                if allpaths[id(pth)].req in pathreqlist_disjt:
+                    # print(f'selected path:{pth} for req {allpaths[id(pth)].req.request_id}')
+                    pathreslist_disjoint[allpaths[id(pth)].req] = allpaths[id(pth)].pth
+                    # remove request from list of requests (in case of duplicate)
+                    pathreqlist_disjt.remove(allpaths[id(pth)].req)
+                    # remove duplicated candidates
+                    candidates = remove_candidate(candidates, allpaths, allpaths[id(pth)].req, pth)
+        else:
+            msg = f'No disjoint path found with added constraint'
+            LOGGER.critical(msg)
+            print(f'{msg}\nComputation stopped.')
+            # TODO in this case: replay step 5  with the candidate without constraints
+            raise DisjunctionError(msg)
 
     # for i in disjunctions_list:
     #     print(i.disjunction_id)
