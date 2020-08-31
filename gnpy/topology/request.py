@@ -689,8 +689,8 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
         # in each loop, dpath is updated with a path for rq that satisfies
         # disjunction with each path in dpath
         # for example, assume set of requests in the vector (disjunction_list) is  {rq1,rq2, rq3}
-        # rq1  p1: abfhg
-        #      p2: aefhg
+        # rq1  p1: aefhg
+        #      p2: abfhg
         #      p3: abcg
         # rq2  p8: bf
         # rq3  p4: abcgh
@@ -707,6 +707,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
         #  after second loop:
         #  dpath = [ p3 p8 p6 ]
         #  since p1 and p4 are not disjoint
+        #        p1 and p6 are not disjoint
         #        p1 and p7 are not disjoint
         #        p3 and p4 are not disjoint
         #        p3 and p7 are not disjoint
@@ -730,7 +731,6 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
                         temp.append(temp2)
                         # print(f' coucou {elem1}: \t{temp}')
             dpath = temp
-        # print(dpath)
         candidates[dis.disjunction_id] = dpath
 
     # for i in disjunctions_list:
@@ -771,9 +771,9 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
                         if pth in cndt:
                             candidates[this_id].remove(cndt)
 
-#    for i in disjunctions_list:
-#        print(i.disjunction_id)
-#        print(f'\n{candidates[i.disjunction_id]}')
+    # for i in disjunctions_list:
+    #     print(i.disjunction_id)
+    #     print(f'\n{candidates[i.disjunction_id]}')
 
     # step 4 apply route constraints: remove candidate path that do not satisfy
     # the constraint only in  the case of disjounction: the simple path is processed in
