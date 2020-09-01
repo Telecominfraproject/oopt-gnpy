@@ -228,6 +228,24 @@
       "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "37f05d0a_bfd14691",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-09-01T13:05:12Z",
+      "side": 1,
+      "message": "If this is actually a bug in the current implementation, maybe it would be more clear to make this change in a separate \"bugfix\" commit? On the other hand I\u0027m not sure since it looks to me like the exceeding_att below is intended to handle the situation when power in for any channel is lower than target power out (note that individual channel powers may be different than pref.p_spani).",
+      "parentUuid": "7ee61072_6d16ee5e",
+      "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
