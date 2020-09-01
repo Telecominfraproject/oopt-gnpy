@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a30d2e7d_347c789b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-01T07:07:27Z",
+      "side": 1,
+      "message": "What is the use case behind this? Is it related to per-degree ROADM TX power setting?",
+      "range": {
+        "startLine": 19,
+        "startChar": 2,
+        "endLine": 19,
+        "endChar": 73
+      },
+      "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25af623d_a634fee6",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-01T07:07:27Z",
+      "side": 1,
+      "message": "Should we perhaps change the __call__ signature so that it also takes a \"next node\" parameter for all network elements, not just ROADMs? That should also make it possible to simplify the Add/Drop SNR penalty in another patch, BTW.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 21
+      },
+      "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f58462b_1ffc1a5a",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-01T07:07:27Z",
+      "side": 1,
+      "message": "I might be a bit tired now, but isn\u0027t this effectively a no-op? I\u0027m assuming that this ROADM parameter is already a dict, is that not the case?",
+      "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "57a59577_fe52f217",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-01T07:07:27Z",
+      "side": 1,
+      "message": "I think this comment could be rephrased as \"ROADM doesn\u0027t amplify, it can only attenuate\", and it would be more readable to me that way",
+      "range": {
+        "startLine": 235,
+        "startChar": 8,
+        "endLine": 236,
+        "endChar": 99
+      },
+      "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
