@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "dc8443a2_8bebac85",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-09-01T12:18:35Z",
+      "side": 1,
+      "message": "The reason behind that is to enable to apply other parameters (delta power, gain ...) even if the type is not defined and  be able to define edfa objects just for degree information purpose. Without this change, one can not define a power on a booster direction without specifying the booster variety.",
+      "parentUuid": "a30d2e7d_347c789b",
+      "range": {
+        "startLine": 19,
+        "startChar": 2,
+        "endLine": 19,
+        "endChar": 73
+      },
+      "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "25af623d_a634fee6",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 12
@@ -36,6 +60,30 @@
       "writtenOn": "2020-09-01T07:07:27Z",
       "side": 1,
       "message": "Should we perhaps change the __call__ signature so that it also takes a \"next node\" parameter for all network elements, not just ROADMs? That should also make it possible to simplify the Add/Drop SNR penalty in another patch, BTW.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 21
+      },
+      "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ff7b7f31_6cd3b21b",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-09-01T12:18:35Z",
+      "side": 1,
+      "message": "OK for me !",
+      "parentUuid": "25af623d_a634fee6",
       "range": {
         "startLine": 13,
         "startChar": 0,
@@ -65,6 +113,24 @@
     },
     {
       "key": {
+        "uuid": "9788bc76_9ec7aeb4",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-09-01T12:18:35Z",
+      "side": 1,
+      "message": "Yes, I letf it this way so that both dict are not the same object (kind of a copy), may be for future, in order not to change the initial target in later developments.",
+      "parentUuid": "7f58462b_1ffc1a5a",
+      "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "57a59577_fe52f217",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 12
@@ -76,6 +142,30 @@
       "writtenOn": "2020-09-01T07:07:27Z",
       "side": 1,
       "message": "I think this comment could be rephrased as \"ROADM doesn\u0027t amplify, it can only attenuate\", and it would be more readable to me that way",
+      "range": {
+        "startLine": 235,
+        "startChar": 8,
+        "endLine": 236,
+        "endChar": 99
+      },
+      "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "878f2b38_4db2293c",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-09-01T12:18:35Z",
+      "side": 1,
+      "message": "Agreed !",
+      "parentUuid": "57a59577_fe52f217",
       "range": {
         "startLine": 235,
         "startChar": 8,
@@ -117,6 +207,24 @@
       "side": 1,
       "message": "I think that this is a correct change -- if the original value of params.target_pch_out_db was lower than pref.p_spani, this is effectively a bugfix. It might still get reverted by the exceeding_att below I think, which suggests to me that this whole function is (still) a candidate for refactoring. It should make it obvious that thresholds are exceeded, and react accoridngly, IMHO. I\u0027ll try to come up with something.",
       "parentUuid": "df5bd776_c61056db",
+      "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ee61072_6d16ee5e",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-09-01T12:18:35Z",
+      "side": 1,
+      "message": "Indeed, I think the old implementation was not working OK in case of power in lower than target power",
+      "parentUuid": "d42836e2_1ba2799c",
       "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
