@@ -121,15 +121,17 @@ and a fiber span from node3 to node6::
 Eqpt sheet 
 ----------
 
-Eqt sheet is optional. It lists the amplifiers types and characteristics on each degree of the *Node A* line.
-Eqpt sheet must contain twelve columns::
+The equipment sheet (named "Eqpt") is optional.
+If provided, it specifies types of boosters and preamplifiers for all ROADM degrees of all ROADM nodes, and for all ILA nodes.
+
+This sheet contains twelve columns::
 
                    <--           east cable from a to z                  --> <--        west from z to a                          -->
   Node A ; Node Z ; amp type ; att_in ; amp gain ; tilt ; att_out ; delta_p ; amp type ; att_in ; amp gain ; tilt ; att_out ; delta_p
 
-If the sheet is present, it MUST have as many lines as egress directions of ROADMs defined in Links Sheet. 
+If the sheet is present, it MUST have as many lines as there are egress directions of ROADMs defined in Links Sheet, and all ILAs.
 
-For example, consider the following list of links (A,B and C being a ROADM and amp# ILAs)
+For example, consider the following list of links (A, B and C being a ROADM and amp# ILAs):
 
 ::
 
@@ -141,8 +143,8 @@ For example, consider the following list of links (A,B and C being a ROADM and a
 
 then Eqpt sheet should contain:
   - one line for each ILAs: amp1, amp2, amp3 
-  - one line for each degree 1 ROADMs B and C  
-  - two lines for ROADM A  which is a degree 2 ROADM 
+  - one line for each one-degree ROADM (B and C in this example)
+  - two lines for each two-degree ROADM (just the ROADM A)
 
 ::
 
