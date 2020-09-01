@@ -113,8 +113,47 @@ The modes are defined as follows:
 | ``cost``             | (number)  | Arbitrary unit                          |
 +----------------------+-----------+-----------------------------------------+
 
-Simulation parameters
-~~~~~~~~~~~~~~~~~~~~~
+ROADM
+~~~~~
+
+The user can only modify the value of existing parameters:
+
++--------------------------+-----------+---------------------------------------------+
+| field                    |   type    | description                                 |
++==========================+===========+=============================================+
+| ``target_pch_out_db``    | (number)  | Auto-design sets the ROADM egress channel   |
+|                          |           | power. This reflects typical control loop   |
+|                          |           | algorithms that adjust ROADM losses to      |
+|                          |           | equalize channels (eg coming from different |
+|                          |           | ingress direction or add ports)             |
+|                          |           | This is the default value                   |
+|                          |           | Roadm/params/target_pch_out_db if no value  |
+|                          |           | is given in the ``Roadm`` element in the    |
+|                          |           | topology input description.                 |
+|                          |           | This default value is ignored if a          |
+|                          |           | params/target_pch_out_db value is input in  |
+|                          |           | the topology for a given ROADM.             |
++--------------------------+-----------+---------------------------------------------+
+| ``add_drop_osnr``        | (number)  | OSNR contribution from the add/drop ports   |
++--------------------------+-----------+---------------------------------------------+
+| ``pmd``                  | (number)  | Polarization mode dispersion (PMD). (s)     |
++--------------------------+-----------+---------------------------------------------+
+| ``restrictions``         | (dict of  | If non-empty, keys ``preamp_variety_list``  |
+|                          |  strings) | and ``booster_variety_list`` represent      |
+|                          |           | list of ``type_variety`` amplifiers which   |
+|                          |           | are allowed for auto-design within ROADM's  |
+|                          |           | line degrees.                               |
+|                          |           |                                             |
+|                          |           | If no booster should be placed on a degree, |
+|                          |           | insert a ``Fused`` node on the degree       |
+|                          |           | output.                                     |
++--------------------------+-----------+---------------------------------------------+
+
+Global parameters
+-----------------
+
+The following options are still defined in ``eqpt_config.json`` for legacy reasons, but
+they do not correspond to tangible network devices.
 
 Auto-design automatically creates EDFA amplifier network elements when they are
 missing, after a fiber, or between a ROADM and a fiber. This auto-design
@@ -255,42 +294,6 @@ parameters:
               "con_out": 0
         }
     }
-
-ROADM
-~~~~~
-
-The user can only modify the value of existing parameters:
-
-+--------------------------+-----------+---------------------------------------------+
-| field                    |   type    | description                                 |
-+==========================+===========+=============================================+
-| ``target_pch_out_db``    | (number)  | Auto-design sets the ROADM egress channel   |
-|                          |           | power. This reflects typical control loop   |
-|                          |           | algorithms that adjust ROADM losses to      |
-|                          |           | equalize channels (eg coming from different |
-|                          |           | ingress direction or add ports)             |
-|                          |           | This is the default value                   |
-|                          |           | Roadm/params/target_pch_out_db if no value  |
-|                          |           | is given in the ``Roadm`` element in the    |
-|                          |           | topology input description.                 |
-|                          |           | This default value is ignored if a          |
-|                          |           | params/target_pch_out_db value is input in  |
-|                          |           | the topology for a given ROADM.             |
-+--------------------------+-----------+---------------------------------------------+
-| ``add_drop_osnr``        | (number)  | OSNR contribution from the add/drop ports   |
-+--------------------------+-----------+---------------------------------------------+
-| ``pmd``                  | (number)  | Polarization mode dispersion (PMD). (s)     |
-+--------------------------+-----------+---------------------------------------------+
-| ``restrictions``         | (dict of  | If non-empty, keys ``preamp_variety_list``  |
-|                          |  strings) | and ``booster_variety_list`` represent      |
-|                          |           | list of ``type_variety`` amplifiers which   |
-|                          |           | are allowed for auto-design within ROADM's  |
-|                          |           | line degrees.                               |
-|                          |           |                                             |
-|                          |           | If no booster should be placed on a degree, |
-|                          |           | insert a ``Fused`` node on the degree       |
-|                          |           | output.                                     |
-+--------------------------+-----------+---------------------------------------------+
 
 SpectralInformation
 ~~~~~~~~~~~~~~~~~~~
