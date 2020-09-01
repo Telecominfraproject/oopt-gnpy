@@ -85,6 +85,23 @@
       "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "df5bd776_c61056db",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-09-01T08:10:24Z",
+      "side": 1,
+      "message": "Was the old implementation (using self.params.target_pch_out_db instead of self.effective_pch_out_db here) wrong? Does it make a difference?",
+      "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
