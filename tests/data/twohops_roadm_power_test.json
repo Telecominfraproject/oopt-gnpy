@@ -1,0 +1,813 @@
+{
+  "elements": [
+    {
+      "uid": "trx node A",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": "node A",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "trx node B",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": "node B",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "trx node C",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": "node C",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "roadm node A",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -15,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        },
+        "per_degree_pch_out_db": {
+          "Edfa0_roadm node A": -15
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": "node A",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "roadm node B",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20.0,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        },
+        "per_degree_pch_out_db": {
+          "east edfa in node B to ila2": -20,
+          "Edfa0_roadm node B": -20
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": "node B",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "roadm node C",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -15,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        },
+        "per_degree_pch_out_db": {
+          "Edfa0_roadm node C": -15
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": "node C",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "fiber (node A → ila1)-",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (ila1 → ila2)-",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (ila2 → node B)-",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 100.0,
+        "loss_coef": 0.22,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (node B → ila3)-",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (ila3 → ila4)-",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (ila4 → node C)-",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (ila1 → node A)-",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (ila2 → ila1)-",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (node B → ila2)-",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 100.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (ila3 → node B)-",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (ila4 → ila3)-",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (node C → ila4)-",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "east edfa in node B to ila2",
+      "type": "Edfa",
+      "type_variety": "std_high_gain",
+      "operational": {
+        "gain_target": 35.0,
+        "delta_p": 0.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": "node B",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "west edfa in node B to ila2",
+      "type": "Fused",
+      "params": {
+        "loss": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": "node B",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "Edfa0_roadm node A",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 14.0,
+        "delta_p": -1.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "node A",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "Edfa0_roadm node B",
+      "type": "Edfa",
+      "type_variety": "std_high_gain",
+      "operational": {
+        "gain_target": 19.0,
+        "delta_p": -1.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "node B",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "Edfa0_roadm node C",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 14.0,
+        "delta_p": -1.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "node C",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "Edfa0_fiber (node A → ila1)-",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 16.0,
+        "delta_p": -1.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa0_fiber (ila1 → ila2)-",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 17.0,
+        "delta_p": 0.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa0_fiber (node B → ila3)-",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 16.0,
+        "delta_p": -1.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa0_fiber (ila3 → ila4)-",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 16.0,
+        "delta_p": -1.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa0_fiber (ila4 → node C)-",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 17.0,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa0_fiber (ila1 → node A)-",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 17.0,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa0_fiber (ila2 → ila1)-",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 16.0,
+        "delta_p": -1.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa0_fiber (node B → ila2)-",
+      "type": "Edfa",
+      "type_variety": "std_medium_gain",
+      "operational": {
+        "gain_target": 19.0,
+        "delta_p": -1.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa0_fiber (ila3 → node B)-",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 17.0,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa0_fiber (ila4 → ila3)-",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 16.0,
+        "delta_p": -1.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa0_fiber (node C → ila4)-",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 16.0,
+        "delta_p": -1.0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": null,
+          "region": null
+        }
+      }
+    }
+  ],
+  "connections": [
+    {
+      "from_node": "trx node A",
+      "to_node": "roadm node A"
+    },
+    {
+      "from_node": "trx node B",
+      "to_node": "roadm node B"
+    },
+    {
+      "from_node": "trx node C",
+      "to_node": "roadm node C"
+    },
+    {
+      "from_node": "roadm node A",
+      "to_node": "trx node A"
+    },
+    {
+      "from_node": "roadm node A",
+      "to_node": "Edfa0_roadm node A"
+    },
+    {
+      "from_node": "roadm node B",
+      "to_node": "east edfa in node B to ila2"
+    },
+    {
+      "from_node": "roadm node B",
+      "to_node": "trx node B"
+    },
+    {
+      "from_node": "roadm node B",
+      "to_node": "Edfa0_roadm node B"
+    },
+    {
+      "from_node": "roadm node C",
+      "to_node": "trx node C"
+    },
+    {
+      "from_node": "roadm node C",
+      "to_node": "Edfa0_roadm node C"
+    },
+    {
+      "from_node": "fiber (node A → ila1)-",
+      "to_node": "Edfa0_fiber (node A → ila1)-"
+    },
+    {
+      "from_node": "fiber (ila1 → ila2)-",
+      "to_node": "Edfa0_fiber (ila1 → ila2)-"
+    },
+    {
+      "from_node": "fiber (ila2 → node B)-",
+      "to_node": "west edfa in node B to ila2"
+    },
+    {
+      "from_node": "fiber (node B → ila3)-",
+      "to_node": "Edfa0_fiber (node B → ila3)-"
+    },
+    {
+      "from_node": "fiber (ila3 → ila4)-",
+      "to_node": "Edfa0_fiber (ila3 → ila4)-"
+    },
+    {
+      "from_node": "fiber (ila4 → node C)-",
+      "to_node": "Edfa0_fiber (ila4 → node C)-"
+    },
+    {
+      "from_node": "fiber (ila1 → node A)-",
+      "to_node": "Edfa0_fiber (ila1 → node A)-"
+    },
+    {
+      "from_node": "fiber (ila2 → ila1)-",
+      "to_node": "Edfa0_fiber (ila2 → ila1)-"
+    },
+    {
+      "from_node": "fiber (node B → ila2)-",
+      "to_node": "Edfa0_fiber (node B → ila2)-"
+    },
+    {
+      "from_node": "fiber (ila3 → node B)-",
+      "to_node": "Edfa0_fiber (ila3 → node B)-"
+    },
+    {
+      "from_node": "fiber (ila4 → ila3)-",
+      "to_node": "Edfa0_fiber (ila4 → ila3)-"
+    },
+    {
+      "from_node": "fiber (node C → ila4)-",
+      "to_node": "Edfa0_fiber (node C → ila4)-"
+    },
+    {
+      "from_node": "east edfa in node B to ila2",
+      "to_node": "fiber (node B → ila2)-"
+    },
+    {
+      "from_node": "west edfa in node B to ila2",
+      "to_node": "roadm node B"
+    },
+    {
+      "from_node": "Edfa0_roadm node A",
+      "to_node": "fiber (node A → ila1)-"
+    },
+    {
+      "from_node": "Edfa0_roadm node B",
+      "to_node": "fiber (node B → ila3)-"
+    },
+    {
+      "from_node": "Edfa0_roadm node C",
+      "to_node": "fiber (node C → ila4)-"
+    },
+    {
+      "from_node": "Edfa0_fiber (node A → ila1)-",
+      "to_node": "fiber (ila1 → ila2)-"
+    },
+    {
+      "from_node": "Edfa0_fiber (ila1 → ila2)-",
+      "to_node": "fiber (ila2 → node B)-"
+    },
+    {
+      "from_node": "Edfa0_fiber (node B → ila3)-",
+      "to_node": "fiber (ila3 → ila4)-"
+    },
+    {
+      "from_node": "Edfa0_fiber (ila3 → ila4)-",
+      "to_node": "fiber (ila4 → node C)-"
+    },
+    {
+      "from_node": "Edfa0_fiber (ila4 → node C)-",
+      "to_node": "roadm node C"
+    },
+    {
+      "from_node": "Edfa0_fiber (ila1 → node A)-",
+      "to_node": "roadm node A"
+    },
+    {
+      "from_node": "Edfa0_fiber (ila2 → ila1)-",
+      "to_node": "fiber (ila1 → node A)-"
+    },
+    {
+      "from_node": "Edfa0_fiber (node B → ila2)-",
+      "to_node": "fiber (ila2 → ila1)-"
+    },
+    {
+      "from_node": "Edfa0_fiber (ila3 → node B)-",
+      "to_node": "roadm node B"
+    },
+    {
+      "from_node": "Edfa0_fiber (ila4 → ila3)-",
+      "to_node": "fiber (ila3 → node B)-"
+    },
+    {
+      "from_node": "Edfa0_fiber (node C → ila4)-",
+      "to_node": "fiber (ila4 → ila3)-"
+    }
+  ]
+}
