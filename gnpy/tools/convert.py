@@ -193,6 +193,10 @@ def parse_sheet(my_sheet, input_headers_dict, header_line, start_line, column):
         yield parse_row(row[0: column], headers)
 
 
+def _format_items(items):
+    return '\n'.join(f' - {item}' for item in items)
+
+
 def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
 
     duplicate_links = []
@@ -206,19 +210,23 @@ def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
     for l in duplicate_links:
         links.remove(l)
 
-    try:
-        test_nodes = [n for n in nodes_by_city if n not in links_by_city]
-        test_links = [n for n in links_by_city if n not in nodes_by_city]
-        test_eqpts = [n for n in eqpts_by_city if n not in nodes_by_city]
-        assert (test_nodes == [] or test_nodes == [''])\
-            and (test_links == [] or test_links == [''])\
-            and (test_eqpts == [] or test_eqpts == [''])
-    except AssertionError:
-        msg = f'CRITICAL error in excel input: Names in Nodes and Links sheets do no match, check:\
-            \n{test_nodes} in Nodes sheet\
-            \n{test_links} in Links sheet\
-            \n{test_eqpts} in Eqpt sheet'
-        raise NetworkTopologyError(msg)
+    unreferenced_nodes = [n for n in nodes_by_city if n not in links_by_city]
+    if unreferenced_nodes:
+        raise NetworkTopologyError(f'{ansi_escapes.red}XLS error:{ansi_escapes.reset} The following nodes are not '
+                                   f'referenced from the {ansi_escapes.cyan}Links{ansi_escapes.reset} sheet. '
+                                   f'If unused, remove them from the {ansi_escapes.cyan}Nodes{ansi_escapes.reset} '
+                                   f'sheet:\n'
+                                   + _format_items(unreferenced_nodes))
+    # no need to check "Links" for invalid nodes because that's already in parse_excel()
+    wrong_eqpt_from = [n for n in eqpts_by_city if n not in nodes_by_city]
+    wrong_eqpt_to = [n.to_city for destinations in eqpts_by_city.values()
+                     for n in destinations if n.to_city not in nodes_by_city]
+    wrong_eqpt = wrong_eqpt_from + wrong_eqpt_to
+    if wrong_eqpt:
+        raise NetworkTopologyError(f'{ansi_escapes.red}XLS error:{ansi_escapes.reset} '
+                                   f'The {ansi_escapes.cyan}Eqpt{ansi_escapes.reset} sheet refers to nodes that '
+                                   f'are not defined in the {ansi_escapes.cyan}Nodes{ansi_escapes.reset} sheet:\n'
+                                   + _format_items(wrong_eqpt))
 
     for city, link in links_by_city.items():
         if nodes_by_city[city].node_type.lower() == 'ila' and len(link) != 2:
@@ -566,8 +574,12 @@ def parse_excel(input_filename):
     for lnk in links:
         if lnk.from_city not in all_cities or lnk.to_city not in all_cities:
             bad_links.append([lnk.from_city, lnk.to_city])
+
     if bad_links:
-        raise NetworkTopologyError(f'Bad link(s): {bad_links}.')
+        raise NetworkTopologyError(f'{ansi_escapes.red}XLS error:{ansi_escapes.reset} '
+                                   f'The {ansi_escapes.cyan}Links{ansi_escapes.reset} sheet references nodes that '
+                                   f'are not defined in the {ansi_escapes.cyan}Nodes{ansi_escapes.reset} sheet:\n'
+                                   + _format_items(f'{item[0]} -> {item[1]}' for item in bad_links))
 
     return nodes, links, eqpts
 
