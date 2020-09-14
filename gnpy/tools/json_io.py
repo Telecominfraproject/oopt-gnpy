@@ -230,14 +230,6 @@ def load_equipment(filename):
     return _equipment_from_json(json_data, filename)
 
 
-def _update_trx_osnr(equipment):
-    """add sys_margins to all Transceivers OSNR values"""
-    for trx in equipment['Transceiver'].values():
-        for m in trx.mode:
-            m['OSNR'] = m['OSNR'] + equipment['SI']['default'].sys_margins
-    return equipment
-
-
 def _update_dual_stage(equipment):
     edfa_dict = equipment['Edfa']
     for edfa in edfa_dict.values():
@@ -298,7 +290,6 @@ def _equipment_from_json(json_data, filename):
                 equipment[key][subkey] = RamanFiber(**entry)
             else:
                 raise EquipmentConfigError(f'Unrecognized network element type "{key}"')
-    equipment = _update_trx_osnr(equipment)
     equipment = _update_dual_stage(equipment)
     _roadm_restrictions_sanity_check(equipment)
     return equipment

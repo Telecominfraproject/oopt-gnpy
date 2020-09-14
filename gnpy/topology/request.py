@@ -375,7 +375,8 @@ def propagate_and_optimize_mode(path, req, equipment):
                         path[-1].update_snr(this_mode['tx_osnr'], equipment['Roadm']['default'].add_drop_osnr)
                     else:
                         path[-1].update_snr(this_mode['tx_osnr'])
-                    if round(min(path[-1].snr + lin2db(this_br / (12.5e9))), 2) > this_mode['OSNR']:
+                    if round(min(path[-1].snr + lin2db(this_br / (12.5e9))), 2) \
+                            > this_mode['OSNR'] + equipment['SI']['default'].sys_margins:
                         return path, this_mode
                     else:
                         last_explored_mode = this_mode
@@ -1092,11 +1093,11 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 # baud_rate was defined
                 propagate(total_path, pathreq, equipment)
                 temp_snr01nm = round(mean(total_path[-1].snr+lin2db(pathreq.baud_rate/(12.5e9))), 2)
-                if temp_snr01nm < pathreq.OSNR:
+                if temp_snr01nm < pathreq.OSNR + equipment['SI']['default'].sys_margins:
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
                           f' {pathreq.source} to {pathreq.destination} does not pass with' +\
                           f' {pathreq.tsp_mode}\n\tcomputedSNR in 0.1nm = {temp_snr01nm} ' +\
-                          f'- required osnr {pathreq.OSNR}'
+                          f'- required osnr {pathreq.OSNR} + {equipment["SI"]["default"].sys_margins} margin'
                     print(msg)
                     LOGGER.warning(msg)
                     pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
@@ -1139,11 +1140,12 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 propagated_reversed_path = rev_p
                 temp_snr01nm = round(mean(propagated_reversed_path[-1].snr +\
                                           lin2db(pathreq.baud_rate/(12.5e9))), 2)
-                if temp_snr01nm < pathreq.OSNR:
+                if temp_snr01nm < pathreq.OSNR + equipment['SI']['default'].sys_margins:
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
                           f' {pathreq.source} to {pathreq.destination} does not pass with' +\
                           f' {pathreq.tsp_mode}\n' +\
-                          f'\tcomputedSNR in 0.1nm = {temp_snr01nm} - required osnr {pathreq.OSNR}'
+                          f'\tcomputedSNR in 0.1nm = {temp_snr01nm} -' \
+                          f' required osnr {pathreq.OSNR} + {equipment["SI"]["default"].sys_margins} margin'
                     print(msg)
                     LOGGER.warning(msg)
                     # TODO selection of mode should also be on reversed direction !!

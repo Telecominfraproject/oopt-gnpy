@@ -410,7 +410,8 @@ def path_requests_run(args=None):
                         f'-', f'{rqs[i].blocking_reason}']
         except AttributeError:
             line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,
-                    psnr, f'{rqs[i].OSNR}', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}',
+                    psnr, f'{rqs[i].OSNR + equipment["SI"]["default"].sys_margins}',
+                    f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}',
                     f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }', f'({rqs[i].N},{rqs[i].M})']
         data.append(line)
 
