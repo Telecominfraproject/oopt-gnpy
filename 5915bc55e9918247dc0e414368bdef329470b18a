@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "877157b9_58bfbcf7",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-15T14:32:21Z",
+      "side": 1,
+      "message": "Good point; it\u0027s probably a good idea to ignore flexgrid completely at this point and only focus on the fixed-grid scenario. That said, one still needs \"some field\" to put that initial per-channel launch power into the simulation engine (e.g., the transmission-main-example --power option).",
+      "parentUuid": "339492cb_3d6965ef",
+      "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "aac878dc_f260ff22",
         "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
         "patchSetId": 1
@@ -121,6 +139,24 @@
     },
     {
       "key": {
+        "uuid": "fbb6bce7_eb728069",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-15T14:32:21Z",
+      "side": 1,
+      "message": "If empty, it means that the autodesign cannot pick any amplifier when it needs to split a fiber, and that will likely result in an error message visible to the user. That\u0027s how I think the code should work.\n\nSimilarly, each ROADM model should contain a list of allowed boosters and preamps. If none are listed, it means that this particular ROADM model does not allow placement of any boosters/preamps. If there\u0027s just one model for each, it might also mean that it\u0027s, say, a 1U Lumentum-style or CzechLight-style pizza box with a preamp/booster already factory-integrated.",
+      "parentUuid": "de18cdec_f7a4d23b",
+      "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b5028cd3_b1e45bfa",
         "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
         "patchSetId": 1
@@ -135,6 +171,24 @@
       "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a303ad7a_3ee8318d",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-15T14:32:21Z",
+      "side": 1,
+      "message": "Yes, I agree, but at the same time I\u0027m confused because that\u0027s what you pointed out as a mistake in my previous patch at https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/479559/3/gnpy/yang/tip/tip-photonic-equipment.yang#162 . \n\nEither way, the current code does not support this feature, so I think it\u0027s better to get the YANG in, and change this one once the underlying code gets updated. I\u0027ve now marked this leaf as deprecated.",
+      "parentUuid": "b5028cd3_b1e45bfa",
+      "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     },
     {
       "key": {
@@ -172,6 +226,24 @@
     },
     {
       "key": {
+        "uuid": "b20a752e_66ebeeaa",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-15T14:32:21Z",
+      "side": 1,
+      "message": "Ack, thanks",
+      "parentUuid": "41fba720_cafb3a60",
+      "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2209499e_d6d5980f",
         "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
         "patchSetId": 1
@@ -186,6 +258,24 @@
       "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "72c18773_f79c18a8",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-15T14:32:21Z",
+      "side": 1,
+      "message": "Well, getting autodesign + Raman working is, I\u0027m afraid, a bit out of scope for now. Rather than spending time implementing support for these \"faux-Raman\" (i.e., very small or even negative NF) amplifiers, I took the liberty to completely ignore all of their parameters. Plugging in the \"RamanFiber\", on the other hand, was very easy, so I implemented that.",
+      "parentUuid": "2209499e_d6d5980f",
+      "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
