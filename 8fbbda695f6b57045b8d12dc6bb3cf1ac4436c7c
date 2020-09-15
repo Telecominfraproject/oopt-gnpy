@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "351916e9_bf85a730",
+        "filename": "gnpy/yang/__init__.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-15T14:32:21Z",
+      "side": 1,
+      "message": "This should be, hopefully, clearer with the updated comments in the equipment library YANG model.",
+      "parentUuid": "99365b42_2b845758",
+      "revId": "8fbbda695f6b57045b8d12dc6bb3cf1ac4436c7c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e667b2bf_6363577e",
         "filename": "gnpy/yang/__init__.py",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "8fbbda695f6b57045b8d12dc6bb3cf1ac4436c7c",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a21b941_44129522",
+        "filename": "gnpy/yang/__init__.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-15T14:32:21Z",
+      "side": 1,
+      "message": "Just saying how we discussed this during the past two coders calls: the way forward is probably using a full-blown YANG datastore with NACM for access control -- e.g., via a RESTCONF server. These attributes have to be somewhere, and that somewhere cannot be an out-of-band file because the YANG model(s) should describe a complete set of simulation parameters, with no out-of-band infromation.",
+      "parentUuid": "e667b2bf_6363577e",
+      "revId": "8fbbda695f6b57045b8d12dc6bb3cf1ac4436c7c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     },
     {
       "key": {
@@ -67,6 +103,24 @@
       "revId": "8fbbda695f6b57045b8d12dc6bb3cf1ac4436c7c",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eec00842_a9271e87",
+        "filename": "gnpy/yang/__init__.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-15T14:32:21Z",
+      "side": 1,
+      "message": "Doh, sure, thanks. This was a PEBKAC on my side.",
+      "parentUuid": "8e0b189d_675a0de3",
+      "revId": "8fbbda695f6b57045b8d12dc6bb3cf1ac4436c7c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
