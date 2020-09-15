@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "837766fe_2c48bd61",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-15T12:42:44Z",
+      "side": 1,
+      "message": "I think that it\u0027s a welcome addition, but you\u0027re right, it\u0027s nowhere in the old code (and I have not implemented it anywhere yet anyway). Removing, this is tracked by, e.g., https://github.com/Telecominfraproject/oopt-gnpy/issues/270 .",
+      "parentUuid": "4527866b_d8e569c5",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4d1cfa3a_21eff757",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 3
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "145f3893_2055218b",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-15T12:42:44Z",
+      "side": 1,
+      "message": "A \"fixed gain\" amplifier is represented by a polynomial NF model with just the absolute coefficient, e.g., for a NF\u003d5.5, it\u0027s gonna be like this:\n\n \"polynomial-NF\": {\n   \"a\": 0.0,\n   \"b\": 0.0,\n   \"c\": 0.0,\n   \"d\": 5.5\n }\n\nThis was suggested by Jean-Luc at https://github.com/Telecominfraproject/oopt-gnpy/issues/227#issue-443794653 . Am I reading that suggestion correctly, or do you propose something else?",
+      "parentUuid": "4d1cfa3a_21eff757",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a0bf383c_2ef18889",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 3
@@ -50,6 +86,24 @@
       "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "91f4cfbe_b81f5aa4",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-15T12:42:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0bf383c_2ef18889",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     },
     {
       "key": {
@@ -155,6 +209,24 @@
     },
     {
       "key": {
+        "uuid": "b2b7d7f0_044cf9a6",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-15T12:42:44Z",
+      "side": 1,
+      "message": "\u003e do you mean channel target power ? this is out of a roadm WSS and it is a target so the naming is not clear, I prefer keeping the original name\n\nDone. I agree that omitting the word \"channel\" from the leaf name was a mistake :), thanks for catching this.\n\n\u003e + maybe prepare for the per degree target\n\nThat needs topology information, and therefore it can only happen once the topology model is introduced, which is in another commit.",
+      "parentUuid": "8640582d_0aea7ec9",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8c882d4a_7c998eae",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 3
@@ -169,6 +241,24 @@
       "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4576e31a_0258caac",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-15T12:42:44Z",
+      "side": 1,
+      "message": "I tried to split this patch series into smaller chunks, which is why I\u0027m adding a YANG model before the implementation. I think that the description is OK, it says what the \"catalogue page\" of this ROADM model says, and mentions that the topology model can override it.",
+      "parentUuid": "8c882d4a_7c998eae",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     },
     {
       "key": {

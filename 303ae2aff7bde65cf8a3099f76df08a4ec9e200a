@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "740c9060_816dcb90",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-15T12:42:44Z",
+      "side": 1,
+      "message": "I\u0027ve now implemented what we agreed to do on September 1st call -- per-amplifier-model values, using explicit freq -\u003e value mapping. The actual code looks rather fishy, but they, that\u0027s another commit.",
+      "parentUuid": "5293809d_c3a55e29",
+      "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "af624607_73c9f613",
         "filename": "yang/tip-photonic-equipment.yang",
         "patchSetId": 2
@@ -51,6 +69,24 @@
       "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08ac64d2_a9ab4be5",
+        "filename": "yang/tip-photonic-equipment.yang",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-15T12:42:44Z",
+      "side": 1,
+      "message": "In YANG+JSON, even natural numbers have to be string-quoted when the type is int64 or uint64, so this is not really a big issue. The frequencies are now uin64 and in Hz.",
+      "parentUuid": "af624607_73c9f613",
+      "revId": "303ae2aff7bde65cf8a3099f76df08a4ec9e200a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     },
     {
       "key": {
