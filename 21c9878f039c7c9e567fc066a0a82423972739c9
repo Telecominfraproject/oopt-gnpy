@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "209f11de_73c0d550",
+        "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-15T14:21:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe0b5a17_288d9388",
+      "revId": "21c9878f039c7c9e567fc066a0a82423972739c9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "82540f1b_c8638427",
         "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
         "patchSetId": 3
@@ -30,6 +48,24 @@
       "writtenOn": "2020-08-19T15:05:51Z",
       "side": 1,
       "message": "this is the only way to represent a direct connection between a roadm and its booster. Am I right ?\nso it means that when translating to the usual gnpyjson topo this patch will disappear, and its loss as well... so why specifying a loss here ?\n\nagain an argument to modve to OMS :) where this ambiguity will not exist",
+      "revId": "21c9878f039c7c9e567fc066a0a82423972739c9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4dca54b1_e91d249f",
+        "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-15T14:21:41Z",
+      "side": 1,
+      "message": "The existing code (\"what is in master right now\") is rather happy to insert amplifiers via several heuristics, and not only that, but also changing the amplifier types on a ROADM-less topology. I would like to change that via this migration to YANG, so I propose the following rules:\n\n- nothing gets inserted anywhere unless explicitly allowed,\n- nothing gets replaced unless explicitly allowed,\n- a \"tentative-link\" will be replaced by a sequence of actual \"fiber\" and \"amplifier\" elements,\n- an \"amplifier-placeholder\" will be replaced by a specific \"amplifier\" element.\n\nIn the current code (as of master), a \"Roadm\" that connects directly to another \"Roadm\" usually gets replaced by a Roadm -\u003e Edfa -\u003e Fiber -\u003e Edfa -\u003e Roadm (IIRC). In this YANG topo, it will be either:\n\na) a YANG topology with \"roadm\" -- \"tentative-link\" -- \"roadm\", which gets transformed into this sequence of GNPy elements:\n\n      \"Roadm\" -- \"Edfa\" -- \"Fiber\" -- \"Edfa\" -- \"Roadm\"\n\n                           ^^^^^^^^^^^^^^^^^--- this part can repeat many times\n\nb) a YANG topology \"roadm\" -- \"patch\" -- \"roadm\", which gets turned into this sequence of GNPy elements:\n\n      \"Roadm\" -- \"Fused\" -- \"Roadm\"\n\nOut of curiosity, how would you implement that OMS approach in YANG?",
+      "parentUuid": "82540f1b_c8638427",
       "revId": "21c9878f039c7c9e567fc066a0a82423972739c9",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
@@ -50,6 +86,24 @@
       "revId": "21c9878f039c7c9e567fc066a0a82423972739c9",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6d8452c1_fd61fae0",
+        "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-15T14:21:41Z",
+      "side": 1,
+      "message": "Ack, so I\u0027ll keep support for that. Thanks!",
+      "parentUuid": "f9125398_0d76e030",
+      "revId": "21c9878f039c7c9e567fc066a0a82423972739c9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
