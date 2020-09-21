@@ -155,8 +155,7 @@ def test_path_low_osnr(test_network):
         'cost': 1
         }]
     equipment['Transceiver']['Voyager_16QAM'].mode = modes
-    mode_expected = equipment['Transceiver']['Voyager_16QAM'].mode[1]
-    # equipment['Transceiver']['Voyager_16QAM'].mode[0]['OSNR'] = 100 
+    mode_expected = equipment['Transceiver']['Voyager_16QAM'].mode[3]
     total_path, mode = propagate_and_optimize_mode(total_path,
                                                    path_request,
                                                    equipment)

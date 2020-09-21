@@ -90,12 +90,12 @@ def find_feasible_paths_disjunction(equipment, network, service0, service1):
 
 def find_propagated_path(equipment, path, service):
     """."""
-    propagated_path = propagate(path, service, equipment)
-    snr01nm = round(np.mean(propagated_path[-1].snr + lin2db(service.baud_rate / 12.5e9)), 2)
+    propagate(path, service, equipment)
+    snr01nm = round(np.mean(path[-1].snr + lin2db(service.baud_rate / 12.5e9)), 2)
     if snr01nm < service.OSNR:
         return []
     else:
-        return propagated_path
+        return path
 
 
 def find_service_not_in_disjunction(disjunction_list, service_list):
