@@ -9,8 +9,10 @@ from gnpy.topology.request import propagate
 
 def are_paths_disjointed(path0, path1):
     """."""
-    nodes_list0 = [node.name for node in path0 if isinstance(node, Roadm)]
-    nodes_list1 = [node.name for node in path1 if isinstance(node, Roadm)]
+    nodes_list0 = [node.name for node in path0 if isinstance(node, Roadm)][1:-1]
+    nodes_list1 = [node.name for node in path1 if isinstance(node, Roadm)][1:-1]
+    if set(nodes_list0) == set(nodes_list1):
+        return False
     for node0 in nodes_list0:
         if node0 in nodes_list1:
             return False
@@ -43,19 +45,22 @@ def find_feasible_path(equipment, network, service):
     """."""
     shortest_simple_paths = find_shortest_simple_paths(network, service)
     alternative_paths = []
-    for path in shortest_simple_paths:
-        if is_routing_node_in_path(path, service.nodes_list):
+    try:
+        for path in shortest_simple_paths:
+            if is_routing_node_in_path(path, service.nodes_list):
+                propagated_path = find_propagated_path(equipment, path, service)
+                if propagated_path:
+                    return propagated_path
+            else:
+                if 'STRICT' not in service.loose_list:
+                    alternative_paths.append(path)
+        for path in alternative_paths:
             propagated_path = find_propagated_path(equipment, path, service)
             if propagated_path:
                 return propagated_path
-        else:
-            if 'STRICT' not in service.loose_list:
-                alternative_paths.append(path)
-    for path in alternative_paths:
-        propagated_path = find_propagated_path(equipment, path, service)
-        if propagated_path:
-            return propagated_path
-    return []
+        return 'NO_PATH_WITH_CONSTRAINT'
+    except nx.NetworkXNoPath:
+        return 'NO_PATH'
 
 
 def find_feasible_paths_disjunction(equipment, network, service0, service1):
@@ -64,28 +69,31 @@ def find_feasible_paths_disjunction(equipment, network, service0, service1):
     shortest_simple_paths1 = find_shortest_simple_paths(network, service1)
     alternative_pairs = []
     alternative_path = {}
-    for path0 in shortest_simple_paths0:
-        for path1 in shortest_simple_paths1:
-            if are_paths_disjointed(path0, path1):
-                if is_routing_node_in_path(path0, service0.nodes_list) and is_routing_node_in_path(path1, service1.nodes_list):
-                    propagated_path0 = find_propagated_path(equipment, path0, service0)
-                    propagated_path1 = find_propagated_path(equipment, path1, service1)
-                    if propagated_path0 and propagated_path1:
-                        return propagated_path0, propagated_path1
-                else:
-                    if 'STRICT' not in service0.loose_list and 'STRICT' not in service1.loose_list:
-                        alternative_path['0'] = path0
-                        alternative_path['1'] = path1
-                        alternative_pairs.append(alternative_path)
-        shortest_simple_paths1 = find_shortest_simple_paths(network, service1)
-    if alternative_pairs:
-        for pair in alternative_pairs:
-            propagated_path0 = find_propagated_path(equipment, pair['0'], service0)
-            propagated_path1 = find_propagated_path(equipment, pair['1'], service1)
-            if propagated_path0 and propagated_path1:
-                return propagated_path0, propagated_path1
-    else:
-        return [], []
+    try:
+        for path0 in shortest_simple_paths0:
+            for path1 in shortest_simple_paths1:
+                if are_paths_disjointed(path0, path1):
+                    if is_routing_node_in_path(path0, service0.nodes_list) and is_routing_node_in_path(path1, service1.nodes_list):
+                        propagated_path0 = find_propagated_path(equipment, path0, service0)
+                        propagated_path1 = find_propagated_path(equipment, path1, service1)
+                        if propagated_path0 and propagated_path1:
+                            return propagated_path0, propagated_path1
+                    else:
+                        if 'STRICT' not in service0.loose_list and 'STRICT' not in service1.loose_list:
+                            alternative_path['0'] = path0
+                            alternative_path['1'] = path1
+                            alternative_pairs.append(alternative_path)
+            shortest_simple_paths1 = find_shortest_simple_paths(network, service1)
+        if alternative_pairs:
+            for pair in alternative_pairs:
+                propagated_path0 = find_propagated_path(equipment, pair['0'], service0)
+                propagated_path1 = find_propagated_path(equipment, pair['1'], service1)
+                if propagated_path0 and propagated_path1:
+                    return propagated_path0, propagated_path1
+        else:
+            return 'NO_PATH_WITH_CONSTRAINT', 'NO_PATH_WITH_CONSTRAINT'
+    except nx.NetworkXNoPath:
+        return 'NO_PATH', 'NO_PATH'
 
 
 def find_propagated_path(equipment, path, service):

@@ -3,12 +3,13 @@ import pytest
 
 from gnpy.core.network import build_network
 from gnpy.core.utils import automatic_nch, lin2db
-from gnpy.topology.request import deduplicate_disjunctions, requests_aggregation
+from gnpy.topology.request import deduplicate_disjunctions, ResultElement, requests_aggregation
 from gnpy.topology.request_feasible import find_feasible_paths
-from gnpy.topology.spectrum_assignment import build_oms_list
+from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.json_io import disjunctions_from_json, load_equipment, load_network, requests_from_json 
 from gnpy.tools.service_sheet import read_service_sheet
 
+from gnpy.tools.cli_examples import _path_result_json, save_json
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
@@ -31,6 +32,9 @@ def test_compute_route_constraint(xls_input):
     disjunction_list = deduplicate_disjunctions(disjunctions_from_json(service_sheet))
     service_list, disjunction_list = requests_aggregation(service_list, disjunction_list)
     paths = find_feasible_paths(disjunction_list, equipment, network, service_list)
+    service_list[0].blocking_reason = 'jabota'
+    pth_assign_spectrum([paths['0']['mode 1']], [service_list[0]], oms_list, [])
+    save_json(_path_result_json([ResultElement(service_list[0], paths['0']['mode 1'], paths['0']['mode 1'])]), 'jabota.csv')
     assert len(paths['0']['mode 1']) == 11
     assert len(paths['1']['mode 1']) == 11
     assert len(paths['2']['mode 1']) == 15
@@ -39,3 +43,6 @@ def test_compute_route_constraint(xls_input):
     assert len(paths['5']['mode 1|mode 1']) == 23
     assert len(paths['6']['mode 1|mode 1']) == 0
     assert len(paths['7']['mode 1|mode 1']) == 0
+
+
+    
