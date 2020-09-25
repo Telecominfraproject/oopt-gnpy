@@ -32,8 +32,7 @@ def test_compute_route_constraint(xls_input):
     disjunction_list = deduplicate_disjunctions(disjunctions_from_json(service_sheet))
     service_list, disjunction_list = requests_aggregation(service_list, disjunction_list)
     paths = find_feasible_paths(disjunction_list, equipment, network, service_list)
-    service_list[0].blocking_reason = 'jabota'
-    pth_assign_spectrum([paths['0']['mode 1']], [service_list[0]], oms_list, [])
+    pth_assign_spectrum([paths['0']['mode 1']], [service_list[0]], oms_list, [[]])
     save_json(_path_result_json([ResultElement(service_list[0], paths['0']['mode 1'], paths['0']['mode 1'])]), 'jabota.csv')
     assert len(paths['0']['mode 1']) == 11
     assert len(paths['1']['mode 1']) == 11
@@ -45,4 +44,3 @@ def test_compute_route_constraint(xls_input):
     assert len(paths['7']['mode 1|mode 1']) == 0
 
 
-    
