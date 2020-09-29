@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "04311f3f_8bddd1bc",
+        "filename": "gnpy/tools/create_eqpt_sheet.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-29T14:37:38Z",
+      "side": 1,
+      "message": "This looks like it\u0027s using a relative path that is anchored to the script\u0027s own location, whereas a relative path will get resolved relative to user\u0027s CWD. Better do something like Path(__file__), or (better) just reuse gnpy.tools.cli_examples._example_data_dir .",
+      "range": {
+        "startLine": 21,
+        "startChar": 53,
+        "endLine": 21,
+        "endChar": 71
+      },
+      "revId": "56565e9d50dcd5a8eb7bd0b3e7ba4098f9fb8e50",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "10624e2d_790c9532",
+        "filename": "gnpy/tools/create_eqpt_sheet.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-29T14:37:38Z",
+      "side": 1,
+      "message": "This returns exit status 0, which means \"success\" on Unix. If you think that nice exceptions instead of unhandled exception traces are worth the effort for this file (your call), make sure that the process exit status still indicates failure.\n\n(Applies also everywhere else.)",
+      "revId": "56565e9d50dcd5a8eb7bd0b3e7ba4098f9fb8e50",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7280e20e_259dd23d",
+        "filename": "gnpy/tools/create_eqpt_sheet.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-29T14:37:38Z",
+      "side": 1,
+      "message": "This change now starts skipping wrong ILAs while trying to progress with the rest of the network. Previously it would just abort processing. Is this intentional? My expectation is that this is an error which should not be ignored.",
+      "revId": "56565e9d50dcd5a8eb7bd0b3e7ba4098f9fb8e50",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b283d7fb_754a0b79",
+        "filename": "gnpy/tools/create_eqpt_sheet.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-29T14:37:38Z",
+      "side": 1,
+      "message": "same here -- code would continue on an error",
+      "revId": "56565e9d50dcd5a8eb7bd0b3e7ba4098f9fb8e50",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c556eca_c1f0e6a9",
+        "filename": "gnpy/tools/create_eqpt_sheet.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-29T14:37:38Z",
+      "side": 1,
+      "message": "please add an error message (and indicate failure)",
+      "revId": "56565e9d50dcd5a8eb7bd0b3e7ba4098f9fb8e50",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
