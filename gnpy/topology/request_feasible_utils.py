@@ -58,9 +58,9 @@ def find_feasible_path(equipment, network, service):
             propagated_path = find_propagated_path(equipment, path, service)
             if propagated_path:
                 return propagated_path
-        return 'NO_PATH_WITH_CONSTRAINT'
+        return []
     except nx.NetworkXNoPath:
-        return 'NO_PATH'
+        return []
 
 
 def find_feasible_paths_disjunction(equipment, network, service0, service1):
@@ -91,9 +91,9 @@ def find_feasible_paths_disjunction(equipment, network, service0, service1):
                 if propagated_path0 and propagated_path1:
                     return propagated_path0, propagated_path1
         else:
-            return 'NO_PATH_WITH_CONSTRAINT', 'NO_PATH_WITH_CONSTRAINT'
+            return [], []
     except nx.NetworkXNoPath:
-        return 'NO_PATH', 'NO_PATH'
+        return [], []
 
 
 def find_propagated_path(equipment, path, service):

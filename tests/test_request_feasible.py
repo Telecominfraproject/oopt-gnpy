@@ -38,8 +38,8 @@ def test_compute_route_constraint(xls_input):
     assert len(paths['1']['mode 1']) == 11
     assert len(paths['2']['mode 1']) == 15
     assert len(paths['3']['mode 1']) == 7
-    assert len(paths['4']['mode 1|mode 1']) == 11
-    assert len(paths['5']['mode 1|mode 1']) == 23
+    assert len(paths['4']['mode 1|mode 1']) == 27
+    assert len(paths['5']['mode 1|mode 1']) == 15
     assert len(paths['6']['mode 1|mode 1']) == 0
     assert len(paths['7']['mode 1|mode 1']) == 0
 
