@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d278415b_046aa81f",
+        "filename": "tests/test_create_eqpt_sheet.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-29T14:46:01Z",
+      "side": 1,
+      "message": "please use the / operator from pathlib like above on line 6 instead of string substitutions",
+      "revId": "af611d47f7b2eb823a71a29286b55cd6539bf08b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f41f37e9_4f3800ca",
+        "filename": "tests/test_create_eqpt_sheet.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-29T14:46:01Z",
+      "side": 1,
+      "message": "This commit doesn\u0027t work as-is without the test data. Please add the test data to this commit.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 64
+      },
+      "revId": "af611d47f7b2eb823a71a29286b55cd6539bf08b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96e663da_2e6c3a8f",
+        "filename": "tests/test_create_eqpt_sheet.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-29T14:46:01Z",
+      "side": 1,
+      "message": "The purpose of the create_eqpt_sheet is XLS processing, so I would prefer to have a test which takes a look at some input XLS and checks if the script prepares a reasonable CSV/JSON/whatever output.\n\nI would prefer not adding 50 lines of code which just try to see if __str__ and __repr__ print out something sane, sorry.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 48
+      },
+      "revId": "af611d47f7b2eb823a71a29286b55cd6539bf08b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7adf14fe_85af6173",
+        "filename": "tests/test_create_eqpt_sheet.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-29T14:46:01Z",
+      "side": 1,
+      "message": "better have the code under test raise an exception instead of silently ignoring \"wrong nodes\"",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 38
+      },
+      "revId": "af611d47f7b2eb823a71a29286b55cd6539bf08b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0ad2c8f_439ebeb8",
+        "filename": "tests/test_create_eqpt_sheet.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-09-29T14:46:01Z",
+      "side": 1,
+      "message": "create_eqpt_template() should accept a pathlike object, is it needed to use strpath here?",
+      "range": {
+        "startLine": 77,
+        "startChar": 76,
+        "endLine": 77,
+        "endChar": 84
+      },
+      "revId": "af611d47f7b2eb823a71a29286b55cd6539bf08b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
