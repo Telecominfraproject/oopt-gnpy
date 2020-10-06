@@ -124,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "54ed7a8f_e64151b5",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2020-10-06T15:35:07Z",
+      "side": 1,
+      "message": "a typical range is [-20,20] ps/(nm km) corresponding to [-20 * e-6, 20*e-6] s/(m m) (the latter is how you can find it in the json fiber description)",
+      "parentUuid": "37c12f1e_ff97217b",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c53c6ae2_9703305c",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 3
@@ -135,6 +153,24 @@
       "writtenOn": "2020-08-01T22:12:57Z",
       "side": 1,
       "message": "@Alessio, how many digits do we need here?",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7d25c7b8_4abd52e1",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2020-10-06T15:35:07Z",
+      "side": 1,
+      "message": "this is around 0.05 ps/(nm^2 km) corresponding to 0.05 * e3 s/(m m m)",
+      "parentUuid": "c53c6ae2_9703305c",
       "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
@@ -158,6 +194,24 @@
     },
     {
       "key": {
+        "uuid": "4c787758_f22f4517",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2020-10-06T15:35:07Z",
+      "side": 1,
+      "message": "typical value for SMF fiber is 0.07 * e3 s/(m m m)",
+      "parentUuid": "805d7031_1790068f",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9830c60e_0b783236",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 3
@@ -175,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "02e1f437_6ff1ae00",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2020-10-06T15:35:07Z",
+      "side": 1,
+      "message": "a typical range is [0.5e-3, 2.5e-3] 1/(Wm)",
+      "parentUuid": "9830c60e_0b783236",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1cb18cfc_2e06ed0c",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 3
@@ -186,6 +258,24 @@
       "writtenOn": "2020-08-01T22:12:57Z",
       "side": 1,
       "message": "@Alessio, how many digits do we need here?",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd4f7ca0_a6dfe01f",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2020-10-06T15:35:07Z",
+      "side": 1,
+      "message": "a typical range is [0.01e-12,0.5e-12] s/sqrt(km) , it is not clear which is the unit in the json configuration",
+      "parentUuid": "1cb18cfc_2e06ed0c",
       "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
@@ -273,6 +363,24 @@
       "writtenOn": "2020-08-01T22:12:57Z",
       "side": 1,
       "message": "@Alessio, how many digits do we need here?",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c80b131f_121776f8",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2020-10-06T15:35:07Z",
+      "side": 1,
+      "message": "this is equal to the pmd_coef times the square root of the length of the fiber, thus its range depends on the length range",
+      "parentUuid": "5102ecb9_5abd33ff",
       "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
