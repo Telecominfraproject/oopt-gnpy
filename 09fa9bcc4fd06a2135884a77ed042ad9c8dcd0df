@@ -70,6 +70,24 @@
       "revId": "09fa9bcc4fd06a2135884a77ed042ad9c8dcd0df",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b366dd74_64b41acf",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-10-08T18:36:58Z",
+      "side": 1,
+      "message": "Not exactly. A preamp is connected to a single ROADM degree and then there are multiple connections from this ROADM degree to other degrees:\n\n                            +-------\u003e roadm_1.1 -----\u003e booster_1.1\n                           /\n preamp_1.4 --\u003e roadm_1.4-*---------\u003e roadm_1.2 -----\u003e booster_1.2\n                           \\\n                            +-------\u003e roadm_1.3 -----\u003e booster_1.3\n\nAnd in the other direction:\n\n                             +\u003c------- roadm_1.1 \u003c----- preamp_1.1\n                            /\n booster_1.4 \u003c-- roadm_1.4-*\u003c--------- roadm_1.2 \u003c----- preamp_1.2\n                            \\\n                             +\u003c------- roadm_1.3 \u003c----- preamp_1.3\n\nThis is how the OpenROADM network YANG model is defined.",
+      "parentUuid": "f5bd7fdc_0ad88834",
+      "revId": "09fa9bcc4fd06a2135884a77ed042ad9c8dcd0df",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
