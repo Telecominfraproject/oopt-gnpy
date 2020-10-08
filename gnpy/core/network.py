@@ -239,7 +239,7 @@ def set_amplifier_voa(amp, power_target, power_mode):
         amp.out_voa = voa
 
 
-def set_egress_amplifier(network, roadm, equipment, pref_total_db):
+def set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db):
     power_mode = equipment['Span']['default'].power_mode
     next_oms = (n for n in network.successors(roadm) if not isinstance(n, elements.Transceiver))
     for oms in next_oms:
@@ -250,7 +250,7 @@ def set_egress_amplifier(network, roadm, equipment, pref_total_db):
         #     node = find_last_node(next_node)
         #     next_node = next(n for n in network.successors(node))
         #     next_node = find_last_node(next_node)
-        prev_dp = getattr(roadm.params, 'target_pch_out_db', 0)
+        prev_dp = getattr(roadm.params, 'target_pch_out_db', 0) - pref_ch_db
         dp = prev_dp
         prev_voa = 0
         voa = 0
@@ -466,10 +466,10 @@ def build_network(network, equipment, pref_ch_db, pref_total_db):
 
     roadms = [r for r in amplified_nodes if isinstance(r, elements.Roadm)]
     for roadm in roadms:
-        set_egress_amplifier(network, roadm, equipment, pref_total_db)
+        set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db)
 
     # support older json input topology wo Roadms:
     if len(roadms) == 0:
         trx = [t for t in network.nodes() if isinstance(t, elements.Transceiver)]
         for t in trx:
-            set_egress_amplifier(network, t, equipment, pref_total_db)
+            set_egress_amplifier(network, t, equipment, 0, pref_total_db)
