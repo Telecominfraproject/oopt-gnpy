@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "95a25a5d_8bde3088",
+        "filename": "tests/test_parser.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-10-08T15:04:51Z",
+      "side": 1,
+      "message": "I think this can be replaced with just this:\n\n elem[\u0027params\u0027][\u0027per_degree_pch_out_db\u0027].items()\n\n...because I prefer simpler code over something that might accommodate some future changes which might or might not happen.",
+      "range": {
+        "startLine": 472,
+        "startChar": 38,
+        "endLine": 472,
+        "endChar": 104
+      },
+      "revId": "d8693c82c06def6d293ad96514afa5243d102ab5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
