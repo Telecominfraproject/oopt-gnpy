@@ -52,6 +52,24 @@
       "revId": "09fa9bcc4fd06a2135884a77ed042ad9c8dcd0df",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f5bd7fdc_0ad88834",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-10-08T14:59:18Z",
+      "side": 1,
+      "message": "I *think* that Jonas proposes something like this, which is a four-degree ROADM. The difference is that we now have multiple connections from a single preamp to many ROADMs, and many connections from several preamps into a single ROADM, like this (note, \"roadm_1.x\" nodes are repeated in the graph):\n\n               +-------\u003e roadm_1.1 -----\u003e booster_1.1\n              /\n preamp_1.4 -*---------\u003e roadm_1.2 -----\u003e booster_1.2\n              \\\n               +-------\u003e roadm_1.3 -----\u003e booster_1.3\n\n               +-------\u003e roadm_1.4 -----\u003e booster_1.4\n              /\n preamp_1.1 -*---------\u003e roadm_1.2 -----\u003e booster_1.2\n              \\\n               +-------\u003e roadm_1.3 -----\u003e booster_1.3\n\n               +-------\u003e roadm_1.1 -----\u003e booster_1.1\n              /\n preamp_1.2 -*---------\u003e roadm_1.4 -----\u003e booster_1.4\n              \\\n               +-------\u003e roadm_1.3 -----\u003e booster_1.3\n\n               +-------\u003e roadm_1.1 -----\u003e booster_1.1\n              /\n preamp_1.3 -*---------\u003e roadm_1.2 -----\u003e booster_1.2\n              \\\n               +-------\u003e roadm_1.4 -----\u003e booster_1.4\n\nThis would indeed make Python code for propagation simpler, but at the expense of a more complicated topology definition. Of course especially with JSON where the structure of the input data is totally decoupled from the Python objects in memory, we\u0027re free to let the user work with \"sane abstractions\", while preserving the simplicity of Python code. One example with the ietf-network-topo YANG model is having a single node for the \"logical ROADM\", and push the per-degree target power to the interconnecting links. I\u0027ll think about that.\n\nI think that this feature has waited for some time, so I think it\u0027s better to merge it as-is, though. Also, we might need that next-node argument for Add/Drop OSNR calculations anyway...",
+      "parentUuid": "e8d7288d_a6ecb94e",
+      "revId": "09fa9bcc4fd06a2135884a77ed042ad9c8dcd0df",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }

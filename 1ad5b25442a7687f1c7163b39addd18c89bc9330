@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "3e6527e1_76114b12",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-10-08T14:59:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e943f0b4_c2d93bfb",
+      "range": {
+        "startLine": 243,
+        "startChar": 34,
+        "endLine": 243,
+        "endChar": 39
+      },
+      "revId": "1ad5b25442a7687f1c7163b39addd18c89bc9330",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "84304875_0f9563e3",
         "filename": "tests/data/CORONET_Global_Topology_auto_design_expected.json",
         "patchSetId": 9
@@ -141,6 +165,30 @@
       "revId": "1ad5b25442a7687f1c7163b39addd18c89bc9330",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c536dbfd_1a050fc3",
+        "filename": "tests/data/CORONET_Global_Topology_auto_design_expected.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 1221,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-10-08T14:59:18Z",
+      "side": 1,
+      "message": "The YANG reader does not use any \"magic shortcuts\", so there\u0027s total decoupling between the structure in the YANG file and Python member variables (class attributes).",
+      "parentUuid": "9638668e_ed0c62c6",
+      "range": {
+        "startLine": 1212,
+        "startChar": 0,
+        "endLine": 1221,
+        "endChar": 9
+      },
+      "revId": "1ad5b25442a7687f1c7163b39addd18c89bc9330",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }

@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "27ae07a2_8d2b0769",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-10-08T14:59:18Z",
+      "side": 1,
+      "message": "I would like to not implement this new feature for the current JSON files, and instead do that in the new YANG+JSON format only. I\u0027ll be pushing an updated patch which undoes that change in gnpy.tools.json_io.",
+      "parentUuid": "dc8443a2_8bebac85",
+      "range": {
+        "startLine": 19,
+        "startChar": 2,
+        "endLine": 19,
+        "endChar": 73
+      },
+      "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "25af623d_a634fee6",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 12
@@ -96,6 +120,30 @@
     },
     {
       "key": {
+        "uuid": "23db3411_1f01c1ba",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-10-08T14:59:18Z",
+      "side": 1,
+      "message": "this will be done in a follow-up patch, apparently.",
+      "parentUuid": "ff7b7f31_6cd3b21b",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 21
+      },
+      "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7f58462b_1ffc1a5a",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 12
@@ -128,6 +176,24 @@
       "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "80fa5b59_de01a8a7",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-10-08T14:59:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9788bc76_9ec7aeb4",
+      "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     },
     {
       "key": {
@@ -175,6 +241,30 @@
       "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "37cf2fda_5b633dcd",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-10-08T14:59:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "878f2b38_4db2293c",
+      "range": {
+        "startLine": 235,
+        "startChar": 8,
+        "endLine": 236,
+        "endChar": 99
+      },
+      "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     },
     {
       "key": {
@@ -261,6 +351,24 @@
       "side": 1,
       "message": "I have tried to dig a bit more on this, and I think that Jonas is correct. But I also think that there is a discrepancy between the channel power that is recorded in the attribute p_spani (seems to be the signal power), and the carriers power that also includes the noises. Which confused me.\nSo if we consider a ROADM with input power p_spani equals to -20.0dBm, in fact it is the signal power that is equals to -20.0dBm. carriers total power might be higher (maybe ranging between -19.981 and -19.982 for this example) due to lin and NL noises. \nThe current implementation thus equalizes the carriers power to the minimum one (-19.982), while my correction applies the signal equalization -20.0.\n\nI think that the current equalization is more correct as Jonas said because equalization is performed on monitored power which includes signal and noise. However, then I think we should update the effective_pch_out_db parameter with the carriers power (inc noise) value to avoid this discrepancy. \nWhat do you think ? \n\nAnd going even a bit further,  in the case we can apply the target_pch_out_db , then shouldn\u0027t we consider that this target power is for the whole power inc noise ? and then carriers signal power should be set a bit lower according to that ?\n\nBesides, I also think that in the situation of pin lower than ptarget, we should apply a minimum loss. I can propose a patch for that.\n\nPlease tell me what you think about that.",
       "parentUuid": "37f05d0a_bfd14691",
+      "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a34a70c_755ba13b",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-10-08T14:59:18Z",
+      "side": 1,
+      "message": "I\u0027ll have to re-read the code a few more times I think. Either way, the \"real\" ROADM will equalize based on total channel power as measured on the device, which means useful signal power plus any impairments, so that\u0027s probably the value we should be working with, yup.",
+      "parentUuid": "a39ab023_97027d3f",
       "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
