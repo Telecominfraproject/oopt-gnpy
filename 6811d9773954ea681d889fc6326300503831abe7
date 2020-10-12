@@ -35,6 +35,24 @@
       "revId": "6811d9773954ea681d889fc6326300503831abe7",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2cb26dda_4b332668",
+        "filename": "tests/test_parser.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-10-12T15:53:22Z",
+      "side": 1,
+      "message": "I would appreciate if you check the \"Resolved\" checkbox once a comment has been addressed",
+      "parentUuid": "cb1258ff_d9b70fb9",
+      "revId": "6811d9773954ea681d889fc6326300503831abe7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
