@@ -17,6 +17,24 @@
       "revId": "6811d9773954ea681d889fc6326300503831abe7",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb1258ff_d9b70fb9",
+        "filename": "tests/test_parser.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-10-12T08:14:20Z",
+      "side": 1,
+      "message": "was fixed in PS5",
+      "parentUuid": "f1b8de23_323870fd",
+      "revId": "6811d9773954ea681d889fc6326300503831abe7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
