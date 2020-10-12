@@ -189,6 +189,30 @@
       "revId": "1ad5b25442a7687f1c7163b39addd18c89bc9330",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "176fe7e4_db791f9a",
+        "filename": "tests/data/CORONET_Global_Topology_auto_design_expected.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 1221,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-10-12T09:19:07Z",
+      "side": 1,
+      "message": "Seems that all my commits have \u0027post_faillure\u0027. I could not see the reports to understand the problem. It is not a Failure, so may be it is a pb with the CI chain ?",
+      "parentUuid": "c536dbfd_1a050fc3",
+      "range": {
+        "startLine": 1212,
+        "startChar": 0,
+        "endLine": 1221,
+        "endChar": 9
+      },
+      "revId": "1ad5b25442a7687f1c7163b39addd18c89bc9330",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
