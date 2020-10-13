@@ -24,12 +24,24 @@ from tests.compare import compare_networks, compare_services
 from copy import deepcopy
 from gnpy.core.utils import automatic_nch, lin2db
 from gnpy.core.network import build_network
-from gnpy.core.exceptions import ServiceError
-from gnpy.topology.request import (jsontocsv, requests_aggregation, compute_path_dsjctn, deduplicate_disjunctions,
-                                   compute_path_with_disjunction, ResultElement, PathRequest)
+from gnpy.core.exceptions import ServiceError, DisjunctionError
+from gnpy.topology.request import (jsontoparams,
+                                   jsontocsv,
+                                   requests_aggregation,
+                                   compute_path_dsjctn,
+                                   deduplicate_disjunctions,
+                                   compute_path_with_disjunction,
+                                   ResultElement,
+                                   PathRequest,
+                                   Disjunction)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.convert import convert_file
-from gnpy.tools.json_io import load_json, load_network, save_network, load_equipment, requests_from_json, disjunctions_from_json
+from gnpy.tools.json_io import (load_json,
+                                load_network,
+                                save_network,
+                                load_equipment,
+                                requests_from_json,
+                                disjunctions_from_json)
 from gnpy.tools.service_sheet import read_service_sheet, correct_xls_route_list
 
 TEST_DIR = Path(__file__).parent
@@ -427,3 +439,171 @@ def test_excel_ila_constraints(source, destination, route_list, hoptype, expecte
     else:
         with pytest.raises(ServiceError):
             [request] = correct_xls_route_list(service_xls_input, network, [request])
+
+
+@pytest.mark.parametrize('json_input',
+    (DATA_DIR / 'testTopology_response.json', )
+)
+def test_jsontoparams_no_mode(json_input):
+    """Test return values in case there is no feasible mode to explore."""
+    json_data = load_json(json_input)
+    equipment = load_equipment(eqpt_filename)
+    path = json_data['response'][0]
+    transponder_type = 'Voyager'
+    _, min_osnr, baud_rate, bit_rate, cost, \
+        _, _, _, _, _, _ = jsontoparams(path, transponder_type, None, equipment)
+    assert min_osnr == ''
+    assert baud_rate == ''
+    assert bit_rate == ''
+    assert cost == ''
+
+
+@pytest.mark.parametrize('json_input',
+    (DATA_DIR / 'testTopology_no_path.json', )
+)
+def test_jsontocsv_no_path(tmpdir, json_input):
+    """Test return when path selected is not feasible."""
+    json_data = load_json(json_input)
+    equipment = load_equipment(eqpt_filename)
+    csv_filename = Path(tmpdir / json_input.name).with_suffix('.csv')
+    with open(csv_filename, 'w', encoding='utf-8') as file_csv:
+        jsontocsv(json_data, equipment, file_csv)
+    with open(csv_filename, 'r') as f1, \
+         open(DATA_DIR / 'testTopology_no_path.csv', 'r') as f2:
+        output = f1.readlines()
+        expected = f2.readlines()
+    assert set(output) == set(expected)
+
+
+@pytest.mark.parametrize('xls_input',
+    (DATA_DIR / 'test_disjunction_error.xls', )
+)
+def test_error(xls_input):
+    """Test to check if code raises a DisjunctionError correctly at
+    the end of step 5 on request.py::compute_path_dsjctn.
+    """
+    equipment = load_equipment(eqpt_filename)
+    network = load_network(xls_input, equipment)
+    data = read_service_sheet(xls_input, equipment, network)
+    oms_list = build_oms_list(network, equipment)
+    rqs = requests_from_json(data, equipment)
+    dsjn = disjunctions_from_json(data)
+    dsjn = deduplicate_disjunctions(dsjn)
+    rqs, dsjn = requests_aggregation(rqs, dsjn)
+    with pytest.raises(DisjunctionError):
+        pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
+
+
+@pytest.mark.parametrize('xls_input', 
+    (DATA_DIR / 'test_request_aggregate_disjunction.xls', )
+)
+def test_compare_reqs(xls_input):
+    """Test if code correctly aggregates duplicate disjunctions
+    in case of aggregation of duplicate requests.
+    """
+    equipment = load_equipment(eqpt_filename)
+    network = load_network(xls_input, equipment)
+    service = read_service_sheet(xls_input, equipment, network)
+    oms_list = build_oms_list(network, equipment)
+    requests = requests_from_json(service, equipment)
+    disjunctions = deduplicate_disjunctions(disjunctions_from_json(service))
+    local_list, disjunction_list = requests_aggregation(requests, disjunctions)
+    assert local_list[0].request_id == '1 | 0'
+    assert disjunction_list[0].disjunctions_req[1] == '1 | 0'
+
+
+@pytest.mark.parametrize('xls_input', 
+    (DATA_DIR / 'test_mode_low_snr.xls', )
+)
+def test_mode_low_snr(xls_input):
+    """Test code behaviour in case of low mode snr0.1nm and blocking."""
+    equipment = load_equipment(eqpt_filename)
+    network = load_network(xls_input, equipment)
+    power_db = equipment['SI']['default'].power_dbm
+    power_total_db = power_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
+                                       equipment['SI']['default'].f_max,
+                                       equipment['SI']['default'].spacing))
+    build_network(network, equipment, power_db, power_total_db)
+    service = read_service_sheet(xls_input, equipment, network)
+    oms_list = build_oms_list(network, equipment)
+    requests = requests_from_json(service, equipment)
+    disjunctions = disjunctions_from_json(service)
+    requests, disjunctions = requests_aggregation(requests, disjunctions)
+    paths = compute_path_dsjctn(network, equipment, requests, disjunctions)
+    #conditions to 'force modes by user' as stated inside 'compute_path_with_disjunction()'
+    requests[0].baud_rate = 12.5e8
+    requests[0].bidir = True
+    requests[1].baud_rate = None
+    requests[1].blocking_reason = 'NO_PATH' 
+    requests[2].baud_rate = None
+    requests[2].blocking_reason = 'NO_FEASIBLE_MODE' 
+    propagated_paths, reversed_paths, reversed_propagated_paths = \
+        compute_path_with_disjunction(network, equipment, requests, paths)
+    #differences from results without 'forced modes'    
+    assert len(propagated_paths[1]) == 0
+    assert len(reversed_paths[2]) != 0
+
+
+@pytest.mark.parametrize('xls_input', 
+    (DATA_DIR / 'test_path_route_constraint.xls', )
+)
+def test_compute_route_constraint(xls_input):
+    """Test code behaviour in case of route constraint (loose and strict)."""
+    equipment = load_equipment(eqpt_filename)
+    network = load_network(xls_input, equipment)
+    service = read_service_sheet(xls_input, equipment, network)
+    oms_list = build_oms_list(network, equipment)
+    requests = requests_from_json(service, equipment)
+    disjunctions = deduplicate_disjunctions(disjunctions_from_json(service))
+    requests, disjunctions = requests_aggregation(requests, disjunctions)
+    with pytest.raises(DisjunctionError):
+        paths = compute_path_dsjctn(network, equipment, requests, disjunctions)
+
+
+def test_path_request_str():
+    """Test PathRequest string representation."""
+    expected = 'PathRequest(request_id=0, source=a, destination=z)'
+    params = {}
+    params['request_id'] = '0'
+    params['source'] = 'a'
+    params['destination'] = 'z'
+    params['bidir'] = ''
+    params['trx_type'] = ''
+    params['trx_mode'] = ''
+    params['baud_rate'] = ''
+    params['nodes_list'] = ''
+    params['loose_list'] = ''
+    params['spacing'] = ''
+    params['power'] = ''
+    params['nb_channel'] = ''
+    params['f_min'] = ''
+    params['f_max'] = ''
+    params['format'] = ''
+    params['OSNR'] = ''
+    params['bit_rate'] = ''
+    params['roll_off'] = ''
+    params['tx_osnr'] = ''
+    params['min_spacing'] = ''
+    params['cost'] = ''
+    params['path_bandwidth'] = ''
+    path_request = PathRequest(**params)
+    path_request_str = path_request.__str__()
+    assert path_request_str == expected
+
+
+def test_disjunction_str():
+    """Test Disjunction string representation."""
+    expected = 'Disjunction(disjunction_id=0, ' \
+               + 'relaxable=false, ' \
+               + 'link_diverse=True, ' \
+               + 'node_diverse=True, ' \
+               + "disjunctions_req=['0', '1'])"
+    params = {}
+    params['disjunction_id'] = '0'
+    params['relaxable'] = 'false'
+    params['link_diverse'] = True
+    params['node_diverse'] = True
+    params['disjunctions_req'] = ['0', '1']
+    disjunction = Disjunction(**params)
+    disjunction_str = disjunction.__str__()
+    assert disjunction_str == expected

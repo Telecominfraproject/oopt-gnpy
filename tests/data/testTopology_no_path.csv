@@ -1,0 +1,4 @@
+response-id,source,destination,path_bandwidth,Pass?,nb of tsp pairs,total cost,transponder-type,transponder-mode,OSNR-0.1nm,SNR-0.1nm,SNR-bandwidth,baud rate (Gbaud),input power (dBm),path,"spectrum (N,M)",reversed path OSNR-0.1nm,reversed path SNR-0.1nm,reversed path SNR-bandwidth
+1,1,2,,NO_FEASIBLE_MODE,,,Voyager,mode 1,30.84,30.84,26.75,32.0,0.0,1 | 2 | 3,,30.84,30.84,26.75
+2,1,2,,NO_FEASIBLE_MODE,,,Voyager,mode 1,30.84,30.84,26.75,32.0,0.0,1 | 2 | 3,,,,
+3,trx Lorient_KMA,trx Vannes_KBE,100.0,True,1,1,Voyager,mode 1,30.84,30.84,26.75,32.0,0.0,trx Lorient_KMA | roadm Lorient_KMA | Edfa1_roadm Lorient_KMA | fiber (Lorient_KMA → Vannes_KBE)-F055 | Edfa0_fiber (Lorient_KMA → Vannes_KBE)-F055 | roadm Vannes_KBE | trx Vannes_KBE,"-284, 4",30.84,30.84,26.75
