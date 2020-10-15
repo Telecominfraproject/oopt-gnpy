@@ -106,6 +106,24 @@
       "revId": "09fa9bcc4fd06a2135884a77ed042ad9c8dcd0df",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3abb77c_cc84bba8",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-10-15T12:48:29Z",
+      "side": 1,
+      "message": "I don\u0027t think we want or need to split ingress/egress. What matters for the OSNR/GSNR is only power into the booster. The power out from one degree into another may matter when you need to control the individual WSS elements in each degree but why does GNPy need to care about that?",
+      "parentUuid": "44e97b5c_f13301ab",
+      "revId": "09fa9bcc4fd06a2135884a77ed042ad9c8dcd0df",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
