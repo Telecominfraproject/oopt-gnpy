@@ -88,6 +88,24 @@
       "revId": "09fa9bcc4fd06a2135884a77ed042ad9c8dcd0df",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "44e97b5c_f13301ab",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-10-15T11:21:38Z",
+      "side": 1,
+      "message": "@Esther: We talked about this at the coders call this Tuesday with Jonas and Gert. I don\u0027t feel great proposing a last-minute change, but I like this abstraction that was inspired by the OpenROADM network model. So here\u0027s what I propose:\n\n- change the XLS -\u003e JSON generator so that the XLS part remains the same, but it generates one ROADM element per each degree, and when crossing a \"logical ROADM node\", the path is actually preamp -\u003e deg1 -\u003e deg2 -\u003e booster,\n- changing the YANG model so that the ROADM counterpart is called \"roadm-degree\".\n\nThat all will, however, *not* solve our problem with disaggregated ROADMs completely, and if we want to keep the propagation algorithm simple (no \"next node\" arg), we\u0027ll have to introduce even more elements to the mix I\u0027m afraid. Going back to Jonas\u0027 example above, the per-channel target TX power for the \"roadm_1.1\" node *still* depends on the direction of propagation. It\u0027s plausible that the power expected at booster_1.1\u0027s input is different from what \"roadm_1.4\" nodes expect at their inputs.\n\nThe only way I can think of right now is splitting that ROADM even further, so that the flow looks like this (this time for a 3-degree ROADM):\n\n preamp_a -\u003e roadm_deg_a_ingress -\u003e roadm_deg_b_egress -\u003e booster_b\n\n preamp_a -\u003e roadm_deg_a_ingress -\u003e roadm_deg_c_egress -\u003e booster_c\n\n preamp_b -\u003e roadm_deg_b_ingress -\u003e roadm_deg_a_egress -\u003e booster_a\n\n preamp_b -\u003e roadm_deg_b_ingress -\u003e roadm_deg_c_egress -\u003e booster_c\n\n preamp_c -\u003e roadm_deg_c_ingress -\u003e roadm_deg_a_egress -\u003e booster_a\n\n preamp_c -\u003e roadm_deg_c_ingress -\u003e roadm_deg_b_egress -\u003e booster_b\n\nWith this abstraction, the TX power levels can be kept on a per-element basis.\n\nEsther, Jonas, Gert -- do we want this?",
+      "parentUuid": "b366dd74_64b41acf",
+      "revId": "09fa9bcc4fd06a2135884a77ed042ad9c8dcd0df",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
