@@ -1,0 +1,1831 @@
+{ "service" :{
+  "path-request": [
+    {
+      "request-id": "0",
+      "source": "trx Lorient_KMA",
+      "destination": "trx Vannes_KBE",
+      "src-tp-id": "trx Lorient_KMA",
+      "dst-tp-id": "trx Vannes_KBE",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": null,
+          "effective-freq-slot": [
+            {
+              "N": "null",
+              "M": "null"
+            }
+          ],
+          "spacing": 50000000000.0,
+          "max-nb-of-channel": 80,
+          "output-power": 0.0012589254117941673,
+          "path_bandwidth": 100000000000.0
+        }
+      }
+    },
+    {
+      "request-id": "1",
+      "source": "trx Brest_KLA",
+      "destination": "trx Vannes_KBE",
+      "src-tp-id": "trx Brest_KLA",
+      "dst-tp-id": "trx Vannes_KBE",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 1",
+          "effective-freq-slot": [
+            {
+              "N": "null",
+              "M": "null"
+            }
+          ],
+          "spacing": 50000000000.0,
+          "max-nb-of-channel": null,
+          "output-power": 0.0012589254117941673,
+          "path_bandwidth": 200000000000.0
+        }
+      },
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 0,
+            "num-unnum-hop": {
+              "node-id": "roadm Brest_KLA",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "LOOSE"
+            }
+          },
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 1,
+            "num-unnum-hop": {
+              "node-id": "roadm Lannion_CAS",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "LOOSE"
+            }
+          },
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 2,
+            "num-unnum-hop": {
+              "node-id": "roadm Lorient_KMA",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "LOOSE"
+            }
+          },
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 3,
+            "num-unnum-hop": {
+              "node-id": "roadm Vannes_KBE",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "LOOSE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request-id": "3",
+      "source": "trx Lannion_CAS",
+      "destination": "trx Rennes_STA",
+      "src-tp-id": "trx Lannion_CAS",
+      "dst-tp-id": "trx Rennes_STA",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "vendorA_trx-type1",
+          "trx_mode": "mode 1",
+          "effective-freq-slot": [
+            {
+              "N": "null",
+              "M": "null"
+            }
+          ],
+          "spacing": 50000000000.0,
+          "max-nb-of-channel": null,
+          "output-power": null,
+          "path_bandwidth": 60000000000.0
+        }
+      }
+    },
+    {
+      "request-id": "4",
+      "source": "trx Rennes_STA",
+      "destination": "trx Lannion_CAS",
+      "src-tp-id": "trx Rennes_STA",
+      "dst-tp-id": "trx Lannion_CAS",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "vendorA_trx-type1",
+          "trx_mode": null,
+          "effective-freq-slot": [
+            {
+              "N": "null",
+              "M": "null"
+            }
+          ],
+          "spacing": 75000000000.0,
+          "max-nb-of-channel": null,
+          "output-power": 0.0019952623149688794,
+          "path_bandwidth": 150000000000.0
+        }
+      }
+    },
+    {
+      "request-id": "5",
+      "source": "trx Rennes_STA",
+      "destination": "trx Lannion_CAS",
+      "src-tp-id": "trx Rennes_STA",
+      "dst-tp-id": "trx Lannion_CAS",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "vendorA_trx-type1",
+          "trx_mode": "mode 2",
+          "effective-freq-slot": [
+            {
+              "N": "null",
+              "M": "null"
+            }
+          ],
+          "spacing": 75000000000.0,
+          "max-nb-of-channel": 63,
+          "output-power": 0.0019952623149688794,
+          "path_bandwidth": 20000000000.0
+        }
+      }
+    },
+    {
+      "request-id": "6",
+      "source": "trx Lannion_CAS",
+      "destination": "trx Lorient_KMA",
+      "src-tp-id": "trx Lannion_CAS",
+      "dst-tp-id": "trx Lorient_KMA",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 1",
+          "effective-freq-slot": [
+            {
+              "N": "null",
+              "M": "null"
+            }
+          ],
+          "spacing": 50000000000.0,
+          "max-nb-of-channel": 76,
+          "output-power": 0.001,
+          "path_bandwidth": 300000000000.0
+        }
+      }
+    },
+    {
+      "request-id": "7",
+      "source": "trx Lannion_CAS",
+      "destination": "trx Lorient_KMA",
+      "src-tp-id": "trx Lannion_CAS",
+      "dst-tp-id": "trx Lorient_KMA",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 1",
+          "effective-freq-slot": [
+            {
+              "N": "null",
+              "M": "null"
+            }
+          ],
+          "spacing": 50000000000.0,
+          "max-nb-of-channel": 76,
+          "output-power": 0.001,
+          "path_bandwidth": 400000000000.0
+        }
+      }
+    },
+    {
+      "request-id": "7b",
+      "source": "trx Lannion_CAS",
+      "destination": "trx Lorient_KMA",
+      "src-tp-id": "trx Lannion_CAS",
+      "dst-tp-id": "trx Lorient_KMA",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 1",
+          "effective-freq-slot": [
+            {
+              "N": "null",
+              "M": "null"
+            }
+          ],
+          "spacing": 75000000000.0,
+          "max-nb-of-channel": 50,
+          "output-power": 0.001,
+          "path_bandwidth": 400000000000.0
+        }
+      }
+    }
+  ],
+  "synchronization": [
+    {
+      "synchronization-id": "3",
+      "svec": {
+        "relaxable": "false",
+        "disjointness": "node link",
+        "request-id-number": [
+          "3",
+          "1"
+        ]
+      }
+    },
+    {
+      "synchronization-id": "4",
+      "svec": {
+        "relaxable": "false",
+        "disjointness": "node link",
+        "request-id-number": [
+          "4",
+          "5"
+        ]
+      }
+    }
+  ]
+},
+"topology":
+{
+  "elements": [
+    {
+      "uid": "trx Lannion_CAS",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx Lorient_KMA",
+      "metadata": {
+        "location": {
+          "city": "Lorient_KMA",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 3.0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx Vannes_KBE",
+      "metadata": {
+        "location": {
+          "city": "Vannes_KBE",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 4.0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx Rennes_STA",
+      "metadata": {
+        "location": {
+          "city": "Rennes_STA",
+          "region": "RLD",
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx Brest_KLA",
+      "metadata": {
+        "location": {
+          "city": "Brest_KLA",
+          "region": "RLD",
+          "latitude": 4.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "roadm Lannion_CAS",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "roadm Lorient_KMA",
+      "metadata": {
+        "location": {
+          "city": "Lorient_KMA",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 3.0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "roadm Vannes_KBE",
+      "metadata": {
+        "location": {
+          "city": "Vannes_KBE",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 4.0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "roadm Rennes_STA",
+      "metadata": {
+        "location": {
+          "city": "Rennes_STA",
+          "region": "RLD",
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "roadm Brest_KLA",
+      "metadata": {
+        "location": {
+          "city": "Brest_KLA",
+          "region": "RLD",
+          "latitude": 4.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "west fused spans in Corlay",
+      "metadata": {
+        "location": {
+          "city": "Corlay",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 1.0
+        }
+      },
+      "type": "Fused"
+    },
+    {
+      "uid": "west fused spans in Loudeac",
+      "metadata": {
+        "location": {
+          "city": "Loudeac",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 2.0
+        }
+      },
+      "type": "Fused"
+    },
+    {
+      "uid": "west fused spans in Morlaix",
+      "metadata": {
+        "location": {
+          "city": "Morlaix",
+          "region": "RLD",
+          "latitude": 3.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fused"
+    },
+    {
+      "uid": "east fused spans in Corlay",
+      "metadata": {
+        "location": {
+          "city": "Corlay",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 1.0
+        }
+      },
+      "type": "Fused"
+    },
+    {
+      "uid": "east fused spans in Loudeac",
+      "metadata": {
+        "location": {
+          "city": "Loudeac",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 2.0
+        }
+      },
+      "type": "Fused"
+    },
+    {
+      "uid": "east fused spans in Morlaix",
+      "metadata": {
+        "location": {
+          "city": "Morlaix",
+          "region": "RLD",
+          "latitude": 3.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fused"
+    },
+    {
+      "uid": "fiber (Lannion_CAS → Corlay)-F061",
+      "metadata": {
+        "location": {
+          "latitude": 2.0,
+          "longitude": 0.5
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 20.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Corlay → Loudeac)-F010",
+      "metadata": {
+        "location": {
+          "latitude": 2.0,
+          "longitude": 1.5
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Loudeac → Lorient_KMA)-F054",
+      "metadata": {
+        "location": {
+          "latitude": 2.0,
+          "longitude": 2.5
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 60.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Lorient_KMA → Vannes_KBE)-F055",
+      "metadata": {
+        "location": {
+          "latitude": 2.0,
+          "longitude": 3.5
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 10.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Lannion_CAS → Stbrieuc)-F056",
+      "metadata": {
+        "location": {
+          "latitude": 1.5,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 60.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Stbrieuc → Rennes_STA)-F057",
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 65.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Lannion_CAS → Morlaix)-F059",
+      "metadata": {
+        "location": {
+          "latitude": 2.5,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 40.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Morlaix → Brest_KLA)-F060",
+      "metadata": {
+        "location": {
+          "latitude": 3.5,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 35.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Brest_KLA → Quimper)-",
+      "metadata": {
+        "location": {
+          "latitude": 2.5,
+          "longitude": 0.5
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 75.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Quimper → Lorient_KMA)-",
+      "metadata": {
+        "location": {
+          "latitude": 1.5,
+          "longitude": 2.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 70.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Ploermel → Vannes_KBE)-",
+      "metadata": {
+        "location": {
+          "latitude": 1.5,
+          "longitude": 3.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Ploermel → Rennes_STA)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 1.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 55.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Corlay → Lannion_CAS)-F061",
+      "metadata": {
+        "location": {
+          "latitude": 2.0,
+          "longitude": 0.5
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 20.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Loudeac → Corlay)-F010",
+      "metadata": {
+        "location": {
+          "latitude": 2.0,
+          "longitude": 1.5
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Lorient_KMA → Loudeac)-F054",
+      "metadata": {
+        "location": {
+          "latitude": 2.0,
+          "longitude": 2.5
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 60.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Vannes_KBE → Lorient_KMA)-F055",
+      "metadata": {
+        "location": {
+          "latitude": 2.0,
+          "longitude": 3.5
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 10.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Stbrieuc → Lannion_CAS)-F056",
+      "metadata": {
+        "location": {
+          "latitude": 1.5,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 60.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Rennes_STA → Stbrieuc)-F057",
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 65.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Morlaix → Lannion_CAS)-F059",
+      "metadata": {
+        "location": {
+          "latitude": 2.5,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 40.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Brest_KLA → Morlaix)-F060",
+      "metadata": {
+        "location": {
+          "latitude": 3.5,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 35.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Quimper → Brest_KLA)-",
+      "metadata": {
+        "location": {
+          "latitude": 2.5,
+          "longitude": 0.5
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 75.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Lorient_KMA → Quimper)-",
+      "metadata": {
+        "location": {
+          "latitude": 1.5,
+          "longitude": 2.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 70.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Vannes_KBE → Ploermel)-",
+      "metadata": {
+        "location": {
+          "latitude": 1.5,
+          "longitude": 3.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Rennes_STA → Ploermel)-",
+      "metadata": {
+        "location": {
+          "latitude": 0.5,
+          "longitude": 1.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 55.0,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "east edfa in Lannion_CAS to Corlay",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "east edfa in Lannion_CAS to Stbrieuc",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "east edfa in Stbrieuc to Rennes_STA",
+      "metadata": {
+        "location": {
+          "city": "Stbrieuc",
+          "region": "RLD",
+          "latitude": 1.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "east edfa in Lannion_CAS to Morlaix",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "east edfa in Lorient_KMA to Loudeac",
+      "metadata": {
+        "location": {
+          "city": "Lorient_KMA",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 3.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "east edfa in Vannes_KBE to Lorient_KMA",
+      "metadata": {
+        "location": {
+          "city": "Vannes_KBE",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 4.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "east edfa in Rennes_STA to Stbrieuc",
+      "metadata": {
+        "location": {
+          "city": "Rennes_STA",
+          "region": "RLD",
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "east edfa in Brest_KLA to Morlaix",
+      "metadata": {
+        "location": {
+          "city": "Brest_KLA",
+          "region": "RLD",
+          "latitude": 4.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Lannion_CAS to Corlay",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Lorient_KMA to Vannes_KBE",
+      "metadata": {
+        "location": {
+          "city": "Lorient_KMA",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 3.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Lannion_CAS to Stbrieuc",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Stbrieuc to Rennes_STA",
+      "metadata": {
+        "location": {
+          "city": "Stbrieuc",
+          "region": "RLD",
+          "latitude": 1.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Lannion_CAS to Morlaix",
+      "metadata": {
+        "location": {
+          "city": "Lannion_CAS",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Lorient_KMA to Loudeac",
+      "metadata": {
+        "location": {
+          "city": "Lorient_KMA",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 3.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Vannes_KBE to Lorient_KMA",
+      "metadata": {
+        "location": {
+          "city": "Vannes_KBE",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 4.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Rennes_STA to Stbrieuc",
+      "metadata": {
+        "location": {
+          "city": "Rennes_STA",
+          "region": "RLD",
+          "latitude": 0.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "west edfa in Brest_KLA to Morlaix",
+      "metadata": {
+        "location": {
+          "city": "Brest_KLA",
+          "region": "RLD",
+          "latitude": 4.0,
+          "longitude": 0.0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": 1.0,
+        "tilt_target": 0,
+        "out_voa": null
+      }
+    },
+    {
+      "uid": "east edfa in Lorient_KMA to Vannes_KBE",
+      "metadata": {
+        "location": {
+          "city": "Lorient_KMA",
+          "region": "RLD",
+          "latitude": 2.0,
+          "longitude": 3.0
+        }
+      },
+      "type": "Fused",
+      "params": {
+        "loss": 0
+      }
+    }
+  ],
+  "connections": [
+    {
+      "from_node": "roadm Lannion_CAS",
+      "to_node": "east edfa in Lannion_CAS to Corlay"
+    },
+    {
+      "from_node": "east edfa in Lannion_CAS to Corlay",
+      "to_node": "fiber (Lannion_CAS → Corlay)-F061"
+    },
+    {
+      "from_node": "fiber (Corlay → Lannion_CAS)-F061",
+      "to_node": "west edfa in Lannion_CAS to Corlay"
+    },
+    {
+      "from_node": "west edfa in Lannion_CAS to Corlay",
+      "to_node": "roadm Lannion_CAS"
+    },
+    {
+      "from_node": "roadm Lannion_CAS",
+      "to_node": "east edfa in Lannion_CAS to Stbrieuc"
+    },
+    {
+      "from_node": "east edfa in Lannion_CAS to Stbrieuc",
+      "to_node": "fiber (Lannion_CAS → Stbrieuc)-F056"
+    },
+    {
+      "from_node": "fiber (Stbrieuc → Lannion_CAS)-F056",
+      "to_node": "west edfa in Lannion_CAS to Stbrieuc"
+    },
+    {
+      "from_node": "west edfa in Lannion_CAS to Stbrieuc",
+      "to_node": "roadm Lannion_CAS"
+    },
+    {
+      "from_node": "roadm Lannion_CAS",
+      "to_node": "east edfa in Lannion_CAS to Morlaix"
+    },
+    {
+      "from_node": "east edfa in Lannion_CAS to Morlaix",
+      "to_node": "fiber (Lannion_CAS → Morlaix)-F059"
+    },
+    {
+      "from_node": "fiber (Morlaix → Lannion_CAS)-F059",
+      "to_node": "west edfa in Lannion_CAS to Morlaix"
+    },
+    {
+      "from_node": "west edfa in Lannion_CAS to Morlaix",
+      "to_node": "roadm Lannion_CAS"
+    },
+    {
+      "from_node": "fiber (Lannion_CAS → Corlay)-F061",
+      "to_node": "west fused spans in Corlay"
+    },
+    {
+      "from_node": "west fused spans in Corlay",
+      "to_node": "fiber (Corlay → Loudeac)-F010"
+    },
+    {
+      "from_node": "fiber (Loudeac → Corlay)-F010",
+      "to_node": "east fused spans in Corlay"
+    },
+    {
+      "from_node": "east fused spans in Corlay",
+      "to_node": "fiber (Corlay → Lannion_CAS)-F061"
+    },
+    {
+      "from_node": "fiber (Corlay → Loudeac)-F010",
+      "to_node": "west fused spans in Loudeac"
+    },
+    {
+      "from_node": "west fused spans in Loudeac",
+      "to_node": "fiber (Loudeac → Lorient_KMA)-F054"
+    },
+    {
+      "from_node": "fiber (Lorient_KMA → Loudeac)-F054",
+      "to_node": "east fused spans in Loudeac"
+    },
+    {
+      "from_node": "east fused spans in Loudeac",
+      "to_node": "fiber (Loudeac → Corlay)-F010"
+    },
+    {
+      "from_node": "roadm Lorient_KMA",
+      "to_node": "east edfa in Lorient_KMA to Loudeac"
+    },
+    {
+      "from_node": "east edfa in Lorient_KMA to Loudeac",
+      "to_node": "fiber (Lorient_KMA → Loudeac)-F054"
+    },
+    {
+      "from_node": "fiber (Loudeac → Lorient_KMA)-F054",
+      "to_node": "west edfa in Lorient_KMA to Loudeac"
+    },
+    {
+      "from_node": "west edfa in Lorient_KMA to Loudeac",
+      "to_node": "roadm Lorient_KMA"
+    },
+    {
+      "from_node": "roadm Lorient_KMA",
+      "to_node": "east edfa in Lorient_KMA to Vannes_KBE"
+    },
+    {
+      "from_node": "east edfa in Lorient_KMA to Vannes_KBE",
+      "to_node": "fiber (Lorient_KMA → Vannes_KBE)-F055"
+    },
+    {
+      "from_node": "fiber (Vannes_KBE → Lorient_KMA)-F055",
+      "to_node": "west edfa in Lorient_KMA to Vannes_KBE"
+    },
+    {
+      "from_node": "west edfa in Lorient_KMA to Vannes_KBE",
+      "to_node": "roadm Lorient_KMA"
+    },
+    {
+      "from_node": "roadm Lorient_KMA",
+      "to_node": "fiber (Lorient_KMA → Quimper)-"
+    },
+    {
+      "from_node": "fiber (Quimper → Lorient_KMA)-",
+      "to_node": "roadm Lorient_KMA"
+    },
+    {
+      "from_node": "roadm Vannes_KBE",
+      "to_node": "east edfa in Vannes_KBE to Lorient_KMA"
+    },
+    {
+      "from_node": "east edfa in Vannes_KBE to Lorient_KMA",
+      "to_node": "fiber (Vannes_KBE → Lorient_KMA)-F055"
+    },
+    {
+      "from_node": "fiber (Lorient_KMA → Vannes_KBE)-F055",
+      "to_node": "west edfa in Vannes_KBE to Lorient_KMA"
+    },
+    {
+      "from_node": "west edfa in Vannes_KBE to Lorient_KMA",
+      "to_node": "roadm Vannes_KBE"
+    },
+    {
+      "from_node": "roadm Vannes_KBE",
+      "to_node": "fiber (Vannes_KBE → Ploermel)-"
+    },
+    {
+      "from_node": "fiber (Ploermel → Vannes_KBE)-",
+      "to_node": "roadm Vannes_KBE"
+    },
+    {
+      "from_node": "fiber (Lannion_CAS → Stbrieuc)-F056",
+      "to_node": "east edfa in Stbrieuc to Rennes_STA"
+    },
+    {
+      "from_node": "east edfa in Stbrieuc to Rennes_STA",
+      "to_node": "fiber (Stbrieuc → Rennes_STA)-F057"
+    },
+    {
+      "from_node": "fiber (Rennes_STA → Stbrieuc)-F057",
+      "to_node": "west edfa in Stbrieuc to Rennes_STA"
+    },
+    {
+      "from_node": "west edfa in Stbrieuc to Rennes_STA",
+      "to_node": "fiber (Stbrieuc → Lannion_CAS)-F056"
+    },
+    {
+      "from_node": "roadm Rennes_STA",
+      "to_node": "east edfa in Rennes_STA to Stbrieuc"
+    },
+    {
+      "from_node": "east edfa in Rennes_STA to Stbrieuc",
+      "to_node": "fiber (Rennes_STA → Stbrieuc)-F057"
+    },
+    {
+      "from_node": "fiber (Stbrieuc → Rennes_STA)-F057",
+      "to_node": "west edfa in Rennes_STA to Stbrieuc"
+    },
+    {
+      "from_node": "west edfa in Rennes_STA to Stbrieuc",
+      "to_node": "roadm Rennes_STA"
+    },
+    {
+      "from_node": "roadm Rennes_STA",
+      "to_node": "fiber (Rennes_STA → Ploermel)-"
+    },
+    {
+      "from_node": "fiber (Ploermel → Rennes_STA)-",
+      "to_node": "roadm Rennes_STA"
+    },
+    {
+      "from_node": "fiber (Lannion_CAS → Morlaix)-F059",
+      "to_node": "west fused spans in Morlaix"
+    },
+    {
+      "from_node": "west fused spans in Morlaix",
+      "to_node": "fiber (Morlaix → Brest_KLA)-F060"
+    },
+    {
+      "from_node": "fiber (Brest_KLA → Morlaix)-F060",
+      "to_node": "east fused spans in Morlaix"
+    },
+    {
+      "from_node": "east fused spans in Morlaix",
+      "to_node": "fiber (Morlaix → Lannion_CAS)-F059"
+    },
+    {
+      "from_node": "roadm Brest_KLA",
+      "to_node": "east edfa in Brest_KLA to Morlaix"
+    },
+    {
+      "from_node": "east edfa in Brest_KLA to Morlaix",
+      "to_node": "fiber (Brest_KLA → Morlaix)-F060"
+    },
+    {
+      "from_node": "fiber (Morlaix → Brest_KLA)-F060",
+      "to_node": "west edfa in Brest_KLA to Morlaix"
+    },
+    {
+      "from_node": "west edfa in Brest_KLA to Morlaix",
+      "to_node": "roadm Brest_KLA"
+    },
+    {
+      "from_node": "roadm Brest_KLA",
+      "to_node": "fiber (Brest_KLA → Quimper)-"
+    },
+    {
+      "from_node": "fiber (Quimper → Brest_KLA)-",
+      "to_node": "roadm Brest_KLA"
+    },
+    {
+      "from_node": "fiber (Brest_KLA → Quimper)-",
+      "to_node": "fiber (Quimper → Lorient_KMA)-"
+    },
+    {
+      "from_node": "fiber (Lorient_KMA → Quimper)-",
+      "to_node": "fiber (Quimper → Brest_KLA)-"
+    },
+    {
+      "from_node": "fiber (Vannes_KBE → Ploermel)-",
+      "to_node": "fiber (Ploermel → Rennes_STA)-"
+    },
+    {
+      "from_node": "fiber (Rennes_STA → Ploermel)-",
+      "to_node": "fiber (Ploermel → Vannes_KBE)-"
+    },
+    {
+      "from_node": "trx Lannion_CAS",
+      "to_node": "roadm Lannion_CAS"
+    },
+    {
+      "from_node": "roadm Lannion_CAS",
+      "to_node": "trx Lannion_CAS"
+    },
+    {
+      "from_node": "trx Lorient_KMA",
+      "to_node": "roadm Lorient_KMA"
+    },
+    {
+      "from_node": "roadm Lorient_KMA",
+      "to_node": "trx Lorient_KMA"
+    },
+    {
+      "from_node": "trx Vannes_KBE",
+      "to_node": "roadm Vannes_KBE"
+    },
+    {
+      "from_node": "roadm Vannes_KBE",
+      "to_node": "trx Vannes_KBE"
+    },
+    {
+      "from_node": "trx Rennes_STA",
+      "to_node": "roadm Rennes_STA"
+    },
+    {
+      "from_node": "roadm Rennes_STA",
+      "to_node": "trx Rennes_STA"
+    },
+    {
+      "from_node": "trx Brest_KLA",
+      "to_node": "roadm Brest_KLA"
+    },
+    {
+      "from_node": "roadm Brest_KLA",
+      "to_node": "trx Brest_KLA"
+    }
+  ]
+},
+"equipment":
+{     "Edfa":[{
+            "type_variety": "high_detail_model_example",
+            "type_def": "advanced_model",
+            "gain_flatmax": 25,
+            "gain_min": 15,
+            "p_max": 21,
+            "advanced_config_from_json": "std_medium_gain_advanced_config.json",
+            "out_voa_auto": false,
+            "allowed_for_design": false
+            },                  {
+            "type_variety": "Juniper_BoosterHG",
+            "type_def": "advanced_model",
+            "gain_flatmax": 25,
+            "gain_min": 10,
+            "p_max": 21,
+            "advanced_config_from_json": "Juniper-BoosterHG.json",
+            "out_voa_auto": false,
+            "allowed_for_design": false
+            }, 
+            {
+            "type_variety": "operator_model_example",
+            "type_def": "variable_gain",
+            "gain_flatmax": 26,
+            "gain_min": 15,
+            "p_max": 23,
+            "nf_min": 6,
+            "nf_max": 10,
+            "out_voa_auto": false,
+            "allowed_for_design": false           
+            },
+            {
+            "type_variety": "low_noise",
+            "type_def": "openroadm",
+            "gain_flatmax": 27,
+            "gain_min": 12,
+            "p_max": 22,
+            "nf_coef": [-8.104e-4,-6.221e-2,-5.889e-1,37.62],
+            "allowed_for_design": false
+            },          
+            {
+            "type_variety": "standard",
+            "type_def": "openroadm",
+            "gain_flatmax": 27,
+            "gain_min": 12,
+            "p_max": 22,
+            "nf_coef": [-5.952e-4,-6.250e-2,-1.071,28.99],
+            "allowed_for_design": false
+            },
+            {
+            "type_variety": "std_high_gain",
+            "type_def": "variable_gain",
+            "gain_flatmax": 35,
+            "gain_min": 25,
+            "p_max": 21,
+            "nf_min": 5.5,
+            "nf_max": 7,
+            "out_voa_auto": false,
+            "allowed_for_design": true
+            },            
+            {
+            "type_variety": "std_medium_gain",
+            "type_def": "variable_gain",
+            "gain_flatmax": 26,
+            "gain_min": 15,
+            "p_max": 23,
+            "nf_min": 6,
+            "nf_max": 10,
+            "out_voa_auto": false,
+            "allowed_for_design": true
+            },
+            {
+            "type_variety": "std_low_gain",
+            "type_def": "variable_gain",
+            "gain_flatmax": 16,
+            "gain_min": 8,
+            "p_max": 23,
+            "nf_min": 6.5,
+            "nf_max": 11,
+            "out_voa_auto": false,
+            "allowed_for_design": true
+            },
+            {
+            "type_variety": "high_power",
+            "type_def": "variable_gain",
+            "gain_flatmax": 16,
+            "gain_min": 8,
+            "p_max": 25,
+            "nf_min": 9,
+            "nf_max": 15,
+            "out_voa_auto": false,
+            "allowed_for_design": false
+            },            
+            {
+            "type_variety": "std_fixed_gain",
+            "type_def": "fixed_gain",
+            "gain_flatmax": 21,
+            "gain_min": 20,
+            "p_max": 21,
+            "nf0": 5.5,
+            "allowed_for_design": false
+            },
+            {
+            "type_variety": "4pumps_raman",
+            "type_def": "fixed_gain",
+            "gain_flatmax": 12,
+            "gain_min": 12,
+            "p_max": 21,
+            "nf0": -1,
+            "allowed_for_design": false
+            },   
+            {
+            "type_variety": "hybrid_4pumps_lowgain",
+            "type_def": "dual_stage",
+            "raman": true,
+            "gain_min": 25,
+            "preamp_variety": "4pumps_raman",
+            "booster_variety": "std_low_gain",
+            "allowed_for_design": true
+            },
+            {
+            "type_variety": "hybrid_4pumps_mediumgain",
+            "type_def": "dual_stage",
+            "raman": true,
+            "gain_min": 25,
+            "preamp_variety": "4pumps_raman",
+            "booster_variety": "std_medium_gain",
+            "allowed_for_design": true
+            },            
+            {
+            "type_variety": "medium+low_gain",
+            "type_def": "dual_stage",
+            "gain_min": 25,
+            "preamp_variety": "std_medium_gain",
+            "booster_variety": "std_low_gain",
+            "allowed_for_design": true
+            },
+            {
+            "type_variety": "medium+high_power",
+            "type_def": "dual_stage",
+            "gain_min": 25,
+            "preamp_variety": "std_medium_gain",
+            "booster_variety": "high_power",
+            "allowed_for_design": false
+            }                                  
+      ],
+      "Fiber":[{
+            "type_variety": "SSMF",
+            "dispersion": 1.67e-05,
+            "gamma": 0.00127,
+            "pmd_coef": 1.265e-15
+            },
+            {
+            "type_variety": "NZDF",
+            "dispersion": 0.5e-05,
+            "gamma": 0.00146,
+            "pmd_coef": 1.265e-15
+            },
+            {
+            "type_variety": "LOF",
+            "dispersion": 2.2e-05,
+            "gamma": 0.000843,
+            "pmd_coef": 1.265e-15
+            }
+      ],
+      "RamanFiber":[{
+            "type_variety": "SSMF",
+            "dispersion": 1.67e-05,
+            "gamma": 0.00127,
+            "pmd_coef": 1.265e-15,
+            "raman_efficiency": {
+              "cr":[
+                  0, 9.4E-06, 2.92E-05, 4.88E-05, 6.82E-05, 8.31E-05, 9.4E-05, 0.0001014, 0.0001069, 0.0001119,
+                  0.0001217, 0.0001268, 0.0001365, 0.000149, 0.000165, 0.000181, 0.0001977, 0.0002192, 0.0002469,
+                  0.0002749, 0.0002999, 0.0003206, 0.0003405, 0.0003592, 0.000374, 0.0003826, 0.0003841, 0.0003826,
+                  0.0003802, 0.0003756, 0.0003549, 0.0003795, 0.000344, 0.0002933, 0.0002024, 0.0001158, 8.46E-05,
+                  7.14E-05, 6.86E-05, 8.5E-05, 8.93E-05, 9.01E-05, 8.15E-05, 6.67E-05, 4.37E-05, 3.28E-05, 2.96E-05,
+                  2.65E-05, 2.57E-05, 2.81E-05, 3.08E-05, 3.67E-05, 5.85E-05, 6.63E-05, 6.36E-05, 5.5E-05, 4.06E-05,
+                  2.77E-05, 2.42E-05, 1.87E-05, 1.6E-05, 1.4E-05, 1.13E-05, 1.05E-05, 9.8E-06, 9.8E-06, 1.13E-05,
+                  1.64E-05, 1.95E-05, 2.38E-05, 2.26E-05, 2.03E-05, 1.48E-05, 1.09E-05, 9.8E-06, 1.05E-05, 1.17E-05,
+                  1.25E-05, 1.21E-05, 1.09E-05, 9.8E-06, 8.2E-06, 6.6E-06, 4.7E-06, 2.7E-06, 1.9E-06, 1.2E-06, 4E-07,
+                  2E-07, 1E-07
+              ],
+              "frequency_offset":[
+                0, 0.5e12, 1e12, 1.5e12, 2e12, 2.5e12, 3e12, 3.5e12, 4e12, 4.5e12, 5e12, 5.5e12, 6e12, 6.5e12, 7e12,
+                7.5e12, 8e12, 8.5e12, 9e12, 9.5e12, 10e12, 10.5e12, 11e12, 11.5e12, 12e12, 12.5e12, 12.75e12,
+                13e12, 13.25e12, 13.5e12, 14e12, 14.5e12, 14.75e12, 15e12, 15.5e12, 16e12, 16.5e12, 17e12,
+                17.5e12, 18e12, 18.25e12, 18.5e12, 18.75e12, 19e12, 19.5e12, 20e12, 20.5e12, 21e12, 21.5e12,
+                22e12, 22.5e12, 23e12, 23.5e12, 24e12, 24.5e12, 25e12, 25.5e12, 26e12, 26.5e12, 27e12, 27.5e12, 28e12,
+                28.5e12, 29e12, 29.5e12, 30e12, 30.5e12, 31e12, 31.5e12, 32e12, 32.5e12, 33e12, 33.5e12, 34e12, 34.5e12,
+                35e12, 35.5e12, 36e12, 36.5e12, 37e12, 37.5e12, 38e12, 38.5e12, 39e12, 39.5e12, 40e12, 40.5e12, 41e12,
+                41.5e12, 42e12
+              ]
+              }
+            }
+      ],
+      "Span":[{
+            "power_mode":true,
+            "delta_power_range_db": [-2,3,0.5],
+            "max_fiber_lineic_loss_for_raman": 0.25,
+            "target_extended_gain": 2.5,
+            "max_length": 150,
+            "length_units": "km",
+            "max_loss": 28,
+            "padding": 10,
+            "EOL": 0,
+            "con_in": 0,
+            "con_out": 0
+            }
+      ],
+      "Roadm":[{
+            "target_pch_out_db": -20,
+            "add_drop_osnr": 38,
+            "pmd": 0,
+            "restrictions": {
+                            "preamp_variety_list":[],
+                            "booster_variety_list":[]
+                            }            
+            }],
+      "SI":[{
+            "f_min": 191.3e12,
+            "baud_rate": 32e9,
+            "f_max":195.1e12,
+            "spacing": 50e9,
+            "power_dbm": 0,
+            "power_range_db": [0,0,1],
+            "roll_off": 0.15,
+            "tx_osnr": 40,
+            "sys_margins": 2
+            }],
+      "Transceiver":[
+            {
+            "type_variety": "vendorA_trx-type1",
+            "frequency":{
+                        "min": 191.35e12,
+                        "max": 196.1e12
+                        },
+            "mode":[
+                       {
+
+                       "format": "mode 1",
+                       "baud_rate": 32e9,
+                       "OSNR": 11,
+                       "bit_rate": 100e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 40,
+                       "min_spacing": 37.5e9,
+                       "cost":1
+                       },
+                       {
+                       "format": "mode 2",
+                       "baud_rate": 66e9,
+                       "OSNR": 15,
+                       "bit_rate": 200e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 40,
+                       "min_spacing": 75e9,
+                       "cost":1
+                       }
+                   ]
+            },
+            {
+            "type_variety": "Voyager",
+            "frequency":{
+                        "min": 191.35e12,
+                        "max": 196.1e12
+                        },
+            "mode":[
+                       {
+                       "format": "mode 1",
+                       "baud_rate": 32e9,
+                       "OSNR": 12,
+                       "bit_rate": 100e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 40,
+                       "min_spacing": 37.5e9,
+                       "cost":1
+                       },
+                       {
+                       "format": "mode 3",
+                       "baud_rate": 44e9,
+                       "OSNR": 18,
+                       "bit_rate": 300e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 40,
+                       "min_spacing": 62.5e9,
+                       "cost":1
+                       },
+                       {
+                       "format": "mode 2",
+                       "baud_rate": 66e9,
+                       "OSNR": 21,
+                       "bit_rate": 400e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 40,
+                       "min_spacing": 75e9,
+                       "cost":1
+                       },
+                       {
+                       "format": "mode 4",
+                       "baud_rate": 66e9,
+                       "OSNR": 16,
+                       "bit_rate": 200e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 40,
+                       "min_spacing": 75e9,
+                       "cost":1
+                       }
+                   ]
+            }
+      ]
+
+}
+}
