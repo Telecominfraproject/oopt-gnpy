@@ -128,6 +128,25 @@ As a result transponder type is not part of the network info. it is related to t
 
 The current version includes a spectrum assigment features that enables to compute a candidate spectrum assignment for each service based on a first fit policy. Spectrum is assigned based on service specified spacing value, path_bandwidth value and selected mode for the transceiver. This spectrum assignment includes a basic capacity planning capability so that the spectrum resource is limited by the frequency min and max values defined for the links. If the requested services reach the link spectrum capacity, additional services feasibility are computed but marked as blocked due to spectrum reason.
 
+REST API (experimental)
+-----------------------
+``gnpy`` provides an experimental api for requesting several paths at once. It is based on Flask server.
+You can run it through command line or Docker.
+
+.. code-block:: shell-session
+
+     $ gnpy-rest
+
+.. code-block:: shell-session
+
+    $ docker run -p 8080:8080 -dit xxxx gnpy-rest
+
+After starting the api server, you can lauch a request
+
+.. code-block:: shell-session
+
+    $ curl -v -X POST -H "Content-Type: application/json" -d @<PATH_TO_JSON_REQUEST_FILE> http://localhost:8080/api/v1/path-computation
+
 
 Contributing
 ------------
