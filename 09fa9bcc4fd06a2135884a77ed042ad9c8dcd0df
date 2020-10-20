@@ -124,6 +124,24 @@
       "revId": "09fa9bcc4fd06a2135884a77ed042ad9c8dcd0df",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ef4173f_4578c4ba",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-10-20T18:41:18Z",
+      "side": 1,
+      "message": "Discussion continues on GitHub at https://github.com/Telecominfraproject/oopt-gnpy/issues/365 .",
+      "parentUuid": "b3abb77c_cc84bba8",
+      "revId": "09fa9bcc4fd06a2135884a77ed042ad9c8dcd0df",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
