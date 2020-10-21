@@ -372,6 +372,24 @@
     },
     {
       "key": {
+        "uuid": "b021b99e_6e11c16d",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-10-21T20:28:57Z",
+      "side": 1,
+      "message": "Considering the limitations of YANG (only decimal64 and 18 fraction-digits), I think it makes more sense to use \"typical\" units for all parameters, i.e. ps/nm/km for dispersion, ps/sqrt(km) for PMD coefficient, etc.\n\nBTW, there is an ongoing discussion about adding native support for float/double in future versions of YANG:\nhttps://github.com/netmod-wg/yang-next/issues/34",
+      "parentUuid": "549a19bc_6c0905c0",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8640582d_0aea7ec9",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 3
