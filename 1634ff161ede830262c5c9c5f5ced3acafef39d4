@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "99bd3fb5_6801ee1c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-10-22T15:30:55Z",
+      "side": 1,
+      "message": "that\u0027s gain excess, not power and yes, it is a normal behaviour for users that are aware that they are pushing the amp above the limit. however the example is not for the experts but for the newbies so I think that it is better to avoid to include this in examples.",
+      "parentUuid": "cd24cd5d_686e18b5",
+      "range": {
+        "startLine": 14,
+        "startChar": 36,
+        "endLine": 16,
+        "endChar": 41
+      },
+      "revId": "1634ff161ede830262c5c9c5f5ced3acafef39d4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "db7d606c_7ff2c373",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "b97917a6_57175e34",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-10-22T15:30:55Z",
+      "side": 1,
+      "message": "That\u0027s a good point. I\u0027ll think of a way for a next time",
+      "parentUuid": "db7d606c_7ff2c373",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 71
+      },
+      "revId": "1634ff161ede830262c5c9c5f5ced3acafef39d4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "232766d0_e7bd064e",
         "filename": "gnpy/core/network.py",
         "patchSetId": 3
@@ -59,6 +107,24 @@
       "writtenOn": "2020-10-22T15:09:16Z",
       "side": 1,
       "message": "This can be just `else`, because a check for that unspecified type_variety is the condition of the first if-branch.",
+      "revId": "1634ff161ede830262c5c9c5f5ced3acafef39d4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0bfcf6bb_8caa15e9",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-10-22T15:30:55Z",
+      "side": 1,
+      "message": "OK, will change that",
+      "parentUuid": "232766d0_e7bd064e",
       "revId": "1634ff161ede830262c5c9c5f5ced3acafef39d4",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
