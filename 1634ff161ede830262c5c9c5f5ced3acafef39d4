@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "cd24cd5d_686e18b5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-10-22T15:15:49Z",
+      "side": 1,
+      "message": "Again, not something for this patch, but isn\u0027t that a bug in the autodesign if it assigns power higher than what is allowed for that amplifier? You\u0027re the expert here, I\u0027m just wondering if this current behavior is correct.",
+      "range": {
+        "startLine": 14,
+        "startChar": 36,
+        "endLine": 16,
+        "endChar": 41
+      },
+      "revId": "1634ff161ede830262c5c9c5f5ced3acafef39d4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "db7d606c_7ff2c373",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
