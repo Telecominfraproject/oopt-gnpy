@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "db7d606c_7ff2c373",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-10-22T15:09:16Z",
+      "side": 1,
+      "message": "The cost of the current approach is that API users of GNPy do not receive any feedback about these warnings. But that\u0027s widespread in the code, so there\u0027s nothing to change for this patch.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 71
+      },
+      "revId": "1634ff161ede830262c5c9c5f5ced3acafef39d4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "232766d0_e7bd064e",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-10-22T15:09:16Z",
+      "side": 1,
+      "message": "This can be just `else`, because a check for that unspecified type_variety is the condition of the first if-branch.",
+      "revId": "1634ff161ede830262c5c9c5f5ced3acafef39d4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
