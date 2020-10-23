@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "0ee4d4d8_004ab324",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-10-23T07:31:15Z",
+      "side": 1,
+      "message": "I think I see this a bit differently. If the user has specified the gain (and set \"power_mode\": false, otherwise there is no point in specifying the gain since it will be overwritten by autodesign) then I agree - they probably know what they are doing and the \"out-of-range\" gain can be allowed. But if the user set gain\u003dNone they wanted autodesign to calculate and set the gain. Moreover they don\u0027t know in advance whether the calculated gain will be within the range of the specified type_variety or not. In this case maybe also an advanced user would like autodesign to enforce gain limits or at least have it as an option.",
+      "parentUuid": "7de25980_7c7e3eea",
+      "range": {
+        "startLine": 14,
+        "startChar": 36,
+        "endLine": 16,
+        "endChar": 41
+      },
+      "revId": "1634ff161ede830262c5c9c5f5ced3acafef39d4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "db7d606c_7ff2c373",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
