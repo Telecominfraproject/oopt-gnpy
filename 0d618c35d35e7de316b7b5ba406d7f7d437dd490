@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "233826c0_d2773c50",
+        "filename": "tests/yang/01-dummy.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-10-23T07:30:50Z",
+      "side": 1,
+      "message": "it is not clear to me why decimal64 values need to be between quotes. I have checked with some controller files and values are provided without quotes (eg \"gain-min\": 27.0,).\nIs there any advantage to changing that apart having yangson working on this ?",
+      "revId": "0d618c35d35e7de316b7b5ba406d7f7d437dd490",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f03f882_0ac31f79",
+        "filename": "tests/yang/01-dummy.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-10-23T07:30:50Z",
+      "side": 1,
+      "message": "The name is not correct. this not a transmitter power, but a target output power (there is no transmitter at this place). having tx here is confusing. Besides, physicaly, this is a target power for the ROADM equlization, so I prefer to have something like the previous naming target_pch_out_db. target-channel-out-power ? if you need explicit words ?",
+      "revId": "0d618c35d35e7de316b7b5ba406d7f7d437dd490",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
