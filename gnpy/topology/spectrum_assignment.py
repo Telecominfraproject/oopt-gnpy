@@ -390,23 +390,35 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
     """ basic first fit assignment
         if reversed path are provided, means that occupation is bidir
     """
-    for i, pth in enumerate(pths):
+    for pth, rq, rpth in zip(pths, rqs, rpths):
         # computes the number of channels required
         try:
-            if rqs[i].blocking_reason:
-                rqs[i].blocked = True
-                rqs[i].N = 0
-                rqs[i].M = 0
+            if rq.blocking_reason:
+                rq.blocked = True
+                rq.N = 0
+                rq.M = 0
         except AttributeError:
-            nb_wl = ceil(rqs[i].path_bandwidth / rqs[i].bit_rate)
+            nb_wl = ceil(rq.path_bandwidth / rq.bit_rate)
             # computes the total nb of slots according to requested spacing
             # TODO : express superchannels
             # assumes that all channels must be grouped
             # TODO : enables non contiguous reservation in case of blocking
-            requested_m = ceil(rqs[i].spacing / 0.0125e12) * nb_wl
-            # concatenate all path and reversed path elements to derive slots availability
-            (center_n, startn, stopn), path_oms = spectrum_selection(pth + rpths[i], oms_list, requested_m,
-                                                                     requested_n=None)
+            requested_m = ceil(rq.spacing / 0.0125e12) * nb_wl
+            if hasattr(rq, 'M') and rq.M is not None:
+                # Consistency check between the requested M and path_bandwidth
+                # M value should be bigger than the computed requested_m (simple estimate)
+                # TODO: elaborate a more accurate estimate with nb_wl * tx_osnr + possibly guardbands in case of
+                # superchannel closed packing.
+                if  requested_m <= rq.M:
+                    requested_m = rq.M
+                else:
+                    rq.N = 0
+                    rq.M = 0
+                    rq.blocking_reason = 'NOT_ENOUGH_RESERVED_SPECTRUM'
+            # else: there is no M value so the programs uses the requested_m one
+            requested_n = getattr(rq, 'N', None)
+            (center_n, startn, stopn), path_oms = spectrum_selection(pth + rpth, oms_list, requested_m,
+                                                                     requested_n)
             # checks that requested_m is fitting startm and stopm
             # if not None, center_n and start, stop frequencies are applicable to all oms of pth
             # checks that spectrum is not None else indicate blocking reason
@@ -420,12 +432,12 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
 
                 for oms_elem in path_oms:
                     oms_list[oms_elem].assign_spectrum(center_n, requested_m)
-                    oms_list[oms_elem].add_service(rqs[i].request_id, nb_wl)
-                rqs[i].blocked = False
-                rqs[i].N = center_n
-                rqs[i].M = requested_m
+                    oms_list[oms_elem].add_service(rq.request_id, nb_wl)
+                rq.blocked = False
+                rq.N = center_n
+                rq.M = requested_m
             else:
-                rqs[i].blocked = True
-                rqs[i].N = 0
-                rqs[i].M = 0
-                rqs[i].blocking_reason = 'NO_SPECTRUM'
+                rq.blocked = True
+                rq.N = 0
+                rq.M = 0
+                rq.blocking_reason = 'NO_SPECTRUM'

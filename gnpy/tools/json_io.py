@@ -475,6 +475,7 @@ def requests_from_json(json_data, equipment):
                 params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
         except KeyError:
             params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
+        params['effective_freq_slot'] = req['path-constraints']['te-bandwidth'].get('effective-freq-slot', [None])[0]
         _check_one_request(params, f_max_from_si)
 
         try:
