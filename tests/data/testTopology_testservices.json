@@ -14,8 +14,8 @@
           "trx_mode": "16QAM",
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N":"null",
+              "M":"null"
             }
           ],
           "spacing": 50000000000.0,
@@ -39,8 +39,8 @@
           "trx_mode": "PS_SP64_1",
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N":"null",
+              "M":"null"
             }
           ],
           "spacing": 50000000000.0,
@@ -64,8 +64,8 @@
           "trx_mode": "PS_SP64_1",
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N":"null",
+              "M":"null"
             }
           ],
           "spacing": 50000000000.0,
@@ -89,8 +89,8 @@
           "trx_mode": "PS_SP64_1",
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N":"null",
+              "M":"null"
             }
           ],
           "spacing": 50000000000.0,
@@ -135,8 +135,8 @@
           "trx_mode": "mode 2 - fake",
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N":"null",
+              "M":"null"
             }
           ],
           "spacing": 75000000000.0,
@@ -160,8 +160,8 @@
           "trx_mode": "mode 2",
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N":"null",
+              "M":"null"
             }
           ],
           "spacing": 75000000000.0,
@@ -185,8 +185,8 @@
           "trx_mode": "PS_SP64_1",
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N":"null",
+              "M":"null"
             }
           ],
           "spacing": 50000000000.0,
@@ -223,8 +223,8 @@
           "trx_mode": "mode 3",
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N":"null",
+              "M":"null"
             }
           ],
           "spacing": 62500000000.0,
@@ -261,8 +261,8 @@
           "trx_mode": "PS_SP64_1",
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N":"null",
+              "M":"null"
             }
           ],
           "spacing": 50000000000.0,
@@ -286,8 +286,8 @@
           "trx_mode": "PS_SP64_1",
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N":"null",
+              "M":"null"
             }
           ],
           "spacing": 50000000000.0,
@@ -332,8 +332,8 @@
           "trx_mode": "16QAM",
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N":"null",
+              "M":"null"
             }
           ],
           "spacing": 50000000000.0,
@@ -357,8 +357,8 @@
           "trx_mode": "mode 1",
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N":"null",
+              "M":"null"
             }
           ],
           "spacing": 50000000000.0,
@@ -382,8 +382,8 @@
           "trx_mode": "PS_SP64_1",
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N":"null",
+              "M":"null"
             }
           ],
           "spacing": 50000000000.0,
@@ -407,8 +407,8 @@
           "trx_mode": null,
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N":"null",
+              "M":"null"
             }
           ],
           "spacing": 50000000000.0,
@@ -453,8 +453,8 @@
           "trx_mode": null,
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N":"null",
+              "M":"null"
             }
           ],
           "spacing": 50000000000.0,
@@ -478,8 +478,8 @@
           "trx_mode": null,
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N":"null",
+              "M":"null"
             }
           ],
           "spacing": 75000000000.0,
@@ -503,8 +503,8 @@
           "trx_mode": null,
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N":"null",
+              "M":"null"
             }
           ],
           "spacing": 50000000000.0,
@@ -528,8 +528,8 @@
           "trx_mode": null,
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N":"null",
+              "M":"null"
             }
           ],
           "spacing": 75000000000.0,
@@ -553,8 +553,8 @@
           "trx_mode": null,
           "effective-freq-slot": [
             {
-              "n": "null",
-              "m": "null"
+              "N":"null",
+              "M":"null"
             }
           ],
           "spacing": 30000000000.0,

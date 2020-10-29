@@ -418,6 +418,7 @@ def test_excel_ila_constraints(source, destination, route_list, hoptype, expecte
         'nb_channel': 0,
         'power': 0,
         'path_bandwidth': 0,
+        'effective_freq_slot': None
     }
     request = PathRequest(**params)
 

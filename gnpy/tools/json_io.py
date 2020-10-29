@@ -466,6 +466,11 @@ def requests_from_json(json_data, equipment):
                 params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
         except KeyError:
             params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
+        if 'effective-freq-slot' in req['path-constraints']['te-bandwidth']:
+            # temporarily reads only the first slot
+            params['effective_freq_slot'] = req['path-constraints']['te-bandwidth']['effective-freq-slot'][0]
+        else:
+            params['effective_freq_slot'] = None
         _check_one_request(params, f_max_from_si)
 
         try:

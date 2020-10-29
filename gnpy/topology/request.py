@@ -35,7 +35,7 @@ LOGGER = getLogger(__name__)
 RequestParams = namedtuple('RequestParams', 'request_id source destination bidir trx_type' +
                            ' trx_mode nodes_list loose_list spacing power nb_channel f_min' +
                            ' f_max format baud_rate OSNR bit_rate roll_off tx_osnr' +
-                           ' min_spacing cost path_bandwidth')
+                           ' min_spacing cost path_bandwidth effective_freq_slot')
 DisjunctionParams = namedtuple('DisjunctionParams', 'disjunction_id relaxable link' +
                                '_diverse node_diverse disjunctions_req')
 
@@ -68,6 +68,9 @@ class PathRequest:
         self.min_spacing = params.min_spacing
         self.cost = params.cost
         self.path_bandwidth = params.path_bandwidth
+        if params.effective_freq_slot is not None:
+            self.N = params.effective_freq_slot['N']
+            self.M = params.effective_freq_slot['M']
 
     def __str__(self):
         return '\n\t'.join([f'{type(self).__name__} {self.request_id}',
@@ -387,7 +390,6 @@ def propagate_and_optimize_mode(path, req, equipment):
                 else:
                     req.blocking_reason = 'NO_COMPUTED_SNR'
                     return path, None
-
         # only get to this point if no baudrate/mode satisfies OSNR requirement
 
         # returns the last propagated path and mode

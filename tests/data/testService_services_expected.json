@@ -14,8 +14,8 @@
           "trx_mode": "mode 1",
           "effective-freq-slot": [
             {
-              "N": "null",
-              "M": "null"
+              "N": null,
+              "M": null
             }
           ],
           "spacing": 50000000000.0,
@@ -39,8 +39,8 @@
           "trx_mode": "mode 1",
           "effective-freq-slot": [
             {
-              "N": "null",
-              "M": "null"
+              "N": null,
+              "M": null
             }
           ],
           "spacing": 50000000000.0,
@@ -64,8 +64,8 @@
           "trx_mode": "mode 1",
           "effective-freq-slot": [
             {
-              "N": "null",
-              "M": "null"
+              "N": null,
+              "M": null
             }
           ],
           "spacing": 50000000000.0,
