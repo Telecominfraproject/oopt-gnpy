@@ -1151,7 +1151,8 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                     print(msg)
                     LOGGER.warning(msg)
                     # TODO selection of mode should also be on reversed direction !!
-                    pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
+                    if not hasattr(pathreq, 'blocking_reason'):
+                        pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
             else:
                 propagated_reversed_path = []
         else:
