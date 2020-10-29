@@ -129,6 +129,7 @@ def create_rq(equipment, srce, dest, bdir, nd_list, ls_list):
     f_max_from_si = params['f_max']
     params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
     params['path_bandwidth'] = 100000000000.0
+    params['effective_freq_slot'] = None
     requests_list.append(PathRequest(**params))
     return requests_list
 

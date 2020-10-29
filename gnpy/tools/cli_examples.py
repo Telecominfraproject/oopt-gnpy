@@ -188,6 +188,7 @@ def transmission_main_example(args=None):
     params['loose_list'] = ['strict']
     params['format'] = ''
     params['path_bandwidth'] = 0
+    params['effective_freq_slot'] = None
     trx_params = trx_mode_params(equipment)
     if args.power:
         trx_params['power'] = db2lin(float(args.power)) * 1e-3

@@ -404,9 +404,25 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
             # assumes that all channels must be grouped
             # TODO : enables non contiguous reservation in case of blocking
             requested_m = ceil(rqs[i].spacing / 0.0125e12) * nb_wl
-            # concatenate all path and reversed path elements to derive slots availability
+            if hasattr(rqs[i], 'M') and rqs[i].M is not None:
+                # Consistency check between the requested M and path_bandwidth
+                # M value should be bigger than the computed requested_m (simple estimate)
+                # TODO: elaborate a more accurate estimate with nb_wl * tx_osnr + possibly guardbands in case of
+                # superchannel closed packing.
+                if  requested_m <= rqs[i].M:
+                    requested_m = rqs[i].M
+                else:
+                    # TODO : create a specific blocking reason and following process for this case instead of an exception
+                    raise SpectrumError(f'requested M {rqs[i].M} number of slots for request {rqs[i].request_id} ' +
+                                        f'should be greater than {requested_m} to support request ' +
+                                        f'{rqs[i].path_bandwidth * 1e-9} Gbit/s with {rqs[i].tsp} {rqs[i].tsp_mode}')
+            # else: there is no M value so the programs uses the requested_m one
+            if hasattr(rqs[i], 'N'):
+                requested_n = rqs[i].N
+            else:
+                requested_n = None
             (center_n, startn, stopn), path_oms = spectrum_selection(pth + rpths[i], oms_list, requested_m,
-                                                                     requested_n=None)
+                                                                     requested_n)
             # checks that requested_m is fitting startm and stopm
             # if not None, center_n and start, stop frequencies are applicable to all oms of pth
             # checks that spectrum is not None else indicate blocking reason
