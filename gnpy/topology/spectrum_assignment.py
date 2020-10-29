@@ -404,9 +404,25 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
             # assumes that all channels must be grouped
             # TODO : enables non contiguous reservation in case of blocking
             requested_m = ceil(rqs[i].spacing / 0.0125e12) * nb_wl
-            # concatenate all path and reversed path elements to derive slots availability
+            if hasattr(rqs[i], 'M') and rqs[i].M is not None:
+                # Consistency check between the requested M and path_bandwidth
+                # M value should be bigger than the computed requested_m (simple estimate)
+                # TODO: elaborate a more accurate estimate with nb_wl * tx_osnr + possibly guardbands in case of
+                # superchannel closed packing.
+                if  requested_m <= rqs[i].M:
+                    requested_m = rqs[i].M
+                else:
+                    rqs[i].N = 0
+                    rqs[i].M = 0
+                    rqs[i].blocking_reason = 'NOT_ENOUGH_RESERVED_SPECTRUM'
+                    break
+            # else: there is no M value so the programs uses the requested_m one
+            if hasattr(rqs[i], 'N'):
+                requested_n = rqs[i].N
+            else:
+                requested_n = None
             (center_n, startn, stopn), path_oms = spectrum_selection(pth + rpths[i], oms_list, requested_m,
-                                                                     requested_n=None)
+                                                                     requested_n)
             # checks that requested_m is fitting startm and stopm
             # if not None, center_n and start, stop frequencies are applicable to all oms of pth
             # checks that spectrum is not None else indicate blocking reason
