@@ -105,6 +105,24 @@
       "revId": "594bebe4734d776c0ef1216c4aebadfa8e5cd824",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b4a25fa_4a73bb8d",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-10-30T16:17:45Z",
+      "side": 1,
+      "message": "The code was crashing because all functions were looking for a type_variety that does not exist in order to populate the operationnal dict. Since that commit, the code has evolved and type_variety is added by the autodesign, so code can support a missing type_variety for EDFA elements (I checked this in several configs).\nFor fiber there is no autodesign to guess the type_variety, so this test is still needed.\n\nI think this is an improvement to enable user to define its booster names even if he does not know the type variety of it.",
+      "parentUuid": "e1d267b4_3a18f3b4",
+      "revId": "594bebe4734d776c0ef1216c4aebadfa8e5cd824",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
