@@ -17,11 +17,12 @@ import pytest
 from gnpy.core.network import build_network
 from gnpy.core.utils import lin2db, automatic_nch
 from gnpy.core.elements import Roadm, Transceiver
-from gnpy.core.exceptions import SpectrumError
-from gnpy.topology.request import compute_path_dsjctn, find_reversed_path, deduplicate_disjunctions
+from gnpy.core.exceptions import ServiceError, SpectrumError
+from gnpy.topology.request import compute_path_dsjctn, find_reversed_path, deduplicate_disjunctions, PathRequest
 from gnpy.topology.spectrum_assignment import (build_oms_list, align_grids, nvalue_to_frequency,
                                            bitmap_sum, Bitmap, spectrum_selection, pth_assign_spectrum)
-from gnpy.tools.json_io import load_equipment, load_network, requests_from_json, disjunctions_from_json
+from gnpy.tools.json_io import (load_equipment, load_network, requests_from_json, disjunctions_from_json,
+                                _check_one_request)
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
@@ -265,6 +266,103 @@ def test_spectrum_assignment_on_path(equipment, setup, requests):
     print(center_n, startn, stopn)
     print('spectrum selection error should not be None')
     assert center_n is not None and startn is not None and stopn is not None
+
+
+def request():
+    """ creates default request dict
+    """
+    params = {
+        'request_id': '0',
+        'source': 'trx a',
+        'bidir': False,
+        'destination': 'trx g',
+        'trx_type': 'Voyager',
+        'trx_mode': 'mode 1',
+        'format': 'mode1',
+        'spacing': 50e9,
+        'nodes_list': [],
+        'loose_list': [],
+        'f_min': 191.1,
+        'f_max': 196.3,
+        'baud_rate': 32e9,
+        'OSNR': 14,
+        'bit_rate': 100e9,
+        'cost': 1,
+        'roll_off': 0.15,
+        'tx_osnr': 38,
+        'min_spacing': 37.5e9,
+        'nb_channel': None,
+        'power': 0,
+        'path_bandwidth': 800e9}
+    return params
+
+def test_freq_slot_exist(setup, equipment):
+    """ test that assignment works even if effective_freq_slot is not populated
+    """
+    network, oms_list = setup
+    params = request()
+    params['effective_freq_slot'] = None
+    rqs = [PathRequest(**params)]
+    paths = compute_path_dsjctn(network, equipment, rqs, [])
+    pth_assign_spectrum(paths, rqs, oms_list, [find_reversed_path(paths[0])])
+    assert rqs[0].N == -256
+    assert rqs[0].M == 32
+
+def test_inconsistant_freq_slot(setup, equipment):
+    """ test that an inconsistant M correctly raises an error
+    """
+    network, oms_list = setup
+    params = request()
+    # minimum required nb of slots is 32 (800Gbit/100Gbit/s channels each occupying 50GHz ie 4 slots)
+    params['effective_freq_slot'] = {'N': 0, 'M': 4}
+    with pytest.raises(ServiceError):
+        _check_one_request(params, 196.05e12)
+    params['trx_mode'] = None
+    rqs = [PathRequest(**params)]
+    paths = compute_path_dsjctn(network, equipment, rqs, [])
+    pth_assign_spectrum(paths, rqs, oms_list, [find_reversed_path(paths[0])])
+    assert rqs[0].blocking_reason == 'NOT_ENOUGH_RESERVED_SPECTRUM'
+
+
+@pytest.mark.parametrize('n, m', [(-100, 32), (150, 50), (None, 32), (-100, None),
+                                  (-280, None), (None, None), (None, None), (-60, 40)])
+def test_n_m_requests(setup, equipment, n, m):
+    """ test that various N and M values for a request end up with the correct path assgnment
+    """
+    network, oms_list = setup
+    # add an occupation on the first span of the expected path OMS list is [13, 16, 19, 20, 21, 22, 26]
+    oms_list[19].assign_spectrum(-30, 32)    # means that spectrum is occupied from indexes -62 to 1
+    params = request()
+    params['effective_freq_slot'] = {'N': n, 'M': m}
+    rqs = [PathRequest(**params)]
+
+    paths = compute_path_dsjctn(network, equipment, rqs, [])
+    # function to be tested:
+    pth_assign_spectrum(paths, rqs, oms_list, [find_reversed_path(paths[0])])
+    # check that spectrum is correctly assigned
+    if n == -280 or n == -60:    # both case should result in unfeasible spectrum, either out of band or
+        # overlapping with occupied spectrum
+        # means that requested spectrum is not available
+        assert hasattr(rqs[0], 'blocking_reason')
+        assert rqs[0].N is None
+        assert rqs[0].M is None
+    elif n is None:
+        # if n is None, there should be an assignment (enough spectrum)
+        assert rqs[0].N is not None
+        # and the center frequency should be set on the lower part of the spectrum based on m value if it exists
+        # or based on 32 
+        if m is not None:
+            assert rqs[0].N == -288 + m
+            assert rqs[0].M == m
+        else:
+            assert rqs[0].N == -256   # ie -288 + 32
+            assert rqs[0].M == 32
+    else:
+        assert rqs[0].N == n
+        if m is None:
+            assert rqs[0].M == 32
+        else:
+            assert rqs[0].M == m
 
 
 def test_reversed_direction(equipment, setup, requests, services):
