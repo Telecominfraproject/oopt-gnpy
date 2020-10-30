@@ -284,7 +284,7 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
                     gain_target = node_loss + dp - prev_dp + prev_voa
                 else:  # gain mode with effective_gain
                     gain_target = node.effective_gain
-                    dp = prev_dp - node_loss + gain_target
+                    dp = prev_dp - node_loss - prev_voa + gain_target
 
                 power_target = pref_total_db + dp
 
