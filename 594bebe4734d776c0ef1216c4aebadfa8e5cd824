@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "0c891468_12f29efd",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-10-30T17:48:03Z",
+      "side": 1,
+      "message": "I have added the dict in each roadm for each direction, because, then a user generating the auto_design json file has the template ready to adapt these values and explore different ones.",
+      "parentUuid": "359662a6_7a261a4d",
+      "revId": "594bebe4734d776c0ef1216c4aebadfa8e5cd824",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "07888c2d_e36cb74b",
         "filename": "gnpy/tools/json_io.py",
         "patchSetId": 14
