@@ -33,6 +33,24 @@
       "revId": "594bebe4734d776c0ef1216c4aebadfa8e5cd824",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c6ac64f2_18120f33",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-10-30T15:05:22Z",
+      "side": 1,
+      "message": "I guess it\u0027s related to this:\n\u003ein order to enable per degree power definition on direction where booster is not defined, enable the declaration of edfas in json without specifying type variety\nBut I don\u0027t understand how this is supposed to work or why it is needed. Can\u0027t you specify a node that is not an Edfa as the next node?",
+      "parentUuid": "07888c2d_e36cb74b",
+      "revId": "594bebe4734d776c0ef1216c4aebadfa8e5cd824",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
