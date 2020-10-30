@@ -51,6 +51,24 @@
       "revId": "594bebe4734d776c0ef1216c4aebadfa8e5cd824",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a99c75a1_8dbfe9d8",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-10-30T15:11:47Z",
+      "side": 1,
+      "message": "This change is to enable the user to define a direction on the ROADM based on booster name even if booster type_variety is not defined. I think Jan did not approve this one in patchset 12.\nRight now if a user defines an amplifier without specifying a type_variety this raises an error.",
+      "parentUuid": "07888c2d_e36cb74b",
+      "revId": "594bebe4734d776c0ef1216c4aebadfa8e5cd824",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
