@@ -87,6 +87,24 @@
       "revId": "594bebe4734d776c0ef1216c4aebadfa8e5cd824",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf82aaca_ff01a8d2",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-10-30T16:16:42Z",
+      "side": 1,
+      "message": "Ok, I think I get it now. This is to solve the case when the user wants to have a booster but wants autodesign to select the type_variety. I misunderstood the motivation at first.",
+      "parentUuid": "e1d267b4_3a18f3b4",
+      "revId": "594bebe4734d776c0ef1216c4aebadfa8e5cd824",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
