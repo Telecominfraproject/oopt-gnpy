@@ -396,7 +396,7 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
         try:
             if rqs[i].blocking_reason:
                 rqs[i].blocked = True
-                rqs[i].N = 0
+                rqs[i].N = None
                 rqs[i].M = 0
         except AttributeError:
             nb_wl, requested_m = compute_spectrum_slot_vs_bandwidth(rqs[i].path_bandwidth,
@@ -435,6 +435,6 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
                 rqs[i].M = requested_m
             else:
                 rqs[i].blocked = True
-                rqs[i].N = 0
+                rqs[i].N = None
                 rqs[i].M = 0
                 rqs[i].blocking_reason = 'NO_SPECTRUM'
