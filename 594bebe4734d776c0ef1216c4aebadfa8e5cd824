@@ -69,6 +69,24 @@
       "revId": "594bebe4734d776c0ef1216c4aebadfa8e5cd824",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1d267b4_3a18f3b4",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-10-30T15:51:49Z",
+      "side": 1,
+      "message": "\u003e Right now if a user defines an amplifier without specifying a type_variety this raises an error.\n\nWell, the comment in the code says that this error is raised because otherwise \"the code will crash later!\". So why won\u0027t the code crash if you remove this check? Also, see my second comment above.",
+      "parentUuid": "a99c75a1_8dbfe9d8",
+      "revId": "594bebe4734d776c0ef1216c4aebadfa8e5cd824",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     }
   ]
 }
