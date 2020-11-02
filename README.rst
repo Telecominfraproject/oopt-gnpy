@@ -70,7 +70,7 @@ example, to use the CORONET Global network defined in
     $ gnpy-transmission-example $(gnpy-example-data)/CORONET_Global_Topology.json
 
 It is also possible to use an Excel file input (for example
-`gnpy/example-data/CORONET_Global_Topology.xlsx <gnpy/example-data/CORONET_Global_Topology.xlsx>`_).
+`gnpy/example-data/CORONET_Global_Topology.xls <gnpy/example-data/CORONET_Global_Topology.xls>`_).
 The Excel file will be processed into a JSON file with the same prefix.
 Further details about the Excel data structure are available `in the documentation <docs/excel.rst>`__.
 
