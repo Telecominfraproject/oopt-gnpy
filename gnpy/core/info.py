@@ -10,7 +10,7 @@ This module contains classes for modelling :class:`SpectralInformation`.
 
 
 from collections import namedtuple, Sized
-from numpy import argsort, mean, array, squeeze, append, ones, ceil, any, zeros
+from numpy import argsort, mean, array, squeeze, append, ones, ceil, any, zeros, outer
 from gnpy.core.utils import automatic_nch, lin2db
 from gnpy.core.exceptions import InfoError
 
@@ -46,6 +46,7 @@ class SpectralInformation(object):
                  roll_off, chromatic_dispersion, pmd):
         indices = argsort(frequency)
         self._frequency = frequency[indices]
+        self._df = outer(ones(frequency.shape), frequency) - outer(frequency, ones(frequency.shape))
         self._number_of_channels = len(self._frequency)
         self._grid = grid[indices]
         self._baud_rate = baud_rate[indices]
@@ -74,6 +75,10 @@ class SpectralInformation(object):
     @property
     def frequency(self):
         return self._frequency
+
+    @property
+    def df(self):
+        return self._df
 
     @property
     def grid(self):

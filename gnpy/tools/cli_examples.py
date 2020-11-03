@@ -22,7 +22,6 @@ from gnpy.core.equipment import trx_mode_params
 import gnpy.core.exceptions as exceptions
 from gnpy.core.network import build_network
 from gnpy.core.parameters import SimParams
-from gnpy.core.science_utils import Simulation
 from gnpy.core.utils import db2lin, lin2db, automatic_nch
 from gnpy.topology.request import (ResultElement, jsontocsv, compute_path_dsjctn, requests_aggregation,
                                    BLOCKING_NOPATH, correct_json_route_list,
@@ -58,14 +57,8 @@ def load_common_data(equipment_filename, topology_filename, simulation_filename,
         if save_raw_network_filename is not None:
             save_network(network, save_raw_network_filename)
             print(f'{ansi_escapes.blue}Raw network (no optimizations) saved to {save_raw_network_filename}{ansi_escapes.reset}')
-        sim_params = SimParams(**load_json(simulation_filename)) if simulation_filename is not None else None
-        if not sim_params:
-            if next((node for node in network if isinstance(node, RamanFiber)), None) is not None:
-                print(f'{ansi_escapes.red}Invocation error:{ansi_escapes.reset} '
-                      f'RamanFiber requires passing simulation params via --sim-params')
-                sys.exit(1)
-        else:
-            Simulation.set_params(sim_params)
+        sim_params = load_json(simulation_filename) if simulation_filename is not None else None
+        SimParams.set_params(sim_params)
     except exceptions.EquipmentConfigError as e:
         print(f'{ansi_escapes.red}Configuration error in the equipment library:{ansi_escapes.reset} {e}')
         sys.exit(1)
@@ -82,7 +75,7 @@ def load_common_data(equipment_filename, topology_filename, simulation_filename,
         print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {e}')
         sys.exit(1)
 
-    return (equipment, network)
+    return equipment, network
 
 
 def _setup_logging(args):

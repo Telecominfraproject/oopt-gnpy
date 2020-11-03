@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @Author: Alessio Ferrari
+
 """
-checks that RamanFiber propagates properly the spectral information. In this way, also the RamanSolver and the NliSolver
- are tested.
+Checks that RamanFiber propagates properly the spectral information. In this way, also the RamanSolver and the NliSolver
+are tested.
 """
 
 from pandas import read_csv
@@ -11,9 +11,9 @@ from numpy.testing import assert_allclose
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.elements import RamanFiber
 from gnpy.core.parameters import SimParams
-from gnpy.core.science_utils import Simulation
 from gnpy.tools.json_io import load_json
 from pathlib import Path
+
 TEST_DIR = Path(__file__).parent
 
 
@@ -30,8 +30,7 @@ def test_raman_fiber():
     spectral_info_params.pop('sys_margins')
     spectral_info_input = create_input_spectral_information(power=power, **spectral_info_params)
 
-    sim_params = SimParams(**load_json(TEST_DIR / 'data' / 'sim_params.json'))
-    Simulation.set_params(sim_params)
+    SimParams.set_params(load_json(TEST_DIR / 'data' / 'sim_params.json'))
     fiber = RamanFiber(**load_json(TEST_DIR / 'data' / 'raman_fiber_config.json'))
 
     # propagation
@@ -41,7 +40,8 @@ def test_raman_fiber():
     p_ase = [carrier.power.ase for carrier in spectral_info_out.carriers]
     p_nli = [carrier.power.nli for carrier in spectral_info_out.carriers]
 
-    expected_results = read_csv(TEST_DIR / 'data' / 'expected_results_science_utils.csv')
+    expected_results = read_csv(TEST_DIR / 'data' / 'test_science_utils_expected_results.csv')
     assert_allclose(p_signal, expected_results['signal'], rtol=1e-3)
     assert_allclose(p_ase, expected_results['ase'], rtol=1e-3)
     assert_allclose(p_nli, expected_results['nli'], rtol=1e-3)
+    SimParams.reset()
