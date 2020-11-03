@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "1384c995_08fdfcf5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-11-03T15:43:32Z",
+      "side": 1,
+      "message": "We decided to take this patch series, so it\u0027s going in. Next time, however, I would prefer separate patches for separate features -- and adding per-degree parameters is a different feature from making it possible to not specify type_variety in this context.",
+      "parentUuid": "27ae07a2_8d2b0769",
+      "range": {
+        "startLine": 19,
+        "startChar": 2,
+        "endLine": 19,
+        "endChar": 73
+      },
+      "revId": "d108a714f1a33369b071062c326acec11c9d2ac5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "25af623d_a634fee6",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 12

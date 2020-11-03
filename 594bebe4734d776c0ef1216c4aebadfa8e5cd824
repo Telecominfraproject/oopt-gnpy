@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "ed7359ec_98de2137",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-11-03T15:43:32Z",
+      "side": 1,
+      "message": "a variable named \"temp\" doesn\u0027t tell much to a reviewer, so I\u0027ll be changing this to a more descriptive name.",
+      "range": {
+        "startLine": 237,
+        "startChar": 8,
+        "endLine": 237,
+        "endChar": 12
+      },
+      "revId": "594bebe4734d776c0ef1216c4aebadfa8e5cd824",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "359662a6_7a261a4d",
         "filename": "gnpy/core/network.py",
         "patchSetId": 14
@@ -34,6 +57,24 @@
       "revId": "594bebe4734d776c0ef1216c4aebadfa8e5cd824",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ac2b453_5a99fdcf",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-11-03T15:43:32Z",
+      "side": 1,
+      "message": "I would prefer if this was in a separate commit (this is not *required* for the per-degree part, and it adds extra data to an output which might not be required). Just something to keep in mind for future work, I won\u0027t be holding this patch series any longer.",
+      "parentUuid": "0c891468_12f29efd",
+      "revId": "594bebe4734d776c0ef1216c4aebadfa8e5cd824",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     },
     {
       "key": {
