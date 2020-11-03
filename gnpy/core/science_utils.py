@@ -40,7 +40,7 @@ def propagate_raman_fiber(fiber, *carriers):
 
     fiber_attenuation = (stimulated_raman_scattering.rho[:, -1])**-2
     if not raman_params.flag_raman:
-        fiber_attenuation = tuple(fiber.params.lin_attenuation for _ in carriers)
+        fiber_attenuation = tuple(fiber.lin_attenuation for _ in carriers)
 
     # evaluate Raman ASE noise if required by sim_params and if raman pumps are present
     if raman_params.flag_raman and fiber.raman_pumps:
@@ -152,7 +152,15 @@ class Simulation:
 
     @property
     def sim_params(self):
-        return self._shared_dict['sim_params']
+        if 'sim_params' in self._shared_dict:
+            sim_params = self._shared_dict['sim_params']
+        else:
+            sim_params = None
+        return sim_params
+
+    @classmethod
+    def reset(cls):
+        cls._shared_dict = {}
 
 
 class SpontaneousRamanScattering:
@@ -466,121 +474,156 @@ class NliSolver:
         at the end of the fiber span.
         """
         simulation = Simulation.get_simulation()
-        try:
-            sim_params = simulation.sim_params
+        sim_params = simulation.sim_params
+        if sim_params:
             if 'gn_model_analytic' == sim_params.nli_params.nli_method_name.lower():
                 carrier_nli = self._gn_analytic(carrier, *carriers)
             elif 'ggn_spectrally_separated' in sim_params.nli_params.nli_method_name.lower():
-                eta_matrix = self._compute_eta_matrix(carrier, *carriers)
-                carrier_nli = self._carrier_nli_from_eta_matrix(eta_matrix, carrier, *carriers)
+                carrier_nli = self._ggn_spectrally_separated(carrier, *carriers)
+            elif 'ggn_fast_aproximation' in sim_params.nli_params.nli_method_name.lower():
+                carrier_nli = self._ggn_fast_approx(carrier, *carriers)
             else:
                 raise ValueError(f'Method {sim_params.nli_params.method_nli} not implemented.')
-        except:
+        else:
             carrier_nli = self._gn_analytic(carrier, *carriers)
         return carrier_nli
 
-    @staticmethod
-    def _carrier_nli_from_eta_matrix(eta_matrix, carrier, *carriers):
-        carrier_nli = 0
-        for pump_carrier_1 in carriers:
-            for pump_carrier_2 in carriers:
-                carrier_nli += eta_matrix[pump_carrier_1.channel_number - 1, pump_carrier_2.channel_number - 1] * \
-                    pump_carrier_1.power.signal * pump_carrier_2.power.signal
-        carrier_nli *= carrier.power.signal
-
-        return carrier_nli
-
-    def _compute_eta_matrix(self, carrier_cut, *carriers):
-        cut_index = carrier_cut.channel_number - 1
-        simulation = Simulation.get_simulation()
-        sim_params = simulation.sim_params
-        # Matrix initialization
-        matrix_size = max(carriers, key=lambda x: getattr(x, 'channel_number')).channel_number
-        eta_matrix = np.zeros(shape=(matrix_size, matrix_size))
-
-        # SPM
-        logger.debug(f'Start computing SPM on channel #{carrier_cut.channel_number}')
-        # SPM GGN
-        if 'ggn' in sim_params.nli_params.nli_method_name.lower():
-            partial_nli = self._generalized_spectrally_separated_spm(carrier_cut)
-        # SPM GN
-        elif 'gn' in sim_params.nli_params.nli_method_name.lower():
-            partial_nli = self._gn_analytic(carrier_cut, *[carrier_cut])
-        eta_matrix[cut_index, cut_index] = partial_nli / (carrier_cut.power.signal**3)
-
-        # XPM
-        for pump_carrier in carriers:
-            pump_index = pump_carrier.channel_number - 1
-            if not (cut_index == pump_index):
-                logger.debug(f'Start computing XPM on channel #{carrier_cut.channel_number} '
-                             f'from channel #{pump_carrier.channel_number}')
-                # XPM GGN
-                if 'ggn' in sim_params.nli_params.nli_method_name.lower():
-                    partial_nli = self._generalized_spectrally_separated_xpm(carrier_cut, pump_carrier)
-                # XPM GGN
-                elif 'gn' in sim_params.nli_params.nli_method_name.lower():
-                    partial_nli = self._gn_analytic(carrier_cut, *[pump_carrier])
-                eta_matrix[pump_index, pump_index] = partial_nli /\
-                    (carrier_cut.power.signal * pump_carrier.power.signal**2)
-        return eta_matrix
-
     # Methods for computing GN-model
-    def _gn_analytic(self, carrier, *carriers):
+    def _gn_analytic(self, cut_carrier, *carriers):
         """ Computes the nonlinear interference power on a single carrier.
         The method uses eq. 120 from arXiv:1209.0394.
-        :param carrier: the signal under analysis
+        :param cut_carrier: the signal under analysis
         :param carriers: the full WDM comb
         :return: carrier_nli: the amount of nonlinear interference in W on the carrier under analysis
         """
-        beta2 = self.fiber.params.beta2
         gamma = self.fiber.params.gamma
-        effective_length = self.fiber.params.effective_length
-        asymptotic_length = self.fiber.params.asymptotic_length
+        g_cut = cut_carrier.power.signal / cut_carrier.baud_rate
+        spm_weight = (16.0 / 27.0) * gamma ** 2
+        xpm_weight = 2 * (16.0 / 27.0) * gamma ** 2
 
         g_nli = 0
-        for interfering_carrier in carriers:
-            g_interfearing = interfering_carrier.power.signal / interfering_carrier.baud_rate
-            g_signal = carrier.power.signal / carrier.baud_rate
-            g_nli += g_interfearing**2 * g_signal \
-                * _psi(carrier, interfering_carrier, beta2=beta2, asymptotic_length=asymptotic_length)
-        g_nli *= (16.0 / 27.0) * (gamma * effective_length) ** 2 /\
-                 (2 * np.pi * abs(beta2) * asymptotic_length)
-        carrier_nli = carrier.baud_rate * g_nli
+        for pump_carrier in carriers:
+            dn = pump_carrier.channel_number - cut_carrier.channel_number
+            if dn == 0:       # SPM
+                ggg = g_cut ** 3
+                g_nli += spm_weight * ggg * self._psi(cut_carrier, cut_carrier)
+            else:             # XPM
+                g_pump = pump_carrier.power.signal / pump_carrier.baud_rate
+                ggg = g_cut * g_pump ** 2
+                g_nli += xpm_weight * ggg * self._psi(cut_carrier, pump_carrier)
+        carrier_nli = cut_carrier.baud_rate * g_nli
         return carrier_nli
 
-    # Methods for computing the GGN-model
-    def _generalized_spectrally_separated_spm(self, carrier):
-        gamma = self.fiber.params.gamma
-        simulation = Simulation.get_simulation()
-        sim_params = simulation.sim_params
-        f_cut_resolution = sim_params.nli_params.f_cut_resolution['delta_0']
-        f_eval = carrier.frequency
-        g_cut = (carrier.power.signal / carrier.baud_rate)
+    def _psi(self, cut_carrier, pump_carrier):
+        """Calculates eq. 123 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__"""
+        beta2 = self.fiber.params.beta2
+        effective_length = self.fiber.effective_length
+        asymptotic_length = self.fiber.asymptotic_length
 
-        spm_nli = carrier.baud_rate * (16.0 / 27.0) * gamma ** 2 * g_cut ** 3 * \
-            self._generalized_psi(carrier, carrier, f_eval, f_cut_resolution, f_cut_resolution)
-        return spm_nli
+        if cut_carrier.channel_number == pump_carrier.channel_number:  # SCI, SPM
+            psi = np.arcsinh(0.5 * np.pi ** 2 * asymptotic_length * abs(beta2) * cut_carrier.baud_rate ** 2)
+        else:  # XCI, XPM
+            delta_f = cut_carrier.frequency - pump_carrier.frequency
+            psi = 0.5 * np.arcsinh(np.pi ** 2 * asymptotic_length * abs(beta2) *
+                             cut_carrier.baud_rate * (delta_f + 0.5 * pump_carrier.baud_rate))
+            psi -= 0.5 * np.arcsinh(np.pi ** 2 * asymptotic_length * abs(beta2) *
+                              cut_carrier.baud_rate * (delta_f - 0.5 * pump_carrier.baud_rate))
+        psi *= effective_length ** 2 / (2 * np.pi * abs(beta2) * asymptotic_length)
+        return psi
 
-    def _generalized_spectrally_separated_xpm(self, carrier_cut, pump_carrier):
-        gamma = self.fiber.params.gamma
-        simulation = Simulation.get_simulation()
-        sim_params = simulation.sim_params
-        delta_index = pump_carrier.channel_number - carrier_cut.channel_number
-        f_cut_resolution = sim_params.nli_params.f_cut_resolution[f'delta_{delta_index}']
-        f_pump_resolution = sim_params.nli_params.f_pump_resolution
-        f_eval = carrier_cut.frequency
-        g_pump = (pump_carrier.power.signal / pump_carrier.baud_rate)
-        g_cut = (carrier_cut.power.signal / carrier_cut.baud_rate)
-        frequency_offset_threshold = self._frequency_offset_threshold(pump_carrier.baud_rate)
-        if abs(carrier_cut.frequency - pump_carrier.frequency) <= frequency_offset_threshold:
-            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * gamma ** 2 * g_pump**2 * g_cut * \
-                2 * self._generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution)
+    # Fast approximation of the GGN-model
+    def _ggn_fast_approx(self, cut_carrier, *carriers):
+        if hasattr(self.fiber, 'raman_solver'):
+            carrier_nli = self._ggn_spectrally_separated(cut_carrier, *carriers)
         else:
-            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * gamma ** 2 * g_pump**2 * g_cut * \
-                2 * self._fast_generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution)
-        return xpm_nli
+            gamma = self.fiber.params.gamma
+            g_cut = cut_carrier.power.signal / cut_carrier.baud_rate
+            spm_weight = (16.0 / 27.0) * gamma ** 2
+            xpm_weight = 2 * (16.0 / 27.0) * gamma ** 2
+            g_nli = 0
+            for pump_carrier in carriers:
+                dn = pump_carrier.channel_number - cut_carrier.channel_number
+                if dn == 0:  # SPM
+                    ggg = g_cut ** 3
+                    g_nli += spm_weight * ggg * self._ggn_fast_psi(cut_carrier, pump_carrier)
+                else:  # XPM
+                    g_pump = pump_carrier.power.signal / pump_carrier.baud_rate
+                    ggg = g_cut * g_pump ** 2
+                    g_nli += xpm_weight * ggg * self._ggn_fast_psi(cut_carrier, pump_carrier)
+            carrier_nli = cut_carrier.baud_rate * g_nli
+        return carrier_nli
 
-    def _fast_generalized_psi(self, carrier_cut, pump_carrier, f_eval, f_cut_resolution):
+    def _ggn_fast_psi(self, cut_carrier, pump_carrier):
+        length = self.fiber.params.length
+        alpha0 = self.fiber.alpha0(cut_carrier.frequency)
+        effective_length = (1 - np.exp(-alpha0 * length))/alpha0
+        beta2 = self.fiber.params.beta2
+        Rs_cut = cut_carrier.baud_rate
+        Rs_pump = pump_carrier.baud_rate
+        Df = cut_carrier.frequency - pump_carrier.frequency
+        threshold = alpha0/ abs(beta2) / Rs_cut
+        n = 100
+        f_cut = Rs_cut * np.linspace(0, 1 / 2, n)
+        df_cut = Rs_cut / n
+        f_pump = Rs_pump * np.linspace(-1 / 2, 1 / 2, n)
+        df_pump = Rs_pump / n
+        ff = np.ones([len(f_pump), len(f_cut)])
+        ff = f_pump * ff - np.transpose(ff * f_cut)
+        ggg = (-Rs_cut / 2 < ff) & (ff < Rs_cut / 2)
+        # SPM
+        if cut_carrier.channel_number == pump_carrier.channel_number:
+            f2 = np.ones([len(f_pump), len(f_cut)])
+            f2 = f_pump * f2 * np.transpose(f2 * f_cut)
+            delta_beta = 4 * np.pi**2 * f2 * beta2
+            integrand = ggg * effective_length /alpha0 * 1/(1 + (delta_beta)**2/alpha0**2)
+            generalized_psi = np.sum(integrand) * df_cut**2
+        #XPM
+        elif abs(Df) < threshold:
+            f2 = np.ones([len(f_pump), len(f_cut)])
+            f2 = (f_pump + Df) * f2 * np.transpose(f2 * f_cut)
+            delta_beta = 4 * np.pi**2 * f2 * beta2
+            integrand = ggg * effective_length /alpha0 * 1/(1 + (delta_beta)**2/alpha0**2)
+            generalized_psi = np.sum(integrand) * df_cut * df_pump
+        else:
+            delta_beta = 4 * np.pi ** 2 * Df * beta2
+            generalized_psi = 2 * effective_length / delta_beta * \
+                              np.arctan((delta_beta * Rs_cut / 2) / alpha0) * Rs_pump
+        return generalized_psi
+
+    # Methods for computing the GGN-model
+    def _ggn_spectrally_separated(self, cut_carrier, *carriers):
+        gamma = self.fiber.params.gamma
+        simulation = Simulation.get_simulation()
+        sim_params = simulation.sim_params
+        f_eval = cut_carrier.frequency
+        g_cut = (cut_carrier.power.signal / cut_carrier.baud_rate)
+        spm_weight = (16.0 / 27.0) * gamma ** 2
+        xpm_weight = 2 * (16.0 / 27.0) * gamma ** 2
+
+        g_nli = 0
+        for pump_carrier in carriers:
+            dn = pump_carrier.channel_number - cut_carrier.channel_number
+            Df = cut_carrier.frequency - pump_carrier.frequency
+            f_cut_resolution = sim_params.nli_params.f_cut_resolution[f'delta_{dn}']
+            if dn == 0:     # SPM
+                ggg = g_cut ** 3
+                g_nli += spm_weight * ggg * \
+                  self._generalized_psi(cut_carrier, cut_carrier, f_eval, f_cut_resolution, f_cut_resolution)
+            else:           # XPM
+                f_pump_resolution = sim_params.nli_params.f_pump_resolution
+                g_pump = (pump_carrier.power.signal / pump_carrier.baud_rate)
+                ggg = g_cut * g_pump ** 2
+                frequency_offset_threshold = self._frequency_offset_threshold(pump_carrier.baud_rate)
+                if abs(Df) <= frequency_offset_threshold:
+                    g_nli += xpm_weight * ggg * self._generalized_psi(cut_carrier, pump_carrier,
+                                                                      f_eval, f_cut_resolution, f_pump_resolution)
+                else:
+                    g_nli += xpm_weight * ggg * self._fast_generalized_psi(cut_carrier, pump_carrier,
+                                                                           f_eval, f_cut_resolution)
+        carrier_nli = g_nli * cut_carrier.baud_rate
+        return carrier_nli
+
+    def _fast_generalized_psi(self, cut_carrier, pump_carrier, f_eval, f_cut_resolution):
         """ It computes the generalized psi function similarly to the one used in the GN model
         :return: generalized_psi
         """
@@ -600,8 +643,8 @@ class NliSolver:
 
         f1_array = np.array([pump_carrier.frequency - (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2),
                              pump_carrier.frequency + (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2)])
-        f2_array = np.arange(carrier_cut.frequency,
-                             carrier_cut.frequency + (carrier_cut.baud_rate * (1 + carrier_cut.roll_off) / 2),
+        f2_array = np.arange(cut_carrier.frequency,
+                             cut_carrier.frequency + (cut_carrier.baud_rate * (1 + cut_carrier.roll_off) / 2),
                              f_cut_resolution)  # Only positive f2 is used since integrand_f2 is symmetric
 
         integrand_f1 = np.zeros(len(f1_array))
@@ -613,7 +656,7 @@ class NliSolver:
         generalized_psi = 0.5 * sum(integrand_f1) * pump_carrier.baud_rate
         return generalized_psi
 
-    def _generalized_psi(self, carrier_cut, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution):
+    def _generalized_psi(self, cut_carrier, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution):
         """ It computes the generalized psi function similarly to the one used in the GN model
         :return: generalized_psi
         """
@@ -634,15 +677,15 @@ class NliSolver:
         f1_array = np.arange(pump_carrier.frequency - (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2),
                              pump_carrier.frequency + (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2),
                              f_pump_resolution)
-        f2_array = np.arange(carrier_cut.frequency - (carrier_cut.baud_rate * (1 + carrier_cut.roll_off) / 2),
-                             carrier_cut.frequency + (carrier_cut.baud_rate * (1 + carrier_cut.roll_off) / 2),
+        f2_array = np.arange(cut_carrier.frequency - (cut_carrier.baud_rate * (1 + cut_carrier.roll_off) / 2),
+                             cut_carrier.frequency + (cut_carrier.baud_rate * (1 + cut_carrier.roll_off) / 2),
                              f_cut_resolution)
         psd1 = raised_cosine_comb(f1_array, pump_carrier) * (pump_carrier.baud_rate / pump_carrier.power.signal)
 
         integrand_f1 = np.zeros(len(f1_array))
         for f1_index, (f1, psd1_sample) in enumerate(zip(f1_array, psd1)):
             f3_array = f1 + f2_array - f_eval
-            psd2 = raised_cosine_comb(f2_array, carrier_cut) * (carrier_cut.baud_rate / carrier_cut.power.signal)
+            psd2 = raised_cosine_comb(f2_array, cut_carrier) * (cut_carrier.baud_rate / cut_carrier.power.signal)
             psd3 = raised_cosine_comb(f3_array, pump_carrier) * (pump_carrier.baud_rate / pump_carrier.power.signal)
             ggg = psd1_sample * psd2 * psd3
 
@@ -672,20 +715,6 @@ class NliSolver:
         beta2 = abs(self.fiber.params.beta2)
         freq_offset_th = ((k_ref * delta_f_ref) * rs_ref * beta2_ref) / (beta2 * symbol_rate)
         return freq_offset_th
-
-
-def _psi(carrier, interfering_carrier, beta2, asymptotic_length):
-    """Calculates eq. 123 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__"""
-
-    if carrier.channel_number == interfering_carrier.channel_number:  # SCI, SPM
-        psi = np.arcsinh(0.5 * np.pi**2 * asymptotic_length * abs(beta2) * carrier.baud_rate**2)
-    else:  # XCI, XPM
-        delta_f = carrier.frequency - interfering_carrier.frequency
-        psi = np.arcsinh(np.pi**2 * asymptotic_length * abs(beta2) *
-                         carrier.baud_rate * (delta_f + 0.5 * interfering_carrier.baud_rate))
-        psi -= np.arcsinh(np.pi**2 * asymptotic_length * abs(beta2) *
-                          carrier.baud_rate * (delta_f - 0.5 * interfering_carrier.baud_rate))
-    return psi
 
 
 def estimate_nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):

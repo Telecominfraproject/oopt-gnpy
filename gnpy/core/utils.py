@@ -10,8 +10,7 @@ This module contains utility functions that are used with gnpy.
 
 
 from csv import writer
-import numpy as np
-from numpy import pi, cos, sqrt, log10
+from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and
 from scipy import constants
 from gnpy.core.exceptions import ConfigurationError
 
@@ -70,7 +69,7 @@ def arrange_frequencies(length, start, stop):
     :return: an array of frequencies determined by the spacing parameter
     :rtype: numpy.ndarray
     """
-    return np.linspace(start, stop, length)
+    return linspace(start, stop, length)
 
 
 def lin2db(value):
@@ -190,12 +189,12 @@ def rrc(ffs, baud_rate, alpha):
     Ts = 1 / baud_rate
     l_lim = (1 - alpha) / (2 * Ts)
     r_lim = (1 + alpha) / (2 * Ts)
-    hf = np.zeros(np.shape(ffs))
-    slope_inds = np.where(
-        np.logical_and(np.abs(ffs) > l_lim, np.abs(ffs) < r_lim))
+    hf = zeros(shape(ffs))
+    slope_inds = where(
+        logical_and(abs(ffs) > l_lim, abs(ffs) < r_lim))
     hf[slope_inds] = 0.5 * (1 + cos((pi * Ts / alpha) *
-                                    (np.abs(ffs[slope_inds]) - l_lim)))
-    p_inds = np.where(np.logical_and(np.abs(ffs) > 0, np.abs(ffs) < l_lim))
+                                    (abs(ffs[slope_inds]) - l_lim)))
+    p_inds = where(logical_and(abs(ffs) > 0, abs(ffs) < l_lim))
     hf[p_inds] = 1
     return sqrt(hf)
 
