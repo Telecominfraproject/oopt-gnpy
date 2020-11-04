@@ -1,4 +1,17 @@
-import numpy as np
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+gnpy.core.science_utils
+==================
+
+Solver definitions to calculate the Raman effect and the nonlinear interference noise
+
+The solvers take as input instances of the spectral information, the fiber and the simulation parameters
+"""
+
+from numpy import interp, pi, zeros, shape, where, cos, reshape, array, append, ones, argsort, nan, exp, arange, sqrt, \
+    empty, vstack, trapz, arcsinh, clip, abs, sum
 from operator import attrgetter
 from logging import getLogger
 import scipy.constants as ph
@@ -10,7 +23,6 @@ from math import isclose
 
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.exceptions import EquipmentConfigError
-
 
 logger = getLogger(__name__)
 
@@ -65,7 +77,7 @@ def propagate_raman_fiber(fiber, *carriers):
 
     new_carriers = []
     for carrier, attenuation, rmn_ase in zip(carriers, fiber_attenuation, raman_ase):
-        carrier_nli = np.interp(carrier.frequency, nli_frequencies, computed_nli)
+        carrier_nli = interp(carrier.frequency, nli_frequencies, computed_nli)
         pwr = carrier.power
         pwr = pwr._replace(signal=pwr.signal / attenuation / attenuation_out,
                            nli=(pwr.nli + carrier_nli) / attenuation / attenuation_out,
@@ -83,10 +95,10 @@ def frequency_resolution(carrier, carriers, sim_params, fiber):
         return res_dict[method], method, res_dict
 
     def _get_freq_res_dispersion_attenuation(delta_count, grid_size, alpha0, beta2, k_tol):
-        return k_tol * abs(alpha0) / abs(beta2) / (1 + delta_count) / (4 * np.pi ** 2 * grid_size)
+        return k_tol * abs(alpha0) / abs(beta2) / (1 + delta_count) / (4 * pi ** 2 * grid_size)
 
     def _get_freq_res_phase_rotation(delta_count, grid_size, delta_z, beta2, phi_tol):
-        return phi_tol / abs(beta2) / (1 + delta_count) / delta_z / (4 * np.pi ** 2 * grid_size)
+        return phi_tol / abs(beta2) / (1 + delta_count) / delta_z / (4 * pi ** 2 * grid_size)
 
     grid_size = sim_params.nli_params.wdm_grid_size
     delta_z = sim_params.raman_params.space_resolution
@@ -117,20 +129,20 @@ def raised_cosine_comb(f, *carriers):
     :param carriers: namedtuple describing the WDM comb
     :return: PSD of the WDM comb evaluated over f
     """
-    psd = np.zeros(np.shape(f))
+    psd = zeros(shape(f))
     for carrier in carriers:
         f_nch = carrier.frequency
         g_ch = carrier.power.signal / carrier.baud_rate
         ts = 1 / carrier.baud_rate
-        passband = (1 - carrier.roll_off) / (2 / carrier.baud_rate)
-        stopband = (1 + carrier.roll_off) / (2 / carrier.baud_rate)
-        ff = np.abs(f - f_nch)
-        tf = ff - passband
+        pass_band = (1 - carrier.roll_off) / (2 / carrier.baud_rate)
+        stop_band = (1 + carrier.roll_off) / (2 / carrier.baud_rate)
+        ff = abs(f - f_nch)
+        tf = ff - pass_band
         if carrier.roll_off == 0:
-            psd = np.where(tf <= 0, g_ch, 0.) + psd
+            psd = where(tf <= 0, g_ch, 0.) + psd
         else:
-            psd = g_ch * (np.where(tf <= 0, 1., 0.) + 1 / 2 * (1 + np.cos(np.pi * ts / carrier.roll_off * tf)) *
-                          np.where(tf > 0, 1., 0.) * np.where(np.abs(ff) <= stopband, 1., 0.)) + psd
+            psd = g_ch * (where(tf <= 0, 1., 0.) + 1 / 2 * (1 + cos(pi * ts / carrier.roll_off * tf)) *
+                          where(tf > 0, 1., 0.) * where(abs(ff) <= stop_band, 1., 0.)) + psd
     return psd
 
 
@@ -227,13 +239,13 @@ class RamanSolver:
 
         alphap_fiber = self.fiber.alpha(freq_array)
 
-        freq_diff = abs(freq_array - np.reshape(freq_array, (len(freq_array), 1)))
+        freq_diff = abs(freq_array - reshape(freq_array, (len(freq_array), 1)))
         interp_cr = interp1d(raman_efficiency['frequency_offset'], raman_efficiency['cr'])
         cr = interp_cr(freq_diff)
 
         # z propagation axis
         z_array = self.stimulated_raman_scattering.z
-        ase_bc = np.zeros(freq_array.shape)
+        ase_bc = zeros(freq_array.shape)
 
         # calculate ase power
         int_spontaneous_raman = self._int_spontaneous_raman(z_array, self._stimulated_raman_scattering.power,
@@ -254,28 +266,28 @@ class RamanSolver:
         """
 
         # Signal power spectrum
-        pow_array = np.array([])
-        f_array = np.array([])
-        noise_bandwidth_array = np.array([])
+        pow_array = array([])
+        f_array = array([])
+        noise_bandwidth_array = array([])
         for carrier in sorted(carriers, key=attrgetter('frequency')):
-            f_array = np.append(f_array, carrier.frequency)
-            pow_array = np.append(pow_array, carrier.power.signal)
+            f_array = append(f_array, carrier.frequency)
+            pow_array = append(pow_array, carrier.power.signal)
             ref_bw = carrier.baud_rate
-            noise_bandwidth_array = np.append(noise_bandwidth_array, ref_bw)
+            noise_bandwidth_array = append(noise_bandwidth_array, ref_bw)
 
-        propagation_direction = np.ones(len(f_array))
+        propagation_direction = ones(len(f_array))
 
         # Raman pump power spectrum
         if raman_pumps:
             for pump in raman_pumps:
-                pow_array = np.append(pow_array, pump.power)
-                f_array = np.append(f_array, pump.frequency)
+                pow_array = append(pow_array, pump.power)
+                f_array = append(f_array, pump.frequency)
                 direction = +1 if pump.propagation_direction.lower() == 'coprop' else -1
-                propagation_direction = np.append(propagation_direction, direction)
-                noise_bandwidth_array = np.append(noise_bandwidth_array, ref_bw)
+                propagation_direction = append(propagation_direction, direction)
+                noise_bandwidth_array = append(noise_bandwidth_array, ref_bw)
 
         # Final sorting
-        ind = np.argsort(f_array)
+        ind = argsort(f_array)
         f_array = f_array[ind]
         pow_array = pow_array[ind]
         propagation_direction = propagation_direction[ind]
@@ -293,27 +305,27 @@ class RamanSolver:
         h = ph.value('Planck constant')
         kb = ph.value('Boltzmann constant')
 
-        power_ase = np.nan * np.ones(raman_matrix.shape)
+        power_ase = nan * ones(raman_matrix.shape)
         int_pump = cumtrapz(raman_matrix, z_array, dx=dx, axis=1, initial=0)
 
         for f_ind, f_ase in enumerate(freq_array):
             cr_raman = cr_raman_matrix[f_ind, :]
             vibrational_loss = f_ase / freq_array[:f_ind]
-            eta = 1 / (np.exp((h * freq_diff[f_ind, f_ind + 1:]) / (kb * temperature)) - 1)
+            eta = 1 / (exp((h * freq_diff[f_ind, f_ind + 1:]) / (kb * temperature)) - 1)
 
             int_fiber_loss = -alphap_fiber[f_ind] * z_array
-            int_raman_loss = np.sum((cr_raman[:f_ind] * vibrational_loss * int_pump[:f_ind, :].transpose()).transpose(),
+            int_raman_loss = sum((cr_raman[:f_ind] * vibrational_loss * int_pump[:f_ind, :].transpose()).transpose(),
                                     axis=0)
-            int_raman_gain = np.sum((cr_raman[f_ind + 1:] * int_pump[f_ind + 1:, :].transpose()).transpose(), axis=0)
+            int_raman_gain = sum((cr_raman[f_ind + 1:] * int_pump[f_ind + 1:, :].transpose()).transpose(), axis=0)
 
             int_gain_loss = int_fiber_loss + int_raman_gain + int_raman_loss
 
-            new_ase = np.sum((cr_raman[f_ind + 1:] * (1 + eta) * raman_matrix[f_ind + 1:, :].transpose()).transpose()
+            new_ase = sum((cr_raman[f_ind + 1:] * (1 + eta) * raman_matrix[f_ind + 1:, :].transpose()).transpose()
                              * h * f_ase * bn_array[f_ind], axis=0)
 
-            bc_evolution = ase_bc[f_ind] * np.exp(int_gain_loss)
-            ase_evolution = np.exp(int_gain_loss) * cumtrapz(new_ase *
-                                                             np.exp(-int_gain_loss), z_array, dx=dx, initial=0)
+            bc_evolution = ase_bc[f_ind] * exp(int_gain_loss)
+            ase_evolution = exp(int_gain_loss) * cumtrapz(new_ase *
+                                                             exp(-int_gain_loss), z_array, dx=dx, initial=0)
 
             power_ase[f_ind, :] = bc_evolution + ase_evolution
 
@@ -332,7 +344,7 @@ class RamanSolver:
         sim_params = simulation.sim_params
 
         if not sim_params.raman_params.flag_raman:
-            raman_efficiency['cr'] = np.zeros(len(raman_efficiency['cr']))
+            raman_efficiency['cr'] = zeros(len(raman_efficiency['cr']))
         # raman solver parameters
         z_resolution = sim_params.raman_params.space_resolution
         tolerance = sim_params.raman_params.tolerance
@@ -343,12 +355,12 @@ class RamanSolver:
 
         alphap_fiber = self.fiber.alpha(freq_array)
 
-        freq_diff = abs(freq_array - np.reshape(freq_array, (len(freq_array), 1)))
+        freq_diff = abs(freq_array - reshape(freq_array, (len(freq_array), 1)))
         interp_cr = interp1d(raman_efficiency['frequency_offset'], raman_efficiency['cr'])
         cr = interp_cr(freq_diff)
 
         # z propagation axis
-        z = np.arange(0, fiber_length + 1, z_resolution)
+        z = arange(0, fiber_length + 1, z_resolution)
 
         def ode_function(z, p):
             return self._ode_stimulated_raman(z, p, alphap_fiber, freq_array, cr, prop_direct)
@@ -362,14 +374,14 @@ class RamanSolver:
         bvp_solution = solve_bvp(ode_function, boundary_residual, z, initial_guess_conditions, tol=tolerance)
 
         rho = (bvp_solution.y.transpose() / power_spectrum).transpose()
-        rho = np.sqrt(rho)    # From power attenuation to field attenuation
+        rho = sqrt(rho)    # From power attenuation to field attenuation
         stimulated_raman_scattering = StimulatedRamanScattering(freq_array, bvp_solution.x, rho, bvp_solution.y)
 
         self._stimulated_raman_scattering = stimulated_raman_scattering
 
     def _residuals_stimulated_raman(self, ya, yb, power_spectrum, prop_direct):
 
-        computed_boundary_value = np.zeros(ya.size)
+        computed_boundary_value = zeros(ya.size)
 
         for index, direction in enumerate(prop_direct):
             if direction == +1:
@@ -393,12 +405,12 @@ class RamanSolver:
         the second ndarray index identifies the step in z. ndarray
         """
 
-        power_guess = np.empty((power_spectrum.size, z.size))
+        power_guess = empty((power_spectrum.size, z.size))
         for f_index, power_slice in enumerate(power_spectrum):
             if prop_direct[f_index] == +1:
-                power_guess[f_index, :] = np.exp(-alphap_fiber[f_index] * z) * power_slice
+                power_guess[f_index, :] = exp(-alphap_fiber[f_index] * z) * power_slice
             else:
-                power_guess[f_index, :] = np.exp(-alphap_fiber[f_index] * z[::-1]) * power_slice
+                power_guess[f_index, :] = exp(-alphap_fiber[f_index] * z[::-1]) * power_slice
 
         return power_guess
 
@@ -419,26 +431,26 @@ class RamanSolver:
         :return: dP/dz: the power variation in dz [W/m]. numpy array. Size n
         """
 
-        dpdz = np.nan * np.ones(power_spectrum.shape)
+        dpdz = nan * ones(power_spectrum.shape)
         for f_ind, power in enumerate(power_spectrum):
             cr_raman = cr_raman_matrix[f_ind, :]
             vibrational_loss = freq_array[f_ind] / freq_array[:f_ind]
 
             for z_ind, power_sample in enumerate(power):
-                raman_gain = np.sum(cr_raman[f_ind + 1:] * power_spectrum[f_ind + 1:, z_ind])
-                raman_loss = np.sum(vibrational_loss * cr_raman[:f_ind] * power_spectrum[:f_ind, z_ind])
+                raman_gain = sum(cr_raman[f_ind + 1:] * power_spectrum[f_ind + 1:, z_ind])
+                raman_loss = sum(vibrational_loss * cr_raman[:f_ind] * power_spectrum[:f_ind, z_ind])
 
                 dpdz_element = prop_direct[f_ind] * (-alphap_fiber[f_ind] + raman_gain - raman_loss) * power_sample
                 dpdz[f_ind][z_ind] = dpdz_element
 
-        return np.vstack(dpdz)
+        return vstack(dpdz)
 
 
 class NliSolver:
     """ This class implements the NLI models.
         Model and method can be specified in `sim_params.nli_params.method`.
         List of implemented methods:
-        'gn_model_analytic': brute force triple integral solution
+        'gn_model_analytic': eq. 120 from arXiv:1209.0394
         'ggn_spectrally_separated_xpm_spm': XPM plus SPM
     """
 
@@ -488,38 +500,38 @@ class NliSolver:
 
         return carrier_nli
 
-    def _compute_eta_matrix(self, carrier_cut, *carriers):
-        cut_index = carrier_cut.channel_number - 1
+    def _compute_eta_matrix(self, cut_carrier, *carriers):
+        cut_index = cut_carrier.channel_number - 1
         simulation = Simulation.get_simulation()
         sim_params = simulation.sim_params
         # Matrix initialization
         matrix_size = max(carriers, key=lambda x: getattr(x, 'channel_number')).channel_number
-        eta_matrix = np.zeros(shape=(matrix_size, matrix_size))
+        eta_matrix = zeros(shape=(matrix_size, matrix_size))
 
         # SPM
-        logger.debug(f'Start computing SPM on channel #{carrier_cut.channel_number}')
+        logger.debug(f'Start computing SPM on channel #{cut_carrier.channel_number}')
         # SPM GGN
         if 'ggn' in sim_params.nli_params.nli_method_name.lower():
-            partial_nli = self._generalized_spectrally_separated_spm(carrier_cut)
+            partial_nli = self._generalized_spectrally_separated_spm(cut_carrier)
         # SPM GN
         elif 'gn' in sim_params.nli_params.nli_method_name.lower():
-            partial_nli = self._gn_analytic(carrier_cut, *[carrier_cut])
-        eta_matrix[cut_index, cut_index] = partial_nli / (carrier_cut.power.signal**3)
+            partial_nli = self._gn_analytic(cut_carrier, *[cut_carrier])
+        eta_matrix[cut_index, cut_index] = partial_nli / (cut_carrier.power.signal**3)
 
         # XPM
         for pump_carrier in carriers:
             pump_index = pump_carrier.channel_number - 1
             if not (cut_index == pump_index):
-                logger.debug(f'Start computing XPM on channel #{carrier_cut.channel_number} '
+                logger.debug(f'Start computing XPM on channel #{cut_carrier.channel_number} '
                              f'from channel #{pump_carrier.channel_number}')
                 # XPM GGN
                 if 'ggn' in sim_params.nli_params.nli_method_name.lower():
-                    partial_nli = self._generalized_spectrally_separated_xpm(carrier_cut, pump_carrier)
+                    partial_nli = self._generalized_spectrally_separated_xpm(cut_carrier, pump_carrier)
                 # XPM GGN
                 elif 'gn' in sim_params.nli_params.nli_method_name.lower():
-                    partial_nli = self._gn_analytic(carrier_cut, *[pump_carrier])
-                eta_matrix[pump_index, pump_index] = partial_nli /\
-                    (carrier_cut.power.signal * pump_carrier.power.signal**2)
+                    partial_nli = self._gn_analytic(cut_carrier, *[pump_carrier])
+                eta_matrix[pump_index, pump_index] = \
+                    partial_nli / (cut_carrier.power.signal * pump_carrier.power.signal**2)
         return eta_matrix
 
     # Methods for computing GN-model
@@ -537,12 +549,12 @@ class NliSolver:
 
         g_nli = 0
         for interfering_carrier in carriers:
-            g_interfearing = interfering_carrier.power.signal / interfering_carrier.baud_rate
+            g_interfering = interfering_carrier.power.signal / interfering_carrier.baud_rate
             g_signal = carrier.power.signal / carrier.baud_rate
-            g_nli += g_interfearing**2 * g_signal \
+            g_nli += g_interfering**2 * g_signal \
                 * _psi(carrier, interfering_carrier, beta2=beta2, asymptotic_length=asymptotic_length)
         g_nli *= (16.0 / 27.0) * (gamma * effective_length) ** 2 /\
-                 (2 * np.pi * abs(beta2) * asymptotic_length)
+                 (2 * pi * abs(beta2) * asymptotic_length)
         carrier_nli = carrier.baud_rate * g_nli
         return carrier_nli
 
@@ -559,26 +571,26 @@ class NliSolver:
             self._generalized_psi(carrier, carrier, f_eval, f_cut_resolution, f_cut_resolution)
         return spm_nli
 
-    def _generalized_spectrally_separated_xpm(self, carrier_cut, pump_carrier):
+    def _generalized_spectrally_separated_xpm(self, cut_carrier, pump_carrier):
         gamma = self.fiber.params.gamma
         simulation = Simulation.get_simulation()
         sim_params = simulation.sim_params
-        delta_index = pump_carrier.channel_number - carrier_cut.channel_number
+        delta_index = pump_carrier.channel_number - cut_carrier.channel_number
         f_cut_resolution = sim_params.nli_params.f_cut_resolution[f'delta_{delta_index}']
         f_pump_resolution = sim_params.nli_params.f_pump_resolution
-        f_eval = carrier_cut.frequency
+        f_eval = cut_carrier.frequency
         g_pump = (pump_carrier.power.signal / pump_carrier.baud_rate)
-        g_cut = (carrier_cut.power.signal / carrier_cut.baud_rate)
+        g_cut = (cut_carrier.power.signal / cut_carrier.baud_rate)
         frequency_offset_threshold = self._frequency_offset_threshold(pump_carrier.baud_rate)
-        if abs(carrier_cut.frequency - pump_carrier.frequency) <= frequency_offset_threshold:
-            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * gamma ** 2 * g_pump**2 * g_cut * \
-                2 * self._generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution)
+        if abs(cut_carrier.frequency - pump_carrier.frequency) <= frequency_offset_threshold:
+            xpm_nli = cut_carrier.baud_rate * (16.0 / 27.0) * gamma ** 2 * g_pump**2 * g_cut * \
+                2 * self._generalized_psi(cut_carrier, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution)
         else:
-            xpm_nli = carrier_cut.baud_rate * (16.0 / 27.0) * gamma ** 2 * g_pump**2 * g_cut * \
-                2 * self._fast_generalized_psi(carrier_cut, pump_carrier, f_eval, f_cut_resolution)
+            xpm_nli = cut_carrier.baud_rate * (16.0 / 27.0) * gamma ** 2 * g_pump**2 * g_cut * \
+                2 * self._fast_generalized_psi(cut_carrier, pump_carrier, f_eval, f_cut_resolution)
         return xpm_nli
 
-    def _fast_generalized_psi(self, carrier_cut, pump_carrier, f_eval, f_cut_resolution):
+    def _fast_generalized_psi(self, cut_carrier, pump_carrier, f_eval, f_cut_resolution):
         """ It computes the generalized psi function similarly to the one used in the GN model
         :return: generalized_psi
         """
@@ -589,29 +601,29 @@ class NliSolver:
         f_ref_beta = self.fiber.params.ref_frequency
         z = self.stimulated_raman_scattering.z
         frequency_rho = self.stimulated_raman_scattering.frequency
-        rho_norm = self.stimulated_raman_scattering.rho * np.exp(np.abs(alpha0) * z / 2)
+        rho_norm = self.stimulated_raman_scattering.rho * exp(abs(alpha0) * z / 2)
         if len(frequency_rho) == 1:
             def rho_function(f): return rho_norm[0, :]
         else:
             rho_function = interp1d(frequency_rho, rho_norm, axis=0, fill_value='extrapolate')
         rho_norm_pump = rho_function(pump_carrier.frequency)
 
-        f1_array = np.array([pump_carrier.frequency - (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2),
-                             pump_carrier.frequency + (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2)])
-        f2_array = np.arange(carrier_cut.frequency,
-                             carrier_cut.frequency + (carrier_cut.baud_rate * (1 + carrier_cut.roll_off) / 2),
-                             f_cut_resolution)  # Only positive f2 is used since integrand_f2 is symmetric
+        f1_array = array([pump_carrier.frequency - (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2),
+                         pump_carrier.frequency + (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2)])
+        f2_array = arange(cut_carrier.frequency,
+                          cut_carrier.frequency + (cut_carrier.baud_rate * (1 + cut_carrier.roll_off) / 2),
+                          f_cut_resolution)  # Only positive f2 is used since integrand_f2 is symmetric
 
-        integrand_f1 = np.zeros(len(f1_array))
+        integrand_f1 = zeros(len(f1_array))
         for f1_index, f1 in enumerate(f1_array):
-            delta_beta = 4 * np.pi**2 * (f1 - f_eval) * (f2_array - f_eval) * \
-                (beta2 + np.pi * beta3 * (f1 + f2_array - 2 * f_ref_beta))
+            delta_beta = 4 * pi**2 * (f1 - f_eval) * (f2_array - f_eval) * \
+                (beta2 + pi * beta3 * (f1 + f2_array - 2 * f_ref_beta))
             integrand_f2 = self._generalized_rho_nli(delta_beta, rho_norm_pump, z, alpha0)
-            integrand_f1[f1_index] = 2 * np.trapz(integrand_f2, f2_array)  # 2x since integrand_f2 is symmetric in f2
+            integrand_f1[f1_index] = 2 * trapz(integrand_f2, f2_array)  # 2x since integrand_f2 is symmetric in f2
         generalized_psi = 0.5 * sum(integrand_f1) * pump_carrier.baud_rate
         return generalized_psi
 
-    def _generalized_psi(self, carrier_cut, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution):
+    def _generalized_psi(self, cut_carrier, pump_carrier, f_eval, f_cut_resolution, f_pump_resolution):
         """ It computes the generalized psi function similarly to the one used in the GN model
         :return: generalized_psi
         """
@@ -622,44 +634,44 @@ class NliSolver:
         f_ref_beta = self.fiber.params.ref_frequency
         z = self.stimulated_raman_scattering.z
         frequency_rho = self.stimulated_raman_scattering.frequency
-        rho_norm = self.stimulated_raman_scattering.rho * np.exp(np.abs(alpha0) * z / 2)
+        rho_norm = self.stimulated_raman_scattering.rho * exp(abs(alpha0) * z / 2)
         if len(frequency_rho) == 1:
             def rho_function(f): return rho_norm[0, :]
         else:
             rho_function = interp1d(frequency_rho, rho_norm, axis=0, fill_value='extrapolate')
         rho_norm_pump = rho_function(pump_carrier.frequency)
 
-        f1_array = np.arange(pump_carrier.frequency - (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2),
-                             pump_carrier.frequency + (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2),
-                             f_pump_resolution)
-        f2_array = np.arange(carrier_cut.frequency - (carrier_cut.baud_rate * (1 + carrier_cut.roll_off) / 2),
-                             carrier_cut.frequency + (carrier_cut.baud_rate * (1 + carrier_cut.roll_off) / 2),
-                             f_cut_resolution)
+        f1_array = arange(pump_carrier.frequency - (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2),
+                          pump_carrier.frequency + (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2),
+                          f_pump_resolution)
+        f2_array = arange(cut_carrier.frequency - (cut_carrier.baud_rate * (1 + cut_carrier.roll_off) / 2),
+                          cut_carrier.frequency + (cut_carrier.baud_rate * (1 + cut_carrier.roll_off) / 2),
+                          f_cut_resolution)
         psd1 = raised_cosine_comb(f1_array, pump_carrier) * (pump_carrier.baud_rate / pump_carrier.power.signal)
 
-        integrand_f1 = np.zeros(len(f1_array))
+        integrand_f1 = zeros(len(f1_array))
         for f1_index, (f1, psd1_sample) in enumerate(zip(f1_array, psd1)):
             f3_array = f1 + f2_array - f_eval
-            psd2 = raised_cosine_comb(f2_array, carrier_cut) * (carrier_cut.baud_rate / carrier_cut.power.signal)
+            psd2 = raised_cosine_comb(f2_array, cut_carrier) * (cut_carrier.baud_rate / cut_carrier.power.signal)
             psd3 = raised_cosine_comb(f3_array, pump_carrier) * (pump_carrier.baud_rate / pump_carrier.power.signal)
             ggg = psd1_sample * psd2 * psd3
 
-            delta_beta = 4 * np.pi**2 * (f1 - f_eval) * (f2_array - f_eval) * \
-                (beta2 + np.pi * beta3 * (f1 + f2_array - 2 * f_ref_beta))
+            delta_beta = 4 * pi**2 * (f1 - f_eval) * (f2_array - f_eval) * \
+                (beta2 + pi * beta3 * (f1 + f2_array - 2 * f_ref_beta))
 
             integrand_f2 = ggg * self._generalized_rho_nli(delta_beta, rho_norm_pump, z, alpha0)
-            integrand_f1[f1_index] = np.trapz(integrand_f2, f2_array)
-        generalized_psi = np.trapz(integrand_f1, f1_array)
+            integrand_f1[f1_index] = trapz(integrand_f2, f2_array)
+        generalized_psi = trapz(integrand_f1, f1_array)
         return generalized_psi
 
     @staticmethod
     def _generalized_rho_nli(delta_beta, rho_norm_pump, z, alpha0):
         w = 1j * delta_beta - alpha0
-        generalized_rho_nli = (rho_norm_pump[-1]**2 * np.exp(w * z[-1]) - rho_norm_pump[0]**2 * np.exp(w * z[0])) / w
+        generalized_rho_nli = (rho_norm_pump[-1]**2 * exp(w * z[-1]) - rho_norm_pump[0]**2 * exp(w * z[0])) / w
         for z_ind in range(0, len(z) - 1):
             derivative_rho = (rho_norm_pump[z_ind + 1]**2 - rho_norm_pump[z_ind]**2) / (z[z_ind + 1] - z[z_ind])
-            generalized_rho_nli -= derivative_rho * (np.exp(w * z[z_ind + 1]) - np.exp(w * z[z_ind])) / (w**2)
-        generalized_rho_nli = np.abs(generalized_rho_nli)**2
+            generalized_rho_nli -= derivative_rho * (exp(w * z[z_ind + 1]) - exp(w * z[z_ind])) / (w**2)
+        generalized_rho_nli = abs(generalized_rho_nli)**2
         return generalized_rho_nli
 
     def _frequency_offset_threshold(self, symbol_rate):
@@ -674,15 +686,14 @@ class NliSolver:
 
 def _psi(carrier, interfering_carrier, beta2, asymptotic_length):
     """Calculates eq. 123 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__"""
-
     if carrier.channel_number == interfering_carrier.channel_number:  # SCI, SPM
-        psi = np.arcsinh(0.5 * np.pi**2 * asymptotic_length * abs(beta2) * carrier.baud_rate**2)
+        psi = arcsinh(0.5 * pi**2 * asymptotic_length * abs(beta2) * carrier.baud_rate**2)
     else:  # XCI, XPM
         delta_f = carrier.frequency - interfering_carrier.frequency
-        psi = np.arcsinh(np.pi**2 * asymptotic_length * abs(beta2) *
-                         carrier.baud_rate * (delta_f + 0.5 * interfering_carrier.baud_rate))
-        psi -= np.arcsinh(np.pi**2 * asymptotic_length * abs(beta2) *
-                          carrier.baud_rate * (delta_f - 0.5 * interfering_carrier.baud_rate))
+        psi = arcsinh(pi**2 * asymptotic_length * abs(beta2) *
+                      carrier.baud_rate * (delta_f + 0.5 * interfering_carrier.baud_rate))
+        psi -= arcsinh(pi**2 * asymptotic_length * abs(beta2) *
+                       carrier.baud_rate * (delta_f - 0.5 * interfering_carrier.baud_rate))
     return psi
 
 
@@ -712,7 +723,7 @@ def estimate_nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
     #    nf2 should be nf1 + 0.3 < nf2 < nf1 + 2
     # If not, recompute and check delta_p
     if not nf1 + 0.3 < nf2 < nf1 + 2:
-        nf2 = np.clip(nf2, nf1 + 0.3, nf1 + 2)
+        nf2 = clip(nf2, nf1 + 0.3, nf1 + 2)
         g1a_max = lin2db(db2lin(nf2) / (db2lin(nf_min) - db2lin(nf1)))
         delta_p = gain_max - g1a_max
         g1a_min = gain_min - (gain_max - gain_min) - delta_p

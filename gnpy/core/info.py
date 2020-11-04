@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-'''
+"""
 gnpy.core.info
 ==============
 
 This module contains classes for modelling :class:`SpectralInformation`.
-'''
-
+"""
 
 from collections import namedtuple
 from gnpy.core.utils import automatic_nch, lin2db
