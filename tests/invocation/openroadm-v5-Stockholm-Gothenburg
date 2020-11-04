@@ -224,7 +224,7 @@ Roadm roadm_Gothenburg
   effective loss (dB):  22.00
   pch out (dBm):        -20.00
 Transceiver trx_Gothenburg
-  GSNR (0.1nm, dB):          19.27
+  GSNR (0.1nm, dB):          19.26
   GSNR (signal bw, dB):      15.24
   OSNR ASE (0.1nm, dB):      21.84
   OSNR ASE (signal bw, dB):  17.82
@@ -232,7 +232,7 @@ Transceiver trx_Gothenburg
   PMD (ps):                  0.89
 
 Transmission result for input power = 2.00 dBm:
-  Final GSNR (0.1 nm): [1;36;40m19.27 dB[0m
+  Final GSNR (0.1 nm): [1;36;40m19.26 dB[0m
 
 (No source node specified: picked trx_Stockholm)
 
