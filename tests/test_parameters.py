@@ -24,3 +24,4 @@ def test_sim_parameters():
     Simulation.set_params(sim_params)
     assert not s2.sim_params.raman_params.flag_raman
     assert not s1.sim_params.raman_params.flag_raman
+    Simulation.reset()
