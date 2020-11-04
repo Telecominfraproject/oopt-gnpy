@@ -46,3 +46,4 @@ def test_raman_fiber():
     assert_allclose(p_signal, expected_results['signal'], rtol=1e-3)
     assert_allclose(p_ase, expected_results['ase'], rtol=1e-3)
     assert_allclose(p_nli, expected_results['nli'], rtol=1e-3)
+    Simulation.reset()
