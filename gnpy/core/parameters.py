@@ -9,9 +9,9 @@ This module contains all parameters to configure standard network elements.
 """
 
 from scipy.constants import c, pi
-from numpy import squeeze, log10, exp
+from numpy import squeeze
 
-from gnpy.core.utils import db2lin, convert_length
+from gnpy.core.utils import convert_length
 from gnpy.core.exceptions import ParametersError
 
 
@@ -171,10 +171,6 @@ class FiberParams(Parameters):
             else:
                 self._loss_coef = kwargs['loss_coef'] * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = 193.5e12  # Hz
-            self._lin_attenuation = db2lin(self.length * self.loss_coef)
-            self._lin_loss_exp = self.loss_coef / (10 * log10(exp(1)))  # linear power exponent loss Neper/m
-            self._effective_length = (1 - exp(- self.lin_loss_exp * self.length)) / self.lin_loss_exp
-            self._asymptotic_length = 1 / self.lin_loss_exp
             # raman parameters (not compulsory)
             self._raman_efficiency = kwargs['raman_efficiency'] if 'raman_efficiency' in kwargs else None
             self._pumps_loss_coef = kwargs['pumps_loss_coef'] if 'pumps_loss_coef' in kwargs else None
@@ -253,22 +249,6 @@ class FiberParams(Parameters):
     @property
     def f_loss_ref(self):
         return self._f_loss_ref
-
-    @property
-    def lin_loss_exp(self):
-        return self._lin_loss_exp
-
-    @property
-    def lin_attenuation(self):
-        return self._lin_attenuation
-
-    @property
-    def effective_length(self):
-        return self._effective_length
-
-    @property
-    def asymptotic_length(self):
-        return self._asymptotic_length
 
     @property
     def raman_efficiency(self):

@@ -12,7 +12,7 @@ from collections import namedtuple
 from collections.abc import Sized
 from numpy import argsort, mean, array, squeeze, append, ones, ceil, any, zeros, outer
 
-from gnpy.core.utils import automatic_nch, lin2db
+from gnpy.core.utils import automatic_nch, lin2db, db2lin
 from gnpy.core.exceptions import InfoError
 
 BASE_SLOT_WIDTH = 12.5e9  # Hz
@@ -165,6 +165,15 @@ class SpectralInformation(object):
         entries = zip(self.channel_number, self.frequency, self.baud_rate, self.slot_width,
                       self.roll_off, self.powers, self.chromatic_dispersion, self.pmd)
         return [Channel(*entry) for entry in entries]
+
+    def apply_attenuation_lin(self, attenuation_lin):
+        self.signal *= attenuation_lin
+        self.nli *= attenuation_lin
+        self.ase *= attenuation_lin
+
+    def apply_attenuation_db(self, attenuation_db):
+        attenuation_lin = 1 / db2lin(attenuation_db)
+        self.apply_attenuation_lin(attenuation_lin)
 
     def __add__(self, si):
         frequency = append(self.frequency, si.frequency)
