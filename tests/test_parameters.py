@@ -12,7 +12,7 @@ DATA_DIR = TEST_DIR / 'data'
 
 
 def test_sim_parameters():
-    j = load_json(DATA_DIR / 'test_sim_params.json')
+    j = load_json(DATA_DIR / 'sim_params.json')
     sim_params = SimParams(**j)
     Simulation.set_params(sim_params)
     s1 = Simulation.get_simulation()
