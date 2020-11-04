@@ -9,9 +9,9 @@ This module contains all parameters to configure standard network elements.
 """
 
 from scipy.constants import c, pi
-from numpy import asarray, log10, exp
+from numpy import asarray
 
-from gnpy.core.utils import db2lin, convert_length
+from gnpy.core.utils import convert_length
 from gnpy.core.exceptions import ParametersError
 
 
@@ -47,7 +47,7 @@ class RamanParams(Parameters):
 
 class NLIParams(Parameters):
     def __init__(self, method='gn_model_analytic', dispersion_tolerance=1, phase_shift_tolerance=0.1,
-                 computed_channels=None, wdm_grid_size=None, f_cut_resolution=None, f_pump_resolution=None):
+                 computed_channels=None):
         """ Simulation parameters used within the Nli Solver
         :params method: formula for NLI calculation
         :params dispersion_tolerance: tuning parameter for ggn model solution
@@ -58,9 +58,6 @@ class NLIParams(Parameters):
         self.dispersion_tolerance = dispersion_tolerance
         self.phase_shift_tolerance = phase_shift_tolerance
         self.computed_channels = computed_channels
-        self.wdm_grid_size = wdm_grid_size
-        self.f_cut_resolution = f_cut_resolution
-        self.f_pump_resolution = f_pump_resolution
 
 
 class SimParams(Parameters):
@@ -126,10 +123,6 @@ class FiberParams(Parameters):
             else:
                 self._loss_coef = asarray(kwargs['loss_coef']) * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = asarray(193.5e12)  # Hz
-            self._lin_attenuation = db2lin(self.length * self.loss_coef)
-            self._lin_loss_exp = self.loss_coef / (10 * log10(exp(1)))  # linear power exponent loss Neper/m
-            self._effective_length = (1 - exp(- self.lin_loss_exp * self.length)) / self.lin_loss_exp
-            self._asymptotic_length = 1 / self.lin_loss_exp
             # raman parameters (not compulsory)
             self._raman_efficiency = kwargs.get('raman_efficiency')
             self._pumps_loss_coef = kwargs.get('pumps_loss_coef')
@@ -208,22 +201,6 @@ class FiberParams(Parameters):
     @property
     def f_loss_ref(self):
         return self._f_loss_ref
-
-    @property
-    def lin_loss_exp(self):
-        return self._lin_loss_exp
-
-    @property
-    def lin_attenuation(self):
-        return self._lin_attenuation
-
-    @property
-    def effective_length(self):
-        return self._effective_length
-
-    @property
-    def asymptotic_length(self):
-        return self._asymptotic_length
 
     @property
     def raman_efficiency(self):
