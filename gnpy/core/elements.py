@@ -20,13 +20,14 @@ unique identifier and a printable name, and provide the :py:meth:`__call__` meth
 instance as a result.
 """
 
-from numpy import abs, arange, array, divide, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt
+from numpy import abs, array, divide, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, exp, asarray
 from scipy.constants import h, c
 from collections import namedtuple
 
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum
 from gnpy.core.parameters import FiberParams, PumpParams
-from gnpy.core.science_utils import NliSolver, RamanSolver, propagate_raman_fiber, _psi
+from gnpy.core.science_utils import NliSolver, RamanSolver
+from gnpy.core.info import SpectralInformation
 
 
 class Location(namedtuple('Location', 'latitude longitude city region')):
@@ -310,6 +311,13 @@ class Fiber(_Node):
         super().__init__(*args, params=FiberParams(**params), **kwargs)
         self.pch_out_db = None
         self.nli_solver = NliSolver(self)
+        self.passive = True
+
+        # Loss coefficient function of the frequency
+        if self.params.loss_coef.size > 1:
+            self._loss_coef_fuction = lambda frequency: interp(frequency, self.params.f_loss_ref, self.params.loss_coef)
+        else:
+            self._loss_coef_fuction = lambda frequency: self.params.loss_coef * ones(asarray(frequency).shape)
 
     @property
     def to_json(self):
@@ -351,33 +359,19 @@ class Fiber(_Node):
     @property
     def loss(self):
         """total loss including padding att_in: useful for polymorphism with roadm loss"""
-        return self.params.loss_coef * self.params.length + self.params.con_in + self.params.con_out + self.params.att_in
+        return self._loss_coef_fuction(self.params.ref_frequency) * self.params.length + \
+            self.params.con_in + self.params.con_out + self.params.att_in
 
-    @property
-    def passive(self):
-        return True
+    def lin_attenuation(self, frequency):
+        return 1 / db2lin(self.params.length * self._loss_coef_fuction(frequency))
 
-    def alpha(self, frequencies):
-        """It returns the values of the series expansion of attenuation coefficient alpha(f) for all f in frequencies
+    def alpha(self, frequency):
+        """Returns the linear exponent attenuation coefficient such that lin_attenuation = exp(- alpha * length)
 
-        :param frequencies: frequencies of series expansion [Hz]
-        :return: alpha: power attenuation coefficient for f in frequencies [Neper/m]
+        :param frequency: the frequency at which alpha is computed [Hz]
+        :return: alpha: power attenuation coefficient for f in frequency [Neper/m]
         """
-        if type(self.params.loss_coef) == dict:
-            alpha = interp(frequencies, self.params.f_loss_ref, self.params.lin_loss_exp)
-        else:
-            alpha = self.params.lin_loss_exp * ones(frequencies.shape)
-
-        return alpha
-
-    def alpha0(self, f_ref=193.5e12):
-        """It returns the zero element of the series expansion of attenuation coefficient alpha(f) in the
-        reference frequency f_ref
-
-        :param f_ref: reference frequency of series expansion [Hz]
-        :return: alpha0: power attenuation coefficient in f_ref [Neper/m]
-        """
-        return self.alpha(f_ref * ones(1))[0]
+        return self._loss_coef_fuction(frequency) / (10 * log10(exp(1)))
 
     def chromatic_dispersion(self, freq=193.5e12):
         """Returns accumulated chromatic dispersion (CD).
@@ -398,70 +392,37 @@ class Fiber(_Node):
         """differential group delay (PMD) [s]"""
         return self.params.pmd_coef * sqrt(self.params.length)
 
-    def _gn_analytic(self, carrier, *carriers):
-        r"""Computes the nonlinear interference power on a single carrier.
-        The method uses eq. 120 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__.
-
-        :param carrier: the signal under analysis
-        :param \*carriers: the full WDM comb
-        :return: carrier_nli: the amount of nonlinear interference in W on the under analysis
+    def propagate(self, spectral_info: SpectralInformation):
+        """Modifies the spectral information computing the attenuation, the non-linear interference generation,
+        the CD and PMD accumulation.
         """
 
-        g_nli = 0
-        for interfering_carrier in carriers:
-            psi = _psi(carrier, interfering_carrier, beta2=self.params.beta2,
-                       asymptotic_length=self.params.asymptotic_length)
-            g_nli += (interfering_carrier.power.signal / interfering_carrier.baud_rate)**2 \
-                * (carrier.power.signal / carrier.baud_rate) * psi
+        attenuation_in_db = self.params.con_in + self.params.att_in
+        spectral_info.apply_attenuation_db(attenuation_in_db)
 
-        g_nli *= (16 / 27) * (self.params.gamma * self.params.effective_length)**2 \
-            / (2 * pi * abs(self.params.beta2) * self.params.asymptotic_length)
+        # NLI noise evaluated at the fiber input
+        nli = self.nli_solver.compute_nli(spectral_info)
+        spectral_info.nli += nli
 
-        carrier_nli = carrier.baud_rate * g_nli
-        return carrier_nli
+        # chromatic dispersion and pmd variations
+        spectral_info.chromatic_dispersion += self.chromatic_dispersion(spectral_info.frequency)
+        spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.pmd ** 2)
 
-    def propagate(self, *carriers):
-        r"""Generator that computes the fiber propagation: attenuation, non-linear interference generation, CD
-        accumulation and PMD accumulation.
+        # apply the attenuation due to the fiber losses
+        spectral_info.apply_attenuation_lin(self.lin_attenuation(spectral_info.frequency))
 
-        :param: \*carriers: the channels at the input of the fiber
-        :yield: carrier: the next channel at the output of the fiber
-        """
+        attenuation_out_db = self.params.con_out
+        spectral_info.apply_attenuation_db(attenuation_out_db)
 
-        # apply connector_att_in on all carriers before computing gn analytics  premiere partie pas bonne
-        attenuation = db2lin(self.params.con_in + self.params.att_in)
-
-        chan = []
-        for carrier in carriers:
-            pwr = carrier.power
-            pwr = pwr._replace(signal=pwr.signal / attenuation,
-                               nli=pwr.nli / attenuation,
-                               ase=pwr.ase / attenuation)
-            carrier = carrier._replace(power=pwr)
-            chan.append(carrier)
-
-        carriers = tuple(f for f in chan)
-
-        # propagate in the fiber and apply attenuation out
-        attenuation = db2lin(self.params.con_out)
-        for carrier in carriers:
-            pwr = carrier.power
-            carrier_nli = self._gn_analytic(carrier, *carriers)
-            pwr = pwr._replace(signal=pwr.signal / self.params.lin_attenuation / attenuation,
-                               nli=(pwr.nli + carrier_nli) / self.params.lin_attenuation / attenuation,
-                               ase=pwr.ase / self.params.lin_attenuation / attenuation)
-            chromatic_dispersion = carrier.chromatic_dispersion + self.chromatic_dispersion(carrier.frequency)
-            pmd = sqrt(carrier.pmd**2 + self.pmd**2)
-            yield carrier._replace(power=pwr, chromatic_dispersion=chromatic_dispersion, pmd=pmd)
-
-    def update_pref(self, pref):
-        self.pch_out_db = round(pref.p_spani - self.loss, 2)
-        return pref._replace(p_span0=pref.p_span0, p_spani=self.pch_out_db)
+    def update_pref(self, spectral_info):
+        pch_out_db = spectral_info.pref.p_spani - self.loss
+        self.pch_out_db = round(pch_out_db, 2)
+        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0, p_spani=self.pch_out_db)
 
     def __call__(self, spectral_info):
-        carriers = tuple(self.propagate(*spectral_info.carriers))
-        pref = self.update_pref(spectral_info.pref)
-        return spectral_info._replace(carriers=carriers, pref=pref)
+        self.propagate(spectral_info)
+        self.update_pref(spectral_info)
+        return spectral_info
 
 
 class RamanFiber(Fiber):
@@ -478,23 +439,40 @@ class RamanFiber(Fiber):
     def to_json(self):
         return dict(super().to_json, operational=self.operational)
 
-    def update_pref(self, pref, *carriers):
-        pch_out_db = lin2db(mean([carrier.power.signal for carrier in carriers])) + 30
+    def propagate(self, spectral_info: SpectralInformation):
+        """Modifies the spectral information computing the attenuation, the non-linear interference generation,
+        the CD and PMD accumulation.
+        """
+        attenuation_in_db = self.params.con_in + self.params.att_in
+        spectral_info.apply_attenuation_db(attenuation_in_db)
+
+        self.raman_solver.carriers = spectral_info.carriers
+        self.raman_solver.raman_pumps = self.raman_pumps
+        self.nli_solver.stimulated_raman_scattering = self.raman_solver.stimulated_raman_scattering
+        raman_ase = self.raman_solver.spontaneous_raman_scattering.power[:spectral_info.number_of_channels, -1]
+
+        # NLI noise evaluated at the fiber input
+        nli = self.nli_solver.compute_nli(spectral_info)
+        spectral_info.nli += nli
+
+        # chromatic dispersion and pmd variations
+        spectral_info.chromatic_dispersion += self.chromatic_dispersion(spectral_info.frequency)
+        spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.pmd ** 2)
+
+        # apply the attenuation due to the fiber losses
+        attenuation_fiber = \
+            self.raman_solver.stimulated_raman_scattering.rho[:spectral_info.number_of_channels, -1] ** 2
+        spectral_info.apply_attenuation_lin(attenuation_fiber)
+
+        spectral_info.ase += raman_ase
+
+        attenuation_out_db = self.params.con_out
+        spectral_info.apply_attenuation_db(attenuation_out_db)
+
+    def update_pref(self, spectral_info):
+        pch_out_db = lin2db(mean(spectral_info.signal)) + 30
         self.pch_out_db = round(pch_out_db, 2)
-        return pref._replace(p_span0=pref.p_span0, p_spani=self.pch_out_db)
-
-    def __call__(self, spectral_info):
-        carriers = tuple(self.propagate(*spectral_info.carriers))
-        pref = self.update_pref(spectral_info.pref, *carriers)
-        return spectral_info._replace(carriers=carriers, pref=pref)
-
-    def propagate(self, *carriers):
-        for propagated_carrier in propagate_raman_fiber(self, *carriers):
-            chromatic_dispersion = propagated_carrier.chromatic_dispersion + \
-                                   self.chromatic_dispersion(propagated_carrier.frequency)
-            pmd = sqrt(propagated_carrier.pmd**2 + self.pmd**2)
-            propagated_carrier = propagated_carrier._replace(chromatic_dispersion=chromatic_dispersion, pmd=pmd)
-            yield propagated_carrier
+        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0, p_spani=self.pch_out_db)
 
 
 class EdfaParams:
