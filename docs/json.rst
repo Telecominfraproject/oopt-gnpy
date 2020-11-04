@@ -223,12 +223,6 @@ the ``gnpy.science_utils.NliSolver`` for the evaluation of the Raman profile and
 |                                         |           | a 50 GHz spacing fix-grid we recommend at   |
 |                                         |           | one computed channel every 20 channels      |
 +-----------------------------------------+-----------+---------------------------------------------+
-| ``nli_params.wdm_grid_size``            | (number)  | Spectrum fixed grid slot width              |
-+-----------------------------------------+-----------+---------------------------------------------+
-| ``nli_params.f_cut_resolution``         | (number)  | Tuning parameter for the NliSolver          |
-+-----------------------------------------+-----------+---------------------------------------------+
-| ``nli_params.f_pump_resolution``        | (number)  | Tuning parameter for the NliSolver          |
-+-----------------------------------------+-----------+---------------------------------------------+
 
 
 Span
