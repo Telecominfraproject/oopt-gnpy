@@ -199,12 +199,6 @@ instances, assuring a coherent simulation.
 | ``nli_params.computed_channels``        | (number)  | The channels on which the NLI is            |
 |                                         |           | explicitly evaluated                        |
 +-----------------------------------------+-----------+---------------------------------------------+
-| ``nli_params.wdm_grid_size``            | (number)  | Spectrum fixed grid slot width              |
-+-----------------------------------------+-----------+---------------------------------------------+
-| ``nli_params.f_cut_resolution``         | (number)  | Tuning parameter for the NliSolver          |
-+-----------------------------------------+-----------+---------------------------------------------+
-| ``nli_params.f_pump_resolution``        | (number)  | Tuning parameter for the NliSolver          |
-+-----------------------------------------+-----------+---------------------------------------------+
 
 
 Span
