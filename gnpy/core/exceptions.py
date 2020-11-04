@@ -35,3 +35,7 @@ class SpectrumError(Exception):
 
 class ParametersError(ConfigurationError):
     """Incomplete or wrong configurations within parameters json"""
+
+
+class InfoError(Exception):
+    """Info errors in spectral information configuration"""
