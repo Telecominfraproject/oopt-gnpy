@@ -28,110 +28,59 @@ class Parameters:
 
 class PumpParams(Parameters):
     def __init__(self, power, frequency, propagation_direction):
-        self._power = power
-        self._frequency = frequency
-        self._propagation_direction = propagation_direction
-
-    @property
-    def power(self):
-        return self._power
-
-    @property
-    def frequency(self):
-        return self._frequency
-
-    @property
-    def propagation_direction(self):
-        return self._propagation_direction
+        self.power = power
+        self.frequency = frequency
+        self.propagation_direction = propagation_direction
 
 
 class RamanParams(Parameters):
-    def __init__(self, **kwargs):
-        self._flag_raman = kwargs['flag_raman']
-        self._space_resolution = kwargs['space_resolution'] if 'space_resolution' in kwargs else None
-        self._tolerance = kwargs['tolerance'] if 'tolerance' in kwargs else None
-
-    @property
-    def flag_raman(self):
-        return self._flag_raman
-
-    @property
-    def space_resolution(self):
-        return self._space_resolution
-
-    @property
-    def tolerance(self):
-        return self._tolerance
+    def __init__(self, raman_params):
+        self.flag = raman_params['flag'] if 'flag' in raman_params else False
+        self.solver_spatial_step = \
+            raman_params['solver_spatial_step'] if 'solver_spatial_step' in raman_params else 50  # [m]
+        self.spatial_resolution = \
+            raman_params['spatial_resolution'] if 'spatial_resolution' in raman_params else 10e3  # [m]
 
 
 class NLIParams(Parameters):
-    def __init__(self, **kwargs):
-        self._nli_method_name = kwargs['nli_method_name']
-        self._wdm_grid_size = kwargs['wdm_grid_size']
-        self._dispersion_tolerance = kwargs['dispersion_tolerance']
-        self._phase_shift_tolerance = kwargs['phase_shift_tolerance']
-        self._f_cut_resolution = None
-        self._f_pump_resolution = None
-        self._computed_channels = kwargs['computed_channels'] if 'computed_channels' in kwargs else None
-
-    @property
-    def nli_method_name(self):
-        return self._nli_method_name
-
-    @property
-    def wdm_grid_size(self):
-        return self._wdm_grid_size
-
-    @property
-    def dispersion_tolerance(self):
-        return self._dispersion_tolerance
-
-    @property
-    def phase_shift_tolerance(self):
-        return self._phase_shift_tolerance
-
-    @property
-    def f_cut_resolution(self):
-        return self._f_cut_resolution
-
-    @f_cut_resolution.setter
-    def f_cut_resolution(self, f_cut_resolution):
-        self._f_cut_resolution = f_cut_resolution
-
-    @property
-    def f_pump_resolution(self):
-        return self._f_pump_resolution
-
-    @f_pump_resolution.setter
-    def f_pump_resolution(self, f_pump_resolution):
-        self._f_pump_resolution = f_pump_resolution
-
-    @property
-    def computed_channels(self):
-        return self._computed_channels
+    def __init__(self, nli_params):
+        self.method = nli_params['method'] if 'method' in nli_params else 'gn_model_analytic'
+        self.dispersion_tolerance = nli_params['dispersion_tolerance'] if 'dispersion_tolerance' in nli_params else 1
+        self.phase_shift_tolerance = nli_params['phase_shift_tolerance'] if 'phase_shift_tolerance' in nli_params else 0.1
+        self.computed_channels = nli_params['computed_channels'] if 'computed_channels' in nli_params else None
 
 
 class SimParams(Parameters):
-    def __init__(self, **kwargs):
-        try:
-            if 'nli_parameters' in kwargs:
-                self._nli_params = NLIParams(**kwargs['nli_parameters'])
-            else:
-                self._nli_params = None
-            if 'raman_parameters' in kwargs:
-                self._raman_params = RamanParams(**kwargs['raman_parameters'])
-            else:
-                self._raman_params = None
-        except KeyError as e:
-            raise ParametersError(f'Simulation parameters must include {e}. Configuration: {kwargs}')
+    _shared_dict = {'nli_params': NLIParams({}), 'raman_params': RamanParams({})}
+
+    def __init__(self):
+        if type(self) == SimParams:
+            raise NotImplementedError('Instances of SimParams cannot be generated')
+
+    @classmethod
+    def set_params(cls, sim_params):
+        if sim_params is not None:
+            if 'nli_params' in sim_params:
+                cls._shared_dict['nli_params'] = NLIParams(sim_params['nli_params'])
+            if 'raman_params' in sim_params:
+                cls._shared_dict['raman_params'] = RamanParams(sim_params['raman_params'])
+
+    @classmethod
+    def get(cls):
+        self = cls.__new__(cls)
+        return self
 
     @property
     def nli_params(self):
-        return self._nli_params
+        return self._shared_dict['nli_params']
 
     @property
     def raman_params(self):
-        return self._raman_params
+        return self._shared_dict['raman_params']
+
+    @classmethod
+    def reset(cls):
+        cls._shared_dict = {'nli_params': NLIParams({}), 'raman_params': RamanParams({})}
 
 
 class FiberParams(Parameters):
@@ -173,7 +122,8 @@ class FiberParams(Parameters):
                 self._f_loss_ref = 193.5e12  # Hz
             # raman parameters (not compulsory)
             self._raman_efficiency = kwargs['raman_efficiency'] if 'raman_efficiency' in kwargs else None
-            self._pumps_loss_coef = kwargs['pumps_loss_coef'] if 'pumps_loss_coef' in kwargs else None
+            # lumped losses
+            self._lumped_losses = kwargs['lumped_losses'] if 'lumped_losses' in kwargs else None
         except KeyError as e:
             raise ParametersError(f'Fiber configurations json must include {e}. Configuration: {kwargs}')
 
@@ -209,6 +159,10 @@ class FiberParams(Parameters):
     @con_out.setter
     def con_out(self, con_out):
         self._con_out = con_out
+
+    @property
+    def lumped_losses(self):
+        return self._lumped_losses
 
     @property
     def dispersion(self):
@@ -254,12 +208,12 @@ class FiberParams(Parameters):
     def raman_efficiency(self):
         return self._raman_efficiency
 
-    @property
-    def pumps_loss_coef(self):
-        return self._pumps_loss_coef
-
     def asdict(self):
         dictionary = super().asdict()
         dictionary['loss_coef'] = self.loss_coef * 1e3
         dictionary['length_units'] = 'm'
+        if not self.lumped_losses:
+            dictionary.pop('lumped_losses')
+        if not self.raman_efficiency:
+            dictionary.pop('raman_efficiency')
         return dictionary

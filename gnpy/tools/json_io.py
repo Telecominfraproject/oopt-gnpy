@@ -114,22 +114,21 @@ class Fiber(_JsonThing):
         'type_variety': '',
         'dispersion': None,
         'gamma': 0,
-        'pmd_coef': 0
-    }
-
-    def __init__(self, **kwargs):
-        self.update_attr(self.default_values, kwargs, 'Fiber')
-
-
-class RamanFiber(_JsonThing):
-    default_values = {
-        'type_variety': '',
-        'dispersion': None,
-        'gamma': 0,
         'pmd_coef': 0,
         'raman_efficiency': None
     }
 
+    def __init__(self, **kwargs):
+        self.update_attr(self.default_values, kwargs, 'Fiber')
+        if self.raman_efficiency is not None:
+            for param in ('cr', 'frequency_offset'):
+                if param not in self.raman_efficiency:
+                    raise EquipmentConfigError(f'Fiber.raman_efficiency: missing "{param}" parameter')
+            if self.raman_efficiency['frequency_offset'] != sorted(self.raman_efficiency['frequency_offset']):
+                raise EquipmentConfigError(f'Fiber.raman_efficiency.frequency_offset is not sorted')
+
+
+class RamanFiber(Fiber):
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'RamanFiber')
         for param in ('cr', 'frequency_offset'):
