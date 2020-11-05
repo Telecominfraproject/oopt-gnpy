@@ -1,27 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from pathlib import Path
+"""
+Checks that the class SimParams behaves as a mutable Singleton.
+"""
 
 from gnpy.core.parameters import SimParams
-from gnpy.core.science_utils import Simulation
-from gnpy.tools.json_io import load_json
-
-TEST_DIR = Path(__file__).parent
-DATA_DIR = TEST_DIR / 'data'
 
 
 def test_sim_parameters():
-    j = load_json(DATA_DIR / 'sim_params.json')
-    sim_params = SimParams(**j)
-    Simulation.set_params(sim_params)
-    s1 = Simulation.get_simulation()
-    assert s1.sim_params.raman_params.flag_raman
-    s2 = Simulation.get_simulation()
-    assert s2.sim_params.raman_params.flag_raman
-    j['raman_parameters']['flag_raman'] = False
-    sim_params = SimParams(**j)
-    Simulation.set_params(sim_params)
-    assert not s2.sim_params.raman_params.flag_raman
-    assert not s1.sim_params.raman_params.flag_raman
-    Simulation.reset()
+    sim_params = {'nli_params': {}, 'raman_params': {}}
+    SimParams.set_params(sim_params)
+    s1 = SimParams.get()
+    assert s1.nli_params.method == 'gn_model_analytic'
+    s2 = SimParams.get()
+    assert not s1.raman_params.flag
+    sim_params['raman_params']['flag'] = True
+    SimParams.set_params(sim_params)
+    assert s2.raman_params.flag
+    assert s1.raman_params.flag
+    SimParams.reset()
