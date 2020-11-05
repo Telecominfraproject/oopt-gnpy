@@ -32,6 +32,16 @@ from gnpy.core.science_utils import NliSolver, RamanSolver, propagate_raman_fibe
 
 class Location(namedtuple('Location', 'latitude longitude city region')):
     def __new__(cls, latitude=0, longitude=0, city=None, region=None):
+        """
+        Create a new region.
+
+        Args:
+            cls: (todo): write your description
+            latitude: (float): write your description
+            longitude: (float): write your description
+            city: (str): write your description
+            region: (str): write your description
+        """
         return super().__new__(cls, latitude, longitude, city, region)
 
 
@@ -42,6 +52,18 @@ class _Node:
     inherit from :class:`_Node`.
     '''
     def __init__(self, uid, name=None, params=None, metadata=None, operational=None, type_variety=None):
+        """
+        Initialize the object.
+
+        Args:
+            self: (todo): write your description
+            uid: (int): write your description
+            name: (str): write your description
+            params: (dict): write your description
+            metadata: (todo): write your description
+            operational: (todo): write your description
+            type_variety: (str): write your description
+        """
         if name is None:
             name = uid
         self.uid, self.name = uid, name
@@ -55,26 +77,56 @@ class _Node:
 
     @property
     def coords(self):
+        """
+        Return the coordinates of the grid. lng file
+
+        Args:
+            self: (todo): write your description
+        """
         return self.lng, self.lat
 
     @property
     def location(self):
+        """
+        Returns the location of the metadata.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.metadata['location']
     loc = location
 
     @property
     def longitude(self):
+        """
+        Return the longitude of the location.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.location.longitude
     lng = longitude
 
     @property
     def latitude(self):
+        """
+        Return the latitude / longitude.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.location.latitude
     lat = latitude
 
 
 class Transceiver(_Node):
     def __init__(self, *args, **kwargs):
+        """
+        Initialize the snr
+
+        Args:
+            self: (todo): write your description
+        """
         super().__init__(*args, **kwargs)
         self.osnr_ase_01nm = None
         self.osnr_ase = None
@@ -96,6 +148,13 @@ class Transceiver(_Node):
         self.pmd = [carrier.pmd*1e12 for carrier in spectral_info.carriers]
 
     def _calc_snr(self, spectral_info):
+        """
+        Calculate the snr value.
+
+        Args:
+            self: (todo): write your description
+            spectral_info: (todo): write your description
+        """
         with errstate(divide='ignore'):
             self.baud_rate = [c.baud_rate for c in spectral_info.carriers]
             ratio_01nm = [lin2db(12.5e9 / b_rate) for b_rate in self.baud_rate]
@@ -140,6 +199,12 @@ class Transceiver(_Node):
 
     @property
     def to_json(self):
+        """
+        Returns a dictionary to be serialized.
+
+        Args:
+            self: (todo): write your description
+        """
         return {'uid': self.uid,
                 'type': type(self).__name__,
                 'metadata': {
@@ -148,6 +213,12 @@ class Transceiver(_Node):
                 }
 
     def __repr__(self):
+        """
+        Return a representation of this parameter.
+
+        Args:
+            self: (todo): write your description
+        """
         return (f'{type(self).__name__}('
                 f'uid={self.uid!r}, '
                 f'osnr_ase_01nm={self.osnr_ase_01nm!r}, '
@@ -158,6 +229,12 @@ class Transceiver(_Node):
                 f'pmd={self.pmd!r})')
 
     def __str__(self):
+        """
+        Return the snr as string
+
+        Args:
+            self: (todo): write your description
+        """
         if self.snr is None or self.osnr_ase is None:
             return f'{type(self).__name__} {self.uid}'
 
@@ -178,6 +255,13 @@ class Transceiver(_Node):
                           f'  PMD (ps):                  {pmd:.2f}'])
 
     def __call__(self, spectral_info):
+        """
+        Calculate the snrature.
+
+        Args:
+            self: (todo): write your description
+            spectral_info: (todo): write your description
+        """
         self._calc_snr(spectral_info)
         self._calc_cd(spectral_info)
         self._calc_pmd(spectral_info)
@@ -189,6 +273,13 @@ RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr pmd res
 
 class Roadm(_Node):
     def __init__(self, *args, params, **kwargs):
+        """
+        Initialize the loss
+
+        Args:
+            self: (todo): write your description
+            params: (dict): write your description
+        """
         if 'per_degree_pch_out_db' not in params.keys():
             params['per_degree_pch_out_db'] = {}
         super().__init__(*args, params=RoadmParams(**params), **kwargs)
@@ -201,6 +292,12 @@ class Roadm(_Node):
 
     @property
     def to_json(self):
+        """
+        Return a dict representation of the analysis.
+
+        Args:
+            self: (todo): write your description
+        """
         return {'uid': self.uid,
                 'type': type(self).__name__,
                 'params': {
@@ -214,9 +311,21 @@ class Roadm(_Node):
                 }
 
     def __repr__(self):
+        """
+        Return a repr representation of a repr__.
+
+        Args:
+            self: (todo): write your description
+        """
         return f'{type(self).__name__}(uid={self.uid!r}, loss={self.loss!r})'
 
     def __str__(self):
+        """
+        Returns the loss string.
+
+        Args:
+            self: (todo): write your description
+        """
         if self.effective_loss is None:
             return f'{type(self).__name__} {self.uid}'
 
@@ -225,6 +334,15 @@ class Roadm(_Node):
                           f'  pch out (dBm):        {self.effective_pch_out_db!r}'])
 
     def propagate(self, pref, *carriers, degree):
+        """
+        Propagate the degree of a given degree.
+
+        Args:
+            self: (todo): write your description
+            pref: (array): write your description
+            carriers: (todo): write your description
+            degree: (array): write your description
+        """
         # pin_target and loss are read from eqpt_config.json['Roadm']
         # all ingress channels in xpress are set to this power level
         # but add channels are not, so we define an effective loss
@@ -250,9 +368,24 @@ class Roadm(_Node):
             yield carrier._replace(power=pwr, pmd=pmd)
 
     def update_pref(self, pref):
+        """
+        Update the span of the span.
+
+        Args:
+            self: (todo): write your description
+            pref: (str): write your description
+        """
         return pref._replace(p_span0=pref.p_span0, p_spani=self.effective_pch_out_db)
 
     def __call__(self, spectral_info, degree):
+        """
+        Calculate function.
+
+        Args:
+            self: (todo): write your description
+            spectral_info: (str): write your description
+            degree: (int): write your description
+        """
         carriers = tuple(self.propagate(spectral_info.pref, *spectral_info.carriers, degree=degree))
         pref = self.update_pref(spectral_info.pref)
         return spectral_info._replace(carriers=carriers, pref=pref)
@@ -263,6 +396,13 @@ FusedParams = namedtuple('FusedParams', 'loss')
 
 class Fused(_Node):
     def __init__(self, *args, params=None, **kwargs):
+        """
+        Initialize all loss.
+
+        Args:
+            self: (todo): write your description
+            params: (dict): write your description
+        """
         if params is None:
             # default loss value if not mentioned in loaded network json
             params = {'loss': 1}
@@ -272,6 +412,12 @@ class Fused(_Node):
 
     @property
     def to_json(self):
+        """
+        Convert the loss to a dictionary.
+
+        Args:
+            self: (todo): write your description
+        """
         return {'uid': self.uid,
                 'type': type(self).__name__,
                 'params': {
@@ -283,13 +429,32 @@ class Fused(_Node):
                 }
 
     def __repr__(self):
+        """
+        Return a repr representation of a repr__.
+
+        Args:
+            self: (todo): write your description
+        """
         return f'{type(self).__name__}(uid={self.uid!r}, loss={self.loss!r})'
 
     def __str__(self):
+        """
+        Str : str
+
+        Args:
+            self: (todo): write your description
+        """
         return '\n'.join([f'{type(self).__name__} {self.uid}',
                           f'  loss (dB): {self.loss:.2f}'])
 
     def propagate(self, *carriers):
+        """
+        Propagate the property of the given property.
+
+        Args:
+            self: (todo): write your description
+            carriers: (todo): write your description
+        """
         attenuation = db2lin(self.loss)
 
         for carrier in carriers:
@@ -300,9 +465,23 @@ class Fused(_Node):
             yield carrier._replace(power=pwr)
 
     def update_pref(self, pref):
+        """
+        Updates the pref.
+
+        Args:
+            self: (todo): write your description
+            pref: (str): write your description
+        """
         return pref._replace(p_span0=pref.p_span0, p_spani=pref.p_spani - self.loss)
 
     def __call__(self, spectral_info):
+        """
+        Return the spectral spectral spectral error.
+
+        Args:
+            self: (todo): write your description
+            spectral_info: (str): write your description
+        """
         carriers = tuple(self.propagate(*spectral_info.carriers))
         pref = self.update_pref(spectral_info.pref)
         return spectral_info._replace(carriers=carriers, pref=pref)
@@ -310,6 +489,13 @@ class Fused(_Node):
 
 class Fiber(_Node):
     def __init__(self, *args, params=None, **kwargs):
+        """
+        Initialize kwargs.
+
+        Args:
+            self: (todo): write your description
+            params: (dict): write your description
+        """
         if not params:
             params = {}
         super().__init__(*args, params=FiberParams(**params), **kwargs)
@@ -318,6 +504,12 @@ class Fiber(_Node):
 
     @property
     def to_json(self):
+        """
+        Convert the object to a dictionary.
+
+        Args:
+            self: (todo): write your description
+        """
         return {'uid': self.uid,
                 'type': type(self).__name__,
                 'type_variety': self.type_variety,
@@ -336,11 +528,23 @@ class Fiber(_Node):
                 }
 
     def __repr__(self):
+        """
+        Return a string representation of the __repr__ method.
+
+        Args:
+            self: (todo): write your description
+        """
         return f'{type(self).__name__}(uid={self.uid!r}, ' \
             f'length={round(self.params.length * 1e-3,1)!r}km, ' \
             f'loss={round(self.loss,1)!r}dB)'
 
     def __str__(self):
+        """
+        Returns a string representation of the pch.
+
+        Args:
+            self: (todo): write your description
+        """
         if self.pch_out_db is None:
             return f'{type(self).__name__} {self.uid}'
 
@@ -366,6 +570,12 @@ class Fiber(_Node):
 
     @property
     def passive(self):
+        """
+        Returns true if the request was successful.
+
+        Args:
+            self: (todo): write your description
+        """
         return True
 
     def alpha(self, frequencies):
@@ -466,10 +676,24 @@ class Fiber(_Node):
             yield carrier._replace(power=pwr, chromatic_dispersion=chromatic_dispersion, pmd=pmd)
 
     def update_pref(self, pref):
+        """
+        Update the pref loss.
+
+        Args:
+            self: (todo): write your description
+            pref: (str): write your description
+        """
         self.pch_out_db = round(pref.p_spani - self.loss, 2)
         return pref._replace(p_span0=pref.p_span0, p_spani=self.pch_out_db)
 
     def __call__(self, spectral_info):
+        """
+        Return the spectral spectral spectral error.
+
+        Args:
+            self: (todo): write your description
+            spectral_info: (str): write your description
+        """
         carriers = tuple(self.propagate(*spectral_info.carriers))
         pref = self.update_pref(spectral_info.pref)
         return spectral_info._replace(carriers=carriers, pref=pref)
@@ -477,6 +701,13 @@ class Fiber(_Node):
 
 class RamanFiber(Fiber):
     def __init__(self, *args, params=None, **kwargs):
+        """
+        Initialize operations
+
+        Args:
+            self: (todo): write your description
+            params: (dict): write your description
+        """
         super().__init__(*args, params=params, **kwargs)
         if self.operational and 'raman_pumps' in self.operational:
             self.raman_pumps = tuple(PumpParams(p['power'], p['frequency'], p['propagation_direction'])
@@ -486,16 +717,38 @@ class RamanFiber(Fiber):
         self.raman_solver = RamanSolver(self)
 
     def update_pref(self, pref, *carriers):
+        """
+        Update the pref of - signal
+
+        Args:
+            self: (todo): write your description
+            pref: (str): write your description
+            carriers: (todo): write your description
+        """
         pch_out_db = lin2db(mean([carrier.power.signal for carrier in carriers])) + 30
         self.pch_out_db = round(pch_out_db, 2)
         return pref._replace(p_span0=pref.p_span0, p_spani=self.pch_out_db)
 
     def __call__(self, spectral_info):
+        """
+        Return the spectral spectral spectral spectral error.
+
+        Args:
+            self: (todo): write your description
+            spectral_info: (str): write your description
+        """
         carriers = tuple(self.propagate(*spectral_info.carriers))
         pref = self.update_pref(spectral_info.pref, *carriers)
         return spectral_info._replace(carriers=carriers, pref=pref)
 
     def propagate(self, *carriers):
+        """
+        Iterate over all the property of the chromatic.
+
+        Args:
+            self: (todo): write your description
+            carriers: (todo): write your description
+        """
         for propagated_carrier in propagate_raman_fiber(self, *carriers):
             chromatic_dispersion = propagated_carrier.chromatic_dispersion + \
                                    self.chromatic_dispersion(propagated_carrier.frequency)
@@ -506,6 +759,13 @@ class RamanFiber(Fiber):
 
 class EdfaParams:
     def __init__(self, **params):
+        """
+        Initialize the parameters.
+
+        Args:
+            self: (todo): write your description
+            params: (dict): write your description
+        """
         self.update_params(params)
         if params == {}:
             self.type_variety = ''
@@ -522,6 +782,12 @@ class EdfaParams:
             # self.allowed_for_design = None
 
     def update_params(self, kwargs):
+        """
+        Updates the kwargs with kwargs.
+
+        Args:
+            self: (todo): write your description
+        """
         for k, v in kwargs.items():
             setattr(self, k, self.update_params(**v) if isinstance(v, dict) else v)
 
@@ -535,14 +801,33 @@ class EdfaOperational:
     }
 
     def __init__(self, **operational):
+        """
+        Initialize the class.
+
+        Args:
+            self: (todo): write your description
+            operational: (todo): write your description
+        """
         self.update_attr(operational)
 
     def update_attr(self, kwargs):
+        """
+        Update an attribute of the model s attributes.
+
+        Args:
+            self: (todo): write your description
+        """
         clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
         for k, v in self.default_values.items():
             setattr(self, k, clean_kwargs.get(k, v))
 
     def __repr__(self):
+        """
+        Return a repr representation of this function.
+
+        Args:
+            self: (todo): write your description
+        """
         return (f'{type(self).__name__}('
                 f'gain_target={self.gain_target!r}, '
                 f'tilt_target={self.tilt_target!r})')
@@ -550,6 +835,14 @@ class EdfaOperational:
 
 class Edfa(_Node):
     def __init__(self, *args, params=None, operational=None, **kwargs):
+        """
+        Initialize this object
+
+        Args:
+            self: (todo): write your description
+            params: (dict): write your description
+            operational: (todo): write your description
+        """
         if params is None:
             params = {}
         if operational is None:
@@ -581,6 +874,12 @@ class Edfa(_Node):
 
     @property
     def to_json(self):
+        """
+        Convert this object to a json serializable dict.
+
+        Args:
+            self: (todo): write your description
+        """
         return {'uid': self.uid,
                 'type': type(self).__name__,
                 'type_variety': self.params.type_variety,
@@ -596,6 +895,12 @@ class Edfa(_Node):
                 }
 
     def __repr__(self):
+        """
+        Return a representation of this parameter.
+
+        Args:
+            self: (todo): write your description
+        """
         return (f'{type(self).__name__}(uid={self.uid!r}, '
                 f'type_variety={self.params.type_variety!r}, '
                 f'interpol_dgt={self.interpol_dgt!r}, '
@@ -608,6 +913,12 @@ class Edfa(_Node):
                 f'pout_db={self.pout_db!r})')
 
     def __str__(self):
+        """
+        Return a string representation of the pin.
+
+        Args:
+            self: (todo): write your description
+        """
         if self.pin_db is None or self.pout_db is None:
             return f'{type(self).__name__} {self.uid}'
         nf = mean(self.nf)
@@ -668,6 +979,18 @@ class Edfa(_Node):
         #    pout_db is not the absolute full output power (negligible if sufficient channels)
 
     def _nf(self, type_def, nf_model, nf_fit_coeff, gain_min, gain_flatmax, gain_target):
+        """
+        Determine the gaussian function.
+
+        Args:
+            self: (todo): write your description
+            type_def: (str): write your description
+            nf_model: (todo): write your description
+            nf_fit_coeff: (str): write your description
+            gain_min: (int): write your description
+            gain_flatmax: (int): write your description
+            gain_target: (int): write your description
+        """
         # if hybrid raman, use edfa_gain_flatmax attribute, else use gain_flatmax
         #gain_flatmax = getattr(params, 'edfa_gain_flatmax', params.gain_flatmax)
         pad = max(gain_min - gain_target, 0)
@@ -900,10 +1223,24 @@ class Edfa(_Node):
             yield carrier._replace(power=pwr)
 
     def update_pref(self, pref):
+        """
+        Update the pref.
+
+        Args:
+            self: (todo): write your description
+            pref: (str): write your description
+        """
         return pref._replace(p_span0=pref.p_span0,
                              p_spani=pref.p_spani + self.effective_gain - self.out_voa)
 
     def __call__(self, spectral_info):
+        """
+        Return the spectral spectral spectral spectral error.
+
+        Args:
+            self: (todo): write your description
+            spectral_info: (str): write your description
+        """
         carriers = tuple(self.propagate(spectral_info.pref, *spectral_info.carriers))
         pref = self.update_pref(spectral_info.pref)
         return spectral_info._replace(carriers=carriers, pref=pref)

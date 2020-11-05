@@ -108,6 +108,13 @@ def db2lin(value):
 
 
 def round2float(number, step):
+    """
+    Round a float to a float.
+
+    Args:
+        number: (int): write your description
+        step: (int): write your description
+    """
     step = round(step, 1)
     if step >= 0.01:
         number = round(number / step, 0)
@@ -133,6 +140,15 @@ def freq2wavelength(value):
 
 
 def snr_sum(snr, bw, snr_added, bw_added=12.5e9):
+    """
+    Summarize snr snr.
+
+    Args:
+        snr: (int): write your description
+        bw: (int): write your description
+        snr_added: (int): write your description
+        bw_added: (int): write your description
+    """
     snr_added = snr_added - lin2db(bw / bw_added)
     snr = -lin2db(db2lin(-snr) + db2lin(-snr_added))
     return snr

@@ -36,6 +36,11 @@ def test_run_wrapper(program):
 
 
 def test_conversion_xls():
+    """
+    Run xls xls conversion.
+
+    Args:
+    """
     proc = subprocess.run(
         ('gnpy-convert-xls', SRC_ROOT / 'tests' / 'data' / 'testTopology.xls', '--output', '/dev/null'),
         stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, universal_newlines=True)

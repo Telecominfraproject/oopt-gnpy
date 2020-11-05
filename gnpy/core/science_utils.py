@@ -16,6 +16,13 @@ logger = getLogger(__name__)
 
 
 def propagate_raman_fiber(fiber, *carriers):
+    """
+    Propagate raman fourier fourier transform.
+
+    Args:
+        fiber: (todo): write your description
+        carriers: (todo): write your description
+    """
     simulation = Simulation.get_simulation()
     sim_params = simulation.sim_params
     raman_params = sim_params.raman_params
@@ -75,7 +82,28 @@ def propagate_raman_fiber(fiber, *carriers):
 
 
 def frequency_resolution(carrier, carriers, sim_params, fiber):
+    """
+    Calculate resolution of - domain.
+
+    Args:
+        carrier: (todo): write your description
+        carriers: (todo): write your description
+        sim_params: (dict): write your description
+        fiber: (todo): write your description
+    """
     def _get_freq_res_k_phi(delta_count, grid_size, alpha0, delta_z, beta2, k_tol, phi_tol):
+        """
+        Calculates delta delta.
+
+        Args:
+            delta_count: (str): write your description
+            grid_size: (int): write your description
+            alpha0: (float): write your description
+            delta_z: (todo): write your description
+            beta2: (todo): write your description
+            k_tol: (float): write your description
+            phi_tol: (float): write your description
+        """
         res_phi = _get_freq_res_phase_rotation(delta_count, grid_size, delta_z, beta2, phi_tol)
         res_k = _get_freq_res_dispersion_attenuation(delta_count, grid_size, alpha0, beta2, k_tol)
         res_dict = {'res_phi': res_phi, 'res_k': res_k}
@@ -83,9 +111,29 @@ def frequency_resolution(carrier, carriers, sim_params, fiber):
         return res_dict[method], method, res_dict
 
     def _get_freq_res_dispersion_attenuation(delta_count, grid_size, alpha0, beta2, k_tol):
+        """
+        R calculate frequency.
+
+        Args:
+            delta_count: (todo): write your description
+            grid_size: (int): write your description
+            alpha0: (float): write your description
+            beta2: (todo): write your description
+            k_tol: (float): write your description
+        """
         return k_tol * abs(alpha0) / abs(beta2) / (1 + delta_count) / (4 * np.pi ** 2 * grid_size)
 
     def _get_freq_res_phase_rotation(delta_count, grid_size, delta_z, beta2, phi_tol):
+        """
+        Calculate delta delta.
+
+        Args:
+            delta_count: (todo): write your description
+            grid_size: (int): write your description
+            delta_z: (todo): write your description
+            beta2: (todo): write your description
+            phi_tol: (float): write your description
+        """
         return phi_tol / abs(beta2) / (1 + delta_count) / delta_z / (4 * np.pi ** 2 * grid_size)
 
     grid_size = sim_params.nli_params.wdm_grid_size
@@ -138,25 +186,59 @@ class Simulation:
     _shared_dict = {}
 
     def __init__(self):
+        """
+        Initialize the simulation.
+
+        Args:
+            self: (todo): write your description
+        """
         if type(self) == Simulation:
             raise NotImplementedError('Simulation cannot be instatiated')
 
     @classmethod
     def set_params(cls, sim_params):
+        """
+        Sets parameters.
+
+        Args:
+            cls: (todo): write your description
+            sim_params: (dict): write your description
+        """
         cls._shared_dict['sim_params'] = sim_params
 
     @classmethod
     def get_simulation(cls):
+        """
+        Returns a new simulation instance.
+
+        Args:
+            cls: (callable): write your description
+        """
         self = cls.__new__(cls)
         return self
 
     @property
     def sim_params(self):
+        """
+        : return : meth : ~. kernel_params
+
+        Args:
+            self: (todo): write your description
+        """
         return self._shared_dict['sim_params']
 
 
 class SpontaneousRamanScattering:
     def __init__(self, frequency, z, power):
+        """
+        Initialize the filter to the given frequency.
+
+        Args:
+            self: (todo): write your description
+            frequency: (float): write your description
+            z: (int): write your description
+            power: (todo): write your description
+        """
         self.frequency = frequency
         self.z = z
         self.power = power
@@ -164,6 +246,16 @@ class SpontaneousRamanScattering:
 
 class StimulatedRamanScattering:
     def __init__(self, frequency, z, rho, power):
+        """
+        Initialize the frequency.
+
+        Args:
+            self: (todo): write your description
+            frequency: (float): write your description
+            z: (int): write your description
+            rho: (todo): write your description
+            power: (todo): write your description
+        """
         self.frequency = frequency
         self.z = z
         self.rho = rho
@@ -185,40 +277,92 @@ class RamanSolver:
 
     @property
     def fiber(self):
+        """
+        Returns a list of fiber.
+
+        Args:
+            self: (todo): write your description
+        """
         return self._fiber
 
     @property
     def carriers(self):
+        """
+        Carcar : class : ~dj.
+
+        Args:
+            self: (todo): write your description
+        """
         return self._carriers
 
     @carriers.setter
     def carriers(self, carriers):
+        """
+        Carries outriers.
+
+        Args:
+            self: (todo): write your description
+            carriers: (todo): write your description
+        """
         self._carriers = carriers
         self._spontaneous_raman_scattering = None
         self._stimulated_raman_scattering = None
 
     @property
     def raman_pumps(self):
+        """
+        Returns a string representation of the ramanan.
+
+        Args:
+            self: (todo): write your description
+        """
         return self._raman_pumps
 
     @raman_pumps.setter
     def raman_pumps(self, raman_pumps):
+        """
+        Convert ram ram to pumps.
+
+        Args:
+            self: (todo): write your description
+            raman_pumps: (int): write your description
+        """
         self._raman_pumps = raman_pumps
         self._stimulated_raman_scattering = None
 
     @property
     def stimulated_raman_scattering(self):
+        """
+        Calculates and returns of this instance.
+
+        Args:
+            self: (todo): write your description
+        """
         if self._stimulated_raman_scattering is None:
             self.calculate_stimulated_raman_scattering(self.carriers, self.raman_pumps)
         return self._stimulated_raman_scattering
 
     @property
     def spontaneous_raman_scattering(self):
+        """
+        Computes the spontaneous frequency.
+
+        Args:
+            self: (todo): write your description
+        """
         if self._spontaneous_raman_scattering is None:
             self.calculate_spontaneous_raman_scattering(self.carriers, self.raman_pumps)
         return self._spontaneous_raman_scattering
 
     def calculate_spontaneous_raman_scattering(self, carriers, raman_pumps):
+        """
+        R calculate the temperature at the temperature.
+
+        Args:
+            self: (todo): write your description
+            carriers: (todo): write your description
+            raman_pumps: (int): write your description
+        """
         raman_efficiency = self.fiber.params.raman_efficiency
         temperature = self.fiber.operational['temperature']
 
@@ -284,6 +428,21 @@ class RamanSolver:
 
     def _int_spontaneous_raman(self, z_array, raman_matrix, alphap_fiber, freq_array,
                                cr_raman_matrix, freq_diff, ase_bc, bn_array, temperature):
+        """
+        R calculate the temperature in the temperature.
+
+        Args:
+            self: (todo): write your description
+            z_array: (array): write your description
+            raman_matrix: (todo): write your description
+            alphap_fiber: (str): write your description
+            freq_array: (float): write your description
+            cr_raman_matrix: (todo): write your description
+            freq_diff: (float): write your description
+            ase_bc: (todo): write your description
+            bn_array: (int): write your description
+            temperature: (todo): write your description
+        """
         spontaneous_raman_scattering = OptimizeResult()
 
         simulation = Simulation.get_simulation()
@@ -351,9 +510,23 @@ class RamanSolver:
         z = np.arange(0, fiber_length + 1, z_resolution)
 
         def ode_function(z, p):
+            """
+            R calculate the function
+
+            Args:
+                z: (todo): write your description
+                p: (todo): write your description
+            """
             return self._ode_stimulated_raman(z, p, alphap_fiber, freq_array, cr, prop_direct)
 
         def boundary_residual(ya, yb):
+            """
+            Compute the residualsidual residuals
+
+            Args:
+                ya: (todo): write your description
+                yb: (todo): write your description
+            """
             return self._residuals_stimulated_raman(ya, yb, power_spectrum, prop_direct)
 
         initial_guess_conditions = self._initial_guess_stimulated_raman(z, power_spectrum, alphap_fiber, prop_direct)
@@ -368,6 +541,16 @@ class RamanSolver:
         self._stimulated_raman_scattering = stimulated_raman_scattering
 
     def _residuals_stimulated_raman(self, ya, yb, power_spectrum, prop_direct):
+        """
+        Compute the power at each power
+
+        Args:
+            self: (todo): write your description
+            ya: (todo): write your description
+            yb: (todo): write your description
+            power_spectrum: (int): write your description
+            prop_direct: (str): write your description
+        """
 
         computed_boundary_value = np.zeros(ya.size)
 
@@ -451,14 +634,33 @@ class NliSolver:
 
     @property
     def fiber(self):
+        """
+        Returns a list of fiber.
+
+        Args:
+            self: (todo): write your description
+        """
         return self._fiber
 
     @property
     def stimulated_raman_scattering(self):
+        """
+        Return the : class : pynphot_raman_scatteringram_scattering.
+
+        Args:
+            self: (todo): write your description
+        """
         return self._stimulated_raman_scattering
 
     @stimulated_raman_scattering.setter
     def stimulated_raman_scattering(self, stimulated_raman_scattering):
+        """
+        Sets a ramulated stimulus.
+
+        Args:
+            self: (todo): write your description
+            stimulated_raman_scattering: (todo): write your description
+        """
         self._stimulated_raman_scattering = stimulated_raman_scattering
 
     def compute_nli(self, carrier, *carriers):
@@ -479,6 +681,14 @@ class NliSolver:
 
     @staticmethod
     def _carrier_nli_from_eta_matrix(eta_matrix, carrier, *carriers):
+        """
+        Compute the power curve.
+
+        Args:
+            eta_matrix: (todo): write your description
+            carrier: (todo): write your description
+            carriers: (todo): write your description
+        """
         carrier_nli = 0
         for pump_carrier_1 in carriers:
             for pump_carrier_2 in carriers:
@@ -489,6 +699,14 @@ class NliSolver:
         return carrier_nli
 
     def _compute_eta_matrix(self, carrier_cut, *carriers):
+        """
+        Compute the spectral matrix.
+
+        Args:
+            self: (todo): write your description
+            carrier_cut: (todo): write your description
+            carriers: (todo): write your description
+        """
         cut_index = carrier_cut.channel_number - 1
         simulation = Simulation.get_simulation()
         sim_params = simulation.sim_params
@@ -548,6 +766,13 @@ class NliSolver:
 
     # Methods for computing the GGN-model
     def _generalized_spectrally_separated_spm(self, carrier):
+        """
+        Compute the spherical harmonic fourier spectrum.
+
+        Args:
+            self: (todo): write your description
+            carrier: (todo): write your description
+        """
         gamma = self.fiber.params.gamma
         simulation = Simulation.get_simulation()
         sim_params = simulation.sim_params
@@ -560,6 +785,14 @@ class NliSolver:
         return spm_nli
 
     def _generalized_spectrally_separated_xpm(self, carrier_cut, pump_carrier):
+        """
+        Generalized fourier fourier transform.
+
+        Args:
+            self: (todo): write your description
+            carrier_cut: (todo): write your description
+            pump_carrier: (todo): write your description
+        """
         gamma = self.fiber.params.gamma
         simulation = Simulation.get_simulation()
         sim_params = simulation.sim_params
@@ -591,6 +824,12 @@ class NliSolver:
         frequency_rho = self.stimulated_raman_scattering.frequency
         rho_norm = self.stimulated_raman_scattering.rho * np.exp(np.abs(alpha0) * z / 2)
         if len(frequency_rho) == 1:
+            """
+            R calculate rho function
+
+            Args:
+                f: (todo): write your description
+            """
             def rho_function(f): return rho_norm[0, :]
         else:
             rho_function = interp1d(frequency_rho, rho_norm, axis=0, fill_value='extrapolate')
@@ -624,6 +863,12 @@ class NliSolver:
         frequency_rho = self.stimulated_raman_scattering.frequency
         rho_norm = self.stimulated_raman_scattering.rho * np.exp(np.abs(alpha0) * z / 2)
         if len(frequency_rho) == 1:
+            """
+            R calculate rho function
+
+            Args:
+                f: (todo): write your description
+            """
             def rho_function(f): return rho_norm[0, :]
         else:
             rho_function = interp1d(frequency_rho, rho_norm, axis=0, fill_value='extrapolate')
@@ -654,6 +899,15 @@ class NliSolver:
 
     @staticmethod
     def _generalized_rho_nli(delta_beta, rho_norm_pump, z, alpha0):
+        """
+        Compute rho - rho_nli_nli_nli_nli_nli ( rho )
+
+        Args:
+            delta_beta: (todo): write your description
+            rho_norm_pump: (todo): write your description
+            z: (todo): write your description
+            alpha0: (float): write your description
+        """
         w = 1j * delta_beta - alpha0
         generalized_rho_nli = (rho_norm_pump[-1]**2 * np.exp(w * z[-1]) - rho_norm_pump[0]**2 * np.exp(w * z[0])) / w
         for z_ind in range(0, len(z) - 1):
@@ -663,6 +917,13 @@ class NliSolver:
         return generalized_rho_nli
 
     def _frequency_offset_threshold(self, symbol_rate):
+        """
+        Calculate the frequency in the frequency.
+
+        Args:
+            self: (todo): write your description
+            symbol_rate: (str): write your description
+        """
         k_ref = 5
         beta2_ref = 21.3e-27
         delta_f_ref = 50e9
@@ -687,6 +948,16 @@ def _psi(carrier, interfering_carrier, beta2, asymptotic_length):
 
 
 def estimate_nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
+    """
+    Estimate nf model
+
+    Args:
+        type_variety: (str): write your description
+        gain_min: (float): write your description
+        gain_max: (int): write your description
+        nf_min: (float): write your description
+        nf_max: (float): write your description
+    """
     if nf_min < -10:
         raise EquipmentConfigError(f'Invalid nf_min value {nf_min!r} for amplifier {type_variety}')
     if nf_max < -10:

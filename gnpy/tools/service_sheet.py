@@ -25,6 +25,13 @@ SERVICES_COLUMN = 12
 
 
 def all_rows(sheet, start=0):
+    """
+    Return all rows in a sheet.
+
+    Args:
+        sheet: (str): write your description
+        start: (int): write your description
+    """
     return (sheet.row(x) for x in range(start, sheet.nrows))
 
 
@@ -34,19 +41,59 @@ logger = getLogger(__name__)
 class Request(namedtuple('Request', 'request_id source destination trx_type mode \
     spacing power nb_channel disjoint_from nodes_list is_loose path_bandwidth')):
     def __new__(cls, request_id, source, destination, trx_type,  mode=None, spacing=None, power=None, nb_channel=None, disjoint_from='',  nodes_list=None, is_loose='', path_bandwidth=None):
+        """
+        Creates a new : class.
+
+        Args:
+            cls: (todo): write your description
+            request_id: (str): write your description
+            source: (str): write your description
+            destination: (str): write your description
+            trx_type: (str): write your description
+            mode: (todo): write your description
+            spacing: (float): write your description
+            power: (float): write your description
+            nb_channel: (todo): write your description
+            disjoint_from: (todo): write your description
+            nodes_list: (list): write your description
+            is_loose: (bool): write your description
+            path_bandwidth: (str): write your description
+        """
         return super().__new__(cls, request_id, source, destination, trx_type, mode, spacing, power, nb_channel, disjoint_from,  nodes_list, is_loose, path_bandwidth)
 
 
 class Element:
     def __eq__(self, other):
+        """
+        Return true if other is equal to other.
+
+        Args:
+            self: (todo): write your description
+            other: (todo): write your description
+        """
         return type(self) == type(other) and self.uid == other.uid
 
     def __hash__(self):
+        """
+        Return the hash of the object
+
+        Args:
+            self: (todo): write your description
+        """
         return hash((type(self), self.uid))
 
 
 class Request_element(Element):
     def __init__(self, Request, equipment, bidir):
+        """
+        Initialize the device.
+
+        Args:
+            self: (todo): write your description
+            Request: (dict): write your description
+            equipment: (str): write your description
+            bidir: (str): write your description
+        """
         # request_id is str
         # excel has automatic number formatting that adds .0 on integer values
         # the next lines recover the pure int value, assuming this .0 is unwanted
@@ -114,6 +161,12 @@ class Request_element(Element):
 
     @property
     def pathrequest(self):
+        """
+        Return a path : class : attr : path.
+
+        Args:
+            self: (todo): write your description
+        """
         # Default assumption for bidir is False
         req_dictionnary = {
             'request-id': self.request_id,
@@ -156,6 +209,12 @@ class Request_element(Element):
 
     @property
     def pathsync(self):
+        """
+        Synchronously sync the path.
+
+        Args:
+            self: (todo): write your description
+        """
         if self.disjoint_from:
             return {'synchronization-id': self.request_id,
                     'svec': {
@@ -170,6 +229,12 @@ class Request_element(Element):
 
     @property
     def json(self):
+        """
+        Return the json value for the given path.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.pathrequest, self.pathsync
 
 
@@ -204,6 +269,12 @@ def read_service_sheet(
 
 
 def correct_xlrd_int_to_str_reading(v):
+    """
+    Convert value to an int.
+
+    Args:
+        v: (todo): write your description
+    """
     if not isinstance(v, str):
         value = str(int(v))
         if value.endswith('.0'):
@@ -214,11 +285,24 @@ def correct_xlrd_int_to_str_reading(v):
 
 
 def parse_row(row, fieldnames):
+    """
+    Parse rownames
+
+    Args:
+        row: (todo): write your description
+        fieldnames: (str): write your description
+    """
     return {f: r.value for f, r in zip(fieldnames, row[0:SERVICES_COLUMN])
             if r.ctype != XL_CELL_EMPTY}
 
 
 def parse_excel(input_filename):
+    """
+    Parse excel excel excel file.
+
+    Args:
+        input_filename: (str): write your description
+    """
     with open_workbook(input_filename) as wb:
         service_sheet = wb.sheet_by_name('Service')
         services = list(parse_service_sheet(service_sheet))

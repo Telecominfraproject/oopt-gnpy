@@ -32,6 +32,15 @@ eqpt_library_name = Path(__file__).parent.parent / 'tests/data/eqpt_config.json'
 @pytest.mark.parametrize("serv", [service_file_name])
 @pytest.mark.parametrize("expected_mode", [['16QAM', 'PS_SP64_1', 'PS_SP64_1', 'PS_SP64_1', 'mode 2 - fake', 'mode 2', 'PS_SP64_1', 'mode 3', 'PS_SP64_1', 'PS_SP64_1', '16QAM', 'mode 1', 'PS_SP64_1', 'PS_SP64_1', 'mode 1', 'mode 2', 'mode 1', 'mode 2', 'nok']])
 def test_automaticmodefeature(net, eqpt, serv, expected_mode):
+    """
+    R calculate modefeature of the modefeature
+
+    Args:
+        net: (todo): write your description
+        eqpt: (todo): write your description
+        serv: (todo): write your description
+        expected_mode: (todo): write your description
+    """
     equipment = load_equipment(eqpt)
     network = load_network(net, equipment)
     data = load_requests(serv, eqpt, bidir=False, network=network, network_filename=net)

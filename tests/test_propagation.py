@@ -26,6 +26,15 @@ def nch_and_spacing(request):
 
 
 def propagation(input_power, con_in, con_out, dest):
+    """
+    R calculate the network
+
+    Args:
+        input_power: (todo): write your description
+        con_in: (str): write your description
+        con_out: (todo): write your description
+        dest: (todo): write your description
+    """
     equipment = load_equipment(eqpt_library_name)
     network = load_network(network_file_name, equipment)
     build_network(network, equipment, 0, 20)
@@ -68,6 +77,13 @@ expected = {'a': (-2, 0, 0), 'b': (-2, 0, 1), 'c': (-1, 0, 0), 'd': (0, 0, 1)}
 @pytest.mark.parametrize("dest", ['trx B', 'trx F'])
 @pytest.mark.parametrize("osnr_test", ['a', 'b', 'c', 'd'])
 def test_snr(osnr_test, dest):
+    """
+    Test whether snr is the snr between two snr.
+
+    Args:
+        osnr_test: (todo): write your description
+        dest: (todo): write your description
+    """
     pw = test[osnr_test][0]
     conn_in = test[osnr_test][1]
     conn_out = test[osnr_test][2]
@@ -89,6 +105,13 @@ def test_snr(osnr_test, dest):
 @pytest.mark.parametrize("dest", ['trx B', 'trx F'])
 @pytest.mark.parametrize("cd_test", ['a', 'b', 'c', 'd'])
 def test_chromatic_dispersion(cd_test, dest):
+    """
+    Dispwatic chromatic chromatic chromatic chromium.
+
+    Args:
+        cd_test: (todo): write your description
+        dest: (todo): write your description
+    """
     pw = test[cd_test][0]
     conn_in = test[cd_test][1]
     conn_out = test[cd_test][2]
@@ -107,6 +130,13 @@ def test_chromatic_dispersion(cd_test, dest):
 @pytest.mark.parametrize("dest", ['trx B', 'trx F'])
 @pytest.mark.parametrize("dgd_test", ['a', 'b', 'c', 'd'])
 def test_dgd(dgd_test, dest):
+    """
+    Test if dest test test test
+
+    Args:
+        dgd_test: (todo): write your description
+        dest: (todo): write your description
+    """
     pw = test[dgd_test][0]
     conn_in = test[dgd_test][1]
     conn_out = test[dgd_test][2]

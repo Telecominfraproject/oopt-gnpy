@@ -12,6 +12,11 @@ DATA_DIR = TEST_DIR / 'data'
 
 
 def test_sim_parameters():
+    """
+    Test if the parameters of - up.
+
+    Args:
+    """
     j = load_json(DATA_DIR / 'test_sim_params.json')
     sim_params = SimParams(**j)
     Simulation.set_params(sim_params)
