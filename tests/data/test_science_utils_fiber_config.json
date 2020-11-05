@@ -13,20 +13,20 @@
     "pmd_coef": 1.265e-15
   },
   "operational": {
-    "temperature": 283,
-    "raman_pumps": [
-      {
-        "power": 0.2,
-        "frequency": 205000000000000,
-        "propagation_direction": "counterprop"
+        "temperature": 283,
+        "raman_pumps": [
+          {
+            "power": 224.403e-3,
+            "frequency": 205e12,
+            "propagation_direction": "counterprop"
+          },
+          {
+            "power": 231.135e-3,
+            "frequency": 201e12,
+            "propagation_direction": "counterprop"
+          }
+        ]
       },
-      {
-        "power": 0.206,
-        "frequency": 201000000000000,
-        "propagation_direction": "counterprop"
-      }
-    ]
-  },
   "metadata": {
     "location": {
       "latitude": 1,
