@@ -35,15 +35,34 @@ from gnpy.core.elements import Edfa, Fused, Fiber
 
 
 def all_rows(sh, start=0):
+    """
+    Return all rows in a list.
+
+    Args:
+        sh: (str): write your description
+        start: (int): write your description
+    """
     return (sh.row(x) for x in range(start, sh.nrows))
 
 
 class Node(object):
     def __init__(self, **kwargs):
+        """
+        Initialize an attribute.
+
+        Args:
+            self: (todo): write your description
+        """
         super(Node, self).__init__()
         self.update_attr(kwargs)
 
     def update_attr(self, kwargs):
+        """
+        Update an attribute of the model s attributes.
+
+        Args:
+            self: (todo): write your description
+        """
         clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
         for k, v in self.default_values.items():
             v = clean_kwargs.get(k, v)
@@ -68,11 +87,23 @@ class Link(object):
     """
 
     def __init__(self, **kwargs):
+        """
+        Initialize metadata
+
+        Args:
+            self: (todo): write your description
+        """
         super(Link, self).__init__()
         self.update_attr(kwargs)
         self.distance_units = 'km'
 
     def update_attr(self, kwargs):
+        """
+        Update an attribute of the model.
+
+        Args:
+            self: (todo): write your description
+        """
         clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
         for k, v in self.default_values.items():
             v = clean_kwargs.get(k, v)
@@ -82,6 +113,13 @@ class Link(object):
             setattr(self, k, v)
 
     def __eq__(self, link):
+        """
+        Return true if the link is equal to the given link.
+
+        Args:
+            self: (todo): write your description
+            link: (todo): write your description
+        """
         return (self.from_city == link.from_city and self.to_city == link.to_city) \
             or (self.from_city == link.to_city and self.to_city == link.from_city)
 
@@ -100,10 +138,22 @@ class Link(object):
 
 class Eqpt(object):
     def __init__(self, **kwargs):
+        """
+        Initialize the eqpt.
+
+        Args:
+            self: (todo): write your description
+        """
         super(Eqpt, self).__init__()
         self.update_attr(kwargs)
 
     def update_attr(self, kwargs):
+        """
+        Updates a dictionary with the given kwargs.
+
+        Args:
+            self: (todo): write your description
+        """
         clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
         for k, v in self.default_values.items():
             v_east = clean_kwargs.get(k, v)
@@ -126,10 +176,22 @@ class Eqpt(object):
 
 class Roadm(object):
     def __init__(self, **kwargs):
+        """
+        Initialize an attribute.
+
+        Args:
+            self: (todo): write your description
+        """
         super(Roadm, self).__init__()
         self.update_attr(kwargs)
 
     def update_attr(self, kwargs):
+        """
+        Update an attribute of the model s attributes.
+
+        Args:
+            self: (todo): write your description
+        """
         clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
         for k, v in self.default_values.items():
             v = clean_kwargs.get(k, v)
@@ -200,21 +262,54 @@ def parse_headers(my_sheet, input_headers_dict, headers, start_line, slice_in):
 
 
 def parse_row(row, headers):
+    """
+    Parse a row.
+
+    Args:
+        row: (todo): write your description
+        headers: (dict): write your description
+    """
     return {f: r.value for f, r in
             zip([label for label in headers.values()], [row[i] for i in headers])}
 
 
 def parse_sheet(my_sheet, input_headers_dict, header_line, start_line, column):
+    """
+    Parse a sheet.
+
+    Args:
+        my_sheet: (str): write your description
+        input_headers_dict: (str): write your description
+        header_line: (str): write your description
+        start_line: (str): write your description
+        column: (str): write your description
+    """
     headers = parse_headers(my_sheet, input_headers_dict, {}, header_line, (0, column))
     for row in all_rows(my_sheet, start=start_line):
         yield parse_row(row[0: column], headers)
 
 
 def _format_items(items):
+    """
+    Format a string items to - string.
+
+    Args:
+        items: (todo): write your description
+    """
     return '\n'.join(f' - {item}' for item in items)
 
 
 def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
+    """
+    Sanity check.
+
+    Args:
+        nodes: (list): write your description
+        links: (todo): write your description
+        nodes_by_city: (todo): write your description
+        links_by_city: (dict): write your description
+        eqpts_by_city: (todo): write your description
+    """
 
     duplicate_links = []
     for l1 in links:
@@ -351,6 +446,13 @@ def create_west_eqpt_element(node):
     return eqpt
 
 def xls_to_json_data(input_filename, filter_region=[]):
+    """
+    Convert an xls file to an xls file.
+
+    Args:
+        input_filename: (str): write your description
+        filter_region: (str): write your description
+    """
     nodes, links, eqpts, roadms = parse_excel(input_filename)
     if filter_region:
         nodes = [n for n in nodes if n.region.lower() in filter_region]
@@ -446,6 +548,14 @@ def xls_to_json_data(input_filename, filter_region=[]):
 
 
 def convert_file(input_filename, filter_region=[], output_json_file_name=None):
+    """
+    Convert an input file to a json file.
+
+    Args:
+        input_filename: (str): write your description
+        filter_region: (str): write your description
+        output_json_file_name: (str): write your description
+    """
     data = xls_to_json_data(input_filename, filter_region)
     if output_json_file_name is None:
         output_json_file_name = input_filename.with_suffix('.json')
@@ -528,6 +638,12 @@ def corresp_names(input_filename, network):
 
 
 def parse_excel(input_filename):
+    """
+    Parse an excel file
+
+    Args:
+        input_filename: (str): write your description
+    """
     link_headers = {
         'Node A': 'from_city',
         'Node Z': 'to_city',
@@ -641,6 +757,12 @@ def parse_excel(input_filename):
 
 
 def eqpt_connection_by_city(city_name):
+    """
+    Connects a city to a city.
+
+    Args:
+        city_name: (str): write your description
+    """
     other_cities = fiber_dest_from_source(city_name)
     subdata = []
     if nodes_by_city[city_name].node_type.lower() in {'ila', 'fused'}:
@@ -666,6 +788,14 @@ def eqpt_connection_by_city(city_name):
 
 
 def connect_eqpt(from_, in_, to_):
+    """
+    Connects to a connection pool.
+
+    Args:
+        from_: (str): write your description
+        in_: (int): write your description
+        to_: (str): write your description
+    """
     connections = []
     if in_ != '':
         connections = [{'from_node': from_, 'to_node': in_},
@@ -676,6 +806,14 @@ def connect_eqpt(from_, in_, to_):
 
 
 def eqpt_in_city_to_city(in_city, to_city, direction='east'):
+    """
+    Return the city in a city.
+
+    Args:
+        in_city: (int): write your description
+        to_city: (todo): write your description
+        direction: (str): write your description
+    """
     rev_direction = 'west' if direction == 'east' else 'east'
     amp_direction = f'{direction}_amp_type'
     amp_rev_direction = f'{rev_direction}_amp_type'
@@ -751,6 +889,12 @@ def corresp_next_node(network, corresp_ila, corresp_roadm):
 
 
 def fiber_dest_from_source(city_name):
+    """
+    Return a list of dest objects return a destination.
+
+    Args:
+        city_name: (str): write your description
+    """
     destinations = []
     links_from_city = links_by_city[city_name]
     for l in links_from_city:
@@ -762,6 +906,13 @@ def fiber_dest_from_source(city_name):
 
 
 def fiber_link(from_city, to_city):
+    """
+    Fiber link between two city links.
+
+    Args:
+        from_city: (int): write your description
+        to_city: (int): write your description
+    """
     source_dest = (from_city, to_city)
     links = links_by_city[from_city]
     link = next(l for l in links if l.from_city in source_dest and l.to_city in source_dest)
@@ -773,6 +924,13 @@ def fiber_link(from_city, to_city):
 
 
 def midpoint(city_a, city_b):
+    """
+    Calculate the midpoint of two points.
+
+    Args:
+        city_a: (int): write your description
+        city_b: (int): write your description
+    """
     lats = city_a.latitude, city_b.latitude
     longs = city_a.longitude, city_b.longitude
     try:
@@ -801,6 +959,11 @@ ROADMS_COLUMN = 3
 
 
 def _do_convert():
+    """
+    Convert workbook file
+
+    Args:
+    """
     parser = ArgumentParser()
     parser.add_argument('workbook', type=Path)
     parser.add_argument('-f', '--filter-region', action='append', default=[])

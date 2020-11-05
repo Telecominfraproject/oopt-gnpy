@@ -36,6 +36,14 @@ Model_dual_stage = namedtuple('Model_dual_stage', 'preamp_variety booster_variet
 
 class _JsonThing:
     def update_attr(self, default_values, kwargs, name):
+        """
+        Updates an existing attribute.
+
+        Args:
+            self: (todo): write your description
+            default_values: (dict): write your description
+            name: (str): write your description
+        """
         clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
         for k, v in default_values.items():
             setattr(self, k, clean_kwargs.get(k, v))
@@ -61,6 +69,12 @@ class SI(_JsonThing):
     }
 
     def __init__(self, **kwargs):
+        """
+        Initialize the instance.
+
+        Args:
+            self: (todo): write your description
+        """
         self.update_attr(self.default_values, kwargs, 'SI')
 
 
@@ -80,6 +94,12 @@ class Span(_JsonThing):
     }
 
     def __init__(self, **kwargs):
+        """
+        Initialize the instance.
+
+        Args:
+            self: (todo): write your description
+        """
         self.update_attr(self.default_values, kwargs, 'Span')
 
 
@@ -95,6 +115,12 @@ class Roadm(_JsonThing):
     }
 
     def __init__(self, **kwargs):
+        """
+        Initialize the instance.
+
+        Args:
+            self: (todo): write your description
+        """
         self.update_attr(self.default_values, kwargs, 'Roadm')
 
 
@@ -106,6 +132,12 @@ class Transceiver(_JsonThing):
     }
 
     def __init__(self, **kwargs):
+        """
+        Initialize the instance.
+
+        Args:
+            self: (todo): write your description
+        """
         self.update_attr(self.default_values, kwargs, 'Transceiver')
 
 
@@ -118,6 +150,12 @@ class Fiber(_JsonThing):
     }
 
     def __init__(self, **kwargs):
+        """
+        Initialize the instance.
+
+        Args:
+            self: (todo): write your description
+        """
         self.update_attr(self.default_values, kwargs, 'Fiber')
 
 
@@ -131,6 +169,12 @@ class RamanFiber(_JsonThing):
     }
 
     def __init__(self, **kwargs):
+        """
+        Initialize the default configuration.
+
+        Args:
+            self: (todo): write your description
+        """
         self.update_attr(self.default_values, kwargs, 'RamanFiber')
         for param in ('cr', 'frequency_offset'):
             if param not in self.raman_efficiency:
@@ -160,10 +204,23 @@ class Amp(_JsonThing):
     }
 
     def __init__(self, **kwargs):
+        """
+        Initialize the instance.
+
+        Args:
+            self: (todo): write your description
+        """
         self.update_attr(self.default_values, kwargs, 'Amp')
 
     @classmethod
     def from_json(cls, filename, **kwargs):
+        """
+        Initialize a model from a model.
+
+        Args:
+            cls: (todo): write your description
+            filename: (str): write your description
+        """
         config = Path(filename).parent / 'default_edfa_config.json'
 
         type_variety = kwargs['type_variety']
@@ -226,11 +283,23 @@ def _automatic_spacing(baud_rate):
 
 
 def load_equipment(filename):
+    """
+    Load a json file from a json file.
+
+    Args:
+        filename: (str): write your description
+    """
     json_data = load_json(filename)
     return _equipment_from_json(json_data, filename)
 
 
 def _update_dual_stage(equipment):
+    """
+    Update the previous stage.
+
+    Args:
+        equipment: (todo): write your description
+    """
     edfa_dict = equipment['Edfa']
     for edfa in edfa_dict.values():
         if edfa.type_def == 'dual_stage':
@@ -296,6 +365,13 @@ def _equipment_from_json(json_data, filename):
 
 
 def load_network(filename, equipment):
+    """
+    Load a network from filename.
+
+    Args:
+        filename: (str): write your description
+        equipment: (str): write your description
+    """
     if filename.suffix.lower() in ('.xls', '.xlsx'):
         json_data = xls_to_json_data(filename)
     elif filename.suffix.lower() == '.json':
@@ -315,6 +391,12 @@ def save_network(network: DiGraph, filename: str):
 
 
 def _cls_for(equipment_type):
+    """
+    Return an instance of the given type.
+
+    Args:
+        equipment_type: (str): write your description
+    """
     if equipment_type == 'Edfa':
         return elements.Edfa
     if equipment_type == 'Fused':
@@ -332,6 +414,13 @@ def _cls_for(equipment_type):
 
 
 def network_from_json(json_data, equipment):
+    """
+    Create a networkx graph from a networkx graph.
+
+    Args:
+        json_data: (str): write your description
+        equipment: (todo): write your description
+    """
     # NOTE|dutc: we could use the following, but it would tie our data format
     #            too closely to the graph library
     # from networkx import node_link_graph
@@ -372,6 +461,12 @@ def network_from_json(json_data, equipment):
 
 
 def network_to_json(network):
+    """
+    Return a dictionary to a network.
+
+    Args:
+        network: (todo): write your description
+    """
     data = {
         'elements': [n.to_json for n in network]
     }
@@ -386,12 +481,25 @@ def network_to_json(network):
 
 
 def load_json(filename):
+    """
+    Load a json file.
+
+    Args:
+        filename: (str): write your description
+    """
     with open(filename, 'r', encoding='utf-8') as f:
         data = json.load(f)
     return data
 
 
 def save_json(obj, filename):
+    """
+    Save obj ascii file.
+
+    Args:
+        obj: (todo): write your description
+        filename: (str): write your description
+    """
     with open(filename, 'w', encoding='utf-8') as f:
         json.dump(obj, f, indent=2, ensure_ascii=False)
 
@@ -520,6 +628,18 @@ def convert_service_sheet(
         output_filename='',
         bidir=False,
         filter_region=None):
+    """
+    Convert excel data sheet to an excel sheet.
+
+    Args:
+        input_filename: (str): write your description
+        eqpt: (todo): write your description
+        network: (todo): write your description
+        network_filename: (str): write your description
+        output_filename: (str): write your description
+        bidir: (str): write your description
+        filter_region: (str): write your description
+    """
     if output_filename == '':
         output_filename = f'{str(input_filename)[0:len(str(input_filename))-len(str(input_filename.suffixes[0]))]}_services.json'
     data = read_service_sheet(input_filename, eqpt, network, network_filename, bidir, filter_region)

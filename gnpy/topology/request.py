@@ -45,6 +45,13 @@ class PathRequest:
     """
 
     def __init__(self, *args, **params):
+        """
+        Initialize parameters
+
+        Args:
+            self: (todo): write your description
+            params: (dict): write your description
+        """
         params = RequestParams(**params)
         self.request_id = params.request_id
         self.source = params.source
@@ -70,11 +77,23 @@ class PathRequest:
         self.path_bandwidth = params.path_bandwidth
 
     def __str__(self):
+        """
+        Str : str
+
+        Args:
+            self: (todo): write your description
+        """
         return '\n\t'.join([f'{type(self).__name__} {self.request_id}',
                             f'source:       {self.source}',
                             f'destination:  {self.destination}'])
 
     def __repr__(self):
+        """
+        Return a human - readable representation of this baud.
+
+        Args:
+            self: (todo): write your description
+        """
         if self.baud_rate is not None:
             temp = self.baud_rate * 1e-9
             temp2 = self.bit_rate * 1e-9
@@ -103,6 +122,13 @@ class Disjunction:
     """
 
     def __init__(self, *args, **params):
+        """
+        Initialize the link
+
+        Args:
+            self: (todo): write your description
+            params: (dict): write your description
+        """
         params = DisjunctionParams(**params)
         self.disjunction_id = params.disjunction_id
         self.relaxable = params.relaxable
@@ -111,12 +137,24 @@ class Disjunction:
         self.disjunctions_req = params.disjunctions_req
 
     def __str__(self):
+        """
+        Return a string representation of this object.
+
+        Args:
+            self: (todo): write your description
+        """
         return '\n\t'.join([f'relaxable:     {self.relaxable}',
                             f'link-diverse:  {self.link_diverse}',
                             f'node-diverse:  {self.node_diverse}',
                             f'request-id-numbers: {self.disjunctions_req}'])
 
     def __repr__(self):
+        """
+        Return a repr representation of - repr representation of this parameter.
+
+        Args:
+            self: (todo): write your description
+        """
         return '\n\t'.join([f'{type(self).__name__} {self.disjunction_id}',
                             f'relaxable:    {self.relaxable}',
                             f'link-diverse: {self.link_diverse}',
@@ -134,6 +172,15 @@ BLOCKING_NOSPECTRUM = 'NO_SPECTRUM'
 
 class ResultElement:
     def __init__(self, path_request, computed_path, reversed_computed_path=None):
+        """
+        Initialize a new path.
+
+        Args:
+            self: (todo): write your description
+            path_request: (str): write your description
+            computed_path: (str): write your description
+            reversed_computed_path: (str): write your description
+        """
         self.path_id = path_request.request_id
         self.path_request = path_request
         self.computed_path = computed_path
@@ -271,10 +318,23 @@ class ResultElement:
 
     @property
     def json(self):
+        """
+        Returns the json representation of the path.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.pathresult
 
 
 def compute_constrained_path(network, req):
+    """
+    Computes a list of network paths.
+
+    Args:
+        network: (todo): write your description
+        req: (todo): write your description
+    """
     # nodes_list contains at least the destination
     if req.nodes_list[-1] != req.destination:
         # only arrive here if there is a bug in the program because route lists have
@@ -330,6 +390,14 @@ def compute_constrained_path(network, req):
 
 
 def propagate(path, req, equipment):
+    """
+    Propagate snr to the snr
+
+    Args:
+        path: (str): write your description
+        req: (todo): write your description
+        equipment: (todo): write your description
+    """
     si = create_input_spectral_information(
         req.f_min, req.f_max, req.roll_off, req.baud_rate,
         req.power, req.spacing)
@@ -347,6 +415,14 @@ def propagate(path, req, equipment):
 
 
 def propagate_and_optimize_mode(path, req, equipment):
+    """
+    Propagate mode to mode
+
+    Args:
+        path: (str): write your description
+        req: (todo): write your description
+        equipment: (todo): write your description
+    """
     # if mode is unknown : loops on the modes starting from the highest baudrate fiting in the
     # step 1: create an ordered list of modes based on baudrate
     baudrate_to_explore = list(set([this_mode['baud_rate']
@@ -591,6 +667,15 @@ def jsontocsv(json_data, equipment, fileout):
 
 
 def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
+    """
+    Compute pathreqjctnjctn.
+
+    Args:
+        network: (todo): write your description
+        equipment: (todo): write your description
+        pathreqlist: (str): write your description
+        disjunctions_list: (list): write your description
+    """
     # pathreqlist is a list of PathRequest objects
     # disjunctions_list a list of Disjunction objects
 
@@ -639,6 +724,15 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     # use a mirror class to record path and the corresponding requests
     class Pth:
         def __init__(self, req, pth, simplepth):
+            """
+            Initialize pthon.
+
+            Args:
+                self: (todo): write your description
+                req: (str): write your description
+                pth: (todo): write your description
+                simplepth: (todo): write your description
+            """
             self.req = req
             self.pth = pth
             self.simplepth = simplepth

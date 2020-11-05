@@ -512,6 +512,16 @@ class Amp:
     """
 
     def __init__(self, uid, to_node, eqpt=None, west=None):
+        """
+        Initialize the object.
+
+        Args:
+            self: (todo): write your description
+            uid: (int): write your description
+            to_node: (todo): write your description
+            eqpt: (int): write your description
+            west: (todo): write your description
+        """
         self.uid = uid
         self.to_node = to_node
         self.eqpt = eqpt

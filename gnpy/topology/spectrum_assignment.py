@@ -27,6 +27,17 @@ class Bitmap:
     """
 
     def __init__(self, f_min, f_max, grid, guardband=0.15e12, bitmap=None):
+        """
+        Initialize the f_min.
+
+        Args:
+            self: (todo): write your description
+            f_min: (int): write your description
+            f_max: (float): write your description
+            grid: (todo): write your description
+            guardband: (str): write your description
+            bitmap: (str): write your description
+        """
         # n is the min index including guardband. Guardband is require to be sure
         # that a channel can be assigned  with center frequency fmin (means that its
         # slot occupation goes below freq_index_min
@@ -80,6 +91,13 @@ class OMS:
     """
 
     def __init__(self, *args, **params):
+        """
+        Initialize spectral spectral spectral spectral spectral spectral results.
+
+        Args:
+            self: (todo): write your description
+            params: (dict): write your description
+        """
         params = OMSParams(**params)
         self.oms_id = params.oms_id
         self.el_id_list = params.el_id_list
@@ -90,10 +108,22 @@ class OMS:
     # TODO
 
     def __str__(self):
+        """
+        Str : str
+
+        Args:
+            self: (todo): write your description
+        """
         return '\n\t'.join([f'{type(self).__name__} {self.oms_id}',
                             f'{self.el_id_list[0]} - {self.el_id_list[-1]}'])
 
     def __repr__(self):
+        """
+        Return a repr representation of - repr representation of this object.
+
+        Args:
+            self: (todo): write your description
+        """
         return '\n\t'.join([f'{type(self).__name__} {self.oms_id}',
                             f'{self.el_id_list[0]} - {self.el_id_list[-1]}', '\n'])
 

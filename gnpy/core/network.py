@@ -16,6 +16,14 @@ from collections import namedtuple
 
 
 def edfa_nf(gain_target, variety_type, equipment):
+    """
+    Calculate eigenvalues of an eigenvalue.
+
+    Args:
+        gain_target: (int): write your description
+        variety_type: (str): write your description
+        equipment: (todo): write your description
+    """
     amp_params = equipment['Edfa'][variety_type]
     amp = elements.Edfa(
         uid='calc_NF',
@@ -137,6 +145,14 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
 
 
 def target_power(network, node, equipment):  # get_fiber_dp
+    """
+    R calculate the power.
+
+    Args:
+        network: (str): write your description
+        node: (todo): write your description
+        equipment: (str): write your description
+    """
     if isinstance(node, elements.Roadm):
         return 0
 
@@ -226,6 +242,14 @@ def find_last_node(network, node):
 
 
 def set_amplifier_voa(amp, power_target, power_mode):
+    """
+    Sets the amplifier of a given power.
+
+    Args:
+        amp: (str): write your description
+        power_target: (todo): write your description
+        power_mode: (str): write your description
+    """
     VOA_MARGIN = 1  # do not maximize the VOA optimization
     if amp.out_voa is None:
         if power_mode and amp.params.out_voa_auto:
@@ -333,6 +357,13 @@ def set_egress_amplifier(network, this_node, equipment, pref_total_db):
         this_node.per_degree_pch_out_db = {k: v for k, v in this_node_degree.items()}
 
 def add_egress_amplifier(network, node):
+    """
+    Add efa to the network.
+
+    Args:
+        network: (todo): write your description
+        node: (todo): write your description
+    """
     next_nodes = [n for n in network.successors(node)
                   if not (isinstance(n, elements.Transceiver) or isinstance(n, elements.Fused) or isinstance(n, elements.Edfa))]
     # no amplification for fused spans or TRX
@@ -363,6 +394,14 @@ def add_egress_amplifier(network, node):
 
 
 def calculate_new_length(fiber_length, bounds, target_length):
+    """
+    Calculate the length of the target length.
+
+    Args:
+        fiber_length: (int): write your description
+        bounds: (todo): write your description
+        target_length: (int): write your description
+    """
     if fiber_length < bounds.stop:
         return fiber_length, 1
 
@@ -383,6 +422,16 @@ def calculate_new_length(fiber_length, bounds, target_length):
 
 
 def split_fiber(network, fiber, bounds, target_length, equipment):
+    """
+    Splits the network into a list of the network.
+
+    Args:
+        network: (todo): write your description
+        fiber: (todo): write your description
+        bounds: (todo): write your description
+        target_length: (int): write your description
+        equipment: (todo): write your description
+    """
     new_length, n_spans = calculate_new_length(fiber.params.length, bounds, target_length)
     if n_spans == 1:
         return
@@ -425,6 +474,16 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
 
 
 def add_connector_loss(network, fibers, default_con_in, default_con_out, EOL):
+    """
+    Add a network to the network.
+
+    Args:
+        network: (todo): write your description
+        fibers: (todo): write your description
+        default_con_in: (todo): write your description
+        default_con_out: (todo): write your description
+        EOL: (str): write your description
+    """
     for fiber in fibers:
         try:
             next_node = next(network.successors(fiber))
@@ -462,6 +521,15 @@ def add_fiber_padding(network, fibers, padding):
 
 
 def build_network(network, equipment, pref_ch_db, pref_total_db):
+    """
+    Builds a network : param network : : param db.
+
+    Args:
+        network: (todo): write your description
+        equipment: (todo): write your description
+        pref_ch_db: (str): write your description
+        pref_total_db: (str): write your description
+    """
     default_span_data = equipment['Span']['default']
     max_length = int(convert_length(default_span_data.max_length, default_span_data.length_units))
     min_length = max(int(default_span_data.padding / 0.2 * 1e3), 50_000)

@@ -14,6 +14,12 @@ from gnpy.core.elements import Transceiver
 
 
 def plot_baseline(network):
+    """
+    Plots the baseline.
+
+    Args:
+        network: (todo): write your description
+    """
     edges = set(network.edges())
     pos = {n: (n.lng, n.lat) for n in network.nodes()}
     labels = {n: n.location.city for n in network.nodes() if isinstance(n, Transceiver)}
@@ -34,6 +40,15 @@ def plot_baseline(network):
 
 
 def plot_results(network, path, source, destination):
+    """
+    Plots results as a 2d.
+
+    Args:
+        network: (todo): write your description
+        path: (str): write your description
+        source: (str): write your description
+        destination: (str): write your description
+    """
     path_edges = set(zip(path[:-1], path[1:]))
     edges = set(network.edges()) - path_edges
     pos = {n: (n.lng, n.lat) for n in network.nodes()}
@@ -68,6 +83,12 @@ def plot_results(network, path, source, destination):
             for (x, y), ns in nodes.items()}
 
     def hover(event):
+        """
+        Pushes the canvas.
+
+        Args:
+            event: (todo): write your description
+        """
         if event.xdata is None or event.ydata is None:
             return
         if fig.contains(event):

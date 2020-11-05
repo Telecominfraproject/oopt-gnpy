@@ -40,10 +40,29 @@ class Pref(namedtuple('Pref', 'p_span0, p_spani, neq_ch ')):
 class SpectralInformation(namedtuple('SpectralInformation', 'pref carriers')):
 
     def __new__(cls, pref, carriers):
+        """
+        Return a new supercar.
+
+        Args:
+            cls: (todo): write your description
+            pref: (str): write your description
+            carriers: (todo): write your description
+        """
         return super().__new__(cls, pref, carriers)
 
 
 def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing):
+    """
+    R create spectral spectral spectral information.
+
+    Args:
+        f_min: (float): write your description
+        f_max: (float): write your description
+        roll_off: (bool): write your description
+        baud_rate: (todo): write your description
+        power: (float): write your description
+        spacing: (float): write your description
+    """
     # pref in dB : convert power lin into power in dB
     pref = lin2db(power * 1e3)
     nb_channel = automatic_nch(f_min, f_max, spacing)

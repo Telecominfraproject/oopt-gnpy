@@ -38,6 +38,11 @@ cband_freq_max = 196.1e12
 
 @pytest.fixture()
 def equipment():
+    """
+    Returns a boolean indicating whether a peipment is equal.
+
+    Args:
+    """
     equipment = load_equipment(EQPT_FILENAME)
     return equipment
 

@@ -20,6 +20,13 @@ PARSER.add_argument('workbook', nargs='?', default='meshTopologyExampleV2.xls',
 
 
 def ALL_ROWS(sh, start=0):
+    """
+    Return the number of rows in the first row.
+
+    Args:
+        sh: (str): write your description
+        start: (int): write your description
+    """
     return (sh.row(x) for x in range(start, sh.nrows))
 
 
@@ -28,14 +35,34 @@ class Node:
     """
 
     def __init__(self, uid, to_node):
+        """
+        Initialize a uid to the uid.
+
+        Args:
+            self: (todo): write your description
+            uid: (int): write your description
+            to_node: (todo): write your description
+        """
         self.uid = uid
         self.to_node = to_node
         self.eqpt = None
 
     def __repr__(self):
+        """
+        Return a repr representation of a repr__.
+
+        Args:
+            self: (todo): write your description
+        """
         return f'uid {self.uid} \nto_node {[node for node in self.to_node]}\neqpt {self.eqpt}\n'
 
     def __str__(self):
+        """
+        Return a string representation of this object.
+
+        Args:
+            self: (todo): write your description
+        """
         return f'uid {self.uid} \nto_node {[node for node in self.to_node]}\neqpt {self.eqpt}\n'
 
 

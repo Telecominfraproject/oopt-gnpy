@@ -46,6 +46,11 @@ _help_fname_json_csv = 'FILE.(json|csv)'
 
 
 def show_example_data_dir():
+    """
+    Show the example dir.
+
+    Args:
+    """
     print(f'{_examples_dir}/')
 
 
@@ -86,10 +91,24 @@ def load_common_data(equipment_filename, topology_filename, simulation_filename,
 
 
 def _setup_logging(args):
+    """
+    Setup logging.
+
+    Args:
+    """
     logging.basicConfig(level={2: logging.DEBUG, 1: logging.INFO, 0: logging.CRITICAL}.get(args.verbose, logging.DEBUG))
 
 
 def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
+    """
+    Add common options to parser.
+
+    Args:
+        parser: (todo): write your description
+        argparse: (todo): write your description
+        ArgumentParser: (todo): write your description
+        network_default: (todo): write your description
+    """
     parser.add_argument('topology', nargs='?', type=Path, metavar='NETWORK-TOPOLOGY.(json|xls|xlsx)',
                         default=network_default,
                         help='Input network topology')
@@ -107,6 +126,11 @@ def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
 
 
 def transmission_main_example(args=None):
+    """
+    Main function.
+
+    Args:
+    """
     parser = argparse.ArgumentParser(
         description='Send a full spectrum load through the network from point A to point B',
         epilog=_help_footer,
@@ -286,10 +310,21 @@ def transmission_main_example(args=None):
 
 
 def _path_result_json(pathresult):
+    """
+    : param pathresult pathresult object into a dict : return a dictionary : param path
+
+    Args:
+        pathresult: (str): write your description
+    """
     return {'response': [n.json for n in pathresult]}
 
 
 def path_requests_run(args=None):
+    """
+    Run the experiment.
+
+    Args:
+    """
     parser = argparse.ArgumentParser(
         description='Compute performance for a list of services provided in a json file or an excel sheet',
         epilog=_help_footer,
