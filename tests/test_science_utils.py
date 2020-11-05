@@ -13,9 +13,7 @@ from numpy import array
 from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information
 from gnpy.core.elements import Fiber, RamanFiber
 from gnpy.core.parameters import SimParams
-from gnpy.core.science_utils import Simulation
 from gnpy.tools.json_io import load_json
-
 TEST_DIR = Path(__file__).parent
 
 
@@ -60,8 +58,7 @@ def test_raman_fiber():
     spectral_info_input = create_input_spectral_information(f_min=191.3e12, f_max=196.1e12, roll_off=0.15,
                                                             baud_rate=32e9, power=1e-3, spacing=50e9)
 
-    sim_params = SimParams(**load_json(TEST_DIR / 'data' / 'sim_params.json'))
-    Simulation.set_params(sim_params)
+    SimParams.set_params(load_json(TEST_DIR / 'data' / 'sim_params.json'))
     fiber = RamanFiber(**load_json(TEST_DIR / 'data' / 'test_science_utils_fiber_config.json'))
 
     # propagation
@@ -75,4 +72,4 @@ def test_raman_fiber():
     assert_allclose(p_signal, expected_results['signal'], rtol=1e-3)
     assert_allclose(p_ase, expected_results['ase'], rtol=1e-3)
     assert_allclose(p_nli, expected_results['nli'], rtol=1e-3)
-    Simulation.reset()
+    SimParams.reset()
