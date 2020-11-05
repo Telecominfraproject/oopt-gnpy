@@ -20,8 +20,8 @@ unique identifier and a printable name, and provide the :py:meth:`__call__` meth
 instance as a result.
 """
 
-from numpy import abs, array, divide, errstate, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, exp,\
-    asarray, full, squeeze
+from numpy import abs, array, divide, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, exp,\
+    asarray, full, squeeze, zeros, append, flip, outer
 from scipy.constants import h, c
 from scipy.interpolate import interp1d
 from collections import namedtuple
@@ -30,7 +30,7 @@ from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum
 from gnpy.core.parameters import FiberParams, PumpParams
 from gnpy.core.science_utils import NliSolver, RamanSolver
 from gnpy.core.info import SpectralInformation
-from gnpy.core.exceptions import SpectrumError
+from gnpy.core.exceptions import NetworkTopologyError, SpectrumError
 
 
 class Location(namedtuple('Location', 'latitude longitude city region')):
@@ -313,8 +313,19 @@ class Fiber(_Node):
             params = {}
         super().__init__(*args, params=FiberParams(**params), **kwargs)
         self.pch_out_db = None
-        self.nli_solver = NliSolver(self)
         self.passive = True
+
+        # Raman efficiency matrix function of the delta frequency constructed such that each row is related to a
+        # fixed frequency: positive elements represent a gain (from higher frequency) and negative elements represent
+        # a loss (to lower frequency)
+        if self.params.raman_efficiency:
+            frequency_offset = self.params.raman_efficiency['frequency_offset']
+            frequency_offset = append(-flip(frequency_offset[1:]), frequency_offset)
+            cr = self.params.raman_efficiency['cr']
+            cr = append(- flip(cr[1:]), cr)
+            self._cr_function = lambda frequency: interp(frequency, frequency_offset, cr)
+        else:
+            self._cr_function = lambda frequency: zeros(squeeze(frequency).shape)
 
     @property
     def to_json(self):
@@ -376,9 +387,6 @@ class Fiber(_Node):
         return self.loss_coef_func(self.params.ref_frequency) * self.params.length + \
             self.params.con_in + self.params.con_out + self.params.att_in
 
-    def lin_attenuation(self, frequency):
-        return 1 / db2lin(self.params.length * self.loss_coef_func(frequency))
-
     def alpha(self, frequency):
         """Returns the linear exponent attenuation coefficient such that
         :math: `lin_attenuation = e^{- alpha length}`
@@ -387,6 +395,17 @@ class Fiber(_Node):
         :return: alpha: power attenuation coefficient for f in frequency [Neper/m]
         """
         return self.loss_coef_func(frequency) / (10 * log10(exp(1)))
+
+    def cr(self, frequency):
+        """Returns the raman efficiency matrix including the vibrational loss
+
+        :param frequency: the frequency at which cr is computed [Hz]
+        :return: cr: raman efficiency matrix [1 / (W m)]
+        """
+        df = outer(ones(frequency.shape), frequency) - outer(frequency, ones(frequency.shape))
+        cr = self._cr_function(df)
+        vibrational_loss = outer(frequency, ones(frequency.shape)) / outer(ones(frequency.shape), frequency)
+        return cr * (cr >= 0) + cr * (cr < 0) * vibrational_loss  # Raman efficiency [1/(W m)]
 
     def chromatic_dispersion(self, freq=None):
         """Returns accumulated chromatic dispersion (CD).
@@ -412,21 +431,25 @@ class Fiber(_Node):
         """Modifies the spectral information computing the attenuation, the non-linear interference generation,
         the CD and PMD accumulation.
         """
-
+        # apply the attenuation due to the input connector loss
         attenuation_in_db = self.params.con_in + self.params.att_in
         spectral_info.apply_attenuation_db(attenuation_in_db)
 
+        # inter channels Raman effect
+        stimulated_raman_scattering = RamanSolver.calculate_stimulated_raman_scattering(spectral_info, self)
+
         # NLI noise evaluated at the fiber input
-        nli = self.nli_solver.compute_nli(spectral_info)
-        spectral_info.nli += nli
+        spectral_info.nli += NliSolver.compute_nli(spectral_info, stimulated_raman_scattering, self)
 
         # chromatic dispersion and pmd variations
         spectral_info.chromatic_dispersion += self.chromatic_dispersion(spectral_info.frequency)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.pmd ** 2)
 
         # apply the attenuation due to the fiber losses
-        spectral_info.apply_attenuation_lin(self.lin_attenuation(spectral_info.frequency))
+        attenuation_fiber = stimulated_raman_scattering.loss_profile[:, -1]
+        spectral_info.apply_attenuation_lin(attenuation_fiber)
 
+        # apply the attenuation due to the output connector loss
         attenuation_out_db = self.params.con_out
         spectral_info.apply_attenuation_db(attenuation_out_db)
 
@@ -451,44 +474,50 @@ class Fiber(_Node):
 class RamanFiber(Fiber):
     def __init__(self, *args, params=None, **kwargs):
         super().__init__(*args, params=params, **kwargs)
-        if self.operational and 'raman_pumps' in self.operational:
-            self.raman_pumps = tuple(PumpParams(p['power'], p['frequency'], p['propagation_direction'])
-                                     for p in self.operational['raman_pumps'])
-        else:
-            self.raman_pumps = None
-        self.raman_solver = RamanSolver(self)
+        if not self.operational:
+            raise NetworkTopologyError(f'Fiber element uid:{self.uid} '
+                                       'defined as RamanFiber without operational parameters')
 
-    @property
-    def to_json(self):
-        return dict(super().to_json, operational=self.operational)
+        if 'raman_pumps' not in self.operational:
+            raise NetworkTopologyError(f'Fiber element uid:{self.uid} '
+                                       'defined as RamanFiber without raman pumps description in operational')
+
+        if 'temperature' not in self.operational:
+            raise NetworkTopologyError(f'Fiber element uid:{self.uid} '
+                                       'defined as RamanFiber without temperature in operational')
+
+        pump_loss = db2lin(self.params.con_out)
+        self.raman_pumps = tuple(PumpParams(p['power'] / pump_loss, p['frequency'], p['propagation_direction'])
+                                 for p in self.operational['raman_pumps'])
+        self.temperature = self.operational['temperature']
 
     def propagate(self, spectral_info: SpectralInformation):
         """Modifies the spectral information computing the attenuation, the non-linear interference generation,
         the CD and PMD accumulation.
         """
+        # apply the attenuation due to the input connector loss
         attenuation_in_db = self.params.con_in + self.params.att_in
         spectral_info.apply_attenuation_db(attenuation_in_db)
 
-        self.raman_solver.carriers = spectral_info.carriers
-        self.raman_solver.raman_pumps = self.raman_pumps
-        self.nli_solver.stimulated_raman_scattering = self.raman_solver.stimulated_raman_scattering
-        raman_ase = self.raman_solver.spontaneous_raman_scattering.power[:spectral_info.number_of_channels, -1]
+        # Raman pumps and inter channel Raman effect
+        stimulated_raman_scattering = RamanSolver.calculate_stimulated_raman_scattering(spectral_info, self)
+        spontaneous_raman_scattering = \
+            RamanSolver.calculate_spontaneous_raman_scattering(spectral_info, stimulated_raman_scattering, self)
 
-        # NLI noise evaluated at the fiber input
-        nli = self.nli_solver.compute_nli(spectral_info)
-        spectral_info.nli += nli
+        # nli and ase noise evaluated at the fiber input
+        spectral_info.nli += NliSolver.compute_nli(spectral_info, stimulated_raman_scattering, self)
+        spectral_info.ase += spontaneous_raman_scattering
 
         # chromatic dispersion and pmd variations
         spectral_info.chromatic_dispersion += self.chromatic_dispersion(spectral_info.frequency)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.pmd ** 2)
 
         # apply the attenuation due to the fiber losses
-        attenuation_fiber = \
-            self.raman_solver.stimulated_raman_scattering.rho[:spectral_info.number_of_channels, -1] ** 2
+        attenuation_fiber = stimulated_raman_scattering.loss_profile[:spectral_info.number_of_channels, -1]
+
         spectral_info.apply_attenuation_lin(attenuation_fiber)
 
-        spectral_info.ase += raman_ase
-
+        # apply the attenuation due to the output connector loss
         attenuation_out_db = self.params.con_out
         spectral_info.apply_attenuation_db(attenuation_out_db)
 

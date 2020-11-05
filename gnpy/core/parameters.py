@@ -34,15 +34,15 @@ class PumpParams(Parameters):
 
 
 class RamanParams(Parameters):
-    def __init__(self, flag=False, space_resolution=10e3, tolerance=None):
+    def __init__(self, flag=False, result_spatial_resolution=10e3, solver_spatial_resolution=50):
         """ Simulation parameters used within the Raman Solver
-        :params flag: boolean for enabling/disable the evaluation of the Raman Power profile in frequency and position
-        :params space_resolution: spatial resolution of the evaluated Raman Power profile
-        :params tolerance: tuning parameter for scipy.integrate.solve_bvp solution
+        :params flag: boolean for enabling/disable the evaluation of the Raman power profile in frequency and position
+        :params result_spatial_resolution: spatial resolution of the evaluated Raman power profile
+        :params solver_spatial_resolution: spatial step for the iterative solution of the first order ode
         """
         self.flag = flag
-        self.space_resolution = space_resolution  # [m]
-        self.tolerance = tolerance
+        self.result_spatial_resolution = result_spatial_resolution  # [m]
+        self.solver_spatial_resolution = solver_spatial_resolution  # [m]
 
 
 class NLIParams(Parameters):
@@ -156,7 +156,6 @@ class FiberParams(Parameters):
             else:
                 self._loss_coef = asarray(kwargs['loss_coef']) * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = asarray(self._ref_frequency)  # Hz
-            self._pumps_loss_coef = kwargs.get('pumps_loss_coef')
         except KeyError as e:
             raise ParametersError(f'Fiber configurations json must include {e}. Configuration: {kwargs}')
 
@@ -237,12 +236,10 @@ class FiberParams(Parameters):
     def raman_efficiency(self):
         return self._raman_efficiency
 
-    @property
-    def pumps_loss_coef(self):
-        return self._pumps_loss_coef
-
     def asdict(self):
         dictionary = super().asdict()
         dictionary['loss_coef'] = self.loss_coef * 1e3
         dictionary['length_units'] = 'm'
+        if not self.raman_efficiency:
+            dictionary.pop('raman_efficiency')
         return dictionary
