@@ -1,3 +1,12 @@
+[1;31;40m
+ WARNING missing raman_efficiency attribute in eqpt_config.json[Fiber]
+ default value is raman_efficiency = None[0m
+[1;31;40m
+ WARNING missing raman_efficiency attribute in eqpt_config.json[Fiber]
+ default value is raman_efficiency = None[0m
+[1;31;40m
+ WARNING missing raman_efficiency attribute in eqpt_config.json[Fiber]
+ default value is raman_efficiency = None[0m
 There are 96 channels propagating
 Power mode is set to True
 => it can be modified in eqpt_config.json - Span
