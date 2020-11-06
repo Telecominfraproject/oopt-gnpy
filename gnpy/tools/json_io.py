@@ -431,7 +431,10 @@ def requests_from_json(json_data, equipment):
         params['bidir'] = req['bidirectional']
         params['destination'] = req['destination']
         params['trx_type'] = req['path-constraints']['te-bandwidth']['trx_type']
-        params['trx_mode'] = req['path-constraints']['te-bandwidth']['trx_mode']
+        if 'trx_mode' in req['path-constraints']['te-bandwidth'].keys():
+            params['trx_mode'] = req['path-constraints']['te-bandwidth']['trx_mode']
+        else:
+            params['trx_mode'] = None
         params['format'] = params['trx_mode']
         params['spacing'] = req['path-constraints']['te-bandwidth']['spacing']
         try:
