@@ -1,0 +1,559 @@
+module gnpy-path-computation-simplified {
+  yang-version 1.1;
+  namespace "gnpy:path";
+
+  prefix "gnpypc";
+
+    organization
+    "Telecom Infra Project OOPT PSE Working Group";
+
+  contact
+    "WG Web:   <https://github.com/Telecominfraproject/oopt-gnpy>
+     contact:  <mailto:ahmed.triki@orange.com>
+     contact:  <mailto:esther.lerouzic@orange.com>
+   ";
+
+  description "YANG model for gnpy path computation simplified for transportPCE";
+
+  revision "2020-10-22" {
+    description 
+      "draft for experimental/2020-candi";
+    reference 
+      "YANG model for path computation with gnpy inputs";
+  }
+
+  grouping effective-freq-slot{
+         /* content copied from ietf-flexi-grid-media-channel, because only M and N are needed
+            from the initial grouping.
+         */
+         description "The effective frequency slot is an attribute
+            of a media channel and, being a frequency slot, it is
+            described by its nominal central frequency and slot
+            width";
+         reference "rfc7698";
+            leaf N {
+              type uint32;
+              description
+                  "Is used to determine the Nominal Central
+                  Frequency. The set of nominal central frequencies
+                  can be built using the following expression:
+                     f = 193.1 THz + n x 0.00625 THz,
+                  where 193.1 THz is ITU-T ''anchor frequency'' for
+                  transmission over the C band, n is a positive or
+                  negative integer including 0.";
+               reference "rfc7698";
+            }
+            leaf M {
+              type int32;
+              description
+                  "Is used to determine the slot width. A slot width
+                  is constrained to be M x SWG (that is, M x 12.5 GHz),
+                  where M is an integer greater than or equal to 1.";
+               reference "rfc7698";
+    }
+  }
+
+  grouping gnpy-specific-parameters{
+    description
+      "This grouping defines the gnpy specific parameters for requests.";
+        leaf technology {
+            type string;
+            default "flexi-grid";
+            description
+          "Data plane technology type.";
+          }
+      leaf trx_type {
+        type string ;
+        mandatory true;
+        description "name of the transponder type (to be read from equipment library";
+
+      }
+      leaf trx_mode {
+        type string;
+        description "name of the transponder mode (to be read from equipment library";
+
+      }
+      list effective-freq-slot {
+        key "N";
+        uses effective-freq-slot ;
+      }
+      leaf spacing {
+        mandatory true;
+        type decimal64 {
+          fraction-digits 1;
+        }
+        units Hz;
+        description
+          "It is the spacing between channels assuming full load with
+          same channels as the requested one. multiple of 12.5 GHz";
+
+      }
+      leaf max-nb-of-channel{
+        type int32;
+        description "Nb of channel to take into account for the full load case.
+        ";
+
+      }
+      leaf output-power{
+        type decimal64 {
+          fraction-digits 5;
+        }
+        units W;
+        description "optical power setting to be used for the propagation";
+
+      }
+      leaf path_bandwidth{
+        type decimal64 {
+          fraction-digits 5;
+        }
+        mandatory true;
+        units bit/s;
+        description "Capacity required";
+      }
+  }
+
+  identity SNR-bandwidth {
+    base path-metric-type;
+    description
+      "A metric that records SNR in signal bandwidth";
+  }
+
+  identity OSNR-bandwidth {
+    base path-metric-type;
+    description
+      "A metric that records OSNR in signal bandwidth";
+  }
+
+  identity SNR-0.1nm {
+    base path-metric-type;
+    description
+      "A metric that records SNR in 0.1nm";
+  }
+
+  identity OSNR-0.1nm {
+    base path-metric-type;
+    description
+      "A metric that records OSNR in 0.1nm";
+  }
+
+  identity reference_power {
+    base path-metric-type;
+    description
+      "to be revised";
+  }
+
+  identity path_bandwidth {
+     base path-metric-type;
+     description
+       "to be revised";
+  }
+
+  grouping transponder{
+        leaf transponder-type {
+        type string ;
+        description
+          "transponder type.";
+          }
+      leaf transponder-mode {
+        type string ;
+        description
+          "transponder mode.";
+          }
+  }
+
+  grouping hop-attribute{
+    description
+      "This grouping defines the hop attribute parameters for request or response";
+    choice hop-type{
+      case tsp {
+        container transponder{
+          uses transponder ;
+        }
+      }
+      case regen {
+        container regenerator{
+          leaf regenerator-id{
+            type string ;
+          }
+          uses transponder ;
+        }
+      }
+      case pow {
+        container optical-power{
+          leaf optical-power{
+            type decimal64 {
+              fraction-digits 5;
+            }
+            units W;
+            description "not used yet. hop output (input??) power";
+          }
+        }
+      }
+    }
+
+  }
+
+  identity path-metric-type {
+    description
+      "Base identity for path metric type";
+  }
+
+  identity route-usage-type {
+    description
+      "Base identity for route usage";
+  }
+
+  identity route-include-ero {
+    base route-usage-type;
+    description
+      "Include ERO from route";
+  }
+
+  identity route-exclude-ero {
+    base route-usage-type;
+    description
+      "Exclude ERO from route";
+  }
+
+  identity route-exclude-srlg {
+    base route-usage-type;
+    description
+      "Exclude SRLG from route";
+  }
+
+  typedef te-hop-type {
+    type enumeration {
+      enum LOOSE {
+        description
+          "loose hop in an explicit path";
+      }
+      enum STRICT {
+        description
+          "strict hop in an explicit path";
+      }
+    }
+    description
+     "enumerated type for specifying loose or strict
+      paths";
+    reference "RFC3209: section-4.3.2";
+  }
+
+  typedef te-path-disjointness {
+    type bits {
+      bit node {
+        position 0;
+        description "Node disjoint.";
+      }
+      bit link {
+        position 1;
+        description "Link disjoint.";
+      }
+      bit srlg {
+        position 2;
+        description "SRLG (Shared Risk Link Group) disjoint.";
+      }
+    }
+    description
+      "Type of the resource disjointness for a TE tunnel path.";
+    reference
+      "RFC4872: RSVP-TE Extensions in Support of End-to-End
+       Generalized Multi-Protocol Label Switching (GMPLS)
+       Recovery";
+  } // te-path-disjointness
+
+    typedef accumulated-metric-type {
+      type union {
+        type uint64;
+        type decimal64 {
+          fraction-digits 2;
+        }
+      }
+      description
+          "type useable for accumulative-value";
+  }
+
+  grouping path-route-objects {
+    description
+      "List of EROs to be included or excluded when performing
+       the path computation.";
+    container explicit-route-objects {
+      description
+        "Container for the route object list";
+      list route-object-include-exclude {
+        description
+          "List of explicit route objects to include or
+           exclude in path computation";
+        leaf explicit-route-usage {
+          type identityref {
+            base route-usage-type;
+          }
+          description "Explicit-route usage.";
+        }
+        key "index";
+        uses explicit-route-hop ;
+      }
+    }
+  }
+
+  grouping generic-path-disjointness {
+    description "Path disjointness grouping";
+    leaf disjointness {
+      type te-path-disjointness;
+      description
+        "The type of resource disjointness.
+         Under primary path, disjointness level applies to
+         all secondary LSPs. Under secondary, disjointness
+         level overrides the one under primary";
+    }
+  }
+
+  grouping common-path-constraints-attributes {
+    description
+      "Common path constraints configuration grouping";
+    uses common-constraints_config;
+  }
+
+  grouping generic-path-constraints {
+    description
+      "Global named path constraints configuration
+      grouping";
+    container path-constraints {
+      description "TE named path constraints container";
+      uses common-path-constraints-attributes;
+    }
+  }
+
+
+  grouping explicit-route-hop {
+    description
+      "The explicit route subobject grouping";
+    leaf index {
+      type uint32;
+      description "ERO subobject index";
+    }
+    choice type {
+      description
+        "The explicit route subobject type";
+      case num-unnum-hop {
+        container num-unnum-hop {
+          leaf node-id {
+            //type te-node-id;
+            type string;
+            description
+              "The identifier of a node in the TE topology.";
+          }
+          leaf link-tp-id {
+            //type te-tp-id;
+            type string;
+            description
+              "TE link termination point identifier. The combination
+              of TE link ID and the TE node ID is used to identify an
+              unnumbered TE link.";
+          }
+          leaf hop-type {
+            type te-hop-type;
+            description "strict or loose hop";
+          }
+          description
+            "Numbered and Unnumbered link/node explicit route
+            subobject";
+        }
+      }
+      case label {
+        container label-hop {
+          description "Label hop type";
+          uses effective-freq-slot;
+        }
+        description
+          "The Label ERO subobject";
+      }
+      case hop-attribute{
+        uses gnpypc:hop-attribute ;
+      }
+    }
+  }
+
+  grouping common-constraints_config {
+    description
+      "Common constraints grouping that can be set on
+       a constraint set or directly on the tunnel";
+
+    container te-bandwidth {
+      uses gnpy-specific-parameters ;
+      description
+        "A requested bandwidth to use for path computation";
+    }
+  }
+
+  grouping end-points {
+    description
+      "Common grouping to define the TE tunnel end-points";
+
+    leaf source {
+      type string;
+      description "TE tunnel source address.";
+    }
+    leaf destination {
+      type string;
+      description "P2P tunnel destination address";
+    }
+    leaf src-tp-id {
+      type string;
+      description "TE tunnel source termination point identifier.";
+    }
+    leaf dst-tp-id {
+      type string;
+      description "TE tunnel destination termination point
+    identifier.";
+    }
+  }
+
+  grouping synchronization-info {
+    description "Information for sync";
+    list synchronization {
+      key "synchronization-id";
+      description "sync list";
+      leaf synchronization-id {
+        type string;
+        description "index";
+      }
+      container svec {
+        description
+         "Synchronization VECtor";
+        leaf relaxable {
+          type boolean;
+          default true;
+          description
+            "If this leaf is true, path computation process is free
+            to ignore svec content.
+            otherwise it must take into account this svec.";
+        }
+        uses generic-path-disjointness;
+        leaf-list request-id-number {
+          type string;
+          description "This list reports the set of M path computation requests that must be synchronized.";
+        }
+      }
+    }
+  }
+
+  grouping path-metric {
+    description "TE path metric type";
+    leaf metric-type {
+      type identityref {
+        base path-metric-type;
+      }
+      description "TE path metric type";
+    }
+    leaf accumulative-value {
+      type decimal64 {
+          fraction-digits 2;
+      }
+      description "TE path metric accumulative value";
+    }
+  }
+  grouping generic-path-properties {
+    description "TE generic path properties grouping";
+    container path-properties {
+      config false;
+      description "The TE path properties";
+      list path-metric {
+        key metric-type;
+        uses path-metric;
+      }
+      list z-a-path-metric {
+        key metric-type;
+        uses path-metric;
+      }
+      list path-route-objects {
+          description
+            "Container for the list of route objects either returned by
+             the computation engine or actually used by an LSP";
+          container path-route-object {
+            description
+              "List of route objects either returned by the computation
+               engine or actually used by an LSP";
+            uses explicit-route-hop;
+          }
+        }
+    }
+  }
+
+  grouping path-info {
+    uses generic-path-properties;
+    description "Path computation output information";
+  }
+
+// adding some blocking reasons and info on path in case of blocking
+
+  grouping no-path-info {
+    description "no-path-info";
+    container no-path {
+      presence "Response without path information, due to failure
+        performing the path computation";
+      leaf no-path {
+        type string;
+        mandatory true ;
+        description
+          "returned blocking reasons:
+            NO_PATH
+            NO_COMPUTED_SNR
+            NO_FEASIBLE_BAUDRATE_WITH_SPACING
+            NO_PATH_WITH_CONSTRAINT
+            NO_FEASIBLE_MODE
+            MODE_NOT_FEASIBLE
+            NO_SPECTRUM
+          ";
+        }
+      uses generic-path-properties ;
+      description "if path computation cannot identify a path,
+        rpc returns no path.";
+    }
+  }
+
+   grouping service {
+     list path-request {
+       key "request-id";
+       description "request-list";
+       leaf request-id {
+         type string;
+         mandatory true;
+         description "Each path computation request is uniquely identified by the request-id-number.";
+       }
+       leaf bidirectional {
+         type boolean;
+         mandatory true;
+         description "Specify the bidirectionality of the path";
+       }
+
+       uses end-points;
+       uses path-route-objects;
+       uses generic-path-constraints;
+     }
+     uses synchronization-info;
+   }
+
+   grouping result {
+     list response {
+       key response-id;
+       config false;
+       description "response";
+       leaf response-id {
+         type string;
+         description
+         "The list key that has to reuse request-id-number.";
+       }
+       choice response-type {
+         config false;
+         description "response-type";
+         case no-path-case {
+           uses no-path-info;
+         }
+         case path-case {
+           uses path-info;
+           description "Path computation service.";
+         }
+       }
+     }
+   }
+}
