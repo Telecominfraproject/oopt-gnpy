@@ -1,0 +1,2777 @@
+{
+  "gnpy-api:service":{
+      "path-request": [
+        {
+          "request-id": "0",
+          "source": "trx Alice",
+          "destination": "trx Bob",
+          "src-tp-id": "trx Alice",
+          "dst-tp-id": "trx Bob",
+          "bidirectional": false,
+          "path-constraints": {
+            "te-bandwidth": {
+              "technology": "flexi-grid",
+              "trx_type": "Voyager",
+              "trx_mode": "mode 1",
+              "effective-freq-slot": [
+                {
+                  "N": 0,
+                  "M": 12
+                }
+              ],
+              "spacing": 50000000000.0,
+              "path_bandwidth": 100000000000.0
+            }
+          }
+        },
+        {
+          "request-id": "1",
+          "source": "trx Alice",
+          "destination": "trx Bob",
+          "src-tp-id": "trx Alice",
+          "dst-tp-id": "trx Bob",
+          "bidirectional": false,
+          "path-constraints": {
+            "te-bandwidth": {
+              "technology": "flexi-grid",
+              "trx_type": "Voyager",
+              "trx_mode": "mode 1",
+              "spacing": 50000000000.0,
+              "path_bandwidth": 100000000000.0
+            }
+          }
+        },
+        {
+          "request-id": "2",
+          "source": "trx Alice",
+          "destination": "trx Bob",
+          "src-tp-id": "trx Alice",
+          "dst-tp-id": "trx Bob",
+          "bidirectional": false,
+          "path-constraints": {
+            "te-bandwidth": {
+              "technology": "flexi-grid",
+              "trx_type": "Voyager",
+              "trx_mode": "mode 2",
+              "spacing": 100000000000.0,
+              "path_bandwidth": 100000000000.0
+            }
+          }
+        },
+        {
+          "request-id": "3",
+          "source": "trx Alice",
+          "destination": "trx Bob",
+          "src-tp-id": "trx Alice",
+          "dst-tp-id": "trx Bob",
+          "bidirectional": true,
+          "path-constraints": {
+            "te-bandwidth": {
+              "technology": "flexi-grid",
+              "trx_type": "Voyager",
+              "spacing": 50000000000.0,
+              "path_bandwidth": 100000000000.0
+            }
+          },
+          "explicit-route-objects": {
+            "route-object-include-exclude": [
+              {
+                "explicit-route-usage": "route-include-ero",
+                "index": 0,
+                "num-unnum-hop": {
+                  "node-id": "roadm Carol",
+                  "link-tp-id": "link-tp-id is not used",
+                  "hop-type": "LOOSE"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "request-id": "4",
+          "source": "trx Alice",
+          "destination": "trx Bob",
+          "src-tp-id": "trx Alice",
+          "dst-tp-id": "trx Bob",
+          "bidirectional": true,
+          "path-constraints": {
+            "te-bandwidth": {
+              "technology": "flexi-grid",
+              "trx_type": "Voyager",
+              "effective-freq-slot": [
+              {
+                "N": -284,
+                "M": 12
+              }
+            ],
+              "spacing": 50000000000.0,
+              "path_bandwidth": 100000000000.0
+            }
+          }
+        },
+        {
+          "request-id": "5",
+          "source": "trx Bob1",
+          "destination": "trx Carol1",
+          "src-tp-id": "trx Bob1",
+          "dst-tp-id": "trx Carol1",
+          "bidirectional": true,
+          "path-constraints": {
+            "te-bandwidth": {
+              "technology": "flexi-grid",
+              "trx_type": "vendorA_trx-type1",
+              "spacing": 100000000000.0,
+              "path_bandwidth": 100000000000.0
+            }
+          }
+        },
+        {
+          "request-id": "6",
+          "source": "trx Bob1",
+          "destination": "trx Carol1",
+          "src-tp-id": "trx Bob1",
+          "dst-tp-id": "trx Carol1",
+          "bidirectional": true,
+          "path-constraints": {
+            "te-bandwidth": {
+              "technology": "flexi-grid",
+              "trx_type": "Voyager",
+              "trx_mode": "mode 1",
+              "spacing": 50000000000.0,
+              "path_bandwidth": 100000000000.0
+            }
+          }
+        },
+        {
+          "request-id": "7",
+          "source": "trx Bob1",
+          "destination": "trx Carol",
+          "src-tp-id": "trx Bob1",
+          "dst-tp-id": "trx Carol",
+          "bidirectional": true,
+          "path-constraints": {
+            "te-bandwidth": {
+              "technology": "flexi-grid",
+              "trx_type": "Voyager",
+              "trx_mode": "mode 1",
+              "spacing": 50000000000.0,
+              "path_bandwidth": 100000000000.0
+            }
+          }
+        }
+      ],
+      "synchronization": [
+        {
+          "synchronization-id": "1",
+          "svec": {
+            "relaxable": false,
+            "disjointness": "node link",
+            "request-id-number": [
+              "1",
+              "0"
+            ]
+          }
+        }
+      ]
+  },
+  "gnpy-api:result": {
+    "response": [
+    {
+      "response-id": "0",
+      "path-properties": {
+        "path-metric": [
+          {
+            "metric-type": "SNR-bandwidth",
+            "accumulative-value": 23.42
+          },
+          {
+            "metric-type": "SNR-0.1nm",
+            "accumulative-value": 27.5
+          },
+          {
+            "metric-type": "OSNR-bandwidth",
+            "accumulative-value": 23.92
+          },
+          {
+            "metric-type": "OSNR-0.1nm",
+            "accumulative-value": 28.0
+          },
+          {
+            "metric-type": "reference_power",
+            "accumulative-value": 0.001
+          },
+          {
+            "metric-type": "path_bandwidth",
+            "accumulative-value": 100000000000.0
+          }
+        ],
+        "path-route-objects": [
+          {
+            "path-route-object": {
+              "index": 0,
+              "num-unnum-hop": {
+                "node-id": "trx Alice",
+                "link-tp-id": "trx Alice"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 1,
+              "label-hop": {
+                "N": 0,
+                "M": 12
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
+              "transponder": {
+                "transponder-type": "Voyager",
+                "transponder-mode": "mode 1"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 3,
+              "num-unnum-hop": {
+                "node-id": "roadm Alice",
+                "link-tp-id": "roadm Alice"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 4,
+              "label-hop": {
+                "N": 0,
+                "M": 12
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 5,
+              "num-unnum-hop": {
+                "node-id": "east edfa in Alice to Bob",
+                "link-tp-id": "east edfa in Alice to Bob"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 6,
+              "label-hop": {
+                "N": 0,
+                "M": 12
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 7,
+              "num-unnum-hop": {
+                "node-id": "fiber (Alice → Bob)-",
+                "link-tp-id": "fiber (Alice → Bob)-"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 8,
+              "label-hop": {
+                "N": 0,
+                "M": 12
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 9,
+              "num-unnum-hop": {
+                "node-id": "west edfa in Bob to Alice",
+                "link-tp-id": "west edfa in Bob to Alice"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 10,
+              "label-hop": {
+                "N": 0,
+                "M": 12
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 11,
+              "num-unnum-hop": {
+                "node-id": "roadm Bob",
+                "link-tp-id": "roadm Bob"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 12,
+              "label-hop": {
+                "N": 0,
+                "M": 12
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 13,
+              "num-unnum-hop": {
+                "node-id": "trx Bob",
+                "link-tp-id": "trx Bob"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 14,
+              "label-hop": {
+                "N": 0,
+                "M": 12
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 15,
+              "transponder": {
+                "transponder-type": "Voyager",
+                "transponder-mode": "mode 1"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "response-id": "1",
+      "path-properties": {
+        "path-metric": [
+          {
+            "metric-type": "SNR-bandwidth",
+            "accumulative-value": 19.64
+          },
+          {
+            "metric-type": "SNR-0.1nm",
+            "accumulative-value": 23.72
+          },
+          {
+            "metric-type": "OSNR-bandwidth",
+            "accumulative-value": 20.34
+          },
+          {
+            "metric-type": "OSNR-0.1nm",
+            "accumulative-value": 24.42
+          },
+          {
+            "metric-type": "reference_power",
+            "accumulative-value": 0.001
+          },
+          {
+            "metric-type": "path_bandwidth",
+            "accumulative-value": 100000000000.0
+          }
+        ],
+        "path-route-objects": [
+          {
+            "path-route-object": {
+              "index": 0,
+              "num-unnum-hop": {
+                "node-id": "trx Alice",
+                "link-tp-id": "trx Alice"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 1,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
+              "transponder": {
+                "transponder-type": "Voyager",
+                "transponder-mode": "mode 1"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 3,
+              "num-unnum-hop": {
+                "node-id": "roadm Alice",
+                "link-tp-id": "roadm Alice"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 4,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 5,
+              "num-unnum-hop": {
+                "node-id": "east edfa in Alice to Dan",
+                "link-tp-id": "east edfa in Alice to Dan"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 6,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 7,
+              "num-unnum-hop": {
+                "node-id": "fiber (Alice → Dan)-",
+                "link-tp-id": "fiber (Alice → Dan)-"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 8,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 9,
+              "num-unnum-hop": {
+                "node-id": "west edfa in Dan to Alice",
+                "link-tp-id": "west edfa in Dan to Alice"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 10,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 11,
+              "num-unnum-hop": {
+                "node-id": "fiber (Dan → Carol)-",
+                "link-tp-id": "fiber (Dan → Carol)-"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 12,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 13,
+              "num-unnum-hop": {
+                "node-id": "west edfa in Carol to Dan",
+                "link-tp-id": "west edfa in Carol to Dan"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 14,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 15,
+              "num-unnum-hop": {
+                "node-id": "roadm Carol",
+                "link-tp-id": "roadm Carol"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 16,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 17,
+              "num-unnum-hop": {
+                "node-id": "east edfa in Carol to Bob",
+                "link-tp-id": "east edfa in Carol to Bob"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 18,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 19,
+              "num-unnum-hop": {
+                "node-id": "fiber (Carol → Bob)-",
+                "link-tp-id": "fiber (Carol → Bob)-"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 20,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 21,
+              "num-unnum-hop": {
+                "node-id": "west edfa in Bob to Carol",
+                "link-tp-id": "west edfa in Bob to Carol"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 22,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 23,
+              "num-unnum-hop": {
+                "node-id": "roadm Bob",
+                "link-tp-id": "roadm Bob"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 24,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 25,
+              "num-unnum-hop": {
+                "node-id": "trx Bob",
+                "link-tp-id": "trx Bob"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 26,
+              "label-hop": {
+                "N": -284,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 27,
+              "transponder": {
+                "transponder-type": "Voyager",
+                "transponder-mode": "mode 1"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "response-id": "2",
+      "path-properties": {
+        "path-metric": [
+          {
+            "metric-type": "SNR-bandwidth",
+            "accumulative-value": 20.71
+          },
+          {
+            "metric-type": "SNR-0.1nm",
+            "accumulative-value": 27.93
+          },
+          {
+            "metric-type": "OSNR-bandwidth",
+            "accumulative-value": 20.77
+          },
+          {
+            "metric-type": "OSNR-0.1nm",
+            "accumulative-value": 28.0
+          },
+          {
+            "metric-type": "reference_power",
+            "accumulative-value": 0.001
+          },
+          {
+            "metric-type": "path_bandwidth",
+            "accumulative-value": 100000000000.0
+          }
+        ],
+        "path-route-objects": [
+          {
+            "path-route-object": {
+              "index": 0,
+              "num-unnum-hop": {
+                "node-id": "trx Alice",
+                "link-tp-id": "trx Alice"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 1,
+              "label-hop": {
+                "N": -280,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
+              "transponder": {
+                "transponder-type": "Voyager",
+                "transponder-mode": "mode 2"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 3,
+              "num-unnum-hop": {
+                "node-id": "roadm Alice",
+                "link-tp-id": "roadm Alice"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 4,
+              "label-hop": {
+                "N": -280,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 5,
+              "num-unnum-hop": {
+                "node-id": "east edfa in Alice to Bob",
+                "link-tp-id": "east edfa in Alice to Bob"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 6,
+              "label-hop": {
+                "N": -280,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 7,
+              "num-unnum-hop": {
+                "node-id": "fiber (Alice → Bob)-",
+                "link-tp-id": "fiber (Alice → Bob)-"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 8,
+              "label-hop": {
+                "N": -280,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 9,
+              "num-unnum-hop": {
+                "node-id": "west edfa in Bob to Alice",
+                "link-tp-id": "west edfa in Bob to Alice"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 10,
+              "label-hop": {
+                "N": -280,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 11,
+              "num-unnum-hop": {
+                "node-id": "roadm Bob",
+                "link-tp-id": "roadm Bob"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 12,
+              "label-hop": {
+                "N": -280,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 13,
+              "num-unnum-hop": {
+                "node-id": "trx Bob",
+                "link-tp-id": "trx Bob"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 14,
+              "label-hop": {
+                "N": -280,
+                "M": 8
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 15,
+              "transponder": {
+                "transponder-type": "Voyager",
+                "transponder-mode": "mode 2"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "response-id": "3",
+      "path-properties": {
+        "path-metric": [
+          {
+            "metric-type": "SNR-bandwidth",
+            "accumulative-value": 19.64
+          },
+          {
+            "metric-type": "SNR-0.1nm",
+            "accumulative-value": 23.72
+          },
+          {
+            "metric-type": "OSNR-bandwidth",
+            "accumulative-value": 20.34
+          },
+          {
+            "metric-type": "OSNR-0.1nm",
+            "accumulative-value": 24.42
+          },
+          {
+            "metric-type": "reference_power",
+            "accumulative-value": 0.001
+          },
+          {
+            "metric-type": "path_bandwidth",
+            "accumulative-value": 100000000000.0
+          }
+        ],
+        "z-a-path-metric": [
+          {
+            "metric-type": "SNR-bandwidth",
+            "accumulative-value": 19.6
+          },
+          {
+            "metric-type": "SNR-0.1nm",
+            "accumulative-value": 23.69
+          },
+          {
+            "metric-type": "OSNR-bandwidth",
+            "accumulative-value": 20.3
+          },
+          {
+            "metric-type": "OSNR-0.1nm",
+            "accumulative-value": 24.38
+          },
+          {
+            "metric-type": "reference_power",
+            "accumulative-value": 0.001
+          },
+          {
+            "metric-type": "path_bandwidth",
+            "accumulative-value": 100000000000.0
+          }
+        ],
+        "path-route-objects": [
+          {
+            "path-route-object": {
+              "index": 0,
+              "num-unnum-hop": {
+                "node-id": "trx Alice",
+                "link-tp-id": "trx Alice"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 1,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 2,
+              "transponder": {
+                "transponder-type": "Voyager",
+                "transponder-mode": "mode 1"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 3,
+              "num-unnum-hop": {
+                "node-id": "roadm Alice",
+                "link-tp-id": "roadm Alice"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 4,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 5,
+              "num-unnum-hop": {
+                "node-id": "east edfa in Alice to Dan",
+                "link-tp-id": "east edfa in Alice to Dan"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 6,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 7,
+              "num-unnum-hop": {
+                "node-id": "fiber (Alice → Dan)-",
+                "link-tp-id": "fiber (Alice → Dan)-"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 8,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 9,
+              "num-unnum-hop": {
+                "node-id": "west edfa in Dan to Alice",
+                "link-tp-id": "west edfa in Dan to Alice"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 10,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 11,
+              "num-unnum-hop": {
+                "node-id": "fiber (Dan → Carol)-",
+                "link-tp-id": "fiber (Dan → Carol)-"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 12,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 13,
+              "num-unnum-hop": {
+                "node-id": "west edfa in Carol to Dan",
+                "link-tp-id": "west edfa in Carol to Dan"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 14,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 15,
+              "num-unnum-hop": {
+                "node-id": "roadm Carol",
+                "link-tp-id": "roadm Carol"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 16,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 17,
+              "num-unnum-hop": {
+                "node-id": "east edfa in Carol to Bob",
+                "link-tp-id": "east edfa in Carol to Bob"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 18,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 19,
+              "num-unnum-hop": {
+                "node-id": "fiber (Carol → Bob)-",
+                "link-tp-id": "fiber (Carol → Bob)-"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 20,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 21,
+              "num-unnum-hop": {
+                "node-id": "west edfa in Bob to Carol",
+                "link-tp-id": "west edfa in Bob to Carol"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 22,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 23,
+              "num-unnum-hop": {
+                "node-id": "roadm Bob",
+                "link-tp-id": "roadm Bob"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 24,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 25,
+              "num-unnum-hop": {
+                "node-id": "trx Bob",
+                "link-tp-id": "trx Bob"
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 26,
+              "label-hop": {
+                "N": -276,
+                "M": 4
+              }
+            }
+          },
+          {
+            "path-route-object": {
+              "index": 27,
+              "transponder": {
+                "transponder-type": "Voyager",
+                "transponder-mode": "mode 1"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "response-id": "4",
+      "no-path": {
+        "no-path": "NO_SPECTRUM",
+        "path-properties": {
+          "path-metric": [
+            {
+              "metric-type": "SNR-bandwidth",
+              "accumulative-value": 23.42
+            },
+            {
+              "metric-type": "SNR-0.1nm",
+              "accumulative-value": 27.5
+            },
+            {
+              "metric-type": "OSNR-bandwidth",
+              "accumulative-value": 23.92
+            },
+            {
+              "metric-type": "OSNR-0.1nm",
+              "accumulative-value": 28.0
+            },
+            {
+              "metric-type": "reference_power",
+              "accumulative-value": 0.001
+            },
+            {
+              "metric-type": "path_bandwidth",
+              "accumulative-value": 100000000000.0
+            }
+          ],
+          "z-a-path-metric": [
+            {
+              "metric-type": "SNR-bandwidth",
+              "accumulative-value": 23.42
+            },
+            {
+              "metric-type": "SNR-0.1nm",
+              "accumulative-value": 27.5
+            },
+            {
+              "metric-type": "OSNR-bandwidth",
+              "accumulative-value": 23.92
+            },
+            {
+              "metric-type": "OSNR-0.1nm",
+              "accumulative-value": 28.0
+            },
+            {
+              "metric-type": "reference_power",
+              "accumulative-value": 0.001
+            },
+            {
+              "metric-type": "path_bandwidth",
+              "accumulative-value": 100000000000.0
+            }
+          ],
+          "path-route-objects": [
+            {
+              "path-route-object": {
+                "index": 0,
+                "num-unnum-hop": {
+                  "node-id": "trx Alice",
+                  "link-tp-id": "trx Alice"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 1,
+                "transponder": {
+                  "transponder-type": "Voyager",
+                  "transponder-mode": "mode 1"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 2,
+                "num-unnum-hop": {
+                  "node-id": "roadm Alice",
+                  "link-tp-id": "roadm Alice"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 3,
+                "num-unnum-hop": {
+                  "node-id": "east edfa in Alice to Bob",
+                  "link-tp-id": "east edfa in Alice to Bob"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 4,
+                "num-unnum-hop": {
+                  "node-id": "fiber (Alice → Bob)-",
+                  "link-tp-id": "fiber (Alice → Bob)-"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 5,
+                "num-unnum-hop": {
+                  "node-id": "west edfa in Bob to Alice",
+                  "link-tp-id": "west edfa in Bob to Alice"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 6,
+                "num-unnum-hop": {
+                  "node-id": "roadm Bob",
+                  "link-tp-id": "roadm Bob"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 7,
+                "num-unnum-hop": {
+                  "node-id": "trx Bob",
+                  "link-tp-id": "trx Bob"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 8,
+                "transponder": {
+                  "transponder-type": "Voyager",
+                  "transponder-mode": "mode 1"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "response-id": "5",
+      "no-path": {
+        "no-path": "NO_FEASIBLE_MODE",
+        "path-properties": {
+          "path-metric": [
+            {
+              "metric-type": "SNR-bandwidth",
+              "accumulative-value": 6.85
+            },
+            {
+              "metric-type": "SNR-0.1nm",
+              "accumulative-value": 10.93
+            },
+            {
+              "metric-type": "OSNR-bandwidth",
+              "accumulative-value": 6.85
+            },
+            {
+              "metric-type": "OSNR-0.1nm",
+              "accumulative-value": 10.93
+            },
+            {
+              "metric-type": "reference_power",
+              "accumulative-value": 0.001
+            },
+            {
+              "metric-type": "path_bandwidth",
+              "accumulative-value": 100000000000.0
+            }
+          ],
+          "z-a-path-metric": [
+            {
+              "metric-type": "SNR-bandwidth",
+              "accumulative-value": 6.85
+            },
+            {
+              "metric-type": "SNR-0.1nm",
+              "accumulative-value": 10.93
+            },
+            {
+              "metric-type": "OSNR-bandwidth",
+              "accumulative-value": 6.85
+            },
+            {
+              "metric-type": "OSNR-0.1nm",
+              "accumulative-value": 10.93
+            },
+            {
+              "metric-type": "reference_power",
+              "accumulative-value": 0.001
+            },
+            {
+              "metric-type": "path_bandwidth",
+              "accumulative-value": 100000000000.0
+            }
+          ],
+          "path-route-objects": [
+            {
+              "path-route-object": {
+                "index": 0,
+                "num-unnum-hop": {
+                  "node-id": "trx Bob1",
+                  "link-tp-id": "trx Bob1"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 1,
+                "transponder": {
+                  "transponder-type": "vendorA_trx-type1",
+                  "transponder-mode": "mode 1"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 2,
+                "num-unnum-hop": {
+                  "node-id": "roadm Bob1",
+                  "link-tp-id": "roadm Bob1"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 3,
+                "num-unnum-hop": {
+                  "node-id": "east edfa in Bob1 to Carol1",
+                  "link-tp-id": "east edfa in Bob1 to Carol1"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 4,
+                "num-unnum-hop": {
+                  "node-id": "fiber (Bob1 → Carol1)-",
+                  "link-tp-id": "fiber (Bob1 → Carol1)-"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 5,
+                "num-unnum-hop": {
+                  "node-id": "west edfa in Carol1 to Bob1",
+                  "link-tp-id": "west edfa in Carol1 to Bob1"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 6,
+                "num-unnum-hop": {
+                  "node-id": "roadm Carol1",
+                  "link-tp-id": "roadm Carol1"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 7,
+                "num-unnum-hop": {
+                  "node-id": "trx Carol1",
+                  "link-tp-id": "trx Carol1"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 8,
+                "transponder": {
+                  "transponder-type": "vendorA_trx-type1",
+                  "transponder-mode": "mode 1"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "response-id": "6",
+      "no-path": {
+        "no-path": "MODE_NOT_FEASIBLE",
+        "path-properties": {
+          "path-metric": [
+            {
+              "metric-type": "SNR-bandwidth",
+              "accumulative-value": 6.84
+            },
+            {
+              "metric-type": "SNR-0.1nm",
+              "accumulative-value": 10.93
+            },
+            {
+              "metric-type": "OSNR-bandwidth",
+              "accumulative-value": 6.85
+            },
+            {
+              "metric-type": "OSNR-0.1nm",
+              "accumulative-value": 10.93
+            },
+            {
+              "metric-type": "reference_power",
+              "accumulative-value": 0.001
+            },
+            {
+              "metric-type": "path_bandwidth",
+              "accumulative-value": 100000000000.0
+            }
+          ],
+          "z-a-path-metric": [
+            {
+              "metric-type": "SNR-bandwidth",
+              "accumulative-value": 6.84
+            },
+            {
+              "metric-type": "SNR-0.1nm",
+              "accumulative-value": 10.93
+            },
+            {
+              "metric-type": "OSNR-bandwidth",
+              "accumulative-value": 6.85
+            },
+            {
+              "metric-type": "OSNR-0.1nm",
+              "accumulative-value": 10.93
+            },
+            {
+              "metric-type": "reference_power",
+              "accumulative-value": 0.001
+            },
+            {
+              "metric-type": "path_bandwidth",
+              "accumulative-value": 100000000000.0
+            }
+          ],
+          "path-route-objects": [
+            {
+              "path-route-object": {
+                "index": 0,
+                "num-unnum-hop": {
+                  "node-id": "trx Bob1",
+                  "link-tp-id": "trx Bob1"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 1,
+                "transponder": {
+                  "transponder-type": "Voyager",
+                  "transponder-mode": "mode 1"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 2,
+                "num-unnum-hop": {
+                  "node-id": "roadm Bob1",
+                  "link-tp-id": "roadm Bob1"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 3,
+                "num-unnum-hop": {
+                  "node-id": "east edfa in Bob1 to Carol1",
+                  "link-tp-id": "east edfa in Bob1 to Carol1"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 4,
+                "num-unnum-hop": {
+                  "node-id": "fiber (Bob1 → Carol1)-",
+                  "link-tp-id": "fiber (Bob1 → Carol1)-"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 5,
+                "num-unnum-hop": {
+                  "node-id": "west edfa in Carol1 to Bob1",
+                  "link-tp-id": "west edfa in Carol1 to Bob1"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 6,
+                "num-unnum-hop": {
+                  "node-id": "roadm Carol1",
+                  "link-tp-id": "roadm Carol1"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 7,
+                "num-unnum-hop": {
+                  "node-id": "trx Carol1",
+                  "link-tp-id": "trx Carol1"
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 8,
+                "transponder": {
+                  "transponder-type": "Voyager",
+                  "transponder-mode": "mode 1"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "response-id": "7",
+      "no-path": {
+        "no-path": "NO_PATH"
+      }
+    }
+    ]
+  },
+  "gnpy-api:topology": {
+      "elements": [
+        {
+          "uid": "trx Alice",
+          "type": "Transceiver",
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Alice",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "trx Bob",
+          "type": "Transceiver",
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Bob",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "trx Carol",
+          "type": "Transceiver",
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Carol",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "trx Bob1",
+          "type": "Transceiver",
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Bob",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "trx Carol1",
+          "type": "Transceiver",
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Carol",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "roadm Alice",
+          "type": "Roadm",
+          "params": {
+            "target_pch_out_db": -20.0,
+            "restrictions": {
+              "preamp_variety_list": [],
+              "booster_variety_list": []
+            }
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Alice",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "roadm Bob",
+          "type": "Roadm",
+          "params": {
+            "target_pch_out_db": -20.0,
+            "restrictions": {
+              "preamp_variety_list": [],
+              "booster_variety_list": []
+            }
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Bob",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "roadm Carol",
+          "type": "Roadm",
+          "params": {
+            "target_pch_out_db": -20.0,
+            "restrictions": {
+              "preamp_variety_list": [],
+              "booster_variety_list": []
+            }
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Carol",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "roadm Bob1",
+          "type": "Roadm",
+          "params": {
+            "target_pch_out_db": -20.0,
+            "restrictions": {
+              "preamp_variety_list": [],
+              "booster_variety_list": []
+            }
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Bob",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "roadm Carol1",
+          "type": "Roadm",
+          "params": {
+            "target_pch_out_db": -20.0,
+            "restrictions": {
+              "preamp_variety_list": [],
+              "booster_variety_list": []
+            }
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Carol",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "fiber (Alice → Bob)-",
+          "type": "Fiber",
+          "type_variety": "SSMF",
+          "params": {
+            "length": 75.0,
+            "loss_coef": 0.2,
+            "length_units": "km",
+            "att_in": 0.0,
+            "con_in": 0.0,
+            "con_out": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "null",
+              "region": "null"
+            }
+          }
+        },
+        {
+          "uid": "fiber (Bob → Carol)-",
+          "type": "Fiber",
+          "type_variety": "SSMF",
+          "params": {
+            "length": 80.0,
+            "loss_coef": 0.2,
+            "length_units": "km",
+            "att_in": 0.0,
+            "con_in": 0.0,
+            "con_out": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "null",
+              "region": "null"
+            }
+          }
+        },
+        {
+          "uid": "fiber (Bob1 → Carol1)-",
+          "type": "Fiber",
+          "type_variety": "SSMF",
+          "params": {
+            "length": 80.0,
+            "loss_coef": 0.5,
+            "length_units": "km",
+            "att_in": 0.0,
+            "con_in": 0.0,
+            "con_out": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "null",
+              "region": "null"
+            }
+          }
+        },
+        {
+          "uid": "fiber (Carol → Dan)-",
+          "type": "Fiber",
+          "type_variety": "SSMF",
+          "params": {
+            "length": 83.0,
+            "loss_coef": 0.2,
+            "length_units": "km",
+            "att_in": 0.0,
+            "con_in": 0.0,
+            "con_out": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "null",
+              "region": "null"
+            }
+          }
+        },
+        {
+          "uid": "fiber (Dan → Alice)-",
+          "type": "Fiber",
+          "type_variety": "SSMF",
+          "params": {
+            "length": 60.0,
+            "loss_coef": 0.2,
+            "length_units": "km",
+            "att_in": 0.0,
+            "con_in": 0.0,
+            "con_out": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "null",
+              "region": "null"
+            }
+          }
+        },
+        {
+          "uid": "fiber (Bob → Alice)-",
+          "type": "Fiber",
+          "type_variety": "SSMF",
+          "params": {
+            "length": 75.0,
+            "loss_coef": 0.2,
+            "length_units": "km",
+            "att_in": 0.0,
+            "con_in": 0.0,
+            "con_out": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "null",
+              "region": "null"
+            }
+          }
+        },
+        {
+          "uid": "fiber (Carol → Bob)-",
+          "type": "Fiber",
+          "type_variety": "SSMF",
+          "params": {
+            "length": 80.0,
+            "loss_coef": 0.2,
+            "length_units": "km",
+            "att_in": 0.0,
+            "con_in": 0.0,
+            "con_out": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "null",
+              "region": "null"
+            }
+          }
+        },
+        {
+          "uid": "fiber (Carol1 → Bob1)-",
+          "type": "Fiber",
+          "type_variety": "SSMF",
+          "params": {
+            "length": 80.0,
+            "loss_coef": 0.5,
+            "length_units": "km",
+            "att_in": 0.0,
+            "con_in": 0.0,
+            "con_out": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "null",
+              "region": "null"
+            }
+          }
+        },
+        {
+          "uid": "fiber (Dan → Carol)-",
+          "type": "Fiber",
+          "type_variety": "SSMF",
+          "params": {
+            "length": 83.0,
+            "loss_coef": 0.2,
+            "length_units": "km",
+            "att_in": 0.0,
+            "con_in": 0.0,
+            "con_out": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "null",
+              "region": "null"
+            }
+          }
+        },
+        {
+          "uid": "fiber (Alice → Dan)-",
+          "type": "Fiber",
+          "type_variety": "SSMF",
+          "params": {
+            "length": 60.0,
+            "loss_coef": 0.2,
+            "length_units": "km",
+            "att_in": 0.0,
+            "con_in": 0.0,
+            "con_out": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "null",
+              "region": "null"
+            }
+          }
+        },
+        {
+          "uid": "east edfa in Alice to Bob",
+          "type": "Edfa",
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 18.5,
+            "delta_p": -1.5,
+            "tilt_target": 0.0,
+            "out_voa": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Alice",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "east edfa in Bob to Carol",
+          "type": "Edfa",
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 19.0,
+            "delta_p": -1.0,
+            "tilt_target": 0.0,
+            "out_voa": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Bob",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "east edfa in Bob1 to Carol1",
+          "type": "Edfa",
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 19.0,
+            "delta_p": -1.0,
+            "tilt_target": 0.0,
+            "out_voa": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Bob",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "east edfa in Carol to Dan",
+          "type": "Edfa",
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 19.0,
+            "delta_p": -1.0,
+            "tilt_target": 0.0,
+            "out_voa": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Carol",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "east edfa in Dan to Alice",
+          "type": "Edfa",
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 15.600000000000001,
+            "delta_p": -2.0,
+            "tilt_target": 0.0,
+            "out_voa": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Dan",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "east edfa in Bob to Alice",
+          "type": "Edfa",
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 18.5,
+            "delta_p": -1.5,
+            "tilt_target": 0.0,
+            "out_voa": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Bob",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "east edfa in Alice to Dan",
+          "type": "Edfa",
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 18.0,
+            "delta_p": -2.0,
+            "tilt_target": 0.0,
+            "out_voa": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Alice",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "east edfa in Carol to Bob",
+          "type": "Edfa",
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 19.0,
+            "delta_p": -1.0,
+            "tilt_target": 0.0,
+            "out_voa": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Carol",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "east edfa in Carol1 to Bob1",
+          "type": "Edfa",
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 19.0,
+            "delta_p": -1.0,
+            "tilt_target": 0.0,
+            "out_voa": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Carol",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "west edfa in Alice to Bob",
+          "type": "Edfa",
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 16.5,
+            "delta_p": 0.0,
+            "tilt_target": 0.0,
+            "out_voa": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Alice",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "west edfa in Bob to Carol",
+          "type": "Edfa",
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 17.0,
+            "delta_p": 0.0,
+            "tilt_target": 0.0,
+            "out_voa": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Bob",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "west edfa in Bob1 to Carol1",
+          "type": "Edfa",
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 17.0,
+            "delta_p": 0.0,
+            "tilt_target": 0.0,
+            "out_voa": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Bob",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "west edfa in Carol to Dan",
+          "type": "Edfa",
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 17.6,
+            "delta_p": 0.0,
+            "tilt_target": 0.0,
+            "out_voa": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Carol",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "west edfa in Dan to Alice",
+          "type": "Edfa",
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 13.0,
+            "delta_p": -1.0,
+            "tilt_target": 0.0,
+            "out_voa": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Dan",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "west edfa in Bob to Alice",
+          "type": "Edfa",
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 16.5,
+            "delta_p": 0.0,
+            "tilt_target": 0.0,
+            "out_voa": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Bob",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "west edfa in Alice to Dan",
+          "type": "Edfa",
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 14.0,
+            "delta_p": 0.0,
+            "tilt_target": 0.0,
+            "out_voa": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Alice",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "west edfa in Carol to Bob",
+          "type": "Edfa",
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 17.0,
+            "delta_p": 0.0,
+            "tilt_target": 0.0,
+            "out_voa": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Carol",
+              "region": ""
+            }
+          }
+        },
+        {
+          "uid": "west edfa in Carol1 to Bob1",
+          "type": "Edfa",
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 17.0,
+            "delta_p": 0.0,
+            "tilt_target": 0.0,
+            "out_voa": 0.0
+          },
+          "metadata": {
+            "location": {
+              "latitude": 0.0,
+              "longitude": 0.0,
+              "city": "Carol",
+              "region": ""
+            }
+          }
+        }
+      ],
+      "connections": [
+        {
+          "from_node": "trx Alice",
+          "to_node": "roadm Alice"
+        },
+        {
+          "from_node": "trx Bob",
+          "to_node": "roadm Bob"
+        },
+        {
+          "from_node": "trx Bob1",
+          "to_node": "roadm Bob1"
+        },
+        {
+          "from_node": "trx Carol",
+          "to_node": "roadm Carol"
+        },
+        {
+          "from_node": "trx Carol1",
+          "to_node": "roadm Carol1"
+        },
+        {
+          "from_node": "roadm Alice",
+          "to_node": "east edfa in Alice to Bob"
+        },
+        {
+          "from_node": "roadm Alice",
+          "to_node": "east edfa in Alice to Dan"
+        },
+        {
+          "from_node": "roadm Alice",
+          "to_node": "trx Alice"
+        },
+        {
+          "from_node": "roadm Bob",
+          "to_node": "east edfa in Bob to Alice"
+        },
+        {
+          "from_node": "roadm Bob1",
+          "to_node": "east edfa in Bob1 to Carol1"
+        },
+        {
+          "from_node": "roadm Bob",
+          "to_node": "east edfa in Bob to Carol"
+        },
+        {
+          "from_node": "roadm Bob",
+          "to_node": "trx Bob"
+        },
+        {
+          "from_node": "roadm Bob1",
+          "to_node": "trx Bob1"
+        },
+        {
+          "from_node": "roadm Carol",
+          "to_node": "east edfa in Carol to Bob"
+        },
+        {
+          "from_node": "roadm Carol1",
+          "to_node": "east edfa in Carol1 to Bob1"
+        },
+        {
+          "from_node": "roadm Carol",
+          "to_node": "east edfa in Carol to Dan"
+        },
+        {
+          "from_node": "roadm Carol",
+          "to_node": "trx Carol"
+        },
+        {
+          "from_node": "roadm Carol1",
+          "to_node": "trx Carol1"
+        },
+        {
+          "from_node": "fiber (Alice → Bob)-",
+          "to_node": "west edfa in Bob to Alice"
+        },
+        {
+          "from_node": "fiber (Bob → Carol)-",
+          "to_node": "west edfa in Carol to Bob"
+        },
+        {
+          "from_node": "fiber (Bob1 → Carol1)-",
+          "to_node": "west edfa in Carol1 to Bob1"
+        },
+        {
+          "from_node": "fiber (Carol → Dan)-",
+          "to_node": "east edfa in Dan to Alice"
+        },
+        {
+          "from_node": "fiber (Dan → Alice)-",
+          "to_node": "west edfa in Alice to Dan"
+        },
+        {
+          "from_node": "fiber (Bob → Alice)-",
+          "to_node": "west edfa in Alice to Bob"
+        },
+        {
+          "from_node": "fiber (Carol → Bob)-",
+          "to_node": "west edfa in Bob to Carol"
+        },
+        {
+          "from_node": "fiber (Carol1 → Bob1)-",
+          "to_node": "west edfa in Bob1 to Carol1"
+        },
+        {
+          "from_node": "fiber (Dan → Carol)-",
+          "to_node": "west edfa in Carol to Dan"
+        },
+        {
+          "from_node": "fiber (Alice → Dan)-",
+          "to_node": "west edfa in Dan to Alice"
+        },
+        {
+          "from_node": "east edfa in Alice to Bob",
+          "to_node": "fiber (Alice → Bob)-"
+        },
+        {
+          "from_node": "east edfa in Bob to Carol",
+          "to_node": "fiber (Bob → Carol)-"
+        },
+        {
+          "from_node": "east edfa in Bob1 to Carol1",
+          "to_node": "fiber (Bob1 → Carol1)-"
+        },
+        {
+          "from_node": "east edfa in Carol to Dan",
+          "to_node": "fiber (Carol → Dan)-"
+        },
+        {
+          "from_node": "east edfa in Dan to Alice",
+          "to_node": "fiber (Dan → Alice)-"
+        },
+        {
+          "from_node": "east edfa in Bob to Alice",
+          "to_node": "fiber (Bob → Alice)-"
+        },
+        {
+          "from_node": "east edfa in Alice to Dan",
+          "to_node": "fiber (Alice → Dan)-"
+        },
+        {
+          "from_node": "east edfa in Carol to Bob",
+          "to_node": "fiber (Carol → Bob)-"
+        },
+        {
+          "from_node": "east edfa in Carol1 to Bob1",
+          "to_node": "fiber (Carol1 → Bob1)-"
+        },
+        {
+          "from_node": "west edfa in Alice to Bob",
+          "to_node": "roadm Alice"
+        },
+        {
+          "from_node": "west edfa in Bob to Carol",
+          "to_node": "roadm Bob"
+        },
+        {
+          "from_node": "west edfa in Bob1 to Carol1",
+          "to_node": "roadm Bob1"
+        },
+        {
+          "from_node": "west edfa in Bob1 to Carol1",
+          "to_node": "roadm Bob1"
+        },
+        {
+          "from_node": "west edfa in Carol to Dan",
+          "to_node": "roadm Carol"
+        },
+        {
+          "from_node": "west edfa in Dan to Alice",
+          "to_node": "fiber (Dan → Carol)-"
+        },
+        {
+          "from_node": "west edfa in Bob to Alice",
+          "to_node": "roadm Bob"
+        },
+        {
+          "from_node": "west edfa in Alice to Dan",
+          "to_node": "roadm Alice"
+        },
+        {
+          "from_node": "west edfa in Carol to Bob",
+          "to_node": "roadm Carol"
+        },
+        {
+          "from_node": "west edfa in Carol1 to Bob1",
+          "to_node": "roadm Carol1"
+        }
+      ]
+  },
+  "gnpy-api:equipment":{
+    "Edfa":[{
+      "type_variety": "high_detail_model_example",
+      "type_def": "advanced_model",
+      "gain_flatmax": 25.0,
+      "gain_min": 15.0,
+      "p_max": 21.0,
+      "advanced_config_from_json": "std_medium_gain_advanced_config.json",
+      "out_voa_auto": false,
+      "allowed_for_design": false
+      },                  {
+      "type_variety": "Juniper_BoosterHG",
+      "type_def": "advanced_model",
+      "gain_flatmax": 25.0,
+      "gain_min": 10.0,
+      "p_max": 21.0,
+      "advanced_config_from_json": "Juniper-BoosterHG.json",
+      "out_voa_auto": false,
+      "allowed_for_design": false
+      }, 
+      {
+      "type_variety": "operator_model_example",
+      "type_def": "variable_gain",
+      "gain_flatmax": 26.0,
+      "gain_min": 15.0,
+      "p_max": 23.0,
+      "nf_min": 6.0,
+      "nf_max": 10.0,
+      "out_voa_auto": false,
+      "allowed_for_design": false           
+      },
+      {
+      "type_variety": "low_noise",
+      "type_def": "openroadm",
+      "gain_flatmax": 27.0,
+      "gain_min": 12.0,
+      "p_max": 22.0,
+      "nf_coef": [-8.104e-4,-6.221e-2,-5.889e-1,37.62],
+      "allowed_for_design": false
+      },
+      {
+      "type_variety": "standard",
+      "type_def": "openroadm",
+      "gain_flatmax": 27.0,
+      "gain_min": 12.0,
+      "p_max": 22.0,
+      "nf_coef": [-5.952e-4,-6.250e-2,-1.071,28.99],
+      "allowed_for_design": false
+      },
+      {
+      "type_variety": "std_high_gain",
+      "type_def": "variable_gain",
+      "gain_flatmax": 35.0,
+      "gain_min": 25.0,
+      "p_max": 21.0,
+      "nf_min": 5.5,
+      "nf_max": 7.0,
+      "out_voa_auto": false,
+      "allowed_for_design": true
+      },            
+      {
+      "type_variety": "std_medium_gain",
+      "type_def": "variable_gain",
+      "gain_flatmax": 26.0,
+      "gain_min": 15.0,
+      "p_max": 23.0,
+      "nf_min": 6.0,
+      "nf_max": 10.0,
+      "out_voa_auto": false,
+      "allowed_for_design": true
+      },
+      {
+      "type_variety": "std_low_gain",
+      "type_def": "variable_gain",
+      "gain_flatmax": 16.0,
+      "gain_min": 8.0,
+      "p_max": 23.0,
+      "nf_min": 6.5,
+      "nf_max": 11.0,
+      "out_voa_auto": false,
+      "allowed_for_design": true
+      },
+      {
+      "type_variety": "high_power",
+      "type_def": "variable_gain",
+      "gain_flatmax": 16.0,
+      "gain_min": 8.0,
+      "p_max": 25.0,
+      "nf_min": 9.0,
+      "nf_max": 15.0,
+      "out_voa_auto": false,
+      "allowed_for_design": false
+      },            
+      {
+      "type_variety": "std_fixed_gain",
+      "type_def": "fixed_gain",
+      "gain_flatmax": 21.0,
+      "gain_min": 20.0,
+      "p_max": 21.0,
+      "nf0": 5.5,
+      "allowed_for_design": false
+      },
+      {
+      "type_variety": "4pumps_raman",
+      "type_def": "fixed_gain",
+      "gain_flatmax": 12.0,
+      "gain_min": 12.0,
+      "p_max": 21.0,
+      "nf0": -1.0,
+      "allowed_for_design": false
+      },   
+      {
+      "type_variety": "hybrid_4pumps_lowgain",
+      "type_def": "dual_stage",
+      "raman": true,
+      "gain_min": 25.0,
+      "preamp_variety": "4pumps_raman",
+      "booster_variety": "std_low_gain",
+      "allowed_for_design": true
+      },
+      {
+      "type_variety": "hybrid_4pumps_mediumgain",
+      "type_def": "dual_stage",
+      "raman": true,
+      "gain_min": 25.0,
+      "preamp_variety": "4pumps_raman",
+      "booster_variety": "std_medium_gain",
+      "allowed_for_design": true
+      },            
+      {
+      "type_variety": "medium+low_gain",
+      "type_def": "dual_stage",
+      "gain_min": 25.0,
+      "preamp_variety": "std_medium_gain",
+      "booster_variety": "std_low_gain",
+      "allowed_for_design": true
+      },
+      {
+      "type_variety": "medium+high_power",
+      "type_def": "dual_stage",
+      "gain_min": 25.0,
+      "preamp_variety": "std_medium_gain",
+      "booster_variety": "high_power",
+      "allowed_for_design": false
+      }                                  
+    ],
+    "Fiber":[{
+      "type_variety": "SSMF",
+      "dispersion": 1.67e-05,
+      "gamma": 0.00127,
+      "pmd_coef": 1.265e-15
+      },
+      {
+      "type_variety": "NZDF",
+      "dispersion": 0.5e-05,
+      "gamma": 0.00146,
+      "pmd_coef": 1.265e-15
+      },
+      {
+      "type_variety": "LOF",
+      "dispersion": 2.2e-05,
+      "gamma": 0.000843,
+      "pmd_coef": 1.265e-15
+      }
+    ],
+    "RamanFiber":[{
+      "type_variety": "SSMF",
+      "dispersion": 1.67e-05,
+      "gamma": 0.00127,
+      "pmd_coef": 1.265e-15,
+      "raman_efficiency": {
+        "cr":[
+            0, 9.4E-06, 2.92E-05, 4.88E-05, 6.82E-05, 8.31E-05, 9.4E-05, 0.0001014, 0.0001069, 0.0001119,
+            0.0001217, 0.0001268, 0.0001365, 0.000149, 0.000165, 0.000181, 0.0001977, 0.0002192, 0.0002469,
+            0.0002749, 0.0002999, 0.0003206, 0.0003405, 0.0003592, 0.000374, 0.0003826, 0.0003841, 0.0003826,
+            0.0003802, 0.0003756, 0.0003549, 0.0003795, 0.000344, 0.0002933, 0.0002024, 0.0001158, 8.46E-05,
+            7.14E-05, 6.86E-05, 8.5E-05, 8.93E-05, 9.01E-05, 8.15E-05, 6.67E-05, 4.37E-05, 3.28E-05, 2.96E-05,
+            2.65E-05, 2.57E-05, 2.81E-05, 3.08E-05, 3.67E-05, 5.85E-05, 6.63E-05, 6.36E-05, 5.5E-05, 4.06E-05,
+            2.77E-05, 2.42E-05, 1.87E-05, 1.6E-05, 1.4E-05, 1.13E-05, 1.05E-05, 9.8E-06, 9.8E-06, 1.13E-05,
+            1.64E-05, 1.95E-05, 2.38E-05, 2.26E-05, 2.03E-05, 1.48E-05, 1.09E-05, 9.8E-06, 1.05E-05, 1.17E-05,
+            1.25E-05, 1.21E-05, 1.09E-05, 9.8E-06, 8.2E-06, 6.6E-06, 4.7E-06, 2.7E-06, 1.9E-06, 1.2E-06, 4E-07,
+            2E-07, 1E-07
+        ],
+        "frequency_offset":[
+          0, 0.5e12, 1e12, 1.5e12, 2e12, 2.5e12, 3e12, 3.5e12, 4e12, 4.5e12, 5e12, 5.5e12, 6e12, 6.5e12, 7e12,
+          7.5e12, 8e12, 8.5e12, 9e12, 9.5e12, 10e12, 10.5e12, 11e12, 11.5e12, 12e12, 12.5e12, 12.75e12,
+          13e12, 13.25e12, 13.5e12, 14e12, 14.5e12, 14.75e12, 15e12, 15.5e12, 16e12, 16.5e12, 17e12,
+          17.5e12, 18e12, 18.25e12, 18.5e12, 18.75e12, 19e12, 19.5e12, 20e12, 20.5e12, 21e12, 21.5e12,
+          22e12, 22.5e12, 23e12, 23.5e12, 24e12, 24.5e12, 25e12, 25.5e12, 26e12, 26.5e12, 27e12, 27.5e12, 28e12,
+          28.5e12, 29e12, 29.5e12, 30e12, 30.5e12, 31e12, 31.5e12, 32e12, 32.5e12, 33e12, 33.5e12, 34e12, 34.5e12,
+          35e12, 35.5e12, 36e12, 36.5e12, 37e12, 37.5e12, 38e12, 38.5e12, 39e12, 39.5e12, 40e12, 40.5e12, 41e12,
+          41.5e12, 42e12
+        ]
+        }
+      }
+    ],
+    "Span":[{
+      "power_mode":true,
+      "delta_power_range_db": [-2.0, 3.0, 0.5],
+      "max_fiber_lineic_loss_for_raman": 0.25,
+      "target_extended_gain": 2.5,
+      "max_length": 150.0,
+      "length_units": "km",
+      "max_loss": 28.0,
+      "padding": 10.0,
+      "EOL": 0.0,
+      "con_in": 0.0,
+      "con_out": 0.0
+      }
+    ],
+    "Roadm":[{
+      "target_pch_out_db": -20.0,
+      "add_drop_osnr": 38.0,
+      "pmd": 0.0,
+      "restrictions": {
+                      "preamp_variety_list":[],
+                      "booster_variety_list":[]
+                      }            
+      }],
+    "SI":[{
+      "f_min": 191.3e12,
+      "baud_rate": 32e9,
+      "f_max":195.1e12,
+      "spacing": 50e9,
+      "power_dbm": 0.0,
+      "power_range_db": [0.0,0.0,1.0],
+      "roll_off": 0.15,
+      "tx_osnr": 40.0,
+      "sys_margins": 2.0
+      }],
+    "Transceiver":[
+      {
+      "type_variety": "vendorA_trx-type1",
+      "frequency":{
+        "min": 191.35e12,
+        "max": 196.1e12
+        },
+      "mode":[{
+        "format": "mode 1",
+        "baud_rate": 32e9,
+        "OSNR": 11.0,
+        "bit_rate": 100e9,
+        "roll_off": 0.15,
+        "tx_osnr": 40.0,
+        "min_spacing": 37.5e9,
+        "cost":1.0
+        },
+        {
+        "format": "mode 2",
+        "baud_rate": 66e9,
+        "OSNR": 15.0,
+        "bit_rate": 200e9,
+        "roll_off": 0.15,
+        "tx_osnr": 40.0,
+        "min_spacing": 75e9,
+        "cost":1.0
+        }
+        ]
+      },
+      {
+      "type_variety": "Voyager",
+      "frequency":{
+        "min": 191.35e12,
+        "max": 196.1e12
+        },
+      "mode":[
+        {
+        "format": "mode 1",
+        "baud_rate": 32e9,
+        "OSNR": 12.0,
+        "bit_rate": 100e9,
+        "roll_off": 0.15,
+        "tx_osnr": 40.0,
+        "min_spacing": 37.5e9,
+        "cost":1.0
+        },
+        {
+        "format": "mode 3",
+        "baud_rate": 44e9,
+        "OSNR": 18.0,
+        "bit_rate": 300e9,
+        "roll_off": 0.15,
+        "tx_osnr": 40.0,
+        "min_spacing": 62.5e9,
+        "cost":1.0
+        },
+        {
+        "format": "mode 2",
+        "baud_rate": 66e9,
+        "OSNR": 21.0,
+        "bit_rate": 400e9,
+        "roll_off": 0.15,
+        "tx_osnr": 40.0,
+        "min_spacing": 75e9,
+        "cost":1.0
+        },
+        {
+        "format": "mode 4",
+        "baud_rate": 66e9,
+        "OSNR": 16.0,
+        "bit_rate": 200e9,
+        "roll_off": 0.15,
+        "tx_osnr": 40.0,
+        "min_spacing": 75e9,
+        "cost":1.0
+        }
+      ]
+      }
+    ]
+  }
+}
