@@ -39,9 +39,9 @@ app = Flask(__name__)
 @app.route('/api/v1/path-computation', methods=['POST'])
 def compute_path():
     data = request.json
-    service = data['service']
-    topology = data['topology']
-    equipment = _equipment_from_json(data['equipment'],
+    service = data['gnpy-api:service']
+    topology = data['gnpy-api:topology']
+    equipment = _equipment_from_json(data['gnpy-api:equipment'],
                                      os.path.join(_examples_dir, 'std_medium_gain_advanced_config.json'))
     network = network_from_json(topology, equipment)
 
