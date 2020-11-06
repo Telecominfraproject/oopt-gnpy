@@ -14,7 +14,7 @@ module gnpy-eqpt-config {
      contact:  <mailto:esther.lerouzic@orange.com>
    ";
 
-  description "Base YANG model for gnpy equipment library input for path computation - transportPCE preversion";
+  description "Base YANG model for gnpy equipment library input for path computation - 2020 - candi preversion";
 
   revision "2020-10-22" {
     description "draft for experimental/2020-candi";
@@ -183,14 +183,14 @@ module gnpy-eqpt-config {
       type decimal64 {
         fraction-digits 8;
       }
-      units w-2.m-1 ;
+      units w-1.m-1 ;
       description "2pi.n2/(lambda*Aeff) (w-2.m-1)";
     }
     leaf pmd_coef{
       type decimal64 {
         fraction-digits 16;
       }
-      units s.m-0.5;
+      units s.sqrt(m)-1;
     }      
   }
 

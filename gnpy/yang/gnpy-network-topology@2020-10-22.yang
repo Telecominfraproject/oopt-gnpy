@@ -11,7 +11,7 @@ module gnpy-network-topology {
      contact:  <mailto:esther.lerouzic@orange.com>
     ";
   description
-    "YANG model for gnpy network input for path computation - transportPCE preversion";
+    "YANG model for gnpy network input for path computation - 2020 - candi preversion";
 
   revision 2020-10-22 {
     description
@@ -34,7 +34,7 @@ module gnpy-network-topology {
   identity Fiber {
     base type-element;
     description
-      "Fiber element";
+      "Fiber element (unidirectional)";
   }
 
   identity Roadm {
@@ -52,7 +52,9 @@ module gnpy-network-topology {
   identity Fused {
     base type-element;
     description
-      "Fused element";
+      "Fused element ; non amplified connection between two fiber spans ;
+       can be used to model optical distribution frame, or losses due to
+       connectors or fused in a span";
   }
 
   identity length-unit {
@@ -119,6 +121,8 @@ module gnpy-network-topology {
         fraction-digits 2;
       }
       mandatory true;
+      units db/km;
+      description "Loss coefficient of the fiber span (dB/km)";
     }
     leaf length_units {
       type identityref {
@@ -130,18 +134,21 @@ module gnpy-network-topology {
       type decimal64 {
         fraction-digits 2;
       }
+      units "dB";
       mandatory true;
     }
     leaf con_in {
       type decimal64 {
         fraction-digits 2;
       }
+      units "dB";
       mandatory true;
     }
     leaf con_out {
       type decimal64 {
         fraction-digits 2;
       }
+      units "dB";
       mandatory true;
     }
   }
@@ -157,7 +164,7 @@ module gnpy-network-topology {
         units "dB";
         mandatory true;
         description
-          "..";
+          "gain target of the amplifier (before VOA and after att_in)";
       }
       leaf tilt_target {
         type decimal64 {
@@ -183,7 +190,7 @@ module gnpy-network-topology {
         units "dB";
         mandatory true;
         description
-          "..";
+          "per channel target output power delta with respect to power setting in SI";
       }
     }
   }

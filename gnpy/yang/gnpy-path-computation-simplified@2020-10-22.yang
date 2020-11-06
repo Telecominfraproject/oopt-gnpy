@@ -13,7 +13,7 @@ module gnpy-path-computation-simplified {
      contact:  <mailto:esther.lerouzic@orange.com>
    ";
 
-  description "YANG model for gnpy path computation simplified for transportPCE";
+  description "YANG model for gnpy path computation simplified for - 2020 - candi preversion";
 
   revision "2020-10-22" {
     description 
