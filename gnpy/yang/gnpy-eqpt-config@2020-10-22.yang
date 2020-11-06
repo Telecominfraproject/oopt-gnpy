@@ -1,0 +1,442 @@
+module gnpy-eqpt-config {
+  yang-version 1;
+  namespace "gnpy:gnpy-eqpt-config";
+
+  prefix "gnpyeqpt";
+
+  organization
+    "Telecom Infra Project OOPT PSE
+     Working Group";
+
+  contact
+    "WG Web:   <https://github.com/Telecominfraproject/oopt-gnpy>
+     contact:  <mailto:ahmed.triki@orange.com>
+     contact:  <mailto:esther.lerouzic@orange.com>
+   ";
+
+  description "Base YANG model for gnpy equipment library input for path computation - transportPCE preversion";
+
+  revision "2020-10-22" {
+    description "draft for experimental/2020-candi";
+    reference "Base YANG model for equipment library input for path computation with gnpy";
+  }
+
+  /*
+   * Identities
+
+
+  identity edfa-type-def {
+    description "base identity for variable gain and fixed gain";
+  }
+
+  identity variable-gain{
+    base edfa-type-def ;
+    description "'variable_gain' is a simplified model simulating a 2-coil 
+      EDFA with internal, input and output VOAs. The NF vs gain response is calculated 
+      accordingly based on the input parameters: nf_min, nf_max, and gain_flatmax. It 
+      is not a simple interpolation but a 2-stage NF calculation.";
+  }
+
+  identity fixed-gain{
+    base edfa-type-def ;
+    description "'fixed_gain' is a fixed gain model. NF == Cte == nf0 if gain_min < gain < gain_flatmax";
+  }
+
+  identity fiber-variety {
+    description "base identity for fiber variety";
+  }
+
+  identity transceiver-variety {
+    description "base identity for transceiver variety";
+  }
+
+  */
+  grouping variable-gain {
+    leaf nf_min {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units dB;
+    }
+    leaf nf_max {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units dB;
+    }
+    leaf out_voa_auto{
+      type boolean ;
+      description "auto_design feature to optimize the amplifier output VOA. If true, output VOA is present 
+      and will be used to push amplifier gain to its maximum, within EOL power margins.";
+    }
+  }
+
+  grouping fixed-gain{
+    leaf nf0 {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units dB;
+    }
+  }
+
+  grouping no-type-def{
+    leaf advanced_config_from_json {
+      type string ;
+      description " filename with json edfa";
+      
+    }
+  }
+  
+
+  grouping openroadm{
+    leaf-list nf_coef {
+      type decimal64 {
+        fraction-digits 5;
+      }
+      //default [8.1e-4,6.142e-2,1.558,19.97] ;
+    }
+  }
+
+  grouping dual-stage {
+    leaf raman {
+      type boolean;
+    }
+    leaf preamp_variety {
+      type leafref {
+          path "../../Edfa/type_variety";
+        }
+    }
+    leaf booster_variety {
+      type leafref {
+          path "../../Edfa/type_variety";
+        }
+    }
+  }
+
+  grouping edfa-common {
+    leaf allowed_for_design{
+      type boolean ;
+      description "If false, the amplifier will not be picked by auto-design but it can still be used as a 
+      manual input (from JSON or Excel template topology files.)";
+    }
+    leaf gain_flatmax {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units dB;
+    }
+    leaf gain_min {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units dB;
+    }
+    leaf p_max {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units dBm;
+    }
+    leaf type_def {
+      type identityref{
+        base edfa-type-def ;
+      }
+    }
+    choice type_of_model {
+      case variable-gain {
+        when "type_def = 'variable-gain'";
+        uses variable-gain ;
+      }
+      case fixed-gain{
+        when "type_def = 'fixed-gain'";
+        uses fixed-gain;
+      }
+      case no-type-def{
+        when "type_def = 'no-type-def'";
+        uses no-type-def;
+      }
+      case openroadm{
+        when "type_def = 'openroadm'";
+        uses openroadm;
+      }
+      case dual_stage {
+        when "type_def = 'dual_stage'";
+        uses dual-stage ;
+      }
+    }
+  }
+
+  grouping common-fiber {
+    description "common parameters for fiber and raman fiber";
+    leaf type_variety {
+      type string ;
+      }
+      description "a unique name to ID the fiber in the JSON or Excel template topology input file";
+    leaf dispersion{
+      type decimal64 {
+        fraction-digits 8;
+      }
+      units s.m-1.m-1;
+    }
+    leaf gamma{
+      type decimal64 {
+        fraction-digits 8;
+      }
+      units w-2.m-1 ;
+      description "2pi.n2/(lambda*Aeff) (w-2.m-1)";
+    }
+    leaf pmd_coef{
+      type decimal64 {
+        fraction-digits 16;
+      }
+      units s.m-0.5;
+    }      
+  }
+
+  grouping eqpt{
+    list Edfa {
+      key type_variety;
+      leaf type_variety {
+        type string;
+        description "a unique name to ID the amplifier in the JSON/Excel template topology input file";
+      }
+      uses edfa-common;
+    }
+
+    list Fiber {
+      key type_variety;
+      uses common-fiber;
+    }
+
+    list RamanFiber {
+      uses common-fiber;
+      container raman_efficiency {
+        leaf-list cr {
+          type decimal64 {
+            fraction-digits 8;
+          }
+        }
+        leaf-list frequency_offset {
+          type decimal64 {
+            fraction-digits 8;
+          }
+        }
+      }
+    }
+
+    list Span {
+      leaf power_mode {
+        type boolean ;
+      }
+      leaf-list delta_power_range_db {
+        type decimal64 {
+          fraction-digits 2;
+        }
+      }
+      leaf max_length {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units km;
+        default 150.0 ;
+      }
+      leaf max_loss {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units dB;
+      }
+      leaf max_fiber_lineic_loss_for_raman {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units dB.km-1;      
+      }
+      leaf target_extended_gain {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units dB;
+      }
+      leaf length_units{
+        type string ;
+        default "km";
+      }
+      leaf padding{
+        type decimal64 {
+          fraction-digits 2;
+        }
+        default 10.0 ;
+      }
+      leaf EOL{
+         type decimal64 {
+          fraction-digits 2;
+        }
+        default 0.0 ;
+      }
+      leaf con_in{
+        type decimal64 {
+          fraction-digits 2;
+        }
+        default 0.0 ;
+      }
+      leaf con_out{
+        type decimal64 {
+          fraction-digits 2;
+        }    
+        default 0.0 ;
+      }
+    }
+
+    list Roadm {
+      leaf target_pch_out_db {
+        type decimal64 {
+          fraction-digits 2;
+        }
+      }
+      leaf add_drop_osnr {
+        type decimal64 {
+          fraction-digits 2;
+        }
+      }
+      leaf pmd {
+        type decimal64 {
+          fraction-digits 2;
+        }
+      }
+      container restrictions {
+        leaf-list preamp_variety_list {
+          type string;
+        }
+        leaf-list booster_variety_list {
+          type string;
+        }
+      }
+    }
+
+    list SI {
+      leaf f_min {
+        type decimal64 {
+          fraction-digits 2;
+        }
+      }
+      leaf f_max {
+        type decimal64 {
+          fraction-digits 2;
+        }
+      }
+      leaf baud_rate {
+        type decimal64 {
+          fraction-digits 2;
+        }
+      }
+      leaf spacing {
+        type decimal64 {
+          fraction-digits 2;
+        }
+      }
+      leaf power_dbm {
+        type decimal64 {
+          fraction-digits 2;
+        }
+      }
+      leaf-list power_range_db {
+        type decimal64 {
+          fraction-digits 2;
+        }
+      }
+      leaf roll_off {
+        type decimal64 {
+          fraction-digits 2;
+        }
+      }
+      leaf tx_osnr {
+        type decimal64 {
+          fraction-digits 2;
+        }
+      }
+      leaf sys_margins {
+        type decimal64 {
+          fraction-digits 2;
+        }
+      }
+    }
+
+    list Transceiver {
+      leaf type_variety {
+        type string ;
+        description "a unique name to ID the transceiver in the JSON or Excel template topology input file";
+      }
+      container frequency {
+        leaf min {
+          type decimal64 {
+              fraction-digits 2;
+            }
+          units Hz ;
+        }
+        leaf max {
+          type decimal64 {
+              fraction-digits 2;
+            }
+          units Hz ;
+        }
+        description "Min/max frequency of transponder eg 191.35e12  and 196.1e12";
+      }
+      list mode {
+        leaf format {
+          type string ;
+          description "unique name of the mode";
+        }
+        leaf baud_rate {
+          type decimal64 {
+              fraction-digits 2;
+            }
+          units baud ;
+          description "baud_rate";
+        }
+        leaf OSNR {
+          type decimal64 {
+              fraction-digits 2;
+            }
+          units dB ;
+          description "min required OSNR in 0.1nm (dB)";
+        }
+        leaf tx_osnr {
+          type decimal64 {
+              fraction-digits 2;
+            }
+          units dB ;
+          description "min required OSNR in 0.1nm (dB)";
+        }
+        leaf min_spacing {
+          type decimal64 {
+              fraction-digits 2;
+            }
+          units GHz ;
+          description "...";
+        }    
+        leaf bit_rate {
+          type decimal64 {
+              fraction-digits 2;
+            }
+          units bit/s ;
+          description "bit rate";
+        }
+        leaf roll_off {
+          type decimal64 {
+              fraction-digits 2;
+            }
+          description "...";
+        }
+        leaf cost {
+          type decimal64 {
+              fraction-digits 2;
+            }
+          description "arbitrary unit";
+        }
+      }
+    }
+  }
+}
+
