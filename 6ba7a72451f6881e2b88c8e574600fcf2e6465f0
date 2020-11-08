@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ce5d0781_ee6d9a8f",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-11-08T22:24:55Z",
+      "side": 1,
+      "message": "By \"grid\" I assume you mean what is defined as \"slot width\" in ITU-T G.694.1? Can we use the standardized terms instead?",
+      "revId": "6ba7a72451f6881e2b88c8e574600fcf2e6465f0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9efb1e52_b8674339",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-11-08T22:24:55Z",
+      "side": 1,
+      "message": "Why not use self._number_of_channels?",
+      "revId": "6ba7a72451f6881e2b88c8e574600fcf2e6465f0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1cf1a42e_8bf7632e",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-11-08T22:24:55Z",
+      "side": 1,
+      "message": "Looks like there is an argument missing here.",
+      "revId": "6ba7a72451f6881e2b88c8e574600fcf2e6465f0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
