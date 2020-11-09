@@ -19,6 +19,23 @@
     },
     {
       "key": {
+        "uuid": "05da158d_bd17c717",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-11-09T10:41:22Z",
+      "side": 1,
+      "message": "I don\u0027t think this is going to be enough. If we are going to support different signal powers for different channels we will also need to modify e.g. ROADM propagation as well as autodesign code.",
+      "revId": "6ba7a72451f6881e2b88c8e574600fcf2e6465f0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9efb1e52_b8674339",
         "filename": "gnpy/core/info.py",
         "patchSetId": 3
