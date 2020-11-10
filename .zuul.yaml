@@ -2,44 +2,7 @@
 - project:
     check:
       jobs:
-        - tox-py38-cover
-        - coverage-diff:
-            voting: false
-            dependencies:
-              - tox-py38-cover-previous
-              - tox-py38-cover
-            vars:
-              coverage_job_name_previous: tox-py38-cover-previous
-              coverage_job_name_current: tox-py38-cover
-        - tox-linters-diff:
-            voting: false
-        - tox-py36-el8
-        - tox-docs-f32
-        - tox-py38-cover-previous
-    gate:
-      jobs:
-        - tox-py38-f32
-        - tox-docs-f32
-    tag:
-      jobs:
-        - oopt-release-python:
-            secrets:
-              - secret: pypi-oopt-gnpy
-                name: pypi_info
-                pass-to-parent: true
-
-- secret:
-    name: pypi-oopt-gnpy
-    data:
-      username: __token__
-      password: !encrypted/pkcs1-oaep
-        - Taod9JmSMtVAvC5ShSbB3UWuccktQvutdySrj0G7a1Nk4tKFQIdwDXEnBuLpHsZVvsU9Q
-          6uk4wRVQABDSdNNI/+M/1FwmZfoxuOXa02U5S1deuxW/rBHTxzYcuB8xriwhArBvTiDMk
-          zyWHVysgDsjlR+85h/DkEhvsaMRDLYWqFwYgXizMoGNKVkwDVIH+qkhBmbggQfDpcYPKT
-          1gq0d6fw0eKVJtO8+vonMEcE0sWZvHmZvSSu0H++gxoe1W/JtzbCteH3Ak0zktwBHI8Qt
-          WBqFvY3laad335tpkFJN5b949N+DP8svCWwRwXmkZlHplPYZWF6QpYbEEXL/6Q0H6VwL+
-          om4f7ybYpKe9Gl939uv2INnXaKe5EU6CMsSw40r2XZCjnSTjWOTgh9pUn2PsoHnqUlALW
-          VR4Z+ipnCrEbu8aTmX3ROcnwYNS7OXkq4uhwDU1u9QjzyMHet6NQQhwhGtimsTo9KhL4E
-          TEUNiRlbAgow9WOwM5r3vRzddO8T2HZZSGaWj75qNRX46XPQWRWgB7ItAwyXgwLZ8UzWl
-          HdztjS3D7Hlsqno3zxNOVlhA5/vl9uVnhFbJnMtUOJAB07YoTJOeR+LjQ0avx/VzopxXc
-          RA/WvJXVZSBrlAHY0+ip4wPZvdi4Ph90gpmvHJvoH82KVfp2j5jxzUhsage94I=
+        - tox-py38-cover:
+            required-projects:
+              - name: github.com/vexxhost/zuul-base-jobs
+                override-checkout: master
