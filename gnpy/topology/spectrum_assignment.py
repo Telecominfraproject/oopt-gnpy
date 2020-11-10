@@ -392,21 +392,18 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
         if reversed path are provided, means that occupation is bidir
     """
     for i, pth in enumerate(pths):
-        # computes the number of channels required
-        try:
-            if rqs[i].blocking_reason:
-                rqs[i].blocked = True
-                rqs[i].N = None
-                rqs[i].M = 0
-        except AttributeError:
+        if hasattr(rqs[i], 'blocking_reason'):
+            rqs[i].N = None
+            rqs[i].M = None
+        else:
             nb_wl, requested_m = compute_spectrum_slot_vs_bandwidth(rqs[i].path_bandwidth,
                                                                     rqs[i].spacing, rqs[i].bit_rate)
             if hasattr(rqs[i], 'M') and rqs[i].M is not None:
                 if requested_m <= rqs[i].M:
                     requested_m = rqs[i].M
                 else:
-                    rqs[i].N = 0
-                    rqs[i].M = 0
+                    rqs[i].N = None
+                    rqs[i].M = None
                     rqs[i].blocking_reason = 'NOT_ENOUGH_RESERVED_SPECTRUM'
                     break
             # else: there is no M value so the programs uses the requested_m one
@@ -430,11 +427,9 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
                 for oms_elem in path_oms:
                     oms_list[oms_elem].assign_spectrum(center_n, requested_m)
                     oms_list[oms_elem].add_service(rqs[i].request_id, nb_wl)
-                rqs[i].blocked = False
                 rqs[i].N = center_n
                 rqs[i].M = requested_m
             else:
-                rqs[i].blocked = True
                 rqs[i].N = None
-                rqs[i].M = 0
+                rqs[i].M = None
                 rqs[i].blocking_reason = 'NO_SPECTRUM'
