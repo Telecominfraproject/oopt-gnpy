@@ -2,7 +2,10 @@
 - project:
     check:
       jobs:
-        - tox-py38-cover
+        - tox-py38-cover:
+            required-projects:
+              - github.com/vexxhost/zuul-base-jobs:
+                  override-checkout: master
         - coverage-diff:
             voting: false
             dependencies:
