@@ -304,11 +304,12 @@ def test_json_response_generation(xls_input, expected_response_file):
 
     result = []
     for i, pth in enumerate(propagatedpths):
-        # test ServiceError handling : when M is zero at this point, the
+        # test ServiceError handling : when M is None at this point, the
         # json result should not be created if there is no blocking reason
         if i == 1:
             my_rq = deepcopy(rqs[i])
-            my_rq.M = 0
+            my_rq.M = None
+            my_rq.N = None
             with pytest.raises(ServiceError):
                 ResultElement(my_rq, pth, reversed_propagatedpths[i]).json
 
