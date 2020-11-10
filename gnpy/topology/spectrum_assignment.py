@@ -413,17 +413,10 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
             requested_n = getattr(rq, 'N', None)
             (center_n, startn, stopn), path_oms = spectrum_selection(pth + rpth, oms_list, requested_m,
                                                                      requested_n)
-            # checks that requested_m is fitting startm and stopm
+            # if requested n and m concern already occupied spectrum the previous function returns a None candidate
             # if not None, center_n and start, stop frequencies are applicable to all oms of pth
             # checks that spectrum is not None else indicate blocking reason
             if center_n is not None:
-                # checks that requested_m is fitting startm and stopm
-                if 2 * requested_m > (stopn - startn + 1):
-                    msg = f'candidate: {(center_n, startn, stopn)} is not consistant ' +\
-                        f'with {requested_m}'
-                    LOGGER.critical(msg)
-                    raise ValueError(msg)
-
                 for oms_elem in path_oms:
                     oms_list[oms_elem].assign_spectrum(center_n, requested_m)
                     oms_list[oms_elem].add_service(rq.request_id, nb_wl)
