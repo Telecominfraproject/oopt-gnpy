@@ -13,6 +13,7 @@ from logging import getLogger
 from pathlib import Path
 import json
 from collections import namedtuple
+from math import ceil
 from gnpy.core import ansi_escapes, elements
 from gnpy.core.equipment import trx_mode_params
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError, ServiceError
@@ -480,12 +481,12 @@ def requests_from_json(json_data, equipment):
             params['effective_freq_slot'] = req['path-constraints']['te-bandwidth']['effective-freq-slot'][0]
         else:
             params['effective_freq_slot'] = None
-        _check_one_request(params, f_max_from_si)
 
         try:
             params['path_bandwidth'] = req['path-constraints']['te-bandwidth']['path_bandwidth']
         except KeyError:
             pass
+        _check_one_request(params, f_max_from_si)
         requests_list.append(PathRequest(**params))
     return requests_list
 
@@ -511,6 +512,23 @@ def _check_one_request(params, f_max_from_si):
             max recommanded nb of channels is {max_recommanded_nb_channels}.'''
             _logger.critical(msg)
             raise ServiceError(msg)
+    # Checks consistency of the requested M and path_bandwidth when trx_mode is defined
+    # when trx_mode is not defined one needs to wait for the mode selection to perform
+    # the verification.
+    if params['trx_mode'] is not None:
+        nb_wl = ceil(params['path_bandwidth'] / params['bit_rate'])
+        # computes the total nb of slots according to requested spacing
+        requested_m = ceil(params['spacing'] / 0.0125e12) * nb_wl
+        if params['effective_freq_slot'] is not None and params['effective_freq_slot']['M'] is not None:
+            # M value should be bigger than the computed requested_m (simple estimate)
+            # TODO: elaborate a more accurate estimate with nb_wl * tx_osnr + possibly guardbands in case of
+            # superchannel closed packing.
+            if requested_m > params['effective_freq_slot']['M']:
+                msg = f'''requested M {params["effective_freq_slot"]["M"]} number of slots for request
+                {params["request_id"]} should be greater than {requested_m} to support request
+                {params["path_bandwidth"] * 1e-9} Gbit/s with {params["trx_type"]} {params["trx_mode"]}'''
+                _logger.critical(msg)
+                raise ServiceError(msg)
 
 
 def disjunctions_from_json(json_data):
