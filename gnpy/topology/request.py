@@ -165,7 +165,11 @@ class ResultElement:
             }
             pro_list.append(temp)
             index += 1
-            if self.path_request.M > 0:
+            if not hasattr(self.path_request, 'blocking_reason'):
+                # M and N values should not be None at this point
+                if self.path_request.M is None or self.path_request.N is None:
+                    raise ServiceError('request {self.path_id} should have positive non null n and m values.')
+
                 temp = {
                     'path-route-object': {
                         'index': index,
@@ -177,12 +181,14 @@ class ResultElement:
                 }
                 pro_list.append(temp)
                 index += 1
-            elif self.path_request.M == 0 and hasattr(self.path_request, 'blocking_reason'):
-                # if the path is blocked due to spectrum, no label object is created, but
-                # the json response includes a detailed path for user infromation.
-                pass
             else:
-                raise ServiceError('request {self.path_id} should have positive path bandwidth value.')
+                # if the path is blocked, no label object is created, but
+                # the json response includes a detailed path for user information.
+                # M and N values should be None at this point
+                if self.path_request.M is not None or self.path_request.N is not None:
+                    raise ServiceError('request {self.path_id} should not have label M and N values at this point.')
+
+
             if isinstance(element, Transceiver):
                 temp = {
                     'path-route-object': {
