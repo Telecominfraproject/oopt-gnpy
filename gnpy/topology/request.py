@@ -1172,3 +1172,13 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         # print to have a nice output
         print('')
     return path_res_list, reversed_path_res_list, propagated_reversed_path_res_list
+
+
+def compute_spectrum_slot_vs_bandwidth(req_bdwdth, req_spacing, req_bit_rate):
+    """ computes the requested M and path_bandwidth when trx_mode is defined.
+    """
+    # computes the number of wavelength required to carry the requested andwidth with the selected bit_rate
+    nb_wl = ceil(req_bdwdth / req_bit_rate)
+    # computes the total nb of slots according to requested spacing (one wavelemngth channel occupies one "spacing")
+    requested_m = ceil(req_spacing / 0.0125e12) * nb_wl
+    return nb_wl, requested_m
