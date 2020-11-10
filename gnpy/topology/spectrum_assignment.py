@@ -393,18 +393,16 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
     """
     for pth, rq, rpth in zip(pths, rqs, rpths):
         # computes the number of channels required
-        try:
-            if rq.blocking_reason:
-                rq.blocked = True
-                rq.N = None
-                rq.M = 0
-        except AttributeError:
+        if hasattr(rq, 'blocking_reason'):
+            rq.N = None
+            rq.M = None
+        else:
             nb_wl, requested_m = compute_spectrum_slot_vs_bandwidth(rq.path_bandwidth,
                                                                     rq.spacing, rq.bit_rate)
             if hasattr(rq, 'M') and rq.M is not None:
                 if requested_m > rq.M:
-                    rq.N = 0
-                    rq.M = 0
+                    rq.N = None
+                    rq.M = None
                     rq.blocking_reason = 'NOT_ENOUGH_RESERVED_SPECTRUM'
                     # need to stop here for this request and not go though spectrum selection process with requested_m
                     continue
@@ -429,11 +427,9 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
                 for oms_elem in path_oms:
                     oms_list[oms_elem].assign_spectrum(center_n, requested_m)
                     oms_list[oms_elem].add_service(rq.request_id, nb_wl)
-                rq.blocked = False
                 rq.N = center_n
                 rq.M = requested_m
             else:
-                rq.blocked = True
                 rq.N = None
-                rq.M = 0
+                rq.M = None
                 rq.blocking_reason = 'NO_SPECTRUM'
