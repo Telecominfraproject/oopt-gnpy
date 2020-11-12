@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "62a8c603_6d8c6a8d",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2020-11-12T19:30:29Z",
+      "side": 1,
+      "message": "I am not sure I have understood completely your comment. I can add a bit of information in order to further clarify this point. This check verify that, for each channel, the given baud rate is not larger than the given channel slot width. Here I am assuming that the baud rate can be straightforwardly translated in a frequency interval (ex 32Gbaud -\u003e 32GHz).",
+      "parentUuid": "8472bc66_f863b0a4",
+      "revId": "79d1d5c0647284201951e474df857e586707fb07",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c5da2f88_f82e1610",
         "filename": "gnpy/core/info.py",
         "patchSetId": 4
@@ -30,6 +48,24 @@
       "writtenOn": "2020-11-12T16:31:28Z",
       "side": 1,
       "message": "I understand that for generality, the f\u003dcentral frequency of a carrier might not be aligned on the ITU-T grid, as long as the channel (reserved spectrum) is.\nHowever, would if be meaningfull to introduce somehow the ITU G694 index to ease ?\n\nfor example if I have to si with bifferent nb of channels, I\u0027ll have a lot of difficulties to identify the smae carrier in both cases based on channel_number\n\n\nor maybe intrduce a correspondance function channel_number \u003c-\u003e frequency ?\n\n            # use ITU-T G694.1\n            # Flexible DWDM grid definition\n            # For the flexible DWDM grid, the allowed frequency slots have a nominal\n            # central frequency (in THz) defined by:\n            # 193.1 + n × 0.00625 where n is a positive or negative integer including 0\n            # and 0.00625 is the nominal central frequency granularity in THz\n            # and a slot width defined by:\n            # 12.5 × m where m is a positive integer and 12.5 is the slot width granularity in\n            # GHz.\n            # Any combination of frequency slots is allowed as long as no two frequency\n            # slots overlap.",
+      "revId": "79d1d5c0647284201951e474df857e586707fb07",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7813a5d3_e763227a",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2020-11-12T19:30:29Z",
+      "side": 1,
+      "message": "\u003e I understand that for generality, the f\u003dcentral frequency of a carrier might not be aligned on the ITU-T grid, as long as the channel (reserved spectrum) is.\n\u003e However, would if be meaningfull to introduce somehow the ITU G694 index to ease ?\n\u003e \n\u003e for example if I have to si with bifferent nb of channels, I\u0027ll have a lot of difficulties to identify the smae carrier in both cases based on channel_number\n\u003e \n\nThis would make the spectral_info class way less flexible( and this could be a drawback in some cases, for example in an experimental setup).\nIn any case we can further discuss about this feature, but to be clear, this would be a new feature, that is not required for the flex grid implementation. In the previous version of info.py in the create_input_spectral_information() function, the channel number is obtained in the same way.",
+      "parentUuid": "c5da2f88_f82e1610",
       "revId": "79d1d5c0647284201951e474df857e586707fb07",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "bbbe25f0_103c5c12",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2020-11-12T19:30:29Z",
+      "side": 1,
+      "message": "These are exactly the criticalities I would like to discuss about together to find the best solutions. Let me add that, in my opinion, all the methods in the elements that apply a modification on the spectrum power should be modified as I have done for the Fiber in the successive changes.",
+      "parentUuid": "7fc692e8_0bc70719",
+      "revId": "79d1d5c0647284201951e474df857e586707fb07",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c9ed23a5_c1270cc0",
         "filename": "gnpy/core/info.py",
         "patchSetId": 4
@@ -64,6 +118,24 @@
       "writtenOn": "2020-11-12T16:31:28Z",
       "side": 1,
       "message": "Not sure to understand this function: is this to create array of value ?, why would the test on defult mean that name is missing ?\nmaybe add a docstring with example ?",
+      "revId": "79d1d5c0647284201951e474df857e586707fb07",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44272c78_c801ad62",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2020-11-12T19:30:29Z",
+      "side": 1,
+      "message": "I added a docstring thet contains the error raising examples. To answer your question, the idea is that the default would be passed as None if the field is mandatory(the value has to be provided because it cannot be evaluated otherwise). Therefore, if the value is None as well as the default, the function raises an error because without a default the value has to be passed.\nI hope the given examples would clarify the function behavior.",
+      "parentUuid": "c9ed23a5_c1270cc0",
       "revId": "79d1d5c0647284201951e474df857e586707fb07",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
