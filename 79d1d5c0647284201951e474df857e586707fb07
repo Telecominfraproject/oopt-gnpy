@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "a2a70f83_d15530b1",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-11-13T17:08:14Z",
+      "side": 1,
+      "message": "OK, then let\u0027s forget about this and only come backto that when there will be a need.",
+      "parentUuid": "7813a5d3_e763227a",
+      "revId": "79d1d5c0647284201951e474df857e586707fb07",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7fc692e8_0bc70719",
         "filename": "gnpy/core/info.py",
         "patchSetId": 4
@@ -101,6 +119,24 @@
       "side": 1,
       "message": "These are exactly the criticalities I would like to discuss about together to find the best solutions. Let me add that, in my opinion, all the methods in the elements that apply a modification on the spectrum power should be modified as I have done for the Fiber in the successive changes.",
       "parentUuid": "7fc692e8_0bc70719",
+      "revId": "79d1d5c0647284201951e474df857e586707fb07",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "23840e57_5ec1c137",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-11-13T17:08:14Z",
+      "side": 1,
+      "message": "I can try to make suggestions but I\u0027ll need some time (partly due to my current work burden and partly also to understand all your changes 😊). Is this what you suggest ?",
+      "parentUuid": "bbbe25f0_103c5c12",
       "revId": "79d1d5c0647284201951e474df857e586707fb07",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
