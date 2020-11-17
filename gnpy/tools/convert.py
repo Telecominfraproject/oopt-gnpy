@@ -276,12 +276,11 @@ def create_roadm_element(node, roadms_by_city):
     if node.city in roadms_by_city.keys():
         if 'params' not in roadm.keys():
             roadm['params'] = {}
-        roadm['params']['per_degree_params'] = []
+        roadm['params']['per_degree_pch_out_db'] = {}
         for elem in roadms_by_city[node.city]:
             to_node = f'east edfa in {node.city} to {elem.to_node}'
             if elem.target_pch_out_db is not None:
-                roadm['params']['per_degree_params'].append({'to_node': to_node,
-                                                             'target_pch_out_db': elem.target_pch_out_db})
+                roadm['params']['per_degree_pch_out_db'][to_node] = elem.target_pch_out_db
     roadm['metadata'] = {'location': {'city':      node.city,
                                       'region':    node.region,
                                       'latitude':  node.latitude,

@@ -63,16 +63,10 @@
     {
       "uid": "roadm Lannion_CAS",
       "params": {
-        "per_degree_params": [
-          {
-            "to_node": "east edfa in Lannion_CAS to Corlay",
-            "target_pch_out_db": -18.6
-          },
-          {
-            "to_node": "east edfa in Lannion_CAS to Morlaix",
-            "target_pch_out_db": -23.0
-          }
-        ]
+        "per_degree_pch_out_db": {
+            "east edfa in Lannion_CAS to Corlay": -18.6,
+            "east edfa in Lannion_CAS to Morlaix": -23.0
+        }
       },
       "metadata": {
         "location": {
@@ -87,12 +81,9 @@
     {
       "uid": "roadm Lorient_KMA",
       "params": {
-        "per_degree_params": [
-          {
-            "to_node": "east edfa in Lorient_KMA to Vannes_KBE",
-            "target_pch_out_db": -12.0
-          }
-        ]
+        "per_degree_pch_out_db": {
+            "east edfa in Lorient_KMA to Vannes_KBE": -12.0
+        }
       },
       "metadata": {
         "location": {
@@ -107,12 +98,9 @@
     {
       "uid": "roadm Vannes_KBE",
       "params": {
-        "per_degree_params": [
-          {
-            "to_node": "east edfa in Vannes_KBE to Lorient_KMA",
-            "target_pch_out_db": -10.0
-          }
-        ]
+        "per_degree_pch_out_db": {
+            "east edfa in Vannes_KBE to Lorient_KMA": -10.0
+        }
       },
       "metadata": {
         "location": {
@@ -127,12 +115,9 @@
     {
       "uid": "roadm Rennes_STA",
       "params": {
-        "per_degree_params": [
-          {
-            "to_node": "east edfa in Rennes_STA to Stbrieuc",
-            "target_pch_out_db": -20.0
-          }
-        ]
+        "per_degree_pch_out_db": {
+            "east edfa in Rennes_STA to Stbrieuc": -20.0
+        }
       },
       "metadata": {
         "location": {
@@ -147,7 +132,7 @@
     {
       "uid": "roadm Brest_KLA",
       "params": {
-        "per_degree_params": []
+        "per_degree_pch_out_db": {}
       },
       "metadata": {
         "location": {
