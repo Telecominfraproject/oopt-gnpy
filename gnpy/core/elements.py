@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-'''
+"""
 gnpy.core.elements
 ==================
 
@@ -18,10 +18,9 @@ Network elements MUST implement two attributes :py:attr:`uid` and :py:attr:`name
 unique identifier and a printable name, and provide the :py:meth:`__call__` method taking a
 :class:`SpectralInformation` as an input and returning another :class:`SpectralInformation`
 instance as a result.
-'''
+"""
 
-from numpy import abs, arange, array, divide, errstate, ones
-from numpy import interp, mean, pi, polyfit, polyval, sum, sqrt
+from numpy import abs, arange, array, divide, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt
 from scipy.constants import h, c
 from collections import namedtuple
 
