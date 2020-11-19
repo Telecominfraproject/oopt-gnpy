@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5d800049_379f7367",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-11-19T14:57:31Z",
+      "side": 1,
+      "message": "Sphinx is picky about this -- one has to use the exact number of underline characters here. I\u0027ll fix this.",
+      "revId": "0f33c82b34aed4977866e50ebf4449f0e75d60be",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
