@@ -143,6 +143,24 @@
     },
     {
       "key": {
+        "uuid": "ec8f9530_f1acdbde",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-11-20T14:58:08Z",
+      "side": 1,
+      "message": "Here is my understanding of pref:\n\npref.p_spani keeps track of the (average) channel power after each element in a propagation path. This is used by Edfa elements (as Esther explains) to calculate required gain for given input power in power mode as well as to reduce gain in case of power saturation. I think it was introduced mainly as a convenience/code optimization. In principle it should not be necessary to have it in the spectral info since the power per channel after each element is anyway represented in the carriers. (Roadm elements also uses pref.p_spani in the propagate code but don\u0027t really need it since they anyway use the actual carriers power for calculating attenuation per channel.)\n\npref.p_span0 is the important attribute and this represents a reference channel power (I think the naming of this attribute as well as the comments in info.py are a bit misleading since it\u0027s not really the \"initial\" target power). It is used only by Edfa elements to calculate the target channel power in power mode as delta_p + p_span0, where delta_p is the offset from the reference power level and is specified per Edfa element in the topology. If you don\u0027t specify delta_p in the topology file and use autodesign in power mode this offset will be calculated based on the loss of the span following the Edfa as (span_loss - SPAN_LOSS_REF)*POWER_SLOPE, where the SPAN_LOSS_REF and POWER_SLOPE values are hardcoded in the target_power function in network.py to 20 dB and 0.3 respectively. So with autodesign, pref.p_span0 corresponds to the target channel power into a 20 dB span, since the calculated delta_p is 0 in this case. But note that you don\u0027t have to rely on this autodesign rule since you can specify delta_p explicitly for each Edfa or alternatively operate in gain mode and specify the target gain instead.\n\nIn conclusion, for operation in gain mode with explicitly set target gain, I think we could modify the code so that pref is not needed and then it would not be an issue for flexgrid/mixed channels. If we want to support a power mode and/or autodesign with flexgrid/mixed channels we have to come up with a strategy. One way forward could be to instead of having a single reference level (currently pref.p_span0) introduce a separate reference level for each channel in the spectral info and adapt the Edfa and Roadm element code accordingly.",
+      "parentUuid": "23840e57_5ec1c137",
+      "revId": "79d1d5c0647284201951e474df857e586707fb07",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c9ed23a5_c1270cc0",
         "filename": "gnpy/core/info.py",
         "patchSetId": 4
