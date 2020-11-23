@@ -161,6 +161,24 @@
     },
     {
       "key": {
+        "uuid": "7ab45a8b_422c04ae",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2020-11-23T08:24:50Z",
+      "side": 1,
+      "message": "Thanks a lot for this comment Jonas, it is very useful.",
+      "parentUuid": "ec8f9530_f1acdbde",
+      "revId": "79d1d5c0647284201951e474df857e586707fb07",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c9ed23a5_c1270cc0",
         "filename": "gnpy/core/info.py",
         "patchSetId": 4
