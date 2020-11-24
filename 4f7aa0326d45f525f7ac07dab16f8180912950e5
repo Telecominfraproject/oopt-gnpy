@@ -552,6 +552,24 @@
     },
     {
       "key": {
+        "uuid": "938986df_219cea70",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1017851
+      },
+      "writtenOn": "2020-11-24T18:54:45Z",
+      "side": 1,
+      "message": "True, my bad. I mixed the expressions 10^3 and 1e-3 at the denominator.",
+      "parentUuid": "0d8f39cd_cec44bd3",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8640582d_0aea7ec9",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 3
