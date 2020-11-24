@@ -570,6 +570,24 @@
     },
     {
       "key": {
+        "uuid": "12c342fe_1276eb3d",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-11-24T19:05:55Z",
+      "side": 1,
+      "message": "\u003e The right factor should be 1e-12/sqrt(1e+3) that can be  written as 1e-13/sqrt(10)\n\n\u003d 1e-14*sqrt(10)",
+      "parentUuid": "938986df_219cea70",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8640582d_0aea7ec9",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 3
