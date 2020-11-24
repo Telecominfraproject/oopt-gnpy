@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "f09f60c9_333ceed4",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 4
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-11-24T15:57:32Z",
+      "side": 1,
+      "message": "In the latest version of this patch, I\u0027m now distinguishing a \"frequency offset\" from \"an optical carrier center frequency\". That\u0027s because this model ships with valid ranges of data, and I need a different allowed range of values for the C-band frequencies as compared to the frequency offsets for Fiber\u0027s Raman efficiency.",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 3
+      },
+      "revId": "0d618c35d35e7de316b7b5ba406d7f7d437dd490",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "233826c0_d2773c50",
         "filename": "tests/yang/01-dummy.json",
         "patchSetId": 4
@@ -19,6 +42,24 @@
     },
     {
       "key": {
+        "uuid": "6b325fe3_ae723085",
+        "filename": "tests/yang/01-dummy.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-11-24T15:57:32Z",
+      "side": 1,
+      "message": "Non-quoted numbers are much nicer, but that\u0027s just the way the spec is written, see https://tools.ietf.org/html/rfc7951#section-6.1 .",
+      "parentUuid": "233826c0_d2773c50",
+      "revId": "0d618c35d35e7de316b7b5ba406d7f7d437dd490",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4f03f882_0ac31f79",
         "filename": "tests/yang/01-dummy.json",
         "patchSetId": 4
@@ -33,6 +74,24 @@
       "revId": "0d618c35d35e7de316b7b5ba406d7f7d437dd490",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "49114b05_2e9d4d60",
+        "filename": "tests/yang/01-dummy.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-11-24T15:57:32Z",
+      "side": 1,
+      "message": "I would like to get rid of all the shortening (it might be obvious what \"pch\" means to you and me, but I think it\u0027s better to only use well-established acronyms).\n\nI\u0027ll use your `target-channel-out-power` proposal here, thanks for a suggestion!",
+      "parentUuid": "4f03f882_0ac31f79",
+      "revId": "0d618c35d35e7de316b7b5ba406d7f7d437dd490",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }

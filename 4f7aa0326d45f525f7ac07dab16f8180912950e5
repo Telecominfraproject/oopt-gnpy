@@ -160,6 +160,24 @@
     },
     {
       "key": {
+        "uuid": "d12c36c0_2778f97d",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-11-24T15:57:32Z",
+      "side": 1,
+      "message": "-\u003e changed to \"ps × nm⁻¹ × km⁻¹\", -20..20. WHatever is provided in a YANG+JSON is multiplied by 1e-6 before passing to the current code.",
+      "parentUuid": "d2fa46e3_fc355335",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c53c6ae2_9703305c",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 3
@@ -266,6 +284,24 @@
     },
     {
       "key": {
+        "uuid": "bdbb0f55_586d2ba9",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-11-24T15:57:32Z",
+      "side": 1,
+      "message": "-\u003e changed to \"ps × nm⁻² × km⁻¹\", 0..0.1, and the value will be multiplied by 1e3.",
+      "parentUuid": "9f84d90c_34e90fa4",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9830c60e_0b783236",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 3
@@ -316,6 +352,24 @@
       "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "83efcb16_c224c5f1",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-11-24T15:57:32Z",
+      "side": 1,
+      "message": "Am I right that this doesn\u0027t need any conversion, i.e., it\u0027s already using the \"human readable units\"?",
+      "parentUuid": "0d78fde0_3b7c9c14",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
     },
     {
       "key": {
@@ -384,6 +438,24 @@
       "side": 1,
       "message": "Considering the limitations of YANG (only decimal64 and 18 fraction-digits), I think it makes more sense to use \"typical\" units for all parameters, i.e. ps/nm/km for dispersion, ps/sqrt(km) for PMD coefficient, etc.\n\nBTW, there is an ongoing discussion about adding native support for float/double in future versions of YANG:\nhttps://github.com/netmod-wg/yang-next/issues/34",
       "parentUuid": "549a19bc_6c0905c0",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1b476c9d_17b087c0",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-11-24T15:57:32Z",
+      "side": 1,
+      "message": "Units will be \"ps × √(km)⁻¹\", and I *think* this means that we\u0027re going to be multiplying by 1e-14*sqrt(10) in order to arrive at a value in fundamental units (s/sqrt(m)), right?",
+      "parentUuid": "b021b99e_6e11c16d",
       "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
@@ -507,6 +579,24 @@
       "side": 1,
       "message": "This is a ROADM parameter, not a fiber parameter.\n\nI went through various datasheets, and the OpenROADM MSA says that the DGD of any ROADM must be \u003c\u003d 3ps for express, add, and drop, and also for any in-line amplifiers. I\u0027ll be sticking with 0 to 5ps, and fraction-digits 16.",
       "parentUuid": "c80b131f_121776f8",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "aee6f25e_702d7aab",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-11-24T15:57:32Z",
+      "side": 1,
+      "message": "This has now become \"ps\", range 0..5.",
+      "parentUuid": "e3529fda_ce1324cb",
       "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
