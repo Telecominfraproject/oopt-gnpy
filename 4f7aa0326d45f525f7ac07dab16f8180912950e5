@@ -373,6 +373,24 @@
     },
     {
       "key": {
+        "uuid": "d8fece8c_13d2ab58",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-11-24T16:59:32Z",
+      "side": 1,
+      "message": "I think the \"human readable units\" for gamma is usually 1/(W*km)",
+      "parentUuid": "83efcb16_c224c5f1",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1cb18cfc_2e06ed0c",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 3
