@@ -5,7 +5,7 @@ import pytest
 from numpy import array, zeros, ones
 from numpy.testing import assert_array_equal
 
-from gnpy.core.info import dimension_reshape, create_arbitrary_spectral_information
+from gnpy.core.info import dimension_reshape, create_arbitrary_spectral_information, Pref
 from gnpy.core.exceptions import InfoError
 
 
@@ -28,7 +28,8 @@ def test_create_arbitrary_spectral_information():
     frequency = [193.25e12, 193.3e12, 193.35e12]
     baud_rate = 32e9
     signal = [1, 1, 1]
-    si = create_arbitrary_spectral_information(frequency=frequency, baud_rate=baud_rate, signal=signal)
+    si = create_arbitrary_spectral_information(frequency=frequency, baud_rate=baud_rate, signal=signal, 
+        ref_power=Pref(1,1,{f: signal[i] for i, f in enumerate(frequency)}))
     assert_array_equal(si.baud_rate, array([32e9, 32e9, 32e9]))
     assert_array_equal(si.slot_width, array([37.5e9, 37.5e9, 37.5e9]))
     assert_array_equal(si.signal, ones(3))
@@ -46,7 +47,8 @@ def test_create_arbitrary_spectral_information():
 
     frequency = [193.35e12, 193.3e12, 193.25e12]
     signal = [1, 2, 3]
-    si = create_arbitrary_spectral_information(frequency=frequency, baud_rate=baud_rate, signal=signal)
+    si = create_arbitrary_spectral_information(frequency=frequency, baud_rate=baud_rate, signal=signal,
+        ref_power=Pref(1,1,{f: signal[i] for i, f in enumerate(frequency)}))
     assert_array_equal(si.signal, array([3, 2, 1]))
 
     frequency = [193.25e12, 193.3e12, 193.35e12]
