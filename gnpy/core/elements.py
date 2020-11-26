@@ -234,10 +234,15 @@ class Roadm(_Node):
         # a ROADM doesn't amplify, it can only attenuate
         # TODO maybe add a minimum loss for the ROADM
         per_degree_pch = self.per_degree_pch_out_db[degree] if degree in self.per_degree_pch_out_db.keys() else self.params.target_pch_out_db
+        # definition of effective_pch_out_db: value for the reference channel
         self.effective_pch_out_db = min(pref.p_spani, per_degree_pch)
+        # definition of effective_loss: value for the reference channel
         self.effective_loss = pref.p_spani - self.effective_pch_out_db
         carriers_power = array([c.power.signal + c.power.nli + c.power.ase for c in carriers])
-        carriers_att = list(map(lambda x: lin2db(x * 1e3) - per_degree_pch, carriers_power))
+        # target power shoud follow same delta power as in p_span0_per_channel
+        delta_channel_power = [p - pref.p_span0 for k, p in pref.p_span0_per_channel.items()]
+        carriers_att = [lin2db(carriers_power[i] * 1e3) - per_degree_pch - delta_channel_power[i] for i, c in enumerate(carriers) ]
+        # carriers_att = list(map(lambda x: lin2db(x * 1e3) - per_degree_pch, carriers_power))
         exceeding_att = -min(list(filter(lambda x: x < 0, carriers_att)), default=0)
         carriers_att = list(map(lambda x: db2lin(x + exceeding_att), carriers_att))
         for carrier_att, carrier in zip(carriers_att, carriers):
@@ -249,7 +254,7 @@ class Roadm(_Node):
             yield carrier._replace(power=pwr, pmd=pmd)
 
     def update_pref(self, pref):
-        return pref._replace(p_span0=pref.p_span0, p_spani=self.effective_pch_out_db)
+        return pref._replace(p_span0=pref.p_span0, p_spani=self.effective_pch_out_db, p_span0_per_channel=pref.p_span0_per_channel)
 
     def __call__(self, spectral_info, degree):
         carriers = tuple(self.propagate(spectral_info.pref, *spectral_info.carriers, degree=degree))
@@ -647,9 +652,12 @@ class Edfa(_Node):
             self.effective_gain = self.target_pch_out_db - pref.p_spani
 
         """check power saturation and correct effective gain & power accordingly:"""
+        # compute the sum of powers of carriers at the input of the amplifier accounting for the expected power mixt
+        delta_channel_power = [p - pref.p_span0 for k, p in pref.p_span0_per_channel.items()]
+        input_total_power = lin2db(sum([db2lin(pref.p_spani + d) for d in delta_channel_power]))
         self.effective_gain = min(
             self.effective_gain,
-            self.params.p_max - (pref.p_spani + pref.neq_ch)
+            self.params.p_max - input_total_power
         )
         #print(self.uid, self.effective_gain, self.operational.gain_target)
         self.effective_pch_out_db = round(pref.p_spani + self.effective_gain, 2)

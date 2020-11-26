@@ -23,7 +23,7 @@ from networkx.utils import pairwise
 from numpy import mean
 from gnpy.core.elements import Transceiver, Roadm
 from gnpy.core.utils import lin2db
-from gnpy.core.info import create_input_spectral_information
+from gnpy.core.info import create_input_spectral_information, use_initial_spectrum
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 import gnpy.core.ansi_escapes as ansi_escapes
 from copy import deepcopy
@@ -330,9 +330,12 @@ def compute_constrained_path(network, req):
 
 
 def propagate(path, req, equipment):
-    si = create_input_spectral_information(
-        req.f_min, req.f_max, req.roll_off, req.baud_rate,
-        req.power, req.spacing)
+    if hasattr(req, 'initial_spectrum'):
+        si = use_initial_spectrum(req.initial_spectrum, req.power)
+    else:
+        si = create_input_spectral_information(
+            req.f_min, req.f_max, req.roll_off, req.baud_rate,
+            req.power, req.spacing)
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
             si = el(si, degree=path[i+1].uid)
@@ -366,9 +369,19 @@ def propagate_and_optimize_mode(path, req, equipment):
             # step2: computes propagation for each baudrate: stop and select the first that passes
             # TODO: the case of roll of is not included: for now use SI one
             # TODO: if the loop in mode optimization does not have a feasible path, then bugs
-            spc_info = create_input_spectral_information(req.f_min, req.f_max,
-                                                         equipment['SI']['default'].roll_off,
-                                                         this_br, req.power, req.spacing)
+
+            if hasattr(req, 'initial_spectrum'):
+                # add the current explored mode caracteristic on the initial spectrum
+                # maybe use a copy instead of changing the request ?
+                for e in req.initial_spectrum.values():
+                    if e['baud_rate'] is None:
+                        e['baud_rate'] = this_br
+                        e['roll_off'] = equipment['SI']['default'].roll_off    # TEMPORARY ! need to change the function !
+                spc_info = use_initial_spectrum(req.initial_spectrum, req.power)
+            else:
+                spc_info = create_input_spectral_information(req.f_min, req.f_max,
+                                                            equipment['SI']['default'].roll_off,
+                                                            this_br, req.power, req.spacing)
             for i, el in enumerate(path):
                 if isinstance(el, Roadm):
                     spc_info = el(spc_info, degree=path[i+1].uid)

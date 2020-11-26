@@ -36,17 +36,18 @@ class Channel(namedtuple('Channel', 'channel_number frequency baud_rate slot_wid
     """
 
 
-class Pref(namedtuple('Pref', 'p_span0, p_spani, neq_ch ')):
+class Pref(namedtuple('Pref', 'p_span0, p_spani, p_span0_per_channel ')):
     """noiseless reference power in dBm:
-    p_span0: inital target carrier power
-    p_spani: carrier power after element i
-    neq_ch: equivalent channel count in dB"""
+    p_span0: inital target carrier power for a reference channel defined by user
+    p_spani: carrier power after element i for a reference channel defined by user
+    neq_ch: equivalent channel count in dB -> almost never used : suppress it
+    p_span0_per_channel: per frequency target per channel power"""
 
 
 class SpectralInformation(object):
     """ Class containing the parameters of the entire WDM comb."""
     def __init__(self, frequency, baud_rate, slot_width, signal, nli, ase,
-                 roll_off, chromatic_dispersion, pmd):
+                 roll_off, chromatic_dispersion, pmd, ref_power):
         indices = argsort(frequency)
         self._frequency = frequency[indices]
         self._df = outer(ones(frequency.shape), frequency) - outer(frequency, ones(frequency.shape))
@@ -64,8 +65,7 @@ class SpectralInformation(object):
         self._chromatic_dispersion = chromatic_dispersion[indices]
         self._pmd = pmd[indices]
         self._channel_number = [*range(1, self._number_of_channels + 1)]
-        pref = lin2db(mean(signal) * 1e3)
-        self._pref = Pref(pref, pref, lin2db(self._number_of_channels))
+        self._pref = ref_power
 
     @property
     def pref(self):
@@ -176,11 +176,14 @@ class SpectralInformation(object):
         roll_off = append(self.roll_off, si.roll_off)
         chromatic_dispersion = append(self.chromatic_dispersion, si.chromatic_dispersion)
         pmd = append(self.pmd, si.pmd)
+        pref = Pref(self.pref.p_span0, self.pref.p_spani,
+            {**self.pref.p_span0_per_channel, **si.pref.p_span0_per_channel})
         try:
             si = SpectralInformation(frequency=frequency, slot_width=slot_width,
                                      signal=signal, nli=nli, ase=ase,
                                      baud_rate=baud_rate, roll_off=roll_off,
-                                     chromatic_dispersion=chromatic_dispersion, pmd=pmd)
+                                     chromatic_dispersion=chromatic_dispersion, pmd=pmd,
+                                     ref_power=pref)
         except InfoError:
             raise InfoError('Spectra cannot be summed: channels overlapping.')
         return si
@@ -232,7 +235,7 @@ def dimension_reshape(value, dimension, default=None, name=None):
 
 
 def create_arbitrary_spectral_information(frequency, slot_width=None, signal=None, baud_rate=None,
-                                          roll_off=None, chromatic_dispersion=None, pmd=None):
+                                          roll_off=None, chromatic_dispersion=None, pmd=None, ref_power=None):
     """ Creates an arbitrary spectral information """
     if isinstance(frequency, Sized):
         frequency = squeeze(frequency)
@@ -252,15 +255,36 @@ def create_arbitrary_spectral_information(frequency, slot_width=None, signal=Non
     si = SpectralInformation(frequency=frequency, slot_width=slot_width,
                              signal=signal, nli=nli, ase=ase,
                              baud_rate=baud_rate, roll_off=roll_off,
-                             chromatic_dispersion=chromatic_dispersion, pmd=pmd)
+                             chromatic_dispersion=chromatic_dispersion, pmd=pmd,
+                             ref_power=ref_power)
     return si
 
 
 def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing):
-    """ Creates a fixed slot width spectral information with flat power """
+    """ Creates a fixed slot width spectral information with flat power.
+    all arguments are scalar values"""
     nb_channel = automatic_nch(f_min, f_max, spacing)
     frequency = [(f_min + spacing * i) for i in range(1, nb_channel + 1)]
+    p_span0 = lin2db(power * 1e3)
+    p_spani = lin2db(power * 1e3)
+    p_span0_per_channel = {f: lin2db(power * 1e3) for f in frequency}
     si = create_arbitrary_spectral_information(
-        frequency, slot_width=spacing, signal=power, baud_rate=baud_rate, roll_off=roll_off
-    )
+        frequency, slot_width=spacing, signal=power, baud_rate=baud_rate,
+        roll_off=roll_off, ref_power=Pref(p_span0, p_spani, p_span0_per_channel))
+    return si
+
+
+def use_initial_spectrum(initial_spectrum, ref_power):
+    """ initial spectrum is a dict with key = carrier frequency, and value a dict with power,
+    baudrate and roll off for this carrier. ref_power is a Pref object with the power used for the reference channel
+    """
+    frequency = [f for f in initial_spectrum.keys()]
+    signal = [s['power'] for s in initial_spectrum.values()]
+    roll_off = [s['roll_off'] for s in initial_spectrum.values()]
+    baud_rate = [s['baud_rate'] for s in initial_spectrum.values()]
+    p_span0 = lin2db(ref_power * 1e3)
+    p_spani = lin2db(ref_power * 1e3)
+    p_span0_per_channel = {f: lin2db(s['power'] * 1e3) for f, s in initial_spectrum.items()}
+    si = create_arbitrary_spectral_information(frequency=frequency, signal=signal, baud_rate=baud_rate,
+                                               roll_off=roll_off, ref_power=Pref(p_span0, p_spani, p_span0_per_channel))
     return si

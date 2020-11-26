@@ -16,6 +16,7 @@ import sys
 from math import ceil
 from numpy import linspace, mean
 from pathlib import Path
+from copy import deepcopy
 import gnpy.core.ansi_escapes as ansi_escapes
 from gnpy.core.elements import Transceiver, Fiber, RamanFiber
 from gnpy.core.equipment import trx_mode_params
@@ -193,6 +194,9 @@ def transmission_main_example(args=None):
         trx_params['power'] = db2lin(float(args.power)) * 1e-3
     params.update(trx_params)
     req = PathRequest(**params)
+    # add a form of spectrum in the request
+    carrier = {key: getattr(req, key) for key in ['power', 'baud_rate', 'roll_off']}
+    req.initial_spectrum = {(req.f_min + req.spacing * f): carrier for f in  range(1, req.nb_channel + 1)}
 
     power_mode = equipment['Span']['default'].power_mode
     print('\n'.join([f'Power mode is set to {power_mode}',
@@ -336,6 +340,12 @@ def path_requests_run(args=None):
         data = load_requests(args.service_filename, equipment, bidir=args.bidir,
                              network=network, network_filename=args.topology)
         rqs = requests_from_json(data, equipment)
+        # add user defined spectrum with relevant optical power defined by the user
+        for rq in rqs:
+            # add a form of spectrum in the request
+            carrier = {key: getattr(rq, key) for key in ['power', 'baud_rate', 'roll_off']}
+            rq.initial_spectrum = {(rq.f_min + rq.spacing * f): deepcopy(carrier) for f in  range(1, rq.nb_channel + 1)}
+
     except exceptions.ServiceError as e:
         print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {e}')
         sys.exit(1)
