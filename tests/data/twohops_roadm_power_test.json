@@ -358,7 +358,7 @@
     {
       "uid": "east edfa in node B to ila2",
       "type": "Edfa",
-      "type_variety": "std_high_gain",
+      "type_variety": "std_medium_gain",
       "operational": {
         "gain_target": 35.0,
         "delta_p": 0.0,
@@ -411,7 +411,7 @@
     {
       "uid": "Edfa0_roadm node B",
       "type": "Edfa",
-      "type_variety": "std_high_gain",
+      "type_variety": "std_medium_gain",
       "operational": {
         "gain_target": 19.0,
         "delta_p": -1.0,
