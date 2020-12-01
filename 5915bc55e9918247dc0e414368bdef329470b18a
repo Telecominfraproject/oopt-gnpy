@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "6abd1bd5_35de25df",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-12-01T15:45:24Z",
+      "side": 1,
+      "message": "Just to clarify -- with the current pending work on the flexgrid+multirate, I expect this section to change. So I\u0027ve undone the \"preparations for flexgrid\", and there\u0027s no `one-channel-common-properties` indirection anymore. OTOH, I left the `/tip-sim:simulation/spectrum/grid` choice \u0026 case in place. This is intended to act as a replacement of the SI thing we use in the legacy JSON.",
+      "parentUuid": "877157b9_58bfbcf7",
+      "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "aac878dc_f260ff22",
         "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
         "patchSetId": 1
@@ -154,6 +172,24 @@
       "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89cc659c_9e377fc3",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-12-01T15:45:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fbb6bce7_eb728069",
+      "revId": "5915bc55e9918247dc0e414368bdef329470b18a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     },
     {
       "key": {
