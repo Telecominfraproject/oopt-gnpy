@@ -27,7 +27,7 @@ import time
 _logger = getLogger(__name__)
 
 
-Model_vg = namedtuple('Model_vg', 'nf1 nf2 delta_p')
+Model_vg = namedtuple('Model_vg', 'nf1 nf2 delta_p orig_nf_min orig_nf_max')
 Model_fg = namedtuple('Model_fg', 'nf0')
 Model_openroadm = namedtuple('Model_openroadm', 'nf_coef')
 Model_hybrid = namedtuple('Model_hybrid', 'nf_ram gain_ram edfa_variety')
@@ -196,7 +196,7 @@ class Amp(_JsonThing):
             except KeyError:
                 pass  # nf0 is not needed for variable gain amp
             nf1, nf2, delta_p = estimate_nf_model(type_variety, gain_min, gain_max, nf_min, nf_max)
-            nf_def = Model_vg(nf1, nf2, delta_p)
+            nf_def = Model_vg(nf1, nf2, delta_p, nf_min, nf_max)
         elif type_def == 'openroadm':
             try:
                 nf_coef = kwargs.pop('nf_coef')
