@@ -260,6 +260,21 @@ def _roadm_restrictions_sanity_check(equipment):
             raise EquipmentConfigError(f'ROADM restriction {amp_name} does not refer to a defined EDFA name')
 
 
+def _check_fiber_vs_raman_fiber(equipment):
+    """Ensure that Fiber and RamanFiber with the same name define common properties equally"""
+    if 'RamanFiber' not in equipment:
+        return
+    for fiber_type in set(equipment['Fiber'].keys()) & set(equipment['RamanFiber'].keys()):
+        for attr in ('dispersion', 'dispersion-slope', 'gamma', 'pmd-coefficient'):
+            fiber = equipment['Fiber'][fiber_type]
+            raman = equipment['RamanFiber'][fiber_type]
+            a = getattr(fiber, attr, None)
+            b = getattr(raman, attr, None)
+            if a != b:
+                raise EquipmentConfigError(f'WARNING: Fiber and RamanFiber definition of "{fiber_type}" '
+                                           f'disagrees for "{attr}": {a} != {b}')
+
+
 def _equipment_from_json(json_data, filename):
     """build global dictionnary eqpt_library that stores all eqpt characteristics:
     edfa type type_variety, fiber type_variety
@@ -290,6 +305,7 @@ def _equipment_from_json(json_data, filename):
                 equipment[key][subkey] = RamanFiber(**entry)
             else:
                 raise EquipmentConfigError(f'Unrecognized network element type "{key}"')
+    _check_fiber_vs_raman_fiber(equipment)
     equipment = _update_dual_stage(equipment)
     _roadm_restrictions_sanity_check(equipment)
     return equipment
