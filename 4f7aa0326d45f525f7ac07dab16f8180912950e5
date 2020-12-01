@@ -178,6 +178,24 @@
     },
     {
       "key": {
+        "uuid": "ae8c02d1_12d2fe70",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-12-01T15:44:40Z",
+      "side": 1,
+      "message": "\u003e -\u003e changed to \"ps × nm⁻¹ × km⁻¹\", -20..20\n\nI had to extend that range because the existing \"LOF\" fiber uses 22ps/nm/km. The \"LOF\" fiber type, whatever it is (it doesn\u0027t appear to be the \"LEAF Optical Fiber\" when I look at LEAF\u0027s specs), was added via https://github.com/Telecominfraproject/oopt-gnpy/pull/135.\n\nIt seems that G.654.B and G.654.D both exceed that +20ps/nm/km limit (using 22 and 23, respectively). Because I have no clue about what I\u0027m doing, I picked the range of -25..25. Is that a correct range?",
+      "parentUuid": "d12c36c0_2778f97d",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c53c6ae2_9703305c",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 3
@@ -391,6 +409,24 @@
     },
     {
       "key": {
+        "uuid": "13fb5a60_fbb792b3",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-12-01T15:44:40Z",
+      "side": 1,
+      "message": "Using \"W⁻¹ × km⁻¹\" now, the code multiplies the YANG+JSON\u0027s value by 1e-3.",
+      "parentUuid": "d8fece8c_13d2ab58",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1cb18cfc_2e06ed0c",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 3
@@ -585,6 +621,24 @@
       "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0e620a8_444ecb90",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-12-01T15:44:40Z",
+      "side": 1,
+      "message": "thanks",
+      "parentUuid": "12c342fe_1276eb3d",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     },
     {
       "key": {

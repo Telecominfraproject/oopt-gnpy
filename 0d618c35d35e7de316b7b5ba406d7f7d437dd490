@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "29e7bb32_a9202cf6",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 4
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-12-01T15:44:40Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f09f60c9_333ceed4",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 3
+      },
+      "revId": "0d618c35d35e7de316b7b5ba406d7f7d437dd490",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "233826c0_d2773c50",
         "filename": "tests/yang/01-dummy.json",
         "patchSetId": 4
