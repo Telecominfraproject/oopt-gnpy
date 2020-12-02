@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cdf6776b_acd53008",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-12-02T18:07:58Z",
+      "side": 1,
+      "message": "I wanted to complain about this undocumented \"default\" thingy, but I see that this is what the code has been doing for ages, so I won\u0027t be complaining, just documenting that here :).",
+      "range": {
+        "startLine": 352,
+        "startChar": 85,
+        "endLine": 352,
+        "endChar": 92
+      },
+      "revId": "d3490ae30c40ade1a09e00795427e7eea3120c9b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
