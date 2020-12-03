@@ -140,7 +140,6 @@ def transmission_main_example(args=None):
         with open(args.from_yang, 'r') as f:
             raw_json = json.load(f)
         (equipment, network) = load_from_yang(raw_json)
-        network = _load_network_legacy(args.topology, equipment, args.save_network_before_autodesign)
     else:
         (equipment, network) = load_common_data(args.equipment, args.topology, args.sim_params, args.save_network_before_autodesign)
 
