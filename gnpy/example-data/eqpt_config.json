@@ -100,33 +100,6 @@
             "allowed_for_design": false
             },
             {
-            "type_variety": "4pumps_raman",
-            "type_def": "fixed_gain",
-            "gain_flatmax": 12,
-            "gain_min": 12,
-            "p_max": 21,
-            "nf0": -1,
-            "allowed_for_design": false
-            },   
-            {
-            "type_variety": "hybrid_4pumps_lowgain",
-            "type_def": "dual_stage",
-            "raman": true,
-            "gain_min": 25,
-            "preamp_variety": "4pumps_raman",
-            "booster_variety": "std_low_gain",
-            "allowed_for_design": true
-            },
-            {
-            "type_variety": "hybrid_4pumps_mediumgain",
-            "type_def": "dual_stage",
-            "raman": true,
-            "gain_min": 25,
-            "preamp_variety": "4pumps_raman",
-            "booster_variety": "std_medium_gain",
-            "allowed_for_design": true
-            },            
-            {
             "type_variety": "medium+low_gain",
             "type_def": "dual_stage",
             "gain_min": 25,
