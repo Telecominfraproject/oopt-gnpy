@@ -16,7 +16,7 @@ from networkx import DiGraph
 from typing import Any, Dict, List, Tuple, Union
 import numpy as np
 import yangson as _y
-from gnpy.core import exceptions
+from gnpy.core import elements, exceptions
 import gnpy.tools.json_io as _ji
 import gnpy.core.science_utils as _sci
 import gnpy.yang
@@ -257,6 +257,101 @@ def _load_equipment(data: _y.instance.RootNode, sim_data: _y.instance.InstanceNo
     return equipment
 
 
+def _load_network(data: _y.instance.RootNode, equipment: Dict[str, Dict[str, Any]]) -> DiGraph:
+    '''Load the network topology from YANG data'''
+
+    network = DiGraph()
+    nodes = {}
+    for net in data['ietf-network:networks']['ietf-network:network']:
+        if 'network-types' not in net:
+            continue
+        if 'tip-photonic-topology:photonic-topology' not in net['network-types']:
+            continue
+        for node in net['ietf-network:node']:
+            uid = node['node-id'].value
+            location = None
+            if 'tip-photonic-topology:geo-location' in node:
+                loc = node['tip-photonic-topology:geo-location']
+                if 'x' in loc and 'y' in loc:
+                    location = elements.Location(
+                        longitude=float(loc['tip-photonic-topology:x'].value),
+                        latitude=float(loc['tip-photonic-topology:y'].value)
+                    )
+            metadata = {'location': location} if location is not None else None
+
+            if 'tip-photonic-topology:amplifier' in node:
+                amp = node['tip-photonic-topology:amplifier']
+                type_variety = amp['model'].value
+                params = equipment['Edfa'][type_variety].__dict__
+                el = elements.Edfa(
+                    uid=uid,
+                    type_variety=type_variety,
+                    params=params,
+                    metadata=metadata,
+                    operational={
+                        'gain_target': _optional_float(amp, 'gain-target'),
+                        'tilt_target': _optional_float(amp, 'tilt-target'),
+                        'out_voa': _optional_float(amp, 'out-voa-target'),
+                    },
+                )
+            elif 'tip-photonic-topology:roadm' in node:
+                roadm = node['tip-photonic-topology:roadm']
+                el = elements.Roadm(
+                    uid=uid,
+                    type_variety=roadm['model'].value,
+                    metadata={'location': location} if location is not None else None,
+                    # FIXME
+                )
+            elif 'tip-photonic-topology:transceiver' in node:
+                txp = node['tip-photonic-topology:transceiver']
+                el = elements.Transceiver(
+                    uid=uid,
+                    type_variety=txp['model'].value,
+                    metadata={'location': location} if location is not None else None,
+                    # FIXME
+                )
+            else:
+                raise ValueError(f'Internal error: unrecognized network node {node} which was expected to belong to the photonic-topology')
+            network.add_node(el)
+            nodes[el.uid] = el
+        for link in net['ietf-network-topology:link']:
+            source = link['source']['source-node'].value
+            target = link['destination']['dest-node'].value
+            if 'tip-photonic-topology:fiber' in link:
+                fiber = link['tip-photonic-topology:fiber']
+                params = {
+                    'length_units': 'km',  # FIXME
+                    'length': float(fiber['length'].value),
+                    'loss_coef': float(fiber['loss-per-km'].value),
+                }
+                specs = equipment['Fiber'][fiber['type'].value]
+                for key in ('dispersion', 'gamma', 'pmd_coef'):
+                    params[key] = getattr(specs, key)
+                location = elements.Location(
+                    latitude=(nodes[source].metadata['location'].latitude + nodes[target].metadata['location'].latitude) / 2,
+                    longitude=(nodes[source].metadata['location'].longitude + nodes[target].metadata['location'].longitude) / 2,
+                )
+                el = elements.Fiber(
+                    uid=link['link-id'].value,
+                    type_variety=fiber['type'].value,
+                    params=params,
+                    metadata={'location': location},
+                    # FIXME
+                )
+                network.add_node(el)
+                nodes[el.uid] = el
+                network.add_edge(nodes[source], nodes[el.uid], weight=float(fiber['length'].value))
+                network.add_edge(nodes[el.uid], nodes[target], weight=0.01)
+            elif 'tip-photonic-topology:patch':
+                pass # FIXME
+            # FIXME: handle all others
+
+    # FIXME: read set_egress_amplifier and make it do what I want to do here
+    # FIXME: be super careful with autodesign!, the assumptions in "legacy JSON" and in "YANG JSON" are very different
+
+    return network
+
+
 def load_from_yang(json_data: Dict) -> Tuple[Dict[str, Dict[str, Any]], DiGraph]:
     '''Load equipment library, (FIXME: nothing for now, will be the network topology) and simulation options from a YANG-formatted JSON-like object'''
     dm = create_datamodel()
@@ -275,8 +370,7 @@ def load_from_yang(json_data: Dict) -> Tuple[Dict[str, Dict[str, Any]], DiGraph]
     sim_data = data[SIMULATION]
     equipment = _load_equipment(data, sim_data)
     # FIXME: adjust all Simulation's parameters
-
-    network = None
+    network = _load_network(data, equipment)
 
     return (equipment, network)
 

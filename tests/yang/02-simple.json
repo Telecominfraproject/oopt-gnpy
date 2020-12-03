@@ -46,6 +46,67 @@
     }
   ],
 
+  "ietf-network:networks": {
+    "network": [
+      {
+        "network-id": "Two transponders, one EDFA, two fibers",
+        "network-types": {
+          "tip-photonic-topology:photonic-topology": {
+          }
+        },
+        "node": [
+          {
+            "node-id": "trx-1",
+            "tip-photonic-topology:transceiver": {
+              "model": "Voyager"
+            }
+          },
+          {
+            "node-id": "trx-2",
+            "tip-photonic-topology:transceiver": {
+              "model": "Voyager"
+            }
+          },
+          {
+            "node-id": "edfa-A",
+            "tip-photonic-topology:amplifier": {
+              "model": "fixed-22",
+              "gain-target": "19.0",
+              "tilt-target": "10.0"
+            }
+          }
+        ],
+        "ietf-network-topology:link": [
+          {
+            "link-id": "fiber trx-1 edfa-1",
+            "source": {
+              "source-node": "trx-1"
+            },
+            "destination": {
+              "dest-node": "edfa-A"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "105"
+            }
+          },
+          {
+            "link-id": "fiber trx-2",
+            "source": {
+              "source-node": "edfa-A"
+            },
+            "destination": {
+              "dest-node": "trx-2"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "70"
+            }
+          }
+        ]
+      }
+    ]
+  },
   "tip-photonic-simulation:simulation": {
     "autodesign": {
       "gain-mode": [null]
