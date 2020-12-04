@@ -30,7 +30,8 @@ from gnpy.topology.request import (ResultElement, jsontocsv, compute_path_dsjctn
                                    PathRequest, compute_constrained_path, propagate)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.json_io import load_equipment, load_network, load_json, load_requests, save_network, \
-                               requests_from_json, disjunctions_from_json, save_json
+                               requests_from_json, disjunctions_from_json, save_json, load_initial_spectrum,\
+                               _spectrum_from_json
 from gnpy.tools.plots import plot_baseline, plot_results
 
 _logger = logging.getLogger(__name__)
@@ -184,13 +185,21 @@ def transmission_main_example(args=None):
     params['path_bandwidth'] = 0
     trx_params = trx_mode_params(equipment)
     if args.power:
-        trx_params['power'] = db2lin(float(args.power)) * 1e-3
+        try:
+            initial_spectrum = load_initial_spectrum(args.power)
+            print('warning: user input for spectrum used for propagation instead of SI')
+        except FileNotFoundError:
+            trx_params['power'] = db2lin(float(args.power)) * 1e-3
+    if 'initial_spectrum' not in locals():
+        temp = [{key: trx_params[key] for key in
+                ['f_min','f_max', 'baud_rate', 'spacing', 'roll_off', 'tx_osnr']}]
+        temp[0]['power_dbm'] = lin2db(trx_params['power'] * 1e3) # uses the default value in SI
+        initial_spectrum = _spectrum_from_json(temp)
+
     params.update(trx_params)
     req = PathRequest(**params)
-    # add a form of spectrum in the request
-    carrier = {key: getattr(req, key) for key in ['power', 'baud_rate', 'roll_off']}
-    req.initial_spectrum = {(req.f_min + req.spacing * f): carrier for f in  range(1, req.nb_channel + 1)}
-
+    req.initial_spectrum = initial_spectrum
+    print(f'There are {len(req.initial_spectrum)} channels propagating')
     power_mode = equipment['Span']['default'].power_mode
     print('\n'.join([f'Power mode is set to {power_mode}',
                      f'=> it can be modified in eqpt_config.json - Span']))
