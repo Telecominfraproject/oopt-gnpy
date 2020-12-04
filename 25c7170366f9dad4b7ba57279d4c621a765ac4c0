@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4e977aa4_fec6ce37",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-04T16:25:12Z",
+      "side": 1,
+      "message": "computes delta power wrt reference channel for each channel",
+      "revId": "25c7170366f9dad4b7ba57279d4c621a765ac4c0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8264f802_dbb308cf",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-04T16:25:12Z",
+      "side": 1,
+      "message": "uses theoretical set of channels to compute input_total_power\nnext refactor will use carriers instead: but we need to check which from carrier should be used: signal only or signal+ase+nli",
+      "revId": "25c7170366f9dad4b7ba57279d4c621a765ac4c0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eea622f3_1de20569",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-04T16:25:12Z",
+      "side": 1,
+      "message": "ref_power is transferred from calling functions",
+      "revId": "25c7170366f9dad4b7ba57279d4c621a765ac4c0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab6a807a_c8918874",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-04T16:25:12Z",
+      "side": 1,
+      "message": "only temporary for testing",
+      "revId": "25c7170366f9dad4b7ba57279d4c621a765ac4c0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "233f7899_b2f404af",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-04T16:25:12Z",
+      "side": 1,
+      "message": "only temporary for testing",
+      "revId": "25c7170366f9dad4b7ba57279d4c621a765ac4c0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
