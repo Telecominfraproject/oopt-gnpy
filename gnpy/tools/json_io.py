@@ -17,7 +17,7 @@ from gnpy.core import ansi_escapes, elements
 from gnpy.core.equipment import trx_mode_params
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError, ServiceError
 from gnpy.core.science_utils import estimate_nf_model
-from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions
+from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions, db2lin
 from gnpy.topology.request import PathRequest, Disjunction
 from gnpy.tools.convert import xls_to_json_data
 from gnpy.tools.service_sheet import read_service_sheet
@@ -226,10 +226,39 @@ def _automatic_spacing(baud_rate):
     return min((s[1] for s in spacing_list if s[0] > baud_rate), default=baud_rate * 1.2)
 
 
+def _spectrum_from_json(json_data):
+    """ json_data is a list of spectrum partitions each with {fmin, fmax, baudrate, roll_off, power and tx_osnr}
+    creates the per freq dict of carrier's dict
+    """
+    spectrum = {}
+    # min freq is fmin - spacing/2 (numbering starts at 0)
+    previous_part_max_freq = json_data[0]['f_min'] - json_data[0]['spacing'] / 2
+    for part in json_data:
+        index = 1     # starting freq is exactly f_min + spacing to be consistent with utils.automatic_nch
+        part['power'] = db2lin(part['power_dbm'] - 30.0)     # convert power_dBm into watt
+        current_part_min_freq = part['f_min'] - part['spacing'] / 2   # supposes that carriers are centered on frequency
+        if previous_part_max_freq <= current_part_min_freq:
+            # check that previous part last channel does not overlap on next part first channel
+            current_freq = part['f_min'] + index * part['spacing']
+            while current_freq <= part['f_max']:
+                spectrum[current_freq] = part
+                index += 1
+                current_freq = part['f_min'] + index * part['spacing']
+            previous_part_max_freq = current_freq - part['spacing'] / 2
+        else:
+            raise ValueError('not a valid initial spectrum definition')
+
+    return spectrum
+
+
 def load_equipment(filename):
     json_data = load_json(filename)
     return _equipment_from_json(json_data, filename)
 
+
+def load_initial_spectrum(filename):
+    json_data = load_json(filename)
+    return _spectrum_from_json(json_data['initial_spectrum'])
 
 def _update_dual_stage(equipment):
     edfa_dict = equipment['Edfa']
