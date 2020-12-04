@@ -267,9 +267,9 @@ def transmission_main_example(args=None):
             ch_freq = final_carrier.frequency * 1e-12
             ch_power = lin2db(final_carrier.power.signal * 1e3)
             print(
-                '{:5}{:26.2f}{:26.2f}{:28.2f}{:28.2f}{:28.2f}' .format(
+                '{:5}{:26.5f}{:26.2f}{:28.2f}{:28.2f}{:28.2f}' .format(
                     final_carrier.channel_number, round(
-                        ch_freq, 2), round(
+                        ch_freq, 5), round(
                         ch_power, 2), round(
                         ch_osnr, 2), round(
                         ch_snr_nl, 2), round(
