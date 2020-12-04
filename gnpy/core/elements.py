@@ -213,7 +213,7 @@ class Roadm(_Node):
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
                           f'  effective loss (dB):  {self.effective_loss:.2f}',
-                          f'  pch out (dBm):        {self.ref_pch_out_dbm!r}'])
+                          f'  pch out (dBm):        {self.ref_pch_out_dbm!r}'])   # (ref channel)
 
     def propagate(self, spectral_info, degree):
         # pin_target and loss are read from eqpt_config.json['Roadm']
@@ -376,7 +376,9 @@ class Fiber(_Node):
                           f'  total loss (dB):             {self.loss:.2f}',
                           f'  (includes conn loss (dB) in: {self.params.con_in:.2f} out: {self.params.con_out:.2f})',
                           f'  (conn loss out includes EOL margin defined in eqpt_config.json)',
-                          f'  pch out (dBm): {self.pch_out_db!r}'])
+                          f'  pch out (dBm): {self.pch_out_db!r}'    # (ref channel)',
+                          #f'  power out (dBm): {lin2db(self.output_total_power * 1e3):.2f}'
+                          ])
 
     @property
     def loss(self):
@@ -475,6 +477,7 @@ class Fiber(_Node):
     def __call__(self, spectral_info):
         self.propagate(spectral_info)
         self.update_pref(spectral_info)
+        self.output_total_power = sum(array([power.signal + power.nli + power.ase for power in spectral_info.powers]))
         return spectral_info
 
 
