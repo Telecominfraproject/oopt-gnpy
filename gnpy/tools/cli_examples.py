@@ -196,8 +196,14 @@ def transmission_main_example(args=None):
     req = PathRequest(**params)
     # add a form of spectrum in the request
     carrier = {key: getattr(req, key) for key in ['power', 'baud_rate', 'roll_off']}
-    req.initial_spectrum = {(req.f_min + req.spacing * f): carrier for f in  range(1, req.nb_channel + 1)}
-
+    req.initial_spectrum = {(req.f_min + req.spacing * f): carrier for f in  range(1, 38)}
+    # change half of the spectrum with 57 GB + 2.5dBm same roll-off and 75 GHz spacing
+    for f in  range(1, 26):
+        req.initial_spectrum[(req.f_min+ 50e9 * 37 + 75e9 * f)] = {'power': db2lin(lin2db(req.power) + 2.5),
+                                                                   'baud_rate': 57e9,
+                                                                   'roll_off': req.roll_off}
+    # print(req.initial_spectrum[191.35e12])
+    # print(req.initial_spectrum[195.025e12])
     power_mode = equipment['Span']['default'].power_mode
     print('\n'.join([f'Power mode is set to {power_mode}',
                      f'=> it can be modified in eqpt_config.json - Span']))
