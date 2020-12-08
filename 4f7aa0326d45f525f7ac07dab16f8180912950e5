@@ -196,6 +196,24 @@
     },
     {
       "key": {
+        "uuid": "8d3d8490_e649e00d",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 3
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2020-12-08T15:59:51Z",
+      "side": 1,
+      "message": "Nobody objected when we talked about this last week, so this one can now be resolved I believe.",
+      "parentUuid": "ae8c02d1_12d2fe70",
+      "revId": "4f7aa0326d45f525f7ac07dab16f8180912950e5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c53c6ae2_9703305c",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 3
