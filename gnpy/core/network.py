@@ -272,7 +272,10 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
         voa = 0
         while not (isinstance(node, elements.Roadm) or isinstance(node, elements.Transceiver)):
             # go through all nodes in the OMS (loop until next Roadm instance)
-            next_node = next(network.successors(node))
+            try:
+                next_node = next(network.successors(node))
+            except StopIteration:
+                raise NetworkTopologyError(f'{type(node).__name__} {node.uid} is not properly connected, please check network topology')
             if isinstance(node, elements.Edfa):
                 node_loss = span_loss(network, prev_node)
                 voa = node.out_voa if node.out_voa else 0
