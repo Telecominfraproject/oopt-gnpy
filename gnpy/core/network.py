@@ -493,8 +493,8 @@ def build_network(network, equipment, pref_ch_db, pref_total_db):
     for roadm in roadms:
         set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db)
 
-    # support older json input topology wo Roadms:
-    if len(roadms) == 0:
-        trx = [t for t in network.nodes() if isinstance(t, elements.Transceiver)]
-        for t in trx:
+    trx = [t for t in network.nodes() if isinstance(t, elements.Transceiver)]
+    for t in trx:
+        next_node = next(network.successors(t), None)
+        if next_node and not isinstance(next_node, elements.Roadm):
             set_egress_amplifier(network, t, equipment, 0, pref_total_db)
