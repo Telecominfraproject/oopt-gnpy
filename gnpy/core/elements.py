@@ -484,6 +484,10 @@ class RamanFiber(Fiber):
             self.raman_pumps = None
         self.raman_solver = RamanSolver(self)
 
+    @property
+    def to_json(self):
+        return dict(super().to_json, operational=self.operational)
+
     def update_pref(self, pref, *carriers):
         pch_out_db = lin2db(mean([carrier.power.signal for carrier in carriers])) + 30
         self.pch_out_db = round(pch_out_db, 2)
