@@ -53,6 +53,24 @@
     },
     {
       "key": {
+        "uuid": "d387ba9a_d2703d18",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-12-18T16:31:07Z",
+      "side": 1,
+      "message": "I agree. If you want to define a range, I would say from 6.25GHz to the full frequency band.",
+      "parentUuid": "531713a0_4bb55f2d",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "546f401a_4ee385e6",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 8
@@ -81,6 +99,24 @@
       "writtenOn": "2020-12-18T11:28:56Z",
       "side": 1,
       "message": "same comment, I don\u0027t think that putting a max value is relevant",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf41abe3_8818b4bb",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-12-18T16:31:07Z",
+      "side": 1,
+      "message": "... but if you want a max, at least make it large enough to accommodate one generation upgrade.\nAlso, fraction-digits should be more than 2. Baudrate is often specified with at least 4 fraction digits.",
+      "parentUuid": "8d5ca350_2a97ce63",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
@@ -166,6 +202,24 @@
       "writtenOn": "2020-12-18T15:12:44Z",
       "side": 1,
       "message": "I think the function should be  NF \u003d f(gain)",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3d66e2ef_501dc91d",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-12-18T16:31:07Z",
+      "side": 1,
+      "message": "In the code it is currently implemented as NF \u003d f(gain_max - gain). This has led to some confusion in the past and I would not mind if we changed the implementation but then we would also have to change the current values in eqpt_cofing.json.",
+      "parentUuid": "3251560a_d4664540",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
@@ -325,6 +379,24 @@
     },
     {
       "key": {
+        "uuid": "d3bc1f1b_3246de16",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-12-18T16:31:07Z",
+      "side": 1,
+      "message": "There is a reason for using \"coefficient\" here, see discussion here: https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/494019/14/gnpy/core/elements.py#178",
+      "parentUuid": "cb32c0b6_c23e89d5",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f590eff4_a7b76f26",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 8
@@ -336,6 +408,24 @@
       "writtenOn": "2020-12-18T15:12:44Z",
       "side": 1,
       "message": "I am not sure this is easy to understand because there might be several pumps at different frequencies (for example in the raman-edfa-example-network.json)",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4137e2ae_7d7c65f1",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-12-18T16:31:07Z",
+      "side": 1,
+      "message": "This is not about the location of the pumps.",
+      "parentUuid": "f590eff4_a7b76f26",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
@@ -393,6 +483,24 @@
     },
     {
       "key": {
+        "uuid": "5c63b6d3_105fbd2d",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 502,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-12-18T16:31:07Z",
+      "side": 1,
+      "message": "Maybe also add \"in-band\" since we\u0027re currently not modeling out-of-band OSNR.",
+      "parentUuid": "ff2ccdd3_6a54726e",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "794d46c9_8913f861",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 8
@@ -404,6 +512,41 @@
       "writtenOn": "2020-12-18T15:12:44Z",
       "side": 1,
       "message": "I would prefer to remove the second part : this parameter is not exactly a physical effective channel spectral bandwidth, it is more a user constraint\nI can have 40 Gbaud, this may fit in 46 GHz, but in my strategy/design rules I am aligned on flex grid + I assume that roadm filtering is penalizing so I set this min spacing to 62.5 GHz",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d751345b_e0215401",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-12-18T16:31:07Z",
+      "side": 1,
+      "message": "But then this minimum spacing is not an inherent property of the transceiver, but rather an operator design rule so maybe it should not be part of the equipment model at all.",
+      "parentUuid": "794d46c9_8913f861",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cd87fdc6_8fa68a5d",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2020-12-18T16:31:07Z",
+      "side": 1,
+      "message": "Here \"transponder\" is a typo?",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
