@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "98699b06_33274e6f",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T11:28:56Z",
+      "side": 1,
+      "message": "do not think it is a good idea to discriminate on c and L band: there might be some cases where you will need all frequencies in a single amplifier, eg multi band amps or large band amps, such as Raman",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "560bfc4a_12b24644",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T11:28:56Z",
+      "side": 1,
+      "message": "flex grid defines center frequency with 6.25 GHz step, so I think that the fraction digit should be at least 5, if this is to represent center frequency, and probably 1GHz in case of the description of ripple, so 6 in this case. 7 would be safer",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "531713a0_4bb55f2d",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T11:28:56Z",
+      "side": 1,
+      "message": "not sure that putting a range here is relevant: next rate will need higher spacing than that and I do not see why we would also prevent a user to test with smaller rates and spacing (min in flexgrid is 12.5GHz for 1 slot)\nshould only be over 0 in my opinion.",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d5ca350_2a97ce63",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T11:28:56Z",
+      "side": 1,
+      "message": "same comment, I don\u0027t think that putting a max value is relevant",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "09bfbdcc_943170d0",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T11:28:56Z",
+      "side": 1,
+      "message": "The fraction digit is not large enough to represent parameters. for example the current standard_medium_gain has\n      0.000168241,\n      0.0469961,\n      0.0359549,\n      5.82851\nat least 10 is required for this one, and for openroadm preamp we have even used 12 to better fit the osnr mask.",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c5db03e_b89ea73f",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T11:28:56Z",
+      "side": 1,
+      "message": "do not limit to c band frequencies as a common feature to all amps, because some may have large band",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "210938b4_b9452a69",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T11:28:56Z",
+      "side": 1,
+      "message": "in the eqpt it is not about having an output voa (which is  always the case in the model) it is about authorizing the autodesign to use it, so I would rather call it: use-output-voa\nand change the description accordingly",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "00ddeebe_18a1cab3",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T11:28:56Z",
+      "side": 1,
+      "message": "replace with \u0027within the maximum power max-power-out of the amplifier\u0027\n\nEOL may be confusing here, and probably not exact",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
