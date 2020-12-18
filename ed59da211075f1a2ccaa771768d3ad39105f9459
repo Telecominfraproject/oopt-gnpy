@@ -536,6 +536,24 @@
     },
     {
       "key": {
+        "uuid": "1d7bd323_4fd444e2",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T16:49:40Z",
+      "side": 1,
+      "message": "Well, I do not see why being an operator constraint , it should be removed but in this case it can be a vendor spec, so I would prefer to keep it.",
+      "parentUuid": "d751345b_e0215401",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cd87fdc6_8fa68a5d",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 8
