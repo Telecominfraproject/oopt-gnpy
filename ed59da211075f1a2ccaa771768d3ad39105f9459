@@ -53,6 +53,23 @@
     },
     {
       "key": {
+        "uuid": "546f401a_4ee385e6",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T15:12:44Z",
+      "side": 1,
+      "message": "+ a user may want to use large spacing to reduce the nb of channels",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8d5ca350_2a97ce63",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 8
@@ -132,6 +149,295 @@
       "writtenOn": "2020-12-18T11:28:56Z",
       "side": 1,
       "message": "replace with \u0027within the maximum power max-power-out of the amplifier\u0027\n\nEOL may be confusing here, and probably not exact",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3251560a_d4664540",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T15:12:44Z",
+      "side": 1,
+      "message": "I think the function should be  NF \u003d f(gain)",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8849c371_478b7142",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T15:12:44Z",
+      "side": 1,
+      "message": "operating at the maximal **flatmax**gain",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "718ca433_d1d78fb1",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T15:12:44Z",
+      "side": 1,
+      "message": "name can be misleading: variable gains of min-max-NF typoes can be dual stage in reality.",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b2454cc3_c9514497",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T15:12:44Z",
+      "side": 1,
+      "message": "the sentence is misleading: most variable gain EDFAs are dual stage one, and our dual stage model can use such a variable gain edfa. What is not supported by the software is to pick one of these \"concatenated\" amp. so I propose to change the name and the sentence:\ndual-stage -\u003e concatenated\nFirst (preamp) stage of a dual-stage amplifier can not be a concatenated type.",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "851e1fff_b4a6cd09",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T15:12:44Z",
+      "side": 1,
+      "message": "same comment",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e706326_a1d53ea7",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T15:12:44Z",
+      "side": 1,
+      "message": "why this check on frequency range ? I could use a booster with a wider or a smaller range, but only operated within the common range, no ?",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "899079d1_09a9e2d0",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T15:12:44Z",
+      "side": 1,
+      "message": "why except ?\nthis is also for the fixed gain particular case of the polynomial-NF model\nI think this part \"except...\" should be removed",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "650c1b8d_c1592d84",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T15:12:44Z",
+      "side": 1,
+      "message": "change the name to chromatic-dispersion to avoid confusion this other types of dispersion (eg polarization mode)",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "034e8b4b_d2ed2712",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T15:12:44Z",
+      "side": 1,
+      "message": "same comment",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb32c0b6_c23e89d5",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T15:12:44Z",
+      "side": 1,
+      "message": "why using a different naming for chromatic dispersion and polarization mode dispersion ?\nuse \"coefficient\" for both or none\nuse acronyms for both or none (cd and pmd), my preference would be to avoid acronyms",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f590eff4_a7b76f26",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T15:12:44Z",
+      "side": 1,
+      "message": "I am not sure this is easy to understand because there might be several pumps at different frequencies (for example in the raman-edfa-example-network.json)",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7cd0724b_90856bfc",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T15:12:44Z",
+      "side": 1,
+      "message": "I would suggest to define rates as a decimal value\n+ not put min value or max value in the range:\non should be positive strictly",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96e74d98_116244d6",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T15:12:44Z",
+      "side": 1,
+      "message": "Add OSNR meaning Optical Signal to Noise ratio and the bandwidth 0.1 nm",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ff2ccdd3_6a54726e",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 502,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T15:12:44Z",
+      "side": 1,
+      "message": "same comment",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "794d46c9_8913f861",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T15:12:44Z",
+      "side": 1,
+      "message": "I would prefer to remove the second part : this parameter is not exactly a physical effective channel spectral bandwidth, it is more a user constraint\nI can have 40 Gbaud, this may fit in 46 GHz, but in my strategy/design rules I am aligned on flex grid + I assume that roadm filtering is penalizing so I set this min spacing to 62.5 GHz",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cd5cba2c_f18da30e",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T15:12:44Z",
+      "side": 1,
+      "message": "in fact that the osnr introbuce by add AND drop stage: so 1 figure for two contribs",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cadb1de2_a0fd741a",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2020-12-18T15:12:44Z",
+      "side": 1,
+      "message": "use full name ? polarisation mode dispersion ?",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
