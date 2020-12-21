@@ -210,6 +210,8 @@ class Amp(_JsonThing):
             except KeyError:
                 raise EquipmentConfigError(f'missing preamp/booster variety input for amplifier: {type_variety} in equipment config')
             dual_stage_def = Model_dual_stage(preamp_variety, booster_variety)
+        else:
+            raise EquipmentConfigError(f'Edfa type_def {type_def} does not exist')
 
         json_data = load_json(config)
 

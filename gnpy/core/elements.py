@@ -687,8 +687,6 @@ class Edfa(_Node):
             nf_avg = pin_ch - polyval(nf_model.nf_coef, pin_ch) + 58
         elif type_def == 'advanced_model':
             nf_avg = polyval(nf_fit_coeff, -dg)
-        else:
-            assert False, "Unrecognized amplifier type, this should have been checked by the JSON loader"
         return nf_avg + pad, pad
 
     def _calc_nf(self, avg=False):
