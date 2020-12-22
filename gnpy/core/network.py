@@ -339,21 +339,22 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
     if isinstance(this_node, elements.Roadm):
         this_node.per_degree_pch_out_db = {k: v for k, v in this_node_degree.items()}
 
-def add_egress_amplifier(network, node):
-    next_nodes = [n for n in network.successors(node)
+
+def add_roadm_booster(network, roadm):
+    next_nodes = [n for n in network.successors(roadm)
                   if not (isinstance(n, elements.Transceiver) or isinstance(n, elements.Fused) or isinstance(n, elements.Edfa))]
     # no amplification for fused spans or TRX
-    for i, next_node in enumerate(next_nodes):
-        network.remove_edge(node, next_node)
+    for next_node in next_nodes:
+        network.remove_edge(roadm, next_node)
         amp = elements.Edfa(
-            uid=f'Edfa{i}_{node.uid}',
+            uid=f'Edfa_booster_{roadm.uid}_to_{next_node.uid}',
             params={},
             metadata={
                 'location': {
-                    'latitude': (node.lat + next_node.lat) / 2,
-                    'longitude': (node.lng + next_node.lng) / 2,
-                    'city': node.loc.city,
-                    'region': node.loc.region,
+                    'latitude': roadm.lat,
+                    'longitude': roadm.lng,
+                    'city': roadm.loc.city,
+                    'region': roadm.loc.region,
                 }
             },
             operational={
@@ -361,11 +362,62 @@ def add_egress_amplifier(network, node):
                 'tilt_target': 0,
             })
         network.add_node(amp)
-        if isinstance(node, elements.Fiber):
-            edgeweight = node.params.length
+        network.add_edge(roadm, amp, weight=0.01)
+        network.add_edge(amp, next_node, weight=0.01)
+
+
+def add_roadm_preamp(network, roadm):
+    prev_nodes = [n for n in network.predecessors(roadm)
+                  if not (isinstance(n, elements.Transceiver) or isinstance(n, elements.Fused) or isinstance(n, elements.Edfa))]
+    # no amplification for fused spans or TRX
+    for prev_node in prev_nodes:
+        network.remove_edge(prev_node, roadm)
+        amp = elements.Edfa(
+            uid=f'Edfa_preamp_{roadm.uid}_from_{prev_node.uid}',
+            params={},
+            metadata={
+                'location': {
+                    'latitude': roadm.lat,
+                    'longitude': roadm.lng,
+                    'city': roadm.loc.city,
+                    'region': roadm.loc.region,
+                }
+            },
+            operational={
+                'gain_target': None,
+                'tilt_target': 0,
+            })
+        network.add_node(amp)
+        if isinstance(prev_node, elements.Fiber):
+            edgeweight = prev_node.params.length
         else:
             edgeweight = 0.01
-        network.add_edge(node, amp, weight=edgeweight)
+        network.add_edge(prev_node, amp, weight=edgeweight)
+        network.add_edge(amp, roadm, weight=0.01)
+
+
+def add_inline_amplifier(network, fiber):
+    next_node = next(network.successors(fiber))
+    if isinstance(next_node, elements.Fiber) or isinstance(next_node, elements.RamanFiber):
+        # no amplification for fused spans or TRX
+        network.remove_edge(fiber, next_node)
+        amp = elements.Edfa(
+            uid=f'Edfa_{fiber.uid}',
+            params={},
+            metadata={
+                'location': {
+                    'latitude': (fiber.lat + next_node.lat) / 2,
+                    'longitude': (fiber.lng + next_node.lng) / 2,
+                    'city': fiber.loc.city,
+                    'region': fiber.loc.region,
+                }
+            },
+            operational={
+                'gain_target': None,
+                'tilt_target': 0,
+            })
+        network.add_node(amp)
+        network.add_edge(fiber, amp, weight=fiber.params.length)
         network.add_edge(amp, next_node, weight=0.01)
 
 
@@ -484,12 +536,15 @@ def build_network(network, equipment, pref_ch_db, pref_total_db):
     for fiber in fibers:
         split_fiber(network, fiber, bounds, target_length, equipment)
 
-    amplified_nodes = [n for n in network.nodes() if isinstance(n, elements.Fiber) or isinstance(n, elements.Roadm)]
+    roadms = [r for r in network.nodes() if isinstance(r, elements.Roadm)]
+    for roadm in roadms:
+        add_roadm_preamp(network, roadm)
+        add_roadm_booster(network, roadm)
 
-    for node in amplified_nodes:
-        add_egress_amplifier(network, node)
+    fibers = [f for f in network.nodes() if isinstance(f, elements.Fiber)]
+    for fiber in fibers:
+        add_inline_amplifier(network, fiber)
 
-    roadms = [r for r in amplified_nodes if isinstance(r, elements.Roadm)]
     for roadm in roadms:
         set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db)
 
