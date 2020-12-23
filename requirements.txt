@@ -11,3 +11,8 @@ Sphinx>=2.4.4,<3
 sphinxcontrib-bibtex>=0.4.2,<1
 xlrd>=1.2.0,<2
 flask>=1.1.2
+gnpy~=2.2.0
+cryptography~=3.3.1
+Werkzeug~=1.0.1
+setuptools~=50.3.1
+Flask-Injector

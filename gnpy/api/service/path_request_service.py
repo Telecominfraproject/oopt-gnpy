@@ -12,6 +12,7 @@ from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectru
 
 _logger = logging.getLogger(__name__)
 
+
 def path_requests_run(service, network, equipment):
     # Build the network once using the default power defined in SI in eqpt config
     # TODO power density: db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
