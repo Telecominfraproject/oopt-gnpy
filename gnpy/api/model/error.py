@@ -12,6 +12,6 @@ class Error:
         :param description: The description of this Error.
         :type description: str
         """
-        self._code = code
-        self._message = message
-        self._description = description
+        self.code = code
+        self.message = message
+        self.description = description

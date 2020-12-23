@@ -19,8 +19,10 @@ def common_error_handler(exception):
     if not isinstance(exception, werkzeug.exceptions.HTTPException):
         exception = werkzeug.exceptions.InternalServerError()
         exception.description = "Something went wrong on our side."
+    else:
+        status_code = exception.code
     response = Error(message=exception.name, description=exception.description,
-                     code=exception.code)
+                     code=status_code)
 
     return werkzeug.Response(response=json.dumps(response.__dict__), status=status_code, mimetype='application/json')
 

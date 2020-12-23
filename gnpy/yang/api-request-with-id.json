@@ -1,0 +1,180 @@
+{
+  "gnpy-api:service":{
+      "path-request": [
+        {
+          "request-id": "0",
+          "source": "trx Alice",
+          "destination": "trx Bob",
+          "src-tp-id": "trx Alice",
+          "dst-tp-id": "trx Bob",
+          "bidirectional": false,
+          "path-constraints": {
+            "te-bandwidth": {
+              "technology": "flexi-grid",
+              "trx_type": "Voyager",
+              "trx_mode": "mode 1",
+              "effective-freq-slot": [
+                {
+                  "N": 0,
+                  "M": 12
+                }
+              ],
+              "spacing": 50000000000.0,
+              "path_bandwidth": 100000000000.0
+            }
+          }
+        },
+        {
+          "request-id": "1",
+          "source": "trx Alice",
+          "destination": "trx Bob",
+          "src-tp-id": "trx Alice",
+          "dst-tp-id": "trx Bob",
+          "bidirectional": false,
+          "path-constraints": {
+            "te-bandwidth": {
+              "technology": "flexi-grid",
+              "trx_type": "Voyager",
+              "trx_mode": "mode 1",
+              "spacing": 50000000000.0,
+              "path_bandwidth": 100000000000.0
+            }
+          }
+        },
+        {
+          "request-id": "2",
+          "source": "trx Alice",
+          "destination": "trx Bob",
+          "src-tp-id": "trx Alice",
+          "dst-tp-id": "trx Bob",
+          "bidirectional": false,
+          "path-constraints": {
+            "te-bandwidth": {
+              "technology": "flexi-grid",
+              "trx_type": "Voyager",
+              "trx_mode": "mode 2",
+              "spacing": 100000000000.0,
+              "path_bandwidth": 100000000000.0
+            }
+          }
+        },
+        {
+          "request-id": "3",
+          "source": "trx Alice",
+          "destination": "trx Bob",
+          "src-tp-id": "trx Alice",
+          "dst-tp-id": "trx Bob",
+          "bidirectional": true,
+          "path-constraints": {
+            "te-bandwidth": {
+              "technology": "flexi-grid",
+              "trx_type": "Voyager",
+              "spacing": 50000000000.0,
+              "path_bandwidth": 100000000000.0
+            }
+          },
+          "explicit-route-objects": {
+            "route-object-include-exclude": [
+              {
+                "explicit-route-usage": "route-include-ero",
+                "index": 0,
+                "num-unnum-hop": {
+                  "node-id": "roadm Carol",
+                  "link-tp-id": "link-tp-id is not used",
+                  "hop-type": "LOOSE"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "request-id": "4",
+          "source": "trx Alice",
+          "destination": "trx Bob",
+          "src-tp-id": "trx Alice",
+          "dst-tp-id": "trx Bob",
+          "bidirectional": true,
+          "path-constraints": {
+            "te-bandwidth": {
+              "technology": "flexi-grid",
+              "trx_type": "Voyager",
+              "effective-freq-slot": [
+              {
+                "N": -284,
+                "M": 12
+              }
+            ],
+              "spacing": 50000000000.0,
+              "path_bandwidth": 100000000000.0
+            }
+          }
+        },
+        {
+          "request-id": "5",
+          "source": "trx Bob1",
+          "destination": "trx Carol1",
+          "src-tp-id": "trx Bob1",
+          "dst-tp-id": "trx Carol1",
+          "bidirectional": true,
+          "path-constraints": {
+            "te-bandwidth": {
+              "technology": "flexi-grid",
+              "trx_type": "vendorA_trx-type1",
+              "spacing": 100000000000.0,
+              "path_bandwidth": 100000000000.0
+            }
+          }
+        },
+        {
+          "request-id": "6",
+          "source": "trx Bob1",
+          "destination": "trx Carol1",
+          "src-tp-id": "trx Bob1",
+          "dst-tp-id": "trx Carol1",
+          "bidirectional": true,
+          "path-constraints": {
+            "te-bandwidth": {
+              "technology": "flexi-grid",
+              "trx_type": "Voyager",
+              "trx_mode": "mode 1",
+              "spacing": 50000000000.0,
+              "path_bandwidth": 100000000000.0
+            }
+          }
+        },
+        {
+          "request-id": "7",
+          "source": "trx Bob1",
+          "destination": "trx Carol",
+          "src-tp-id": "trx Bob1",
+          "dst-tp-id": "trx Carol",
+          "bidirectional": true,
+          "path-constraints": {
+            "te-bandwidth": {
+              "technology": "flexi-grid",
+              "trx_type": "Voyager",
+              "trx_mode": "mode 1",
+              "spacing": 50000000000.0,
+              "path_bandwidth": 100000000000.0
+            }
+          }
+        }
+      ],
+      "synchronization": [
+        {
+          "synchronization-id": "1",
+          "svec": {
+            "relaxable": false,
+            "disjointness": "node link",
+            "request-id-number": [
+              "1",
+              "0"
+            ]
+          }
+        }
+      ]
+  },
+  "gnpy-api:topology_id": "5cf39d4b-be10-4ee9-b38b-7f4db7403db7",
+  "gnpy-api:equipment_id": "9ed86e34-9d41-41b2-b8e4-984ca0901d47"
+
+}
