@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fcf5725_0d6b6496",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-01-01T18:18:34Z",
+      "side": 1,
+      "message": "recheck\n\n(dunno why CI missed this one)",
+      "revId": "6820a3fc368e57b3f5fa7590584d610bdf3de848",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
