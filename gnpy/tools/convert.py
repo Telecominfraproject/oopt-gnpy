@@ -20,7 +20,6 @@ In the "Links" sheet, only the first three columns ("Node A", "Node Z" and
 the "east" information so that it is possible to input undirected data.
 """
 
-from sys import exit
 from xlrd import open_workbook
 from argparse import ArgumentParser
 from collections import namedtuple, Counter, defaultdict
@@ -186,7 +185,7 @@ def parse_headers(my_sheet, input_headers_dict, headers, start_line, slice_in):
         if slice_out == (-1, -1):
             if h0 in ('east', 'Node A', 'Node Z', 'City'):
                 print(f'{ansi_escapes.red}CRITICAL{ansi_escapes.reset}: missing _{h0}_ header: EXECUTION ENDS')
-                exit()
+                raise NetworkTopologyError(f'Missing _{h0}_ header')
             else:
                 print(f'missing header {h0}')
         elif not isinstance(input_headers_dict[h0], dict):
@@ -195,7 +194,7 @@ def parse_headers(my_sheet, input_headers_dict, headers, start_line, slice_in):
             headers = parse_headers(my_sheet, input_headers_dict[h0], headers, start_line + 1, slice_out)
     if headers == {}:
         print(f'{ansi_escapes.red}CRITICAL ERROR{ansi_escapes.reset}: could not find any header to read _ ABORT')
-        exit()
+        raise NetworkTopologyError('Could not find any header to read')
     return headers
 
 
