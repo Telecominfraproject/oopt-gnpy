@@ -16,6 +16,24 @@
       "message": "I like the description of the problem, and it seems to me that this is a good fix. On the other hand, I think that the simulation will produce an incorrect result because propagate() will still add the full add_drop_osnr which comprises both ADD\u0027s and DROP\u0027s impairments, not just the DROP contribution. \n\nThat might not be a big problem, the code currently does not check that there\u0027s a ROADM at the destination TRX (I haven\u0027t checked, but I think it does not). Perhaps we can ignore that?\n\nEither way, I\u0027ll be interested in Esther\u0027s opinion.",
       "revId": "7e8ed590eb483720a586356a02eca9196f558201",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3c0d45a_a94953eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-01-01T21:05:09Z",
+      "side": 1,
+      "message": "\u003e I think that the simulation will produce an incorrect result because propagate() will still add the full add_drop_osnr\nThis is a good point. But I don\u0027t think the problem is much worse than adding the same add_drop_osnr regardless of what type of ROADM architecture is used for adding/dropping (in some architectures there are no amps in the add/drop path of the ROADM). Longer term I think we should come up with a better way to handle add/drop OSNR.",
+      "parentUuid": "96842237_83e46f1b",
+      "revId": "7e8ed590eb483720a586356a02eca9196f558201",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
