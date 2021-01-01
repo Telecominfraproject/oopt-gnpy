@@ -16,6 +16,23 @@
       "message": "recheck\n\n(dunno why CI missed this one)",
       "revId": "6820a3fc368e57b3f5fa7590584d610bdf3de848",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26ef38b1_9259b56b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-01-01T18:24:44Z",
+      "side": 1,
+      "message": "Thanks. I have not fixed this file in my sweep of s/exit/raise/ last year because I assumed that this file was not used from the library context. It is.",
+      "revId": "6820a3fc368e57b3f5fa7590584d610bdf3de848",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
