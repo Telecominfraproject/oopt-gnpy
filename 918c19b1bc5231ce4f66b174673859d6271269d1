@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b688911_2f3df34d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-01-01T19:52:02Z",
+      "side": 1,
+      "message": "If the JSON loader ever changes and that else branch gets removed, this will result in elements.py throwing a NameError. I\u0027m OK with that, perhaps the original code was too defensive.",
+      "range": {
+        "startLine": 11,
+        "startChar": 13,
+        "endLine": 12,
+        "endChar": 33
+      },
+      "revId": "918c19b1bc5231ce4f66b174673859d6271269d1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
