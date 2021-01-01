@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96842237_83e46f1b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-01-01T18:40:59Z",
+      "side": 1,
+      "message": "I like the description of the problem, and it seems to me that this is a good fix. On the other hand, I think that the simulation will produce an incorrect result because propagate() will still add the full add_drop_osnr which comprises both ADD\u0027s and DROP\u0027s impairments, not just the DROP contribution. \n\nThat might not be a big problem, the code currently does not check that there\u0027s a ROADM at the destination TRX (I haven\u0027t checked, but I think it does not). Perhaps we can ignore that?\n\nEither way, I\u0027ll be interested in Esther\u0027s opinion.",
+      "revId": "7e8ed590eb483720a586356a02eca9196f558201",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
