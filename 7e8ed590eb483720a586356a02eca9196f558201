@@ -18,6 +18,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "62a95255_07a2c6bf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-01-05T13:28:35Z",
+      "side": 1,
+      "message": "Esther, I agree with you in principle. I implemented this change because I saw program crashes on gnpy.app that could only be explained by users mixing transceivers directly connected to a fiber span and transceivers connected through a Roadm in the same topology. Maybe this is not something they really need - it could be that they just start from the default edfa_example_network.json which does not include any Roadm. But in any case it\u0027s bad to have the program crash. In my opinion we should either allow this or we should change the default example and always enforce connecting transceivers through Roadms (raising an error explaining the problem to the user otherwise).",
+      "parentUuid": "e64a8997_5576d702",
+      "revId": "7e8ed590eb483720a586356a02eca9196f558201",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "96842237_83e46f1b",
