@@ -36,6 +36,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "319e48cb_32830742",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-01-05T16:41:49Z",
+      "side": 1,
+      "message": "This is a good point. I agree that the program should not crash with these cases. This feedback of user experience on the gnpy.app is very interesting !",
+      "parentUuid": "62a95255_07a2c6bf",
+      "revId": "7e8ed590eb483720a586356a02eca9196f558201",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "96842237_83e46f1b",
