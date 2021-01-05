@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "e64a8997_5576d702",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-01-05T09:01:46Z",
+      "side": 1,
+      "message": "Even degree-1 node need some add-drop function for mux/demuxing or power equalization of channels. the ROADM function also handles this with per channel power target on the egress (ROADM is not only about switching wavelengths). The only case where there would be a transceiver directly connected to a fiber span is for a single channel transmission (not WDM), which is a bit out of the scope in my opinion. So I am not really convinced that this changes is useful (is this a requests from some users ? if so would it be possible to elaborate a bit more why not having a mux function after the transceiver?), but I have no strong opinion against it either.",
+      "revId": "7e8ed590eb483720a586356a02eca9196f558201",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "96842237_83e46f1b",
