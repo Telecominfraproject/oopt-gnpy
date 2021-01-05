@@ -28,7 +28,7 @@ def compute_path(equipment_service: EquipmentService):
         raise TopologyError('No topology found in request')
     if 'gnpy-api:equipment' in data:
         equipment = data['gnpy-api:equipment']
-    elif 'gnpy-api:topology_id' in data:
+    elif 'gnpy-api:equipment_id' in data:
         equipment = equipment_service.get_equipment(data['gnpy-api:equipment_id'])
     else:
         raise EquipmentError('No equipment found in request')
