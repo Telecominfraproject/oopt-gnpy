@@ -56,6 +56,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "abb8eccb_0bc8dcab",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-01-05T17:03:43Z",
+      "side": 1,
+      "message": "\u003eThis feedback of user experience on the gnpy.app is very interesting !\nYes, most of the \"bugs\" I discover come from this.",
+      "parentUuid": "319e48cb_32830742",
+      "revId": "7e8ed590eb483720a586356a02eca9196f558201",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "96842237_83e46f1b",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
