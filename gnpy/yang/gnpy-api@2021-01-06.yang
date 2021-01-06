@@ -1,0 +1,78 @@
+module gnpy-api {
+  yang-version 1.1;
+  namespace "gnpy:gnpy-api";
+  prefix gnpyapi;
+
+  import gnpy-network-topology {
+    prefix gnpynt;
+  }
+  import gnpy-path-computation-simplified {
+    prefix gnpypc;
+  }
+  import gnpy-eqpt-config {
+    prefix gnpyeqpt;
+  }
+  import ietf-yang-types {
+    prefix ietftypes;
+  }
+
+  organization
+    "Telecom Infra Project OOPT PSE Working Group";
+  contact
+    "WG Web:   <https://github.com/Telecominfraproject/oopt-gnpy>
+     contact:  <mailto:ahmed.triki@orange.com>
+     contact:  <mailto:esther.lerouzic@orange.com>
+    ";
+  description
+    "YANG model for gnpy api input for path computation - TransportPCE preversion";
+
+  revision 2021-01-06 {
+    description
+      "draft for experimental/2020-candi.
+      Add the possibility to use a topology_id or an equipment_id
+      ";
+    reference
+      "YANG model for api input for path computation with gnpy";
+  }
+
+    container service {
+      description
+        "Describe the service file to connect to gnpy";
+      uses gnpypc:service;
+    }
+    container result {
+     uses gnpypc:result;
+     description
+     "Describe the response object to gnpy";
+    }
+    choice topo {
+      case explicit {
+        container topology {
+          description
+            "Describe the topology file to connect to gnpy";
+          uses gnpynt:topo;
+        }
+      }
+      case id {
+        leaf topology_id {
+          type ietftypes:uuid;
+          mandatory true;
+        }
+      }
+    }
+    choice eqpt {
+      case explicit {
+        container equipment {
+          description
+            "Describe the equipment library to connect to gnpy";
+          uses gnpyeqpt:eqpt;
+        }
+      }
+      case id {
+        leaf equipment_id {
+          type ietftypes:uuid;
+          mandatory true;
+        }
+      }
+    }
+}
