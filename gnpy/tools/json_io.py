@@ -203,6 +203,8 @@ class Amp(_JsonThing):
             except KeyError:  # nf_coef is expected for openroadm amp
                 raise EquipmentConfigError(f'missing nf_coef input for amplifier: {type_variety} in equipment config')
             nf_def = Model_openroadm(nf_coef)
+        elif type_def in ('openroadm_preamp', 'openroadm_booster'):
+            pass  # no extra parameters needed
         elif type_def == 'dual_stage':
             try:  # nf_ram and gain_ram are expected for a hybrid amp
                 preamp_variety = kwargs.pop('preamp_variety')
