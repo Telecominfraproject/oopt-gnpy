@@ -27,7 +27,9 @@ can be added and existing ones removed. Three different noise models are availab
 3. ``'type_def': 'openroadm'`` models the incremental OSNR contribution as a function of input power.
    It is suitable for inline amplifiers that conform to the OpenROADM specification.
    The input parameters are coefficients of the :ref:`third-degree polynomial<ext-nf-model-polynomial-OSNR-OpenROADM>`.
-4. ``'type_def': 'advanced_model'`` is an advanced model.
+4. ``'type_def': 'openroadm_preamp'`` and ``openroadm_booster`` approximate the :ref:`preamp and booster within an OpenROADM network<ext-nf-model-noise-mask-OpenROADM>`.
+   No extra parameters specific to the NF model are accepted.
+5. ``'type_def': 'advanced_model'`` is an advanced model.
    A detailed JSON configuration file is required (by default `gnpy/example-data/std_medium_gain_advanced_config.json <https://github.com/Telecominfraproject/oopt-gnpy/blob/master/gnpy/example-data/std_medium_gain_advanced_config.json>`_).
    It uses a 3rd order polynomial where NF = f(gain), NF_ripple = f(frequency), gain_ripple = f(frequency), N-array dgt = f(frequency).
    Compared to the previous models, NF ripple and gain ripple are modelled.

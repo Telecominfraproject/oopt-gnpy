@@ -52,6 +52,21 @@ The amplifier performance is evaluated via its incremental OSNR, which is a func
 
     \text{OSNR}_\text{inc}(P_\text{in}) = \text{a}P_\text{in}^3 + \text{b}P_\text{in}^2 + \text{c}P_\text{in} + \text{d}
 
+.. _ext-nf-model-noise-mask-OpenROADM:
+
+Noise mask (OpenROADM-style for combined preamp and booster)
+************************************************************
+
+Unlike GNPy which simluates the preamplifier and the booster separately as two amplifiers for best accuracy, the OpenROADM specification mandates a certain performance level for a combination of these two amplifiers.
+For the express path, the effective noise mask comprises the preamplifier and the booster.
+When terminating a channel, the same effective noise mask is mandated for a combination of the preamplifier and the drop stage.
+
+GNPy emulates this specification via two special NF models:
+
+- The ``openroadm_preamp`` NF model for preamplifiers.
+  This NF model provides all of the linear impairments to the signal, including those which are incured by the booster in a real network.
+- The ``openroadm_booster`` NF model is a special "zero noise" faux amplifier in place of the booster.
+
 .. _ext-nf-model-min-max-NF:
 
 Min-max NF
