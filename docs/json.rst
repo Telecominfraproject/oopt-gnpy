@@ -61,35 +61,43 @@ Fiber
 
 The fiber library currently describes SSMF and NZDF but additional fiber types can be entered by the user following the same model:
 
-+----------------------+-----------+------------------------------------------+
-| field                | type      | description                              |
-+======================+===========+==========================================+
-| ``type_variety``     | (string)  | a unique name to ID the fiber in the     |
-|                      |           | JSON or Excel template topology input    |
-|                      |           | file                                     |
-+----------------------+-----------+------------------------------------------+
-| ``dispersion``       | (number)  | In :math:`s \times m^{-1} \times m^{-1}`.|
-+----------------------+-----------+------------------------------------------+
-| ``dispersion_slope`` | (number)  | In :math:`s \times m^{-1} \times m^{-1}  |
-|                      |           | \times m^{-1}`                           |
-+----------------------+-----------+------------------------------------------+
-| ``effective_area``   | (number)  | Effective area of the fiber (not just    |
-|                      |           | the MFD circle). This is the             |
-|                      |           | :math:`A_{eff}`, see e.g., the           |
-|                      |           | `Corning whitepaper on MFD/EA`_.         |
-|                      |           | Specified in :math:`m^{2}`.              |
-+----------------------+-----------+------------------------------------------+
-| ``gamma``            | (number)  | Coefficient :math:`\gamma = 2\pi\times   |
-|                      |           | n^2/(\lambda*A_{eff})`.                  |
-|                      |           | If not provided, this will be derived    |
-|                      |           | from the ``effective_area``              |
-|                      |           | :math:`A_{eff}`.                         |
-|                      |           | In :math:`w^{-1} \times m^{-1}`.         |
-+----------------------+-----------+------------------------------------------+
-| ``pmd_coef``         | (number)  | Polarization mode dispersion (PMD)       |
-|                      |           | coefficient. In                          |
-|                      |           | :math:`s\times\sqrt{m}^{-1}`.            |
-+----------------------+-----------+------------------------------------------+
++----------------------------+-----------+------------------------------------------+
+| field                      | type      | description                              |
++============================+===========+==========================================+
+| ``type_variety``           | (string)  | a unique name to ID the fiber in the     |
+|                            |           | JSON or Excel template topology input    |
+|                            |           | file                                     |
++----------------------------+-----------+------------------------------------------+
+| ``dispersion``             | (number)  | In :math:`s \times m^{-1} \times m^{-1}`.|
++----------------------------+-----------+------------------------------------------+
+| ``dispersion_slope``       | (number)  | In :math:`s \times m^{-1} \times m^{-1}  |
+|                            |           | \times m^{-1}`                           |
++----------------------------+-----------+------------------------------------------+
+| ``effective_area``         | (number)  | Effective area of the fiber (not just    |
+|                            |           | the MFD circle). This is the             |
+|                            |           | :math:`A_{eff}`, see e.g., the           |
+|                            |           | `Corning whitepaper on MFD/EA`_.         |
+|                            |           | Specified in :math:`m^{2}`.              |
++----------------------------+-----------+------------------------------------------+
+| ``gamma``                  | (number)  | Coefficient :math:`\gamma = 2\pi\times   |
+|                            |           | n^2/(\lambda*A_{eff})`.                  |
+|                            |           | If not provided, this will be derived    |
+|                            |           | from the ``effective_area``              |
+|                            |           | :math:`A_{eff}`.                         |
+|                            |           | In :math:`w^{-1} \times m^{-1}`.         |
++----------------------------+-----------+------------------------------------------+
+| ``pmd_coef``               | (number)  | Polarization mode dispersion (PMD)       |
+|                            |           | coefficient. In                          |
+|                            |           | :math:`s\times\sqrt{m}^{-1}`.            |
++----------------------------+-----------+------------------------------------------+
+| ``lumped_losses.loss``     | (number)  | Array of lumped loss , expressed in dB,  |
+|                            |           | values along the fiber due to spool      |
+|                            |           | junctions.                               |
++----------------------------+-----------+------------------------------------------+
+| ``lumped_losses.position`` | (number)  | Array of positions, expressed in km,     |
+|                            |           | of the lumped losses along the fiber     |
+|                            |           | due to spool junctions.                  |
++----------------------------+-----------+------------------------------------------+
 
 .. _Corning whitepaper on MFD/EA: https://www.corning.com/microsites/coc/oem/documents/specialty-fiber/WP7071-Mode-Field-Diam-and-Eff-Area.pdf
 
