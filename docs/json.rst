@@ -90,6 +90,20 @@ The fiber library currently describes SSMF and NZDF but additional fiber types c
 |                      |           | coefficient. In                          |
 |                      |           | :math:`s\times\sqrt{m}^{-1}`.            |
 +----------------------+-----------+------------------------------------------+
+| ``lumped_losses``    | (array)   | Each element is a dictionary (e.g.       |
+|                      |           | ``{"position": 10, "loss": 1.5}``)       |
+|                      |           | containing a specific value of lumped    |
+|                      |           | loss along the fiber due to a spool      |
+|                      |           | junction, expressed in dB, and the       |
+|                      |           | corresponding value of position,         |
+|                      |           | expressed in km.                         |
++----------------------+-----------+------------------------------------------+
+
+The lumped losses are used in the computation of the loss/gain profile through the fiber whether the Raman effect is
+considered or not. The computed power profile is used to calculate the related NLI impairment. Using the 'gn_model_analytic' method, the lumped
+losses are taken into account as the contribution of an additional total loss at the end of the fiber span. In
+case the 'ggn_spectrally_separated' is selected, the method uses the computed power profile according to the specified
+z and frequency arrays. The lumped losses are so considered within the NLI power evolution along the fiber.
 
 .. _Corning whitepaper on MFD/EA: https://www.corning.com/microsites/coc/oem/documents/specialty-fiber/WP7071-Mode-Field-Diam-and-Eff-Area.pdf
 
