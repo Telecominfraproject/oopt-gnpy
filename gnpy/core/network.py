@@ -253,20 +253,12 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
         #     node = find_last_node(next_node)
         #     next_node = next(n for n in network.successors(node))
         #     next_node = find_last_node(next_node)
-        if this_node_degree:
-            # find the target power on this degree
-            if node.uid in this_node_degree.keys():
-                prev_dp = this_node_degree[node.uid] - pref_ch_db
-            else:
-                # if no target power is defined on this degree use the global one
-                # if target_pch_out_db  is not an attribute, then the element must be a transceiver
-                prev_dp = getattr(this_node.params, 'target_pch_out_db', 0) - pref_ch_db
-                this_node_degree[node.uid] = prev_dp
-        else:
-            # if no per degree target power is given use the global one
+        if node.uid not in this_node_degree:
+            # if no target power is defined on this degree or no per degree target power is given use the global one
             # if target_pch_out_db  is not an attribute, then the element must be a transceiver
-            prev_dp = getattr(this_node.params, 'target_pch_out_db', 0) - pref_ch_db
-            this_node_degree[node.uid] = prev_dp
+            this_node_degree[node.uid] = getattr(this_node.params, 'target_pch_out_db', 0)
+        # use the target power on this degree
+        prev_dp = this_node_degree[node.uid] - pref_ch_db
         dp = prev_dp
         prev_voa = 0
         voa = 0
