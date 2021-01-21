@@ -1,0 +1,36 @@
+{
+  "uid": "Span1",
+  "params": {
+    "length": 80,
+    "loss_coef": 0.2,
+    "length_units": "km",
+    "att_in": 0,
+    "con_in": 0.5,
+    "con_out": 0.0,
+    "lumped_losses": [
+      {
+        "position": 7,
+        "loss": 0.5
+      }
+    ],
+    "type_variety": "SSMF",
+    "dispersion": 0.0000167,
+    "effective_area": 83e-12,
+    "pmd_coef": 1.265e-15
+  },
+  "operational": {
+    "temperature": 283,
+    "raman_pumps": [
+      {
+        "power": 0.2,
+        "frequency": 205000000000000,
+        "propagation_direction": "counterprop"
+      },
+      {
+        "power": 0.206,
+        "frequency": 201000000000000,
+        "propagation_direction": "counterprop"
+      }
+    ]
+  }
+}

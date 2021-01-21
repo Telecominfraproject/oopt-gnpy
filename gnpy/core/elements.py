@@ -365,6 +365,15 @@ class Fiber(_Node):
         else:
             self._cr_function = lambda frequency: zeros(squeeze(frequency).shape)
 
+        # Lumped losses
+        z_lumped_losses = array([lumped['position'] for lumped in self.params.lumped_losses])  # km
+        lumped_losses_power = array([lumped['loss'] for lumped in self.params.lumped_losses])  # dB
+        if not ((z_lumped_losses > 0) * (z_lumped_losses < 1e-3 * self.params.length)).all():
+            raise NetworkTopologyError("Lumped loss positions must be between 0 and the fiber length "
+                                       f"({1e-3 * self.params.length} km), boundaries excluded.")
+        self.lumped_losses = db2lin(- lumped_losses_power)  # [linear units]
+        self.z_lumped_losses = array(z_lumped_losses) * 1e3  # [m]
+
     @property
     def to_json(self):
         return {'uid': self.uid,
