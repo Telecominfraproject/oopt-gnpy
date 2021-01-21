@@ -302,22 +302,17 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
                 else:
                     raman_allowed = False
 
-                # implementation of restrictions on roadm boosters
-                if isinstance(prev_node, elements.Roadm):
-                    if prev_node.restrictions['booster_variety_list']:
+                if node.params.type_variety == '':
+                    if node.variety_list and isinstance(node.variety_list, list):
+                        restrictions = node.variety_list
+                    elif isinstance(prev_node, elements.Roadm) and prev_node.restrictions['booster_variety_list']:
+                        # implementation of restrictions on roadm boosters
                         restrictions = prev_node.restrictions['booster_variety_list']
-                    else:
-                        restrictions = None
-                elif isinstance(next_node, elements.Roadm):
-                    # implementation of restrictions on roadm preamp
-                    if next_node.restrictions['preamp_variety_list']:
+                    elif isinstance(next_node, elements.Roadm) and next_node.restrictions['preamp_variety_list']:
+                        # implementation of restrictions on roadm preamp
                         restrictions = next_node.restrictions['preamp_variety_list']
                     else:
                         restrictions = None
-                else:
-                    restrictions = None
-
-                if node.params.type_variety == '':
                     edfa_variety, power_reduction = select_edfa(raman_allowed, gain_target, power_target, equipment, node.uid, restrictions)
                     extra_params = equipment['Edfa'][edfa_variety]
                     node.params.update_params(extra_params.__dict__)
