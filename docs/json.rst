@@ -89,6 +89,14 @@ The fiber library currently describes SSMF and NZDF but additional fiber types c
 |                      |           | coefficient. In                          |
 |                      |           | :math:`s\times\sqrt{m}^{-1}`.            |
 +----------------------+-----------+------------------------------------------+
+| ``lumped_losses.loss``     | (number)  | Array of lumped loss , expressed in dB,  |
+|                            |           | values along the fiber due to spool      |
+|                            |           | junctions.                               |
++----------------------------+-----------+------------------------------------------+
+| ``lumped_losses.position`` | (number)  | Array of positions, expressed in km,     |
+|                            |           | of the lumped losses along the fiber     |
+|                            |           | due to spool junctions.                  |
++----------------------------+-----------+------------------------------------------+
 
 .. _Corning whitepaper on MFD/EA: https://www.corning.com/microsites/coc/oem/documents/specialty-fiber/WP7071-Mode-Field-Diam-and-Eff-Area.pdf
 
