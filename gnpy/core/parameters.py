@@ -122,6 +122,8 @@ class FiberParams(Parameters):
                 self._f_loss_ref = 193.5e12  # Hz
             # raman parameters (not compulsory)
             self._raman_efficiency = kwargs['raman_efficiency'] if 'raman_efficiency' in kwargs else None
+            # lumped losses
+            self._lumped_losses = kwargs['lumped_losses'] if 'lumped_losses' in kwargs else None
         except KeyError as e:
             raise ParametersError(f'Fiber configurations json must include {e}. Configuration: {kwargs}')
 
@@ -153,6 +155,10 @@ class FiberParams(Parameters):
     @property
     def con_out(self):
         return self._con_out
+
+    @property
+    def lumped_losses(self):
+        return self._lumped_losses
 
     @con_out.setter
     def con_out(self, con_out):
@@ -206,6 +212,8 @@ class FiberParams(Parameters):
         dictionary = super().asdict()
         dictionary['loss_coef'] = self.loss_coef * 1e3
         dictionary['length_units'] = 'm'
+        if not self.lumped_losses:
+            dictionary.pop('lumped_losses')
         if not self.raman_efficiency:
             dictionary.pop('raman_efficiency')
         return dictionary
