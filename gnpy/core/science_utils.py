@@ -11,7 +11,8 @@ The solvers take as input instances of the spectral information, the fiber and t
 """
 
 from numpy import interp, pi, zeros, shape, where, cos, array, append, ones, exp, arange, sqrt, empty, trapz, arcsinh, \
-    clip, abs, sum, concatenate, flip, outer, inner, transpose, max, format_float_scientific, diag
+    clip, abs, sum, concatenate, flip, outer, inner, transpose, max, format_float_scientific, diag, prod, argwhere, \
+    unique, argsort
 from logging import getLogger
 from scipy.constants import k, h
 from scipy.interpolate import interp1d
@@ -76,9 +77,14 @@ class RamanSolver:
         """
         # z array definition
         z = array([0, fiber.params.length])
+        # Lumped losses array definition
+        if fiber.lumped_losses is not None:
+            lumped_loss_acc = array([prod(fiber.lumped_losses[argwhere(z_i > fiber.z_lumped_losses)]) for z_i in z])
+        else:
+            lumped_loss_acc = ones(z.size)
         frequency = spectral_info.frequency
         alpha = fiber.alpha(frequency)
-        loss_profile = exp(- outer(alpha, z))
+        loss_profile = exp(- outer(alpha, z)) * lumped_loss_acc
         power_profile = outer(spectral_info.signal, ones(z.size)) * loss_profile
         stimulated_raman_scattering = StimulatedRamanScattering(power_profile, loss_profile, frequency, z)
         return stimulated_raman_scattering
@@ -95,6 +101,16 @@ class RamanSolver:
         z_step = sim_params.raman_params.solver_spatial_resolution
         z = append(arange(0, fiber.params.length, z_step), fiber.params.length)
         z_final = append(arange(0, fiber.params.length, z_resolution), fiber.params.length)
+
+        # Lumped losses array definition
+        if fiber.lumped_losses is not None:
+            lumped_losses = concatenate((fiber.lumped_losses, ones(z.size)))
+            z, unique_indices = unique(concatenate((fiber.z_lumped_losses, z)), return_index=True)
+            order = argsort(z)
+            lumped_losses = (lumped_losses[unique_indices])[order]
+            z = z[order]
+        else:
+            lumped_losses = ones(z.size)
 
         if sim_params.raman_params.flag:
             if hasattr(fiber, 'raman_pumps'):
@@ -119,19 +135,20 @@ class RamanSolver:
                     co_cr = fiber.cr(co_frequency)
                     co_alpha = fiber.alpha(co_frequency)
                     co_power_profile = \
-                        RamanSolver.first_order_derivative_solution(co_power, co_alpha, co_cr, z)
+                        RamanSolver.first_order_derivative_solution(co_power, co_alpha, co_cr, z, lumped_losses)
                 # Counter-propagating profile initialization
                 cnt_power_profile = empty([co_frequency.size, z.size])
                 if cnt_frequency.size:
                     cnt_cr = fiber.cr(cnt_frequency)
                     cnt_alpha = fiber.alpha(cnt_frequency)
                     cnt_power_profile = \
-                        flip(RamanSolver.first_order_derivative_solution(cnt_power, cnt_alpha, cnt_cr, z[-1] - flip(z)))
+                        flip(RamanSolver.first_order_derivative_solution(cnt_power, cnt_alpha, cnt_cr,
+                                                                         z[-1] - flip(z), flip(lumped_losses)))
                 # Co-propagating and Counter-propagating Profile Computation
                 if co_frequency.size and cnt_frequency.size:
                     co_power_profile, cnt_power_profile = \
-                        RamanSolver.iterative_algorithm(co_power_profile, cnt_power_profile, co_frequency, cnt_frequency,
-                                                        z, fiber)
+                        RamanSolver.iterative_algorithm(co_power_profile, cnt_power_profile,
+                                                        co_frequency, cnt_frequency, z, fiber, lumped_losses)
                 # Complete Power Profile
                 power_profile = concatenate((co_power_profile, cnt_power_profile), axis=0)
                 # Complete Loss Profile
@@ -146,7 +163,7 @@ class RamanSolver:
                 cr = fiber.cr(spectral_info.frequency)
                 # Power profile
                 power_profile = \
-                    RamanSolver.first_order_derivative_solution(spectral_info.signal, alpha, cr, z)
+                    RamanSolver.first_order_derivative_solution(spectral_info.signal, alpha, cr, z, lumped_losses)
                 # Loss profile
                 loss_profile = power_profile / outer(spectral_info.signal, ones(z.size))
                 frequency = spectral_info.frequency
@@ -181,23 +198,26 @@ class RamanSolver:
         return ase
 
     @staticmethod
-    def first_order_derivative_solution(power_in, alpha, cr, z):
+    def first_order_derivative_solution(power_in, alpha, cr, z, lumped_losses):
         """Solves the Raman first order derivative equation
 
         :param power_in: launch power array
         :param alpha: loss coefficient array
         :param cr: Raman efficiency coefficients matrix
         :param z: z position array
+        :param lumped_losses: concentrated losses array along the fiber span
         :return: power profile matrix
         """
         dz = z[1:] - z[:-1]
         power = outer(power_in, ones(z.size))
         for i in range(1, z.size):
-            power[:, i] = power[:, i - 1] * (1 + (- alpha + sum(cr * power[:, i - 1], 1)) * dz[i - 1])
+            power[:, i] = \
+                power[:, i - 1] * (1 + (- alpha + sum(cr * power[:, i - 1], 1)) * dz[i - 1]) * lumped_losses[i - 1]
         return power
 
     @staticmethod
-    def iterative_algorithm(co_initial_guess_power, cnt_initial_guess_power, co_frequency, cnt_frequency, z, fiber):
+    def iterative_algorithm(co_initial_guess_power, cnt_initial_guess_power, co_frequency, cnt_frequency, z, fiber,
+                            lumped_losses=None):
         """Solves the Raman first order derivative equation in case of both co- and counter-propagating
         frequencies
 
@@ -207,6 +227,7 @@ class RamanSolver:
         :param cnt_frequency: counter-propagationg frequencies
         :param z: z position array
         :param fiber: instance of gnpy.core.elements.Fiber or gnpy.core.elements.RamanFiber
+        :param lumped_losses: concentrated losses array along the fiber span
         :return: co- and counter-propagatng power profile matrix
         """
         logger.debug('  Start iterative algorithm')
@@ -221,21 +242,25 @@ class RamanSolver:
         dz = z[1:] - z[:-1]
         cr = fiber.cr(frequency)
         alpha = fiber.alpha(frequency)
+        lumped_losses = lumped_losses if not (lumped_losses is None) else ones(z.size)
         next_power = array(prev_power)
         while residue > residue_tol and accuracy > accuracy_tol and iteration < num_max_iter:
             iteration += 1
             for i in range(1, z.size):
                 dpdz = - alpha + sum(cr * next_power[:, i - 1], 1)
                 next_power[:co_frequency.size, i] = \
-                    next_power[:co_frequency.size, i - 1] * (1 + dpdz[:co_frequency.size] * dz[i - 1])
+                    next_power[:co_frequency.size, i - 1] * (1 + dpdz[:co_frequency.size] * dz[i - 1]) * \
+                    lumped_losses[i - 1]
             for i in range(1, z.size):
                 dpdz = - alpha + sum(cr * next_power[:, -i], 1)
                 next_power[co_frequency.size:, -i - 1] = \
-                    next_power[co_frequency.size:, -i] * (1 + dpdz[co_frequency.size:] * dz[-i])
+                    next_power[co_frequency.size:, -i] * (1 + dpdz[co_frequency.size:] * dz[-i]) * \
+                    lumped_losses[-i]
 
             dpdz_num = (next_power[:co_frequency.size, 1:] - next_power[:co_frequency.size, :-1]) / dz
             dpdz_exp = next_power[:co_frequency.size, :-1] * \
-                (- outer(alpha, ones(z.size)) + inner(cr, transpose(next_power)))[:co_frequency.size, :-1]
+                (- outer(alpha, ones(z.size)) + inner(cr, transpose(next_power)))[:co_frequency.size, :-1] * \
+                lumped_losses[:-1]
 
             residue = max(abs((next_power - prev_power) / next_power))
             accuracy = max(abs((dpdz_exp - dpdz_num) / dpdz_exp))
