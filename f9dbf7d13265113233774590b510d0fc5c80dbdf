@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69d677b6_5bac877f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-01-22T08:58:05Z",
+      "side": 1,
+      "message": "Thanks a lot!\nI have tested on several cases but not exhaustively, and this looks good to me.\nMybe we should add an automatic test on the behaviour for future changes...",
+      "revId": "f9dbf7d13265113233774590b510d0fc5c80dbdf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
