@@ -1,3 +1,5 @@
+.. _physical-model:
+
 Physical Model used in GNPy
 ===========================
 

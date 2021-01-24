@@ -34,7 +34,9 @@ extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.mathjax',
     'sphinx.ext.githubpages',
     'sphinxcontrib.bibtex',
-    'pbr.sphinxext',]
+    'pbr.sphinxext',
+    'sphinx.ext.graphviz',
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -181,3 +183,5 @@ autodoc_default_options = {
     'private-members': True,
     'show-inheritance': True,
 }
+
+graphviz_output_format = 'svg'
