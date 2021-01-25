@@ -26,6 +26,7 @@ from gnpy.core.utils import lin2db
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 import gnpy.core.ansi_escapes as ansi_escapes
+from gnpy.topology.spectrum_assignment import m_to_freq
 from copy import deepcopy
 from csv import writer
 from math import ceil
@@ -143,13 +144,15 @@ class ResultElement:
 
     uid = property(lambda self: repr(self))
 
-    @property
-    def detailed_path_json(self):
+    def detailed_path_json(self, path_to_json):
         """ a function that builds path object for normal and blocking cases
         """
+        #Converting (N,M) to (freq_start, freq_end) tuple
+        freq_slot = m_to_freq(self.path_request.N, self.path_request.M)
+
         index = 0
         pro_list = []
-        for element in self.computed_path:
+        for element in path_to_json:
             temp = {
                 'path-route-object': {
                     'index': index,
@@ -167,8 +170,8 @@ class ResultElement:
                     'path-route-object': {
                         'index': index,
                         "label-hop": {
-                            "N": self.path_request.N,
-                            "M": self.path_request.M
+                            "freq_start": freq_slot[0],
+                            "freq_end": freq_slot[1]
                         },
                     }
                 }
@@ -231,12 +234,13 @@ class ResultElement:
             path_properties = {
                 'path-metric': path_metric(self.computed_path, self.path_request),
                 'z-a-path-metric': path_metric(self.reversed_computed_path, self.path_request),
-                'path-route-objects': self.detailed_path_json
+                'path-route-objects': self.detailed_path_json(self.computed_path),
+                'reverse_path_route_objects': self.detailed_path_json(self.reversed_computed_path)
             }
         else:
             path_properties = {
                 'path-metric': path_metric(self.computed_path, self.path_request),
-                'path-route-objects': self.detailed_path_json
+                'path-route-objects': self.detailed_path_json(self.computed_path)
             }
         return path_properties
 
