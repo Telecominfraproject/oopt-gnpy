@@ -65,3 +65,5 @@ target/
 
 # MacOS DS_store
 .DS_Store
+
+venv/

@@ -10,6 +10,7 @@ COPY . /opt/application/oopt-gnpy
 WORKDIR /opt/application/oopt-gnpy
 RUN mkdir topology \
     && mkdir equipment \
+    && mkdir autodesign \
     && pip install . \
     && chown -Rc gnpy:gnpy /opt/application/oopt-gnpy /shared/example-data
 USER gnpy

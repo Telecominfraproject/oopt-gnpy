@@ -35,3 +35,11 @@ def get_equipment_dir() -> str:
     @return: the directory of equipments
     """
     return current_app.config['properties'].get('DIRECTORY', 'equipment')
+
+
+def get_autodesign_dir() -> str:
+    """
+    Get the base dir where autodesign are saved
+    @return: the directory of equipments
+    """
+    return current_app.config['properties'].get('DIRECTORY', 'autodesign')
