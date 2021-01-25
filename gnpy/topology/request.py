@@ -222,12 +222,29 @@ class ResultElement:
                     'accumulative-value': round(mean(pth[-1].osnr_ase_01nm), 2)
                 },
                 {
+                    'metric-type': 'Transponder',
+                    'name': req.tsp,
+                    'mode': req.tsp_mode
+                },
+                {
                     'metric-type': 'reference_power',
                     'accumulative-value': req.power
                 },
                 {
                     'metric-type': 'path_bandwidth',
                     'accumulative-value': req.path_bandwidth
+                },
+                {
+                    'metric-type': 'num-of-channels',
+                    'accumulative-value': ceil(req.path_bandwidth / req.bit_rate)
+                },
+                {
+                    'metric-type': 'path-channel-spacing',
+                    'accumulative-value': req.spacing
+                },
+                {
+                    'metric-type': 'bit-rate',
+                    'accumulative-value': req.bit_rate
                 }
             ]
         if self.path_request.bidir:
