@@ -229,13 +229,13 @@ def transmission_main_example(args=None):
     for dp_db in power_range:
         req.power = db2lin(pref_ch_db + dp_db) * 1e-3
         if power_mode:
-            print(f'\nPropagating with input power = {ansi_escapes.cyan}{lin2db(req.power*1e3):.10f} dBm{ansi_escapes.reset}:')
+            print(f'\nPropagating with input power = {ansi_escapes.cyan}{lin2db(req.power*1e3):.2f} dBm{ansi_escapes.reset}:')
         else:
             print(f'\nPropagating in {ansi_escapes.cyan}gain mode{ansi_escapes.reset}: power cannot be set manually')
         infos = propagate(path, req, equipment)
         if len(power_range) == 1:
             for elem in path:
-                print(elem.uid)# TODO I edited this line
+                print(elem)
             if power_mode:
                 print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f} dBm:')
             else:
