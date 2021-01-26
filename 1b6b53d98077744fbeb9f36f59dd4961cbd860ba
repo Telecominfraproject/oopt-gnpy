@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e393eab_6cee45d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-01-26T10:58:57Z",
+      "side": 1,
+      "message": "Here\u0027s how the new docs chapter with an intro to what GNPy works with looks like:\n\nhttps://object-storage.public.mtl1.vexxhost.net/swift/v1/bfd521072e894ebb99e66f72619daa8a/vexxhost-ci_fa2/509453/4/check/tox-docs-f32/fa2720b/docs/concepts.html",
+      "revId": "1b6b53d98077744fbeb9f36f59dd4961cbd860ba",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
