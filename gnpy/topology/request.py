@@ -147,8 +147,6 @@ class ResultElement:
     def detailed_path_json(self, path_to_json):
         """ a function that builds path object for normal and blocking cases
         """
-        #Converting (N,M) to (freq_start, freq_end) tuple
-        freq_slot = m_to_freq(self.path_request.N, self.path_request.M)
 
         index = 0
         pro_list = []
@@ -170,8 +168,8 @@ class ResultElement:
                     'path-route-object': {
                         'index': index,
                         "label-hop": {
-                            "freq_start": freq_slot[0],
-                            "freq_end": freq_slot[1]
+                            "N": self.path_request.N,
+                            "M": self.path_request.M
                         },
                     }
                 }
@@ -204,6 +202,7 @@ class ResultElement:
         def path_metric(pth, req):
             """ creates the metrics dictionary
             """
+            freq_slot = m_to_freq(req.N, req.M)
             return [
                 {
                     'metric-type': 'SNR-bandwidth',
@@ -245,6 +244,11 @@ class ResultElement:
                 {
                     'metric-type': 'bit-rate',
                     'accumulative-value': req.bit_rate
+                },
+                {
+                    'metric-type': 'freq-spectrum',
+                    'freq-start': freq_slot[0],
+                    'freq-end': freq_slot[1]
                 }
             ]
         if self.path_request.bidir:
