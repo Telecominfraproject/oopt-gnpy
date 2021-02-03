@@ -513,11 +513,7 @@ def disjunctions_from_json(json_data):
         of requested disjunctions for this set of requests
     """
     disjunctions_list = []
-    try:
-        temp_test = json_data['synchronization']
-    except KeyError:
-        temp_test = []
-    if temp_test:
+    if 'synchronization' in json_data:
         for snc in json_data['synchronization']:
             params = {}
             params['disjunction_id'] = snc['synchronization-id']
