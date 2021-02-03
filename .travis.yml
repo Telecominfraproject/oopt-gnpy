@@ -6,6 +6,8 @@ python:
   - "3.6"
   - "3.7"
   - "3.8"
+before_install:
+  - apt-get -y install graphviz
 install: skip
 script:
   - pip install --editable .
