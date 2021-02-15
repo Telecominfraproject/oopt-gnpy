@@ -41,7 +41,7 @@ Let's consider a simple triangle topology with three :abbr:`PoPs (Points of Pres
   :layout: neato
   :align: center
 
-  graph {
+  graph "High-level topology with three PoPs" {
     A -- B
     B -- C
     C -- A
@@ -53,7 +53,7 @@ In the real world, each city would probably host a ROADM and some transponders:
   :layout: neato
   :align: center
 
-  graph {
+  graph "Simplified topology with transponders" {
     "ROADM A" [pos="2,2!"]
     "ROADM B" [pos="4,2!"]
     "ROADM C" [pos="3,1!"]
@@ -79,7 +79,7 @@ The amplifiers are, by definition, unidirectional, so the graph becomes quite co
   :layout: neato
   :align: center
 
-  digraph {
+  digraph "Preamps and boosters are explicitly modeled in GNPy" {
     "ROADM A" [pos="2,4!"]
     "ROADM B" [pos="6,4!"]
     "ROADM C" [pos="4,0!"]
@@ -138,7 +138,7 @@ In many regions, the ROADMs are not placed physically close to each other, so th
   :layout: neato
   :align: center
 
-  digraph {
+  digraph "A subset of a real topology with inline amplifiers" {
     "ROADM A" [pos="2,4!"]
     "ROADM B" [pos="6,4!"]
     "ROADM C" [pos="4,-3!"]
