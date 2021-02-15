@@ -81,17 +81,18 @@ When provided, the amplifier characteristic is fine-tuned as a function of carri
 .. _extending-raman:
 
 Raman Amplifiers
-****************
+----------------
 
-While GNPy is fully Raman-aware, under certain scenarios it is useful to be able to run a simulation without an accurate Raman description.
-For these purposes the :ref:`polynomial NF<ext-nf-model-polynomial-NF>` model with :math:`\text{a} = \text{b} = \text{c} = 0`, and :math:`\text{d} = NF` can be used.
-
-A more accurate simulation of Raman amplification requires knowledge of:
+An accurate simulation of Raman amplification requires knowledge of:
 
 - the *power* and *wavelength* of all Raman pumping lasers,
 - the *direction*, whether it is co-propagating or counter-propagating,
 - the Raman efficiency of the fiber,
 - the fiber temperature.
+
+Under certain scenarios it is useful to be able to run a simulation without an accurate Raman description.
+For these purposes, it is possible to approximate a Raman amplifier via a fixed-gain EDFA with the :ref:`polynomial NF<ext-nf-model-polynomial-NF>` model using :math:`\text{a} = \text{b} = \text{c} = 0`, and a desired effective :math:`\text{d} = NF`.
+This is also useful to quickly approximate a hybrid EDFA+Raman amplifier.
 
 .. _extending-transponder:
 
