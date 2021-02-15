@@ -1,3 +1,5 @@
+.. _json:
+
 JSON Input Files
 ================
 
