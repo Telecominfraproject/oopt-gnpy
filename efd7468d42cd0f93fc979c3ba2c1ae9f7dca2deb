@@ -16,6 +16,24 @@
       "message": "It seems the \"JSON Input Files\" section does not describe the topology file (only Equipment library and Global parameters) so I think this cross-reference is currently misleading.",
       "revId": "efd7468d42cd0f93fc979c3ba2c1ae9f7dca2deb",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d669a4c_7b669d90",
+        "filename": "docs/concepts.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-02-16T19:59:56Z",
+      "side": 1,
+      "message": "I\u0027m aware of that, but it\u0027s the closest thing we have so far. When the documentation gets updated, this file will be the place which will contain this information, so I assumed it\u0027s a reasonable thing to add this link.\n\nOr do you think it\u0027s better not to link here at the moment?",
+      "parentUuid": "40dc687e_cb45858a",
+      "revId": "efd7468d42cd0f93fc979c3ba2c1ae9f7dca2deb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
