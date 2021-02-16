@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "998dfa8a_8118750f",
+        "filename": "docs/concepts.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-02-16T14:22:57Z",
+      "side": 1,
+      "message": "Spelling: Simplified",
+      "revId": "9982dff02f9e43290e7073e5f35f065fef2243e6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
