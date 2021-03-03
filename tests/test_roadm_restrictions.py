@@ -13,15 +13,18 @@ checks that restrictions in roadms are correctly applied during autodesign
 from pathlib import Path
 import pytest
 from numpy.testing import assert_allclose
-
+from numpy import ndarray
+from copy import deepcopy
 from gnpy.core.utils import lin2db, automatic_nch
-from gnpy.core.elements import Fused, Roadm, Edfa
+from gnpy.core.elements import Fused, Roadm, Edfa, Transceiver, EdfaOperational, EdfaParams, Fiber
+from gnpy.core.parameters import FiberParams, RoadmParams, FusedParams
 from gnpy.core.network import build_network
 from gnpy.tools.json_io import network_from_json, load_equipment, load_json, Amp
 from gnpy.core.equipment import trx_mode_params
-from gnpy.topology.request import PathRequest, compute_constrained_path, ref_carrier
+from gnpy.topology.request import PathRequest, compute_constrained_path, ref_carrier, propagate
 from gnpy.core.info import create_input_spectral_information
-from gnpy.core.utils import db2lin
+from gnpy.core.utils import db2lin, dbm2watt
+
 
 TEST_DIR = Path(__file__).parent
 EQPT_LIBRARY_NAME = TEST_DIR / 'data/eqpt_config.json'
@@ -218,6 +221,7 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
     power can not be met in this last case.
     '''
     equipment = load_equipment(EQPT_LIBRARY_NAME)
+    equipment['SI']['default'].power_dbm = power_dbm
     json_network = load_json(TEST_DIR / 'data/twohops_roadm_power_test.json')
     prev_node = next(n for n in json_network['elements'] if n['uid'] == 'west edfa in node B to ila2')
     json_network['elements'].remove(prev_node)
@@ -274,12 +278,238 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
                     assert_allclose(el.ref_pch_out_dbm, effective_pch_out_db, rtol=1e-3)
                     # Check that egress power of roadm is equal to target power
                     assert_allclose(power_out_roadm, db2lin(effective_pch_out_db - 30), rtol=1e-3)
-                elif prev_node_type == 'fused':
-                    # fused prev_node does reamplfy power after fiber propagation, so input power
+                    assert_allclose(el.ref_pch_out_dbm, effective_pch_out_db, rtol=1e-3)
+                if prev_node_type == 'fused':
+                    # fused prev_node does not reamplify power after fiber propagation, so input power
                     # to roadm is low.
                     # check that target power correctly reports power_dbm from previous propagation
                     assert_allclose(el.ref_pch_out_dbm, effective_pch_out_db + power_dbm, rtol=1e-3)
                     # Check that egress power of roadm is equalized to the min carrier input power.
+                    assert_allclose(el.ref_pch_out_dbm, effective_pch_out_db + power_dbm, rtol=1e-3)
+                    assert effective_pch_out_db + power_dbm ==\
+                        pytest.approx(lin2db(min_power_in_roadm * 1e3), rel=1e-3)
                     assert_allclose(power_out_roadm, min_power_in_roadm, rtol=1e-3)
         else:
             si = el(si)
+
+
+def create_per_oms_request(network, eqpt, req_power):
+    """Create requests between every adjacent ROADMs + one additional request crossing several ROADMs
+    """
+    params = {
+        'trx_type': '',
+        'trx_mode': '',
+        'bidir': False,
+        'loose_list': ['strict', 'strict'],
+        'format': '',
+        'path_bandwidth': 100e9,
+        'effective_freq_slot': None
+    }
+    trx_params = trx_mode_params(eqpt)
+    params.update(trx_params)
+    trxs = [e for e in network if isinstance(e, Transceiver)]
+    req_list = []
+    req_id = 0
+    for trx in trxs:
+        source = trx.uid
+        roadm = next(n for n in network.successors(trx) if isinstance(n, Roadm))
+        for degree in roadm.per_degree_pch_out_dbm.keys():
+            node = next(n for n in network.nodes() if n.uid == degree)
+            # find next roadm
+            while not isinstance(node, Roadm):
+                node = next(n for n in network.successors(node))
+            next_roadm = node
+            destination = next(n.uid for n in network.successors(next_roadm) if isinstance(n, Transceiver))
+            params['request_id'] = req_id
+            req_id += 1
+            params['source'] = source
+            params['destination'] = destination
+            params['nodes_list'] = [degree, destination]
+            req = PathRequest(**params)
+            req.power = dbm2watt(req_power)
+            carrier = {key: getattr(req, key) for key in ['power', 'baud_rate', 'roll_off', 'spacing']}
+            carrier['label'] = ""
+            carrier['slot_width'] = carrier['spacing']
+            carrier['delta_pdb'] = 0
+            req.initial_spectrum = {(req.f_min + req.spacing * f):
+                                    deepcopy(carrier) for f in  range(1, req.nb_channel + 1)}
+            req_list.append(req)
+    # add one additional request crossing several roadms to have a complete view
+    params['source'] = 'trx Rennes_STA'
+    params['destination'] = 'trx Vannes_KBE'
+    params['nodes_list'] = ['roadm Lannion_CAS', 'trx Vannes_KBE']
+    params['bidir'] = True
+    req = PathRequest(**params)
+    req.power = dbm2watt(req_power)
+    carrier = {key: getattr(req, key) for key in ['power', 'baud_rate', 'roll_off', 'spacing']}
+    carrier['label'] = ""
+    carrier['slot_width'] = carrier['spacing']
+    carrier['delta_pdb'] = 0
+    req.initial_spectrum = {(req.f_min + req.spacing * f): deepcopy(carrier) for f in  range(1, req.nb_channel + 1)}
+    req_list.append(req)
+    return req_list
+
+
+def list_element_attr(element):
+    """Return the list of keys to be checked depending on element type. List only the keys that are not
+    created upon element effective propagation
+    """
+
+    if isinstance(element, Roadm):
+        return ['uid', 'name', 'metadata', 'operational', 'type_variety', 'target_pch_out_dbm',
+                'ref_pch_out_dbm', 'passive', 'restrictions', 'per_degree_pch_out_dbm',
+                'target_psd_out_mWperGHz', 'per_degree_pch_psd']
+        # dynamically created: 'effective_loss',
+    if isinstance(element, RoadmParams):
+        return ['target_pch_out_db', 'target_psd_out_mWperGHz', 'per_degree_pch_out_db', 'per_degree_pch_psd',
+                'add_drop_osnr', 'pmd', 'restrictions']
+    if isinstance(element, Edfa):
+        return ['variety_list', 'uid', 'name', 'params', 'metadata', 'operational',
+                'passive', 'effective_gain', 'delta_p', 'tilt_target', 'out_voa']
+                # TODO this exhaustive test highlighted that type_variety is not correctly updated from EdfaParams to
+                # attributes in preamps
+        # dynamically created only with channel propagation: 'att_in', 'channel_freq', 'effective_pch_out_db'
+        # 'gprofile', 'interpol_dgt', 'interpol_gain_ripple', 'interpol_nf_ripple', 'nch',  'nf', 'pin_db', 'pout_db',
+        # 'target_pch_out_db',
+    if isinstance(element, RoadmParams):
+        return ['target_pch_out_db', 'add_drop_osnr', 'pmd', 'restrictions', 'per_degree_pch_out_db']
+    if isinstance(element, FusedParams):
+        return ['loss']
+    if isinstance(element, EdfaOperational):
+        return ['delta_p', 'gain_target', 'out_voa', 'tilt_target']
+    if isinstance(element, EdfaParams):
+        return ['f_min', 'f_max', 'type_variety', 'type_def', 'gain_flatmax', 'gain_min', 'p_max', 'nf_model',
+                'dual_stage_model', 'nf_fit_coeff', 'nf_ripple', 'dgt', 'gain_ripple', 'out_voa_auto',
+                'allowed_for_design', 'raman']
+    if isinstance(element, Fiber):
+
+        return ['uid', 'name', 'params', 'metadata', 'operational', 'type_variety', 'passive',
+                '_cr_function', 'lumped_losses', 'z_lumped_losses']
+        # dynamically created 'output_total_power', 'pch_out_db'
+    if isinstance(element, FiberParams):
+        return ['_length', '_att_in', '_con_in', '_con_out', '_ref_frequency', '_ref_wavelength',
+                '_dispersion', '_dispersion_slope', '_beta2', '_beta3', '_gamma', '_pmd_coef', '_loss_coef',
+                '_f_loss_ref', '_raman_efficiency', '_lumped_losses']
+    if isinstance(element, Fused):
+        return ['uid', 'name', 'params', 'metadata', 'operational', 'loss', 'passive']
+    if isinstance(element,FusedParams):
+        return ['loss']
+    return ['should never come here']
+
+
+# all initial delta_p are null in topo file, so add random places to change this value
+@pytest.mark.parametrize('delta_p', [[],
+                                     ['east edfa in Lorient_KMA to Vannes_KBE',
+                                      'east edfa in Stbrieuc to Rennes_STA',
+                                      'west edfa in Lannion_CAS to Morlaix',
+                                      'east edfa in a to b',
+                                      'west edfa in b to a']])
+@pytest.mark.parametrize('power_dbm, req_power', [(0, 0), (0, -3), (3, 3), (0, 3), (3, 0),
+                                                  (3, 1), (3,5), (3, 2), (3, 4), (2, 4)])
+def test_compare_design_propagation_settings(power_dbm, req_power, delta_p):
+    """ Check that network design does not change after propagation
+    except for gain in case of power_saturation during design and/or during propagation:
+    - in power mode only:
+        expected behaviour: target power out of roadm does not change
+        so gain of booster should be reduced/augmented by the exact power difference
+        the rest of the amplifier have unchanged gain
+        except if augmentation leads to total_power above amplifier max power
+         ie if amplifier saturates. then first amplifier in OMS is impacted
+         eg
+                                roadm -----booster (pmax 21dBm, 96 channels= 19.82dB)
+        pdesign=0dBm pch= 0dBm,         ^ -20dBm  ^G=20dB, Pch=0dBm, Ptot=19.82dBm
+        pdesign=0dBm pch= -3dBm         ^ -20dBm  ^G=17dB, Pch=-3dBm, Ptot=16.82dBm
+        pdesign=3dBm pch= 3dBm          ^ -20dBm  ^G=23-1.82dB, Pch=1.18dBm, Ptot=21dBm
+            amplifier can not handle 96x3dBm channels, amplifier saturation is considered for the choice
+            of amplifier
+        pdesign=0dBm pch= 3dBm          ^ -20dBm  ^G=23-1.82dB, Pch=1.18dBm, Ptot=21dBm
+            amplifier can not handle 96x3dBm channels, amplifier selection has been done for 0dBm
+            saturation is applied for all amps only during propagation
+        Design applies a saturation verification on amplifiers.
+        This saturation leads to a power reduction to the max power in the amp library, which is also applied on
+        the amp delta_p.
+        This saturation occurs per amplifier and independantly from propagation.
+        After design, upon propagation, the amplifier gain mays change due to different total power used than
+        during design (eg not the smae nb of channels, not the same power per channel).
+        This test also checks all the possible combinations and expected before/after propagation gain differences.
+        it also checks delta_p applied due to saturation during design
+    """
+    eqpt = load_equipment(EQPT_LIBRARY_NAME)
+    eqpt['SI']['default'].power_dbm = power_dbm
+    json_network = load_json(NETWORK_FILE_NAME)
+    for element in json_network['elements']:
+        for name in delta_p:
+            if element['uid'] == name:
+                element['operational']['delta_p'] = 1
+
+    network = network_from_json(json_network, eqpt)
+    # Build the network once using the default power defined in SI in eqpt config
+    p_db = power_dbm
+    p_total_db = p_db + lin2db(automatic_nch(eqpt['SI']['default'].f_min,
+                                             eqpt['SI']['default'].f_max,
+                                             eqpt['SI']['default'].spacing))
+    base_network = deepcopy(network)
+    base_amps = {amp.uid: amp for amp in base_network.nodes() if isinstance(amp, Edfa)}
+    build_network(network, eqpt, p_db, p_total_db)
+    # record network settings before propagating
+    network_copy = deepcopy(network)
+    # propagate on each oms
+    req_list = create_per_oms_request(network, eqpt, req_power)
+    paths = [compute_constrained_path(network, r) for r in req_list]
+    propagated_paths = [propagate(p, r, eqpt) for p, r in zip(paths, req_list)]
+
+    # systematic comparison of elements settings before and after propagation
+    # all amps have 21 dBm max power
+    pch_max = 21 - lin2db(96)
+    for pth in paths:
+        # check all elements except source and destination trx
+        for i, element in enumerate(pth[1:-1]):
+            element_is_first_amp = False
+            # index of previous element in path is i
+            if (isinstance(element, Edfa) and isinstance(pth[i], Roadm)) or element.uid == 'west edfa in d to c':
+                # oms c to d has no booster but one preamp: the power difference is hold there
+                element_is_first_amp = True
+            # find the element with the same id in the network_copy
+            element_copy = next(n for n in network_copy.nodes() if n.uid == element.uid)
+            for key in list_element_attr(element):
+                print(element.uid, key, getattr(element, key), getattr(element_copy, key))
+                if not isinstance(getattr(element, key),
+                                  (EdfaOperational, EdfaParams, FiberParams, RoadmParams, FusedParams)):
+                    if not key == 'effective_gain':
+                        # for all keys, before and after design should be the same except for gain (in power mode)
+                        if isinstance(getattr(element, key), ndarray):
+                            if len(getattr(element, key)) > 0:
+                                assert getattr(element, key) == getattr(element_copy, key)
+                            else:
+                                assert len(getattr(element, key)) == len(getattr(element_copy, key))
+                        else:
+                            assert getattr(element, key) == getattr(element_copy, key)
+                    else:
+                        dp = element.out_voa if element.uid not in delta_p else element.out_voa + 1
+                        if element_is_first_amp:
+                            assert element.effective_gain - element_copy.effective_gain ==\
+                                pytest.approx(min(pch_max, req_power + element.delta_p) -
+                                              min(pch_max, power_dbm + dp), abs=1e-2)
+                            # if target power is above pch_max then gain should be saturated during propagation
+                            assert element.effective_pch_out_db ==\
+                                pytest.approx(min(pch_max, req_power + element.delta_p), abs=1e-2)
+                        else:
+                            assert element.effective_gain - element_copy.effective_gain ==\
+                                pytest.approx(min(pch_max, req_power + element.delta_p) -
+                                              min(pch_max, req_power + previous_deltap) -
+                                              min(pch_max, power_dbm + element.delta_p) +
+                                              min(pch_max, power_dbm + previous_deltap), abs=2e-2)
+                        assert element.delta_p == pytest.approx(min(power_dbm + dp, pch_max) - power_dbm, abs=1e-2)
+
+                        previous_deltap = element.delta_p
+                else:
+                    # for all subkeys, before and after design should be the same
+                    for subkey in list_element_attr(getattr(element, key)):
+                        if isinstance(getattr(getattr(element, key), subkey), list):
+                            assert getattr(getattr(element, key), subkey) == getattr(getattr(element_copy, key), subkey)
+                        elif isinstance(getattr(getattr(element, key), subkey), dict):
+                            for value1, value2 in zip(getattr(getattr(element, key), subkey).values(),
+                                                      getattr(getattr(element_copy, key), subkey).values()):
+                                assert(all(value1==value2))
+                        else:
+                            assert getattr(getattr(element, key), subkey) == getattr(getattr(element_copy, key), subkey)
