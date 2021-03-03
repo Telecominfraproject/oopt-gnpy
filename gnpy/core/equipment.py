@@ -67,7 +67,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             # il faut aussi changer ca ici remplacer par un spectre de refence
             nch = automatic_nch(trx_params['f_min'], trx_params['f_max'], trx_params['spacing'])
             trx_params['nb_channel'] = nch
-            print(f'There are {nch} channels propagating for the design')
+            # print(f'There are {nch} channels propagating for the design')
 
     trx_params['power'] = db2lin(default_si_data.power_dbm) * 1e-3
 
