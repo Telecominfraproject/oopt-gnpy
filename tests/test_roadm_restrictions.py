@@ -539,6 +539,10 @@ def test_roadm_and_booster_target_power_and_gain(power_dbm, req_power, delta_p):
                             previous_amp_was_saturated = True
                             previous_deltap = element.delta_p
                             assert element.delta_p == pytest.approx(min(power_dbm + dp, pch_max) - power_dbm, abs=1e-2)
+                        # if target power is above pch_max then gain should be saturated during propagation
+                        if  element_is_first_amp:
+                            assert element.effective_pch_out_db ==\
+                                pytest.approx(min(pch_max, req_power + element.delta_p), abs=1e-2)
                 else:
                     for subkey in list_element_attr(getattr(element, key)):
                         if isinstance(getattr(element, key), EdfaOperational):
