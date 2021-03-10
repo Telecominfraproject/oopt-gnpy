@@ -563,6 +563,12 @@ def test_booster_target_power_and_gain(power_dbm, req_power, amps_with_adjusted_
                         else:
                             previous_amp_was_saturated = True
                             assert element.delta_p == pytest.approx(min(power_dbm + dp, pch_max) - power_dbm, abs=1e-2)
+                        if element_is_first_amp:
+                            # if req_power + element.delta_p, is above pch_max, then the amp saturates: this means that
+                            # it can not satisfy this target, but limits the channel power to pch_max and its gain will
+                            # not be  the one that was set during design.
+                            assert element.effective_pch_out_db ==\
+                                pytest.approx(min(pch_max, req_power + element.delta_p), abs=1e-2)
                 else:
                     for one_param in list_element_attr(parameters):
                         assert getattr(parameters, one_param) == getattr(parameters_copy, one_param)
