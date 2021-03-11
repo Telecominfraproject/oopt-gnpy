@@ -11,6 +11,8 @@ SRC_ROOT = Path(__file__).parent.parent
 
 @pytest.mark.parametrize("output, handler, args", (
     ('transmission_main_example', transmission_main_example, []),
+    ('transmission_saturated', transmission_main_example,
+     ['tests/data/testTopology_expected.json', 'lannion', 'lorient', '-e', 'tests/data/eqpt_config.json', '--pow', '3']),
     ('path_requests_run', path_requests_run, []),
     ('transmission_main_example__raman', transmission_main_example,
      ['gnpy/example-data/raman_edfa_example_network.json', '--sim', 'gnpy/example-data/sim_params.json', '--show-channels', ]),
