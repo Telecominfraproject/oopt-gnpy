@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2057101a_7564acb4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-03-12T09:15:50Z",
+      "side": 1,
+      "message": "Great, test coverage at different power levels has really been lacking before (I think this is true not just for ROADM tests)!\n\nThere are several issues found by the linter, including an undefined parameter. The test still succeeds so I guess that code is not executed or the parameter is set after and only used in later iterations of the loop. Anyway, can you have a look at the linter output and try to fix the issues?",
+      "revId": "f7ffdfcd5dfdabe7b66b2a7410fb2ed2155e8c02",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
