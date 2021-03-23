@@ -164,7 +164,8 @@ def prev_node_generator(network, node):
     except StopIteration:
         raise NetworkTopologyError(f'Node {node.uid} is not properly connected, please check network topology')
     # yield and re-iterate
-    if isinstance(prev_node, elements.Fused) or isinstance(node, elements.Fused):
+    if not isinstance(prev_node, (elements.Roadm, elements.Edfa, elements.Transceiver))\
+            and not isinstance(node, (elements.Roadm, elements.Edfa, elements.Transceiver)):
         yield prev_node
         yield from prev_node_generator(network, prev_node)
     else:
@@ -179,7 +180,8 @@ def next_node_generator(network, node):
     except StopIteration:
         raise NetworkTopologyError('Node {node.uid} is not properly connected, please check network topology')
     # yield and re-iterate
-    if isinstance(next_node, elements.Fused) or isinstance(node, elements.Fused):
+    if not isinstance(next_node, (elements.Roadm, elements.Edfa, elements.Transceiver))\
+            and not isinstance(node, (elements.Roadm, elements.Edfa, elements.Transceiver)):
         yield next_node
         yield from next_node_generator(network, next_node)
     else:
