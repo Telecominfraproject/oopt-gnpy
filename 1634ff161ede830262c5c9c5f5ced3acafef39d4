@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": false,
       "key": {
         "uuid": "cd24cd5d_686e18b5",
         "filename": "/COMMIT_MSG",
@@ -20,10 +21,10 @@
         "endChar": 41
       },
       "revId": "1634ff161ede830262c5c9c5f5ced3acafef39d4",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": false
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "99bd3fb5_6801ee1c",
         "filename": "/COMMIT_MSG",
@@ -44,10 +45,10 @@
         "endChar": 41
       },
       "revId": "1634ff161ede830262c5c9c5f5ced3acafef39d4",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": false
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "7de25980_7c7e3eea",
         "filename": "/COMMIT_MSG",
@@ -68,10 +69,10 @@
         "endChar": 41
       },
       "revId": "1634ff161ede830262c5c9c5f5ced3acafef39d4",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": false
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "0ee4d4d8_004ab324",
         "filename": "/COMMIT_MSG",
@@ -92,10 +93,10 @@
         "endChar": 41
       },
       "revId": "1634ff161ede830262c5c9c5f5ced3acafef39d4",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": false
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "db7d606c_7ff2c373",
         "filename": "/COMMIT_MSG",
@@ -115,10 +116,10 @@
         "endChar": 71
       },
       "revId": "1634ff161ede830262c5c9c5f5ced3acafef39d4",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": false
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "b97917a6_57175e34",
         "filename": "/COMMIT_MSG",
@@ -139,10 +140,10 @@
         "endChar": 71
       },
       "revId": "1634ff161ede830262c5c9c5f5ced3acafef39d4",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": false
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "232766d0_e7bd064e",
         "filename": "gnpy/core/network.py",
@@ -156,10 +157,10 @@
       "side": 1,
       "message": "This can be just `else`, because a check for that unspecified type_variety is the condition of the first if-branch.",
       "revId": "1634ff161ede830262c5c9c5f5ced3acafef39d4",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "0bfcf6bb_8caa15e9",
         "filename": "gnpy/core/network.py",
@@ -174,8 +175,25 @@
       "message": "OK, will change that",
       "parentUuid": "232766d0_e7bd064e",
       "revId": "1634ff161ede830262c5c9c5f5ced3acafef39d4",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c038622_a260c80a",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-04-06T09:53:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0bfcf6bb_8caa15e9",
+      "revId": "1634ff161ede830262c5c9c5f5ced3acafef39d4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
