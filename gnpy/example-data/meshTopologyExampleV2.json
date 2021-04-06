@@ -635,7 +635,7 @@
         }
       },
       "type": "Edfa",
-      "type_variety": "std_low_gain",
+      "type_variety": "std_medium_gain",
       "operational": {
         "gain_target": null,
         "delta_p": 1.0,
@@ -669,7 +669,7 @@
         }
       },
       "type": "Edfa",
-      "type_variety": "std_low_gain",
+      "type_variety": "std_medium_gain",
       "operational": {
         "gain_target": null,
         "delta_p": 1.0,
@@ -707,7 +707,7 @@
         }
       },
       "type": "Edfa",
-      "type_variety": "std_low_gain",
+      "type_variety": "std_medium_gain",
       "operational": {
         "gain_target": null,
         "delta_p": 1.0,
@@ -726,7 +726,7 @@
         }
       },
       "type": "Edfa",
-      "type_variety": "std_low_gain",
+      "type_variety": "std_medium_gain",
       "operational": {
         "gain_target": null,
         "delta_p": 1.0,
@@ -745,7 +745,7 @@
         }
       },
       "type": "Edfa",
-      "type_variety": "std_low_gain",
+      "type_variety": "std_medium_gain",
       "operational": {
         "gain_target": null,
         "delta_p": 1.0,
@@ -764,7 +764,7 @@
         }
       },
       "type": "Edfa",
-      "type_variety": "std_low_gain",
+      "type_variety": "std_medium_gain",
       "operational": {
         "gain_target": null,
         "delta_p": 1.0,
@@ -783,7 +783,7 @@
         }
       },
       "type": "Edfa",
-      "type_variety": "std_low_gain",
+      "type_variety": "std_medium_gain",
       "operational": {
         "gain_target": null,
         "delta_p": 1.0,
@@ -802,7 +802,7 @@
         }
       },
       "type": "Edfa",
-      "type_variety": "std_low_gain",
+      "type_variety": "std_high_gain",
       "operational": {
         "gain_target": null,
         "delta_p": 1.0,
@@ -897,7 +897,7 @@
         }
       },
       "type": "Edfa",
-      "type_variety": "std_low_gain",
+      "type_variety": "std_high_gain",
       "operational": {
         "gain_target": null,
         "delta_p": 1.0,
@@ -916,7 +916,7 @@
         }
       },
       "type": "Edfa",
-      "type_variety": "std_low_gain",
+      "type_variety": "std_medium_gain",
       "operational": {
         "gain_target": null,
         "delta_p": 1.0,
