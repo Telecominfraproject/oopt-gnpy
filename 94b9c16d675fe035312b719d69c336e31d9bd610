@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1628d6f0_caa1d262",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-04-06T09:54:13Z",
+      "side": 1,
+      "message": "Just FYI, I\u0027ve also changed another linter warning about multiline strings and the \u0027+\u0027 operator.",
+      "revId": "94b9c16d675fe035312b719d69c336e31d9bd610",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
