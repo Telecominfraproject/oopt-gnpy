@@ -5,10 +5,14 @@ Power mode is set to True
      is beyond all available amplifiers capabilities and/or extended_gain_range:
     a power reduction of -1.82 is applied
 
+[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Lannion_CAS to Stbrieuc is above user specified amplifier std_low_gain
+max flat gain: 16dB ; required gain: 23.0dB. Please check amplifier type.
 [1;31;40mWARNING:[0m target gain and power in node west edfa in Rennes_STA to Stbrieuc
      is beyond all available amplifiers capabilities and/or extended_gain_range:
     a power reduction of -1.82 is applied
 
+[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Lannion_CAS to Morlaix is above user specified amplifier std_low_gain
+max flat gain: 16dB ; required gain: 23.0dB. Please check amplifier type.
 [1;31;40mWARNING:[0m target gain and power in node west edfa in Brest_KLA to Morlaix
      is beyond all available amplifiers capabilities and/or extended_gain_range:
     a power reduction of -1.82 is applied
@@ -17,6 +21,8 @@ Power mode is set to True
      is beyond all available amplifiers capabilities and/or extended_gain_range:
     a power reduction of -1.82 is applied
 
+[1;31;40mWARNING[0m: WARNING: effective gain in Node west edfa in Lannion_CAS to Corlay is above user specified amplifier test
+max flat gain: 25dB ; required gain: 29.82dB. Please check amplifier type.
 [1;31;40mWARNING:[0m target gain and power in node east edfa in Lorient_KMA to Vannes_KBE
      is beyond all available amplifiers capabilities and/or extended_gain_range:
     a power reduction of -1.82 is applied
@@ -81,6 +87,8 @@ Power mode is set to True
      is beyond all available amplifiers capabilities and/or extended_gain_range:
     a power reduction of -1.82 is applied
 
+[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Brest_KLA to Quimper is above user specified amplifier std_low_gain
+max flat gain: 16dB ; required gain: 23.0dB. Please check amplifier type.
 [1;31;40mWARNING:[0m target gain and power in node east edfa in Quimper to Lorient_KMA
      is beyond all available amplifiers capabilities and/or extended_gain_range:
     a power reduction of -1.82 is applied
