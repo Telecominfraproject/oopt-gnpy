@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46f92fcf_acff90b2",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-11T15:02:02Z",
+      "side": 0,
+      "message": "why is this one suppressed ?",
+      "revId": "e8969bbfcbc390be4923a9226d65ab05a9b897d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64f15a2a_5d25fe94",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-11T15:02:02Z",
+      "side": 0,
+      "message": "why is this one suppressed ? Ithink Jean-luc used this flag for autodesign",
+      "revId": "e8969bbfcbc390be4923a9226d65ab05a9b897d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}

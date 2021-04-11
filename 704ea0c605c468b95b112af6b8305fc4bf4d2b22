@@ -1,6 +1,40 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4c834d7_3c825c79",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-11T15:02:02Z",
+      "side": 1,
+      "message": "I have rebased my work onto the new version.\nand tested the speed for the tests (inc the new ones)\nnew test pass if accuracy is a bit reduced for some cases, and speed was 15mn before ypur changes and now its 10mn. On master they last about 5mn",
+      "revId": "704ea0c605c468b95b112af6b8305fc4bf4d2b22",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b290770f_8b222573",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-11T15:02:02Z",
+      "side": 1,
+      "message": "why is pumps_loss_coef suppressed ?",
+      "revId": "704ea0c605c468b95b112af6b8305fc4bf4d2b22",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3e5de69_692cb8e9",
