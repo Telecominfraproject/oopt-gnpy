@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "24c70648_3d5529ae",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-04-12T20:46:47Z",
+      "side": 0,
+      "message": "I remove this property because it was unused in the entire project and I thought that it can create some confusion with the following property loss. Of course, it can be restored.",
+      "parentUuid": "46f92fcf_acff90b2",
+      "revId": "e8969bbfcbc390be4923a9226d65ab05a9b897d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "64f15a2a_5d25fe94",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 5
@@ -31,6 +49,24 @@
       "writtenOn": "2021-04-11T15:02:02Z",
       "side": 0,
       "message": "why is this one suppressed ? Ithink Jean-luc used this flag for autodesign",
+      "revId": "e8969bbfcbc390be4923a9226d65ab05a9b897d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d89d5b25_00659ca2",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-04-12T20:46:47Z",
+      "side": 0,
+      "message": "This property has not been suppressed. Its definition has been moved in the constructor of the class Fiber.",
+      "parentUuid": "64f15a2a_5d25fe94",
       "revId": "e8969bbfcbc390be4923a9226d65ab05a9b897d2",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }

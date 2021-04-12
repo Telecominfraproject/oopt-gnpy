@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "accccaaa_6f175436",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-04-12T20:46:47Z",
+      "side": 1,
+      "message": "I suppressed it by mistake. I will restore it in the next push.",
+      "parentUuid": "b290770f_8b222573",
+      "revId": "704ea0c605c468b95b112af6b8305fc4bf4d2b22",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3e5de69_692cb8e9",
         "filename": "tests/invocation/transmission_main_example__raman",
         "patchSetId": 5
@@ -48,6 +66,24 @@
       "writtenOn": "2021-04-11T13:25:25Z",
       "side": 1,
       "message": "figures have changes: is this because of the speed up ?",
+      "revId": "704ea0c605c468b95b112af6b8305fc4bf4d2b22",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92920363_18e92f89",
+        "filename": "tests/invocation/transmission_main_example__raman",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-04-12T20:46:47Z",
+      "side": 1,
+      "message": "Before, the solution of the Raman profile were calculated using an internal function of scipy that solve ordinary differential equations.\nIn this patch, along with other changes, we have substituted the Raman profile solver with an explicit solution of the first order differential equation. This method is faster and can be more accurate.\nThis affects directly all the powers and, in the end, the figures in the comment.",
+      "parentUuid": "f3e5de69_692cb8e9",
       "revId": "704ea0c605c468b95b112af6b8305fc4bf4d2b22",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
