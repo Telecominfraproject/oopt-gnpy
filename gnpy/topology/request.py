@@ -35,7 +35,7 @@ LOGGER = getLogger(__name__)
 RequestParams = namedtuple('RequestParams', 'request_id source destination bidir trx_type' +
                            ' trx_mode nodes_list loose_list spacing power nb_channel f_min' +
                            ' f_max format baud_rate OSNR bit_rate roll_off tx_osnr' +
-                           ' min_spacing cost path_bandwidth effective_freq_slot')
+                           ' min_spacing cost path_bandwidth effective_freq_slot blocking_reason')
 DisjunctionParams = namedtuple('DisjunctionParams', 'disjunction_id relaxable link' +
                                '_diverse node_diverse disjunctions_req')
 
@@ -71,6 +71,8 @@ class PathRequest:
         if params.effective_freq_slot is not None:
             self.N = params.effective_freq_slot['N']
             self.M = params.effective_freq_slot['M']
+        if params.blocking_reason is not None:
+            self.blocking_reason = params.blocking_reason
 
     def __str__(self):
         return '\n\t'.join([f'{type(self).__name__} {self.request_id}',
@@ -130,7 +132,7 @@ class Disjunction:
 
 BLOCKING_NOPATH = ['NO_PATH', 'NO_PATH_WITH_CONSTRAINT',
                    'NO_FEASIBLE_BAUDRATE_WITH_SPACING',
-                   'NO_COMPUTED_SNR']
+                   'NO_COMPUTED_SNR', 'MODE_BAUDRATE_NOT_CONSISTENT_WITH_SPACING']
 BLOCKING_NOMODE = ['NO_FEASIBLE_MODE', 'MODE_NOT_FEASIBLE']
 BLOCKING_NOSPECTRUM = 'NO_SPECTRUM'
 

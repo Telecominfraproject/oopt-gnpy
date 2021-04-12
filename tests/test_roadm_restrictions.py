@@ -245,6 +245,7 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db):
     params['format'] = ''
     params['path_bandwidth'] = 100e9
     params['effective_freq_slot'] = None
+    params['blocking_reason'] = None
     trx_params = trx_mode_params(equipment)
     params.update(trx_params)
     req = PathRequest(**params)

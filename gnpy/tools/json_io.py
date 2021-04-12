@@ -483,8 +483,7 @@ def requests_from_json(json_data, equipment):
             params['effective_freq_slot'] = req['path-constraints']['te-bandwidth']['effective-freq-slot'][0]
         else:
             params['effective_freq_slot'] = None
-        _check_one_request(params, f_max_from_si)
-
+        params['blocking_reason'] = _check_one_request(params, f_max_from_si)
         try:
             params['path_bandwidth'] = req['path-constraints']['te-bandwidth']['path_bandwidth']
         except KeyError:
@@ -506,7 +505,7 @@ def _check_one_request(params, f_max_from_si):
                   f'{params["min_spacing"]*1e-9}GHz.\nComputation stopped'
             print(msg)
             _logger.critical(msg)
-            raise ServiceError(msg)
+            return 'MODE_BAUDRATE_NOT_CONSISTENT_WITH_SPACING'
         if f_max > f_max_from_si:
             msg = f'''Requested channel number {params["nb_channel"]}, baud rate {params["baud_rate"]} GHz
             and requested spacing {params["spacing"]*1e-9}GHz is not consistent with frequency range
@@ -514,6 +513,7 @@ def _check_one_request(params, f_max_from_si):
             max recommanded nb of channels is {max_recommanded_nb_channels}.'''
             _logger.critical(msg)
             raise ServiceError(msg)
+    return None
 
 
 def disjunctions_from_json(json_data):
