@@ -1133,9 +1133,8 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
 
             # reversed path is needed for correct spectrum assignment
             reversed_path = find_reversed_path(pathlist[i])
-            if pathreq.bidir:
-                # only propagate if bidir is true, but needs the reversed path anyway for
-                # correct spectrum assignment
+            if pathreq.bidir and pathreq.baud_rate is not None:
+                # Both directions requested, and a feasible mode was found
                 rev_p = deepcopy(reversed_path)
 
                 print(f'\n\tPropagating Z to A direction {pathreq.destination} to {pathreq.source}')
