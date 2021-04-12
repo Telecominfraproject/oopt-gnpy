@@ -139,7 +139,7 @@ You can run it through command line or Docker.
 
 .. code-block:: shell-session
 
-    $ docker run -p 8080:8080 -it emmanuelledelfour/gnpy-experimental:candi-1.0 gnpy-rest
+    $ docker run -p 8080:8080 -it emmanuelledelfour/gnpy-experimental:candi-1.1 gnpy-rest
 
 When starting the api server will aks for an encryption/decryption key. This key i used to encrypt equipment file when using /api/v1/equipments endpoint.
 This key is a Fernet key and can be generated this way:
