@@ -1133,7 +1133,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
 
             # reversed path is needed for correct spectrum assignment
             reversed_path = find_reversed_path(pathlist[i])
-            if pathreq.bidir:
+            if pathreq.bidir and pathreq.baud_rate is not None:
                 # only propagate if bidir is true, but needs the reversed path anyway for
                 # correct spectrum assignment
                 rev_p = deepcopy(reversed_path)
