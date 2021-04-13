@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e35da77c_24eac44d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-04-13T09:49:34Z",
+      "side": 1,
+      "message": "I would have preferred to have an explicit test for this, but hey, it\u0027s an improvement.",
+      "revId": "bf7b2bebf9754b2630a88a4c838df76c6e187f0a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
