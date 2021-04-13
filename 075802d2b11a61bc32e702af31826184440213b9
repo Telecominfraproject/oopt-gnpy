@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0857b4a7_b485f4b7",
+        "filename": "tests/invocation/transmission_saturated",
+        "patchSetId": 2
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-04-13T09:43:27Z",
+      "side": 1,
+      "message": "Is this intentional? I see that it improves coverage a wee bit, but I think it\u0027s better to have the test code \"more specific\" if that makes sense.",
+      "range": {
+        "startLine": 324,
+        "startChar": 0,
+        "endLine": 326,
+        "endChar": 66
+      },
+      "revId": "075802d2b11a61bc32e702af31826184440213b9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
