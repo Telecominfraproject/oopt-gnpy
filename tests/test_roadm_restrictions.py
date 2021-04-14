@@ -12,6 +12,8 @@ checks that restrictions in roadms are correctly applied during autodesign
 
 from pathlib import Path
 import pytest
+from numpy.testing import assert_allclose
+
 from gnpy.core.utils import lin2db, automatic_nch
 from gnpy.core.elements import Fused, Roadm, Edfa
 from gnpy.core.network import build_network
@@ -254,35 +256,23 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
         req.power, req.spacing)
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
-            carriers_power_in_roadm = min([c.power.signal + c.power.nli + c.power.ase for c in si.carriers])
+            min_power_in_roadm = min(si.signal + si.ase + si.nli)
             si = el(si, degree=path[i + 1].uid)
+            power_out_roadm = si.signal + si.ase + si.nli
             if el.uid == 'roadm node B':
-                print('input', carriers_power_in_roadm)
-                # if previous was an EDFA, power level at ROADM input is enough for the ROADM to apply its
-                # target power (as specified in equipment ie -20 dBm)
-                # if it is a Fused, the input power to the ROADM is smaller than the target power, and the
-                # ROADM cannot apply this target. In this case, it is assumed that the ROADM has 0 dB loss
-                # so the output power will be the same as the input power, which for this particular case
-                # corresponds to -22dBm + power_dbm
-                # next step (for ROADM modelling) will be to apply a minimum loss for ROADMs !
+                print('input', min_power_in_roadm)
                 if prev_node_type == 'edfa':
-                    assert el.effective_pch_out_db == effective_pch_out_db
-                if prev_node_type == 'fused':
-                    # then output power == input_power == effective_pch_out_db + power_dbm
-                    assert effective_pch_out_db + power_dbm == \
-                        pytest.approx(lin2db(carriers_power_in_roadm * 1e3), rel=1e-3)
-                    assert el.effective_pch_out_db == effective_pch_out_db + power_dbm
-                for carrier in si.carriers:
-                    print(carrier.power.signal + carrier.power.nli + carrier.power.ase)
-                    power = carrier.power.signal + carrier.power.nli + carrier.power.ase
-                    if prev_node_type == 'edfa':
-                        # edfa prev_node sets input power to roadm to a high enough value:
-                        # Check that egress power of roadm is equal to target power
-                        assert power == pytest.approx(db2lin(effective_pch_out_db - 30), rel=1e-3)
-                    elif prev_node_type == 'fused':
-                        # fused prev_node does reamplfy power after fiber propagation, so input power
-                        # to roadm is low.
-                        # Check that egress power of roadm is equalized to the min carrier input power.
-                        assert power == pytest.approx(carriers_power_in_roadm, rel=1e-3)
+                    # edfa prev_node sets input power to roadm to a high enough value:
+                    # check that target power is correctly set in the ROADM
+                    assert_allclose(el.pch_out_db, effective_pch_out_db, rtol=1e-3)
+                    # Check that egress power of roadm is equal to target power
+                    assert_allclose(power_out_roadm, db2lin(effective_pch_out_db - 30), rtol=1e-3)
+                elif prev_node_type == 'fused':
+                    # fused prev_node does reamplfy power after fiber propagation, so input power
+                    # to roadm is low.
+                    # check that target power correctly reports power_dbm from previous propagation
+                    assert_allclose(el.pch_out_db, effective_pch_out_db + power_dbm, rtol=1e-3)
+                    # Check that egress power of roadm is equalized to the min carrier input power.
+                    assert_allclose(power_out_roadm, min_power_in_roadm, rtol=1e-3)
         else:
             si = el(si)
