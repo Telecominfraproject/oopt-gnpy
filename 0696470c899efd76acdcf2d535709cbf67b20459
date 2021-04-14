@@ -16,6 +16,41 @@
       "message": "This fixes a bug (BLOCKING_NOSPECTRUM was previously used as list via the `in` operator even though it was a string), but I don\u0027t see the new value being actually used from anywhere. Is that intentional?",
       "revId": "0696470c899efd76acdcf2d535709cbf67b20459",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ac47051_893b9ea9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-14T06:29:27Z",
+      "side": 1,
+      "message": "Thanks for reviewing !",
+      "revId": "0696470c899efd76acdcf2d535709cbf67b20459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6d67125_5bfa27b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-14T06:29:27Z",
+      "side": 1,
+      "message": "it is used in the next change https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/514242/1\nand laters.",
+      "parentUuid": "cd5a39ef_cda2e803",
+      "revId": "0696470c899efd76acdcf2d535709cbf67b20459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
