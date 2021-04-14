@@ -12,6 +12,8 @@ checks that restrictions in roadms are correctly applied during autodesign
 
 from pathlib import Path
 import pytest
+from numpy.testing import assert_allclose
+
 from gnpy.core.utils import lin2db, automatic_nch
 from gnpy.core.elements import Fused, Roadm, Edfa
 from gnpy.core.network import build_network
@@ -254,23 +256,21 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db):
         req.power, req.spacing)
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
-            carriers_power_in_roadm = min([c.power.signal + c.power.nli + c.power.ase for c in si.carriers])
+            min_power_in_roadm = min(si.signal + si.ase + si.nli)
             si = el(si, degree=path[i+1].uid)
+            power_out_roadm = si.signal + si.ase + si.nli
             if el.uid == 'roadm node B':
-                print('input', carriers_power_in_roadm)
-                assert el.effective_pch_out_db == effective_pch_out_db
-                for carrier in si.carriers:
-                    print(carrier.power.signal + carrier.power.nli + carrier.power.ase)
-                    power = carrier.power.signal + carrier.power.nli + carrier.power.ase
-                    if prev_node_type == 'edfa':
-                        # edfa prev_node sets input power to roadm to a high enough value:
-                        # Check that egress power of roadm is equal to target power
-                        assert power == pytest.approx(db2lin(effective_pch_out_db - 30), rel=1e-3)
-                    elif prev_node_type == 'fused':
-                        # fused prev_node does reamplfy power after fiber propagation, so input power
-                        # to roadm is low.
-                        # Check that egress power of roadm is equalized to the min carrier input power.
-                        assert power == pytest.approx(carriers_power_in_roadm, rel=1e-3)
+                print('input', min_power_in_roadm)
+                assert_allclose(el.pch_out_db, effective_pch_out_db, rtol=1e-3)
+                if prev_node_type == 'edfa':
+                    # edfa prev_node sets input power to roadm to a high enough value:
+                    # Check that egress power of roadm is equal to target power
+                    assert_allclose(power_out_roadm, db2lin(effective_pch_out_db - 30), rtol=1e-3)
+                elif prev_node_type == 'fused':
+                    # fused prev_node does reamplfy power after fiber propagation, so input power
+                    # to roadm is low.
+                    # Check that egress power of roadm is equalized to the min carrier input power.
+                    assert_allclose(power_out_roadm, min_power_in_roadm, rtol=1e-3)
         else:
             si = el(si)
 
