@@ -98,6 +98,11 @@ class RoadmParams(Parameters):
             raise ParametersError(f'ROADM configurations json must include {e}. Configuration: {kwargs}')
 
 
+class FusedParams(Parameters):
+    def __init__(self, **kwargs):
+        self.loss = kwargs['loss'] if 'loss' in kwargs else 1
+
+
 # SSMF Raman coefficient profile normalized with respect to the effective area (Cr * A_eff)
 CR_NORM = array([
     0., 7.802e-16, 2.4236e-15, 4.0504e-15, 5.6606e-15, 6.8973e-15, 7.802e-15, 8.4162e-15, 8.8727e-15, 9.2877e-15,
