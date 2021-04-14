@@ -20,8 +20,8 @@ unique identifier and a printable name, and provide the :py:meth:`__call__` meth
 instance as a result.
 """
 
-from numpy import abs, array, divide, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, exp,\
-    asarray, full, squeeze, zeros, append, flip, outer
+from numpy import abs, array, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, exp, asarray, full,\
+    squeeze, zeros, append, flip, outer
 from scipy.constants import h, c
 from scipy.interpolate import interp1d
 from collections import namedtuple
@@ -87,28 +87,23 @@ class Transceiver(_Node):
     def _calc_cd(self, spectral_info):
         """ Updates the Transceiver property with the CD of the received channels. CD in ps/nm.
         """
-        self.chromatic_dispersion = [carrier.chromatic_dispersion * 1e3 for carrier in spectral_info.carriers]
+        self.chromatic_dispersion = spectral_info.chromatic_dispersion * 1e3
 
     def _calc_pmd(self, spectral_info):
         """Updates the Transceiver property with the PMD of the received channels. PMD in ps.
         """
-        self.pmd = [carrier.pmd*1e12 for carrier in spectral_info.carriers]
+        self.pmd = spectral_info.pmd * 1e12
 
     def _calc_snr(self, spectral_info):
         with errstate(divide='ignore'):
-            self.baud_rate = [c.baud_rate for c in spectral_info.carriers]
-            ratio_01nm = [lin2db(12.5e9 / b_rate) for b_rate in self.baud_rate]
+            self.baud_rate = spectral_info.baud_rate
+            ratio_01nm = lin2db(12.5e9 / self.baud_rate)
             # set raw values to record original calculation, before update_snr()
-            self.raw_osnr_ase = [lin2db(divide(c.power.signal, c.power.ase))
-                                 for c in spectral_info.carriers]
-            self.raw_osnr_ase_01nm = [ase - ratio for ase, ratio
-                                      in zip(self.raw_osnr_ase, ratio_01nm)]
-            self.raw_osnr_nli = [lin2db(divide(c.power.signal, c.power.nli))
-                                 for c in spectral_info.carriers]
-            self.raw_snr = [lin2db(divide(c.power.signal, c.power.nli + c.power.ase))
-                            for c in spectral_info.carriers]
-            self.raw_snr_01nm = [snr - ratio for snr, ratio
-                                 in zip(self.raw_snr, ratio_01nm)]
+            self.raw_osnr_ase = lin2db(spectral_info.signal / spectral_info.ase)
+            self.raw_osnr_ase_01nm = self.raw_osnr_ase - ratio_01nm
+            self.raw_osnr_nli = lin2db(spectral_info.signal / spectral_info.nli)
+            self.raw_snr = lin2db(spectral_info.signal / (spectral_info.ase + spectral_info.nli))
+            self.raw_snr_01nm = self.raw_snr - ratio_01nm
 
             self.osnr_ase = self.raw_osnr_ase
             self.osnr_ase_01nm = self.raw_osnr_ase_01nm
@@ -128,14 +123,10 @@ class Transceiver(_Node):
         for s in args:
             snr_added += db2lin(-s)
         snr_added = -lin2db(snr_added)
-        self.osnr_ase = list(map(lambda x, y: snr_sum(x, y, snr_added),
-                                 self.raw_osnr_ase, self.baud_rate))
-        self.snr = list(map(lambda x, y: snr_sum(x, y, snr_added),
-                            self.raw_snr, self.baud_rate))
-        self.osnr_ase_01nm = list(map(lambda x: snr_sum(x, 12.5e9, snr_added),
-                                      self.raw_osnr_ase_01nm))
-        self.snr_01nm = list(map(lambda x: snr_sum(x, 12.5e9, snr_added),
-                                 self.raw_snr_01nm))
+        self.osnr_ase = snr_sum(self.raw_osnr_ase, self.baud_rate, snr_added)
+        self.snr = snr_sum(self.raw_snr, self.baud_rate, snr_added)
+        self.osnr_ase_01nm = snr_sum(self.raw_osnr_ase_01nm, 12.5e9, snr_added)
+        self.snr_01nm = snr_sum(self.raw_snr_01nm, 12.5e9, snr_added)
 
     @property
     def to_json(self):
