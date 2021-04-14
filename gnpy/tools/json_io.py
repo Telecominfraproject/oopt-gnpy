@@ -17,7 +17,7 @@ from gnpy.core import ansi_escapes, elements
 from gnpy.core.equipment import trx_mode_params
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError, ServiceError
 from gnpy.core.science_utils import estimate_nf_model
-from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions, db2lin
+from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions, db2lin, merge_equalization
 from gnpy.topology.request import PathRequest, Disjunction
 from gnpy.tools.convert import xls_to_json_data
 from gnpy.tools.service_sheet import read_service_sheet
@@ -85,7 +85,8 @@ class Span(_JsonThing):
 
 class Roadm(_JsonThing):
     default_values = {
-        'target_pch_out_db': -17,
+        'target_pch_out_db': None,
+        'target_psd_out_mWperGHz': None,     #5.4219e-4,
         'add_drop_osnr': 100,
         'pmd': 0,
         'restrictions': {
@@ -235,7 +236,11 @@ def _spectrum_from_json(json_data):
     previous_part_max_freq = json_data[0]['f_min'] - json_data[0]['spacing'] / 2
     for part in json_data:
         index = 1     # starting freq is exactly f_min + spacing to be consistent with utils.automatic_nch
-        part['power'] = db2lin(part['power_dbm'] - 30.0)     # convert power_dBm into watt
+        if 'power_dbm' in part: 
+            # user defined partition power. if it does not exist, means that we apply default equalization in node
+            part['power'] = db2lin(part['power_dbm'] - 30.0)     # convert power_dBm into watt
+        else:
+            part['power'] = None
         current_part_min_freq = part['f_min'] - part['spacing'] / 2   # supposes that carriers are centered on frequency
         if previous_part_max_freq <= current_part_min_freq:    # check that previous part last channel does not overlap
                                                                # on next part first channel
@@ -392,6 +397,12 @@ def network_from_json(json_data, equipment):
         elif variety in equipment[typ]:
             extra_params = equipment[typ][variety]
             temp = el_config.setdefault('params', {})
+            if typ == 'Roadm':
+                # if equalisatoion is not define in the element config, then rretrive the general one from SI
+                # else use the one from the element config. only one type of equalisation is allowed
+                extra_params = merge_equalization(temp, extra_params)
+                if not extra_params:
+                    raise ConfigurationError('roadm contains both per channelpower and psd. please choose only one', el_config['uid'])
             temp = merge_amplifier_restrictions(temp, extra_params.__dict__)
             el_config['params'] = temp
             el_config['type_variety'] = variety

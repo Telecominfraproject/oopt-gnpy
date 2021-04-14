@@ -11,6 +11,7 @@ This module contains utility functions that are used with gnpy.
 from csv import writer
 from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and
 from scipy import constants
+from copy import deepcopy
 
 from gnpy.core.exceptions import ConfigurationError
 
@@ -106,6 +107,41 @@ def db2lin(value):
     return 10**(value / 10)
 
 
+def watt2dbm(value):
+    """ Convert watt units to dbm
+
+    >>> round(watt2dbm(0.001), 1)
+    0.0
+    >>> round(watt2dbm(0.02), 1)
+    13.0
+    """
+    return lin2db(value * 1e3)
+
+
+def dbm2watt(value):
+    """ Convert dbm units to watt
+    >>> round(dbm2watt(0), 4)
+    0.001
+    >>> round(dbm2watt(-3), 4)
+    0.0005
+    >>> round(dbm2watt(13), 4)
+    0.02
+    """
+    return db2lin(value) * 1e-3
+
+
+def psd2powerdbm(psd_mWperGHz, baudrate_baud, roll_off):
+    """ computes power in dbm based on baudrate in bauds, roll-of and psd in mw/GHz
+    """
+    return watt2dbm(baudrate_baud * (1 + roll_off) * psd_mWperGHz * 1e-12)
+
+
+def powerdbm2psdmwperghz(power_dbm, baudrate_baud, roll_off):
+    """ computes power in dbm based on baudrate in bauds, roll-of and psd in mw/GHz
+    """
+    return dbm2watt(power_dbm) * 1e3 / (baudrate_baud * (1 + roll_off))
+
+
 def round2float(number, step):
     step = round(step, 1)
     if step >= 0.01:
@@ -197,6 +233,31 @@ def rrc(ffs, baud_rate, alpha):
     p_inds = where(logical_and(abs(ffs) > 0, abs(ffs) < l_lim))
     hf[p_inds] = 1
     return sqrt(hf)
+
+
+def merge_equalization(params, extra_params):
+    """ Updates equalization type
+    if target_pch_out_db in params, then do not add target_psd_out_mWperGHz from extra_params
+    and reversaly. if both exist: raise an error, if non exist add the one in extra_params
+    """
+    extra = deepcopy(extra_params)
+    if 'target_pch_out_db' in params.keys() and params['target_pch_out_db'] is not None and\
+            'target_psd_out_mWperGHz' in params.keys() and params['target_psd_out_mWperGHz'] is not None:
+        return None
+    if 'target_pch_out_db' in params.keys() and params['target_pch_out_db'] is not None:
+        #remove 'target_pch_out_db' from extra_params
+        extra.__dict__.pop('target_psd_out_mWperGHz')
+        return extra
+    if 'target_psd_out_mWperGHz' in params.keys() and params['target_psd_out_mWperGHz'] is not None:
+        extra.__dict__.pop('target_pch_out_db')
+        return extra
+    if extra.target_pch_out_db is not None:
+        extra.__dict__.pop('target_psd_out_mWperGHz')
+        return extra
+    if extra.target_psd_out_mWperGHz is not None:
+        extra.__dict__.pop('target_pch_out_db')
+        return extra
+    return None
 
 
 def merge_amplifier_restrictions(dict1, dict2):
