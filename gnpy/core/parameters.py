@@ -86,6 +86,18 @@ class SimParams(Parameters):
         return self._shared_dict['raman_params']
 
 
+class RoadmParams(Parameters):
+    def __init__(self, **kwargs):
+        try:
+            self.target_pch_out_db = kwargs['target_pch_out_db']
+            self.add_drop_osnr = kwargs['add_drop_osnr']
+            self.pmd = kwargs['pmd']
+            self.restrictions = kwargs['restrictions']
+            self.per_degree_pch_out_db = kwargs['per_degree_pch_out_db'] if 'per_degree_pch_out_db' in kwargs else {}
+        except KeyError as e:
+            raise ParametersError(f'ROADM configurations must include {e}. Configuration: {kwargs}')
+
+
 # SSMF Raman coefficient profile normalized with respect to the effective area (Cr * A_eff)
 CR_NORM = array([
     0., 7.802e-16, 2.4236e-15, 4.0504e-15, 5.6606e-15, 6.8973e-15, 7.802e-15, 8.4162e-15, 8.8727e-15, 9.2877e-15,

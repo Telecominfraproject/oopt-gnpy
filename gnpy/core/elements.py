@@ -27,7 +27,7 @@ from scipy.interpolate import interp1d
 from collections import namedtuple
 
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum
-from gnpy.core.parameters import FiberParams, PumpParams
+from gnpy.core.parameters import RoadmParams, FiberParams, PumpParams
 from gnpy.core.science_utils import NliSolver, RamanSolver
 from gnpy.core.info import SpectralInformation
 from gnpy.core.exceptions import NetworkTopologyError, SpectrumError
@@ -220,17 +220,14 @@ class Transceiver(_Node):
         return spectral_info
 
 
-RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr pmd pdl restrictions per_degree_pch_out_db')
-
-
 class Roadm(_Node):
-    def __init__(self, *args, params, **kwargs):
-        if 'per_degree_pch_out_db' not in params.keys():
-            params['per_degree_pch_out_db'] = {}
+    def __init__(self, *args, params=None, **kwargs):
+        if not params:
+            params = {}
         super().__init__(*args, params=RoadmParams(**params), **kwargs)
+        self.pch_out_db = self.params.target_pch_out_db
         self.loss = 0  # auto-design interest
         self.effective_loss = None
-        self.effective_pch_out_db = self.params.target_pch_out_db
         self.passive = True
         self.restrictions = self.params.restrictions
         self.per_degree_pch_out_db = self.params.per_degree_pch_out_db
@@ -240,7 +237,7 @@ class Roadm(_Node):
         return {'uid': self.uid,
                 'type': type(self).__name__,
                 'params': {
-                    'target_pch_out_db': self.effective_pch_out_db,
+                    'target_pch_out_db': self.pch_out_db,
                     'restrictions': self.restrictions,
                     'per_degree_pch_out_db': self.per_degree_pch_out_db
                     },
@@ -258,9 +255,9 @@ class Roadm(_Node):
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
                           f'  effective loss (dB):  {self.effective_loss:.2f}',
-                          f'  pch out (dBm):        {self.effective_pch_out_db:.2f}'])
+                          f'  pch out (dBm):        {self.pch_out_db:.2f}'])
 
-    def propagate(self, pref, *carriers, degree):
+    def propagate(self, spectral_info, degree):
         # pin_target and loss are read from eqpt_config.json['Roadm']
         # all ingress channels in xpress are set to this power level
         # but add channels are not, so we define an effective loss
@@ -270,29 +267,24 @@ class Roadm(_Node):
         # if the input power is lower than the target one, use the input power instead because
         # a ROADM doesn't amplify, it can only attenuate
         # TODO maybe add a minimum loss for the ROADM
-        per_degree_pch = self.per_degree_pch_out_db[degree] if degree in self.per_degree_pch_out_db.keys() else self.params.target_pch_out_db
-        self.effective_pch_out_db = min(pref.p_spani, per_degree_pch)
-        self.effective_loss = pref.p_spani - self.effective_pch_out_db
-        carriers_power = array([c.power.signal + c.power.nli + c.power.ase for c in carriers])
-        carriers_att = list(map(lambda x: lin2db(x * 1e3) - per_degree_pch, carriers_power))
-        exceeding_att = -min(list(filter(lambda x: x < 0, carriers_att)), default=0)
-        carriers_att = list(map(lambda x: db2lin(x + exceeding_att), carriers_att))
-        for carrier_att, carrier in zip(carriers_att, carriers):
-            pwr = carrier.power
-            pwr = pwr._replace(signal=pwr.signal / carrier_att,
-                               nli=pwr.nli / carrier_att,
-                               ase=pwr.ase / carrier_att)
-            pmd = sqrt(carrier.pmd**2 + self.params.pmd**2)
-            pdl = sqrt(carrier.pdl**2 + self.params.pdl**2)
-            yield carrier._replace(power=pwr, pmd=pmd, pdl=pdl)
+        per_degree_pch = self.per_degree_pch_out_db[degree] \
+            if degree in self.per_degree_pch_out_db else self.pch_out_db
+        self.pch_out_db = min(spectral_info.pref.p_spani, per_degree_pch)
+        self.effective_loss = spectral_info.pref.p_spani - self.pch_out_db
+        input_power = spectral_info.signal + spectral_info.nli + spectral_info.ase
+        min_power = min(lin2db(input_power * 1e3))
+        per_degree_pch = per_degree_pch if per_degree_pch < min_power else min_power
+        delta_power = lin2db(input_power * 1e3) - per_degree_pch
+        spectral_info.apply_attenuation_db(delta_power)
+        spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
 
-    def update_pref(self, pref):
-        return pref._replace(p_span0=pref.p_span0, p_spani=self.effective_pch_out_db)
+    def update_pref(self, spectral_info):
+        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0, p_spani=self.pch_out_db)
 
     def __call__(self, spectral_info, degree):
-        carriers = tuple(self.propagate(spectral_info.pref, *spectral_info.carriers, degree=degree))
-        pref = self.update_pref(spectral_info.pref)
-        return spectral_info._replace(carriers=carriers, pref=pref)
+        self.propagate(spectral_info, degree=degree)
+        self.update_pref(spectral_info)
+        return spectral_info
 
 
 FusedParams = namedtuple('FusedParams', 'loss')
