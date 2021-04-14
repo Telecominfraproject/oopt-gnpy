@@ -186,6 +186,15 @@ class SpectralInformation(object):
         attenuation_lin = 1 / db2lin(attenuation_db)
         self.apply_attenuation_lin(attenuation_lin)
 
+    def apply_gain_lin(self, gain_lin):
+        self.signal *= gain_lin
+        self.nli *= gain_lin
+        self.ase *= gain_lin
+
+    def apply_gain_db(self, gain_db):
+        gain_lin = db2lin(gain_db)
+        self.apply_gain_lin(gain_lin)
+
     def __add__(self, other: SpectralInformation):
         try:
             return SpectralInformation(frequency=append(self.frequency, other.frequency),
