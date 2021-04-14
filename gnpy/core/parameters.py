@@ -268,3 +268,47 @@ class FiberParams(Parameters):
         if not self.raman_efficiency:
             dictionary.pop('raman_efficiency')
         return dictionary
+
+
+class EdfaParams:
+    def __init__(self, **params):
+        self.update_params(params)
+        if params == {}:
+            self.type_variety = ''
+            self.type_def = ''
+            # self.gain_flatmax = 0
+            # self.gain_min = 0
+            # self.p_max = 0
+            # self.nf_model = None
+            # self.nf_fit_coeff = None
+            # self.nf_ripple = None
+            # self.dgt = None
+            # self.gain_ripple = None
+            # self.out_voa_auto = False
+            # self.allowed_for_design = None
+
+    def update_params(self, kwargs):
+        for k, v in kwargs.items():
+            setattr(self, k, self.update_params(**v) if isinstance(v, dict) else v)
+
+
+class EdfaOperational:
+    default_values = {
+        'gain_target': None,
+        'delta_p': None,
+        'out_voa': None,
+        'tilt_target': 0
+    }
+
+    def __init__(self, **operational):
+        self.update_attr(operational)
+
+    def update_attr(self, kwargs):
+        clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
+        for k, v in self.default_values.items():
+            setattr(self, k, clean_kwargs.get(k, v))
+
+    def __repr__(self):
+        return (f'{type(self).__name__}('
+                f'gain_target={self.gain_target!r}, '
+                f'tilt_target={self.tilt_target!r})')
