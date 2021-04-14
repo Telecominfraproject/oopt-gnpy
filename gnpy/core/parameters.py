@@ -95,6 +95,11 @@ class RoadmParams(Parameters):
             raise ParametersError(f'ROADM configurations json must include {e}. Configuration: {kwargs}')
 
 
+class FusedParams(Parameters):
+    def __init__(self, **kwargs):
+        self.loss = kwargs['loss'] if 'loss' in kwargs else 1
+
+
 class FiberParams(Parameters):
     def __init__(self, **kwargs):
         try:
