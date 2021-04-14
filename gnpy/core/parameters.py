@@ -90,6 +90,18 @@ class SimParams(Parameters):
         cls._shared_dict = {'nli_params': NLIParams(), 'raman_params': RamanParams()}
 
 
+class RoadmParams(Parameters):
+    def __init__(self, **kwargs):
+        try:
+            self.target_pch_out_db = kwargs['target_pch_out_db']
+            self.add_drop_osnr = kwargs['add_drop_osnr']
+            self.pmd = kwargs['pmd']
+            self.restrictions = kwargs['restrictions']
+            self.per_degree_pch_out_db = kwargs['per_degree_pch_out_db'] if 'per_degree_pch_out_db' in kwargs else {}
+        except KeyError as e:
+            raise ParametersError(f'ROADM configurations json must include {e}. Configuration: {kwargs}')
+
+
 class FiberParams(Parameters):
     def __init__(self, **kwargs):
         try:
