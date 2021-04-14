@@ -22,7 +22,7 @@ from networkx import (dijkstra_path, NetworkXNoPath,
 from networkx.utils import pairwise
 from numpy import mean
 from gnpy.core.elements import Transceiver, Roadm
-from gnpy.core.utils import lin2db
+from gnpy.core.utils import lin2db, powerdbm2psdmwperghz
 from gnpy.core.info import create_input_spectral_information, use_initial_spectrum
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 import gnpy.core.ansi_escapes as ansi_escapes
@@ -333,7 +333,13 @@ def propagate(path, req, equipment):
     """ propagates signals in each element according to initial spectrum set by user
     """
     if hasattr(req, 'initial_spectrum'):
-        si = use_initial_spectrum(req.initial_spectrum, req.power)
+        # complete powers if they miss in initial spectrum
+        # if power is not in partition, use the SI one + ratio of equalization in ROADM
+        # rajouter un flag, pour ne pas avoir de ref per channel, pour pouvoir appliquer l'egalisation des roadms
+        si = use_initial_spectrum(req.initial_spectrum, req.power,
+            default_psd=powerdbm2psdmwperghz(equipment['SI']['default'].power_dbm,
+                                             equipment['SI']['default'].baud_rate,
+                                             equipment['SI']['default'].roll_off))
     else:
         si = create_input_spectral_information(
             req.f_min, req.f_max, req.roll_off, req.baud_rate,
@@ -377,7 +383,7 @@ def propagate_and_optimize_mode(path, req, equipment):
                 for e in req.initial_spectrum.values():
                     if e['baud_rate'] is None:
                         e['baud_rate'] = this_br
-                        e['roll_off'] = equipment['SI']['default'].roll_off    # TEMPORARY ! need to change the function !
+                        e['roll_off'] = equipment['SI']['default'].roll_off    # TODO TEMPORARY ! need to change the function !
                 spc_info = use_initial_spectrum(req.initial_spectrum, req.power)
             else:
                 spc_info = create_input_spectral_information(req.f_min, req.f_max,
