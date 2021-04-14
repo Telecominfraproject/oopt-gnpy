@@ -27,7 +27,7 @@ from scipy.interpolate import interp1d
 from collections import namedtuple
 
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum
-from gnpy.core.parameters import RoadmParams, FiberParams, PumpParams
+from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams
 from gnpy.core.science_utils import NliSolver, RamanSolver
 from gnpy.core.info import SpectralInformation
 from gnpy.core.exceptions import NetworkTopologyError, SpectrumError
@@ -288,14 +288,10 @@ class Roadm(_Node):
         return spectral_info
 
 
-FusedParams = namedtuple('FusedParams', 'loss')
-
-
 class Fused(_Node):
     def __init__(self, *args, params=None, **kwargs):
-        if params is None:
-            # default loss value if not mentioned in loaded network json
-            params = {'loss': 1}
+        if not params:
+            params = {}
         super().__init__(*args, params=FusedParams(**params), **kwargs)
         self.loss = self.params.loss
         self.passive = True
@@ -319,23 +315,17 @@ class Fused(_Node):
         return '\n'.join([f'{type(self).__name__} {self.uid}',
                           f'  loss (dB): {self.loss:.2f}'])
 
-    def propagate(self, *carriers):
-        attenuation = db2lin(self.loss)
+    def propagate(self, spectral_info):
+        spectral_info.apply_attenuation_db(self.loss)
 
-        for carrier in carriers:
-            pwr = carrier.power
-            pwr = pwr._replace(signal=pwr.signal / attenuation,
-                               nli=pwr.nli / attenuation,
-                               ase=pwr.ase / attenuation)
-            yield carrier._replace(power=pwr)
-
-    def update_pref(self, pref):
-        return pref._replace(p_span0=pref.p_span0, p_spani=pref.p_spani - self.loss)
+    def update_pref(self, spectral_info):
+        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
+                                                         p_spani=spectral_info.pref.p_spani - self.loss)
 
     def __call__(self, spectral_info):
-        carriers = tuple(self.propagate(*spectral_info.carriers))
-        pref = self.update_pref(spectral_info.pref)
-        return spectral_info._replace(carriers=carriers, pref=pref)
+        self.propagate(spectral_info)
+        self.update_pref(spectral_info)
+        return spectral_info
 
 
 class Fiber(_Node):
