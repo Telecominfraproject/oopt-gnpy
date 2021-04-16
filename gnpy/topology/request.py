@@ -844,6 +844,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     # step 5 select the first combination that works
     pathreslist_disjoint = {}
     for dis in disjunctions_list:
+        
         if candidates[dis.disjunction_id]:
             for pth in candidates[dis.disjunction_id][0]:
                 if allpaths[id(pth)].req in pathreqlist_disjt:
@@ -854,7 +855,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
                     # remove duplicated candidates
                     candidates = remove_candidate(candidates, allpaths, allpaths[id(pth)].req, pth)
         else:
-            msg = f'No disjoint path found with added constraint'
+            msg = f'No disjoint path found with added constraint for request_id "{dis.disjunction_id}"'
             LOGGER.critical(msg)
             print(f'{msg}\nComputation stopped.')
             # TODO in this case: replay step 5  with the candidate without constraints
