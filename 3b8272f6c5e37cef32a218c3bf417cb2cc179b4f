@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32660f55_ccde0142",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-20T16:35:58Z",
+      "side": 1,
+      "message": "Hello, I have started to work on your commits, and found changes which I would like to revert later on. Could you please check my comments ?\nIf you agree, I will apply this changes when rebasing my work on yours.",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4943154d_8b02aa19",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-20T16:35:58Z",
+      "side": 1,
+      "message": "why did you change the name of this parameter ?\nfor the proposed implem I will use self.effective_pch_out_db as the power for the reference channel as discussed during the call.\nself.efective loss will also be the loss for the reference channel",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7123cc1_c2f78103",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-20T16:35:58Z",
+      "side": 1,
+      "message": "This is not exactly what was in the old code: in case the ROADM could not apply the target power (eg because input power is too low) then the power of all channels was equalized to the value of the min input power (line 244 computed the delta to apply per channel) and the attenuation was applied on line 245). I think we should keep the same behaviour. Do you mind if I amend this to correct ?",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbf5a8f8_8e086225",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-20T16:35:58Z",
+      "side": 1,
+      "message": "In my proposed evolution, p_spani and p_span0 contain information related to the reference channel: so I will change this back to self.effective_pch_out_db when integrated my changes. Is this OK for you ?",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67c668d6_99351740",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-20T16:35:58Z",
+      "side": 1,
+      "message": "The value of equalisation should not be changed if we stick to the old analytic model (which I think is default for tests, isn\u0027t it ?), I guess this is due to the change in the equalization ?",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "631a6328_d6e252f4",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-20T16:35:58Z",
+      "side": 1,
+      "message": "If you don\u0027t mind, I would prefer keeping the comments explaining the tests",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8eaaa65_426cf028",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-20T16:35:58Z",
+      "side": 1,
+      "message": "I think that this is not exactly the initial test: we need to check that the output power of all channels is equal to the min power at the roadm input.",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
