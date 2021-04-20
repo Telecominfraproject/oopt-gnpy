@@ -18,6 +18,23 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "931ab394_509dc2d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-04-20T19:31:10Z",
+      "side": 1,
+      "message": "I\u0027ll restore the ROADM behaviour, fix all your comments and push again. I hope this will be helpful.",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4943154d_8b02aa19",
@@ -31,6 +48,24 @@
       "writtenOn": "2021-04-20T16:35:58Z",
       "side": 1,
       "message": "why did you change the name of this parameter ?\nfor the proposed implem I will use self.effective_pch_out_db as the power for the reference channel as discussed during the call.\nself.efective loss will also be the loss for the reference channel",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "436b7ec6_37753a9b",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-04-20T19:31:10Z",
+      "side": 1,
+      "message": "I change the name of this variable because the same quantity, the total power at the output of the element, has been called pch_out_dB in the Fiber and I think this coherency would help the readability. If, in further versions, this would indicate the power of the reference channel I think that maybe the name can be more precise.",
+      "parentUuid": "4943154d_8b02aa19",
       "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -54,6 +89,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a3b5097c_4b79d882",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-04-20T19:31:10Z",
+      "side": 1,
+      "message": "Sure, I misinterpreted these lines because I thought the ROADM attenuates the channels with a power over the given threshold and leaves unchanged the channel below. If it not the case I can push a modification that would implement the behaviour that you have explained and that does not use the function map, filter and the lambda",
+      "parentUuid": "a7123cc1_c2f78103",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cbf5a8f8_8e086225",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 1
@@ -65,6 +118,24 @@
       "writtenOn": "2021-04-20T16:35:58Z",
       "side": 1,
       "message": "In my proposed evolution, p_spani and p_span0 contain information related to the reference channel: so I will change this back to self.effective_pch_out_db when integrated my changes. Is this OK for you ?",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95e330ee_a1d58a84",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-04-20T19:31:10Z",
+      "side": 1,
+      "message": "As in the previous comment, I think a more precise name can be better.",
+      "parentUuid": "cbf5a8f8_8e086225",
       "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -88,6 +159,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e5651c4b_7d56e522",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-04-20T19:31:10Z",
+      "side": 1,
+      "message": "Yes, the old analytic model is default for test. I think this difference is due to different numerical approximation and being at the second figure of a dB quantity that should be negligible. I think the best is to restore the right behaviour of the ROADM equalization and then check again.",
+      "parentUuid": "67c668d6_99351740",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "631a6328_d6e252f4",
         "filename": "tests/test_roadm_restrictions.py",
         "patchSetId": 1
@@ -105,6 +194,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9c98103e_11c3f553",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-04-20T19:31:10Z",
+      "side": 1,
+      "message": "Sure, I delete them by mistake removing the for cycles.",
+      "parentUuid": "631a6328_d6e252f4",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b8eaaa65_426cf028",
         "filename": "tests/test_roadm_restrictions.py",
         "patchSetId": 1
@@ -116,6 +223,24 @@
       "writtenOn": "2021-04-20T16:35:58Z",
       "side": 1,
       "message": "I think that this is not exactly the initial test: we need to check that the output power of all channels is equal to the min power at the roadm input.",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af01cc39_ec4fe2b1",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-04-20T19:31:10Z",
+      "side": 1,
+      "message": "This again depends on my mistake on the ROAM behaviour.",
+      "parentUuid": "b8eaaa65_426cf028",
       "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
