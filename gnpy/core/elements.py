@@ -183,7 +183,7 @@ class Roadm(_Node):
         if not params:
             params = {}
         super().__init__(*args, params=RoadmParams(**params), **kwargs)
-        self.pch_out_db = self.params.target_pch_out_db
+        self.ref_pch_out_dbm = self.params.target_pch_out_db
         self.loss = 0  # auto-design interest
         self.effective_loss = None
         self.passive = True
@@ -195,7 +195,7 @@ class Roadm(_Node):
         return {'uid': self.uid,
                 'type': type(self).__name__,
                 'params': {
-                    'target_pch_out_db': self.pch_out_db,
+                    'target_pch_out_db': self.ref_pch_out_dbm,
                     'restrictions': self.restrictions,
                     'per_degree_pch_out_db': self.per_degree_pch_out_db
                     },
@@ -213,7 +213,7 @@ class Roadm(_Node):
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
                           f'  effective loss (dB):  {self.effective_loss:.2f}',
-                          f'  pch out (dBm):        {self.pch_out_db!r}'])
+                          f'  pch out (dBm):        {self.ref_pch_out_dbm!r}'])
 
     def propagate(self, spectral_info, degree):
         # pin_target and loss are read from eqpt_config.json['Roadm']
@@ -226,13 +226,20 @@ class Roadm(_Node):
         # a ROADM doesn't amplify, it can only attenuate
         # TODO maybe add a minimum loss for the
         per_degree_pch = self.per_degree_pch_out_db[degree] \
-            if degree in self.per_degree_pch_out_db else self.pch_out_db
-        effective_pch_out_db = min(spectral_info.pref.p_spani, per_degree_pch)
-        self.effective_loss = spectral_info.pref.p_spani - effective_pch_out_db
+            if degree in self.per_degree_pch_out_db else self.ref_pch_out_dbm
+        # definition of ref_pch_out_db: value for the reference channel
+        ref_pch_out_dbm = min(spectral_info.pref.p_spani, per_degree_pch)
+        self.ref_pch_out_dbm = ref_pch_out_dbm
+        # definition of effective_loss: value for the reference channel
+        self.effective_loss = spectral_info.pref.p_spani - ref_pch_out_dbm
         input_power = spectral_info.signal + spectral_info.nli + spectral_info.ase
         min_power = min(lin2db(input_power*1e3))
         per_degree_pch = per_degree_pch if per_degree_pch < min_power else min_power
-        delta_power = lin2db(input_power * 1e3) - per_degree_pch
+        # target power shoud follow same delta power as in p_span0_per_channel
+        # if no specific delta, then apply equalization (later on)
+        pref = spectral_info.pref
+        delta_channel_power = pref.p_span0_per_channel - pref.p_span0
+        delta_power = lin2db(input_power * 1e3) - (per_degree_pch + delta_channel_power)
         attenuation = 1/db2lin(delta_power)
         spectral_info.signal *= attenuation
         spectral_info.nli *= attenuation
@@ -240,8 +247,10 @@ class Roadm(_Node):
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
 
     def update_pref(self, spectral_info):
-        self.pch_out_db = round(lin2db(mean(spectral_info.signal+spectral_info.ase+spectral_info.nli) * 1e3), 2)
-        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0, p_spani=self.pch_out_db)
+        """ updates the value in Pref in spectral_info. p_span0 and p_span0_per_channel are unchanged, only p_spani
+        which contains the power for the reference channel after propagation in the ROADM
+        """
+        spectral_info.pref = spectral_info.pref._replace(p_spani=self.ref_pch_out_dbm)
 
     def __call__(self, spectral_info, degree):
         self.propagate(spectral_info, degree=degree)
@@ -624,9 +633,13 @@ class Edfa(_Node):
             self.effective_gain = self.target_pch_out_db - pref.p_spani
 
         """check power saturation and correct effective gain & power accordingly:"""
+        # compute the sum of powers of carriers at the input of the amplifier accounting for the expected power mixt
+        delta_channel_power = pref.p_span0_per_channel - pref.p_span0
+        input_total_power = lin2db(sum([db2lin(pref.p_spani + d) for d in delta_channel_power]))
         self.effective_gain = min(
             self.effective_gain,
-            self.params.p_max - (pref.p_spani + pref.neq_ch)
+            # self.params.p_max - (pref.p_spani + pref.neq_ch)
+            self.params.p_max - input_total_power
         )
         #print(self.uid, self.effective_gain, self.operational.gain_target)
         self.effective_pch_out_db = round(pref.p_spani + self.effective_gain, 2)
