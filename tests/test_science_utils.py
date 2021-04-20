@@ -11,7 +11,7 @@ from pandas import read_csv
 from numpy.testing import assert_allclose
 from numpy import array, load, save
 
-from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information
+from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information, Pref
 from gnpy.core.elements import Fiber, RamanFiber
 from gnpy.core.parameters import SimParams
 from gnpy.tools.json_io import load_json
@@ -43,7 +43,9 @@ def test_fiber():
     slot_width = array([37.5e9, 50e9, 75e9, 50e9, 37.5e9])
     baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
     signal = 1e-3 + array([0, -1e-4, 3e-4, -2e-4, +2e-4])
-    spectral_info_input = create_arbitrary_spectral_information(frequency, slot_width, signal, baud_rate, roll_off=0.15)
+    pref = Pref(p_span0=0, p_spani=0, p_span0_per_channel=list(signal))
+    spectral_info_input = create_arbitrary_spectral_information(frequency, slot_width, signal, baud_rate,
+                                                                roll_off=0.15, ref_power=pref)
 
     # propagation
     spectral_info_out = fiber(spectral_info_input)
