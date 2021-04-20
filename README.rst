@@ -109,7 +109,7 @@ An experimental support for Raman amplification is available:
        --sim $(gnpy-example-data)/sim_params.json --show-channels
 
 Configuration of Raman pumps (their frequencies, power and pumping direction) is done via the `RamanFiber element in the network topology <gnpy/example-data/raman_edfa_example_network.json>`_.
-General numeric parameters for simulaiton control are provided in the `gnpy/example-data/sim_params.json <gnpy/example-data/sim_params.json>`_.
+General numeric parameters for simulation control are provided in the `gnpy/example-data/sim_params.json <gnpy/example-data/sim_params.json>`_.
 
 Use ``gnpy-path-request`` to request several paths at once:
 
