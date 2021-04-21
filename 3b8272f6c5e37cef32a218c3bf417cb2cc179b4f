@@ -72,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dd521629_41ca392c",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-21T09:28:30Z",
+      "side": 1,
+      "message": "Understood ! thanks !",
+      "parentUuid": "436b7ec6_37753a9b",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a7123cc1_c2f78103",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 1
@@ -136,6 +154,24 @@
       "side": 1,
       "message": "As in the previous comment, I think a more precise name can be better.",
       "parentUuid": "cbf5a8f8_8e086225",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a24a96b6_2c26e0ee",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-21T09:28:30Z",
+      "side": 1,
+      "message": "OK !",
+      "parentUuid": "95e330ee_a1d58a84",
       "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },

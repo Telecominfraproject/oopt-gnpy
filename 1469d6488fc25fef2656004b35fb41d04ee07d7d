@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f8a0e61_ba53c963",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-21T09:28:30Z",
+      "side": 1,
+      "message": "Thanks a lot!\nI\u0027ll continue based on this patch.",
+      "revId": "1469d6488fc25fef2656004b35fb41d04ee07d7d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
