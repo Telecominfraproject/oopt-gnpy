@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33bb3066_b5b33928",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-21T16:38:07Z",
+      "side": 1,
+      "message": "I replayed the tests on top of The changes (514922) and found that this changed the behaviour for Pref, and tests ware not correct anymore. with this suggestion, this restore behaviour, and tests pass again.",
+      "revId": "63312befbeffca6bd01239a6d62d815ee1c4d9d5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c7532df_3a639b20",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-21T16:38:07Z",
+      "side": 1,
+      "message": "same comment: Pref is the noiseless reference, so this should be\nspectral_info.pref \u003d spectral_info.pref._replace(p_span0\u003dspectral_info.pref.p_span0, p_spani\u003dspectral_info.pref.p_spani - self.loss)",
+      "revId": "63312befbeffca6bd01239a6d62d815ee1c4d9d5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
