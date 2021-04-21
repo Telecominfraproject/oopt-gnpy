@@ -76,6 +76,8 @@ with mixed channels, printings must be adapted to show perf per partition
 so, if no partition defined by user : same prints as today (backward compatibility)
 if partition, then, per channel powers, SNR and OSNR should be shown per baudrate
 
+use the spectrum arg as the flag 
+
 ----------------------
 
 power sweep behaviour in ROADMs:
