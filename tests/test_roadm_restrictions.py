@@ -16,7 +16,7 @@ from numpy.testing import assert_allclose
 from copy import deepcopy
 from gnpy.core.utils import lin2db, automatic_nch
 from gnpy.core.elements import Fused, Roadm, Edfa, Transceiver, EdfaOperational, EdfaParams, Fiber
-from gnpy.core.parameters import FiberParams
+from gnpy.core.parameters import FiberParams, RoadmParams, FusedParams
 from gnpy.core.network import build_network
 from gnpy.tools.json_io import network_from_json, load_equipment, load_json, Amp
 from gnpy.core.equipment import trx_mode_params
@@ -264,7 +264,10 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
             power_out_roadm = si.signal + si.ase + si.nli
             if el.uid == 'roadm node B':
                 print('input', min_power_in_roadm)
-                assert_allclose(el.ref_pch_out_dbm, effective_pch_out_db, rtol=1e-3)
+                # if edfa, the roadm can apply target power (as specified in eqpt ie -20 dBm)
+                # if fused, the roadm can not apply target power, but  is just reporting the input power which
+                # for this particular case corresponds to -22dBm + power_dbm
+                # next step will be to apply a min loss !
                 if prev_node_type == 'edfa':
                     # edfa prev_node sets input power to roadm to a high enough value:
                     # Check that egress power of roadm is equal to target power
@@ -335,8 +338,8 @@ def list_element_attr(element):
     TODO: many parameters (location ones) look redondant: simplify ?
     """
     if isinstance(element, Roadm):
-        return ['coords', 'effective_pch_out_db', 'lat', 'latitude', 'lng', 'loc',
-                'location', 'longitude', 'loss', 'metadata', 'name', 'operational', 'params', 'passive',
+        return ['coords', 'ref_pch_out_dbm', 'lat', 'latitude', 'lng', 'loc',
+                'location', 'longitude', 'loss', 'metadata', 'name', 'operational', 'passive', 'params',
                 'per_degree_pch_out_db', 'restrictions', 'type_variety']
         # dynamically created: 'effective_loss',
         # TODO: loss is not updated at all : dead param ?
@@ -350,6 +353,10 @@ def list_element_attr(element):
         # dynamically created only with channel propagation: 'att_in', 'channel_freq', 'effective_pch_out_db'
         # 'gprofile', 'interpol_dgt', 'interpol_gain_ripple', 'interpol_nf_ripple', 'nch',  'nf', 'pin_db', 'pout_db',
         # 'target_pch_out_db',
+    if isinstance(element, RoadmParams):
+        return ['target_pch_out_db', 'add_drop_osnr', 'pmd', 'restrictions', 'per_degree_pch_out_db']
+    if isinstance(element, FusedParams):
+        return ['loss']
     if isinstance(element, EdfaOperational):
         return ['delta_p', 'gain_target', 'out_voa', 'tilt_target']
     if isinstance(element, EdfaParams):
@@ -358,13 +365,13 @@ def list_element_attr(element):
                 'type_def', 'type_variety']
     if isinstance(element, Fiber):
         return ['coords',
-                'fiber_loss', 'lat', 'latitude', 'lng', 'loc', 'location',
+                'lat', 'latitude', 'lng', 'loc', 'location',
                 'longitude', 'loss', 'metadata', 'name', 'operational',
                 'params', 'passive', 'pmd', 'type_variety']
         # dynamically created 'output_total_power', 'pch_out_db'
     if isinstance(element, FiberParams):
         return ['att_in', 'beta2', 'beta3', 'con_in', 'con_out', 'dispersion', 'dispersion_slope', 'f_loss_ref',
-                'gamma', 'length', 'loss_coef', 'pmd_coef', 'pumps_loss_coef', 'raman_efficiency', 'ref_frequency',
+                'gamma', 'length', 'loss_coef', 'lumped_losses', 'pmd_coef', 'raman_efficiency', 'ref_frequency',
                 'ref_wavelength']
     if isinstance(element, Fused):
         return ['coords', 'lat', 'latitude', 'lng', 'loc', 'location', 'longitude', 'loss', 'metadata', 'name',
@@ -455,9 +462,11 @@ def test_roadm_and_booster_target_power_and_gain(power_dbm, req_power, delta_p):
             element_copy = next(n for n in network_copy.nodes() if n.uid == element.uid)
             for key in list_element_attr(element):
                 print(element.uid, key, getattr(element, key), getattr(element_copy, key))
-                if not isinstance(getattr(element, key), (EdfaOperational, EdfaParams, FiberParams)):
+                if not isinstance(getattr(element, key), (EdfaOperational, EdfaParams, FiberParams, RoadmParams, FusedParams)):
                     if not key == 'effective_gain':
                         # all key cases except gain
+                        if key == 'fiber_loss':
+                            print('coucou --------------------')
                         assert getattr(element, key) == getattr(element_copy, key)
                     else:
                         dp = 0 if element.uid not in delta_p else 1
@@ -515,7 +524,7 @@ def test_roadm_and_booster_target_power_and_gain(power_dbm, req_power, delta_p):
                                         pytest.approx(min(pch_max, req_power + element.delta_p) -
                                                       min(pch_max, req_power + previous_deltap) -
                                                       min(pch_max, power_dbm + element.delta_p) +
-                                                      power_dbm + previous_deltap, abs=1e-2)
+                                                      power_dbm + previous_deltap, abs=2e-2)
                         # if amp has no type_variety then its output total power is computed too choose an type_variety
                         # in the library, and if all amps have max_power below this vaue, a reductio of the target
                         # power is applied on delta_p. This test check that the reduction is correctly computed

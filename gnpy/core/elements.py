@@ -293,7 +293,8 @@ class Fused(_Node):
 
     def update_pref(self, spectral_info):
         self.pch_out_db = round(lin2db(mean(spectral_info.signal) * 1e3), 2)
-        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0, p_spani=self.pch_out_db)
+        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
+            p_spani=spectral_info.pref.p_spani - self.loss)
 
     def __call__(self, spectral_info):
         self.propagate(spectral_info)
@@ -472,7 +473,8 @@ class Fiber(_Node):
 
     def update_pref(self, spectral_info):
         self.pch_out_db = round(lin2db(mean(spectral_info.signal) * 1e3), 2)
-        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0, p_spani=self.pch_out_db)
+        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
+                                                         p_spani=spectral_info.pref.p_spani - self.loss)
 
     def __call__(self, spectral_info):
         self.propagate(spectral_info)
@@ -881,7 +883,8 @@ class Edfa(_Node):
 
     def update_pref(self, spectral_info):
         self.pch_out_db = round(lin2db(mean(spectral_info.signal) * 1e3), 2)
-        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0, p_spani=self.pch_out_db)
+        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
+            p_spani=spectral_info.pref.p_spani + self.effective_gain - self.out_voa)
 
     def __call__(self, spectral_info):
         self.propagate(spectral_info)
