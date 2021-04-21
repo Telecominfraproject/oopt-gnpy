@@ -814,7 +814,7 @@ class Edfa(_Node):
         dgt_slope = p[0]
 
         # Calculate the target slope
-        targ_slope = self.tilt_target / (self.params.f_max - self.params.f_min)
+        targ_slope = -self.tilt_target / (self.params.f_max - self.params.f_min)
 
         # first estimate of DGT scaling
         try:
