@@ -18,6 +18,23 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "52956091_5f5e868f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-21T17:13:18Z",
+      "side": 1,
+      "message": "correction of my comment for Raman fiber",
+      "revId": "63312befbeffca6bd01239a6d62d815ee1c4d9d5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c7532df_3a639b20",
@@ -31,6 +48,24 @@
       "writtenOn": "2021-04-21T16:38:07Z",
       "side": 1,
       "message": "same comment: Pref is the noiseless reference, so this should be\nspectral_info.pref \u003d spectral_info.pref._replace(p_span0\u003dspectral_info.pref.p_span0, p_spani\u003dspectral_info.pref.p_spani - self.loss)",
+      "revId": "63312befbeffca6bd01239a6d62d815ee1c4d9d5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15790ec1_3cbe5f2c",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-21T17:13:18Z",
+      "side": 1,
+      "message": "Well maybe not with Raman ...\nfor this one I propose to compute the loss based on average powerin average power out, and use this loss on top of p_spani\n\nI have added this function in RamanFiber\n    def update_pref(self, spectral_info):\n        loss \u003d self._pch_in - round(lin2db(mean(spectral_info.signal) * 1e3), 2)\n        self.pch_out_db \u003d round(lin2db(mean(spectral_info.signal) * 1e3), 2)\n        spectral_info.pref \u003d spectral_info.pref._replace(p_span0\u003dspectral_info.pref.p_span0,\n                                                         p_spani\u003dspectral_info.pref.p_spani - loss)\n\nand defined _pch_in in Fiber:\n        self._pch_in \u003d round(lin2db(mean(spectral_info.signal) * 1e3), 2)\n just before calling propagate, I this solves the issue.",
+      "parentUuid": "8c7532df_3a639b20",
       "revId": "63312befbeffca6bd01239a6d62d815ee1c4d9d5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
