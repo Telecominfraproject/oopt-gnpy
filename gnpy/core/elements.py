@@ -21,12 +21,12 @@ instance as a result.
 """
 
 from numpy import abs, arange, array, divide, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, \
-    exp, zeros, squeeze, append, flip, outer
+    exp, zeros, squeeze, append, flip, outer, minimum
 from scipy.constants import h, c
 from collections import namedtuple
 from collections.abc import Sized
 
-from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, psd2powerdbm
+from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, psd2powerdbm, watt2dbm
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational, \
     SimParams
 from gnpy.core.science_utils import NliSolver, RamanSolver
@@ -237,21 +237,33 @@ class Roadm(_Node):
         # a ROADM doesn't amplify, it can only attenuate
         # TODO maybe add a minimum loss for the ROADM
         # check equalization: if ref_pch_out_dbm is defined then use it
+        # change per_degree_pch from scalar to an array / add a ref_power, ref_baudrate ...
+        ref_baud_rate = 32e9
+        ref_roll_off = 0.15
         if self.ref_pch_out_dbm:
             per_degree_pch = self.per_degree_pch_out_db[degree] \
                 if degree in self.per_degree_pch_out_db else self.ref_pch_out_dbm
+            ref_per_degree_pch = per_degree_pch
+            per_degree_pch = per_degree_pch * ones(len(spectral_info.channel_number))
         elif self.target_psd_out_mWperGHz:
-            per_degree_pch = psd2powerdbm(self.per_degree_pch_psd[degree], baudrate_baud, roll_off) \
-                if degree in self.per_degree_pch_psd else self.target_psd_out_mWperGHz
+            per_degree_pch = psd2powerdbm(self.per_degree_pch_psd[degree], spectral_info.baud_rate, spectral_info.roll_off) \
+                if degree in self.per_degree_pch_psd else psd2powerdbm(self.target_psd_out_mWperGHz, spectral_info.baud_rate, spectral_info.roll_off)
+            ref_per_degree_pch = psd2powerdbm(self.per_degree_pch_psd[degree], ref_baud_rate, ref_roll_off) \
+                if degree in self.per_degree_pch_psd else psd2powerdbm(self.target_psd_out_mWperGHz, ref_baud_rate, ref_roll_off)
         # definition of ref_pch_out_db: value for the reference channel
-        ref_pch_out_dbm = min(spectral_info.pref.p_spani, per_degree_pch)
+        ref_pch_out_dbm = min(spectral_info.pref.p_spani, ref_per_degree_pch)
         self.ref_pch_out_dbm = ref_pch_out_dbm
         # definition of effective_loss: value for the reference channel
         self.effective_loss = spectral_info.pref.p_spani - ref_pch_out_dbm
         input_power = spectral_info.signal + spectral_info.nli + spectral_info.ase
-        min_power = min(lin2db(input_power*1e3))
-        per_degree_pch = per_degree_pch if per_degree_pch < min_power else min_power
-        # target power shoud follow same delta power as in p_span0_per_channel
+        if self.ref_pch_out_dbm:
+            min_power = watt2dbm(min(input_power))
+            per_degree_pch = minimum(per_degree_pch, min_power)   # fonctionnement bien capturé ici
+        elif self.target_psd_out_mWperGHz:         # pas bien capturé ici: ca doit donner la meme chose si tous les canaux egaux: travailer en psd ?
+            min_psd = min(psdmwperghz(input_power, spectral_info.baud_rate, spectral_info.roll_off))
+            temp = powerdbm2psdmwperghz(per_degree_pch, baudrate_baud, roll_off)
+            per_degree_pch = psd2powerdbm(minimum(temp, min_psd), spectral_info.baud_rate, spectral_info.roll_off)
+        # target power should follow same delta power as in p_span0_per_channel
         # if no specific delta, then apply equalization (later on)
         pref = spectral_info.pref
         delta_channel_power = pref.p_span0_per_channel - pref.p_span0
