@@ -68,6 +68,24 @@
       "parentUuid": "8c7532df_3a639b20",
       "revId": "63312befbeffca6bd01239a6d62d815ee1c4d9d5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3d78413_9917886d",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-04-22T09:22:25Z",
+      "side": 1,
+      "message": "The self.loss it is not accurate if the loss_coef depend on frequency. Moreover, I think the same consideration that you have done for the RamanFiber should be done for the standard Fiber as there is the possibility to consider the Raman inter-channel effect within the standard Fiber. \nIn general, the self.pch_out_db is the most accurate evaluation of the total power out of the signal. If the pref would be changed in the power of a reference channel, I think that it should be done as in the ROADM.",
+      "parentUuid": "15790ec1_3cbe5f2c",
+      "revId": "63312befbeffca6bd01239a6d62d815ee1c4d9d5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
