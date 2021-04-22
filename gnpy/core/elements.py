@@ -199,8 +199,8 @@ class Roadm(_Node):
 
     @property
     def to_json(self):
-        if self.effective_pch_out_db:
-            equalisation, value = 'target_pch_out_db', self.effective_pch_out_db
+        if self.ref_pch_out_dbm:
+            equalisation, value = 'target_pch_out_db', self.ref_pch_out_dbm
         if self.target_psd_out_mWperGHz:
             equalisation, value = 'target_psd_out_mWperGHz', self.target_psd_out_mWperGHz
         return {'uid': self.uid,
@@ -500,7 +500,7 @@ class Fiber(_Node):
         self._pch_in = round(lin2db(mean(spectral_info.signal) * 1e3), 2)
         self.propagate(spectral_info)
         self.update_pref(spectral_info)
-        self.output_total_power = sum(array([power.signal + power.nli + power.ase for power in spectral_info.powers]))
+        self.output_total_power = sum(spectral_info.signal + spectral_info.nli + spectral_info.ase)
         return spectral_info
 
 
