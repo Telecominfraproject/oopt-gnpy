@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afa518dd_999b207b",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 813,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-04-22T11:56:07Z",
+      "side": 1,
+      "message": "This parameter is initialized via interpol_params() which gets invoked via propagate(), and that only has access to the currently propagated channels. Shouldn\u0027t the call be something like this instead?\n \np \u003d polyfit((self.params.f_min, self.params.f_max), self.interpol_dgt, 1)",
+      "range": {
+        "startLine": 813,
+        "startChar": 20,
+        "endLine": 813,
+        "endChar": 37
+      },
+      "revId": "a211e305c3948b6e112cae0551324eb18df70d11",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7a92987_d959396f",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 822,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-04-22T11:56:07Z",
+      "side": 1,
+      "message": "I like this more python approach.",
+      "revId": "a211e305c3948b6e112cae0551324eb18df70d11",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
