@@ -39,7 +39,9 @@ class _JsonThing:
         clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
         for k, v in default_values.items():
             setattr(self, k, clean_kwargs.get(k, v))
-            if k not in clean_kwargs and name != 'Amp':
+            if k not in clean_kwargs and name != 'Amp' and \
+                    (k == 'target_psd_out_mWperGHz' and 'target_pch_out_db' not in clean_kwargs) and \
+                    (k == 'target_pch_out_db' and 'target_psd_out_mWperGHz' not in clean_kwargs):
                 print(ansi_escapes.red +
                       f'\n WARNING missing {k} attribute in eqpt_config.json[{name}]' +
                       f'\n default value is {k} = {v}' +
@@ -398,7 +400,7 @@ def network_from_json(json_data, equipment):
             extra_params = equipment[typ][variety]
             temp = el_config.setdefault('params', {})
             if typ == 'Roadm':
-                # if equalisatoion is not define in the element config, then rretrive the general one from SI
+                # if equalisation is not define in the element config, then retrieve the general one from SI
                 # else use the one from the element config. only one type of equalisation is allowed
                 extra_params = merge_equalization(temp, extra_params)
                 if not extra_params:
