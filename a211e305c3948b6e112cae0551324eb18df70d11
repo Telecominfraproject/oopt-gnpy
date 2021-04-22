@@ -48,6 +48,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "4511cfcc_8466e3bc",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 813,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-04-22T14:07:53Z",
+      "side": 1,
+      "message": "Right, I missed the fact that \"interpol_dgt\" is already interpolated for the list currently propagated channels; the \"interpol\" in the name was apparently not a clear hint to me :). This means that this patch not only fixes a bug which was present when the range of channels was \"too narrow\", but it is also now made ready for non-uniform channel spacing of the propagated channel. I missed that, and I like the outcome.\n\nHowever, I think the other behavior that you discussed (always taking the amp\u0027s full DGT profile from the equipment library) is \"better\". The measurements from the equipment library were -- I hope -- taken on a full channel load (or at least over a subset of channels while representing the full spectrum equally well). I\u0027m not sure if taking a small subset of that under a completely different scenario is more accurate. Please take my opinion with a huge grain of salt, I won\u0027t pretend I understand the physics behind this.\n\nEither way, it looks like this code would benefit greatly from an explanation what it is doing. You are hoping to achieve a more accurate result here by only considering \"the relevant part\" of the spectral window, so it would be awesome to add a comment which points that out.",
+      "parentUuid": "9a7e5281_27c39ff0",
+      "range": {
+        "startLine": 813,
+        "startChar": 20,
+        "endLine": 813,
+        "endChar": 37
+      },
+      "revId": "a211e305c3948b6e112cae0551324eb18df70d11",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d7a92987_d959396f",
