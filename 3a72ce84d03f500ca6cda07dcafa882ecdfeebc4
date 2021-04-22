@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c8a1b9d_faa8f462",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-04-22T11:49:30Z",
+      "side": 1,
+      "message": "The CI is still down I\u0027m afraid, so I\u0027ve checked this one manually.",
+      "revId": "3a72ce84d03f500ca6cda07dcafa882ecdfeebc4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
