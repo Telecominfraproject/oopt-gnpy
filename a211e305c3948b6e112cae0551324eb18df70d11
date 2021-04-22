@@ -98,6 +98,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "27ba7178_cac5b704",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 813,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-04-22T14:31:35Z",
+      "side": 1,
+      "message": "Ack, that\u0027s a good point.",
+      "parentUuid": "3de061af_3e9c1643",
+      "range": {
+        "startLine": 813,
+        "startChar": 20,
+        "endLine": 813,
+        "endChar": 37
+      },
+      "revId": "a211e305c3948b6e112cae0551324eb18df70d11",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d7a92987_d959396f",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 1
