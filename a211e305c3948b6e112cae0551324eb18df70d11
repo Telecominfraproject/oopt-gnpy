@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a7e5281_27c39ff0",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 813,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-04-22T13:02:50Z",
+      "side": 1,
+      "message": "No, I don\u0027t think that would work since self.interpol_dgt is itself interpolated on self.channel_freq. It could be replaced with:\n\np \u003d polyfit(amplifier_freq, self.params.dgt, 1)\n\nwhere amplifier_freq is calculated as in interpol_params():\n\namplifier_freq \u003d arrange_frequencies(len(self.params.dgt), self.params.f_min, self.params.f_max)\n\nThis would always take the whole dgt curve into account. I did think about this but I thought the current approach, which only takes dgt values at the propagated channel frequencies into account, makes sense since the resulting tilt will be more accurate when propagated channels only occupy a small part of the total amplifier bandwidth. I am, however, open to any argument for why the alternative approach would be better. It would also be interesting to hear from system vendors how the tilt is actually controlled in practice.",
+      "parentUuid": "afa518dd_999b207b",
+      "range": {
+        "startLine": 813,
+        "startChar": 20,
+        "endLine": 813,
+        "endChar": 37
+      },
+      "revId": "a211e305c3948b6e112cae0551324eb18df70d11",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d7a92987_d959396f",
