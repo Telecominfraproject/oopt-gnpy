@@ -72,6 +72,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "3de061af_3e9c1643",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 813,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-04-22T14:29:15Z",
+      "side": 1,
+      "message": "\u003eYou are hoping to achieve a more accurate result here by only considering \"the relevant part\" of the spectral window, so it would be awesome to add a comment which points that out.\n\nIt\u0027s not really that _I_ am hoping. This is what the original code did and I thought it made some sense. The alternative approach I described would be a larger change compared to existing behaviour. Anyway, the real question is what approach best models how a real amplifier behaves. Until we know that, I think we can merge the patch as is since it\u0027s closer to the current implementation.",
+      "parentUuid": "4511cfcc_8466e3bc",
+      "range": {
+        "startLine": 813,
+        "startChar": 20,
+        "endLine": 813,
+        "endChar": 37
+      },
+      "revId": "a211e305c3948b6e112cae0551324eb18df70d11",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d7a92987_d959396f",
