@@ -243,13 +243,14 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
     """ this node can be a transceiver or a ROADM (same function called in both cases)
     """
     power_mode = equipment['Span']['default'].power_mode
-    nominal_bw = equipment['SI']['default'].baud_rate * (1 + equipment['SI']['default'].roll_off) * 1e-9
+    ref_br = equipment['SI']['default'].baud_rate
+    ref_roll_off = equipment['SI']['default'].roll_off
     next_oms = (n for n in network.successors(this_node) if not isinstance(n, elements.Transceiver))
     this_node_degree = {}
     if hasattr(this_node, 'per_degree_pch_out_db'):
         this_node_degree = {k: v for k, v in this_node.per_degree_pch_out_db.items()}
     elif hasattr(this_node, 'per_degree_pch_psd'):
-        this_node_degree = {k: lin2db(v * nominal_bw) for k, v in this_node.per_degree_pch_psd.items()}
+        this_node_degree = {k: psd2powerdbm(v, ref_br, ref_roll_off) for k, v in this_node.per_degree_pch_psd.items()}
     for oms in next_oms:
         # go through all the OMS departing from the ROADM
         prev_node = this_node
@@ -261,12 +262,15 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
         if node.uid not in this_node_degree:
             # if no target power is defined on this degree or no per degree target power is given use the global one
             # if target_pch_out_db  is not an attribute, then the element must be a transceiver
-            if this_node.params.target_pch_out_db:
-                this_node_degree[node.uid] = this_node.params.target_pch_out_db
-            elif this_node.params.target_psd_out_mWperGHz:
-                this_node_degree[node.uid] = lin2db(this_node.params.target_psd_out_mWperGHz * nominal_bw)
-            else:
-                raise ConfigurationError(this_node.uid, 'needs either a target_pch_out_db or a target_psd_out_mWperGHz')
+            temp = getattr(this_node.params, 'target_pch_out_db', None)
+            this_node_degree[node.uid] = 0     #default value if node is a transceiver
+            if isinstance(this_node, elements.Roadm):
+                if this_node.params.target_pch_out_db:
+                    this_node_degree[node.uid] = this_node.params.target_pch_out_db
+                elif this_node.params.target_psd_out_mWperGHz:
+                    this_node_degree[node.uid] = psd2powerdbm(this_node.params.target_psd_out_mWperGHz, ref_br, ref_roll_off)
+                else:
+                    raise ConfigurationError(this_node.uid, 'needs either a target_pch_out_db or a target_psd_out_mWperGHz')
         # use the target power on this degree
         prev_dp = this_node_degree[node.uid] - pref_ch_db
         dp = prev_dp
