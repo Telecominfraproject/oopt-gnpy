@@ -142,6 +142,12 @@ def powerdbm2psdmwperghz(power_dbm, baudrate_baud, roll_off):
     return dbm2watt(power_dbm) * 1e3 / (baudrate_baud * (1 + roll_off))
 
 
+def psdmwperghz(power_watt, baudrate_baud, roll_off):
+    """ computes power in dbm based on baudrate in bauds, roll-of and psd in mw/GHz
+    """
+    return power_watt * 1e3 /(baudrate_baud * (1 + roll_off) * 1e9)
+
+
 def round2float(number, step):
     step = round(step, 1)
     if step >= 0.01:
