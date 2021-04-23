@@ -70,10 +70,7 @@
           "longitude": 0.0
         }
       },
-      "type": "Roadm",
-      "params": {
-        "target_psd_out_mWperGHz": 4e-4
-      }
+      "type": "Roadm"
     },
     {
       "uid": "roadm Lorient_KMA",
