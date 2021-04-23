@@ -112,6 +112,7 @@ def transmission_main_example(args=None):
     parser.add_argument('-pl', '--plot', action='store_true')
     parser.add_argument('-l', '--list-nodes', action='store_true', help='list all transceiver nodes')
     parser.add_argument('-po', '--power', default=0, help='channel ref power in dBm')
+    parser.add_argument('-spectrum', '--mixed-rate-spectrum-file', help='user defined mixed rate spectrum json file')
     parser.add_argument('source', nargs='?', help='source node')
     parser.add_argument('destination', nargs='?', help='destination node')
 
@@ -185,16 +186,15 @@ def transmission_main_example(args=None):
     params['path_bandwidth'] = 0
     trx_params = trx_mode_params(equipment)
     if args.power:
-        try:
-            initial_spectrum = load_initial_spectrum(args.power)
-            print('warning: user input for spectrum used for propagation instead of SI')
-        except FileNotFoundError:
-            trx_params['power'] = db2lin(float(args.power)) * 1e-3
-    if 'initial_spectrum' not in locals():
+        trx_params['power'] = db2lin(float(args.power)) * 1e-3
+    if args.mixed_rate_spectrum_file:
+        initial_spectrum = load_initial_spectrum(args.mixed_rate_spectrum_file, equipment)
+        print('warning: user input for spectrum used for propagation instead of SI')
+    else:
         temp = [{key: trx_params[key] for key in
                 ['f_min', 'f_max', 'baud_rate', 'spacing', 'roll_off', 'tx_osnr']}]
         temp[0]['power_dbm'] = lin2db(trx_params['power'] * 1e3)   # uses the default value in SI
-        initial_spectrum = _spectrum_from_json(temp)
+        initial_spectrum = _spectrum_from_json(temp, equipment)
 
     params.update(trx_params)
     req = PathRequest(**params)
