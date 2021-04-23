@@ -281,7 +281,6 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, 
 def use_initial_spectrum(initial_spectrum, ref_power, default_psd=None):
     """ initial spectrum is a dict with key = carrier frequency, and value a dict with power,
     baudrate and roll off for this carrier. ref_power is a Pref object with the power used for the reference channel
-    default equalization is PSD
     """
     frequency = list(initial_spectrum.keys())
     signal = [s['power'] for s in initial_spectrum.values()]
@@ -291,11 +290,6 @@ def use_initial_spectrum(initial_spectrum, ref_power, default_psd=None):
     p_spani = lin2db(ref_power * 1e3)
     p_span0_per_channel = []
     for freq, spect in initial_spectrum.items():
-        if spect['power'] is None:
-            if default_psd is None:
-                raise ConfigurationError(''''initial specrum power attribute and default psd are both missing;
-                    please configure one of them''')
-            spect['power'] = psd2powerdbm(default_psd, spect['baud_rate'], spect['roll_off'])
         p_span0_per_channel.append(watt2dbm(spect['power']))
     si = create_arbitrary_spectral_information(frequency=frequency, signal=signal, baud_rate=baud_rate,
                                                roll_off=roll_off, ref_power=Pref(p_span0, p_spani, p_span0_per_channel))
