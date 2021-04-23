@@ -188,7 +188,7 @@ class Roadm(_Node):
             raise ConfigurationError('Config error in ', self.uid, ' .', e)
         self.ref_pch_out_dbm = self.params.target_pch_out_db
         self.loss = 0  # auto-design interest
-        self.effective_loss = None
+        self.ref_effective_loss = None
         self.passive = True
         self.restrictions = self.params.restrictions
         self.per_degree_pch_out_db = self.params.per_degree_pch_out_db
@@ -219,11 +219,11 @@ class Roadm(_Node):
         return f'{type(self).__name__}(uid={self.uid!r}, loss={self.loss!r})'
 
     def __str__(self):
-        if self.effective_loss is None:
+        if self.ref_effective_loss is None:
             return f'{type(self).__name__} {self.uid}'
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
-                          f'  effective loss (dB):  {self.effective_loss:.2f}',
+                          f'  effective loss (dB):  {self.ref_effective_loss:.2f}',
                           f'  pch out (dBm):        {self.ref_pch_out_dbm!r}'])   # (ref channel)
 
     def propagate(self, spectral_info, degree):
@@ -254,12 +254,17 @@ class Roadm(_Node):
         ref_pch_out_dbm = min(spectral_info.pref.p_spani, ref_per_degree_pch)
         self.ref_pch_out_dbm = ref_pch_out_dbm
         # definition of effective_loss: value for the reference channel
-        self.effective_loss = spectral_info.pref.p_spani - ref_pch_out_dbm
+        self.ref_effective_loss = spectral_info.pref.p_spani - ref_pch_out_dbm
+        # computation of the target power for each power according to equalization policy
         input_power = spectral_info.signal + spectral_info.nli + spectral_info.ase
         if self.ref_pch_out_dbm:
             min_power = watt2dbm(min(input_power))
             per_degree_pch = minimum(per_degree_pch, min_power)   # fonctionnement bien capturé ici
-        elif self.target_psd_out_mWperGHz:         # pas bien capturé ici: ca doit donner la meme chose si tous les canaux egaux: travailer en psd ?
+        elif self.target_psd_out_mWperGHz:
+            # assume that channels with same baudrate*(1+roll-off) are equalized to the same power.
+            # applies the same min strategy if the input power is lower than the target one: use the min psd of all carriers
+            # if all carriers are identical baud_rate and roll_off the target power is the min power
+            # of the carrier compared to per_degree_pch (same as power equalization)
             min_psd = min(psdmwperghz(input_power, spectral_info.baud_rate, spectral_info.roll_off))
             temp = powerdbm2psdmwperghz(per_degree_pch, baudrate_baud, roll_off)
             per_degree_pch = psd2powerdbm(minimum(temp, min_psd), spectral_info.baud_rate, spectral_info.roll_off)
