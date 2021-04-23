@@ -226,7 +226,7 @@ class Roadm(_Node):
         # reference power is target power by default. depending on propagation this may change (due to equalization)
         self.ref_pch_out_dbm = self.params.target_pch_out_db
         self.loss = 0  # auto-design interest
-        self.effective_loss = None
+        self.ref_effective_loss = None
         self.passive = True
         self.restrictions = self.params.restrictions
         self.per_degree_pch_out_db = self.params.per_degree_pch_out_db
@@ -258,12 +258,12 @@ class Roadm(_Node):
         return f'{type(self).__name__}(uid={self.uid!r}, loss={self.loss!r})'
 
     def __str__(self):
-        if self.effective_loss is None:
+        if self.ref_effective_loss is None:
             return f'{type(self).__name__} {self.uid}'
 
         total_pch = pretty_summary_print(per_label_summary(self.pch_out_dbm, self.label))
         return '\n'.join([f'{type(self).__name__} {self.uid}',
-                          f'  effective loss (dB):  {self.effective_loss:.2f}',
+                          f'  effective loss (dB):  {self.ref_effective_loss:.2f}',
                           f'  pch out (dBm):        {self.ref_pch_out_dbm:.2f}',
                           f'  total pch (dBm):      {total_pch}'])
 
@@ -298,7 +298,7 @@ class Roadm(_Node):
         # Definition of effective_loss:
         # Optical power of carriers are equalized by the ROADM, so that experienced loss is not same for different
         # carriers. effective_loss records the loss for a reference carrier.
-        self.effective_loss = spectral_info.pref.p_spani - self.ref_pch_out_dbm
+        self.ref_effective_loss = spectral_info.pref.p_spani - self.ref_pch_out_dbm
         input_power = spectral_info.signal + spectral_info.nli + spectral_info.ase
         pref = spectral_info.pref
         # computation of the per channel target power according to equalization policy
