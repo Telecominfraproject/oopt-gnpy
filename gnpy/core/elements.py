@@ -26,7 +26,8 @@ from scipy.constants import h, c
 from collections import namedtuple
 from collections.abc import Sized
 
-from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, psd2powerdbm, watt2dbm
+from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, psd2powerdbm, watt2dbm, psdmwperghz, \
+    powerdbm2psdmwperghz
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational, \
     SimParams
 from gnpy.core.science_utils import NliSolver, RamanSolver
@@ -186,6 +187,7 @@ class Roadm(_Node):
             super().__init__(*args, params=RoadmParams(**params), **kwargs)
         except ParameterError as e:
             raise ConfigurationError('Config error in ', self.uid, ' .', e)
+        self.target_pch_out_dbm = self.params.target_pch_out_db
         self.ref_pch_out_dbm = self.params.target_pch_out_db
         self.loss = 0  # auto-design interest
         self.ref_effective_loss = None
@@ -240,9 +242,9 @@ class Roadm(_Node):
         # change per_degree_pch from scalar to an array / add a ref_power, ref_baudrate ...
         ref_baud_rate = 32e9
         ref_roll_off = 0.15
-        if self.ref_pch_out_dbm:
+        if self.target_pch_out_dbm:
             per_degree_pch = self.per_degree_pch_out_db[degree] \
-                if degree in self.per_degree_pch_out_db else self.ref_pch_out_dbm
+                if degree in self.per_degree_pch_out_db else self.target_pch_out_dbm
             ref_per_degree_pch = per_degree_pch
             per_degree_pch = per_degree_pch * ones(len(spectral_info.channel_number))
         elif self.target_psd_out_mWperGHz:
@@ -257,7 +259,7 @@ class Roadm(_Node):
         self.ref_effective_loss = spectral_info.pref.p_spani - ref_pch_out_dbm
         # computation of the target power for each power according to equalization policy
         input_power = spectral_info.signal + spectral_info.nli + spectral_info.ase
-        if self.ref_pch_out_dbm:
+        if self.target_pch_out_dbm:
             min_power = watt2dbm(min(input_power))
             per_degree_pch = minimum(per_degree_pch, min_power)   # fonctionnement bien capturé ici
         elif self.target_psd_out_mWperGHz:
@@ -266,7 +268,7 @@ class Roadm(_Node):
             # if all carriers are identical baud_rate and roll_off the target power is the min power
             # of the carrier compared to per_degree_pch (same as power equalization)
             min_psd = min(psdmwperghz(input_power, spectral_info.baud_rate, spectral_info.roll_off))
-            temp = powerdbm2psdmwperghz(per_degree_pch, baudrate_baud, roll_off)
+            temp = powerdbm2psdmwperghz(per_degree_pch, spectral_info.baud_rate, spectral_info.roll_off)
             per_degree_pch = psd2powerdbm(minimum(temp, min_psd), spectral_info.baud_rate, spectral_info.roll_off)
         # target power should follow same delta power as in p_span0_per_channel
         # if no specific delta, then apply equalization (later on)
