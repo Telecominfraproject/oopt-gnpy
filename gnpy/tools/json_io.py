@@ -17,7 +17,8 @@ from gnpy.core import ansi_escapes, elements
 from gnpy.core.equipment import trx_mode_params
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError, ServiceError
 from gnpy.core.science_utils import estimate_nf_model
-from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions, db2lin, merge_equalization
+from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions, db2lin, merge_equalization,\
+                            dbm2watt, powerdbm2psdmwperghz, psd2powerdbm
 from gnpy.topology.request import PathRequest, Disjunction
 from gnpy.tools.convert import xls_to_json_data
 from gnpy.tools.service_sheet import read_service_sheet
@@ -229,7 +230,7 @@ def _automatic_spacing(baud_rate):
     return min((s[1] for s in spacing_list if s[0] > baud_rate), default=baud_rate * 1.2)
 
 
-def _spectrum_from_json(json_data):
+def _spectrum_from_json(json_data, equipment):
     """ json_data is a list of spectrum partitions each with {fmin, fmax, baudrate, roll_off, power and tx_osnr}
     creates the per freq dict of carrier's dict
     """
@@ -239,13 +240,29 @@ def _spectrum_from_json(json_data):
     for part in json_data:
         index = 1     # starting freq is exactly f_min + spacing to be consistent with utils.automatic_nch
         if 'power_dbm' in part: 
-            # user defined partition power. if it does not exist, means that we apply default equalization in node
-            part['power'] = db2lin(part['power_dbm'] - 30.0)     # convert power_dBm into watt
+            # user defined partition power.
+            part['power'] = dbm2watt(part['power_dbm'])
         else:
-            part['power'] = None
+            # if it does not exist, means that we apply default power of SI in node
+            if hasattr(equipment['Roadm']['default'], 'target_pch_out_db'):
+                # then use equipment SI power_dbm
+                part['power'] = dbm2watt(equipment['SI']['default'].power_dbm)
+            elif hasattr(equipment['Roadm']['default'], 'target_psd_out_mWperGHz'):
+                part['power'] = dbm2watt(
+                                    psd2powerdbm(
+                                        powerdbm2psdmwperghz(equipment['SI']['default'].power_dbm,
+                                                             equipment['SI']['default'].baud_rate,
+                                                             equipment['SI']['default'].roll_off),
+                                        part['baud_rate'],
+                                        part['roll_off']))
+            else:
+                # should never comme here, because equipment consistency is checked before
+                raise ConfigurationError('equipment Roadm is missing default equalisation')
         current_part_min_freq = part['f_min'] - part['spacing'] / 2   # supposes that carriers are centered on frequency
         if previous_part_max_freq <= current_part_min_freq:    # check that previous part last channel does not overlap
                                                                # on next part first channel
+                                                               # TODO use functions from andrea to build si and
+                                                               # check consistency of spectrum instead
             current_freq = part['f_min'] + index * part['spacing']
             while current_freq <= part['f_max']:
                 spectrum[current_freq] = part
@@ -263,9 +280,9 @@ def load_equipment(filename):
     return _equipment_from_json(json_data, filename)
 
 
-def load_initial_spectrum(filename):
+def load_initial_spectrum(filename, equipment):
     json_data = load_json(filename)
-    return _spectrum_from_json(json_data['initial_spectrum'])
+    return _spectrum_from_json(json_data['initial_spectrum'], equipment)
 
 def _update_dual_stage(equipment):
     edfa_dict = equipment['Edfa']
