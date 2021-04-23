@@ -22,7 +22,7 @@ from networkx import (dijkstra_path, NetworkXNoPath,
 from networkx.utils import pairwise
 from numpy import mean
 from gnpy.core.elements import Transceiver, Roadm
-from gnpy.core.utils import lin2db, powerdbm2psdmwperghz
+from gnpy.core.utils import lin2db, powerdbm2psdmwperghz, dbm2watt
 from gnpy.core.info import create_input_spectral_information, use_initial_spectrum
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 import gnpy.core.ansi_escapes as ansi_escapes
@@ -328,6 +328,12 @@ def compute_constrained_path(network, req):
 
     return total_path
 
+def ref_carrier(req, equipment):
+    ref_carrier = {key: getattr(equipment['SI']['default'], key) for key in
+                ['f_min','f_max', 'baud_rate', 'spacing', 'roll_off', 'tx_osnr']}
+    ref_carrier['power'] = req.power
+    return ref_carrier
+
 
 def propagate(path, req, equipment):
     """ propagates signals in each element according to initial spectrum set by user
@@ -336,10 +342,7 @@ def propagate(path, req, equipment):
         # complete powers if they miss in initial spectrum
         # if power is not in partition, use the SI one + ratio of equalization in ROADM
         # rajouter un flag, pour ne pas avoir de ref per channel, pour pouvoir appliquer l'egalisation des roadms
-        si = use_initial_spectrum(req.initial_spectrum, req.power,
-            default_psd=powerdbm2psdmwperghz(equipment['SI']['default'].power_dbm,
-                                             equipment['SI']['default'].baud_rate,
-                                             equipment['SI']['default'].roll_off))
+        si = use_initial_spectrum(req.initial_spectrum, ref_carrier=ref_carrier(req, equipment))
     else:
         si = create_input_spectral_information(
             req.f_min, req.f_max, req.roll_off, req.baud_rate,
@@ -377,6 +380,7 @@ def propagate_and_optimize_mode(path, req, equipment):
             # step2: computes propagation for each baudrate: stop and select the first that passes
             # TODO: the case of roll of is not included: for now use SI one
             # TODO: if the loop in mode optimization does not have a feasible path, then bugs
+            # TODO: use a mixed rate spectrum ?
             if hasattr(req, 'initial_spectrum'):
                 # add the current explored mode caracteristic on the initial spectrum
                 # maybe use a copy instead of changing the request ?
@@ -384,7 +388,7 @@ def propagate_and_optimize_mode(path, req, equipment):
                     if e['baud_rate'] is None:
                         e['baud_rate'] = this_br
                         e['roll_off'] = equipment['SI']['default'].roll_off    # TODO TEMPORARY ! need to change the function !
-                spc_info = use_initial_spectrum(req.initial_spectrum, req.power)
+                spc_info = use_initial_spectrum(req.initial_spectrum, ref_carrier=ref_carrier(req, equipment))
             else:
                 spc_info = create_input_spectral_information(req.f_min, req.f_max,
                                                              equipment['SI']['default'].roll_off,
