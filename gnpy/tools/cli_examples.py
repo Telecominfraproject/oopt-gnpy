@@ -190,16 +190,20 @@ def transmission_main_example(args=None):
     if args.mixed_rate_spectrum_file:
         initial_spectrum = load_initial_spectrum(args.mixed_rate_spectrum_file, equipment)
         print('warning: user input for spectrum used for propagation instead of SI')
-    else:
-        temp = [{key: trx_params[key] for key in
-                ['f_min', 'f_max', 'baud_rate', 'spacing', 'roll_off', 'tx_osnr']}]
-        temp[0]['power_dbm'] = lin2db(trx_params['power'] * 1e3)   # uses the default value in SI
-        initial_spectrum = _spectrum_from_json(temp, equipment)
+        req.initial_spectrum = initial_spectrum
+    # else:
+    #     temp = [{key: trx_params[key] for key in
+    #             ['f_min', 'f_max', 'baud_rate', 'spacing', 'roll_off', 'tx_osnr']}]
+    #     temp[0]['power_dbm'] = lin2db(trx_params['power'] * 1e3)   # uses the default value in SI
+    #     initial_spectrum = _spectrum_from_json(temp, equipment)
 
     params.update(trx_params)
     req = PathRequest(**params)
-    req.initial_spectrum = initial_spectrum
-    print(f'There are {len(req.initial_spectrum)} channels propagating')
+    if hasattr(req, 'initial_spectrum'):
+        nb_channels = len(req.initial_spectrum)
+    else:
+        nb_channels = req.nb_channel
+        print(f'There are {nb_channels} channels propagating')
     power_mode = equipment['Span']['default'].power_mode
     print('\n'.join([f'Power mode is set to {power_mode}',
                      f'=> it can be modified in eqpt_config.json - Span']))
