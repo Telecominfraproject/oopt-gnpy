@@ -328,6 +328,7 @@ def compute_constrained_path(network, req):
 
     return total_path
 
+
 def ref_carrier(req, equipment):
     ref_carrier = {key: getattr(equipment['SI']['default'], key) for key in
                 ['f_min','f_max', 'baud_rate', 'spacing', 'roll_off', 'tx_osnr']}
