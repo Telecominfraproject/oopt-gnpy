@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bbfb5f5_ec540e12",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-26T12:11:26Z",
+      "side": 1,
+      "message": "I have noticed this default slot width definition: what is its impact ? may I force the slot width to the trx min spacing instead (when it is defined) ? is it necessary to be a multiple of 12.5GHz ?",
+      "revId": "4f84d5231368a6bb26529859dd830a1521eaac24",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
