@@ -27,7 +27,7 @@ from collections import namedtuple
 from collections.abc import Sized
 
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, psd2powerdbm, watt2dbm, psdmwperghz, \
-    powerdbm2psdmwperghz
+    powerdbm2psdmwperghz, per_baudrate_summary
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational, \
     SimParams
 from gnpy.core.science_utils import NliSolver, RamanSolver
@@ -104,10 +104,10 @@ class Transceiver(_Node):
             self.baud_rate = spectral_info.baud_rate
             ratio_01nm = lin2db(12.5e9 / self.baud_rate)
             # set raw values to record original calculation, before update_snr()
-            self.raw_osnr_ase = lin2db(spectral_info.signal/spectral_info.ase)
+            self.raw_osnr_ase = lin2db(spectral_info.signal / spectral_info.ase)
             self.raw_osnr_ase_01nm = self.raw_osnr_ase - ratio_01nm
-            self.raw_osnr_nli = lin2db(spectral_info.signal/spectral_info.nli)
-            self.raw_snr = lin2db(spectral_info.signal/(spectral_info.ase+spectral_info.nli))
+            self.raw_osnr_nli = lin2db(spectral_info.signal / spectral_info.nli)
+            self.raw_snr = lin2db(spectral_info.signal / (spectral_info.ase + spectral_info.nli))
             self.raw_snr_01nm = self.raw_snr - ratio_01nm
 
             self.osnr_ase = self.raw_osnr_ase
@@ -156,19 +156,19 @@ class Transceiver(_Node):
         if self.snr is None or self.osnr_ase is None:
             return f'{type(self).__name__} {self.uid}'
 
-        snr = round(mean(self.snr), 2)
-        osnr_ase = round(mean(self.osnr_ase), 2)
-        osnr_ase_01nm = round(mean(self.osnr_ase_01nm), 2)
-        snr_01nm = round(mean(self.snr_01nm), 2)
+        snr = per_baudrate_summary(self.snr, self.baud_rate)
+        osnr_ase = per_baudrate_summary(self.osnr_ase, self.baud_rate)
+        osnr_ase_01nm = per_baudrate_summary(self.osnr_ase_01nm, self.baud_rate)
+        snr_01nm = per_baudrate_summary(self.snr_01nm, self.baud_rate)
         cd = mean(self.chromatic_dispersion)
         pmd = mean(self.pmd)
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
 
-                          f'  OSNR ASE (0.1nm, dB):      {osnr_ase_01nm:.2f}',
-                          f'  OSNR ASE (signal bw, dB):  {osnr_ase:.2f}',
-                          f'  SNR total (signal bw, dB): {snr:.2f}',
-                          f'  SNR total (0.1nm, dB):     {snr_01nm:.2f}',
+                          f'  OSNR ASE (0.1nm, dB):      {osnr_ase_01nm}',
+                          f'  OSNR ASE (signal bw, dB):  {osnr_ase}',
+                          f'  SNR total (signal bw, dB): {snr}',
+                          f'  SNR total (0.1nm, dB):     {snr_01nm}',
                           f'  CD (ps/nm):                {cd:.2f}',
                           f'  PMD (ps):                  {pmd:.2f}'])
 
@@ -197,7 +197,6 @@ class Roadm(_Node):
         # element contains the two types of equalisation parameters, but only one is not None or enpty
         self.target_psd_out_mWperGHz = self.params.target_psd_out_mWperGHz
         self.per_degree_pch_psd = self.params.per_degree_pch_psd
-        self.reference_baud_rate = 32e9 * 1.15
 
     @property
     def to_json(self):
@@ -227,8 +226,10 @@ class Roadm(_Node):
             return f'{type(self).__name__} {self.uid}'
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
-                          f'  effective loss (dB):  {self.ref_effective_loss:.2f}',
-                          f'  pch out (dBm):        {self.ref_pch_out_dbm!r}'])   # (ref channel)
+                          f'  reference loss (dB):  {self.ref_effective_loss:.2f}',
+                          f'  per channel loss (dB): {per_baudrate_summary(self.per_ch_loss, self.baud_rate)}',
+                          f'  reference ch out power (dBm): {self.ref_pch_out_dbm:.2f}',
+                          f'  per channel out power (dBm):  {per_baudrate_summary(self.pch_out_dbm, self.baud_rate)}'])
 
     def propagate(self, spectral_info, degree):
         # pin_target and loss are read from eqpt_config.json['Roadm']
@@ -277,11 +278,14 @@ class Roadm(_Node):
         pref = spectral_info.pref
         delta_channel_power = pref.p_span0_per_channel - pref.p_span0
         delta_power = lin2db(input_power * 1e3) - (per_degree_pch + delta_channel_power)
+        self.per_ch_loss = delta_power
+        self.baud_rate = spectral_info.baud_rate
         attenuation = 1/db2lin(delta_power)
         spectral_info.signal *= attenuation
         spectral_info.nli *= attenuation
         spectral_info.ase *= attenuation
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
+        self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
 
     def update_pref(self, spectral_info):
         """ updates the value in Pref in spectral_info. p_span0 and p_span0_per_channel are unchanged, only p_spani
@@ -418,7 +422,7 @@ class Fiber(_Node):
                           f'  total loss (dB):             {self.loss:.2f}',
                           f'  (includes conn loss (dB) in: {self.params.con_in:.2f} out: {self.params.con_out:.2f})',
                           f'  (conn loss out includes EOL margin defined in eqpt_config.json)',
-                          f'  pch out (dBm): {self.pch_out_db!r}'    # (ref channel)',
+                          f'  pch out (dBm): {per_baudrate_summary(self.pch_out_dbm, self.baud_rate)}'
                           # f'  power out (dBm): {lin2db(self.output_total_power * 1e3):.2f}'
                           ])
 
@@ -511,6 +515,8 @@ class Fiber(_Node):
         spectral_info.signal *= attenuation_out
         spectral_info.nli *= attenuation_out
         spectral_info.ase *= attenuation_out
+        self.baud_rate = spectral_info.baud_rate
+        self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
 
     def update_pref(self, spectral_info):
         self.pch_out_db = round(lin2db(mean(spectral_info.signal) * 1e3), 2)
@@ -577,6 +583,8 @@ class RamanFiber(Fiber):
         spectral_info.signal *= attenuation_out
         spectral_info.nli *= attenuation_out
         spectral_info.ase *= attenuation_out
+        self.baud_rate = spectral_info.baud_rate
+        self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
 
     def update_pref(self, spectral_info):
         loss = self._pch_in - round(lin2db(mean(spectral_info.signal) * 1e3), 2)
@@ -654,7 +662,7 @@ class Edfa(_Node):
                           f'  Power Out (dBm):        {self.pout_db:.2f}',
                           f'  Delta_P (dB):           {self.delta_p!r}',
                           f'  target pch (dBm):       {self.target_pch_out_db!r}',
-                          f'  effective pch (dBm):    {self.effective_pch_out_db!r}',
+                          f'  effective pch (dBm):    {per_baudrate_summary(self.pch_out_dbm, self.baud_rate)}',
                           f'  output VOA (dB):        {self.out_voa:.2f}'])
 
     def interpol_params(self, spectral_info):
@@ -928,6 +936,8 @@ class Edfa(_Node):
         spectral_info.signal *= gains * attenuation
         spectral_info.nli *= gains * attenuation
         spectral_info.ase *= gains * attenuation
+        self.baud_rate = spectral_info.baud_rate
+        self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
 
     def update_pref(self, spectral_info):
         self.pch_out_db = round(lin2db(mean(spectral_info.signal) * 1e3), 2)
