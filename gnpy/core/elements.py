@@ -242,10 +242,8 @@ class Roadm(_Node):
         # TODO maybe add a minimum loss for the ROADM
         # check equalization: if ref_pch_out_dbm is defined then use it
         # change per_degree_pch from scalar to an array / add a ref_power, ref_baudrate ...
-        # TEMPORAIRE
-        ref_baud_rate = 32e9
-        ref_roll_off = 0.15
-        # TODO ajouter le canal de ref du design dans le conteneur Pref
+        ref_baud_rate = spectral_info.pref.ref_carrier['baud_rate']
+        ref_roll_off = spectral_info.pref.ref_carrier['roll_off']
         if self.target_pch_out_dbm:
             per_degree_pch = self.per_degree_pch_out_db[degree] \
                 if degree in self.per_degree_pch_out_db else self.target_pch_out_dbm
