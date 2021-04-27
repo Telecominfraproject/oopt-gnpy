@@ -1,0 +1,23 @@
+{
+      "spectrum":[
+            {
+            "f_min": 191.4e12,
+            "f_max":193.1e12,
+            "baud_rate": 32e9,
+            "slot_width": 50e9,
+            "delta_pdb": 0,
+            "roll_off": 0.15,
+            "tx_osnr": 40,
+            "label": "mode_1"
+            },
+            {
+            "f_min": 193.1625e12,
+            "f_max":195e12,
+            "baud_rate": 64e9,
+            "slot_width": 75e9,
+            "roll_off": 0.15,
+            "tx_osnr": 40,
+            "label": "mode_2"
+            }
+      ]
+}

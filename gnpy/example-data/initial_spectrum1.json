@@ -1,0 +1,12 @@
+{
+      "spectrum":[
+            {
+            "f_min": 191.35e12,
+            "f_max": 195.1e12,
+            "baud_rate": 32e9,
+            "slot_width": 50e9,
+            "roll_off": 0.15,
+            "tx_osnr": 40
+            }
+      ]
+}
