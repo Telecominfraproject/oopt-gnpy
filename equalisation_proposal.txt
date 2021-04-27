@@ -1,0 +1,193 @@
+New mixed rate equalization process
+
+propagation case:
+eqpt config defines the policy for the whole network:
+default is equal power spectral density (psd)
+psd is computed using baudrate*(1+roll_off) for the bandwidth
+"Roadm":[{
+    "target_pch_out_db": -20,
+    xor "target_psd_out_mWperGHz": 2.717e-4,
+    "add_drop_osnr": 38,
+    "pmd": 0,
+    ...}]
+
+-> if target_pch_out is present in a roadm, it overrides the general default for this roadm equalization
+-> if target_psd_out is present in a roadm, it overrides the general default for this roadm equalization
+only one of the two can be present in a roadm
+
+the same per_degree dictionnary is added to handle per_degre psd
+similarly to target_pch_out, if a per_degree_psd is defined it overrides the general(network) or general(roadm) settings
+
+eg:
+    {
+      "uid": "roadm A",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "per_degree_pch_out_db": {
+          "edfa in roadm A to toto": -18,
+        }
+      }
+    },
+    means that target power is -20 dBm for all degrees except "edfa in roadm A to toto" where it is -18dBm
+
+    {
+      "uid": "roadm A",
+      "type": "Roadm",
+      "params": {
+        "target_psd_out_mWperGHz": 2.717e-4,
+        "per_degree_psd_out_mWperGHz": {
+          "edfa in roadm A to toto": 4.3e-4,
+        }
+      }
+    },
+
+means that target psd is -2.717e-4 mw/GHz for all degrees except "edfa in roadm A to toto" where it is 4.3e-4.
+
+mixing is permited as long as no same degree are listed in the dict
+    {
+      "uid": "roadm A",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "per_degree_psd_out_mWperGHz": {
+          "edfa in roadm A to toto": 4.3e-4,
+        }
+      }
+    },
+means that roadm A uses power equalization on all its degrees except "edfa in roadm A to toto" where it is power_sectral density
+
+------------------
+initial spectrum mix
+
+initial spectrum mix can be defined by user in a json file composed of a list of {"f_min", "f_max", "baud_rate", "spacing" "power_dbm", "roll_off", "tx_osnr"}. these fmin-fmax should not overlap.
+this file will be used  with transmission main only. (hard to define a mix in case of planning)
+
+if the user does not set power in ths file, it is assumed that the default equalisation is used (PSD).
+if the user sets initial powers, this mix of power has to be used (p_span0_per_channel refers to this)
+if p_span0_per_channel is empty, the equalization of the roadm is used
+
+----------------------
+
+elements printing:
+
+current prints are average values considering same channels.
+with mixed channels, printings must be adapted to show perf per partition
+so, if no partition defined by user : same prints as today (backward compatibility)
+if partition, then, per channel powers, SNR and OSNR should be shown per baudrate
+
+----------------------
+
+power sweep behaviour in ROADMs:
+expected behaviour is that per degree power / psd is not changed by power sweep or change of power of a
+propagation request:
+	target power is the result of the roadm design and is the best (highest) power that can be supported by 
+	roadms given the add power range.  the rationale behind that is that to have best OSNR at booster, it is
+	required to have the highest possible power. but this power is constrained by add/drop and express stages
+	loss and power out limitation of the amps in these stages. So it is probably not possible to increase it
+	for limitations issues and not desirable to decrease it for performance issues.
+
+	(as a side remark, given the current behaiour, I think that renaming target_pch_out_db into 
+	target_pch_out_dbm would make sense)
+so current behaviour when we apply power sweep or --pow option, is that this does not affect the power out
+from the ROADM. only the target power at the output of amps
+
+with PSD, the same rule applies: power sweep or --pow option can be used to change the propagated reference 
+power/psd. the proposed behaviour depends on the OMS add roadm:
+- if roadm degree equalization is power, then same behaviour as today
+- if roadm degree equallization is psd, then 
+      o --pow  is interpreted as the power of the reference channel defined in SI container in eqpt_config
+        and its psd is used for propagation.
+        c.power_psd = db2lin(pow/(SI.baud_rate *(1+ SI.roll_off))
+
+      o power sweep is interpreted in the same way with a translation on carriers
+eg :
+suppose that we have SI in eqpt_config:
+      "SI":[{
+            "f_min": 191.3e12,
+            "baud_rate": 32e9,
+            "f_max":195.1e12,
+            "spacing": 50e9,
+            "power_dbm": 0,
+            "power_range_db": [-1,1,1],
+            "roll_off": 0.15,
+            "tx_osnr": 40,
+            "sys_margins": 2
+            }],
+and psd equalization in roadms
+    {
+      "uid": "roadm A",
+      "type": "Roadm",
+      "params": {
+        "target_psd_out_mWperGHz": 2.717e-4,
+      }
+    },
+    {
+      "uid": "edfa in roadm A to toto",
+      "type": "Edfa",
+      "type_variety": "standrd_medium_gain",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 2,
+        "tilt_target": 0.0,
+        "out_voa": 0
+      }
+    },
+then we use the power steps of the power_range_db to compute resulting powers of each carrier out of the amp:
+c.power_db = lin2db(target_psd_out_mWperGHz * c.baud_rate *(1+ roll_off))
+sweep = c.pwer_db + delta_power for delta_power in power_range_db
+assuming one 32Gbaud and one 64Gbaud carriers:
+                32 Gbaud        64 Gbaud
+roadmA out pow
+(sig+ase+nli)   -20dBm         -17dBm
+
+edfa out pow
+range[
+	-1          1dBm            4dBm
+	 0          2dBm            5dBm
+	 1          3dBm            6dBm
+]
+
+
+-------------------------
+
+design case:
+design is performed based on the reference channel set defined in SI in equipement config.
+(independantly of equalization process)
+      "SI":[{
+            "f_min": 191.3e12,
+            "baud_rate": 32e9,
+            "f_max":195.1e12,
+            "spacing": 50e9,
+            "power_dbm": -1,
+            "power_range_db": [0,0,1],
+            "roll_off": 0.15,
+            "tx_osnr": 40,
+            "sys_margins": 2
+            }],
+
+delta_p values of amps refer to this reference channel, but are applicable for any baudrate during propagation
+eg 
+    {
+      "uid": "roadm A",
+      "type": "Roadm",
+      "params": {
+        "target_psd_out_mWperGHz": 2.717e-4,
+      }
+    },
+    {
+      "uid": "edfa in roadm A to toto",
+      "type": "Edfa",
+      "type_variety": "standard_medium_gain",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 2,
+        "tilt_target": 0.0,
+        "out_voa": 0
+      }
+    },
+
+then outpower for a 64 Gbaud carrier will be +4 = 
+= lin2db( db2lin(power_dbm + delta_p)/(baud_rate*(1+roll_off)) * c.baudrate*(1+c.roll_off))
+= lin2db( db2lin(power_dbm + delta_p) * 2) if roll-off is the same as reference one
+= powerdbm + delta + 3 = 4 dBm
