@@ -90,7 +90,7 @@ class RoadmParams(Parameters):
         if self.target_pch_out_db is not None and self.target_psd_out_mWperGHz is not None:
             raise ParametersError('ROADM config contains per channel power and psd. Please choose only one', kwargs)
         self.per_degree_pch_out_db = kwargs['per_degree_pch_out_db'] if 'per_degree_pch_out_db' in kwargs else {}
-        self.per_degree_pch_psd = kwargs['per_degree_pch_psd'] if 'per_degree_pch_psd' in kwargs else {}
+        self.per_degree_pch_psd = kwargs['per_degree_psd_out_mWperGHz'] if 'per_degree_psd_out_mWperGHz' in kwargs else {}
         try:
             self.add_drop_osnr = kwargs['add_drop_osnr']
             self.pmd = kwargs['pmd']
