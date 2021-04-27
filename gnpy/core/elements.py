@@ -203,14 +203,16 @@ class Roadm(_Node):
     def to_json(self):
         if self.ref_pch_out_dbm:
             equalisation, value = 'target_pch_out_db', self.ref_pch_out_dbm
+            perdegree, perdegreevalue = 'per_degree_pch_out_db', self.per_degree_pch_out_db
         if self.target_psd_out_mWperGHz:
             equalisation, value = 'target_psd_out_mWperGHz', self.target_psd_out_mWperGHz
+            perdegree, perdegreevalue = 'per_degree_psd_out_mWperGHz', self.per_degree_pch_psd
         return {'uid': self.uid,
                 'type': type(self).__name__,
                 'params': {
                     equalisation: value,
                     'restrictions': self.restrictions,
-                    'per_degree_pch_out_db': self.per_degree_pch_out_db
+                    perdegree: perdegreevalue
                     },
                 'metadata': {
                     'location': self.metadata['location']._asdict()
@@ -240,8 +242,10 @@ class Roadm(_Node):
         # TODO maybe add a minimum loss for the ROADM
         # check equalization: if ref_pch_out_dbm is defined then use it
         # change per_degree_pch from scalar to an array / add a ref_power, ref_baudrate ...
+        # TEMPORAIRE
         ref_baud_rate = 32e9
         ref_roll_off = 0.15
+        # TODO ajouter le canal de ref du design dans le conteneur Pref
         if self.target_pch_out_dbm:
             per_degree_pch = self.per_degree_pch_out_db[degree] \
                 if degree in self.per_degree_pch_out_db else self.target_pch_out_dbm
