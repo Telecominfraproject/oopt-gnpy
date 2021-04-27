@@ -36,7 +36,7 @@ class Channel(namedtuple('Channel', 'channel_number frequency baud_rate slot_wid
     """
 
 
-class Pref(namedtuple('Pref', 'p_span0, p_spani, p_span0_per_channel')):
+class Pref(namedtuple('Pref', 'p_span0, p_spani, p_span0_per_channel, ref_carrier')):
     """noiseless reference power in dBm:
     p_span0: inital target carrier power for a reference channel defined by user
     p_spani: carrier power after element i for a reference channel defined by user
@@ -179,7 +179,7 @@ class SpectralInformation(object):
         chromatic_dispersion = append(self.chromatic_dispersion, si.chromatic_dispersion)
         pmd = append(self.pmd, si.pmd)
         pref = Pref(self.pref.p_span0, self.pref.p_spani,
-                    append(self.pref.p_span0_per_channel, si.pref.p_span0_per_channel))
+                    append(self.pref.p_span0_per_channel, si.pref.p_span0_per_channel), self.pref.ref_carrier)
         try:
             si = SpectralInformation(frequency=frequency, slot_width=slot_width,
                                      signal=signal, nli=nli, ase=ase,
@@ -262,7 +262,7 @@ def create_arbitrary_spectral_information(frequency, slot_width=None, signal=Non
     return si
 
 
-def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing):
+def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing, ref_carrier=None):
     """ Creates a fixed slot width spectral information with flat power.
     all arguments are scalar values"""
     nb_channel = automatic_nch(f_min, f_max, spacing)
@@ -273,7 +273,7 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, 
 
     si = create_arbitrary_spectral_information(
         frequency, slot_width=spacing, signal=power, baud_rate=baud_rate,
-        roll_off=roll_off, ref_power=Pref(p_span0, p_spani, p_span0_per_channel))
+        roll_off=roll_off, ref_power=Pref(p_span0, p_spani, p_span0_per_channel, ref_carrier))
     return si
 
 
@@ -291,5 +291,5 @@ def use_initial_spectrum(initial_spectrum, ref_carrier):
     for freq, spect in initial_spectrum.items():
         p_span0_per_channel.append(watt2dbm(spect['power']))
     si = create_arbitrary_spectral_information(frequency=frequency, signal=signal, baud_rate=baud_rate,
-                                               roll_off=roll_off, ref_power=Pref(p_span0, p_spani, p_span0_per_channel))
+                                               roll_off=roll_off, ref_power=Pref(p_span0, p_spani, p_span0_per_channel, ref_carrier))
     return si

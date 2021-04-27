@@ -19,7 +19,7 @@ from gnpy.core.elements import Roadm
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.equipment import trx_mode_params
 from gnpy.tools.json_io import network_from_json, load_equipment, load_network, _spectrum_from_json, load_json
-from gnpy.topology.request import PathRequest, compute_constrained_path, propagate
+from gnpy.topology.request import PathRequest, compute_constrained_path, propagate, ref_carrier
 
 
 TEST_DIR = Path(__file__).parent
@@ -207,6 +207,7 @@ def test_equalization(case, deltap, target, mode, spacing):
     boosters = ['east edfa in Brest_KLA to Quimper', 'east edfa in Lorient_KMA to Loudeac',
                 'east edfa in Lannion_CAS to Stbrieuc']
     target_psd = powerdbm2psdmwperghz(target, 32e9, 0.15)
+    ref = ref_carrier(req, equipment)
     if case == 'SI':
         setattr(equipment['Roadm']['default'], 'target_pch_out_db', None)
         setattr(equipment['Roadm']['default'], 'target_psd_out_mWperGHz',
@@ -230,7 +231,7 @@ def test_equalization(case, deltap, target, mode, spacing):
             assert roadm.target_pch_out_dbm == target
     path = compute_constrained_path(network, req)
     si = create_input_spectral_information(
-        req.f_min, req.f_max, req.roll_off, req.baud_rate, req.power, req.spacing)
+        req.f_min, req.f_max, req.roll_off, req.baud_rate, req.power, req.spacing, ref_carrier=ref)
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
             si = el(si, degree=path[i+1].uid)
