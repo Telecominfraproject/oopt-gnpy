@@ -243,21 +243,7 @@ def _spectrum_from_json(json_data, equipment):
             # user defined partition power.
             part['power'] = dbm2watt(part['power_dbm'])
         else:
-            # if it does not exist, means that we apply default power of SI in node
-            if hasattr(equipment['Roadm']['default'], 'target_pch_out_db'):
-                # then use equipment SI power_dbm
-                part['power'] = dbm2watt(equipment['SI']['default'].power_dbm)
-            elif hasattr(equipment['Roadm']['default'], 'target_psd_out_mWperGHz'):
-                part['power'] = dbm2watt(
-                                    psd2powerdbm(
-                                        powerdbm2psdmwperghz(equipment['SI']['default'].power_dbm,
-                                                             equipment['SI']['default'].baud_rate,
-                                                             equipment['SI']['default'].roll_off),
-                                        part['baud_rate'],
-                                        part['roll_off']))
-            else:
-                # should never comme here, because equipment consistency is checked before
-                raise ConfigurationError('equipment Roadm is missing default equalisation')
+            part['power'] = None
         current_part_min_freq = part['f_min'] - part['spacing'] / 2   # supposes that carriers are centered on frequency
         if previous_part_max_freq <= current_part_min_freq:    # check that previous part last channel does not overlap
                                                                # on next part first channel
