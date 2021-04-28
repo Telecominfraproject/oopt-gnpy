@@ -244,15 +244,17 @@ Now propagating between trx Lannion_CAS and trx Lorient_KMA:
 
 Propagating with input power = [1;36;40m3.00 dBm[0m:
 Transceiver trx Lannion_CAS
-  OSNR ASE (0.1nm, dB):      100.00
+  OSNR ASE (0.1nm, dB):      100.0
   OSNR ASE (signal bw, dB):  95.92
   SNR total (signal bw, dB): 95.92
-  SNR total (0.1nm, dB):     100.00
+  SNR total (0.1nm, dB):     100.0
   CD (ps/nm):                0.00
   PMD (ps):                  0.00
 Roadm roadm Lannion_CAS
-  effective loss (dB):  23.00
-  pch out (dBm):        -20
+  reference loss (dB):  23.00
+  per channel loss (dB): 23.0
+  reference ch out power (dBm): -20.00
+  per channel out power (dBm):  -20.0
 Edfa east edfa in Lannion_CAS to Corlay
   type_variety:           test
   effective gain(dB):     21.18
@@ -308,11 +310,13 @@ Edfa west edfa in Lorient_KMA to Loudeac
   effective pch (dBm):    1.18
   output VOA (dB):        0.00
 Roadm roadm Lorient_KMA
-  effective loss (dB):  21.18
-  pch out (dBm):        -20
+  reference loss (dB):  21.18
+  per channel loss (dB): 21.22
+  reference ch out power (dBm): -20.00
+  per channel out power (dBm):  -20.0
 Transceiver trx Lorient_KMA
   OSNR ASE (0.1nm, dB):      24.29
-  OSNR ASE (signal bw, dB):  20.20
+  OSNR ASE (signal bw, dB):  20.2
   SNR total (signal bw, dB): 19.85
   SNR total (0.1nm, dB):     23.94
   CD (ps/nm):                2171.00
