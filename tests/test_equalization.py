@@ -19,7 +19,7 @@ from gnpy.core.elements import Roadm
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.equipment import trx_mode_params
 from gnpy.tools.json_io import network_from_json, load_equipment, load_network, _spectrum_from_json, load_json
-from gnpy.topology.request import PathRequest, compute_constrained_path, propagate, ref_carrier
+from gnpy.topology.request import PathRequest, compute_constrained_path, propagate, ref_carrier, update_spectrum_power
 
 
 TEST_DIR = Path(__file__).parent
@@ -85,6 +85,7 @@ def test_initial_spectrum(mode, spacing, power_dbm):
     if power_dbm:
         temp[0]['power_dbm'] = power_dbm
     req.initial_spectrum = _spectrum_from_json(temp, equipment)
+    update_spectrum_power(req)
     infos_actual = propagate(path, req, equipment)
     assert_array_equal(infos_expected.baud_rate, infos_actual.baud_rate)
     # assert_array_equal(infos_expected.slot_width, infos_actual.slot_width)
@@ -149,7 +150,7 @@ def ref_network():
     return network
 
 
-@pytest.mark.parametrize('deltap', [0, +2, -0.5])
+@pytest.mark.parametrize('deltap', [0, +1.2, -0.5])   # power over 1.2 saturate amp with this test: TODO add a test on this saturation
 def test_target_psd_out_mWperGHz_deltap(deltap):
     """ checks that if target_psd_out_mWperGHz is defined, delta_p of amps is correctly updated
     """
@@ -167,6 +168,7 @@ def test_target_psd_out_mWperGHz_deltap(deltap):
             }
            ]
     req.initial_spectrum = _spectrum_from_json(temp, equipment)
+    update_spectrum_power(req)
     path = compute_constrained_path(network, req)
     infos_actual = propagate(path, req, equipment)
     # check that gain of booster is changed accordingly whereas gain of preamp and ila is not (no saturation case)
@@ -178,6 +180,7 @@ def test_target_psd_out_mWperGHz_deltap(deltap):
         actual_amp = next(n for n in network.nodes() if n.uid == amp)
         expected_gain = expected_amp.pout_db - expected_amp.pin_db
         actual_gain = actual_amp.pout_db - actual_amp.pin_db
+        print(actual_amp)
         if amp in boosters:
             assert expected_gain + deltap == pytest.approx(actual_gain, rel=1e-3)
         if amp in ila_preamps:
@@ -207,7 +210,7 @@ def test_equalization(case, deltap, target, mode, spacing):
     boosters = ['east edfa in Brest_KLA to Quimper', 'east edfa in Lorient_KMA to Loudeac',
                 'east edfa in Lannion_CAS to Stbrieuc']
     target_psd = powerdbm2psdmwperghz(target, 32e9, 0.15)
-    ref = ref_carrier(req, equipment)
+    ref = ref_carrier(req.power, equipment)
     if case == 'SI':
         setattr(equipment['Roadm']['default'], 'target_pch_out_db', None)
         setattr(equipment['Roadm']['default'], 'target_psd_out_mWperGHz',
@@ -241,3 +244,4 @@ def test_equalization(case, deltap, target, mode, spacing):
         else:
             si = el(si)
         print(el.uid)
+

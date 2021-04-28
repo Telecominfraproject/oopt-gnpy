@@ -329,11 +329,20 @@ def compute_constrained_path(network, req):
     return total_path
 
 
-def ref_carrier(req, equipment):
+def ref_carrier(req_power, equipment):
     ref_carrier = {key: getattr(equipment['SI']['default'], key) for key in
                 ['f_min','f_max', 'baud_rate', 'spacing', 'roll_off', 'tx_osnr']}
-    ref_carrier['power'] = req.power
+    ref_carrier['power'] = dbm2watt(equipment['SI']['default'].power_dbm)
+    ref_carrier['req_power'] = req_power
     return ref_carrier
+
+
+def update_spectrum_power(req):
+    """
+    """
+    for spectrum in req.initial_spectrum.values():
+        if spectrum['power'] == None:
+            spectrum['power'] = req.power
 
 
 def propagate(path, req, equipment):
@@ -343,7 +352,7 @@ def propagate(path, req, equipment):
         # complete powers if they miss in initial spectrum
         # if power is not in partition, use the SI one + ratio of equalization in ROADM
         # rajouter un flag, pour ne pas avoir de ref per channel, pour pouvoir appliquer l'egalisation des roadms
-        si = use_initial_spectrum(req.initial_spectrum, ref_carrier=ref_carrier(req, equipment))
+        si = use_initial_spectrum(req.initial_spectrum, ref_carrier=ref_carrier(req.power, equipment))
     else:
         si = create_input_spectral_information(
             req.f_min, req.f_max, req.roll_off, req.baud_rate,
@@ -389,12 +398,12 @@ def propagate_and_optimize_mode(path, req, equipment):
                     if e['baud_rate'] is None:
                         e['baud_rate'] = this_br
                         e['roll_off'] = equipment['SI']['default'].roll_off    # TODO TEMPORARY ! need to change the function !
-                spc_info = use_initial_spectrum(req.initial_spectrum, ref_carrier=ref_carrier(req, equipment))
+                spc_info = use_initial_spectrum(req.initial_spectrum, ref_carrier=ref_carrier(req.power, equipment))
             else:
                 spc_info = create_input_spectral_information(req.f_min, req.f_max,
                                                              equipment['SI']['default'].roll_off,
                                                              this_br, req.power, req.spacing,
-                                                             ref_carrier=ref_carrier(req, equipment))
+                                                             ref_carrier=ref_carrier(req.power, equipment))
             for i, el in enumerate(path):
                 if isinstance(el, Roadm):
                     spc_info = el(spc_info, degree=path[i+1].uid)
