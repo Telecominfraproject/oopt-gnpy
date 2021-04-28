@@ -519,9 +519,10 @@ class Fiber(_Node):
         self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
 
     def update_pref(self, spectral_info):
+        loss = self._pch_in - round(lin2db(mean(spectral_info.signal) * 1e3), 2)
         self.pch_out_db = round(lin2db(mean(spectral_info.signal) * 1e3), 2)
         spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
-                                                         p_spani=spectral_info.pref.p_spani - self.loss)
+                                                         p_spani=spectral_info.pref.p_spani - loss)
 
     def __call__(self, spectral_info):
         self._pch_in = round(lin2db(mean(spectral_info.signal) * 1e3), 2)
@@ -585,12 +586,6 @@ class RamanFiber(Fiber):
         spectral_info.ase *= attenuation_out
         self.baud_rate = spectral_info.baud_rate
         self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
-
-    def update_pref(self, spectral_info):
-        loss = self._pch_in - round(lin2db(mean(spectral_info.signal) * 1e3), 2)
-        self.pch_out_db = round(lin2db(mean(spectral_info.signal) * 1e3), 2)
-        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
-                                                         p_spani=spectral_info.pref.p_spani - loss)
 
 
 class Edfa(_Node):
