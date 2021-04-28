@@ -11,7 +11,7 @@ Transceiver Site_A
   OSNR ASE (0.1nm, dB):      40.00
   OSNR ASE (signal bw, dB):  35.92
   SNR total (signal bw, dB): 35.92
-  SNR total (0.1nm, dB):     40.00
+  SNR total (0.1nm, dB):     40.0
   CD (ps/nm):                0.00
   PMD (ps):                  0.00
 Fiber          Span1
@@ -36,7 +36,7 @@ Edfa Edfa1
   effective pch (dBm):    -2.0
   output VOA (dB):        0.00
 Transceiver Site_B
-  OSNR ASE (0.1nm, dB):      33.30
+  OSNR ASE (0.1nm, dB):      33.3
   OSNR ASE (signal bw, dB):  29.21
   SNR total (signal bw, dB): 27.09
   SNR total (0.1nm, dB):     31.17
