@@ -27,7 +27,7 @@ from gnpy.core.utils import db2lin, lin2db, automatic_nch
 from gnpy.topology.request import (ResultElement, jsontocsv, compute_path_dsjctn, requests_aggregation,
                                    BLOCKING_NOPATH, correct_json_route_list,
                                    deduplicate_disjunctions, compute_path_with_disjunction,
-                                   PathRequest, compute_constrained_path, propagate)
+                                   PathRequest, compute_constrained_path, propagate, update_spectrum_power)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.json_io import load_equipment, load_network, load_json, load_requests, save_network, \
                                requests_from_json, disjunctions_from_json, save_json, load_initial_spectrum,\
@@ -233,6 +233,13 @@ def transmission_main_example(args=None):
         power_range = [0]
     for dp_db in power_range:
         req.power = db2lin(pref_ch_db + dp_db) * 1e-3
+        # if initial spectrum did not contain any power, now we need to use this one.
+        # note the initial power defines a differential wrt req.power so that if req.power is set to 2mW (3dBm)
+        # and initial spectrum was set to 0, this sets a initial per channel delta power to -3dB, so that 
+        # whatever the equalization, -3 dB is applied on all channels (ie initial power in initial spectrum pre-empts
+        # pow option)
+        if hasattr(req, 'initial_spectrum'):
+            update_spectrum_power(req)
         if power_mode:
             print(f'\nPropagating with input power = {ansi_escapes.cyan}{lin2db(req.power*1e3):.2f} dBm{ansi_escapes.reset}:')
         else:

@@ -256,7 +256,7 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
     path = compute_constrained_path(network, req)
     si = create_input_spectral_information(
         req.f_min, req.f_max, req.roll_off, req.baud_rate,
-        req.power, req.spacing, ref_carrier(req, eqpt))
+        req.power, req.spacing, ref_carrier(req.power, eqpt))
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
             min_power_in_roadm = min(si.signal + si.ase + si.nli)

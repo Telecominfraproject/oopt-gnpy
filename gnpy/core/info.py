@@ -286,8 +286,8 @@ def use_initial_spectrum(initial_spectrum, ref_carrier):
     signal = [s['power'] for s in initial_spectrum.values()]
     roll_off = [s['roll_off'] for s in initial_spectrum.values()]
     baud_rate = [s['baud_rate'] for s in initial_spectrum.values()]
-    p_span0 = watt2dbm(ref_carrier['power'])
-    p_spani = watt2dbm(ref_carrier['power'])
+    p_span0 = watt2dbm(ref_carrier['req_power'])
+    p_spani = watt2dbm(ref_carrier['req_power'])
     p_span0_per_channel = []
     for freq, spect in initial_spectrum.items():
         p_span0_per_channel.append(watt2dbm(spect['power']))
