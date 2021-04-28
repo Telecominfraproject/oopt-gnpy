@@ -277,3 +277,41 @@ def test_equalization(case, deltap, target, mode, slot_width):
         else:
             si = el(si)
         print(el.uid)
+
+
+@pytest.mark.parametrize('req_power', [0, 2, -1.5])
+def test_power_option(req_power):
+    """check that --po option adds correctly power with spectral information
+    """
+    equipment = load_equipment(EQPT_FILENAME)
+    setattr(equipment['Roadm']['default'], 'target_pch_out_db', None)
+    setattr(equipment['Roadm']['default'], 'target_psd_out_mWperGHz', power_dbm_to_psd_mw_ghz(-20, 32e9))
+    network = net_setup(equipment)
+    req = create_voyager_req(equipment, 'trx Brest_KLA', 'trx Vannes_KBE', False, ['trx Vannes_KBE'], ['STRICT'],
+                             'mode 1', 50e9, req_power)
+    path = compute_constrained_path(network, req)
+    infos_expected = propagate(path, req, equipment)
+
+    temp = [{
+             "f_min": 191.35e12,     # align f_min , f_max on Voyager f_min, f_max and not SI !
+             "f_max": 196.1e12,
+             "baud_rate": req.baud_rate,
+             "slot_width": 50e9,
+             "roll_off": 0.15,
+             "tx_osnr": 40
+            }]
+    req.initial_spectrum = _spectrum_from_json(temp)
+    update_spectrum_power(req)
+    network2 = net_setup(equipment)
+    path2 = compute_constrained_path(network2, req)
+    infos_actual = propagate(path2, req, equipment)
+    assert_array_equal(infos_expected.baud_rate, infos_actual.baud_rate)
+    assert_array_equal(infos_expected.slot_width, infos_actual.slot_width)
+    assert_array_equal(infos_expected.signal, infos_actual.signal)
+    assert_array_equal(infos_expected.nli, infos_actual.nli)
+    assert_array_equal(infos_expected.ase, infos_actual.ase)
+    assert_array_equal(infos_expected.roll_off, infos_actual.roll_off)
+    assert_array_equal(infos_expected.chromatic_dispersion, infos_actual.chromatic_dispersion)
+    assert_array_equal(infos_expected.pmd, infos_actual.pmd)
+    assert_array_equal(infos_expected.channel_number, infos_actual.channel_number)
+    assert_array_equal(infos_expected.number_of_channels, infos_actual.number_of_channels)
