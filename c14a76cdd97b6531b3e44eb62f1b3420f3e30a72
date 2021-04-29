@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f92af23b_5b26faf7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-04-29T14:48:10Z",
+      "side": 1,
+      "message": "I read through this a number of items, looked at the places where this is used, and I\u0027m not sure if this is a correct fix. The comment in the function body does not match the function\u0027s new behavior once this is applied.\n\nIt would help me if you can describe in plain English how this thing is supposed to behave. Should it only return Fused and Fiber node types? It should keep doing that while the next (or prev) node fulfills that property, right?",
+      "revId": "c14a76cdd97b6531b3e44eb62f1b3420f3e30a72",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
