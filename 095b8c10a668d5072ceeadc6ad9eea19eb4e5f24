@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "038ffa41_9b490854",
+        "filename": "tests/data/bugfixiteratortopo.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-04-30T14:35:11Z",
+      "side": 1,
+      "message": "thanks. https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/515620",
+      "parentUuid": "12bcf42a_806bd73c",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 221,
+        "endChar": 6
+      },
+      "revId": "095b8c10a668d5072ceeadc6ad9eea19eb4e5f24",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "a1877293_0e01e576",
         "filename": "tests/test_network_functions.py",
         "patchSetId": 2
