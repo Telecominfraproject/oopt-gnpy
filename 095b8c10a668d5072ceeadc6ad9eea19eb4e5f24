@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "12bcf42a_806bd73c",
+        "filename": "tests/data/bugfixiteratortopo.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-30T14:23:45Z",
+      "side": 1,
+      "message": "No, I played a bit on this topo before uploading it and forgot this one. we can remove it. And indeed I prefer to have an exception raised for the unconnected fused , thanks !",
+      "parentUuid": "5b83183d_92b8b284",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 221,
+        "endChar": 6
+      },
+      "revId": "095b8c10a668d5072ceeadc6ad9eea19eb4e5f24",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "a1877293_0e01e576",
@@ -49,6 +73,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "9c3d0506_79966394",
+        "filename": "tests/test_network_functions.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-30T14:23:45Z",
+      "side": 1,
+      "message": "OK!",
+      "parentUuid": "a1877293_0e01e576",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 3
+      },
+      "revId": "095b8c10a668d5072ceeadc6ad9eea19eb4e5f24",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "225a2251_db2865b7",
         "filename": "tests/test_network_functions.py",
         "patchSetId": 2
@@ -60,6 +108,24 @@
       "writtenOn": "2021-04-30T14:04:14Z",
       "side": 1,
       "message": "I\u0027ve changed this to a parametrized function via pytest; that way the test suite prints out what node failed the test. I\u0027ve also changed some values because I think that some of the fused nodes were not handled correctly -- see the updated commit message.",
+      "revId": "095b8c10a668d5072ceeadc6ad9eea19eb4e5f24",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5db294ea_832ac1f3",
+        "filename": "tests/test_network_functions.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-30T14:23:45Z",
+      "side": 1,
+      "message": "Good catch ! I did not see that Fused 7 was not accounted correctly, thanks",
+      "parentUuid": "225a2251_db2865b7",
       "revId": "095b8c10a668d5072ceeadc6ad9eea19eb4e5f24",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }

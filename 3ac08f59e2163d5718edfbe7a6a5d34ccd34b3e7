@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "257eb8ee_6d2520c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-30T14:23:45Z",
+      "side": 1,
+      "message": "Thanks! This improves a lot the readability",
+      "revId": "3ac08f59e2163d5718edfbe7a6a5d34ccd34b3e7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
