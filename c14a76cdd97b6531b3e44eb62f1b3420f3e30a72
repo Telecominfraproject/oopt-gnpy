@@ -51,6 +51,24 @@
       "message": "Thanks for reviewing !",
       "revId": "c14a76cdd97b6531b3e44eb62f1b3420f3e30a72",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b70b2ce_5ff5ae81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-30T07:58:20Z",
+      "side": 1,
+      "message": "I have an example file that shows that bug. I will provide a test with it.",
+      "parentUuid": "b246eed7_c35b0249",
+      "revId": "c14a76cdd97b6531b3e44eb62f1b3420f3e30a72",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
