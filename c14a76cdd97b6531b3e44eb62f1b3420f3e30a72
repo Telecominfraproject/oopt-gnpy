@@ -69,6 +69,24 @@
       "parentUuid": "b246eed7_c35b0249",
       "revId": "c14a76cdd97b6531b3e44eb62f1b3420f3e30a72",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b57d59a_60caa788",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-04-30T14:04:14Z",
+      "side": 1,
+      "message": "Thanks a lot. I\u0027ve changed the code some more, see my latest push.",
+      "parentUuid": "6b70b2ce_5ff5ae81",
+      "revId": "c14a76cdd97b6531b3e44eb62f1b3420f3e30a72",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }

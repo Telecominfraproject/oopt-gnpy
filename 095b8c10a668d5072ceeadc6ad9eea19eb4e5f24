@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b83183d_92b8b284",
+        "filename": "tests/data/bugfixiteratortopo.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-04-30T14:04:14Z",
+      "side": 1,
+      "message": "This element is not connected to the rest of the topology. Is that on purpose, Esther?",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 221,
+        "endChar": 6
+      },
+      "revId": "095b8c10a668d5072ceeadc6ad9eea19eb4e5f24",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1877293_0e01e576",
+        "filename": "tests/test_network_functions.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-04-30T14:04:14Z",
+      "side": 1,
+      "message": "I\u0027ve changed this to our standard header. Author info and such are tracked in git.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 3
+      },
+      "revId": "095b8c10a668d5072ceeadc6ad9eea19eb4e5f24",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "225a2251_db2865b7",
+        "filename": "tests/test_network_functions.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-04-30T14:04:14Z",
+      "side": 1,
+      "message": "I\u0027ve changed this to a parametrized function via pytest; that way the test suite prints out what node failed the test. I\u0027ve also changed some values because I think that some of the fused nodes were not handled correctly -- see the updated commit message.",
+      "revId": "095b8c10a668d5072ceeadc6ad9eea19eb4e5f24",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
