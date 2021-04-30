@@ -39,6 +39,30 @@
       },
       "revId": "549e04e9258ffef7ae5b3cd545b8cafc00a77325",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c12502c1_d9b53f3c",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-04-30T17:16:42Z",
+      "side": 1,
+      "message": "Like I say in the commit message, I think this makes more sense since the preamp and booster are practically always collocated with the ROADM.",
+      "parentUuid": "f5194025_1bb89441",
+      "range": {
+        "startLine": 354,
+        "startChar": 0,
+        "endLine": 355,
+        "endChar": 43
+      },
+      "revId": "549e04e9258ffef7ae5b3cd545b8cafc00a77325",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
