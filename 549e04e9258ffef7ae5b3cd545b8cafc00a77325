@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b7e4a56_a5b25896",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-04-30T14:46:47Z",
+      "side": 1,
+      "message": "I like this change, but I think it\u0027s better without that change in preamp/booster positions. Was that not a problem when you work with this patch?",
+      "revId": "549e04e9258ffef7ae5b3cd545b8cafc00a77325",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5194025_1bb89441",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-04-30T14:46:47Z",
+      "side": 1,
+      "message": "This will make the EDFA nodes overlap the ROADM node, which I think is not great.",
+      "range": {
+        "startLine": 354,
+        "startChar": 0,
+        "endLine": 355,
+        "endChar": 43
+      },
+      "revId": "549e04e9258ffef7ae5b3cd545b8cafc00a77325",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
