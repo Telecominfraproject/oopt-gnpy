@@ -156,19 +156,21 @@ def target_power(network, node, equipment):  # get_fiber_dp
     return dp
 
 
+_fiber_fused_types = (elements.Fused, elements.Fiber)
+
+
 def prev_node_generator(network, node):
     """fused spans interest:
     iterate over all predecessors while they are Fused or Fiber type"""
     try:
         prev_node = next(network.predecessors(node))
     except StopIteration:
+        if isinstance(node, elements.Transceiver):
+            return
         raise NetworkTopologyError(f'Node {node.uid} is not properly connected, please check network topology')
-    # yield and re-iterate
-    if isinstance(prev_node, elements.Fused) or isinstance(node, elements.Fused):
+    if isinstance(prev_node, _fiber_fused_types) and isinstance(node, _fiber_fused_types):
         yield prev_node
         yield from prev_node_generator(network, prev_node)
-    else:
-        StopIteration
 
 
 def next_node_generator(network, node):
@@ -177,31 +179,20 @@ def next_node_generator(network, node):
     try:
         next_node = next(network.successors(node))
     except StopIteration:
-        raise NetworkTopologyError('Node {node.uid} is not properly connected, please check network topology')
-    # yield and re-iterate
-    if isinstance(next_node, elements.Fused) or isinstance(node, elements.Fused):
+        if isinstance(node, elements.Transceiver):
+            return
+        raise NetworkTopologyError(f'Node {node.uid} is not properly connected, please check network topology')
+
+    if isinstance(next_node, _fiber_fused_types) and isinstance(node, _fiber_fused_types):
         yield next_node
         yield from next_node_generator(network, next_node)
-    else:
-        StopIteration
 
 
 def span_loss(network, node):
-    """Fused span interest:
-    return the total span loss of all the fibers spliced by a Fused node"""
+    """Total loss of a span (Fiber and Fused nodes) which contains the given node"""
     loss = node.loss if node.passive else 0
-    try:
-        prev_node = next(network.predecessors(node))
-        if isinstance(prev_node, elements.Fused):
-            loss += sum(n.loss for n in prev_node_generator(network, node))
-    except StopIteration:
-        pass
-    try:
-        next_node = next(network.successors(node))
-        if isinstance(next_node, elements.Fused):
-            loss += sum(n.loss for n in next_node_generator(network, node))
-    except StopIteration:
-        pass
+    loss += sum(n.loss for n in prev_node_generator(network, node))
+    loss += sum(n.loss for n in next_node_generator(network, node))
     return loss
 
 
