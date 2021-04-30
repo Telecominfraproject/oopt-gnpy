@@ -231,6 +231,10 @@ def transmission_main_example(args=None):
     if not power_mode:
         # power cannot be changed in gain mode
         power_range = [0]
+    if hasattr(req, 'initial_spectrum'):
+        # without deepcopy, the previous dp setting is recorded as a user defined and spectrum is not properly
+        # updated for the power sweep
+        record_intial_spectrum = req.initial_spectrum
     for dp_db in power_range:
         req.power = db2lin(pref_ch_db + dp_db) * 1e-3
         # if initial spectrum did not contain any power, now we need to use this one.
@@ -239,6 +243,7 @@ def transmission_main_example(args=None):
         # whatever the equalization, -3 dB is applied on all channels (ie initial power in initial spectrum pre-empts
         # pow option)
         if hasattr(req, 'initial_spectrum'):
+            req.initial_spectrum = deepcopy(record_intial_spectrum)
             update_spectrum_power(req)
         if power_mode:
             print(f'\nPropagating with input power = {ansi_escapes.cyan}{lin2db(req.power*1e3):.2f} dBm{ansi_escapes.reset}:')
