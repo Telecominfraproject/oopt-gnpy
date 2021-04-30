@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "929fffe7_3a6641c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-04-30T14:56:22Z",
+      "side": 1,
+      "message": "It seems that this commit has tests failing with the newly added changes on DGT. Could you please have a look ? I could not find what is the issue:\n\nI have this error: \ntests/test_amplifier.py:88: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\ngnpy/core/elements.py:645: in interpol_params\n    self.gprofile \u003d self._gain_profile(pin)\ngnpy/core/elements.py:788: in _gain_profile\n    p \u003d polyfit(self.channel_freq, self.interpol_dgt, 1)\n",
+      "revId": "f2eb365c38a8afbed2f245b766af6a4a86e722ab",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f8c32ae9_77871bca",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 2
