@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a32ab77e_5f9c5f8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-04-30T17:19:01Z",
+      "side": 1,
+      "message": "No, why would it be a problem?",
+      "parentUuid": "7b7e4a56_a5b25896",
+      "revId": "549e04e9258ffef7ae5b3cd545b8cafc00a77325",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f5194025_1bb89441",
         "filename": "gnpy/core/network.py",
         "patchSetId": 2
