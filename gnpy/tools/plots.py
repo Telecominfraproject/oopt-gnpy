@@ -28,8 +28,7 @@ def plot_baseline(network):
             city_labels.add(n.location.city)
     label_pos = pos
 
-    fig = figure()
-    kwargs = {'figure': fig, 'pos': pos}
+    kwargs = {'pos': pos}
     plot = draw_networkx_nodes(network, nodelist=network.nodes(), node_color='#ababab', **kwargs)
     draw_networkx_edges(network, edgelist=edges, edge_color='#ababab', **kwargs)
     draw_networkx_labels(network, labels=labels, font_size=14, **{**kwargs, 'pos': label_pos})
@@ -54,7 +53,7 @@ def plot_results(network, path, source, destination):
     label_pos = pos
 
     fig = figure()
-    kwargs = {'figure': fig, 'pos': pos}
+    kwargs = {'pos': pos}
     all_nodes = [n for n in network.nodes() if n not in path]
     plot = draw_networkx_nodes(network, nodelist=all_nodes, node_color='#ababab', node_size=50, **kwargs)
     draw_networkx_nodes(network, nodelist=path, node_color='#ff0000', node_size=55, **kwargs)
