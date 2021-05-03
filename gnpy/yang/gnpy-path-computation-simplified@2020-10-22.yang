@@ -32,7 +32,7 @@ module gnpy-path-computation-simplified {
             width";
          reference "rfc7698";
             leaf N {
-              type uint32;
+              type int32;
               description
                   "Is used to determine the Nominal Central
                   Frequency. The set of nominal central frequencies
@@ -44,7 +44,7 @@ module gnpy-path-computation-simplified {
                reference "rfc7698";
             }
             leaf M {
-              type int32;
+              type uint32;
               description
                   "Is used to determine the slot width. A slot width
                   is constrained to be M x SWG (that is, M x 12.5 GHz),
