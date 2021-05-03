@@ -36,6 +36,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0841e35c_7746813f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-03T08:52:24Z",
+      "side": 1,
+      "message": "In the past it bite me when the graph visualization used overlapping nodes or overlapping edges. But if you\u0027re telling me that it\u0027s never been a problem for you or for users you support, fair enough, then :).",
+      "parentUuid": "a32ab77e_5f9c5f8b",
+      "revId": "549e04e9258ffef7ae5b3cd545b8cafc00a77325",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5194025_1bb89441",
@@ -73,6 +91,30 @@
       "side": 1,
       "message": "Like I say in the commit message, I think this makes more sense since the preamp and booster are practically always collocated with the ROADM.",
       "parentUuid": "f5194025_1bb89441",
+      "range": {
+        "startLine": 354,
+        "startChar": 0,
+        "endLine": 355,
+        "endChar": 43
+      },
+      "revId": "549e04e9258ffef7ae5b3cd545b8cafc00a77325",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "588548d1_661e5839",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-03T08:52:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c12502c1_d9b53f3c",
       "range": {
         "startLine": 354,
         "startChar": 0,
