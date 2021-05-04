@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba8ecb90_38fe0632",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-04T11:15:42Z",
+      "side": 1,
+      "message": "recheck\n\nThis is a POST_FAILURE, which means that the CI is having a bad day again :(. I\u0027ll look into this.",
+      "revId": "c19fad4b97edf1fd1366d15c814e1cb87577eceb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
