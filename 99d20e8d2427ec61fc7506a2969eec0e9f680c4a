@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f608d3f4_934d3101",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 787,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-04T09:53:22Z",
+      "side": 1,
+      "message": "nit: it seems that we\u0027re mostly using identifiers_with_underscores in GNPy, which is what is IMHO more common in Python, so it wouldn\u0027t hurt to use that here as well (something for the next time).",
+      "revId": "99d20e8d2427ec61fc7506a2969eec0e9f680c4a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
