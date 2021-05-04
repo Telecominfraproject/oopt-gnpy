@@ -225,6 +225,8 @@ def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
                 duplicate_links.append(l1)
     for l in duplicate_links:
         links.remove(l)
+        links_by_city[l.from_city].remove(l)
+        links_by_city[l.to_city].remove(l)
 
     unreferenced_nodes = [n for n in nodes_by_city if n not in links_by_city]
     if unreferenced_nodes:
