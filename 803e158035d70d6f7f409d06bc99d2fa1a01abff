@@ -16,6 +16,24 @@
       "message": "@Jan: do you know why the \"tox-docs-f32\" fail  on this change ?",
       "revId": "803e158035d70d6f7f409d06bc99d2fa1a01abff",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee3e1b3a_30841d78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-04T09:19:49Z",
+      "side": 1,
+      "message": "Looks like it was not happy with this:\n\n /home/zuul/src/gerrithub.io/Telecominfraproject/oopt-gnpy/gnpy/core/info.py:docstring of gnpy.core.info.dimension_reshape:9: WARNING: Unexpected indentation.\n\napparently it was in one of the parent commits, and it\u0027s already fixed.",
+      "parentUuid": "74759ce8_1108f918",
+      "revId": "803e158035d70d6f7f409d06bc99d2fa1a01abff",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
