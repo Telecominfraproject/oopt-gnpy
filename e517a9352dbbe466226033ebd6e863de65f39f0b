@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cefbb07_4a3bf879",
+        "filename": "tests/test_disjunction.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-04T09:52:48Z",
+      "side": 1,
+      "message": "\u003e linters-diff: E302 expected 2 blank lines, found 1\n\nFixed.",
+      "parentUuid": "7c6024be_9852ba0a",
+      "revId": "e517a9352dbbe466226033ebd6e863de65f39f0b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee86b831_4fbe5a41",
+        "filename": "tests/test_disjunction.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-04T09:52:48Z",
+      "side": 1,
+      "message": "debugging leftover? I\u0027ve removed all these prints.",
+      "revId": "e517a9352dbbe466226033ebd6e863de65f39f0b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
