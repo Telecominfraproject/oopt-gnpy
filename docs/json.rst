@@ -11,8 +11,7 @@ Design and transmission parameters are defined in a dedicated json file.
 By default, this information is read from `gnpy/example-data/eqpt_config.json <https://github.com/Telecominfraproject/oopt-gnpy/blob/master/gnpy/example-data/eqpt_config.json>`_.
 This file defines the equipment libraries that can be customized (EDFAs, fibers, and transceivers).
 
-It also defines the simulation parameters (spans, ROADMs, and the spectral
-information to transmit.)
+It also defines the simulation parameters (spans, ROADMs, and the spectral information to transmit.)
 
 EDFA
 ~~~~
@@ -20,9 +19,15 @@ EDFA
 The EDFA equipment library is a list of supported amplifiers. New amplifiers
 can be added and existing ones removed. Three different noise models are available:
 
-1. ``'type_def': 'variable_gain'`` is a simplified model simulating a 2-coil EDFA with internal, input and output VOAs. The NF vs gain response is calculated accordingly based on the input parameters: ``nf_min``, ``nf_max``, and ``gain_flatmax``. It is not a simple interpolation but a 2-stage NF calculation.
-2. ``'type_def': 'fixed_gain'`` is a fixed gain model.  `NF == Cte == nf0` if `gain_min < gain < gain_flatmax`
-3. ``'type_def': None`` is an advanced model. A detailed JSON configuration file is required (by default `gnpy/example-data/std_medium_gain_advanced_config.json <https://github.com/Telecominfraproject/oopt-gnpy/blob/master/gnpy/example-data/std_medium_gain_advanced_config.json>`_). It uses a 3rd order polynomial where NF = f(gain), NF_ripple = f(frequency), gain_ripple = f(frequency), N-array dgt = f(frequency). Compared to the previous models, NF ripple and gain ripple are modelled.
+1. ``'type_def': 'variable_gain'`` is a simplified model simulating a 2-coil EDFA with internal, input and output VOAs.
+   The NF vs gain response is calculated accordingly based on the input parameters: ``nf_min``, ``nf_max``, and ``gain_flatmax``.
+   It is not a simple interpolation but a 2-stage NF calculation.
+2. ``'type_def': 'fixed_gain'`` is a fixed gain model.
+   `NF == Cte == nf0` if `gain_min < gain < gain_flatmax`
+3. ``'type_def': None`` is an advanced model.
+   A detailed JSON configuration file is required (by default `gnpy/example-data/std_medium_gain_advanced_config.json <https://github.com/Telecominfraproject/oopt-gnpy/blob/master/gnpy/example-data/std_medium_gain_advanced_config.json>`_).
+   It uses a 3rd order polynomial where NF = f(gain), NF_ripple = f(frequency), gain_ripple = f(frequency), N-array dgt = f(frequency).
+   Compared to the previous models, NF ripple and gain ripple are modelled.
 
 For all amplifier models:
 
@@ -154,24 +159,17 @@ Global parameters
 The following options are still defined in ``eqpt_config.json`` for legacy reasons, but
 they do not correspond to tangible network devices.
 
-Auto-design automatically creates EDFA amplifier network elements when they are
-missing, after a fiber, or between a ROADM and a fiber. This auto-design
-functionality can be manually and locally deactivated by introducing a ``Fused``
-network element after a ``Fiber`` or a ``Roadm`` that doesn't need amplification.
-The amplifier is chosen in the EDFA list of the equipment library based on
-gain, power, and NF criteria. Only the EDFA that are marked
-``'allowed_for_design': true`` are considered.
+Auto-design automatically creates EDFA amplifier network elements when they are missing, after a fiber, or between a ROADM and a fiber.
+This auto-design functionality can be manually and locally deactivated by introducing a ``Fused`` network element after a ``Fiber`` or a ``Roadm`` that doesn't need amplification.
+The amplifier is chosen in the EDFA list of the equipment library based on gain, power, and NF criteria.
+Only the EDFA that are marked ``'allowed_for_design': true`` are considered.
 
-For amplifiers defined in the topology JSON input but whose ``gain = 0``
-(placeholder), auto-design will set its gain automatically: see ``power_mode`` in
-the ``Spans`` library to find out how the gain is calculated.
+For amplifiers defined in the topology JSON input but whose ``gain = 0`` (placeholder), auto-design will set its gain automatically: see ``power_mode`` in the ``Spans`` library to find out how the gain is calculated.
 
 Span
 ~~~~
 
-Span configuration is not a list (which may change
-in later releases) and the user can only modify the value of existing
-parameters:
+Span configuration is not a list (which may change in later releases) and the user can only modify the value of existing parameters:
 
 +-------------------------------------+-----------+---------------------------------------------+
 | field                               | type      | description                                 |
@@ -297,10 +295,9 @@ parameters:
 SpectralInformation
 ~~~~~~~~~~~~~~~~~~~
 
-The user can only modify the value of existing parameters. It defines a spectrum of N
-identical carriers. While the code libraries allow for different carriers and
-power levels, the current user parametrization only allows one carrier type and
-one power/channel definition.
+The user can only modify the value of existing parameters.
+It defines a spectrum of N identical carriers.
+While the code libraries allow for different carriers and power levels, the current user parametrization only allows one carrier type and one power/channel definition.
 
 +----------------------+-----------+-------------------------------------------+
 | field                |   type    | description                               |
