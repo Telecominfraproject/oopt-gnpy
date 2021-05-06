@@ -18,6 +18,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac5ab04a_db64d7f9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-06T15:55:26Z",
+      "side": 1,
+      "message": "Ok, it makes sense but for consistency I think we should also change the standard and low_noise typedefs:\n\nstandard -\u003e openroadm_ila_standard\nlow_noise -\u003e openroadm_ila_low_noise",
+      "parentUuid": "4b9dd7a2_e91040a3",
+      "revId": "ec65a6d8e8360499bbdd74ae2848492c6a0b45f4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "b99d69f3_fdaa9866",
