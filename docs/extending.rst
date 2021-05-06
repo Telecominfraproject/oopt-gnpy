@@ -42,11 +42,11 @@ In that case, use:
 
 .. _ext-nf-model-polynomial-OSNR-OpenROADM:
 
-Polynomial OSNR (OpenROADM-style)
-*********************************
+Polynomial OSNR (OpenROADM-style for inline amplifier)
+******************************************************
 
-This model is useful for amplifiers compliant to the OpenROADM specification for ILA.
-In OpenROADM, amplifier performance is evaluated via its incremental OSNR, which is a function of the input power.
+This model is useful for amplifiers compliant to the OpenROADM specification for ILA (an in-line amplifier).
+The amplifier performance is evaluated via its incremental OSNR, which is a function of the input power.
 
 .. math::
 
