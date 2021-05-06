@@ -29,7 +29,7 @@
             "allowed_for_design": false           
             },
             {
-            "type_variety": "low_noise",
+            "type_variety": "openroadm_ila_low_noise",
             "type_def": "openroadm",
             "gain_flatmax": 27,
             "gain_min": 12,
@@ -38,7 +38,7 @@
             "allowed_for_design": false
             },          
             {
-            "type_variety": "standard",
+            "type_variety": "openroadm_ila_standard",
             "type_def": "openroadm",
             "gain_flatmax": 27,
             "gain_min": 12,
