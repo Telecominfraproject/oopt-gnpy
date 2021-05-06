@@ -16,6 +16,24 @@
       "message": "I don\u0027t think this is correct. If type_def is missing, the default is \u0027variable_gain\u0027.",
       "revId": "717955c08eb6d294cd0bc2adcbdd420050068a85",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bb11780_6bb01b3f",
+        "filename": "docs/json.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-06T17:59:50Z",
+      "side": 1,
+      "message": "You\u0027re right, the documentation (in master branch) was wrong and I preserved it accidentally here. Fixed in the (new) parent commit.",
+      "parentUuid": "2929768b_d72bb2e0",
+      "revId": "717955c08eb6d294cd0bc2adcbdd420050068a85",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
