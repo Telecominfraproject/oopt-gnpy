@@ -227,7 +227,7 @@ In an opensource and multi-vendor environnement, it is needed to support differe
     .. code-block:: json-object
 
         "Edfa":[{
-                "type_variety": "low_noise",
+                "type_variety": "openroadm_ila_low_noise",
                 "type_def": "openroadm",
                 "gain_flatmax": 27,
                 "gain_min": 12,

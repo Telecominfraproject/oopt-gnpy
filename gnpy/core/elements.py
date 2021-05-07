@@ -685,6 +685,13 @@ class Edfa(_Node):
             pin_ch = self.pin_db - lin2db(self.nch)
             # model OSNR = f(Pin)
             nf_avg = pin_ch - polyval(nf_model.nf_coef, pin_ch) + 58
+        elif type_def == 'openroadm_preamp':
+            pin_ch = self.pin_db - lin2db(self.nch)
+            # model OSNR = f(Pin)
+            nf_avg = pin_ch - min((4 * pin_ch + 275) / 7, 33) + 58
+        elif type_def == 'openroadm_booster':
+            # model a zero-noise amp with "infinitely negative" (in dB) NF
+            nf_avg = float('-inf')
         elif type_def == 'advanced_model':
             nf_avg = polyval(nf_fit_coeff, -dg)
         return nf_avg + pad, pad

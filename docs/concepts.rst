@@ -237,7 +237,7 @@ GNPy supports several different noise models with varying level of accuracy.
 When in doubt, contact your vendor's technical support and ask them to :ref:`contribute their equipment descriptions<extending-edfa>` to GNPy.
 
 The most accurate noise models describe the resulting NF of an EDFA as a third-degree polynomial.
-GNPy understands polynomials as a NF-yielding function of the :ref:`gain difference from the optimal gain<ext-nf-model-polynomial-NF>`, or as a function of the input power resulting in an :ref:`incremental OSNR as used in OpenROADM<ext-nf-model-polynomial-OSNR-OpenROADM>`.
+GNPy understands polynomials as a NF-yielding function of the :ref:`gain difference from the optimal gain<ext-nf-model-polynomial-NF>`, or as a function of the input power resulting in an incremental OSNR as used in :ref:`OpenROADM inline amplifiers<ext-nf-model-polynomial-OSNR-OpenROADM>` and :ref:`OpenROADM booster/preamps in the ROADMs<ext-nf-model-noise-mask-OpenROADM>`.
 For scenarios where the vendor has not yet contributed an accurate EDFA NF description to GNPy, it is possible to approximate the characteristics via an operator-focused, min-max NF model.
 
 .. _nf-model-min-max-NF:
