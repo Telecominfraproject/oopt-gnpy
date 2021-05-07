@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "8472bc66_f863b0a4",
         "filename": "gnpy/core/info.py",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "just a comment here: This check does not depend only on baudrate, it also depends on the min spacing specified by the transceiver ... however at this stage there is no relation between the frequency index and the attached transceiver ... so maybe the check should (also) be added when calling this function with the desired set of transceivers ?",
       "revId": "79d1d5c0647284201951e474df857e586707fb07",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "62a8c603_6d8c6a8d",
         "filename": "gnpy/core/info.py",
@@ -32,10 +33,28 @@
       "message": "I am not sure I have understood completely your comment. I can add a bit of information in order to further clarify this point. This check verify that, for each channel, the given baud rate is not larger than the given channel slot width. Here I am assuming that the baud rate can be straightforwardly translated in a frequency interval (ex 32Gbaud -\u003e 32GHz).",
       "parentUuid": "8472bc66_f863b0a4",
       "revId": "79d1d5c0647284201951e474df857e586707fb07",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba56e22c_73a22e77",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-07T16:39:03Z",
+      "side": 1,
+      "message": "I think that there\u0027s nothing to check here in the constructor as the transponder information are indeed not available. Esther\u0027s suggestion is (I believe) to cross-check with the equipment library when actually invoking this constructor, but that cannot be implemented in this patch.",
+      "parentUuid": "62a8c603_6d8c6a8d",
+      "revId": "79d1d5c0647284201951e474df857e586707fb07",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "c5da2f88_f82e1610",
         "filename": "gnpy/core/info.py",
@@ -49,10 +68,10 @@
       "side": 1,
       "message": "I understand that for generality, the f\u003dcentral frequency of a carrier might not be aligned on the ITU-T grid, as long as the channel (reserved spectrum) is.\nHowever, would if be meaningfull to introduce somehow the ITU G694 index to ease ?\n\nfor example if I have to si with bifferent nb of channels, I\u0027ll have a lot of difficulties to identify the smae carrier in both cases based on channel_number\n\n\nor maybe intrduce a correspondance function channel_number \u003c-\u003e frequency ?\n\n            # use ITU-T G694.1\n            # Flexible DWDM grid definition\n            # For the flexible DWDM grid, the allowed frequency slots have a nominal\n            # central frequency (in THz) defined by:\n            # 193.1 + n × 0.00625 where n is a positive or negative integer including 0\n            # and 0.00625 is the nominal central frequency granularity in THz\n            # and a slot width defined by:\n            # 12.5 × m where m is a positive integer and 12.5 is the slot width granularity in\n            # GHz.\n            # Any combination of frequency slots is allowed as long as no two frequency\n            # slots overlap.",
       "revId": "79d1d5c0647284201951e474df857e586707fb07",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "7813a5d3_e763227a",
         "filename": "gnpy/core/info.py",
@@ -67,10 +86,10 @@
       "message": "\u003e I understand that for generality, the f\u003dcentral frequency of a carrier might not be aligned on the ITU-T grid, as long as the channel (reserved spectrum) is.\n\u003e However, would if be meaningfull to introduce somehow the ITU G694 index to ease ?\n\u003e \n\u003e for example if I have to si with bifferent nb of channels, I\u0027ll have a lot of difficulties to identify the smae carrier in both cases based on channel_number\n\u003e \n\nThis would make the spectral_info class way less flexible( and this could be a drawback in some cases, for example in an experimental setup).\nIn any case we can further discuss about this feature, but to be clear, this would be a new feature, that is not required for the flex grid implementation. In the previous version of info.py in the create_input_spectral_information() function, the channel number is obtained in the same way.",
       "parentUuid": "c5da2f88_f82e1610",
       "revId": "79d1d5c0647284201951e474df857e586707fb07",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "a2a70f83_d15530b1",
         "filename": "gnpy/core/info.py",
@@ -85,10 +104,28 @@
       "message": "OK, then let\u0027s forget about this and only come backto that when there will be a need.",
       "parentUuid": "7813a5d3_e763227a",
       "revId": "79d1d5c0647284201951e474df857e586707fb07",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e7fad04_097f8c06",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-07T16:39:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2a70f83_d15530b1",
+      "revId": "79d1d5c0647284201951e474df857e586707fb07",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "7fc692e8_0bc70719",
         "filename": "gnpy/core/info.py",
@@ -102,10 +139,10 @@
       "side": 1,
       "message": "pref is used in elements to:\n- compute effective loss of ROADM -\u003e in case of multiple carriers with different power level, th function will need to be changed\n- compute effective_gain in amplifiers, based on effective history of channel propagation (pref span i). for example, in power_mode\u003dtrue, the effective_gain is computed based on previous power and target power (operational value of gain is ignored). In this case, I think that the used of the mean power of the si would not work properly, since, it would lead to different target gain.\n- and check power saturation in amplifiers (here again the computation is not correct if chanels have different power levels)\n\n\nso as a conclusion, we probably need to also adapt elements to benefit from your work",
       "revId": "79d1d5c0647284201951e474df857e586707fb07",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "bbbe25f0_103c5c12",
         "filename": "gnpy/core/info.py",
@@ -120,10 +157,10 @@
       "message": "These are exactly the criticalities I would like to discuss about together to find the best solutions. Let me add that, in my opinion, all the methods in the elements that apply a modification on the spectrum power should be modified as I have done for the Fiber in the successive changes.",
       "parentUuid": "7fc692e8_0bc70719",
       "revId": "79d1d5c0647284201951e474df857e586707fb07",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "23840e57_5ec1c137",
         "filename": "gnpy/core/info.py",
@@ -138,10 +175,10 @@
       "message": "I can try to make suggestions but I\u0027ll need some time (partly due to my current work burden and partly also to understand all your changes 😊). Is this what you suggest ?",
       "parentUuid": "bbbe25f0_103c5c12",
       "revId": "79d1d5c0647284201951e474df857e586707fb07",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "ec8f9530_f1acdbde",
         "filename": "gnpy/core/info.py",
@@ -156,10 +193,10 @@
       "message": "Here is my understanding of pref:\n\npref.p_spani keeps track of the (average) channel power after each element in a propagation path. This is used by Edfa elements (as Esther explains) to calculate required gain for given input power in power mode as well as to reduce gain in case of power saturation. I think it was introduced mainly as a convenience/code optimization. In principle it should not be necessary to have it in the spectral info since the power per channel after each element is anyway represented in the carriers. (Roadm elements also uses pref.p_spani in the propagate code but don\u0027t really need it since they anyway use the actual carriers power for calculating attenuation per channel.)\n\npref.p_span0 is the important attribute and this represents a reference channel power (I think the naming of this attribute as well as the comments in info.py are a bit misleading since it\u0027s not really the \"initial\" target power). It is used only by Edfa elements to calculate the target channel power in power mode as delta_p + p_span0, where delta_p is the offset from the reference power level and is specified per Edfa element in the topology. If you don\u0027t specify delta_p in the topology file and use autodesign in power mode this offset will be calculated based on the loss of the span following the Edfa as (span_loss - SPAN_LOSS_REF)*POWER_SLOPE, where the SPAN_LOSS_REF and POWER_SLOPE values are hardcoded in the target_power function in network.py to 20 dB and 0.3 respectively. So with autodesign, pref.p_span0 corresponds to the target channel power into a 20 dB span, since the calculated delta_p is 0 in this case. But note that you don\u0027t have to rely on this autodesign rule since you can specify delta_p explicitly for each Edfa or alternatively operate in gain mode and specify the target gain instead.\n\nIn conclusion, for operation in gain mode with explicitly set target gain, I think we could modify the code so that pref is not needed and then it would not be an issue for flexgrid/mixed channels. If we want to support a power mode and/or autodesign with flexgrid/mixed channels we have to come up with a strategy. One way forward could be to instead of having a single reference level (currently pref.p_span0) introduce a separate reference level for each channel in the spectral info and adapt the Edfa and Roadm element code accordingly.",
       "parentUuid": "23840e57_5ec1c137",
       "revId": "79d1d5c0647284201951e474df857e586707fb07",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "7ab45a8b_422c04ae",
         "filename": "gnpy/core/info.py",
@@ -174,10 +211,10 @@
       "message": "Thanks a lot for this comment Jonas, it is very useful.",
       "parentUuid": "ec8f9530_f1acdbde",
       "revId": "79d1d5c0647284201951e474df857e586707fb07",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "3ae5eb10_49b53735",
         "filename": "gnpy/core/info.py",
@@ -192,10 +229,10 @@
       "message": "See also related discussion here:\nhttps://github.com/Telecominfraproject/oopt-gnpy/issues/371",
       "parentUuid": "7ab45a8b_422c04ae",
       "revId": "79d1d5c0647284201951e474df857e586707fb07",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "c9ed23a5_c1270cc0",
         "filename": "gnpy/core/info.py",
@@ -209,10 +246,10 @@
       "side": 1,
       "message": "Not sure to understand this function: is this to create array of value ?, why would the test on defult mean that name is missing ?\nmaybe add a docstring with example ?",
       "revId": "79d1d5c0647284201951e474df857e586707fb07",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "44272c78_c801ad62",
         "filename": "gnpy/core/info.py",
@@ -227,8 +264,25 @@
       "message": "I added a docstring thet contains the error raising examples. To answer your question, the idea is that the default would be passed as None if the field is mandatory(the value has to be provided because it cannot be evaluated otherwise). Therefore, if the value is None as well as the default, the function raises an error because without a default the value has to be passed.\nI hope the given examples would clarify the function behavior.",
       "parentUuid": "c9ed23a5_c1270cc0",
       "revId": "79d1d5c0647284201951e474df857e586707fb07",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a7b0e4c_a3aab6e5",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-07T16:39:03Z",
+      "side": 1,
+      "message": "I\u0027m a bit confused by this function. The purpose is apparently to take two values, the \"value\" and \"default\", both of which can be a \"vector\" or \"scalar\" or None, and turn that into a \"vector\" with a given dimension \"doing the right thing\". When I look at how this function is used, it seems that it\u0027s only ever used to turn \"something\" (which can probably be either a scalar or a vector) into a vector with a given size.\n\nThe function is too complex for what is needed. It is never invoked with a non-scalar \"default\" parameter. I would prefer something simpler, such as:\n \nif isinstance(value, Sized) and len(value) !\u003d dimension:\n    throw InfoError(...)\nreturn value * ones(dimension)\n\nThat works for `value` being either a Python number, or a numpy array; I don\u0027t think we need anything else.\n\nAlso, this looks like a private helper function just for create_arbitrary_spectral_information(). Please either prefix it by a single underscore, or (perhaps even better) make it into an inner function within create_arbitrary_spectral_information().",
+      "parentUuid": "44272c78_c801ad62",
+      "revId": "79d1d5c0647284201951e474df857e586707fb07",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }

@@ -1,0 +1,210 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0007e208_31d5d554",
+        "filename": "gnpy/core/exceptions.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-07T16:39:03Z",
+      "side": 1,
+      "message": "Why not just use SpectrumError everywhere?",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 59
+      },
+      "revId": "aeee0478e3b50ef4ec31cfc596e2ac894eb799ae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "616f32a6_4611c5ec",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-07T16:39:03Z",
+      "side": 1,
+      "message": "This is undocumented. It appears to be used for rounding up when converting from the baud rate to the spectrum width, please add a docstring.",
+      "revId": "aeee0478e3b50ef4ec31cfc596e2ac894eb799ae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "064c9b1c_6c66695f",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-07T16:39:03Z",
+      "side": 1,
+      "message": "This syntax only works on numpy arrays, not on regular Python lists. I\u0027m OK with mandating numpy arrays here, but please add at least the type annotation to make this obvious. And I see that this might be easier to implement with numpy \u003e\u003d 1.20 and python \u003e\u003d 3.8, so we should briefly touch this on the coders call to make sure it isn\u0027t a problem for anybody.",
+      "revId": "aeee0478e3b50ef4ec31cfc596e2ac894eb799ae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91d50eda_8d8ac591",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-07T16:39:03Z",
+      "side": 1,
+      "message": "Please add a docstring for this property. We\u0027ve talked over this one on several calls, so it would be nice to have a nice definition written down somewhere.",
+      "revId": "aeee0478e3b50ef4ec31cfc596e2ac894eb799ae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1799b255_5c8568ab",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-07T16:39:03Z",
+      "side": 1,
+      "message": "Please document this.",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 23
+      },
+      "revId": "aeee0478e3b50ef4ec31cfc596e2ac894eb799ae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08842ac3_0598ea60",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-07T16:39:03Z",
+      "side": 1,
+      "message": "I do not think that the term \"SNR\" is consistently used to refer to just the nonlinear part of the GSNR in the literature, so I suggest using a more descriptive name.",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 43
+      },
+      "revId": "aeee0478e3b50ef4ec31cfc596e2ac894eb799ae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "448cfa3a_2e1e7db6",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-07T16:39:03Z",
+      "side": 1,
+      "message": "nit: I know it\u0027s a matter of style, but this is rather verbose for my personal taste. Why not just:\n \nreturn SpectralInformation(\n    frequency\u003dappend(self.frequency, si.frequency),\n    slot_width\u003dappend(self.slot_width, si.slot_width),\n    ...\n    )",
+      "range": {
+        "startLine": 170,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 38
+      },
+      "revId": "aeee0478e3b50ef4ec31cfc596e2ac894eb799ae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85e00838_03e1a8db",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-07T16:39:03Z",
+      "side": 1,
+      "message": "Please remove the try/except wrapper; it removes possibly useful information (\"what was wrong with the attempted spectrum\") by replacing it with a hardcoded error message.",
+      "range": {
+        "startLine": 184,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 78
+      },
+      "revId": "aeee0478e3b50ef4ec31cfc596e2ac894eb799ae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9b9fe8d_66c1a259",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-07T16:39:03Z",
+      "side": 1,
+      "message": "This can be moved out of the if/else branches; len(frequency) will always return the correct value once `frequency` has been set.",
+      "revId": "aeee0478e3b50ef4ec31cfc596e2ac894eb799ae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47df566b_e1a9a775",
+        "filename": "tests/test_info.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-07T16:39:03Z",
+      "side": 1,
+      "message": "This can be made simpler:\n \nwith pytest.raises(InfoError, match\u003d\u0027Spectra cannot be summed: channels overlapping.\u0027):\n    si +\u003d si\n\n(I had to look it up in the docs :).)",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 76
+      },
+      "revId": "aeee0478e3b50ef4ec31cfc596e2ac894eb799ae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
