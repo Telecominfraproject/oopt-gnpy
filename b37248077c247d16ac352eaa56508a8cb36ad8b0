@@ -16,6 +16,24 @@
       "message": "This will disregard the ROADM\u0027s restrictions on preamp/booster EDFAs. If a user puts in an EDFA with variety_list that contains something which is not explicitly allowed, it will still be accepted. Do we want to restrict that?",
       "revId": "b37248077c247d16ac352eaa56508a8cb36ad8b0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bece5b4_03905da7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-07T21:09:52Z",
+      "side": 1,
+      "message": "The ROADM\u0027s restrictions are also disregarded as it is now if the user sets the type_variety. Isn\u0027t it reasonable that explicitly setting a variety_list has the same effect?",
+      "parentUuid": "9cc19e5c_204a0cf4",
+      "revId": "b37248077c247d16ac352eaa56508a8cb36ad8b0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
