@@ -64,8 +64,8 @@
       "uid": "roadm Lannion_CAS",
       "params": {
         "per_degree_pch_out_db": {
-            "east edfa in Lannion_CAS to Corlay": -18.6,
-            "east edfa in Lannion_CAS to Morlaix": -23.0
+          "east edfa in Lannion_CAS to Corlay": -18.6,
+          "east edfa in Lannion_CAS to Morlaix": -23.0
         }
       },
       "metadata": {
@@ -82,7 +82,7 @@
       "uid": "roadm Lorient_KMA",
       "params": {
         "per_degree_pch_out_db": {
-            "east edfa in Lorient_KMA to Vannes_KBE": -12.0
+          "east edfa in Lorient_KMA to Vannes_KBE": -12.0
         }
       },
       "metadata": {
@@ -99,7 +99,7 @@
       "uid": "roadm Vannes_KBE",
       "params": {
         "per_degree_pch_out_db": {
-            "east edfa in Vannes_KBE to Lorient_KMA": -10.0
+          "east edfa in Vannes_KBE to Lorient_KMA": -10.0
         }
       },
       "metadata": {
@@ -116,7 +116,7 @@
       "uid": "roadm Rennes_STA",
       "params": {
         "per_degree_pch_out_db": {
-            "east edfa in Rennes_STA to Stbrieuc": -20.0
+          "east edfa in Rennes_STA to Stbrieuc": -20.0
         }
       },
       "metadata": {
@@ -646,6 +646,70 @@
         "loss_coef": 0.2,
         "con_in": null,
         "con_out": null
+      }
+    },
+    {
+      "uid": "west edfa in Quimper",
+      "metadata": {
+        "location": {
+          "city": "Quimper",
+          "region": "RLD",
+          "latitude": 1.0,
+          "longitude": 1.0
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "west edfa in Ploermel",
+      "metadata": {
+        "location": {
+          "city": "Ploermel",
+          "region": "RLD",
+          "latitude": 1.0,
+          "longitude": 2.0
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "east edfa in Quimper",
+      "metadata": {
+        "location": {
+          "city": "Quimper",
+          "region": "RLD",
+          "latitude": 1.0,
+          "longitude": 1.0
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "tilt_target": 0
+      }
+    },
+    {
+      "uid": "east edfa in Ploermel",
+      "metadata": {
+        "location": {
+          "city": "Ploermel",
+          "region": "RLD",
+          "latitude": 1.0,
+          "longitude": 2.0
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "tilt_target": 0
       }
     },
     {
@@ -1200,18 +1264,34 @@
     },
     {
       "from_node": "fiber (Brest_KLA → Quimper)-",
+      "to_node": "west edfa in Quimper"
+    },
+    {
+      "from_node": "west edfa in Quimper",
       "to_node": "fiber (Quimper → Lorient_KMA)-"
     },
     {
       "from_node": "fiber (Lorient_KMA → Quimper)-",
+      "to_node": "east edfa in Quimper"
+    },
+    {
+      "from_node": "east edfa in Quimper",
       "to_node": "fiber (Quimper → Brest_KLA)-"
     },
     {
       "from_node": "fiber (Vannes_KBE → Ploermel)-",
+      "to_node": "west edfa in Ploermel"
+    },
+    {
+      "from_node": "west edfa in Ploermel",
       "to_node": "fiber (Ploermel → Rennes_STA)-"
     },
     {
       "from_node": "fiber (Rennes_STA → Ploermel)-",
+      "to_node": "east edfa in Ploermel"
+    },
+    {
+      "from_node": "east edfa in Ploermel",
       "to_node": "fiber (Ploermel → Vannes_KBE)-"
     },
     {
