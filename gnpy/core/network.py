@@ -450,8 +450,8 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
 
     fiber.params.length = new_length
 
-    xpos = [prev_node.lng + (next_node.lng - prev_node.lng) * (n + 1) / (n_spans + 1) for n in range(n_spans)]
-    ypos = [prev_node.lat + (next_node.lat - prev_node.lat) * (n + 1) / (n_spans + 1) for n in range(n_spans)]
+    xpos = [prev_node.lng + (next_node.lng - prev_node.lng) * (n + 0.5) / n_spans for n in range(n_spans)]
+    ypos = [prev_node.lat + (next_node.lat - prev_node.lat) * (n + 0.5) / n_spans for n in range(n_spans)]
     for span, lng, lat in zip(range(n_spans), xpos, ypos):
         new_span = elements.Fiber(uid=f'{fiber.uid}_({span+1}/{n_spans})',
                          type_variety=fiber.type_variety,
