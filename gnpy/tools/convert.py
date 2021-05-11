@@ -425,10 +425,9 @@ def xls_to_json_data(input_filename, filter_region=[]):
               'params': {'length': round(x.west_distance, 3),
                          'length_units': x.distance_units,
                          'loss_coef': x.west_lineic,
-                         'con_in':x.west_con_in,
-                         'con_out':x.west_con_out}
-            }
-              for x in links] +
+                         'con_in': x.west_con_in,
+                         'con_out': x.west_con_out}
+              } for x in links] +
             [{'uid': f'west edfa in {x.city}',
               'metadata': {'location': {'city': x.city,
                                         'region': x.region,
@@ -437,9 +436,7 @@ def xls_to_json_data(input_filename, filter_region=[]):
               'type': 'Edfa',
               'operational': {'gain_target': None,
                               'tilt_target': 0}
-             }
-             for x in nodes_by_city.values()
-             if x.node_type.lower() == 'ila' and x.city not in eqpts_by_city] +
+              } for x in nodes_by_city.values() if x.node_type.lower() == 'ila' and x.city not in eqpts_by_city] +
             [{'uid': f'east edfa in {x.city}',
               'metadata': {'location': {'city': x.city,
                                         'region': x.region,
@@ -448,9 +445,7 @@ def xls_to_json_data(input_filename, filter_region=[]):
               'type': 'Edfa',
               'operational': {'gain_target': None,
                               'tilt_target': 0}
-             }
-             for x in nodes_by_city.values()
-             if x.node_type.lower() == 'ila' and x.city not in eqpts_by_city] +
+              } for x in nodes_by_city.values() if x.node_type.lower() == 'ila' and x.city not in eqpts_by_city] +
             [create_east_eqpt_element(e) for e in eqpts] +
             [create_west_eqpt_element(e) for e in eqpts],
         'connections':
