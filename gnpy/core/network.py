@@ -161,21 +161,22 @@ _fiber_fused_types = (elements.Fused, elements.Fiber)
 
 def prev_node_generator(network, node):
     """fused spans interest:
-    iterate over all predecessors while they are Fused or Fiber type"""
+    iterate over all predecessors while they are either Fused or Fibers succeeded by Fused"""
     try:
         prev_node = next(network.predecessors(node))
     except StopIteration:
         if isinstance(node, elements.Transceiver):
             return
         raise NetworkTopologyError(f'Node {node.uid} is not properly connected, please check network topology')
-    if isinstance(prev_node, _fiber_fused_types) and isinstance(node, _fiber_fused_types):
+    if ((isinstance(prev_node, elements.Fused) and isinstance(node, _fiber_fused_types)) or
+            (isinstance(prev_node, _fiber_fused_types) and isinstance(node, elements.Fused))):
         yield prev_node
         yield from prev_node_generator(network, prev_node)
 
 
 def next_node_generator(network, node):
     """fused spans interest:
-    iterate over all successors while they are Fused or Fiber type"""
+    iterate over all predecessors while they are either Fused or Fibers preceded by Fused"""
     try:
         next_node = next(network.successors(node))
     except StopIteration:
@@ -183,7 +184,8 @@ def next_node_generator(network, node):
             return
         raise NetworkTopologyError(f'Node {node.uid} is not properly connected, please check network topology')
 
-    if isinstance(next_node, _fiber_fused_types) and isinstance(node, _fiber_fused_types):
+    if ((isinstance(next_node, elements.Fused) and isinstance(node, _fiber_fused_types)) or
+            (isinstance(next_node, _fiber_fused_types) and isinstance(node, elements.Fused))):
         yield next_node
         yield from next_node_generator(network, next_node)
 
