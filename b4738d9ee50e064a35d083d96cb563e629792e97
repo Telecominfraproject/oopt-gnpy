@@ -16,6 +16,29 @@
       "message": "recheck",
       "revId": "b4738d9ee50e064a35d083d96cb563e629792e97",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "323a1a1a_9ab4f127",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1138,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-11T09:58:26Z",
+      "side": 1,
+      "message": "With this proposed patch, the code no longer matches this comment. I\u0027ll change the patch a bit so that this is addressed.",
+      "range": {
+        "startLine": 1136,
+        "startChar": 0,
+        "endLine": 1138,
+        "endChar": 45
+      },
+      "revId": "b4738d9ee50e064a35d083d96cb563e629792e97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
