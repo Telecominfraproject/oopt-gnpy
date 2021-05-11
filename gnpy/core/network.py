@@ -168,7 +168,8 @@ def prev_node_generator(network, node):
         if isinstance(node, elements.Transceiver):
             return
         raise NetworkTopologyError(f'Node {node.uid} is not properly connected, please check network topology')
-    if isinstance(prev_node, _fiber_fused_types) and isinstance(node, _fiber_fused_types):
+    if ((isinstance(prev_node, elements.Fused) and isinstance(node, _fiber_fused_types)) or
+        (isinstance(prev_node, _fiber_fused_types) and isinstance(node, elements.Fused))):
         yield prev_node
         yield from prev_node_generator(network, prev_node)
 
@@ -183,7 +184,8 @@ def next_node_generator(network, node):
             return
         raise NetworkTopologyError(f'Node {node.uid} is not properly connected, please check network topology')
 
-    if isinstance(next_node, _fiber_fused_types) and isinstance(node, _fiber_fused_types):
+    if ((isinstance(next_node, elements.Fused) and isinstance(node, _fiber_fused_types)) or
+        (isinstance(next_node, _fiber_fused_types) and isinstance(node, elements.Fused))):
         yield next_node
         yield from next_node_generator(network, next_node)
 
