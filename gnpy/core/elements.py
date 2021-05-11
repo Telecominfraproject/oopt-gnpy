@@ -557,6 +557,7 @@ class Edfa(_Node):
             params = {}
         if operational is None:
             operational = {}
+        self.variety_list = kwargs.pop('variety_list', None)
         super().__init__(
             *args,
             params=EdfaParams(**params),
