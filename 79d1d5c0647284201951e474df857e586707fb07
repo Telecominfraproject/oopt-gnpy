@@ -283,6 +283,24 @@
       "parentUuid": "44272c78_c801ad62",
       "revId": "79d1d5c0647284201951e474df857e586707fb07",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de5cab0b_63771fec",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-11T23:36:01Z",
+      "side": 1,
+      "message": "My first choice is to define this function in the gnpy.core.utils module as it can be useful in several cases anticipating the increasing number of request of more detailed simulations in terms of investigated channels. \nIn light of this consideration, maybe is better to move it in gnpy.core.utils instead of limiting it to a private or internal function.\nAlong with the purpose that you mentioned, this function checks if a field is mandatory and set a default value. Moreover, it indicates which mandatory field has not been provided. \nThe simplification that you suggested:\n\nif isinstance(value, Sized) and len(value) !\u003d dimension:\n    throw InfoError(...)\nreturn value * ones(dimension)\n\nwould reduce the information of the error as the two proposition in the \u0027if\u0027 condition generate two distinct error messages. Moreover, it would not cover all the cases managed by the function.",
+      "parentUuid": "9a7b0e4c_a3aab6e5",
+      "revId": "79d1d5c0647284201951e474df857e586707fb07",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
