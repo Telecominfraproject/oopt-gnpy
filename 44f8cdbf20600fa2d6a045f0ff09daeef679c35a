@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "390470c4_e6ac285a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-05-12T13:58:11Z",
+      "side": 1,
+      "message": "This looks good to me, thanks for catching it!\nI have proposed a change to add a test case that also checks this case\n",
+      "revId": "44f8cdbf20600fa2d6a045f0ff09daeef679c35a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
