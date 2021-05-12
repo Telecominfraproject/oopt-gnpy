@@ -54,6 +54,48 @@
       }
     },
     {
+      "uid": "fiber7",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 1.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.0,
+        "con_out": 0.0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber8",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 60.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.0,
+        "con_out": 0.0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
       "uid": "fused1",
       "type": "Fused",
       "params": {
@@ -387,6 +429,18 @@
     {
       "from_node": "nodeB",
       "to_node": "Site_B"
+    },
+    {
+      "from_node": "nodeA",
+      "to_node": "fiber7"
+    },
+    {
+      "from_node": "fiber7",
+      "to_node": "fiber8"
+    },
+    {
+      "from_node": "fiber8",
+      "to_node": "nodeB"
     }
   ]
 }

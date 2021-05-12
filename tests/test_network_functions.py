@@ -30,6 +30,9 @@ NETWORK_FILENAME = TEST_DIR / 'data/bugfixiteratortopo.json'
     # fourth span
     ['fiber6', 17],
     ['fused7', 17],
+    # fifth span
+    ['fiber7', 0.2],
+    ['fiber8', 12],
     # all other nodes
     ['Site_A', 0],
     ['nodeA', 0],
