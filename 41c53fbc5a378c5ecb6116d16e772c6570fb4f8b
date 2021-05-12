@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a04f55d0_0b20e862",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-12T09:50:03Z",
+      "side": 1,
+      "message": "I\u0027m surprised to see this, but it\u0027s indeed what the public XLS spec says, and I\u0027m not really the EDFA expert here.",
+      "revId": "41c53fbc5a378c5ecb6116d16e772c6570fb4f8b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
