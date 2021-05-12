@@ -32,7 +32,7 @@
             "type_variety": "openroadm_ila_low_noise",
             "type_def": "openroadm",
             "gain_flatmax": 27,
-            "gain_min": 12,
+            "gain_min": 0,
             "p_max": 22,
             "nf_coef": [-8.104e-4,-6.221e-2,-5.889e-1,37.62],
             "allowed_for_design": false
@@ -41,7 +41,7 @@
             "type_variety": "openroadm_ila_standard",
             "type_def": "openroadm",
             "gain_flatmax": 27,
-            "gain_min": 12,
+            "gain_min": 0,
             "p_max": 22,
             "nf_coef": [-5.952e-4,-6.250e-2,-1.071,28.99],
             "allowed_for_design": false
