@@ -164,6 +164,7 @@ class Amp(_JsonThing):
 
     @classmethod
     def from_json(cls, filename, **kwargs):
+        # dummy comment, ignore this
         config = Path(filename).parent / 'default_edfa_config.json'
 
         type_variety = kwargs['type_variety']
