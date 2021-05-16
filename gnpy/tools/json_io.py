@@ -163,7 +163,7 @@ class Amp(_JsonThing):
         self.update_attr(self.default_values, kwargs, 'Amp')
 
     @classmethod
-    def from_json(cls, filename, **kwargs):
+    def from_json(cls, filename, **kwargs): 
         config = Path(filename).parent / 'default_edfa_config.json'
 
         type_variety = kwargs['type_variety']
