@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83b6e67c_d9af3eaf",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-16T17:14:55Z",
+      "side": 1,
+      "message": "I don\u0027t follow, and I don\u0027t think that this is checked or enforced in the code. Am I missing something?",
+      "range": {
+        "startLine": 19,
+        "startChar": 3,
+        "endLine": 19,
+        "endChar": 99
+      },
+      "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "289baf9b_2655d8ec",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-16T17:14:55Z",
+      "side": 1,
+      "message": "If this is needed (see my comment about default values), can you perhaps rephrase it like this:\n \nChannels with unspecified slot width will have their spectrum allocation determined based on the Baud rate and rounded up to the nearest BASE_SLOT_WIDTH.\n\nLooking that that, perhaps there\u0027s a better name:\n \nDEFAULT_SLOT_WIDTH_INCREMENT",
+      "range": {
+        "startLine": 19,
+        "startChar": 100,
+        "endLine": 21,
+        "endChar": 18
+      },
+      "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f02c77c6_d58e38b8",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-16T17:14:55Z",
+      "side": 1,
+      "message": "I don\u0027t understand how the default values are supposed to behave, and the documentation doesn\u0027t explain that to me. My suggestion is to remove the default values from the function\u0027s signature.",
+      "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}

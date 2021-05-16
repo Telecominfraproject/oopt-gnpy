@@ -247,6 +247,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0a9cfd3_f1eea6ac",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-16T17:14:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae2978e9_311a7018",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 43
+      },
+      "revId": "aeee0478e3b50ef4ec31cfc596e2ac894eb799ae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "448cfa3a_2e1e7db6",
@@ -294,6 +318,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48d8ed41_14c6edf2",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-16T17:14:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2feee5a2_1a35f1bd",
+      "range": {
+        "startLine": 170,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 38
+      },
+      "revId": "aeee0478e3b50ef4ec31cfc596e2ac894eb799ae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85e00838_03e1a8db",
@@ -331,6 +379,30 @@
       "side": 1,
       "message": "I would rather keep this try/except wrapper. The reason is that in adding two spectrum instances we can assume that both are separately well defined (neither baud rates nor slot widths overlapping). The only situation that can prevent the creation of the total spectrum is that there is an overlapping of two or more channels from the two spectra and the error string that would be created is \u0027Spectrum required slot widths larger than the frequency spectral distances\u0027(without any additional information). Therefore, I think that it would be more meaningful a specific error indicating that the two spectrum cannot be summed. \nIn other words, in this function I take advantage of the checks that are already performed in the constructor of the SppectralInformation (in order to avoid code duplicates) but the nature of the error is completely different and should be indicated in two different places of the code.\nI hope this better clarify my choice, let me know what is your opinion on this.",
       "parentUuid": "85e00838_03e1a8db",
+      "range": {
+        "startLine": 184,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 78
+      },
+      "revId": "aeee0478e3b50ef4ec31cfc596e2ac894eb799ae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b979205_0023d388",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-16T17:14:55Z",
+      "side": 1,
+      "message": "I think you\u0027re right. The error message thrown from the constructor is \"not perfect\" because it only says \"Spectrum required slot widths larger than the frequency spectral distances.\" instead of identifying which channel overlaps which one. I agree that the new error message is actually better here. Thanks!",
+      "parentUuid": "61986ebc_1c078569",
       "range": {
         "startLine": 184,
         "startChar": 0,
@@ -413,6 +485,30 @@
       "side": 1,
       "message": "I applied this choice also in other functions that have the same structure.",
       "parentUuid": "47df566b_e1a9a775",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 76
+      },
+      "revId": "aeee0478e3b50ef4ec31cfc596e2ac894eb799ae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff2182fd_4f1f110e",
+        "filename": "tests/test_info.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-16T17:14:55Z",
+      "side": 1,
+      "message": "thanks",
+      "parentUuid": "d496192b_879c0a33",
       "range": {
         "startLine": 43,
         "startChar": 0,
