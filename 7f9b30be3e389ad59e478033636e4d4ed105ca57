@@ -216,6 +216,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bda5ba1a_db27d0cf",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-17T15:13:06Z",
+      "side": 1,
+      "message": "Got an example? I saw just use_initial_spectrum() in commit 3c5d28c4b, and it looks like that particular usage doesn\u0027t rely on default values.",
+      "parentUuid": "0258e47d_fc2d15c2",
+      "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3039a0e1_445e8e04",
         "filename": "tests/test_info.py",
         "patchSetId": 11
@@ -251,6 +269,30 @@
       "side": 1,
       "message": "The defaults cannot be placed as you are suggesting because they depend on the frequency dimension.\nI will try an alternative definition of the function in order to have a cleaner version.",
       "parentUuid": "3039a0e1_445e8e04",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 22
+      },
+      "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bfa867d_c383a6d0",
+        "filename": "tests/test_info.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-17T15:13:06Z",
+      "side": 1,
+      "message": "That\u0027s not what I meant. I suggested to, within this test suite, replace a code like this one:\n \nfrequency \u003d [193.25e12, 193.3e12, 193.35e12]\nbaud_rate \u003d 32e9\nsignal \u003d [1, 1, 1]\nsi \u003d create_arbitrary_spectral_information(frequency\u003dfrequency, baud_rate\u003dbaud_rate, signal\u003dsignal)\n\nwith a code like this:\n \nsi \u003d create_arbitrary_spectral_information(frequency\u003d[193.25e12, 193.3e12, 193.35e12], baud_rate\u003d32e9, signal\u003d[1, 1, 1])\n\nBut perhaps we can get by without an explicit test file and stash everything into the docstring.",
+      "parentUuid": "71682b73_519b4a46",
       "range": {
         "startLine": 26,
         "startChar": 0,
