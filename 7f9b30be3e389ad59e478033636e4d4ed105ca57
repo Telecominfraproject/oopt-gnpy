@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "acd6dde3_26cd0f7c",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-17T14:28:18Z",
+      "side": 1,
+      "message": "The documentation confuses me. The docstring for a variable called \"BASE_SLOT_WIDTH\" mentions certain assumptions, yet these assumptions are (as far as I can tell) not checked anywhere. I do not understand how these assumptions are relevant for this variable; please rephrase that docstring. Perhaps my suggestion in the other comment (DEFAULT_SLOT_WIDTH_STEP) can be used?",
+      "parentUuid": "172f9d79_c8dcc548",
+      "range": {
+        "startLine": 19,
+        "startChar": 3,
+        "endLine": 19,
+        "endChar": 99
+      },
+      "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "289baf9b_2655d8ec",
         "filename": "gnpy/core/info.py",
         "patchSetId": 11
@@ -61,6 +85,30 @@
       "writtenOn": "2021-05-16T17:14:55Z",
       "side": 1,
       "message": "If this is needed (see my comment about default values), can you perhaps rephrase it like this:\n \nChannels with unspecified slot width will have their spectrum allocation determined based on the Baud rate and rounded up to the nearest BASE_SLOT_WIDTH.\n\nLooking that that, perhaps there\u0027s a better name:\n \nDEFAULT_SLOT_WIDTH_INCREMENT",
+      "range": {
+        "startLine": 19,
+        "startChar": 100,
+        "endLine": 21,
+        "endChar": 18
+      },
+      "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27aa0ca7_0149d32d",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-17T14:28:18Z",
+      "side": 1,
+      "message": "On a second thought, perhaps DEFAULT_SLOT_WIDTH_STEP describes that variable\u0027s purpose better?",
+      "parentUuid": "289baf9b_2655d8ec",
       "range": {
         "startLine": 19,
         "startChar": 100,
@@ -102,6 +150,47 @@
       "side": 1,
       "message": "I don\u0027t understand why we should remove the defaults as they can be evaluated if they are not mandatory, e.g. see the slot width. Do these evaluations should be moved in a different place in the code? Even more, if we assume that all the inputs are provided, the constructor of the SpectralInformation can be directly used. The purpose of this function is to simplify the creation of an arbitrary spectrum.",
       "parentUuid": "f02c77c6_d58e38b8",
+      "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03b63ac2_028c5c20",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-17T14:28:18Z",
+      "side": 1,
+      "message": "I would prefer not to add complexity unless we have a need for that -- and that need should be demonstrated by a use within this repository. I\u0027m not sure if I understand you correctly, but perhaps you need this outside of gnpy-the-public-project? In that case I would prefer to only merge what is absolutely neccessary for gnpy\u0027s own use at this stage, and leave out the convenience functions for later. If that means that we won\u0027t need this function at all, that\u0027s fine with me.\n\nWhat is the use case for creating an arbitrary spectrum with, say, no power defined? Does the convenience of not having to write:\n\n power\u003d0\n\noutweigh the cost of having a rather messy function such as the `dimension_rehsape` above that does not just reshape an array, but also happens to substitute None with some other value? I\u0027m afraid I just don\u0027t find that intuitive and readable :(. If there were documentation, that would have helped, but if it is not needed by this patch series, my (strong) suggestion is to just remove that.",
+      "parentUuid": "e7ade00d_e4a0d14d",
+      "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3039a0e1_445e8e04",
+        "filename": "tests/test_info.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-17T14:28:18Z",
+      "side": 1,
+      "message": "I think it would actually be cleaner to move these into the constructor, i.e.:\n \nsi \u003d create_arbitrary_spectrum_information(frequency\u003d[...], baud_rate\u003d32e9, signal\u003d[1, 1, 1])\n\nAlso everywhere else, please.\n\nIf the create_arbistraty_spectrum_information gets removed, we won\u0027t need this test file at all -- just add a docstring with a bunch of example invocations of SpectrumInformation, similar to how it\u0027s done here:\n\nhttps://github.com/Telecominfraproject/oopt-gnpy/blob/c4235fa61c49b90305329e5e96b5d1e103610c36/gnpy/core/utils.py#L275-L291",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 22
+      },
       "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
