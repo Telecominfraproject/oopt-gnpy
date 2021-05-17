@@ -234,6 +234,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "98f344f5_c8157b99",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-05-17T15:36:00Z",
+      "side": 1,
+      "message": "Yes, this is where I used it, and yes I did use some of the default values (CD, PMD, for example are not provided when I instantiate the spectrum). I think that keeping the function makes sense to me:\nI called it to create my spectrum, with scalar values. If we remove this function I will need to do the SI creation on my own, no ?",
+      "parentUuid": "bda5ba1a_db27d0cf",
+      "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3039a0e1_445e8e04",
         "filename": "tests/test_info.py",
         "patchSetId": 11
