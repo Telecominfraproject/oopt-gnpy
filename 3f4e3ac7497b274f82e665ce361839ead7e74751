@@ -105,6 +105,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2a629cf_47ff375a",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-17T22:43:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3572f9e1_6cc277fe",
+      "revId": "3f4e3ac7497b274f82e665ce361839ead7e74751",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11a853f2_808f2d85",
@@ -136,6 +154,24 @@
       "side": 1,
       "message": "My mistake :)",
       "parentUuid": "11a853f2_808f2d85",
+      "revId": "3f4e3ac7497b274f82e665ce361839ead7e74751",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afe7ba17_9b1e9043",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-17T22:43:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "829cdd80_08dcdeea",
       "revId": "3f4e3ac7497b274f82e665ce361839ead7e74751",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
