@@ -18,6 +18,23 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81a8ffa3_207c2225",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-17T22:23:10Z",
+      "side": 1,
+      "message": "Thanks for the comments. I will include them in the next version.",
+      "revId": "3f4e3ac7497b274f82e665ce361839ead7e74751",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "005c0cdf_3e4a630d",
@@ -31,6 +48,24 @@
       "writtenOn": "2021-05-17T21:55:51Z",
       "side": 1,
       "message": "Just a question but what is the benefit of using numpy.squeeze instead of just numpy.array here?",
+      "revId": "3f4e3ac7497b274f82e665ce361839ead7e74751",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1fe3858_15fc7d87",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-17T22:23:10Z",
+      "side": 1,
+      "message": "It ensures that the output is a 1 dim array in specific cases. It can be redundant, but for example can fix an input as [[a,b,...]]. It is not essential.",
+      "parentUuid": "005c0cdf_3e4a630d",
       "revId": "3f4e3ac7497b274f82e665ce361839ead7e74751",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -54,6 +89,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3572f9e1_6cc277fe",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-17T22:23:10Z",
+      "side": 1,
+      "message": "Thanks for the comment. numpy.full can be the right choice here, it would work in both cases, if signal is a scalar or it is an array or a list and raises the same error if the dimensions does not match.",
+      "parentUuid": "bfffb70e_0f754062",
+      "revId": "3f4e3ac7497b274f82e665ce361839ead7e74751",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "11a853f2_808f2d85",
         "filename": "gnpy/core/info.py",
         "patchSetId": 12
@@ -65,6 +118,24 @@
       "writtenOn": "2021-05-17T21:55:51Z",
       "side": 1,
       "message": "Why the factor 2 here?",
+      "revId": "3f4e3ac7497b274f82e665ce361839ead7e74751",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "829cdd80_08dcdeea",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-17T22:23:10Z",
+      "side": 1,
+      "message": "My mistake :)",
+      "parentUuid": "11a853f2_808f2d85",
       "revId": "3f4e3ac7497b274f82e665ce361839ead7e74751",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
