@@ -193,6 +193,30 @@
       },
       "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71682b73_519b4a46",
+        "filename": "tests/test_info.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-17T14:43:42Z",
+      "side": 1,
+      "message": "The defaults cannot be placed as you are suggesting because they depend on the frequency dimension.\nI will try an alternative definition of the function in order to have a cleaner version.",
+      "parentUuid": "3039a0e1_445e8e04",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 22
+      },
+      "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
