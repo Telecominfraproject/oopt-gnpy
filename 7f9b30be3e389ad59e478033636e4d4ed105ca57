@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "172f9d79_c8dcc548",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-17T13:52:29Z",
+      "side": 1,
+      "message": "This is something that should be true in real implementations. We had a discussion on this during the coders call and I think the only alternative is to set 6.25 GHz instead of 12.5 GHz. In any real implementation, the spacing between two adjacent channels is a multiple of this base sloth width. In order to avoid any restriction in the input central frequencies this condition is not forced, instead, some checks are present in the SpectralInformation constructor to avoid any overlapping.",
+      "parentUuid": "83b6e67c_d9af3eaf",
+      "range": {
+        "startLine": 19,
+        "startChar": 3,
+        "endLine": 19,
+        "endChar": 99
+      },
+      "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "289baf9b_2655d8ec",
         "filename": "gnpy/core/info.py",
         "patchSetId": 11
@@ -60,6 +84,24 @@
       "writtenOn": "2021-05-16T17:14:55Z",
       "side": 1,
       "message": "I don\u0027t understand how the default values are supposed to behave, and the documentation doesn\u0027t explain that to me. My suggestion is to remove the default values from the function\u0027s signature.",
+      "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7ade00d_e4a0d14d",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-17T13:52:29Z",
+      "side": 1,
+      "message": "I don\u0027t understand why we should remove the defaults as they can be evaluated if they are not mandatory, e.g. see the slot width. Do these evaluations should be moved in a different place in the code? Even more, if we assume that all the inputs are provided, the constructor of the SpectralInformation can be directly used. The purpose of this function is to simplify the creation of an arbitrary spectrum.",
+      "parentUuid": "f02c77c6_d58e38b8",
       "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
