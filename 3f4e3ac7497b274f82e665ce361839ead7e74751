@@ -16,6 +16,57 @@
       "message": "I hope this new version help to simplify the code without removing any feature. The error message in case of dimension mismatch provides less information in this case.",
       "revId": "3f4e3ac7497b274f82e665ce361839ead7e74751",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "005c0cdf_3e4a630d",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-17T21:55:51Z",
+      "side": 1,
+      "message": "Just a question but what is the benefit of using numpy.squeeze instead of just numpy.array here?",
+      "revId": "3f4e3ac7497b274f82e665ce361839ead7e74751",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfffb70e_0f754062",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-17T21:55:51Z",
+      "side": 1,
+      "message": "Maybe this is premature optimization but isn\u0027t numpy.full meant to be used for this (instead of multiplying with ones)? Or if signal is already a list, just use numpy.array or numpy.squeeze (I think this was done in the earlier version using a dimension_reshape function)? It just seems a bit strange to perform all these multiplications by 1 even it it makes the code compact.",
+      "revId": "3f4e3ac7497b274f82e665ce361839ead7e74751",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11a853f2_808f2d85",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-17T21:55:51Z",
+      "side": 1,
+      "message": "Why the factor 2 here?",
+      "revId": "3f4e3ac7497b274f82e665ce361839ead7e74751",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
