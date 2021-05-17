@@ -121,6 +121,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c1855412_3e276a5a",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-05-17T15:04:59Z",
+      "side": 1,
+      "message": "I just add a comment here: we will need to harmonize because, if a given transceiver is defined, its min_spacing is defined with transceivers library. If it is not (case of transission_main_example, I think we should include roll-off in the slot width determination (eg a 49Gbaud signal does not fit in 50GHz in general!). Besides spacing in this case is already determined by the user in this case. so this figure might only be used for consistency checks",
+      "parentUuid": "27aa0ca7_0149d32d",
+      "range": {
+        "startLine": 19,
+        "startChar": 100,
+        "endLine": 21,
+        "endChar": 18
+      },
+      "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f02c77c6_d58e38b8",
         "filename": "gnpy/core/info.py",
         "patchSetId": 11
@@ -168,6 +192,24 @@
       "side": 1,
       "message": "I would prefer not to add complexity unless we have a need for that -- and that need should be demonstrated by a use within this repository. I\u0027m not sure if I understand you correctly, but perhaps you need this outside of gnpy-the-public-project? In that case I would prefer to only merge what is absolutely neccessary for gnpy\u0027s own use at this stage, and leave out the convenience functions for later. If that means that we won\u0027t need this function at all, that\u0027s fine with me.\n\nWhat is the use case for creating an arbitrary spectrum with, say, no power defined? Does the convenience of not having to write:\n\n power\u003d0\n\noutweigh the cost of having a rather messy function such as the `dimension_rehsape` above that does not just reshape an array, but also happens to substitute None with some other value? I\u0027m afraid I just don\u0027t find that intuitive and readable :(. If there were documentation, that would have helped, but if it is not needed by this patch series, my (strong) suggestion is to just remove that.",
       "parentUuid": "e7ade00d_e4a0d14d",
+      "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0258e47d_fc2d15c2",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-05-17T15:04:59Z",
+      "side": 1,
+      "message": "I have used this create_arbitrary_spectral_information  in my changes... I guess this could be changed, but I found it useful",
+      "parentUuid": "03b63ac2_028c5c20",
       "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
