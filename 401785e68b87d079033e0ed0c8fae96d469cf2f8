@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebc15945_2cf91bc9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-20T15:08:50Z",
+      "side": 1,
+      "message": "This is very similar to a check that\u0027s already in gnpy/topology/spectrum_assignment.py. The code is not easy for me to follow though, so I cannot offer a direct suggestion, but is it possible to make a helper function for this check? I.e., pass it the requested N and M along with a reference to the transponder from the equipment library, and raise the error from there?",
+      "revId": "401785e68b87d079033e0ed0c8fae96d469cf2f8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
