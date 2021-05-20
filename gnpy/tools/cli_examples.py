@@ -72,11 +72,11 @@ def load_common_data(equipment_filename, topology_filename, simulation_filename,
     except exceptions.NetworkTopologyError as e:
         print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
         sys.exit(1)
-    except exceptions.ConfigurationError as e:
-        print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
-        sys.exit(1)
     except exceptions.ParametersError as e:
         print(f'{ansi_escapes.red}Simulation parameters error:{ansi_escapes.reset} {e}')
+        sys.exit(1)
+    except exceptions.ConfigurationError as e:
+        print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
         sys.exit(1)
     except exceptions.ServiceError as e:
         print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {e}')
