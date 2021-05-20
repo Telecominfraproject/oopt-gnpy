@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "febf84a9_fa9d1356",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-20T15:02:09Z",
+      "side": 1,
+      "message": "This wasn\u0027t easy to read for me. I think that the request processing and spectrum allocation should get more docs before it gets more features, but I won\u0027t be blocking this one. So, a reluctant CR+2 from me to not hold this up any longer.",
+      "revId": "65cf924225b3f3e2710bf3d653a6357f99f7a249",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
