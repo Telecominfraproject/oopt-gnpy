@@ -145,6 +145,7 @@ See the `Onboarding Guide
 <https://github.com/Telecominfraproject/gnpy/wiki/Onboarding-Guide>`_ for
 specific details on code contributions, or just `upload patches to our Gerrit
 <https://review.gerrithub.io/Documentation/intro-gerrit-walkthrough-github.html>`_.
+Here is `what we are currently working on<https://review.gerrithub.io/q/project:Telecominfraproject/oopt-gnpy+status:open>`_.
 
 See `AUTHORS.rst <AUTHORS.rst>`_ for past and present contributors.
 
