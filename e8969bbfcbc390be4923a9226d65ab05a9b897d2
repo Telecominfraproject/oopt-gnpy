@@ -36,6 +36,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5a619a8_18fcc081",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T23:42:31Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "24c70648_3d5529ae",
+      "revId": "e8969bbfcbc390be4923a9226d65ab05a9b897d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "64f15a2a_5d25fe94",
@@ -67,6 +85,24 @@
       "side": 0,
       "message": "This property has not been suppressed. Its definition has been moved in the constructor of the class Fiber.",
       "parentUuid": "64f15a2a_5d25fe94",
+      "revId": "e8969bbfcbc390be4923a9226d65ab05a9b897d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "641b8233_9613d9d6",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T23:42:31Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "d89d5b25_00659ca2",
       "revId": "e8969bbfcbc390be4923a9226d65ab05a9b897d2",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
