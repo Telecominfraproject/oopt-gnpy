@@ -1,0 +1,210 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de32056e_07af42a0",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T23:00:50Z",
+      "side": 1,
+      "message": "turn this into a docstring",
+      "range": {
+        "startLine": 376,
+        "startChar": 61,
+        "endLine": 376,
+        "endChar": 97
+      },
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "882635c2_238be53b",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T23:00:50Z",
+      "side": 1,
+      "message": "Can you please add a comment which explains what an effective length of a fiber is?",
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "420d94dc_fc4ee3e7",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T23:00:50Z",
+      "side": 1,
+      "message": "add a docs as well please",
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea0c5ed6_e3b9cac6",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T23:00:50Z",
+      "side": 1,
+      "message": "in the previous commit I porposed a helper in RamanFiber, so please move that to Fiber and reuse it here",
+      "range": {
+        "startLine": 434,
+        "startChar": 0,
+        "endLine": 439,
+        "endChar": 43
+      },
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65e1f18b_9792525d",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T23:00:50Z",
+      "side": 1,
+      "message": "this is more Pythonic:\n \ntry:\n    return self._shared_dic[\u0027sim_params\u0027]\ncatch KeyError:\n    return None",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 25
+      },
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c781733c_0d61e166",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T23:00:50Z",
+      "side": 1,
+      "message": "What is the purpose here? Or rather, what is the use case?",
+      "range": {
+        "startLine": 173,
+        "startChar": 0,
+        "endLine": 175,
+        "endChar": 29
+      },
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce29e98f_1ba0489a",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T23:00:50Z",
+      "side": 1,
+      "message": "Please add a comment saying where were these derived from",
+      "range": {
+        "startLine": 510,
+        "startChar": 22,
+        "endLine": 510,
+        "endChar": 33
+      },
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23637573_bdebf383",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T23:00:50Z",
+      "side": 1,
+      "message": "Please add a comment saying where were these derived from",
+      "range": {
+        "startLine": 550,
+        "startChar": 22,
+        "endLine": 550,
+        "endChar": 33
+      },
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9185a808_634e990b",
+        "filename": "tests/data/test_fiber_flex_expected_results.csv",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T23:00:50Z",
+      "side": 1,
+      "message": "Please explain in the commit message why it\u0027s important to have 96 lines for RamanFiber, but it\u0027s ok to have just five data points for a regular Fiber. Perhaps it\u0027s obvious, but I have no clue.",
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "492c5478_bfb47c9b",
+        "filename": "tests/test_parameters.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T23:00:50Z",
+      "side": 1,
+      "message": "what is this for?",
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
