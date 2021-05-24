@@ -80,6 +80,30 @@
       },
       "revId": "3fb3f77205b42c91334c3b5d868e75ae9658bf09",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6ceb579_cff4c56c",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-24T21:43:58Z",
+      "side": 1,
+      "message": "You are right, and this is actually an additional bug coming from the first implementation of the Raman solver. In fact, the correct result in your example should be array([ 0, 10, 11]) as it includes the z\u003dfiber_length. As you pointed out, in the current version if fiber_length is not a multiple of z_resolution, this is not the case and the output Raman profile is not calculated at the fiber termination (the science_utils test fails if the z_resolution is changed of just one meter, which is an unreasonable behaviour). This is an additional reason to use my proposal that restores the right behaviour (it is also included in the last Raman restructuring patch).\n\nRegarding your question, in my opinion is better to avoid the overwriting of configuration parameters for debugging and future implementations reasons.",
+      "parentUuid": "31ac1477_28fd7679",
+      "range": {
+        "startLine": 362,
+        "startChar": 8,
+        "endLine": 362,
+        "endChar": 53
+      },
+      "revId": "3fb3f77205b42c91334c3b5d868e75ae9658bf09",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
