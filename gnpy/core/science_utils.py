@@ -345,7 +345,7 @@ class RamanSolver:
         if not sim_params.raman_params.flag_raman:
             raman_efficiency['cr'] = zeros(len(raman_efficiency['cr']))
         # raman solver parameters
-        z_resolution = sim_params.raman_params.space_resolution
+        z_resolution = min(sim_params.raman_params.space_resolution, fiber_length)
         tolerance = sim_params.raman_params.tolerance
 
         logger.debug('Start computing fiber Stimulated Raman Scattering')
