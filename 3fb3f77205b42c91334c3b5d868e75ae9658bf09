@@ -128,6 +128,30 @@
       },
       "revId": "3fb3f77205b42c91334c3b5d868e75ae9658bf09",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "119d7e87_35276d90",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-24T22:15:36Z",
+      "side": 1,
+      "message": "The patch that I am referring to is the \"505386:  Raman Solver restructuring and speed up\" that is under revision. \n\nIt is crucial to include the z\u003dfiber_span element because the Raman profile (which include the loss profile) has to be calculated at the fiber termination as it quantify the real loss experienced by the signal. Following your example, the Raman profile at 30km would be different from the one at 36.123km. Considering a loss coefficient of 0.2dB/km, this would result in almost 1.5dB not considered by the following amplifier. Moreover, in case of short fiber spans, the NLI generated in those additional 6 km is not negligible as the power of the signal is still relatively high. Lastly, the position of the back propagating pumps has to coincide with the fiber termination to obtain a realistic simulation.\n\nI am including the information of this simulation parameter in the documentation that includes the description of the new patches and that I have not time to finish yet.",
+      "parentUuid": "80a907af_de96d02a",
+      "range": {
+        "startLine": 362,
+        "startChar": 8,
+        "endLine": 362,
+        "endChar": 53
+      },
+      "revId": "3fb3f77205b42c91334c3b5d868e75ae9658bf09",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
