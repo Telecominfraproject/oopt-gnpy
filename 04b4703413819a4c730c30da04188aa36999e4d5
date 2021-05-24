@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b6c08d8_badfb260",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T22:48:17Z",
+      "side": 1,
+      "message": "This is called twice, once for the input connector, then for the output one. Please refactor that into a helper function, like this:\n \ndef apply_connector_attenuation(spectrum: SpectralInformation, attenuation_db: float):\n    attenuation \u003d db2lin(attenuation_db)\n    spectrum.signal /\u003d attenuation\n    spectrum.nli /\u003d attenuation\n    sepctrum.ase /\u003d attenuation\n\nWhen that\u0027s invoked like:\n apply_connector_attenuation(sepctrum, self.params.conn_in + self.params.att_in)\n\n...the comment won\u0027t be needed anymore.",
+      "range": {
+        "startLine": 480,
+        "startChar": 0,
+        "endLine": 484,
+        "endChar": 47
+      },
+      "revId": "04b4703413819a4c730c30da04188aa36999e4d5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c09e86a2_9c03b910",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T22:48:17Z",
+      "side": 1,
+      "message": "nit: please call this \"NLI\"",
+      "range": {
+        "startLine": 486,
+        "startChar": 10,
+        "endLine": 486,
+        "endChar": 13
+      },
+      "revId": "04b4703413819a4c730c30da04188aa36999e4d5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
