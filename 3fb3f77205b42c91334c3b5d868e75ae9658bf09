@@ -56,6 +56,30 @@
       },
       "revId": "3fb3f77205b42c91334c3b5d868e75ae9658bf09",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31ac1477_28fd7679",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-24T20:19:22Z",
+      "side": 1,
+      "message": "What is the problem with changing the value of z_resolution, it is not used for anything else? On the other hand, your proposal does not provide the same result when fiber_length is larger than space_resolution since then it will add an extra value to the array, e.g. append(arange(0, 11, 10), 11) \u003d array([ 0, 10, 11]). Maybe that is ok but it is different from how the current code behaves.",
+      "parentUuid": "a26bd37d_dc563271",
+      "range": {
+        "startLine": 362,
+        "startChar": 8,
+        "endLine": 362,
+        "endChar": 53
+      },
+      "revId": "3fb3f77205b42c91334c3b5d868e75ae9658bf09",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
