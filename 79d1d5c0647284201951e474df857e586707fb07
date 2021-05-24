@@ -319,6 +319,24 @@
       "parentUuid": "de5cab0b_63771fec",
       "revId": "79d1d5c0647284201951e474df857e586707fb07",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ff4347a_ad6fe79d",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T22:38:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c886091d_07f54e41",
+      "revId": "79d1d5c0647284201951e474df857e586707fb07",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }

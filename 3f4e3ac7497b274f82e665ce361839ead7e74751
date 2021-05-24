@@ -72,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "63c6f829_018c1438",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T22:38:39Z",
+      "side": 1,
+      "message": "I think it\u0027s cleaner to throw an exception when the frequency array is not one-dimensional. But no need to do this here, it\u0027s IMHO actually better in the SpectralInformation constructor.",
+      "parentUuid": "f1fe3858_15fc7d87",
+      "revId": "3f4e3ac7497b274f82e665ce361839ead7e74751",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bfffb70e_0f754062",
         "filename": "gnpy/core/info.py",
         "patchSetId": 12

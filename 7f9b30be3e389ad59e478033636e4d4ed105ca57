@@ -72,6 +72,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22a1c787_2b3527d7",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T22:38:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "acd6dde3_26cd0f7c",
+      "range": {
+        "startLine": 19,
+        "startChar": 3,
+        "endLine": 19,
+        "endChar": 99
+      },
+      "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "289baf9b_2655d8ec",
@@ -157,6 +181,30 @@
       "side": 1,
       "message": "I included the roll off in the new version.",
       "parentUuid": "c1855412_3e276a5a",
+      "range": {
+        "startLine": 19,
+        "startChar": 100,
+        "endLine": 21,
+        "endChar": 18
+      },
+      "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9187d366_ad637ba0",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T22:38:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cee78678_06978645",
       "range": {
         "startLine": 19,
         "startChar": 100,
@@ -274,6 +322,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d3352b4_79fe4664",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T22:38:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98f344f5_c8157b99",
+      "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3039a0e1_445e8e04",
@@ -359,6 +425,30 @@
       "side": 1,
       "message": "I updated this.",
       "parentUuid": "9bfa867d_c383a6d0",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 22
+      },
+      "revId": "7f9b30be3e389ad59e478033636e4d4ed105ca57",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87cc9255_240b25c9",
+        "filename": "tests/test_info.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T22:38:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4352612a_d9cb16c1",
       "range": {
         "startLine": 26,
         "startChar": 0,

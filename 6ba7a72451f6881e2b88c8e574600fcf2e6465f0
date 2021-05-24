@@ -53,6 +53,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3978db6_e419f9dd",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T22:38:39Z",
+      "side": 1,
+      "message": "I *think* this is not relevant for this first patch in the full series, so I\u0027m marking this one as done.",
+      "parentUuid": "05da158d_bd17c717",
+      "revId": "6ba7a72451f6881e2b88c8e574600fcf2e6465f0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9efb1e52_b8674339",
