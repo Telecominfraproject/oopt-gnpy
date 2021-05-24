@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "734ca4e1_2f7742b6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-24T23:10:22Z",
+      "side": 1,
+      "message": "Sorry Jan, this patch was part of the set that I pushed before last summer and I have reorganized the changes in distinct successive pushes, as you suggested in September. I have changed the status of all these patches ABBANDONED. I will do the same for this one.",
+      "revId": "04b4703413819a4c730c30da04188aa36999e4d5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b6c08d8_badfb260",
