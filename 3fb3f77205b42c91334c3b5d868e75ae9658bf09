@@ -16,6 +16,46 @@
       "message": "Andrea, can you take a look and see if this makes sense?",
       "revId": "3fb3f77205b42c91334c3b5d868e75ae9658bf09",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0202b52_60a16c17",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-24T19:15:16Z",
+      "side": 1,
+      "message": "I hope this is helpful.",
+      "revId": "3fb3f77205b42c91334c3b5d868e75ae9658bf09",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a26bd37d_dc563271",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-24T19:15:16Z",
+      "side": 1,
+      "message": "Your solution should work for the specific problem pointed out in the github issue. Probably, a better solution is importing append from numpy and replace this line with\n\u003e\u003e\u003e z \u003d append(arange(0, fiber_length, z_resolution), fiber_length)\n\nas it does not change the value of z_resolution and provides the same result.",
+      "range": {
+        "startLine": 362,
+        "startChar": 8,
+        "endLine": 362,
+        "endChar": 53
+      },
+      "revId": "3fb3f77205b42c91334c3b5d868e75ae9658bf09",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
