@@ -104,6 +104,30 @@
       },
       "revId": "3fb3f77205b42c91334c3b5d868e75ae9658bf09",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80a907af_de96d02a",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-24T21:53:55Z",
+      "side": 1,
+      "message": "Andrea, can you please send such a patch *and* explain what it\u0027s about in its commit message? While I think I can follow Jonas\u0027 reasoning here that replacing a vector [0] with vector e.g. [0, 5172] \"probably makes sense\", I have no clue if this also applies to non-uniform spacing which you\u0027ll get in the majority of cases with a simple append (i.e., [0, 10k, 20k, 30k, 36123]). Don\u0027t take me wrong, it makes sense if you say so, but I would prefer a self-contained commit which explains the details.\n\nToo bad \"space_resolution\" is unfortunately not documented anywhere in the code (or in the docs), so I cannot really reason about the code\u0027s behavior.",
+      "parentUuid": "a26bd37d_dc563271",
+      "range": {
+        "startLine": 362,
+        "startChar": 8,
+        "endLine": 362,
+        "endChar": 53
+      },
+      "revId": "3fb3f77205b42c91334c3b5d868e75ae9658bf09",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
