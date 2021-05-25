@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f416e003_27f66e5c",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-25T00:17:45Z",
+      "side": 1,
+      "message": "The type annotation cannot be placed within the definition of the very same Class, therefore I added a doc string with this information.",
+      "parentUuid": "a456f866_0d595bf6",
+      "range": {
+        "startLine": 161,
+        "startChar": 22,
+        "endLine": 161,
+        "endChar": 24
+      },
+      "revId": "11b1221abf85574b3a2648a59bdda3c81b451a0d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "64c1a9b3_7e54b619",
         "filename": "gnpy/core/info.py",
         "patchSetId": 13
@@ -71,6 +95,30 @@
       "writtenOn": "2021-05-24T22:38:39Z",
       "side": 1,
       "message": "I think this version only supports arbitrary distribution of carriers, but the carriers are expected to be uniform in all other aspects, so a better name is more suitable.\n\nPerhaps a @staticmethod within SpectralInformation, like this:\n \nclass SpectralInformation:\n# ...\n    @staticmethod\n    def from_frequencies(...):\n       ...",
+      "range": {
+        "startLine": 183,
+        "startChar": 4,
+        "endLine": 183,
+        "endChar": 41
+      },
+      "revId": "11b1221abf85574b3a2648a59bdda3c81b451a0d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3afe434a_cb0cb854",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-25T00:17:45Z",
+      "side": 1,
+      "message": "The purpose of this function is to create a non-uniform spectral information with different signal powers, baud rates, slot widths, roll offs, chromatic dispersions and pmd values for each channel. This version will work on such a spectral information, only the accuracy of the simulation is not guaranteed at this stage, but this would be the case also for the SpectralInformation constructor.",
+      "parentUuid": "64c1a9b3_7e54b619",
       "range": {
         "startLine": 183,
         "startChar": 4,
@@ -104,6 +152,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4350f89d_7d385677",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-25T00:17:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7bee652_fb1d1e29",
+      "range": {
+        "startLine": 183,
+        "startChar": 42,
+        "endLine": 184,
+        "endChar": 83
+      },
+      "revId": "11b1221abf85574b3a2648a59bdda3c81b451a0d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "300148f8_3b1ed496",
@@ -117,6 +189,24 @@
       "writtenOn": "2021-05-24T22:38:39Z",
       "side": 1,
       "message": "This comment paraphrases the function\u0027s name I\u0027m afraid, so as a developer, it doesn\u0027t help me understand the code. Why should I use that instead of the SpectrumInformation\u0027s constructor?\n\nA better version of documentation would tell me how the input parameters are reflected in the output, perhaps with some examples. What about this:\n \n\u0027\u0027\u0027Create SpectrumInformation over the specified set of frequencies\n \nThis is just a wrapper around SpectralInformation.__init__() to use when\neverything but actual channel frequencies is uniform.\n\u0027\u0027\u0027",
+      "revId": "11b1221abf85574b3a2648a59bdda3c81b451a0d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0054a115_e67cb34a",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-25T00:17:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "300148f8_3b1ed496",
       "revId": "11b1221abf85574b3a2648a59bdda3c81b451a0d",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -144,6 +234,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46e01da2_14b8329e",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-25T00:17:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9280f4aa_2a795469",
+      "range": {
+        "startLine": 188,
+        "startChar": 0,
+        "endLine": 189,
+        "endChar": 38
+      },
+      "revId": "11b1221abf85574b3a2648a59bdda3c81b451a0d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5cdda36_9a2086f3",
@@ -157,6 +271,30 @@
       "writtenOn": "2021-05-24T22:38:39Z",
       "side": 1,
       "message": "might as well test the df() here",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 48
+      },
+      "revId": "11b1221abf85574b3a2648a59bdda3c81b451a0d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ee2346d_0e9286ee",
+        "filename": "tests/test_info.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-25T00:17:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5cdda36_9a2086f3",
       "range": {
         "startLine": 15,
         "startChar": 0,
