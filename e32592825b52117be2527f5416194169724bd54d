@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7863f954_9d8180d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-25T22:27:44Z",
+      "side": 1,
+      "message": "I think the error message is still accidentally multiline, isn\u0027t it?",
+      "revId": "e32592825b52117be2527f5416194169724bd54d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}

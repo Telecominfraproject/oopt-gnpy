@@ -69,6 +69,24 @@
       "parentUuid": "66671b7f_750b55fd",
       "revId": "401785e68b87d079033e0ed0c8fae96d469cf2f8",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f01f1f76_951b25a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-25T22:27:44Z",
+      "side": 1,
+      "message": "I would have preferred refactorings in an extra commit. I also think that the guardband allocation is a matter of policy, so perhaps it is not that awesome to just harcode 12.5GHz there like it\u0027s currently done, but that is not a regression.",
+      "parentUuid": "f6fbaa83_28d8a473",
+      "revId": "401785e68b87d079033e0ed0c8fae96d469cf2f8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
