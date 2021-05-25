@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c8852a9b_e70f8b3f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-25T13:59:58Z",
+      "side": 1,
+      "message": "I +2\u0027d since I\u0027m ok with this solution but yes, more information in the commit message would be good.",
+      "parentUuid": "d06933c0_b6d7c07a",
+      "revId": "30a713dfc01495b670815b433ba97c0e6427f5e3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c7bcd5a6_6c214276",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
