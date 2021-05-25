@@ -152,6 +152,30 @@
       },
       "revId": "3fb3f77205b42c91334c3b5d868e75ae9658bf09",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f43d84a_fe28e189",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-25T06:12:19Z",
+      "side": 1,
+      "message": "\u003e The patch that I am referring to is the \"505386:  Raman Solver restructuring and speed up\" that is under revision. \n\nIf this fix is \"crucial\" I think it should be a separate patch merged asap.\n\n\u003e I have no clue if this also applies to non-uniform spacing which you\u0027ll get in the majority of cases with a simple append (i.e., [0, 10k, 20k, 30k, 36123]).\n\nWhat about using numpy.linspace instead of arange to have uniform spacing and refer to space_resolution in the documentation as a max value?\n\n\u003e Regarding your question, in my opinion is better to avoid the overwriting of configuration parameters for debugging and future implementations reasons.\n\nI agree in principle but in this case the \"configuration\" parameter would be \"sim_params.raman_params.space_resolution\" and \"z_resolution\" is just a local variable used in this method. Anyway, this is a moot point now since a larger fix is required.",
+      "parentUuid": "119d7e87_35276d90",
+      "range": {
+        "startLine": 362,
+        "startChar": 8,
+        "endLine": 362,
+        "endChar": 53
+      },
+      "revId": "3fb3f77205b42c91334c3b5d868e75ae9658bf09",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
