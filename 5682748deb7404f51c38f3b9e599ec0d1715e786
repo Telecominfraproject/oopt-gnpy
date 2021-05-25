@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bafad3cf_11c3c3bf",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-25T09:44:25Z",
+      "side": 1,
+      "message": "Why do we need to support using complex numbers here, and what is their semantics?",
+      "range": {
+        "startLine": 192,
+        "startChar": 68,
+        "endLine": 192,
+        "endChar": 75
+      },
+      "revId": "5682748deb7404f51c38f3b9e599ec0d1715e786",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}

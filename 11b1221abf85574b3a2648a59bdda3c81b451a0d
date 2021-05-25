@@ -84,6 +84,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3657737b_71cfd127",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-25T09:44:25Z",
+      "side": 1,
+      "message": "Right, that\u0027s tricky in Python 3.6 (https://stackoverflow.com/questions/33533148/how-do-i-type-hint-a-method-with-the-type-of-the-enclosing-class). Let me push a change (later today) which bumps the Python requirement to 3.8, then we can rebase this one and use that feature.",
+      "parentUuid": "f416e003_27f66e5c",
+      "range": {
+        "startLine": 161,
+        "startChar": 22,
+        "endLine": 161,
+        "endChar": 24
+      },
+      "revId": "11b1221abf85574b3a2648a59bdda3c81b451a0d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "64c1a9b3_7e54b619",
         "filename": "gnpy/core/info.py",
         "patchSetId": 13
@@ -119,6 +143,30 @@
       "side": 1,
       "message": "The purpose of this function is to create a non-uniform spectral information with different signal powers, baud rates, slot widths, roll offs, chromatic dispersions and pmd values for each channel. This version will work on such a spectral information, only the accuracy of the simulation is not guaranteed at this stage, but this would be the case also for the SpectralInformation constructor.",
       "parentUuid": "64c1a9b3_7e54b619",
+      "range": {
+        "startLine": 183,
+        "startChar": 4,
+        "endLine": 183,
+        "endChar": 41
+      },
+      "revId": "11b1221abf85574b3a2648a59bdda3c81b451a0d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f73b7e63_d58d367d",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-25T09:44:25Z",
+      "side": 1,
+      "message": "Ah, sorry. I missed the fact that numpy.array() can take an array as its input, provided that the shape of the array matches the expected result. I tried that before, but I used a different array shape and that of course failed, so I got confused. Thanks for adding tests for that!",
+      "parentUuid": "3afe434a_cb0cb854",
       "range": {
         "startLine": 183,
         "startChar": 4,
