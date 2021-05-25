@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb755574_73edb3ce",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-25T22:31:01Z",
+      "side": 1,
+      "message": "typo? perhaps \"blocking\"?",
+      "range": {
+        "startLine": 10,
+        "startChar": 12,
+        "endLine": 10,
+        "endChar": 20
+      },
+      "revId": "3ae42a6cb857e435592910d7f48c251768cd1840",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
