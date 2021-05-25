@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d06933c0_b6d7c07a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-25T13:44:09Z",
+      "side": 1,
+      "message": "- Please format this as per various style guides (a good example is at https://chris.beams.io/posts/git-commit/), in particular, use a brief summary, a blank line, and then the rest of the commit message, hard wrapping, etc. But that full page is worth reading for the \"why\" behind this.\n- Please explain why this one is better than the other proposal from Jonas; in other words, please capture our discussion we had earlier today on the call. That all should be in the (not-first) paragraphs of the commit so that we remember in future what this was all about.",
+      "revId": "30a713dfc01495b670815b433ba97c0e6427f5e3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7bcd5a6_6c214276",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-25T13:44:09Z",
+      "side": 1,
+      "message": "Please also add a commit footer (in the same paragraphs as the Change-Id bit) where you link to the original bugreport. Like this:\n Bug: https://github.com/Telecominfraproject/oopt-gnpy/discussions/400",
+      "revId": "30a713dfc01495b670815b433ba97c0e6427f5e3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
