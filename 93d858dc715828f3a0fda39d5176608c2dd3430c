@@ -52,6 +52,24 @@
       "parentUuid": "a7cf8cd9_1efdbe0a",
       "revId": "93d858dc715828f3a0fda39d5176608c2dd3430c",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c3a20e6_26a27127",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-25T14:55:08Z",
+      "side": 1,
+      "message": "The test case that I had raise an error because there was a bug that I fixed, and that won\u0027t be raised in the current version. I have not other example at the moment, but I cannot assure that a similar behaviour can happen in other cases.",
+      "parentUuid": "0c879a91_06824f95",
+      "revId": "93d858dc715828f3a0fda39d5176608c2dd3430c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
