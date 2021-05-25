@@ -359,7 +359,7 @@ class RamanSolver:
         cr = interp_cr(freq_diff)
 
         # z propagation axis
-        z = arange(0, fiber_length + 1, z_resolution)
+        z = append(arange(0, fiber_length, z_resolution), fiber_length)
 
         def ode_function(z, p):
             return self._ode_stimulated_raman(z, p, alphap_fiber, freq_array, cr, prop_direct)
