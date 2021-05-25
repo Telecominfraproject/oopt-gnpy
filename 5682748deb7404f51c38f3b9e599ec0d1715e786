@@ -22,6 +22,30 @@
       },
       "revId": "5682748deb7404f51c38f3b9e599ec0d1715e786",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee7921e1_d750be9b",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-25T13:26:07Z",
+      "side": 1,
+      "message": "There is no need, it has been removed from the type annotation",
+      "parentUuid": "bafad3cf_11c3c3bf",
+      "range": {
+        "startLine": 192,
+        "startChar": 68,
+        "endLine": 192,
+        "endChar": 75
+      },
+      "revId": "5682748deb7404f51c38f3b9e599ec0d1715e786",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
