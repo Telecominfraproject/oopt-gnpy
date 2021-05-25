@@ -16,6 +16,24 @@
       "message": "Matching errors based on strings looks very fragile to me, but based on a quick glance, there\u0027s nothing better in numpy. Just wanted to say that I\u0027m not convinced that this is an excellent idea, but hey, you wanted to add that for convenience, so be it. If only they had a derived class for that...",
       "revId": "93d858dc715828f3a0fda39d5176608c2dd3430c",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7cf8cd9_1efdbe0a",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-25T13:32:50Z",
+      "side": 1,
+      "message": "I totally agree with you on this, unfortunately, as you pointed out, there is no alternative. I have had the matching because I faced a specific case where a ValueError was raised and the dimension mismatch was not the cause. I think that can happen in other situations.",
+      "parentUuid": "ac0d503b_c21b3129",
+      "revId": "93d858dc715828f3a0fda39d5176608c2dd3430c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
