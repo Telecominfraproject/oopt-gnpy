@@ -51,6 +51,24 @@
       "message": "Thanks for reviewing!",
       "revId": "401785e68b87d079033e0ed0c8fae96d469cf2f8",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6fbaa83_28d8a473",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-25T14:25:18Z",
+      "side": 1,
+      "message": "Yes, a common function that you just invoke with a right parameter from both places. Something like gnpy/topology/request.py looks like a good place to me.",
+      "parentUuid": "66671b7f_750b55fd",
+      "revId": "401785e68b87d079033e0ed0c8fae96d469cf2f8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }

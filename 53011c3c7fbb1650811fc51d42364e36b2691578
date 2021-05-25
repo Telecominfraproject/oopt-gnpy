@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3073022_55bdb044",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-25T14:25:18Z",
+      "side": 1,
+      "message": "this produces a string with newlines and spaces where the original linebreaks and indents are",
+      "range": {
+        "startLine": 527,
+        "startChar": 0,
+        "endLine": 529,
+        "endChar": 106
+      },
+      "revId": "53011c3c7fbb1650811fc51d42364e36b2691578",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
