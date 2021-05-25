@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f513f72_a73d8aed",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-25T01:04:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de32056e_07af42a0",
+      "range": {
+        "startLine": 376,
+        "startChar": 61,
+        "endLine": 376,
+        "endChar": 97
+      },
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "882635c2_238be53b",
@@ -41,6 +65,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1660a94_572fa54c",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-25T01:04:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "882635c2_238be53b",
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "420d94dc_fc4ee3e7",
@@ -54,6 +96,24 @@
       "writtenOn": "2021-05-24T23:00:50Z",
       "side": 1,
       "message": "add a docs as well please",
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0801e6ae_0dab8f96",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-25T01:04:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "420d94dc_fc4ee3e7",
       "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -81,6 +141,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a81e371_f47b1cba",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-25T01:04:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea0c5ed6_e3b9cac6",
+      "range": {
+        "startLine": 434,
+        "startChar": 0,
+        "endLine": 439,
+        "endChar": 43
+      },
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "65e1f18b_9792525d",
@@ -94,6 +178,30 @@
       "writtenOn": "2021-05-24T23:00:50Z",
       "side": 1,
       "message": "this is more Pythonic:\n \ntry:\n    return self._shared_dic[\u0027sim_params\u0027]\ncatch KeyError:\n    return None",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 25
+      },
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00099ec6_4fc0e616",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-25T01:04:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65e1f18b_9792525d",
       "range": {
         "startLine": 167,
         "startChar": 0,
@@ -129,6 +237,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cd59eab4_fee3c038",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-25T01:04:28Z",
+      "side": 1,
+      "message": "It is an easy way to reset the SimParams to the default value. It is used for example in the test_parameters (see last comment for more explanation).",
+      "parentUuid": "c781733c_0d61e166",
+      "range": {
+        "startLine": 173,
+        "startChar": 0,
+        "endLine": 175,
+        "endChar": 29
+      },
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ce29e98f_1ba0489a",
         "filename": "gnpy/core/science_utils.py",
         "patchSetId": 8
@@ -140,6 +272,30 @@
       "writtenOn": "2021-05-24T23:00:50Z",
       "side": 1,
       "message": "Please add a comment saying where were these derived from",
+      "range": {
+        "startLine": 510,
+        "startChar": 22,
+        "endLine": 510,
+        "endChar": 33
+      },
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2a3f80f_f7127e40",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-25T01:04:28Z",
+      "side": 1,
+      "message": "In the doc string it is indicated that these expressions are from \"eq. 120 from arXiv:1209.0394\"",
+      "parentUuid": "ce29e98f_1ba0489a",
       "range": {
         "startLine": 510,
         "startChar": 22,
@@ -173,6 +329,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2ebbbd5_379ee3e7",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-25T01:04:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23637573_bdebf383",
+      "range": {
+        "startLine": 550,
+        "startChar": 22,
+        "endLine": 550,
+        "endChar": 33
+      },
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9185a808_634e990b",
@@ -192,6 +372,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "805b060c_bd8470f0",
+        "filename": "tests/data/test_fiber_flex_expected_results.csv",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-25T01:04:28Z",
+      "side": 1,
+      "message": "The result file come from previous implementations. Here I am just renaming the file in order to follow the naming convention of other files in the same folder.",
+      "parentUuid": "9185a808_634e990b",
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "492c5478_bfb47c9b",
         "filename": "tests/test_parameters.py",
         "patchSetId": 8
@@ -203,6 +401,24 @@
       "writtenOn": "2021-05-24T23:00:50Z",
       "side": 1,
       "message": "what is this for?",
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c5167e1_8b213a0c",
+        "filename": "tests/test_parameters.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-25T01:04:28Z",
+      "side": 1,
+      "message": "Having a global variable guaranteed that within a simulation the same simulation parameters are shared between all the fibers. Here is it necessary to reset the simulation parameters because running pytest there is a single simulation environment for all the tests, therefore, after this test the simulation parameters would remain the such as defined here.",
+      "parentUuid": "492c5478_bfb47c9b",
       "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
