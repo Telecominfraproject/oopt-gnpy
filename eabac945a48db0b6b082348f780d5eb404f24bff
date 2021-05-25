@@ -146,6 +146,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "94f17486_f890b832",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-25T06:41:13Z",
+      "side": 1,
+      "message": "So now you first calculate the power profile at a much finer resolution (default is 50m) and then interpolate to get values at the coarse resolution (default is 10km). Why throw away so many values? Or vice versa, why calculate at such fine resolution if you are anyway going to throw it away? Just asking to understand...",
+      "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9a341656_80912e51",
         "filename": "gnpy/core/science_utils.py",
         "patchSetId": 7
@@ -180,6 +197,23 @@
       "writtenOn": "2021-05-24T23:42:31Z",
       "side": 1,
       "message": "please document this",
+      "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4130d347_8abe5cb6",
+        "filename": "gnpy/example-data/sim_params.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-25T06:41:13Z",
+      "side": 1,
+      "message": "\"spatial_resolution\" and \"solver_spatial_step\" sound confusingly similar, still their values differ by 3 orders of magnitude. Even if these will be described in documentation, maybe we can come up with more descriptive names?",
       "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
