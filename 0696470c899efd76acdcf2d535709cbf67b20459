@@ -85,6 +85,24 @@
       "message": "This doesn\u0027t belong to this commit, and the CI catches this. In the RequestParams\u0027s constructor:\n\n TypeError: __new__() got an unexpected keyword argument \u0027effective_freq_slot\u0027",
       "revId": "0696470c899efd76acdcf2d535709cbf67b20459",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81d4d3b1_82975284",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-25T14:18:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a25cd9d3_3937fbf9",
+      "revId": "0696470c899efd76acdcf2d535709cbf67b20459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
