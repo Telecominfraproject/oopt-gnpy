@@ -34,6 +34,24 @@
       "parentUuid": "ac0d503b_c21b3129",
       "revId": "93d858dc715828f3a0fda39d5176608c2dd3430c",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c879a91_06824f95",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-25T13:47:51Z",
+      "side": 1,
+      "message": "If you already have a test case for this where the ValueError is not due to an incorrect shape, I would prefer to have that added to the test suite. Not just for a nice 100% test coverage, but also because it looks like a real improvement.",
+      "parentUuid": "a7cf8cd9_1efdbe0a",
+      "revId": "93d858dc715828f3a0fda39d5176608c2dd3430c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
