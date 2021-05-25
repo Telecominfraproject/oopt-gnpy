@@ -36,6 +36,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "21ac7d1d_1af9e1f0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-25T16:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8852a9b_e70f8b3f",
+      "revId": "30a713dfc01495b670815b433ba97c0e6427f5e3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7bcd5a6_6c214276",
@@ -49,6 +67,24 @@
       "writtenOn": "2021-05-25T13:44:09Z",
       "side": 1,
       "message": "Please also add a commit footer (in the same paragraphs as the Change-Id bit) where you link to the original bugreport. Like this:\n Bug: https://github.com/Telecominfraproject/oopt-gnpy/discussions/400",
+      "revId": "30a713dfc01495b670815b433ba97c0e6427f5e3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "173aaafc_db2cefb4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-25T16:17:52Z",
+      "side": 1,
+      "message": "I\u0027ve added this myself now.",
+      "parentUuid": "c7bcd5a6_6c214276",
       "revId": "30a713dfc01495b670815b433ba97c0e6427f5e3",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
