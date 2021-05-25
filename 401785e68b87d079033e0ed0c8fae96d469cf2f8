@@ -16,6 +16,41 @@
       "message": "This is very similar to a check that\u0027s already in gnpy/topology/spectrum_assignment.py. The code is not easy for me to follow though, so I cannot offer a direct suggestion, but is it possible to make a helper function for this check? I.e., pass it the requested N and M along with a reference to the transponder from the equipment library, and raise the error from there?",
       "revId": "401785e68b87d079033e0ed0c8fae96d469cf2f8",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66671b7f_750b55fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-05-25T13:14:29Z",
+      "side": 1,
+      "message": "Do you mean a common function used for these two places ? and that would be in equipent.py ?",
+      "parentUuid": "ebc15945_2cf91bc9",
+      "revId": "401785e68b87d079033e0ed0c8fae96d469cf2f8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d3321f8_f6f7e80a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-05-25T13:14:29Z",
+      "side": 1,
+      "message": "Thanks for reviewing!",
+      "revId": "401785e68b87d079033e0ed0c8fae96d469cf2f8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
