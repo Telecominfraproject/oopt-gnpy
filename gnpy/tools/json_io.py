@@ -18,7 +18,7 @@ from gnpy.core.equipment import trx_mode_params
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError, ServiceError
 from gnpy.core.science_utils import estimate_nf_model
 from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions
-from gnpy.topology.request import PathRequest, Disjunction
+from gnpy.topology.request import PathRequest, Disjunction, compute_spectrum_slot_vs_bandwidth
 from gnpy.tools.convert import xls_to_json_data
 from gnpy.tools.service_sheet import read_service_sheet
 import time
@@ -476,12 +476,11 @@ def requests_from_json(json_data, equipment):
         except KeyError:
             params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
         params['effective_freq_slot'] = req['path-constraints']['te-bandwidth'].get('effective-freq-slot', [None])[0]
-        _check_one_request(params, f_max_from_si)
-
         try:
             params['path_bandwidth'] = req['path-constraints']['te-bandwidth']['path_bandwidth']
         except KeyError:
             pass
+        _check_one_request(params, f_max_from_si)
         requests_list.append(PathRequest(**params))
     return requests_list
 
@@ -507,6 +506,26 @@ def _check_one_request(params, f_max_from_si):
             max recommanded nb of channels is {max_recommanded_nb_channels}.'''
             _logger.critical(msg)
             raise ServiceError(msg)
+    # Checks consistency of the requested M and path_bandwidth when trx_mode is defined
+    # when trx_mode is not defined one needs to wait for the mode selection to perform
+    # the verification. This saves simuation time because it avoids performing propagation
+    # on request we already know should fail because of inconsistent spectrum reservation
+    #
+    if params['trx_mode'] is not None:
+        if params['effective_freq_slot'] is not None and params['effective_freq_slot']['M'] is not None:
+            _, requested_m = compute_spectrum_slot_vs_bandwidth(params['path_bandwidth'],
+                                                                params['spacing'],
+                                                                params['bit_rate'])
+            # params['effective_freq_slot']['M'] value should be bigger than the computed requested_m (simple estimate)
+            # TODO: elaborate a more accurate estimate with nb_wl * tx_osnr + possibly guardbands in case of
+            # superchannel closed packing.
+
+            if requested_m > params['effective_freq_slot']['M']:
+                msg = f'requested M {params["effective_freq_slot"]["M"]} number of slots for request' +\
+                      f'{params["request_id"]} should be greater than {requested_m} to support request' +\
+                      f'{params["path_bandwidth"] * 1e-9} Gbit/s with {params["trx_type"]} {params["trx_mode"]}'
+                _logger.critical(msg)
+                raise ServiceError(msg)
 
 
 def disjunctions_from_json(json_data):
