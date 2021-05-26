@@ -16,6 +16,24 @@
       "message": "Why have these tests if this can never happen?",
       "revId": "bdd302c360f0420e15012872a13ae6bf0cd96bcb",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07b53df8_8cfe63c5",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-05-26T14:28:47Z",
+      "side": 1,
+      "message": "Good point but I have checked and line 171 is covered by tests so it can happen at least in tests config ...\n\n----------- coverage: platform linux, python 3.8.5-final-0 -----------\nName                                   Stmts   Miss  Cover   Missing\n--------------------------------------------------------------------\ngnpy/topology/request.py                 579     75    87%   76, 117, 189, 291-294, 392, 397-408, 466, 517-543, 570-574, 816-822, 840-844, 899-902, 956, 1001-1002, 1005, 1069, 1109-1115, 1125-1132, 1156-1165",
+      "parentUuid": "2a1744f2_57c48759",
+      "revId": "bdd302c360f0420e15012872a13ae6bf0cd96bcb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
