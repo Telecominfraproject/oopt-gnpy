@@ -18,6 +18,7 @@ from logging import getLogger
 from math import ceil
 from gnpy.core.elements import Roadm, Transceiver
 from gnpy.core.exceptions import ServiceError, SpectrumError
+from gnpy.topology.request import compute_spectrum_slot_vs_bandwidth
 
 LOGGER = getLogger(__name__)
 
@@ -398,18 +399,10 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
                 rqs[i].N = 0
                 rqs[i].M = 0
         except AttributeError:
-            nb_wl = ceil(rqs[i].path_bandwidth / rqs[i].bit_rate)
-            # computes the total nb of slots according to requested spacing
-            # TODO : express superchannels
-            # assumes that all channels must be grouped
-            # TODO : enables non contiguous reservation in case of blocking
-            requested_m = ceil(rqs[i].spacing / 0.0125e12) * nb_wl
+            nb_wl, requested_m = compute_spectrum_slot_vs_bandwidth(rqs[i].path_bandwidth,
+                                                                    rqs[i].spacing, rqs[i].bit_rate)
             if hasattr(rqs[i], 'M') and rqs[i].M is not None:
-                # Consistency check between the requested M and path_bandwidth
-                # M value should be bigger than the computed requested_m (simple estimate)
-                # TODO: elaborate a more accurate estimate with nb_wl * tx_osnr + possibly guardbands in case of
-                # superchannel closed packing.
-                if  requested_m <= rqs[i].M:
+                if requested_m <= rqs[i].M:
                     requested_m = rqs[i].M
                 else:
                     rqs[i].N = 0
