@@ -484,7 +484,7 @@ class NliSolver:
             eta_matrix = self._compute_eta_matrix(carrier, *carriers)
             carrier_nli = self._carrier_nli_from_eta_matrix(eta_matrix, carrier, *carriers)
         else:
-            raise ValueError(f'Method {sim_params.nli_params.method_nli} not implemented.')
+            raise ValueError(f'Method {sim_params.nli_params.nli_method_name} not implemented.')
 
         return carrier_nli
 
