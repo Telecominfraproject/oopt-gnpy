@@ -16,6 +16,23 @@
       "message": "This wasn\u0027t easy to read for me. I think that the request processing and spectrum allocation should get more docs before it gets more features, but I won\u0027t be blocking this one. So, a reluctant CR+2 from me to not hold this up any longer.",
       "revId": "65cf924225b3f3e2710bf3d653a6357f99f7a249",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6b5fa12_cdc638a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-26T12:42:32Z",
+      "side": 1,
+      "message": "\u003eFor this commit only the first element from the {N, M} list is read\nand assigned.\n\nJust curious but why is \"effective-freq-slot\" a list in the first place? Is the use case to be able to request non-contiguous spectrum?",
+      "revId": "65cf924225b3f3e2710bf3d653a6357f99f7a249",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
