@@ -16,6 +16,24 @@
       "message": "\u003c instead of \u003c\u003d would be more logical, right?",
       "revId": "6c37fb6ec94b3292762b5367ebf3540324a38802",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cc3bbc8_17a42b6c",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-05-26T12:58:37Z",
+      "side": 1,
+      "message": "I do not agree: if requested_m \u003d\u003d rqs[i].M, then this M value is still valid and we can use it.",
+      "parentUuid": "8b2f6876_fcc0769a",
+      "revId": "6c37fb6ec94b3292762b5367ebf3540324a38802",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
