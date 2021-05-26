@@ -212,6 +212,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a53feaa5_1e7f1e12",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-26T20:10:41Z",
+      "side": 1,
+      "message": "Why not simply:\n\n@property\ndef sim_params(self):\n    return self._shared_dict.get(\u0027sim_params\u0027)",
+      "parentUuid": "00099ec6_4fc0e616",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 25
+      },
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c781733c_0d61e166",
