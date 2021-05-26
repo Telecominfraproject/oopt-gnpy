@@ -51,6 +51,23 @@
       "parentUuid": "c6b5fa12_cdc638a3",
       "revId": "65cf924225b3f3e2710bf3d653a6357f99f7a249",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82b594ad_40fbcc4e",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-26T13:42:12Z",
+      "side": 1,
+      "message": "I think you can replace this hasattr + if/else with getattr and reduce 4 lines to 1:\n\nrequested_n \u003d getattr(rqs[i], \u0027N\u0027, None)",
+      "revId": "65cf924225b3f3e2710bf3d653a6357f99f7a249",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
