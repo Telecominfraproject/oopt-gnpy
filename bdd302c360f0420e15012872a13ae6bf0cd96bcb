@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a1744f2_57c48759",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-26T12:58:30Z",
+      "side": 1,
+      "message": "Why have these tests if this can never happen?",
+      "revId": "bdd302c360f0420e15012872a13ae6bf0cd96bcb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
