@@ -18,6 +18,7 @@ from logging import getLogger
 from math import ceil
 from gnpy.core.elements import Roadm, Transceiver
 from gnpy.core.exceptions import ServiceError, SpectrumError
+from gnpy.topology.request import compute_spectrum_slot_vs_bandwidth
 
 LOGGER = getLogger(__name__)
 
@@ -398,24 +399,21 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
                 rq.N = 0
                 rq.M = 0
         except AttributeError:
-            nb_wl = ceil(rq.path_bandwidth / rq.bit_rate)
-            # computes the total nb of slots according to requested spacing
-            # TODO : express superchannels
-            # assumes that all channels must be grouped
-            # TODO : enables non contiguous reservation in case of blocking
-            requested_m = ceil(rq.spacing / 0.0125e12) * nb_wl
+            nb_wl, requested_m = compute_spectrum_slot_vs_bandwidth(rq.path_bandwidth,
+                                                                    rq.spacing, rq.bit_rate)
             if getattr(rq, 'M', None) is not None:
                 # Consistency check between the requested M and path_bandwidth
                 # M value should be bigger than the computed requested_m (simple estimate)
                 # TODO: elaborate a more accurate estimate with nb_wl * tx_osnr + possibly guardbands in case of
                 # superchannel closed packing.
-                if requested_m <= rq.M:
-                    requested_m = rq.M
-                else:
+                if requested_m > rq.M:
                     rq.N = 0
                     rq.M = 0
                     rq.blocking_reason = 'NOT_ENOUGH_RESERVED_SPECTRUM'
+                    # need to stop here for this request and not go though spectrum selection process with requested_m
                     continue
+                # use the req.M even if requested_m is smaller
+                requested_m = rq.M
             requested_n = getattr(rq, 'N', None)
             (center_n, startn, stopn), path_oms = spectrum_selection(pth + rpth, oms_list, requested_m,
                                                                      requested_n)
