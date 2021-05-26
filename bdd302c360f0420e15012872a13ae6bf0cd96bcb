@@ -34,6 +34,24 @@
       "parentUuid": "2a1744f2_57c48759",
       "revId": "bdd302c360f0420e15012872a13ae6bf0cd96bcb",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b1f9de5_cdd3ce87",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-26T15:42:52Z",
+      "side": 1,
+      "message": "Ok, but this is because test_json_response_generation explicitly sets M and N to None before instantiating ResultElement. All these tests just seem a bit overly cautious to me but maybe that\u0027s just a matter of preference.",
+      "parentUuid": "07b53df8_8cfe63c5",
+      "revId": "bdd302c360f0420e15012872a13ae6bf0cd96bcb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
