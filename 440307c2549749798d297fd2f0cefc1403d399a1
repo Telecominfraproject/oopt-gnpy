@@ -34,6 +34,24 @@
       "parentUuid": "eb28025c_4e711652",
       "revId": "440307c2549749798d297fd2f0cefc1403d399a1",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af069b62_176972f8",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-26T13:16:27Z",
+      "side": 1,
+      "message": "Sorry, maybe I was not clear. I meant that all these tests could be performed in a single if clause and you would need one less indentation level:\n\nif params[\u0027trx_mode\u0027] is not None and params[\u0027effective_freq_slot\u0027] is not None and params[\u0027effective_freq_slot\u0027][\u0027M\u0027] is not None:",
+      "parentUuid": "86e49588_575a5968",
+      "revId": "440307c2549749798d297fd2f0cefc1403d399a1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
