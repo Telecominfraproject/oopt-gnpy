@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d86537e4_248f05f6",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-26T23:15:36Z",
+      "side": 1,
+      "message": "nit: I think this can be phrased as:\n\n # Transponder mode already selected; will it fit to the requested bandwidth?",
+      "range": {
+        "startLine": 514,
+        "startChar": 0,
+        "endLine": 517,
+        "endChar": 89
+      },
+      "revId": "440307c2549749798d297fd2f0cefc1403d399a1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eb28025c_4e711652",
         "filename": "gnpy/tools/json_io.py",
         "patchSetId": 5
@@ -50,6 +73,69 @@
       "side": 1,
       "message": "Sorry, maybe I was not clear. I meant that all these tests could be performed in a single if clause and you would need one less indentation level:\n\nif params[\u0027trx_mode\u0027] is not None and params[\u0027effective_freq_slot\u0027] is not None and params[\u0027effective_freq_slot\u0027][\u0027M\u0027] is not None:",
       "parentUuid": "86e49588_575a5968",
+      "revId": "440307c2549749798d297fd2f0cefc1403d399a1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9124acf_d55fe869",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1177,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-26T23:15:36Z",
+      "side": 1,
+      "message": "- pls don\u0027t intrdc abbrvtns cos they\u0027re hrd t read :). I suggest calling that `bandwidth`.\n- I suggest to loose the prefix \"req_\", I don\u0027t think it adds much to understanding the code.",
+      "range": {
+        "startLine": 1177,
+        "startChar": 43,
+        "endLine": 1177,
+        "endChar": 49
+      },
+      "revId": "440307c2549749798d297fd2f0cefc1403d399a1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e11e21fb_e38a1969",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1178,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-26T23:15:36Z",
+      "side": 1,
+      "message": "- These values are actually returned in a reversed order compared to the docstring, that could be confusing. Can you perhaps add a few doctests for this? See, e.g., https://github.com/Telecominfraproject/oopt-gnpy/blob/998249be61b5630360758a94b1a996d770eb63e2/gnpy/core/utils.py#L252-L255 for an example of what I mean.\n\n- The trx_mode refers to something that\u0027s used in the caller, not in this function directly.\n\nLet me propose this:\n \n\u0027\u0027\u0027Compute the number of required wavelengths and the M value (number of consumed slots)\n \nEach wavelength consumes one `spacing`, and the result is rounded up to consume a natural number of slots.\n\u0027\u0027\u0027",
+      "revId": "440307c2549749798d297fd2f0cefc1403d399a1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9569c151_4f13e82e",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1181,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-26T23:15:36Z",
+      "side": 1,
+      "message": "I\u0027m already commenting on a docstring, so I\u0027ll comment on this one as well: in my opinion, here the comment just duplicates the code. If the variable has a more descriptive name, I think the comment can be easily removed, like this:\n number_of_wavelengths \u003d ceil(bandwidth / bit_rate)\n\nSame below.",
+      "range": {
+        "startLine": 1180,
+        "startChar": 0,
+        "endLine": 1181,
+        "endChar": 43
+      },
       "revId": "440307c2549749798d297fd2f0cefc1403d399a1",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
