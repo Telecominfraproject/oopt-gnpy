@@ -16,6 +16,24 @@
       "message": "I think the error message is still accidentally multiline, isn\u0027t it?",
       "revId": "e32592825b52117be2527f5416194169724bd54d",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfafb6e6_960c0f33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-05-26T07:09:28Z",
+      "side": 1,
+      "message": "yes",
+      "parentUuid": "7863f954_9d8180d4",
+      "revId": "e32592825b52117be2527f5416194169724bd54d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }

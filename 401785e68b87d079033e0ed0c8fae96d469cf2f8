@@ -87,6 +87,24 @@
       "parentUuid": "f6fbaa83_28d8a473",
       "revId": "401785e68b87d079033e0ed0c8fae96d469cf2f8",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4619a394_1f644378",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-05-26T07:09:28Z",
+      "side": 1,
+      "message": "12.5GHz is not the guard band, it is the minimum slot size for flex grid. But you are right, that s not awesome. let me try someting else...",
+      "parentUuid": "f01f1f76_951b25a3",
+      "revId": "401785e68b87d079033e0ed0c8fae96d469cf2f8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
