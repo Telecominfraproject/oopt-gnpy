@@ -16,6 +16,24 @@
       "message": "Nit: why the two levels of if clauses when one level would be enough?",
       "revId": "440307c2549749798d297fd2f0cefc1403d399a1",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86e49588_575a5968",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-05-26T12:56:18Z",
+      "side": 1,
+      "message": "Because it is possible to specify a center frequency without specifying an M value, so the first level may exist but not the second. Do you have a better way ?",
+      "parentUuid": "eb28025c_4e711652",
+      "revId": "440307c2549749798d297fd2f0cefc1403d399a1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
