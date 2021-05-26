@@ -34,6 +34,24 @@
       "parentUuid": "8b2f6876_fcc0769a",
       "revId": "6c37fb6ec94b3292762b5367ebf3540324a38802",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0446a15c_b1e1eab6",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-26T13:11:01Z",
+      "side": 1,
+      "message": "Yes but then requested_m already has the correct value and you don\u0027t need to set it again, that\u0027s what I meant.",
+      "parentUuid": "4cc3bbc8_17a42b6c",
+      "revId": "6c37fb6ec94b3292762b5367ebf3540324a38802",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
