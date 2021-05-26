@@ -1172,3 +1172,15 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         # print to have a nice output
         print('')
     return path_res_list, reversed_path_res_list, propagated_reversed_path_res_list
+
+
+def compute_spectrum_slot_vs_bandwidth(bandwidth, spacing, bit_rate, slot_width=0.0125e12):
+    """ Compute the number of required wavelengths and the M value (number of consumed slots)
+    Each wavelength consumes one `spacing`, and the result is rounded up to consume a natural number of slots.
+
+    >>> compute_spectrum_slot_vs_bandwidth(400e9, 50e9, 200e9)
+    (2, 8)
+    """
+    number_of_wavelengths = ceil(bandwidth / bit_rate)
+    total_number_of_slots = ceil(spacing / slot_width) * number_of_wavelengths
+    return number_of_wavelengths, total_number_of_slots
