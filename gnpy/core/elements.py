@@ -346,7 +346,7 @@ class Fiber(_Node):
         return '\n'.join([f'{type(self).__name__}          {self.uid}',
                           f'  type_variety:                {self.type_variety}',
                           f'  length (km):                 '
-                          f'{round(self.params.length * 1e-3):.2f}',
+                          f'{round(self.params.length * 1e-3, 2):.2f}',
                           f'  pad att_in (dB):             {self.params.att_in:.2f}',
                           f'  total loss (dB):             {self.loss:.2f}',
                           f'  (includes conn loss (dB) in: {self.params.con_in:.2f} out: {self.params.con_out:.2f})',
