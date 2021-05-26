@@ -33,6 +33,24 @@
       "message": "\u003eFor this commit only the first element from the {N, M} list is read\nand assigned.\n\nJust curious but why is \"effective-freq-slot\" a list in the first place? Is the use case to be able to request non-contiguous spectrum?",
       "revId": "65cf924225b3f3e2710bf3d653a6357f99f7a249",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c08d2d17_55359aa4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-05-26T12:53:18Z",
+      "side": 1,
+      "message": "Yes, it was the use case for the list",
+      "parentUuid": "c6b5fa12_cdc638a3",
+      "revId": "65cf924225b3f3e2710bf3d653a6357f99f7a249",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
