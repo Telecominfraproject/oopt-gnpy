@@ -13,6 +13,8 @@
               coverage_job_name_current: tox-py38-cover
         - tox-linters-diff:
             voting: false
+            vars:
+              tox_envlist: linters-diff-ci
         - tox-py36-el8
         - tox-docs-f32
         - tox-py38-cover-previous
