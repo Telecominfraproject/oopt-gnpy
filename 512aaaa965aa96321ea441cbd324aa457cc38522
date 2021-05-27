@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6a99571_9a88a86a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-27T14:24:08Z",
+      "side": 1,
+      "message": "I\u0027m so sorry I\u0027ve requested modifications on previous commits. Git abbreviates this one as \"512aaaa\", that\u0027s really a perfect hash :).\n\nOn a serious side, I love this very much. I\u0027ll add this to the \"invocation test\" once the parents are stable.",
+      "revId": "512aaaa965aa96321ea441cbd324aa457cc38522",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
