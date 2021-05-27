@@ -1,0 +1,204 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91ecaf0f_7eef9547",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-27T14:15:31Z",
+      "side": 1,
+      "message": "I realize that this is more about my relative inexperience with network design than a problem with this commit, but I\u0027m having troubles tracking down the relevant parts of the spec which led to this. Could you please do me a favor and describe this in more detail?",
+      "range": {
+        "startLine": 19,
+        "startChar": 2,
+        "endLine": 20,
+        "endChar": 32
+      },
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bea302a_cae3980c",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-27T14:15:31Z",
+      "side": 1,
+      "message": "Where this comes from? I guess I just cannot interpret the noise mask pictures correctly :(.",
+      "range": {
+        "startLine": 103,
+        "startChar": 29,
+        "endLine": 103,
+        "endChar": 31
+      },
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7bf40e1_6587215b",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-27T14:15:31Z",
+      "side": 1,
+      "message": "our documentation says \"Carrier min max excursion\" which I take means the upper and lower edges of the spectrum, not the central frequencies. In the \"Common\" sheet, row 32 the spec says 191.325 to 196.125.",
+      "range": {
+        "startLine": 111,
+        "startChar": 21,
+        "endLine": 111,
+        "endChar": 29
+      },
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fb9eb04_b8aa7cba",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-27T14:15:31Z",
+      "side": 1,
+      "message": "Do you want to keep these in? I mean in the end we should probably ship just a single instance of the equipment library, but considering that you\u0027re filtering out amplifiers, perhaps removing transponders would make sense as well?",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 15
+      },
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd03196c_dbe222d8",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-27T14:15:31Z",
+      "side": 1,
+      "message": "Sheet \"W 100G Optical Spec\", cell C39 says \"Modulated spectral width at -20dB\" is 40GHz. The same for \"W 100G Enhanced Optical Spec\". Should we perhaps use 40 GHz here?",
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cd45cf4_b0439a77",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-27T14:15:31Z",
+      "side": 1,
+      "message": "This is row 56 in the XLS spec. I think one should apply at least the CD and PMD penalties here (liens 62 and 63), i.e., at least 1dB worse. Too bad that they have not released the non-filtered A/D penalties yet.",
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e13611a_10ff2196",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-27T14:15:31Z",
+      "side": 1,
+      "message": "In the \"W 100G 31.6 Gbaud Optical Spec\" sheet, cells B35 and B36, roll_off is mandated between 0.05 and 0.2. Should we pick 0.2 here?",
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcb5f54f_7c52a143",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-27T14:15:31Z",
+      "side": 1,
+      "message": "...which yields 37.884 here",
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76828c4c_0956a18c",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-27T14:15:31Z",
+      "side": 1,
+      "message": "same here (sheet \"W 200-400G Optical Spec\", row 36).",
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4146055b_33ffd989",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-27T14:15:31Z",
+      "side": 1,
+      "message": "it\u0027s 75.72 (63.1*1.2), and the document mentions 87.5 GHz in another context (cell E32). Should we really list 75 GHz here?",
+      "range": {
+        "startLine": 235,
+        "startChar": 38,
+        "endLine": 235,
+        "endChar": 42
+      },
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
