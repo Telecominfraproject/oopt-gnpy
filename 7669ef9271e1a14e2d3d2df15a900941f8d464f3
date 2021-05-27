@@ -47,6 +47,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78b4cfb1_fd4aca45",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-27T18:05:28Z",
+      "side": 1,
+      "message": "MW-Wr sheet, Add Path, Incremental OSNR, row 32 (Drop Path is handled by preamp noise mask).",
+      "parentUuid": "3bea302a_cae3980c",
+      "range": {
+        "startLine": 103,
+        "startChar": 29,
+        "endLine": 103,
+        "endChar": 31
+      },
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7bf40e1_6587215b",
@@ -60,6 +84,30 @@
       "writtenOn": "2021-05-27T14:15:31Z",
       "side": 1,
       "message": "our documentation says \"Carrier min max excursion\" which I take means the upper and lower edges of the spectrum, not the central frequencies. In the \"Common\" sheet, row 32 the spec says 191.325 to 196.125.",
+      "range": {
+        "startLine": 111,
+        "startChar": 21,
+        "endLine": 111,
+        "endChar": 29
+      },
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e9faaa3_dfd8658d",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-27T18:05:28Z",
+      "side": 1,
+      "message": "I can\u0027t really interpret \"Carrier min max excursion\" but in create_input_spectral_information() the f_min and f_max are used to generate central frequencies. Also, the lowest generated frequency is f_min+spacing (I think this is confusing but that\u0027s the way it is). I set f_min, f_max and spacing here in SI to generate a 96 channels, 50 GHz spectrum as defined in row 17 if the Common sheet of the v4.0 spec.",
+      "parentUuid": "c7bf40e1_6587215b",
       "range": {
         "startLine": 111,
         "startChar": 21,
@@ -95,6 +143,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "636d5948_55a6a63f",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-27T18:05:28Z",
+      "side": 1,
+      "message": "I removed the other amps so that auto-design will only pick openroadm ones and also in practice it\u0027s not really possible to mix openroadm and non-openroadm amps in the same network. So I don\u0027t think we can ship a single instance and still support openroadm auto-design. But I can remove these transponders as well to simplify.",
+      "parentUuid": "9fb9eb04_b8aa7cba",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 15
+      },
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cd03196c_dbe222d8",
         "filename": "gnpy/example-data/eqpt_config_openroadm.json",
         "patchSetId": 1
@@ -106,6 +178,24 @@
       "writtenOn": "2021-05-27T14:15:31Z",
       "side": 1,
       "message": "Sheet \"W 100G Optical Spec\", cell C39 says \"Modulated spectral width at -20dB\" is 40GHz. The same for \"W 100G Enhanced Optical Spec\". Should we perhaps use 40 GHz here?",
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c190733c_54f234e1",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-27T18:05:28Z",
+      "side": 1,
+      "message": "Good point, but it should probably be 50 GHz in that case. The MSA doesn\u0027t really specify a min spacing but the device white paper talks about dead-bands. Probably the min spacing for the higher baud_rate formats should be changed too.",
+      "parentUuid": "cd03196c_dbe222d8",
       "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -129,6 +219,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6eed4f5f_7f384c1d",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-27T18:05:28Z",
+      "side": 1,
+      "message": "I don\u0027t agree. I think this should be the required OSNR without penalties. The penalties should then be handled (added) separately, i.e. we should follow up with the patch that started implementing penalty as a function of CD and PMD.",
+      "parentUuid": "9cd45cf4_b0439a77",
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9e13611a_10ff2196",
         "filename": "gnpy/example-data/eqpt_config_openroadm.json",
         "patchSetId": 1
@@ -146,6 +254,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "991cc5b6_56fa1cc4",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-27T18:05:28Z",
+      "side": 1,
+      "message": "It\u0027s not clear to me if every transceiver should have a configurable roll-off supporting the full range or if it is sufficient to have one value falling within the range but anyway, we can set the default to 0.2 instead.",
+      "parentUuid": "9e13611a_10ff2196",
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bcb5f54f_7c52a143",
         "filename": "gnpy/example-data/eqpt_config_openroadm.json",
         "patchSetId": 1
@@ -157,6 +283,24 @@
       "writtenOn": "2021-05-27T14:15:31Z",
       "side": 1,
       "message": "...which yields 37.884 here",
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85c17a05_63b9575d",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-27T18:05:28Z",
+      "side": 1,
+      "message": "... or that + 8 GHz if dead-bands should be taken into account so maybe 50 GHz. I don\u0027t know if we should mandate the min_spacing to be a multiple of 12.5 GHz since this is what the spectrum allocation code will set anyway.",
+      "parentUuid": "bcb5f54f_7c52a143",
       "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -191,6 +335,30 @@
       "writtenOn": "2021-05-27T14:15:31Z",
       "side": 1,
       "message": "it\u0027s 75.72 (63.1*1.2), and the document mentions 87.5 GHz in another context (cell E32). Should we really list 75 GHz here?",
+      "range": {
+        "startLine": 235,
+        "startChar": 38,
+        "endLine": 235,
+        "endChar": 42
+      },
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ccc27cb_a4d71cec",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-27T18:05:28Z",
+      "side": 1,
+      "message": "No, I will change it to 87.5 GHz.",
+      "parentUuid": "4146055b_33ffd989",
       "range": {
         "startLine": 235,
         "startChar": 38,
