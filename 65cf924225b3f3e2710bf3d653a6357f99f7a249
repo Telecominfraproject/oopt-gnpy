@@ -53,6 +53,23 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "063a3cfc_c25cc93b",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-27T20:50:46Z",
+      "side": 1,
+      "message": "This is perhaps mainly a matter of coding style and also not directly related to this patch but since you\u0027re refactoring anyway. I think a more \"pythonic\" and readable way to loop over multiple lists at the same time is using zip:\n\n for pth, rq, rpth in zip(pths, rqs, rpths):\n\nThen you don\u0027t need to use any index i and can replace all rqs[i] with rq (and rpths[i] with rpth).",
+      "revId": "65cf924225b3f3e2710bf3d653a6357f99f7a249",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6dd60369_f7e7d1a9",
