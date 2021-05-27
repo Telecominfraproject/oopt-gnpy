@@ -55,6 +55,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6dd60369_f7e7d1a9",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-27T06:01:25Z",
+      "side": 1,
+      "message": "I\u0027m confused. Doesn\u0027t this break statement mean that spectrum assignment for all following requests is skipped? Shouldn\u0027t it be a continue instead?",
+      "revId": "65cf924225b3f3e2710bf3d653a6357f99f7a249",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "82b594ad_40fbcc4e",
         "filename": "gnpy/topology/spectrum_assignment.py",
         "patchSetId": 2
