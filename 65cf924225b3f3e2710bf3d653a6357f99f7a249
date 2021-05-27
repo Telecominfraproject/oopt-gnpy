@@ -55,6 +55,29 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "d9ec8c0f_1ed688b9",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-27T21:00:39Z",
+      "side": 1,
+      "message": "Could be replaced with a single line:\n params[\u0027effective_freq_slot\u0027] \u003d req[\u0027path-constraints\u0027][\u0027te-bandwidth\u0027].get(\u0027effective-freq-slot\u0027, [None])[0]",
+      "range": {
+        "startLine": 478,
+        "startChar": 8,
+        "endLine": 482,
+        "endChar": 48
+      },
+      "revId": "65cf924225b3f3e2710bf3d653a6357f99f7a249",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "063a3cfc_c25cc93b",
         "filename": "gnpy/topology/spectrum_assignment.py",
         "patchSetId": 2
