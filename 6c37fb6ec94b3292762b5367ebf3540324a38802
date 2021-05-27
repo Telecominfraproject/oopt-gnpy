@@ -124,6 +124,24 @@
       "parentUuid": "f7e75aed_452b3b0a",
       "revId": "6c37fb6ec94b3292762b5367ebf3540324a38802",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74a00514_42c1e440",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-27T10:13:16Z",
+      "side": 1,
+      "message": "Sorry, it only got added in https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/514242 , so the solution is to fix that one, not a separate commit. I\u0027ll get my coffee now :).",
+      "parentUuid": "0234a94d_040c121a",
+      "revId": "6c37fb6ec94b3292762b5367ebf3540324a38802",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
