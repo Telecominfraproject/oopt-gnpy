@@ -70,6 +70,24 @@
       "parentUuid": "0446a15c_b1e1eab6",
       "revId": "6c37fb6ec94b3292762b5367ebf3540324a38802",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f1e1513_7ad1f4e2",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-05-27T06:01:54Z",
+      "side": 1,
+      "message": "\u003eI think Esther means that you don\u0027t want to hit the else branch.\n\nYes, of course, you\u0027re right, I missed that. Flipping the if/else is a good idea. But now I\u0027m confused about the break, see my comment on the other commit.",
+      "parentUuid": "f1bae865_dd812dd4",
+      "revId": "6c37fb6ec94b3292762b5367ebf3540324a38802",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
