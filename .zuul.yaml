@@ -2,20 +2,8 @@
 - project:
     check:
       jobs:
-        - tox-py38-cover
-        - coverage-diff:
-            voting: false
-            dependencies:
-              - tox-py38-cover-previous
-              - tox-py38-cover
-            vars:
-              coverage_job_name_previous: tox-py38-cover-previous
-              coverage_job_name_current: tox-py38-cover
-        - tox-linters-diff:
-            voting: false
-        - tox-py36-el8
-        - tox-docs-f32
-        - tox-py38-cover-previous
+        - tox-linters-diff-n-report:
+            voting: true
     gate:
       jobs:
         - tox-py38-f32
