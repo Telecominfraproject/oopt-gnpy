@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97fa550e_9b988a06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-28T20:21:32Z",
+      "side": 1,
+      "message": "Hi Andrea, can you please comment on https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/516462/comment/9e13611a_10ff2196/ ? I would appreciate your help on how the roll_off affects propagation. In short, if the OpenROADM spec says that the roll-off is between 0.05 and 0.20, which one is \"the worst case\"? How much does it matter in practice? I\u0027m seeing a tiny difference, but I don\u0027t really know what I\u0027m looking at.",
+      "revId": "1df178f6c3d6c0939007f2d4437e8ac3c3d2fcaa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
