@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df83e42c_8a50c291",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-28T18:51:23Z",
+      "side": 1,
+      "message": "Esther, here\u0027s a simple HTML report with all the nits from the linters we have currently enabled. It produces two kinds of output:\n\n- A full report of the state of the repo (the current snapshot of target branch plus this patch merged in) is now produced. That\u0027s a new feature. Check the \"Zuul Summary\" tab, click the \"tox-linters-diff-n-report\", and you\u0027ll land on a page which says \"Artifacts\" at the bottom. Click the \"Linters HTML\", and you get a clickable HTML report.\n\n- There will still be those inline comments posted to specific lines of the diff within Gerrit. That\u0027s been here for some time, and it only posts to locations which were changed in the current patchset.\n\nPlease let me know if this is useful for you.",
+      "revId": "af767dd38a1233a2c6055c3a0905a8d8b4edf2c9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
