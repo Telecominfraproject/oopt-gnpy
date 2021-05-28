@@ -118,6 +118,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13d16b94_a073db75",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-28T20:18:46Z",
+      "side": 1,
+      "message": "Yay, nice. Fixed in the docs, and one more thing to change in the YANG format I suppose.",
+      "parentUuid": "6e9faaa3_dfd8658d",
+      "range": {
+        "startLine": 111,
+        "startChar": 21,
+        "endLine": 111,
+        "endChar": 29
+      },
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9fb9eb04_b8aa7cba",
@@ -165,6 +189,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bce9b7f_a686b275",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-28T20:18:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "636d5948_55a6a63f",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 15
+      },
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd03196c_dbe222d8",
@@ -200,6 +248,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b7549bb_0782b75d",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-28T20:18:46Z",
+      "side": 1,
+      "message": "looks good to me this way, thanks",
+      "parentUuid": "c190733c_54f234e1",
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9cd45cf4_b0439a77",
@@ -231,6 +297,24 @@
       "side": 1,
       "message": "I don\u0027t agree. I think this should be the required OSNR without penalties. The penalties should then be handled (added) separately, i.e. we should follow up with the patch that started implementing penalty as a function of CD and PMD.",
       "parentUuid": "9cd45cf4_b0439a77",
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ec8c05d_00e43372",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-28T20:18:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6eed4f5f_7f384c1d",
       "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -272,6 +356,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ace588fb_160d4580",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-28T20:18:46Z",
+      "side": 1,
+      "message": "Disclaimer: I don\u0027t know how \"a typical OpenROADM transponder\" works, and I also do not know how this parameter affects propagation, so I gave this a try with both 0.20 and 0.05. I\u0027ve run simulations propagating from trx_Gothenburg to trx_Stockholm.\n\n- There\u0027s no difference without the Raman engine. That makes sense because it seems that that parameter is not used at all in this case. The final GSNR is reported as 18.90 dB.\n\n- When I replace all Fiber instances with RamanFiber, and using roll_off \u003d 0.20, I get the GSNR 19.07 dB.\n\n- With RamanFiber and roll_off \u003d 0.05, the GSNR is 19.04 dB.\n\nSo it seems as if the more narrow channels actually produce more interference. But I have no clue if these can be generalized.",
+      "parentUuid": "991cc5b6_56fa1cc4",
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bcb5f54f_7c52a143",
         "filename": "gnpy/example-data/eqpt_config_openroadm.json",
         "patchSetId": 1
@@ -305,6 +407,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "856230b2_09b2a99e",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-28T20:18:46Z",
+      "side": 1,
+      "message": "Sounds reasonable to me.",
+      "parentUuid": "85c17a05_63b9575d",
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76828c4c_0956a18c",
@@ -318,6 +438,24 @@
       "writtenOn": "2021-05-27T14:15:31Z",
       "side": 1,
       "message": "same here (sheet \"W 200-400G Optical Spec\", row 36).",
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd3c39cd_c2a7cec8",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-28T20:18:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76828c4c_0956a18c",
       "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -359,6 +497,30 @@
       "side": 1,
       "message": "No, I will change it to 87.5 GHz.",
       "parentUuid": "4146055b_33ffd989",
+      "range": {
+        "startLine": 235,
+        "startChar": 38,
+        "endLine": 235,
+        "endChar": 42
+      },
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0efd0119_db7dffd7",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-28T20:18:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ccc27cb_a4d71cec",
       "range": {
         "startLine": 235,
         "startChar": 38,
