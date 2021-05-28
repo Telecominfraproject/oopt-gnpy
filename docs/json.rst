@@ -91,7 +91,7 @@ used to determine the service list path feasibility when running the
 |                      |           | the JSON or Excel template topology     |
 |                      |           | input file                              |
 +----------------------+-----------+-----------------------------------------+
-| ``frequency``        | (number)  | Min/max as below.                       |
+| ``frequency``        | (number)  | Min/max central channel frequency.      |
 +----------------------+-----------+-----------------------------------------+
 | ``mode``             | (number)  | A list of modes supported by the        |
 |                      |           | transponder. New modes can be added at  |
@@ -307,8 +307,11 @@ While the code libraries allow for different carriers and power levels, the curr
 +----------------------+-----------+-------------------------------------------+
 | field                |   type    | description                               |
 +======================+===========+===========================================+
-| ``f_min``,           | (number)  | In Hz. Carrier min max excursion.         |
-| ``f_max``            |           |                                           |
+| ``f_min``,           | (number)  | In Hz. Define spectrum boundaries. Note   |
+| ``f_max``            |           | that due to backward compatibility, the   |
+|                      |           | first channel central frequency is placed |
+|                      |           | at :math:`f_{min} + spacing` and the last |
+|                      |           | one at :math:`f_{max}`.                   |
 +----------------------+-----------+-------------------------------------------+
 | ``baud_rate``        | (number)  | In Hz. Simulated baud rate.               |
 +----------------------+-----------+-------------------------------------------+
