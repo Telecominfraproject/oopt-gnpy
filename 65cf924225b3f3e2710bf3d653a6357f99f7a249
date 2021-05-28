@@ -55,6 +55,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "489e42da_6dc29bd2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-05-28T12:49:02Z",
+      "side": 1,
+      "message": "Thanks to both of you for this deep review!\nI will take care of this next week",
+      "revId": "65cf924225b3f3e2710bf3d653a6357f99f7a249",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d9ec8c0f_1ed688b9",
         "filename": "gnpy/tools/json_io.py",
         "patchSetId": 2
