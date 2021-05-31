@@ -374,6 +374,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c5061092_538f8edb",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-05-31T13:55:39Z",
+      "side": 1,
+      "message": "To date, the roll off is used only to calculate the raised cosine within the ggn calculation. In general, this quantity should not change too much the evaluated nli, as you can see in the test that you have run. In my opinion a good choice here is to put the default value to 0.15 as it is defined in the \u0027SI\u0027 of the eqpt_config.json.",
+      "parentUuid": "ace588fb_160d4580",
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bcb5f54f_7c52a143",
         "filename": "gnpy/example-data/eqpt_config_openroadm.json",
         "patchSetId": 1
