@@ -1,0 +1,270 @@
+{
+  "tip-photonic-equipment:amplifier": [
+    {
+      "type": "fixed-27",
+      "gain-min": "27",
+      "gain-flatmax": "27",
+      "max-power-out": "21.9",
+      "polynomial-NF": {
+        "a": "0",
+        "b": "0",
+        "c": "0",
+        "d": "4.9"
+      }
+    },
+    {
+      "type": "fixed-22",
+      "gain-min": "22",
+      "gain-flatmax": "22",
+      "max-power-out": "21.9",
+      "polynomial-NF": {
+        "a": "0",
+        "b": "0",
+        "c": "0",
+        "d": "4.8"
+      }
+    },
+    {
+      "type": "vg-15-30",
+      "gain-min": "15",
+      "gain-flatmax": "26",
+      "dynamic-gain-tilt": [
+        {
+          "frequency": "191.35",
+          "dynamic-gain-tilt": "0"
+        },
+        {
+          "frequency": "196.1",
+          "dynamic-gain-tilt": "2.4"
+        }
+      ],
+      "max-power-out": "23",
+      "min-max-NF": {
+        "nf-min": "6.0",
+        "nf-max": "10.0"
+      }
+    },
+    {
+      "type": "vg-8-16",
+      "gain-min": "8",
+      "gain-flatmax": "15",
+      "max-power-out": "23",
+      "min-max-NF": {
+        "nf-min": "6.5",
+        "nf-max": "11.0"
+      }
+    },
+    {
+      "type": "dual--vg-15-30--vg-8-16",
+      "gain-min": "25.0",
+      "cascaded": {
+        "preamp": "vg-15-30",
+        "booster": "vg-8-16"
+      }
+    },
+    {
+      "type": "Juniper-BoosterHG",
+      "gain-min": "10",
+      "gain-flatmax": "25",
+      "max-power-out": "21",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "polynomial-NF": {
+        "a": "0.0008",
+        "b": "0.0272",
+        "c": "-0.2249",
+        "d": "6.4902"
+      }
+    }
+  ],
+  "tip-photonic-equipment:fiber": [
+    {
+      "type": "SSMF",
+      "chromatic-dispersion": "16.7",
+      "gamma": "1.27",
+      "pmd-coefficient": "0.0400028124",
+      "raman-efficiency": [
+        {
+          "delta-frequency": "0.0",
+          "cr": "0"
+        },
+        {
+          "delta-frequency": "0.5",
+          "cr": "0.0000094"
+        },
+        {
+          "delta-frequency": "1.0",
+          "cr": "0.0000292"
+        },
+        {
+          "delta-frequency": "1.5",
+          "cr": "0.0000488"
+        },
+        {
+          "delta-frequency": "2.0",
+          "cr": "0.0000682"
+        },
+        {
+          "delta-frequency": "2.5",
+          "cr": "0.0000831"
+        },
+        {
+          "delta-frequency": "3.0",
+          "cr": "0.000094"
+        },
+        {
+          "delta-frequency": "3.5",
+          "cr": "0.0001014"
+        },
+        {
+          "delta-frequency": "4.0",
+          "cr": "0.0001069"
+        },
+        {
+          "delta-frequency": "4.5",
+          "cr": "0.0001119"
+        },
+        {
+          "delta-frequency": "5.0",
+          "cr": "0.0001217"
+        },
+        {
+          "delta-frequency": "5.5",
+          "cr": "0.0001268"
+        },
+        {
+          "delta-frequency": "6.0",
+          "cr": "0.0001365"
+        },
+        {
+          "delta-frequency": "6.5",
+          "cr": "0.000149"
+        },
+        {
+          "delta-frequency": "7.0",
+          "cr": "0.000165"
+        },
+        {
+          "delta-frequency": "7.5",
+          "cr": "0.000181"
+        },
+        {
+          "delta-frequency": "8.0",
+          "cr": "0.0001977"
+        },
+        {
+          "delta-frequency": "8.5",
+          "cr": "0.0002192"
+        },
+        {
+          "delta-frequency": "9.0",
+          "cr": "0.0002469"
+        },
+        {
+          "delta-frequency": "9.5",
+          "cr": "0.0002749"
+        },
+        {
+          "delta-frequency": "10.0",
+          "cr": "0.0002999"
+        },
+        {
+          "delta-frequency": "10.5",
+          "cr": "0.0003206"
+        },
+        {
+          "delta-frequency": "11.0",
+          "cr": "0.0003405"
+        },
+        {
+          "delta-frequency": "11.5",
+          "cr": "0.0003592"
+        },
+        {
+          "delta-frequency": "12.0",
+          "cr": "0.000374"
+        },
+        {
+          "delta-frequency": "12.5",
+          "cr": "0.0003826"
+        },
+        {
+          "delta-frequency": "12.75",
+          "cr": "0.0003841"
+        },
+        {
+          "delta-frequency": "13.0",
+          "cr": "0.0003826"
+        },
+        {
+          "delta-frequency": "13.25",
+          "cr": "0.0003802"
+        },
+        {
+          "delta-frequency": "13.5",
+          "cr": "0.0003756"
+        },
+        {
+          "delta-frequency": "14.0",
+          "cr": "0.0003549"
+        },
+        {
+          "delta-frequency": "14.5",
+          "cr": "0.0003795"
+        },
+        {
+          "delta-frequency": "14.75",
+          "cr": "0.000344"
+        },
+        {
+          "delta-frequency": "15.0",
+          "cr": "0.0002933"
+        },
+        {
+          "delta-frequency": "15.5",
+          "cr": "0.0002024"
+        },
+        {
+          "delta-frequency": "16.0",
+          "cr": "0.0001158"
+        }
+      ]
+    },
+    {
+      "type": "NZDF",
+      "chromatic-dispersion": "5.0",
+      "gamma": "1.46",
+      "pmd-coefficient": "0.0400028124"
+    },
+    {
+      "type": "LOF",
+      "chromatic-dispersion": "22",
+      "gamma": "0.843",
+      "pmd-coefficient": "0.0400028124"
+    }
+  ],
+  "tip-photonic-equipment:transceiver": [
+    {
+      "type": "Voyager",
+      "mode": [
+        {
+          "name": "DP-QPSK",
+          "bit-rate": 100,
+          "baud-rate": "32",
+          "required-osnr": "12",
+          "in-band-tx-osnr": "40",
+          "grid-spacing": "37.5",
+          "tx-roll-off": "0.15"
+        }
+      ]
+    }
+  ],
+  "tip-photonic-equipment:roadm": [
+    {
+      "type": "default",
+      "add-drop-osnr": "50.0",
+      "target-channel-out-power": "-20",
+      "polarization-mode-dispersion": "0"
+    }
+  ]
+}
