@@ -9,7 +9,6 @@ Common code for CLI examples
 '''
 
 import argparse
-from json import dumps
 import logging
 import os.path
 import sys
