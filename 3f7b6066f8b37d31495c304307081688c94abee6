@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fe8af9b_8aac4421",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-31T14:37:44Z",
+      "side": 1,
+      "message": "This fails once merged into current master due to that change in rounding, so I\u0027ll merge it only afterwards.",
+      "revId": "3f7b6066f8b37d31495c304307081688c94abee6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
