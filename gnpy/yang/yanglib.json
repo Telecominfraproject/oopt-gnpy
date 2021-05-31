@@ -25,6 +25,12 @@
         "revision": "2018-02-26",
         "namespace": "urn:ietf:params:xml:ns:yang:ietf-network",
         "conformance-type": "implement"
+      },
+      {
+        "name": "tip-photonic-equipment",
+        "revision": "2020-09-01",
+        "namespace": "https://oopt.telecominfraproject.com/yang/equipment",
+        "conformance-type": "implement"
       }
     ]
   }
