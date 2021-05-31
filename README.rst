@@ -7,7 +7,7 @@
 `gnpy`: mesh optical network route planning and optimization library
 ====================================================================
 
-|pypi| |docs| |travis| |doi| |contributors| |codacy-quality| |codecov|
+|pypi| |pypi-python| |docs| |travis| |doi| |contributors| |codacy-quality| |codecov|
 
 **`gnpy` is an open-source, community-developed library for building route
 planning and optimization tools in real-world mesh optical networks.**
@@ -219,6 +219,11 @@ implementations.
 .. |pypi| image:: https://img.shields.io/pypi/v/gnpy
   :target: https://pypi.org/project/gnpy/
   :alt: Install via PyPI
+  :scale: 100%
+
+.. |pypi-python| image:: https://img.shields.io/pypi/pyversions/gnpy
+  :target: https://pypi.org/project/gnpy/
+  :alt: Python versions
   :scale: 100%
 
 
