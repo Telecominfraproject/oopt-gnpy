@@ -1,12 +1,7 @@
-alabaster>=0.7.12,<1
-docutils==0.15.2
 matplotlib>=3.3.3,<4
 networkx>=2.5,<3
 numpy>=1.19.4,<2
 pandas>=1.1.5,<2
 pbr>=5.5.1,<6
-Pygments>=2.7.4,<3
 scipy>=1.5.4,<2
-Sphinx>=3.5.0,<4
-sphinxcontrib-bibtex>=0.4.2,<1
 xlrd>=1.2.0,<2

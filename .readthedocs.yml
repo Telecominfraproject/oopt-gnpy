@@ -2,3 +2,4 @@ build:
     image: latest
 python:
     version: 3.8
+requirements_file: docs/requirements.txt
