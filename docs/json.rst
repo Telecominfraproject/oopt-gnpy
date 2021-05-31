@@ -59,22 +59,25 @@ Fiber
 
 The fiber library currently describes SSMF and NZDF but additional fiber types can be entered by the user following the same model:
 
-+----------------------+-----------+-----------------------------------------+
-| field                | type      | description                             |
-+======================+===========+=========================================+
-| ``type_variety``     | (string)  | a unique name to ID the fiber in the    |
-|                      |           | JSON or Excel template topology input   |
-|                      |           | file                                    |
-+----------------------+-----------+-----------------------------------------+
-| ``dispersion``       | (number)  | (s.m-1.m-1)                             |
-+----------------------+-----------+-----------------------------------------+
-| ``dispersion_slope`` | (number)  | (s.m-1.m-1.m-1)                         |
-+----------------------+-----------+-----------------------------------------+
-| ``gamma``            | (number)  | 2pi.n2/(lambda*Aeff) (w-1.m-1)          |
-+----------------------+-----------+-----------------------------------------+
-| ``pmd_coef``         | (number)  | Polarization mode dispersion (PMD)      |
-|                      |           | coefficient. (s.sqrt(m)-1)              |
-+----------------------+-----------+-----------------------------------------+
++----------------------+-----------+------------------------------------------+
+| field                | type      | description                              |
++======================+===========+==========================================+
+| ``type_variety``     | (string)  | a unique name to ID the fiber in the     |
+|                      |           | JSON or Excel template topology input    |
+|                      |           | file                                     |
++----------------------+-----------+------------------------------------------+
+| ``dispersion``       | (number)  | In :math:`s \times m^{-1} \times m^{-1}`.|
++----------------------+-----------+------------------------------------------+
+| ``dispersion_slope`` | (number)  | In :math:`s \times m^{-1} \times m^{-1}  |
+|                      |           | \times m^{-1}`                           |
++----------------------+-----------+------------------------------------------+
+| ``gamma``            | (number)  | :math:`2\pi\times n^2/(\lambda*A_{eff})`,|
+|                      |           | in :math:`w^{-1} \times m^{-1}`.         |
++----------------------+-----------+------------------------------------------+
+| ``pmd_coef``         | (number)  | Polarization mode dispersion (PMD)       |
+|                      |           | coefficient. In                          |
+|                      |           | :math:`s\times\sqrt{m}^{-1}`.            |
++----------------------+-----------+------------------------------------------+
 
 Transceiver
 ~~~~~~~~~~~
