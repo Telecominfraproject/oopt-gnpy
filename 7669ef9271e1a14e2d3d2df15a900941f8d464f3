@@ -390,6 +390,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd49bb16_6f060567",
+        "filename": "gnpy/example-data/eqpt_config_openroadm.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-05-31T14:04:54Z",
+      "side": 1,
+      "message": "Thanks a lot for your input. Let\u0027s go with 0.15, then. I\u0027ll push that one.",
+      "parentUuid": "c5061092_538f8edb",
+      "revId": "7669ef9271e1a14e2d3d2df15a900941f8d464f3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bcb5f54f_7c52a143",
