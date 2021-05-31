@@ -6,6 +6,7 @@
 [![Python versions](https://img.shields.io/pypi/pyversions/gnpy)](https://pypi.org/project/gnpy/)
 [![Documentation status](https://readthedocs.org/projects/gnpy/badge/?version=master)](http://gnpy.readthedocs.io/en/master/?badge=master)
 [![CI](https://travis-ci.com/Telecominfraproject/oopt-gnpy.svg?branch=master)](https://travis-ci.com/Telecominfraproject/oopt-gnpy)
+[![Gerrit](https://img.shields.io/badge/patches-via%20Gerrit-blue)](https://review.gerrithub.io/q/project:Telecominfraproject/oopt-gnpy+is:open)
 [![Contributors](https://img.shields.io/github/contributors-anon/Telecominfraproject/oopt-gnpy)](https://github.com/Telecominfraproject/oopt-gnpy/graphs/contributors)
 [![Code Quality via LGTM.com](https://img.shields.io/lgtm/grade/python/github/Telecominfraproject/oopt-gnpy)](https://lgtm.com/projects/g/Telecominfraproject/oopt-gnpy/)
 [![Code Coverage via codecov](https://img.shields.io/codecov/c/github/Telecominfraproject/oopt-gnpy)](https://codecov.io/gh/Telecominfraproject/oopt-gnpy)
