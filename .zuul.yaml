@@ -13,7 +13,6 @@
               coverage_job_name_current: tox-py38-cover
         - tox-linters-diff-n-report:
             voting: false
-        - tox-py36-el8
         - tox-docs-f32
         - tox-py38-cover-previous
     gate:
