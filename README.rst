@@ -128,64 +128,6 @@ As a result transponder type is not part of the network info. it is related to t
 
 The current version includes a spectrum assigment features that enables to compute a candidate spectrum assignment for each service based on a first fit policy. Spectrum is assigned based on service specified spacing value, path_bandwidth value and selected mode for the transceiver. This spectrum assignment includes a basic capacity planning capability so that the spectrum resource is limited by the frequency min and max values defined for the links. If the requested services reach the link spectrum capacity, additional services feasibility are computed but marked as blocked due to spectrum reason.
 
-
-Contributing
-------------
-
-``gnpy`` is looking for additional contributors, especially those with experience
-planning and maintaining large-scale, real-world mesh optical networks.
-
-To get involved, please contact Jan Kundrát
-<jan.kundrat@telecominfraproject.com> or Gert Grammel <ggrammel@juniper.net>.
-
-``gnpy`` contributions are currently limited to members of `TIP
-<http://telecominfraproject.com>`_. Membership is free and open to all.
-
-See the `Onboarding Guide
-<https://github.com/Telecominfraproject/gnpy/wiki/Onboarding-Guide>`_ for
-specific details on code contributions, or just `upload patches to our Gerrit
-<https://review.gerrithub.io/Documentation/intro-gerrit-walkthrough-github.html>`_.
-Here is `what we are currently working on <https://review.gerrithub.io/q/project:Telecominfraproject/oopt-gnpy+status:open>`_.
-
-See `AUTHORS.rst <AUTHORS.rst>`_ for past and present contributors.
-
-Project Background
-------------------
-
-Data Centers are built upon interchangeable, highly standardized node and
-network architectures rather than a sum of isolated solutions. This also
-translates to optical networking. It leads to a push in enabling multi-vendor
-optical network by disaggregating HW and SW functions and focusing on
-interoperability. In this paradigm, the burden of responsibility for ensuring
-the performance of such disaggregated open optical systems falls on the
-operators. Consequently, operators and vendors are collaborating in defining
-control models that can be readily used by off-the-shelf controllers. However,
-node and network models are only part of the answer. To take reasonable
-decisions, controllers need to incorporate logic to simulate and assess optical
-performance. Hence, a vendor-independent optical quality estimator is required.
-Given its vendor-agnostic nature, such an estimator needs to be driven by a
-consortium of operators, system and component suppliers.
-
-Founded in February 2016, the Telecom Infra Project (TIP) is an
-engineering-focused initiative which is operator driven, but features
-collaboration across operators, suppliers, developers, integrators, and
-startups with the goal of disaggregating the traditional network deployment
-approach. The group’s ultimate goal is to help provide better connectivity for
-communities all over the world as more people come on-line and demand more
-bandwidth- intensive experiences like video, virtual reality and augmented
-reality.
-
-Within TIP, the Open Optical Packet Transport (OOPT) project group is chartered
-with unbundling monolithic packet-optical network technologies in order to
-unlock innovation and support new, more flexible connectivity paradigms.
-
-The key to unbundling is the ability to accurately plan and predict the
-performance of optical line systems based on an accurate simulation of optical
-parameters. Under that OOPT umbrella, the Physical Simulation Environment (PSE)
-working group set out to disrupt the planning landscape by providing an open
-source simulation model which can be used freely across multiple vendor
-implementations.
-
 .. |docs| image:: https://readthedocs.org/projects/gnpy/badge/?version=master
   :target: http://gnpy.readthedocs.io/en/master/?badge=master
   :alt: Documentation Status
@@ -225,30 +167,3 @@ implementations.
   :target: https://pypi.org/project/gnpy/
   :alt: Python versions
   :scale: 100%
-
-
-TIP OOPT/PSE & PSE WG Charter
------------------------------
-
-We believe that openly sharing ideas, specifications, and other intellectual
-property is the key to maximizing innovation and reducing complexity
-
-TIP OOPT/PSE's goal is to build an end-to-end simulation environment which
-defines the network models of the optical device transfer functions and their
-parameters.  This environment will provide validation of the optical
-performance requirements for the TIP OLS building blocks.
-
-- The model may be approximate or complete depending on the network complexity.
-  Each model shall be validated against the proposed network scenario.
-- The environment must be able to process network models from multiple vendors,
-  and also allow users to pick any implementation in an open source framework.
-- The PSE will influence and benefit from the innovation of the DTC, API, and
-  OLS working groups.
-- The PSE represents a step along the journey towards multi-layer optimization.
-
-License
--------
-
-``gnpy`` is distributed under a standard BSD 3-Clause License.
-
-See `LICENSE <LICENSE>`__ for more details.
