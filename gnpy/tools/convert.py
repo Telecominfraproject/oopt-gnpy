@@ -694,8 +694,6 @@ def connect_eqpt(from_, in_, to_):
 
 def eqpt_in_city_to_city(in_city, to_city, direction='east'):
     rev_direction = 'west' if direction == 'east' else 'east'
-    amp_direction = f'{direction}_amp_type'
-    amp_rev_direction = f'{rev_direction}_amp_type'
     return_eqpt = ''
     if in_city in eqpts_by_city:
         for e in eqpts_by_city[in_city]:
@@ -705,7 +703,6 @@ def eqpt_in_city_to_city(in_city, to_city, direction='east'):
             elif nodes_by_city[in_city].node_type.lower() == 'ila':
                 if e.to_city != to_city:
                     direction = rev_direction
-                    amp_direction = amp_rev_direction
                 return_eqpt = f'{direction} edfa in {e.from_city} to {e.to_city}'
     elif nodes_by_city[in_city].node_type.lower() == 'ila':
         return_eqpt = f'{direction} edfa in {in_city}'
