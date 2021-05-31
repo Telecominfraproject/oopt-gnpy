@@ -1,5 +1,6 @@
 alabaster>=0.7.12,<1
 docutils>=0.15.2,<1
+myst-parser>=0.14.0,<1
 Pygments>=2.7.4,<3
 rstcheck
 Sphinx>=3.5.0,<4
