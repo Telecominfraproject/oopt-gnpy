@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "98699b06_33274e6f",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -14,10 +15,28 @@
       "side": 1,
       "message": "do not think it is a good idea to discriminate on c and L band: there might be some cases where you will need all frequencies in a single amplifier, eg multi band amps or large band amps, such as Raman",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e4951f3_3f5f237c",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "This is related to range checking. In the (existing) equipment library, there\u0027s a need for several \"types of frequencies\" (e.g., \"carrier frequency\" vs. \"frequency delta for Raman\"). Calling this \"frequency-c-band\" seemed to be the cleanest solution to me, but if you\u0027re suggesting that calling this a C-band thingy will limit us in future, I\u0027m OK with calling it \"carrier-frequency\" as well. (Or feel free to propose another name.)\n\n-\u003e carrier-frequency",
+      "parentUuid": "98699b06_33274e6f",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "560bfc4a_12b24644",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -31,10 +50,28 @@
       "side": 1,
       "message": "flex grid defines center frequency with 6.25 GHz step, so I think that the fraction digit should be at least 5, if this is to represent center frequency, and probably 1GHz in case of the description of ripple, so 6 in this case. 7 would be safer",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "085d4ae1_dc042d4b",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "560bfc4a_12b24644",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "531713a0_4bb55f2d",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -48,10 +85,10 @@
       "side": 1,
       "message": "not sure that putting a range here is relevant: next rate will need higher spacing than that and I do not see why we would also prevent a user to test with smaller rates and spacing (min in flexgrid is 12.5GHz for 1 slot)\nshould only be over 0 in my opinion.",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "d387ba9a_d2703d18",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -66,10 +103,28 @@
       "message": "I agree. If you want to define a range, I would say from 6.25GHz to the full frequency band.",
       "parentUuid": "531713a0_4bb55f2d",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32c2dd7b_94d694fb",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "I think that the use case of a \"spectrum with holes\" should be defined via listing the channels explicitly and not via faking that through unrealistic channel spacing.\n\n-\u003e changed, now 6.25 .. 200",
+      "parentUuid": "d387ba9a_d2703d18",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "546f401a_4ee385e6",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -83,10 +138,28 @@
       "side": 1,
       "message": "+ a user may want to use large spacing to reduce the nb of channels",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5042ddf_f5acec30",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "See above",
+      "parentUuid": "546f401a_4ee385e6",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "8d5ca350_2a97ce63",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -100,10 +173,10 @@
       "side": 1,
       "message": "same comment, I don\u0027t think that putting a max value is relevant",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "cf41abe3_8818b4bb",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -118,10 +191,28 @@
       "message": "... but if you want a max, at least make it large enough to accommodate one generation upgrade.\nAlso, fraction-digits should be more than 2. Baudrate is often specified with at least 4 fraction digits.",
       "parentUuid": "8d5ca350_2a97ce63",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e35d79b2_9cf1df8e",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "-\u003e fraction-digits 4\n-\u003e \u003c130 GBaud might be realistic\n\nUnfortunately, I don\u0027t see a reasonable way of \"extending the range\" via, e.g., a YANG-level feature which could be easily triggered to bypass range checking. Let\u0027s try to enforce \"reasonable values\" where we think that GNPy probably produces accurate results, and error out when fed with wildly out-of-bounds values.",
+      "parentUuid": "cf41abe3_8818b4bb",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "09bfbdcc_943170d0",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -135,10 +226,28 @@
       "side": 1,
       "message": "The fraction digit is not large enough to represent parameters. for example the current standard_medium_gain has\n      0.000168241,\n      0.0469961,\n      0.0359549,\n      5.82851\nat least 10 is required for this one, and for openroadm preamp we have even used 12 to better fit the osnr mask.",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b6e2132_d5e2ec50",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "12 it is, thanks!",
+      "parentUuid": "09bfbdcc_943170d0",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "3c5db03e_b89ea73f",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -152,10 +261,28 @@
       "side": 1,
       "message": "do not limit to c band frequencies as a common feature to all amps, because some may have large band",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74d8e26c_50f41947",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c5db03e_b89ea73f",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "210938b4_b9452a69",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -169,10 +296,28 @@
       "side": 1,
       "message": "in the eqpt it is not about having an output voa (which is  always the case in the model) it is about authorizing the autodesign to use it, so I would rather call it: use-output-voa\nand change the description accordingly",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3db75629_5cff77e6",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "I\u0027ve changed the description. I\u0027ve seen some EDFAs in a lab where there\u0027s no physical VOA.",
+      "parentUuid": "210938b4_b9452a69",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "00ddeebe_18a1cab3",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -186,10 +331,28 @@
       "side": 1,
       "message": "replace with \u0027within the maximum power max-power-out of the amplifier\u0027\n\nEOL may be confusing here, and probably not exact",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bfa2ef9_792369af",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00ddeebe_18a1cab3",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "3251560a_d4664540",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -203,10 +366,10 @@
       "side": 1,
       "message": "I think the function should be  NF \u003d f(gain)",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "3d66e2ef_501dc91d",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -221,10 +384,10 @@
       "message": "In the code it is currently implemented as NF \u003d f(gain_max - gain). This has led to some confusion in the past and I would not mind if we changed the implementation but then we would also have to change the current values in eqpt_cofing.json.",
       "parentUuid": "3251560a_d4664540",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "8849c371_478b7142",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -238,10 +401,28 @@
       "side": 1,
       "message": "operating at the maximal **flatmax**gain",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a4589c6_25bc3713",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8849c371_478b7142",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "718ca433_d1d78fb1",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -255,10 +436,28 @@
       "side": 1,
       "message": "name can be misleading: variable gains of min-max-NF typoes can be dual stage in reality.",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "daf9d5b9_97405581",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "see another comment",
+      "parentUuid": "718ca433_d1d78fb1",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "b2454cc3_c9514497",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -272,10 +471,28 @@
       "side": 1,
       "message": "the sentence is misleading: most variable gain EDFAs are dual stage one, and our dual stage model can use such a variable gain edfa. What is not supported by the software is to pick one of these \"concatenated\" amp. so I propose to change the name and the sentence:\ndual-stage -\u003e concatenated\nFirst (preamp) stage of a dual-stage amplifier can not be a concatenated type.",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3e73bb9_a8ed4f04",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "I did some googling, and I used the word \"composite\". At least there\u0027s some prior use of that term when it comes to electronic amplifiers.",
+      "parentUuid": "b2454cc3_c9514497",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "851e1fff_b4a6cd09",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -289,10 +506,28 @@
       "side": 1,
       "message": "same comment",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0df5c50_cf4ae8fb",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "851e1fff_b4a6cd09",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "6e706326_a1d53ea7",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -306,10 +541,28 @@
       "side": 1,
       "message": "why this check on frequency range ? I could use a booster with a wider or a smaller range, but only operated within the common range, no ?",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "682f4e01_704bf2e0",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "This condition checks that there\u0027s a non-zero overlap. I\u0027ve merged these two conditions to one, and added a generic error message.",
+      "parentUuid": "6e706326_a1d53ea7",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "899079d1_09a9e2d0",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -323,10 +576,28 @@
       "side": 1,
       "message": "why except ?\nthis is also for the fixed gain particular case of the polynomial-NF model\nI think this part \"except...\" should be removed",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "267857b9_8b4486d4",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "I think that this spelling is correct -- it\u0027s saying that unlike the more generic model, this one is limited in one extent, the polynomial cannot change based on the amplifier\u0027s operating point.",
+      "parentUuid": "899079d1_09a9e2d0",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "650c1b8d_c1592d84",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -340,10 +611,28 @@
       "side": 1,
       "message": "change the name to chromatic-dispersion to avoid confusion this other types of dispersion (eg polarization mode)",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b8c9ddf_ba32547b",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "650c1b8d_c1592d84",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "034e8b4b_d2ed2712",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -357,10 +646,28 @@
       "side": 1,
       "message": "same comment",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "561d0b82_fe0ecce7",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "034e8b4b_d2ed2712",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "cb32c0b6_c23e89d5",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -374,10 +681,10 @@
       "side": 1,
       "message": "why using a different naming for chromatic dispersion and polarization mode dispersion ?\nuse \"coefficient\" for both or none\nuse acronyms for both or none (cd and pmd), my preference would be to avoid acronyms",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "d3bc1f1b_3246de16",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -392,10 +699,28 @@
       "message": "There is a reason for using \"coefficient\" here, see discussion here: https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/494019/14/gnpy/core/elements.py#178",
       "parentUuid": "cb32c0b6_c23e89d5",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac8fd691_cf993af3",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3bc1f1b_3246de16",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "f590eff4_a7b76f26",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -409,10 +734,10 @@
       "side": 1,
       "message": "I am not sure this is easy to understand because there might be several pumps at different frequencies (for example in the raman-edfa-example-network.json)",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "4137e2ae_7d7c65f1",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -427,10 +752,28 @@
       "message": "This is not about the location of the pumps.",
       "parentUuid": "f590eff4_a7b76f26",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f827a095_8bb5db65",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4137e2ae_7d7c65f1",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "7cd0724b_90856bfc",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -444,10 +787,28 @@
       "side": 1,
       "message": "I would suggest to define rates as a decimal value\n+ not put min value or max value in the range:\non should be positive strictly",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6164d977_3bad8939",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "I expect to be relaxing these parameters as new transponders are developed in future. In the meanwhile, this is by design to put a realistic cap on the range of values which are \"normal\" and can be \"reasonably supported\" by the code.",
+      "parentUuid": "7cd0724b_90856bfc",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "96e74d98_116244d6",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -461,10 +822,28 @@
       "side": 1,
       "message": "Add OSNR meaning Optical Signal to Noise ratio and the bandwidth 0.1 nm",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32ff8d00_2a446b2f",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "nice catch, thanks",
+      "parentUuid": "96e74d98_116244d6",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "ff2ccdd3_6a54726e",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -478,10 +857,10 @@
       "side": 1,
       "message": "same comment",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "5c63b6d3_105fbd2d",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -496,10 +875,28 @@
       "message": "Maybe also add \"in-band\" since we\u0027re currently not modeling out-of-band OSNR.",
       "parentUuid": "ff2ccdd3_6a54726e",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4005fc91_5dc24cbd",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 502,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "thanks, changed to in-band-tx-osnr",
+      "parentUuid": "5c63b6d3_105fbd2d",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "794d46c9_8913f861",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -513,10 +910,10 @@
       "side": 1,
       "message": "I would prefer to remove the second part : this parameter is not exactly a physical effective channel spectral bandwidth, it is more a user constraint\nI can have 40 Gbaud, this may fit in 46 GHz, but in my strategy/design rules I am aligned on flex grid + I assume that roadm filtering is penalizing so I set this min spacing to 62.5 GHz",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "d751345b_e0215401",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -531,10 +928,10 @@
       "message": "But then this minimum spacing is not an inherent property of the transceiver, but rather an operator design rule so maybe it should not be part of the equipment model at all.",
       "parentUuid": "794d46c9_8913f861",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "1d7bd323_4fd444e2",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -549,10 +946,28 @@
       "message": "Well, I do not see why being an operator constraint , it should be removed but in this case it can be a vendor spec, so I would prefer to keep it.",
       "parentUuid": "d751345b_e0215401",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aae728cc_9b9875f5",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "Expanded the docs a bit, thanks.",
+      "parentUuid": "1d7bd323_4fd444e2",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "cd87fdc6_8fa68a5d",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -566,10 +981,28 @@
       "side": 1,
       "message": "Here \"transponder\" is a typo?",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f366c8c_2699d080",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "I think I\u0027m mostly using \"transponder\" and \"transceiver\" interchangeable, but changed to a \"transponder\".",
+      "parentUuid": "cd87fdc6_8fa68a5d",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "cd5cba2c_f18da30e",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -583,10 +1016,28 @@
       "side": 1,
       "message": "in fact that the osnr introbuce by add AND drop stage: so 1 figure for two contribs",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "559d5050_8266b350",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "cd5cba2c_f18da30e",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "cadb1de2_a0fd741a",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
@@ -600,8 +1051,25 @@
       "side": 1,
       "message": "use full name ? polarisation mode dispersion ?",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cf421a0_4b1a1d7e",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T01:25:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cadb1de2_a0fd741a",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
