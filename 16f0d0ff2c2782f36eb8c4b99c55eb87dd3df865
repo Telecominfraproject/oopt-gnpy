@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7f76b45_b195eeff",
+        "filename": "gnpy/yang/yanglib.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-01T15:40:35Z",
+      "side": 1,
+      "message": "for my curiosity, why is this \"implement\" ? and not \"import\" ?",
+      "revId": "16f0d0ff2c2782f36eb8c4b99c55eb87dd3df865",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
