@@ -160,6 +160,24 @@
       "parentUuid": "74a00514_42c1e440",
       "revId": "6c37fb6ec94b3292762b5367ebf3540324a38802",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ea4e096_72a20c95",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-06-01T17:25:32Z",
+      "side": 1,
+      "message": "But a break will exit the whole loop. I think you just needed to replace the \"break\" with a \"continue\", like I commented on the other commit, so that other requests are still processed.",
+      "parentUuid": "af1c238c_db9b37f2",
+      "revId": "6c37fb6ec94b3292762b5367ebf3540324a38802",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
