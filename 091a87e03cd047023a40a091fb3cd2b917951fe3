@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88b8d168_5a7f94de",
+        "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
+        "patchSetId": 4
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-01T15:52:31Z",
+      "side": 1,
+      "message": "I think a leaf with delta_p is missing here",
+      "revId": "091a87e03cd047023a40a091fb3cd2b917951fe3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
