@@ -16,6 +16,24 @@
       "message": "These YANG models will need to be updated or complemented later when flexgrid and non-homogenous spectrum support is introduced, right?",
       "revId": "3a2a846db393cfdd7a46e6c67c9bb7a03a142c89",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90f73f49_18671a3d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T08:12:09Z",
+      "side": 1,
+      "message": "Yes. I don\u0027t think this one will need an update, but the other one (which I have not refreshed yet) which includes the SpectralInformation will get a choice/case statement with just one allowed branch for now. When we finalize the flexgrid support, it will get another one for non-uniform grids.",
+      "parentUuid": "42955899_9063778e",
+      "revId": "3a2a846db393cfdd7a46e6c67c9bb7a03a142c89",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
