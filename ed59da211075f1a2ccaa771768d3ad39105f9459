@@ -92,6 +92,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "41fc06d9_c6a2439c",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-01T09:03:12Z",
+      "side": 1,
+      "message": "Would it be OK to limit the range of frequencies (`range` of the `carrier-frequency`) to C+L, and on top of that add a constraint to amplifiers\u0027 f-min/f-max and transponder\u0027s f-min/f-max so that they only span one band at a time?\n\nWhat is a good range for L-band? 186.5 - 191.0? Should we do one continuous range for the allowed frequency, or should we reserve a \"dead band\" between C and L? Perhaps 191.1 to 191.2?",
+      "parentUuid": "67753d25_502b47ad",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "560bfc4a_12b24644",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 8
