@@ -110,6 +110,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b99b89ce_e095b92e",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-01T15:26:39Z",
+      "side": 1,
+      "message": "for amps, if this is standard EDFAs, we need to specify two amps inside the same amp because C + L amps don\u0027t have the same specs. We solved this by having a list of amps in the amp element, each with its own f_min, fmax, and gain /nf specs",
+      "parentUuid": "41fc06d9_c6a2439c",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "560bfc4a_12b24644",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 8
