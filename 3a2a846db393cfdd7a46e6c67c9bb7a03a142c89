@@ -34,6 +34,24 @@
       "parentUuid": "42955899_9063778e",
       "revId": "3a2a846db393cfdd7a46e6c67c9bb7a03a142c89",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "370c8764_cc5a767f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-06-01T08:37:51Z",
+      "side": 1,
+      "message": "Ok, but the terminology is also different (slot width and central frequency granularity vs. spacing, etc.) so I\u0027m not sure that this one will not need an update.",
+      "parentUuid": "90f73f49_18671a3d",
+      "revId": "3a2a846db393cfdd7a46e6c67c9bb7a03a142c89",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
