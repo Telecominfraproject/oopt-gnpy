@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42955899_9063778e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-06-01T08:03:36Z",
+      "side": 1,
+      "message": "These YANG models will need to be updated or complemented later when flexgrid and non-homogenous spectrum support is introduced, right?",
+      "revId": "3a2a846db393cfdd7a46e6c67c9bb7a03a142c89",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
