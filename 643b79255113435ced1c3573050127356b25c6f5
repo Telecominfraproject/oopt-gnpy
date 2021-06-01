@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32d2193f_35118c7c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-06-01T17:29:15Z",
+      "side": 1,
+      "message": "It\u0027s very difficult to follow and review a chain of commits like this when later commits like this one changes or undoes things from earlier commits.",
+      "revId": "643b79255113435ced1c3573050127356b25c6f5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
