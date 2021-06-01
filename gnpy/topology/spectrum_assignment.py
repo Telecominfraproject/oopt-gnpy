@@ -393,26 +393,21 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
     """
     for pth, rq, rpth in zip(pths, rqs, rpths):
         # computes the number of channels required
+        nb_wl, requested_m = compute_spectrum_slot_vs_bandwidth(rq.path_bandwidth,
+                                                                rq.spacing, rq.bit_rate)
+        if hasattr(rq, 'M') and rq.M is not None:
+            if requested_m > rq.M:
+                rq.blocking_reason = 'NOT_ENOUGH_RESERVED_SPECTRUM'
+            else:
+                # use the req.M even if requested M is smaller
+                requested_m = rq.M
+        # else: there is no M value so the programs uses the computed requested_m one
         if hasattr(rq, 'blocking_reason'):
             rq.N = None
             rq.M = None
         else:
-            nb_wl, requested_m = compute_spectrum_slot_vs_bandwidth(rq.path_bandwidth,
-                                                                    rq.spacing, rq.bit_rate)
-            if hasattr(rq, 'M') and rq.M is not None:
-                if requested_m > rq.M:
-                    rq.N = None
-                    rq.M = None
-                    rq.blocking_reason = 'NOT_ENOUGH_RESERVED_SPECTRUM'
-                    # need to stop here for this request and not go though spectrum selection process with requested_m
-                    break
-                else:
-                    # use the req.M even if requested M is smaller
-                    requested_m = rq.M
-            # else: there is no M value so the programs uses the requested_m one
             requested_n = getattr(rq, 'N', None)
-            (center_n, startn, stopn), path_oms = spectrum_selection(pth + rpth, oms_list, requested_m,
-                                                                     requested_n)
+            (center_n, _, _), path_oms = spectrum_selection(pth + rpth, oms_list, requested_m, requested_n)
             # if requested n and m concern already occupied spectrum the previous function returns a None candidate
             # if not None, center_n and start, stop frequencies are applicable to all oms of pth
             # checks that spectrum is not None else indicate blocking reason
