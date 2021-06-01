@@ -142,6 +142,24 @@
       "parentUuid": "0234a94d_040c121a",
       "revId": "6c37fb6ec94b3292762b5367ebf3540324a38802",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af1c238c_db9b37f2",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-01T14:21:38Z",
+      "side": 1,
+      "message": "In fact the break was needed to stop the computations in the loop, otherwise, an assignment is performed even if rq.M is not big enough and request should be blocked. I\u0027ll try to have the whole function clearer.",
+      "parentUuid": "74a00514_42c1e440",
+      "revId": "6c37fb6ec94b3292762b5367ebf3540324a38802",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
