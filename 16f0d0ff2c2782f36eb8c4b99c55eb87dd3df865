@@ -16,6 +16,24 @@
       "message": "for my curiosity, why is this \"implement\" ? and not \"import\" ?",
       "revId": "16f0d0ff2c2782f36eb8c4b99c55eb87dd3df865",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a1a02ec_3b1eb37c",
+        "filename": "gnpy/yang/yanglib.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T15:02:50Z",
+      "side": 1,
+      "message": "I also find this confusing, but that\u0027s how the augments work:\n\nhttps://datatracker.ietf.org/doc/html/rfc7950#section-5.6.5",
+      "parentUuid": "d7f76b45_b195eeff",
+      "revId": "16f0d0ff2c2782f36eb8c4b99c55eb87dd3df865",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
