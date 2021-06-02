@@ -127,6 +127,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d61cf9fb_9a628f57",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T22:12:58Z",
+      "side": 1,
+      "message": "(replaced by a newer comment, closing this one)",
+      "parentUuid": "6dd60369_f7e7d1a9",
+      "revId": "65cf924225b3f3e2710bf3d653a6357f99f7a249",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "82b594ad_40fbcc4e",
@@ -158,6 +176,24 @@
       "side": 1,
       "message": "good catch, let\u0027s do that, please",
       "parentUuid": "82b594ad_40fbcc4e",
+      "revId": "65cf924225b3f3e2710bf3d653a6357f99f7a249",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75a973a1_27f066ee",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T22:12:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d28200e2_0a2c98da",
       "revId": "65cf924225b3f3e2710bf3d653a6357f99f7a249",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }

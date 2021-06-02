@@ -16,6 +16,29 @@
       "message": "You removed the \"break\" but I think it should be replaced it with a \"continue\".",
       "revId": "2398222703b1bc810b9e4818792aa94337c2fb99",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a87a5469_eb8f28f9",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T22:12:58Z",
+      "side": 1,
+      "message": "There\u0027s no `else` which applies here, so I\u0027m confused. What does it mean?",
+      "range": {
+        "startLine": 418,
+        "startChar": 12,
+        "endLine": 418,
+        "endChar": 80
+      },
+      "revId": "2398222703b1bc810b9e4818792aa94337c2fb99",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
