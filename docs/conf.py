@@ -34,7 +34,6 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.mathjax',
               'sphinx.ext.githubpages',
               'sphinxcontrib.bibtex',
-              'pbr.sphinxext',
               'sphinx.ext.graphviz',
               ]
 
