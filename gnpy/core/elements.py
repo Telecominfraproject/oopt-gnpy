@@ -53,10 +53,6 @@ class _Node:
             self.type_variety = type_variety
 
     @property
-    def coords(self):
-        return self.lng, self.lat
-
-    @property
     def location(self):
         return self.metadata['location']
     loc = location
