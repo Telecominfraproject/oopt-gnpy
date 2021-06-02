@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edacbec2_a54900e0",
+        "filename": "tests/test_gain_mode.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T23:01:01Z",
+      "side": 1,
+      "message": "nit: \"then\"",
+      "range": {
+        "startLine": 72,
+        "startChar": 93,
+        "endLine": 72,
+        "endChar": 98
+      },
+      "revId": "550b6044a312083bbc9aac8329eeecc6b6498e35",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c92acb0d_39245206",
+        "filename": "tests/test_gain_mode.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T23:01:01Z",
+      "side": 1,
+      "message": "nit: \"power\"",
+      "range": {
+        "startLine": 96,
+        "startChar": 71,
+        "endLine": 96,
+        "endChar": 76
+      },
+      "revId": "550b6044a312083bbc9aac8329eeecc6b6498e35",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a26c37a_8cf4d385",
+        "filename": "tests/test_gain_mode.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T23:01:01Z",
+      "side": 1,
+      "message": "nit: \"standard\"",
+      "range": {
+        "startLine": 96,
+        "startChar": 11,
+        "endLine": 96,
+        "endChar": 17
+      },
+      "revId": "550b6044a312083bbc9aac8329eeecc6b6498e35",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96070634_e4e6cbf5",
+        "filename": "tests/test_gain_mode.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T23:01:01Z",
+      "side": 1,
+      "message": "I don\u0027t understand how this is related to saturation testing. Why is this important?",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 66
+      },
+      "revId": "550b6044a312083bbc9aac8329eeecc6b6498e35",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
