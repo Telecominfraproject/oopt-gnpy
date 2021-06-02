@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17057d3a_e8698907",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T21:29:45Z",
+      "side": 1,
+      "message": "Turns out that RTD still adds that trailer with an abbreviated git hash, so we are not losing any information. Yay!",
+      "revId": "5d13b9bfb6e56811e4ee878b3aa0fcaddd505c7b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
