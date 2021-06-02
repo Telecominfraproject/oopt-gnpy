@@ -84,6 +84,167 @@
       "message": "recheck",
       "revId": "c19fad4b97edf1fd1366d15c814e1cb87577eceb",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2703c6b3_237cfeee",
+        "filename": "tests/test_disjunction.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T22:43:18Z",
+      "side": 1,
+      "message": "node_list_1, please",
+      "range": {
+        "startLine": 183,
+        "startChar": 38,
+        "endLine": 183,
+        "endChar": 46
+      },
+      "revId": "c19fad4b97edf1fd1366d15c814e1cb87577eceb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c08a51a1_707d9166",
+        "filename": "tests/test_disjunction.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T22:43:18Z",
+      "side": 1,
+      "message": "What is a \"sol\"? \"Start Of Line\"? \"State Of Link?\"\n\nIt looks like the expected value of the computer path (aha! \"solution\", right?), so please call it something like computed_paths.\n\nI realize that this is what alreaddy gets used throughout the tests, but I\u0027d like to make this more readable to me.",
+      "range": {
+        "startLine": 183,
+        "startChar": 66,
+        "endLine": 183,
+        "endChar": 69
+      },
+      "revId": "c19fad4b97edf1fd1366d15c814e1cb87577eceb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2573afe1_3949053f",
+        "filename": "tests/test_disjunction.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T22:43:18Z",
+      "side": 1,
+      "message": "loose_list_1, please. I thought that this has something to do with \"links\".",
+      "range": {
+        "startLine": 183,
+        "startChar": 48,
+        "endLine": 183,
+        "endChar": 56
+      },
+      "revId": "c19fad4b97edf1fd1366d15c814e1cb87577eceb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db1ba16b_0d16cefe",
+        "filename": "tests/test_disjunction.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T22:43:18Z",
+      "side": 1,
+      "message": "I think that this refers to a commit message from the previous commit (https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/501468/3), so this better be squashed there.\n\nWhen that\u0027s done, please change this to something like \"the first possible candidate among all candidates should be returned\"",
+      "range": {
+        "startLine": 205,
+        "startChar": 49,
+        "endLine": 206,
+        "endChar": 39
+      },
+      "revId": "c19fad4b97edf1fd1366d15c814e1cb87577eceb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5eac1f98_1c08da35",
+        "filename": "tests/test_disjunction.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T22:43:18Z",
+      "side": 1,
+      "message": "nit: `paths`, please",
+      "range": {
+        "startLine": 236,
+        "startChar": 8,
+        "endLine": 236,
+        "endChar": 12
+      },
+      "revId": "c19fad4b97edf1fd1366d15c814e1cb87577eceb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abf314fd_7ae41c29",
+        "filename": "tests/test_disjunction.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T22:43:18Z",
+      "side": 1,
+      "message": "nit: `path_names` please",
+      "range": {
+        "startLine": 237,
+        "startChar": 8,
+        "endLine": 237,
+        "endChar": 16
+      },
+      "revId": "c19fad4b97edf1fd1366d15c814e1cb87577eceb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3eadeed_299055f7",
+        "filename": "tests/test_disjunction.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T22:43:18Z",
+      "side": 1,
+      "message": "something like `roadm_names`, please",
+      "range": {
+        "startLine": 239,
+        "startChar": 12,
+        "endLine": 239,
+        "endChar": 16
+      },
+      "revId": "c19fad4b97edf1fd1366d15c814e1cb87577eceb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
