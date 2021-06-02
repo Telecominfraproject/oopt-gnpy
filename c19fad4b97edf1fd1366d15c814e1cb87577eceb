@@ -67,6 +67,23 @@
       "message": "Can you please tell me if this set of changes is OK to be merged ?",
       "revId": "c19fad4b97edf1fd1366d15c814e1cb87577eceb",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c55b451e_042df49c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T22:25:15Z",
+      "side": 1,
+      "message": "recheck",
+      "revId": "c19fad4b97edf1fd1366d15c814e1cb87577eceb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
