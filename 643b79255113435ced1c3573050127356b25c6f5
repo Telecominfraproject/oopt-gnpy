@@ -34,6 +34,24 @@
       "parentUuid": "32d2193f_35118c7c",
       "revId": "643b79255113435ced1c3573050127356b25c6f5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cf81daa_fc1a9a7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-06-02T09:56:39Z",
+      "side": 1,
+      "message": "I think the version with a \"continue\" instead of \"break\" is cleaner than this one.",
+      "parentUuid": "f17a57f3_c62859d5",
+      "revId": "643b79255113435ced1c3573050127356b25c6f5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
