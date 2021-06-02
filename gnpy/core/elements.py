@@ -349,11 +349,6 @@ class Fiber(_Node):
                           f'  pch out (dBm): {self.pch_out_db!r}'])
 
     @property
-    def fiber_loss(self):
-        """Fiber loss in dB, not including padding attenuator"""
-        return self.params.loss_coef * self.params.length + self.params.con_in + self.params.con_out
-
-    @property
     def loss(self):
         """total loss including padding att_in: useful for polymorphism with roadm loss"""
         return self.params.loss_coef * self.params.length + self.params.con_in + self.params.con_out + self.params.att_in
