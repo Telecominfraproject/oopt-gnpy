@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "baaab5a2_1a5b05ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T22:22:13Z",
+      "side": 1,
+      "message": "sorry for a late reply, haven\u0027t realized that I haven\u0027t hit the reply button earlier.",
+      "revId": "018a646b4161bbee0d45802f7f972d625155f38d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa98b92f_4b2a937e",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T22:22:13Z",
+      "side": 1,
+      "message": "A suggestion: given this this is not in the hot path, it might be better to provide a more specific error message. I\u0027ve got an example here:\n\nhttps://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/497119/1/gnpy/core/info.py#43\n\nFeel free to say no and mark this comment as done, though.",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 110
+      },
+      "revId": "018a646b4161bbee0d45802f7f972d625155f38d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}

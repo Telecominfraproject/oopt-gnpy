@@ -70,6 +70,24 @@
       "parentUuid": "0c879a91_06824f95",
       "revId": "93d858dc715828f3a0fda39d5176608c2dd3430c",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77b2a53c_5d6e694b",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-02T22:22:13Z",
+      "side": 1,
+      "message": "ok, I thought you have a reproducer. OK.",
+      "parentUuid": "7c3a20e6_26a27127",
+      "revId": "93d858dc715828f3a0fda39d5176608c2dd3430c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
