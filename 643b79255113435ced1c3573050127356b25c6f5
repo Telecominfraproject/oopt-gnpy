@@ -16,6 +16,24 @@
       "message": "It\u0027s very difficult to follow and review a chain of commits like this when later commits like this one changes or undoes things from earlier commits.",
       "revId": "643b79255113435ced1c3573050127356b25c6f5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f17a57f3_c62859d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-02T08:44:04Z",
+      "side": 1,
+      "message": "I\u0027ll move that change on the refactor initial commit, but I wanted to be sure that this change is OK with you first.",
+      "parentUuid": "32d2193f_35118c7c",
+      "revId": "643b79255113435ced1c3573050127356b25c6f5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
