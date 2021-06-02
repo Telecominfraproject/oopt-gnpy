@@ -824,10 +824,7 @@ class Edfa(_Node):
         targ_slope = -self.tilt_target / (self.params.f_max - self.params.f_min)
 
         # first estimate of DGT scaling
-        try:
-            dgts1 = targ_slope / dgt_slope
-        except ZeroDivisionError:
-            dgts1 = 0
+        dgts1 = targ_slope / dgt_slope if dgt_slope != 0. else 0.
 
         # when simple_opt is true, make 2 attempts to compute gain and
         # the internal voa value. This is currently here to provide direct
