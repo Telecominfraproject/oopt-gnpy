@@ -534,10 +534,9 @@ def convert_service_sheet(
         network,
         network_filename=None,
         output_filename='',
-        bidir=False,
-        filter_region=None):
+        bidir=False):
     if output_filename == '':
         output_filename = f'{str(input_filename)[0:len(str(input_filename))-len(str(input_filename.suffixes[0]))]}_services.json'
-    data = read_service_sheet(input_filename, eqpt, network, network_filename, bidir, filter_region)
+    data = read_service_sheet(input_filename, eqpt, network, network_filename, bidir)
     save_json(data, output_filename)
     return data
