@@ -53,10 +53,6 @@ class _Node:
             self.type_variety = type_variety
 
     @property
-    def coords(self):
-        return self.lng, self.lat
-
-    @property
     def location(self):
         return self.metadata['location']
     loc = location
@@ -351,11 +347,6 @@ class Fiber(_Node):
                           f'  (includes conn loss (dB) in: {self.params.con_in:.2f} out: {self.params.con_out:.2f})',
                           f'  (conn loss out includes EOL margin defined in eqpt_config.json)',
                           f'  pch out (dBm): {self.pch_out_db!r}'])
-
-    @property
-    def fiber_loss(self):
-        """Fiber loss in dB, not including padding attenuator"""
-        return self.params.loss_coef * self.params.length + self.params.con_in + self.params.con_out
 
     @property
     def loss(self):
