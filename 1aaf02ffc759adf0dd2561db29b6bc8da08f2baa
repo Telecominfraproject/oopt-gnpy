@@ -34,6 +34,24 @@
       "parentUuid": "97891220_75d232fa",
       "revId": "1aaf02ffc759adf0dd2561db29b6bc8da08f2baa",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a62523c5_5b03f84b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-03T09:03:04Z",
+      "side": 1,
+      "message": "Tomato it is :). I only used exception wrestling because that\u0027s how the code was before, but I agree that an explicit check looks better here.",
+      "parentUuid": "5823784d_90c54a43",
+      "revId": "1aaf02ffc759adf0dd2561db29b6bc8da08f2baa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
