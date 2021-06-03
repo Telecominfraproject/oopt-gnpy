@@ -21,7 +21,6 @@ from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restr
 from gnpy.topology.request import PathRequest, Disjunction
 from gnpy.tools.convert import xls_to_json_data
 from gnpy.tools.service_sheet import read_service_sheet
-import time
 
 
 _logger = getLogger(__name__)
@@ -44,7 +43,6 @@ class _JsonThing:
                       f'\n WARNING missing {k} attribute in eqpt_config.json[{name}]' +
                       f'\n default value is {k} = {v}' +
                       ansi_escapes.reset)
-                time.sleep(1)
 
 
 class SI(_JsonThing):
