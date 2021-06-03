@@ -16,6 +16,24 @@
       "message": "I don\u0027t understand why the division errstate of numpy is not the default and I think it is not the best in general.\nIn this particular case, why not \n\ndgt1 \u003d targ_slope / dgt_slope if dgt_slope !\u003d0 else dgt_slope\n\ninstead of trying to catch the right error?",
       "revId": "1aaf02ffc759adf0dd2561db29b6bc8da08f2baa",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5823784d_90c54a43",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-06-03T08:40:51Z",
+      "side": 1,
+      "message": "You like tomato, ... 😊\n\nJoking aside, I don\u0027t have a strong preference in this case. Both ways are fine for me.",
+      "parentUuid": "97891220_75d232fa",
+      "revId": "1aaf02ffc759adf0dd2561db29b6bc8da08f2baa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
