@@ -16,6 +16,24 @@
       "message": "Hello did you test this validation process against large network instances ? I tested the yangson on a large network (~500 links) and the validation was never finished",
       "revId": "8698ee6f36a62abe3541d08ceb64f65a665c9649",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "351c2b43_76e12f75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-03T09:05:11Z",
+      "side": 1,
+      "message": "I have not. Can you share the data which caused these troubles? It will be interesting to know whether there\u0027s a bottleneck in yangson-the-library, or perhaps in some of my `must` statements. In the past and in some other project, I accidentally did something which was worst than O(N^2).",
+      "parentUuid": "97641839_74078418",
+      "revId": "8698ee6f36a62abe3541d08ceb64f65a665c9649",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
