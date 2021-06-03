@@ -16,6 +16,23 @@
       "message": "In my YANG patch series, I needed a feature like this on a per-link basis instead of a global flag, so this flag might need to be removed in the long run. But it\u0027s an improvement, so I think it should be merged.",
       "revId": "08c922a5e5c9535a2eb31fafe2537251b4541cd6",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9aa397b_e1418397",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-03T07:51:21Z",
+      "side": 1,
+      "message": "Thanks! That\u0027s good to have, However would it be possible to also have tests with this ?",
+      "revId": "08c922a5e5c9535a2eb31fafe2537251b4541cd6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
