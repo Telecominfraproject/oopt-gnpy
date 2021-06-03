@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97641839_74078418",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-03T08:58:27Z",
+      "side": 1,
+      "message": "Hello did you test this validation process against large network instances ? I tested the yangson on a large network (~500 links) and the validation was never finished",
+      "revId": "8698ee6f36a62abe3541d08ceb64f65a665c9649",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
