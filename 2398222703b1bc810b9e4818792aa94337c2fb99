@@ -39,6 +39,30 @@
       },
       "revId": "2398222703b1bc810b9e4818792aa94337c2fb99",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eeabb8a8_473af4e2",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-03T07:04:38Z",
+      "side": 1,
+      "message": "This is a comment to explain what happens if rq has no M or rq.M is None: (it applies to line \"if hasattr(rq, \u0027M\u0027) and rq.M is not None:\").\nif rq has no M or rq.M is None: this means \"there is no M value so the programs uses the requested_m one\". But writing the else is not required since requested_m has already the value in it.",
+      "parentUuid": "a87a5469_eb8f28f9",
+      "range": {
+        "startLine": 418,
+        "startChar": 12,
+        "endLine": 418,
+        "endChar": 80
+      },
+      "revId": "2398222703b1bc810b9e4818792aa94337c2fb99",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
