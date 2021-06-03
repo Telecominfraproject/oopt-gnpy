@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e35c6bc_4c6d4e8a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-06-03T07:32:53Z",
+      "side": 1,
+      "message": "This patch does not seem to change anything for me. What happens for me, both before and after this patch, when the DGT vector is [0, 0] is that I get a warning:\n\nRuntimeWarning: invalid value encountered in double_scalars\n\nNote that the warning is not about division by zero. The warning is only printed the first time, i.e. for the first amplifier in the link. The resulting dgts1 is nan, which also results in all computed SNR values being nan. This behaviour is obviously far from ideal and should be changed but the fix has to be something else.\n\nAlso note that the behaviour of numpy is different depending on whether the numerator (here targ_slope) is 0 or not:\n\n\u003e\u003e\u003e import numpy as np\n\u003e\u003e\u003e np.seterr(divide\u003d\u0027raise\u0027)\n\u003e\u003e\u003e 0 / np.float64(0)\n\u003cstdin\u003e:1: RuntimeWarning: invalid value encountered in double_scalars\nnan\n\u003e\u003e\u003e 1 / np.float64(0)\nTraceback (most recent call last):\n  File \"\u003cstdin\u003e\", line 1, in \u003cmodule\u003e\nFloatingPointError: divide by zero encountered in double_scalars",
+      "revId": "8b2dbadf613f87f64463fdc16b7b1b32cf07387a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
