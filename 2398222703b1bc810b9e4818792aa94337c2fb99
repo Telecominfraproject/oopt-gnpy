@@ -3,6 +3,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8a69b9e1_cce9bfd3",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-03T11:38:59Z",
+      "side": 1,
+      "message": "it\u0027s simpler this way:\n if getattr(rw, \u0027M\u0027, None) is not None:",
+      "range": {
+        "startLine": 407,
+        "startChar": 12,
+        "endLine": 407,
+        "endChar": 52
+      },
+      "revId": "2398222703b1bc810b9e4818792aa94337c2fb99",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32371edf_6b824ec8",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-03T11:38:59Z",
+      "side": 1,
+      "message": "\u003e linters-diff-ci: E271 multiple spaces after keyword\n\nPlease fix.",
+      "parentUuid": "4246b0fe_f7749160",
+      "revId": "2398222703b1bc810b9e4818792aa94337c2fb99",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4b21cfe9_2951b35c",
         "filename": "gnpy/topology/spectrum_assignment.py",
         "patchSetId": 3
@@ -55,6 +96,30 @@
       "side": 1,
       "message": "This is a comment to explain what happens if rq has no M or rq.M is None: (it applies to line \"if hasattr(rq, \u0027M\u0027) and rq.M is not None:\").\nif rq has no M or rq.M is None: this means \"there is no M value so the programs uses the requested_m one\". But writing the else is not required since requested_m has already the value in it.",
       "parentUuid": "a87a5469_eb8f28f9",
+      "range": {
+        "startLine": 418,
+        "startChar": 12,
+        "endLine": 418,
+        "endChar": 80
+      },
+      "revId": "2398222703b1bc810b9e4818792aa94337c2fb99",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa6bc666_8989f579",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-03T11:38:59Z",
+      "side": 1,
+      "message": "I think what I find confusing in this comment is that it talks about \"an else case\", but the `requested_m` is taken unconditionally. In other words, it talks about something which is not there, but at the same time it\u0027s \"on a wrong indentation level\" for me to make sense on a first sight. My suggestion is to get rid of that because the code always ends up using the content of that variable.",
+      "parentUuid": "eeabb8a8_473af4e2",
       "range": {
         "startLine": 418,
         "startChar": 12,
