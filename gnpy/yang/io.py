@@ -519,7 +519,114 @@ def _store_equipment_roadm(name: str, roadm: _ji.Roadm) -> Dict:
     }
 
 
-def save_equipment(equipment: Dict[str, Dict[str, Any]]) -> Dict:
+# def _next_nodes_except_links(network, node):
+#     '''Get all nodes which are directly connected from a given node, except those that are represented as YANG links already'''
+#     for n in network.successors(node):
+#         if isinstance(n, (elements.Fiber, elements.Fused)):
+#             continue
+#         yield n
+
+
+def _json_yang_link(uid, source, destination, extra):
+    link = {
+        'link-id': uid,
+        'source': {
+            'source-node': source,
+        },
+        'destination': {
+            'dest-node': destination,
+        },
+    }
+    link.update(extra)
+    return link
+
+
+def _store_topology(raw: Dict, equipment, network):
+    nodes = []
+    links = []
+
+    for n in network.nodes():
+        if isinstance(n, elements.Transceiver):
+            if not hasattr(n, 'type_variety'):
+                raise exceptions.NetworkTopologyError(f"Legacy JSON doesn't specify type_variety for {n!s}")
+            nodes.append({
+                'node-id': n.uid,
+                'tip-photonic-topology:transceiver': {
+                    'model': n.type_variety,
+                }
+            })
+            # for x in _next_nodes_except_links(network, n):
+            #     links.append(_json_yang_link(f'{n.uid} - {x.uid}', n.uid, x.uid, {})
+        elif isinstance(n, elements.Edfa):
+            nodes.append({
+                'node-id': n.uid,
+                'tip-photonic-topology:amplifier': {
+                    'model': n.type_variety,
+                    # FIXME: more
+                }
+            })
+        elif isinstance(n, elements.Roadm):
+            if not hasattr(n, 'type_variety'):
+                raise exceptions.NetworkTopologyError(f"Legacy JSON doesn't specify type_variety for {n!s}")
+            nodes.append({
+                'node-id': n.uid,
+                'tip-photonic-topology:roadm': {
+                    'model': n.type_variety,
+                    # FIXME: more
+                }
+            })
+        elif isinstance(n, (elements.Fiber, elements.Fused)):
+            ingress_node = next(network.predecessors(n))
+            egress_node = next(network.successors(n))
+            if isinstance(n, elements.Fused):
+                specific = {
+                    'tip-photonic-topology:patch': {
+                        'attenuation': str(n.params.loss),
+                    }
+                }
+                if isinstance(ingress_node, elements.Roadm):
+                    specific['tip-photonic-topology:patch']['roadm-target-egress-per-channel-power'] = str(
+                        getattr(ingress_node.params.per_degree_pch_out_db, egress_node.uid, ingress_node.params.target_pch_out_db))
+            else:
+                specific = {
+                    'tip-photonic-topology:fiber': {
+                        'type': n.type_variety,
+                        'length': str(n.params.length * 1e-3),
+                        'attenuation-in': str(n.params.att_in),
+                        'conn-att-in': str(n.params.con_in),
+                        'conn-att-out': str(n.params.con_out),
+                        # FIXME: more?
+                    }
+                }
+            
+            links.append(_json_yang_link(n.uid, ingress_node.uid, egress_node.uid, specific))
+        else:
+            raise NotImplementedError(f'Internal error: unhandled node {n!s}')
+
+    for edge in network.edges():
+        if isinstance(edge[0], (elements.Fiber, elements.Fused)) or isinstance(edge[1], (elements.Fiber, elements.Fused)):
+            continue
+        link = {'tip-photonic-topology:patch': {
+            'attenuation': '0'
+        }}
+        if isinstance(edge[0], elements.Roadm):
+            link['tip-photonic-topology:patch']['roadm-target-egress-per-channel-power'] = str(
+                getattr(edge[0].params.per_degree_pch_out_db, egress_node.uid, edge[0].params.target_pch_out_db))
+        links.append(_json_yang_link(f'EXTRApatch{{{edge[0].uid}, {edge[1].uid}}}', edge[0].uid, edge[1].uid, link))
+
+    raw['ietf-network:networks'] = {
+        'network': [{
+            'network-id': 'GNPy',
+            'network-types': {
+                'tip-photonic-topology:photonic-topology': {},
+            },
+            'node': nodes,
+            'ietf-network-topology:link': links,
+        }], 
+    }
+
+
+def save_to_json(equipment: Dict[str, Dict[str, Any]], network) -> Dict:
     '''Save the in-memory equipment library into a dict with YANG-formatted data'''
     dm = create_datamodel()
 
@@ -564,6 +671,9 @@ def save_equipment(equipment: Dict[str, Dict[str, Any]]) -> Dict:
     }
     # FIXME: spectrum.power_range_db
     # FIXME: span.*
+
+    if network is not None:
+        _store_topology(raw, equipment, network)
 
     data = dm.from_raw(raw)
     data.validate()
