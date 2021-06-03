@@ -34,6 +34,24 @@
       "parentUuid": "7e35c6bc_4c6d4e8a",
       "revId": "8b2dbadf613f87f64463fdc16b7b1b32cf07387a",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8031467_cafb595c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-03T08:06:30Z",
+      "side": 1,
+      "message": "Good catch. During my testing I had a non-zero tilt. I can reproduce your results when I use a zero tilt.",
+      "parentUuid": "ab99ceee_de6b79eb",
+      "revId": "8b2dbadf613f87f64463fdc16b7b1b32cf07387a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
