@@ -39,6 +39,30 @@
       },
       "revId": "018a646b4161bbee0d45802f7f972d625155f38d",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db5de644_c6b26d01",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-06-03T21:41:32Z",
+      "side": 1,
+      "message": "Now the error message indicates the pairs of channels in case of overlapping or the channels that have the baud rates larger then the sloth widths",
+      "parentUuid": "fa98b92f_4b2a937e",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 110
+      },
+      "revId": "018a646b4161bbee0d45802f7f972d625155f38d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
