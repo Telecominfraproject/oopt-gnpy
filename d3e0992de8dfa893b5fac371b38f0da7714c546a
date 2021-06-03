@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa28e434_d364868c",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-03T21:54:34Z",
+      "side": 1,
+      "message": "nit: extra space?",
+      "range": {
+        "startLine": 73,
+        "startChar": 49,
+        "endLine": 73,
+        "endChar": 50
+      },
+      "revId": "d3e0992de8dfa893b5fac371b38f0da7714c546a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "971b2b16_3381c871",
+        "filename": "tests/test_info.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-03T21:54:34Z",
+      "side": 1,
+      "message": "\u003e linters-diff-ci: W605 invalid escape sequence \u0027\\[\u0027\n\nIf this is about escaping for a regex, then I suggest using the \"r\" prefix, like this:\n\n match\u003dr\u0027blah blah \\[1, 3\\]\u0027",
+      "parentUuid": "16c88162_539d64bc",
+      "revId": "d3e0992de8dfa893b5fac371b38f0da7714c546a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}

@@ -154,6 +154,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85ee0fcb_493a8725",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-03T21:54:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d72cbbb9_8d37db90",
+      "range": {
+        "startLine": 161,
+        "startChar": 22,
+        "endLine": 161,
+        "endChar": 24
+      },
+      "revId": "11b1221abf85574b3a2648a59bdda3c81b451a0d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "64c1a9b3_7e54b619",
