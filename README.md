@@ -1,6 +1,4 @@
-![GNPy with an OLS system](docs/images/GNPy-banner.png)
-
-# `gnpy`: mesh optical network route planning and optimization library
+# GNPy: Optical Route Planning and DWDM Network Optimization
 
 [![Install via pip](https://img.shields.io/pypi/v/gnpy)](https://pypi.org/project/gnpy/)
 [![Python versions](https://img.shields.io/pypi/pyversions/gnpy)](https://pypi.org/project/gnpy/)
@@ -15,6 +13,8 @@
 GNPy is an open-source, community-developed library for building route planning and optimization tools in real-world mesh optical networks.
 We are a consortium of operators, vendors, and academic researchers sponsored via the [Telecom Infra Project](http://telecominfraproject.com)'s [OOPT/PSE](https://telecominfraproject.com/open-optical-packet-transport) working group.
 Together, we are building this tool for rapid development of production-grade route planning tools which is easily extensible to include custom network elements and performant to the scale of real-world mesh optical networks.
+
+![GNPy with an OLS system](docs/images/GNPy-banner.png)
 
 ## Quick Start
 
