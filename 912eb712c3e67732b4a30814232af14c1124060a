@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff0969a8_0603c58b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-03T21:55:33Z",
+      "side": 1,
+      "message": "self-approving since both Jonas and Andrea indicated that they\u0027re OK with this.",
+      "revId": "912eb712c3e67732b4a30814232af14c1124060a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
