@@ -91,6 +91,30 @@
       },
       "revId": "550b6044a312083bbc9aac8329eeecc6b6498e35",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec39917d_34d1c4aa",
+        "filename": "tests/test_gain_mode.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-04T16:02:38Z",
+      "side": 1,
+      "message": "This is unrelated, but when checking the values I made some error forgetting about that and I wanted to track that somewhere. The default number of channels when using SI values is not the same as the one with t_min f_max from Transceivers. I have changed that to a simple comment.",
+      "parentUuid": "96070634_e4e6cbf5",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 66
+      },
+      "revId": "550b6044a312083bbc9aac8329eeecc6b6498e35",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
