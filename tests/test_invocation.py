@@ -16,6 +16,13 @@ SRC_ROOT = Path(__file__).parent.parent
      ['gnpy/example-data/raman_edfa_example_network.json', '--sim', 'gnpy/example-data/sim_params.json', '--show-channels', ]),
     ('openroadm-Stockholm-Gothenburg', transmission_main_example,
      ['-e', 'gnpy/example-data/eqpt_config_openroadm.json', 'gnpy/example-data/Sweden_OpenROADM_example_network.json', ]),
+    pytest.param('transmission_main_example', transmission_main_example,
+                 ['--from-yang', 'tests/yang/converted/edfa_example.json'],
+                 id='yang-transmission_main_example-edfa_example'),
+    # Different out: 0.01dB in one NF, and 0.03ps/nm in the final CD
+    pytest.param('openroadm-Stockholm-Gothenburg', transmission_main_example,
+                 ['--from-yang', 'tests/yang/converted/Sweden_OpenROADM_example.json'],
+                 id='yang-openroadm-sweden'),
 ))
 def test_example_invocation(capfdbinary, output, handler, args):
     '''Make sure that our examples produce useful output'''
