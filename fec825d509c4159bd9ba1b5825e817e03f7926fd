@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b435f621_08095841",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-04T16:14:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a352521_e487f1ce",
+      "range": {
+        "startLine": 303,
+        "startChar": 4,
+        "endLine": 303,
+        "endChar": 22
+      },
+      "revId": "fec825d509c4159bd9ba1b5825e817e03f7926fd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "720cb8cb_adf13a39",
@@ -47,6 +71,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99fa5a2a_32aab333",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-04T16:14:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "720cb8cb_adf13a39",
+      "range": {
+        "startLine": 343,
+        "startChar": 29,
+        "endLine": 343,
+        "endChar": 104
+      },
+      "revId": "fec825d509c4159bd9ba1b5825e817e03f7926fd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ddd14d5d_27d8622c",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-05-26T23:30:19Z",
       "side": 1,
       "message": "I think this is hard to follow, but I\u0027m open to discussion. My suggestion is to turn these into additional \"pytest/mark.parametrize\" bits, like this:\n \n@pytest.mark.parametrize(\u0027n_orig, m_orig, n_final, m_final, blocking_reason\u0027,\n [\n   # ... comments can and should be added here for those \"itneresting\" cases\" ...\n ]\ndef test_n_m_requests(...):\n    ...\n    assert rqs[0].N \u003d\u003d n_final\n    assert rqs[0].M \u003d\u003d m_final\n    assert getattr(rqs[0], \u0027blocking_reason\u0027, None) \u003d\u003d blocking_reason\n\nSounds reasonable?",
+      "range": {
+        "startLine": 343,
+        "startChar": 0,
+        "endLine": 365,
+        "endChar": 32
+      },
+      "revId": "fec825d509c4159bd9ba1b5825e817e03f7926fd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1742f0aa_fbc60dae",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-04T16:14:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ddd14d5d_27d8622c",
       "range": {
         "startLine": 343,
         "startChar": 0,
