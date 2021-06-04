@@ -33,6 +33,14 @@ Model_hybrid = namedtuple('Model_hybrid', 'nf_ram gain_ram edfa_variety')
 Model_dual_stage = namedtuple('Model_dual_stage', 'preamp_variety booster_variety')
 
 
+class Model_openroadm_preamp:
+    pass
+
+
+class Model_openroadm_booster:
+    pass
+
+
 class _JsonThing:
     def update_attr(self, default_values, kwargs, name):
         clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
@@ -201,8 +209,10 @@ class Amp(_JsonThing):
             except KeyError:  # nf_coef is expected for openroadm amp
                 raise EquipmentConfigError(f'missing nf_coef input for amplifier: {type_variety} in equipment config')
             nf_def = Model_openroadm_ila(nf_coef)
-        elif type_def in ('openroadm_preamp', 'openroadm_booster'):
-            pass  # no extra parameters needed
+        elif type_def == 'openroadm_preamp':
+            nf_def = Model_openroadm_preamp()
+        elif type_def == 'openroadm_booster':
+            nf_def = Model_openroadm_booster()
         elif type_def == 'dual_stage':
             try:  # nf_ram and gain_ram are expected for a hybrid amp
                 preamp_variety = kwargs.pop('preamp_variety')
