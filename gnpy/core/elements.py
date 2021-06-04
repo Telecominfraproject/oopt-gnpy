@@ -165,10 +165,10 @@ class Transceiver(_Node):
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
 
+                          f'  GSNR (0.1nm, dB):          {snr_01nm:.2f}',
+                          f'  GSNR (signal bw, dB):      {snr:.2f}',
                           f'  OSNR ASE (0.1nm, dB):      {osnr_ase_01nm:.2f}',
                           f'  OSNR ASE (signal bw, dB):  {osnr_ase:.2f}',
-                          f'  SNR total (signal bw, dB): {snr:.2f}',
-                          f'  SNR total (0.1nm, dB):     {snr_01nm:.2f}',
                           f'  CD (ps/nm):                {cd:.2f}',
                           f'  PMD (ps):                  {pmd:.2f}'])
 

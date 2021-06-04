@@ -8,10 +8,10 @@ Now propagating between trx_Stockholm and trx_Gothenburg:
 
 Propagating with input power = [1;36;40m2.00 dBm[0m:
 Transceiver trx_Stockholm
+  GSNR (0.1nm, dB):          35.00
+  GSNR (signal bw, dB):      30.98
   OSNR ASE (0.1nm, dB):      35.00
   OSNR ASE (signal bw, dB):  30.98
-  SNR total (signal bw, dB): 30.98
-  SNR total (0.1nm, dB):     35.00
   CD (ps/nm):                0.00
   PMD (ps):                  0.00
 Roadm roadm_Stockholm
@@ -224,15 +224,15 @@ Roadm roadm_Gothenburg
   effective loss (dB):  22.00
   pch out (dBm):        -20
 Transceiver trx_Gothenburg
+  GSNR (0.1nm, dB):          18.90
+  GSNR (signal bw, dB):      14.88
   OSNR ASE (0.1nm, dB):      21.20
   OSNR ASE (signal bw, dB):  17.18
-  SNR total (signal bw, dB): 14.88
-  SNR total (0.1nm, dB):     18.90
   CD (ps/nm):                8350.42
   PMD (ps):                  0.89
 
 Transmission result for input power = 2.00 dBm:
-  Final SNR total (0.1 nm): [1;36;40m18.90 dB[0m
+  Final GSNR (0.1 nm): [1;36;40m18.90 dB[0m
 
 (No source node specified: picked trx_Stockholm)
 
