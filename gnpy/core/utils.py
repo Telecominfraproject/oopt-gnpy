@@ -107,6 +107,35 @@ def db2lin(value):
 
 
 def round2float(number, step):
+    """Round a floating point number so that its "resolution" is not bigger than 'step'
+
+    The finest step is fixed at 0.01; smaller values are silently changed to 0.01.
+
+    >>> round2float(123.456, 1000)
+    0.0
+    >>> round2float(123.456, 100)
+    100.0
+    >>> round2float(123.456, 10)
+    120.0
+    >>> round2float(123.456, 1)
+    123.0
+    >>> round2float(123.456, 0.1)
+    123.5
+    >>> round2float(123.456, 0.01)
+    123.46
+    >>> round2float(123.456, 0.001)
+    123.46
+    >>> round2float(123.249, 0.5)
+    123.0
+    >>> round2float(123.250, 0.5)
+    123.0
+    >>> round2float(123.251, 0.5)
+    123.5
+    >>> round2float(123.300, 0.2)
+    123.2
+    >>> round2float(123.301, 0.2)
+    123.4
+    """
     step = round(step, 1)
     if step >= 0.01:
         number = round(number / step, 0)
