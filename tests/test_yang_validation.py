@@ -8,7 +8,7 @@
 
 from gnpy.tools.json_io import load_equipment, load_network
 from gnpy.yang import external_path, model_path
-from gnpy.yang.io import create_datamodel, save_to_json
+from gnpy.yang.io import create_datamodel, load_from_yang, save_to_json
 from pathlib import Path
 from typing import List
 import pytest
@@ -79,3 +79,37 @@ def test_conversion_to_yang(expected_file, equipment_file, topology_file):
     serialized = json.dumps(data, indent=2) + '\n'  # files were generated via print(), hence a newline
     expected = open(SRC_ROOT / 'tests' / 'yang' / 'converted' / expected_file, mode='rb').read().decode('utf-8')
     assert serialized == expected
+
+    y_equipment, y_network = load_from_yang(data)
+
+    assert set(equipment.keys()) == set(y_equipment.keys())
+
+    for meta in ['Span', 'SI', 'Edfa', 'Fiber', 'RamanFiber', 'Roadm', 'Transceiver']:
+        assert equipment[meta].keys() == y_equipment[meta].keys()
+        for name in equipment[meta].keys():
+            print(f'{meta}: {name}')
+            thing = equipment[meta][name]
+            y_thing = y_equipment[meta][name]
+            assert type(thing) == type(y_thing)
+            assert set(thing.__dict__.keys()) == set(y_thing.__dict__.keys())
+            # FIXME: some bits are missing, some are numerically different
+            # for attr in thing.__dict__:
+            #     try:
+            #         assert getattr(thing, attr) == getattr(y_thing, attr)
+            #     except AssertionError:
+            #         print(f'!!! different attribute: {meta}: {name} -> {attr}')
+            #         raise
+
+    # network nodes:
+    # the order is unstable, and there "might" be duplicate UIDs
+    len(network.nodes()) == len(y_network.nodes())
+    assert set(n.uid for n in network.nodes()) == set(n.uid for n in y_network.nodes())
+
+    # edges are simple, just check the UIDs and cardinality
+    assert set((e[0].uid, e[1].uid) for e in network.edges()) == set((e[0].uid, e[1].uid) for e in y_network.edges())
+    assert len(network.edges()) == len(y_network.edges())
+
+    # for orig_node in network.nodes():
+    #     y_node = next(x for x in y_network.nodes() if x.uid == orig_node.uid)
+    #     # FIXME: fails on metadata...
+    #     assert orig_node.to_json == y_node.to_json
