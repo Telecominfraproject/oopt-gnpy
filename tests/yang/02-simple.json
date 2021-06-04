@@ -46,13 +46,78 @@
     }
   ],
 
+  "ietf-network:networks": {
+    "network": [
+      {
+        "network-id": "Two transponders, one EDFA, two fibers",
+        "network-types": {
+          "tip-photonic-topology:photonic-topology": {
+          }
+        },
+        "node": [
+          {
+            "node-id": "trx-1",
+            "tip-photonic-topology:transceiver": {
+              "model": "Voyager"
+            }
+          },
+          {
+            "node-id": "trx-2",
+            "tip-photonic-topology:transceiver": {
+              "model": "Voyager"
+            }
+          },
+          {
+            "node-id": "edfa-A",
+            "tip-photonic-topology:amplifier": {
+              "model": "fixed-22",
+              "gain-target": "19.0",
+              "tilt-target": "10.0"
+            }
+          }
+        ],
+        "ietf-network-topology:link": [
+          {
+            "link-id": "fiber trx-1 edfa-1",
+            "source": {
+              "source-node": "trx-1"
+            },
+            "destination": {
+              "dest-node": "edfa-A"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "105"
+            }
+          },
+          {
+            "link-id": "fiber trx-2",
+            "source": {
+              "source-node": "edfa-A"
+            },
+            "destination": {
+              "dest-node": "trx-2"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "70"
+            }
+          }
+        ]
+      }
+    ]
+  },
   "tip-photonic-simulation:simulation": {
     "autodesign": {
-      "gain-mode": [null]
+      "power-mode": {
+        "power-sweep-stepping": "0.0",
+        "long-span-power-boost": "0.0",
+        "short-span-power-reduction": "0.0"
+      }
     },
     "grid": {
-      "frequency-min": "191.8",
-      "frequency-max": "195.5",
+      "frequency-min": "191.3",
+      "frequency-max": "195.1",
       "spacing": "50.0",
       "baud-rate": "37.5",
       "tx-roll-off": "0.5",
