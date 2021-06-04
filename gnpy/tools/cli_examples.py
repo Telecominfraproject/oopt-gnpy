@@ -32,7 +32,7 @@ from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectru
 from gnpy.tools.json_io import load_equipment, load_network, load_json, load_requests, save_network, \
                                requests_from_json, disjunctions_from_json, save_json
 from gnpy.tools.plots import plot_baseline, plot_results
-from gnpy.yang.io import load_from_yang, save_equipment
+from gnpy.yang.io import load_from_yang, save_to_json
 
 _logger = logging.getLogger(__name__)
 _examples_dir = Path(__file__).parent.parent / 'example-data'
@@ -140,7 +140,8 @@ def transmission_main_example(args=None):
         with open(args.from_yang, 'r') as f:
             raw_json = json.load(f)
         (equipment, network) = load_from_yang(raw_json)
-        network = _load_network_legacy(args.topology, equipment, args.save_network_before_autodesign)
+        if args.save_network_before_autodesign is not None:
+            save_network(network, args.save_network_before_autodesign)
     else:
         (equipment, network) = load_common_data(args.equipment, args.topology, args.sim_params, args.save_network_before_autodesign)
 
@@ -468,9 +469,13 @@ def convert_to_yang(args=None):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         )
     _parser_add_equipment(parser)
+    parser.add_argument('--topology', type=Path, metavar='NETWORK-TOPOLOGY.(json|xls|xlsx)',
+                        help='Input network topology')
 
     args = parser.parse_args(args if args is not None else sys.argv[1:])
 
     equipment = load_equipment(args.equipment)
-    data = save_equipment(equipment)
+    network = load_network(args.topology, equipment) if args.topology is not None else None
+
+    data = save_to_json(equipment, network)
     print(json.dumps(data, indent=2))
