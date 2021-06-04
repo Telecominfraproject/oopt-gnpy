@@ -23,7 +23,7 @@ def test_example_invocation(capfdbinary, output, handler, args):
     expected = open(SRC_ROOT / 'tests' / 'invocation' / output, mode='rb').read()
     handler(args)
     captured = capfdbinary.readouterr()
-    assert captured.out == expected
+    assert captured.out.decode('utf-8') == expected.decode('utf-8')
     assert captured.err == b''
 
 
