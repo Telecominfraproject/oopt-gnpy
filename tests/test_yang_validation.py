@@ -6,13 +6,17 @@
 # see LICENSE.md for a list of contributors
 #
 
+from gnpy.tools.json_io import load_equipment, load_network
 from gnpy.yang import external_path, model_path
-from gnpy.yang.io import create_datamodel
+from gnpy.yang.io import create_datamodel, save_to_json
 from pathlib import Path
 from typing import List
 import pytest
 import subprocess
 import json
+
+
+SRC_ROOT = Path(__file__).parent.parent
 
 
 def _get_basename(filename: Path) -> str:
@@ -61,3 +65,17 @@ def test_validate_yang_data(_yangson_datamodel, filename: Path):
         raw_json = json.load(f)
     data = dm.from_raw(raw_json)
     data.validate()
+
+
+@pytest.mark.parametrize("expected_file, equipment_file, topology_file", (
+    ("edfa_example.json", "gnpy/example-data/eqpt_config.json", "gnpy/example-data/edfa_example_network.json"),
+    ("Sweden_OpenROADM_example.json", "gnpy/example-data/eqpt_config_openroadm.json", "gnpy/example-data/Sweden_OpenROADM_example_network.json"),
+))
+def test_conversion_to_yang(expected_file, equipment_file, topology_file):
+    '''Conversion from legacy JSON to self-contained YANG data'''
+    equipment = load_equipment(SRC_ROOT / equipment_file)
+    network = load_network(SRC_ROOT / topology_file, equipment)
+    data = save_to_json(equipment, network)
+    serialized = json.dumps(data, indent=2) + '\n'  # files were generated via print(), hence a newline
+    expected = open(SRC_ROOT / 'tests' / 'yang' / 'converted' / expected_file, mode='rb').read().decode('utf-8')
+    assert serialized == expected
