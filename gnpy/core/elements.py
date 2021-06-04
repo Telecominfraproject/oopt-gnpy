@@ -217,7 +217,7 @@ class Roadm(_Node):
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
                           f'  effective loss (dB):  {self.effective_loss:.2f}',
-                          f'  pch out (dBm):        {self.effective_pch_out_db!r}'])
+                          f'  pch out (dBm):        {self.effective_pch_out_db:.2f}'])
 
     def propagate(self, pref, *carriers, degree):
         # pin_target and loss are read from eqpt_config.json['Roadm']
@@ -346,7 +346,7 @@ class Fiber(_Node):
                           f'  total loss (dB):             {self.loss:.2f}',
                           f'  (includes conn loss (dB) in: {self.params.con_in:.2f} out: {self.params.con_out:.2f})',
                           f'  (conn loss out includes EOL margin defined in eqpt_config.json)',
-                          f'  pch out (dBm): {self.pch_out_db!r}'])
+                          f'  pch out (dBm): {self.pch_out_db:.2f}'])
 
     @property
     def loss(self):
@@ -614,9 +614,9 @@ class Edfa(_Node):
                           f'  pad att_in (dB):        {self.att_in:.2f}',
                           f'  Power In (dBm):         {self.pin_db:.2f}',
                           f'  Power Out (dBm):        {self.pout_db:.2f}',
-                          f'  Delta_P (dB):           {self.delta_p!r}',
-                          f'  target pch (dBm):       {self.target_pch_out_db!r}',
-                          f'  effective pch (dBm):    {self.effective_pch_out_db!r}',
+                          f'  Delta_P (dB):           ' + f'{self.delta_p:.2f}' if self.delta_p is not None else 'None',
+                          f'  target pch (dBm):       ' + f'{self.target_pch_out_db:.2f}' if self.target_pch_out_db is not None else 'None',
+                          f'  effective pch (dBm):    {self.effective_pch_out_db:.2f}',
                           f'  output VOA (dB):        {self.out_voa:.2f}'])
 
     def interpol_params(self, frequencies, pin, baud_rates, pref):
