@@ -1,0 +1,771 @@
+{
+  "tip-photonic-equipment:amplifier": [
+    {
+      "type": "high_detail_model_example",
+      "gain-min": "15.0",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "gain-flatmax": "25.0",
+      "max-power-out": "21.0",
+      "has-output-voa": false,
+      "polynomial-NF": {
+        "a": "0.000168241",
+        "b": "0.0469961",
+        "c": "0.0359549",
+        "d": "5.82851"
+      }
+    },
+    {
+      "type": "Juniper_BoosterHG",
+      "gain-min": "10.0",
+      "frequency-min": "191.4",
+      "frequency-max": "196.1",
+      "gain-flatmax": "25.0",
+      "max-power-out": "21.0",
+      "has-output-voa": false,
+      "polynomial-NF": {
+        "a": "0.0008",
+        "b": "0.0272",
+        "c": "-0.2249",
+        "d": "6.4902"
+      }
+    },
+    {
+      "type": "operator_model_example",
+      "gain-min": "15.0",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "gain-flatmax": "26.0",
+      "max-power-out": "23.0",
+      "has-output-voa": false,
+      "min-max-NF": {
+        "nf-min": "6.0",
+        "nf-max": "10.0"
+      }
+    },
+    {
+      "type": "openroadm_ila_low_noise",
+      "gain-min": "0.0",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "gain-flatmax": "27.0",
+      "max-power-out": "22.0",
+      "has-output-voa": false,
+      "OpenROADM-ILA": {
+        "a": "-0.0008104",
+        "b": "-0.06221",
+        "c": "-0.5889",
+        "d": "37.62"
+      }
+    },
+    {
+      "type": "openroadm_ila_standard",
+      "gain-min": "0.0",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "gain-flatmax": "27.0",
+      "max-power-out": "22.0",
+      "has-output-voa": false,
+      "OpenROADM-ILA": {
+        "a": "-0.0005952",
+        "b": "-0.0625",
+        "c": "-1.071",
+        "d": "28.99"
+      }
+    },
+    {
+      "type": "openroadm_mw_mw_preamp",
+      "gain-min": "0.0",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "gain-flatmax": "27.0",
+      "max-power-out": "22.0",
+      "has-output-voa": false,
+      "OpenROADM-preamp": {}
+    },
+    {
+      "type": "openroadm_mw_mw_booster",
+      "gain-min": "0.0",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "gain-flatmax": "32.0",
+      "max-power-out": "22.0",
+      "has-output-voa": false,
+      "OpenROADM-booster": {}
+    },
+    {
+      "type": "std_high_gain",
+      "gain-min": "25.0",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "gain-flatmax": "35.0",
+      "max-power-out": "21.0",
+      "has-output-voa": false,
+      "min-max-NF": {
+        "nf-min": "5.5",
+        "nf-max": "7.0"
+      }
+    },
+    {
+      "type": "std_medium_gain",
+      "gain-min": "15.0",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "gain-flatmax": "26.0",
+      "max-power-out": "23.0",
+      "has-output-voa": false,
+      "min-max-NF": {
+        "nf-min": "6.0",
+        "nf-max": "10.0"
+      }
+    },
+    {
+      "type": "std_low_gain",
+      "gain-min": "8.0",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "gain-flatmax": "16.0",
+      "max-power-out": "23.0",
+      "has-output-voa": false,
+      "min-max-NF": {
+        "nf-min": "6.5",
+        "nf-max": "11.0"
+      }
+    },
+    {
+      "type": "high_power",
+      "gain-min": "8.0",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "gain-flatmax": "16.0",
+      "max-power-out": "25.0",
+      "has-output-voa": false,
+      "min-max-NF": {
+        "nf-min": "9.0",
+        "nf-max": "15.0"
+      }
+    },
+    {
+      "type": "std_fixed_gain",
+      "gain-min": "20.0",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "gain-flatmax": "21.0",
+      "max-power-out": "21.0",
+      "has-output-voa": false,
+      "polynomial-NF": {
+        "a": "0.0",
+        "b": "0.0",
+        "c": "0.0",
+        "d": "5.5"
+      }
+    },
+    {
+      "type": "4pumps_raman",
+      "gain-min": "12.0",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "gain-flatmax": "12.0",
+      "max-power-out": "21.0",
+      "has-output-voa": false,
+      "raman-approximation": {
+        "nf": "-1.0"
+      }
+    },
+    {
+      "type": "hybrid_4pumps_lowgain",
+      "gain-min": "25.0",
+      "composite": {
+        "preamp": "4pumps_raman",
+        "booster": "std_low_gain"
+      }
+    },
+    {
+      "type": "hybrid_4pumps_mediumgain",
+      "gain-min": "25.0",
+      "composite": {
+        "preamp": "4pumps_raman",
+        "booster": "std_medium_gain"
+      }
+    },
+    {
+      "type": "medium+low_gain",
+      "gain-min": "25.0",
+      "composite": {
+        "preamp": "std_medium_gain",
+        "booster": "std_low_gain"
+      }
+    },
+    {
+      "type": "medium+high_power",
+      "gain-min": "25.0",
+      "composite": {
+        "preamp": "std_medium_gain",
+        "booster": "high_power"
+      }
+    }
+  ],
+  "tip-photonic-equipment:fiber": [
+    {
+      "type": "NZDF",
+      "chromatic-dispersion": "5.0",
+      "gamma": "1.46",
+      "pmd-coefficient": "0.0400028124"
+    },
+    {
+      "type": "LOF",
+      "chromatic-dispersion": "22.0",
+      "gamma": "0.843",
+      "pmd-coefficient": "0.0400028124"
+    },
+    {
+      "type": "SSMF",
+      "chromatic-dispersion": "16.7",
+      "gamma": "1.27",
+      "pmd-coefficient": "0.0400028124",
+      "raman-efficiency": [
+        {
+          "delta-frequency": "0.0",
+          "cr": "0.0"
+        },
+        {
+          "delta-frequency": "0.5",
+          "cr": "0.0000094"
+        },
+        {
+          "delta-frequency": "1.0",
+          "cr": "0.0000292"
+        },
+        {
+          "delta-frequency": "1.5",
+          "cr": "0.0000488"
+        },
+        {
+          "delta-frequency": "2.0",
+          "cr": "0.0000682"
+        },
+        {
+          "delta-frequency": "2.5",
+          "cr": "0.0000831"
+        },
+        {
+          "delta-frequency": "3.0",
+          "cr": "0.000094"
+        },
+        {
+          "delta-frequency": "3.5",
+          "cr": "0.0001014"
+        },
+        {
+          "delta-frequency": "4.0",
+          "cr": "0.0001069"
+        },
+        {
+          "delta-frequency": "4.5",
+          "cr": "0.0001119"
+        },
+        {
+          "delta-frequency": "5.0",
+          "cr": "0.0001217"
+        },
+        {
+          "delta-frequency": "5.5",
+          "cr": "0.0001268"
+        },
+        {
+          "delta-frequency": "6.0",
+          "cr": "0.0001365"
+        },
+        {
+          "delta-frequency": "6.5",
+          "cr": "0.000149"
+        },
+        {
+          "delta-frequency": "7.0",
+          "cr": "0.000165"
+        },
+        {
+          "delta-frequency": "7.5",
+          "cr": "0.000181"
+        },
+        {
+          "delta-frequency": "8.0",
+          "cr": "0.0001977"
+        },
+        {
+          "delta-frequency": "8.5",
+          "cr": "0.0002192"
+        },
+        {
+          "delta-frequency": "9.0",
+          "cr": "0.0002469"
+        },
+        {
+          "delta-frequency": "9.5",
+          "cr": "0.0002749"
+        },
+        {
+          "delta-frequency": "10.0",
+          "cr": "0.0002999"
+        },
+        {
+          "delta-frequency": "10.5",
+          "cr": "0.0003206"
+        },
+        {
+          "delta-frequency": "11.0",
+          "cr": "0.0003405"
+        },
+        {
+          "delta-frequency": "11.5",
+          "cr": "0.0003592"
+        },
+        {
+          "delta-frequency": "12.0",
+          "cr": "0.000374"
+        },
+        {
+          "delta-frequency": "12.5",
+          "cr": "0.0003826"
+        },
+        {
+          "delta-frequency": "12.75",
+          "cr": "0.0003841"
+        },
+        {
+          "delta-frequency": "13.0",
+          "cr": "0.0003826"
+        },
+        {
+          "delta-frequency": "13.25",
+          "cr": "0.0003802"
+        },
+        {
+          "delta-frequency": "13.5",
+          "cr": "0.0003756"
+        },
+        {
+          "delta-frequency": "14.0",
+          "cr": "0.0003549"
+        },
+        {
+          "delta-frequency": "14.5",
+          "cr": "0.0003795"
+        },
+        {
+          "delta-frequency": "14.75",
+          "cr": "0.000344"
+        },
+        {
+          "delta-frequency": "15.0",
+          "cr": "0.0002933"
+        },
+        {
+          "delta-frequency": "15.5",
+          "cr": "0.0002024"
+        },
+        {
+          "delta-frequency": "16.0",
+          "cr": "0.0001158"
+        },
+        {
+          "delta-frequency": "16.5",
+          "cr": "0.0000846"
+        },
+        {
+          "delta-frequency": "17.0",
+          "cr": "0.0000714"
+        },
+        {
+          "delta-frequency": "17.5",
+          "cr": "0.0000686"
+        },
+        {
+          "delta-frequency": "18.0",
+          "cr": "0.000085"
+        },
+        {
+          "delta-frequency": "18.25",
+          "cr": "0.0000893"
+        },
+        {
+          "delta-frequency": "18.5",
+          "cr": "0.0000901"
+        },
+        {
+          "delta-frequency": "18.75",
+          "cr": "0.0000815"
+        },
+        {
+          "delta-frequency": "19.0",
+          "cr": "0.0000667"
+        },
+        {
+          "delta-frequency": "19.5",
+          "cr": "0.0000437"
+        },
+        {
+          "delta-frequency": "20.0",
+          "cr": "0.0000328"
+        },
+        {
+          "delta-frequency": "20.5",
+          "cr": "0.0000296"
+        },
+        {
+          "delta-frequency": "21.0",
+          "cr": "0.0000265"
+        },
+        {
+          "delta-frequency": "21.5",
+          "cr": "0.0000257"
+        },
+        {
+          "delta-frequency": "22.0",
+          "cr": "0.0000281"
+        },
+        {
+          "delta-frequency": "22.5",
+          "cr": "0.0000308"
+        },
+        {
+          "delta-frequency": "23.0",
+          "cr": "0.0000367"
+        },
+        {
+          "delta-frequency": "23.5",
+          "cr": "0.0000585"
+        },
+        {
+          "delta-frequency": "24.0",
+          "cr": "0.0000663"
+        },
+        {
+          "delta-frequency": "24.5",
+          "cr": "0.0000636"
+        },
+        {
+          "delta-frequency": "25.0",
+          "cr": "0.000055"
+        },
+        {
+          "delta-frequency": "25.5",
+          "cr": "0.0000406"
+        },
+        {
+          "delta-frequency": "26.0",
+          "cr": "0.0000277"
+        },
+        {
+          "delta-frequency": "26.5",
+          "cr": "0.0000242"
+        },
+        {
+          "delta-frequency": "27.0",
+          "cr": "0.0000187"
+        },
+        {
+          "delta-frequency": "27.5",
+          "cr": "0.000016"
+        },
+        {
+          "delta-frequency": "28.0",
+          "cr": "0.000014"
+        },
+        {
+          "delta-frequency": "28.5",
+          "cr": "0.0000113"
+        },
+        {
+          "delta-frequency": "29.0",
+          "cr": "0.0000105"
+        },
+        {
+          "delta-frequency": "29.5",
+          "cr": "0.0000098"
+        },
+        {
+          "delta-frequency": "30.0",
+          "cr": "0.0000098"
+        },
+        {
+          "delta-frequency": "30.5",
+          "cr": "0.0000113"
+        },
+        {
+          "delta-frequency": "31.0",
+          "cr": "0.0000164"
+        },
+        {
+          "delta-frequency": "31.5",
+          "cr": "0.0000195"
+        },
+        {
+          "delta-frequency": "32.0",
+          "cr": "0.0000238"
+        },
+        {
+          "delta-frequency": "32.5",
+          "cr": "0.0000226"
+        },
+        {
+          "delta-frequency": "33.0",
+          "cr": "0.0000203"
+        },
+        {
+          "delta-frequency": "33.5",
+          "cr": "0.0000148"
+        },
+        {
+          "delta-frequency": "34.0",
+          "cr": "0.0000109"
+        },
+        {
+          "delta-frequency": "34.5",
+          "cr": "0.0000098"
+        },
+        {
+          "delta-frequency": "35.0",
+          "cr": "0.0000105"
+        },
+        {
+          "delta-frequency": "35.5",
+          "cr": "0.0000117"
+        },
+        {
+          "delta-frequency": "36.0",
+          "cr": "0.0000125"
+        },
+        {
+          "delta-frequency": "36.5",
+          "cr": "0.0000121"
+        },
+        {
+          "delta-frequency": "37.0",
+          "cr": "0.0000109"
+        },
+        {
+          "delta-frequency": "37.5",
+          "cr": "0.0000098"
+        },
+        {
+          "delta-frequency": "38.0",
+          "cr": "0.0000082"
+        },
+        {
+          "delta-frequency": "38.5",
+          "cr": "0.0000066"
+        },
+        {
+          "delta-frequency": "39.0",
+          "cr": "0.0000047"
+        },
+        {
+          "delta-frequency": "39.5",
+          "cr": "0.0000027"
+        },
+        {
+          "delta-frequency": "40.0",
+          "cr": "0.0000019"
+        },
+        {
+          "delta-frequency": "40.5",
+          "cr": "0.0000012"
+        },
+        {
+          "delta-frequency": "41.0",
+          "cr": "4.00000E-7"
+        },
+        {
+          "delta-frequency": "41.5",
+          "cr": "2.00000E-7"
+        },
+        {
+          "delta-frequency": "42.0",
+          "cr": "1.00000E-7"
+        }
+      ]
+    }
+  ],
+  "tip-photonic-equipment:transceiver": [
+    {
+      "type": "vendorA_trx-type1",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "mode": [
+        {
+          "name": "mode 1",
+          "bit-rate": 100,
+          "baud-rate": "32.0",
+          "required-osnr": "11.0",
+          "in-band-tx-osnr": "40.0",
+          "grid-spacing": "37.5",
+          "tx-roll-off": "0.15",
+          "tip-photonic-simulation:cost": 1
+        },
+        {
+          "name": "mode 2",
+          "bit-rate": 200,
+          "baud-rate": "66.0",
+          "required-osnr": "15.0",
+          "in-band-tx-osnr": "40.0",
+          "grid-spacing": "75.0",
+          "tx-roll-off": "0.15",
+          "tip-photonic-simulation:cost": 1
+        }
+      ]
+    },
+    {
+      "type": "Voyager",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "mode": [
+        {
+          "name": "mode 1",
+          "bit-rate": 100,
+          "baud-rate": "32.0",
+          "required-osnr": "12.0",
+          "in-band-tx-osnr": "40.0",
+          "grid-spacing": "37.5",
+          "tx-roll-off": "0.15",
+          "tip-photonic-simulation:cost": 1
+        },
+        {
+          "name": "mode 3",
+          "bit-rate": 300,
+          "baud-rate": "44.0",
+          "required-osnr": "18.0",
+          "in-band-tx-osnr": "40.0",
+          "grid-spacing": "62.5",
+          "tx-roll-off": "0.15",
+          "tip-photonic-simulation:cost": 1
+        },
+        {
+          "name": "mode 2",
+          "bit-rate": 400,
+          "baud-rate": "66.0",
+          "required-osnr": "21.0",
+          "in-band-tx-osnr": "40.0",
+          "grid-spacing": "75.0",
+          "tx-roll-off": "0.15",
+          "tip-photonic-simulation:cost": 1
+        },
+        {
+          "name": "mode 4",
+          "bit-rate": 200,
+          "baud-rate": "66.0",
+          "required-osnr": "16.0",
+          "in-band-tx-osnr": "40.0",
+          "grid-spacing": "75.0",
+          "tx-roll-off": "0.15",
+          "tip-photonic-simulation:cost": 1
+        }
+      ]
+    }
+  ],
+  "tip-photonic-equipment:roadm": [
+    {
+      "type": "default",
+      "add-drop-osnr": "38.0",
+      "polarization-mode-dispersion": "0.0",
+      "target-channel-out-power": "-20.0",
+      "compatible-preamp": [],
+      "compatible-booster": []
+    }
+  ],
+  "tip-photonic-simulation:simulation": {
+    "grid": {
+      "frequency-min": "191.3",
+      "frequency-max": "195.1",
+      "spacing": "50.0",
+      "power": "0.0",
+      "tx-roll-off": "0.15",
+      "tx-osnr": "40.0",
+      "baud-rate": "32.0"
+    },
+    "autodesign": {
+      "allowed-inline-edfa": [
+        "std_high_gain",
+        "std_medium_gain",
+        "std_low_gain",
+        "hybrid_4pumps_lowgain",
+        "hybrid_4pumps_mediumgain",
+        "medium+low_gain"
+      ],
+      "power-adjustment-for-span-loss": {
+        "maximal-reduction": "-2.0",
+        "maximal-boost": "3.0",
+        "excursion-step-size": "0.5"
+      },
+      "power-mode": {
+        "power-sweep": {
+          "start": "0.0",
+          "stop": "0.0",
+          "step-size": "1.0"
+        }
+      }
+    },
+    "system-margin": "2.0"
+  },
+  "ietf-network:networks": {
+    "network": [
+      {
+        "network-id": "GNPy",
+        "network-types": {
+          "tip-photonic-topology:photonic-topology": {}
+        },
+        "node": [
+          {
+            "node-id": "Site_A",
+            "tip-photonic-topology:transceiver": {
+              "model": "vendorA_trx-type1"
+            }
+          },
+          {
+            "node-id": "Edfa1",
+            "tip-photonic-topology:amplifier": {
+              "model": "std_low_gain",
+              "gain-target": "17.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Site_B",
+            "tip-photonic-topology:transceiver": {
+              "model": "vendorA_trx-type1"
+            }
+          }
+        ],
+        "ietf-network-topology:link": [
+          {
+            "link-id": "Span1",
+            "source": {
+              "source-node": "Site_A"
+            },
+            "destination": {
+              "dest-node": "Edfa1"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "80.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.5",
+              "conn-att-out": "0.5"
+            }
+          },
+          {
+            "link-id": "patch{Edfa1, Site_B}",
+            "source": {
+              "source-node": "Edfa1"
+            },
+            "destination": {
+              "dest-node": "Site_B"
+            },
+            "tip-photonic-topology:patch": {}
+          }
+        ]
+      }
+    ]
+  }
+}
