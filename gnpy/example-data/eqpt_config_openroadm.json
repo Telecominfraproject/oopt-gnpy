@@ -138,7 +138,7 @@
                        "baud_rate": 27.95e9,
                        "OSNR": 17,
                        "bit_rate": 100e9,
-                       "roll_off": null,
+                       "roll_off": 0.15,
                        "tx_osnr": 33,
                        "min_spacing": 50e9,
                        "cost":1
