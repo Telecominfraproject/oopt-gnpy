@@ -1,0 +1,4826 @@
+{
+  "tip-photonic-equipment:amplifier": [
+    {
+      "type": "openroadm_ila_low_noise",
+      "gain-min": "0.0",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "gain-flatmax": "27.0",
+      "max-power-out": "22.0",
+      "has-output-voa": false,
+      "OpenROADM-ILA": {
+        "a": "-0.0008104",
+        "b": "-0.06221",
+        "c": "-0.5889",
+        "d": "37.62"
+      }
+    },
+    {
+      "type": "openroadm_ila_standard",
+      "gain-min": "0.0",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "gain-flatmax": "27.0",
+      "max-power-out": "22.0",
+      "has-output-voa": false,
+      "OpenROADM-ILA": {
+        "a": "-0.0005952",
+        "b": "-0.0625",
+        "c": "-1.071",
+        "d": "28.99"
+      }
+    },
+    {
+      "type": "openroadm_mw_mw_preamp",
+      "gain-min": "0.0",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "gain-flatmax": "27.0",
+      "max-power-out": "22.0",
+      "has-output-voa": false,
+      "OpenROADM-preamp": {}
+    },
+    {
+      "type": "openroadm_mw_mw_booster",
+      "gain-min": "0.0",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "gain-flatmax": "32.0",
+      "max-power-out": "22.0",
+      "has-output-voa": false,
+      "OpenROADM-booster": {}
+    }
+  ],
+  "tip-photonic-equipment:fiber": [
+    {
+      "type": "NZDF",
+      "chromatic-dispersion": "5.0",
+      "gamma": "1.46",
+      "pmd-coefficient": "0.0400028124"
+    },
+    {
+      "type": "LOF",
+      "chromatic-dispersion": "22.0",
+      "gamma": "0.843",
+      "pmd-coefficient": "0.0400028124"
+    },
+    {
+      "type": "SSMF",
+      "chromatic-dispersion": "16.7",
+      "gamma": "1.27",
+      "pmd-coefficient": "0.0400028124",
+      "raman-efficiency": [
+        {
+          "delta-frequency": "0.0",
+          "cr": "0.0"
+        },
+        {
+          "delta-frequency": "0.5",
+          "cr": "0.0000094"
+        },
+        {
+          "delta-frequency": "1.0",
+          "cr": "0.0000292"
+        },
+        {
+          "delta-frequency": "1.5",
+          "cr": "0.0000488"
+        },
+        {
+          "delta-frequency": "2.0",
+          "cr": "0.0000682"
+        },
+        {
+          "delta-frequency": "2.5",
+          "cr": "0.0000831"
+        },
+        {
+          "delta-frequency": "3.0",
+          "cr": "0.000094"
+        },
+        {
+          "delta-frequency": "3.5",
+          "cr": "0.0001014"
+        },
+        {
+          "delta-frequency": "4.0",
+          "cr": "0.0001069"
+        },
+        {
+          "delta-frequency": "4.5",
+          "cr": "0.0001119"
+        },
+        {
+          "delta-frequency": "5.0",
+          "cr": "0.0001217"
+        },
+        {
+          "delta-frequency": "5.5",
+          "cr": "0.0001268"
+        },
+        {
+          "delta-frequency": "6.0",
+          "cr": "0.0001365"
+        },
+        {
+          "delta-frequency": "6.5",
+          "cr": "0.000149"
+        },
+        {
+          "delta-frequency": "7.0",
+          "cr": "0.000165"
+        },
+        {
+          "delta-frequency": "7.5",
+          "cr": "0.000181"
+        },
+        {
+          "delta-frequency": "8.0",
+          "cr": "0.0001977"
+        },
+        {
+          "delta-frequency": "8.5",
+          "cr": "0.0002192"
+        },
+        {
+          "delta-frequency": "9.0",
+          "cr": "0.0002469"
+        },
+        {
+          "delta-frequency": "9.5",
+          "cr": "0.0002749"
+        },
+        {
+          "delta-frequency": "10.0",
+          "cr": "0.0002999"
+        },
+        {
+          "delta-frequency": "10.5",
+          "cr": "0.0003206"
+        },
+        {
+          "delta-frequency": "11.0",
+          "cr": "0.0003405"
+        },
+        {
+          "delta-frequency": "11.5",
+          "cr": "0.0003592"
+        },
+        {
+          "delta-frequency": "12.0",
+          "cr": "0.000374"
+        },
+        {
+          "delta-frequency": "12.5",
+          "cr": "0.0003826"
+        },
+        {
+          "delta-frequency": "12.75",
+          "cr": "0.0003841"
+        },
+        {
+          "delta-frequency": "13.0",
+          "cr": "0.0003826"
+        },
+        {
+          "delta-frequency": "13.25",
+          "cr": "0.0003802"
+        },
+        {
+          "delta-frequency": "13.5",
+          "cr": "0.0003756"
+        },
+        {
+          "delta-frequency": "14.0",
+          "cr": "0.0003549"
+        },
+        {
+          "delta-frequency": "14.5",
+          "cr": "0.0003795"
+        },
+        {
+          "delta-frequency": "14.75",
+          "cr": "0.000344"
+        },
+        {
+          "delta-frequency": "15.0",
+          "cr": "0.0002933"
+        },
+        {
+          "delta-frequency": "15.5",
+          "cr": "0.0002024"
+        },
+        {
+          "delta-frequency": "16.0",
+          "cr": "0.0001158"
+        },
+        {
+          "delta-frequency": "16.5",
+          "cr": "0.0000846"
+        },
+        {
+          "delta-frequency": "17.0",
+          "cr": "0.0000714"
+        },
+        {
+          "delta-frequency": "17.5",
+          "cr": "0.0000686"
+        },
+        {
+          "delta-frequency": "18.0",
+          "cr": "0.000085"
+        },
+        {
+          "delta-frequency": "18.25",
+          "cr": "0.0000893"
+        },
+        {
+          "delta-frequency": "18.5",
+          "cr": "0.0000901"
+        },
+        {
+          "delta-frequency": "18.75",
+          "cr": "0.0000815"
+        },
+        {
+          "delta-frequency": "19.0",
+          "cr": "0.0000667"
+        },
+        {
+          "delta-frequency": "19.5",
+          "cr": "0.0000437"
+        },
+        {
+          "delta-frequency": "20.0",
+          "cr": "0.0000328"
+        },
+        {
+          "delta-frequency": "20.5",
+          "cr": "0.0000296"
+        },
+        {
+          "delta-frequency": "21.0",
+          "cr": "0.0000265"
+        },
+        {
+          "delta-frequency": "21.5",
+          "cr": "0.0000257"
+        },
+        {
+          "delta-frequency": "22.0",
+          "cr": "0.0000281"
+        },
+        {
+          "delta-frequency": "22.5",
+          "cr": "0.0000308"
+        },
+        {
+          "delta-frequency": "23.0",
+          "cr": "0.0000367"
+        },
+        {
+          "delta-frequency": "23.5",
+          "cr": "0.0000585"
+        },
+        {
+          "delta-frequency": "24.0",
+          "cr": "0.0000663"
+        },
+        {
+          "delta-frequency": "24.5",
+          "cr": "0.0000636"
+        },
+        {
+          "delta-frequency": "25.0",
+          "cr": "0.000055"
+        },
+        {
+          "delta-frequency": "25.5",
+          "cr": "0.0000406"
+        },
+        {
+          "delta-frequency": "26.0",
+          "cr": "0.0000277"
+        },
+        {
+          "delta-frequency": "26.5",
+          "cr": "0.0000242"
+        },
+        {
+          "delta-frequency": "27.0",
+          "cr": "0.0000187"
+        },
+        {
+          "delta-frequency": "27.5",
+          "cr": "0.000016"
+        },
+        {
+          "delta-frequency": "28.0",
+          "cr": "0.000014"
+        },
+        {
+          "delta-frequency": "28.5",
+          "cr": "0.0000113"
+        },
+        {
+          "delta-frequency": "29.0",
+          "cr": "0.0000105"
+        },
+        {
+          "delta-frequency": "29.5",
+          "cr": "0.0000098"
+        },
+        {
+          "delta-frequency": "30.0",
+          "cr": "0.0000098"
+        },
+        {
+          "delta-frequency": "30.5",
+          "cr": "0.0000113"
+        },
+        {
+          "delta-frequency": "31.0",
+          "cr": "0.0000164"
+        },
+        {
+          "delta-frequency": "31.5",
+          "cr": "0.0000195"
+        },
+        {
+          "delta-frequency": "32.0",
+          "cr": "0.0000238"
+        },
+        {
+          "delta-frequency": "32.5",
+          "cr": "0.0000226"
+        },
+        {
+          "delta-frequency": "33.0",
+          "cr": "0.0000203"
+        },
+        {
+          "delta-frequency": "33.5",
+          "cr": "0.0000148"
+        },
+        {
+          "delta-frequency": "34.0",
+          "cr": "0.0000109"
+        },
+        {
+          "delta-frequency": "34.5",
+          "cr": "0.0000098"
+        },
+        {
+          "delta-frequency": "35.0",
+          "cr": "0.0000105"
+        },
+        {
+          "delta-frequency": "35.5",
+          "cr": "0.0000117"
+        },
+        {
+          "delta-frequency": "36.0",
+          "cr": "0.0000125"
+        },
+        {
+          "delta-frequency": "36.5",
+          "cr": "0.0000121"
+        },
+        {
+          "delta-frequency": "37.0",
+          "cr": "0.0000109"
+        },
+        {
+          "delta-frequency": "37.5",
+          "cr": "0.0000098"
+        },
+        {
+          "delta-frequency": "38.0",
+          "cr": "0.0000082"
+        },
+        {
+          "delta-frequency": "38.5",
+          "cr": "0.0000066"
+        },
+        {
+          "delta-frequency": "39.0",
+          "cr": "0.0000047"
+        },
+        {
+          "delta-frequency": "39.5",
+          "cr": "0.0000027"
+        },
+        {
+          "delta-frequency": "40.0",
+          "cr": "0.0000019"
+        },
+        {
+          "delta-frequency": "40.5",
+          "cr": "0.0000012"
+        },
+        {
+          "delta-frequency": "41.0",
+          "cr": "4.00000E-7"
+        },
+        {
+          "delta-frequency": "41.5",
+          "cr": "2.00000E-7"
+        },
+        {
+          "delta-frequency": "42.0",
+          "cr": "1.00000E-7"
+        }
+      ]
+    }
+  ],
+  "tip-photonic-equipment:transceiver": [
+    {
+      "type": "OpenROADM MSA ver. 4.0",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "mode": [
+        {
+          "name": "100 Gbit/s, 27.95 Gbaud, DP-QPSK",
+          "bit-rate": 100,
+          "baud-rate": "27.95",
+          "required-osnr": "17.0",
+          "in-band-tx-osnr": "33.0",
+          "grid-spacing": "50.0",
+          "tx-roll-off": "0.15",
+          "tip-photonic-simulation:cost": 1
+        },
+        {
+          "name": "100 Gbit/s, 31.57 Gbaud, DP-QPSK",
+          "bit-rate": 100,
+          "baud-rate": "31.57",
+          "required-osnr": "12.0",
+          "in-band-tx-osnr": "35.0",
+          "grid-spacing": "50.0",
+          "tx-roll-off": "0.15",
+          "tip-photonic-simulation:cost": 1
+        },
+        {
+          "name": "200 Gbit/s, DP-QPSK",
+          "bit-rate": 200,
+          "baud-rate": "63.1",
+          "required-osnr": "17.0",
+          "in-band-tx-osnr": "36.0",
+          "grid-spacing": "87.5",
+          "tx-roll-off": "0.15",
+          "tip-photonic-simulation:cost": 1
+        },
+        {
+          "name": "300 Gbit/s, DP-8QAM",
+          "bit-rate": 300,
+          "baud-rate": "63.1",
+          "required-osnr": "21.0",
+          "in-band-tx-osnr": "36.0",
+          "grid-spacing": "87.5",
+          "tx-roll-off": "0.15",
+          "tip-photonic-simulation:cost": 1
+        },
+        {
+          "name": "400 Gbit/s, DP-16QAM",
+          "bit-rate": 400,
+          "baud-rate": "63.1",
+          "required-osnr": "24.0",
+          "in-band-tx-osnr": "36.0",
+          "grid-spacing": "87.5",
+          "tx-roll-off": "0.15",
+          "tip-photonic-simulation:cost": 1
+        }
+      ]
+    }
+  ],
+  "tip-photonic-equipment:roadm": [
+    {
+      "type": "default",
+      "add-drop-osnr": "30.0",
+      "polarization-mode-dispersion": "0.0",
+      "target-channel-out-power": "-20.0",
+      "compatible-preamp": [
+        "openroadm_mw_mw_preamp"
+      ],
+      "compatible-booster": [
+        "openroadm_mw_mw_booster"
+      ]
+    }
+  ],
+  "tip-photonic-simulation:simulation": {
+    "grid": {
+      "frequency-min": "191.3",
+      "frequency-max": "196.1",
+      "spacing": "50.0",
+      "power": "2.0",
+      "tx-roll-off": "0.15",
+      "tx-osnr": "35.0",
+      "baud-rate": "31.57"
+    },
+    "autodesign": {
+      "allowed-inline-edfa": [
+        "openroadm_ila_low_noise",
+        "openroadm_ila_standard"
+      ],
+      "power-adjustment-for-span-loss": {
+        "maximal-reduction": "0.0",
+        "maximal-boost": "0.0",
+        "excursion-step-size": "0.0"
+      },
+      "power-mode": {
+        "power-sweep": {
+          "start": "0.0",
+          "stop": "0.0",
+          "step-size": "1.0"
+        }
+      }
+    },
+    "system-margin": "2.0"
+  },
+  "ietf-network:networks": {
+    "network": [
+      {
+        "network-id": "GNPy",
+        "network-types": {
+          "tip-photonic-topology:photonic-topology": {}
+        },
+        "node": [
+          {
+            "node-id": "trx_Stockholm",
+            "tip-photonic-topology:transceiver": {
+              "model": "OpenROADM MSA ver. 4.0"
+            }
+          },
+          {
+            "node-id": "trx_Gothenburg",
+            "tip-photonic-topology:transceiver": {
+              "model": "OpenROADM MSA ver. 4.0"
+            }
+          },
+          {
+            "node-id": "trx_Malm\u00f6",
+            "tip-photonic-topology:transceiver": {
+              "model": "OpenROADM MSA ver. 4.0"
+            }
+          },
+          {
+            "node-id": "trx_Uppsala",
+            "tip-photonic-topology:transceiver": {
+              "model": "OpenROADM MSA ver. 4.0"
+            }
+          },
+          {
+            "node-id": "trx_V\u00e4ster\u00e5s",
+            "tip-photonic-topology:transceiver": {
+              "model": "OpenROADM MSA ver. 4.0"
+            }
+          },
+          {
+            "node-id": "trx_\u00d6rebro",
+            "tip-photonic-topology:transceiver": {
+              "model": "OpenROADM MSA ver. 4.0"
+            }
+          },
+          {
+            "node-id": "trx_Link\u00f6ping",
+            "tip-photonic-topology:transceiver": {
+              "model": "OpenROADM MSA ver. 4.0"
+            }
+          },
+          {
+            "node-id": "trx_Helsingborg",
+            "tip-photonic-topology:transceiver": {
+              "model": "OpenROADM MSA ver. 4.0"
+            }
+          },
+          {
+            "node-id": "trx_J\u00f6nk\u00f6ping",
+            "tip-photonic-topology:transceiver": {
+              "model": "OpenROADM MSA ver. 4.0"
+            }
+          },
+          {
+            "node-id": "trx_Ume\u00e5",
+            "tip-photonic-topology:transceiver": {
+              "model": "OpenROADM MSA ver. 4.0"
+            }
+          },
+          {
+            "node-id": "trx_Norrk\u00f6ping",
+            "tip-photonic-topology:transceiver": {
+              "model": "OpenROADM MSA ver. 4.0"
+            }
+          },
+          {
+            "node-id": "trx_Karlstad",
+            "tip-photonic-topology:transceiver": {
+              "model": "OpenROADM MSA ver. 4.0"
+            }
+          },
+          {
+            "node-id": "trx_Sundsvall",
+            "tip-photonic-topology:transceiver": {
+              "model": "OpenROADM MSA ver. 4.0"
+            }
+          },
+          {
+            "node-id": "trx_G\u00e4vle",
+            "tip-photonic-topology:transceiver": {
+              "model": "OpenROADM MSA ver. 4.0"
+            }
+          },
+          {
+            "node-id": "trx_Bor\u00e5s",
+            "tip-photonic-topology:transceiver": {
+              "model": "OpenROADM MSA ver. 4.0"
+            }
+          },
+          {
+            "node-id": "roadm_Stockholm",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "node-id": "roadm_Gothenburg",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "node-id": "roadm_Malm\u00f6",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "node-id": "roadm_Uppsala",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "node-id": "roadm_V\u00e4ster\u00e5s",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "node-id": "roadm_\u00d6rebro",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "node-id": "roadm_Link\u00f6ping",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "node-id": "roadm_Helsingborg",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "node-id": "roadm_J\u00f6nk\u00f6ping",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "node-id": "roadm_Ume\u00e5",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "node-id": "roadm_Norrk\u00f6ping",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "node-id": "roadm_Karlstad",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "node-id": "roadm_Sundsvall",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "node-id": "roadm_G\u00e4vle",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "node-id": "roadm_Bor\u00e5s",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Stockholm_from_fiber (V\u00e4ster\u00e5s \u2192 Stockholm)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "22.15",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Stockholm_from_fiber (Uppsala \u2192 Stockholm)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "15.08",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Stockholm_from_fiber (Norrk\u00f6ping \u2192 Stockholm)_(2/2)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "16.33",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm \u2192 V\u00e4ster\u00e5s)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm \u2192 Uppsala)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm \u2192 Norrk\u00f6ping)_(1/2)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Gothenburg_from_fiber (Bor\u00e5s \u2192 Gothenburg)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "13.53",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Gothenburg_from_fiber (Helsingborg \u2192 Gothenburg)_(3/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "14.96",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg \u2192 Bor\u00e5s)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg \u2192 Helsingborg)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Malm\u00f6_from_fiber (Helsingborg \u2192 Malm\u00f6)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "12.83",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Malm\u00f6_from_fiber (J\u00f6nk\u00f6ping \u2192 Malm\u00f6)_(3/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "20.2",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Malm\u00f6_from_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(5/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "18.49",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Malm\u00f6_to_fiber (Malm\u00f6 \u2192 Helsingborg)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Malm\u00f6_to_fiber (Malm\u00f6 \u2192 J\u00f6nk\u00f6ping)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Malm\u00f6_to_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(1/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Uppsala_from_fiber (V\u00e4ster\u00e5s \u2192 Uppsala)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "16.06",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Uppsala_from_fiber (G\u00e4vle \u2192 Uppsala)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "22.74",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Uppsala_from_fiber (Stockholm \u2192 Uppsala)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "15.08",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala \u2192 V\u00e4ster\u00e5s)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala \u2192 G\u00e4vle)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala \u2192 Stockholm)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_V\u00e4ster\u00e5s_from_fiber (Uppsala \u2192 V\u00e4ster\u00e5s)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "16.06",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_V\u00e4ster\u00e5s_from_fiber (\u00d6rebro \u2192 V\u00e4ster\u00e5s)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "20.58",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_V\u00e4ster\u00e5s_from_fiber (Stockholm \u2192 V\u00e4ster\u00e5s)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "22.15",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_V\u00e4ster\u00e5s_to_fiber (V\u00e4ster\u00e5s \u2192 Uppsala)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_V\u00e4ster\u00e5s_to_fiber (V\u00e4ster\u00e5s \u2192 \u00d6rebro)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_V\u00e4ster\u00e5s_to_fiber (V\u00e4ster\u00e5s \u2192 Stockholm)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_\u00d6rebro_from_fiber (Norrk\u00f6ping \u2192 \u00d6rebro)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "22.51",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_\u00d6rebro_from_fiber (V\u00e4ster\u00e5s \u2192 \u00d6rebro)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "20.58",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_\u00d6rebro_from_fiber (Link\u00f6ping \u2192 \u00d6rebro)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "23.68",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_\u00d6rebro_from_fiber (Karlstad \u2192 \u00d6rebro)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "23.34",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_\u00d6rebro_from_fiber (G\u00e4vle \u2192 \u00d6rebro)_(3/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "15.27",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 Norrk\u00f6ping)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 V\u00e4ster\u00e5s)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 Link\u00f6ping)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 Karlstad)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 G\u00e4vle)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Link\u00f6ping_from_fiber (J\u00f6nk\u00f6ping \u2192 Link\u00f6ping)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "26.8",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Link\u00f6ping_from_fiber (\u00d6rebro \u2192 Link\u00f6ping)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "23.68",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Link\u00f6ping_from_fiber (Norrk\u00f6ping \u2192 Link\u00f6ping)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "11.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Link\u00f6ping_to_fiber (Link\u00f6ping \u2192 J\u00f6nk\u00f6ping)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Link\u00f6ping_to_fiber (Link\u00f6ping \u2192 \u00d6rebro)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Link\u00f6ping_to_fiber (Link\u00f6ping \u2192 Norrk\u00f6ping)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Helsingborg_from_fiber (Malm\u00f6 \u2192 Helsingborg)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "12.83",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Helsingborg_from_fiber (Gothenburg \u2192 Helsingborg)_(3/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "14.96",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg \u2192 Malm\u00f6)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg \u2192 Gothenburg)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_J\u00f6nk\u00f6ping_from_fiber (Link\u00f6ping \u2192 J\u00f6nk\u00f6ping)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "26.8",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_J\u00f6nk\u00f6ping_from_fiber (Bor\u00e5s \u2192 J\u00f6nk\u00f6ping)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "17.82",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_J\u00f6nk\u00f6ping_from_fiber (Malm\u00f6 \u2192 J\u00f6nk\u00f6ping)_(3/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "20.2",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_J\u00f6nk\u00f6ping_to_fiber (J\u00f6nk\u00f6ping \u2192 Link\u00f6ping)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_J\u00f6nk\u00f6ping_to_fiber (J\u00f6nk\u00f6ping \u2192 Bor\u00e5s)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_J\u00f6nk\u00f6ping_to_fiber (J\u00f6nk\u00f6ping \u2192 Malm\u00f6)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Ume\u00e5_from_fiber (G\u00e4vle \u2192 Ume\u00e5)_(5/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "18.6",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Ume\u00e5_from_fiber (Sundsvall \u2192 Ume\u00e5)_(3/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "17.45",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Ume\u00e5_to_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(1/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Ume\u00e5_to_fiber (Ume\u00e5 \u2192 Sundsvall)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Norrk\u00f6ping_from_fiber (\u00d6rebro \u2192 Norrk\u00f6ping)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "22.51",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Norrk\u00f6ping_from_fiber (Link\u00f6ping \u2192 Norrk\u00f6ping)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "11.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Norrk\u00f6ping_from_fiber (Stockholm \u2192 Norrk\u00f6ping)_(2/2)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "16.33",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Norrk\u00f6ping_from_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(5/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "18.49",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Norrk\u00f6ping_to_fiber (Norrk\u00f6ping \u2192 \u00d6rebro)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Norrk\u00f6ping_to_fiber (Norrk\u00f6ping \u2192 Link\u00f6ping)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Norrk\u00f6ping_to_fiber (Norrk\u00f6ping \u2192 Stockholm)_(1/2)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Norrk\u00f6ping_to_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(1/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Karlstad_from_fiber (\u00d6rebro \u2192 Karlstad)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "23.34",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Karlstad_from_fiber (Bor\u00e5s \u2192 Karlstad)_(3/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "14.83",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Karlstad_from_fiber (Sundsvall \u2192 Karlstad)_(5/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "19.02",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad \u2192 \u00d6rebro)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad \u2192 Bor\u00e5s)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad \u2192 Sundsvall)_(1/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Sundsvall_from_fiber (Ume\u00e5 \u2192 Sundsvall)_(3/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "17.45",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Sundsvall_from_fiber (Karlstad \u2192 Sundsvall)_(5/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "19.02",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall \u2192 Ume\u00e5)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall \u2192 Karlstad)_(1/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_G\u00e4vle_from_fiber (Uppsala \u2192 G\u00e4vle)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "22.74",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_G\u00e4vle_from_fiber (\u00d6rebro \u2192 G\u00e4vle)_(3/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "15.27",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_G\u00e4vle_from_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(5/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "18.6",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_G\u00e4vle_to_fiber (G\u00e4vle \u2192 Uppsala)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_G\u00e4vle_to_fiber (G\u00e4vle \u2192 \u00d6rebro)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_G\u00e4vle_to_fiber (G\u00e4vle \u2192 Ume\u00e5)_(1/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Bor\u00e5s_from_fiber (J\u00f6nk\u00f6ping \u2192 Bor\u00e5s)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "17.82",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Bor\u00e5s_from_fiber (Gothenburg \u2192 Bor\u00e5s)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "13.53",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_preamp_roadm_Bor\u00e5s_from_fiber (Karlstad \u2192 Bor\u00e5s)_(3/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_preamp",
+              "gain-target": "14.83",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Bor\u00e5s_to_fiber (Bor\u00e5s \u2192 J\u00f6nk\u00f6ping)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Bor\u00e5s_to_fiber (Bor\u00e5s \u2192 Gothenburg)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_booster_roadm_Bor\u00e5s_to_fiber (Bor\u00e5s \u2192 Karlstad)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_mw_mw_booster",
+              "gain-target": "22.0",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (\u00d6rebro \u2192 G\u00e4vle)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "15.27",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (\u00d6rebro \u2192 G\u00e4vle)_(2/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "15.27",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (G\u00e4vle \u2192 \u00d6rebro)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "15.27",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (G\u00e4vle \u2192 \u00d6rebro)_(2/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "15.27",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Karlstad \u2192 Bor\u00e5s)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "14.83",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Karlstad \u2192 Bor\u00e5s)_(2/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "14.83",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Bor\u00e5s \u2192 Karlstad)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "14.83",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Bor\u00e5s \u2192 Karlstad)_(2/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "14.83",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Malm\u00f6 \u2192 J\u00f6nk\u00f6ping)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "20.2",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Malm\u00f6 \u2192 J\u00f6nk\u00f6ping)_(2/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "20.2",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (J\u00f6nk\u00f6ping \u2192 Malm\u00f6)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "20.2",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (J\u00f6nk\u00f6ping \u2192 Malm\u00f6)_(2/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "20.2",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(1/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "18.6",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(2/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "18.6",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(3/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "18.6",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(4/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "18.6",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (G\u00e4vle \u2192 Ume\u00e5)_(1/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "18.6",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (G\u00e4vle \u2192 Ume\u00e5)_(2/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "18.6",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (G\u00e4vle \u2192 Ume\u00e5)_(3/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "18.6",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (G\u00e4vle \u2192 Ume\u00e5)_(4/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "18.6",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Stockholm \u2192 Norrk\u00f6ping)_(1/2)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "16.33",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Norrk\u00f6ping \u2192 Stockholm)_(1/2)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "16.33",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(1/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "18.49",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(2/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "18.49",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(3/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "18.49",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(4/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "18.49",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(1/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "18.49",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(2/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "18.49",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(3/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "18.49",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(4/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "18.49",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Ume\u00e5 \u2192 Sundsvall)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "17.45",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Ume\u00e5 \u2192 Sundsvall)_(2/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "17.45",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Sundsvall \u2192 Ume\u00e5)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "17.45",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Sundsvall \u2192 Ume\u00e5)_(2/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "17.45",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Karlstad \u2192 Sundsvall)_(1/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "19.02",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Karlstad \u2192 Sundsvall)_(2/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "19.02",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Karlstad \u2192 Sundsvall)_(3/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "19.02",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Karlstad \u2192 Sundsvall)_(4/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "19.02",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Sundsvall \u2192 Karlstad)_(1/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "19.02",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Sundsvall \u2192 Karlstad)_(2/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "19.02",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Sundsvall \u2192 Karlstad)_(3/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "19.02",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Sundsvall \u2192 Karlstad)_(4/5)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "19.02",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Gothenburg \u2192 Helsingborg)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "14.96",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Gothenburg \u2192 Helsingborg)_(2/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "14.96",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Helsingborg \u2192 Gothenburg)_(1/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "14.96",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "Edfa_fiber (Helsingborg \u2192 Gothenburg)_(2/3)",
+            "tip-photonic-topology:amplifier": {
+              "model": "openroadm_ila_low_noise",
+              "gain-target": "14.96",
+              "delta-p": "0.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          }
+        ],
+        "ietf-network-topology:link": [
+          {
+            "link-id": "fiber (Uppsala \u2192 V\u00e4ster\u00e5s)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala \u2192 V\u00e4ster\u00e5s)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_V\u00e4ster\u00e5s_from_fiber (Uppsala \u2192 V\u00e4ster\u00e5s)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "80.284",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (V\u00e4ster\u00e5s \u2192 Uppsala)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_V\u00e4ster\u00e5s_to_fiber (V\u00e4ster\u00e5s \u2192 Uppsala)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Uppsala_from_fiber (V\u00e4ster\u00e5s \u2192 Uppsala)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "80.284",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Uppsala \u2192 G\u00e4vle)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala \u2192 G\u00e4vle)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_G\u00e4vle_from_fiber (Uppsala \u2192 G\u00e4vle)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "113.675",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (G\u00e4vle \u2192 Uppsala)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_G\u00e4vle_to_fiber (G\u00e4vle \u2192 Uppsala)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Uppsala_from_fiber (G\u00e4vle \u2192 Uppsala)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "113.675",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (\u00d6rebro \u2192 Norrk\u00f6ping)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 Norrk\u00f6ping)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Norrk\u00f6ping_from_fiber (\u00d6rebro \u2192 Norrk\u00f6ping)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "112.534",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Norrk\u00f6ping \u2192 \u00d6rebro)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Norrk\u00f6ping_to_fiber (Norrk\u00f6ping \u2192 \u00d6rebro)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_\u00d6rebro_from_fiber (Norrk\u00f6ping \u2192 \u00d6rebro)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "112.534",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Link\u00f6ping \u2192 J\u00f6nk\u00f6ping)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Link\u00f6ping_to_fiber (Link\u00f6ping \u2192 J\u00f6nk\u00f6ping)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_J\u00f6nk\u00f6ping_from_fiber (Link\u00f6ping \u2192 J\u00f6nk\u00f6ping)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "134.021",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (J\u00f6nk\u00f6ping \u2192 Link\u00f6ping)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_J\u00f6nk\u00f6ping_to_fiber (J\u00f6nk\u00f6ping \u2192 Link\u00f6ping)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Link\u00f6ping_from_fiber (J\u00f6nk\u00f6ping \u2192 Link\u00f6ping)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "134.021",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (V\u00e4ster\u00e5s \u2192 \u00d6rebro)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_V\u00e4ster\u00e5s_to_fiber (V\u00e4ster\u00e5s \u2192 \u00d6rebro)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_\u00d6rebro_from_fiber (V\u00e4ster\u00e5s \u2192 \u00d6rebro)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "102.898",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (\u00d6rebro \u2192 V\u00e4ster\u00e5s)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 V\u00e4ster\u00e5s)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_V\u00e4ster\u00e5s_from_fiber (\u00d6rebro \u2192 V\u00e4ster\u00e5s)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "102.898",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (\u00d6rebro \u2192 Link\u00f6ping)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 Link\u00f6ping)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Link\u00f6ping_from_fiber (\u00d6rebro \u2192 Link\u00f6ping)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "118.418",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Link\u00f6ping \u2192 \u00d6rebro)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Link\u00f6ping_to_fiber (Link\u00f6ping \u2192 \u00d6rebro)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_\u00d6rebro_from_fiber (Link\u00f6ping \u2192 \u00d6rebro)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "118.418",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (J\u00f6nk\u00f6ping \u2192 Bor\u00e5s)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_J\u00f6nk\u00f6ping_to_fiber (J\u00f6nk\u00f6ping \u2192 Bor\u00e5s)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Bor\u00e5s_from_fiber (J\u00f6nk\u00f6ping \u2192 Bor\u00e5s)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "89.124",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Bor\u00e5s \u2192 J\u00f6nk\u00f6ping)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Bor\u00e5s_to_fiber (Bor\u00e5s \u2192 J\u00f6nk\u00f6ping)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_J\u00f6nk\u00f6ping_from_fiber (Bor\u00e5s \u2192 J\u00f6nk\u00f6ping)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "89.124",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Stockholm \u2192 V\u00e4ster\u00e5s)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm \u2192 V\u00e4ster\u00e5s)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_V\u00e4ster\u00e5s_from_fiber (Stockholm \u2192 V\u00e4ster\u00e5s)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "110.729",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (V\u00e4ster\u00e5s \u2192 Stockholm)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_V\u00e4ster\u00e5s_to_fiber (V\u00e4ster\u00e5s \u2192 Stockholm)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Stockholm_from_fiber (V\u00e4ster\u00e5s \u2192 Stockholm)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "110.729",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Malm\u00f6 \u2192 Helsingborg)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Malm\u00f6_to_fiber (Malm\u00f6 \u2192 Helsingborg)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Helsingborg_from_fiber (Malm\u00f6 \u2192 Helsingborg)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "64.129",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Helsingborg \u2192 Malm\u00f6)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg \u2192 Malm\u00f6)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Malm\u00f6_from_fiber (Helsingborg \u2192 Malm\u00f6)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "64.129",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Gothenburg \u2192 Bor\u00e5s)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg \u2192 Bor\u00e5s)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Bor\u00e5s_from_fiber (Gothenburg \u2192 Bor\u00e5s)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "67.641",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Bor\u00e5s \u2192 Gothenburg)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Bor\u00e5s_to_fiber (Bor\u00e5s \u2192 Gothenburg)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Gothenburg_from_fiber (Bor\u00e5s \u2192 Gothenburg)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "67.641",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Link\u00f6ping \u2192 Norrk\u00f6ping)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Link\u00f6ping_to_fiber (Link\u00f6ping \u2192 Norrk\u00f6ping)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Norrk\u00f6ping_from_fiber (Link\u00f6ping \u2192 Norrk\u00f6ping)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "45.989",
+              "attenuation-in": "1.8",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Norrk\u00f6ping \u2192 Link\u00f6ping)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Norrk\u00f6ping_to_fiber (Norrk\u00f6ping \u2192 Link\u00f6ping)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Link\u00f6ping_from_fiber (Norrk\u00f6ping \u2192 Link\u00f6ping)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "45.989",
+              "attenuation-in": "1.8",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (\u00d6rebro \u2192 Karlstad)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 Karlstad)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Karlstad_from_fiber (\u00d6rebro \u2192 Karlstad)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "116.706",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Karlstad \u2192 \u00d6rebro)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad \u2192 \u00d6rebro)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_\u00d6rebro_from_fiber (Karlstad \u2192 \u00d6rebro)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "116.706",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Stockholm \u2192 Uppsala)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm \u2192 Uppsala)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Uppsala_from_fiber (Stockholm \u2192 Uppsala)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "75.422",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Uppsala \u2192 Stockholm)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala \u2192 Stockholm)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Stockholm_from_fiber (Uppsala \u2192 Stockholm)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "75.422",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (\u00d6rebro \u2192 G\u00e4vle)_(1/3)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 G\u00e4vle)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (\u00d6rebro \u2192 G\u00e4vle)_(1/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "76.351",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (\u00d6rebro \u2192 G\u00e4vle)_(2/3)",
+            "source": {
+              "source-node": "Edfa_fiber (\u00d6rebro \u2192 G\u00e4vle)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (\u00d6rebro \u2192 G\u00e4vle)_(2/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "76.351",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (\u00d6rebro \u2192 G\u00e4vle)_(3/3)",
+            "source": {
+              "source-node": "Edfa_fiber (\u00d6rebro \u2192 G\u00e4vle)_(2/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_G\u00e4vle_from_fiber (\u00d6rebro \u2192 G\u00e4vle)_(3/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "76.351",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (G\u00e4vle \u2192 \u00d6rebro)_(1/3)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_G\u00e4vle_to_fiber (G\u00e4vle \u2192 \u00d6rebro)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (G\u00e4vle \u2192 \u00d6rebro)_(1/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "76.351",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (G\u00e4vle \u2192 \u00d6rebro)_(2/3)",
+            "source": {
+              "source-node": "Edfa_fiber (G\u00e4vle \u2192 \u00d6rebro)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (G\u00e4vle \u2192 \u00d6rebro)_(2/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "76.351",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (G\u00e4vle \u2192 \u00d6rebro)_(3/3)",
+            "source": {
+              "source-node": "Edfa_fiber (G\u00e4vle \u2192 \u00d6rebro)_(2/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_\u00d6rebro_from_fiber (G\u00e4vle \u2192 \u00d6rebro)_(3/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "76.351",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Karlstad \u2192 Bor\u00e5s)_(1/3)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad \u2192 Bor\u00e5s)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Karlstad \u2192 Bor\u00e5s)_(1/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "74.162",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Karlstad \u2192 Bor\u00e5s)_(2/3)",
+            "source": {
+              "source-node": "Edfa_fiber (Karlstad \u2192 Bor\u00e5s)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Karlstad \u2192 Bor\u00e5s)_(2/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "74.162",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Karlstad \u2192 Bor\u00e5s)_(3/3)",
+            "source": {
+              "source-node": "Edfa_fiber (Karlstad \u2192 Bor\u00e5s)_(2/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Bor\u00e5s_from_fiber (Karlstad \u2192 Bor\u00e5s)_(3/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "74.162",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Bor\u00e5s \u2192 Karlstad)_(1/3)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Bor\u00e5s_to_fiber (Bor\u00e5s \u2192 Karlstad)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Bor\u00e5s \u2192 Karlstad)_(1/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "74.162",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Bor\u00e5s \u2192 Karlstad)_(2/3)",
+            "source": {
+              "source-node": "Edfa_fiber (Bor\u00e5s \u2192 Karlstad)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Bor\u00e5s \u2192 Karlstad)_(2/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "74.162",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Bor\u00e5s \u2192 Karlstad)_(3/3)",
+            "source": {
+              "source-node": "Edfa_fiber (Bor\u00e5s \u2192 Karlstad)_(2/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Karlstad_from_fiber (Bor\u00e5s \u2192 Karlstad)_(3/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "74.162",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Malm\u00f6 \u2192 J\u00f6nk\u00f6ping)_(1/3)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Malm\u00f6_to_fiber (Malm\u00f6 \u2192 J\u00f6nk\u00f6ping)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Malm\u00f6 \u2192 J\u00f6nk\u00f6ping)_(1/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "100.982",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Malm\u00f6 \u2192 J\u00f6nk\u00f6ping)_(2/3)",
+            "source": {
+              "source-node": "Edfa_fiber (Malm\u00f6 \u2192 J\u00f6nk\u00f6ping)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Malm\u00f6 \u2192 J\u00f6nk\u00f6ping)_(2/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "100.982",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Malm\u00f6 \u2192 J\u00f6nk\u00f6ping)_(3/3)",
+            "source": {
+              "source-node": "Edfa_fiber (Malm\u00f6 \u2192 J\u00f6nk\u00f6ping)_(2/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_J\u00f6nk\u00f6ping_from_fiber (Malm\u00f6 \u2192 J\u00f6nk\u00f6ping)_(3/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "100.982",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (J\u00f6nk\u00f6ping \u2192 Malm\u00f6)_(1/3)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_J\u00f6nk\u00f6ping_to_fiber (J\u00f6nk\u00f6ping \u2192 Malm\u00f6)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (J\u00f6nk\u00f6ping \u2192 Malm\u00f6)_(1/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "100.982",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (J\u00f6nk\u00f6ping \u2192 Malm\u00f6)_(2/3)",
+            "source": {
+              "source-node": "Edfa_fiber (J\u00f6nk\u00f6ping \u2192 Malm\u00f6)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (J\u00f6nk\u00f6ping \u2192 Malm\u00f6)_(2/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "100.982",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (J\u00f6nk\u00f6ping \u2192 Malm\u00f6)_(3/3)",
+            "source": {
+              "source-node": "Edfa_fiber (J\u00f6nk\u00f6ping \u2192 Malm\u00f6)_(2/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Malm\u00f6_from_fiber (J\u00f6nk\u00f6ping \u2192 Malm\u00f6)_(3/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "100.982",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Ume\u00e5 \u2192 G\u00e4vle)_(1/5)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Ume\u00e5_to_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(1/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(1/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.98",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Ume\u00e5 \u2192 G\u00e4vle)_(2/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(1/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(2/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.98",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Ume\u00e5 \u2192 G\u00e4vle)_(3/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(2/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(3/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.98",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Ume\u00e5 \u2192 G\u00e4vle)_(4/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(3/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(4/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.98",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Ume\u00e5 \u2192 G\u00e4vle)_(5/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(4/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_G\u00e4vle_from_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(5/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.98",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (G\u00e4vle \u2192 Ume\u00e5)_(1/5)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_G\u00e4vle_to_fiber (G\u00e4vle \u2192 Ume\u00e5)_(1/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (G\u00e4vle \u2192 Ume\u00e5)_(1/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.98",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (G\u00e4vle \u2192 Ume\u00e5)_(2/5)",
+            "source": {
+              "source-node": "Edfa_fiber (G\u00e4vle \u2192 Ume\u00e5)_(1/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (G\u00e4vle \u2192 Ume\u00e5)_(2/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.98",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (G\u00e4vle \u2192 Ume\u00e5)_(3/5)",
+            "source": {
+              "source-node": "Edfa_fiber (G\u00e4vle \u2192 Ume\u00e5)_(2/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (G\u00e4vle \u2192 Ume\u00e5)_(3/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.98",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (G\u00e4vle \u2192 Ume\u00e5)_(4/5)",
+            "source": {
+              "source-node": "Edfa_fiber (G\u00e4vle \u2192 Ume\u00e5)_(3/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (G\u00e4vle \u2192 Ume\u00e5)_(4/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.98",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (G\u00e4vle \u2192 Ume\u00e5)_(5/5)",
+            "source": {
+              "source-node": "Edfa_fiber (G\u00e4vle \u2192 Ume\u00e5)_(4/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Ume\u00e5_from_fiber (G\u00e4vle \u2192 Ume\u00e5)_(5/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.98",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Stockholm \u2192 Norrk\u00f6ping)_(1/2)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm \u2192 Norrk\u00f6ping)_(1/2)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Stockholm \u2192 Norrk\u00f6ping)_(1/2)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "81.626",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Stockholm \u2192 Norrk\u00f6ping)_(2/2)",
+            "source": {
+              "source-node": "Edfa_fiber (Stockholm \u2192 Norrk\u00f6ping)_(1/2)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Norrk\u00f6ping_from_fiber (Stockholm \u2192 Norrk\u00f6ping)_(2/2)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "81.626",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Norrk\u00f6ping \u2192 Stockholm)_(1/2)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Norrk\u00f6ping_to_fiber (Norrk\u00f6ping \u2192 Stockholm)_(1/2)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Norrk\u00f6ping \u2192 Stockholm)_(1/2)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "81.626",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Norrk\u00f6ping \u2192 Stockholm)_(2/2)",
+            "source": {
+              "source-node": "Edfa_fiber (Norrk\u00f6ping \u2192 Stockholm)_(1/2)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Stockholm_from_fiber (Norrk\u00f6ping \u2192 Stockholm)_(2/2)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "81.626",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(1/5)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Malm\u00f6_to_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(1/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(1/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.433",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(2/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(1/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(2/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.433",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(3/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(2/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(3/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.433",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(4/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(3/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(4/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.433",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(5/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(4/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Norrk\u00f6ping_from_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(5/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.433",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(1/5)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Norrk\u00f6ping_to_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(1/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(1/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.433",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(2/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(1/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(2/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.433",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(3/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(2/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(3/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.433",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(4/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(3/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(4/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.433",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(5/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(4/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Malm\u00f6_from_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(5/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "92.433",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Ume\u00e5 \u2192 Sundsvall)_(1/3)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Ume\u00e5_to_fiber (Ume\u00e5 \u2192 Sundsvall)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Ume\u00e5 \u2192 Sundsvall)_(1/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "87.234",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Ume\u00e5 \u2192 Sundsvall)_(2/3)",
+            "source": {
+              "source-node": "Edfa_fiber (Ume\u00e5 \u2192 Sundsvall)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Ume\u00e5 \u2192 Sundsvall)_(2/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "87.234",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Ume\u00e5 \u2192 Sundsvall)_(3/3)",
+            "source": {
+              "source-node": "Edfa_fiber (Ume\u00e5 \u2192 Sundsvall)_(2/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Sundsvall_from_fiber (Ume\u00e5 \u2192 Sundsvall)_(3/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "87.234",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Sundsvall \u2192 Ume\u00e5)_(1/3)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall \u2192 Ume\u00e5)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Sundsvall \u2192 Ume\u00e5)_(1/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "87.234",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Sundsvall \u2192 Ume\u00e5)_(2/3)",
+            "source": {
+              "source-node": "Edfa_fiber (Sundsvall \u2192 Ume\u00e5)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Sundsvall \u2192 Ume\u00e5)_(2/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "87.234",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Sundsvall \u2192 Ume\u00e5)_(3/3)",
+            "source": {
+              "source-node": "Edfa_fiber (Sundsvall \u2192 Ume\u00e5)_(2/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Ume\u00e5_from_fiber (Sundsvall \u2192 Ume\u00e5)_(3/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "87.234",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Karlstad \u2192 Sundsvall)_(1/5)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad \u2192 Sundsvall)_(1/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Karlstad \u2192 Sundsvall)_(1/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "95.113",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Karlstad \u2192 Sundsvall)_(2/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Karlstad \u2192 Sundsvall)_(1/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Karlstad \u2192 Sundsvall)_(2/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "95.113",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Karlstad \u2192 Sundsvall)_(3/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Karlstad \u2192 Sundsvall)_(2/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Karlstad \u2192 Sundsvall)_(3/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "95.113",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Karlstad \u2192 Sundsvall)_(4/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Karlstad \u2192 Sundsvall)_(3/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Karlstad \u2192 Sundsvall)_(4/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "95.113",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Karlstad \u2192 Sundsvall)_(5/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Karlstad \u2192 Sundsvall)_(4/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Sundsvall_from_fiber (Karlstad \u2192 Sundsvall)_(5/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "95.113",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Sundsvall \u2192 Karlstad)_(1/5)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall \u2192 Karlstad)_(1/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Sundsvall \u2192 Karlstad)_(1/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "95.113",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Sundsvall \u2192 Karlstad)_(2/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Sundsvall \u2192 Karlstad)_(1/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Sundsvall \u2192 Karlstad)_(2/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "95.113",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Sundsvall \u2192 Karlstad)_(3/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Sundsvall \u2192 Karlstad)_(2/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Sundsvall \u2192 Karlstad)_(3/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "95.113",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Sundsvall \u2192 Karlstad)_(4/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Sundsvall \u2192 Karlstad)_(3/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Sundsvall \u2192 Karlstad)_(4/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "95.113",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Sundsvall \u2192 Karlstad)_(5/5)",
+            "source": {
+              "source-node": "Edfa_fiber (Sundsvall \u2192 Karlstad)_(4/5)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Karlstad_from_fiber (Sundsvall \u2192 Karlstad)_(5/5)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "95.113",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Gothenburg \u2192 Helsingborg)_(1/3)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg \u2192 Helsingborg)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Gothenburg \u2192 Helsingborg)_(1/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "74.785",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Gothenburg \u2192 Helsingborg)_(2/3)",
+            "source": {
+              "source-node": "Edfa_fiber (Gothenburg \u2192 Helsingborg)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Gothenburg \u2192 Helsingborg)_(2/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "74.785",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Gothenburg \u2192 Helsingborg)_(3/3)",
+            "source": {
+              "source-node": "Edfa_fiber (Gothenburg \u2192 Helsingborg)_(2/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Helsingborg_from_fiber (Gothenburg \u2192 Helsingborg)_(3/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "74.785",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Helsingborg \u2192 Gothenburg)_(1/3)",
+            "source": {
+              "source-node": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg \u2192 Gothenburg)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Helsingborg \u2192 Gothenburg)_(1/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "74.785",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Helsingborg \u2192 Gothenburg)_(2/3)",
+            "source": {
+              "source-node": "Edfa_fiber (Helsingborg \u2192 Gothenburg)_(1/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_fiber (Helsingborg \u2192 Gothenburg)_(2/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "74.785",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "fiber (Helsingborg \u2192 Gothenburg)_(3/3)",
+            "source": {
+              "source-node": "Edfa_fiber (Helsingborg \u2192 Gothenburg)_(2/3)"
+            },
+            "destination": {
+              "dest-node": "Edfa_preamp_roadm_Gothenburg_from_fiber (Helsingborg \u2192 Gothenburg)_(3/3)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "74.785",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.0",
+              "conn-att-out": "0.0"
+            }
+          },
+          {
+            "link-id": "patch{trx_Stockholm, roadm_Stockholm}",
+            "source": {
+              "source-node": "trx_Stockholm"
+            },
+            "destination": {
+              "dest-node": "roadm_Stockholm"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{trx_Gothenburg, roadm_Gothenburg}",
+            "source": {
+              "source-node": "trx_Gothenburg"
+            },
+            "destination": {
+              "dest-node": "roadm_Gothenburg"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{trx_Malm\u00f6, roadm_Malm\u00f6}",
+            "source": {
+              "source-node": "trx_Malm\u00f6"
+            },
+            "destination": {
+              "dest-node": "roadm_Malm\u00f6"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{trx_Uppsala, roadm_Uppsala}",
+            "source": {
+              "source-node": "trx_Uppsala"
+            },
+            "destination": {
+              "dest-node": "roadm_Uppsala"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{trx_V\u00e4ster\u00e5s, roadm_V\u00e4ster\u00e5s}",
+            "source": {
+              "source-node": "trx_V\u00e4ster\u00e5s"
+            },
+            "destination": {
+              "dest-node": "roadm_V\u00e4ster\u00e5s"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{trx_\u00d6rebro, roadm_\u00d6rebro}",
+            "source": {
+              "source-node": "trx_\u00d6rebro"
+            },
+            "destination": {
+              "dest-node": "roadm_\u00d6rebro"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{trx_Link\u00f6ping, roadm_Link\u00f6ping}",
+            "source": {
+              "source-node": "trx_Link\u00f6ping"
+            },
+            "destination": {
+              "dest-node": "roadm_Link\u00f6ping"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{trx_Helsingborg, roadm_Helsingborg}",
+            "source": {
+              "source-node": "trx_Helsingborg"
+            },
+            "destination": {
+              "dest-node": "roadm_Helsingborg"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{trx_J\u00f6nk\u00f6ping, roadm_J\u00f6nk\u00f6ping}",
+            "source": {
+              "source-node": "trx_J\u00f6nk\u00f6ping"
+            },
+            "destination": {
+              "dest-node": "roadm_J\u00f6nk\u00f6ping"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{trx_Ume\u00e5, roadm_Ume\u00e5}",
+            "source": {
+              "source-node": "trx_Ume\u00e5"
+            },
+            "destination": {
+              "dest-node": "roadm_Ume\u00e5"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{trx_Norrk\u00f6ping, roadm_Norrk\u00f6ping}",
+            "source": {
+              "source-node": "trx_Norrk\u00f6ping"
+            },
+            "destination": {
+              "dest-node": "roadm_Norrk\u00f6ping"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{trx_Karlstad, roadm_Karlstad}",
+            "source": {
+              "source-node": "trx_Karlstad"
+            },
+            "destination": {
+              "dest-node": "roadm_Karlstad"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{trx_Sundsvall, roadm_Sundsvall}",
+            "source": {
+              "source-node": "trx_Sundsvall"
+            },
+            "destination": {
+              "dest-node": "roadm_Sundsvall"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{trx_G\u00e4vle, roadm_G\u00e4vle}",
+            "source": {
+              "source-node": "trx_G\u00e4vle"
+            },
+            "destination": {
+              "dest-node": "roadm_G\u00e4vle"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{trx_Bor\u00e5s, roadm_Bor\u00e5s}",
+            "source": {
+              "source-node": "trx_Bor\u00e5s"
+            },
+            "destination": {
+              "dest-node": "roadm_Bor\u00e5s"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{roadm_Stockholm, trx_Stockholm}",
+            "source": {
+              "source-node": "roadm_Stockholm"
+            },
+            "destination": {
+              "dest-node": "trx_Stockholm"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Stockholm, Edfa_booster_roadm_Stockholm_to_fiber (Stockholm \u2192 V\u00e4ster\u00e5s)}",
+            "source": {
+              "source-node": "roadm_Stockholm"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm \u2192 V\u00e4ster\u00e5s)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Stockholm, Edfa_booster_roadm_Stockholm_to_fiber (Stockholm \u2192 Uppsala)}",
+            "source": {
+              "source-node": "roadm_Stockholm"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm \u2192 Uppsala)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Stockholm, Edfa_booster_roadm_Stockholm_to_fiber (Stockholm \u2192 Norrk\u00f6ping)_(1/2)}",
+            "source": {
+              "source-node": "roadm_Stockholm"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm \u2192 Norrk\u00f6ping)_(1/2)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Gothenburg, trx_Gothenburg}",
+            "source": {
+              "source-node": "roadm_Gothenburg"
+            },
+            "destination": {
+              "dest-node": "trx_Gothenburg"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Gothenburg, Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg \u2192 Bor\u00e5s)}",
+            "source": {
+              "source-node": "roadm_Gothenburg"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg \u2192 Bor\u00e5s)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Gothenburg, Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg \u2192 Helsingborg)_(1/3)}",
+            "source": {
+              "source-node": "roadm_Gothenburg"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg \u2192 Helsingborg)_(1/3)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Malm\u00f6, trx_Malm\u00f6}",
+            "source": {
+              "source-node": "roadm_Malm\u00f6"
+            },
+            "destination": {
+              "dest-node": "trx_Malm\u00f6"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Malm\u00f6, Edfa_booster_roadm_Malm\u00f6_to_fiber (Malm\u00f6 \u2192 Helsingborg)}",
+            "source": {
+              "source-node": "roadm_Malm\u00f6"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Malm\u00f6_to_fiber (Malm\u00f6 \u2192 Helsingborg)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Malm\u00f6, Edfa_booster_roadm_Malm\u00f6_to_fiber (Malm\u00f6 \u2192 J\u00f6nk\u00f6ping)_(1/3)}",
+            "source": {
+              "source-node": "roadm_Malm\u00f6"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Malm\u00f6_to_fiber (Malm\u00f6 \u2192 J\u00f6nk\u00f6ping)_(1/3)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Malm\u00f6, Edfa_booster_roadm_Malm\u00f6_to_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(1/5)}",
+            "source": {
+              "source-node": "roadm_Malm\u00f6"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Malm\u00f6_to_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(1/5)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Uppsala, trx_Uppsala}",
+            "source": {
+              "source-node": "roadm_Uppsala"
+            },
+            "destination": {
+              "dest-node": "trx_Uppsala"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Uppsala, Edfa_booster_roadm_Uppsala_to_fiber (Uppsala \u2192 V\u00e4ster\u00e5s)}",
+            "source": {
+              "source-node": "roadm_Uppsala"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala \u2192 V\u00e4ster\u00e5s)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Uppsala, Edfa_booster_roadm_Uppsala_to_fiber (Uppsala \u2192 G\u00e4vle)}",
+            "source": {
+              "source-node": "roadm_Uppsala"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala \u2192 G\u00e4vle)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Uppsala, Edfa_booster_roadm_Uppsala_to_fiber (Uppsala \u2192 Stockholm)}",
+            "source": {
+              "source-node": "roadm_Uppsala"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala \u2192 Stockholm)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_V\u00e4ster\u00e5s, trx_V\u00e4ster\u00e5s}",
+            "source": {
+              "source-node": "roadm_V\u00e4ster\u00e5s"
+            },
+            "destination": {
+              "dest-node": "trx_V\u00e4ster\u00e5s"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_V\u00e4ster\u00e5s, Edfa_booster_roadm_V\u00e4ster\u00e5s_to_fiber (V\u00e4ster\u00e5s \u2192 Uppsala)}",
+            "source": {
+              "source-node": "roadm_V\u00e4ster\u00e5s"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_V\u00e4ster\u00e5s_to_fiber (V\u00e4ster\u00e5s \u2192 Uppsala)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_V\u00e4ster\u00e5s, Edfa_booster_roadm_V\u00e4ster\u00e5s_to_fiber (V\u00e4ster\u00e5s \u2192 \u00d6rebro)}",
+            "source": {
+              "source-node": "roadm_V\u00e4ster\u00e5s"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_V\u00e4ster\u00e5s_to_fiber (V\u00e4ster\u00e5s \u2192 \u00d6rebro)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_V\u00e4ster\u00e5s, Edfa_booster_roadm_V\u00e4ster\u00e5s_to_fiber (V\u00e4ster\u00e5s \u2192 Stockholm)}",
+            "source": {
+              "source-node": "roadm_V\u00e4ster\u00e5s"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_V\u00e4ster\u00e5s_to_fiber (V\u00e4ster\u00e5s \u2192 Stockholm)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_\u00d6rebro, trx_\u00d6rebro}",
+            "source": {
+              "source-node": "roadm_\u00d6rebro"
+            },
+            "destination": {
+              "dest-node": "trx_\u00d6rebro"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_\u00d6rebro, Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 Norrk\u00f6ping)}",
+            "source": {
+              "source-node": "roadm_\u00d6rebro"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 Norrk\u00f6ping)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_\u00d6rebro, Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 V\u00e4ster\u00e5s)}",
+            "source": {
+              "source-node": "roadm_\u00d6rebro"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 V\u00e4ster\u00e5s)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_\u00d6rebro, Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 Link\u00f6ping)}",
+            "source": {
+              "source-node": "roadm_\u00d6rebro"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 Link\u00f6ping)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_\u00d6rebro, Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 Karlstad)}",
+            "source": {
+              "source-node": "roadm_\u00d6rebro"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 Karlstad)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_\u00d6rebro, Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 G\u00e4vle)_(1/3)}",
+            "source": {
+              "source-node": "roadm_\u00d6rebro"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_\u00d6rebro_to_fiber (\u00d6rebro \u2192 G\u00e4vle)_(1/3)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Link\u00f6ping, trx_Link\u00f6ping}",
+            "source": {
+              "source-node": "roadm_Link\u00f6ping"
+            },
+            "destination": {
+              "dest-node": "trx_Link\u00f6ping"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Link\u00f6ping, Edfa_booster_roadm_Link\u00f6ping_to_fiber (Link\u00f6ping \u2192 J\u00f6nk\u00f6ping)}",
+            "source": {
+              "source-node": "roadm_Link\u00f6ping"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Link\u00f6ping_to_fiber (Link\u00f6ping \u2192 J\u00f6nk\u00f6ping)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Link\u00f6ping, Edfa_booster_roadm_Link\u00f6ping_to_fiber (Link\u00f6ping \u2192 \u00d6rebro)}",
+            "source": {
+              "source-node": "roadm_Link\u00f6ping"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Link\u00f6ping_to_fiber (Link\u00f6ping \u2192 \u00d6rebro)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Link\u00f6ping, Edfa_booster_roadm_Link\u00f6ping_to_fiber (Link\u00f6ping \u2192 Norrk\u00f6ping)}",
+            "source": {
+              "source-node": "roadm_Link\u00f6ping"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Link\u00f6ping_to_fiber (Link\u00f6ping \u2192 Norrk\u00f6ping)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Helsingborg, trx_Helsingborg}",
+            "source": {
+              "source-node": "roadm_Helsingborg"
+            },
+            "destination": {
+              "dest-node": "trx_Helsingborg"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Helsingborg, Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg \u2192 Malm\u00f6)}",
+            "source": {
+              "source-node": "roadm_Helsingborg"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg \u2192 Malm\u00f6)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Helsingborg, Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg \u2192 Gothenburg)_(1/3)}",
+            "source": {
+              "source-node": "roadm_Helsingborg"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg \u2192 Gothenburg)_(1/3)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_J\u00f6nk\u00f6ping, trx_J\u00f6nk\u00f6ping}",
+            "source": {
+              "source-node": "roadm_J\u00f6nk\u00f6ping"
+            },
+            "destination": {
+              "dest-node": "trx_J\u00f6nk\u00f6ping"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_J\u00f6nk\u00f6ping, Edfa_booster_roadm_J\u00f6nk\u00f6ping_to_fiber (J\u00f6nk\u00f6ping \u2192 Link\u00f6ping)}",
+            "source": {
+              "source-node": "roadm_J\u00f6nk\u00f6ping"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_J\u00f6nk\u00f6ping_to_fiber (J\u00f6nk\u00f6ping \u2192 Link\u00f6ping)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_J\u00f6nk\u00f6ping, Edfa_booster_roadm_J\u00f6nk\u00f6ping_to_fiber (J\u00f6nk\u00f6ping \u2192 Bor\u00e5s)}",
+            "source": {
+              "source-node": "roadm_J\u00f6nk\u00f6ping"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_J\u00f6nk\u00f6ping_to_fiber (J\u00f6nk\u00f6ping \u2192 Bor\u00e5s)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_J\u00f6nk\u00f6ping, Edfa_booster_roadm_J\u00f6nk\u00f6ping_to_fiber (J\u00f6nk\u00f6ping \u2192 Malm\u00f6)_(1/3)}",
+            "source": {
+              "source-node": "roadm_J\u00f6nk\u00f6ping"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_J\u00f6nk\u00f6ping_to_fiber (J\u00f6nk\u00f6ping \u2192 Malm\u00f6)_(1/3)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Ume\u00e5, trx_Ume\u00e5}",
+            "source": {
+              "source-node": "roadm_Ume\u00e5"
+            },
+            "destination": {
+              "dest-node": "trx_Ume\u00e5"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Ume\u00e5, Edfa_booster_roadm_Ume\u00e5_to_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(1/5)}",
+            "source": {
+              "source-node": "roadm_Ume\u00e5"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Ume\u00e5_to_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(1/5)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Ume\u00e5, Edfa_booster_roadm_Ume\u00e5_to_fiber (Ume\u00e5 \u2192 Sundsvall)_(1/3)}",
+            "source": {
+              "source-node": "roadm_Ume\u00e5"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Ume\u00e5_to_fiber (Ume\u00e5 \u2192 Sundsvall)_(1/3)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Norrk\u00f6ping, trx_Norrk\u00f6ping}",
+            "source": {
+              "source-node": "roadm_Norrk\u00f6ping"
+            },
+            "destination": {
+              "dest-node": "trx_Norrk\u00f6ping"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Norrk\u00f6ping, Edfa_booster_roadm_Norrk\u00f6ping_to_fiber (Norrk\u00f6ping \u2192 \u00d6rebro)}",
+            "source": {
+              "source-node": "roadm_Norrk\u00f6ping"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Norrk\u00f6ping_to_fiber (Norrk\u00f6ping \u2192 \u00d6rebro)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Norrk\u00f6ping, Edfa_booster_roadm_Norrk\u00f6ping_to_fiber (Norrk\u00f6ping \u2192 Link\u00f6ping)}",
+            "source": {
+              "source-node": "roadm_Norrk\u00f6ping"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Norrk\u00f6ping_to_fiber (Norrk\u00f6ping \u2192 Link\u00f6ping)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Norrk\u00f6ping, Edfa_booster_roadm_Norrk\u00f6ping_to_fiber (Norrk\u00f6ping \u2192 Stockholm)_(1/2)}",
+            "source": {
+              "source-node": "roadm_Norrk\u00f6ping"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Norrk\u00f6ping_to_fiber (Norrk\u00f6ping \u2192 Stockholm)_(1/2)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Norrk\u00f6ping, Edfa_booster_roadm_Norrk\u00f6ping_to_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(1/5)}",
+            "source": {
+              "source-node": "roadm_Norrk\u00f6ping"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Norrk\u00f6ping_to_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(1/5)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Karlstad, trx_Karlstad}",
+            "source": {
+              "source-node": "roadm_Karlstad"
+            },
+            "destination": {
+              "dest-node": "trx_Karlstad"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Karlstad, Edfa_booster_roadm_Karlstad_to_fiber (Karlstad \u2192 \u00d6rebro)}",
+            "source": {
+              "source-node": "roadm_Karlstad"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad \u2192 \u00d6rebro)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Karlstad, Edfa_booster_roadm_Karlstad_to_fiber (Karlstad \u2192 Bor\u00e5s)_(1/3)}",
+            "source": {
+              "source-node": "roadm_Karlstad"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad \u2192 Bor\u00e5s)_(1/3)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Karlstad, Edfa_booster_roadm_Karlstad_to_fiber (Karlstad \u2192 Sundsvall)_(1/5)}",
+            "source": {
+              "source-node": "roadm_Karlstad"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad \u2192 Sundsvall)_(1/5)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Sundsvall, trx_Sundsvall}",
+            "source": {
+              "source-node": "roadm_Sundsvall"
+            },
+            "destination": {
+              "dest-node": "trx_Sundsvall"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Sundsvall, Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall \u2192 Ume\u00e5)_(1/3)}",
+            "source": {
+              "source-node": "roadm_Sundsvall"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall \u2192 Ume\u00e5)_(1/3)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Sundsvall, Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall \u2192 Karlstad)_(1/5)}",
+            "source": {
+              "source-node": "roadm_Sundsvall"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall \u2192 Karlstad)_(1/5)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_G\u00e4vle, trx_G\u00e4vle}",
+            "source": {
+              "source-node": "roadm_G\u00e4vle"
+            },
+            "destination": {
+              "dest-node": "trx_G\u00e4vle"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_G\u00e4vle, Edfa_booster_roadm_G\u00e4vle_to_fiber (G\u00e4vle \u2192 Uppsala)}",
+            "source": {
+              "source-node": "roadm_G\u00e4vle"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_G\u00e4vle_to_fiber (G\u00e4vle \u2192 Uppsala)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_G\u00e4vle, Edfa_booster_roadm_G\u00e4vle_to_fiber (G\u00e4vle \u2192 \u00d6rebro)_(1/3)}",
+            "source": {
+              "source-node": "roadm_G\u00e4vle"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_G\u00e4vle_to_fiber (G\u00e4vle \u2192 \u00d6rebro)_(1/3)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_G\u00e4vle, Edfa_booster_roadm_G\u00e4vle_to_fiber (G\u00e4vle \u2192 Ume\u00e5)_(1/5)}",
+            "source": {
+              "source-node": "roadm_G\u00e4vle"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_G\u00e4vle_to_fiber (G\u00e4vle \u2192 Ume\u00e5)_(1/5)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Bor\u00e5s, trx_Bor\u00e5s}",
+            "source": {
+              "source-node": "roadm_Bor\u00e5s"
+            },
+            "destination": {
+              "dest-node": "trx_Bor\u00e5s"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Bor\u00e5s, Edfa_booster_roadm_Bor\u00e5s_to_fiber (Bor\u00e5s \u2192 J\u00f6nk\u00f6ping)}",
+            "source": {
+              "source-node": "roadm_Bor\u00e5s"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Bor\u00e5s_to_fiber (Bor\u00e5s \u2192 J\u00f6nk\u00f6ping)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Bor\u00e5s, Edfa_booster_roadm_Bor\u00e5s_to_fiber (Bor\u00e5s \u2192 Gothenburg)}",
+            "source": {
+              "source-node": "roadm_Bor\u00e5s"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Bor\u00e5s_to_fiber (Bor\u00e5s \u2192 Gothenburg)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm_Bor\u00e5s, Edfa_booster_roadm_Bor\u00e5s_to_fiber (Bor\u00e5s \u2192 Karlstad)_(1/3)}",
+            "source": {
+              "source-node": "roadm_Bor\u00e5s"
+            },
+            "destination": {
+              "dest-node": "Edfa_booster_roadm_Bor\u00e5s_to_fiber (Bor\u00e5s \u2192 Karlstad)_(1/3)"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-20.0"
+            }
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Stockholm_from_fiber (V\u00e4ster\u00e5s \u2192 Stockholm), roadm_Stockholm}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Stockholm_from_fiber (V\u00e4ster\u00e5s \u2192 Stockholm)"
+            },
+            "destination": {
+              "dest-node": "roadm_Stockholm"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Stockholm_from_fiber (Uppsala \u2192 Stockholm), roadm_Stockholm}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Stockholm_from_fiber (Uppsala \u2192 Stockholm)"
+            },
+            "destination": {
+              "dest-node": "roadm_Stockholm"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Stockholm_from_fiber (Norrk\u00f6ping \u2192 Stockholm)_(2/2), roadm_Stockholm}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Stockholm_from_fiber (Norrk\u00f6ping \u2192 Stockholm)_(2/2)"
+            },
+            "destination": {
+              "dest-node": "roadm_Stockholm"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Gothenburg_from_fiber (Bor\u00e5s \u2192 Gothenburg), roadm_Gothenburg}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Gothenburg_from_fiber (Bor\u00e5s \u2192 Gothenburg)"
+            },
+            "destination": {
+              "dest-node": "roadm_Gothenburg"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Gothenburg_from_fiber (Helsingborg \u2192 Gothenburg)_(3/3), roadm_Gothenburg}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Gothenburg_from_fiber (Helsingborg \u2192 Gothenburg)_(3/3)"
+            },
+            "destination": {
+              "dest-node": "roadm_Gothenburg"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Malm\u00f6_from_fiber (Helsingborg \u2192 Malm\u00f6), roadm_Malm\u00f6}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Malm\u00f6_from_fiber (Helsingborg \u2192 Malm\u00f6)"
+            },
+            "destination": {
+              "dest-node": "roadm_Malm\u00f6"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Malm\u00f6_from_fiber (J\u00f6nk\u00f6ping \u2192 Malm\u00f6)_(3/3), roadm_Malm\u00f6}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Malm\u00f6_from_fiber (J\u00f6nk\u00f6ping \u2192 Malm\u00f6)_(3/3)"
+            },
+            "destination": {
+              "dest-node": "roadm_Malm\u00f6"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Malm\u00f6_from_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(5/5), roadm_Malm\u00f6}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Malm\u00f6_from_fiber (Norrk\u00f6ping \u2192 Malm\u00f6)_(5/5)"
+            },
+            "destination": {
+              "dest-node": "roadm_Malm\u00f6"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Uppsala_from_fiber (V\u00e4ster\u00e5s \u2192 Uppsala), roadm_Uppsala}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Uppsala_from_fiber (V\u00e4ster\u00e5s \u2192 Uppsala)"
+            },
+            "destination": {
+              "dest-node": "roadm_Uppsala"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Uppsala_from_fiber (G\u00e4vle \u2192 Uppsala), roadm_Uppsala}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Uppsala_from_fiber (G\u00e4vle \u2192 Uppsala)"
+            },
+            "destination": {
+              "dest-node": "roadm_Uppsala"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Uppsala_from_fiber (Stockholm \u2192 Uppsala), roadm_Uppsala}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Uppsala_from_fiber (Stockholm \u2192 Uppsala)"
+            },
+            "destination": {
+              "dest-node": "roadm_Uppsala"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_V\u00e4ster\u00e5s_from_fiber (Uppsala \u2192 V\u00e4ster\u00e5s), roadm_V\u00e4ster\u00e5s}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_V\u00e4ster\u00e5s_from_fiber (Uppsala \u2192 V\u00e4ster\u00e5s)"
+            },
+            "destination": {
+              "dest-node": "roadm_V\u00e4ster\u00e5s"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_V\u00e4ster\u00e5s_from_fiber (\u00d6rebro \u2192 V\u00e4ster\u00e5s), roadm_V\u00e4ster\u00e5s}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_V\u00e4ster\u00e5s_from_fiber (\u00d6rebro \u2192 V\u00e4ster\u00e5s)"
+            },
+            "destination": {
+              "dest-node": "roadm_V\u00e4ster\u00e5s"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_V\u00e4ster\u00e5s_from_fiber (Stockholm \u2192 V\u00e4ster\u00e5s), roadm_V\u00e4ster\u00e5s}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_V\u00e4ster\u00e5s_from_fiber (Stockholm \u2192 V\u00e4ster\u00e5s)"
+            },
+            "destination": {
+              "dest-node": "roadm_V\u00e4ster\u00e5s"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_\u00d6rebro_from_fiber (Norrk\u00f6ping \u2192 \u00d6rebro), roadm_\u00d6rebro}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_\u00d6rebro_from_fiber (Norrk\u00f6ping \u2192 \u00d6rebro)"
+            },
+            "destination": {
+              "dest-node": "roadm_\u00d6rebro"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_\u00d6rebro_from_fiber (V\u00e4ster\u00e5s \u2192 \u00d6rebro), roadm_\u00d6rebro}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_\u00d6rebro_from_fiber (V\u00e4ster\u00e5s \u2192 \u00d6rebro)"
+            },
+            "destination": {
+              "dest-node": "roadm_\u00d6rebro"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_\u00d6rebro_from_fiber (Link\u00f6ping \u2192 \u00d6rebro), roadm_\u00d6rebro}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_\u00d6rebro_from_fiber (Link\u00f6ping \u2192 \u00d6rebro)"
+            },
+            "destination": {
+              "dest-node": "roadm_\u00d6rebro"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_\u00d6rebro_from_fiber (Karlstad \u2192 \u00d6rebro), roadm_\u00d6rebro}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_\u00d6rebro_from_fiber (Karlstad \u2192 \u00d6rebro)"
+            },
+            "destination": {
+              "dest-node": "roadm_\u00d6rebro"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_\u00d6rebro_from_fiber (G\u00e4vle \u2192 \u00d6rebro)_(3/3), roadm_\u00d6rebro}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_\u00d6rebro_from_fiber (G\u00e4vle \u2192 \u00d6rebro)_(3/3)"
+            },
+            "destination": {
+              "dest-node": "roadm_\u00d6rebro"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Link\u00f6ping_from_fiber (J\u00f6nk\u00f6ping \u2192 Link\u00f6ping), roadm_Link\u00f6ping}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Link\u00f6ping_from_fiber (J\u00f6nk\u00f6ping \u2192 Link\u00f6ping)"
+            },
+            "destination": {
+              "dest-node": "roadm_Link\u00f6ping"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Link\u00f6ping_from_fiber (\u00d6rebro \u2192 Link\u00f6ping), roadm_Link\u00f6ping}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Link\u00f6ping_from_fiber (\u00d6rebro \u2192 Link\u00f6ping)"
+            },
+            "destination": {
+              "dest-node": "roadm_Link\u00f6ping"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Link\u00f6ping_from_fiber (Norrk\u00f6ping \u2192 Link\u00f6ping), roadm_Link\u00f6ping}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Link\u00f6ping_from_fiber (Norrk\u00f6ping \u2192 Link\u00f6ping)"
+            },
+            "destination": {
+              "dest-node": "roadm_Link\u00f6ping"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Helsingborg_from_fiber (Malm\u00f6 \u2192 Helsingborg), roadm_Helsingborg}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Helsingborg_from_fiber (Malm\u00f6 \u2192 Helsingborg)"
+            },
+            "destination": {
+              "dest-node": "roadm_Helsingborg"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Helsingborg_from_fiber (Gothenburg \u2192 Helsingborg)_(3/3), roadm_Helsingborg}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Helsingborg_from_fiber (Gothenburg \u2192 Helsingborg)_(3/3)"
+            },
+            "destination": {
+              "dest-node": "roadm_Helsingborg"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_J\u00f6nk\u00f6ping_from_fiber (Link\u00f6ping \u2192 J\u00f6nk\u00f6ping), roadm_J\u00f6nk\u00f6ping}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_J\u00f6nk\u00f6ping_from_fiber (Link\u00f6ping \u2192 J\u00f6nk\u00f6ping)"
+            },
+            "destination": {
+              "dest-node": "roadm_J\u00f6nk\u00f6ping"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_J\u00f6nk\u00f6ping_from_fiber (Bor\u00e5s \u2192 J\u00f6nk\u00f6ping), roadm_J\u00f6nk\u00f6ping}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_J\u00f6nk\u00f6ping_from_fiber (Bor\u00e5s \u2192 J\u00f6nk\u00f6ping)"
+            },
+            "destination": {
+              "dest-node": "roadm_J\u00f6nk\u00f6ping"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_J\u00f6nk\u00f6ping_from_fiber (Malm\u00f6 \u2192 J\u00f6nk\u00f6ping)_(3/3), roadm_J\u00f6nk\u00f6ping}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_J\u00f6nk\u00f6ping_from_fiber (Malm\u00f6 \u2192 J\u00f6nk\u00f6ping)_(3/3)"
+            },
+            "destination": {
+              "dest-node": "roadm_J\u00f6nk\u00f6ping"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Ume\u00e5_from_fiber (G\u00e4vle \u2192 Ume\u00e5)_(5/5), roadm_Ume\u00e5}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Ume\u00e5_from_fiber (G\u00e4vle \u2192 Ume\u00e5)_(5/5)"
+            },
+            "destination": {
+              "dest-node": "roadm_Ume\u00e5"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Ume\u00e5_from_fiber (Sundsvall \u2192 Ume\u00e5)_(3/3), roadm_Ume\u00e5}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Ume\u00e5_from_fiber (Sundsvall \u2192 Ume\u00e5)_(3/3)"
+            },
+            "destination": {
+              "dest-node": "roadm_Ume\u00e5"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Norrk\u00f6ping_from_fiber (\u00d6rebro \u2192 Norrk\u00f6ping), roadm_Norrk\u00f6ping}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Norrk\u00f6ping_from_fiber (\u00d6rebro \u2192 Norrk\u00f6ping)"
+            },
+            "destination": {
+              "dest-node": "roadm_Norrk\u00f6ping"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Norrk\u00f6ping_from_fiber (Link\u00f6ping \u2192 Norrk\u00f6ping), roadm_Norrk\u00f6ping}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Norrk\u00f6ping_from_fiber (Link\u00f6ping \u2192 Norrk\u00f6ping)"
+            },
+            "destination": {
+              "dest-node": "roadm_Norrk\u00f6ping"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Norrk\u00f6ping_from_fiber (Stockholm \u2192 Norrk\u00f6ping)_(2/2), roadm_Norrk\u00f6ping}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Norrk\u00f6ping_from_fiber (Stockholm \u2192 Norrk\u00f6ping)_(2/2)"
+            },
+            "destination": {
+              "dest-node": "roadm_Norrk\u00f6ping"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Norrk\u00f6ping_from_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(5/5), roadm_Norrk\u00f6ping}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Norrk\u00f6ping_from_fiber (Malm\u00f6 \u2192 Norrk\u00f6ping)_(5/5)"
+            },
+            "destination": {
+              "dest-node": "roadm_Norrk\u00f6ping"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Karlstad_from_fiber (\u00d6rebro \u2192 Karlstad), roadm_Karlstad}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Karlstad_from_fiber (\u00d6rebro \u2192 Karlstad)"
+            },
+            "destination": {
+              "dest-node": "roadm_Karlstad"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Karlstad_from_fiber (Bor\u00e5s \u2192 Karlstad)_(3/3), roadm_Karlstad}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Karlstad_from_fiber (Bor\u00e5s \u2192 Karlstad)_(3/3)"
+            },
+            "destination": {
+              "dest-node": "roadm_Karlstad"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Karlstad_from_fiber (Sundsvall \u2192 Karlstad)_(5/5), roadm_Karlstad}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Karlstad_from_fiber (Sundsvall \u2192 Karlstad)_(5/5)"
+            },
+            "destination": {
+              "dest-node": "roadm_Karlstad"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Sundsvall_from_fiber (Ume\u00e5 \u2192 Sundsvall)_(3/3), roadm_Sundsvall}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Sundsvall_from_fiber (Ume\u00e5 \u2192 Sundsvall)_(3/3)"
+            },
+            "destination": {
+              "dest-node": "roadm_Sundsvall"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Sundsvall_from_fiber (Karlstad \u2192 Sundsvall)_(5/5), roadm_Sundsvall}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Sundsvall_from_fiber (Karlstad \u2192 Sundsvall)_(5/5)"
+            },
+            "destination": {
+              "dest-node": "roadm_Sundsvall"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_G\u00e4vle_from_fiber (Uppsala \u2192 G\u00e4vle), roadm_G\u00e4vle}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_G\u00e4vle_from_fiber (Uppsala \u2192 G\u00e4vle)"
+            },
+            "destination": {
+              "dest-node": "roadm_G\u00e4vle"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_G\u00e4vle_from_fiber (\u00d6rebro \u2192 G\u00e4vle)_(3/3), roadm_G\u00e4vle}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_G\u00e4vle_from_fiber (\u00d6rebro \u2192 G\u00e4vle)_(3/3)"
+            },
+            "destination": {
+              "dest-node": "roadm_G\u00e4vle"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_G\u00e4vle_from_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(5/5), roadm_G\u00e4vle}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_G\u00e4vle_from_fiber (Ume\u00e5 \u2192 G\u00e4vle)_(5/5)"
+            },
+            "destination": {
+              "dest-node": "roadm_G\u00e4vle"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Bor\u00e5s_from_fiber (J\u00f6nk\u00f6ping \u2192 Bor\u00e5s), roadm_Bor\u00e5s}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Bor\u00e5s_from_fiber (J\u00f6nk\u00f6ping \u2192 Bor\u00e5s)"
+            },
+            "destination": {
+              "dest-node": "roadm_Bor\u00e5s"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Bor\u00e5s_from_fiber (Gothenburg \u2192 Bor\u00e5s), roadm_Bor\u00e5s}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Bor\u00e5s_from_fiber (Gothenburg \u2192 Bor\u00e5s)"
+            },
+            "destination": {
+              "dest-node": "roadm_Bor\u00e5s"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{Edfa_preamp_roadm_Bor\u00e5s_from_fiber (Karlstad \u2192 Bor\u00e5s)_(3/3), roadm_Bor\u00e5s}",
+            "source": {
+              "source-node": "Edfa_preamp_roadm_Bor\u00e5s_from_fiber (Karlstad \u2192 Bor\u00e5s)_(3/3)"
+            },
+            "destination": {
+              "dest-node": "roadm_Bor\u00e5s"
+            },
+            "tip-photonic-topology:patch": {}
+          }
+        ]
+      }
+    ]
+  }
+}
