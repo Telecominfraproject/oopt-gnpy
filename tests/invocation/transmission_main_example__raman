@@ -8,10 +8,10 @@ Now propagating between Site_A and Site_B:
 
 Propagating with input power = [1;36;40m0.00 dBm[0m:
 Transceiver Site_A
+  GSNR (0.1nm, dB):          40.00
+  GSNR (signal bw, dB):      35.92
   OSNR ASE (0.1nm, dB):      40.00
   OSNR ASE (signal bw, dB):  35.92
-  SNR total (signal bw, dB): 35.92
-  SNR total (0.1nm, dB):     40.00
   CD (ps/nm):                0.00
   PMD (ps):                  0.00
 RamanFiber          Span1
@@ -36,18 +36,18 @@ Edfa Edfa1
   effective pch (dBm):    -2.0
   output VOA (dB):        0.00
 Transceiver Site_B
+  GSNR (0.1nm, dB):          31.43
+  GSNR (signal bw, dB):      27.35
   OSNR ASE (0.1nm, dB):      34.18
   OSNR ASE (signal bw, dB):  30.10
-  SNR total (signal bw, dB): 27.35
-  SNR total (0.1nm, dB):     31.43
   CD (ps/nm):                1336.00
   PMD (ps):                  0.36
 
 Transmission result for input power = 0.00 dBm:
-  Final SNR total (0.1 nm): [1;36;40m31.43 dB[0m
+  Final GSNR (0.1 nm): [1;36;40m31.43 dB[0m
 
-The total SNR per channel at the end of the line is:
-Ch. #   Channel frequency (THz)       Channel power (dBm)    OSNR ASE (signal bw, dB)     SNR NLI (signal bw, dB)   SNR total (signal bw, dB)
+The GSNR per channel at the end of the line is:
+Ch. #   Channel frequency (THz)       Channel power (dBm)    OSNR ASE (signal bw, dB)     SNR NLI (signal bw, dB)        GSNR (signal bw, dB)
     1                    191.35                      0.21                       31.56                       31.47                       28.50
     2                    191.40                      0.17                       31.54                       31.38                       28.45
     3                    191.45                      0.14                       31.52                       31.30                       28.40

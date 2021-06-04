@@ -112,7 +112,7 @@ def transmission_main_example(args=None):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         )
     _add_common_options(parser, network_default=_examples_dir / 'edfa_example_network.json')
-    parser.add_argument('--show-channels', action='store_true', help='Show final per-channel OSNR summary')
+    parser.add_argument('--show-channels', action='store_true', help='Show final per-channel OSNR and GSNR summary')
     parser.add_argument('-pl', '--plot', action='store_true')
     parser.add_argument('-l', '--list-nodes', action='store_true', help='list all transceiver nodes')
     parser.add_argument('-po', '--power', default=0, help='channel ref power in dBm')
@@ -239,7 +239,7 @@ def transmission_main_example(args=None):
                 print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f} dBm:')
             else:
                 print(f'\nTransmission results:')
-            print(f'  Final SNR total (0.1 nm): {ansi_escapes.cyan}{mean(destination.snr_01nm):.02f} dB{ansi_escapes.reset}')
+            print(f'  Final GSNR (0.1 nm): {ansi_escapes.cyan}{mean(destination.snr_01nm):.02f} dB{ansi_escapes.reset}')
         else:
             print(path[-1])
 
@@ -248,7 +248,7 @@ def transmission_main_example(args=None):
         print(f'{ansi_escapes.blue}Network (after autodesign) saved to {args.save_network}{ansi_escapes.reset}')
 
     if args.show_channels:
-        print('\nThe total SNR per channel at the end of the line is:')
+        print('\nThe GSNR per channel at the end of the line is:')
         print(
             '{:>5}{:>26}{:>26}{:>28}{:>28}{:>28}' .format(
                 'Ch. #',
@@ -256,7 +256,7 @@ def transmission_main_example(args=None):
                 'Channel power (dBm)',
                 'OSNR ASE (signal bw, dB)',
                 'SNR NLI (signal bw, dB)',
-                'SNR total (signal bw, dB)'))
+                'GSNR (signal bw, dB)'))
         for final_carrier, ch_osnr, ch_snr_nl, ch_snr in zip(
                 infos.carriers, path[-1].osnr_ase, path[-1].osnr_nli, path[-1].snr):
             ch_freq = final_carrier.frequency * 1e-12
@@ -383,7 +383,7 @@ def path_requests_run(args=None):
     pth_assign_spectrum(pths, rqs, oms_list, reversed_pths)
 
     print(f'{ansi_escapes.blue}Result summary{ansi_escapes.reset}')
-    header = ['req id', '  demand', '  snr@bandwidth A-Z (Z-A)', '  snr@0.1nm A-Z (Z-A)',
+    header = ['req id', '  demand', ' GSNR@bandwidth A-Z (Z-A)', ' GSNR@0.1nm A-Z (Z-A)',
               '  Receiver minOSNR', '  mode', '  Gbit/s', '  nb of tsp pairs',
               'N,M or blocking reason']
     data = []
@@ -422,7 +422,7 @@ def path_requests_run(args=None):
         secondcol = ''.join(row[1].ljust(secondcol_width))
         remainingcols = ''.join(word.center(col_width, ' ') for word in row[2:])
         print(f'{firstcol} {secondcol} {remainingcols}')
-    print(f'{ansi_escapes.yellow}Result summary shows mean SNR and OSNR (average over all channels){ansi_escapes.reset}')
+    print(f'{ansi_escapes.yellow}Result summary shows mean GSNR and OSNR (average over all channels){ansi_escapes.reset}')
 
     if args.output:
         result = []

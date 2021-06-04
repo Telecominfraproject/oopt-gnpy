@@ -8,10 +8,10 @@ Now propagating between Site_A and Site_B:
 
 Propagating with input power = [1;36;40m0.00 dBm[0m:
 Transceiver Site_A
+  GSNR (0.1nm, dB):          40.00
+  GSNR (signal bw, dB):      35.92
   OSNR ASE (0.1nm, dB):      40.00
   OSNR ASE (signal bw, dB):  35.92
-  SNR total (signal bw, dB): 35.92
-  SNR total (0.1nm, dB):     40.00
   CD (ps/nm):                0.00
   PMD (ps):                  0.00
 Fiber          Span1
@@ -36,15 +36,15 @@ Edfa Edfa1
   effective pch (dBm):    -2.0
   output VOA (dB):        0.00
 Transceiver Site_B
+  GSNR (0.1nm, dB):          31.17
+  GSNR (signal bw, dB):      27.09
   OSNR ASE (0.1nm, dB):      33.30
   OSNR ASE (signal bw, dB):  29.21
-  SNR total (signal bw, dB): 27.09
-  SNR total (0.1nm, dB):     31.17
   CD (ps/nm):                1336.00
   PMD (ps):                  0.36
 
 Transmission result for input power = 0.00 dBm:
-  Final SNR total (0.1 nm): [1;36;40m31.17 dB[0m
+  Final GSNR (0.1 nm): [1;36;40m31.17 dB[0m
 
 (No source node specified: picked Site_A)
 
