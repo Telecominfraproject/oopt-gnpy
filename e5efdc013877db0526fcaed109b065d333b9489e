@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d5d7f3a_00365f12",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-06-05T15:36:01Z",
+      "side": 1,
+      "message": "Maybe it would be more clear to have the power_mode \u003d [0] and the comment about gain mode in an else clause?",
+      "range": {
+        "startLine": 217,
+        "startChar": 4,
+        "endLine": 225,
+        "endChar": 114
+      },
+      "revId": "e5efdc013877db0526fcaed109b065d333b9489e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
