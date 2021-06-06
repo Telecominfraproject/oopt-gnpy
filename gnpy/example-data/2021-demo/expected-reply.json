@@ -1,0 +1,291 @@
+{
+  "result": {
+    "response": [
+      {
+        "path-properties": {
+          "path-metric": [
+            {
+              "accumulative-value": 19.38,
+              "metric-type": "SNR-bandwidth"
+            },
+            {
+              "accumulative-value": 23.46,
+              "metric-type": "SNR-0.1nm"
+            },
+            {
+              "accumulative-value": 19.38,
+              "metric-type": "OSNR-bandwidth"
+            },
+            {
+              "accumulative-value": 23.47,
+              "metric-type": "OSNR-0.1nm"
+            },
+            {
+              "accumulative-value": 100000000000,
+              "metric-type": "path_bandwidth"
+            }
+          ],
+          "path-route-objects": [
+            {
+              "path-route-object": {
+                "index": 0,
+                "label-hop": {
+                  "M": 4,
+                  "N": -236
+                },
+                "num-unnum-hop": {
+                  "gnpy-node-type": "transceiver",
+                  "gnpy-nodes": [
+                    "trx-Bremen"
+                  ],
+                  "link-tp-id": "netconf:10.0.254.103:830",
+                  "node-id": "netconf:10.0.254.103:830",
+                  "transponder": {
+                    "transponder-mode": "dp-qpsk",
+                    "transponder-type": "Cassini"
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 1,
+                "label-hop": {
+                  "M": 4,
+                  "N": -236
+                },
+                "num-unnum-hop": {
+                  "gnpy-node-type": "ROADM",
+                  "gnpy-nodes": [
+                    "roadm-Bremen-AD"
+                  ],
+                  "link-tp-id": "netconf:10.0.254.225:830",
+                  "node-id": "netconf:10.0.254.225:830",
+                  "target-channel-power": -12
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 5,
+                "label-hop": {
+                  "M": 4,
+                  "N": -236
+                },
+                "num-unnum-hop": {
+                  "gnpy-node-type": "ROADM",
+                  "gnpy-nodes": [
+                    "roadm-Bremen-L2"
+                  ],
+                  "link-tp-id": "netconf:10.0.254.102:830",
+                  "node-id": "netconf:10.0.254.102:830",
+                  "target-channel-power": -23
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 9,
+                "label-hop": {
+                  "M": 4,
+                  "N": -236
+                },
+                "num-unnum-hop": {
+                  "gnpy-node-type": "ROADM",
+                  "gnpy-nodes": [
+                    "roadm-Amsterdam-L1"
+                  ],
+                  "link-tp-id": "netconf:10.0.254.78:830",
+                  "node-id": "netconf:10.0.254.78:830",
+                  "target-channel-power": -12
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 13,
+                "label-hop": {
+                  "M": 4,
+                  "N": -236
+                },
+                "num-unnum-hop": {
+                  "gnpy-node-type": "ROADM",
+                  "gnpy-nodes": [
+                    "roadm-Amsterdam-AD"
+                  ],
+                  "link-tp-id": "netconf:10.0.254.107:830",
+                  "node-id": "netconf:10.0.254.107:830",
+                  "target-channel-power": -13
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 14,
+                "label-hop": {
+                  "M": 4,
+                  "N": -236
+                },
+                "num-unnum-hop": {
+                  "gnpy-node-type": "transceiver",
+                  "gnpy-nodes": [
+                    "trx-Amsterdam"
+                  ],
+                  "link-tp-id": "netconf:10.0.254.105:830",
+                  "node-id": "netconf:10.0.254.105:830",
+                  "transponder": {
+                    "transponder-mode": "dp-qpsk",
+                    "transponder-type": "Cassini"
+                  }
+                }
+              }
+            }
+          ],
+          "reversed-path-route-objects": [
+            {
+              "path-route-object": {
+                "index": 0,
+                "label-hop": {
+                  "M": 4,
+                  "N": -236
+                },
+                "num-unnum-hop": {
+                  "gnpy-node-type": "transceiver",
+                  "gnpy-nodes": [
+                    "trx-Amsterdam"
+                  ],
+                  "link-tp-id": "netconf:10.0.254.105:830",
+                  "node-id": "netconf:10.0.254.105:830",
+                  "transponder": {
+                    "transponder-mode": "dp-qpsk",
+                    "transponder-type": "Cassini"
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 1,
+                "label-hop": {
+                  "M": 4,
+                  "N": -236
+                },
+                "num-unnum-hop": {
+                  "gnpy-node-type": "ROADM",
+                  "gnpy-nodes": [
+                    "roadm-Amsterdam-AD"
+                  ],
+                  "link-tp-id": "netconf:10.0.254.107:830",
+                  "node-id": "netconf:10.0.254.107:830",
+                  "target-channel-power": -12
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 6,
+                "label-hop": {
+                  "M": 4,
+                  "N": -236
+                },
+                "num-unnum-hop": {
+                  "gnpy-node-type": "EDFA",
+                  "gnpy-nodes": [
+                    "roadm-Amsterdam-L1-booster"
+                  ],
+                  "link-tp-id": "netconf:10.0.254.78:830",
+                  "node-id": "netconf:10.0.254.78:830",
+                  "target-channel-power": -1
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 9,
+                "label-hop": {
+                  "M": 4,
+                  "N": -236
+                },
+                "num-unnum-hop": {
+                  "gnpy-node-type": "ROADM",
+                  "gnpy-nodes": [
+                    "roadm-Bremen-L2"
+                  ],
+                  "link-tp-id": "netconf:10.0.254.102:830",
+                  "node-id": "netconf:10.0.254.102:830",
+                  "target-channel-power": -12
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 13,
+                "label-hop": {
+                  "M": 4,
+                  "N": -236
+                },
+                "num-unnum-hop": {
+                  "gnpy-node-type": "ROADM",
+                  "gnpy-nodes": [
+                    "roadm-Bremen-AD"
+                  ],
+                  "link-tp-id": "netconf:10.0.254.225:830",
+                  "node-id": "netconf:10.0.254.225:830",
+                  "target-channel-power": -13
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 14,
+                "label-hop": {
+                  "M": 4,
+                  "N": -236
+                },
+                "num-unnum-hop": {
+                  "gnpy-node-type": "transceiver",
+                  "gnpy-nodes": [
+                    "trx-Bremen"
+                  ],
+                  "link-tp-id": "netconf:10.0.254.103:830",
+                  "node-id": "netconf:10.0.254.103:830",
+                  "transponder": {
+                    "transponder-mode": "dp-qpsk",
+                    "transponder-type": "Cassini"
+                  }
+                }
+              }
+            }
+          ],
+          "z-a-path-metric": [
+            {
+              "accumulative-value": 19.38,
+              "metric-type": "SNR-bandwidth"
+            },
+            {
+              "accumulative-value": 23.46,
+              "metric-type": "SNR-0.1nm"
+            },
+            {
+              "accumulative-value": 19.38,
+              "metric-type": "OSNR-bandwidth"
+            },
+            {
+              "accumulative-value": 23.47,
+              "metric-type": "OSNR-0.1nm"
+            },
+            {
+              "accumulative-value": 0.001,
+              "metric-type": "reference_power"
+            },
+            {
+              "accumulative-value": 100000000000,
+              "metric-type": "path_bandwidth"
+            }
+          ]
+        },
+        "response-id": "onos-3"
+      }
+    ]
+  }
+}

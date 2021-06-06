@@ -57,7 +57,12 @@ def _yangson_datamodel():
     return create_datamodel
 
 
-@pytest.mark.parametrize("filename", (Path(__file__).parent / 'yang').glob('*.json'), ids=_get_basename)
+@pytest.mark.parametrize("filename",
+                         list((Path(__file__).parent / 'yang').glob('*.json')) + [
+                             SRC_ROOT / 'gnpy' / 'example-data' / '2021-demo' / 'yang-without-onos.json',
+                             SRC_ROOT / 'gnpy' / 'example-data' / '2021-demo' / 'yang.json',
+                         ],
+                         ids=_get_basename)
 def test_validate_yang_data(_yangson_datamodel, filename: Path):
     '''Validate a JSON file against our YANG models'''
     dm = _yangson_datamodel()

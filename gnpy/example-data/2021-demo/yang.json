@@ -1,0 +1,1810 @@
+{
+  "tip-photonic-equipment:amplifier": [
+    {
+      "type": "fixed27",
+      "gain-min": "27.0",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "gain-flatmax": "27.0",
+      "max-power-out": "21.0",
+      "has-output-voa": false,
+      "polynomial-NF": {
+        "a": "0.0",
+        "b": "0.0",
+        "c": "0.0",
+        "d": "5.5"
+      }
+    },
+    {
+      "type": "fixed22",
+      "gain-min": "22.0",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "gain-flatmax": "22.0",
+      "max-power-out": "21.0",
+      "has-output-voa": false,
+      "polynomial-NF": {
+        "a": "0.0",
+        "b": "0.0",
+        "c": "0.0",
+        "d": "5.5"
+      }
+    }
+  ],
+  "tip-photonic-equipment:fiber": [
+    {
+      "type": "SSMF",
+      "chromatic-dispersion": "16.7",
+      "gamma": "1.27",
+      "pmd-coefficient": "0.0400028124"
+    }
+  ],
+  "tip-photonic-equipment:transceiver": [
+    {
+      "type": "Cassini",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "mode": [
+        {
+          "name": "dp-qpsk",
+          "bit-rate": 100,
+          "baud-rate": "32.0",
+          "required-osnr": "11.0",
+          "in-band-tx-osnr": "40.0",
+          "grid-spacing": "37.5",
+          "tx-roll-off": "0.15",
+          "tip-photonic-simulation:cost": 1
+        },
+        {
+          "name": "16-qam",
+          "bit-rate": 200,
+          "baud-rate": "66.0",
+          "required-osnr": "15.0",
+          "in-band-tx-osnr": "40.0",
+          "grid-spacing": "75.0",
+          "tx-roll-off": "0.15",
+          "tip-photonic-simulation:cost": 1
+        }
+      ]
+    },
+    {
+      "type": "Voyager",
+      "frequency-min": "191.35",
+      "frequency-max": "196.1",
+      "mode": [
+        {
+          "name": "mode 1",
+          "bit-rate": 100,
+          "baud-rate": "32.0",
+          "required-osnr": "12.0",
+          "in-band-tx-osnr": "40.0",
+          "grid-spacing": "37.5",
+          "tx-roll-off": "0.15",
+          "tip-photonic-simulation:cost": 1
+        }
+      ]
+    }
+  ],
+  "tip-photonic-equipment:roadm": [
+    {
+      "type": "default",
+      "add-drop-osnr": "30.0",
+      "polarization-mode-dispersion": "0.0",
+      "target-channel-out-power": "-25.0",
+      "compatible-preamp": [],
+      "compatible-booster": []
+    }
+  ],
+  "tip-photonic-simulation:simulation": {
+    "grid": {
+      "frequency-min": "191.6",
+      "frequency-max": "195.1",
+      "spacing": "50.0",
+      "power": "0.0",
+      "tx-roll-off": "0.15",
+      "tx-osnr": "40.0",
+      "baud-rate": "32.0"
+    },
+    "autodesign": {
+      "allowed-inline-edfa": [],
+      "power-adjustment-for-span-loss": {
+        "maximal-reduction": "-2.0",
+        "maximal-boost": "3.0",
+        "excursion-step-size": "0.5"
+      },
+      "gain-mode": [
+        null
+      ]
+    },
+    "system-margin": "2.0"
+  },
+  "ietf-network:networks": {
+    "network": [
+      {
+        "network-id": "GNPy",
+        "network-types": {
+          "tip-photonic-topology:photonic-topology": {}
+        },
+        "node": [
+          {
+            "node-id": "trx-Amsterdam",
+            "tip-photonic-topology:transceiver": {
+              "model": "Cassini"
+            }
+          },
+          {
+            "node-id": "roadm-Amsterdam-AD",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-2.0"
+            }
+          },
+          {
+            "node-id": "roadm-Amsterdam-L1",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-23.0"
+            }
+          },
+          {
+            "node-id": "roadm-Amsterdam-L1-booster",
+            "tip-photonic-topology:amplifier": {
+              "model": "fixed22",
+              "gain-target": "22.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "12.0"
+            }
+          },
+          {
+            "node-id": "roadm-Amsterdam-L1-preamp",
+            "tip-photonic-topology:amplifier": {
+              "model": "fixed27",
+              "gain-target": "27.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(roadm-Amsterdam-AD)-(patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L1))",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L1))-(roadm-Amsterdam-L1)",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(roadm-Amsterdam-L1)-(patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-AD))",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-AD))-(roadm-Amsterdam-AD)",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(roadm-Amsterdam-L1)-(patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-L2))",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-L2))-(roadm-Amsterdam-L2)",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "roadm-Amsterdam-L2",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-23.0"
+            }
+          },
+          {
+            "node-id": "roadm-Amsterdam-L2-booster",
+            "tip-photonic-topology:amplifier": {
+              "model": "fixed22",
+              "gain-target": "22.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "12.0"
+            }
+          },
+          {
+            "node-id": "roadm-Amsterdam-L2-preamp",
+            "tip-photonic-topology:amplifier": {
+              "model": "fixed27",
+              "gain-target": "27.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(roadm-Amsterdam-AD)-(patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L2))",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L2))-(roadm-Amsterdam-L2)",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(roadm-Amsterdam-L2)-(patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-AD))",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-AD))-(roadm-Amsterdam-AD)",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(roadm-Amsterdam-L2)-(patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-L1))",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-L1))-(roadm-Amsterdam-L1)",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "trx-Bremen",
+            "tip-photonic-topology:transceiver": {
+              "model": "Cassini"
+            }
+          },
+          {
+            "node-id": "roadm-Bremen-AD",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-2.0"
+            }
+          },
+          {
+            "node-id": "roadm-Bremen-L1",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-23.0"
+            }
+          },
+          {
+            "node-id": "roadm-Bremen-L1-booster",
+            "tip-photonic-topology:amplifier": {
+              "model": "fixed22",
+              "gain-target": "22.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "12.0"
+            }
+          },
+          {
+            "node-id": "roadm-Bremen-L1-preamp",
+            "tip-photonic-topology:amplifier": {
+              "model": "fixed27",
+              "gain-target": "27.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(roadm-Bremen-AD)-(patch-(roadm-Bremen-AD)-(roadm-Bremen-L1))",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(patch-(roadm-Bremen-AD)-(roadm-Bremen-L1))-(roadm-Bremen-L1)",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(roadm-Bremen-L1)-(patch-(roadm-Bremen-L1)-(roadm-Bremen-AD))",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(patch-(roadm-Bremen-L1)-(roadm-Bremen-AD))-(roadm-Bremen-AD)",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(roadm-Bremen-L1)-(patch-(roadm-Bremen-L1)-(roadm-Bremen-L2))",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(patch-(roadm-Bremen-L1)-(roadm-Bremen-L2))-(roadm-Bremen-L2)",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "roadm-Bremen-L2",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-23.0"
+            }
+          },
+          {
+            "node-id": "roadm-Bremen-L2-booster",
+            "tip-photonic-topology:amplifier": {
+              "model": "fixed22",
+              "gain-target": "22.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "12.0"
+            }
+          },
+          {
+            "node-id": "roadm-Bremen-L2-preamp",
+            "tip-photonic-topology:amplifier": {
+              "model": "fixed27",
+              "gain-target": "27.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(roadm-Bremen-AD)-(patch-(roadm-Bremen-AD)-(roadm-Bremen-L2))",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(patch-(roadm-Bremen-AD)-(roadm-Bremen-L2))-(roadm-Bremen-L2)",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(roadm-Bremen-L2)-(patch-(roadm-Bremen-L2)-(roadm-Bremen-AD))",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(patch-(roadm-Bremen-L2)-(roadm-Bremen-AD))-(roadm-Bremen-AD)",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(roadm-Bremen-L2)-(patch-(roadm-Bremen-L2)-(roadm-Bremen-L1))",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(patch-(roadm-Bremen-L2)-(roadm-Bremen-L1))-(roadm-Bremen-L1)",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "trx-Cologne",
+            "tip-photonic-topology:transceiver": {
+              "model": "Cassini"
+            }
+          },
+          {
+            "node-id": "roadm-Cologne-AD",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-2.0"
+            }
+          },
+          {
+            "node-id": "roadm-Cologne-L1",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-23.0"
+            }
+          },
+          {
+            "node-id": "roadm-Cologne-L1-booster",
+            "tip-photonic-topology:amplifier": {
+              "model": "fixed22",
+              "gain-target": "22.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "12.0"
+            }
+          },
+          {
+            "node-id": "roadm-Cologne-L1-preamp",
+            "tip-photonic-topology:amplifier": {
+              "model": "fixed27",
+              "gain-target": "27.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(roadm-Cologne-AD)-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L1))",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L1))-(roadm-Cologne-L1)",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(roadm-Cologne-L1)-(patch-(roadm-Cologne-L1)-(roadm-Cologne-AD))",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(patch-(roadm-Cologne-L1)-(roadm-Cologne-AD))-(roadm-Cologne-AD)",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(roadm-Cologne-L1)-(patch-(roadm-Cologne-L1)-(roadm-Cologne-L2))",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(patch-(roadm-Cologne-L1)-(roadm-Cologne-L2))-(roadm-Cologne-L2)",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "roadm-Cologne-L2",
+            "tip-photonic-topology:roadm": {
+              "model": "default",
+              "target-egress-per-channel-power": "-23.0"
+            }
+          },
+          {
+            "node-id": "roadm-Cologne-L2-booster",
+            "tip-photonic-topology:amplifier": {
+              "model": "fixed22",
+              "gain-target": "22.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "12.0"
+            }
+          },
+          {
+            "node-id": "roadm-Cologne-L2-preamp",
+            "tip-photonic-topology:amplifier": {
+              "model": "fixed27",
+              "gain-target": "27.0",
+              "tilt-target": "0.0",
+              "out-voa-target": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(roadm-Cologne-AD)-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L2))",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L2))-(roadm-Cologne-L2)",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(roadm-Cologne-L2)-(patch-(roadm-Cologne-L2)-(roadm-Cologne-AD))",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(patch-(roadm-Cologne-L2)-(roadm-Cologne-AD))-(roadm-Cologne-AD)",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(roadm-Cologne-L2)-(patch-(roadm-Cologne-L2)-(roadm-Cologne-L1))",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          },
+          {
+            "node-id": "splice-(patch-(roadm-Cologne-L2)-(roadm-Cologne-L1))-(roadm-Cologne-L1)",
+            "tip-photonic-topology:attenuator": {
+              "attenuation": "0.0"
+            }
+          }
+        ],
+        "ietf-network-topology:link": [
+          {
+            "link-id": "patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L1)",
+            "source": {
+              "source-node": "splice-(roadm-Amsterdam-AD)-(patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L1))"
+            },
+            "destination": {
+              "dest-node": "splice-(patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L1))-(roadm-Amsterdam-L1)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "0.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.5",
+              "conn-att-out": "0.5"
+            }
+          },
+          {
+            "link-id": "patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-AD)",
+            "source": {
+              "source-node": "splice-(roadm-Amsterdam-L1)-(patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-AD))"
+            },
+            "destination": {
+              "dest-node": "splice-(patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-AD))-(roadm-Amsterdam-AD)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "0.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.5",
+              "conn-att-out": "0.5"
+            }
+          },
+          {
+            "link-id": "patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-L2)",
+            "source": {
+              "source-node": "splice-(roadm-Amsterdam-L1)-(patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-L2))"
+            },
+            "destination": {
+              "dest-node": "splice-(patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-L2))-(roadm-Amsterdam-L2)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "0.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.5",
+              "conn-att-out": "0.5"
+            }
+          },
+          {
+            "link-id": "patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L2)",
+            "source": {
+              "source-node": "splice-(roadm-Amsterdam-AD)-(patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L2))"
+            },
+            "destination": {
+              "dest-node": "splice-(patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L2))-(roadm-Amsterdam-L2)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "0.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.5",
+              "conn-att-out": "0.5"
+            }
+          },
+          {
+            "link-id": "patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-AD)",
+            "source": {
+              "source-node": "splice-(roadm-Amsterdam-L2)-(patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-AD))"
+            },
+            "destination": {
+              "dest-node": "splice-(patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-AD))-(roadm-Amsterdam-AD)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "0.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.5",
+              "conn-att-out": "0.5"
+            }
+          },
+          {
+            "link-id": "patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-L1)",
+            "source": {
+              "source-node": "splice-(roadm-Amsterdam-L2)-(patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-L1))"
+            },
+            "destination": {
+              "dest-node": "splice-(patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-L1))-(roadm-Amsterdam-L1)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "0.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.5",
+              "conn-att-out": "0.5"
+            }
+          },
+          {
+            "link-id": "patch-(roadm-Bremen-AD)-(roadm-Bremen-L1)",
+            "source": {
+              "source-node": "splice-(roadm-Bremen-AD)-(patch-(roadm-Bremen-AD)-(roadm-Bremen-L1))"
+            },
+            "destination": {
+              "dest-node": "splice-(patch-(roadm-Bremen-AD)-(roadm-Bremen-L1))-(roadm-Bremen-L1)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "0.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.5",
+              "conn-att-out": "0.5"
+            }
+          },
+          {
+            "link-id": "patch-(roadm-Bremen-L1)-(roadm-Bremen-AD)",
+            "source": {
+              "source-node": "splice-(roadm-Bremen-L1)-(patch-(roadm-Bremen-L1)-(roadm-Bremen-AD))"
+            },
+            "destination": {
+              "dest-node": "splice-(patch-(roadm-Bremen-L1)-(roadm-Bremen-AD))-(roadm-Bremen-AD)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "0.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.5",
+              "conn-att-out": "0.5"
+            }
+          },
+          {
+            "link-id": "patch-(roadm-Bremen-L1)-(roadm-Bremen-L2)",
+            "source": {
+              "source-node": "splice-(roadm-Bremen-L1)-(patch-(roadm-Bremen-L1)-(roadm-Bremen-L2))"
+            },
+            "destination": {
+              "dest-node": "splice-(patch-(roadm-Bremen-L1)-(roadm-Bremen-L2))-(roadm-Bremen-L2)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "0.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.5",
+              "conn-att-out": "0.5"
+            }
+          },
+          {
+            "link-id": "patch-(roadm-Bremen-AD)-(roadm-Bremen-L2)",
+            "source": {
+              "source-node": "splice-(roadm-Bremen-AD)-(patch-(roadm-Bremen-AD)-(roadm-Bremen-L2))"
+            },
+            "destination": {
+              "dest-node": "splice-(patch-(roadm-Bremen-AD)-(roadm-Bremen-L2))-(roadm-Bremen-L2)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "0.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.5",
+              "conn-att-out": "0.5"
+            }
+          },
+          {
+            "link-id": "patch-(roadm-Bremen-L2)-(roadm-Bremen-AD)",
+            "source": {
+              "source-node": "splice-(roadm-Bremen-L2)-(patch-(roadm-Bremen-L2)-(roadm-Bremen-AD))"
+            },
+            "destination": {
+              "dest-node": "splice-(patch-(roadm-Bremen-L2)-(roadm-Bremen-AD))-(roadm-Bremen-AD)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "0.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.5",
+              "conn-att-out": "0.5"
+            }
+          },
+          {
+            "link-id": "patch-(roadm-Bremen-L2)-(roadm-Bremen-L1)",
+            "source": {
+              "source-node": "splice-(roadm-Bremen-L2)-(patch-(roadm-Bremen-L2)-(roadm-Bremen-L1))"
+            },
+            "destination": {
+              "dest-node": "splice-(patch-(roadm-Bremen-L2)-(roadm-Bremen-L1))-(roadm-Bremen-L1)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "0.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.5",
+              "conn-att-out": "0.5"
+            }
+          },
+          {
+            "link-id": "patch-(roadm-Cologne-AD)-(roadm-Cologne-L1)",
+            "source": {
+              "source-node": "splice-(roadm-Cologne-AD)-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L1))"
+            },
+            "destination": {
+              "dest-node": "splice-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L1))-(roadm-Cologne-L1)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "0.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.5",
+              "conn-att-out": "0.5"
+            }
+          },
+          {
+            "link-id": "patch-(roadm-Cologne-L1)-(roadm-Cologne-AD)",
+            "source": {
+              "source-node": "splice-(roadm-Cologne-L1)-(patch-(roadm-Cologne-L1)-(roadm-Cologne-AD))"
+            },
+            "destination": {
+              "dest-node": "splice-(patch-(roadm-Cologne-L1)-(roadm-Cologne-AD))-(roadm-Cologne-AD)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "0.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.5",
+              "conn-att-out": "0.5"
+            }
+          },
+          {
+            "link-id": "patch-(roadm-Cologne-L1)-(roadm-Cologne-L2)",
+            "source": {
+              "source-node": "splice-(roadm-Cologne-L1)-(patch-(roadm-Cologne-L1)-(roadm-Cologne-L2))"
+            },
+            "destination": {
+              "dest-node": "splice-(patch-(roadm-Cologne-L1)-(roadm-Cologne-L2))-(roadm-Cologne-L2)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "0.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.5",
+              "conn-att-out": "0.5"
+            }
+          },
+          {
+            "link-id": "patch-(roadm-Cologne-AD)-(roadm-Cologne-L2)",
+            "source": {
+              "source-node": "splice-(roadm-Cologne-AD)-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L2))"
+            },
+            "destination": {
+              "dest-node": "splice-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L2))-(roadm-Cologne-L2)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "0.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.5",
+              "conn-att-out": "0.5"
+            }
+          },
+          {
+            "link-id": "patch-(roadm-Cologne-L2)-(roadm-Cologne-AD)",
+            "source": {
+              "source-node": "splice-(roadm-Cologne-L2)-(patch-(roadm-Cologne-L2)-(roadm-Cologne-AD))"
+            },
+            "destination": {
+              "dest-node": "splice-(patch-(roadm-Cologne-L2)-(roadm-Cologne-AD))-(roadm-Cologne-AD)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "0.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.5",
+              "conn-att-out": "0.5"
+            }
+          },
+          {
+            "link-id": "patch-(roadm-Cologne-L2)-(roadm-Cologne-L1)",
+            "source": {
+              "source-node": "splice-(roadm-Cologne-L2)-(patch-(roadm-Cologne-L2)-(roadm-Cologne-L1))"
+            },
+            "destination": {
+              "dest-node": "splice-(patch-(roadm-Cologne-L2)-(roadm-Cologne-L1))-(roadm-Cologne-L1)"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "0.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "0.5",
+              "conn-att-out": "0.5"
+            }
+          },
+          {
+            "link-id": "fiber-Amsterdam-Bremen",
+            "source": {
+              "source-node": "roadm-Amsterdam-L1-booster"
+            },
+            "destination": {
+              "dest-node": "roadm-Bremen-L2-preamp"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "50.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "1.5",
+              "conn-att-out": "1.5"
+            }
+          },
+          {
+            "link-id": "fiber-Bremen-Amsterdam",
+            "source": {
+              "source-node": "roadm-Bremen-L2-booster"
+            },
+            "destination": {
+              "dest-node": "roadm-Amsterdam-L1-preamp"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "50.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "1.5",
+              "conn-att-out": "1.5"
+            }
+          },
+          {
+            "link-id": "fiber-Bremen-Cologne",
+            "source": {
+              "source-node": "roadm-Bremen-L1-booster"
+            },
+            "destination": {
+              "dest-node": "roadm-Cologne-L2-preamp"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "50.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "1.5",
+              "conn-att-out": "1.5"
+            }
+          },
+          {
+            "link-id": "fiber-Cologne-Bremen",
+            "source": {
+              "source-node": "roadm-Cologne-L2-booster"
+            },
+            "destination": {
+              "dest-node": "roadm-Bremen-L1-preamp"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "50.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "1.5",
+              "conn-att-out": "1.5"
+            }
+          },
+          {
+            "link-id": "fiber-Cologne-Amsterdam",
+            "source": {
+              "source-node": "roadm-Cologne-L1-booster"
+            },
+            "destination": {
+              "dest-node": "roadm-Amsterdam-L2-preamp"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "50.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "1.5",
+              "conn-att-out": "1.5"
+            }
+          },
+          {
+            "link-id": "fiber-Amsterdam-Cologne",
+            "source": {
+              "source-node": "roadm-Amsterdam-L2-booster"
+            },
+            "destination": {
+              "dest-node": "roadm-Cologne-L1-preamp"
+            },
+            "tip-photonic-topology:fiber": {
+              "type": "SSMF",
+              "length": "50.0",
+              "attenuation-in": "0.0",
+              "conn-att-in": "1.5",
+              "conn-att-out": "1.5"
+            }
+          },
+          {
+            "link-id": "patch{trx-Amsterdam, roadm-Amsterdam-AD}",
+            "source": {
+              "source-node": "trx-Amsterdam"
+            },
+            "destination": {
+              "dest-node": "roadm-Amsterdam-AD"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{roadm-Amsterdam-AD, trx-Amsterdam}",
+            "source": {
+              "source-node": "roadm-Amsterdam-AD"
+            },
+            "destination": {
+              "dest-node": "trx-Amsterdam"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-8.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Amsterdam-AD, splice-(roadm-Amsterdam-AD)-(patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L1))}",
+            "source": {
+              "source-node": "roadm-Amsterdam-AD"
+            },
+            "destination": {
+              "dest-node": "splice-(roadm-Amsterdam-AD)-(patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L1))"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-12.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Amsterdam-AD, splice-(roadm-Amsterdam-AD)-(patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L2))}",
+            "source": {
+              "source-node": "roadm-Amsterdam-AD"
+            },
+            "destination": {
+              "dest-node": "splice-(roadm-Amsterdam-AD)-(patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L2))"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-12.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Amsterdam-L1, roadm-Amsterdam-L1-booster}",
+            "source": {
+              "source-node": "roadm-Amsterdam-L1"
+            },
+            "destination": {
+              "dest-node": "roadm-Amsterdam-L1-booster"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-23.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Amsterdam-L1, splice-(roadm-Amsterdam-L1)-(patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-AD))}",
+            "source": {
+              "source-node": "roadm-Amsterdam-L1"
+            },
+            "destination": {
+              "dest-node": "splice-(roadm-Amsterdam-L1)-(patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-AD))"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-12.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Amsterdam-L1, splice-(roadm-Amsterdam-L1)-(patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-L2))}",
+            "source": {
+              "source-node": "roadm-Amsterdam-L1"
+            },
+            "destination": {
+              "dest-node": "splice-(roadm-Amsterdam-L1)-(patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-L2))"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-12.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Amsterdam-L1-preamp, roadm-Amsterdam-L1}",
+            "source": {
+              "source-node": "roadm-Amsterdam-L1-preamp"
+            },
+            "destination": {
+              "dest-node": "roadm-Amsterdam-L1"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{splice-(patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L1))-(roadm-Amsterdam-L1), roadm-Amsterdam-L1}",
+            "source": {
+              "source-node": "splice-(patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L1))-(roadm-Amsterdam-L1)"
+            },
+            "destination": {
+              "dest-node": "roadm-Amsterdam-L1"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{splice-(patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-AD))-(roadm-Amsterdam-AD), roadm-Amsterdam-AD}",
+            "source": {
+              "source-node": "splice-(patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-AD))-(roadm-Amsterdam-AD)"
+            },
+            "destination": {
+              "dest-node": "roadm-Amsterdam-AD"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{splice-(patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-L2))-(roadm-Amsterdam-L2), roadm-Amsterdam-L2}",
+            "source": {
+              "source-node": "splice-(patch-(roadm-Amsterdam-L1)-(roadm-Amsterdam-L2))-(roadm-Amsterdam-L2)"
+            },
+            "destination": {
+              "dest-node": "roadm-Amsterdam-L2"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{roadm-Amsterdam-L2, roadm-Amsterdam-L2-booster}",
+            "source": {
+              "source-node": "roadm-Amsterdam-L2"
+            },
+            "destination": {
+              "dest-node": "roadm-Amsterdam-L2-booster"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-23.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Amsterdam-L2, splice-(roadm-Amsterdam-L2)-(patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-AD))}",
+            "source": {
+              "source-node": "roadm-Amsterdam-L2"
+            },
+            "destination": {
+              "dest-node": "splice-(roadm-Amsterdam-L2)-(patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-AD))"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-12.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Amsterdam-L2, splice-(roadm-Amsterdam-L2)-(patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-L1))}",
+            "source": {
+              "source-node": "roadm-Amsterdam-L2"
+            },
+            "destination": {
+              "dest-node": "splice-(roadm-Amsterdam-L2)-(patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-L1))"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-12.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Amsterdam-L2-preamp, roadm-Amsterdam-L2}",
+            "source": {
+              "source-node": "roadm-Amsterdam-L2-preamp"
+            },
+            "destination": {
+              "dest-node": "roadm-Amsterdam-L2"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{splice-(patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L2))-(roadm-Amsterdam-L2), roadm-Amsterdam-L2}",
+            "source": {
+              "source-node": "splice-(patch-(roadm-Amsterdam-AD)-(roadm-Amsterdam-L2))-(roadm-Amsterdam-L2)"
+            },
+            "destination": {
+              "dest-node": "roadm-Amsterdam-L2"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{splice-(patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-AD))-(roadm-Amsterdam-AD), roadm-Amsterdam-AD}",
+            "source": {
+              "source-node": "splice-(patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-AD))-(roadm-Amsterdam-AD)"
+            },
+            "destination": {
+              "dest-node": "roadm-Amsterdam-AD"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{splice-(patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-L1))-(roadm-Amsterdam-L1), roadm-Amsterdam-L1}",
+            "source": {
+              "source-node": "splice-(patch-(roadm-Amsterdam-L2)-(roadm-Amsterdam-L1))-(roadm-Amsterdam-L1)"
+            },
+            "destination": {
+              "dest-node": "roadm-Amsterdam-L1"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{trx-Bremen, roadm-Bremen-AD}",
+            "source": {
+              "source-node": "trx-Bremen"
+            },
+            "destination": {
+              "dest-node": "roadm-Bremen-AD"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{roadm-Bremen-AD, trx-Bremen}",
+            "source": {
+              "source-node": "roadm-Bremen-AD"
+            },
+            "destination": {
+              "dest-node": "trx-Bremen"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-8.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Bremen-AD, splice-(roadm-Bremen-AD)-(patch-(roadm-Bremen-AD)-(roadm-Bremen-L1))}",
+            "source": {
+              "source-node": "roadm-Bremen-AD"
+            },
+            "destination": {
+              "dest-node": "splice-(roadm-Bremen-AD)-(patch-(roadm-Bremen-AD)-(roadm-Bremen-L1))"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-12.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Bremen-AD, splice-(roadm-Bremen-AD)-(patch-(roadm-Bremen-AD)-(roadm-Bremen-L2))}",
+            "source": {
+              "source-node": "roadm-Bremen-AD"
+            },
+            "destination": {
+              "dest-node": "splice-(roadm-Bremen-AD)-(patch-(roadm-Bremen-AD)-(roadm-Bremen-L2))"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-12.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Bremen-L1, roadm-Bremen-L1-booster}",
+            "source": {
+              "source-node": "roadm-Bremen-L1"
+            },
+            "destination": {
+              "dest-node": "roadm-Bremen-L1-booster"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-23.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Bremen-L1, splice-(roadm-Bremen-L1)-(patch-(roadm-Bremen-L1)-(roadm-Bremen-AD))}",
+            "source": {
+              "source-node": "roadm-Bremen-L1"
+            },
+            "destination": {
+              "dest-node": "splice-(roadm-Bremen-L1)-(patch-(roadm-Bremen-L1)-(roadm-Bremen-AD))"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-12.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Bremen-L1, splice-(roadm-Bremen-L1)-(patch-(roadm-Bremen-L1)-(roadm-Bremen-L2))}",
+            "source": {
+              "source-node": "roadm-Bremen-L1"
+            },
+            "destination": {
+              "dest-node": "splice-(roadm-Bremen-L1)-(patch-(roadm-Bremen-L1)-(roadm-Bremen-L2))"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-12.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Bremen-L1-preamp, roadm-Bremen-L1}",
+            "source": {
+              "source-node": "roadm-Bremen-L1-preamp"
+            },
+            "destination": {
+              "dest-node": "roadm-Bremen-L1"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{splice-(patch-(roadm-Bremen-AD)-(roadm-Bremen-L1))-(roadm-Bremen-L1), roadm-Bremen-L1}",
+            "source": {
+              "source-node": "splice-(patch-(roadm-Bremen-AD)-(roadm-Bremen-L1))-(roadm-Bremen-L1)"
+            },
+            "destination": {
+              "dest-node": "roadm-Bremen-L1"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{splice-(patch-(roadm-Bremen-L1)-(roadm-Bremen-AD))-(roadm-Bremen-AD), roadm-Bremen-AD}",
+            "source": {
+              "source-node": "splice-(patch-(roadm-Bremen-L1)-(roadm-Bremen-AD))-(roadm-Bremen-AD)"
+            },
+            "destination": {
+              "dest-node": "roadm-Bremen-AD"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{splice-(patch-(roadm-Bremen-L1)-(roadm-Bremen-L2))-(roadm-Bremen-L2), roadm-Bremen-L2}",
+            "source": {
+              "source-node": "splice-(patch-(roadm-Bremen-L1)-(roadm-Bremen-L2))-(roadm-Bremen-L2)"
+            },
+            "destination": {
+              "dest-node": "roadm-Bremen-L2"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{roadm-Bremen-L2, roadm-Bremen-L2-booster}",
+            "source": {
+              "source-node": "roadm-Bremen-L2"
+            },
+            "destination": {
+              "dest-node": "roadm-Bremen-L2-booster"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-23.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Bremen-L2, splice-(roadm-Bremen-L2)-(patch-(roadm-Bremen-L2)-(roadm-Bremen-AD))}",
+            "source": {
+              "source-node": "roadm-Bremen-L2"
+            },
+            "destination": {
+              "dest-node": "splice-(roadm-Bremen-L2)-(patch-(roadm-Bremen-L2)-(roadm-Bremen-AD))"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-12.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Bremen-L2, splice-(roadm-Bremen-L2)-(patch-(roadm-Bremen-L2)-(roadm-Bremen-L1))}",
+            "source": {
+              "source-node": "roadm-Bremen-L2"
+            },
+            "destination": {
+              "dest-node": "splice-(roadm-Bremen-L2)-(patch-(roadm-Bremen-L2)-(roadm-Bremen-L1))"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-12.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Bremen-L2-preamp, roadm-Bremen-L2}",
+            "source": {
+              "source-node": "roadm-Bremen-L2-preamp"
+            },
+            "destination": {
+              "dest-node": "roadm-Bremen-L2"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{splice-(patch-(roadm-Bremen-AD)-(roadm-Bremen-L2))-(roadm-Bremen-L2), roadm-Bremen-L2}",
+            "source": {
+              "source-node": "splice-(patch-(roadm-Bremen-AD)-(roadm-Bremen-L2))-(roadm-Bremen-L2)"
+            },
+            "destination": {
+              "dest-node": "roadm-Bremen-L2"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{splice-(patch-(roadm-Bremen-L2)-(roadm-Bremen-AD))-(roadm-Bremen-AD), roadm-Bremen-AD}",
+            "source": {
+              "source-node": "splice-(patch-(roadm-Bremen-L2)-(roadm-Bremen-AD))-(roadm-Bremen-AD)"
+            },
+            "destination": {
+              "dest-node": "roadm-Bremen-AD"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{splice-(patch-(roadm-Bremen-L2)-(roadm-Bremen-L1))-(roadm-Bremen-L1), roadm-Bremen-L1}",
+            "source": {
+              "source-node": "splice-(patch-(roadm-Bremen-L2)-(roadm-Bremen-L1))-(roadm-Bremen-L1)"
+            },
+            "destination": {
+              "dest-node": "roadm-Bremen-L1"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{trx-Cologne, roadm-Cologne-AD}",
+            "source": {
+              "source-node": "trx-Cologne"
+            },
+            "destination": {
+              "dest-node": "roadm-Cologne-AD"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{roadm-Cologne-AD, trx-Cologne}",
+            "source": {
+              "source-node": "roadm-Cologne-AD"
+            },
+            "destination": {
+              "dest-node": "trx-Cologne"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-8.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Cologne-AD, splice-(roadm-Cologne-AD)-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L1))}",
+            "source": {
+              "source-node": "roadm-Cologne-AD"
+            },
+            "destination": {
+              "dest-node": "splice-(roadm-Cologne-AD)-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L1))"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-12.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Cologne-AD, splice-(roadm-Cologne-AD)-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L2))}",
+            "source": {
+              "source-node": "roadm-Cologne-AD"
+            },
+            "destination": {
+              "dest-node": "splice-(roadm-Cologne-AD)-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L2))"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-12.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Cologne-L1, roadm-Cologne-L1-booster}",
+            "source": {
+              "source-node": "roadm-Cologne-L1"
+            },
+            "destination": {
+              "dest-node": "roadm-Cologne-L1-booster"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-23.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Cologne-L1, splice-(roadm-Cologne-L1)-(patch-(roadm-Cologne-L1)-(roadm-Cologne-AD))}",
+            "source": {
+              "source-node": "roadm-Cologne-L1"
+            },
+            "destination": {
+              "dest-node": "splice-(roadm-Cologne-L1)-(patch-(roadm-Cologne-L1)-(roadm-Cologne-AD))"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-12.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Cologne-L1, splice-(roadm-Cologne-L1)-(patch-(roadm-Cologne-L1)-(roadm-Cologne-L2))}",
+            "source": {
+              "source-node": "roadm-Cologne-L1"
+            },
+            "destination": {
+              "dest-node": "splice-(roadm-Cologne-L1)-(patch-(roadm-Cologne-L1)-(roadm-Cologne-L2))"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-12.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Cologne-L1-preamp, roadm-Cologne-L1}",
+            "source": {
+              "source-node": "roadm-Cologne-L1-preamp"
+            },
+            "destination": {
+              "dest-node": "roadm-Cologne-L1"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{splice-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L1))-(roadm-Cologne-L1), roadm-Cologne-L1}",
+            "source": {
+              "source-node": "splice-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L1))-(roadm-Cologne-L1)"
+            },
+            "destination": {
+              "dest-node": "roadm-Cologne-L1"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{splice-(patch-(roadm-Cologne-L1)-(roadm-Cologne-AD))-(roadm-Cologne-AD), roadm-Cologne-AD}",
+            "source": {
+              "source-node": "splice-(patch-(roadm-Cologne-L1)-(roadm-Cologne-AD))-(roadm-Cologne-AD)"
+            },
+            "destination": {
+              "dest-node": "roadm-Cologne-AD"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{splice-(patch-(roadm-Cologne-L1)-(roadm-Cologne-L2))-(roadm-Cologne-L2), roadm-Cologne-L2}",
+            "source": {
+              "source-node": "splice-(patch-(roadm-Cologne-L1)-(roadm-Cologne-L2))-(roadm-Cologne-L2)"
+            },
+            "destination": {
+              "dest-node": "roadm-Cologne-L2"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{roadm-Cologne-L2, roadm-Cologne-L2-booster}",
+            "source": {
+              "source-node": "roadm-Cologne-L2"
+            },
+            "destination": {
+              "dest-node": "roadm-Cologne-L2-booster"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-23.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Cologne-L2, splice-(roadm-Cologne-L2)-(patch-(roadm-Cologne-L2)-(roadm-Cologne-AD))}",
+            "source": {
+              "source-node": "roadm-Cologne-L2"
+            },
+            "destination": {
+              "dest-node": "splice-(roadm-Cologne-L2)-(patch-(roadm-Cologne-L2)-(roadm-Cologne-AD))"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-12.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Cologne-L2, splice-(roadm-Cologne-L2)-(patch-(roadm-Cologne-L2)-(roadm-Cologne-L1))}",
+            "source": {
+              "source-node": "roadm-Cologne-L2"
+            },
+            "destination": {
+              "dest-node": "splice-(roadm-Cologne-L2)-(patch-(roadm-Cologne-L2)-(roadm-Cologne-L1))"
+            },
+            "tip-photonic-topology:patch": {
+              "roadm-target-egress-per-channel-power": "-12.0"
+            }
+          },
+          {
+            "link-id": "patch{roadm-Cologne-L2-preamp, roadm-Cologne-L2}",
+            "source": {
+              "source-node": "roadm-Cologne-L2-preamp"
+            },
+            "destination": {
+              "dest-node": "roadm-Cologne-L2"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{splice-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L2))-(roadm-Cologne-L2), roadm-Cologne-L2}",
+            "source": {
+              "source-node": "splice-(patch-(roadm-Cologne-AD)-(roadm-Cologne-L2))-(roadm-Cologne-L2)"
+            },
+            "destination": {
+              "dest-node": "roadm-Cologne-L2"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{splice-(patch-(roadm-Cologne-L2)-(roadm-Cologne-AD))-(roadm-Cologne-AD), roadm-Cologne-AD}",
+            "source": {
+              "source-node": "splice-(patch-(roadm-Cologne-L2)-(roadm-Cologne-AD))-(roadm-Cologne-AD)"
+            },
+            "destination": {
+              "dest-node": "roadm-Cologne-AD"
+            },
+            "tip-photonic-topology:patch": {}
+          },
+          {
+            "link-id": "patch{splice-(patch-(roadm-Cologne-L2)-(roadm-Cologne-L1))-(roadm-Cologne-L1), roadm-Cologne-L1}",
+            "source": {
+              "source-node": "splice-(patch-(roadm-Cologne-L2)-(roadm-Cologne-L1))-(roadm-Cologne-L1)"
+            },
+            "destination": {
+              "dest-node": "roadm-Cologne-L1"
+            },
+            "tip-photonic-topology:patch": {}
+          }
+        ]
+      },
+      {
+        "network-id": "ONOS",
+        "network-types": {
+          "tip-onos-topology:onos-topology": {}
+        },
+        "node": [
+          {
+            "node-id": "netconf:10.0.254.105:830",
+            "supporting-node": [
+              {
+                "network-ref": "GNPy",
+                "node-ref": "trx-Amsterdam"
+              }
+            ],
+            "tip-onos-topology:device": {
+              "name": "Amsterdam TXP (g30-horni)",
+              "driver": "groove",
+              "grid-x": -150,
+              "grid-y": 350,
+              "netconf": {
+                "username": "administrator",
+                "password": "e2e!Net4u#"
+              }
+            }
+          },
+          {
+            "node-id": "netconf:10.0.254.78:830",
+            "supporting-node": [
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Amsterdam-L1"
+              },
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Amsterdam-L1-preamp"
+              },
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Amsterdam-L1-booster"
+              }
+            ],
+            "tip-onos-topology:device": {
+              "name": "Amsterdam L1 to Bremen (line-QR79)",
+              "driver": "czechlight-roadm",
+              "grid-x": 225,
+              "grid-y": 320,
+              "netconf": {
+                "idle-timeout": 0,
+                "username": "dwdm",
+                "password": "dwdm"
+              }
+            }
+          },
+          {
+            "node-id": "netconf:10.0.254.79:830",
+            "supporting-node": [
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Amsterdam-L2"
+              },
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Amsterdam-L2-boster"
+              },
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Amsterdam-L2-preamp"
+              }
+            ],
+            "tip-onos-topology:device": {
+              "name": "Amsterdam L2 to Cologne (line-Q7JS)",
+              "driver": "czechlight-roadm",
+              "grid-x": 225,
+              "grid-y": 380,
+              "netconf": {
+                "idle-timeout": 0,
+                "username": "dwdm",
+                "password": "dwdm"
+              }
+            }
+          },
+          {
+            "node-id": "netconf:10.0.254.107:830",
+            "supporting-node": [
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Amsterdam-AD"
+              }
+            ],
+            "tip-onos-topology:device": {
+              "name": "Amsterdam Add/Drop (coh-a-d-v9u)",
+              "driver": "czechlight-roadm",
+              "grid-x": 175,
+              "grid-y": 350,
+              "netconf": {
+                "idle-timeout": 0,
+                "username": "dwdm",
+                "password": "dwdm"
+              }
+            }
+          },
+          {
+            "node-id": "netconf:10.0.254.99:830",
+            "supporting-node": [
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Cologne-L1"
+              },
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Cologne-L1-preamp"
+              },
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Cologne-L1-booster"
+              }
+            ],
+            "tip-onos-topology:device": {
+              "name": "Cologne L1 to Amsterdam (line-TQQ)",
+              "driver": "czechlight-roadm",
+              "grid-x": 420,
+              "grid-y": 550,
+              "netconf": {
+                "idle-timeout": 0,
+                "username": "dwdm",
+                "password": "dwdm"
+              }
+            }
+          },
+          {
+            "node-id": "netconf:10.0.254.104:830",
+            "supporting-node": [
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Cologne-L2"
+              },
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Cologne-L2-boster"
+              },
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Cologne-L2-preamp"
+              }
+            ],
+            "tip-onos-topology:device": {
+              "name": "Cologne L2 to Bremen (line-QLK6)",
+              "driver": "czechlight-roadm",
+              "grid-x": 480,
+              "grid-y": 550,
+              "netconf": {
+                "idle-timeout": 0,
+                "username": "dwdm",
+                "password": "dwdm"
+              }
+            }
+          },
+          {
+            "node-id": "netconf:10.0.254.100:830",
+            "supporting-node": [
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Bremen-L1"
+              },
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Bremen-L1-preamp"
+              },
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Bremen-L1-booster"
+              }
+            ],
+            "tip-onos-topology:device": {
+              "name": "Bremen L1 to Cologne (line-WKP)",
+              "driver": "czechlight-roadm",
+              "grid-x": 700,
+              "grid-y": 380,
+              "netconf": {
+                "idle-timeout": 0,
+                "username": "dwdm",
+                "password": "dwdm"
+              }
+            }
+          },
+          {
+            "node-id": "netconf:10.0.254.102:830",
+            "supporting-node": [
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Bremen-L2"
+              },
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Bremen-L2-booster"
+              },
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Bremen-L2-preamp"
+              }
+            ],
+            "tip-onos-topology:device": {
+              "name": "Bremen L2 to Amsterdam (line-QCP9)",
+              "driver": "czechlight-roadm",
+              "grid-x": 700,
+              "grid-y": 320,
+              "netconf": {
+                "idle-timeout": 0,
+                "username": "dwdm",
+                "password": "dwdm"
+              }
+            }
+          },
+          {
+            "node-id": "netconf:10.0.254.225:830",
+            "supporting-node": [
+              {
+                "network-ref": "GNPy",
+                "node-ref": "roadm-Bremen-AD"
+              }
+            ],
+            "tip-onos-topology:device": {
+              "name": "Bremen Add/Drop (add-drop-SPI)",
+              "driver": "czechlight-roadm",
+              "grid-x": 750,
+              "grid-y": 350,
+              "netconf": {
+                "idle-timeout": 0,
+                "username": "dwdm",
+                "password": "dwdm"
+              }
+            }
+          },
+          {
+            "node-id": "netconf:10.0.254.103:830",
+            "supporting-node": [
+              {
+                "network-ref": "GNPy",
+                "node-ref": "trx-Bremen"
+              }
+            ],
+            "tip-onos-topology:device": {
+              "name": "Amsterdam TXP (g30-spodni)",
+              "driver": "groove",
+              "grid-x": 1050,
+              "grid-y": 350,
+              "netconf": {
+                "username": "administrator",
+                "password": "e2e!Net4u#"
+              }
+            }
+          }
+        ],
+        "ietf-network-topology:link": [
+          {
+            "link-id": "netconf:10.0.254.105:830/10101-netconf:10.0.254.107:830/1"
+          },
+          {
+            "link-id": "netconf:10.0.254.107:830/100-netconf:10.0.254.78:830/1"
+          },
+          {
+            "link-id": "netconf:10.0.254.107:830/100-netconf:10.0.254.79:830/2"
+          },
+          {
+            "link-id": "netconf:10.0.254.79:830/1-netconf:10.0.254.78:830/2"
+          },
+          {
+            "link-id": "netconf:10.0.254.99:830/1-netconf:10.0.254.104:830/1"
+          },
+          {
+            "link-id": "netconf:10.0.254.79:830/100-netconf:10.0.254.99:830/100"
+          },
+          {
+            "link-id": "netconf:10.0.254.104:830/100-netconf:10.0.254.100:830/100"
+          },
+          {
+            "link-id": "netconf:10.0.254.102:830/100-netconf:10.0.254.78:830/100"
+          },
+          {
+            "link-id": "netconf:10.0.254.100:830/1-netconf:10.0.254.225:830/100"
+          },
+          {
+            "link-id": "netconf:10.0.254.102:830/2-netconf:10.0.254.225:830/100"
+          },
+          {
+            "link-id": "netconf:10.0.254.102:830/1-netconf:10.0.254.100:830/2"
+          },
+          {
+            "link-id": "netconf:10.0.254.103:830/10101-netconf:10.0.254.225:830/1"
+          }
+        ]
+      }
+    ]
+  }
+}
