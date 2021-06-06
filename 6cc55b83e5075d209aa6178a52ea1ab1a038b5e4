@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a13c2b29_d74cbad7",
+        "filename": "tests/test_invocation.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-06T10:50:14Z",
+      "side": 1,
+      "message": "Needs debugging.",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 117
+      },
+      "revId": "6cc55b83e5075d209aa6178a52ea1ab1a038b5e4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
