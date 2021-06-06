@@ -34,6 +34,7 @@
             "path-route-object": {
               "index": 0,
               "num-unnum-hop": {
+                "gnpy-node-type": "transceiver",
                 "node-id": "trx Lorient_KMA",
                 "link-tp-id": "trx Lorient_KMA"
               }
@@ -61,6 +62,7 @@
             "path-route-object": {
               "index": 3,
               "num-unnum-hop": {
+                "gnpy-node-type": "ROADM",
                 "node-id": "roadm Lorient_KMA",
                 "link-tp-id": "roadm Lorient_KMA"
               }
@@ -79,6 +81,7 @@
             "path-route-object": {
               "index": 5,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "east edfa in Lorient_KMA to Vannes_KBE",
                 "link-tp-id": "east edfa in Lorient_KMA to Vannes_KBE"
               }
@@ -115,6 +118,7 @@
             "path-route-object": {
               "index": 9,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "west edfa in Vannes_KBE to Lorient_KMA",
                 "link-tp-id": "west edfa in Vannes_KBE to Lorient_KMA"
               }
@@ -133,6 +137,7 @@
             "path-route-object": {
               "index": 11,
               "num-unnum-hop": {
+                "gnpy-node-type": "ROADM",
                 "node-id": "roadm Vannes_KBE",
                 "link-tp-id": "roadm Vannes_KBE"
               }
@@ -151,6 +156,7 @@
             "path-route-object": {
               "index": 13,
               "num-unnum-hop": {
+                "gnpy-node-type": "transceiver",
                 "node-id": "trx Vannes_KBE",
                 "link-tp-id": "trx Vannes_KBE"
               }
@@ -211,6 +217,7 @@
             "path-route-object": {
               "index": 0,
               "num-unnum-hop": {
+                "gnpy-node-type": "transceiver",
                 "node-id": "trx Brest_KLA",
                 "link-tp-id": "trx Brest_KLA"
               }
@@ -238,6 +245,7 @@
             "path-route-object": {
               "index": 3,
               "num-unnum-hop": {
+                "gnpy-node-type": "ROADM",
                 "node-id": "roadm Brest_KLA",
                 "link-tp-id": "roadm Brest_KLA"
               }
@@ -256,6 +264,7 @@
             "path-route-object": {
               "index": 5,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "east edfa in Brest_KLA to Morlaix",
                 "link-tp-id": "east edfa in Brest_KLA to Morlaix"
               }
@@ -328,6 +337,7 @@
             "path-route-object": {
               "index": 13,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "west edfa in Lannion_CAS to Morlaix",
                 "link-tp-id": "west edfa in Lannion_CAS to Morlaix"
               }
@@ -346,6 +356,7 @@
             "path-route-object": {
               "index": 15,
               "num-unnum-hop": {
+                "gnpy-node-type": "ROADM",
                 "node-id": "roadm Lannion_CAS",
                 "link-tp-id": "roadm Lannion_CAS"
               }
@@ -364,6 +375,7 @@
             "path-route-object": {
               "index": 17,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "east edfa in Lannion_CAS to Corlay",
                 "link-tp-id": "east edfa in Lannion_CAS to Corlay"
               }
@@ -472,6 +484,7 @@
             "path-route-object": {
               "index": 29,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "west edfa in Lorient_KMA to Loudeac",
                 "link-tp-id": "west edfa in Lorient_KMA to Loudeac"
               }
@@ -490,6 +503,7 @@
             "path-route-object": {
               "index": 31,
               "num-unnum-hop": {
+                "gnpy-node-type": "ROADM",
                 "node-id": "roadm Lorient_KMA",
                 "link-tp-id": "roadm Lorient_KMA"
               }
@@ -508,6 +522,7 @@
             "path-route-object": {
               "index": 33,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "east edfa in Lorient_KMA to Vannes_KBE",
                 "link-tp-id": "east edfa in Lorient_KMA to Vannes_KBE"
               }
@@ -544,6 +559,7 @@
             "path-route-object": {
               "index": 37,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "west edfa in Vannes_KBE to Lorient_KMA",
                 "link-tp-id": "west edfa in Vannes_KBE to Lorient_KMA"
               }
@@ -562,6 +578,7 @@
             "path-route-object": {
               "index": 39,
               "num-unnum-hop": {
+                "gnpy-node-type": "ROADM",
                 "node-id": "roadm Vannes_KBE",
                 "link-tp-id": "roadm Vannes_KBE"
               }
@@ -580,6 +597,7 @@
             "path-route-object": {
               "index": 41,
               "num-unnum-hop": {
+                "gnpy-node-type": "transceiver",
                 "node-id": "trx Vannes_KBE",
                 "link-tp-id": "trx Vannes_KBE"
               }
@@ -640,6 +658,7 @@
             "path-route-object": {
               "index": 0,
               "num-unnum-hop": {
+                "gnpy-node-type": "transceiver",
                 "node-id": "trx Lannion_CAS",
                 "link-tp-id": "trx Lannion_CAS"
               }
@@ -667,6 +686,7 @@
             "path-route-object": {
               "index": 3,
               "num-unnum-hop": {
+                "gnpy-node-type": "ROADM",
                 "node-id": "roadm Lannion_CAS",
                 "link-tp-id": "roadm Lannion_CAS"
               }
@@ -685,6 +705,7 @@
             "path-route-object": {
               "index": 5,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "east edfa in Lannion_CAS to Stbrieuc",
                 "link-tp-id": "east edfa in Lannion_CAS to Stbrieuc"
               }
@@ -721,6 +742,7 @@
             "path-route-object": {
               "index": 9,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "east edfa in Stbrieuc to Rennes_STA",
                 "link-tp-id": "east edfa in Stbrieuc to Rennes_STA"
               }
@@ -757,6 +779,7 @@
             "path-route-object": {
               "index": 13,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "west edfa in Rennes_STA to Stbrieuc",
                 "link-tp-id": "west edfa in Rennes_STA to Stbrieuc"
               }
@@ -775,6 +798,7 @@
             "path-route-object": {
               "index": 15,
               "num-unnum-hop": {
+                "gnpy-node-type": "ROADM",
                 "node-id": "roadm Rennes_STA",
                 "link-tp-id": "roadm Rennes_STA"
               }
@@ -793,6 +817,7 @@
             "path-route-object": {
               "index": 17,
               "num-unnum-hop": {
+                "gnpy-node-type": "transceiver",
                 "node-id": "trx Rennes_STA",
                 "link-tp-id": "trx Rennes_STA"
               }
@@ -853,6 +878,7 @@
             "path-route-object": {
               "index": 0,
               "num-unnum-hop": {
+                "gnpy-node-type": "transceiver",
                 "node-id": "trx Rennes_STA",
                 "link-tp-id": "trx Rennes_STA"
               }
@@ -880,6 +906,7 @@
             "path-route-object": {
               "index": 3,
               "num-unnum-hop": {
+                "gnpy-node-type": "ROADM",
                 "node-id": "roadm Rennes_STA",
                 "link-tp-id": "roadm Rennes_STA"
               }
@@ -898,6 +925,7 @@
             "path-route-object": {
               "index": 5,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "east edfa in Rennes_STA to Ploermel",
                 "link-tp-id": "east edfa in Rennes_STA to Ploermel"
               }
@@ -934,6 +962,7 @@
             "path-route-object": {
               "index": 9,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "east edfa in Ploermel to Vannes_KBE",
                 "link-tp-id": "east edfa in Ploermel to Vannes_KBE"
               }
@@ -970,6 +999,7 @@
             "path-route-object": {
               "index": 13,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "west edfa in Vannes_KBE to Ploermel",
                 "link-tp-id": "west edfa in Vannes_KBE to Ploermel"
               }
@@ -988,6 +1018,7 @@
             "path-route-object": {
               "index": 15,
               "num-unnum-hop": {
+                "gnpy-node-type": "ROADM",
                 "node-id": "roadm Vannes_KBE",
                 "link-tp-id": "roadm Vannes_KBE"
               }
@@ -1006,6 +1037,7 @@
             "path-route-object": {
               "index": 17,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "east edfa in Vannes_KBE to Lorient_KMA",
                 "link-tp-id": "east edfa in Vannes_KBE to Lorient_KMA"
               }
@@ -1042,6 +1074,7 @@
             "path-route-object": {
               "index": 21,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "west edfa in Lorient_KMA to Vannes_KBE",
                 "link-tp-id": "west edfa in Lorient_KMA to Vannes_KBE"
               }
@@ -1060,6 +1093,7 @@
             "path-route-object": {
               "index": 23,
               "num-unnum-hop": {
+                "gnpy-node-type": "ROADM",
                 "node-id": "roadm Lorient_KMA",
                 "link-tp-id": "roadm Lorient_KMA"
               }
@@ -1078,6 +1112,7 @@
             "path-route-object": {
               "index": 25,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "east edfa in Lorient_KMA to Loudeac",
                 "link-tp-id": "east edfa in Lorient_KMA to Loudeac"
               }
@@ -1186,6 +1221,7 @@
             "path-route-object": {
               "index": 37,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "west edfa in Lannion_CAS to Corlay",
                 "link-tp-id": "west edfa in Lannion_CAS to Corlay"
               }
@@ -1204,6 +1240,7 @@
             "path-route-object": {
               "index": 39,
               "num-unnum-hop": {
+                "gnpy-node-type": "ROADM",
                 "node-id": "roadm Lannion_CAS",
                 "link-tp-id": "roadm Lannion_CAS"
               }
@@ -1222,6 +1259,7 @@
             "path-route-object": {
               "index": 41,
               "num-unnum-hop": {
+                "gnpy-node-type": "transceiver",
                 "node-id": "trx Lannion_CAS",
                 "link-tp-id": "trx Lannion_CAS"
               }
@@ -1282,6 +1320,7 @@
             "path-route-object": {
               "index": 0,
               "num-unnum-hop": {
+                "gnpy-node-type": "transceiver",
                 "node-id": "trx Rennes_STA",
                 "link-tp-id": "trx Rennes_STA"
               }
@@ -1309,6 +1348,7 @@
             "path-route-object": {
               "index": 3,
               "num-unnum-hop": {
+                "gnpy-node-type": "ROADM",
                 "node-id": "roadm Rennes_STA",
                 "link-tp-id": "roadm Rennes_STA"
               }
@@ -1327,6 +1367,7 @@
             "path-route-object": {
               "index": 5,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "east edfa in Rennes_STA to Stbrieuc",
                 "link-tp-id": "east edfa in Rennes_STA to Stbrieuc"
               }
@@ -1363,6 +1404,7 @@
             "path-route-object": {
               "index": 9,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "west edfa in Stbrieuc to Rennes_STA",
                 "link-tp-id": "west edfa in Stbrieuc to Rennes_STA"
               }
@@ -1399,6 +1441,7 @@
             "path-route-object": {
               "index": 13,
               "num-unnum-hop": {
+                "gnpy-node-type": "EDFA",
                 "node-id": "west edfa in Lannion_CAS to Stbrieuc",
                 "link-tp-id": "west edfa in Lannion_CAS to Stbrieuc"
               }
@@ -1417,6 +1460,7 @@
             "path-route-object": {
               "index": 15,
               "num-unnum-hop": {
+                "gnpy-node-type": "ROADM",
                 "node-id": "roadm Lannion_CAS",
                 "link-tp-id": "roadm Lannion_CAS"
               }
@@ -1435,6 +1479,7 @@
             "path-route-object": {
               "index": 17,
               "num-unnum-hop": {
+                "gnpy-node-type": "transceiver",
                 "node-id": "trx Lannion_CAS",
                 "link-tp-id": "trx Lannion_CAS"
               }

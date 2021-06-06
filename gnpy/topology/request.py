@@ -21,7 +21,7 @@ from networkx import (dijkstra_path, NetworkXNoPath,
                       all_simple_paths, shortest_simple_paths)
 from networkx.utils import pairwise
 from numpy import mean
-from gnpy.core.elements import Transceiver, Roadm
+from gnpy.core.elements import Transceiver, Roadm, Edfa
 from gnpy.core.utils import lin2db
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.exceptions import ServiceError, DisjunctionError
@@ -145,53 +145,55 @@ class ResultElement:
 
     @property
     def detailed_path_json(self):
+        return self.detailed_json_for_path(self.computed_path)
+
+    @property
+    def detailed_reversed_path_json(self):
+        return self.detailed_json_for_path(self.reversed_computed_path)
+
+    def detailed_json_for_path(self, path):
         """ a function that builds path object for normal and blocking cases
         """
-        index = 0
         pro_list = []
-        for element in self.computed_path:
+        for index, element in enumerate(path):
             temp = {
                 'path-route-object': {
                     'index': index,
                     'num-unnum-hop': {
                         'node-id': element.uid,
                         'link-tp-id': element.uid,
-                        # TODO change index in order to insert transponder attribute
                     }
                 }
             }
-            pro_list.append(temp)
-            index += 1
+
             if self.path_request.M > 0:
-                temp = {
-                    'path-route-object': {
-                        'index': index,
-                        "label-hop": {
-                            "N": self.path_request.N,
-                            "M": self.path_request.M
-                        },
-                    }
+                temp['path-route-object']["label-hop"] = {
+
+                    "N": self.path_request.N,
+                    "M": self.path_request.M
                 }
-                pro_list.append(temp)
-                index += 1
             elif self.path_request.M == 0 and hasattr(self.path_request, 'blocking_reason'):
                 # if the path is blocked due to spectrum, no label object is created, but
                 # the json response includes a detailed path for user infromation.
                 pass
             else:
                 raise ServiceError('request {self.path_id} should have positive path bandwidth value.')
+
             if isinstance(element, Transceiver):
-                temp = {
-                    'path-route-object': {
-                        'index': index,
-                        'transponder': {
-                            'transponder-type': self.path_request.tsp,
-                            'transponder-mode': self.path_request.tsp_mode
-                        }
-                    }
+                temp['path-route-object']['num-unnum-hop']['gnpy-node-type'] = 'transceiver'
+                temp['path-route-object']['num-unnum-hop']['transponder'] = {
+                    'transponder-type': self.path_request.tsp,
+                    'transponder-mode': self.path_request.tsp_mode
                 }
-                pro_list.append(temp)
-                index += 1
+            if isinstance(element, Edfa):
+                temp['path-route-object']['num-unnum-hop']['gnpy-node-type'] = 'EDFA'
+                temp['path-route-object']['num-unnum-hop']['target-channel-power'] = element.effective_pch_out_db
+                temp['path-route-object']['output-voa']: element.out_voa
+            if isinstance(element, Roadm):
+                temp['path-route-object']['num-unnum-hop']['gnpy-node-type'] = 'ROADM'
+                temp['path-route-object']['num-unnum-hop']['target-channel-power'] = element.effective_pch_out_db
+
+            pro_list.append(temp)
         return pro_list
 
     @property
@@ -231,7 +233,8 @@ class ResultElement:
             path_properties = {
                 'path-metric': path_metric(self.computed_path, self.path_request),
                 'z-a-path-metric': path_metric(self.reversed_computed_path, self.path_request),
-                'path-route-objects': self.detailed_path_json
+                'path-route-objects': self.detailed_path_json,
+                'reversed-path-route-objects': self.detailed_reversed_path_json,
             }
         else:
             path_properties = {
