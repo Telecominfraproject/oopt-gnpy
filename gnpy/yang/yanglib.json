@@ -43,6 +43,12 @@
         "revision": "2020-09-01",
         "namespace": "https://oopt.telecominfraproject.com/yang/simulation",
         "conformance-type": "implement"
+      },
+      {
+        "name": "tip-onos-topology",
+        "revision": "2021-06-06",
+        "namespace": "https://oopt.telecominfraproject.com/yang/onos-topology",
+        "conformance-type": "implement"
       }
     ]
   }

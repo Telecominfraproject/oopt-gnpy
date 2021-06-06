@@ -1,0 +1,104 @@
+module tip-onos-topology {
+  yang-version 1.1;
+  namespace "https://oopt.telecominfraproject.com/yang/onos-topology";
+  prefix "gnpy-onos";
+
+  import ietf-network {
+    prefix nw;
+    revision-date 2018-02-26;
+  }
+
+  import ietf-network-topology {
+    prefix nt;
+    revision-date 2018-02-26;
+  }
+
+  organization "Telecom Infrastructure Project";
+  contact "https://github.com/Telecominfraproject/oopt-gnpy";
+  description "Feeding GNPy simulations into ONOS
+
+  GNPy and ONOS have different understanding of what \"a node\" is.
+  In GNPy, a typical ROADM, and even a ROADM degree, comprises one GNPy-level element for the \"switching matrix\", and also an extra element for each integrated EDFA.
+  This presents certain issues when mapping ONOS-level requests with GNPy-level path information -- simply because the node IDs *cannot* be the same.
+
+  No GNPy nodes are \"split\" into several ONOS nodes, but many ONOS elements are split into several GNPy nodes each.
+
+  To use this, just create one nw:network for the GNPy topology, and one nw:network for the ONOS topology.
+  The node IDs in GNPy are arbitrary, while the node IDs in this topology must map directly to ONOS Device URLs.
+  Create a pair of nt:network/node/supporting-node/node-ref and network-ref going from the ONOS topology to the GNPy topology.
+  GNPy's experimental API server will use this information to automatically build a device configuration JSON that can be fed to ONOS.
+
+  The links are a bit more complex, because GNPy does not use ports -- just devices.
+  All connections in GNPy are unidirectional, whereas in ONOS we only use bidirectional ones -- but with a given port.
+  This is required so that, e.g., ONOS knows how to determine the egress port number when routing a MC in a ROADM.
+  ";
+
+  revision 2021-06-06 {
+    description "Initial release";
+    reference "Internal documentation";
+  }
+
+  augment "/nw:networks/nw:network/nw:network-types" {
+    description "ONOS topology for use with GNPy";
+    container onos-topology {
+      presence "Devices for ONOS";
+      description "Devices for ONOS";
+    }
+  }
+
+  augment "/nw:networks/nw:network/nw:node" {
+    when "../nw:network-types/gnpy-onos:onos-topology";
+    description "ONOS devices";
+
+    container device {
+      description "A device that ONOS can connect to
+
+      Use nt:node/supporting-node to tie this with GNPy-level nodes.
+      ";
+      leaf name {
+        type string;
+        mandatory true;
+        description "A free-form title";
+      }
+      leaf grid-x {
+        type int16;
+        mandatory true;
+        description "Position in ONOS' topology view (X)";
+      }
+      leaf grid-y {
+        type int16;
+        mandatory true;
+        description "Position in ONOS' topology view (Y)";
+      }
+      leaf driver {
+        type string;
+        mandatory true;
+        description "Driver ID";
+      }
+      container netconf {
+        description "Protocol options for NETCONF connections";
+        leaf username {
+          type string;
+          mandatory true;
+          description "Login name";
+        }
+        leaf password {
+          type string;
+          mandatory true;
+          description "Password in cleartext";
+        }
+        leaf idle-timeout {
+          type uint16;
+          description "Just use 0 here";
+        }
+      }
+    }
+  }
+
+  augment "/nw:networks/nw:network/nt:link" {
+    when "../nw:network-types/gnpy-onos:onos-topology";
+    description "ONOS device links";
+
+    // right now we just don't to anything; we create a link with a magic name, and that's all
+  }
+}
