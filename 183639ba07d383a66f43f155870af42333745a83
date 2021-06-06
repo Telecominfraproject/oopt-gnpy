@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6f7c262_6060ae6a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-06T10:49:47Z",
+      "side": 1,
+      "message": "@Esther, how was the test file created? I would like to regenerate it with the new code. I tried this:\n gnpy-path-request -e tests/data/eqpt_config.json tests/data/testTopology.xls -o tests/data/testTopology_response.json\n\n...but it apparently used different options back then because I got a different GSNR.",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 7
+      },
+      "revId": "183639ba07d383a66f43f155870af42333745a83",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
