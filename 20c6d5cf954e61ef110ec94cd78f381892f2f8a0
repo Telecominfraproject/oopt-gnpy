@@ -52,6 +52,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f635ae0_7be3e213",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017986
+      },
+      "writtenOn": "2021-06-07T16:56:28Z",
+      "side": 1,
+      "message": "Thanks for the explanation :-) Please consider my comments as deprecated :-) \nYou\u0027re perfectly right to want to get ride of hand-written API endpoints and rely on yang models to automatically generate endpoints. From my point of view RESTCONF is the natural way to provide API for consumer like controller. I think that providing an openapi definition of the api would be a good feature too for consumer that are not controllers (for example IT application).\nI\u0027m sorry but I will not be available for the next coder call.",
+      "parentUuid": "9da5ff2f_e8e845f8",
+      "revId": "20c6d5cf954e61ef110ec94cd78f381892f2f8a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89ea522f_d5668c92",
@@ -89,6 +107,30 @@
       "side": 1,
       "message": "I don\u0027t know what you mean here -- what are you referring to?",
       "parentUuid": "89ea522f_d5668c92",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 17
+      },
+      "revId": "20c6d5cf954e61ef110ec94cd78f381892f2f8a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c64c5a47_952f6f51",
+        "filename": "gnpy/tools/rest_server/app.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1017986
+      },
+      "writtenOn": "2021-06-07T16:56:28Z",
+      "side": 1,
+      "message": "I\u0027m referring to \"layered architecture pattern\"",
+      "parentUuid": "34e0cfe7_d18048bc",
       "range": {
         "startLine": 18,
         "startChar": 0,
