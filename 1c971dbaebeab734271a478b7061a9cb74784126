@@ -52,6 +52,24 @@
       "parentUuid": "8df1070f_64585b6c",
       "revId": "1c971dbaebeab734271a478b7061a9cb74784126",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d2dfe78_c42e4f8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-06-07T12:52:25Z",
+      "side": 1,
+      "message": "I agree with Jonas, in the Yang, when describing the transceiver, a range is useful but should be optional. About the default, my new code set the roll off to zero if it is not provided, but I think we can find a more realistic value for this quantity. For example, in the eqpt_config.json, the basic SI has roll off 0.15.",
+      "parentUuid": "87a6d7e7_830228f8",
+      "revId": "1c971dbaebeab734271a478b7061a9cb74784126",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
