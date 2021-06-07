@@ -22,6 +22,30 @@
       },
       "revId": "e5efdc013877db0526fcaed109b065d333b9489e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09ec2357_bd997a19",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-07T10:00:59Z",
+      "side": 1,
+      "message": "The if-block can \"fail\" when it throws; in that case the power_range is not initialized to [0]. That\u0027s why I\u0027m initializing just once in the common code path.\n\nI can add an `else` with that comment, but then it will also need a `pass` because a comment doesn\u0027t count as a statement. Which one do you prefer?",
+      "parentUuid": "5d5d7f3a_00365f12",
+      "range": {
+        "startLine": 217,
+        "startChar": 4,
+        "endLine": 225,
+        "endChar": 114
+      },
+      "revId": "e5efdc013877db0526fcaed109b065d333b9489e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
