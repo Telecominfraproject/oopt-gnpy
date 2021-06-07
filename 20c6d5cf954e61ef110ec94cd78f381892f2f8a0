@@ -35,6 +35,23 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9da5ff2f_e8e845f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-07T09:31:46Z",
+      "side": 1,
+      "message": "Thanks a lot for checking this; I think I should have made it clear that this is in no way ready for a merge :) just yet. I wanted to have this available among the list of \"patches under review\" so that potential contributors can follow progress. It\u0027s definitely CR-2 for now.\n\nIn general, I would like to get rid of API endpoints which are hand-written like this one; a proper approach should be, IMHO, purely via RESTCONF or NETCONF. That way, the equipment library and the topology gets provisioned via your usual \u003cedit-config\u003e, and path computation gets triggered via an \u003caction\u003e. Or perhaps go the 100% stateless route (\"GNPy as a service\"), abolish any configs whatsoever, and just support a single action which gets the full config (equipment library, topology, sim options, path requests) as its input. This might need support for YANG-level schema mounts, though, because of the way how the ietf-network was designed. Also, the ONOS bits are indeed rather demo-specific.\n\nPerhaps we can discuss our ideas for the way forward in the next coders call (tomorrow 12:00 CEST)?\n",
+      "revId": "20c6d5cf954e61ef110ec94cd78f381892f2f8a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89ea522f_d5668c92",
@@ -48,6 +65,30 @@
       "writtenOn": "2021-06-07T08:44:32Z",
       "side": 1,
       "message": "Should be put in a dedicated service layer, shouldn\u0027t it ?",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 17
+      },
+      "revId": "20c6d5cf954e61ef110ec94cd78f381892f2f8a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34e0cfe7_d18048bc",
+        "filename": "gnpy/tools/rest_server/app.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-07T09:31:46Z",
+      "side": 1,
+      "message": "I don\u0027t know what you mean here -- what are you referring to?",
+      "parentUuid": "89ea522f_d5668c92",
       "range": {
         "startLine": 18,
         "startChar": 0,
