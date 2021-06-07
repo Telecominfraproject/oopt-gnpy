@@ -3,6 +3,7 @@
     check:
       jobs:
         - tox-py38-cover
+        - tox-py39
         - coverage-diff:
             voting: false
             dependencies:
@@ -18,6 +19,7 @@
     gate:
       jobs:
         - tox-py38-f32
+        - tox-py39
         - tox-docs-f32
     tag:
       jobs:
