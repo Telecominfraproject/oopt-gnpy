@@ -16,6 +16,24 @@
       "message": "Can we make it optional? The roll-off is often not specified in datasheets.\n\nAnother thing is that the roll-off is sometimes configurable by the DSP at provisioning. So maybe it should be a range in the equipment library and the desired roll-off within that range could be specified in the service request.",
       "revId": "1c971dbaebeab734271a478b7061a9cb74784126",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8df1070f_64585b6c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-07T10:16:52Z",
+      "side": 1,
+      "message": "Andrea, what\u0027s your take on this one -- can your new code properly simulate a transponder where the roll-off is not known? Would a range help you?",
+      "parentUuid": "5a166edb_9a6cc01b",
+      "revId": "1c971dbaebeab734271a478b7061a9cb74784126",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
