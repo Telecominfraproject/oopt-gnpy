@@ -16,6 +16,184 @@
       "message": "Could you please have a look to the API prepared by Emmanuelle in the experimental/candi2021 https://github.com/Telecominfraproject/oopt-gnpy/tree/experimental/2021-candi/gnpy/api ?\nI think that what you propose here for master is too closely related to the specific case of ONOS particular demo, and not generic enough.",
       "revId": "20c6d5cf954e61ef110ec94cd78f381892f2f8a0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1823c914_9ca9c0b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017986
+      },
+      "writtenOn": "2021-06-07T08:44:32Z",
+      "side": 1,
+      "message": "Hello,\n\nPlease find my comments :-)\n\nBest regards.",
+      "revId": "20c6d5cf954e61ef110ec94cd78f381892f2f8a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89ea522f_d5668c92",
+        "filename": "gnpy/tools/rest_server/app.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1017986
+      },
+      "writtenOn": "2021-06-07T08:44:32Z",
+      "side": 1,
+      "message": "Should be put in a dedicated service layer, shouldn\u0027t it ?",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 17
+      },
+      "revId": "20c6d5cf954e61ef110ec94cd78f381892f2f8a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76382812_aef40831",
+        "filename": "gnpy/tools/rest_server/app.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1017986
+      },
+      "writtenOn": "2021-06-07T08:44:32Z",
+      "side": 1,
+      "message": "Is it still experimental as you propose to merge it in master ?",
+      "range": {
+        "startLine": 171,
+        "startChar": 13,
+        "endLine": 171,
+        "endChar": 30
+      },
+      "revId": "20c6d5cf954e61ef110ec94cd78f381892f2f8a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d68e1b8_6d27e608",
+        "filename": "gnpy/tools/rest_server/app.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1017986
+      },
+      "writtenOn": "2021-06-07T08:44:32Z",
+      "side": 1,
+      "message": "For api endpoint it\u0027s a good practice to have version of the api in path, example/gnpy/api/v1",
+      "range": {
+        "startLine": 177,
+        "startChar": 12,
+        "endLine": 177,
+        "endChar": 30
+      },
+      "revId": "20c6d5cf954e61ef110ec94cd78f381892f2f8a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90f61ae7_26130f32",
+        "filename": "gnpy/tools/rest_server/app.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1017986
+      },
+      "writtenOn": "2021-06-07T08:44:32Z",
+      "side": 1,
+      "message": "Perhaps a json response instead of text response ?",
+      "range": {
+        "startLine": 180,
+        "startChar": 35,
+        "endLine": 180,
+        "endChar": 65
+      },
+      "revId": "20c6d5cf954e61ef110ec94cd78f381892f2f8a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7db06d7_a3de84c8",
+        "filename": "gnpy/tools/rest_server/app.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1017986
+      },
+      "writtenOn": "2021-06-07T08:44:32Z",
+      "side": 1,
+      "message": "Is it for api status ? If yes, perhaps add a dedicated endpoint for the api status.",
+      "range": {
+        "startLine": 184,
+        "startChar": 7,
+        "endLine": 184,
+        "endChar": 29
+      },
+      "revId": "20c6d5cf954e61ef110ec94cd78f381892f2f8a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6683cf9_c9887b7f",
+        "filename": "gnpy/tools/rest_server/app.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1017986
+      },
+      "writtenOn": "2021-06-07T08:44:32Z",
+      "side": 1,
+      "message": "Not sure it\u0027s the right way to put onos in endpoint path. To be more generic, perhaps a filter will be more appropriate ie : /gnpy-experimental/devices?controller\u003donos",
+      "range": {
+        "startLine": 187,
+        "startChar": 0,
+        "endLine": 187,
+        "endChar": 45
+      },
+      "revId": "20c6d5cf954e61ef110ec94cd78f381892f2f8a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7208ed5_ddf94aa5",
+        "filename": "gnpy/tools/rest_server/app.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1017986
+      },
+      "writtenOn": "2021-06-07T08:44:32Z",
+      "side": 1,
+      "message": "Not sure it\u0027s the right way to put onos in endpoint path. To be more generic, perhaps a filter will be more appropriate ie : /gnpy-experimental/devices?controller\u003donos",
+      "range": {
+        "startLine": 194,
+        "startChar": 0,
+        "endLine": 194,
+        "endChar": 43
+      },
+      "revId": "20c6d5cf954e61ef110ec94cd78f381892f2f8a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
