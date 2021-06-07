@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54e97897_64070e66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-07T08:27:13Z",
+      "side": 1,
+      "message": "Could you please have a look to the API prepared by Emmanuelle in the experimental/candi2021 https://github.com/Telecominfraproject/oopt-gnpy/tree/experimental/2021-candi/gnpy/api ?\nI think that what you propose here for master is too closely related to the specific case of ONOS particular demo, and not generic enough.",
+      "revId": "20c6d5cf954e61ef110ec94cd78f381892f2f8a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
