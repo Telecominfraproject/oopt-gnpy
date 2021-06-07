@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4b90f1e_62a0d4b9",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-07T09:51:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a69b9e1_cce9bfd3",
+      "range": {
+        "startLine": 407,
+        "startChar": 12,
+        "endLine": 407,
+        "endChar": 52
+      },
+      "revId": "2398222703b1bc810b9e4818792aa94337c2fb99",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32371edf_6b824ec8",
@@ -42,6 +66,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e66379c_b579e560",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-07T09:51:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32371edf_6b824ec8",
+      "revId": "2398222703b1bc810b9e4818792aa94337c2fb99",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b21cfe9_2951b35c",
@@ -55,6 +97,24 @@
       "writtenOn": "2021-06-01T17:18:26Z",
       "side": 1,
       "message": "You removed the \"break\" but I think it should be replaced it with a \"continue\".",
+      "revId": "2398222703b1bc810b9e4818792aa94337c2fb99",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca330bb2_0974a22f",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-07T09:51:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4b21cfe9_2951b35c",
       "revId": "2398222703b1bc810b9e4818792aa94337c2fb99",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -120,6 +180,30 @@
       "side": 1,
       "message": "I think what I find confusing in this comment is that it talks about \"an else case\", but the `requested_m` is taken unconditionally. In other words, it talks about something which is not there, but at the same time it\u0027s \"on a wrong indentation level\" for me to make sense on a first sight. My suggestion is to get rid of that because the code always ends up using the content of that variable.",
       "parentUuid": "eeabb8a8_473af4e2",
+      "range": {
+        "startLine": 418,
+        "startChar": 12,
+        "endLine": 418,
+        "endChar": 80
+      },
+      "revId": "2398222703b1bc810b9e4818792aa94337c2fb99",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f2c039f_f55f2a51",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-07T09:51:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa6bc666_8989f579",
       "range": {
         "startLine": 418,
         "startChar": 12,
