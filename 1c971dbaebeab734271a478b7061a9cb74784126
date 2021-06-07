@@ -34,6 +34,24 @@
       "parentUuid": "5a166edb_9a6cc01b",
       "revId": "1c971dbaebeab734271a478b7061a9cb74784126",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87a6d7e7_830228f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-06-07T12:09:44Z",
+      "side": 1,
+      "message": "As I understand it, the roll-off is required for ggn simulation. But why can\u0027t we have a default value in the YANG model?\n\nThe range proposal was not meant to solve the case of unknown roll-off. It was meant to model the separate case when the transceiver supports setting the roll-off dynamically within a defined range, i.e. a single value is not sufficient to describe the transceiver. In this case, the chosen roll-off for a specific lightpath value would have to be defined somewhere else, probably in the service request.",
+      "parentUuid": "8df1070f_64585b6c",
+      "revId": "1c971dbaebeab734271a478b7061a9cb74784126",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
