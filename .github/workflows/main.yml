@@ -1,0 +1,19 @@
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Tox test
+    steps:
+      - uses: fedora-python/tox-github-action
+    strategy:
+      matrix:
+        tox_env:
+          - py38
+          - py39
+          - docs
