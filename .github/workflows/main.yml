@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: fedora-python/tox-github-action@v0.4
         with:
           tox_env: ${{ matrix.tox_env }}
