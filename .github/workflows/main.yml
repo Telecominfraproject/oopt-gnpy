@@ -71,7 +71,7 @@ jobs:
           context: .
           push: true
           tags: |
-            telecominfraproject/oopt-gnpy:dev-${{ steps.extract_pretty_git.outputs.GIT_DESC }}
+            telecominfraproject/oopt-gnpy:${{ steps.extract_pretty_git.outputs.GIT_DESC }}
             telecominfraproject/oopt-gnpy:master
       - name: Extract tag name
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
