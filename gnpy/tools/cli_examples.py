@@ -214,17 +214,16 @@ def transmission_main_example(args=None):
           f'and {destination.uid}')
     print(f'\nNow propagating between {source.uid} and {destination.uid}:')
 
-    try:
-        p_start, p_stop, p_step = equipment['SI']['default'].power_range_db
-        p_num = abs(int(round((p_stop - p_start) / p_step))) + 1 if p_step != 0 else 1
-        power_range = list(linspace(p_start, p_stop, p_num))
-    except TypeError:
-        print('invalid power range definition in eqpt_config, should be power_range_db: [lower, upper, step]')
-        power_range = [0]
-
-    if not power_mode:
+    power_range = [0]
+    if power_mode:
         # power cannot be changed in gain mode
-        power_range = [0]
+        try:
+            p_start, p_stop, p_step = equipment['SI']['default'].power_range_db
+            p_num = abs(int(round((p_stop - p_start) / p_step))) + 1 if p_step != 0 else 1
+            power_range = list(linspace(p_start, p_stop, p_num))
+        except TypeError:
+            print('invalid power range definition in eqpt_config, should be power_range_db: [lower, upper, step]')
+
     for dp_db in power_range:
         req.power = db2lin(pref_ch_db + dp_db) * 1e-3
         if power_mode:
