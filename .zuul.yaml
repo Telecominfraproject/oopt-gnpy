@@ -2,23 +2,25 @@
 - project:
     check:
       jobs:
-        - tox-py38-cover
+        - tox-py38-f34
+        - tox-py39-cover
+        - tox-docs-f34
         - coverage-diff:
             voting: false
             dependencies:
-              - tox-py38-cover-previous
-              - tox-py38-cover
+              - tox-py39-cover-previous
+              - tox-py39-cover
             vars:
-              coverage_job_name_previous: tox-py38-cover-previous
-              coverage_job_name_current: tox-py38-cover
+              coverage_job_name_previous: tox-py39-cover-previous
+              coverage_job_name_current: tox-py39-cover
         - tox-linters-diff-n-report:
             voting: false
-        - tox-docs-f32
-        - tox-py38-cover-previous
+        - tox-py39-cover-previous
     gate:
       jobs:
         - tox-py38-f32
-        - tox-docs-f32
+        - tox-py39-f34
+        - tox-docs-f34
     tag:
       jobs:
         - oopt-release-python:
