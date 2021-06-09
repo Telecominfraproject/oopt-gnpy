@@ -16,6 +16,75 @@
       "message": "I\u0027ve changed this a lot, so I would appreciate if you could take another look.",
       "revId": "f88d95d54bd2b03eb75f16939a00334917d5f826",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a45d02f5_e5284aae",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 11
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-06-09T21:27:35Z",
+      "side": 1,
+      "message": "This can be removed.",
+      "range": {
+        "startLine": 118,
+        "startChar": 25,
+        "endLine": 118,
+        "endChar": 66
+      },
+      "revId": "f88d95d54bd2b03eb75f16939a00334917d5f826",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2eab8d7d_5b7abd9d",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 11
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-06-09T21:27:35Z",
+      "side": 1,
+      "message": "You already describe it in the power-adjustment container below. The launch power is calculated based on exit span loss and then the gain is set to achieve this launch power.",
+      "range": {
+        "startLine": 124,
+        "startChar": 66,
+        "endLine": 124,
+        "endChar": 85
+      },
+      "revId": "f88d95d54bd2b03eb75f16939a00334917d5f826",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c845c700_97514853",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 11
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-06-09T21:27:35Z",
+      "side": 1,
+      "message": "I don\u0027t think this is correct. In gain-mode adjustment is not performed for EDFAs which have gain_target explicitly set. In both gain-mode (without gain_target set) and power-mode, adjustment is still not performed for EDFAs which have delta_p explicitly set.",
+      "range": {
+        "startLine": 138,
+        "startChar": 8,
+        "endLine": 139,
+        "endChar": 81
+      },
+      "revId": "f88d95d54bd2b03eb75f16939a00334917d5f826",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
