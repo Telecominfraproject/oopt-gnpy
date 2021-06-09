@@ -70,6 +70,24 @@
       "parentUuid": "87a6d7e7_830228f8",
       "revId": "1c971dbaebeab734271a478b7061a9cb74784126",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf8e05f9_6ee439bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-09T18:52:02Z",
+      "side": 1,
+      "message": "I\u0027ll just add a default of 0.15, thanks!",
+      "parentUuid": "3d2dfe78_c42e4f8d",
+      "revId": "1c971dbaebeab734271a478b7061a9cb74784126",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
