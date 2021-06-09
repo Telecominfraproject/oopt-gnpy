@@ -26,3 +26,43 @@ jobs:
         include:
           - tox_env: docs
             dnf_install: graphviz
+
+  docker:
+    needs: build
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v'))
+    name: Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: jktjkt
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Extract tag name
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        id: extract_pretty_git
+        run: echo ::set-output name=GIT_DESC::$(git describe --tags)
+      - name: Build and push a container
+        uses: docker/build-push-action@v2
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        with:
+          context: .
+          push: true
+          tags: |
+            telecominfraproject/oopt-gnpy:dev-${{ steps.extract_pretty_git.outputs.GIT_DESC }}
+            telecominfraproject/oopt-gnpy:master
+      - name: Extract tag name
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+        id: extract_tag_name
+        run: echo ::set-output name=GIT_DESC::${GITHUB_REF/refs\/tags\//}
+      - name: Build and push a container
+        uses: docker/build-push-action@v2
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+        with:
+          context: .
+          push: true
+          tags: |
+            telecominfraproject/oopt-gnpy:${{ steps.extract_tag_name.outputs.GIT_DESC }}
