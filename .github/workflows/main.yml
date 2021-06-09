@@ -5,7 +5,7 @@ on:
     branches:
       - master
 
-name: build
+name: CI
 
 jobs:
   build:
