@@ -22,6 +22,30 @@
       },
       "revId": "6cc55b83e5075d209aa6178a52ea1ab1a038b5e4",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18e6d9d2_1f967db1",
+        "filename": "tests/test_invocation.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-06-10T22:03:48Z",
+      "side": 1,
+      "message": "I think the differences are because fiber lengths are rounded to 3 fraction-digits in the YANG input.",
+      "parentUuid": "a13c2b29_d74cbad7",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 117
+      },
+      "revId": "6cc55b83e5075d209aa6178a52ea1ab1a038b5e4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
