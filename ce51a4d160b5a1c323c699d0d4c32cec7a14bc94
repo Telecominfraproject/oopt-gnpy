@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1a1919c_16f7089b",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-11T07:08:49Z",
+      "side": 1,
+      "message": "would it be possible to have a test added with this particular use case ? to catch the desired behaviour",
+      "revId": "ce51a4d160b5a1c323c699d0d4c32cec7a14bc94",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
