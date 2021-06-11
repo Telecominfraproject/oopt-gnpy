@@ -269,7 +269,7 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
                 node_loss = span_loss(network, prev_node)
                 voa = node.out_voa if node.out_voa else 0
                 if node.delta_p is None:
-                    dp = target_power(network, next_node, equipment)
+                    dp = target_power(network, next_node, equipment) + voa
                 else:
                     dp = node.delta_p
                 if node.effective_gain is None or power_mode:
