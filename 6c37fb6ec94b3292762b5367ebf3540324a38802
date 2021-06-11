@@ -196,6 +196,24 @@
       "parentUuid": "1ea4e096_72a20c95",
       "revId": "6c37fb6ec94b3292762b5367ebf3540324a38802",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38be4a09_9d724e96",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-11T14:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05bd381e_8acbdce5",
+      "revId": "6c37fb6ec94b3292762b5367ebf3540324a38802",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }

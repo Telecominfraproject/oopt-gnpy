@@ -16,6 +16,24 @@
       "message": "Actually, you don\u0027t need this \"else\" since it\u0027s after the \"continue\" so if the previous \"if\" is true, execution will jump directly to the next iteration of the for loop anyway. So you could just write:\n\n if requested_m \u003e rq.M:\n     rq.N \u003d 0\n     rq.M \u003d 0\n     rq.blocking_reason \u003d \u0027NOT_ENOUGH_RESERVED_SPECTRUM\u0027\n     # need to stop here for this request and not go though spectrum selection process with requested_m\n     continue\n\n # use the req.M even if requested M is smaller\n requested_m \u003d rq.M",
       "revId": "921f03b1a55e3f1ca7d6bda61ffcdddaa7acf056",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a706424c_f2dce2b2",
+        "filename": "gnpy/topology/spectrum_assignment.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-11T14:27:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f4e1d3e4_c49b1aba",
+      "revId": "921f03b1a55e3f1ca7d6bda61ffcdddaa7acf056",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
