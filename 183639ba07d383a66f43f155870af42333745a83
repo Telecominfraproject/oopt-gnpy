@@ -22,6 +22,64 @@
       },
       "revId": "183639ba07d383a66f43f155870af42333745a83",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "588e1f98_0d844393",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-11T14:43:00Z",
+      "side": 1,
+      "message": "I am not sure I understand the question: the test_json_response_generation re-creates the response and if it passes it means that it is the same as the expected one. Then re-creating the response gives the exact same response as current testTopology_response.json\ngnpy-path-request tests/data/testTopology.xls tests/data/testTopology.xls -e tests/data/eqpt_config.json  -o toto.json",
+      "parentUuid": "e6f7c262_6060ae6a",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 7
+      },
+      "revId": "183639ba07d383a66f43f155870af42333745a83",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04bb8d11_115ada75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-11T14:43:00Z",
+      "side": 1,
+      "message": "I am not sure I can agree on part of this change: I do not understand why you add element types. this is already available in the topology.",
+      "revId": "183639ba07d383a66f43f155870af42333745a83",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afd0086a_0123e73a",
+        "filename": "tests/data/testTopology_response.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-11T14:43:00Z",
+      "side": 1,
+      "message": "Why does the controler needs the element type in the route ? It is in the topology, no ?",
+      "revId": "183639ba07d383a66f43f155870af42333745a83",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
