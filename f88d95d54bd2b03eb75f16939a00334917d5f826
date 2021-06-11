@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2d46f2f6_edc7be2b",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 11
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-11T15:27:25Z",
+      "side": 1,
+      "message": "what about per-channel-power-target-mode ? As a common user I do not mix the simulation power-mode and the actual power or gain modes of real amps, but I am not sure this is the case of all our users... (for example in power mode,  that power target is set for the total power (all channels), and means that if the nb of channels is changed the gain is changed, here this is not the case, because the target is the per channel power target, so the total output power will change if the user changes the number of channels between two simulations, and the gain will remain constant (if total power below max power).",
+      "revId": "f88d95d54bd2b03eb75f16939a00334917d5f826",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a45d02f5_e5284aae",
         "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
         "patchSetId": 11
@@ -31,6 +48,30 @@
       "writtenOn": "2021-06-09T21:27:35Z",
       "side": 1,
       "message": "This can be removed.",
+      "range": {
+        "startLine": 118,
+        "startChar": 25,
+        "endLine": 118,
+        "endChar": 66
+      },
+      "revId": "f88d95d54bd2b03eb75f16939a00334917d5f826",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a397bd7_5e6ed87b",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 11
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-11T15:27:25Z",
+      "side": 1,
+      "message": "\u003e This can be removed.\n\nI agree",
+      "parentUuid": "a45d02f5_e5284aae",
       "range": {
         "startLine": 118,
         "startChar": 25,
@@ -66,6 +107,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "de6f2c4e_03827bf5",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 11
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-11T15:27:25Z",
+      "side": 1,
+      "message": "launch",
+      "range": {
+        "startLine": 134,
+        "startChar": 24,
+        "endLine": 134,
+        "endChar": 30
+      },
+      "revId": "f88d95d54bd2b03eb75f16939a00334917d5f826",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c845c700_97514853",
         "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
         "patchSetId": 11
@@ -82,6 +146,52 @@
         "startChar": 8,
         "endLine": 139,
         "endChar": 81
+      },
+      "revId": "f88d95d54bd2b03eb75f16939a00334917d5f826",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d643268c_85648422",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 11
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-11T15:27:25Z",
+      "side": 1,
+      "message": "not deterioration only, can be for industrial margins, safety margin because of fluctuations, effects which are not currently modelled: crosstalk, filtering ..., uncertainties of parameters, uncertainty of the tool ...",
+      "range": {
+        "startLine": 186,
+        "startChar": 93,
+        "endLine": 186,
+        "endChar": 116
+      },
+      "revId": "f88d95d54bd2b03eb75f16939a00334917d5f826",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "491521de_61b31135",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 11
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-11T15:27:25Z",
+      "side": 1,
+      "message": "decimal instead",
+      "range": {
+        "startLine": 238,
+        "startChar": 11,
+        "endLine": 238,
+        "endChar": 17
       },
       "revId": "f88d95d54bd2b03eb75f16939a00334917d5f826",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
