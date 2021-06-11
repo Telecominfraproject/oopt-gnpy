@@ -457,7 +457,7 @@ def requests_from_json(json_data, equipment):
     for req in json_data['path-request']:
         # init all params from request
         params = {}
-        params['request_id'] = req['request-id']
+        params['request_id'] = f'{req["request-id"]}'
         params['source'] = req['source']
         params['bidir'] = req['bidirectional']
         params['destination'] = req['destination']
