@@ -52,6 +52,24 @@
       "parentUuid": "07b53df8_8cfe63c5",
       "revId": "bdd302c360f0420e15012872a13ae6bf0cd96bcb",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b774b06f_942c226f",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-11T14:34:38Z",
+      "side": 1,
+      "message": "I think this is a good candidate for the `assert` statement (but then also for not hitting that via the test suite). Anyway, that\u0027s outside of scope of this patch.",
+      "parentUuid": "8b1f9de5_cdd3ce87",
+      "revId": "bdd302c360f0420e15012872a13ae6bf0cd96bcb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
