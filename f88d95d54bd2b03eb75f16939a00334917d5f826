@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eeefd599_e15ea1b8",
+        "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
+        "patchSetId": 11
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-06-14T07:35:36Z",
+      "side": 1,
+      "message": "I mean that power mode for an amplifiers usually means constant **total** power, and not constant per channel power. If a user simulates the same set up with different nb of channels, the total output power of the amp will change from one simulation from another, unlike power mode of real amps. And if the user is used to power mode meaning in amps, this behaviour might appear as confusing. So my proposal is to slightly change the name just to avoid this confusion.",
+      "parentUuid": "68de1375_70f38106",
+      "revId": "f88d95d54bd2b03eb75f16939a00334917d5f826",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a45d02f5_e5284aae",
         "filename": "gnpy/yang/tip/tip-photonic-simulation.yang",
         "patchSetId": 11
