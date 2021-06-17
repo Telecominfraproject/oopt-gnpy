@@ -18,11 +18,15 @@ jobs:
         with:
           tox_env: ${{ matrix.tox_env }}
           dnf_install: ${{ matrix.dnf_install }}
+      - uses: codecov/codecov-action@29386c70ef20e286228c72b668a06fd0e8399192
+        if: ${{ endswith(matrix.tox_env, '-cover') }}
+        with:
+          files: ${{ github.workspace }}/cover/coverage.xml
     strategy:
       matrix:
         tox_env:
           - py38
-          - py39
+          - py39-cover
         include:
           - tox_env: docs
             dnf_install: graphviz
