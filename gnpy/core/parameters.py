@@ -34,92 +34,63 @@ class PumpParams(Parameters):
 
 
 class RamanParams(Parameters):
-    def __init__(self, **kwargs):
-        self._flag_raman = kwargs['flag_raman']
-        self._space_resolution = kwargs['space_resolution'] if 'space_resolution' in kwargs else None
-        self._tolerance = kwargs['tolerance'] if 'tolerance' in kwargs else None
-
-    @property
-    def flag_raman(self):
-        return self._flag_raman
-
-    @property
-    def space_resolution(self):
-        return self._space_resolution
-
-    @property
-    def tolerance(self):
-        return self._tolerance
+    def __init__(self, flag=False, space_resolution=10e3, tolerance=None):
+        """ Simulation parameters used within the Raman Solver
+        :params flag: boolean for enabling/disable the evaluation of the Raman Power profile in frequency and position
+        :params space_resolution: spatial resolution of the evaluated Raman Power profile
+        :params tolerance: tuning parameter for scipy.integrate.solve_bvp solution
+        """
+        self.flag = flag
+        self.space_resolution = space_resolution  # [m]
+        self.tolerance = tolerance
 
 
 class NLIParams(Parameters):
-    def __init__(self, **kwargs):
-        self._nli_method_name = kwargs['nli_method_name']
-        self._wdm_grid_size = kwargs['wdm_grid_size']
-        self._dispersion_tolerance = kwargs['dispersion_tolerance']
-        self._phase_shift_tolerance = kwargs['phase_shift_tolerance']
-        self._f_cut_resolution = None
-        self._f_pump_resolution = None
-        self._computed_channels = kwargs['computed_channels'] if 'computed_channels' in kwargs else None
-
-    @property
-    def nli_method_name(self):
-        return self._nli_method_name
-
-    @property
-    def wdm_grid_size(self):
-        return self._wdm_grid_size
-
-    @property
-    def dispersion_tolerance(self):
-        return self._dispersion_tolerance
-
-    @property
-    def phase_shift_tolerance(self):
-        return self._phase_shift_tolerance
-
-    @property
-    def f_cut_resolution(self):
-        return self._f_cut_resolution
-
-    @f_cut_resolution.setter
-    def f_cut_resolution(self, f_cut_resolution):
-        self._f_cut_resolution = f_cut_resolution
-
-    @property
-    def f_pump_resolution(self):
-        return self._f_pump_resolution
-
-    @f_pump_resolution.setter
-    def f_pump_resolution(self, f_pump_resolution):
-        self._f_pump_resolution = f_pump_resolution
-
-    @property
-    def computed_channels(self):
-        return self._computed_channels
+    def __init__(self, method='gn_model_analytic', dispersion_tolerance=1, phase_shift_tolerance=0.1,
+                 computed_channels=None, wdm_grid_size=None, f_cut_resolution=None, f_pump_resolution=None):
+        """ Simulation parameters used within the Nli Solver
+        :params method: formula for NLI calculation
+        :params dispersion_tolerance: tuning parameter for ggn model solution
+        :params phase_shift_tolerance: tuning parameter for ggn model solution
+        :params computed_channels: the NLI is evaluated for these channels and extrapolated for the others
+        """
+        self.method = method.lower()
+        self.dispersion_tolerance = dispersion_tolerance
+        self.phase_shift_tolerance = phase_shift_tolerance
+        self.computed_channels = computed_channels
+        self.wdm_grid_size = wdm_grid_size
+        self.f_cut_resolution = f_cut_resolution
+        self.f_pump_resolution = f_pump_resolution
 
 
 class SimParams(Parameters):
-    def __init__(self, **kwargs):
-        try:
-            if 'nli_parameters' in kwargs:
-                self._nli_params = NLIParams(**kwargs['nli_parameters'])
-            else:
-                self._nli_params = None
-            if 'raman_parameters' in kwargs:
-                self._raman_params = RamanParams(**kwargs['raman_parameters'])
-            else:
-                self._raman_params = None
-        except KeyError as e:
-            raise ParametersError(f'Simulation parameters must include {e}. Configuration: {kwargs}')
+    _shared_dict = {'nli_params': NLIParams(), 'raman_params': RamanParams()}
+
+    def __init__(self):
+        if type(self) == SimParams:
+            raise NotImplementedError('Instances of SimParams cannot be generated')
+
+    @classmethod
+    def set_params(cls, sim_params):
+        cls._shared_dict['nli_params'] = NLIParams(**sim_params.get('nli_params', {}))
+        cls._shared_dict['raman_params'] = RamanParams(**sim_params.get('raman_params', {}))
+
+    @classmethod
+    def get(cls):
+        self = cls.__new__(cls)
+        return self
 
     @property
     def nli_params(self):
-        return self._nli_params
+        return self._shared_dict['nli_params']
 
     @property
     def raman_params(self):
-        return self._raman_params
+        return self._shared_dict['raman_params']
+
+    @classmethod
+    def default(cls):
+        cls._shared_dict = {'nli_params': NLIParams(), 'raman_params': RamanParams()}
 
 
 class FiberParams(Parameters):
