@@ -243,35 +243,6 @@ def test_csv_response_generation(tmpdir, json_input):
         print(type(list(resp[column])[-1]))
 
 
-def compare_response(exp_resp, act_resp):
-    """ False if the keys are different in the nested dicts as well
-    """
-    print(exp_resp)
-    print(act_resp)
-    test = True
-    for key in act_resp.keys():
-        if key not in exp_resp.keys():
-            print(f'{key} is not expected')
-            return False
-        if isinstance(act_resp[key], dict):
-            test = compare_response(exp_resp[key], act_resp[key])
-    if test:
-        for key in exp_resp.keys():
-            if key not in act_resp.keys():
-                print(f'{key} is expected')
-                return False
-            if isinstance(exp_resp[key], dict):
-                test = compare_response(exp_resp[key], act_resp[key])
-
-    # at this point exp_resp and act_resp have the same keys. Check if their values are the same
-    for key in act_resp.keys():
-        if not isinstance(act_resp[key], dict):
-            if exp_resp[key] != act_resp[key]:
-                print(f'expected value :{exp_resp[key]}\n actual value: {act_resp[key]}')
-                return False
-    return test
-
-
 # test json answers creation
 @pytest.mark.parametrize('xls_input, expected_response_file', {
     DATA_DIR / 'testTopology.xls': DATA_DIR / 'testTopology_response.json',
@@ -327,7 +298,7 @@ def test_json_response_generation(xls_input, expected_response_file):
         if i == 2:
             # compare response must be False because z-a metric is missing
             # (request with bidir option to cover bidir case)
-            assert not compare_response(expected['response'][i], response)
+            assert expected['response'][i] != response
             print(f'response {response["response-id"]} should not match')
             expected['response'][2]['path-properties']['z-a-path-metric'] = [
                 {'metric-type': 'SNR-bandwidth', 'accumulative-value': 22.809999999999999},
@@ -338,8 +309,7 @@ def test_json_response_generation(xls_input, expected_response_file):
                 {'metric-type': 'path_bandwidth', 'accumulative-value': 60000000000.0}]
             # test should be OK now
         else:
-            assert compare_response(expected['response'][i], response)
-            print(f'response {response["response-id"]} is not correct')
+            assert expected['response'][i] == response
 
 # test the correspondance names dict in case of excel input
 # test that using the created json network still works with excel input
