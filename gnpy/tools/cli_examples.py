@@ -306,7 +306,6 @@ def path_requests_run(args=None):
     _setup_logging(args)
 
     _logger.info(f'Computing path requests {args.service_filename} into JSON format')
-    print(f'{ansi_escapes.blue}Computing path requests {os.path.relpath(args.service_filename)} into JSON format{ansi_escapes.reset}')
 
     (equipment, network) = load_common_data(args.equipment, args.topology, args.sim_params, args.save_network_before_autodesign)
 
