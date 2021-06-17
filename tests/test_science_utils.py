@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @Author: Alessio Ferrari
+
 """
 Checks that RamanFiber propagates properly the spectral information. In this way, also the RamanSolver and the NliSolver
 are tested.
@@ -12,14 +12,14 @@ from numpy.testing import assert_allclose
 
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.elements import RamanFiber
-from gnpy.core.parameters import SimParams
-from gnpy.core.science_utils import Simulation
 from gnpy.tools.json_io import load_json
+
+from tests.test_parameters import MockSimParams, set_sim_params
 
 TEST_DIR = Path(__file__).parent
 
 
-def test_raman_fiber():
+def test_raman_fiber(set_sim_params):
     """ Test the accuracy of propagating the RamanFiber."""
     # spectral information generation
     power = 1e-3
@@ -30,9 +30,7 @@ def test_raman_fiber():
     spectral_info_params.pop('tx_osnr')
     spectral_info_params.pop('sys_margins')
     spectral_info_input = create_input_spectral_information(power=power, **spectral_info_params)
-
-    sim_params = SimParams(**load_json(TEST_DIR / 'data' / 'sim_params.json'))
-    Simulation.set_params(sim_params)
+    MockSimParams.set_params(load_json(TEST_DIR / 'data' / 'sim_params.json'))
     fiber = RamanFiber(**load_json(TEST_DIR / 'data' / 'raman_fiber_config.json'))
 
     # propagation
