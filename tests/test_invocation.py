@@ -17,14 +17,14 @@ SRC_ROOT = Path(__file__).parent.parent
     ('openroadm-Stockholm-Gothenburg', transmission_main_example,
      ['-e', 'gnpy/example-data/eqpt_config_openroadm.json', 'gnpy/example-data/Sweden_OpenROADM_example_network.json', ]),
 ))
-def test_example_invocation(capfdbinary, output, handler, args):
+def test_example_invocation(capfd, output, handler, args):
     '''Make sure that our examples produce useful output'''
     os.chdir(SRC_ROOT)
-    expected = open(SRC_ROOT / 'tests' / 'invocation' / output, mode='rb').read()
+    expected = open(SRC_ROOT / 'tests' / 'invocation' / output, mode='r', encoding='utf-8').read()
     handler(args)
-    captured = capfdbinary.readouterr()
-    assert captured.out.decode('utf-8') == expected.decode('utf-8')
-    assert captured.err == b''
+    captured = capfd.readouterr()
+    assert captured.out == expected
+    assert captured.err == ''
 
 
 @pytest.mark.parametrize('program', ('gnpy-transmission-example', 'gnpy-path-request'))
