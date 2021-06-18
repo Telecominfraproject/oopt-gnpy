@@ -16,6 +16,24 @@
       "message": "This looks good to me, thanks for addressing all of my comments. Do we merge this \"now\", or do we wait until this new structure is used by the NEs?",
       "revId": "967e5f3462c6d26c44b7d8ac1d1fd91704f2f675",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff26462e_c3e97ab9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-06-18T13:18:33Z",
+      "side": 1,
+      "message": "We can wait the next changes.",
+      "parentUuid": "fa97121b_38270c15",
+      "revId": "967e5f3462c6d26c44b7d8ac1d1fd91704f2f675",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
