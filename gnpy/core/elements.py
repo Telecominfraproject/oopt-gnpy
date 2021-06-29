@@ -614,8 +614,8 @@ class Edfa(_Node):
                           f'  pad att_in (dB):        {self.att_in:.2f}',
                           f'  Power In (dBm):         {self.pin_db:.2f}',
                           f'  Power Out (dBm):        {self.pout_db:.2f}',
-                          f'  Delta_P (dB):           ' + f'{self.delta_p:.2f}' if self.delta_p is not None else 'None',
-                          f'  target pch (dBm):       ' + f'{self.target_pch_out_db:.2f}' if self.target_pch_out_db is not None else 'None',
+                          f'  Delta_P (dB):           ' + (f'{self.delta_p:.2f}' if self.delta_p is not None else 'None'),
+                          f'  target pch (dBm):       ' + (f'{self.target_pch_out_db:.2f}' if self.target_pch_out_db is not None else 'None'),
                           f'  effective pch (dBm):    {self.effective_pch_out_db:.2f}',
                           f'  output VOA (dB):        {self.out_voa:.2f}'])
 
