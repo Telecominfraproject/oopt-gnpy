@@ -89,3 +89,22 @@ jobs:
           push: true
           tags: |
             telecominfraproject/oopt-gnpy:${{ steps.extract_tag_name.outputs.GIT_DESC }}
+
+  windows:
+    name: Tests on Windows
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python_version }}
+      - run: |
+          pip install --editable .
+          pip install 'pytest>=5.0.0,<6'
+          pytest -vv
+    strategy:
+      matrix:
+        python_version:
+          - "3.9"
