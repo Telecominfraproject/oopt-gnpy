@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c070f987_fe2aa3a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-06-29T11:37:57Z",
+      "side": 1,
+      "message": "Thanks, nice catch. This was a regression I introduced recently, and I think it\u0027s nice to track that, so I\u0027ve added a corresponding `Fixes` tag.",
+      "revId": "4ab6f8cb1b317eb4b0c23ad161c7e11c5858aa6e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
