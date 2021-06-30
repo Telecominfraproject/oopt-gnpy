@@ -500,15 +500,19 @@ def add_fiber_padding(network, fibers, padding):
             raise NetworkTopologyError(f'Fiber {fiber.uid} is not properly connected, please check network topology')
         if isinstance(next_node, elements.Fused):
             continue
+        # address the case when several fibers are spliced together
+        first_fiber = find_first_node(network, fiber)
+        # in order to support no booster , fused might be placed
+        # just after a roadm: need to check that first_fiber is really a fiber
+        if not isinstance(first_fiber, elements.Fiber):
+            continue
         this_span_loss = span_loss(network, fiber)
+        prev_node = next(network.predecessors(first_fiber))
+        if isinstance(prev_node, elements.Edfa) and prev_node.out_voa is not None:
+            this_span_loss += prev_node.out_voa
         if this_span_loss < padding:
             # add a padding att_in at the input of the 1st fiber:
-            # address the case when several fibers are spliced together
-            first_fiber = find_first_node(network, fiber)
-            # in order to support no booster , fused might be placed
-            # just after a roadm: need to check that first_fiber is really a fiber
-            if isinstance(first_fiber, elements.Fiber):
-                first_fiber.params.att_in = first_fiber.params.att_in + padding - this_span_loss
+            first_fiber.params.att_in += padding - this_span_loss
 
 
 def build_network(network, equipment, pref_ch_db, pref_total_db):
