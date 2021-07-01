@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19b55a7c_b8992db7",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-01T19:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d815c6b5_e9c2f969",
+      "range": {
+        "startLine": 394,
+        "startChar": 11,
+        "endLine": 394,
+        "endChar": 21
+      },
+      "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd9bcc73_f22eb1ae",
@@ -37,6 +61,24 @@
       "writtenOn": "2021-05-24T23:42:31Z",
       "side": 1,
       "message": "Please document the individual parameters. The target audience are the end users of GNPy, so it\u0027s good to assume no knowledge of specific papers. \"Raman is a special amp which requires special safety handling and includes some pumping lasers which shine into the fiber\" is probably a reasonable level of assumption :).",
+      "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b82c740b_3a4c99b5",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-01T19:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd9bcc73_f22eb1ae",
       "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -58,6 +100,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f788856c_69970c44",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-01T19:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f79c1c7_b5aa3c70",
+      "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25f13470_20d202a2",
@@ -71,6 +131,24 @@
       "writtenOn": "2021-05-24T23:42:31Z",
       "side": 1,
       "message": "Please push this as a separate change where we can discuss this. The commit message should explain the motivation as well as the implementation.",
+      "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a9c2414_ed0dbd30",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-01T19:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25f13470_20d202a2",
       "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -98,6 +176,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ee20dde_3b4f4962",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-01T19:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9fc9ef29_3575d674",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 54
+      },
+      "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0db73005_8714f7af",
@@ -111,6 +213,30 @@
       "writtenOn": "2021-05-24T23:42:31Z",
       "side": 1,
       "message": "move that to type annotations",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 54
+      },
+      "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8350545d_567e90d5",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-01T19:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0db73005_8714f7af",
       "range": {
         "startLine": 92,
         "startChar": 0,
@@ -184,6 +310,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4da2c4f0_b1f1c28f",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-01T19:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a341656_80912e51",
+      "range": {
+        "startLine": 168,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 71
+      },
+      "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cec4a12c_3ab459ff",
@@ -241,6 +391,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e9d39d3_54d6e620",
+        "filename": "gnpy/example-data/sim_params.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-01T19:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3fbfbaba_1898bd23",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 44
+      },
+      "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0fb2c45a_84b654bc",
@@ -277,6 +451,24 @@
       "writtenOn": "2021-05-24T23:42:31Z",
       "side": 1,
       "message": "why is it necessary to reset that at the end of the test?",
+      "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e7cfa0d_8b25796a",
+        "filename": "tests/test_parameters.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-01T19:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44d09c20_f7838484",
       "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
