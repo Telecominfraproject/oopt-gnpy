@@ -283,6 +283,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb88a5e7_f0613ef2",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-01T19:35:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd59eab4_fee3c038",
+      "range": {
+        "startLine": 173,
+        "startChar": 0,
+        "endLine": 175,
+        "endChar": 29
+      },
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ce29e98f_1ba0489a",
@@ -320,6 +344,30 @@
       "side": 1,
       "message": "In the doc string it is indicated that these expressions are from \"eq. 120 from arXiv:1209.0394\"",
       "parentUuid": "ce29e98f_1ba0489a",
+      "range": {
+        "startLine": 510,
+        "startChar": 22,
+        "endLine": 510,
+        "endChar": 33
+      },
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f294dec_aa201458",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-01T19:35:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2a3f80f_f7127e40",
       "range": {
         "startLine": 510,
         "startChar": 22,
@@ -443,6 +491,24 @@
       "side": 1,
       "message": "Having a global variable guaranteed that within a simulation the same simulation parameters are shared between all the fibers. Here is it necessary to reset the simulation parameters because running pytest there is a single simulation environment for all the tests, therefore, after this test the simulation parameters would remain the such as defined here.",
       "parentUuid": "492c5478_bfb47c9b",
+      "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a19170f_ccda69c1",
+        "filename": "tests/test_parameters.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-01T19:35:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c5167e1_8b213a0c",
       "revId": "65f36ca934b5d0e2b0848254300a69eaeb1481d2",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
