@@ -313,6 +313,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e38d9390_5a9942d8",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-01T20:26:50Z",
+      "side": 1,
+      "message": "To solve numerically the first order differential equation of the Raman effect, the spatial step cannot be too large for accuracy reasons. On the contrary, it is sufficient to include a low number of z position along the fiber in order to calculate the NLI in the GGN model and, on the contrary, an higher number of z position will increase significantly the computational time for the GGN implementation. \n\nThe same behaviour was hidden before in the scipy bvp solver.",
+      "parentUuid": "94f17486_f890b832",
+      "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9a341656_80912e51",
         "filename": "gnpy/core/science_utils.py",
         "patchSetId": 7
@@ -410,6 +428,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fb8ad58_0c846227",
+        "filename": "gnpy/example-data/sim_params.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-01T20:26:50Z",
+      "side": 1,
+      "message": "I did changed the names of these parameters and added some documentation",
+      "parentUuid": "4130d347_8abe5cb6",
+      "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fbfbaba_1898bd23",
@@ -470,6 +506,30 @@
       "writtenOn": "2021-05-24T23:42:31Z",
       "side": 1,
       "message": "this duplicates that check in Fiber.__init__",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 101
+      },
+      "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bce474de_0024f113",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-01T20:26:50Z",
+      "side": 1,
+      "message": "I think it can be useful to distinguish the error messages for the Fiber and the RamanFiber. The Fiber.__init__ cannot be used for this purpose as it would produce a repetition of the prints in self.update_attr in case of missing parameters.",
+      "parentUuid": "0fb2c45a_84b654bc",
       "range": {
         "startLine": 134,
         "startChar": 0,

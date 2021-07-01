@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "45340499_456de2e1",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-01T20:26:50Z",
+      "side": 1,
+      "message": "This parameter has been suppressed as in the new set of changes it is possible to use the definition of the loss_coef along the frequency that has to be properly set to include the loss_coef for the specific pump.",
+      "parentUuid": "accccaaa_6f175436",
+      "revId": "704ea0c605c468b95b112af6b8305fc4bf4d2b22",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3e5de69_692cb8e9",
         "filename": "tests/invocation/transmission_main_example__raman",
         "patchSetId": 5
