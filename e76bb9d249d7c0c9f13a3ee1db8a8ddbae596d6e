@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f779ec0_1e326122",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-13T15:59:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9beb25a8_0a3ff6e4",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 152
+      },
+      "revId": "e76bb9d249d7c0c9f13a3ee1db8a8ddbae596d6e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf4b65db_06e72865",
@@ -38,6 +62,24 @@
       "side": 1,
       "message": "\u003e linters-diff-ci: F401 \u0027numpy.ones\u0027 imported but unused\n\nPlease fix.",
       "parentUuid": "c42f4d79_1d9bb93f",
+      "revId": "e76bb9d249d7c0c9f13a3ee1db8a8ddbae596d6e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1e54c1b_2c76bb72",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-13T15:59:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf4b65db_06e72865",
       "revId": "e76bb9d249d7c0c9f13a3ee1db8a8ddbae596d6e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -67,6 +109,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "50e412f8_1fcb65c6",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-13T15:59:49Z",
+      "side": 1,
+      "message": "In my opinion, it is useful to use the interpolation in some cases, for example when the specific channel frequency is slightly higher/lower than the loss coefficient definition interval.\n\nThe point is that the fiber has not a fixed frequency range as the spectrum, therefore it is not clear to me where the frequency range should be fixed in the data loading part.",
+      "parentUuid": "bf38b00e_ed0e2600",
+      "range": {
+        "startLine": 362,
+        "startChar": 0,
+        "endLine": 363,
+        "endChar": 86
+      },
+      "revId": "e76bb9d249d7c0c9f13a3ee1db8a8ddbae596d6e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d4564456_fadba5b2",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 16
@@ -78,6 +144,30 @@
       "writtenOn": "2021-07-13T09:44:57Z",
       "side": 1,
       "message": "nit: suggest using sphinx\u0027 latex math mode",
+      "range": {
+        "startLine": 381,
+        "startChar": 73,
+        "endLine": 381,
+        "endChar": 112
+      },
+      "revId": "e76bb9d249d7c0c9f13a3ee1db8a8ddbae596d6e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36031315_be3d5032",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-13T15:59:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4564456_fadba5b2",
       "range": {
         "startLine": 381,
         "startChar": 73,
@@ -124,6 +214,30 @@
       "writtenOn": "2021-07-13T09:44:57Z",
       "side": 1,
       "message": "It isn\u0027t related to this commit, but I wonder why the implementation of update_pref is different between Fiber and RamanFiber. Can you perhaps explain that to me?",
+      "range": {
+        "startLine": 485,
+        "startChar": 0,
+        "endLine": 486,
+        "endChar": 46
+      },
+      "revId": "e76bb9d249d7c0c9f13a3ee1db8a8ddbae596d6e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bf83eb9_4c54dc10",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-13T15:59:49Z",
+      "side": 1,
+      "message": "At this point, the RamanFiber pref update method has to take into account the Raman loss profile as the total output power is not exactly the total input power times the average fiber attenuation. In the next change, where the Raman loss profile is considered also in the standard Fiber, the pref update method is fixed as in the RamanFiber. \nIn general, the latter calculation is more accurate when the signal power is not flat.",
+      "parentUuid": "22ef4340_9e49c183",
       "range": {
         "startLine": 485,
         "startChar": 0,
