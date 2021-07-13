@@ -1,0 +1,137 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9beb25a8_0a3ff6e4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-07-13T09:44:57Z",
+      "side": 1,
+      "message": "nit: please configure your editor as per https://chris.beams.io/posts/git-commit/",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 152
+      },
+      "revId": "e76bb9d249d7c0c9f13a3ee1db8a8ddbae596d6e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf4b65db_06e72865",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-07-13T09:44:57Z",
+      "side": 1,
+      "message": "\u003e linters-diff-ci: F401 \u0027numpy.ones\u0027 imported but unused\n\nPlease fix.",
+      "parentUuid": "c42f4d79_1d9bb93f",
+      "revId": "e76bb9d249d7c0c9f13a3ee1db8a8ddbae596d6e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf38b00e_ed0e2600",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-07-13T09:44:57Z",
+      "side": 1,
+      "message": "I know that we have code like this in the repo, but please do not add new instances of warning printing into the library code. We are working towards the YANG interface where noone ever sees the console.\n\nThis happens when the frequency is somehow out of range of the fiber\u0027s parameters. Can you just hard error in that case? That way we can check in the data loading part that the parameters cover the full range that\u0027s required.",
+      "range": {
+        "startLine": 362,
+        "startChar": 0,
+        "endLine": 363,
+        "endChar": 86
+      },
+      "revId": "e76bb9d249d7c0c9f13a3ee1db8a8ddbae596d6e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4564456_fadba5b2",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-07-13T09:44:57Z",
+      "side": 1,
+      "message": "nit: suggest using sphinx\u0027 latex math mode",
+      "range": {
+        "startLine": 381,
+        "startChar": 73,
+        "endLine": 381,
+        "endChar": 112
+      },
+      "revId": "e76bb9d249d7c0c9f13a3ee1db8a8ddbae596d6e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ff8b036_a726ee6e",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-07-13T09:44:57Z",
+      "side": 1,
+      "message": "I like this refactoring of info.py, it makes the implementation of Fiber.propagate vs. RamanFiber.propagate more readable, in my opinion.\n\nIf I was writing this, I would have just put the `attenutation_in_db` as an inline parameter of the method call, but that\u0027s just me I guess. I see value in self-documenting code like you did here.",
+      "range": {
+        "startLine": 412,
+        "startChar": 0,
+        "endLine": 413,
+        "endChar": 61
+      },
+      "revId": "e76bb9d249d7c0c9f13a3ee1db8a8ddbae596d6e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22ef4340_9e49c183",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-07-13T09:44:57Z",
+      "side": 1,
+      "message": "It isn\u0027t related to this commit, but I wonder why the implementation of update_pref is different between Fiber and RamanFiber. Can you perhaps explain that to me?",
+      "range": {
+        "startLine": 485,
+        "startChar": 0,
+        "endLine": 486,
+        "endChar": 46
+      },
+      "revId": "e76bb9d249d7c0c9f13a3ee1db8a8ddbae596d6e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
