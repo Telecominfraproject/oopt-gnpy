@@ -282,7 +282,7 @@ class RamanSolver:
             for pump in raman_pumps:
                 pow_array = append(pow_array, pump.power)
                 f_array = append(f_array, pump.frequency)
-                direction = +1 if pump.propagation_direction.lower() == 'coprop' else -1
+                direction = +1 if pump.propagation_direction == 'coprop' else -1
                 propagation_direction = append(propagation_direction, direction)
                 noise_bandwidth_array = append(noise_bandwidth_array, ref_bw)
 
