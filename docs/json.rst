@@ -176,6 +176,61 @@ Only the EDFA that are marked ``'allowed_for_design': true`` are considered.
 
 For amplifiers defined in the topology JSON input but whose ``gain = 0`` (placeholder), auto-design will set its gain automatically: see ``power_mode`` in the ``Spans`` library to find out how the gain is calculated.
 
+The file ``sim_params.json`` contains the tuning parameters used within both the ``gnpy.science_utils.RamanSolver`` and
+the ``gnpy.science_utils.NliSolver`` for the evaluation of the Raman profile and the NLI generation, respectively.
+
++-----------------------------------------+-----------+---------------------------------------------+
+| field                                   |   type    | description                                 |
++=========================================+===========+=============================================+
+| ``raman_params.flag``                   | (boolean) | Enable/Disable the Raman effect that        |
+|                                         |           | produces a power transfer from higher to    |
+|                                         |           | lower frequencies.                          |
+|                                         |           | In general, considering the Raman effect    |
+|                                         |           | provides more accurate results. It is       |
+|                                         |           | mandatory when Raman amplification is       |
+|                                         |           | included in the simulation                  |
++-----------------------------------------+-----------+---------------------------------------------+
+| ``raman_params.space_resolution``       | (number)  | Spatial resolution of the output            |
+|                                         |           | Raman profile along the entire fiber span.  |
+|                                         |           | This affects the accuracy and the           |
+|                                         |           | computational time of the NLI               |
+|                                         |           | calculation when the GGN method is used:    |
+|                                         |           | smaller the space resolution higher both    |
+|                                         |           | the accuracy and the computational time.    |
+|                                         |           | In C-band simulations, with input power per |
+|                                         |           | channel around 0 dBm, a suggested value of  |
+|                                         |           | space resolution is 10e3 m                  |
++-----------------------------------------+-----------+---------------------------------------------+
+| ``raman_params.tolerance``              | (number)  | Tuning parameter for                        |
+|                                         |           | scipy.integrate.solve_bvp solution          |
++-----------------------------------------+-----------+---------------------------------------------+
+| ``nli_params.method``                   | (string)  | Model used for the NLI evaluation           |
+|                                         |           | Currently implemented methods:              |
+|                                         |           | - ``gn_model_analytic`` (see eq. 120        |
+|                                         |           |   from arXiv:1209.0394)                     |
+|                                         |           | - ``ggn_spectrally_separated`` (see eq. 21  |
+|                                         |           |   from arXiv: 1710.02225)                   |
++-----------------------------------------+-----------+---------------------------------------------+
+| ``nli_params.dispersion_tolerance``     | (number)  | Tuning parameter for the NliSolver          |
++-----------------------------------------+-----------+---------------------------------------------+
+| ``nli_params.phase_shift_tolerance``    | (number)  | Tuning parameter for the NliSolver          |
++-----------------------------------------+-----------+---------------------------------------------+
+| ``nli_params.computed_channels``        | (number)  | The channels on which the NLI is            |
+|                                         |           | explicitly evaluated.                       |
+|                                         |           | The NLI of the other channels is            |
+|                                         |           | interpolated using numpy.interp.            |
+|                                         |           | In a C-band simulation with 96 channels in  |
+|                                         |           | a 50 GHz spacing fix-grid we recommend at   |
+|                                         |           | one computed channel every 20 channels      |
++-----------------------------------------+-----------+---------------------------------------------+
+| ``nli_params.wdm_grid_size``            | (number)  | Spectrum fixed grid slot width              |
++-----------------------------------------+-----------+---------------------------------------------+
+| ``nli_params.f_cut_resolution``         | (number)  | Tuning parameter for the NliSolver          |
++-----------------------------------------+-----------+---------------------------------------------+
+| ``nli_params.f_pump_resolution``        | (number)  | Tuning parameter for the NliSolver          |
++-----------------------------------------+-----------+---------------------------------------------+
+
+
 Span
 ~~~~
 
