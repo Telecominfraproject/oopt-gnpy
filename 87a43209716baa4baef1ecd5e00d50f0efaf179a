@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed3a52ee_bd0624f3",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-07-13T09:23:39Z",
+      "side": 1,
+      "message": "This is adding docs for something which was previously not documented. That\u0027s a good change, but it is not related to the rest of this commit. Please ensure that it\u0027s split into a separate one.",
+      "range": {
+        "startLine": 177,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 101
+      },
+      "revId": "87a43209716baa4baef1ecd5e00d50f0efaf179a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3a1a0f8_f6928f67",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-07-13T09:23:39Z",
+      "side": 1,
+      "message": "nit: in an extra commit please; it makes it easier to review.",
+      "revId": "87a43209716baa4baef1ecd5e00d50f0efaf179a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c90bb949_22902f59",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-07-13T09:23:39Z",
+      "side": 1,
+      "message": "This means that the programmer must not forget to call this default() function. That\u0027s a bad design choice; if something requires initialization, ensure that it *cannot* be used uninitialized -- perhaps via always initializing in the constructor.",
+      "revId": "87a43209716baa4baef1ecd5e00d50f0efaf179a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb148122_b419f527",
+        "filename": "tests/test_parameters.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-07-13T09:23:39Z",
+      "side": 1,
+      "message": "I am low on coffee today, but I don\u0027t understand why this class is needed. The purpose of the \"real class\" SimParams is to act as a global variable (masqueraded in a module namespace). Why is it needed to introduce a derived class here?\n\nIf the reason was that the SimParams did not support writes, then that would have been a reason not to use this hidden global state pattern in the first place, but that class doesn\u0027t look like it.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 77
+      },
+      "revId": "87a43209716baa4baef1ecd5e00d50f0efaf179a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
