@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "495c83f1_3df57524",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 23
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-13T09:29:18Z",
+      "side": 1,
+      "message": "I unintentionally introduced an old version of this change, I will fix it and push it again as P22 that was accepted.",
+      "revId": "83b9ee51fd76ac9dc3b4c28e7084bcb1fc4794d7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a555f14_58088196",
