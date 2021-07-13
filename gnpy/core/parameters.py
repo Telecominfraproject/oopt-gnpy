@@ -28,21 +28,9 @@ class Parameters:
 
 class PumpParams(Parameters):
     def __init__(self, power, frequency, propagation_direction):
-        self._power = power
-        self._frequency = frequency
-        self._propagation_direction = propagation_direction
-
-    @property
-    def power(self):
-        return self._power
-
-    @property
-    def frequency(self):
-        return self._frequency
-
-    @property
-    def propagation_direction(self):
-        return self._propagation_direction
+        self.power = power
+        self.frequency = frequency
+        self.propagation_direction = propagation_direction.lower()
 
 
 class RamanParams(Parameters):
