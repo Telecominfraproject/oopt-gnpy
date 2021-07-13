@@ -176,6 +176,39 @@ Only the EDFA that are marked ``'allowed_for_design': true`` are considered.
 
 For amplifiers defined in the topology JSON input but whose ``gain = 0`` (placeholder), auto-design will set its gain automatically: see ``power_mode`` in the ``Spans`` library to find out how the gain is calculated.
 
+The file ``sim_params.json`` contains the tuning parameters used within both the ``gnpy.science_utils.RamanSolver`` and
+the ``gnpy.science_utils.NliSolver`` for the evaluation of the Raman profile and the NLI generation, respectively.
+A global variable of ``gnpy.parameters.SimParams`` is created for each simulation and it is shared between all the fiber
+instances, assuring a coherent simulation.
+
++-----------------------------------------+-----------+---------------------------------------------+
+| field                                   |   type    | description                                 |
++=========================================+===========+=============================================+
+| ``raman_params.flag``                   | (boolean) | Enable/Disable Raman profile evaluation     |
++-----------------------------------------+-----------+---------------------------------------------+
+| ``raman_params.space_resolution``       | (number)  | Spatial resolution of the output            |
+|                                         |           | Raman profile                               |
++-----------------------------------------+-----------+---------------------------------------------+
+| ``raman_params.tolerance``              | (number)  | Tuning parameter for                        |
+|                                         |           | scipy.integrate.solve_bvp solution          |
++-----------------------------------------+-----------+---------------------------------------------+
+| ``nli_params.method``                   | (string)  | Model used for the NLI evaluation           |
++-----------------------------------------+-----------+---------------------------------------------+
+| ``nli_params.dispersion_tolerance``     | (number)  | Tuning parameter for the NliSolver          |
++-----------------------------------------+-----------+---------------------------------------------+
+| ``nli_params.phase_shift_tolerance``    | (number)  | Tuning parameter for the NliSolver          |
++-----------------------------------------+-----------+---------------------------------------------+
+| ``nli_params.computed_channels``        | (number)  | The channels on which the NLI is            |
+|                                         |           | explicitly evaluated                        |
++-----------------------------------------+-----------+---------------------------------------------+
+| ``nli_params.wdm_grid_size``            | (number)  | Spectrum fixed grid slot width              |
++-----------------------------------------+-----------+---------------------------------------------+
+| ``nli_params.f_cut_resolution``         | (number)  | Tuning parameter for the NliSolver          |
++-----------------------------------------+-----------+---------------------------------------------+
+| ``nli_params.f_pump_resolution``        | (number)  | Tuning parameter for the NliSolver          |
++-----------------------------------------+-----------+---------------------------------------------+
+
+
 Span
 ~~~~
 
