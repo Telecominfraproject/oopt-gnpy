@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7d8ff50_4f77a1e4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-07-13T09:55:56Z",
+      "side": 1,
+      "message": "Is it possible to use Giacomo\u0027s real name here? A commit can be changed by using --author\u003d\"Foo bar \u003cfoo@example.org\u003e\" syntax once you have that particular commit as your HEAD. `git rebase -i sha1-of-the-troublesome-one~1` is a good way of getting there.",
+      "range": {
+        "startLine": 2,
+        "startChar": 12,
+        "endLine": 2,
+        "endChar": 20
+      },
+      "revId": "bbaaa657e6bb216b82ff7cc15d92939005b0e560",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18cef0a7_47cde2e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-07-13T09:55:56Z",
+      "side": 1,
+      "message": "Please add documentation about the user-visible parameter to the JSON docs (docs/json.rst).",
+      "revId": "bbaaa657e6bb216b82ff7cc15d92939005b0e560",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c6ade49_e614dab7",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-07-13T09:55:56Z",
+      "side": 1,
+      "message": "It\u0027s a legacy thingy from the past, but there\u0027s support for length_units to either use `m` or `km` for a length of a particular fiber. In my opinion that has no place in the data I/O code, so I would prefer to reduce the complexity by switching to only supporting one unit in the input layer. That\u0027s of course unrelated to this commit, *but* given that this adds a new parameter which was not there before, let\u0027s make sure that the new feature only support one unit (probably `km`).\n\nHave you checked that this code does the right thing when the length_units (and the fiber length) is in `m`?",
+      "range": {
+        "startLine": 331,
+        "startChar": 99,
+        "endLine": 331,
+        "endChar": 103
+      },
+      "revId": "bbaaa657e6bb216b82ff7cc15d92939005b0e560",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
