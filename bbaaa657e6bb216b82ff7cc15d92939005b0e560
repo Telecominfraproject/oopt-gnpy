@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fedbf04_81b63c40",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-13T16:05:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7d8ff50_4f77a1e4",
+      "range": {
+        "startLine": 2,
+        "startChar": 12,
+        "endLine": 2,
+        "endChar": 20
+      },
+      "revId": "bbaaa657e6bb216b82ff7cc15d92939005b0e560",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18cef0a7_47cde2e9",
@@ -41,6 +65,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "52012876_5ab87e7f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-13T16:05:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18cef0a7_47cde2e9",
+      "revId": "bbaaa657e6bb216b82ff7cc15d92939005b0e560",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c6ade49_e614dab7",
@@ -54,6 +96,30 @@
       "writtenOn": "2021-07-13T09:55:56Z",
       "side": 1,
       "message": "It\u0027s a legacy thingy from the past, but there\u0027s support for length_units to either use `m` or `km` for a length of a particular fiber. In my opinion that has no place in the data I/O code, so I would prefer to reduce the complexity by switching to only supporting one unit in the input layer. That\u0027s of course unrelated to this commit, *but* given that this adds a new parameter which was not there before, let\u0027s make sure that the new feature only support one unit (probably `km`).\n\nHave you checked that this code does the right thing when the length_units (and the fiber length) is in `m`?",
+      "range": {
+        "startLine": 331,
+        "startChar": 99,
+        "endLine": 331,
+        "endChar": 103
+      },
+      "revId": "bbaaa657e6bb216b82ff7cc15d92939005b0e560",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53e3e69c_017d330e",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-07-13T16:05:15Z",
+      "side": 1,
+      "message": "As you described, in this new parameter we consider the lumped_losses.position expressed in km as mandatory.\nI tried to replace the length_units in the test_lumped_losses related files and the tests passed.",
+      "parentUuid": "5c6ade49_e614dab7",
       "range": {
         "startLine": 331,
         "startChar": 99,
