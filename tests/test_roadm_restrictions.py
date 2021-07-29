@@ -207,8 +207,9 @@ def test_restrictions(restrictions, equipment):
                     raise AssertionError()
 
 
+@pytest.mark.parametrize('power_dbm', [0, +1, -2])
 @pytest.mark.parametrize('prev_node_type, effective_pch_out_db', [('edfa', -20.0), ('fused', -22.0)])
-def test_roadm_target_power(prev_node_type, effective_pch_out_db):
+def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
     ''' Check that egress power of roadm is equal to target power if input power is greater
     than target power else, that it is equal to input power. Use a simple two hops A-B-C topology
     for the test where the prev_node in ROADM B is either an amplifier or a fused, so that the target
@@ -226,9 +227,9 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db):
     json_network['elements'].append(prev_node)
     network = network_from_json(json_network, equipment)
     # Build the network once using the default power defined in SI in eqpt config
-    p_db = equipment['SI']['default'].power_dbm
+    p_db = power_dbm
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
-                                             equipment['SI']['default'].f_max, 
+                                             equipment['SI']['default'].f_max,
                                              equipment['SI']['default'].spacing))
 
     build_network(network, equipment, p_db, p_total_db)
@@ -247,6 +248,7 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db):
     trx_params = trx_mode_params(equipment)
     params.update(trx_params)
     req = PathRequest(**params)
+    req.power = db2lin(power_dbm - 30)
     path = compute_constrained_path(network, req)
     si = create_input_spectral_information(
         req.f_min, req.f_max, req.roll_off, req.baud_rate,
@@ -257,7 +259,20 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db):
             si = el(si, degree=path[i+1].uid)
             if el.uid == 'roadm node B':
                 print('input', carriers_power_in_roadm)
-                assert el.effective_pch_out_db == effective_pch_out_db
+                # if previous was an EDFA, power level at ROADM input is enough for the ROADM to apply its
+                # target power (as specified in equipment ie -20 dBm)
+                # if it is a Fused, the input power to the ROADM is smaller than the target power, and the
+                # ROADM cannot apply this target. In this case, it is assumed that the ROADM has 0 dB loss
+                # so the output power will be the same as the input power, which for this particular case
+                # corresponds to -22dBm + power_dbm
+                # next step (for ROADM modelling) will be to apply a minimum loss for ROADMs !
+                if prev_node_type == 'edfa':
+                    assert el.effective_pch_out_db == effective_pch_out_db
+                if prev_node_type == 'fused':
+                    # then output power == input_power == effective_pch_out_db + power_dbm
+                    assert effective_pch_out_db + power_dbm ==\
+                        pytest.approx(lin2db(carriers_power_in_roadm * 1e3), rel=1e-3)
+                    assert el.effective_pch_out_db == effective_pch_out_db + power_dbm
                 for carrier in si.carriers:
                     print(carrier.power.signal + carrier.power.nli + carrier.power.ase)
                     power = carrier.power.signal + carrier.power.nli + carrier.power.ase
@@ -272,4 +287,3 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db):
                         assert power == pytest.approx(carriers_power_in_roadm, rel=1e-3)
         else:
             si = el(si)
-
