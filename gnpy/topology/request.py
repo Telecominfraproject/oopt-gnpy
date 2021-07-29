@@ -972,7 +972,8 @@ def compare_reqs(req1, req2, disjlist):
             req1.format == req2.format and \
             req1.OSNR == req2.OSNR and \
             req1.roll_off == req2.roll_off and \
-            same_disj:
+            same_disj and \
+            req1.N is None and req2.N is None and req1.M is None and req2.M is None:
         return True
     else:
         return False
