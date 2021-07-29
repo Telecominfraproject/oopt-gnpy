@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b3099b5_ea483727",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-29T12:59:45Z",
+      "side": 1,
+      "message": "I have slightly changed the comment to better explain that I was occupying on of the span on the total list of path OMS (path and reversed path)\nI hope this is clearer",
+      "revId": "5371ff8ef1cba621e7e7e87f60496c790549bc22",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}

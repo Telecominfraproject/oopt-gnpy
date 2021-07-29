@@ -33,6 +33,24 @@
       "message": "I don\u0027t understand this comment, please rephrase. I *think* that the list which is described in the comment is the expected path as defined by its offsets within the OMS list, right?\n\nIf so, please assert for that. One has to wait for that path, so the code should be probably something like this:\n \nexpected_path \u003d [13, 16, 19, 20, 21, 22, 26]\nsome_oms \u003d oms_list[expected_path[2]]\nparams \u003d request_set\n...\nif blocking_reason is not None:\n    assert expected_path \u003d\u003d paths[0]",
       "revId": "a4248c6c9a6c9edadf216ec6fe5135d49e49f971",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1eec3ed2_674d0396",
+        "filename": "tests/test_spectrum_assignment.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-29T12:59:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "82968cee_c2cd6ae0",
+      "revId": "a4248c6c9a6c9edadf216ec6fe5135d49e49f971",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
