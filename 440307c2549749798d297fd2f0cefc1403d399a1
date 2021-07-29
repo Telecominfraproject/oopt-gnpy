@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6d24e07_7512d2dd",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-29T13:42:45Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "d86537e4_248f05f6",
+      "range": {
+        "startLine": 514,
+        "startChar": 0,
+        "endLine": 517,
+        "endChar": 89
+      },
+      "revId": "440307c2549749798d297fd2f0cefc1403d399a1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb28025c_4e711652",
@@ -77,6 +101,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01a02387_aadd1338",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-29T13:42:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af069b62_176972f8",
+      "revId": "440307c2549749798d297fd2f0cefc1403d399a1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9124acf_d55fe869",
@@ -90,6 +132,30 @@
       "writtenOn": "2021-05-26T23:15:36Z",
       "side": 1,
       "message": "- pls don\u0027t intrdc abbrvtns cos they\u0027re hrd t read :). I suggest calling that `bandwidth`.\n- I suggest to loose the prefix \"req_\", I don\u0027t think it adds much to understanding the code.",
+      "range": {
+        "startLine": 1177,
+        "startChar": 43,
+        "endLine": 1177,
+        "endChar": 49
+      },
+      "revId": "440307c2549749798d297fd2f0cefc1403d399a1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2806b211_b61ff749",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1177,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-29T13:42:45Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "a9124acf_d55fe869",
       "range": {
         "startLine": 1177,
         "startChar": 43,
@@ -117,6 +183,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f93267c_740f9828",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1178,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-29T13:42:45Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "e11e21fb_e38a1969",
+      "revId": "440307c2549749798d297fd2f0cefc1403d399a1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9569c151_4f13e82e",
@@ -130,6 +214,30 @@
       "writtenOn": "2021-05-26T23:15:36Z",
       "side": 1,
       "message": "I\u0027m already commenting on a docstring, so I\u0027ll comment on this one as well: in my opinion, here the comment just duplicates the code. If the variable has a more descriptive name, I think the comment can be easily removed, like this:\n number_of_wavelengths \u003d ceil(bandwidth / bit_rate)\n\nSame below.",
+      "range": {
+        "startLine": 1180,
+        "startChar": 0,
+        "endLine": 1181,
+        "endChar": 43
+      },
+      "revId": "440307c2549749798d297fd2f0cefc1403d399a1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2768dc2b_88813652",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1181,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-29T13:42:45Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "9569c151_4f13e82e",
       "range": {
         "startLine": 1180,
         "startChar": 0,
