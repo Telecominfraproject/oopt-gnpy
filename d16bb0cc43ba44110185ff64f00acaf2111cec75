@@ -230,6 +230,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "334547ec_5f536701",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-29T15:52:45Z",
+      "side": 1,
+      "message": "indeed this level corresponds to one path. the el level is the list of element of that path. So it is initialize here for each path",
+      "parentUuid": "a074d238_6c61f9ff",
+      "revId": "d16bb0cc43ba44110185ff64f00acaf2111cec75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d61ea0bc_d8ec7f93",
@@ -283,6 +301,24 @@
       "writtenOn": "2021-06-02T23:25:56Z",
       "side": 1,
       "message": "please remove this; it\u0027s only useful for the original author I think (and same on all other occurences)",
+      "revId": "d16bb0cc43ba44110185ff64f00acaf2111cec75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a77ad42_e2a703f3",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-29T15:52:45Z",
+      "side": 1,
+      "message": "I have used them to categorize cases: I prefer to leave them as comments",
+      "parentUuid": "2acb4589_ef65f8bc",
       "revId": "d16bb0cc43ba44110185ff64f00acaf2111cec75",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },

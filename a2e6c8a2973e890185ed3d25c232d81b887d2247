@@ -1,0 +1,40 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8886907f_d865fa2d",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 527,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-29T15:52:45Z",
+      "side": 1,
+      "message": "\u003e linters-diff: F821 undefined name \u0027previous_deltap\u0027\n\nPlease fix.",
+      "parentUuid": "4ed0cf1c_f494e11c",
+      "revId": "a2e6c8a2973e890185ed3d25c232d81b887d2247",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c67c27f2_30eec63a",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-29T15:52:45Z",
+      "side": 1,
+      "message": "\u003e linters-diff: F841 local variable \u0027previous_deltap\u0027 is assigned to but never used\n\nPlease fix.",
+      "parentUuid": "df95b241_1804bd3d",
+      "revId": "a2e6c8a2973e890185ed3d25c232d81b887d2247",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
