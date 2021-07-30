@@ -1,0 +1,22 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6832982b_1984c4a1",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-30T14:33:54Z",
+      "side": 1,
+      "message": "\u003e linters-diff-ci: C901 \u0027test_roadm_and_booster_target_power_and_gain\u0027 is too complex (20)\n\nPlease fix.",
+      "parentUuid": "5529e94e_efe44c2f",
+      "revId": "f7e01ee898a6ef53810a04cc56f5efe4ae7e2583",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
