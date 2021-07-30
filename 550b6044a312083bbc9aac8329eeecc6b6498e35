@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44951f78_aca9eaee",
+        "filename": "tests/test_gain_mode.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-30T14:34:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "edacbec2_a54900e0",
+      "range": {
+        "startLine": 72,
+        "startChar": 93,
+        "endLine": 72,
+        "endChar": 98
+      },
+      "revId": "550b6044a312083bbc9aac8329eeecc6b6498e35",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c92acb0d_39245206",
@@ -70,6 +94,78 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31121824_9d4b7bd4",
+        "filename": "tests/test_gain_mode.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-30T14:34:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a26c37a_8cf4d385",
+      "range": {
+        "startLine": 96,
+        "startChar": 11,
+        "endLine": 96,
+        "endChar": 17
+      },
+      "revId": "550b6044a312083bbc9aac8329eeecc6b6498e35",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83b34a48_6293b6cb",
+        "filename": "tests/test_gain_mode.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-30T14:34:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c92acb0d_39245206",
+      "range": {
+        "startLine": 96,
+        "startChar": 71,
+        "endLine": 96,
+        "endChar": 76
+      },
+      "revId": "550b6044a312083bbc9aac8329eeecc6b6498e35",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dee763f_25d68cb8",
+        "filename": "tests/test_gain_mode.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-30T14:34:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c92acb0d_39245206",
+      "range": {
+        "startLine": 96,
+        "startChar": 71,
+        "endLine": 96,
+        "endChar": 76
+      },
+      "revId": "550b6044a312083bbc9aac8329eeecc6b6498e35",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96070634_e4e6cbf5",
@@ -107,6 +203,30 @@
       "side": 1,
       "message": "This is unrelated, but when checking the values I made some error forgetting about that and I wanted to track that somewhere. The default number of channels when using SI values is not the same as the one with t_min f_max from Transceivers. I have changed that to a simple comment.",
       "parentUuid": "96070634_e4e6cbf5",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 66
+      },
+      "revId": "550b6044a312083bbc9aac8329eeecc6b6498e35",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0223f21_66d963b5",
+        "filename": "tests/test_gain_mode.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-30T14:34:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec39917d_34d1c4aa",
       "range": {
         "startLine": 128,
         "startChar": 0,
