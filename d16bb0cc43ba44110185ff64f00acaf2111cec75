@@ -170,6 +170,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ae473a0_abf859ad",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-30T14:41:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1584d50_c1bad641",
+      "range": {
+        "startLine": 295,
+        "startChar": 0,
+        "endLine": 301,
+        "endChar": 36
+      },
+      "revId": "d16bb0cc43ba44110185ff64f00acaf2111cec75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2b894aad_ff75b890",
@@ -187,6 +211,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bc98eb5_fbc44e98",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-30T14:41:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b894aad_ff75b890",
+      "revId": "d16bb0cc43ba44110185ff64f00acaf2111cec75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6128402_23adb5b6",
@@ -200,6 +242,30 @@
       "writtenOn": "2021-06-02T23:25:56Z",
       "side": 1,
       "message": "I think that something like `amps_with_adjusted_delta_p` or even `adjusted_delta_p` wold be more readable. I was expecting a numerical value here, not a list of device IDs.",
+      "range": {
+        "startLine": 386,
+        "startChar": 26,
+        "endLine": 386,
+        "endChar": 33
+      },
+      "revId": "d16bb0cc43ba44110185ff64f00acaf2111cec75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c0e228f_20e24028",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-30T14:41:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6128402_23adb5b6",
       "range": {
         "startLine": 386,
         "startChar": 26,
@@ -233,6 +299,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80a28eb6_7f8502e5",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-30T14:41:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53907298_19bcdf4a",
+      "range": {
+        "startLine": 417,
+        "startChar": 59,
+        "endLine": 417,
+        "endChar": 63
+      },
+      "revId": "d16bb0cc43ba44110185ff64f00acaf2111cec75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa9f8a50_8c271780",
@@ -256,6 +346,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd947a95_09689108",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-30T14:41:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa9f8a50_8c271780",
+      "range": {
+        "startLine": 418,
+        "startChar": 34,
+        "endLine": 418,
+        "endChar": 38
+      },
+      "revId": "d16bb0cc43ba44110185ff64f00acaf2111cec75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27aea67a_98650ee9",
@@ -269,6 +383,30 @@
       "writtenOn": "2021-06-02T23:25:56Z",
       "side": 1,
       "message": "nit: \"is applied\"",
+      "range": {
+        "startLine": 420,
+        "startChar": 31,
+        "endLine": 420,
+        "endChar": 38
+      },
+      "revId": "d16bb0cc43ba44110185ff64f00acaf2111cec75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41e9ce8f_99ac001a",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-30T14:41:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27aea67a_98650ee9",
       "range": {
         "startLine": 420,
         "startChar": 31,
@@ -337,6 +475,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb298835_411a8c6f",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-30T14:41:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d61ea0bc_d8ec7f93",
+      "range": {
+        "startLine": 457,
+        "startChar": 12,
+        "endLine": 463,
+        "endChar": 54
+      },
+      "revId": "d16bb0cc43ba44110185ff64f00acaf2111cec75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6abc8c4a_f0bd156d",
@@ -350,6 +512,24 @@
       "writtenOn": "2021-06-02T23:25:56Z",
       "side": 1,
       "message": "nit: this comment doesn\u0027t add much, IMHO.",
+      "revId": "d16bb0cc43ba44110185ff64f00acaf2111cec75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd3722a0_ea25251c",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-30T14:41:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6abc8c4a_f0bd156d",
       "revId": "d16bb0cc43ba44110185ff64f00acaf2111cec75",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -412,6 +592,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d1ad49c_97fa7ade",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-30T14:41:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "467064ae_8b46caf0",
+      "range": {
+        "startLine": 487,
+        "startChar": 39,
+        "endLine": 487,
+        "endChar": 50
+      },
+      "revId": "d16bb0cc43ba44110185ff64f00acaf2111cec75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14956ed6_0df8ef84",
@@ -458,6 +662,54 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4da6c45e_7e89564d",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-30T14:41:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a116737c_fb8fb085",
+      "range": {
+        "startLine": 543,
+        "startChar": 24,
+        "endLine": 543,
+        "endChar": 30
+      },
+      "revId": "d16bb0cc43ba44110185ff64f00acaf2111cec75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4219a76_21f492c3",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-30T14:41:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14956ed6_0df8ef84",
+      "range": {
+        "startLine": 543,
+        "startChar": 52,
+        "endLine": 543,
+        "endChar": 73
+      },
+      "revId": "d16bb0cc43ba44110185ff64f00acaf2111cec75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf64c1e3_2e077eec",
@@ -471,6 +723,30 @@
       "writtenOn": "2021-06-02T23:25:56Z",
       "side": 1,
       "message": "Is this still useful?",
+      "range": {
+        "startLine": 544,
+        "startChar": 0,
+        "endLine": 547,
+        "endChar": 78
+      },
+      "revId": "d16bb0cc43ba44110185ff64f00acaf2111cec75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2a8c0e0_0d2d75fe",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 547,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-30T14:41:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf64c1e3_2e077eec",
       "range": {
         "startLine": 544,
         "startChar": 0,

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d15de3c_9a9d4d21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-07-30T14:41:48Z",
+      "side": 1,
+      "message": "Thanks for the deep review. I hope I handled all your comments.\n\nI separated this commit, but unfortunatly the change-ID changed as weel. so for this one please look at change https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/521470",
+      "revId": "9e1b100930661c2f7927bdcaea84cf2af2c60994",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
