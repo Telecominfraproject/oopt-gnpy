@@ -25,6 +25,7 @@ from numpy import abs, array, errstate, ones, interp, mean, pi, polyfit, polyval
 from scipy.constants import h, c
 from scipy.interpolate import interp1d
 from collections import namedtuple
+from copy import deepcopy
 
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational
@@ -283,6 +284,7 @@ class Fused(_Node):
         spectral_info.apply_attenuation_db(self.loss)
 
     def update_pref(self, spectral_info):
+        self.pch_out_db = round(lin2db(mean(spectral_info.signal) * 1e3), 2)
         spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
                                                          p_spani=spectral_info.pref.p_spani - self.loss)
 
@@ -455,14 +457,15 @@ class Fiber(_Node):
         # because of Raman gain. In order to correctly update pref, we need the resulting loss:
         # power_out - power_in. We use the total signal power (sum on all channels) to compute
         # this loss, because pref is a noiseless reference.
-        loss = round(lin2db(self._psig_in / sum(spectral_info.signal)), 2)
+        loss = round(lin2db(sum(self._psig_in) / sum(spectral_info.signal)), 2)
         self.pch_out_db = spectral_info.pref.p_spani - loss
         spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
-                                                         p_spani=self.pch_out_db)
+                                                         p_spani=spectral_info.pref.p_spani - loss)
 
     def __call__(self, spectral_info):
-        # _psig_in records the total signal power of the spectral information before propagartion.
-        self._psig_in = sum(spectral_info.signal)
+        # _psig_in records the spectral information before propagartion. deepcopy is needed
+        # otherwise the object gets chaged with propagation. 
+        self._psig_in = deepcopy(spectral_info.signal)
         self.propagate(spectral_info)
         self.update_pref(spectral_info)
         return spectral_info
@@ -852,9 +855,10 @@ class Edfa(_Node):
         spectral_info.apply_gain_db(self.gprofile - self.out_voa)
 
     def update_pref(self, spectral_info):
-        spectral_info.pref = \
-            spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
-                                        p_spani=spectral_info.pref.p_spani + self.effective_gain - self.out_voa)
+        self.pch_out_db = round(lin2db(mean(spectral_info.signal) * 1e3), 2)
+        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
+                                                         p_spani=spectral_info.pref.p_spani
+                                                         + self.effective_gain - self.out_voa)
 
     def __call__(self, spectral_info):
         self.propagate(spectral_info)
