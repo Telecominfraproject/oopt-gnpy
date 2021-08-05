@@ -54,7 +54,7 @@ class SpectralInformation(object):
     """ Class containing the parameters of the entire WDM comb."""
 
     def __init__(self, frequency: array, baud_rate: array, slot_width: array, signal: array, nli: array, ase: array,
-                 roll_off: array, chromatic_dispersion: array, pmd: array, pdl: array, ref_power: Pref):
+                 roll_off: array, chromatic_dispersion: array, pmd: array, pdl: array, ref_power: Pref, label: str):
         indices = argsort(frequency)
         self._frequency = frequency[indices]
         self._df = outer(ones(frequency.shape), frequency) - outer(frequency, ones(frequency.shape))
@@ -81,6 +81,7 @@ class SpectralInformation(object):
         self._pdl = pdl[indices]
         self._channel_number = [*range(1, self._number_of_channels + 1)]
         self._pref = ref_power
+        self._label = label
 
     @property
     def pref(self):
@@ -157,6 +158,10 @@ class SpectralInformation(object):
     def pmd(self):
         return self._pmd
 
+    @property
+    def label(self):
+        return self._label
+
     @pmd.setter
     def pmd(self, pmd):
         self._pmd = pmd
@@ -211,7 +216,8 @@ class SpectralInformation(object):
                                                                    other.chromatic_dispersion),
                                        pmd=append(self.pmd, other.pmd),
                                        pdl=append(self.pdl, other.pdl),
-                                       ref_power=pref)
+                                       ref_power=pref,
+                                       label=append(self.label, other.label))
         except SpectrumError:
             raise SpectrumError('Spectra cannot be summed: channels overlapping.')
 
@@ -235,7 +241,8 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, in
                                           chromatic_dispersion: Union[int, float, ndarray, Iterable] = 0.,
                                           pmd: Union[int, float, ndarray, Iterable] = 0.,
                                           pdl: Union[int, float, ndarray, Iterable] = 0.,
-                                          ref_power: Pref = None):
+                                          ref_power: Pref = None,
+                                          label: str = None):
     """This is just a wrapper around the SpectralInformation.__init__() that simplifies the creation of
     a non-uniform spectral information with NLI and ASE powers set to zero."""
     frequency = asarray(frequency)
@@ -256,7 +263,7 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, in
                                    baud_rate=baud_rate, roll_off=roll_off,
                                    chromatic_dispersion=chromatic_dispersion,
                                    pmd=pmd, pdl=pdl,
-                                   ref_power=ref_power)
+                                   ref_power=ref_power, label=label)
     except ValueError as e:
         if 'could not broadcast' in str(e):
             raise SpectrumError('Dimension mismatch in input fields.')
@@ -272,11 +279,13 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, 
     p_span0 = watt2dbm(power)
     p_spani = watt2dbm(power)
     p_span0_per_channel = watt2dbm(power) * ones(nb_channel)
+    label = ["0" for i in range(nb_channel)]
     return create_arbitrary_spectral_information(frequency, slot_width=spacing, signal=power, baud_rate=baud_rate,
                                                  roll_off=roll_off,
                                                  ref_power=Pref(p_span0=p_span0, p_spani=p_spani,
                                                                 p_span0_per_channel=p_span0_per_channel,
-                                                                ref_carrier=ref_carrier))
+                                                                ref_carrier=ref_carrier),
+                                                 label=label)
 
 
 def use_initial_spectrum(initial_spectrum, ref_carrier):
@@ -289,6 +298,7 @@ def use_initial_spectrum(initial_spectrum, ref_carrier):
     roll_off = [s['roll_off'] for s in initial_spectrum.values()]
     baud_rate = [s['baud_rate'] for s in initial_spectrum.values()]
     slot_width = [s['slot_width'] for s in initial_spectrum.values()]
+    label = [s['label'] for s in initial_spectrum.values()]
     p_span0 = watt2dbm(ref_carrier['req_power'])
     p_spani = watt2dbm(ref_carrier['req_power'])
     p_span0_per_channel = [watt2dbm(s['power']) for s in initial_spectrum.values()]
@@ -296,4 +306,5 @@ def use_initial_spectrum(initial_spectrum, ref_carrier):
                                                  slot_width=slot_width, roll_off=roll_off,
                                                  ref_power=Pref(p_span0=p_span0, p_spani=p_spani,
                                                                 p_span0_per_channel=p_span0_per_channel,
-                                                                ref_carrier=ref_carrier))
+                                                                ref_carrier=ref_carrier),
+                                                 label=label)
