@@ -106,6 +106,69 @@ def db2lin(value):
     return 10**(value / 10)
 
 
+def watt2dbm(value):
+    """Convert Watt units to dBm
+
+    >>> round(watt2dbm(0.001), 1)
+    0.0
+    >>> round(watt2dbm(0.02), 1)
+    13.0
+    """
+    return lin2db(value * 1e3)
+
+
+def dbm2watt(value):
+    """Convert dBm units to Watt
+
+    >>> round(dbm2watt(0), 4)
+    0.001
+    >>> round(dbm2watt(-3), 4)
+    0.0005
+    >>> round(dbm2watt(13), 4)
+    0.02
+    """
+    return db2lin(value) * 1e-3
+
+
+def psd2powerdbm(psd_mwperghz, baudrate_baud):
+    """computes power in dBm based on baudrate in bauds and psd in mW/GHz
+
+    >>> round(psd2powerdbm(0.031176, 64e9),3)
+    3.0
+    >>> round(psd2powerdbm(0.062352, 32e9),3)
+    3.0
+    >>> round(psd2powerdbm(0.015625, 64e9),3)
+    0.0
+    """
+    return lin2db(baudrate_baud * psd_mwperghz * 1e-9)
+
+
+def powerdbm2psdmwperghz(power_dbm, baudrate_baud):
+    """computes power spectral density in  mW/GHz based on baudrate in bauds and power in dBm
+
+    >>> powerdbm2psdmwperghz(0, 64e9)
+    0.015625
+    >>> round(powerdbm2psdmwperghz(3, 64e9), 6)
+    0.031176
+    >>> round(powerdbm2psdmwperghz(3, 32e9), 6)
+    0.062352
+    """
+    return db2lin(power_dbm) / (baudrate_baud * 1e-9)
+
+
+def psdmwperghz(power_watt, baudrate_baud):
+    """computes power spectral density in  mW/GHz based on baudrate in bauds and power in W
+
+    >>> psdmwperghz(2e-3, 32e9)
+    0.0625
+    >>> psdmwperghz(1e-3, 64e9)
+    0.015625
+    >>> psdmwperghz(0.5e-3, 32e9)
+    0.015625
+    """
+    return power_watt * 1e3 / (baudrate_baud * 1e-9)
+
+
 def round2float(number, step):
     """Round a floating point number so that its "resolution" is not bigger than 'step'
 
