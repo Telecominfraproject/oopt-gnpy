@@ -260,7 +260,7 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db):
             power_out_roadm = si.signal + si.ase + si.nli
             if el.uid == 'roadm node B':
                 print('input', min_power_in_roadm)
-                assert_allclose(el.pch_out_db, effective_pch_out_db, rtol=1e-3)
+                assert_allclose(el.ref_pch_out_dbm, effective_pch_out_db, rtol=1e-3)
                 if prev_node_type == 'edfa':
                     # edfa prev_node sets input power to roadm to a high enough value:
                     # Check that egress power of roadm is equal to target power
