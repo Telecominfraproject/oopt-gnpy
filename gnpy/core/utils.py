@@ -106,6 +106,47 @@ def db2lin(value):
     return 10**(value / 10)
 
 
+def watt2dbm(value):
+    """ Convert watt units to dbm
+
+    >>> round(watt2dbm(0.001), 1)
+    0.0
+    >>> round(watt2dbm(0.02), 1)
+    13.0
+    """
+    return lin2db(value * 1e3)
+
+
+def dbm2watt(value):
+    """ Convert dbm units to watt
+    >>> round(dbm2watt(0), 4)
+    0.001
+    >>> round(dbm2watt(-3), 4)
+    0.0005
+    >>> round(dbm2watt(13), 4)
+    0.02
+    """
+    return db2lin(value) * 1e-3
+
+
+def psd2powerdbm(psd_mWperGHz, baudrate_baud):
+    """ computes power in dbm based on baudrate in bauds, roll-of and psd in mw/GHz
+    """
+    return watt2dbm(baudrate_baud * psd_mWperGHz * 1e-12)
+
+
+def powerdbm2psdmwperghz(power_dbm, baudrate_baud):
+    """ computes power in dbm based on baudrate in bauds, roll-of and psd in mw/GHz
+    """
+    return dbm2watt(power_dbm) * 1e3 / (baudrate_baud * 1e-9)
+
+
+def psdmwperghz(power_watt, baudrate_baud):
+    """ computes power in dbm based on baudrate in bauds, roll-of and psd in mw/GHz
+    """
+    return power_watt * 1e3 /(baudrate_baud * 1e-9)
+
+
 def round2float(number, step):
     """Round a floating point number so that its "resolution" is not bigger than 'step'
 
