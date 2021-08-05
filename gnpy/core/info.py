@@ -12,6 +12,7 @@ from __future__ import annotations
 from collections import namedtuple
 from collections.abc import Iterable
 from typing import Union
+from dataclasses import dataclass
 from numpy import argsort, mean, array, append, ones, ceil, any, zeros, outer, full, ndarray, asarray
 
 from gnpy.core.utils import automatic_nch, db2lin, watt2dbm
@@ -292,3 +293,50 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, 
     return create_arbitrary_spectral_information(frequency, slot_width=spacing, signal=power, baud_rate=baud_rate,
                                                  roll_off=roll_off, delta_pdb_per_channel=delta_pdb_per_channel,
                                                  ref_power=Pref(p_span0=p_span0, p_spani=p_spani))
+
+
+def carriers_to_spectral_information(initial_spectrum: dict[Union[int, float], Carrier],
+                                     ref_carrier: ReferenceCarrier) -> SpectralInformation:
+    """Initial spectrum is a dict with key = carrier frequency, and value a Carrier object.
+    :param initial_spectrum: indexed by frequency in Hz, with power offset (delta_pdb), baudrate, slot width
+    and roll off.
+    :param ref_carrier: reference carrier (baudrate and power) used for the reference channel
+    """
+    frequency = list(initial_spectrum.keys())
+    signal = [ref_carrier.req_power * db2lin(c.delta_pdb) for c in initial_spectrum.values()]
+    roll_off = [c.roll_off for c in initial_spectrum.values()]
+    baud_rate = [c.baud_rate for c in initial_spectrum.values()]
+    delta_pdb_per_channel = array([c.delta_pdb for c in initial_spectrum.values()])
+    slot_width = [c.slot_width for c in initial_spectrum.values()]
+    p_span0 = watt2dbm(ref_carrier.req_power)
+    p_spani = watt2dbm(ref_carrier.req_power)
+    return create_arbitrary_spectral_information(frequency=frequency, signal=signal, baud_rate=baud_rate,
+                                                 slot_width=slot_width, roll_off=roll_off,
+                                                 delta_pdb_per_channel=delta_pdb_per_channel,
+                                                 ref_power=Pref(p_span0=p_span0, p_spani=p_spani))
+
+
+@dataclass
+class Carrier:
+    """One channel in the initial mixed-type spectrum definition, each type being defined by
+    its delta_pdb (power offset with respect to reference power), baud rate, slot_width, roll_off
+    and tx_osnr. delta_pdb offset is applied to target power out of Roadm.
+    """
+    delta_pdb: float
+    baud_rate: float
+    slot_width: float
+    roll_off: float
+
+
+@dataclass
+class ReferenceCarrier:
+    """Reference channel is used during autodesign to determine target power
+    based on power spectral density values during propagation in ROADMs for equalization purpose.
+    It is also required to correctly compute the loss experienced by p_span_i in Roadm element.
+
+    In typical scenarios, users would pick a 32 GBaud channel at 0dBm, which will
+    neatly lead to the same power spectral density for a 64 GBaud channel at 3 dBm.
+    Other attributes (like slot_width or roll-off) may be added there for future equalization purpose.
+    """
+    baud_rate: float
+    req_power: float

@@ -23,7 +23,7 @@ from networkx.utils import pairwise
 from numpy import mean, argmin
 from gnpy.core.elements import Transceiver, Roadm
 from gnpy.core.utils import lin2db
-from gnpy.core.info import create_input_spectral_information
+from gnpy.core.info import create_input_spectral_information, carriers_to_spectral_information, ReferenceCarrier
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 import gnpy.core.ansi_escapes as ansi_escapes
 from copy import deepcopy
@@ -72,6 +72,7 @@ class PathRequest:
         if params.effective_freq_slot is not None:
             self.N = params.effective_freq_slot['N']
             self.M = params.effective_freq_slot['M']
+        self.initial_spectrum = None
 
     def __str__(self):
         return '\n\t'.join([f'{type(self).__name__} {self.request_id}',
@@ -339,10 +340,24 @@ def compute_constrained_path(network, req):
     return total_path
 
 
+def ref_carrier(req_power, equipment):
+    """Create a reference carier based SI information with the specified request's power:
+    req_power records the power in W that the user has defined for a given request
+    (which might be different from the one used for the design).
+    """
+    return ReferenceCarrier(baud_rate=equipment['SI']['default'].baud_rate, req_power=req_power)
+
+
 def propagate(path, req, equipment):
-    si = create_input_spectral_information(
-        req.f_min, req.f_max, req.roll_off, req.baud_rate,
-        req.power, req.spacing)
+    """ propagates signals in each element according to initial spectrum set by user
+    """
+    if req.initial_spectrum is not None:
+        si = carriers_to_spectral_information(initial_spectrum=req.initial_spectrum,
+                                              ref_carrier=ref_carrier(req.power, equipment))
+    else:
+        si = create_input_spectral_information(
+            req.f_min, req.f_max, req.roll_off, req.baud_rate,
+            req.power, req.spacing)
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
             si = el(si, degree=path[i+1].uid)
@@ -378,9 +393,15 @@ def propagate_and_optimize_mode(path, req, equipment):
             # step2: computes propagation for each baudrate: stop and select the first that passes
             # TODO: the case of roll of is not included: for now use SI one
             # TODO: if the loop in mode optimization does not have a feasible path, then bugs
-            spc_info = create_input_spectral_information(req.f_min, req.f_max,
-                                                         equipment['SI']['default'].roll_off,
-                                                         this_br, req.power, req.spacing)
+            if req.initial_spectrum is not None:
+                # this case is not yet handled: spectrum can not be defined for the path-request-run function
+                # and this function is only called in this case. so coming here should not be considered yet.
+                msg = f'Request: {req.request_id} contains a unexpected initial_spectrum.'
+                LOGGER.critical(msg)
+                raise ServiceError(msg)
+            spc_info = create_input_spectral_information(f_min=req.f_min, f_max=req.f_max,
+                                                         roll_off=equipment['SI']['default'].roll_off,
+                                                         baud_rate=this_br, power=req.power, spacing=req.spacing)
             for i, el in enumerate(path):
                 if isinstance(el, Roadm):
                     spc_info = el(spc_info, degree=path[i+1].uid)
