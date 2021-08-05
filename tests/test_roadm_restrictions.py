@@ -271,14 +271,14 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
                 if prev_node_type == 'edfa':
                     # edfa prev_node sets input power to roadm to a high enough value:
                     # check that target power is correctly set in the ROADM
-                    assert_allclose(el.pch_out_db, effective_pch_out_db, rtol=1e-3)
+                    assert_allclose(el.ref_pch_out_dbm, effective_pch_out_db, rtol=1e-3)
                     # Check that egress power of roadm is equal to target power
                     assert_allclose(power_out_roadm, db2lin(effective_pch_out_db - 30), rtol=1e-3)
                 elif prev_node_type == 'fused':
                     # fused prev_node does reamplfy power after fiber propagation, so input power
                     # to roadm is low.
                     # check that target power correctly reports power_dbm from previous propagation
-                    assert_allclose(el.pch_out_db, effective_pch_out_db + power_dbm, rtol=1e-3)
+                    assert_allclose(el.ref_pch_out_dbm, effective_pch_out_db + power_dbm, rtol=1e-3)
                     # Check that egress power of roadm is equalized to the min carrier input power.
                     assert_allclose(power_out_roadm, min_power_in_roadm, rtol=1e-3)
         else:
