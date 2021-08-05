@@ -17,7 +17,7 @@ from gnpy.core import ansi_escapes, elements
 from gnpy.core.equipment import trx_mode_params
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError, ServiceError
 from gnpy.core.science_utils import estimate_nf_model
-from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions
+from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions, dbm2watt
 from gnpy.topology.request import PathRequest, Disjunction, compute_spectrum_slot_vs_bandwidth
 from gnpy.tools.convert import xls_to_json_data
 from gnpy.tools.service_sheet import read_service_sheet
@@ -226,9 +226,69 @@ def _automatic_spacing(baud_rate):
     return min((s[1] for s in spacing_list if s[0] > baud_rate), default=baud_rate * 1.2)
 
 
+def _spectrum_from_json(json_data):
+    """ json_data is a list of spectrum partitions each with {fmin, fmax, baudrate, roll_off, power and tx_osnr}
+    creates the per freq dict of carrier's dict
+    f_min, f_max, baud_rate, slot_width and roll_off are mandatory
+    label and power are created if not present
+    label should be different for each partition
+    >>> json_data = {'SI': \
+        [{'f_min': 0, 'f_max': 9, 'slot_width': 1, 'baud_rate': 2.5, 'roll_off': 0.15, 'power_dbm': 0},
+        {'f_min': 10, 'f_max': 20, 'slot_width': 2, 'baud_rate': 2.5, 'roll_off': 0.15}]}
+    >>> print("{" + "\n".join("{!r}: {!r},".format(k, v) for k, v in _spectrum_from_json(json_data['SI']).items()) + "}")
+    {1: {'slot_width': 1, 'baud_rate': 2.5, 'roll_off': 0.15, 'label': '0-0.0', 'power': 0.001},
+    2: {'slot_width': 1, 'baud_rate': 2.5, 'roll_off': 0.15, 'label': '0-0.0', 'power': 0.001},
+    3: {'slot_width': 1, 'baud_rate': 2.5, 'roll_off': 0.15, 'label': '0-0.0', 'power': 0.001},
+    4: {'slot_width': 1, 'baud_rate': 2.5, 'roll_off': 0.15, 'label': '0-0.0', 'power': 0.001},
+    5: {'slot_width': 1, 'baud_rate': 2.5, 'roll_off': 0.15, 'label': '0-0.0', 'power': 0.001},
+    6: {'slot_width': 1, 'baud_rate': 2.5, 'roll_off': 0.15, 'label': '0-0.0', 'power': 0.001},
+    7: {'slot_width': 1, 'baud_rate': 2.5, 'roll_off': 0.15, 'label': '0-0.0', 'power': 0.001},
+    8: {'slot_width': 1, 'baud_rate': 2.5, 'roll_off': 0.15, 'label': '0-0.0', 'power': 0.001},
+    9: {'slot_width': 1, 'baud_rate': 2.5, 'roll_off': 0.15, 'label': '0-0.0', 'power': 0.001},
+    12: {'slot_width': 2, 'baud_rate': 2.5, 'roll_off': 0.15, 'label': '1-0.0', 'power': None},
+    14: {'slot_width': 2, 'baud_rate': 2.5, 'roll_off': 0.15, 'label': '1-0.0', 'power': None},
+    16: {'slot_width': 2, 'baud_rate': 2.5, 'roll_off': 0.15, 'label': '1-0.0', 'power': None},
+    18: {'slot_width': 2, 'baud_rate': 2.5, 'roll_off': 0.15, 'label': '1-0.0', 'power': None},
+    20: {'slot_width': 2, 'baud_rate': 2.5, 'roll_off': 0.15, 'label': '1-0.0', 'power': None},}
+    """
+    spectrum = {}
+    json_data = sorted(json_data, key=lambda x: x['f_min'])
+    # min freq is fmin - spacing/2 (numbering starts at 0)
+    previous_part_max_freq = json_data[0]['f_min'] - json_data[0]['slot_width'] / 2
+    for index, part in enumerate(json_data):
+        # add a label to the partition for the printings
+        if 'label' not in part.keys():
+            part['label'] = f'{index}-{round(part["baud_rate"] * 1e-9, 2)}'
+        index = 1     # starting freq is exactly f_min + spacing to be consistent with utils.automatic_nch
+        # first partition min frequency is f_min + spacing - spacing/2
+        current_part_min_freq = part['f_min'] + part['slot_width'] / 2   # supposes that carriers are centered on frequency
+        if 'power_dbm' in part:
+            # user defined partition power.
+            part['power'] = dbm2watt(part['power_dbm'])
+        else:
+            part['power'] = None
+        if previous_part_max_freq <= current_part_min_freq:
+            # check that previous part last channel does not overlap on next part first channel
+            current_freq = part['f_min'] + index * part['slot_width']
+            while current_freq <= part['f_max']:
+                spectrum[current_freq] = {k: v for k,v in part.items() if k not in ['f_min', 'f_max', 'power_dbm']}
+                index += 1
+                current_freq = part['f_min'] + index * part['slot_width']
+            previous_part_max_freq = current_freq - part['slot_width'] / 2
+        else:
+            raise ValueError('not a valid initial spectrum definition')
+
+    return spectrum
+
+
 def load_equipment(filename):
     json_data = load_json(filename)
     return _equipment_from_json(json_data, filename)
+
+
+def load_initial_spectrum(filename):
+    json_data = load_json(filename)
+    return _spectrum_from_json(json_data['SI'])
 
 
 def _update_dual_stage(equipment):
