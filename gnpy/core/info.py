@@ -11,7 +11,7 @@ This module contains classes for modelling :class:`SpectralInformation`.
 from __future__ import annotations
 from collections import namedtuple
 from collections.abc import Iterable
-from typing import Union
+from typing import Union, TypedDict
 from numpy import argsort, mean, array, append, ones, ceil, any, zeros, outer, full, ndarray, asarray
 
 from gnpy.core.utils import automatic_nch, db2lin, watt2dbm
@@ -291,4 +291,31 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, 
     delta_pdb_per_channel = zeros(number_of_channels)
     return create_arbitrary_spectral_information(frequency, slot_width=spacing, signal=power, baud_rate=baud_rate,
                                                  roll_off=roll_off, delta_pdb_per_channel=delta_pdb_per_channel,
+                                                 ref_power=Pref(p_span0=p_span0, p_spani=p_spani))
+
+
+class carrier(TypedDict):
+    delta_pdb: float
+    baud_rate: float
+    slot_width: float
+    roll_off: float
+
+
+def use_pre_defined_spectrum_to_create_input_si(initial_spectrum: dict[float, carrier],
+                                                ref_carrier: dict) -> SpectralInformation:
+    """initial spectrum is a dict with key = carrier frequency, and value a dict with power offset,
+    baudrate, slot width and roll off for this carrier. ref_carrier contains the reference carrier 
+    (baudrate and power) used for the reference channel. 
+    """
+    frequency = list(initial_spectrum.keys())
+    signal = [ref_carrier['req_power'] * db2lin(s['delta_pdb']) for s in initial_spectrum.values()]
+    roll_off = [s['roll_off'] for s in initial_spectrum.values()]
+    baud_rate = [s['baud_rate'] for s in initial_spectrum.values()]
+    delta_pdb_per_channel = array([s['delta_pdb'] for s in initial_spectrum.values()])
+    slot_width = [s['slot_width'] for s in initial_spectrum.values()]
+    p_span0 = watt2dbm(ref_carrier['req_power'])
+    p_spani = watt2dbm(ref_carrier['req_power'])
+    return create_arbitrary_spectral_information(frequency=frequency, signal=signal, baud_rate=baud_rate,
+                                                 slot_width=slot_width, roll_off=roll_off,
+                                                 delta_pdb_per_channel=delta_pdb_per_channel,
                                                  ref_power=Pref(p_span0=p_span0, p_spani=p_spani))
