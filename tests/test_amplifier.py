@@ -84,7 +84,7 @@ def test_variable_gain_nf(gain, nf_expected, setup_edfa_variable_gain, si):
     si.nli /= db2lin(gain)
     si.ase /= db2lin(gain)
     edfa.operational.gain_target = gain
-    si.pref = si.pref._replace(p_span0=0, p_spani=-gain, neq_ch=lin2db(si.number_of_channels))
+    si.pref = si.pref._replace(p_span0=0, p_spani=-gain, p_span0_per_channel=zeros(len(si.signal)))
     edfa.interpol_params(si)
     result = edfa.nf
     assert pytest.approx(nf_expected, abs=0.01) == result[0]
@@ -98,7 +98,7 @@ def test_fixed_gain_nf(gain, nf_expected, setup_edfa_fixed_gain, si):
     si.nli /= db2lin(gain)
     si.ase /= db2lin(gain)
     edfa.operational.gain_target = gain
-    si.pref = si.pref._replace(p_span0=0, p_spani=-gain, neq_ch=lin2db(si.number_of_channels))
+    si.pref = si.pref._replace(p_span0=0, p_spani=-gain, p_span0_per_channel=zeros(len(si.signal)))
     edfa.interpol_params(si)
     assert pytest.approx(nf_expected, abs=0.01) == edfa.nf[0]
 
@@ -123,7 +123,7 @@ def test_compare_nf_models(gain, setup_edfa_variable_gain, si):
     si.ase /= db2lin(gain)
     edfa.operational.gain_target = gain
     # edfa is variable gain type
-    si.pref = si.pref._replace(p_span0=0, p_spani=-gain, neq_ch=lin2db(si.number_of_channels))
+    si.pref = si.pref._replace(p_span0=0, p_spani=-gain, p_span0_per_channel=zeros(len(si.signal)))
     edfa.interpol_params(si)
     nf_model = edfa.nf[0]
 
@@ -178,7 +178,7 @@ def test_ase_noise(gain, si, setup_trx, bw):
     si = span(si)
     print(span)
 
-    si.pref = si.pref._replace(p_span0=0, p_spani=-gain, neq_ch=lin2db(si.number_of_channels))
+    si.pref = si.pref._replace(p_span0=0, p_spani=-gain, p_span0_per_channel=zeros(len(si.signal)))
     edfa.interpol_params(si)
     nf = edfa.nf
     print('nf', nf)
