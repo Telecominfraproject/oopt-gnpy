@@ -22,7 +22,7 @@ from networkx import (dijkstra_path, NetworkXNoPath,
 from networkx.utils import pairwise
 from numpy import mean, argmin
 from gnpy.core.elements import Transceiver, Roadm
-from gnpy.core.utils import lin2db
+from gnpy.core.utils import lin2db, dbm2watt
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 import gnpy.core.ansi_escapes as ansi_escapes
@@ -337,6 +337,19 @@ def compute_constrained_path(network, req):
             total_path = []
 
     return total_path
+
+
+def ref_carrier(req_power, equipment):
+    """Create a reference carier based SI information with the specified request's power:
+    ref_carrier['power'] records the power used for the system design
+    ref_carrier['req_power'] records the power that the user has defined for a given request
+    (which might be different from the one used for the design)
+    """
+    ref_carrier = {key: getattr(equipment['SI']['default'], key) for key in
+                   ['f_min', 'f_max', 'baud_rate', 'spacing', 'roll_off', 'tx_osnr']}
+    ref_carrier['power'] = dbm2watt(equipment['SI']['default'].power_dbm)
+    ref_carrier['req_power'] = req_power
+    return ref_carrier
 
 
 def propagate(path, req, equipment):
