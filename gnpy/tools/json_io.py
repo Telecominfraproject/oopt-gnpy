@@ -13,11 +13,14 @@ from logging import getLogger
 from pathlib import Path
 import json
 from collections import namedtuple
+from numpy import arange
+
 from gnpy.core import ansi_escapes, elements
 from gnpy.core.equipment import trx_mode_params
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError, ServiceError
 from gnpy.core.science_utils import estimate_nf_model
 from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions
+from gnpy.core.info import Carrier
 from gnpy.topology.request import PathRequest, Disjunction, compute_spectrum_slot_vs_bandwidth
 from gnpy.tools.convert import xls_to_json_data
 from gnpy.tools.service_sheet import read_service_sheet
@@ -249,9 +252,86 @@ def _automatic_spacing(baud_rate):
     return min((s[1] for s in spacing_list if s[0] > baud_rate), default=baud_rate * 1.2)
 
 
+def _spectrum_from_json(json_data):
+    """JSON_data is a list of spectrum partitions each with
+    {f_min, f_max, baud_rate, roll_off, delta_pdb, slot_width, tx_osnr, label}
+    Creates the per freq Carrier's dict.
+    f_min, f_max, baud_rate, slot_width and roll_off are mandatory
+    label, tx_osnr and delta_pdb are created if not present
+    label should be different for each partition
+    >>> json_data = {'spectrum': \
+        [{'f_min': 193.2e12, 'f_max': 193.4e12, 'slot_width': 50e9, 'baud_rate': 32e9, 'roll_off': 0.15, 'delta_pdb': 1, 'tx_osnr': 45},\
+        {'f_min': 193.4625e12, 'f_max': 193.9875e12, 'slot_width': 75e9, 'baud_rate': 64e9, 'roll_off': 0.15},\
+        {'f_min': 194.075e12, 'f_max': 194.075e12, 'slot_width': 100e9, 'baud_rate': 90e9, 'roll_off': 0.15},\
+        {'f_min': 194.2e12, 'f_max': 194.35e12, 'slot_width': 50e9, 'baud_rate': 32e9, 'roll_off': 0.15}]}
+    >>> spectrum = _spectrum_from_json(json_data['spectrum'])
+    >>> for k, v in spectrum.items():
+    ...     print(f'{k}: {v}')
+    ...
+    193200000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, label='0-32.0')
+    193250000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, label='0-32.0')
+    193300000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, label='0-32.0')
+    193350000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, label='0-32.0')
+    193400000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, label='0-32.0')
+    193462500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, label='1-64.0')
+    193537500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, label='1-64.0')
+    193612500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, label='1-64.0')
+    193687500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, label='1-64.0')
+    193762500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, label='1-64.0')
+    193837500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, label='1-64.0')
+    193912500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, label='1-64.0')
+    193987500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, label='1-64.0')
+    194075000000000.0: Carrier(delta_pdb=0, baud_rate=90000000000.0, slot_width=100000000000.0, roll_off=0.15, tx_osnr=40, label='2-90.0')
+    194200000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, label='3-32.0')
+    194250000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, label='3-32.0')
+    194300000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, label='3-32.0')
+    194350000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, label='3-32.0')
+    """
+    spectrum = {}
+    json_data = sorted(json_data, key=lambda x: x['f_min'])
+    # min freq of occupation is f_min - slot_width/2 (numbering starts at 0)
+    previous_part_max_freq = json_data[0]['f_min'] - json_data[0]['slot_width'] / 2
+    for index, part in enumerate(json_data):
+        # default delta_pdb is 0 dB
+        if 'delta_pdb' not in part:
+            part['delta_pdb'] = 0
+        # add a label to the partition for the printings
+        if 'label' not in part:
+            part['label'] = f'{index}-{round(part["baud_rate"] * 1e-9, 2)}'
+        # default tx_osnr is set to 40 dB
+        if 'tx_osnr' not in part:
+            part['tx_osnr'] = 40
+        # starting freq is exactly f_min to be consistent with utils.automatic_nch
+        # first partition min occupation is f_min - slot_width / 2 (central_frequency is f_min)
+        # supposes that carriers are centered on frequency
+        if previous_part_max_freq > (part['f_min'] - part['slot_width'] / 2):
+            # check that previous part last channel does not overlap on next part first channel
+            # max center of the part should be below part['f_max'] and aligned on the slot_width
+            msg = 'Not a valid initial spectrum definition:\nprevious spectrum last carrier max occupation ' +\
+                f'{round(previous_part_max_freq * 1e-12, 5)} ' +\
+                'overlaps on next spectrum first carrier occupation ' +\
+                f'{round((part["f_min"] - part["slot_width"] / 2) * 1e-12, 5)}'
+            raise ValueError(msg)
+
+        max_range = ((part['f_max'] - part['f_min']) // part['slot_width'] + 1) * part['slot_width']
+        for current_freq in arange(part['f_min'],
+                                   part['f_min'] + max_range,
+                                   part['slot_width']):
+            spectrum[current_freq] = Carrier(delta_pdb=part['delta_pdb'], baud_rate=part['baud_rate'],
+                                             slot_width=part['slot_width'], roll_off=part['roll_off'],
+                                             tx_osnr=part['tx_osnr'], label=part['label'])
+        previous_part_max_freq = current_freq + part['slot_width'] / 2
+    return spectrum
+
+
 def load_equipment(filename):
     json_data = load_json(filename)
     return _equipment_from_json(json_data, filename)
+
+
+def load_initial_spectrum(filename):
+    json_data = load_json(filename)
+    return _spectrum_from_json(json_data['spectrum'])
 
 
 def _update_dual_stage(equipment):

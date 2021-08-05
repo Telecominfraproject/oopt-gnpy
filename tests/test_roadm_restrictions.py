@@ -228,9 +228,9 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
         prev_node['params'] = {'loss': 0}
     json_network['elements'].append(prev_node)
     network = network_from_json(json_network, equipment)
-    p_total_db = power_dbm + lin2db(automatic_nch(equipment['SI']['default'].f_min,
-                                                  equipment['SI']['default'].f_max,
-                                                  equipment['SI']['default'].spacing))
+    nb_channel = automatic_nch(equipment['SI']['default'].f_min, equipment['SI']['default'].f_max,
+                               equipment['SI']['default'].spacing)
+    p_total_db = power_dbm + lin2db(nb_channel)
 
     build_network(network, equipment, power_dbm, p_total_db)
 
@@ -245,6 +245,7 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
               'format': '',
               'path_bandwidth': 100e9,
               'effective_freq_slot': None,
+              'nb_channel': nb_channel
               }
     trx_params = trx_mode_params(equipment)
     params.update(trx_params)
