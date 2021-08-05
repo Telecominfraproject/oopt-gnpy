@@ -14,6 +14,8 @@ import sys
 from math import ceil
 from numpy import linspace, mean
 from pathlib import Path
+from copy import deepcopy
+
 import gnpy.core.ansi_escapes as ansi_escapes
 from gnpy.core.elements import Transceiver, Fiber, RamanFiber
 from gnpy.core.equipment import trx_mode_params
@@ -26,8 +28,9 @@ from gnpy.topology.request import (ResultElement, jsontocsv, compute_path_dsjctn
                                    deduplicate_disjunctions, compute_path_with_disjunction,
                                    PathRequest, compute_constrained_path, propagate)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
-from gnpy.tools.json_io import load_equipment, load_network, load_json, load_requests, save_network, \
-                               requests_from_json, disjunctions_from_json, save_json
+from gnpy.tools.json_io import (load_equipment, load_network, load_json, load_requests, save_network,
+                                requests_from_json, disjunctions_from_json, save_json, load_initial_spectrum,
+                                _spectrum_from_json)
 from gnpy.tools.plots import plot_baseline, plot_results
 
 _logger = logging.getLogger(__name__)
@@ -118,6 +121,7 @@ def transmission_main_example(args=None):
     parser.add_argument('-pl', '--plot', action='store_true')
     parser.add_argument('-l', '--list-nodes', action='store_true', help='list all transceiver nodes')
     parser.add_argument('-po', '--power', default=0, help='channel ref power in dBm')
+    parser.add_argument('-spectrum', '--mixed-rate-spectrum-file', help='user defined mixed rate spectrum json file')
     parser.add_argument('source', nargs='?', help='source node')
     parser.add_argument('destination', nargs='?', help='destination node')
 
@@ -195,7 +199,13 @@ def transmission_main_example(args=None):
         trx_params['power'] = db2lin(float(args.power)) * 1e-3
     params.update(trx_params)
     req = PathRequest(**params)
-
+    if args.mixed_rate_spectrum_file:
+        req.initial_spectrum = load_initial_spectrum(args.mixed_rate_spectrum_file)
+        print('User input for spectrum used for propagation instead of SI')
+        nb_channels = len(req.initial_spectrum)
+    else:
+        nb_channels = req.nb_channel
+    print(f'There are {nb_channels} channels propagating')
     power_mode = equipment['Span']['default'].power_mode
     print('\n'.join([f'Power mode is set to {power_mode}',
                      f'=> it can be modified in eqpt_config.json - Span']))
@@ -226,8 +236,19 @@ def transmission_main_example(args=None):
             power_range = list(linspace(p_start, p_stop, p_num))
         except TypeError:
             print('invalid power range definition in eqpt_config, should be power_range_db: [lower, upper, step]')
+    if hasattr(req, 'initial_spectrum'):
+        record_initial_spectrum = req.initial_spectrum
     for dp_db in power_range:
         req.power = db2lin(pref_ch_db + dp_db) * 1e-3
+        # if initial spectrum did not contain any power, now we need to use this one.
+        # note the initial power defines a differential wrt req.power so that if req.power is set to 2mW (3dBm)
+        # and initial spectrum was set to 0, this sets a initial per channel delta power to -3dB, so that
+        # whatever the equalization, -3 dB is applied on all channels (ie initial power in initial spectrum pre-empts
+        # pow option)
+        if hasattr(req, 'initial_spectrum'):
+            # without deepcopy, the previous dp setting is recorded as a user defined and spectrum is not properly
+            # updated for the power sweep dp_db
+            req.initial_spectrum = deepcopy(record_initial_spectrum)
         if power_mode:
             print(f'\nPropagating with input power = {ansi_escapes.cyan}{lin2db(req.power*1e3):.2f} dBm{ansi_escapes.reset}:')
         else:
