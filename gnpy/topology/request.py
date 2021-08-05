@@ -22,7 +22,7 @@ from networkx import (dijkstra_path, NetworkXNoPath,
 from networkx.utils import pairwise
 from numpy import mean, argmin
 from gnpy.core.elements import Transceiver, Roadm
-from gnpy.core.utils import lin2db
+from gnpy.core.utils import lin2db, dbm2watt
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 import gnpy.core.ansi_escapes as ansi_escapes
