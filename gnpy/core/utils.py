@@ -9,6 +9,7 @@ This module contains utility functions that are used with gnpy.
 """
 
 from csv import writer
+from dataclasses import dataclass
 from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and
 from scipy import constants
 
@@ -387,3 +388,22 @@ def convert_length(value, units):
         return value * 1e3
     else:
         raise ConfigurationError(f'Cannot convert length in "{units}" into meters')
+
+
+@dataclass
+class Carrier:
+    """Structure for the data to describe initial spectrum pre-defined by user.
+    delta_pdb is the power offset in dB applied to the carrier compared to the power used for design
+    """
+    delta_pdb: float
+    baud_rate: float
+    slot_width: float
+    roll_off: float
+
+
+@dataclass
+class ReferenceCarrier:
+    """Structure for the data to describe reference carrier from SI
+    """
+    baud_rate: float
+    req_power: float
