@@ -11,6 +11,7 @@ This module contains classes for modelling :class:`SpectralInformation`.
 from __future__ import annotations
 from collections import namedtuple
 from collections.abc import Iterable
+from dataclasses import dataclass
 from typing import Union
 from numpy import argsort, mean, array, append, ones, ceil, any, zeros, outer, full, ndarray, asarray
 
@@ -20,6 +21,25 @@ from gnpy.core.exceptions import SpectrumError
 DEFAULT_SLOT_WIDTH_STEP = 12.5e9  # Hz
 """Channels with unspecified slot width will have their slot width evaluated as the baud rate rounded up to the minimum
 multiple of the DEFAULT_SLOT_WIDTH_STEP (the baud rate is extended including the roll off in this evaluation)"""
+
+
+@dataclass
+class Carrier:
+    """Structure for the data to describe initial spectrum pre-defined by user.
+    delta_pdb is the power offset in dB applied to the carrier compared to the power used for design
+    """
+    delta_pdb: float
+    baud_rate: float
+    slot_width: float
+    roll_off: float
+
+
+@dataclass
+class ReferenceCarrier:
+    """Structure for the data to describe reference carrier from SI
+    """
+    baud_rate: float
+    req_power: float
 
 
 class Power(namedtuple('Power', 'signal nli ase')):
@@ -291,4 +311,25 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, 
     delta_pdb_per_channel = zeros(number_of_channels)
     return create_arbitrary_spectral_information(frequency, slot_width=spacing, signal=power, baud_rate=baud_rate,
                                                  roll_off=roll_off, delta_pdb_per_channel=delta_pdb_per_channel,
+                                                 ref_power=Pref(p_span0=p_span0, p_spani=p_spani))
+
+
+def carriers_to_spectral_information(initial_spectrum: dict[Union[int, float], Carrier],
+                                     ref_carrier: ReferenceCarrier) -> SpectralInformation:
+    """Initial spectrum is a dict with key = carrier frequency, and value a Carrier object.
+    :param initial_spectrum: indexed by frequency in Hz, with power offset (delta_pdb), baudrate, slot width
+    and roll off.
+    :param ref_carrier: reference carrier (baudrate and power) used for the reference channel
+    """
+    frequency = list(initial_spectrum.keys())
+    signal = [ref_carrier.req_power * db2lin(c.delta_pdb) for c in initial_spectrum.values()]
+    roll_off = [c.roll_off for c in initial_spectrum.values()]
+    baud_rate = [c.baud_rate for c in initial_spectrum.values()]
+    delta_pdb_per_channel = [c.delta_pdb for c in initial_spectrum.values()]
+    slot_width = [c.slot_width for c in initial_spectrum.values()]
+    p_span0 = watt2dbm(ref_carrier.req_power)
+    p_spani = watt2dbm(ref_carrier.req_power)
+    return create_arbitrary_spectral_information(frequency=frequency, signal=signal, baud_rate=baud_rate,
+                                                 slot_width=slot_width, roll_off=roll_off,
+                                                 delta_pdb_per_channel=delta_pdb_per_channel,
                                                  ref_power=Pref(p_span0=p_span0, p_spani=p_spani))
