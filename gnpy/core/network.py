@@ -238,7 +238,7 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
     """
     power_mode = equipment['Span']['default'].power_mode
     next_oms = (n for n in network.successors(this_node) if not isinstance(n, elements.Transceiver))
-    this_node_degree = {k: v for k, v in this_node.per_degree_pch_out_db.items()} if hasattr(this_node, 'per_degree_pch_out_db') else {}
+    this_node_degree = getattr(this_node, 'per_degree_pch_out_dbm', {})
     for oms in next_oms:
         # go through all the OMS departing from the ROADM
         prev_node = this_node
@@ -334,7 +334,7 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
             # print(f'{node.uid}')
 
     if isinstance(this_node, elements.Roadm):
-        this_node.per_degree_pch_out_db = {k: v for k, v in this_node_degree.items()}
+        this_node.per_degree_pch_out_dbm = {k: v for k, v in this_node_degree.items()}
 
 
 def add_roadm_booster(network, roadm):
