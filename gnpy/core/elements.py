@@ -268,14 +268,22 @@ class Roadm(_Node):
         input_power = spectral_info.signal + spectral_info.nli + spectral_info.ase
         min_power = min(lin2db(input_power * 1e3))
         per_degree_pch = per_degree_pch if per_degree_pch < min_power else min_power
-        delta_power = lin2db(input_power * 1e3) - per_degree_pch
+        # target power shoud follow same delta power as in p_span0_per_channel
+        # if no specific delta, then apply equalization (later on)
+        pref = spectral_info.pref
+        delta_channel_power = pref.p_span0_per_channel - pref.p_span0
+        delta_power = lin2db(input_power * 1e3) - (per_degree_pch + delta_channel_power)
         spectral_info.apply_attenuation_db(delta_power)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
         spectral_info.pdl = sqrt(spectral_info.pdl ** 2 + self.params.pdl ** 2)
 
     def update_pref(self, spectral_info):
-        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
-                                                         p_spani=self.ref_pch_out_dbm)
+        """Update Reference power
+
+        This modifies  the spectral info in-place. Only the `pref` is updated,
+        while p_span0 and p_span0_per_channel are not changed.
+        """
+        spectral_info.pref = spectral_info.pref._replace(p_spani=self.ref_pch_out_dbm)
 
     def __call__(self, spectral_info, degree):
         self.propagate(spectral_info, degree=degree)
@@ -656,9 +664,13 @@ class Edfa(_Node):
             self.effective_gain = self.target_pch_out_db - pref.p_spani
 
         """check power saturation and correct effective gain & power accordingly:"""
+        # compute the sum of powers of carriers at the input of the amplifier accounting for the
+        # expected distribution of per channel power
+        delta_channel_power = pref.p_span0_per_channel - pref.p_span0
+        input_total_power = lin2db(sum([db2lin(pref.p_spani + d) for d in delta_channel_power]))
         self.effective_gain = min(
             self.effective_gain,
-            self.params.p_max - (pref.p_spani + pref.neq_ch)
+            self.params.p_max - input_total_power
         )
         #print(self.uid, self.effective_gain, self.operational.gain_target)
         self.effective_pch_out_db = round(pref.p_spani + self.effective_gain, 2)
