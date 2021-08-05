@@ -400,6 +400,7 @@ class Carrier:
     slot_width: float
     roll_off: float
     tx_osnr: float
+    label: str
 
 
 @dataclass
