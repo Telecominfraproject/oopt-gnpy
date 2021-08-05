@@ -270,16 +270,33 @@ class Roadm(_Node):
         # different carriers. effective_loss records the loss for a reference carrier.
         self.effective_loss = spectral_info.pref.p_spani - self.ref_pch_out_dbm
         input_power = spectral_info.signal + spectral_info.nli + spectral_info.ase
-        min_power = min(lin2db(input_power * 1e3))
-        per_degree_pch = per_degree_pch if per_degree_pch < min_power else min_power
-        delta_power = lin2db(input_power * 1e3) - per_degree_pch
+        target_power_per_channel = per_degree_pch + spectral_info.delta_pdb_per_channel
+        # If target_power_per_channel has some channels power above input power, then the whole target is reduced.
+        # For example, if user specifies delta_pdb_per_channel:
+        # freq1: 1dB, freq2: 3dB, freq3: -3dB, and target is -20dBm out of the ROADM,
+        # then the target power for each channel uses the specified delta_pdb_per_channel.
+        # target_power_per_channel[f1, f2, f3] = -19, -17, -23
+        # However if input_signal = -23, -16, -26, then the target can not be applied, because
+        # -23 < -19dBm and -26 < -23dBm,
+        # and a reduction must be applied (ROADM can not amplify).
+        # In order to keep the same differences on channels, the target is reduced by 4 dB
+        # max((max([-19, -17, -23] - [-23, -16, -26]), 0) = max(max([4, -1, 3]), 0) = max(4, 0) = 4
+        # the new target is [-23, -21, -27]
+        # and the attenuation to apply is [-23, -16, -26] - [-23, -21, -27] = [0, 5, 1]
+        correction = max(max(target_power_per_channel - lin2db(input_power * 1e3)), 0)
+        new_target = target_power_per_channel - correction
+        delta_power = lin2db(input_power * 1e3) - new_target
         spectral_info.apply_attenuation_db(delta_power)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
         spectral_info.pdl = sqrt(spectral_info.pdl ** 2 + self.params.pdl ** 2)
 
     def update_pref(self, spectral_info):
-        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
-                                                         p_spani=self.ref_pch_out_dbm)
+        """Update Reference power
+
+        This modifies the spectral info in-place. Only the `pref` is updated with new p_spani,
+        while p_span0 is not changed.
+        """
+        spectral_info.pref = spectral_info.pref._replace(p_spani=self.ref_pch_out_dbm)
 
     def __call__(self, spectral_info, degree):
         self.propagate(spectral_info, degree=degree)
