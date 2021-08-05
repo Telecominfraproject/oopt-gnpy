@@ -271,16 +271,34 @@ class Roadm(_Node):
         # carriers. effective_loss records the loss for a reference carrier.
         self.effective_loss = spectral_info.pref.p_spani - self.ref_pch_out_dbm
         input_power = spectral_info.signal + spectral_info.nli + spectral_info.ase
-        min_power = min(lin2db(input_power * 1e3))
-        per_degree_pch = per_degree_pch if per_degree_pch < min_power else min_power
-        delta_power = lin2db(input_power * 1e3) - per_degree_pch
+        pref = spectral_info.pref
+        target_power_per_channel = per_degree_pch + (pref.p_span0_per_channel - pref.p_span0)
+        # if target_power_per_channel has some channels power above input power then the whole target is reduced
+        # for example if user specifies p_span0_per_channel: freq1: 1dBm, freq2: 3dBm, freq3:-3dBm,
+        # and target is -20dBm out of the ROADM then the target power for each channel uses the specified 
+        # p_span0_per_channel relative to p_span0
+        # target_power_per_channel[f1, f2, f3] = -19, -17, -23
+        # however if input_signal = -23, -16, -26, then the target can not be aaplied and an reduction must be applied
+        # (ROADM can not amplify)
+        # in order to keep the same differences on channels the target is reduced by 4 dB
+        # max((max([-19, -17, -23] - [-23, -16, -26]), 0) = max(max([4, -1, 3]), 0) = max(4, 0) = 4
+        # the new target is [-23, -21, -27]
+        # and the attenuation to apply is [-23, -16, -26] - [-23, -21, -27] = [0, 5, 1]
+        correction = max(max(target_power_per_channel - lin2db(input_power * 1e3)), 0)
+        # min_power = min(lin2db(input_power * 1e3))
+        new_target =  target_power_per_channel - correction
+        delta_power = lin2db(input_power * 1e3) - new_target
         spectral_info.apply_attenuation_db(delta_power)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
         spectral_info.pdl = sqrt(spectral_info.pdl ** 2 + self.params.pdl ** 2)
 
     def update_pref(self, spectral_info):
-        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
-                                                         p_spani=self.ref_pch_out_dbm)
+        """Update Reference power
+
+        This modifies  the spectral info in-place. Only the `pref` is updated,
+        while p_span0 and p_span0_per_channel are not changed.
+        """
+        spectral_info.pref = spectral_info.pref._replace(p_spani=self.ref_pch_out_dbm)
 
     def __call__(self, spectral_info, degree):
         self.propagate(spectral_info, degree=degree)
@@ -661,9 +679,13 @@ class Edfa(_Node):
             self.effective_gain = self.target_pch_out_db - pref.p_spani
 
         """check power saturation and correct effective gain & power accordingly:"""
+        # compute the sum of powers of carriers at the input of the amplifier accounting for the
+        # expected distribution of per channel power
+        delta_channel_power = pref.p_span0_per_channel - pref.p_span0
+        input_total_power = lin2db(sum(db2lin(pref.p_spani + delta_channel_power)))
         self.effective_gain = min(
             self.effective_gain,
-            self.params.p_max - (pref.p_spani + pref.neq_ch)
+            self.params.p_max - input_total_power
         )
         #print(self.uid, self.effective_gain, self.operational.gain_target)
         self.effective_pch_out_db = round(pref.p_spani + self.effective_gain, 2)
