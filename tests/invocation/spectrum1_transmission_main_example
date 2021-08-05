@@ -1,0 +1,98 @@
+warning: user input for spectrum used for propagation instead of SI
+There are 96 channels propagating
+Power mode is set to True
+=> it can be modified in eqpt_config.json - Span
+
+There are 3 fiber spans over 130 km between trx Lannion_CAS and trx Lorient_KMA
+
+Now propagating between trx Lannion_CAS and trx Lorient_KMA:
+
+Propagating with input power = [1;36;40m0.00 dBm[0m:
+Transceiver trx Lannion_CAS
+  GSNR (0.1nm, dB):          40.00
+  GSNR (signal bw, dB):      35.92
+  OSNR ASE (0.1nm, dB):      40.00
+  OSNR ASE (signal bw, dB):  35.92
+  CD (ps/nm):                0.00
+  PMD (ps):                  0.00
+Roadm roadm Lannion_CAS
+  effective loss (dB):  20.00
+  pch out (dBm):        -20.00
+  total pch (dBm):      -20.00
+Edfa east edfa in Lannion_CAS to Corlay
+  type_variety:           std_medium_gain
+  effective gain(dB):     21.00
+  (before att_in and before output VOA)
+  noise figure (dB):      6.36
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         -0.18
+  Power Out (dBm):        20.83
+  Delta_P (dB):           1.00
+  target pch (dBm):       1.00
+  effective pch (dBm):    1.00
+  total pch (dBm):        1.01
+  output VOA (dB):        0.00
+Fiber          fiber (Lannion_CAS → Corlay)-F061
+  type_variety:                SSMF
+  length (km):                 20.00
+  pad att_in (dB):             0.00
+  total loss (dB):             4.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm):               -3.00
+  total pch (dBm):             -2.99
+Fused west fused spans in Corlay
+  loss (dB): 1.00
+Fiber          fiber (Corlay → Loudeac)-F010
+  type_variety:                SSMF
+  length (km):                 50.00
+  pad att_in (dB):             0.00
+  total loss (dB):             10.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm):               -14.00
+  total pch (dBm):             -13.99
+Fused west fused spans in Loudeac
+  loss (dB): 1.00
+Fiber          fiber (Loudeac → Lorient_KMA)-F054
+  type_variety:                SSMF
+  length (km):                 60.00
+  pad att_in (dB):             0.00
+  total loss (dB):             12.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  pch out (dBm):               -27.00
+  total pch (dBm):             -26.99
+Edfa west edfa in Lorient_KMA to Loudeac
+  type_variety:           std_high_gain
+  effective gain(dB):     28.00
+  (before att_in and before output VOA)
+  noise figure (dB):      5.92
+  (including att_in)
+  pad att_in (dB):        0.00
+  Power In (dBm):         -7.17
+  Power Out (dBm):        20.87
+  Delta_P (dB):           1.00
+  target pch (dBm):       1.00
+  effective pch (dBm):    1.00
+  total pch (dBm):        1.05
+  output VOA (dB):        0.00
+Roadm roadm Lorient_KMA
+  effective loss (dB):  21.00
+  pch out (dBm):        -20.00
+  total pch (dBm):      -20.00
+Transceiver trx Lorient_KMA
+  GSNR (0.1nm, dB):          23.58
+  GSNR (signal bw, dB):      19.50
+  OSNR ASE (0.1nm, dB):      23.88
+  OSNR ASE (signal bw, dB):  19.80
+  CD (ps/nm):                2171.00
+  PMD (ps):                  0.46
+
+Transmission result for input power = 0.00 dBm:
+  Final GSNR (0.1 nm): [1;36;40m23.58 dB[0m
+
+(No source node specified: picked trx Lannion_CAS)
+
+(No destination node specified: picked trx Lorient_KMA)
