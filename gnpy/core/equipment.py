@@ -66,9 +66,6 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             trx_params['roll_off'] = default_si_data.roll_off
             trx_params['tx_osnr'] = default_si_data.tx_osnr
             trx_params['min_spacing'] = None
-            nch = automatic_nch(trx_params['f_min'], trx_params['f_max'], trx_params['spacing'])
-            trx_params['nb_channel'] = nch
-            print(f'There are {nch} channels propagating')
 
     trx_params['power'] = db2lin(default_si_data.power_dbm) * 1e-3
 
