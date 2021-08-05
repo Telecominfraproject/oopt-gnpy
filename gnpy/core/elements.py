@@ -179,7 +179,7 @@ class Roadm(_Node):
         if not params:
             params = {}
         super().__init__(*args, params=RoadmParams(**params), **kwargs)
-        self.pch_out_db = self.params.target_pch_out_db
+        self.ref_pch_out_dbm = self.params.target_pch_out_db
         self.loss = 0  # auto-design interest
         self.effective_loss = None
         self.passive = True
@@ -191,7 +191,7 @@ class Roadm(_Node):
         return {'uid': self.uid,
                 'type': type(self).__name__,
                 'params': {
-                    'target_pch_out_db': self.pch_out_db,
+                    'target_pch_out_db': self.ref_pch_out_dbm,
                     'restrictions': self.restrictions,
                     'per_degree_pch_out_db': self.per_degree_pch_out_db
                     },
@@ -209,7 +209,7 @@ class Roadm(_Node):
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
                           f'  effective loss (dB):  {self.effective_loss:.2f}',
-                          f'  pch out (dBm):        {self.pch_out_db:.2f}'])
+                          f'  pch out (dBm):        {self.ref_pch_out_dbm:.2f}'])
 
     def propagate(self, spectral_info, degree):
         # pin_target and loss are read from eqpt_config.json['Roadm']
@@ -222,9 +222,12 @@ class Roadm(_Node):
         # a ROADM doesn't amplify, it can only attenuate
         # TODO maybe add a minimum loss for the
         per_degree_pch = self.per_degree_pch_out_db[degree] \
-            if degree in self.per_degree_pch_out_db else self.pch_out_db
-        self.pch_out_db = min(spectral_info.pref.p_spani, per_degree_pch)
-        self.effective_loss = spectral_info.pref.p_spani - self.pch_out_db
+            if degree in self.per_degree_pch_out_db else self.ref_pch_out_dbm
+        # definition of ref_pch_out_db for the reference channel: depending on propagation input power (p_spani) might
+        # be smaller than the target power out of the roadm on this degree then use the min value between both
+        self.ref_pch_out_dbm = min(spectral_info.pref.p_spani, per_degree_pch)
+        # definition of effective_loss: value for the reference channel
+        self.effective_loss = spectral_info.pref.p_spani - self.ref_pch_out_dbm
         input_power = spectral_info.signal + spectral_info.nli + spectral_info.ase
         min_power = min(lin2db(input_power * 1e3))
         per_degree_pch = per_degree_pch if per_degree_pch < min_power else min_power
@@ -233,7 +236,8 @@ class Roadm(_Node):
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
 
     def update_pref(self, spectral_info):
-        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0, p_spani=self.pch_out_db)
+        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
+                                                         p_spani=self.ref_pch_out_dbm)
 
     def __call__(self, spectral_info, degree):
         self.propagate(spectral_info, degree=degree)
