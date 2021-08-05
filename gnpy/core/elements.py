@@ -270,16 +270,36 @@ class Roadm(_Node):
         # different carriers. effective_loss records the loss for a reference carrier.
         self.effective_loss = spectral_info.pref.p_spani - self.ref_pch_out_dbm
         input_power = spectral_info.signal + spectral_info.nli + spectral_info.ase
-        min_power = min(lin2db(input_power * 1e3))
-        per_degree_pch = per_degree_pch if per_degree_pch < min_power else min_power
-        delta_power = lin2db(input_power * 1e3) - per_degree_pch
+        target_power_per_channel = per_degree_pch + spectral_info.delta_pdb_per_channel
+        # If target_power_per_channel has some channels power above input power, then the whole target is reduced.
+        # For example, if user specifies delta_pdb_per_channel:
+        # freq1: 1dB, freq2: 3dB, freq3: -3dB, and target is -20dBm out of the ROADM,
+        # then the target power for each channel uses the specified delta_pdb_per_channel.
+        # target_power_per_channel[f1, f2, f3] = -19, -17, -23
+        # However if input_signal = -23, -16, -26, then the target can not be applied, because
+        # -23 < -19dBm and -26 < -23dBm. Then the target is only applied to signals whose power is above the
+        # threshold. others are left unchanged and unequalized.
+        # the new target is [-23, -17, -26]
+        # and the attenuation to apply is [-23, -16, -26] - [-23, -17, -26] = [0, 1, 0]
+        # note that this changes the previous behaviour that equalized all identical channels based on the one
+        # that had the min power.
+        # This change corresponds to a discussion held during coders call. Please look at this document for
+        # a reference: https://telecominfraproject.atlassian.net/wiki/spaces/OOPT/pages/669679645/PSE+Meeting+Minutes
+        correction = (abs(lin2db(input_power * 1e3) - target_power_per_channel) -
+                      (lin2db(input_power * 1e3) - target_power_per_channel)) / 2
+        new_target = target_power_per_channel - correction
+        delta_power = lin2db(input_power * 1e3) - new_target
         spectral_info.apply_attenuation_db(delta_power)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
         spectral_info.pdl = sqrt(spectral_info.pdl ** 2 + self.params.pdl ** 2)
 
     def update_pref(self, spectral_info):
-        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
-                                                         p_spani=self.ref_pch_out_dbm)
+        """Update Reference power
+
+        This modifies the spectral info in-place. Only the `pref` is updated with new p_spani,
+        while p_span0 is not changed.
+        """
+        spectral_info.pref = spectral_info.pref._replace(p_spani=self.ref_pch_out_dbm)
 
     def __call__(self, spectral_info, degree):
         self.propagate(spectral_info, degree=degree)

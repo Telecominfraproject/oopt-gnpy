@@ -256,11 +256,10 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
         req.power, req.spacing)
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
-            min_power_in_roadm = min(si.signal + si.ase + si.nli)
+            power_in_roadm = si.signal + si.ase + si.nli
             si = el(si, degree=path[i + 1].uid)
             power_out_roadm = si.signal + si.ase + si.nli
             if el.uid == 'roadm node B':
-                print('input', min_power_in_roadm)
                 # if previous was an EDFA, power level at ROADM input is enough for the ROADM to apply its
                 # target power (as specified in equipment ie -20 dBm)
                 # if it is a Fused, the input power to the ROADM is smaller than the target power, and the
@@ -279,7 +278,7 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
                     # to roadm is low.
                     # check that target power correctly reports power_dbm from previous propagation
                     assert_allclose(el.ref_pch_out_dbm, effective_pch_out_db + power_dbm, rtol=1e-3)
-                    # Check that egress power of roadm is equalized to the min carrier input power.
-                    assert_allclose(power_out_roadm, min_power_in_roadm, rtol=1e-3)
+                    # Check that egress power of roadm is not equalized power out is the same as power in.
+                    assert_allclose(power_out_roadm, power_in_roadm, rtol=1e-3)
         else:
             si = el(si)
