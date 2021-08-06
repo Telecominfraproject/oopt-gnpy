@@ -44,7 +44,7 @@ def test_fiber():
     slot_width = array([37.5e9, 50e9, 75e9, 50e9, 37.5e9])
     baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
     signal = 1e-3 + array([0, -1e-4, 3e-4, -2e-4, +2e-4])
-    pref = Pref(p_span0=0, p_spani=0, p_span0_per_channel=signal)
+    pref = Pref(p_span0=0, p_spani=0, p_span0_per_channel=signal, ref_carrier=None)
     spectral_info_input = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
                                                                 signal=signal, baud_rate=baud_rate, roll_off=0.15,
                                                                 ref_power=pref)
