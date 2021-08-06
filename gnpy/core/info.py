@@ -41,7 +41,7 @@ class Channel(namedtuple('Channel',
     """
 
 
-class Pref(namedtuple('Pref', 'p_span0, p_spani, p_span0_per_channel')):
+class Pref(namedtuple('Pref', 'p_span0, p_spani, p_span0_per_channel, ref_carrier')):
     """noiseless reference power in dBm:
     p_span0: inital target carrier power for a reference channel defined by user
     p_spani: carrier power after element i for a reference channel defined by user
@@ -200,7 +200,7 @@ class SpectralInformation(object):
     def __add__(self, other: SpectralInformation):
         try:
             pref = Pref(self.pref.p_span0, self.pref.p_spani,
-                        append(self.pref.p_span0_per_channel, other.pref.p_span0_per_channel))
+                        append(self.pref.p_span0_per_channel, other.pref.p_span0_per_channel), self.pref.ref_carrier)
             return SpectralInformation(frequency=append(self.frequency, other.frequency),
                                        slot_width=append(self.slot_width, other.slot_width),
                                        signal=append(self.signal, other.signal), nli=append(self.nli, other.nli),
@@ -264,7 +264,7 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, in
             raise
 
 
-def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing):
+def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing, ref_carrier=None):
     """ Creates a fixed slot width spectral information with flat power.
     all arguments are scalar values"""
     nb_channel = automatic_nch(f_min, f_max, spacing)
@@ -275,12 +275,14 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, 
     return create_arbitrary_spectral_information(frequency, slot_width=spacing, signal=power, baud_rate=baud_rate,
                                                  roll_off=roll_off,
                                                  ref_power=Pref(p_span0=p_span0, p_spani=p_spani,
-                                                                p_span0_per_channel=p_span0_per_channel))
+                                                                p_span0_per_channel=p_span0_per_channel,
+                                                                ref_carrier=ref_carrier))
 
 
 def use_initial_spectrum(initial_spectrum, ref_carrier):
     """ initial spectrum is a dict with key = carrier frequency, and value a dict with power,
-    baudrate and roll off for this carrier. ref_power is a Pref object with the power used for the reference channel
+    baudrate and roll off for this carrier. ref_carrier contains the reference carrier (power, baudrate, ...)
+    used for the reference channel
     """
     frequency = list(initial_spectrum.keys())
     signal = [s['power'] for s in initial_spectrum.values()]
@@ -293,4 +295,5 @@ def use_initial_spectrum(initial_spectrum, ref_carrier):
     return create_arbitrary_spectral_information(frequency=frequency, signal=signal, baud_rate=baud_rate,
                                                  slot_width=slot_width, roll_off=roll_off,
                                                  ref_power=Pref(p_span0=p_span0, p_spani=p_spani,
-                                                                p_span0_per_channel=p_span0_per_channel))
+                                                                p_span0_per_channel=p_span0_per_channel,
+                                                                ref_carrier=ref_carrier))
