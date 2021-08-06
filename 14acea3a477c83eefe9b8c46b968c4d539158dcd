@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "585bd76b_376ea6de",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-06T14:26:06Z",
+      "side": 1,
+      "message": "Change title? + correct Transiver into Transceiver\nfor example\n\"Restructure Transceiver with new spectral information\"",
+      "revId": "14acea3a477c83eefe9b8c46b968c4d539158dcd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7905d384_33bfd5f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-06T14:26:06Z",
+      "side": 1,
+      "message": "Hello! some suggestions",
+      "revId": "14acea3a477c83eefe9b8c46b968c4d539158dcd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b003fe65_0ef4c0ae",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-06T14:26:06Z",
+      "side": 1,
+      "message": "missing spaces\nspectral_info.pmd * 1e12",
+      "revId": "14acea3a477c83eefe9b8c46b968c4d539158dcd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81079b2a_d6bbdb35",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-06T14:26:06Z",
+      "side": 1,
+      "message": "missing spaces",
+      "revId": "14acea3a477c83eefe9b8c46b968c4d539158dcd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fab51556_0122f6d9",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-06T14:26:06Z",
+      "side": 1,
+      "message": "missing spaces",
+      "revId": "14acea3a477c83eefe9b8c46b968c4d539158dcd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ddd561c_a496c7b7",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-06T14:26:06Z",
+      "side": 1,
+      "message": "missing spaces",
+      "revId": "14acea3a477c83eefe9b8c46b968c4d539158dcd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
