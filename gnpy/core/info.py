@@ -41,10 +41,11 @@ class Channel(namedtuple('Channel',
     """
 
 
-class Pref(namedtuple('Pref', 'p_span0, p_spani')):
+class Pref(namedtuple('Pref', 'p_span0, p_spani, ref_carrier')):
     """noiseless reference power in dBm:
     p_span0: inital target carrier power for a reference channel defined by user
     p_spani: carrier power after element i for a reference channel defined by user
+    ref_carrier records the baud rate of the reference channel
     """
 
 
@@ -235,7 +236,7 @@ class SpectralInformation(object):
                                        delta_pdb_per_channel=append(self.delta_pdb_per_channel,
                                                                     other.delta_pdb_per_channel),
                                        tx_osnr=append(self.tx_osnr, other.tx_osnr),
-                                       ref_power=Pref(self.pref.p_span0, self.pref.p_spani))
+                                       ref_power=Pref(self.pref.p_span0, self.pref.p_spani, self.pref.ref_carrier))
         except SpectrumError:
             raise SpectrumError('Spectra cannot be summed: channels overlapping.')
 
@@ -294,7 +295,7 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, in
             raise
 
 
-def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing, tx_osnr):
+def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing, tx_osnr, ref_carrier=None):
     """ Creates a fixed slot width spectral information with flat power.
     all arguments are scalar values"""
     number_of_channels = automatic_nch(f_min, f_max, spacing)
@@ -304,18 +305,21 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, 
     delta_pdb_per_channel = zeros(number_of_channels)
     return create_arbitrary_spectral_information(frequency, slot_width=spacing, signal=power, baud_rate=baud_rate,
                                                  roll_off=roll_off, delta_pdb_per_channel=delta_pdb_per_channel,
-                                                 tx_osnr=tx_osnr, ref_power=Pref(p_span0=p_span0, p_spani=p_spani))
+                                                 tx_osnr=tx_osnr,
+                                                 ref_power=Pref(p_span0=p_span0, p_spani=p_spani,
+                                                                ref_carrier=ref_carrier))
 
 
-def carriers_to_spectral_information(initial_spectrum: dict[Union[int, float], Carrier],
+def carriers_to_spectral_information(initial_spectrum: dict[Union[int, float], Carrier], power: float,
                                      ref_carrier: ReferenceCarrier) -> SpectralInformation:
     """Initial spectrum is a dict with key = carrier frequency, and value a Carrier object.
     :param initial_spectrum: indexed by frequency in Hz, with power offset (delta_pdb), baudrate, slot width,
     tx_osnr and roll off.
-    :param ref_carrier: reference carrier (baudrate and power) used for the reference channel
+    :param power: power of the request
+    :param ref_carrier: reference carrier (baudrate) used for the reference channel
     """
     frequency = list(initial_spectrum.keys())
-    signal = [ref_carrier.req_power * db2lin(c.delta_pdb) for c in initial_spectrum.values()]
+    signal = [power * db2lin(c.delta_pdb) for c in initial_spectrum.values()]
     roll_off = [c.roll_off for c in initial_spectrum.values()]
     baud_rate = [c.baud_rate for c in initial_spectrum.values()]
     delta_pdb_per_channel = array([c.delta_pdb for c in initial_spectrum.values()])
@@ -326,4 +330,5 @@ def carriers_to_spectral_information(initial_spectrum: dict[Union[int, float], C
     return create_arbitrary_spectral_information(frequency=frequency, signal=signal, baud_rate=baud_rate,
                                                  slot_width=slot_width, roll_off=roll_off,
                                                  delta_pdb_per_channel=delta_pdb_per_channel, tx_osnr=tx_osnr,
-                                                 ref_power=Pref(p_span0=p_span0, p_spani=p_spani))
+                                                 ref_power=Pref(p_span0=p_span0, p_spani=p_spani,
+                                                                ref_carrier=ref_carrier))
