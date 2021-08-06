@@ -181,7 +181,10 @@ class Roadm(_Node):
     def __init__(self, *args, params=None, **kwargs):
         if not params:
             params = {}
-        super().__init__(*args, params=RoadmParams(**params), **kwargs)
+        try:
+            super().__init__(*args, params=RoadmParams(**params), **kwargs)
+        except ParameterError as e:
+            raise ConfigurationError('Config error in ', self.uid, ' .', e)
         # target power as defined by user
         self.target_pch_out_dbm = self.params.target_pch_out_db
         # reference power is target power by default. depending on propagation this may change (due to equalization)
