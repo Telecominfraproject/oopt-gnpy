@@ -340,12 +340,12 @@ def compute_constrained_path(network, req):
     return total_path
 
 
-def ref_carrier(req_power, equipment):
+def ref_carrier(equipment):
     """Create a reference carier based SI information with the specified request's power:
     req_power records the power in W that the user has defined for a given request
     (which might be different from the one used for the design).
     """
-    return ReferenceCarrier(baud_rate=equipment['SI']['default'].baud_rate, req_power=req_power)
+    return ReferenceCarrier(baud_rate=equipment['SI']['default'].baud_rate)
 
 
 def propagate(path, req, equipment):
@@ -353,11 +353,11 @@ def propagate(path, req, equipment):
     """
     if req.initial_spectrum is not None:
         si = carriers_to_spectral_information(initial_spectrum=req.initial_spectrum,
-                                              ref_carrier=ref_carrier(req.power, equipment))
+                                              power=req.power, ref_carrier=ref_carrier(equipment))
     else:
         si = create_input_spectral_information(
             f_min=req.f_min, f_max=req.f_max, roll_off=req.roll_off, baud_rate=req.baud_rate,
-            power=req.power, spacing=req.spacing, tx_osnr=req.tx_osnr)
+            power=req.power, spacing=req.spacing, tx_osnr=req.tx_osnr, ref_carrier=ref_carrier(equipment))
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
             si = el(si, degree=path[i+1].uid)
@@ -396,12 +396,11 @@ def propagate_and_optimize_mode(path, req, equipment):
                 # this case is not yet handled: spectrum can not be defined for the path-request-run function
                 # and this function is only called in this case. so coming here should not be considered yet.
                 msg = f'Request: {req.request_id} contains a unexpected initial_spectrum.'
-                LOGGER.critical(msg)
                 raise ServiceError(msg)
             spc_info = create_input_spectral_information(f_min=req.f_min, f_max=req.f_max,
                                                          roll_off=equipment['SI']['default'].roll_off,
                                                          baud_rate=this_br, power=req.power, spacing=req.spacing,
-                                                         tx_osnr=req.tx_osnr)
+                                                         tx_osnr=req.tx_osnr, ref_carrier=ref_carrier(equipment))
             for i, el in enumerate(path):
                 if isinstance(el, Roadm):
                     spc_info = el(spc_info, degree=path[i+1].uid)
