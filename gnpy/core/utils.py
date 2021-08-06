@@ -407,4 +407,3 @@ class ReferenceCarrier:
     """Structure for the data to describe reference carrier from SI
     """
     baud_rate: float
-    req_power: float
