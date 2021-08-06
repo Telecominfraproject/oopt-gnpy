@@ -33,7 +33,7 @@ from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpPara
 from gnpy.core.science_utils import NliSolver, RamanSolver
 from gnpy.core.info import SpectralInformation
 from gnpy.core import ansi_escapes
-from gnpy.core.exceptions import NetworkTopologyError
+from gnpy.core.exceptions import NetworkTopologyError, ParametersError, ConfigurationError
 
 
 class Location(namedtuple('Location', 'latitude longitude city region')):
@@ -181,7 +181,10 @@ class Roadm(_Node):
     def __init__(self, *args, params=None, **kwargs):
         if not params:
             params = {}
-        super().__init__(*args, params=RoadmParams(**params), **kwargs)
+        try:
+            super().__init__(*args, params=RoadmParams(**params), **kwargs)
+        except ParametersError as e:
+            raise ConfigurationError('Config error in ', self.uid, ' .', e)
         # target power as defined by user
         self.target_pch_out_dbm = self.params.target_pch_out_db
         # reference power is target power by default. depending on propagation this may change (due to equalization)
