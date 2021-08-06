@@ -357,7 +357,7 @@ def propagate(path, req, equipment):
     else:
         si = create_input_spectral_information(
             req.f_min, req.f_max, req.roll_off, req.baud_rate,
-            req.power, req.spacing)
+            req.power, req.spacing, ref_carrier=ref_carrier(req.power, equipment))
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
             si = el(si, degree=path[i+1].uid)
@@ -403,7 +403,8 @@ def propagate_and_optimize_mode(path, req, equipment):
             else:
                 spc_info = create_input_spectral_information(req.f_min, req.f_max,
                                                              equipment['SI']['default'].roll_off,
-                                                             this_br, req.power, req.spacing)
+                                                             this_br, req.power, req.spacing,
+                                                             ref_carrier=ref_carrier(req.power, equipment))
             for i, el in enumerate(path):
                 if isinstance(el, Roadm):
                     spc_info = el(spc_info, degree=path[i+1].uid)
