@@ -31,7 +31,7 @@ from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_la
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational
 from gnpy.core.science_utils import NliSolver, RamanSolver
 from gnpy.core.info import SpectralInformation
-from gnpy.core.exceptions import NetworkTopologyError, SpectrumError
+from gnpy.core.exceptions import NetworkTopologyError, SpectrumError, ParametersError
 
 
 class Location(namedtuple('Location', 'latitude longitude city region')):
@@ -217,7 +217,10 @@ class Roadm(_Node):
     def __init__(self, *args, params=None, **kwargs):
         if not params:
             params = {}
-        super().__init__(*args, params=RoadmParams(**params), **kwargs)
+        try:
+            super().__init__(*args, params=RoadmParams(**params), **kwargs)
+        except ParametersError as e:
+            raise ParametersError(f'Config error in {kwargs["uid"]}: {e}') from e
 
         # Target output power for the reference carrier, can only be computed on the fly, because it depends
         # on the path, since it depends on the equalization definition on the degree.
