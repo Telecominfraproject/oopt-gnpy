@@ -41,10 +41,11 @@ class Channel(namedtuple('Channel',
     """
 
 
-class Pref(namedtuple('Pref', 'p_span0, p_spani')):
+class Pref(namedtuple('Pref', 'p_span0, p_spani, ref_carrier')):
     """noiseless reference power in dBm:
     p_span0: inital target carrier power for a reference channel defined by user
     p_spani: carrier power after element i for a reference channel defined by user
+    ref_carrier records the power and baud rate of the reference channel
     """
 
 
@@ -235,7 +236,7 @@ class SpectralInformation(object):
                                        delta_pdb_per_channel=append(self.delta_pdb_per_channel,
                                                                     other.delta_pdb_per_channel),
                                        tx_osnr=append(self.tx_osnr, other.tx_osnr),
-                                       ref_power=Pref(self.pref.p_span0, self.pref.p_spani))
+                                       ref_power=Pref(self.pref.p_span0, self.pref.p_spani, self.pref.ref_carrier))
         except SpectrumError:
             raise SpectrumError('Spectra cannot be summed: channels overlapping.')
 
@@ -294,7 +295,7 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, in
             raise
 
 
-def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing, tx_osnr):
+def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing, tx_osnr, ref_carrier=None):
     """ Creates a fixed slot width spectral information with flat power.
     all arguments are scalar values"""
     number_of_channels = automatic_nch(f_min, f_max, spacing)
@@ -304,7 +305,9 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, 
     delta_pdb_per_channel = zeros(number_of_channels)
     return create_arbitrary_spectral_information(frequency, slot_width=spacing, signal=power, baud_rate=baud_rate,
                                                  roll_off=roll_off, delta_pdb_per_channel=delta_pdb_per_channel,
-                                                 tx_osnr=tx_osnr, ref_power=Pref(p_span0=p_span0, p_spani=p_spani))
+                                                 tx_osnr=tx_osnr,
+                                                 ref_power=Pref(p_span0=p_span0, p_spani=p_spani,
+                                                                ref_carrier=ref_carrier))
 
 
 class carrier(TypedDict):
@@ -315,22 +318,23 @@ class carrier(TypedDict):
     tx_osnr: float
 
 
-def use_pre_defined_spectrum_to_create_input_si(initial_spectrum: dict[float, carrier],
+def use_pre_defined_spectrum_to_create_input_si(initial_spectrum: dict[float, carrier], power: float,
                                                 ref_carrier: dict) -> SpectralInformation:
     """initial spectrum is a dict with key = carrier frequency, and value a dict with power offset,
-    baudrate, slot width, roll off and Tx_osnr for this carrier. ref_carrier contains the reference carrier
-    (baudrate and power) used for the reference channel. 
+    baudrate, slot width, roll off and Tx_osnr for this carrier. power is the power for the current request
+    ref_carrier contains the reference carrier (baudrate) used for the reference channel.
     """
     frequency = list(initial_spectrum.keys())
-    signal = [ref_carrier['req_power'] * db2lin(s['delta_pdb']) for s in initial_spectrum.values()]
+    signal = [power * db2lin(s['delta_pdb']) for s in initial_spectrum.values()]
     roll_off = [s['roll_off'] for s in initial_spectrum.values()]
     baud_rate = [s['baud_rate'] for s in initial_spectrum.values()]
     delta_pdb_per_channel = array([s['delta_pdb'] for s in initial_spectrum.values()])
     slot_width = [s['slot_width'] for s in initial_spectrum.values()]
     tx_osnr = [s['tx_osnr'] for s in initial_spectrum.values()]
-    p_span0 = watt2dbm(ref_carrier['req_power'])
-    p_spani = watt2dbm(ref_carrier['req_power'])
+    p_span0 = watt2dbm(power)
+    p_spani = watt2dbm(power)
     return create_arbitrary_spectral_information(frequency=frequency, signal=signal, baud_rate=baud_rate,
                                                  slot_width=slot_width, roll_off=roll_off,
                                                  delta_pdb_per_channel=delta_pdb_per_channel, tx_osnr=tx_osnr,
-                                                 ref_power=Pref(p_span0=p_span0, p_spani=p_spani))
+                                                 ref_power=Pref(p_span0=p_span0, p_spani=p_spani,
+                                                                ref_carrier=ref_carrier))
