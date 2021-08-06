@@ -340,13 +340,12 @@ def compute_constrained_path(network, req):
     return total_path
 
 
-def ref_carrier(req_power, equipment):
+def ref_carrier(equipment):
     """Create a reference carier based SI information with the specified request's power:
     ref_carrier['req_power'] records the power in W that the user has defined for a given request
     (which might be different from the one used for the design).
     """
     ref_carrier = {'baud_rate': equipment['SI']['default'].baud_rate}
-    ref_carrier['req_power'] = req_power
     return ref_carrier
 
 
@@ -354,11 +353,11 @@ def propagate(path, req, equipment):
     """ propagates signals in each element according to initial spectrum set by user
     """
     if req.initial_spectrum is not None:
-        si = use_initial_spectrum(req.initial_spectrum, ref_carrier=ref_carrier(req.power, equipment))
+        si = use_initial_spectrum(req.initial_spectrum, req.power, ref_carrier=ref_carrier(equipment))
     else:
         si = create_input_spectral_information(
             req.f_min, req.f_max, req.roll_off, req.baud_rate,
-            req.power, req.spacing)
+            req.power, req.spacing, ref_carrier=ref_carrier(equipment))
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
             si = el(si, degree=path[i+1].uid)
@@ -400,11 +399,12 @@ def propagate_and_optimize_mode(path, req, equipment):
                 for e in req.initial_spectrum.values():
                     if e['baud_rate'] is None:
                         e['baud_rate'] = this_br
-                spc_info = use_initial_spectrum(req.initial_spectrum, ref_carrier=ref_carrier(req.power, equipment))
+                spc_info = use_initial_spectrum(req.initial_spectrum, req.power, ref_carrier=ref_carrier(equipment))
             else:
                 spc_info = create_input_spectral_information(req.f_min, req.f_max,
                                                              equipment['SI']['default'].roll_off,
-                                                             this_br, req.power, req.spacing)
+                                                             this_br, req.power, req.spacing,
+                                                             ref_carrier=ref_carrier(equipment))
             for i, el in enumerate(path):
                 if isinstance(el, Roadm):
                     spc_info = el(spc_info, degree=path[i+1].uid)
