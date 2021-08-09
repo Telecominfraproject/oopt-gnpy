@@ -116,7 +116,8 @@ def test_auto_design_generation_fromjson(tmpdir, json_input, power_mode):
     actual_json_output = tmpdir / json_input.with_name(json_input.stem + '_auto_design').with_suffix('.json').name
     save_network(network, actual_json_output)
     actual = load_json(actual_json_output)
-    unlink(actual_json_output)
+    # unlink(actual_json_output)
+    print(actual_json_output)
     assert actual == load_json(json_input)
 
 # test services creation
