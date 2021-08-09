@@ -10,6 +10,7 @@ This module contains utility functions that are used with gnpy.
 
 from csv import writer
 from dataclasses import dataclass
+from copy import deepcopy
 from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and, mean
 from scipy import constants
 
@@ -312,6 +313,32 @@ def rrc(ffs, baud_rate, alpha):
     p_inds = where(logical_and(abs(ffs) > 0, abs(ffs) < l_lim))
     hf[p_inds] = 1
     return sqrt(hf)
+
+
+def merge_equalization(params, extra_params):
+    """Updates equalization type of extra_params
+    If target_pch_out_db in params, then remove target_psd_out_mWperGHz or target_pch_out_db
+    from extra_params. If both exist: raise an error, if none exist add the equalization
+    defined in extra_params
+    """
+    # Work on a local object, since another ROADM instance might need the equipment default equalization.
+    extra = deepcopy(extra_params)
+    if ('target_pch_out_db' in params and params['target_pch_out_db'] is not None) or \
+            ('target_psd_out_mWperGHz' in params and params['target_psd_out_mWperGHz'] is not None):
+        # equalizaion is already set in element, then remove default equalization from the extra attributes
+        if hasattr(extra, 'target_pch_out_db'):
+            default_equalization = 'target_pch_out_db'
+        elif hasattr(extra, 'target_psd_out_mWperGHz'):
+            default_equalization = 'target_psd_out_mWperGHz'
+        delattr(extra, default_equalization)
+        return extra
+    if 'target_pch_out_db' not in params and 'target_psd_out_mWperGHz' not in params:
+        # no equalization is defined: keep extra's one
+        return extra
+    if ('target_pch_out_db' in params and params['target_pch_out_db'] is not None) and \
+            ('target_psd_out_mWperGHz' in params and params['target_psd_out_mWperGHz'] is not None):
+        # element has more than one equalization defined raise a configuration error in the calling function
+        return None
 
 
 def merge_amplifier_restrictions(dict1, dict2):
