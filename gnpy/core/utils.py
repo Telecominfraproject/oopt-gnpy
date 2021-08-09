@@ -9,6 +9,7 @@ This module contains utility functions that are used with gnpy.
 """
 
 from csv import writer
+from copy import deepcopy
 from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and, mean
 from scipy import constants
 
@@ -315,6 +316,42 @@ def rrc(ffs, baud_rate, alpha):
     p_inds = where(logical_and(abs(ffs) > 0, abs(ffs) < l_lim))
     hf[p_inds] = 1
     return sqrt(hf)
+
+
+def find_equalisation(params):
+    """Find the equalization(s) defined in params. params can be a dict or a Roadm object.
+    """
+    equalization_types = ["target_pch_out_db", "target_psd_out_mWperGHz"]
+    equalization = {e: False for e in equalization_types}
+    for equ in equalization_types:
+        if type(params) == dict:
+            if equ in params:
+                equalization[equ] = True
+        else:
+            if hasattr(params, equ):
+                equalization[equ] = True
+    return equalization
+
+
+def merge_equalization(params, extra_params):
+    """Updates equalization type of extra_params
+    If target_pch_out_db in params, then remove target_psd_out_mWperGHz or target_pch_out_db
+    from extra_params. If both exist: raise an error, if none exist add the equalization
+    defined in extra_params
+    """
+    # Work on a local object, since another ROADM instance might need the equipment default equalization.
+    extra = deepcopy(extra_params)
+    params_equalization = find_equalisation(params)
+    extra_equalization = find_equalisation(extra_params)
+    if sum(params_equalization.values()) > 1:
+        return None
+    if sum(params_equalization.values()) == 1:
+        default_equalization = next(e for e, v in extra_equalization.items() if v)
+        delattr(extra, default_equalization)
+        return extra
+    if sum(params_equalization.values()) == 0:
+        return extra
+    return None
 
 
 def merge_amplifier_restrictions(dict1, dict2):

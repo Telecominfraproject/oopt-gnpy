@@ -19,8 +19,8 @@ from gnpy.core import ansi_escapes, elements
 from gnpy.core.equipment import trx_mode_params
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError, ServiceError
 from gnpy.core.science_utils import estimate_nf_model
-from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions
 from gnpy.core.info import Carrier
+from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions, merge_equalization
 from gnpy.topology.request import PathRequest, Disjunction, compute_spectrum_slot_vs_bandwidth
 from gnpy.tools.convert import xls_to_json_data
 from gnpy.tools.service_sheet import read_service_sheet
@@ -94,7 +94,6 @@ class Span(_JsonThing):
 
 class Roadm(_JsonThing):
     default_values = {
-        'target_pch_out_db': -17,
         'add_drop_osnr': 100,
         'pmd': 0,
         'pdl': 0,
@@ -105,6 +104,20 @@ class Roadm(_JsonThing):
     }
 
     def __init__(self, **kwargs):
+        # if equalization is not defined in equipment, then use the default power equalization
+        # target_pch_out_db -20 dBm. else use the one define in equipment. Only one type of equalization
+        # must be defined: power (target_pch_out_db) or PSD (target_psd_out_mWperGHz)
+        equalisation_type = ['target_pch_out_db', 'target_psd_out_mWperGHz']
+        temp = [k in kwargs for k in equalisation_type]
+        if sum(temp) > 1:
+            raise EquipmentConfigError('WARNING only one equalization type should be set in ROADM, found'
+                                       + '\n target_pch_out_db and target_psd_out_mWperGHz')
+        for key in equalisation_type:
+            if key in kwargs:
+                setattr(self, key, kwargs[key])
+                break
+        if not any(temp):
+            setattr(self, 'target_pch_out_db', -20)
         self.update_attr(self.default_values, kwargs, 'Roadm')
 
 
@@ -466,6 +479,15 @@ def network_from_json(json_data, equipment):
         elif variety in equipment[typ]:
             extra_params = equipment[typ][variety]
             temp = el_config.setdefault('params', {})
+            if typ == 'Roadm':
+                # if equalization is defined, remove default equalization from the extra_params
+                # If equalisation is not defined in the element config, then use the default one from equipment
+                # if more than one equalization was defined in element config, then raise an error
+                extra_params = merge_equalization(temp, extra_params)
+                if not extra_params:
+                    raise ConfigurationError(f'ROADM {el_config["uid"]} has not a correct configuration'
+                                             '\nplease check that ROADM contains at most per channel power or '
+                                             'power spectral density definition.')
             temp = merge_amplifier_restrictions(temp, extra_params.__dict__)
             el_config['params'] = temp
             el_config['type_variety'] = variety
