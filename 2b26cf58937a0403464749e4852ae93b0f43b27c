@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70a2464f_11484c3b",
+        "filename": "tests/invocation/openroadm-Stockholm-Gothenburg",
+        "patchSetId": 13
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-09T08:06:06Z",
+      "side": 1,
+      "message": "Just a comment not to forget (no need to change anything at this point): This change is not consistant with previous power and loss: it comes from the new Pref p_span_i definition. I am trying to change that in the Pref commits later on (work not finished)",
+      "revId": "2b26cf58937a0403464749e4852ae93b0f43b27c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
