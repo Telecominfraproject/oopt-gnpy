@@ -21,13 +21,13 @@ instance as a result.
 """
 
 from numpy import abs, array, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, exp, asarray, full,\
-    squeeze, zeros, append, flip, outer
+    squeeze, zeros, append, flip, outer, minimum
 from scipy.constants import h, c
 from scipy.interpolate import interp1d
 from collections import namedtuple
 
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_summary, pretty_summary_print,\
-    watt2dbm
+    watt2dbm, psd2powerdbm, psdmwperghz, powerdbm2psdmwperghz
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational
 from gnpy.core.science_utils import NliSolver, RamanSolver
 from gnpy.core.info import SpectralInformation
@@ -218,21 +218,33 @@ class Roadm(_Node):
         if not params:
             params = {}
         super().__init__(*args, params=RoadmParams(**params), **kwargs)
+        # target power as defined by user
+        self.target_pch_out_dbm = self.params.target_pch_out_db
+        # reference power is target power by default. depending on propagation this may change (due to equalization)
         self.ref_pch_out_dbm = self.params.target_pch_out_db
         self.loss = 0  # auto-design interest
         self.effective_loss = None
         self.passive = True
         self.restrictions = self.params.restrictions
         self.per_degree_pch_out_db = self.params.per_degree_pch_out_db
+        # element contains the two types of equalisation parameters, but only one is not None or empty
+        self.target_psd_out_mWperGHz = self.params.target_psd_out_mWperGHz
+        self.per_degree_pch_psd = self.params.per_degree_pch_psd
 
     @property
     def to_json(self):
+        if self.ref_pch_out_dbm:
+            equalisation, value = 'target_pch_out_db', self.ref_pch_out_dbm
+            perdegree, perdegreevalue = 'per_degree_pch_out_db', self.per_degree_pch_out_db
+        if self.target_psd_out_mWperGHz:
+            equalisation, value = 'target_psd_out_mWperGHz', self.target_psd_out_mWperGHz
+            perdegree, perdegreevalue = 'per_degree_psd_out_mWperGHz', self.per_degree_pch_psd
         return {'uid': self.uid,
                 'type': type(self).__name__,
                 'params': {
-                    'target_pch_out_db': self.ref_pch_out_dbm,
+                    equalisation: value,
                     'restrictions': self.restrictions,
-                    'per_degree_pch_out_db': self.per_degree_pch_out_db
+                    perdegree: perdegreevalue
                     },
                 'metadata': {
                     'location': self.metadata['location']._asdict()
@@ -262,17 +274,41 @@ class Roadm(_Node):
         # if the input power is lower than the target one, use the input power instead because
         # a ROADM doesn't amplify, it can only attenuate
         # TODO maybe add a minimum loss for the ROADM
-        per_degree_pch = self.per_degree_pch_out_db[degree] \
-            if degree in self.per_degree_pch_out_db else self.ref_pch_out_dbm
+        # check equalization: if ref_pch_out_dbm is defined then use it
+        # change per_degree_pch from scalar to an array / add a ref_power, ref_baudrate ...
+        ref_baud_rate = spectral_info.pref.ref_carrier['baud_rate']
+        if self.target_pch_out_dbm:
+            per_degree_pch = self.per_degree_pch_out_db[degree] \
+                if degree in self.per_degree_pch_out_db else self.target_pch_out_dbm
+            ref_per_degree_pch = per_degree_pch
+            per_degree_pch = per_degree_pch * ones(len(spectral_info.channel_number))
+        elif self.target_psd_out_mWperGHz:
+            per_degree_pch = psd2powerdbm(self.per_degree_pch_psd[degree], spectral_info.baud_rate) \
+                if degree in self.per_degree_pch_psd \
+                else psd2powerdbm(self.target_psd_out_mWperGHz, spectral_info.baud_rate)
+            ref_per_degree_pch = psd2powerdbm(self.per_degree_pch_psd[degree], ref_baud_rate) \
+                if degree in self.per_degree_pch_psd \
+                else psd2powerdbm(self.target_psd_out_mWperGHz, ref_baud_rate)
         # definition of ref_pch_out_db for the reference channel: depending on propagation input power (p_spani) might
         # be smaller than the target power out of the roadm on this degree then use the min value between both
-        self.ref_pch_out_dbm = min(spectral_info.pref.p_spani, per_degree_pch)
+        self.ref_pch_out_dbm = min(spectral_info.pref.p_spani, ref_per_degree_pch)
         # definition of effective_loss: value for the reference channel
         self.effective_loss = spectral_info.pref.p_spani - self.ref_pch_out_dbm
         input_power = spectral_info.signal + spectral_info.nli + spectral_info.ase
-        min_power = min(watt2dbm(input_power))
-        per_degree_pch = per_degree_pch if per_degree_pch < min_power else min_power
-        # target power shoud follow same delta power as in p_span0_per_channel
+        # computation of the per channel target power according to equalization policy
+        if self.target_pch_out_dbm:
+            min_power = watt2dbm(min(input_power))
+            per_degree_pch = minimum(per_degree_pch, min_power)
+        elif self.target_psd_out_mWperGHz:
+            # Assume that channels with same baudrate are equalized to the same power.
+            # Applies the same min strategy if the input power is lower than the target one:
+            # use the min psd of all carriers.
+            # If all carriers have identical baud_rate, the target power is the min power
+            # of the carrier compared to per_degree_pch (same as power equalization)
+            min_psd = min(psdmwperghz(input_power, spectral_info.baud_rate))
+            temp = powerdbm2psdmwperghz(per_degree_pch, spectral_info.baud_rate)
+            per_degree_pch = psd2powerdbm(minimum(temp, min_psd), spectral_info.baud_rate)
+        # target power should follow same delta power as in p_span0_per_channel
         # if no specific delta, then apply equalization (later on)
         pref = spectral_info.pref
         delta_channel_power = pref.p_span0_per_channel - pref.p_span0
@@ -285,7 +321,11 @@ class Roadm(_Node):
 
     def update_pref(self, spectral_info):
         """ updates the value in Pref in spectral_info. p_span0 and p_span0_per_channel are unchanged, only p_spani
-        which contains the power for the reference channel after propagation in the ROADM
+        which contains the power for the reference channel after propagation in the ROADM.
+        p_span0_per_channel corresponds exactly to the current mix of channels {freq: pow},
+        it serves as reference to compute delta_power wrt ref channel.
+        So, we implement two main equalisation: all channels with same power or same psd plus
+        a user defined delta power based on p_span0_per_channel vector
         """
         spectral_info.pref = spectral_info.pref._replace(p_spani=self.ref_pch_out_dbm)
 
