@@ -35,6 +35,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "963487b0_2eb9bd57",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-09T08:24:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "929fffe7_3a6641c7",
+      "revId": "f2eb365c38a8afbed2f245b766af6a4a86e722ab",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8c32ae9_77871bca",
@@ -48,6 +66,24 @@
       "writtenOn": "2021-04-21T16:38:38Z",
       "side": 1,
       "message": "As for Roadms, Pref contains info related to the noiseless ref channel, so I think this change is not correct and should be reverted to \nspectral_info.pref \u003d spectral_info.pref._replace(p_span0\u003dspectral_info.pref.p_span0,  p_spani\u003dspectral_info.pref.p_spani + self.effective_gain - self.out_voa)",
+      "revId": "f2eb365c38a8afbed2f245b766af6a4a86e722ab",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fadc4066_d48613e8",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 876,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-09T08:24:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f8c32ae9_77871bca",
       "revId": "f2eb365c38a8afbed2f245b766af6a4a86e722ab",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }

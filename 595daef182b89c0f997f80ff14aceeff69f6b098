@@ -16,6 +16,24 @@
       "message": "I found: I think this line is missing to generate the frequency set for interpol_params:\nself.channel_freq \u003d spectral_info.frequency\ndoes the job",
       "revId": "595daef182b89c0f997f80ff14aceeff69f6b098",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af6d68a0_1c3e6b83",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 659,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-09T08:24:04Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "1043fe0d_a5cbcdfc",
+      "revId": "595daef182b89c0f997f80ff14aceeff69f6b098",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
