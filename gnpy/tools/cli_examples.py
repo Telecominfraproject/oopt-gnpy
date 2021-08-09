@@ -211,6 +211,7 @@ def transmission_main_example(args=None):
     print('\n'.join([f'Power mode is set to {power_mode}',
                      f'=> it can be modified in eqpt_config.json - Span']))
 
+    # Keep the reference channel for design: the one from SI, with full load same channels
     pref_ch_db = lin2db(req.power * 1e3)  # reference channel power / span (SL=20dB)
     pref_total_db = pref_ch_db + lin2db(req.nb_channel)  # reference total power / span (SL=20dB)
     try:

@@ -88,12 +88,18 @@ class SimParams(Parameters):
 
 class RoadmParams(Parameters):
     def __init__(self, **kwargs):
+        self.target_pch_out_db = kwargs['target_pch_out_db'] if 'target_pch_out_db' in kwargs else None
+        self.target_psd_out_mWperGHz = \
+            kwargs['target_psd_out_mWperGHz'] if 'target_psd_out_mWperGHz' in kwargs else None
+        if self.target_pch_out_db is not None and self.target_psd_out_mWperGHz is not None:
+            raise ParametersError('ROADM config contains per channel power and psd. Please choose only one', kwargs)
+        self.per_degree_pch_out_db = kwargs['per_degree_pch_out_db'] if 'per_degree_pch_out_db' in kwargs else {}
+        self.per_degree_pch_psd = \
+            kwargs['per_degree_psd_out_mWperGHz'] if 'per_degree_psd_out_mWperGHz' in kwargs else {}
         try:
-            self.target_pch_out_db = kwargs['target_pch_out_db']
             self.add_drop_osnr = kwargs['add_drop_osnr']
             self.pmd = kwargs['pmd']
             self.restrictions = kwargs['restrictions']
-            self.per_degree_pch_out_db = kwargs['per_degree_pch_out_db'] if 'per_degree_pch_out_db' in kwargs else {}
         except KeyError as e:
             raise ParametersError(f'ROADM configurations json must include {e}. Configuration: {kwargs}')
 
