@@ -267,6 +267,7 @@ def use_initial_spectrum(initial_spectrum, ref_carrier):
     """ initial spectrum is a dict with key = carrier frequency, and value a dict with power,
     baudrate and roll off for this carrier. ref_carrier contains the reference carrier (power, baudrate, ...)
     used for the reference channel
+    default equalization is PSD
     """
     frequency = list(initial_spectrum.keys())
     signal = [s['power'] for s in initial_spectrum.values()]
@@ -275,7 +276,9 @@ def use_initial_spectrum(initial_spectrum, ref_carrier):
     slot_width = [s['spacing'] for s in initial_spectrum.values()]
     p_span0 = watt2dbm(ref_carrier['req_power'])
     p_spani = watt2dbm(ref_carrier['req_power'])
-    p_span0_per_channel = [lin2db(s['power'] * 1e3) for s in initial_spectrum.values()]
+    p_span0_per_channel = []
+    for freq, spect in initial_spectrum.items():
+        p_span0_per_channel.append(watt2dbm(spect['power']))
     return create_arbitrary_spectral_information(frequency=frequency, signal=signal, baud_rate=baud_rate,
                                                  slot_width=slot_width, roll_off=roll_off,
                                                  ref_power=Pref(p_span0=p_span0, p_spani=p_spani,
