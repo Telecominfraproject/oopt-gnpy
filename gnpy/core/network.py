@@ -11,7 +11,7 @@ Working with networks which consist of network elements
 from operator import attrgetter
 from gnpy.core import ansi_escapes, elements
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
-from gnpy.core.utils import round2float, convert_length
+from gnpy.core.utils import round2float, convert_length, psd2powerdbm
 from collections import namedtuple
 
 
@@ -237,8 +237,11 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
     """ this node can be a transceiver or a ROADM (same function called in both cases)
     """
     power_mode = equipment['Span']['default'].power_mode
+    ref_br = equipment['SI']['default'].baud_rate
     next_oms = (n for n in network.successors(this_node) if not isinstance(n, elements.Transceiver))
     this_node_degree = getattr(this_node, 'per_degree_pch_out_dbm', {})
+    this_node_degree_psd = getattr(this_node, 'per_degree_pch_psd', {})
+    # TODO: check that the same degree does not appear in both dicts
     for oms in next_oms:
         # go through all the OMS departing from the ROADM
         prev_node = this_node
@@ -247,12 +250,22 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
         #     node = find_last_node(next_node)
         #     next_node = next(n for n in network.successors(node))
         #     next_node = find_last_node(next_node)
-        if node.uid not in this_node_degree:
+        if node.uid not in this_node_degree and node.uid not in this_node_degree_psd:
             # if no target power is defined on this degree or no per degree target power is given use the global one
-            # if target_pch_out_db  is not an attribute, then the element must be a transceiver
-            this_node_degree[node.uid] = getattr(this_node.params, 'target_pch_out_db', 0)
+            this_node_degree[node.uid] = 0     # default value if this_node is a transceiver
+            if isinstance(this_node, elements.Roadm):
+                if this_node.params.target_pch_out_db:
+                    this_node_degree[node.uid] = this_node.params.target_pch_out_db
+                elif this_node.params.target_psd_out_mWperGHz:
+                    this_node_degree_psd[node.uid] = this_node.params.target_psd_out_mWperGHz
+                else:
+                    raise ConfigurationError(this_node.uid,
+                                             'needs either a target_pch_out_db or a target_psd_out_mWperGHz')
         # use the target power on this degree
-        prev_dp = this_node_degree[node.uid] - pref_ch_db
+        if node.uid in this_node_degree:
+            prev_dp = this_node_degree[node.uid] - pref_ch_db
+        if node.uid in this_node_degree_psd:
+            prev_dp = psd2powerdbm(this_node_degree_psd[node.uid], ref_br) - pref_ch_db
         dp = prev_dp
         prev_voa = 0
         voa = 0
@@ -335,6 +348,7 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
 
     if isinstance(this_node, elements.Roadm):
         this_node.per_degree_pch_out_dbm = {k: v for k, v in this_node_degree.items()}
+        this_node.per_degree_pch_psd = {k: v for k, v in this_node_degree_psd.items()}
 
 
 def add_roadm_booster(network, roadm):
