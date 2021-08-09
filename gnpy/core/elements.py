@@ -21,13 +21,13 @@ instance as a result.
 """
 
 from numpy import abs, array, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, exp, asarray, full,\
-    squeeze, zeros, append, flip, outer
+    squeeze, zeros, append, flip, outer, minimum
 from scipy.constants import h, c
 from scipy.interpolate import interp1d
 from collections import namedtuple
 
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_summary, pretty_summary_print,\
-    watt2dbm
+    watt2dbm, psd2powerdbm, power_dbm_to_psd_mw_ghz
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational
 from gnpy.core.science_utils import NliSolver, RamanSolver
 from gnpy.core.info import SpectralInformation
@@ -217,21 +217,33 @@ class Roadm(_Node):
         if not params:
             params = {}
         super().__init__(*args, params=RoadmParams(**params), **kwargs)
+        # target power as defined by user
+        self.target_pch_out_dbm = self.params.target_pch_out_db
+        # reference power is target power by default. depending on propagation this may change (due to equalization)
         self.ref_pch_out_dbm = self.params.target_pch_out_db
         self.loss = 0  # auto-design interest
         self.effective_loss = None
         self.passive = True
         self.restrictions = self.params.restrictions
         self.per_degree_pch_out_db = self.params.per_degree_pch_out_db
+        # element contains the two types of equalisation parameters, but only one is not None or empty
+        self.target_psd_out_mWperGHz = self.params.target_psd_out_mWperGHz
+        self.per_degree_pch_psd = self.params.per_degree_pch_psd
 
     @property
     def to_json(self):
+        if self.ref_pch_out_dbm:
+            equalisation, value = 'target_pch_out_db', self.ref_pch_out_dbm
+            perdegree, perdegreevalue = 'per_degree_pch_out_db', self.per_degree_pch_out_db
+        if self.target_psd_out_mWperGHz:
+            equalisation, value = 'target_psd_out_mWperGHz', self.target_psd_out_mWperGHz
+            perdegree, perdegreevalue = 'per_degree_psd_out_mWperGHz', self.per_degree_pch_psd
         return {'uid': self.uid,
                 'type': type(self).__name__,
                 'params': {
-                    'target_pch_out_db': self.ref_pch_out_dbm,
+                    equalisation: value,
                     'restrictions': self.restrictions,
-                    'per_degree_pch_out_db': self.per_degree_pch_out_db
+                    perdegree: perdegreevalue
                     },
                 'metadata': {
                     'location': self.metadata['location']._asdict()
@@ -261,14 +273,24 @@ class Roadm(_Node):
         # if the input power is lower than the target one, use the input power instead because
         # a ROADM doesn't amplify, it can only attenuate
         # TODO maybe add a minimum loss for the ROADM
-        per_degree_pch = self.per_degree_pch_out_db[degree] \
-            if degree in self.per_degree_pch_out_db else self.ref_pch_out_dbm
+
+        # check equalization: if ref_pch_out_dbm is defined then use it
+        # change per_degree_pch from scalar to an array / add a ref_power, ref_baudrate ...
+        ref_baud_rate = spectral_info.pref.ref_carrier['baud_rate']
+        if self.target_pch_out_dbm:
+            ref_per_degree_pch = self.per_degree_pch_out_db.get(degree, self.target_pch_out_dbm)
+            per_degree_pch = full(len(spectral_info.channel_number), ref_per_degree_pch)
+        elif self.target_psd_out_mWperGHz:
+            per_degree_pch = psd2powerdbm(self.per_degree_pch_psd.get(degree, self.target_psd_out_mWperGHz),
+                                          spectral_info.baud_rate)
+            ref_per_degree_pch = psd2powerdbm(self.per_degree_pch_psd.get(degree, self.target_psd_out_mWperGHz),
+                                              ref_baud_rate)
         # Definition of ref_pch_out_dbm for the reference channel: 
         # Depending on propagation upstream from this ROADM, the input power (p_spani) might be smaller than
         # the target power out configured for this ROADM degree's egress. Since ROADM does not amplify,
         # the power out of the ROADM for the ref channel is the min value between target power and input power.
         # (TODO add a minimum loss for the ROADM crossing)
-        self.ref_pch_out_dbm = min(spectral_info.pref.p_spani, per_degree_pch)
+        self.ref_pch_out_dbm = min(spectral_info.pref.p_spani, ref_per_degree_pch)
         # Definition of effective_loss:
         # Optical power of carriers are equalized by the ROADM, so that the experienced loss is not the same for
         # different carriers. effective_loss records the loss for a reference carrier.
@@ -276,6 +298,7 @@ class Roadm(_Node):
         input_power = spectral_info.signal + spectral_info.nli + spectral_info.ase
         pref = spectral_info.pref
         target_power_per_channel = per_degree_pch + spectral_info.delta_pdb_per_channel
+        # Computation of the per channel target power according to equalization policy
         # If target_power_per_channel has some channels power above input power, then the whole target is reduced.
         # For example, if user specifies delta_pdb_per_channel:
         # freq1: 1dB, freq2: 3dB, freq3: -3dB, and target is -20dBm out of the ROADM,
@@ -291,6 +314,7 @@ class Roadm(_Node):
         correction = max(max(target_power_per_channel - watt2dbm(input_power)), 0)
         new_target =  target_power_per_channel - correction
         delta_power = watt2dbm(input_power) - new_target
+
         spectral_info.apply_attenuation_db(delta_power)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
         spectral_info.pdl = sqrt(spectral_info.pdl ** 2 + self.params.pdl ** 2)
@@ -300,7 +324,7 @@ class Roadm(_Node):
     def update_pref(self, spectral_info):
         """Update Reference power
 
-        This modifies  the spectral info in-place. Only the `pref` is updated,
+        This modifies  the spectral info in-place. Only the `pref` is updated with new p_spani,
         while p_span0 is not changed.
         """
         spectral_info.pref = spectral_info.pref._replace(p_spani=self.ref_pch_out_dbm)

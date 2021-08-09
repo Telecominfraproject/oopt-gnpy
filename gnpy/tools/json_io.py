@@ -17,7 +17,8 @@ from gnpy.core import ansi_escapes, elements
 from gnpy.core.equipment import trx_mode_params
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError, ServiceError
 from gnpy.core.science_utils import estimate_nf_model
-from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions, dbm2watt
+from gnpy.core.utils import (automatic_nch, automatic_fmax, merge_amplifier_restrictions, dbm2watt,
+                             merge_equalization)
 from gnpy.topology.request import PathRequest, Disjunction, compute_spectrum_slot_vs_bandwidth
 from gnpy.tools.convert import xls_to_json_data
 from gnpy.tools.service_sheet import read_service_sheet
@@ -46,7 +47,9 @@ class _JsonThing:
         clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
         for k, v in default_values.items():
             setattr(self, k, clean_kwargs.get(k, v))
-            if k not in clean_kwargs and name != 'Amp':
+            if k not in clean_kwargs and name != 'Amp' and \
+                    (k == 'target_psd_out_mWperGHz' and 'target_pch_out_db' not in clean_kwargs) and \
+                    (k == 'target_pch_out_db' and 'target_psd_out_mWperGHz' not in clean_kwargs):
                 print(ansi_escapes.red +
                       f'\n WARNING missing {k} attribute in eqpt_config.json[{name}]' +
                       f'\n default value is {k} = {v}' +
@@ -91,7 +94,8 @@ class Span(_JsonThing):
 
 class Roadm(_JsonThing):
     default_values = {
-        'target_pch_out_db': -17,
+        'target_pch_out_db': None,
+        'target_psd_out_mWperGHz': None,
         'add_drop_osnr': 100,
         'pmd': 0,
         'pdl': 0,
@@ -448,6 +452,14 @@ def network_from_json(json_data, equipment):
         elif variety in equipment[typ]:
             extra_params = equipment[typ][variety]
             temp = el_config.setdefault('params', {})
+            if typ == 'Roadm':
+                # if equalisation is not defined in the element config, then retrieve the general one from SI
+                # else use the one from the element config. Only one type of equalisation is allowed.
+                extra_params = merge_equalization(temp, extra_params)
+                if not extra_params:
+                    raise ConfigurationError(f'ROADM {el_config["uid"]} has not a correct configuration'
+                                             '\nplease check that ROADM contains at most per channel power or '
+                                             'power spectral density definition.')
             temp = merge_amplifier_restrictions(temp, extra_params.__dict__)
             el_config['params'] = temp
             el_config['type_variety'] = variety
