@@ -237,22 +237,20 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
     """ this node can be a transceiver or a ROADM (same function called in both cases)
     """
     power_mode = equipment['Span']['default'].power_mode
+    reference_baudrate = equipment['SI']['default'].baud_rate
     next_oms = (n for n in network.successors(this_node) if not isinstance(n, elements.Transceiver))
-    this_node_degree = getattr(this_node, 'per_degree_pch_out_dbm', {})
     for oms in next_oms:
         # go through all the OMS departing from the ROADM
         prev_node = this_node
         node = oms
-        # if isinstance(next_node, elements.Fused): #support ROADM wo egress amp for metro applications
-        #     node = find_last_node(next_node)
-        #     next_node = next(n for n in network.successors(node))
-        #     next_node = find_last_node(next_node)
-        if node.uid not in this_node_degree:
-            # if no target power is defined on this degree or no per degree target power is given use the global one
-            # if target_pch_out_db  is not an attribute, then the element must be a transceiver
-            this_node_degree[node.uid] = getattr(this_node.params, 'target_pch_out_db', 0)
+        if isinstance(this_node, elements.Transceiver):
+            this_node_out_power = 0.0     # default value if this_node is a transceiver
+        if isinstance(this_node, elements.Roadm):
+            # get target power out from ROADM for the reference carrier based on equalization settings
+            this_node_out_power = this_node.get_per_degree_ref_power(degree=node.uid,
+                                                                     reference_baudrate=reference_baudrate)
         # use the target power on this degree
-        prev_dp = this_node_degree[node.uid] - pref_ch_db
+        prev_dp = this_node_out_power - pref_ch_db
         dp = prev_dp
         prev_voa = 0
         voa = 0
@@ -331,10 +329,26 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
             prev_voa = voa
             prev_node = node
             node = next_node
-            # print(f'{node.uid}')
 
-    if isinstance(this_node, elements.Roadm):
-        this_node.per_degree_pch_out_dbm = {k: v for k, v in this_node_degree.items()}
+
+def set_roadm_per_degree_targets(roadm, network):
+    """Set target powers/PSD on all degrees
+    This is needed to populate per_degree_pch_out_dbm or per_degree_pch_psd dicts when they are
+    not initialized by users.
+    """
+    next_oms = (n for n in network.successors(roadm) if not isinstance(n, elements.Transceiver))
+
+    for node in next_oms:
+        # go through all the OMS departing from the ROADM
+        if node.uid not in roadm.per_degree_pch_out_dbm and node.uid not in roadm.per_degree_pch_psd:
+            # if no target power is defined on this degree or no per degree target power is given use the global one
+            if roadm.params.target_pch_out_db:
+                roadm.per_degree_pch_out_dbm[node.uid] = roadm.params.target_pch_out_db
+            elif roadm.params.target_psd_out_mWperGHz:
+                roadm.per_degree_pch_psd[node.uid] = roadm.params.target_psd_out_mWperGHz
+            else:
+                raise ConfigurationError(roadm.uid,
+                                         'needs a target_pch_out_db or a target_psd_out_mWperGHz')
 
 
 def add_roadm_booster(network, roadm):
@@ -547,6 +561,7 @@ def build_network(network, equipment, pref_ch_db, pref_total_db, no_insert_edfas
     add_fiber_padding(network, fibers, default_span_data.padding)
 
     for roadm in roadms:
+        set_roadm_per_degree_targets(roadm, network)
         set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db)
 
     trx = [t for t in network.nodes() if isinstance(t, elements.Transceiver)]
