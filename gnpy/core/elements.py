@@ -21,13 +21,13 @@ instance as a result.
 """
 
 from numpy import abs, array, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, exp, asarray, full,\
-    squeeze, zeros, append, flip, outer
+    squeeze, zeros, append, flip, outer, minimum
 from scipy.constants import h, c
 from scipy.interpolate import interp1d
 from collections import namedtuple
 
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_average, pretty_summary_print, \
-    watt2dbm
+    watt2dbm, psd2powerdbm, power_dbm_to_psd_mw_ghz
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational
 from gnpy.core.science_utils import NliSolver, RamanSolver
 from gnpy.core.info import SpectralInformation
@@ -219,9 +219,9 @@ class Roadm(_Node):
             params = {}
         super().__init__(*args, params=RoadmParams(**params), **kwargs)
 
-        # Target output power for the reference carrier
-        self.ref_pch_out_dbm = self.params.target_pch_out_db
-
+        # Target output power for the reference carrier, can only be computed on the fly, because it depends
+        # on the path, since it depends on the equalization definition on the degree.
+        self.ref_pch_out_dbm = None
         self.loss = 0  # auto-design interest
 
         # Optical power of carriers are equalized by the ROADM, so that the experienced loss is not the same for
@@ -230,22 +230,37 @@ class Roadm(_Node):
 
         self.passive = True
         self.restrictions = self.params.restrictions
-        self.per_degree_pch_out_dbm = self.params.per_degree_pch_out_db
         self.propagated_labels = [""]
+        # element contains the two types of equalisation parameters, but only one is not None or empty
+        # target for equalization for the ROADM only one must be not None
+        self.target_pch_out_dbm = self.params.target_pch_out_db
+        self.target_psd_out_mWperGHz = self.params.target_psd_out_mWperGHz
+        # per degree equalization that overrides the ROADM equalization if not None
+        self.per_degree_pch_out_dbm = self.params.per_degree_pch_out_db
+        self.per_degree_pch_psd = self.params.per_degree_pch_psd
 
     @property
     def to_json(self):
-        return {'uid': self.uid,
-                'type': type(self).__name__,
-                'params': {
-                    'target_pch_out_db': self.ref_pch_out_dbm,
-                    'restrictions': self.restrictions,
-                    'per_degree_pch_out_db': self.per_degree_pch_out_dbm
-                    },
-                'metadata': {
-                    'location': self.metadata['location']._asdict()
-                }
-                }
+        if self.target_pch_out_dbm is not None:
+            equalisation, value = 'target_pch_out_db', self.target_pch_out_dbm
+        if self.target_psd_out_mWperGHz is not None:
+            equalisation, value = 'target_psd_out_mWperGHz', self.target_psd_out_mWperGHz
+        to_json = {
+            'uid': self.uid,
+            'type': type(self).__name__,
+            'params': {
+                equalisation: value,
+                'restrictions': self.restrictions,
+            },
+            'metadata': {
+                'location': self.metadata['location']._asdict()
+            }
+        }
+        if self.per_degree_pch_out_dbm:
+            to_json['params']['per_degree_pch_out_db'] = self.per_degree_pch_out_dbm
+        if self.per_degree_pch_psd:
+            to_json['params']['per_degree_psd_out_mWperGHz'] = self.per_degree_pch_psd
+        return to_json
 
     def __repr__(self):
         return f'{type(self).__name__}(uid={self.uid!r}, loss={self.loss!r})'
@@ -260,28 +275,67 @@ class Roadm(_Node):
                           f'  reference pch out (dBm): {self.ref_pch_out_dbm:.2f}',
                           f'  actual pch out (dBm):    {total_pch}'])
 
-    def propagate(self, spectral_info, degree):
-        # pin_target and loss are read from eqpt_config.json['Roadm']
-        # all ingress channels in xpress are set to this power level
-        # but add channels are not, so we define an effective loss
-        # in the case of add channels
-        # find the target power on this degree:
-        # if a target power has been defined for this degree use it else use the global one.
-        # if the input power is lower than the target one, use the input power instead because
-        # a ROADM doesn't amplify, it can only attenuate
-        # TODO maybe add a minimum loss for the ROADM
-        per_degree_pch = self.per_degree_pch_out_dbm.get(degree, self.ref_pch_out_dbm)
+    def get_roadm_target_power(self, reference_baudrate=None, spectral_info=None):
+        """Computes the power in dBm for a reference carrier or for a spectral information.
+        power is computed based on equalization target.
+        if spectral_info baud_rate is baud_rate = [32e9, 42e9, 64e9, 42e9, 32e9], and 
+        target_pch_out_dbm is defined to -20 dbm, then the function returns an array of powers
+        [-20, -20, -20, -20, -20]
+        if target_psd_out_mWperGHz is defined instead with 3.125e-4mW/GHz then it returns
+        [-20, -18.819, -16.9897, -18.819, -20]
+        if instead a reference_baud_rate is defined, the functions computes the result for a
+        single reference carrier whose baud_rate is reference_baudrate
+        """
+        if spectral_info:
+            if self.target_pch_out_dbm is not None:
+                return full(len(spectral_info.channel_number), self.target_pch_out_dbm)
+            if self.target_psd_out_mWperGHz is not None:
+                return psd2powerdbm(self.target_psd_out_mWperGHz, spectral_info.baud_rate)
+        else:
+            if self.target_pch_out_dbm is not None:
+                return self.target_pch_out_dbm
+            if self.target_psd_out_mWperGHz is not None:
+                return psd2powerdbm(self.target_psd_out_mWperGHz, reference_baudrate)
+        return None
 
+    def get_per_degree_ref_power(self, degree, reference_baudrate):
+        """Get the target power in dBm out of ROADM degree for the reference bandwidth
+        If no equalization is defined on this degree use the ROADM level one.
+        """
+        if degree in self.per_degree_pch_out_dbm:
+            return self.per_degree_pch_out_dbm[degree]
+        elif degree in self.per_degree_pch_psd:
+            return psd2powerdbm(self.per_degree_pch_psd[degree], reference_baudrate)
+        return self.get_roadm_target_power(reference_baudrate=reference_baudrate)
+
+    def propagate(self, spectral_info, degree):
+        """Equalization targets are read from topology file if defined and completed with default
+        definition of the library.
+        If the input power is lower than the target one, use the input power instead because
+        a ROADM doesn't amplify, it can only attenuate.
+        There is no difference for add or express : the same target is applied. For the moment
+        propagates operates with spectral info carriers all having the same source or destination.
+        """
+        # TODO maybe add a minimum loss for the ROADM
+
+        # find the target power for the reference carrier
+        ref_per_degree_pch = self.get_per_degree_ref_power(degree, spectral_info.pref.ref_carrier.baud_rate)
+        # find the target powers for each signal carrier
+        per_degree_pch = self.get_roadm_target_power(spectral_info=spectral_info)
+
+        # Definition of ref_pch_out_dbm for the reference channel:
         # Depending on propagation upstream from this ROADM, the input power (p_spani) might be smaller than
         # the target power out configured for this ROADM degree's egress. Since ROADM does not amplify,
         # the power out of the ROADM for the ref channel is the min value between target power and input power.
         # (TODO add a minimum loss for the ROADM crossing)
-        self.ref_pch_out_dbm = min(spectral_info.pref.p_spani, per_degree_pch)
-
+        self.ref_pch_out_dbm = min(spectral_info.pref.p_spani, ref_per_degree_pch)
+        # Definition of effective_loss:
+        # Optical power of carriers are equalized by the ROADM, so that the experienced loss is not the same for
+        # different carriers. effective_loss records the loss for the reference carrier.
         self.ref_effective_loss = spectral_info.pref.p_spani - self.ref_pch_out_dbm
-
         input_power = spectral_info.signal + spectral_info.nli + spectral_info.ase
         target_power_per_channel = per_degree_pch + spectral_info.delta_pdb_per_channel
+        # Computation of the per channel target power according to equalization policy
         # If target_power_per_channel has some channels power above input power, then the whole target is reduced.
         # For example, if user specifies delta_pdb_per_channel:
         # freq1: 1dB, freq2: 3dB, freq3: -3dB, and target is -20dBm out of the ROADM,
@@ -300,6 +354,7 @@ class Roadm(_Node):
                       - (watt2dbm(input_power) - target_power_per_channel)) / 2
         new_target = target_power_per_channel - correction
         delta_power = watt2dbm(input_power) - new_target
+
         spectral_info.apply_attenuation_db(delta_power)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
         spectral_info.pdl = sqrt(spectral_info.pdl ** 2 + self.params.pdl ** 2)
