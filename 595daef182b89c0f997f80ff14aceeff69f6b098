@@ -33,6 +33,24 @@
       "message": "same comment: Pref is the noiseless reference, so this line should be \nspectral_info.pref \u003d spectral_info.pref._replace(p_span0\u003dspectral_info.pref.p_span0, p_spani\u003dp_span0\u003dspectral_info.pref.p_span -self.loss)",
       "revId": "595daef182b89c0f997f80ff14aceeff69f6b098",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46d819c5_f56af3da",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-09T08:23:03Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1bdcea02_d909f51d",
+      "revId": "595daef182b89c0f997f80ff14aceeff69f6b098",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
