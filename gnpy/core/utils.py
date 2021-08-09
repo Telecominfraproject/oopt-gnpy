@@ -11,6 +11,7 @@ This module contains utility functions that are used with gnpy.
 from csv import writer
 from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and, mean
 from scipy import constants
+from copy import deepcopy
 
 from gnpy.core.exceptions import ConfigurationError
 
@@ -311,6 +312,30 @@ def rrc(ffs, baud_rate, alpha):
     p_inds = where(logical_and(abs(ffs) > 0, abs(ffs) < l_lim))
     hf[p_inds] = 1
     return sqrt(hf)
+
+
+def merge_equalization(params, extra_params):
+    """ Updates equalization type
+    if target_pch_out_db in params, then do not add target_psd_out_mWperGHz from extra_params
+    and reversaly. if both exist: raise an error, if none exist add the one in extra_params
+    """
+    extra = deepcopy(extra_params)
+    if 'target_pch_out_db' in params.keys() and params['target_pch_out_db'] is not None and\
+            'target_psd_out_mWperGHz' in params.keys() and params['target_psd_out_mWperGHz'] is not None:
+        return None
+    if 'target_pch_out_db' in params.keys() and params['target_pch_out_db'] is not None:
+        extra.__dict__.pop('target_psd_out_mWperGHz')
+        return extra
+    if 'target_psd_out_mWperGHz' in params.keys() and params['target_psd_out_mWperGHz'] is not None:
+        extra.__dict__.pop('target_pch_out_db')
+        return extra
+    if extra.target_pch_out_db is not None:
+        extra.__dict__.pop('target_psd_out_mWperGHz')
+        return extra
+    if extra.target_psd_out_mWperGHz is not None:
+        extra.__dict__.pop('target_pch_out_db')
+        return extra
+    return None
 
 
 def merge_amplifier_restrictions(dict1, dict2):
