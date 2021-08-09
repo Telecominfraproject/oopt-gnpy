@@ -88,6 +88,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "315348ba_0b019ae8",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-09T08:22:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd521629_41ca392c",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7123cc1_c2f78103",
@@ -119,6 +137,24 @@
       "side": 1,
       "message": "Sure, I misinterpreted these lines because I thought the ROADM attenuates the channels with a power over the given threshold and leaves unchanged the channel below. If it not the case I can push a modification that would implement the behaviour that you have explained and that does not use the function map, filter and the lambda",
       "parentUuid": "a7123cc1_c2f78103",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c34865a4_4009e061",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-09T08:22:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a3b5097c_4b79d882",
       "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -176,6 +212,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2afb5425_b63210ee",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-09T08:22:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a24a96b6_2c26e0ee",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67c668d6_99351740",
@@ -207,6 +261,24 @@
       "side": 1,
       "message": "Yes, the old analytic model is default for test. I think this difference is due to different numerical approximation and being at the second figure of a dB quantity that should be negligible. I think the best is to restore the right behaviour of the ROADM equalization and then check again.",
       "parentUuid": "67c668d6_99351740",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc7c19e8_0aa55228",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-09T08:22:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e5651c4b_7d56e522",
       "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -246,6 +318,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76e8f8e5_cf0c9468",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-09T08:22:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9c98103e_11c3f553",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8eaaa65_426cf028",
@@ -277,6 +367,24 @@
       "side": 1,
       "message": "This again depends on my mistake on the ROAM behaviour.",
       "parentUuid": "b8eaaa65_426cf028",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0118015d_0d99a8d8",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-09T08:22:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "af01cc39_ec4fe2b1",
       "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
