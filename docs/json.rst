@@ -176,36 +176,36 @@ ROADM
 
 The user can only modify the value of existing parameters:
 
-+--------------------------+-----------+---------------------------------------------+
-| field                    |   type    | description                                 |
-+==========================+===========+=============================================+
-| ``target_pch_out_db``    | (number)  | Auto-design sets the ROADM egress channel   |
-|                          |           | power. This reflects typical control loop   |
-|                          |           | algorithms that adjust ROADM losses to      |
-|                          |           | equalize channels (eg coming from different |
-|                          |           | ingress direction or add ports)             |
-|                          |           | This is the default value                   |
-|                          |           | Roadm/params/target_pch_out_db if no value  |
-|                          |           | is given in the ``Roadm`` element in the    |
-|                          |           | topology input description.                 |
-|                          |           | This default value is ignored if a          |
-|                          |           | params/target_pch_out_db value is input in  |
-|                          |           | the topology for a given ROADM.             |
-+--------------------------+-----------+---------------------------------------------+
-| ``add_drop_osnr``        | (number)  | OSNR contribution from the add/drop ports   |
-+--------------------------+-----------+---------------------------------------------+
-| ``pmd``                  | (number)  | Polarization mode dispersion (PMD). (s)     |
-+--------------------------+-----------+---------------------------------------------+
-| ``restrictions``         | (dict of  | If non-empty, keys ``preamp_variety_list``  |
-|                          |  strings) | and ``booster_variety_list`` represent      |
-|                          |           | list of ``type_variety`` amplifiers which   |
-|                          |           | are allowed for auto-design within ROADM's  |
-|                          |           | line degrees.                               |
-|                          |           |                                             |
-|                          |           | If no booster should be placed on a degree, |
-|                          |           | insert a ``Fused`` node on the degree       |
-|                          |           | output.                                     |
-+--------------------------+-----------+---------------------------------------------+
++-----------------------------+-----------+----------------------------------------------------+
+| field                       |   type    | description                                        |
++=============================+===========+====================================================+
+| ``target_pch_out_db``       | (number)  | Default :ref:`equalization strategy<equalization>` |
+| or                          |           | for this ROADM type.                               |
+| ``target_psd_out_mWperGHz`` |           |                                                    |
+| (mutually exclusive)        |           | Auto-design sets the ROADM egress channel          |
+|                             |           | power. This reflects typical control loop          |
+|                             |           | algorithms that adjust ROADM losses to             |
+|                             |           | equalize channels (e.g., coming from               |
+|                             |           | different ingress direction or add ports).         |
+|                             |           |                                                    |
+|                             |           | These values are used as defaults when no          |
+|                             |           | overrides are set per each ``Roadm``               |
+|                             |           | element in the network topology.                   |
++-----------------------------+-----------+----------------------------------------------------+
+| ``add_drop_osnr``           | (number)  | OSNR contribution from the add/drop ports          |
++-----------------------------+-----------+----------------------------------------------------+
+| ``pmd``                     | (number)  | Polarization mode dispersion (PMD). (s)            |
++-----------------------------+-----------+----------------------------------------------------+
+| ``restrictions``            | (dict of  | If non-empty, keys ``preamp_variety_list``         |
+|                             |  strings) | and ``booster_variety_list`` represent             |
+|                             |           | list of ``type_variety`` amplifiers which          |
+|                             |           | are allowed for auto-design within ROADM's         |
+|                             |           | line degrees.                                      |
+|                             |           |                                                    |
+|                             |           | If no booster should be placed on a degree,        |
+|                             |           | insert a ``Fused`` node on the degree              |
+|                             |           | output.                                            |
++-----------------------------+-----------+----------------------------------------------------+
 
 Global parameters
 -----------------
@@ -557,3 +557,12 @@ All channels ranging from 193.1625 THz to 195 THz will have their power equalize
 Note that first carrier of the second partition has center frequency 193.1625 THz (its spectrum occupation ranges from 193.125 THz to 193.2 THz).
 The last carrier of the second partition has center frequency 193.1 THz and spectrum occupation ranges from 193.075 THz to 193.125 THz.
 There is no overlap of the occupation and both share the same boundary.
+
+.. _equalization:
+
+Equalization choices
+~~~~~~~~~~~~~~~~~~~~
+
+ROADMs typically equalize the optical power across multiple channels using one of the available equalization strategies — either targeting a specific output power, or a specific power spectral density (PSD).
+Both of these strategies can be adjusted by a per-channel offset.
+The equalization strategy can be defined globally per a ROADM model, or per each ROADM instance in the topology, and within a ROADM also on a per-degree basis.
