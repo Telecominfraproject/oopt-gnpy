@@ -234,13 +234,13 @@ class Roadm(_Node):
         # definition of effective_loss: value for the reference channel
         self.effective_loss = spectral_info.pref.p_spani - self.ref_pch_out_dbm
         input_power = spectral_info.signal + spectral_info.nli + spectral_info.ase
-        min_power = min(lin2db(input_power*1e3))
+        min_power = min(watt2dbm(input_power))
         per_degree_pch = per_degree_pch if per_degree_pch < min_power else min_power
         # target power shoud follow same delta power as in p_span0_per_channel
         # if no specific delta, then apply equalization (later on)
         pref = spectral_info.pref
         delta_channel_power = pref.p_span0_per_channel - pref.p_span0
-        delta_power = lin2db(input_power * 1e3) - (per_degree_pch + delta_channel_power)
+        delta_power = watt2dbm(input_power) - (per_degree_pch + delta_channel_power)
         spectral_info.apply_attenuation_db(delta_power)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
         self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
@@ -289,7 +289,7 @@ class Fused(_Node):
         spectral_info.apply_attenuation_db(self.loss)
 
     def update_pref(self, spectral_info):
-        self.pch_out_db = round(lin2db(mean(spectral_info.signal) * 1e3), 2)
+        self.pch_out_db = round(watt2dbm(mean(spectral_info.signal)), 2)
         spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
                                                          p_spani=spectral_info.pref.p_spani - self.loss)
 
@@ -868,7 +868,7 @@ class Edfa(_Node):
         self.baud_rate = spectral_info.baud_rate
 
     def update_pref(self, spectral_info):
-        self.pch_out_db = round(lin2db(mean(spectral_info.signal) * 1e3), 2)
+        self.pch_out_db = watt2dbm(spectral_info.signal)
         spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
                                                          p_spani=spectral_info.pref.p_spani
                                                          + self.effective_gain - self.out_voa)
