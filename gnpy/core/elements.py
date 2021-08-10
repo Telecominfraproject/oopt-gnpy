@@ -288,10 +288,10 @@ class Roadm(_Node):
         # that had the min power.
         # This change corresponds to a discussion held during coders call. Please look at this document for
         # a reference: https://telecominfraproject.atlassian.net/wiki/spaces/OOPT/pages/669679645/PSE+Meeting+Minutes
-        correction = (abs(lin2db(input_power * 1e3) - target_power_per_channel) -
-                      (lin2db(input_power * 1e3) - target_power_per_channel)) / 2
+        correction = (abs(watt2dbm(input_power) - target_power_per_channel)
+                      - (watt2dbm(input_power) - target_power_per_channel)) / 2
         new_target = target_power_per_channel - correction
-        delta_power = lin2db(input_power * 1e3) - new_target
+        delta_power = watt2dbm(input_power) - new_target
         spectral_info.apply_attenuation_db(delta_power)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
         spectral_info.pdl = sqrt(spectral_info.pdl ** 2 + self.params.pdl ** 2)
