@@ -253,6 +253,7 @@ Transceiver trx Lannion_CAS
 Roadm roadm Lannion_CAS
   effective loss (dB):  23.00
   pch out (dBm):        -20.00
+  total pch (dBm):      -20.00
 Edfa east edfa in Lannion_CAS to Corlay
   type_variety:           test
   effective gain(dB):     21.18
@@ -265,6 +266,7 @@ Edfa east edfa in Lannion_CAS to Corlay
   Delta_P (dB):           0.00
   target pch (dBm):       3.00
   effective pch (dBm):    1.18
+  total pch (dBm):        1.18
   output VOA (dB):        0.00
 Fiber          fiber (Lannion_CAS → Corlay)-F061
   type_variety:                SSMF
@@ -273,7 +275,8 @@ Fiber          fiber (Lannion_CAS → Corlay)-F061
   total loss (dB):             4.00
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
-  pch out (dBm): -2.82
+  pch out (dBm):               -2.82
+  total pch (dBm):             -2.81
 Fused west fused spans in Corlay
   loss (dB): 1.00
 Fiber          fiber (Corlay → Loudeac)-F010
@@ -283,7 +286,8 @@ Fiber          fiber (Corlay → Loudeac)-F010
   total loss (dB):             10.00
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
-  pch out (dBm): -13.82
+  pch out (dBm):               -13.82
+  total pch (dBm):             -13.81
 Fused west fused spans in Loudeac
   loss (dB): 1.00
 Fiber          fiber (Loudeac → Lorient_KMA)-F054
@@ -293,7 +297,8 @@ Fiber          fiber (Loudeac → Lorient_KMA)-F054
   total loss (dB):             12.00
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
-  pch out (dBm): -26.82
+  pch out (dBm):               -26.82
+  total pch (dBm):             -26.81
 Edfa west edfa in Lorient_KMA to Loudeac
   type_variety:           test
   effective gain(dB):     28.00
@@ -306,10 +311,12 @@ Edfa west edfa in Lorient_KMA to Loudeac
   Delta_P (dB):           -1.82
   target pch (dBm):       1.18
   effective pch (dBm):    1.18
+  total pch (dBm):        1.22
   output VOA (dB):        0.00
 Roadm roadm Lorient_KMA
   effective loss (dB):  21.18
   pch out (dBm):        -20.00
+  total pch (dBm):      -20.00
 Transceiver trx Lorient_KMA
   GSNR (0.1nm, dB):          23.94
   GSNR (signal bw, dB):      19.85
