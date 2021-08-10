@@ -26,7 +26,7 @@ from scipy.constants import h, c
 from scipy.interpolate import interp1d
 from collections import namedtuple
 
-from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum
+from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_summary, pretty_summary_print
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational
 from gnpy.core.science_utils import NliSolver, RamanSolver
 from gnpy.core.info import SpectralInformation
@@ -116,6 +116,7 @@ class Transceiver(_Node):
 
     def _calc_snr(self, spectral_info):
         with errstate(divide='ignore'):
+            self.label = spectral_info.label
             self.baud_rate = spectral_info.baud_rate
             ratio_01nm = lin2db(12.5e9 / self.baud_rate)
             # set raw values to record original calculation, before update_snr()
@@ -173,23 +174,22 @@ class Transceiver(_Node):
         if self.snr is None or self.osnr_ase is None:
             return f'{type(self).__name__} {self.uid}'
 
-        snr = round(mean(self.snr), 2)
-        osnr_ase = round(mean(self.osnr_ase), 2)
-        osnr_ase_01nm = round(mean(self.osnr_ase_01nm), 2)
-        snr_01nm = round(mean(self.snr_01nm), 2)
+        snr = per_label_summary(self.snr, self.label)
+        osnr_ase = per_label_summary(self.osnr_ase, self.label)
+        osnr_ase_01nm = per_label_summary(self.osnr_ase_01nm, self.label)
+        snr_01nm = per_label_summary(self.snr_01nm, self.label)
         cd = mean(self.chromatic_dispersion)
         pmd = mean(self.pmd)
         pdl = mean(self.pdl)
 
         result = '\n'.join([f'{type(self).__name__} {self.uid}',
-
-                          f'  GSNR (0.1nm, dB):          {snr_01nm:.2f}',
-                          f'  GSNR (signal bw, dB):      {snr:.2f}',
-                          f'  OSNR ASE (0.1nm, dB):      {osnr_ase_01nm:.2f}',
-                          f'  OSNR ASE (signal bw, dB):  {osnr_ase:.2f}',
-                          f'  CD (ps/nm):                {cd:.2f}',
-                          f'  PMD (ps):                  {pmd:.2f}',
-                          f'  PDL (dB):                  {pdl:.2f}'])
+                            f'  GSNR (0.1nm, dB):          {pretty_summary_print(snr_01nm)}',
+                            f'  GSNR (signal bw, dB):      {pretty_summary_print(snr)}',
+                            f'  OSNR ASE (0.1nm, dB):      {pretty_summary_print(osnr_ase_01nm)}',
+                            f'  OSNR ASE (signal bw, dB):  {pretty_summary_print(osnr_ase)}',
+                            f'  CD (ps/nm):                {cd:.2f}',
+                            f'  PMD (ps):                  {pmd:.2f}',
+                            f'  PDL (dB):                  {pdl:.2f}'])
 
         cd_penalty = self.penalties.get('chromatic_dispersion')
         if cd_penalty is not None:
