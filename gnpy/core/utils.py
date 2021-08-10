@@ -9,7 +9,7 @@ This module contains utility functions that are used with gnpy.
 """
 
 from csv import writer
-from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and
+from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and, mean
 from scipy import constants
 
 from gnpy.core.exceptions import ConfigurationError
@@ -227,6 +227,32 @@ def snr_sum(snr, bw, snr_added, bw_added=12.5e9):
     snr_added = snr_added - lin2db(bw / bw_added)
     snr = -lin2db(db2lin(-snr) + db2lin(-snr_added))
     return snr
+
+
+def per_label_average(values, labels):
+    """ computes the average per defined spectrum band, using labels
+
+    >>> labels = ['A', 'A', 'A', 'A', 'A', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'C', 'D', 'D', 'D', 'D']
+    >>> values = [28.51, 28.23, 28.15, 28.17, 28.36, 28.53, 28.64, 28.68, 28.7, 28.71, 28.72, 28.73, 28.74, 28.91, 27.96, 27.85, 27.87, 28.02]
+    >>> per_label_average(values, labels)
+    {'A': 28.28, 'B': 28.68, 'C': 28.91, 'D': 27.92}
+    """
+
+    label_set = sorted(set(labels))
+    summary = {}
+    for label in label_set:
+        vals = [val for val, lab in zip(values, labels) if lab == label]
+        summary[label] = round(mean(vals), 2)
+    return summary
+
+
+def pretty_summary_print(summary):
+    """Build a prettty string that shows the summary dict values per label with 2 digits
+    """
+    if len(summary) == 1:
+        return f'{list(summary.values())[0]:.2f}'
+    text = ', '.join([f'{label}: {value:.2f}' for label, value in summary.items()])
+    return text
 
 
 def deltawl2deltaf(delta_wl, wavelength):
