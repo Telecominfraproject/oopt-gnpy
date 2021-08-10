@@ -212,7 +212,8 @@ class Roadm(_Node):
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
                           f'  effective loss (dB):  {self.effective_loss:.2f}',
-                          f'  pch out (dBm):        {self.ref_pch_out_dbm:.2f}'])
+                          f'  pch out (dBm):        {self.ref_pch_out_dbm:.2f}',
+                          f'  total pch (dBm):  {pretty_summary_print(per_baudrate_summary(self.pch_out_dbm, self.baud_rate))}'])
 
     def propagate(self, spectral_info, degree):
         # pin_target and loss are read from eqpt_config.json['Roadm']
@@ -241,6 +242,8 @@ class Roadm(_Node):
         delta_power = lin2db(input_power * 1e3) - (per_degree_pch + delta_channel_power)
         spectral_info.apply_attenuation_db(delta_power)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
+        self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+        self.baud_rate = spectral_info.baud_rate
 
     def update_pref(self, spectral_info):
         """ updates the value in Pref in spectral_info. p_span0 and p_span0_per_channel are unchanged, only p_spani
@@ -362,7 +365,8 @@ class Fiber(_Node):
                           f'  total loss (dB):             {self.loss:.2f}',
                           f'  (includes conn loss (dB) in: {self.params.con_in:.2f} out: {self.params.con_out:.2f})',
                           f'  (conn loss out includes EOL margin defined in eqpt_config.json)',
-                          f'  pch out (dBm): {self.pch_out_db:.2f}'])
+                          f'  pch out (dBm): {self.pch_out_db:.2f}',
+                          f'  total pch (dBm): {pretty_summary_print(per_baudrate_summary(self.pch_out_dbm, self.baud_rate))}'])
 
     def loss_coef_func(self, frequency):
         frequency = asarray(frequency)
@@ -460,6 +464,8 @@ class Fiber(_Node):
         # this loss, because pref is a noiseless reference.
         loss = round(lin2db(sum(self._psig_in) / sum(spectral_info.signal)),2)
         self.pch_out_db = spectral_info.pref.p_spani - loss
+        self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+        self.baud_rate = spectral_info.baud_rate
         spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
                                                          p_spani=spectral_info.pref.p_spani - loss)
 
@@ -583,6 +589,7 @@ class Edfa(_Node):
                           f'  Delta_P (dB):           ' + (f'{self.delta_p:.2f}' if self.delta_p is not None else 'None'),
                           f'  target pch (dBm):       ' + (f'{self.target_pch_out_db:.2f}' if self.target_pch_out_db is not None else 'None'),
                           f'  effective pch (dBm):    {self.effective_pch_out_db:.2f}',
+                          f'  total pch (dBm):        {pretty_summary_print(per_baudrate_summary(self.pch_out_dbm, self.baud_rate))}',
                           f'  output VOA (dB):        {self.out_voa:.2f}'])
 
     def interpol_params(self, spectral_info):
@@ -852,6 +859,8 @@ class Edfa(_Node):
         spectral_info.ase += ase
 
         spectral_info.apply_gain_db(self.gprofile - self.out_voa)
+        self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+        self.baud_rate = spectral_info.baud_rate
 
     def update_pref(self, spectral_info):
         self.pch_out_db = round(lin2db(mean(spectral_info.signal) * 1e3), 2)

@@ -17,6 +17,7 @@ Transceiver Site_A
 Roadm roadm Site A
   effective loss (dB):  20.00
   pch out (dBm):        -20.00
+  total pch (dBm):  -20.00
 Edfa booster A
   type_variety:           std_medium_gain
   effective gain(dB):     20.00
@@ -29,6 +30,7 @@ Edfa booster A
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   effective pch (dBm):    0.00
+  total pch (dBm):        0.01
   output VOA (dB):        0.00
 Fiber          Span1
   type_variety:                SSMF
@@ -38,6 +40,7 @@ Fiber          Span1
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   pch out (dBm): -16.00
+  total pch (dBm): -15.99
 Edfa Edfa1
   type_variety:           test
   effective gain(dB):     16.00
@@ -50,6 +53,7 @@ Edfa Edfa1
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   effective pch (dBm):    0.00
+  total pch (dBm):        0.02
   output VOA (dB):        0.00
 Fiber          Span2
   type_variety:                SSMF
@@ -59,6 +63,7 @@ Fiber          Span2
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   pch out (dBm): -16.00
+  total pch (dBm): -15.98
 Edfa Edfa2
   type_variety:           test_fixed_gain
   effective gain(dB):     16.00
@@ -71,6 +76,7 @@ Edfa Edfa2
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   effective pch (dBm):    0.00
+  total pch (dBm):        0.03
   output VOA (dB):        0.00
 Fiber          Span3
   type_variety:                SSMF
@@ -80,6 +86,7 @@ Fiber          Span3
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   pch out (dBm): -16.00
+  total pch (dBm): -15.97
 Edfa Edfa3
   type_variety:           test
   effective gain(dB):     16.00
@@ -92,6 +99,7 @@ Edfa Edfa3
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   effective pch (dBm):    0.00
+  total pch (dBm):        0.04
   output VOA (dB):        0.00
 Fiber          Span4
   type_variety:                SSMF
@@ -101,6 +109,7 @@ Fiber          Span4
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   pch out (dBm): -16.00
+  total pch (dBm): -15.96
 Edfa Edfa4
   type_variety:           test_fixed_gain
   effective gain(dB):     16.00
@@ -113,6 +122,7 @@ Edfa Edfa4
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   effective pch (dBm):    0.00
+  total pch (dBm):        0.05
   output VOA (dB):        0.00
 Fiber          Span5
   type_variety:                SSMF
@@ -122,6 +132,7 @@ Fiber          Span5
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   pch out (dBm): -16.00
+  total pch (dBm): -15.95
 Edfa Edfa5
   type_variety:           test
   effective gain(dB):     16.00
@@ -134,10 +145,12 @@ Edfa Edfa5
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   effective pch (dBm):    0.00
+  total pch (dBm):        0.06
   output VOA (dB):        0.00
 Roadm roadm Site C
   effective loss (dB):  20.00
   pch out (dBm):        -20.00
+  total pch (dBm):  -20.00
 Edfa booster C
   type_variety:           std_medium_gain
   effective gain(dB):     20.00
@@ -150,6 +163,7 @@ Edfa booster C
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   effective pch (dBm):    0.00
+  total pch (dBm):        0.01
   output VOA (dB):        0.00
 Fiber          Span6
   type_variety:                SSMF
@@ -159,6 +173,7 @@ Fiber          Span6
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   pch out (dBm): -16.00
+  total pch (dBm): -15.99
 Edfa Edfa6
   type_variety:           test_fixed_gain
   effective gain(dB):     16.00
@@ -171,6 +186,7 @@ Edfa Edfa6
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   effective pch (dBm):    0.00
+  total pch (dBm):        0.02
   output VOA (dB):        0.00
 Fiber          Span7
   type_variety:                SSMF
@@ -180,6 +196,7 @@ Fiber          Span7
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   pch out (dBm): -16.00
+  total pch (dBm): -15.98
 Edfa Edfa7
   type_variety:           test
   effective gain(dB):     16.00
@@ -192,6 +209,7 @@ Edfa Edfa7
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   effective pch (dBm):    0.00
+  total pch (dBm):        0.03
   output VOA (dB):        0.00
 Fiber          Span8
   type_variety:                SSMF
@@ -201,6 +219,7 @@ Fiber          Span8
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   pch out (dBm): -16.00
+  total pch (dBm): -15.97
 Edfa Edfa8
   type_variety:           test_fixed_gain
   effective gain(dB):     16.00
@@ -213,6 +232,7 @@ Edfa Edfa8
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   effective pch (dBm):    0.00
+  total pch (dBm):        0.04
   output VOA (dB):        0.00
 Fiber          Span9
   type_variety:                SSMF
@@ -222,6 +242,7 @@ Fiber          Span9
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   pch out (dBm): -16.00
+  total pch (dBm): -15.96
 Edfa Edfa9
   type_variety:           test
   effective gain(dB):     16.00
@@ -234,6 +255,7 @@ Edfa Edfa9
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   effective pch (dBm):    0.00
+  total pch (dBm):        0.05
   output VOA (dB):        0.00
 Fiber          Span10
   type_variety:                SSMF
@@ -243,6 +265,7 @@ Fiber          Span10
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   pch out (dBm): -16.00
+  total pch (dBm): -15.95
 Edfa Edfa10
   type_variety:           test_fixed_gain
   effective gain(dB):     16.00
@@ -255,10 +278,12 @@ Edfa Edfa10
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   effective pch (dBm):    0.00
+  total pch (dBm):        0.06
   output VOA (dB):        0.00
 Roadm roadm Site D
   effective loss (dB):  20.00
   pch out (dBm):        -20.00
+  total pch (dBm):  -20.00
 Edfa booster D
   type_variety:           std_medium_gain
   effective gain(dB):     20.00
@@ -271,6 +296,7 @@ Edfa booster D
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   effective pch (dBm):    0.00
+  total pch (dBm):        0.01
   output VOA (dB):        0.00
 Fiber          Span11
   type_variety:                SSMF
@@ -280,6 +306,7 @@ Fiber          Span11
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   pch out (dBm): -16.00
+  total pch (dBm): -15.99
 Edfa Edfa11
   type_variety:           test
   effective gain(dB):     16.00
@@ -292,6 +319,7 @@ Edfa Edfa11
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   effective pch (dBm):    0.00
+  total pch (dBm):        0.02
   output VOA (dB):        0.00
 Fiber          Span12
   type_variety:                SSMF
@@ -301,6 +329,7 @@ Fiber          Span12
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   pch out (dBm): -16.00
+  total pch (dBm): -15.98
 Edfa Edfa12
   type_variety:           test_fixed_gain
   effective gain(dB):     16.00
@@ -313,10 +342,12 @@ Edfa Edfa12
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   effective pch (dBm):    0.00
+  total pch (dBm):        0.03
   output VOA (dB):        0.00
 Roadm roadm Site E
   effective loss (dB):  20.00
   pch out (dBm):        -20.00
+  total pch (dBm):  -20.00
 Edfa booster E
   type_variety:           std_medium_gain
   effective gain(dB):     20.00
@@ -329,6 +360,7 @@ Edfa booster E
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   effective pch (dBm):    0.00
+  total pch (dBm):        0.01
   output VOA (dB):        0.00
 Fiber          Span13
   type_variety:                SSMF
@@ -338,6 +370,7 @@ Fiber          Span13
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   pch out (dBm): -16.00
+  total pch (dBm): -15.99
 Edfa Edfa13
   type_variety:           test
   effective gain(dB):     16.00
@@ -350,6 +383,7 @@ Edfa Edfa13
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   effective pch (dBm):    0.00
+  total pch (dBm):        0.02
   output VOA (dB):        0.00
 Fiber          Span14
   type_variety:                SSMF
@@ -359,6 +393,7 @@ Fiber          Span14
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   pch out (dBm): -16.00
+  total pch (dBm): -15.98
 Edfa Edfa14
   type_variety:           test_fixed_gain
   effective gain(dB):     16.00
@@ -371,6 +406,7 @@ Edfa Edfa14
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   effective pch (dBm):    0.00
+  total pch (dBm):        0.03
   output VOA (dB):        0.00
 Fiber          Span15
   type_variety:                SSMF
@@ -380,6 +416,7 @@ Fiber          Span15
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   pch out (dBm): -16.00
+  total pch (dBm): -15.97
 Edfa Edfa15
   type_variety:           test
   effective gain(dB):     16.00
@@ -392,10 +429,12 @@ Edfa Edfa15
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   effective pch (dBm):    0.00
+  total pch (dBm):        0.04
   output VOA (dB):        0.00
 Roadm roadm Site B
   effective loss (dB):  20.00
   pch out (dBm):        -20.00
+  total pch (dBm):  -20.00
 Transceiver Site_B
   GSNR (0.1nm, dB):          17.85
   GSNR (signal bw, dB):      13.77
