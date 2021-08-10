@@ -9,7 +9,7 @@ This module contains utility functions that are used with gnpy.
 """
 
 from csv import writer
-from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and
+from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and, mean
 from scipy import constants
 
 from gnpy.core.exceptions import ConfigurationError
@@ -227,6 +227,33 @@ def snr_sum(snr, bw, snr_added, bw_added=12.5e9):
     snr_added = snr_added - lin2db(bw / bw_added)
     snr = -lin2db(db2lin(-snr) + db2lin(-snr_added))
     return snr
+
+
+def per_baudrate_summary(values, baud_rates):
+    """ computes the average per baud_rate
+    >>> a = [1, 1, 3, 2, 4, 3, 1]
+    >>> b = [1, 1.1, 3, 2.2, 4, 3, 1.2]
+    >>> per_baudrate_summary(b, a)
+    {1: 1.1, 2: 2.2, 3: 3.0, 4: 4.0}
+    """
+
+    bdr_set = list(set(baud_rates))
+    summary = {}
+    for baud_rate in bdr_set:
+        vals = [values[i] for i, b in enumerate(baud_rates) if b == baud_rate]
+        summary[baud_rate * 1e-9] = round(mean(vals), 2)
+    return summary
+
+
+def pretty_summary_print(summary):
+    """
+    """
+    if len(summary) == 1:
+        return f'{round(list(summary.values())[0], 2):.2f}'
+    text = ''
+    for baud_rate, value in summary.items():
+        text += f'{baud_rate:.2f}: {value:.2f}, '
+    return text
 
 
 def deltawl2deltaf(delta_wl, wavelength):
