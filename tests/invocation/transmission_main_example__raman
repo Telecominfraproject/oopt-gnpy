@@ -22,7 +22,8 @@ RamanFiber          Span1
   total loss (dB):             17.00
   (includes conn loss (dB) in: 0.50 out: 0.50)
   (conn loss out includes EOL margin defined in eqpt_config.json)
-  pch out (dBm): -7.71
+  reference pch out (dBm):     -7.71
+  actual pch out (dBm):        -7.96
 Fused Fused1
   loss (dB): 0.00
 Edfa Edfa1
@@ -37,6 +38,7 @@ Edfa Edfa1
   Delta_P (dB):           -2.00
   target pch (dBm):       -2.00
   effective pch (dBm):    -2.00
+  actual pch out (dBm):   -2.25
   output VOA (dB):        0.00
 Transceiver Site_B
   GSNR (0.1nm, dB):          31.44
