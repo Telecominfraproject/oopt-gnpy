@@ -16,6 +16,24 @@
       "message": "Please don\u0027t merge yet: I have noticed that I forgot to handle the requests_aggregation.",
       "revId": "16cb64557ad1a354747b635d401b2d397389b6db",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a97ea654_78c98de3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-08-10T10:30:39Z",
+      "side": 1,
+      "message": "Is it OK to merge all of the parent changes except this one?\n\n(Also, please feel free to self-review with Code-Review: -1. That\u0027s a machine-readable way of saying \"don\u0027t merge this\" :). Another way is to mark a change as \"work in progress\", that also prevents accidental merging.)",
+      "parentUuid": "b5e95445_2ac52c82",
+      "revId": "16cb64557ad1a354747b635d401b2d397389b6db",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
