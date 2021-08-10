@@ -22,7 +22,8 @@ Fiber          Span1
   total loss (dB):             17.00
   (includes conn loss (dB) in: 0.50 out: 0.50)
   (conn loss out includes EOL margin defined in eqpt_config.json)
-  pch out (dBm): -17.00
+  reference pch out (dBm):     -17.00
+  actual pch out (dBm):        -17.00
 Edfa Edfa1
   type_variety:           std_low_gain
   effective gain(dB):     15.00
@@ -35,6 +36,7 @@ Edfa Edfa1
   Delta_P (dB):           -2.00
   target pch (dBm):       -2.00
   effective pch (dBm):    -2.00
+  actual pch out (dBm):   -1.99
   output VOA (dB):        0.00
 Transceiver Site_B
   GSNR (0.1nm, dB):          31.17
