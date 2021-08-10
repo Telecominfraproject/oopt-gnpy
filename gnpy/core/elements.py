@@ -283,10 +283,10 @@ class Roadm(_Node):
         # max((max([-19, -17, -23] - [-23, -16, -26]), 0) = max(max([4, -1, 3]), 0) = max(4, 0) = 4
         # the new target is [-23, -21, -27]
         # and the attenuation to apply is [-23, -16, -26] - [-23, -21, -27] = [0, 5, 1]
-        correction = max(max(target_power_per_channel - lin2db(input_power * 1e3)), 0)
+        correction = max(max(target_power_per_channel - watt2dbm(input_power)), 0)
         # min_power = min(lin2db(input_power * 1e3))
         new_target =  target_power_per_channel - correction
-        delta_power = lin2db(input_power * 1e3) - new_target
+        delta_power = watt2dbm(input_power) - new_target
         spectral_info.apply_attenuation_db(delta_power)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
         spectral_info.pdl = sqrt(spectral_info.pdl ** 2 + self.params.pdl ** 2)
