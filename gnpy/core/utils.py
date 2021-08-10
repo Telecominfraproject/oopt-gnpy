@@ -9,7 +9,7 @@ This module contains utility functions that are used with gnpy.
 """
 
 from csv import writer
-from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and
+from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and, mean
 from scipy import constants
 
 from gnpy.core.exceptions import ConfigurationError
@@ -227,6 +227,28 @@ def snr_sum(snr, bw, snr_added, bw_added=12.5e9):
     snr_added = snr_added - lin2db(bw / bw_added)
     snr = -lin2db(db2lin(-snr) + db2lin(-snr_added))
     return snr
+
+
+def per_label_summary(values, labels):
+    """ computes the average per defined spectrum band, using labels
+
+    """
+
+    label_set = sorted(set(labels))
+    summary = {}
+    for label in label_set:
+        vals = [val for val, lab in zip(values, labels) if lab == label]
+        summary[label] = round(mean(vals), 2)
+    return summary
+
+
+def pretty_summary_print(summary):
+    """
+    """
+    if len(summary) == 1:
+        return f'{list(summary.values())[0]:.2f}'
+    text = ', '.join([f'{label}: {value:.2f}' for label, value in summary.items()])
+    return text
 
 
 def deltawl2deltaf(delta_wl, wavelength):
