@@ -87,6 +87,7 @@ class Transceiver(_Node):
         self.pdl = None
         self.penalties = {}
         self.total_penalty = 0
+        self.propagated_labels = [""]
 
     def _calc_cd(self, spectral_info):
         """ Updates the Transceiver property with the CD of the received channels. CD in ps/nm.
@@ -117,7 +118,7 @@ class Transceiver(_Node):
 
     def _calc_snr(self, spectral_info):
         with errstate(divide='ignore'):
-            self.label = spectral_info.label
+            self.propagated_labels = spectral_info.label
             self.baud_rate = spectral_info.baud_rate
             ratio_01nm = lin2db(12.5e9 / self.baud_rate)
             # set raw values to record original calculation, before update_snr()
@@ -175,10 +176,10 @@ class Transceiver(_Node):
         if self.snr is None or self.osnr_ase is None:
             return f'{type(self).__name__} {self.uid}'
 
-        snr = per_label_average(self.snr, self.label)
-        osnr_ase = per_label_average(self.osnr_ase, self.label)
-        osnr_ase_01nm = per_label_average(self.osnr_ase_01nm, self.label)
-        snr_01nm = per_label_average(self.snr_01nm, self.label)
+        snr = per_label_average(self.snr, self.propagated_labels)
+        osnr_ase = per_label_average(self.osnr_ase, self.propagated_labels)
+        osnr_ase_01nm = per_label_average(self.osnr_ase_01nm, self.propagated_labels)
+        snr_01nm = per_label_average(self.snr_01nm, self.propagated_labels)
         cd = mean(self.chromatic_dispersion)
         pmd = mean(self.pmd)
         pdl = mean(self.pdl)
@@ -230,6 +231,7 @@ class Roadm(_Node):
         self.passive = True
         self.restrictions = self.params.restrictions
         self.per_degree_pch_out_dbm = self.params.per_degree_pch_out_db
+        self.propagated_labels = [""]
 
     @property
     def to_json(self):
@@ -252,9 +254,11 @@ class Roadm(_Node):
         if self.ref_effective_loss is None:
             return f'{type(self).__name__} {self.uid}'
 
+        total_pch = pretty_summary_print(per_label_average(self.pch_out_dbm, self.propagated_labels))
         return '\n'.join([f'{type(self).__name__} {self.uid}',
-                          f'  effective loss (dB):  {self.ref_effective_loss:.2f}',
-                          f'  pch out (dBm):        {self.ref_pch_out_dbm:.2f}'])
+                          f'  effective loss (dB):     {self.ref_effective_loss:.2f}',
+                          f'  reference pch out (dBm): {self.ref_pch_out_dbm:.2f}',
+                          f'  actual pch out (dBm):    {total_pch}'])
 
     def propagate(self, spectral_info, degree):
         # pin_target and loss are read from eqpt_config.json['Roadm']
@@ -299,6 +303,8 @@ class Roadm(_Node):
         spectral_info.apply_attenuation_db(delta_power)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
         spectral_info.pdl = sqrt(spectral_info.pdl ** 2 + self.params.pdl ** 2)
+        self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+        self.propagated_labels = spectral_info.label
 
     def update_pref(self, spectral_info):
         """Update Reference power
@@ -361,7 +367,7 @@ class Fiber(_Node):
         super().__init__(*args, params=FiberParams(**params), **kwargs)
         self.pch_out_db = None
         self.passive = True
-
+        self.propagated_labels = [""]
         # Raman efficiency matrix function of the delta frequency constructed such that each row is related to a
         # fixed frequency: positive elements represent a gain (from higher frequency) and negative elements represent
         # a loss (to lower frequency)
@@ -411,6 +417,7 @@ class Fiber(_Node):
         if self.pch_out_db is None:
             return f'{type(self).__name__} {self.uid}'
 
+        total_pch = pretty_summary_print(per_label_average(self.pch_out_dbm, self.propagated_labels))
         return '\n'.join([f'{type(self).__name__}          {self.uid}',
                           f'  type_variety:                {self.type_variety}',
                           f'  length (km):                 {self.params.length * 1e-3:.2f}',
@@ -418,7 +425,8 @@ class Fiber(_Node):
                           f'  total loss (dB):             {self.loss:.2f}',
                           f'  (includes conn loss (dB) in: {self.params.con_in:.2f} out: {self.params.con_out:.2f})',
                           f'  (conn loss out includes EOL margin defined in eqpt_config.json)',
-                          f'  pch out (dBm): {self.pch_out_db:.2f}'])
+                          f'  reference pch out (dBm):     {self.pch_out_db:.2f}',
+                          f'  actual pch out (dBm):        {total_pch}'])
 
     def loss_coef_func(self, frequency):
         frequency = asarray(frequency)
@@ -508,6 +516,8 @@ class Fiber(_Node):
         # apply the attenuation due to the output connector loss
         attenuation_out_db = self.params.con_out
         spectral_info.apply_attenuation_db(attenuation_out_db)
+        self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+        self.propagated_labels = spectral_info.label
 
     def update_pref(self, spectral_info):
         # in case of Raman, the resulting loss of the fiber is not equivalent to self.loss
@@ -580,6 +590,8 @@ class RamanFiber(Fiber):
         # apply the attenuation due to the output connector loss
         attenuation_out_db = self.params.con_out
         spectral_info.apply_attenuation_db(attenuation_out_db)
+        self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+        self.propagated_labels = spectral_info.label
 
 
 class Edfa(_Node):
@@ -608,6 +620,7 @@ class Edfa(_Node):
         self.delta_p = self.operational.delta_p  # delta P with Pref (power swwep) in power mode
         self.tilt_target = self.operational.tilt_target
         self.out_voa = self.operational.out_voa
+        self.propagated_labels = [""]
 
     @property
     def to_json(self):
@@ -641,6 +654,7 @@ class Edfa(_Node):
         if self.pin_db is None or self.pout_db is None:
             return f'{type(self).__name__} {self.uid}'
         nf = mean(self.nf)
+        total_pch = pretty_summary_print(per_label_average(self.pch_out_dbm, self.propagated_labels))
         return '\n'.join([f'{type(self).__name__} {self.uid}',
                           f'  type_variety:           {self.params.type_variety}',
                           f'  effective gain(dB):     {self.effective_gain:.2f}',
@@ -653,6 +667,7 @@ class Edfa(_Node):
                           f'  Delta_P (dB):           ' + (f'{self.delta_p:.2f}' if self.delta_p is not None else 'None'),
                           f'  target pch (dBm):       ' + (f'{self.target_pch_out_db:.2f}' if self.target_pch_out_db is not None else 'None'),
                           f'  effective pch (dBm):    {self.effective_pch_out_db:.2f}',
+                          f'  actual pch out (dBm):   {total_pch}',
                           f'  output VOA (dB):        {self.out_voa:.2f}'])
 
     def interpol_params(self, spectral_info):
@@ -925,6 +940,8 @@ class Edfa(_Node):
         spectral_info.apply_gain_db(self.gprofile - self.out_voa)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
         spectral_info.pdl = sqrt(spectral_info.pdl ** 2 + self.params.pdl ** 2)
+        self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+        self.propagated_labels = spectral_info.label
 
     def update_pref(self, spectral_info):
         spectral_info.pref = \
