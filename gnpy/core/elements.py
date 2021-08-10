@@ -863,7 +863,7 @@ class Edfa(_Node):
         self.baud_rate = spectral_info.baud_rate
 
     def update_pref(self, spectral_info):
-        self.pch_out_db = round(lin2db(mean(spectral_info.signal) * 1e3), 2)
+        self.pch_out_db = watt2dbm(spectral_info.signal)
         spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
                                                          p_spani=spectral_info.pref.p_spani
                                                          + self.effective_gain - self.out_voa)
