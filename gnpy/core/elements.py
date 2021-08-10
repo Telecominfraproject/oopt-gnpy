@@ -27,7 +27,7 @@ from scipy.interpolate import interp1d
 from collections import namedtuple
 from copy import deepcopy
 
-from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum
+from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_baudrate_summary, pretty_summary_print
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational
 from gnpy.core.science_utils import NliSolver, RamanSolver
 from gnpy.core.info import SpectralInformation
@@ -153,19 +153,19 @@ class Transceiver(_Node):
         if self.snr is None or self.osnr_ase is None:
             return f'{type(self).__name__} {self.uid}'
 
-        snr = round(mean(self.snr), 2)
-        osnr_ase = round(mean(self.osnr_ase), 2)
-        osnr_ase_01nm = round(mean(self.osnr_ase_01nm), 2)
-        snr_01nm = round(mean(self.snr_01nm), 2)
+        snr = per_baudrate_summary(self.snr, self.baud_rate)
+        osnr_ase = per_baudrate_summary(self.osnr_ase, self.baud_rate)
+        osnr_ase_01nm = per_baudrate_summary(self.osnr_ase_01nm, self.baud_rate)
+        snr_01nm = per_baudrate_summary(self.snr_01nm, self.baud_rate)
         cd = mean(self.chromatic_dispersion)
         pmd = mean(self.pmd)
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
 
-                          f'  GSNR (0.1nm, dB):          {snr_01nm:.2f}',
-                          f'  GSNR (signal bw, dB):      {snr:.2f}',
-                          f'  OSNR ASE (0.1nm, dB):      {osnr_ase_01nm:.2f}',
-                          f'  OSNR ASE (signal bw, dB):  {osnr_ase:.2f}',
+                          f'  GSNR (0.1nm, dB):          {pretty_summary_print(snr_01nm)}',
+                          f'  GSNR (signal bw, dB):      {pretty_summary_print(snr)}',
+                          f'  OSNR ASE (0.1nm, dB):      {pretty_summary_print(osnr_ase_01nm)}',
+                          f'  OSNR ASE (signal bw, dB):  {pretty_summary_print(osnr_ase)}',
                           f'  CD (ps/nm):                {cd:.2f}',
                           f'  PMD (ps):                  {pmd:.2f}'])
 
