@@ -270,13 +270,13 @@ class Roadm(_Node):
         # definition of effective_loss: value for the reference channel
         self.effective_loss = spectral_info.pref.p_spani - self.ref_pch_out_dbm
         input_power = spectral_info.signal + spectral_info.nli + spectral_info.ase
-        min_power = min(lin2db(input_power * 1e3))
+        min_power = min(watt2dbm(input_power))
         per_degree_pch = per_degree_pch if per_degree_pch < min_power else min_power
         # target power shoud follow same delta power as in p_span0_per_channel
         # if no specific delta, then apply equalization (later on)
         pref = spectral_info.pref
         delta_channel_power = pref.p_span0_per_channel - pref.p_span0
-        delta_power = lin2db(input_power * 1e3) - (per_degree_pch + delta_channel_power)
+        delta_power = watt2dbm(input_power) - (per_degree_pch + delta_channel_power)
         spectral_info.apply_attenuation_db(delta_power)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
         spectral_info.pdl = sqrt(spectral_info.pdl ** 2 + self.params.pdl ** 2)
