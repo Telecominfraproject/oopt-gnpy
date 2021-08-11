@@ -20,6 +20,8 @@ SRC_ROOT = Path(__file__).parent.parent
      ['-e', 'gnpy/example-data/eqpt_config_openroadm_ver4.json', 'gnpy/example-data/Sweden_OpenROADMv4_example_network.json', ]),
     ('openroadm-v5-Stockholm-Gothenburg', transmission_main_example,
      ['-e', 'gnpy/example-data/eqpt_config_openroadm_ver5.json', 'gnpy/example-data/Sweden_OpenROADMv5_example_network.json', ]),
+    ('transmission_main_example_long', transmission_main_example,
+     ['-e', 'tests/data/eqpt_config.json', 'tests/data/test_long_network.json'])
 ))
 def test_example_invocation(capfd, output, handler, args):
     '''Make sure that our examples produce useful output'''
