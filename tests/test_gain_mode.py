@@ -12,6 +12,8 @@ checks behaviour of gain mode
 
 from pathlib import Path
 from copy import deepcopy
+from numpy.testing import assert_array_equal, assert_allclose
+
 import pytest
 from gnpy.core.utils import lin2db, automatic_nch, db2lin, db2lin
 from gnpy.core.parameters import FiberParams
@@ -53,7 +55,7 @@ def create_rq(equipment, srce, dest, bdir, nd_list, ls_list, mode, power_dbm):
     params['loose_list'] = ls_list
     trx_params = trx_mode_params(equipment, params['trx_type'], params['trx_mode'], True)
     params.update(trx_params)
-    params['power'] = dbm2watt(power_dbm) if power_dbm else db2lin(equipment['SI']['default'].power_dbm) * 1e-3
+    params['power'] = db2lin(power_dbm) * 1e-3
     f_min = params['f_min']
     f_max_from_si = params['f_max']
     params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
@@ -62,15 +64,14 @@ def create_rq(equipment, srce, dest, bdir, nd_list, ls_list, mode, power_dbm):
 
 @pytest.mark.parametrize("power_dbm", [0, -2, 3])
 @pytest.mark.parametrize("req_power", [1e-3, 0.5e-3, 2e-3])
-def test_no_amp_feature(req_power, power_dbm):
+def test_gain_mode(req_power, power_dbm):
     """
     """
     equipment = load_equipment(EQPT_FILENAME)
     network = net_setup(equipment)
     req = create_rq(equipment, 'trx Brest_KLA', 'trx Rennes_STA', False,
                     ['Edfa0_roadm Brest_KLA', 'roadm Lannion_CAS', 'trx Rennes_STA'], 
-                    ['STRICT', 'STRICT', 'STRICT'],
-                    'mode 1', 0)
+                    ['STRICT', 'STRICT', 'STRICT'], 'mode 1', 0)
     path = compute_constrained_path(network, req)
     infos_expected = propagate(path, req, equipment)
 
@@ -80,7 +81,13 @@ def test_no_amp_feature(req_power, power_dbm):
     network2 = net_setup(equipment)
     path2 = compute_constrained_path(network2, req)
     infos_actual = propagate(path2, req, equipment)
-    for expected, actual in zip(infos_expected.carriers, infos_actual.carriers):
-        assert expected.power.signal == actual.power.signal
-        assert expected.power.ase == actual.power.ase
-        assert expected.power.nli == actual.power.nli
+
+    assert_array_equal(infos_expected.baud_rate, infos_actual.baud_rate)
+    assert_allclose(infos_expected.signal, infos_actual.signal, rtol=1e-14)
+    assert_allclose(infos_expected.nli, infos_actual.nli, rtol=1e-14)
+    assert_allclose(infos_expected.ase, infos_actual.ase, rtol=1e-14)
+    assert_array_equal(infos_expected.roll_off, infos_actual.roll_off)
+    assert_array_equal(infos_expected.chromatic_dispersion, infos_actual.chromatic_dispersion)
+    assert_array_equal(infos_expected.pmd, infos_actual.pmd)
+    assert_array_equal(infos_expected.channel_number, infos_actual.channel_number)
+    assert_array_equal(infos_expected.number_of_channels, infos_actual.number_of_channels)
