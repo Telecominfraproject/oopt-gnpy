@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d16fe44_4cb912b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-13T14:42:39Z",
+      "side": 1,
+      "message": "Hello,\nI believe this version is clean and readable for you to review, and I would be glad to have your feedbacks. In the meantime I will prepare some slides to explain the changes and the tricky part on Pref power printings (which I had difficulties to handle).",
+      "revId": "e02894ddbea2e1b23ee7325dd0053582d8a35cd8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
