@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7a6c1be_32c38ddb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-13T14:39:06Z",
+      "side": 1,
+      "message": "Dear Andrea, could you please have a look ? I think this reverts a bit some of your changes for prints, and so it restore initial example file for OpenROADM case.\n",
+      "revId": "a1795edc1b3b18395d76a62e441c40c474e08a80",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
