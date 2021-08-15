@@ -16,6 +16,74 @@
       "message": "Hello,\nI believe this version is clean and readable for you to review, and I would be glad to have your feedbacks. In the meantime I will prepare some slides to explain the changes and the tricky part on Pref power printings (which I had difficulties to handle).",
       "revId": "e02894ddbea2e1b23ee7325dd0053582d8a35cd8",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcd1a173_91fdabc5",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-08-15T14:16:45Z",
+      "side": 1,
+      "message": "If the input psd is already in mW I think it would be clearer to just have:\n return lin2db(baudrate_baud * psd_mwperghz * 1e-9)\n\nand avoid the extra conversion and function call.",
+      "revId": "e02894ddbea2e1b23ee7325dd0053582d8a35cd8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "921a9d17_9d189ed9",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-08-15T14:16:45Z",
+      "side": 1,
+      "message": "This was just copied from above and does not describe this function?",
+      "revId": "e02894ddbea2e1b23ee7325dd0053582d8a35cd8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf943b3b_9704b702",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-08-15T14:16:45Z",
+      "side": 1,
+      "message": "Same comment as above: if you want to return the psd in mW I think this is simpler:\n return db2lin(power_dbm) / (baudrate_baud * 1e-9)",
+      "revId": "e02894ddbea2e1b23ee7325dd0053582d8a35cd8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "447af4d9_f77b66a9",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-08-15T14:16:45Z",
+      "side": 1,
+      "message": "See above.",
+      "revId": "e02894ddbea2e1b23ee7325dd0053582d8a35cd8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
