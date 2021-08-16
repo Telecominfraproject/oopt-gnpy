@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1febdd6_082f1ae4",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-08-16T20:09:47Z",
+      "side": 1,
+      "message": "Why is it better to raise ConfigurationError? ParametersError should be more specific since it is a subclass of ConfigurationError.",
+      "revId": "da4909829a7efc7e043e6f88d33c69d5ea4398c0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
