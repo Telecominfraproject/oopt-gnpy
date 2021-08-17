@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28e1ce2e_b683f49e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-17T09:55:15Z",
+      "side": 1,
+      "message": "I think this change is not correct:\nout_voa accounts for the previous amplifier, and should not be accounted for the next span padding.\nFor example, you may want to set the amplifier gain closer to its max gain to optimize NF, and then have the outpower before VOA being very high, while the value after voa corresponds to the computed optimum input for next span. If you count the voa in the padding, then you may not reach low enough power at the input of the next amp, and will decrease the performance (I have tested that).\nBesides, this patch changes the behaviour when setting or not the value, which should not be the case.\n(if autodesign sets a voa to a value and then computes padding, does not give the same result as if user sets this voa to the exact same figure)",
+      "revId": "081affcc999759f6596b50803b865ebbca3e1682",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
