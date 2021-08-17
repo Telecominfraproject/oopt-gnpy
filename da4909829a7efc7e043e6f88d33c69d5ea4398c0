@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "631c3212_d4cb566f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-17T08:21:41Z",
+      "side": 1,
+      "message": "Thanks !",
+      "revId": "da4909829a7efc7e043e6f88d33c69d5ea4398c0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1febdd6_082f1ae4",
@@ -14,6 +31,24 @@
       "writtenOn": "2021-08-16T20:09:47Z",
       "side": 1,
       "message": "Why is it better to raise ConfigurationError? ParametersError should be more specific since it is a subclass of ConfigurationError.",
+      "revId": "da4909829a7efc7e043e6f88d33c69d5ea4398c0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de9e4861_2ee1c015",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-17T08:21:41Z",
+      "side": 1,
+      "message": "I catched the error, in order to add the information on node uid in the error message, to ease debug. I thought that having wrong parameters in ROADMs was more a configuration error of the ROADM in this case, and was consistant with the catching in cli as well. I have no strong opinion, though, I can raise again ParametersError here, if you believe this is more meaningful.",
+      "parentUuid": "a1febdd6_082f1ae4",
       "revId": "da4909829a7efc7e043e6f88d33c69d5ea4398c0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
