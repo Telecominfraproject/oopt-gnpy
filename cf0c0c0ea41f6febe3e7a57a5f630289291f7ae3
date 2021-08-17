@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0321290c_9acf479c",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-08-17T09:28:55Z",
+      "side": 1,
+      "message": "You already added handling of this in parameters.py. I don\u0027t think this check is needed here as well.",
+      "range": {
+        "startLine": 416,
+        "startChar": 12,
+        "endLine": 422,
+        "endChar": 62
+      },
+      "revId": "cf0c0c0ea41f6febe3e7a57a5f630289291f7ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
