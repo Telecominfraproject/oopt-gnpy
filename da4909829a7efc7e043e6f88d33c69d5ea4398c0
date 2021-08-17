@@ -87,6 +87,24 @@
       "parentUuid": "11d3ee94_d4f61a02",
       "revId": "da4909829a7efc7e043e6f88d33c69d5ea4398c0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "822c17ff_6fa384e5",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-08-17T10:46:48Z",
+      "side": 1,
+      "message": "But that message does not come from this line. If it did it would start with \"Config error in\", right? I think it comes from the check you added in json_io.py in a previous commit.",
+      "parentUuid": "8f7b99a9_74646716",
+      "revId": "da4909829a7efc7e043e6f88d33c69d5ea4398c0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
