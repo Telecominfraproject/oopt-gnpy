@@ -69,6 +69,24 @@
       "parentUuid": "de9e4861_2ee1c015",
       "revId": "da4909829a7efc7e043e6f88d33c69d5ea4398c0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f7b99a9_74646716",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-08-17T10:29:44Z",
+      "side": 1,
+      "message": "Yes it works with me:\nfor example:\n\nConfiguration error: (\u0027ROADM contains both per channel power and psd. please choose only one\u0027, \u0027roadm Site A\u0027)\n\nregarding your comment, in parameter.py, I do not have the roadm uid, so I can not give the uid information when raising the exception.",
+      "parentUuid": "11d3ee94_d4f61a02",
+      "revId": "da4909829a7efc7e043e6f88d33c69d5ea4398c0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
