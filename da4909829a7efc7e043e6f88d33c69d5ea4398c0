@@ -51,6 +51,24 @@
       "parentUuid": "a1febdd6_082f1ae4",
       "revId": "da4909829a7efc7e043e6f88d33c69d5ea4398c0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11d3ee94_d4f61a02",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-08-17T09:24:54Z",
+      "side": 1,
+      "message": "Raising ParametersError when having wrong parameters seems reasonable to me but I don\u0027t have a strong opinion either. In any case I don\u0027t think this is the correct place to change the type of exception. If you really want to change it, I think it should be done in parameters.py where the exception is raised in the first place.\n\nAlso, did you try if adding info on node uid like this really works? It seems to me that if calling RoadmParams results in an exception, super().__init__() will never complete and self.uid will not be set.",
+      "parentUuid": "de9e4861_2ee1c015",
+      "revId": "da4909829a7efc7e043e6f88d33c69d5ea4398c0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
