@@ -303,12 +303,12 @@ def test_freq_slot_exist(setup, equipment, request_set):
     """
     network, oms_list = setup
     params = request_set
-    params['effective_freq_slot'] = None
+    params['effective_freq_slot'] = [{'N': None, 'M': None}]
     rqs = [PathRequest(**params)]
     paths = compute_path_dsjctn(network, equipment, rqs, [])
     pth_assign_spectrum(paths, rqs, oms_list, [find_reversed_path(paths[0])])
-    assert rqs[0].N == -256
-    assert rqs[0].M == 32
+    assert rqs[0].N == [-256]
+    assert rqs[0].M == [32]
 
 
 def test_inconsistant_freq_slot(setup, equipment, request_set):
@@ -317,7 +317,7 @@ def test_inconsistant_freq_slot(setup, equipment, request_set):
     network, oms_list = setup
     params = request_set
     # minimum required nb of slots is 32 (800Gbit/100Gbit/s channels each occupying 50GHz ie 4 slots)
-    params['effective_freq_slot'] = {'N': 0, 'M': 4}
+    params['effective_freq_slot'] = [{'N': 0, 'M': 4}]
     with pytest.raises(ServiceError):
         _check_one_request(params, 196.05e12)
     params['trx_mode'] = None
@@ -327,25 +327,25 @@ def test_inconsistant_freq_slot(setup, equipment, request_set):
     assert rqs[0].blocking_reason == 'NOT_ENOUGH_RESERVED_SPECTRUM'
 
 
-@pytest.mark.parametrize('n, m, final_n, final_m, blocking_reason', [
+@pytest.mark.parametrize('req_n, req_m, final_n, final_m, blocking_reason', [
     # regular requests that should be correctly assigned:
-    (-100, 32, -100, 32, None),
-    (150, 50, 150, 50, None),
+    ([-100], [32], [-100], [32], None),
+    ([150], [50], [150], [50], None),
     # if n is None, there should be an assignment (enough spectrum cases)
     # and the center frequency should be set on the lower part of the spectrum based on m value if it exists
     # or based on 32
-    (None, 32, -256, 32, None),
-    (None, 40, -248, 40, None),
-    (-100, None, -100, 32, None),
-    (None, None, -256, 32, None),
+    ([None], [32], [-256], [32], None),
+    ([None], [40], [-248], [40], None),
+    ([-100], [None], [-100], [32], None),
+    ([None], [None], [-256], [32], None),
     # -280 and 60 center indexes should result in unfeasible spectrum, either out of band or
     # overlapping with occupied spectrum. The requested spectrum is not available
-    (-280, None, None, None, 'NO_SPECTRUM'),
-    (-60, 40, None, None, 'NO_SPECTRUM'),
+    ([-280], [None], None, None, 'NO_SPECTRUM'),
+    ([-60], [40], None, None, 'NO_SPECTRUM'),
     # 20 is smaller than min 32 required nb of slots so should also be blocked
-    (-60, 20, None, None, 'NOT_ENOUGH_RESERVED_SPECTRUM')
+    ([-60], [20], None, None, 'NOT_ENOUGH_RESERVED_SPECTRUM')
     ])
-def test_n_m_requests(setup, equipment, n, m, final_n, final_m, blocking_reason, request_set):
+def test_n_m_requests(setup, equipment, req_n, req_m, final_n, final_m, blocking_reason, request_set):
     """ test that various N and M values for a request end up with the correct path assgnment
     """
     network, oms_list = setup
@@ -356,7 +356,7 @@ def test_n_m_requests(setup, equipment, n, m, final_n, final_m, blocking_reason,
     some_oms = oms_list[expected_oms[3]]
     some_oms.assign_spectrum(-30, 32)    # means that spectrum is occupied from indexes -62 to 1 on reversed path
     params = request_set
-    params['effective_freq_slot'] = {'N': n, 'M': m}
+    params['effective_freq_slot'] = [{'N': n, 'M': m} for n, m in zip(req_n, req_m)]
     rqs = [PathRequest(**params)]
 
     paths = compute_path_dsjctn(network, equipment, rqs, [])

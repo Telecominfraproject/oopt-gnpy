@@ -392,20 +392,20 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
         else:
             nb_wl, requested_m = compute_spectrum_slot_vs_bandwidth(rq.path_bandwidth,
                                                                     rq.spacing, rq.bit_rate)
-            if getattr(rq, 'M', None) is not None:
+            if getattr(rq, 'M', [None])[0] is not None:
                 # Consistency check between the requested M and path_bandwidth
                 # M value should be bigger than the computed requested_m (simple estimate)
                 # TODO: elaborate a more accurate estimate with nb_wl * tx_osnr + possibly guardbands in case of
                 # superchannel closed packing.
-                if requested_m > rq.M:
+                if requested_m > rq.M[0]:
                     rq.N = None
                     rq.M = None
                     rq.blocking_reason = 'NOT_ENOUGH_RESERVED_SPECTRUM'
                     # need to stop here for this request and not go though spectrum selection process with requested_m
                     continue
                 # use the req.M even if requested_m is smaller
-                requested_m = rq.M
-            requested_n = getattr(rq, 'N', None)
+                requested_m = rq.M[0]
+            requested_n = getattr(rq, 'N', [None])[0]
             (center_n, startn, stopn), path_oms = spectrum_selection(pth + rpth, oms_list, requested_m,
                                                                      requested_n)
             # if requested n and m concern already occupied spectrum the previous function returns a None candidate
@@ -415,8 +415,8 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
                 for oms_elem in path_oms:
                     oms_list[oms_elem].assign_spectrum(center_n, requested_m)
                     oms_list[oms_elem].add_service(rq.request_id, nb_wl)
-                rq.N = center_n
-                rq.M = requested_m
+                rq.N = [center_n]
+                rq.M = [requested_m]
             else:
                 rq.N = None
                 rq.M = None
