@@ -70,8 +70,8 @@ class PathRequest:
         self.cost = params.cost
         self.path_bandwidth = params.path_bandwidth
         if params.effective_freq_slot is not None:
-            self.N = params.effective_freq_slot['N']
-            self.M = params.effective_freq_slot['M']
+            self.N = [s['N'] for s in params.effective_freq_slot]
+            self.M = [s['M'] for s in params.effective_freq_slot]
 
     def __str__(self):
         return '\n\t'.join([f'{type(self).__name__} {self.request_id}',
@@ -174,10 +174,10 @@ class ResultElement:
                 temp = {
                     'path-route-object': {
                         'index': index,
-                        "label-hop": {
-                            "N": self.path_request.N,
-                            "M": self.path_request.M
-                        },
+                        "label-hop": [{
+                            "N": n,
+                            "M": m
+                        } for n, m in zip(self.path_request.N, self.path_request.M)],
                     }
                 }
                 pro_list.append(temp)
@@ -452,8 +452,8 @@ def jsontoparams(my_p, tsp, mode, equipment):
     temp2 = []
     for elem in my_p['path-properties']['path-route-objects']:
         if 'label-hop' in elem['path-route-object'].keys():
-            temp2.append(f'{elem["path-route-object"]["label-hop"]["N"]}, ' +
-                         f'{elem["path-route-object"]["label-hop"]["M"]}')
+            temp2.append(f'{[e["N"] for e in elem["path-route-object"]["label-hop"]]}, '
+                         + f'{[e["M"] for e in elem["path-route-object"]["label-hop"]]}')
     # OrderedDict.fromkeys returns the unique set of strings.
     # TODO: if spectrum changes along the path, we should be able to give the segments
     #       eg for regeneration case
@@ -979,8 +979,8 @@ def compare_reqs(req1, req2, disjlist):
             req1.OSNR == req2.OSNR and \
             req1.roll_off == req2.roll_off and \
             same_disj and \
-            getattr(req1, 'N', None) is None and getattr(req2, 'N', None) is None and \
-            getattr(req1, 'M', None) is None and getattr(req2, 'M', None) is None:
+            getattr(req1, 'N', [None]) == [None] and getattr(req2, 'N', [None]) == [None] and \
+            getattr(req1, 'M', [None]) == [None] and getattr(req2, 'M', [None]) == [None]:
         return True
     else:
         return False

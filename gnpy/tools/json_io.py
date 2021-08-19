@@ -19,6 +19,7 @@ from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, Netwo
 from gnpy.core.science_utils import estimate_nf_model
 from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions
 from gnpy.topology.request import PathRequest, Disjunction, compute_spectrum_slot_vs_bandwidth
+from gnpy.topology.spectrum_assignment import mvalue_to_slots
 from gnpy.tools.convert import xls_to_json_data
 from gnpy.tools.service_sheet import read_service_sheet
 
@@ -497,7 +498,8 @@ def requests_from_json(json_data, equipment):
                 params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
         except KeyError:
             params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
-        params['effective_freq_slot'] = req['path-constraints']['te-bandwidth'].get('effective-freq-slot', [None])[0]
+        params['effective_freq_slot'] = \
+            req['path-constraints']['te-bandwidth'].get('effective-freq-slot', [{'N': None, 'M': None}])
         try:
             params['path_bandwidth'] = req['path-constraints']['te-bandwidth']['path_bandwidth']
         except KeyError:
@@ -529,21 +531,49 @@ def _check_one_request(params, f_max_from_si):
             _logger.critical(msg)
             raise ServiceError(msg)
     # Transponder mode already selected; will it fit to the requested bandwidth?
-    if params['trx_mode'] is not None and params['effective_freq_slot'] is not None \
-            and params['effective_freq_slot']['M'] is not None:
-        _, requested_m = compute_spectrum_slot_vs_bandwidth(params['path_bandwidth'],
-                                                            params['spacing'],
-                                                            params['bit_rate'])
-        # params['effective_freq_slot']['M'] value should be bigger than the computed requested_m (simple estimate)
+    if params['trx_mode'] is not None and params['effective_freq_slot'] is not None:
+        required_nb_of_channels, requested_m = compute_spectrum_slot_vs_bandwidth(params['path_bandwidth'],
+                                                                                  params['spacing'],
+                                                                                  params['bit_rate'])
+        _, per_channel_m = compute_spectrum_slot_vs_bandwidth(params['bit_rate'],
+                                                              params['spacing'],
+                                                              params['bit_rate'])
+        # each M should fit one or more channels if it is not None
+        # spectrum slots should not overlap
+        # resulting nb of channels should be bigger than the nb computed with path_bandwidth
+        # without being splitted
         # TODO: elaborate a more accurate estimate with nb_wl * tx_osnr + possibly guardbands in case of
         # superchannel closed packing.
-
-        if requested_m > params['effective_freq_slot']['M']:
-            msg = f'requested M {params["effective_freq_slot"]["M"]} number of slots for request' +\
-                  f'{params["request_id"]} should be greater than {requested_m} to support request' +\
+        nb_of_channels = 0
+        # order slots
+        slots = sorted(params['effective_freq_slot'], key=lambda x: float('inf') if x['N'] is None else x['N'])
+        for slot in slots:
+            nb_of_channels = nb_of_channels + slot['M'] // per_channel_m if slot['M'] is not None \
+                and nb_of_channels is not None else None
+            if slot['M'] is not None and slot['M'] < per_channel_m:
+                msg = f'Requested M {slot} number of slots for request' +\
+                      f'{params["request_id"]} should be greater than {per_channel_m} to support request' +\
+                      f'with {params["trx_type"]} {params["trx_mode"]}'
+                _logger.critical(msg)
+        if nb_of_channels is not None and nb_of_channels < required_nb_of_channels:
+            msg = f'Requested M {slots} number of slots for request {params["request_id"]} support {nb_of_channels}' +\
+                  f' nb of channels while {required_nb_of_channels} are required to support request' +\
                   f'{params["path_bandwidth"] * 1e-9} Gbit/s with {params["trx_type"]} {params["trx_mode"]}'
             _logger.critical(msg)
             raise ServiceError(msg)
+        if nb_of_channels is not None:
+            start0n, stop0n = mvalue_to_slots(slots[0]['N'], slots[0]['M'])
+            i = 1
+            while i < len(slots):
+                slot = slots[i]
+                startn, stopn = mvalue_to_slots(slot['N'], slot['M'])
+                if startn <= stop0n:
+                    msg = f'Requested M {slots} for request {params["request_id"]} overlap'
+                    _logger.critical(msg)
+                    raise ServiceError(msg)
+                _, stop0n = startn, stopn
+                i += 1
+
 
 
 def disjunctions_from_json(json_data):
