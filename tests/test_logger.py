@@ -279,8 +279,9 @@ def wrong_requests():
                     }
                 }
             }]},
-        'expected_msg': 'Requested M 4 number of slots for request Wrong_M should be greater than 6 to '
-        + 'support request 100.0 Gbit/s with Voyager mode 2'
+        'expected_msg': 'Requested M [{\'N\': -208, \'M\': 4}] number of slots for request Wrong_M '
+                        + 'support 0 nb of channels while 1 are required to support request 100.0 Gbit/s'
+                        + ' with Voyager mode 2'
     })
     return data
 
