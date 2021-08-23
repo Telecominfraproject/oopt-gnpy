@@ -1,36 +1,36 @@
 INFO     gnpy.tools.cli_examples:cli_examples.py:326 Computing path requests meshTopologyExampleV2.xls into JSON format
 INFO     gnpy.tools.json_io:json_io.py:549 Automatically converting requests from XLS to JSON
-INFO     gnpy.topology.request:request.py:1104 
+INFO     gnpy.topology.request:request.py:1107 
 	request 0
 	Computing path from trx Lorient_KMA to trx Vannes_KBE
 	with path constraint: ['trx Lorient_KMA', 'trx Vannes_KBE']
 	Computed path (roadms):['roadm Lorient_KMA', 'roadm Vannes_KBE']
-INFO     gnpy.topology.request:request.py:1104 
+INFO     gnpy.topology.request:request.py:1107 
 	request 1
 	Computing path from trx Brest_KLA to trx Vannes_KBE
 	with path constraint: ['trx Brest_KLA', 'roadm Brest_KLA', 'roadm Lannion_CAS', 'roadm Lorient_KMA', 'roadm Vannes_KBE', 'trx Vannes_KBE']
 	Computed path (roadms):['roadm Brest_KLA', 'roadm Lannion_CAS', 'roadm Lorient_KMA', 'roadm Vannes_KBE']
-INFO     gnpy.topology.request:request.py:1104 
+INFO     gnpy.topology.request:request.py:1107 
 	request 3
 	Computing path from trx Lannion_CAS to trx Rennes_STA
 	with path constraint: ['trx Lannion_CAS', 'trx Rennes_STA']
 	Computed path (roadms):['roadm Lannion_CAS', 'roadm Rennes_STA']
-INFO     gnpy.topology.request:request.py:1104 
+INFO     gnpy.topology.request:request.py:1107 
 	request 4
 	Computing path from trx Rennes_STA to trx Lannion_CAS
 	with path constraint: ['trx Rennes_STA', 'trx Lannion_CAS']
 	Computed path (roadms):['roadm Rennes_STA', 'roadm Vannes_KBE', 'roadm Lorient_KMA', 'roadm Lannion_CAS']
-INFO     gnpy.topology.request:request.py:1104 
+INFO     gnpy.topology.request:request.py:1107 
 	request 5
 	Computing path from trx Rennes_STA to trx Lannion_CAS
 	with path constraint: ['trx Rennes_STA', 'trx Lannion_CAS']
 	Computed path (roadms):['roadm Rennes_STA', 'roadm Lannion_CAS']
-INFO     gnpy.topology.request:request.py:1104 
+INFO     gnpy.topology.request:request.py:1107 
 	request 7 | 6
 	Computing path from trx Lannion_CAS to trx Lorient_KMA
 	with path constraint: ['trx Lannion_CAS', 'trx Lorient_KMA']
 	Computed path (roadms):['roadm Lannion_CAS', 'roadm Lorient_KMA']
-INFO     gnpy.topology.request:request.py:1104 
+INFO     gnpy.topology.request:request.py:1107 
 	request 7b
 	Computing path from trx Lannion_CAS to trx Lorient_KMA
 	with path constraint: ['trx Lannion_CAS', 'trx Lorient_KMA']

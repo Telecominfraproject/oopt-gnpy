@@ -1,10 +1,10 @@
 INFO     gnpy.tools.cli_examples:cli_examples.py:326 Computing path requests CORONET_services.json into JSON format
-INFO     gnpy.topology.request:request.py:1104 
+INFO     gnpy.topology.request:request.py:1107 
 	request 0
 	Computing path from trx Abilene to trx Albany
 	with path constraint: ['trx Abilene', 'trx Albany']
 	Computed path (roadms):['roadm Abilene', 'roadm Dallas', 'roadm Little_Rock', 'roadm Memphis', 'roadm Nashville', 'roadm Louisville', 'roadm Cincinnati', 'roadm Columbus', 'roadm Cleveland', 'roadm Buffalo', 'roadm Rochester', 'roadm Syracuse', 'roadm Albany']
-WARNING  gnpy.topology.request:request.py:1121 	Warning! Request 0 computed path from trx Abilene to trx Albany does not pass with mode 3
+WARNING  gnpy.topology.request:request.py:1124 	Warning! Request 0 computed path from trx Abilene to trx Albany does not pass with mode 3
 	computed SNR in 0.1nm = 14.46
 	PDL penalty not evaluated
 	CD penalty not evaluated
