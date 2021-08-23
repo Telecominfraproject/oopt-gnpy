@@ -19,7 +19,7 @@ from gnpy.core.exceptions import ServiceError, DisjunctionError
 from gnpy.core.utils import automatic_nch, lin2db
 from gnpy.core.elements import Roadm
 from gnpy.topology.request import (compute_path_dsjctn, isdisjoint, find_reversed_path, PathRequest,
-                                   correct_json_route_list)
+                                   correct_json_route_list, requests_aggregation, Disjunction)
 from gnpy.topology.spectrum_assignment import build_oms_list
 from gnpy.tools.json_io import requests_from_json, load_requests, load_network, load_equipment, disjunctions_from_json
 
@@ -242,3 +242,91 @@ def test_create_disjunction(test_setup, dis1, dis2, node_list1, loose_list1, res
             path_names.append(roadm_names)
         assert path_names == expected_paths
         # if loose, one path can be returned
+
+
+@pytest.fixture()
+def request_set():
+    """ creates default request dict
+    """
+    return {
+        # 'request_id': '0',
+        'source': 'trx a',
+        'bidir': False,
+        'destination': 'trx g',
+        'trx_type': 'Voyager',
+        'spacing': 50e9,
+        'nodes_list': [],
+        'loose_list': [],
+        'f_min': 191.1e12,
+        'f_max': 196.3e12,
+        'nb_channel': None,
+        'power': 0,
+        'path_bandwidth': 200e9}
+
+
+@pytest.mark.parametrize(
+    'ids, modes, req_n, req_m, disjunction, final_ids, final_ns, final_ms, final_path_bandwidths', [
+    # requests that should be correctly aggregated:
+    (['a', 'b', 'c', 'd'], ['mode 1', 'mode 1', 'mode 1', 'mode 1'],
+     [[0], [16], [32], [48]], [[8], [8], [8], [8]], [[]],
+     ['d | c | b | a'], [[48, 32, 16, 0]], [[8, 8, 8, 8]], [800e9]),
+    (['a', 'b', 'c', 'd'], ['mode 1', 'mode 1', 'mode 1', 'mode 1'],
+     [[0, 8], [16, 24], [32, 40], [48]], [[4, 4], [4, 4], [4, 4], [8]], [[]],
+     ['d | c | b | a'], [[48, 32, 40, 16, 24, 0, 8]], [[8, 4, 4, 4, 4, 4, 4]], [800e9]),
+    (['a', 'b', 'c', 'd'], ['mode 1', 'mode 1', 'mode 1', 'mode 1'],
+     [[0, 8], [None, 24], [32, 40], [None]], [[4, 4], [4, 4], [4, 4], [None]], [[]],
+     ['d | c | b | a'], [[None, 32, 40, None, 24, 0, 8]], [[None, 4, 4, 4, 4, 4, 4]], [800e9]),
+    # 'a' and 'b' have same constraint and can be aggregated
+    (['a', 'b', 'c', 'd'], ['mode 1', 'mode 1', 'mode 1', 'mode 1'],
+     [[0], [16], [32], [48]], [[8], [8], [8], [8]], [['c', 'd']],
+     ['b | a', 'c', 'd'], [[16, 0], [32], [48]], [[8, 8], [8], [8]], [400e9, 200e9, 200e9]),
+    (['a', 'b', 'c', 'd'], ['mode 1', 'mode 1', 'mode 1', 'mode 1'],
+     [[0], [16], [32], [48]], [[8], [8], [8], [8]], [['a', 'd'], ['b', 'd']],
+     ['b | a', 'c', 'd'], [[16, 0], [32], [48]], [[8, 8], [8], [8]], [400e9, 200e9, 200e9]),
+    # requests that should not be aggregated:
+    (['a', 'b', 'c', 'd'], [None, None, None, 'mode 1'],
+     [[0, 8], [None, 24], [32, 40], [None]], [[4, 4], [4, 4], [4, 4], [None]], [[]],
+     ['a', 'b', 'c', 'd'], [[0, 8], [None, 24], [32, 40], [None]], [[4, 4], [4, 4], [4, 4], [None]],
+     [200e9, 200e9, 200e9, 200e9]),
+    (['a', 'b', 'c', 'd'], ['mode 1', 'mode 1', 'mode 1', 'mode 1'],
+     [[0], [16], [32], [48]], [[8], [8], [8], [8]], [['c', 'd', 'a']],
+     ['a', 'b', 'c', 'd'], [[0], [16], [32], [48]], [[8], [8], [8], [8]], [200e9, 200e9, 200e9, 200e9]), ])
+def test_aggregation(ids, modes, req_n, req_m, disjunction, final_ids, final_ns, final_ms, final_path_bandwidths,
+                     request_set):
+    """ tests that identical requests are correctly aggregated (included frequency slots merging)
+    if mode is not defined, requests must not be merged,
+    if requests are in a synchronization vector, they should not be merged
+    """
+    equipment = load_equipment(EQPT_LIBRARY_NAME)
+    requests = []
+    for request_id, mode, req_n, req_m in zip(ids, modes, req_n, req_m):
+        params = request_set
+        params['request_id'] = request_id
+        params['trx_mode'] = mode
+        params['effective_freq_slot'] = [{'N': n, 'M': m} for n, m in zip(req_n, req_m)]
+        trx_params = trx_mode_params(equipment, params['trx_type'], params['trx_mode'], True)
+        params.update(trx_params)
+        requests.append(PathRequest(**params))
+    params = {
+        'relaxable': False,
+        'link_diverse': True,
+        'node_diverse': True
+    }
+
+    disjunctions = []
+    i = 0
+    for vector in disjunction:
+        params['disjunctions_req'] = vector
+        params['disjunction_id'] = i
+        disjunctions.append(Disjunction(**params))
+        i += 1
+    requests, disjunctions = requests_aggregation(requests, disjunctions)
+    print(disjunctions)
+    print(requests)
+    i = 0
+    for final_id, final_n, final_m, final_path_bandwidth in zip(final_ids, final_ns, final_ms, final_path_bandwidths):
+        assert requests[i].request_id == final_id
+        assert requests[i].N == final_n
+        assert requests[i].M == final_m
+        assert requests[i].path_bandwidth == final_path_bandwidth
+        i += 1
