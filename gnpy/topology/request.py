@@ -978,9 +978,7 @@ def compare_reqs(req1, req2, disjlist):
             req1.format == req2.format and \
             req1.OSNR == req2.OSNR and \
             req1.roll_off == req2.roll_off and \
-            same_disj and \
-            getattr(req1, 'N', [None]) == [None] and getattr(req2, 'N', [None]) == [None] and \
-            getattr(req1, 'M', [None]) == [None] and getattr(req2, 'M', [None]) == [None]:
+            same_disj:
         return True
     else:
         return False
@@ -988,18 +986,23 @@ def compare_reqs(req1, req2, disjlist):
 
 def requests_aggregation(pathreqlist, disjlist):
     """ this function aggregates requests so that if several requests
-        exist between same source and destination and with same transponder type
+    exist between same source and destination and with same transponder type
+    If transponder mode is defined and identical, then also agregates demands.
     """
     # todo maybe add conditions on mode ??, spacing ...
     # currently if undefined takes the default values
     local_list = pathreqlist.copy()
     for req in pathreqlist:
         for this_r in local_list:
-            if req.request_id != this_r.request_id and compare_reqs(req, this_r, disjlist):
+            if req.request_id != this_r.request_id and compare_reqs(req, this_r, disjlist) and\
+                    this_r.tsp_mode is not None:
                 # aggregate
                 this_r.path_bandwidth += req.path_bandwidth
+                this_r.N = this_r.N + req.N
+                this_r.M = this_r.M + req.M
                 temp_r_id = this_r.request_id
                 this_r.request_id = ' | '.join((this_r.request_id, req.request_id))
+
                 # remove request from list
                 local_list.remove(req)
                 # todo change also disjunction req with new demand
