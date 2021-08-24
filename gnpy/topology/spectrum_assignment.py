@@ -103,27 +103,21 @@ class OMS:
         self.el_id_list.append(elem.uid)
         self.el_list.append(elem)
 
-    def update_spectrum(self, f_min, f_max, guardband=0.15e12, existing_spectrum=None,
-                        grid=0.00625e12):
-        """ frequencies expressed in Hz
+    def update_spectrum(self, f_min, f_max, guardband=0.15e12, existing_spectrum=None, grid=0.00625e12):
+        """Frequencies expressed in Hz.
+        Add 150 GHz margin to enable a center channel on f_min
+        Use ITU-T G694.1 Flexible DWDM grid definition
+        For the flexible DWDM grid, the allowed frequency slots have a nominal central frequency (in THz) defined by:
+        193.1 + n × 0.00625 where n is a positive or negative integer including 0
+        and 0.00625 is the nominal central frequency granularity in THz
+        and a slot width defined by:
+        12.5 × m where m is a positive integer and 12.5 is the slot width granularity in GHz.
+        Any combination of frequency slots is allowed as long as no two frequency slots overlap.
+        If bitmap is not None, then use it: Bitmap checks its consistency with f_min f_max
+        else a brand new bitmap is created
         """
-        if existing_spectrum is None:
-            # add some 150 GHz margin to enable a center channel on f_min
-            # use ITU-T G694.1
-            # Flexible DWDM grid definition
-            # For the flexible DWDM grid, the allowed frequency slots have a nominal
-            # central frequency (in THz) defined by:
-            # 193.1 + n × 0.00625 where n is a positive or negative integer including 0
-            # and 0.00625 is the nominal central frequency granularity in THz
-            # and a slot width defined by:
-            # 12.5 × m where m is a positive integer and 12.5 is the slot width granularity in
-            # GHz.
-            # Any combination of frequency slots is allowed as long as no two frequency
-            # slots overlap.
-
-            # TODO : add explaination on that / parametrize ....
-            self.spectrum_bitmap = Bitmap(f_min, f_max, grid, guardband)
-            # print(len(self.spectrum_bitmap.bitmap))
+        self.spectrum_bitmap = Bitmap(f_min=f_min, f_max=f_max, grid=grid, guardband=guardband,
+                                      bitmap=existing_spectrum)
 
     def assign_spectrum(self, nvalue, mvalue):
         """ change oms spectrum to mark spectrum assigned
