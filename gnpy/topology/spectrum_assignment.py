@@ -316,17 +316,20 @@ def bitmap_sum(band1, band2):
     return res
 
 
-def spectrum_selection(pth, oms_list, requested_m, requested_n=None):
-    """Collects spectrum availability and call the select_candidate function"""
-
-    # use indexes instead of ITU-T n values
+def build_path_oms_id_list(pth):
     path_oms = []
     for elem in pth:
         if not isinstance(elem, Roadm) and not isinstance(elem, Transceiver):
             # only edfa, fused and fibers have oms_id attribute
             path_oms.append(elem.oms_id)
     # remove duplicate oms_id, order is not important
-    path_oms = list(set(path_oms))
+    return list(set(path_oms))
+
+
+def spectrum_selection(path_oms, oms_list, requested_m, requested_n=None):
+    """Collects spectrum availability and call the select_candidate function"""
+
+    # use indexes instead of ITU-T n values
     # assuming all oms have same freq index
     if not path_oms:
         candidate = (None, None, None)
@@ -358,8 +361,8 @@ def spectrum_selection(pth, oms_list, requested_m, requested_n=None):
             # candidate is the triplet center_n, startn and stopn
             candidate = (requested_n, requested_n - requested_m, requested_n + requested_m - 1)
         else:
-            candidate = (None, None, None)
-    return candidate, path_oms
+            candidate = (None, None, None)    
+    return candidate
 
 
 def select_candidate(candidates, policy):
@@ -386,6 +389,7 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
         else:
             nb_wl, requested_m = compute_spectrum_slot_vs_bandwidth(rq.path_bandwidth,
                                                                     rq.spacing, rq.bit_rate)
+            path_oms = build_path_oms_id_list(pth + rpth)
             if getattr(rq, 'M', [None])[0] is not None:
                 # Consistency check between the requested M and path_bandwidth
                 # M value should be bigger than the computed requested_m (simple estimate)
@@ -400,8 +404,7 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
                 # use the req.M even if requested_m is smaller
                 requested_m = rq.M[0]
             requested_n = getattr(rq, 'N', [None])[0]
-            (center_n, startn, stopn), path_oms = spectrum_selection(pth + rpth, oms_list, requested_m,
-                                                                     requested_n)
+            center_n, _, _ = spectrum_selection(path_oms, oms_list, requested_m, requested_n)
             # if requested n and m concern already occupied spectrum the previous function returns a None candidate
             # if not None, center_n and start, stop frequencies are applicable to all oms of pth
             # checks that spectrum is not None else indicate blocking reason
