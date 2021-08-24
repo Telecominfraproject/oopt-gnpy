@@ -17,6 +17,7 @@ from collections import namedtuple
 from logging import getLogger
 from gnpy.core.elements import Roadm, Transceiver
 from gnpy.core.exceptions import ServiceError, SpectrumError
+from gnpy.core.utils import order_slots, restore_order
 from gnpy.topology.request import compute_spectrum_slot_vs_bandwidth
 
 LOGGER = getLogger(__name__)
@@ -372,6 +373,23 @@ def spectrum_selection(test_oms, requested_m, requested_n=None):
     return candidate
 
 
+def determine_slot_numbers(test_oms, requested_n, required_m, per_channel_m):
+    """determines max availability around requested_n. requested_n should not be None"""
+    bitmap = test_oms.spectrum_bitmap
+    freq_index = bitmap.freq_index
+    freq_index_min = bitmap.freq_index_min
+    freq_index_max = bitmap.freq_index_max
+    freq_availability = bitmap.bitmap
+    center_i = bitmap.geti(requested_n)
+    i = per_channel_m
+    while (freq_availability[center_i - i:center_i + i] == [1] * (2 * i)
+           and freq_index[center_i - i] >= freq_index_min
+           and freq_index[center_i + i - 1] <= freq_index_max
+           and i <= required_m):
+        i += per_channel_m
+    return i - per_channel_m
+
+
 def select_candidate(candidates, policy):
     """ selects a candidate among all available spectrum
     """
@@ -384,45 +402,111 @@ def select_candidate(candidates, policy):
         raise ServiceError('Only first_fit spectrum assignment policy is implemented.')
 
 
+def compute_n_m(required_m, rq, path_oms, oms_list, per_channel_m, policy='first_fit'):
+    """ based on requested path_bandwidth fill in M=None values with uint values, using per_channel_m
+    and center frequency, with first fit strategy. The function checks the available spectrum but check
+    consistencies among M values of the request, but not with other requests.
+    For example, if request is for 32 slots corresponding to 8 x 4 slots of 32Gbauds channels,
+    the following frequency slots will result in the following assignment
+
+    N = 0, 8,    16, 32           -> 0,   8,   16,   32
+    M = 8, None, 8,  None         -> 8,   8,    8,    8
+
+    N = 0,    8,    16, 32        -> 0,   , 16
+    M = None, None, 8,  None      -> 24,  , 8
+    """
+    selected_m = []
+    selected_n = []
+    remaining_slots_to_serve = required_m
+    # order slots for the computation: assign biggest m first
+    rq_N, rq_M, order = order_slots([{'N': n, 'M': m} for n, m in zip(rq.N, rq.M)])
+    # Create an oms that represents current assignments of all oms listed in path_oms, and test N and M on it.
+    # If M is defined, checks that proposed N, M is free
+    test_oms = aggregate_oms_bitmap(path_oms, oms_list)
+    for n, m in zip(rq_N, rq_M):
+        if m is not None and n is not None:
+            # check availabilityfor this n, m
+            available_slots = determine_slot_numbers(test_oms, n, m, m)
+            if available_slots == 0:
+                # if n, m are not feasible, break at this point no have non zero remaining_slots_to_serve
+                # in order to blocks the request (even is other N,M where feasible)
+                break
+        elif m is not None and n is None:
+            # find a candidate n
+            n, _, _ = spectrum_selection(test_oms, m, None)
+            if n is None:
+                # if no n is feasible for the m, block the request
+                break
+        elif m is None and n is not None:
+            # find a feasible m for this n. If None is found, then block the request
+            m = determine_slot_numbers(test_oms, n, remaining_slots_to_serve, per_channel_m)
+            if m == 0 or remaining_slots_to_serve == 0:
+                break
+        else:
+            # if n and m are not defined, try to find a single  assignment to fits the remaining slots to serve
+            # (first fit strategy)
+            n, _, _ = spectrum_selection(test_oms, remaining_slots_to_serve, None)
+            if n is None or remaining_slots_to_serve == 0:
+                break
+            else:
+                m = remaining_slots_to_serve
+        selected_m.append(m)
+        selected_n.append(n)
+        test_oms.assign_spectrum(n, m)
+        remaining_slots_to_serve = remaining_slots_to_serve - m
+
+    # re-order selected_m and selected_n according to initial request N, M order, ignoring None values
+    not_selected = [None for i in range(len(rq_N) - len(selected_n))]
+    selected_m = restore_order(selected_m + not_selected, order)
+    selected_n = restore_order(selected_n + not_selected, order)
+    return selected_n, selected_m, remaining_slots_to_serve
+
+
 def pth_assign_spectrum(pths, rqs, oms_list, rpths):
     """ basic first fit assignment
         if reversed path are provided, means that occupation is bidir
     """
     for pth, rq, rpth in zip(pths, rqs, rpths):
-        # computes the number of channels required
         if hasattr(rq, 'blocking_reason'):
             rq.N = None
             rq.M = None
         else:
-            nb_wl, requested_m = compute_spectrum_slot_vs_bandwidth(rq.path_bandwidth,
+            # computes the number of channels required for path_bandwidth and the min required nb of slots
+            # for one channel (corresponds to the spacing)
+            nb_wl, required_m = compute_spectrum_slot_vs_bandwidth(rq.path_bandwidth,
                                                                     rq.spacing, rq.bit_rate)
+            _, per_channel_m = compute_spectrum_slot_vs_bandwidth(rq.bit_rate,
+                                                                  rq.spacing, rq.bit_rate)
+            # find oms ids that are concerned both by pth and rpth
             path_oms = build_path_oms_id_list(pth + rpth)
-            if getattr(rq, 'M', [None])[0] is not None:
-                # Consistency check between the requested M and path_bandwidth
-                # M value should be bigger than the computed requested_m (simple estimate)
-                # TODO: elaborate a more accurate estimate with nb_wl * tx_osnr + possibly guardbands in case of
+            if getattr(rq, 'M', None) is not None and all(rq.M):
+                # if all M are well defined: Consistency check that the requested M are enough to carry the nb_wl:
+                # check that the integer number of per_channel_m carried in each M value is enough to carry nb_wl.
+                # if not, blocks the demand
+                nb_channels_of_request = sum([m // per_channel_m for m in rq.M])
+                # TODO: elaborate a more accurate estimate with nb_wl * min_spacing + possibly guardbands in case of
                 # superchannel closed packing.
-                if requested_m > rq.M[0]:
+                if nb_wl > nb_channels_of_request:
                     rq.N = None
                     rq.M = None
                     rq.blocking_reason = 'NOT_ENOUGH_RESERVED_SPECTRUM'
-                    # need to stop here for this request and not go though spectrum selection process with requested_m
+                    # need to stop here for this request and not go though spectrum selection process
                     continue
-                # use the req.M even if requested_m is smaller
-                requested_m = rq.M[0]
-            requested_n = getattr(rq, 'N', [None])[0]
-            test_oms = aggregate_oms_bitmap(path_oms, oms_list)
-            center_n, startn, stopn = spectrum_selection(test_oms, requested_m, requested_n)
-            # if requested n and m concern already occupied spectrum the previous function returns a None candidate
-            # if not None, center_n and start, stop frequencies are applicable to all oms of pth
-            # checks that spectrum is not None else indicate blocking reason
-            if center_n is not None:
-                for oms_elem in path_oms:
-                    oms_list[oms_elem].assign_spectrum(center_n, requested_m)
-                    oms_list[oms_elem].add_service(rq.request_id, nb_wl)
-                rq.N = [center_n]
-                rq.M = [requested_m]
-            else:
+            # Use the req.M even if nb_wl and required_m are smaller.
+            # first fit strategy: assign as many lambda as possible in the None remaining N, M values
+            selected_n, selected_m, remaining_slots_to_serve = \
+                compute_n_m(required_m, rq, path_oms, oms_list, per_channel_m)
+            # if there are some remaining_slots_to_serve, this means that provided rq.M and rq.N values were not possible.
+            # Then do not go though spectrum assignment process and blocks the demand
+            if remaining_slots_to_serve > 0:
                 rq.N = None
                 rq.M = None
                 rq.blocking_reason = 'NO_SPECTRUM'
+                continue
+            for oms_elem in path_oms:
+                for this_n, this_m in zip(selected_n, selected_m):
+                    if this_m is not None:
+                        oms_list[oms_elem].assign_spectrum(this_n, this_m)
+                oms_list[oms_elem].add_service(rq.request_id, nb_wl)
+            rq.N = selected_n
+            rq.M = selected_m
