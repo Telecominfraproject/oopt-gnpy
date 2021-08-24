@@ -11,6 +11,7 @@ This module contains utility functions that are used with gnpy.
 from csv import writer
 from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and
 from scipy import constants
+from copy import deepcopy
 
 from gnpy.core.exceptions import ConfigurationError
 
@@ -324,3 +325,43 @@ def convert_length(value, units):
         return value * 1e3
     else:
         raise ConfigurationError(f'Cannot convert length in "{units}" into meters')
+
+
+def replace_none(dictionary):
+    """ Replaces None with inf values in a frequency slots dict
+
+    >>> replace_none({'N': 3, 'M': None})
+    {'N': 3, 'M': inf}
+
+    """
+    for key, val in dictionary.items():
+        if val is None:
+            dictionary[key] = float('inf')
+        if val == float('inf'):
+            dictionary[key] = None
+    return dictionary
+
+
+def order_slots(slots):
+    """ Order frequency slots from larger slots to smaller ones up to None
+
+    >>> l = [{'N': 3, 'M': None}, {'N': 2, 'M': 1}, {'N': None, 'M': None},{'N': 7, 'M': 2},{'N': None, 'M': 1} , {'N': None, 'M': 0}]
+    >>> order_slots(l)
+    ([7, 2, None, None, 3, None], [2, 1, 1, 0, None, None], [3, 1, 4, 5, 0, 2])
+    """
+    slots_list = deepcopy(slots)
+    slots_list = [replace_none(e) for e in slots_list]
+    for i, e in enumerate(slots_list):
+        e['i'] = i
+    slots_list = sorted(slots_list, key=lambda x: (-x['M'], x['N']) if x['M'] != float('inf') else (x['M'], x['N']))
+    slots_list = [replace_none(e) for e in slots_list]
+    return [e['N'] for e in slots_list], [e['M'] for e in slots_list], [e['i'] for e in slots_list]
+
+
+def restore_order(elements, order):
+    """ Use order to re-order the element of the list, and ignore None values
+
+    >>> restore_order([7, 2, None, None, 3, None], [3, 1, 4, 5, 0, 2])
+    [3, 2, 7]
+    """
+    return [elements[i[0]] for i in sorted(enumerate(order), key=lambda x:x[1]) if elements[i[0]] is not None]
