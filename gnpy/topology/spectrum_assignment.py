@@ -362,9 +362,6 @@ def spectrum_selection(test_oms, requested_m, requested_n=None):
         candidate = select_candidate(candidates, policy='first_fit')
     else:
         i = test_oms.spectrum_bitmap.geti(requested_n)
-        # print(f'N {requested_n} i {i}')
-        # print(freq_availability[i-m:i+m] )
-        # print(freq_index[i-m:i+m])
         if (freq_availability[i - requested_m:i + requested_m] == [1] * (2 * requested_m) and
                 freq_index[i - requested_m] >= freq_index_min
                 and freq_index[i + requested_m - 1] <= freq_index_max):
