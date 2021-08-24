@@ -21,7 +21,7 @@ from gnpy.core.exceptions import ServiceError, SpectrumError
 from gnpy.topology.request import compute_path_dsjctn, find_reversed_path, deduplicate_disjunctions, PathRequest
 from gnpy.topology.spectrum_assignment import (build_oms_list, align_grids, nvalue_to_frequency,
                                                bitmap_sum, Bitmap, spectrum_selection, pth_assign_spectrum,
-                                               build_path_oms_id_list)
+                                               build_path_oms_id_list, aggregate_oms_bitmap)
 from gnpy.tools.json_io import (load_equipment, load_network, requests_from_json, disjunctions_from_json,
                                 _check_one_request)
 
@@ -239,11 +239,11 @@ def test_spectrum_assignment_on_path(equipment, setup, requests):
     req = [deepcopy(requests[1])]
     paths = compute_path_dsjctn(network, equipment, req, [])
     first_path_oms = build_path_oms_id_list(paths[0])
-
     print(req)
     for nval in range(100):
         req = [deepcopy(requests[1])]
-        center_n, startn, stopn = spectrum_selection(first_path_oms, oms_list, 4)
+        test_oms = aggregate_oms_bitmap(first_path_oms, oms_list)
+        center_n, startn, stopn = spectrum_selection(test_oms, 4)
         pth_assign_spectrum(paths, req, oms_list, [find_reversed_path(paths[0])])
         print(f'testing on following oms {first_path_oms}')
         # check that only 96 channels are feasible
@@ -259,13 +259,14 @@ def test_spectrum_assignment_on_path(equipment, setup, requests):
     req = [requests[2]]
     paths = compute_path_dsjctn(network, equipment, req, [])
     second_path_oms = build_path_oms_id_list(paths[0])
-    center_n, startn, stopn = spectrum_selection(second_path_oms, oms_list, 4, 478)
+    test_oms = aggregate_oms_bitmap(second_path_oms, oms_list)
+    center_n, startn, stopn = spectrum_selection(test_oms, 4, 478)
     print(oms_list[0].spectrum_bitmap.freq_index_max)
     print(oms_list[0])
     print(center_n, startn, stopn)
     print('spectrum selection error: should be None')
     assert center_n is None and startn is None and stopn is None
-    center_n, startn, stopn = spectrum_selection(second_path_oms, oms_list, 4, 477)
+    center_n, startn, stopn = spectrum_selection(test_oms, 4, 477)
     print(center_n, startn, stopn)
     print('spectrum selection error should not be None')
     assert center_n is not None and startn is not None and stopn is not None
@@ -396,8 +397,8 @@ def test_reversed_direction(equipment, setup, requests, services):
             number_wl = ceil(requests[i].path_bandwidth / requests[i].bit_rate)
             requested_m = ceil(requests[i].spacing / slot) * number_wl
             path_oms = build_path_oms_id_list(pth)
-            center_n, startn, stopn = spectrum_selection(path_oms, oms_list, requested_m,
-                                                                     requested_n=None)
+            test_oms = aggregate_oms_bitmap(path_oms, oms_list)
+            center_n, startn, stopn = spectrum_selection(test_oms, requested_m, requested_n=None)
             spectrum_list.append([center_n, startn, stopn])
         else:
             spectrum_list.append([])
