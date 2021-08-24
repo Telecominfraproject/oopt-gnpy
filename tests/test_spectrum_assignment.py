@@ -347,7 +347,34 @@ def test_inconsistant_freq_slot(setup, equipment, request_set):
     ([-280], [None], None, None, 'NO_SPECTRUM'),
     ([-60], [40], None, None, 'NO_SPECTRUM'),
     # 20 is smaller than min 32 required nb of slots so should also be blocked
-    ([-60], [20], None, None, 'NOT_ENOUGH_RESERVED_SPECTRUM')
+    ([-60], [20], None, None, 'NOT_ENOUGH_RESERVED_SPECTRUM'),
+    # multiple assignments
+    ([-100, -164], [16, 16], [-100, -164], [16, 16], None),
+    ([-100, -164], [32, 32], [-100, -164], [32, 32], None),
+    ([-100, -164], [None, None], [-164], [32], None),
+    ([None, None], [16, 16], [-272, -240], [16, 16], None),
+    ([None, None, None], [16, 16, None], [-272, -240], [16, 16], None),
+    ([None, None], [None, None], [-256], [32], None),
+    ([-272, None], [16, 16], [-272, -240], [16, 16], None),
+    ([-272, 100], [None, 16], [-272, 100], [16, 16], None),
+    # first assign defined Ms whatever the N (but order them), and then uses imposed N. Fill in with the max
+    # available nb of slots (centered on N).
+    ([-88, -100, -116, None], [8, None, 12, None], [-88, -100, -116, -280], [8, 4, 12, 8], None),
+    # If no M is defined, uses th Ns to fill in with the max possible nb of slots (with respecte to request,
+    # here it is 32 slots)
+    ([-88, -106, -116, None], [None, None, None, None], [-116], [32], None),
+    # if one defined N, M is not applicable then blocks the spectrum (even f other slots are OK)
+    # only 2 slots remains between  -104 (-100 - 4) and -108 (-112 + 4). So (-106, None) is not feasible, because min
+    # required M is 4 for Voyager, Mode 1
+    ([-100, -106, -112], [4, None, 4], None, None, 'NO_SPECTRUM'),
+    # required nb of channels is 8 with 4 slots each. Next two spectrum are not providing enough spectrum
+    ([-88, -100, -116], [4, 4, 4], None, None, 'NOT_ENOUGH_RESERVED_SPECTRUM'),
+    ([-88, -100, -116], [4, None, 4], None, None, 'NO_SPECTRUM'),
+    # only 4 slots remains between  -96 (-88 -8) and -104 (-116 + 12), and centered on -100, so N = -101 is not
+    # feasible whatever the M.
+    ([-88, -101, -116, None], [8, 4, 12, None], None, None, 'NO_SPECTRUM'),
+    ([-88, -101, -116, -250], [4, 4, 12, 12], None, None, 'NO_SPECTRUM'),
+    ([-88, -101, -116, None], [8, None, 12, None], None, None, 'NO_SPECTRUM'),
     ])
 def test_n_m_requests(setup, equipment, req_n, req_m, final_n, final_m, blocking_reason, request_set):
     """ test that various N and M values for a request end up with the correct path assgnment
