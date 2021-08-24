@@ -326,21 +326,31 @@ def build_path_oms_id_list(pth):
     return list(set(path_oms))
 
 
-def spectrum_selection(path_oms, oms_list, requested_m, requested_n=None):
-    """Collects spectrum availability and call the select_candidate function"""
-
-    # use indexes instead of ITU-T n values
-    # assuming all oms have same freq index
-    if not path_oms:
-        candidate = (None, None, None)
-        return candidate, path_oms
-    freq_index = oms_list[path_oms[0]].spectrum_bitmap.freq_index
-    freq_index_min = oms_list[path_oms[0]].spectrum_bitmap.freq_index_min
-    freq_index_max = oms_list[path_oms[0]].spectrum_bitmap.freq_index_max
-
-    freq_availability = oms_list[path_oms[0]].spectrum_bitmap.bitmap
+def aggregate_oms_bitmap(path_oms, oms_list):
+    spectrum = oms_list[path_oms[0]].spectrum_bitmap
+    bitmap = spectrum.bitmap
+    # assuming all oms have same freq indices
     for oms in path_oms[1:]:
-        freq_availability = bitmap_sum(oms_list[oms].spectrum_bitmap.bitmap, freq_availability)
+        bitmap = bitmap_sum(oms_list[oms].spectrum_bitmap.bitmap, bitmap)
+    params = {
+        'oms_id': 0,
+        'el_id_list': 0,
+        'el_list': []
+    }
+    freq_min = nvalue_to_frequency(spectrum.freq_index_min)
+    freq_max = nvalue_to_frequency(spectrum.freq_index_max)
+    aggregate_oms = OMS(**params)
+    aggregate_oms.update_spectrum(freq_min, freq_max, grid=0.00625e12, existing_spectrum=bitmap)
+    return aggregate_oms
+
+
+def spectrum_selection(test_oms, requested_m, requested_n=None):
+    """Collects spectrum availability and call the select_candidate function"""
+    freq_index = test_oms.spectrum_bitmap.freq_index
+    freq_index_min = test_oms.spectrum_bitmap.freq_index_min
+    freq_index_max = test_oms.spectrum_bitmap.freq_index_max
+    freq_availability = test_oms.spectrum_bitmap.bitmap
+
     if requested_n is None:
         # avoid slots reserved on the edge 0.15e-12 on both sides -> 24
         candidates = [(freq_index[i] + requested_m, freq_index[i], freq_index[i] + 2 * requested_m - 1)
@@ -351,7 +361,7 @@ def spectrum_selection(path_oms, oms_list, requested_m, requested_n=None):
 
         candidate = select_candidate(candidates, policy='first_fit')
     else:
-        i = oms_list[path_oms[0]].spectrum_bitmap.geti(requested_n)
+        i = test_oms.spectrum_bitmap.geti(requested_n)
         # print(f'N {requested_n} i {i}')
         # print(freq_availability[i-m:i+m] )
         # print(freq_index[i-m:i+m])
@@ -404,7 +414,8 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
                 # use the req.M even if requested_m is smaller
                 requested_m = rq.M[0]
             requested_n = getattr(rq, 'N', [None])[0]
-            center_n, _, _ = spectrum_selection(path_oms, oms_list, requested_m, requested_n)
+            test_oms = aggregate_oms_bitmap(path_oms, oms_list)
+            center_n, startn, stopn = spectrum_selection(test_oms, requested_m, requested_n)
             # if requested n and m concern already occupied spectrum the previous function returns a None candidate
             # if not None, center_n and start, stop frequencies are applicable to all oms of pth
             # checks that spectrum is not None else indicate blocking reason
