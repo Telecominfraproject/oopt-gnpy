@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1151d3c_d69ef566",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-08-24T18:23:47Z",
+      "side": 1,
+      "message": "The OpenROADM MSA specifies a mixed rate equalization method that is not represented by the options implemented in this patch. They also use a psd but based on MC slot-width instead of baudrate. Maybe we should also support that option?",
+      "revId": "cf0c0c0ea41f6febe3e7a57a5f630289291f7ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0321290c_9acf479c",
