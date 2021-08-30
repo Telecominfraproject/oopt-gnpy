@@ -115,6 +115,17 @@ class Transceiver(_JsonThing):
         self.update_attr(self.default_values, kwargs, 'Transceiver')
 
 
+class Regenerator(_JsonThing):
+    default_values = {
+        'type_variety': None,
+        'frequency': None,
+        'mode': {}
+    }
+
+    def __init__(self, **kwargs):
+        self.update_attr(self.default_values, kwargs, 'Regenerator')
+
+
 class Fiber(_JsonThing):
     default_values = {
         'type_variety': '',
@@ -315,6 +326,8 @@ def _equipment_from_json(json_data, filename):
                 equipment[key][subkey] = Transceiver(**entry)
             elif key == 'RamanFiber':
                 equipment[key][subkey] = RamanFiber(**entry)
+            elif key == 'Regenerator':
+                equipment[key][subkey] = Regenerator(**entry)
             else:
                 raise EquipmentConfigError(f'Unrecognized network element type "{key}"')
     _check_fiber_vs_raman_fiber(equipment)
@@ -355,6 +368,8 @@ def _cls_for(equipment_type):
         return elements.Fiber
     elif equipment_type == 'RamanFiber':
         return elements.RamanFiber
+    elif equipment_type == 'Regenerator':
+        return elements.Regenerator
     else:
         raise ConfigurationError(f'Unknown network equipment "{equipment_type}"')
 
@@ -395,7 +410,11 @@ def network_from_json(json_data, equipment):
             g.add_edge(nodes[from_node], nodes[to_node], weight=edge_length)
         except KeyError:
             raise NetworkTopologyError(f'can not find {from_node} or {to_node} defined in {cx}')
-
+    # check that regenerators are only attached to ROADMs
+    for node in g.nodes():
+        if isinstance(node, elements.Regenerator) and (not isinstance(next(g.successors(node)), elements.Roadm) or \
+                not isinstance(next(g.predecessors(node)), elements.Roadm)):
+            raise NetworkTopologyError(f'Regenerator {node.uid} must be attached to a ROADM')
     return g
 
 
