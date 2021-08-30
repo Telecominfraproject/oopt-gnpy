@@ -16,7 +16,7 @@ element/oms correspondace
 from collections import namedtuple
 from logging import getLogger
 from math import ceil
-from gnpy.core.elements import Roadm, Transceiver
+from gnpy.core.elements import Roadm, Transceiver, Regenerator
 from gnpy.core.exceptions import ServiceError, SpectrumError
 from gnpy.topology.request import compute_spectrum_slot_vs_bandwidth
 
@@ -251,7 +251,7 @@ def build_oms_list(network, equipment):
     oms_list = []
     for node in [n for n in network.nodes() if isinstance(n, Roadm)]:
         for edge in network.edges([node]):
-            if not isinstance(edge[1], Transceiver):
+            if not isinstance(edge[1], (Transceiver, Regenerator)):
                 nd_in = edge[0]  # nd_in is a Roadm
                 try:
                     nd_in.oms_list.append(oms_id)
@@ -329,7 +329,7 @@ def spectrum_selection(pth, oms_list, requested_m, requested_n=None):
     # use indexes instead of ITU-T n values
     path_oms = []
     for elem in pth:
-        if not isinstance(elem, Roadm) and not isinstance(elem, Transceiver):
+        if not isinstance(elem, Roadm) and not isinstance(elem, (Transceiver, Regenerator)):
             # only edfa, fused and fibers have oms_id attribute
             path_oms.append(elem.oms_id)
     # remove duplicate oms_id, order is not important

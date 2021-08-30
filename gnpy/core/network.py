@@ -236,7 +236,7 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
     """ this node can be a transceiver or a ROADM (same function called in both cases)
     """
     power_mode = equipment['Span']['default'].power_mode
-    next_oms = (n for n in network.successors(this_node) if not isinstance(n, elements.Transceiver))
+    next_oms = (n for n in network.successors(this_node) if not isinstance(n, (elements.Transceiver, elements.Regenerator)))
     this_node_degree = {k: v for k, v in this_node.per_degree_pch_out_db.items()} if hasattr(this_node, 'per_degree_pch_out_db') else {}
     for oms in next_oms:
         # go through all the OMS departing from the ROADM
@@ -256,7 +256,8 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
         prev_voa = 0
         voa = 0
         visited_nodes = []
-        while not (isinstance(node, elements.Roadm) or isinstance(node, elements.Transceiver)):
+        while not (isinstance(node, elements.Roadm) or isinstance(node, elements.Transceiver) or
+                   isinstance(node, elements.Regenerator)):
             # go through all nodes in the OMS (loop until next Roadm instance)
             try:
                 next_node = next(network.successors(node))
@@ -333,7 +334,8 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
 
 def add_roadm_booster(network, roadm):
     next_nodes = [n for n in network.successors(roadm)
-                  if not (isinstance(n, elements.Transceiver) or isinstance(n, elements.Fused) or isinstance(n, elements.Edfa))]
+                  if not (isinstance(n, elements.Transceiver) or isinstance(n, elements.Fused) or isinstance(n, elements.Edfa)
+                          or isinstance(n, elements.Regenerator))]
     # no amplification for fused spans or TRX
     for next_node in next_nodes:
         network.remove_edge(roadm, next_node)
@@ -359,7 +361,8 @@ def add_roadm_booster(network, roadm):
 
 def add_roadm_preamp(network, roadm):
     prev_nodes = [n for n in network.predecessors(roadm)
-                  if not (isinstance(n, elements.Transceiver) or isinstance(n, elements.Fused) or isinstance(n, elements.Edfa))]
+                  if not (isinstance(n, elements.Transceiver) or isinstance(n, elements.Fused) or isinstance(n, elements.Edfa)
+                          or isinstance(n, elements.Regenerator))]
     # no amplification for fused spans or TRX
     for prev_node in prev_nodes:
         network.remove_edge(prev_node, roadm)

@@ -900,3 +900,74 @@ class Edfa(_Node):
         carriers = tuple(self.propagate(spectral_info.pref, *spectral_info.carriers))
         pref = self.update_pref(spectral_info.pref)
         return spectral_info._replace(carriers=carriers, pref=pref)
+
+
+class Regenerator(Transceiver):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.receiver_osnr_ase_01nm = None
+        self.receiver_osnr_ase = None
+        self.receiver_osnr_nli = None
+        self.receiver_snr = None
+        self.receiver_snr_01nm = None
+        self.receiver_baud_rate = None
+        self.receiver_chromatic_dispersion = None
+        self.receiver_pmd = None
+
+    def _calc_snr(self, spectral_info):
+        super()._calc_snr(spectral_info)
+        self.receiver_baud_rate = [c.baud_rate for c in spectral_info.carriers]
+        self.receiver_osnr_ase = self.raw_osnr_ase
+        self.receiver_osnr_ase_01nm = self.raw_osnr_ase_01nm
+        self.receiver_osnr_nli = self.raw_osnr_nli
+        self.receiver_snr = self.raw_snr
+        self.receiver_snr_01nm = self.raw_snr_01nm
+        self.snr_01nm = self.raw_snr_01nm
+
+    def _calc_cd(self, spectral_info):
+        """ Updates the Transceiver property with the CD of the received channels. CD in ps/nm.
+        """
+        super()._calc_cd(spectral_info)
+        self.receiver_chromatic_dispersion = self.chromatic_dispersion
+
+    def _calc_pmd(self, spectral_info):
+        """Updates the Transceiver property with the PMD of the received channels. PMD in ps.
+        """
+        super()._calc_pmd(spectral_info)
+        self.receiver_pmd = self.pmd
+
+    def update_snr(self, *args):
+        super().update_snr(*args)
+        self.receiver_osnr_ase =self.osnr_ase
+        self.receiver_snr = self.snr
+        self.receiver_osnr_ase_01nm = self.osnr_ase_01nm
+        self.receiver_snr_01nm = self.snr_01nm
+
+    def update_emitter(self, spectral_info):
+        self.baud_rate = [c.baud_rate for c in spectral_info.carriers]
+
+    def __repr__(self):
+        return (f'{type(self).__name__}('
+                f'uid={self.uid!r}, '
+                f'osnr_ase_01nm={self.receiver_osnr_ase_01nm!r}, '
+                f'osnr_ase={self.receiver_osnr_ase!r}, '
+                f'osnr_nli={self.receiver_osnr_nli!r}, '
+                f'snr={self.receiver_snr!r}, '
+                f'chromatic_dispersion={self.receiver_chromatic_dispersion!r}, '
+                f'pmd={self.receiver_pmd!r})')
+
+    def __str__(self):
+        if self.receiver_snr is None or self.receiver_osnr_ase is None:
+            return f'{type(self).__name__} {self.uid}'
+
+        receiver_osnr_ase_01nm = round(mean(self.receiver_osnr_ase_01nm), 2)
+        receiver_snr_01nm = round(mean(self.receiver_snr_01nm), 2)
+        receiver_cd = mean(self.receiver_chromatic_dispersion)
+        receiver_pmd = mean(self.receiver_pmd)
+
+        return '\n'.join([f'{type(self).__name__} {self.uid}',
+                          f'  receiver OSNR ASE (0.1nm, dB):      {receiver_osnr_ase_01nm:.2f}',
+                          f'  receiver SNR total (0.1nm, dB):     {receiver_snr_01nm:.2f}',
+                          f'  receiver CD (ps/nm):                {receiver_cd:.2f}',
+                          f'  receiver PMD (ps):                  {receiver_pmd:.2f}',
+                          f'  emitter baud rate (Gbauds):         {self.baud_rate[0]*1e-9:.3f}'])
