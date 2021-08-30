@@ -403,16 +403,16 @@ def path_requests_run(args=None):
         try:
             if rqs[i].blocking_reason in BLOCKING_NOPATH:
                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} :',
-                        f'-', f'-', f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}',
+                        f'-', f'-', f'-', f'{rqs[i].trx_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}',
                         f'-', f'{rqs[i].blocking_reason}']
             else:
                 line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,
-                        psnr, f'-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
+                        psnr, f'-', f'{rqs[i].trx_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
                         f'-', f'{rqs[i].blocking_reason}']
         except AttributeError:
             line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,
                     psnr, f'{rqs[i].OSNR + equipment["SI"]["default"].sys_margins}',
-                    f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}',
+                    f'{rqs[i].trx_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}',
                     f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }', f'({rqs[i].N},{rqs[i].M})']
         data.append(line)
 

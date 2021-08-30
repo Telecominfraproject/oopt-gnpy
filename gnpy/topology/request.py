@@ -50,8 +50,8 @@ class PathRequest:
         self.source = params.source
         self.destination = params.destination
         self.bidir = params.bidir
-        self.tsp = params.trx_type
-        self.tsp_mode = params.trx_mode
+        self.trx_type = params.trx_type
+        self.trx_mode = params.trx_mode
         self.baud_rate = params.baud_rate
         self.nodes_list = params.nodes_list
         self.loose_list = params.loose_list
@@ -88,8 +88,8 @@ class PathRequest:
         return '\n\t'.join([f'{type(self).__name__} {self.request_id}',
                             f'source: \t{self.source}',
                             f'destination:\t{self.destination}',
-                            f'trx type:\t{self.tsp}',
-                            f'trx mode:\t{self.tsp_mode}',
+                            f'trx type:\t{self.trx_type}',
+                            f'trx mode:\t{self.trx_mode}',
                             f'baud_rate:\t{temp} Gbaud',
                             f'bit_rate:\t{temp2} Gb/s',
                             f'spacing:\t{self.spacing * 1e-9} GHz',
@@ -194,8 +194,8 @@ class ResultElement:
                     'path-route-object': {
                         'index': index,
                         'transponder': {
-                            'transponder-type': self.path_request.tsp,
-                            'transponder-mode': self.path_request.tsp_mode
+                            'transponder-type': self.path_request.trx_type,
+                            'transponder-mode': self.path_request.trx_mode
                         }
                     }
                 }
@@ -359,14 +359,14 @@ def propagate_and_optimize_mode(path, req, equipment):
     # if mode is unknown : loops on the modes starting from the highest baudrate fiting in the
     # step 1: create an ordered list of modes based on baudrate
     baudrate_to_explore = list(set([this_mode['baud_rate']
-                                    for this_mode in equipment['Transceiver'][req.tsp].mode
+                                    for this_mode in equipment['Transceiver'][req.trx_type].mode
                                     if float(this_mode['min_spacing']) <= req.spacing]))
     # TODO be carefull on limits cases if spacing very close to req spacing eg 50.001 50.000
     baudrate_to_explore = sorted(baudrate_to_explore, reverse=True)
     if baudrate_to_explore:
         # at least 1 baudrate can be tested wrt spacing
         for this_br in baudrate_to_explore:
-            modes_to_explore = [this_mode for this_mode in equipment['Transceiver'][req.tsp].mode
+            modes_to_explore = [this_mode for this_mode in equipment['Transceiver'][req.trx_type].mode
                                 if this_mode['baud_rate'] == this_br and
                                 float(this_mode['min_spacing']) <= req.spacing]
             modes_to_explore = sorted(modes_to_explore,
@@ -960,8 +960,8 @@ def compare_reqs(req1, req2, disjlist):
 
     if req1.source == req2.source and \
             req1.destination == req2.destination and  \
-            req1.tsp == req2.tsp and \
-            req1.tsp_mode == req2.tsp_mode and \
+            req1.trx_type == req2.trx_type and \
+            req1.trx_mode == req2.trx_mode and \
             req1.baud_rate == req2.baud_rate and \
             req1.nodes_list == req2.nodes_list and \
             req1.loose_list == req2.loose_list and \
@@ -1111,7 +1111,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 if temp_snr01nm < pathreq.OSNR + equipment['SI']['default'].sys_margins:
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
                           f' {pathreq.source} to {pathreq.destination} does not pass with' +\
-                          f' {pathreq.tsp_mode}\n\tcomputedSNR in 0.1nm = {temp_snr01nm} ' +\
+                          f' {pathreq.trx_mode}\n\tcomputedSNR in 0.1nm = {temp_snr01nm} ' +\
                           f'- required osnr {pathreq.OSNR} + {equipment["SI"]["default"].sys_margins} margin'
                     print(msg)
                     LOGGER.warning(msg)
@@ -1128,7 +1128,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                         total_path = []
                     elif pathreq.blocking_reason in BLOCKING_NOMODE:
                         pathreq.baud_rate = mode['baud_rate']
-                        pathreq.tsp_mode = mode['format']
+                        pathreq.trx_mode = mode['format']
                         pathreq.format = mode['format']
                         pathreq.OSNR = mode['OSNR']
                         pathreq.tx_osnr = mode['tx_osnr']
@@ -1136,7 +1136,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                     # other blocking reason should not appear at this point
                 except AttributeError:
                     pathreq.baud_rate = mode['baud_rate']
-                    pathreq.tsp_mode = mode['format']
+                    pathreq.trx_mode = mode['format']
                     pathreq.format = mode['format']
                     pathreq.OSNR = mode['OSNR']
                     pathreq.tx_osnr = mode['tx_osnr']
@@ -1157,7 +1157,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 if temp_snr01nm < pathreq.OSNR + equipment['SI']['default'].sys_margins:
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
                           f' {pathreq.source} to {pathreq.destination} does not pass with' +\
-                          f' {pathreq.tsp_mode}\n' +\
+                          f' {pathreq.trx_mode}\n' +\
                           f'\tcomputedSNR in 0.1nm = {temp_snr01nm} -' \
                           f' required osnr {pathreq.OSNR} + {equipment["SI"]["default"].sys_margins} margin'
                     print(msg)
