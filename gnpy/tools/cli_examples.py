@@ -188,6 +188,7 @@ def transmission_main_example(args=None):
     params['bidir'] = False
     params['nodes_list'] = [destination.uid]
     params['loose_list'] = ['strict']
+    params['regen_list'] = []
     params['format'] = ''
     params['path_bandwidth'] = 0
     params['effective_freq_slot'] = None

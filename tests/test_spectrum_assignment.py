@@ -283,6 +283,7 @@ def request_set():
         'spacing': 50e9,
         'nodes_list': [],
         'loose_list': [],
+        'regen_list': [],
         'f_min': 191.1e12,
         'f_max': 196.3e12,
         'baud_rate': 32e9,

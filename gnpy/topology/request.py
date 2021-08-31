@@ -33,7 +33,7 @@ from math import ceil
 LOGGER = getLogger(__name__)
 
 RequestParams = namedtuple('RequestParams', 'request_id source destination bidir trx_type' +
-                           ' trx_mode nodes_list loose_list spacing power nb_channel f_min' +
+                           ' trx_mode nodes_list loose_list regen_list spacing power nb_channel f_min' +
                            ' f_max format baud_rate OSNR bit_rate roll_off tx_osnr' +
                            ' min_spacing cost path_bandwidth effective_freq_slot')
 DisjunctionParams = namedtuple('DisjunctionParams', 'disjunction_id relaxable link' +
@@ -55,6 +55,7 @@ class PathRequest:
         self.baud_rate = params.baud_rate
         self.nodes_list = params.nodes_list
         self.loose_list = params.loose_list
+        self.regen_list = params.regen_list
         self.spacing = params.spacing
         self.power = params.power
         self.nb_channel = params.nb_channel
@@ -1016,7 +1017,8 @@ def correct_json_route_list(network, pathreqlist):
         suppresses the constraint it it is loose or raises an error if it is strict
     """
     all_uid = [n.uid for n in network.nodes()]
-    transponders = [n.uid for n in network.nodes() if isinstance(n, Transceiver)]
+    # do not record regenerators in the transponder list, so use type instead of isinstance
+    transponders = [n.uid for n in network.nodes() if type(n) is Transceiver]
     for pathreq in pathreqlist:
         if pathreq.source not in transponders:
             msg = f'{ansi_escapes.red}Request: {pathreq.request_id}: could not find transponder' +\

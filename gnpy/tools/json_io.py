@@ -472,12 +472,37 @@ def requests_from_json(json_data, equipment):
         params['trx_mode'] = req['path-constraints']['te-bandwidth']['trx_mode']
         params['format'] = params['trx_mode']
         params['spacing'] = req['path-constraints']['te-bandwidth']['spacing']
+        # ['route-object-include-exclude'] object may contain ['num-unnum-hop'] objects with node-id and hop-type
+        # and ['regenerator'] objects containing specification for the regenerator. In any case a regenerator object must 
+        # follow a num-unnum-hop object, since these are specs for this regen
         try:
             nd_list = req['explicit-route-objects']['route-object-include-exclude']
         except KeyError:
             nd_list = []
-        params['nodes_list'] = [n['num-unnum-hop']['node-id'] for n in nd_list]
-        params['loose_list'] = [n['num-unnum-hop']['hop-type'] for n in nd_list]
+        params['nodes_list'] = [n['num-unnum-hop']['node-id'] for n in nd_list if 'num-unnum-hop' in n.keys()]
+        params['loose_list'] = [n['num-unnum-hop']['hop-type'] for n in nd_list if 'num-unnum-hop' in n.keys()]
+        # Different ways of declaring a regen in a node list
+        params['regen_list'] = []
+        for i, node_obj in enumerate(nd_list):
+            if 'regenerator' in node_obj.keys():
+                # case 1: explicit mention that the listed obj is a regen. Previous object must be 'num-unnum-hop'
+                if 'num-unnum-hop' in nd_list[i-1].keys():
+                    regen = {'regen_uid': nd_list[i-1]['num-unnum-hop']['node-id'],
+                             'request_id': params['request_id']}
+                    for parameter in ['trx_type', 'trx_mode', 'spacing', 'effective-freq-slot']:
+                        regen[parameter] = params[parameter] if node_obj['regenerator'].get(parameter, None) is None \
+                                           else node_obj['regenerator'].get(parameter)
+                    regen_params = trx_mode_params(equipment, regen['trx_type'], regen['trx_mode'], True)
+                    regen_params['effective_freq_slot'] = regen['effective-freq-slot'][0]
+                    # check regen mode and spacing consistency
+                    regen.update(regen_params)
+                    _check_one_request(regen, regen['f_max'])
+                    params['regen_list'].append(regen)
+                else:
+                    raise ServiceError(f'wrong definition of route nodes: previous element from node {node_obj} +\
+                                       must be an "num-unnum-hop object".')
+                # case 2: implicit: if name of node_obj is part of regen list of nodes then it is a regen.
+                # Needs to have built the network though, so this function is a post processing of the json bare reading
         # recover trx physical param (baudrate, ...) from type and mode
         # in trx_mode_params optical power is read from equipment['SI']['default'] and
         # nb_channel is computed based on min max frequency and spacing

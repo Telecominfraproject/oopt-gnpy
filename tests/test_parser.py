@@ -383,6 +383,7 @@ def test_excel_ila_constraints(source, destination, route_list, hoptype, expecte
         'spacing': '',
         'nodes_list': nodes_list,
         'loose_list': [hoptype for node in nodes_list] if route_list is not None else '',
+        'regen_list': [],
         'f_min': 0,
         'f_max': 0,
         'baud_rate': 0,

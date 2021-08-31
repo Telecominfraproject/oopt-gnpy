@@ -121,6 +121,7 @@ def create_rq(equipment, srce, dest, bdir, node_list, loose_list, rqid='test_req
         'spacing': 50000000000.0,
         'nodes_list': node_list,
         'loose_list': loose_list,
+        'regen_list': [],
         'path_bandwidth': 100.0e9,
         'power': 1.0,
         'effective_freq_slot': None,

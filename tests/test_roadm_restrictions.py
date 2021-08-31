@@ -240,6 +240,7 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
               'bidir': False,
               'nodes_list': ['trx node C'],
               'loose_list': ['strict'],
+              'regen_list': [],
               'format': '',
               'path_bandwidth': 100e9,
               'effective_freq_slot': None,
