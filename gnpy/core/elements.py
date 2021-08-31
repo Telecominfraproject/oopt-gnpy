@@ -319,7 +319,7 @@ class Fiber(_Node):
                 'params': {
                     # have to specify each because namedtupple cannot be updated :(
                     'length': round(self.params.length * 1e-3, 6),
-                    'loss_coef': self.params.loss_coef * 1e3,
+                    'loss_coef': round(self.params.loss_coef * 1e3, 6),
                     'length_units': 'km',
                     'att_in': self.params.att_in,
                     'con_in': self.params.con_in,
@@ -579,7 +579,7 @@ class Edfa(_Node):
                 'type': type(self).__name__,
                 'type_variety': self.params.type_variety,
                 'operational': {
-                    'gain_target': self.effective_gain,
+                    'gain_target': round(self.effective_gain, 6),
                     'delta_p': self.delta_p,
                     'tilt_target': self.tilt_target,
                     'out_voa': self.out_voa
