@@ -53,6 +53,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8733a5f_c525250a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-08-31T11:06:56Z",
+      "side": 1,
+      "message": "I thought the relevant attribute would be slot_width, which is introduced in the \"New definition of spectral information\" patch by Andrea. Aren\u0027t we moving away from using spacing when introducing flex-grid support?",
+      "parentUuid": "58f728a7_984aa4cb",
+      "revId": "cf0c0c0ea41f6febe3e7a57a5f630289291f7ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0321290c_9acf479c",
