@@ -89,6 +89,7 @@ jobs:
           push: true
           tags: |
             telecominfraproject/oopt-gnpy:${{ steps.extract_tag_name.outputs.GIT_DESC }}
+            telecominfraproject/oopt-gnpy:latest
 
   windows:
     name: Tests on Windows
