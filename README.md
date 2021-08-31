@@ -18,7 +18,7 @@ Together, we are building this tool for rapid development of production-grade ro
 
 ## Quick Start
 
-Install either via [Docker](docs/install.rst#install-docker), or as a [Python package](docs/install.rst#install-pip).
+Install either via [Docker](https://gnpy.readthedocs.io/en/master/install.html#using-prebuilt-docker-images), or as a [Python package](https://gnpy.readthedocs.io/en/master/install.html#using-python-on-your-computer).
 Read our [documentation](https://gnpy.readthedocs.io/), learn from the demos, and [get in touch with us](https://github.com/Telecominfraproject/oopt-gnpy/discussions).
 
 This example demonstrates how GNPy can be used to check the expected SNR at the end of the line by varying the channel input power:
