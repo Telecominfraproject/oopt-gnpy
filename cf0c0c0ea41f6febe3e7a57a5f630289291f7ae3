@@ -71,6 +71,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f23800f3_4d35560d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-09-01T07:26:59Z",
+      "side": 1,
+      "message": "Whether we call it spacing or slot_width, we still need this user defined value for design, planning and propagation. Right now, slot_width is filled with \"spacing\" specified by user, and we need to keep a user specified value here, instead of one computed based on baud rate. I understand that spacing has a \"fixed grid\" connotation, but in the code it is just defining the per channel width for a given set of channels.\nBesides, for design and planning, we still consider a fully loaded system with same channel type, for which spacing makes sense. \nSo I don\u0027t think that we move away from \"spacing\" with flexgrid, but maybe we can name it differently to be clearer ...",
+      "parentUuid": "c8733a5f_c525250a",
+      "revId": "cf0c0c0ea41f6febe3e7a57a5f630289291f7ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0321290c_9acf479c",
