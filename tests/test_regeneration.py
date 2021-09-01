@@ -23,6 +23,7 @@ from gnpy.core.equipment import trx_mode_params
 from gnpy.core.utils import lin2db, automatic_nch
 from gnpy.core.exceptions import ServiceError
 from gnpy.tools.json_io import load_equipment, load_network, requests_from_json, save_network, load_json
+from gnpy.topology.request import correct_json_route_list, correct_json_regen_list
 from gnpy.topology.spectrum_assignment import build_oms_list
 
 from tests.compare import compare_networks
@@ -58,6 +59,7 @@ def setup(equipment):
     build_oms_list(network, equipment)
     return network
 
+
 # parsing tests: network reading and creation
 def test_network_parsing(tmpdir, setup):
     """test that autodesign creates same file as the input file (already autodesigned)
@@ -78,3 +80,166 @@ def test_network_parsing(tmpdir, setup):
     assert not results.connections.missing
     assert not results.connections.extra
     assert not results.connections.different
+
+
+# parsing tests
+# reading regenerators in service json. check that a regen is correctly read out of a path constraint
+# case where roadm in which the roadm is placed is also listed in the route
+# case where no type is specified -> select the same transcever type from source by default
+#             and source mode is specified -> select the same transcever mode from source by default
+#             and source mode is not specified -> leave empty for decision
+# case where the regen type is specified and the same as the source
+#             and mode is specified and the same as the source
+#             and mode is specified and not the same as the source
+#                         and min spacing compatible with request
+#                         and min spacing not compatible with request
+#             and mode is not specified -> leave empty for decision
+# case where the regen type is specified and different from the source
+#             and mode is specified
+#             and mode is not specified -> leave empty for decision
+# case of several regeneration sections
+# TODO case where regeneration is set as a preference
+
+# exhaustive use case generation of all combinations
+def json_data(equipment, source='trx node A', destination='trx node C'):
+    """ comman data structure for the service
+    """
+    json_data = {
+        'path-request': [{
+            'request-id': '0',
+            'source': source,
+            'destination': destination,
+            'src-tp-id': source,
+            'dst-tp-id': destination,
+            'bidirectional': False,
+            'path-constraints': {
+                'te-bandwidth': {
+                    'technology': 'flexi-grid',
+                    'trx_type': 'Voyager',
+                    'trx_mode': 'mode 1',
+                    'effective-freq-slot': [
+                        {
+                            'N': None,
+                            'M': None
+                        }
+                    ],
+                    'spacing': 50e9,
+                    'path_bandwidth': 100e9
+                }
+            },
+            'explicit-route-objects': {
+                'route-object-include-exclude': []
+            }}]}
+    return json_data
+
+
+def json_request(source, destination, bidir, regen_nodes, route_prev_nodes, regen_types, regen_modes, spacings):
+    """ common function to create the request dict
+    """
+    json = json_data(equipment)['path-request'][0]
+    json['source'], json['src-tp-id'], json['destination'], json['dst-tp-id'], json['bidirectional'] = \
+        source, source, destination, destination, bidir
+    i = 0
+    for node, prev_node, regen_type, regen_mode, spacing in \
+            zip(regen_nodes, route_prev_nodes, regen_types, regen_modes, spacings):
+        if prev_node != '':
+            hop = {
+                'explicit-route-usage': 'route-include-ero',
+                'index': i,
+                'num-unnum-hop': {
+                    'node-id': prev_node,
+                    'link-tp-id': 'link-tp-id is not used',
+                    'hop-type': 'STRICT'
+                    }
+                }
+            json['explicit-route-objects']['route-object-include-exclude'].append(hop)
+            i = i + 1
+        hop = {
+            'explicit-route-usage': 'route-include-ero',
+            'index': i,
+            'num-unnum-hop': {
+                'node-id': node,
+                'link-tp-id': 'link-tp-id is not used',
+                'hop-type': 'STRICT'
+                }
+            }
+        json['explicit-route-objects']['route-object-include-exclude'].append(hop)
+        i = i + 1
+        if regen_types is not None:
+            hop_type = {
+                "explicit-route-usage": "route-include-ero",
+                "index": i,
+                "regenerator": {
+                    "technology": "flexi-grid",
+                    "trx_type": regen_type,
+                    "trx_mode": regen_mode,
+                    "effective-freq-slot": [
+                        {
+                            "N": None,
+                            "M": None
+                        }
+                    ],
+                    "spacing": spacing
+                    }
+                }
+            json['explicit-route-objects']['route-object-include-exclude'].append(hop_type)
+            i = i + 1
+    return json
+
+
+@pytest.mark.parametrize('regen_type, regen_mode', [(['Voyager', 'Voyager'], ['mode 1', 'mode 1']),
+                                                    (['Voyager', 'Voyager'], ['mode 2', 'mode 1']),
+                                                    (['Voyager', 'Voyager'], ['mode 1', 'mode 2']),
+                                                    (['Voyager', 'Voyager'], ['mode 2', 'mode 2']),
+                                                    (['Voyager', 'vendorA_trx-type1'], ['mode 1', 'mode 1']),
+                                                    (['vendorA_trx-type1', None], ['mode 1', None]),
+                                                    ([None, 'vendorA_trx-type1'], [None, 'mode 1']),
+                                                    ([None, 'Voyager'], [None, 'mode 2']),
+                                                    ([None, None], [None, None])])
+@pytest.mark.parametrize('bidir', [False, True])
+@pytest.mark.parametrize('source, destination, regen_nodes, route_prev_nodes, check_prev_nodes, spacing', (
+    ('trx node A', 'trx node C', [], [], [], []),
+    ('trx node A', 'trx node C', ['regen node B'], [''], ['roadm node B'], [50e9]),
+    ('trx node A', 'trx node C', ['regen node B'], [''], ['roadm node B'], [100e9]),
+    ('trx node A', 'trx node C', ['regen node B'], ['roadm node B'], ['roadm node B'], [50e9]),
+    ('trx node A', 'trx node D', ['regen node B'], [''], ['roadm node B'], [50e9]),
+    ('trx node A', 'trx node D', ['regen node B', 'regen node C'], ['', ''], ['roadm node B', 'roadm node C'], [50e9, 50e9]),
+    ('trx node A', 'trx node D', ['regen node B', 'regen node C'], ['', ''], ['roadm node B', 'roadm node C'], [50e9, 100e9]),
+    ('trx node A', 'trx node D', ['regen node B', 'regen node C'], ['', ''], ['roadm node B', 'roadm node C'], [100e9, 100e9])))
+def test_read_service_with_regen(setup, equipment,
+                                 source, destination, regen_nodes, route_prev_nodes, check_prev_nodes, spacing,
+                                 bidir,
+                                 regen_type, regen_mode):
+    """ creates a service with different configuration of regenerators
+    """
+    network = setup
+    json = json_request(source, destination, bidir,regen_nodes, route_prev_nodes, regen_type, regen_mode, spacing)
+    json_data = {'path-request': [json]}
+    min_spacing = []
+    for node, typ, mode in zip(regen_nodes, regen_type, regen_mode):
+        if typ is not None:
+            min_spacing.append(trx_mode_params(equipment, typ, mode)['min_spacing'])
+        else:
+            min_spacing.append(
+                trx_mode_params(equipment,
+                                json['path-constraints']['te-bandwidth']['trx_type'],
+                                json['path-constraints']['te-bandwidth']['trx_mode'])['min_spacing'])
+    # check that demands with inconsistant spacing/mode are correctly raising a ServiceError
+    if regen_nodes and any(min_spacing[j] > s for j, s in enumerate(spacing)):
+        with pytest.raises(ServiceError):
+            rqs = requests_from_json(json_data, equipment)
+    elif not any(min_spacing[j] > s for j, s in enumerate(spacing)):
+        rqs = requests_from_json(json_data, equipment)
+        rqs = correct_json_route_list(network, rqs)
+        rqs = correct_json_regen_list(network, equipment, rqs)
+        # check that if regen type is not specifed, the regen is set to the default
+        defaul_trx_type = json['path-constraints']['te-bandwidth']['trx_type']
+        default_trx_mode = json['path-constraints']['te-bandwidth']['trx_mode']
+        for node, typ, mode in zip(rqs[0].regen_list, regen_type, regen_mode):
+            print(node)
+            if typ is not None:
+                assert node['trx_type'] == typ
+                assert node['trx_mode'] == mode
+            else:
+                assert node['trx_type'] == defaul_trx_type
+                assert node['trx_mode'] == default_trx_mode
