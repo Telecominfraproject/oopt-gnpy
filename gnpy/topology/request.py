@@ -21,8 +21,9 @@ from networkx import (dijkstra_path, NetworkXNoPath,
                       all_simple_paths, shortest_simple_paths)
 from networkx.utils import pairwise
 from numpy import mean
-from gnpy.core.elements import Transceiver, Roadm
-from gnpy.core.utils import lin2db
+from gnpy.core.elements import Transceiver, Roadm, Regenerator
+from gnpy.core.equipment import trx_mode_params
+from gnpy.core.utils import lin2db, unique_ordered
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 import gnpy.core.ansi_escapes as ansi_escapes
@@ -1061,6 +1062,79 @@ def correct_json_route_list(network, pathreqlist):
                     raise ServiceError(msg)
 
     return pathreqlist
+
+
+def correct_json_regen_list(network, equipment, pathreqlist):
+    """ all names in list should be exact name in the network, and there is no ambiguity
+    This function checks that list is correct, warns user if the name is incorrect and
+    suppresses the constraint if it is loose or raises an error if it is strict
+    it also swap the node_name for the attached roadm name in the route constraint.
+    This is to avoid loops in path search: a path trxa-roadma-fiber1-roadmb-regenb-roadmb-fiber2-roadmc-trxc
+    is changed to rxa-roadma-fiber1-roadmb-fiber2-roadmc-trxc for computation purpose
+    """
+    regenerators = [n.uid for n in network.nodes() if isinstance(n, Regenerator)]
+    for pathreq in pathreqlist:
+        # first add in regen_list the regen nodes in node_list that were not declared explicitely as regenerators
+        regen_uid_list = [r['regen_uid'] for r in pathreq.regen_list]
+        for node_uid in pathreq.nodes_list:
+            try:
+                node = next(n for n in network.nodes() if n.uid == node_uid)
+                if isinstance(node, Regenerator) and node_uid not in regen_uid_list and \
+                        node_uid != pathreq.source and node_uid != pathreq.destination:
+                    regen = {'regen_uid': node_uid, 'spacing': pathreq.spacing, 'trx_type': pathreq.trx_type,
+                             'trx_mode': pathreq.trx_mode}
+                    # since no transceiver is specified for the regen use the request's type and mode
+                    regen_params = trx_mode_params(equipment,  pathreq.trx_type, pathreq.trx_mode, True)
+                    regen.update(regen_params)
+                    pathreq.regen_list.append(regen)
+                elif node_uid == pathreq.source or node_uid == pathreq.destination:
+                    raise ServiceError('Can not place a regenerator as source or destination node', pathreq.request_id)
+            except StopIteration:
+                raise ServiceError(f'could not find {node_uid} in topology')
+        # then check that all regen in regen_list are really of Regenerator types
+        for regen in pathreq.regen_list:
+            # a node within this list must be part of the topology and should be a regen
+            if regen['regen_uid'] not in regenerators:
+                raise ServiceError('Inconsistent regenerator definition: not a regenerator', regen['regen_uid'])
+    return pathreqlist
+
+
+def remove_regen_from_list(network, pathreqlist):
+    """ Swap the regen node_name with the attached roadm name in the route constraint.
+    This is to avoid loops in path search: a path trxa-roadma-fiber1-roadmb-regenb-roadmb-fiber2-roadmc-trxc
+    is changed to rxa-roadma-fiber1-roadmb-fiber2-roadmc-trxc for computation purpose
+    """
+    regenerators = [n.uid for n in network.nodes() if isinstance(n, Regenerator)]
+    for pathreq in pathreqlist: 
+        # Prepare the node_lis to be usable by networkx functions: remove Regenerator from th node list and replace it
+        # with its attached ROADM : trxa-roadma-fiber1-roadmb-regenb-roadmb-fiber2-roadmc-trxc  changed to
+        # trxa-roadma-fiber1-roadmb-roadmb-roadmb-fiber2-roadmc-trxc (same loose_list)
+        for i, n_id in enumerate(pathreq.nodes_list):
+            # change regen into its attached roadm
+            if n_id in regenerators:
+                regenerator = next(n for n in network.nodes() if n.uid == n_id)
+                attached_roadm = next(network.successors(regenerator))
+                pathreq.nodes_list[i] = attached_roadm.uid
+        # remove duplicate nodes in nodes_list and correct loose_list accordingly:
+        # trxa-roadma-fiber1-roadmb-fiber2-roadmc-trxc
+        pathreq.nodes_list, pathreq.loose_list = unique_ordered(pathreq.nodes_list, pathreq.loose_list)
+    return pathreqlist
+
+
+def restore_regen_in_path(network, pathreqlist, pathlist):
+    """ restore the regenerator in the path, once a path is computed
+    """
+    for req, path in zip(pathreqlist, pathlist):
+        regen_uid_list = [r['regen_uid'] for r in req.regen_list]
+        for i, node_id in enumerate(regen_uid_list):
+            regenerator = next(n for n in network.nodes() if n.uid == node_id)
+            attached_roadm = next(network.successors(regenerator))
+            for i, elem in enumerate(path):
+                if elem == attached_roadm:
+                    path.insert(i + 1, regenerator)
+                    path.insert(i + 2, attached_roadm)
+                    break
+    return pathlist
 
 
 def deduplicate_disjunctions(disjn):

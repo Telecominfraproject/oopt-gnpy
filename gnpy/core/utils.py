@@ -324,3 +324,20 @@ def convert_length(value, units):
         return value * 1e3
     else:
         raise ConfigurationError(f'Cannot convert length in "{units}" into meters')
+
+
+def unique_ordered(list1, list2):
+   """ Order preserving unique function for the list1 and applied on list2
+
+    >>> l1 = ['trxa', 'roadma', 'fiber1', 'roadmb', 'roadmb', 'roadmb', 'fiber2', 'roadmc', 'trxc']
+    >>> l2 = ['STRICT','STRICT', 'STRICT', 'STRICT', 'STRICT', 'STRICT', 'STRICT', 'STRICT','STRICT']
+    >>> unique_ordered(l1, l2)
+    (['trxa', 'roadma', 'fiber1', 'roadmb', 'fiber2', 'roadmc', 'trxc'], ['STRICT', 'STRICT', 'STRICT', 'STRICT', 'STRICT', 'STRICT', 'STRICT'])
+   """
+   checked1 = []
+   checked2 = []
+   for elem1, elem2 in zip(list1, list2):
+       if elem1 not in checked1:
+           checked1.append(elem1)
+           checked2.append(elem2)
+   return checked1, checked2

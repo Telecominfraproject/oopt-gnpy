@@ -26,7 +26,8 @@ from gnpy.core.utils import db2lin, lin2db, automatic_nch
 from gnpy.topology.request import (ResultElement, jsontocsv, compute_path_dsjctn, requests_aggregation,
                                    BLOCKING_NOPATH, correct_json_route_list,
                                    deduplicate_disjunctions, compute_path_with_disjunction,
-                                   PathRequest, compute_constrained_path, propagate)
+                                   PathRequest, compute_constrained_path, propagate, correct_json_regen_list,
+                                   remove_regen_from_list, restore_regen_in_path)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.json_io import load_equipment, load_network, load_json, load_requests, save_network, \
                                requests_from_json, disjunctions_from_json, save_json
@@ -350,8 +351,8 @@ def path_requests_run(args=None):
         _logger.critical(msg)
         sys.exit()
     rqs = correct_json_route_list(network, rqs)
-
-    # pths = compute_path(network, equipment, rqs)
+    rqs = correct_json_regen_list(network, equipment, rqs)
+    rqs = remove_regen_from_list(network, rqs)
     dsjn = disjunctions_from_json(data)
 
     print(f'{ansi_escapes.blue}List of disjunctions{ansi_escapes.reset}')
@@ -377,6 +378,7 @@ def path_requests_run(args=None):
         sys.exit(1)
 
     print(f'{ansi_escapes.blue}Propagating on selected path{ansi_escapes.reset}')
+    pths = restore_regen_in_path(network, rqs, pths)
     propagatedpths, reversed_pths, reversed_propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
     # Note that deepcopy used in compute_path_with_disjunction returns
     # a list of nodes which are not belonging to network (they are copies of the node objects).
