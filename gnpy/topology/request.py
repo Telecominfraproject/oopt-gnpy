@@ -1203,6 +1203,51 @@ def deduplicate_disjunctions(disjn):
     return local_disjn
 
 
+def decompose_req(req):
+    """ Returns a list of requests corresponding to the regenerated sections of the given path.
+    for example request corresponding to trxa-regenb-trxc will be decomposed into
+    [trxa to regenb , regenb to trx]. also returns the nb of sections
+    """
+    decomposed_rqs = []
+    source = req.source
+    temp = deepcopy(req)
+    if req.regen_list:
+        for regen in req.regen_list:
+            temp.source = source
+            temp.destination = regen['regen_uid']
+            decomposed_rqs.append(temp)
+            temp = deepcopy(req)
+            source = regen['regen_uid']
+            for key, val in regen.items():
+                if hasattr(temp, key):
+                    setattr(temp, key, val)
+    temp.source = source
+    temp.destination = req.destination
+    decomposed_rqs.append(temp)
+    return decomposed_rqs
+
+
+def recompose_regenerated_sections(sections, pathreq, modes, equipment):
+    """ Recompose a path with all its regenerated sections after it has been propagated.
+    """
+    # start the path with first node of the first section
+    total_path = [sections[0][0]]
+    trx_type = pathreq.trx_type
+    pathreq.trx_mode = modes[0]
+    for i, section in enumerate(sections[:-1]):
+        # append all nodes in the section except last node (which is the first node of next section)
+        total_path.extend(section[1:])
+        # Update regen_list with the selected mode for the given regen according to what has been computed.
+        regen = {'spacing': pathreq.spacing, 'trx_mode': modes[i + 1]['format']}
+        # use the request's type
+        regen_params = trx_mode_params(equipment,  pathreq.trx_type, modes[i + 1]['format'], True)
+        regen.update(regen_params)
+        pathreq.regen_list[i].update(regen)
+    # Append the nodes from the final section, except for first node (which is already in the path of previous section)
+    total_path.extend(sections[-1][1:])
+    return total_path, pathreq
+
+
 def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
     """ use a list but a dictionnary might be helpful to find path based on request_id
         TODO change all these req, dsjct, res lists into dict !
@@ -1229,7 +1274,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         # may use the same transponder for the performance simulation. This is why
         # we use deepcopy: to ensure that each propagation is recorded and not overwritten
         total_path = deepcopy(pathlist[i])
-        print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}')
+        print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, (Roadm, Regenerator))]}')
         # for debug
         # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
         if total_path:
@@ -1237,17 +1282,37 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 # means that at this point the mode was entered/forced by user and thus a
                 # baud_rate was defined
                 propagate(total_path, pathreq, equipment)
-                temp_snr01nm = round(mean(total_path[-1].snr+lin2db(pathreq.baud_rate/(12.5e9))), 2)
-                if temp_snr01nm < pathreq.OSNR + equipment['SI']['default'].sys_margins:
-                    msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
-                          f' {pathreq.source} to {pathreq.destination} does not pass with' +\
-                          f' {pathreq.trx_mode}\n\tcomputedSNR in 0.1nm = {temp_snr01nm} ' +\
-                          f'- required osnr {pathreq.OSNR} + {equipment["SI"]["default"].sys_margins} margin'
-                    print(msg)
-                    LOGGER.warning(msg)
-                    pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
+
+                regen_site = [e.uid for e in total_path if isinstance(e, Regenerator)] + [total_path[-1].uid]
+                regen_snr = [round(mean(e.receiver_snr_01nm), 2) for e in total_path if isinstance(e, Regenerator)] + \
+                            [round(mean(total_path[-1].snr_01nm),2)]
+                required_OSNR = [pathreq.OSNR + equipment['SI']['default'].sys_margins] + \
+                                [r['OSNR'] + equipment['SI']['default'].sys_margins for r in pathreq.regen_list]
+                # check that each regen section is feasible else if any is below min required OSNR,
+                # raise the warning
+                for snr, required_osnr, site in zip(regen_snr, required_OSNR, regen_site):
+                    if snr < required_osnr:
+                        msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
+                              f' {pathreq.source} to {pathreq.destination} does not pass with' +\
+                              f' {site}\n\tcomputedSNR in 0.1nm = {snr} - required osnr {required_osnr}'
+                        print(msg)
+                        LOGGER.warning(msg)
+                        pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
             else:
-                total_path, mode = propagate_and_optimize_mode(total_path, pathreq, equipment)
+                # select mode per regenerated section
+                req_sections = decompose_req(pathreq)
+                sections = decompose_path(total_path, len(req_sections))
+                modes = []
+                copy_sections = []
+                for section, req_section in zip(sections, req_sections):
+                    section, mode = propagate_and_optimize_mode(section, req_section, equipment)
+                    # since regenerator and attached ROADM are propagated twice, need to use deepcopy to reproduce
+                    # the objects, and avoid loosing the performance information (GSNR)
+                    copy_sections.append(deepcopy(section))
+                    modes.append(mode)
+                total_path, pathreq = recompose_regenerated_sections(copy_sections, pathreq, modes, equipment)
+
+
                 # if no baudrate satisfies spacing, no mode is returned and the last explored mode
                 # a warning is shown in the propagate_and_optimize_mode
                 # propagate_and_optimize_mode function returns the mode with the highest bitrate
@@ -1279,22 +1344,33 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 rev_p = deepcopy(reversed_path)
 
                 print(f'\n\tPropagating Z to A direction {pathreq.destination} to {pathreq.source}')
-                print(f'\tPath (roadsm) {[r.uid for r in rev_p if isinstance(r,Roadm)]}\n')
+                print(f'\tPath (roadsm) {[r.uid for r in rev_p if isinstance(r,(Roadm, Regenerator))]}\n')
                 propagate(rev_p, pathreq, equipment)
+                # if there are some regen, need to change req.regen_list and req initial values to support
+                # regen of different mode/type eg suppose following path
+                # tx(voyager, mode1, 50Ghz)-ROADMA-ROADMB-Regen(cassini, mode2, 50Ghz)-ROADMB-ROADMC-rx
+                # then rx must be (cassini, mode2, 50Ghz) (so different from source) and reversed path must be:
+                # tx(cassini, mode2, 50Ghz)-ROADMC-ROADMB-Regen(voyager, mode1, 50Ghz)-ROADMB-ROADMA-rx(voyager, mode1, 50Ghz)
                 propagated_reversed_path = rev_p
-                temp_snr01nm = round(mean(propagated_reversed_path[-1].snr +\
-                                          lin2db(pathreq.baud_rate/(12.5e9))), 2)
-                if temp_snr01nm < pathreq.OSNR + equipment['SI']['default'].sys_margins:
-                    msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
-                          f' {pathreq.source} to {pathreq.destination} does not pass with' +\
-                          f' {pathreq.trx_mode}\n' +\
-                          f'\tcomputedSNR in 0.1nm = {temp_snr01nm} -' \
-                          f' required osnr {pathreq.OSNR} + {equipment["SI"]["default"].sys_margins} margin'
-                    print(msg)
-                    LOGGER.warning(msg)
-                    # TODO selection of mode should also be on reversed direction !!
-                    if not hasattr(pathreq, 'blocking_reason'):
-                        pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
+                #use the regeneration information in reverse order
+                rev_regen_site = [e.uid for e in propagated_reversed_path if isinstance(e, Regenerator)] +\
+                                 [propagated_reversed_path[-1].uid]
+                rev_regen_snr = [round(mean(e.receiver_snr_01nm), 2) for e in propagated_reversed_path
+                                 if isinstance(e, Regenerator)] +\
+                                [round(mean(propagated_reversed_path[-1].snr_01nm),2)]
+                # don't forget: required_OSNR already integrates system_margin
+                rev_required_OSNR = required_OSNR[::-1]
+                for site, snr, required_snr in zip(rev_regen_site, rev_regen_snr, rev_required_OSNR):
+                    if snr < required_snr:
+                        msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
+                              f' {pathreq.destination} to {pathreq.source} does not pass with' +\
+                              f' {site}\n\tcomputedSNR in 0.1nm = {snr} -' +\
+                              f' required osnr {required_snr + equipment["SI"]["default"].sys_margins}'
+                        print(msg)
+                        LOGGER.warning(msg)
+                        # TODO selection of mode should also be on reversed direction !!
+                        if not hasattr(pathreq, 'blocking_reason'):
+                            pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
             else:
                 propagated_reversed_path = []
         else:
