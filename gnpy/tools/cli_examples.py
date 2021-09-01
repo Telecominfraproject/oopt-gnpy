@@ -179,19 +179,18 @@ def transmission_main_example(args=None):
     _logger.info(f'source = {args.source!r}')
     _logger.info(f'destination = {args.destination!r}')
 
-    params = {}
-    params['request_id'] = 0
-    params['trx_type'] = ''
-    params['trx_mode'] = ''
-    params['source'] = source.uid
-    params['destination'] = destination.uid
-    params['bidir'] = False
-    params['nodes_list'] = [destination.uid]
-    params['loose_list'] = ['strict']
-    params['regen_list'] = []
-    params['format'] = ''
-    params['path_bandwidth'] = 0
-    params['effective_freq_slot'] = None
+    params = {'request_id': 0,
+              'trx_type': '',
+              'trx_mode': '',
+              'source': source.uid,
+              'destination': destination.uid,
+              'bidir': False,
+              'nodes_list':[destination.uid],
+              'loose_list': ['strict'],
+              'regen_list': [],
+              'format': '',
+              'path_bandwidth': 0,
+              'effective_freq_slot': None}
     trx_params = trx_mode_params(equipment)
     if args.power:
         trx_params['power'] = db2lin(float(args.power)) * 1e-3
