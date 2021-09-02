@@ -27,7 +27,8 @@ from gnpy.topology.request import (ResultElement, jsontocsv, compute_path_dsjctn
                                    BLOCKING_NOPATH, correct_json_route_list,
                                    deduplicate_disjunctions, compute_path_with_disjunction,
                                    PathRequest, compute_constrained_path, propagate, correct_json_regen_list,
-                                   remove_regen_from_list, restore_regen_in_path, decompose_req, decompose_path)
+                                   remove_regen_from_list, restore_regen_in_path, decompose_req, decompose_path,
+                                   place_regenerator, select_regenerator_place)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.json_io import load_equipment, load_network, load_json, load_requests, save_network, \
                                requests_from_json, disjunctions_from_json, save_json
@@ -396,6 +397,11 @@ def path_requests_run(args=None):
 
     print(f'{ansi_escapes.blue}Propagating on selected path{ansi_escapes.reset}')
     pths = restore_regen_in_path(network, rqs, pths)
+    for i, req in enumerate(rqs):
+        if req.regen_preference == 'regeneration':
+            regen_place = select_regenerator_place(rqs[i], pths[i], equipment, network)
+            pths[i] = place_regenerator(pths[i], req, regen_place, network, equipment)
+
     propagatedpths, reversed_pths, reversed_propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
     # Note that deepcopy used in compute_path_with_disjunction returns
     # a list of nodes which are not belonging to network (they are copies of the node objects).

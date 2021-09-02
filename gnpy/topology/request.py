@@ -36,7 +36,7 @@ LOGGER = getLogger(__name__)
 RequestParams = namedtuple('RequestParams', 'request_id source destination bidir trx_type' +
                            ' trx_mode nodes_list loose_list regen_list spacing power nb_channel f_min' +
                            ' f_max format baud_rate OSNR bit_rate roll_off tx_osnr' +
-                           ' min_spacing cost path_bandwidth effective_freq_slot')
+                           ' min_spacing cost path_bandwidth effective_freq_slot regen_preference')
 DisjunctionParams = namedtuple('DisjunctionParams', 'disjunction_id relaxable link' +
                                '_diverse node_diverse disjunctions_req')
 
@@ -46,6 +46,8 @@ class PathRequest:
     """
 
     def __init__(self, *args, **params):
+        if 'regen_preference' not in params.keys():
+            params['regen_preference'] = []
         params = RequestParams(**params)
         self.request_id = params.request_id
         self.source = params.source
@@ -73,6 +75,7 @@ class PathRequest:
         if params.effective_freq_slot is not None:
             self.N = params.effective_freq_slot['N']
             self.M = params.effective_freq_slot['M']
+        self.regen_preference = params.regen_preference
 
     def __str__(self):
         return '\n\t'.join([f'{type(self).__name__} {self.request_id}',
@@ -125,7 +128,7 @@ class PathRequest:
             pretty_print.extend([f'regen-list:\t{self.regen_list_print}', '\n'])
 
         return '\n\t'.join(pretty_print)
- 
+
 
 class Disjunction:
     """ the class that contains all attributes related to disjunction constraints
@@ -1422,3 +1425,90 @@ def compute_spectrum_slot_vs_bandwidth(bandwidth, spacing, bit_rate, slot_width=
     number_of_wavelengths = ceil(bandwidth / bit_rate)
     total_number_of_slots = ceil(spacing / slot_width) * number_of_wavelengths
     return number_of_wavelengths, total_number_of_slots
+
+
+def select_regenerator_place(req, path, equipment, network):
+    """ given a path and a mode, cut a path so that each segment is feasible
+    minimizes the number of segments
+    """
+    si = create_input_spectral_information(
+        req.f_min, req.f_max, req.roll_off, req.baud_rate,
+        req.power, req.spacing)
+    regen_place = []
+    fini = False
+    while not fini:
+        for i, el in enumerate(path):
+            if isinstance(el, Roadm):
+                si = el(si, degree=path[i + 1].uid)
+            else:
+                si = el(si)
+            if el == path[-1]:
+                fini = True
+            if isinstance (el, Roadm):
+                # place a Rx here to check performance
+                opm_rx = Transceiver({'uid': 'opm_rx'})
+                opm_rx(si)
+                opm_rx.update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
+                snr = round(mean(opm_rx.snr_01nm), 2)
+                if snr < req.OSNR + equipment['SI']['default'].sys_margins:
+                    if not regen_place or regen_place[-1] != path[previous_roadm_index].uid:
+                        # place a regen on the previous node
+                        # only if there is one regen attached there !
+                        try:
+                            # find previous roadm in network (because elem in path are copies, not the actual
+                            # network elements)
+                            roadm = next(n for n in network.nodes() if n.uid == path[previous_roadm_index].uid)
+                            regen = next(n for n in network.successors(roadm) if isinstance(n, Regenerator))
+                            regen_place.append(path[previous_roadm_index].uid)
+                            path = path[previous_roadm_index:]
+                            si = create_input_spectral_information(
+                                req.f_min, req.f_max, req.roll_off, req.baud_rate,
+                                req.power, req.spacing)
+                            break
+                        except StopIteration:
+                            msg = f'could not find a regen in {path[previous_roadm_index].uid}'
+                            print(msg)
+                            LOGGER.warning(msg)
+                            return []
+                    elif regen_place and regen_place[-1] == path[previous_roadm_index].uid:
+                        # the OMS is not feasible at all
+                        return []
+                else:
+                    previous_roadm_index = i
+            if isinstance(el, Regenerator):
+                regen_spec = next(r for r in req.regen_list if r['regen_uid'] == el.uid)
+                si = create_input_spectral_information(
+                    regen_spec['f_min'], regen_spec['f_max'], regen_spec['roll_off'], regen_spec['baud_rate'],
+                    regen_spec['power'], regen_spec['spacing'])
+    return regen_place
+
+
+def place_regenerator(path, req, regen_place, network, equipment):
+    """ Update the given path with the regenerators selected in the regen_place
+    """
+    regen_path = []
+    req.regen_list = []
+    for node in path:
+        regen_path.append(node)
+        if node.uid in regen_place:
+            # node must be a roadm: then insert the regen
+            if isinstance(node, Roadm):
+                roadm = next(n for n in network.nodes() if n.uid == node.uid)
+                regen = next(n for n in network.successors(roadm) if isinstance(n, Regenerator))
+                regen_path.extend([regen, roadm])
+                regen_dict = {'regen_uid': regen.uid,
+                              'trx_type': req.trx_type,
+                              'trx_mode': req.trx_mode,
+                              'spacing': req.spacing}
+                regen_params = trx_mode_params(equipment, req.trx_type, req.trx_mode, True)
+                regen_params['spacing'] = req.spacing
+                regen_params['request_id'] = req.request_id
+                regen_params['trx_type'] = req.trx_type
+                regen_params['trx_mode'] = req.trx_mode
+                regen_dict.update(regen_params)
+                req.regen_list.append(regen_dict)
+            else:
+                msg = f'Place of regeneration not supported in {node.uid}. Should be a ROADM node.'
+                print(msg)
+                LOGGER.warning(msg)
+    return regen_path

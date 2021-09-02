@@ -503,12 +503,17 @@ def requests_from_json(json_data, equipment):
                                        must be an "num-unnum-hop object".')
                 # case 2: implicit: if name of node_obj is part of regen list of nodes then it is a regen.
                 # Needs to have built the network though, so this function is a post processing of the json bare reading
+        if 'optimizations' in req.keys():
+            params['regen_preference'] = req['optimizations']['objective-function']['preferences']['regeneration']
         # recover trx physical param (baudrate, ...) from type and mode
         # in trx_mode_params optical power is read from equipment['SI']['default'] and
         # nb_channel is computed based on min max frequency and spacing
+        #
+        #pour traiter les preferences d'optimisation, utiliser
+        #   grouping generic-path-optimization de te-types
+        #
         trx_params = trx_mode_params(equipment, params['trx_type'], params['trx_mode'], True)
         params.update(trx_params)
-        # print(trx_params['min_spacing'])
         # optical power might be set differently in the request. if it is indicated then the
         # params['power'] is updated
         try:
