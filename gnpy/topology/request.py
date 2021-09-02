@@ -880,6 +880,46 @@ def isdisjoint(pth1, pth2):
     return 0
 
 
+
+def decompose_path(path, nb_decomposition=0):
+    """ Returns a list of non regenerated sections of a given path
+    first and last elements are either transceiver or a regenerator
+    Use nb_decomposition to return the same number of empty section as nb_decompsition
+    if it is provided.
+
+    >>> from gnpy.core.elements import Transceiver, Fused, Regenerator
+    >>> source = Transceiver('trxa')
+    >>> destination = Transceiver('trxc')
+    >>> a = Fused('fuseda')
+    >>> c = Fused('fusedc')
+    >>> regen = Regenerator('regenb')
+    >>> path = [source, a, regen, c, destination]
+    >>> sections = decompose_path(path)
+    >>> for section in sections:
+    ...     [e.uid for e in section]
+    ... 
+    ['trxa', 'fuseda', 'regenb']
+    ['regenb', 'fusedc', 'trxc']
+
+    >>> decompose_path([], 2)
+    [[], []]
+    """
+    decomposed_path = []
+    section = []
+    if path:
+        for elem in path:
+            section.append(elem)
+            if isinstance(elem, Regenerator):
+                decomposed_path.append(section)
+                section = []
+                section.append(elem)
+        decomposed_path.append(section)
+    else:
+        for i in range(nb_decomposition):
+            decomposed_path.append([])
+    return decomposed_path
+
+
 def find_reversed_path(pth):
     """ select of intermediate roadms and find the path between them
         note that this function may not give an exact result in case of multiple
@@ -894,24 +934,30 @@ def find_reversed_path(pth):
     # the OrderedDict.fromkeys function does this. eg
     # pth = [el1_oms1 el2_oms1 el3_oms1 el1_oms2 el2_oms2 el3_oms2]
     # p_oms should be = [oms1 oms2]
-    p_oms = list(OrderedDict.fromkeys(reversed([el.oms.reversed_oms for el in pth
-                                                if not isinstance(el, Transceiver) and not isinstance(el, Roadm)])))
-    reversed_path = [pth[-1]]
-    for oms in p_oms:
-        if oms is not None:
-            reversed_path.extend(oms.el_list)
-            # similarly each oms starts and ends with a roadm so roadm may be repeated
-            # if we don't use the OrderedDict.fromkeys function. eg:
-            # if oms1 = [roadma el1 el2 roadmb] and oms2 = [roadmb el3 el4 roadmc]
-            # concatenation should be [roadma el1 el2 roadmb el3 el4 roadmc]
-            reversed_path = list(OrderedDict.fromkeys(reversed_path))
-        else:
-            msg = f'Error while handling reversed path {pth[-1].uid} to {pth[0].uid}:' +\
-                ' can not handle unidir topology. TO DO.'
-            LOGGER.critical(msg)
-            raise ValueError(msg)
-    reversed_path.append(pth[0])
 
+    # first decompose in regenerated sections
+    regen_sections = decompose_path(pth)
+    # for each section (reverse order) find the reverse path
+    reversed_path = []
+    for section in reversed(regen_sections):
+        p_oms = list(OrderedDict.fromkeys(reversed([el.oms.reversed_oms for el in section
+                                                    if not isinstance(el, (Transceiver, Roadm))])))
+        reversed_section = [section[-1]]
+        for oms in p_oms:
+            if oms is not None:
+                reversed_section.extend(oms.el_list)
+                # similarly each oms starts and ends with a roadm so roadm may be repeated
+                # if we don't use the OrderedDict.fromkeys function. eg:
+                # if oms1 = [roadma el1 el2 roadmb] and oms2 = [roadmb el3 el4 roadmc]
+                # concatenation should be [roadma el1 el2 roadmb el3 el4 roadmc]
+                reversed_section = list(OrderedDict.fromkeys(reversed_section))
+            else:
+                msg = f'Error while handling reversed path {section[-1].uid} to {section[0].uid}:' +\
+                    ' can not handle unidir topology. TO DO.'
+                LOGGER.critical(msg)
+                raise ValueError(msg)
+        reversed_path.extend(reversed_section)
+    reversed_path.append(pth[0])
     return reversed_path
 
 
