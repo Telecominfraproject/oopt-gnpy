@@ -27,7 +27,7 @@ from gnpy.topology.request import (ResultElement, jsontocsv, compute_path_dsjctn
                                    BLOCKING_NOPATH, correct_json_route_list,
                                    deduplicate_disjunctions, compute_path_with_disjunction,
                                    PathRequest, compute_constrained_path, propagate, correct_json_regen_list,
-                                   remove_regen_from_list, restore_regen_in_path)
+                                   remove_regen_from_list, restore_regen_in_path, decompose_req, decompose_path)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.json_io import load_equipment, load_network, load_json, load_requests, save_network, \
                                requests_from_json, disjunctions_from_json, save_json
@@ -292,6 +292,23 @@ def _path_result_json(pathresult):
     return {'response': [n.json for n in pathresult]}
 
 
+def decompose_into_regenerated_sections(propagatedpths, reversed_propagatedpths, rqs):
+    """ creates a set of decomposed section for each request for the final printing.
+    eg for a path rq1: txA-ROADMA-ROADMB-Regen-ROADMB-ROADMC-rxC
+    creates rq1-0: txA-ROADMA-ROADMB-Regen
+            rq1-1: Regen-ROADMB-ROADMC-rxC
+    """
+    decomposed_rqs = []
+    decomposed_propagatedpths = []
+    decomposed_reversed_propagatedpths = []
+    for req, path, reverse_path in zip(rqs, propagatedpths, reversed_propagatedpths):
+        decomposed_rq = decompose_req(req)
+        decomposed_rqs.extend(decomposed_rq)
+        decomposed_propagatedpths.extend(decompose_path(path, len(decomposed_rq)))
+        decomposed_reversed_propagatedpths.extend(decompose_path(reverse_path, len(decomposed_rq)))
+    return decomposed_propagatedpths, decomposed_reversed_propagatedpths, decomposed_rqs
+
+
 def path_requests_run(args=None):
     parser = argparse.ArgumentParser(
         description='Compute performance for a list of services provided in a json file or an excel sheet',
@@ -392,30 +409,33 @@ def path_requests_run(args=None):
               'N,M or blocking reason']
     data = []
     data.append(header)
-    for i, this_p in enumerate(propagatedpths):
-        rev_pth = reversed_propagatedpths[i]
-        if rev_pth and this_p:
-            psnrb = f'{round(mean(this_p[-1].snr),2)} ({round(mean(rev_pth[-1].snr),2)})'
-            psnr = f'{round(mean(this_p[-1].snr_01nm), 2)}' +\
-                f' ({round(mean(rev_pth[-1].snr_01nm),2)})'
-        elif this_p:
-            psnrb = f'{round(mean(this_p[-1].snr),2)}'
-            psnr = f'{round(mean(this_p[-1].snr_01nm),2)}'
+
+    decomposed_propagatedpths, decomposed_rev_pths, decomposed_rqs = \
+        decompose_into_regenerated_sections(propagatedpths, reversed_propagatedpths, rqs)
+
+    for req, path, reverse_path in zip(decomposed_rqs, decomposed_propagatedpths, decomposed_rev_pths):
+        if reverse_path and path:
+            psnrb = f'{round(mean(path[-1].snr),2)} ({round(mean(reverse_path[-1].snr),2)})'
+            psnr = f'{round(mean(path[-1].snr_01nm), 2)}' +\
+                f' ({round(mean(reverse_path[-1].snr_01nm),2)})'
+        elif path:
+            psnrb = f'{round(mean(path[-1].snr),2)}'
+            psnr = f'{round(mean(path[-1].snr_01nm),2)}'
 
         try:
-            if rqs[i].blocking_reason in BLOCKING_NOPATH:
-                line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} :',
-                        f'-', f'-', f'-', f'{rqs[i].trx_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}',
-                        f'-', f'{rqs[i].blocking_reason}']
+            if req.blocking_reason in BLOCKING_NOPATH:
+                line = [f'{req.request_id}', f' {req.source} to {req.destination} :',
+                        f'-', f'-', f'-', f'{req.trx_mode}', f'{round(req.path_bandwidth * 1e-9,2)}',
+                        f'-', f'{req.blocking_reason}']
             else:
-                line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,
-                        psnr, f'-', f'{rqs[i].trx_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
-                        f'-', f'{rqs[i].blocking_reason}']
+                line = [f'{req.request_id}', f' {req.source} to {req.destination} : ', psnrb,
+                        psnr, f'-', f'{req.trx_mode}', f'{round(req.path_bandwidth * 1e-9, 2)}',
+                        f'-', f'{req.blocking_reason}']
         except AttributeError:
-            line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,
-                    psnr, f'{rqs[i].OSNR + equipment["SI"]["default"].sys_margins}',
-                    f'{rqs[i].trx_mode}', f'{round(rqs[i].path_bandwidth * 1e-9,2)}',
-                    f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate) }', f'({rqs[i].N},{rqs[i].M})']
+            line = [f'{req.request_id}', f' {req.source} to {req.destination} : ', psnrb,
+                    psnr, f'{req.OSNR + equipment["SI"]["default"].sys_margins}',
+                    f'{req.trx_mode}', f'{round(req.path_bandwidth * 1e-9,2)}',
+                    f'{ceil(req.path_bandwidth / req.bit_rate) }', f'({req.N},{req.M})']
         data.append(line)
 
     col_width = max(len(word) for row in data for word in row[2:])   # padding
