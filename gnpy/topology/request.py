@@ -349,6 +349,13 @@ def propagate(path, req, equipment):
             si = el(si, degree=path[i+1].uid)
         else:
             si = el(si)
+        if isinstance(el, Regenerator):
+            el.update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
+            regen_spec = next(r for r in req.regen_list if r['regen_uid'] == el.uid)
+            si = create_input_spectral_information(
+                regen_spec['f_min'], regen_spec['f_max'], regen_spec['roll_off'], regen_spec['baud_rate'],
+                regen_spec['power'], regen_spec['spacing'])
+            el.update_emitter(si)
     path[0].update_snr(req.tx_osnr)
     if any(isinstance(el, Roadm) for el in path):
         path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
