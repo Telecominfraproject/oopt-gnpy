@@ -79,6 +79,27 @@ class PathRequest:
                             f'source:       {self.source}',
                             f'destination:  {self.destination}'])
 
+    @property
+    def regen_list_print(self):
+        """ Build a pretty string to summarize regenerator list in request
+        """
+        pretty_regen = ''
+        for regen in self.regen_list:
+            baud_rate = f'{regen["baud_rate"]*1e-9}  Gbaud' if regen["baud_rate"] is not None else 'Undetermined'
+            if 'trx_type' in regen.keys() and  'trx_mode' in regen.keys():
+                mode = f'{regen["trx_mode"]}' if regen["trx_mode"] is not None else 'Undetermined'
+                pretty_regen = pretty_regen + f'{regen["regen_uid"]} {regen["trx_type"]} {mode}\n\t\t' + \
+                               f'\t\tbaud rate: {baud_rate}\n\t\t' + \
+                               f'\t\tspacing: {regen["spacing"]*1e-9} GHz\n\t\t\t'
+            elif 'trx_type' in regen.keys():
+                pretty_regen = pretty_regen + f'{regen["regen_uid"]} {regen["trx_type"]}\n\t\t' + \
+                               f'\t\tbaud rate: {baud_rate} Gbaud\n\t\t' + \
+                               f'\t\tspacing: {regen["spacing"]*1e-9} GHz\n\t\t\t'
+            else:
+                pretty_regen = pretty_regen + f'{regen["regen_uid"]}\n\t\t\t'
+
+        return pretty_regen
+    
     def __repr__(self):
         if self.baud_rate is not None and self.bit_rate is not None:
             temp = self.baud_rate * 1e-9
@@ -87,21 +108,24 @@ class PathRequest:
             temp = self.baud_rate
             temp2 = self.bit_rate
 
-        return '\n\t'.join([f'{type(self).__name__} {self.request_id}',
-                            f'source: \t{self.source}',
-                            f'destination:\t{self.destination}',
-                            f'trx type:\t{self.trx_type}',
-                            f'trx mode:\t{self.trx_mode}',
-                            f'baud_rate:\t{temp} Gbaud',
-                            f'bit_rate:\t{temp2} Gb/s',
-                            f'spacing:\t{self.spacing * 1e-9} GHz',
-                            f'power:  \t{round(lin2db(self.power)+30, 2)} dBm',
-                            f'nb channels: \t{self.nb_channel}',
-                            f'path_bandwidth: \t{round(self.path_bandwidth * 1e-9, 2)} Gbit/s',
-                            f'nodes-list:\t{self.nodes_list}',
-                            f'loose-list:\t{self.loose_list}'
-                            '\n'])
+        pretty_print = [f'{type(self).__name__} {self.request_id}',
+                        f'source: \t{self.source}',
+                        f'destination:\t{self.destination}',
+                        f'trx type:\t{self.trx_type}',
+                        f'trx mode:\t{self.trx_mode}',
+                        f'baud_rate:\t{temp} Gbaud',
+                        f'bit_rate:\t{temp2} Gb/s',
+                        f'spacing:\t{self.spacing * 1e-9} GHz',
+                        f'power:  \t{round(lin2db(self.power)+30, 2)} dBm',
+                        f'nb channels: \t{self.nb_channel}',
+                        f'path_bandwidth: \t{round(self.path_bandwidth * 1e-9, 2)} Gbit/s',
+                        f'nodes-list:\t{self.nodes_list}',
+                        f'loose-list:\t{self.loose_list}\n']
+        if self.regen_list_print != '':
+            pretty_print.extend([f'regen-list:\t{self.regen_list_print}', '\n'])
 
+        return '\n\t'.join(pretty_print)
+ 
 
 class Disjunction:
     """ the class that contains all attributes related to disjunction constraints
