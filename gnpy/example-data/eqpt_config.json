@@ -341,6 +341,27 @@
                        }
                    ]
             }
-      ]
+      ],
+      "Regenerator":[
+            {
+            "type_variety": "vendorA_trx-type1",
+            "frequency":{
+                        "min": 191.35e12,
+                        "max": 196.1e12
+                        },
+            "mode":[
+                       {
 
+                       "format": "mode 1",
+                       "baud_rate": 32e9,
+                       "OSNR": 11,
+                       "bit_rate": 100e9,
+                       "roll_off": 0.15,
+                       "tx_osnr": 40,
+                       "min_spacing": 37.5e9,
+                       "cost":1
+                       }
+                    ]
+          }
+        ]
 }
