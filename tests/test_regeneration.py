@@ -302,3 +302,53 @@ def test_read_service_with_regen(setup, equipment,
                 # check the baudrate only, use the first carrier
                 assert elem.baud_rate[0] == trx_mode_params(equipment, reg_type, reg_mode)['baud_rate']
                 j = j + 1
+
+
+@pytest.mark.parametrize('regen', (['regen node B'], ['regen node B', 'regen node C']))
+def test_regen_section(setup, equipment, regen):
+    """ check that the regenerated SNR of each section gives the same result as a the list of independant requests
+    for each section (inc txOSNR and add-drop OSNR)
+    """
+    network = setup
+    temp1 = ['' for e in regen]
+    temp2 = [None for e in regen]
+    json = json_request('trx node A', 'trx node D', True, regen, temp1, temp2, temp2, temp2)
+    rqs = requests_from_json({'path-request': [json]}, equipment)
+    rqs = correct_json_regen_list(network, equipment, rqs)
+    rqs = remove_regen_from_list(network, rqs)
+    pths = compute_path_dsjctn(network, equipment, rqs, [])
+    expected_path = ['trx node A', 'roadm node A', 'Edfa0_roadm node A', 'fiber (node A → ila1)-',
+                     'Edfa0_fiber (node A → ila1)-', 'fiber (ila1 → ila2)-', 'Edfa0_fiber (ila1 → ila2)-',
+                     'fiber (ila2 → node B)-', 'Edfa0_fiber (ila2 → node B)-', 'roadm node B',
+                     'Edfa1_roadm node B', 'fiber (node B → ila3)-', 'Edfa0_fiber (node B → ila3)-',
+                     'fiber (ila3 → ila4)-', 'Edfa0_fiber (ila3 → ila4)-', 'fiber (ila4 → node C)-',
+                     'Edfa0_fiber (ila4 → node C)-', 'roadm node C', 'Edfa1_roadm node C',
+                     'fiber (node C → ila5)-', 'Edfa0_fiber (node C → ila5)-', 'fiber (ila5 → ila6)-',
+                     'Edfa0_fiber (ila5 → ila6)-', 'fiber (ila6 → node D)-', 'Edfa0_fiber (ila6 → node D)-',
+                     'roadm node D', 'trx node D']
+    assert [e.uid for e in pths[0]] == expected_path
+    pths = restore_regen_in_path(network, rqs, pths)
+
+    propagatedpths, reversed_pths, reversed_propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
+    path = propagatedpths[0]
+    sections = [e for e in path[1:] if isinstance(e, Transceiver)]
+    expected_sections = []
+    source = 'trx node A'
+    for elem in sections:
+        dest = elem.uid.replace('regen', 'trx')
+        print(source, dest)
+        json_section_data = json_data(equipment, source, dest)
+        expected_rqs = requests_from_json(json_section_data, equipment)
+        # expected_rqs = correct_json_route_list(network, expected_rqs)
+        expected_pths = compute_path_dsjctn(network, equipment, expected_rqs, [])
+        expected_propagated, _, _ = compute_path_with_disjunction(network, equipment, expected_rqs, expected_pths)
+        assert elem.snr_01nm == expected_propagated[0][-1].snr_01nm
+        source = dest
+
+# select a place for a regen:
+# simple algorithm: same type/mode as source
+# if source type and mode are selected and path is not feasible find a regen place where a regenerator exists
+# an unfeasible OMS means that no regen can solve this, so the path is set to unfeasible
+# if source mode is not specified, use another criterium from the user. default is highest baudrate/highest bitrate
+
+# check before and after propagation and for reversed path
