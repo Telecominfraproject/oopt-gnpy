@@ -1,0 +1,529 @@
+{
+  "path-request": [
+    {
+      "request-id": "0",
+      "source": "trx node A",
+      "destination": "trx node C",
+      "src-tp-id": "trx node A",
+      "dst-tp-id": "trx node C",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 1",
+          "effective-freq-slot": [
+            {
+              "N": null,
+              "M": null
+            }
+          ],
+          "spacing": 50000000000.0,
+          "path_bandwidth": 100e9
+        }
+      },
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 0,
+            "num-unnum-hop": {
+              "node-id": "regen node B",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "STRICT"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request-id": "0bis",
+      "source": "trx node A",
+      "destination": "trx node C",
+      "src-tp-id": "trx node A",
+      "dst-tp-id": "trx node C",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 1",
+          "effective-freq-slot": [
+            {
+              "N": null,
+              "M": null
+            }
+          ],
+          "spacing": 50e9,
+          "path_bandwidth": 100e9
+        }
+      },
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 0,
+            "num-unnum-hop": {
+              "node-id": "regen node B",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "STRICT"
+            }
+          },
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 1,
+            "regenerator": {
+              "technology": "flexi-grid",
+              "trx_type": "vendorA_trx-type1",
+              "trx_mode": "mode 1",
+              "effective-freq-slot": [
+                {
+                  "N": null,
+                  "M": null
+                }
+              ],
+              "spacing": 50e9
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request-id": "0ter",
+      "source": "trx node A",
+      "destination": "trx node C",
+      "src-tp-id": "trx node A",
+      "dst-tp-id": "trx node C",
+      "bidirectional": true,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 1",
+          "effective-freq-slot": [
+            {
+              "N": null,
+              "M": null
+            }
+          ],
+          "spacing": 50e9,
+          "path_bandwidth": 100e9
+        }
+      },
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 0,
+            "num-unnum-hop": {
+              "node-id": "regen node B",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "STRICT"
+            }
+          },
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 1,
+            "regenerator": {
+              "technology": "flexi-grid",
+              "trx_type": "Voyager",
+              "trx_mode": "mode 1",
+              "effective-freq-slot": [
+                {
+                  "N": null,
+                  "M": null
+                }
+              ],
+              "spacing": 100e9
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request-id": "1",
+      "source": "trx node A",
+      "destination": "trx node C",
+      "src-tp-id": "trx node A",
+      "dst-tp-id": "trx node C",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 1",
+          "effective-freq-slot": [
+            {
+              "N": null,
+              "M": null
+            }
+          ],
+          "spacing": 50000000000.0,
+          "path_bandwidth": 100e9
+        }
+      },
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 0,
+            "num-unnum-hop": {
+              "node-id": "regen node B",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "STRICT"
+            }
+          },
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 1,
+            "regenerator": {
+              "trx-type": "Voyager",
+              "trx-mode": "mode 1",
+              "effective-freq-slot": [
+                {
+                  "N": null,
+                  "M": null
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request-id": "1b",
+      "source": "trx node A",
+      "destination": "trx node C",
+      "src-tp-id": "trx node A",
+      "dst-tp-id": "trx node C",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 1",
+          "effective-freq-slot": [
+            {
+              "N": null,
+              "M": null
+            }
+          ],
+          "spacing": 50000000000.0,
+          "path_bandwidth": 100e9
+        }
+      },
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 0,
+            "num-unnum-hop": {
+              "node-id": "roadm node B",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "STRICT"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request-id": "bc",
+      "source": "trx node B",
+      "destination": "trx node C",
+      "src-tp-id": "trx node B",
+      "dst-tp-id": "trx node C",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 1",
+          "effective-freq-slot": [
+            {
+              "N": null,
+              "M": null
+            }
+          ],
+          "spacing": 50000000000.0,
+          "path_bandwidth": 100e9
+        }
+      }
+    },
+    {
+      "request-id": "2",
+      "source": "trx node A",
+      "destination": "trx node C",
+      "src-tp-id": "trx node A",
+      "dst-tp-id": "trx node C",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 1",
+          "effective-freq-slot": [
+            {
+              "N": null,
+              "M": null
+            }
+          ],
+          "spacing": 50000000000.0,
+          "path_bandwidth": 100e9
+        }
+      },
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 0,
+            "num-unnum-hop": {
+              "node-id": "roadm node B",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "STRICT"
+            }
+          },
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 1,
+            "num-unnum-hop": {
+              "node-id": "regen node B",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "STRICT"
+            }
+          },
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 2,
+            "num-unnum-hop": {
+              "node-id": "roadm node B",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "STRICT"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request-id": "3",
+      "source": "trx node A",
+      "destination": "trx node C",
+      "src-tp-id": "trx node A",
+      "dst-tp-id": "trx node C",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": null,
+          "effective-freq-slot": [
+            {
+              "N": null,
+              "M": null
+            }
+          ],
+          "spacing": 50000000000.0,
+          "path_bandwidth": 100e9
+        }
+      },
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 0,
+            "num-unnum-hop": {
+              "node-id": "regen node B",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "STRICT"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request-id": "4",
+      "source": "trx node A",
+      "destination": "trx node D",
+      "src-tp-id": "trx node A",
+      "dst-tp-id": "trx node D",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": null,
+          "effective-freq-slot": [
+            {
+              "N": null,
+              "M": null
+            }
+          ],
+          "spacing": 50000000000.0,
+          "path_bandwidth": 100e9
+        }
+      },
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 0,
+            "num-unnum-hop": {
+              "node-id": "regen node B",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "STRICT"
+            }
+          },
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 1,
+            "num-unnum-hop": {
+              "node-id": "regen node C",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "STRICT"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request-id": "5",
+      "source": "trx node A",
+      "destination": "trx node D",
+      "src-tp-id": "trx node A",
+      "dst-tp-id": "trx node D",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": null,
+          "effective-freq-slot": [
+            {
+              "N": null,
+              "M": null
+            }
+          ],
+          "spacing": 50000000000.0,
+          "path_bandwidth": 100e9
+        }
+      },
+      "explicit-route-objects": {
+        "route-object-include-exclude": [
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 0,
+            "num-unnum-hop": {
+              "node-id": "regen node B",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "STRICT"
+            }
+          },
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 1,
+            "regenerator": {
+              "technology": "flexi-grid",
+              "trx_type": "Voyager",
+              "trx_mode": "mode 1",
+              "effective-freq-slot": [
+                {
+                  "N": null,
+                  "M": null
+                }
+              ],
+              "spacing": 50e9
+            }
+          },
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 2,
+            "num-unnum-hop": {
+              "node-id": "regen node C",
+              "link-tp-id": "link-tp-id is not used",
+              "hop-type": "STRICT"
+            }
+          },
+          {
+            "explicit-route-usage": "route-include-ero",
+            "index": 3,
+            "regenerator": {
+              "technology": "flexi-grid",
+              "trx_type": "Voyager",
+              "trx_mode": null,
+              "effective-freq-slot": [
+                {
+                  "N": null,
+                  "M": null
+                }
+              ],
+              "spacing": 50e9
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request-id": "ad",
+      "source": "trx node A",
+      "destination": "trx node D",
+      "src-tp-id": "trx node A",
+      "dst-tp-id": "trx node D",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 2",
+          "effective-freq-slot": [
+            {
+              "N": null,
+              "M": null
+            }
+          ],
+          "spacing": 75000000000.0,
+          "path_bandwidth": 100e9
+        }
+      },
+      "optimizations": {
+        "objective-function": {
+          "objective-function-type": "shortest_path",
+          "preferences": {
+            "regeneration": "regeneration",
+            "wavelength-assignment": "first_fit"
+          }
+        }
+      }
+    },
+    {
+      "request-id": "cd",
+      "source": "trx node C",
+      "destination": "trx node D",
+      "src-tp-id": "trx node C",
+      "dst-tp-id": "trx node D",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "Voyager",
+          "trx_mode": "mode 2",
+          "effective-freq-slot": [
+            {
+              "N": null,
+              "M": null
+            }
+          ],
+          "spacing": 75000000000.0,
+          "path_bandwidth": 100e9
+        }
+      },
+      "optimizations": {
+        "objective-function": {
+          "objective-function-type": "shortest_path",
+          "preferences": {
+            "regeneration": "no regeneration",
+            "wavelength-assignment": "first_fit"
+          }
+        }
+      }
+    }
+  ]
+}
