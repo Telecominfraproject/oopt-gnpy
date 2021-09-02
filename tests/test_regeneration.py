@@ -23,7 +23,8 @@ from gnpy.core.equipment import trx_mode_params
 from gnpy.core.utils import lin2db, automatic_nch
 from gnpy.core.exceptions import ServiceError
 from gnpy.tools.json_io import load_equipment, load_network, requests_from_json, save_network, load_json
-from gnpy.topology.request import correct_json_route_list, correct_json_regen_list
+from gnpy.topology.request import (correct_json_route_list, correct_json_regen_list, compute_path_dsjctn,
+                                   restore_regen_in_path, compute_path_with_disjunction, remove_regen_from_list)
 from gnpy.topology.spectrum_assignment import build_oms_list
 
 from tests.compare import compare_networks
@@ -210,7 +211,8 @@ def test_read_service_with_regen(setup, equipment,
                                  source, destination, regen_nodes, route_prev_nodes, check_prev_nodes, spacing,
                                  bidir,
                                  regen_type, regen_mode):
-    """ creates a service with different configuration of regenerators
+    """ creates a service with different configuration of regenerators, and use them to compute path and propagate
+    verifies that created path is set according to request
     """
     network = setup
     json = json_request(source, destination, bidir,regen_nodes, route_prev_nodes, regen_type, regen_mode, spacing)
@@ -232,6 +234,7 @@ def test_read_service_with_regen(setup, equipment,
         rqs = requests_from_json(json_data, equipment)
         rqs = correct_json_route_list(network, rqs)
         rqs = correct_json_regen_list(network, equipment, rqs)
+        rqs = remove_regen_from_list(network, rqs)
         # check that if regen type is not specifed, the regen is set to the default
         defaul_trx_type = json['path-constraints']['te-bandwidth']['trx_type']
         default_trx_mode = json['path-constraints']['te-bandwidth']['trx_mode']
@@ -243,3 +246,59 @@ def test_read_service_with_regen(setup, equipment,
             else:
                 assert node['trx_type'] == defaul_trx_type
                 assert node['trx_mode'] == default_trx_mode
+        # reproduce the same process as in cli and check the path
+        pths = compute_path_dsjctn(network, equipment, rqs, [])
+        if destination == 'trx node C':
+            expected_path = ['trx node A', 'roadm node A', 'Edfa0_roadm node A', 'fiber (node A → ila1)-',
+                             'Edfa0_fiber (node A → ila1)-', 'fiber (ila1 → ila2)-', 'Edfa0_fiber (ila1 → ila2)-',
+                             'fiber (ila2 → node B)-', 'Edfa0_fiber (ila2 → node B)-', 'roadm node B',
+                             'Edfa1_roadm node B', 'fiber (node B → ila3)-', 'Edfa0_fiber (node B → ila3)-',
+                             'fiber (ila3 → ila4)-', 'Edfa0_fiber (ila3 → ila4)-', 'fiber (ila4 → node C)-',
+                             'Edfa0_fiber (ila4 → node C)-', 'roadm node C', 'trx node C']
+        elif destination == 'trx node D':
+            expected_path = ['trx node A', 'roadm node A', 'Edfa0_roadm node A', 'fiber (node A → ila1)-',
+                             'Edfa0_fiber (node A → ila1)-', 'fiber (ila1 → ila2)-', 'Edfa0_fiber (ila1 → ila2)-',
+                             'fiber (ila2 → node B)-', 'Edfa0_fiber (ila2 → node B)-', 'roadm node B',
+                             'Edfa1_roadm node B', 'fiber (node B → ila3)-', 'Edfa0_fiber (node B → ila3)-',
+                             'fiber (ila3 → ila4)-', 'Edfa0_fiber (ila3 → ila4)-', 'fiber (ila4 → node C)-',
+                             'Edfa0_fiber (ila4 → node C)-', 'roadm node C', 'Edfa1_roadm node C',
+                             'fiber (node C → ila5)-', 'Edfa0_fiber (node C → ila5)-', 'fiber (ila5 → ila6)-',
+                             'Edfa0_fiber (ila5 → ila6)-', 'fiber (ila6 → node D)-', 'Edfa0_fiber (ila6 → node D)-',
+                             'roadm node D', 'trx node D']
+        assert [e.uid for e in pths[0]] == expected_path
+
+        pths = restore_regen_in_path(network, rqs, pths)
+        propagatedpths, reversed_pths, reversed_propagatedpths = \
+            compute_path_with_disjunction(network, equipment, rqs, pths)
+
+        # behaviour tests:
+        # check that the path is correctly going through the listed regen(s) with relevant modes when specified
+        # check that the bidir path is correctly implemented with a regen at the same roadm place for both directions
+        all_pths = [pths[0], list(reversed(reversed_pths[0])),
+                    propagatedpths[0], list(reversed(reversed_propagatedpths[0]))]
+        for pth in all_pths:
+            reg_nodes = [n.uid for n in pth if isinstance(n, Regenerator)]
+            reg_prev_nodes = [pth[i - 1].uid for i, n in enumerate(pth) if isinstance(n, Regenerator)]
+            reg_next_nodes = [pth[i + 1].uid for i, n in enumerate(pth) if isinstance(n, Regenerator)]
+            for rnode, prev_node, next_node, reg, check_prev_node in \
+                    zip(reg_nodes, reg_prev_nodes, reg_next_nodes, regen_nodes, check_prev_nodes):
+                # assert regen is correctly part of the path
+                assert rnode == reg
+                # check that the regen in path is correctly placed between the two roadm instances
+                assert check_prev_node == prev_node
+                assert check_prev_node == next_node
+        j = 0
+        for elem in propagatedpths[0]:
+            if isinstance(elem, Regenerator):
+                # check that  the regen caracteristics correspond to the one specified
+                if regen_type[j] is None:
+                    reg_type = defaul_trx_type
+                else:
+                    reg_type = regen_type[j]
+                if regen_mode[j] is None:
+                    reg_mode = default_trx_mode
+                else:
+                    reg_mode = regen_mode[j]
+                # check the baudrate only, use the first carrier
+                assert elem.baud_rate[0] == trx_mode_params(equipment, reg_type, reg_mode)['baud_rate']
+                j = j + 1
