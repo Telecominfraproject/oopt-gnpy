@@ -967,6 +967,7 @@ def compare_reqs(req1, req2, disjlist):
             req1.baud_rate == req2.baud_rate and \
             req1.nodes_list == req2.nodes_list and \
             req1.loose_list == req2.loose_list and \
+            req1.regen_list == req2.regen_list and \
             req1.spacing == req2.spacing and \
             req1.power == req2.power and \
             req1.nb_channel == req2.nb_channel and \
