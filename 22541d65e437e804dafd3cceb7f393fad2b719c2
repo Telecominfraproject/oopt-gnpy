@@ -16,6 +16,23 @@
       "message": "Thanks!",
       "revId": "22541d65e437e804dafd3cceb7f393fad2b719c2",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41923a95_37798d3c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-09-07T14:27:22Z",
+      "side": 1,
+      "message": "I wonder if it would be easier to just always initialize both M and N, possibly to None if there\u0027s no effective-freq-slot. Less potential for forgotten checks like this one that way...",
+      "revId": "22541d65e437e804dafd3cceb7f393fad2b719c2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
