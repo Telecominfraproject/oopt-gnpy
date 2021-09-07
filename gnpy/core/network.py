@@ -516,7 +516,7 @@ def build_network(network, equipment, pref_ch_db, pref_total_db):
     max_length = int(convert_length(default_span_data.max_length, default_span_data.length_units))
     min_length = max(int(default_span_data.padding / 0.2 * 1e3), 50_000)
     bounds = range(min_length, max_length)
-    target_length = max(min_length, 90_000)
+    target_length = max(min_length, min(max_length, 90_000))
 
     # set roadm loss for gain_mode before to build network
     fibers = [f for f in network.nodes() if isinstance(f, elements.Fiber)]
