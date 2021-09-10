@@ -104,6 +104,24 @@
       "parentUuid": "c3d78413_9917886d",
       "revId": "63312befbeffca6bd01239a6d62d815ee1c4d9d5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9103071_3cf1ae3d",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-09-10T15:20:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f741490_ac23476d",
+      "revId": "63312befbeffca6bd01239a6d62d815ee1c4d9d5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
