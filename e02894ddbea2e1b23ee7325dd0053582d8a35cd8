@@ -53,6 +53,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f8a7aff_eadd5d5e",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-09-10T16:16:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dfc88daf_01858a29",
+      "revId": "e02894ddbea2e1b23ee7325dd0053582d8a35cd8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "921a9d17_9d189ed9",
@@ -84,6 +102,24 @@
       "side": 1,
       "message": "Corrected, thanks !",
       "parentUuid": "921a9d17_9d189ed9",
+      "revId": "e02894ddbea2e1b23ee7325dd0053582d8a35cd8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60b3a15a_28a933ba",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-09-10T16:16:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66ae76e5_9543dbd2",
       "revId": "e02894ddbea2e1b23ee7325dd0053582d8a35cd8",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -123,6 +159,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac1f919a_68e72d43",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-09-10T16:16:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54db5583_5b590728",
+      "revId": "e02894ddbea2e1b23ee7325dd0053582d8a35cd8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "447af4d9_f77b66a9",
@@ -154,6 +208,24 @@
       "side": 1,
       "message": "OK, done !",
       "parentUuid": "447af4d9_f77b66a9",
+      "revId": "e02894ddbea2e1b23ee7325dd0053582d8a35cd8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0063cd4_90dcbeb7",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-09-10T16:16:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30bab88c_60b7c34d",
       "revId": "e02894ddbea2e1b23ee7325dd0053582d8a35cd8",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
