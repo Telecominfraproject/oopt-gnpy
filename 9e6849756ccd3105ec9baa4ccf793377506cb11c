@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e96888a_aa811af2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-09-10T16:38:48Z",
+      "side": 1,
+      "message": "Following discussion on the coders code, the print per baud rate does not seem relevant (only for ROADMs). I propose to change this into a print per user defined spectrum band.\nI will update this commit accordingly. ",
+      "revId": "9e6849756ccd3105ec9baa4ccf793377506cb11c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
