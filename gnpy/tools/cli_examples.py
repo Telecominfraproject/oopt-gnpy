@@ -103,6 +103,9 @@ def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
                         help='Save the final network as a JSON file')
     parser.add_argument('--save-network-before-autodesign', type=Path, metavar=_help_fname_json,
                         help='Dump the network into a JSON file prior to autodesign')
+    parser.add_argument('--no-insert-edfas', action='store_true',
+                        help='Disable insertion of EDFAs after ROADMs and fibers '
+                             'as well as splitting of fibers by auto-design.')
 
 
 def transmission_main_example(args=None):
@@ -201,7 +204,7 @@ def transmission_main_example(args=None):
     pref_ch_db = lin2db(req.power * 1e3)  # reference channel power / span (SL=20dB)
     pref_total_db = pref_ch_db + lin2db(req.nb_channel)  # reference total power / span (SL=20dB)
     try:
-        build_network(network, equipment, pref_ch_db, pref_total_db)
+        build_network(network, equipment, pref_ch_db, pref_total_db, args.no_insert_edfas)
     except exceptions.NetworkTopologyError as e:
         print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
         sys.exit(1)
@@ -318,7 +321,7 @@ def path_requests_run(args=None):
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
                                              equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     try:
-        build_network(network, equipment, p_db, p_total_db)
+        build_network(network, equipment, p_db, p_total_db, args.no_insert_edfas)
     except exceptions.NetworkTopologyError as e:
         print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
         sys.exit(1)

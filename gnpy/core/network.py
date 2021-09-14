@@ -511,7 +511,7 @@ def add_fiber_padding(network, fibers, padding):
                 first_fiber.params.att_in = first_fiber.params.att_in + padding - this_span_loss
 
 
-def build_network(network, equipment, pref_ch_db, pref_total_db):
+def build_network(network, equipment, pref_ch_db, pref_total_db, no_insert_edfas=False):
     default_span_data = equipment['Span']['default']
     max_length = int(convert_length(default_span_data.max_length, default_span_data.length_units))
     min_length = max(int(default_span_data.padding / 0.2 * 1e3), 50_000)
@@ -524,17 +524,20 @@ def build_network(network, equipment, pref_ch_db, pref_total_db):
     add_fiber_padding(network, fibers, default_span_data.padding)
     # don't group split fiber and add amp in the same loop
     # =>for code clarity (at the expense of speed):
-    for fiber in fibers:
-        split_fiber(network, fiber, bounds, target_length, equipment)
 
     roadms = [r for r in network.nodes() if isinstance(r, elements.Roadm)]
-    for roadm in roadms:
-        add_roadm_preamp(network, roadm)
-        add_roadm_booster(network, roadm)
 
-    fibers = [f for f in network.nodes() if isinstance(f, elements.Fiber)]
-    for fiber in fibers:
-        add_inline_amplifier(network, fiber)
+    if not no_insert_edfas:
+        for fiber in fibers:
+            split_fiber(network, fiber, bounds, target_length, equipment)
+
+        for roadm in roadms:
+            add_roadm_preamp(network, roadm)
+            add_roadm_booster(network, roadm)
+
+        fibers = [f for f in network.nodes() if isinstance(f, elements.Fiber)]
+        for fiber in fibers:
+            add_inline_amplifier(network, fiber)
 
     for roadm in roadms:
         set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db)
