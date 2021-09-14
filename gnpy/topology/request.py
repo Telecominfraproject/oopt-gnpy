@@ -974,7 +974,8 @@ def compare_reqs(req1, req2, disjlist):
             req1.OSNR == req2.OSNR and \
             req1.roll_off == req2.roll_off and \
             same_disj and \
-            req1.N is None and req2.N is None and req1.M is None and req2.M is None:
+            getattr(req1, 'N', None) is None and getattr(req2, 'N', None) is None and \
+            getattr(req1, 'M', None) is None and getattr(req2, 'M', None) is None:
         return True
     else:
         return False
