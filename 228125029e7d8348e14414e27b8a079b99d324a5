@@ -33,6 +33,23 @@
       "message": "recheck",
       "revId": "228125029e7d8348e14414e27b8a079b99d324a5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91866b27_12a59568",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-09-14T14:38:33Z",
+      "side": 1,
+      "message": "When I take the OpenROADM topology and adapt it for the worst-case definitions from OpenROADMv5, I get a better (!) result than with the old OpenROADM equipment. It\u0027s almost 0.4dB.\n\nHere\u0027s how to reproduce:\n \nsed s/openroadm_mw_mw_preamp/openroadm_mw_mw_preamp_worstcase_ver5/g \\\n  gnpy/example-data/Sweden_OpenROADM_example_network.json \\\n  \u003e gnpy/example-data/Sweden_OpenROADMv5_example_network.json\n \ngnpy-transmission-example -e gnpy/example-data/eqpt_config_openroadm_ver5.json \\\n  gnpy/example-data/Sweden_OpenROADMv5_example_network.json \\\n  \u003e tests/invocation/openroadm-v5-Stockholm-Gothenburg\n \ndiff -u tests/invocation/openroadm-Stockholm-Gothenburg \\\n  tests/invocation/openroadm-v5-Stockholm-Gothenburg\n\nIs the code producing expected results for you?",
+      "revId": "228125029e7d8348e14414e27b8a079b99d324a5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
