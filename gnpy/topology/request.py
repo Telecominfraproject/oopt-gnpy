@@ -78,7 +78,7 @@ class PathRequest:
                             f'destination:  {self.destination}'])
 
     def __repr__(self):
-        if self.baud_rate is not None:
+        if self.baud_rate is not None and self.bit_rate is not None:
             temp = self.baud_rate * 1e-9
             temp2 = self.bit_rate * 1e-9
         else:
