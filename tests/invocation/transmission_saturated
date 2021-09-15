@@ -12,7 +12,7 @@ max flat gain: 16dB ; required gain: 23.0dB. Please check amplifier type.
     a power reduction of -1.82 is applied
 
 [1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Lannion_CAS to Morlaix is above user specified amplifier std_low_gain
-max flat gain: 16dB ; required gain: 23.0dB. Please check amplifier type.
+max flat gain: 16dB ; required gain: 23.5dB. Please check amplifier type.
 [1;31;40mWARNING:[0m target gain and power in node west edfa in Brest_KLA to Morlaix
      is beyond all available amplifiers capabilities and/or extended_gain_range:
     a power reduction of -1.82 is applied
