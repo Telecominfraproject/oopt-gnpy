@@ -14,8 +14,10 @@ SRC_ROOT = Path(__file__).parent.parent
     ('path_requests_run', path_requests_run, []),
     ('transmission_main_example__raman', transmission_main_example,
      ['gnpy/example-data/raman_edfa_example_network.json', '--sim', 'gnpy/example-data/sim_params.json', '--show-channels', ]),
-    ('openroadm-Stockholm-Gothenburg', transmission_main_example,
-     ['-e', 'gnpy/example-data/eqpt_config_openroadm.json', 'gnpy/example-data/Sweden_OpenROADM_example_network.json', ]),
+    ('openroadm-v4-Stockholm-Gothenburg', transmission_main_example,
+     ['-e', 'gnpy/example-data/eqpt_config_openroadm_ver4.json', 'gnpy/example-data/Sweden_OpenROADMv4_example_network.json', ]),
+    ('openroadm-v5-Stockholm-Gothenburg', transmission_main_example,
+     ['-e', 'gnpy/example-data/eqpt_config_openroadm_ver5.json', 'gnpy/example-data/Sweden_OpenROADMv5_example_network.json', ]),
 ))
 def test_example_invocation(capfd, output, handler, args):
     '''Make sure that our examples produce useful output'''

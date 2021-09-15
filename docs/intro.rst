@@ -92,4 +92,4 @@ As a result transponder type is not part of the network info. it is related to t
 
 The current version includes a spectrum assigment features that enables to compute a candidate spectrum assignment for each service based on a first fit policy. Spectrum is assigned based on service specified spacing value, path_bandwidth value and selected mode for the transceiver. This spectrum assignment includes a basic capacity planning capability so that the spectrum resource is limited by the frequency min and max values defined for the links. If the requested services reach the link spectrum capacity, additional services feasibility are computed but marked as blocked due to spectrum reason.
 
-OpenROADM networks can be simulated via ``gnpy/example-data/eqpt_config_openroadm.json`` -- see ``gnpy/example-data/Sweden_OpenROADM_example_network.json`` as an example. 
+OpenROADM networks can be simulated via ``gnpy/example-data/eqpt_config_openroadm_*.json`` -- see ``gnpy/example-data/Sweden_OpenROADM*_example_network.json`` as an example. 
