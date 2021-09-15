@@ -16,6 +16,24 @@
       "message": "I do not understand the comment and the code -- how do they fit together? Can you please describe that in more detail?",
       "revId": "16f215588b354a2dde0a3501e55c377c3cd42bb0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "214fe05c_c1290fca",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-09-15T13:54:21Z",
+      "side": 1,
+      "message": "I see your point: I mixed gain and power for the explanation.\nTarget power specified by user is req_power + element.delta_p. given the nb of channels and the max amplifier\u0027s power, each channel can only have at most pch_max.\nif req_power + element.delta_p, is above pch_max, then the amp saturates: this means that it can not satisfy this target, but limits the channel power to pch_max and its gain will not be  the one that was set during design.\nIt is enough to test the effective power out of the amp, though, since the gain is just computed based on that.\nDoes this clarify the code ?",
+      "parentUuid": "459fa117_75d7e7f2",
+      "revId": "16f215588b354a2dde0a3501e55c377c3cd42bb0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
