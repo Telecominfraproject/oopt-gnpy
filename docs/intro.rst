@@ -20,7 +20,6 @@ This example demonstrates how GNPy can be used to check the expected SNR at the 
    :width: 100%
    :align: left
    :alt: Running a simple simulation example
-   :target: https://asciinema.org/a/252295
 
 By default, this script operates on a single span network defined in
 `gnpy/example-data/edfa_example_network.json <gnpy/example-data/edfa_example_network.json>`_
