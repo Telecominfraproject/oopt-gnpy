@@ -1,0 +1,199 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc8f5646_debddbd4",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-09-15T12:54:16Z",
+      "side": 1,
+      "message": "This seems unusual to me. Rather than comparing \"everything\", including location data, the passive flag, etc., why not compare \"just the relevant data\"? That would better match the description of the test, IMHO.",
+      "range": {
+        "startLine": 346,
+        "startChar": 0,
+        "endLine": 384,
+        "endChar": 51
+      },
+      "revId": "5b0c7f27071ff33073d434e57299dff97f79d310",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c9546c3_b5427372",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-09-15T12:54:16Z",
+      "side": 1,
+      "message": "I read the comment in another patch which said that these comments are useful for structuring the code (my paraphrased wording). That said, I do not know the context you had when these were written, and therefore I don\u0027t know what the difference between \"CC\" and \"DD\" really is. That\u0027s why I\u0027ve removed these comments.",
+      "revId": "5b0c7f27071ff33073d434e57299dff97f79d310",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7cd3e98_38c9c7c4",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-09-15T12:54:16Z",
+      "side": 1,
+      "message": "I\u0027ve changed these names because these functions compute a number, they do not perform a verification.",
+      "range": {
+        "startLine": 407,
+        "startChar": 4,
+        "endLine": 407,
+        "endChar": 21
+      },
+      "revId": "5b0c7f27071ff33073d434e57299dff97f79d310",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5125027a_85886fee",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-09-15T12:54:16Z",
+      "side": 1,
+      "message": "I (still) think that it\u0027s better to explicitly spell out the four possible options which are described by this matrix as inline comments in the code. I\u0027ve done just that in a new patchset.",
+      "range": {
+        "startLine": 410,
+        "startChar": 0,
+        "endLine": 417,
+        "endChar": 69
+      },
+      "revId": "5b0c7f27071ff33073d434e57299dff97f79d310",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edc765d2_a5e27247",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-09-15T12:54:16Z",
+      "side": 1,
+      "message": "this comment was the same as for the opposite if clause, fixed.",
+      "range": {
+        "startLine": 437,
+        "startChar": 12,
+        "endLine": 437,
+        "endChar": 39
+      },
+      "revId": "5b0c7f27071ff33073d434e57299dff97f79d310",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c3ef592_9903d9d6",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-09-15T12:54:16Z",
+      "side": 1,
+      "message": "this branch is never taken; is that expected?",
+      "range": {
+        "startLine": 438,
+        "startChar": 0,
+        "endLine": 444,
+        "endChar": 57
+      },
+      "revId": "5b0c7f27071ff33073d434e57299dff97f79d310",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a43a66a_1b3e871c",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-09-15T12:54:16Z",
+      "side": 1,
+      "message": "what does \"augmentation\" refer to here? Can you please rephrase?",
+      "range": {
+        "startLine": 469,
+        "startChar": 18,
+        "endLine": 469,
+        "endChar": 30
+      },
+      "revId": "5b0c7f27071ff33073d434e57299dff97f79d310",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61eea63a_5b7ebed1",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-09-15T12:54:16Z",
+      "side": 1,
+      "message": "this was not true anymore, changed.",
+      "revId": "5b0c7f27071ff33073d434e57299dff97f79d310",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6527ef1e_8b16c374",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-09-15T12:54:16Z",
+      "side": 1,
+      "message": "I\u0027ve removed this one because the exact same comment was in the helper function already",
+      "range": {
+        "startLine": 547,
+        "startChar": 0,
+        "endLine": 554,
+        "endChar": 95
+      },
+      "revId": "5b0c7f27071ff33073d434e57299dff97f79d310",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
