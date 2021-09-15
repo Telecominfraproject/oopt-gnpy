@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "459fa117_75d7e7f2",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-09-15T12:54:16Z",
+      "side": 1,
+      "message": "I do not understand the comment and the code -- how do they fit together? Can you please describe that in more detail?",
+      "revId": "16f215588b354a2dde0a3501e55c377c3cd42bb0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
