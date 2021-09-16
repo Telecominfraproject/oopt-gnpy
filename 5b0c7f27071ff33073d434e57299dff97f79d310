@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fc2dca3_82d0f06c",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-09-16T13:26:10Z",
+      "side": 1,
+      "message": "I see your point, but since we have no tests yet for the \"other data\" before and after design, I though it was the opportunity to add them here while we are in the loop instead of creating another set of tests.",
+      "parentUuid": "bc8f5646_debddbd4",
+      "range": {
+        "startLine": 346,
+        "startChar": 0,
+        "endLine": 384,
+        "endChar": 51
+      },
+      "revId": "5b0c7f27071ff33073d434e57299dff97f79d310",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5c9546c3_b5427372",
@@ -135,6 +159,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d94dbad4_ace35a66",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-09-16T13:26:10Z",
+      "side": 1,
+      "message": "No, I thought I created all combinations, including this one. I need  to correct this...",
+      "parentUuid": "8c3ef592_9903d9d6",
+      "range": {
+        "startLine": 438,
+        "startChar": 0,
+        "endLine": 444,
+        "endChar": 57
+      },
+      "revId": "5b0c7f27071ff33073d434e57299dff97f79d310",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1a43a66a_1b3e871c",
         "filename": "tests/test_roadm_restrictions.py",
         "patchSetId": 8
@@ -146,6 +194,30 @@
       "writtenOn": "2021-09-15T12:54:16Z",
       "side": 1,
       "message": "what does \"augmentation\" refer to here? Can you please rephrase?",
+      "range": {
+        "startLine": 469,
+        "startChar": 18,
+        "endLine": 469,
+        "endChar": 30
+      },
+      "revId": "5b0c7f27071ff33073d434e57299dff97f79d310",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03a0558e_b64ee471",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-09-16T13:26:10Z",
+      "side": 1,
+      "message": "means increase. I change that.",
+      "parentUuid": "1a43a66a_1b3e871c",
       "range": {
         "startLine": 469,
         "startChar": 18,
