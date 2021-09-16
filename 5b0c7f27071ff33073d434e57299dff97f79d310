@@ -183,6 +183,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c8a7f28e_cd696a4a",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-09-16T15:09:52Z",
+      "side": 1,
+      "message": "I have checked with the initial tests (before all patches), and it was going into all cases. I need to find the bug:)",
+      "parentUuid": "d94dbad4_ace35a66",
+      "range": {
+        "startLine": 438,
+        "startChar": 0,
+        "endLine": 444,
+        "endChar": 57
+      },
+      "revId": "5b0c7f27071ff33073d434e57299dff97f79d310",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1a43a66a_1b3e871c",
         "filename": "tests/test_roadm_restrictions.py",
         "patchSetId": 8
