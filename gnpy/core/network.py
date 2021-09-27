@@ -282,7 +282,7 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
 
                 if isinstance(prev_node, elements.Fiber):
                     max_fiber_lineic_loss_for_raman = \
-                        equipment['Span']['default'].max_fiber_lineic_loss_for_raman
+                        equipment['Span']['default'].max_fiber_lineic_loss_for_raman * 1e-3  # dB/m
                     raman_allowed = prev_node.params.loss_coef < max_fiber_lineic_loss_for_raman
                 else:
                     raman_allowed = False
