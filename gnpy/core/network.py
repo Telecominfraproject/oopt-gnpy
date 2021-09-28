@@ -303,9 +303,14 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
                     node.params.update_params(extra_params.__dict__)
                     dp += power_reduction
                     gain_target += power_reduction
-                elif node.params.raman and not raman_allowed:
-                    print(f'{ansi_escapes.red}WARNING{ansi_escapes.reset}: raman is used in node {node.uid}\n but fiber lineic loss is above threshold\n')
                 else:
+                    if node.params.raman and not raman_allowed:
+                        if isinstance(prev_node, elements.Fiber):
+                            print(f'{ansi_escapes.red}WARNING{ansi_escapes.reset}: raman is used in node {node.uid}\n '
+                                  'but fiber lineic loss is above threshold\n')
+                        else:
+                            print(f'{ansi_escapes.red}WARNING{ansi_escapes.reset}: raman is used in node {node.uid}\n '
+                                  'but previous node is not a fiber\n')
                     # if variety is imposed by user, and if the gain_target (computed or imposed) is also above
                     # variety max gain + extended range, then warn that gain > max_gain + extended range
                     if gain_target - equipment['Edfa'][node.params.type_variety].gain_flatmax - \
