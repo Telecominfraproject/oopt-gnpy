@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99928230_99c3ee61",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 18
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-09-28T09:40:49Z",
+      "side": 1,
+      "message": "I think we will need to add fmin and fmax in amps and the case of multi band \"composite\" in order to be able to handle C+L amps. My preference would be to have individual amps defined with their freq range and a multiband amp referencing a list of these amps.",
+      "revId": "658bf5aabd260df6c125668e34cb03fd6eb4c69d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
