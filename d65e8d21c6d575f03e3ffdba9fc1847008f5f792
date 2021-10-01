@@ -16,6 +16,29 @@
       "message": "Recheck",
       "revId": "d65e8d21c6d575f03e3ffdba9fc1847008f5f792",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "310585a6_e19ce770",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-10-01T13:55:03Z",
+      "side": 1,
+      "message": "here the type should be str",
+      "range": {
+        "startLine": 57,
+        "startChar": 99,
+        "endLine": 57,
+        "endChar": 105
+      },
+      "revId": "d65e8d21c6d575f03e3ffdba9fc1847008f5f792",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
