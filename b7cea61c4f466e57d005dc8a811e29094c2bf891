@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91b7f832_0ca6ec92",
+        "filename": "gnpy/example-data/initial_spectrum1.json",
+        "patchSetId": 18
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-10-01T14:05:12Z",
+      "side": 1,
+      "message": "Just a minor suggestion:\nAs this is used instead of the \u0027SI\u0027 in eqpt_config, can we mantain the same name in this file?",
+      "range": {
+        "startLine": 2,
+        "startChar": 7,
+        "endLine": 2,
+        "endChar": 23
+      },
+      "revId": "b7cea61c4f466e57d005dc8a811e29094c2bf891",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
