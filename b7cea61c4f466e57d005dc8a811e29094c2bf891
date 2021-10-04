@@ -22,6 +22,30 @@
       },
       "revId": "b7cea61c4f466e57d005dc8a811e29094c2bf891",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "833b7eae_e9868919",
+        "filename": "gnpy/example-data/initial_spectrum1.json",
+        "patchSetId": 18
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-10-04T13:11:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "91b7f832_0ca6ec92",
+      "range": {
+        "startLine": 2,
+        "startChar": 7,
+        "endLine": 2,
+        "endChar": 23
+      },
+      "revId": "b7cea61c4f466e57d005dc8a811e29094c2bf891",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
