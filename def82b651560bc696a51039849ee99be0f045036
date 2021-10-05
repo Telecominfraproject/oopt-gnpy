@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33836b46_c143ebe3",
+        "filename": "gnpy/example-data/sim_params.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-05T07:38:47Z",
+      "side": 1,
+      "message": "This introduces a change in a user-facing data format, which means that anyone who wants to run a simulation with Raman will have to adjust their data. Is this intentional?",
+      "revId": "def82b651560bc696a51039849ee99be0f045036",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}

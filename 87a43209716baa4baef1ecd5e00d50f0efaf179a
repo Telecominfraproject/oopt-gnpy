@@ -120,6 +120,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "738955f1_91588354",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-05T07:38:47Z",
+      "side": 1,
+      "message": "There\u0027s a class which holds some data. This code initializes the class either from the user-supplied data via that call to SimParams.set_params(...), or via loading the default settings through SimParams.default(). That means that the programmer has to rememeber to call .default(), which is not a great pattern.\n\nPlease change the class so that it contains the default values even without a call to .default(). The usual way of doing that is in the class\u0027 constructor.",
+      "parentUuid": "90dfa0f6_2f64355e",
+      "revId": "87a43209716baa4baef1ecd5e00d50f0efaf179a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fb148122_b419f527",
         "filename": "tests/test_parameters.py",
         "patchSetId": 2
@@ -155,6 +173,30 @@
       "side": 1,
       "message": "The class SimParams do support writers, the reason to use a mock class here is to assure that any modification of the global variable last only the time of the specific test and does not affect the behavior of successive tests.\n\nAs in the previous comment, I introduced these modifications in order to assure a fixed state of the global variable, has it was required.",
       "parentUuid": "fb148122_b419f527",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 77
+      },
+      "revId": "87a43209716baa4baef1ecd5e00d50f0efaf179a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f07b6cdd_723e93cf",
+        "filename": "tests/test_parameters.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-05T07:38:47Z",
+      "side": 1,
+      "message": "A fixed state for each test run is typically implemented via pytest fixtures directly, without manipulating a global hidden state. I\u0027m sorry, this is one more reason why hiding the state behind a global variable (in this case, a static memeber of a class which is conceptually the exactly same thing) makes things more complicated. Here, the code introduces a shared state, and then the code adds more ways to reset that state. I would *much* prefer a solution where the state is passed explicitly to all places which need it. What disadvantages do you see in that approach?",
+      "parentUuid": "1593de46_4c6f21fb",
       "range": {
         "startLine": 12,
         "startChar": 0,
