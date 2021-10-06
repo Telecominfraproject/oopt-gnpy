@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f18737ce_13a00206",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-06T16:46:32Z",
+      "side": 1,
+      "message": "We decided not to use yangson due to performance issues when loading larger data sets, so this commit cannot go in as-is.",
+      "revId": "1335c16cbaf047495ee1b385c9d02fdcf3aa9b66",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
