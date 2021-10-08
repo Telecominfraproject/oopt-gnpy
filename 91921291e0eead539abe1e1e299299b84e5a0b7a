@@ -16,6 +16,23 @@
       "message": "recheck",
       "revId": "91921291e0eead539abe1e1e299299b84e5a0b7a",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40d1cb6a_ab12c1c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-08T09:57:21Z",
+      "side": 1,
+      "message": "This might not be needed in the long run (we won\u0027t be using yangson due to its performance limitations).",
+      "revId": "91921291e0eead539abe1e1e299299b84e5a0b7a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
