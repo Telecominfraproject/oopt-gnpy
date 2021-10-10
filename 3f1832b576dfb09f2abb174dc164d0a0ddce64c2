@@ -51,6 +51,24 @@
       "message": "delta_p expresses the per channel power deviation with respect to the base reference power defined in the simulation (power_dbm or --pow option). For example if the simulation is set with -1dBm power, then the per channel power out of amps will be -1dBm + delta_p out of each amp. Delta_p is the setting before the out VOA. If the simulation has power_mode true, this setting is used to compute the effective gain, and any gain target is ignored. if it is not set, the autodesign will compute one, and use it. if power_mode is false, then gain target is used it is set and delta_p is ignored. else, delta_p is used to determine missing gain.\n\nUsing delta_p and not only gain from a given network and working in power_mode true, preserves individual working points of each amps. instead, using power_mode false and ignoring delta_p, may lead to error propagation in the power computation across the succession of amps if one amp in the chain has a wrong gain reported. This is why, whenever possible power_mode true is recommended.\n\nIf a simulation sets a delta_p target (or a gain target) that is incompatible with the amp max power, then the effective per channel power will not reach the power target and will be reduced in order to fit within the amp power budget.",
       "revId": "3f1832b576dfb09f2abb174dc164d0a0ddce64c2",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fc77409_49535a58",
+        "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
+        "patchSetId": 14
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-10T22:53:33Z",
+      "side": 1,
+      "message": "Thanks!",
+      "parentUuid": "5cb2cc13_e546e5cd",
+      "revId": "3f1832b576dfb09f2abb174dc164d0a0ddce64c2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
