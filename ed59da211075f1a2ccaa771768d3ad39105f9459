@@ -126,6 +126,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c252d4a_7b98f7c0",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-10T21:19:52Z",
+      "side": 1,
+      "message": "I believe that this one has been long fixed, the band name doesn\u0027t refer to the C-band anymore.",
+      "parentUuid": "b99b89ce_e095b92e",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "560bfc4a_12b24644",
@@ -473,6 +491,24 @@
       "side": 1,
       "message": "In the code it is currently implemented as NF \u003d f(gain_max - gain). This has led to some confusion in the past and I would not mind if we changed the implementation but then we would also have to change the current values in eqpt_cofing.json.",
       "parentUuid": "3251560a_d4664540",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d14f3612_101257cf",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-10T21:19:52Z",
+      "side": 1,
+      "message": "Should we change this \"right now\", or should we take the model in as-is?",
+      "parentUuid": "3d66e2ef_501dc91d",
       "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },

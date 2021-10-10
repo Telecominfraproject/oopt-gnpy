@@ -16,6 +16,24 @@
       "message": "I think we will need to add fmin and fmax in amps and the case of multi band \"composite\" in order to be able to handle C+L amps. My preference would be to have individual amps defined with their freq range and a multiband amp referencing a list of these amps.",
       "revId": "658bf5aabd260df6c125668e34cb03fd6eb4c69d",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf77242e_75efdcc3",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 18
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-10T21:19:52Z",
+      "side": 1,
+      "message": "I agree, but that\u0027s something for a future multiband work. In this patch, a \"composite\" amplifier refers to a \"sequence of amplifiers\", typically a dual-stage amp (but perhaps also an EDFA + Raman combination).\n\nLet\u0027s poll the developers for a favorite name for this thing:\n\n- \"dual-stage\". Cons: confusing, because some dual-stage amplifiers are modeled \"directly\" as, say, OpenROADM-booster.\n\n- \"composite\". Cons: might conflict with the future multi-band work.\n\n- \"serial\". Cons: yet another name.",
+      "parentUuid": "99928230_99c3ee61",
+      "revId": "658bf5aabd260df6c125668e34cb03fd6eb4c69d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
