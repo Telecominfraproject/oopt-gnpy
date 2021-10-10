@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "b7e3e027_495eb784",
         "filename": "yang/tip-photonic-topology.yang",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "Raman fiber parameters are not currently represented in the yang module.",
       "revId": "7c41922eeb55b9da371377a2cc96971d79966f77",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "f4876804_64324911",
         "filename": "yang/tip-photonic-topology.yang",
@@ -31,8 +32,25 @@
       "side": 1,
       "message": "Why is it called \"model\" here and \"type\" in the equipment model (fiber is using \"type\" for both)?",
       "revId": "7c41922eeb55b9da371377a2cc96971d79966f77",
-      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
-      "unresolved": true
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a0de321_88bbc90d",
+        "filename": "yang/tip-photonic-topology.yang",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-10T22:27:53Z",
+      "side": 1,
+      "message": "There\u0027s a fiber \"type\", but all active components are called \"model\". I think this makes sense because a datasheet typically describes a HW \"model\", whereas our representation of fiber \"feels generic\" to me.",
+      "parentUuid": "f4876804_64324911",
+      "revId": "7c41922eeb55b9da371377a2cc96971d79966f77",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }

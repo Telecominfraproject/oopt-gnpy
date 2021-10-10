@@ -18,6 +18,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d272296_133221ea",
+        "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
+        "patchSetId": 14
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-10T22:27:53Z",
+      "side": 1,
+      "message": "I agree, but let\u0027s defer that until we start working on multiband. I would prefer to merge YANG stuff which describes the current capabilities of the code.",
+      "parentUuid": "9637cb9f_27893e96",
+      "revId": "3f1832b576dfb09f2abb174dc164d0a0ddce64c2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5cb2cc13_e546e5cd",
