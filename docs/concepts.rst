@@ -29,7 +29,7 @@ This path is directional, and all "GNPy elements" along the path match the unidi
 
 The network topology contains not just the physical topology of the network, but also references to the :ref:`equipment library<concepts-equipment>` and a set of *operating parameters* for each entity.
 These parameters include the **fiber length** of each fiber, the connector **attenutation losses**, or an amplifier's specific **gain setting**.
-The topology is specified via :ref:`XLS files<excel>` or via :ref:`JSON<json>`.
+The topology is specified via :ref:`XLS files<excel>` or via :ref:`JSON<legacy-json>`.
 
 .. _complete-vs-incomplete:
 
