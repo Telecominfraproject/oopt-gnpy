@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8da49241_2d4413a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-11T10:46:07Z",
+      "side": 1,
+      "message": "Allow me to rephrase -- I realize that some of these parameter will have to change once we add support for wideband/multiband simulations. However, I\u0027m OK with that because that\u0027s future work anyway, and because we need a sample data format to show to the GUI team now.\n\nWould you be OK with this, or do you prefer to address the multiband use case in the first version of a YANG topology that will be merged?",
+      "parentUuid": "7b2f1c3d_f37fc3d3",
+      "revId": "c67a895f0754df55a4d5bd680aaaca7127ed3efb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "09ed130c_b400bb96",
         "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
         "patchSetId": 17
