@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b2f1c3d_f37fc3d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-10-11T08:53:59Z",
+      "side": 1,
+      "message": "I think that frequency band of amp is required even in the topology, because in the case of multiband amps, the operational values (gain, voa, tilt target mays have defferent values depending on the amplified band). \nBesides, the topo should also let the possibility to input fiber lineic loss as a set of values per frequency, to allow for different slopes in the band.",
+      "revId": "c67a895f0754df55a4d5bd680aaaca7127ed3efb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09ed130c_b400bb96",
+        "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
+        "patchSetId": 17
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-10-11T08:53:59Z",
+      "side": 1,
+      "message": "Shouldn\u0027t that be defined per frequency as well ?",
+      "revId": "c67a895f0754df55a4d5bd680aaaca7127ed3efb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a6e6b57_95e2f244",
+        "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
+        "patchSetId": 17
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-10-11T08:53:59Z",
+      "side": 1,
+      "message": "In fact, (contrarily to what I said in the last meeting) these operational values should be different per amplifier in the case of multiband amplifier. So, my suggestion would be either to refer to the freq band of the amp, or to a name that would be defined in the equipment.",
+      "revId": "c67a895f0754df55a4d5bd680aaaca7127ed3efb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
