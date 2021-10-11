@@ -61,6 +61,58 @@ module tip-photonic-topology {
     }
   }
 
+  grouping one-amplifier-operating-point {
+    description "Amplifier operating regime parameters which map to a one-band amplifier";
+
+    leaf gain-target {
+      type tip-pe:gain;
+      description "Desired gain of the amplifier
+
+      If not set, GNPy will try to find an optimal operating point.";
+    }
+
+    leaf out-voa-target {
+      // when "deref(../model)/has-output-voa"; FIXME: implement this
+      type tip-pe:db-ratio;
+      description "Output VOA setting
+
+      If not set, GNPy will try to find an optimal operating point -- which means operating the EDFA at its highest gain
+      for the lowest NF, and using the output VOA to compensate.";
+    }
+
+    leaf tilt-target {
+      type tip-pe:db-ratio;
+      // FIXME: make this available only when the amplifier model supports tilt settings
+      description "Desired tilt of the amplifier";
+    }
+
+    leaf delta-p {
+      type tip-pe:db-ratio;
+      description "Per-channel power deviation from the base reference power
+
+      Delta-p expresses the per channel power deviation from the base reference power defined
+      in the simulation. For example, if the simulation is set with -1 dBm power, then the
+      per-channel power out of amps will be -1 dBm + delta_p of each amp. Delta-p applies
+      before the output VOA.
+
+      If the simulation runs in the power_mode, delta-p is used to compute the effective gain,
+      and any gain target is ignored. If delta-p is not set, the autodesign will compute one.
+
+      When not in the power_mode, then gain target is used if available, and delta-p is ignored.
+      Otherwise, delta-p is used to determine gain.
+
+      Using delta-p and not only gain from a given network and working in power_mode preserves
+      individual working points of each amplifier. Instead, using power_mode false and ignoring
+      delta-p may lead to error propagation in the power computation across the succession of
+      amplifiers if one amp in the chain has a wrong gain reported. Therefore, whenever possible
+      the power_mode is recommended.
+
+      If a simulation sets a delta-p target (or a gain target) which exceeds the amplifier's
+      maximal power, then the effective per channel power will be reduced in order to fit within
+      the amplifier power budget.";
+    }
+  }
+
   augment "/nw:networks/nw:network/nt:link" {
     when "../nw:network-types/tip-topo:photonic-topology";
     description "Connections of optical components";
@@ -246,52 +298,24 @@ module tip-photonic-topology {
             description "Amplifier model cross-reference";
           }
 
-          leaf gain-target {
-            type tip-pe:gain;
-            description "Desired gain of the amplifier
-
-            If not set, GNPy will try to find an optimal operating point.";
+          uses one-amplifier-operating-point {
+            when "count(deref(model)/multiband) = 0";
           }
 
-          leaf out-voa-target {
-            // when "deref(../model)/has-output-voa"; FIXME: implement this
-            type tip-pe:db-ratio;
-            description "Output VOA setting
-
-            If not set, GNPy will try to find an optimal operating point -- which means operating the EDFA at its highest gain
-            for the lowest NF, and using the output VOA to compensate.";
-          }
-
-          leaf tilt-target {
-            type tip-pe:db-ratio;
-            // FIXME: make this available only when the amplifier model supports tilt settings
-            description "Desired tilt of the amplifier";
-          }
-
-          leaf delta-p {
-            type tip-pe:db-ratio;
-            description "Per-channel power deviation from the base reference power
-
-            Delta-p expresses the per channel power deviation from the base reference power defined
-            in the simulation. For example, if the simulation is set with -1 dBm power, then the
-            per-channel power out of amps will be -1 dBm + delta_p of each amp. Delta-p applies
-            before the output VOA.
-
-            If the simulation runs in the power_mode, delta-p is used to compute the effective gain,
-            and any gain target is ignored. If delta-p is not set, the autodesign will compute one.
-
-            When not in the power_mode, then gain target is used if available, and delta-p is ignored.
-            Otherwise, delta-p is used to determine gain.
-
-            Using delta-p and not only gain from a given network and working in power_mode preserves
-            individual working points of each amplifier. Instead, using power_mode false and ignoring
-            delta-p may lead to error propagation in the power computation across the succession of
-            amplifiers if one amp in the chain has a wrong gain reported. Therefore, whenever possible
-            the power_mode is recommended.
-
-            If a simulation sets a delta-p target (or a gain target) which exceeds the amplifier's
-            maximal power, then the effective per channel power will be reduced in order to fit within
-            the amplifier power budget.";
+          list per-band {
+            when "count(deref(../model)/multiband) = 1";
+            leaf model {
+              type leafref {
+                path "/tip-pe:amplifier/tip-pe:type";
+              }
+              must "count(deref(../../model)/multiband/amplifiers[. = current()]) = 1" {
+                error-message "Per-band amplifier data refer to wrong subamplifier definition";
+              }
+              description "Sub-amplifier model cross-reference";
+            }
+            key "model";
+            uses one-amplifier-operating-point;
+            description "Per-subamplifier operating parameters";
           }
         }
       }

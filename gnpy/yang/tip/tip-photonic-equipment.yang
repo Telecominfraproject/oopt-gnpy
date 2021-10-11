@@ -357,6 +357,9 @@ module tip-photonic-equipment {
             must "count(deref(.)/../composite) = 0" {
               error-message "First (preamp) stage of a composite amplifier cannot be a composite amplifier";
             }
+            must "count(deref(.)/../multiband) = 0" {
+              error-message "First (preamp) stage of a composite amplifier cannot be a multiband amplifier";
+            }
             must "../../gain-min >= deref(.)/../gain-min" {
               error-message "Minimal total gain of a composite EDFA cannot be lower that the minimal gain of the preamp";
             }
@@ -371,6 +374,9 @@ module tip-photonic-equipment {
             must "count(deref(.)/../composite) = 0" {
               error-message "Second (booster) stage of a composite amplifier cannot be a composite amplifier";
             }
+            must "count(deref(.)/../multiband) = 0" {
+              error-message "Second (booster) stage of a composite amplifier cannot be a multiband amplifier";
+            }
             must "(deref(.)/../frequency-min <= deref(../preamp)/../frequency-max) and
                   (deref(.)/../frequency-max >= deref(../preamp)/../frequency-min)" {
               error-message "booster/preamp operating frequencies do not overlap";
@@ -378,6 +384,23 @@ module tip-photonic-equipment {
             mandatory true;
             description "Amplifier type used as a booster, i.e., the second stage";
           }
+        }
+      }
+
+      case multiband {
+        container multiband {
+          description "Multiband amplifier combines several amplifiers operating at different parts of the spectrum";
+        }
+
+        leaf-list amplifiers {
+          type leafref {
+            path "/tip-pe:amplifier/type";
+          }
+          must "count(deref(.)/../composite) = 0" {
+            error-message "Multiband amplifier cannot consist of composite amplifiers";
+          }
+          min-elements 1;
+          description "Amplifiers which operate on one band each";
         }
       }
 
