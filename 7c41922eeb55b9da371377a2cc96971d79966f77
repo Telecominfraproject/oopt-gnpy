@@ -69,6 +69,24 @@
       "parentUuid": "f4876804_64324911",
       "revId": "7c41922eeb55b9da371377a2cc96971d79966f77",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81f3c6c1_2a211270",
+        "filename": "yang/tip-photonic-topology.yang",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-10-11T16:01:25Z",
+      "side": 1,
+      "message": "I don\u0027t have a strong opinion on type vs. model, the comment was about using different terms in the equipment vs. topology yang (the leafref here is to amplifier/type in the equipment yang). In the current json-definitions we use type_variety in both equipment and topology files. I think it would be clearer to use the same term (either type or model) in both yang definitions as well.",
+      "parentUuid": "7a0de321_88bbc90d",
+      "revId": "7c41922eeb55b9da371377a2cc96971d79966f77",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }

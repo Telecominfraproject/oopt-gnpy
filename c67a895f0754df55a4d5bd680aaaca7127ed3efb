@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7a916f71_d73356a9",
+        "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
+        "patchSetId": 17
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-10-11T16:01:25Z",
+      "side": 1,
+      "message": "I agree since wavelength dependent loss has been requested by several users and it\u0027s practically already supported by the code.",
+      "parentUuid": "09ed130c_b400bb96",
+      "revId": "c67a895f0754df55a4d5bd680aaaca7127ed3efb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7a6e6b57_95e2f244",
         "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
         "patchSetId": 17
