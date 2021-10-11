@@ -67,6 +67,24 @@
       "message": "recheck",
       "revId": "78d311b8b38ddd813b7b72766052eaa5bcddc919",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56c3a3e5_c35b8bff",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-11T19:03:50Z",
+      "side": 1,
+      "message": "\u003e linters-diff-ci: E261 at least two spaces before inline comment\n\nFixed.",
+      "parentUuid": "1d7597ce_0256b5de",
+      "revId": "78d311b8b38ddd813b7b72766052eaa5bcddc919",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
