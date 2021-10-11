@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fb7af081_075392bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-10-11T14:22:54Z",
+      "side": 1,
+      "message": "If you think that the future change will not impact too much the GUI team later on, we can proceed with this two step. I have some doubts, because once objects are defined in the GUI, with only one caller box for the Gain,... that might be difficult later on to change. Would it be possible to warn them and explain what\u0027s coming next , so that they can choose solutions that are compatible with this future evolution ?",
+      "parentUuid": "8da49241_2d4413a2",
+      "revId": "c67a895f0754df55a4d5bd680aaaca7127ed3efb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "09ed130c_b400bb96",
         "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
         "patchSetId": 17
