@@ -16,6 +16,91 @@
       "message": "I\u0027m not 100% sure about these XPaths (there\u0027s at least one bug in my favorite YANG library, for example), but I hope it shows one possible way. Do you like this?",
       "revId": "da9ee9a2ce50343692c8ed040d32b9574aaa4f97",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccf6bcaa_cb4cdc0d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-10-12T08:22:09Z",
+      "side": 1,
+      "message": "Adding Andrea\n\nThis looks good to me for the tree structure, I have doubts on the restrictions. Maybe we can solve this later on and provide this as is to the GUI team ?\n\n",
+      "revId": "da9ee9a2ce50343692c8ed040d32b9574aaa4f97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21e53834_0276416b",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-10-12T08:22:09Z",
+      "side": 1,
+      "message": "I have not encountered such case, but I do not see why this should be forbidden.",
+      "revId": "da9ee9a2ce50343692c8ed040d32b9574aaa4f97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b2de9c3_09965176",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-10-12T08:22:09Z",
+      "side": 1,
+      "message": "One first use case I can see is  multi band and raman: first stage being a Raman amp and second a C+L amp, so this restriction is not OK for me",
+      "revId": "da9ee9a2ce50343692c8ed040d32b9574aaa4f97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc9cb98c_dfcebb64",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-10-12T08:22:09Z",
+      "side": 1,
+      "message": "Again not clear why you set this constraint",
+      "revId": "da9ee9a2ce50343692c8ed040d32b9574aaa4f97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22366088_de50abcb",
+        "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-10-12T08:22:09Z",
+      "side": 1,
+      "message": "the reference to the model looks OK for me !",
+      "revId": "da9ee9a2ce50343692c8ed040d32b9574aaa4f97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
