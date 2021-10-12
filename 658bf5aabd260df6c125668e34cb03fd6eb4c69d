@@ -34,6 +34,24 @@
       "parentUuid": "99928230_99c3ee61",
       "revId": "658bf5aabd260df6c125668e34cb03fd6eb4c69d",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91eef7c2_9f4f1a6b",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 18
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-12T10:16:00Z",
+      "side": 1,
+      "message": "thanks to Vittorio\u0027s proposal, \"cascaded\" it\u0027s going to be. Also, we\u0027ll take a look at the possibility of removing this construct in favor of a mere sequence of amplifiers (but it\u0027s a question whether a change like this will reduce the UX substantially).",
+      "parentUuid": "cf77242e_75efdcc3",
+      "revId": "658bf5aabd260df6c125668e34cb03fd6eb4c69d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
