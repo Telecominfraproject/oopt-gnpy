@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c801ec4_76d4f382",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-12T07:52:28Z",
+      "side": 1,
+      "message": "I\u0027m not 100% sure about these XPaths (there\u0027s at least one bug in my favorite YANG library, for example), but I hope it shows one possible way. Do you like this?",
+      "revId": "da9ee9a2ce50343692c8ed040d32b9574aaa4f97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
