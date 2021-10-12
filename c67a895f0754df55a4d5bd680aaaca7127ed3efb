@@ -91,6 +91,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d1d7d87_6638f4b8",
+        "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
+        "patchSetId": 17
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-10-12T11:41:09Z",
+      "side": 1,
+      "message": "When looking at the datasheet that I sent during today\u0027s call I realized that Ramam units typically use two orthogonally polarized pump lasers per frequency combined with a PBC. Does the power here (and in the json input in the current code) refer to power per polarization or total power in both polarizations? My guess is that it is power per polarization but this should be clarified somewhere.",
+      "range": {
+        "startLine": 170,
+        "startChar": 19,
+        "endLine": 170,
+        "endChar": 25
+      },
+      "revId": "c67a895f0754df55a4d5bd680aaaca7127ed3efb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7a6e6b57_95e2f244",
         "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
         "patchSetId": 17
