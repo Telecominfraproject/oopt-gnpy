@@ -636,6 +636,9 @@ class Edfa(_Node):
 
         self.nch = frequencies.size
         self.pin_db = lin2db(sum(pin * 1e3))
+        # The following should be changed when we have the new spectral information including slot widths.
+        # For now, with homogeneous spectrum, we can calculate it as the difference between neighbouring channels.
+        self.slot_width = self.channel_freq[1] - self.channel_freq[0]
 
         """in power mode: delta_p is defined and can be used to calculate the power target
         This power target is used calculate the amplifier gain"""
@@ -673,11 +676,11 @@ class Edfa(_Node):
         elif type_def == 'fixed_gain':
             nf_avg = nf_model.nf0
         elif type_def == 'openroadm':
-            pin_ch = self.pin_db - lin2db(self.nch)
+            pin_ch = self.pin_db - lin2db(self.nch) + lin2db(50e9 / self.slot_width)
             # model OSNR = f(Pin)
             nf_avg = pin_ch - polyval(nf_model.nf_coef, pin_ch) + 58
         elif type_def == 'openroadm_preamp':
-            pin_ch = self.pin_db - lin2db(self.nch)
+            pin_ch = self.pin_db - lin2db(self.nch) + lin2db(50e9 / self.slot_width)
             # model OSNR = f(Pin)
             nf_avg = pin_ch - min((4 * pin_ch + 275) / 7, 33) + 58
         elif type_def == 'openroadm_booster':
