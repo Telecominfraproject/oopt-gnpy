@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5788c6dd_60201086",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-15T16:15:27Z",
+      "side": 1,
+      "message": "nit: you might want to say something like \"This fixes #420.\" so that GitHub\u0027s aut-issue-closing works when we merge this:\n\nhttps://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword",
+      "revId": "75d8e7bfba0c8c4c55b0627037baad1cd85aa08d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b4af6a0_10781a87",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-15T16:15:27Z",
+      "side": 1,
+      "message": "When I saw this, I wondered how come it\u0027s  \u0027+\u0027 and not \u0027-\u0027. If the slot width is, say, 100 GHz, the channel power will typically be twice as high (assuming a constant PSD, which I think is reasonable because of amplifier saturation point and the fact that we have one half of channels with 100 GHz). But this is not about per-channel power, but about a \"power per standard 50 GHz channel\", and that\u0027s why substraction is a correct operation here (AFAICT).\n\nI think this deserves at least a comment in the code, and I also suggest renaming these variables from `pin_ch` to something like `pin_50ghz`.",
+      "revId": "75d8e7bfba0c8c4c55b0627037baad1cd85aa08d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
