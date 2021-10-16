@@ -1,0 +1,22 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77da4c90_c68bb06b",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-16T11:21:17Z",
+      "side": 1,
+      "message": "\u003e linters-diff-ci: N806 variable \u0027pin_ch_50GHz\u0027 in function should be lowercase\n\nDo we want to relax this linter rule, or should I change this to lowercase? We have 7 other occurrences of this check in the tree, and I think we can remove them easily.",
+      "parentUuid": "6e1c62b0_fab8198e",
+      "revId": "e6ffe3745c940a9c211f2b61f379f05f4d2a541e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
