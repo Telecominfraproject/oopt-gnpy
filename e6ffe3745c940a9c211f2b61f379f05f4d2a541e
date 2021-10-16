@@ -17,6 +17,24 @@
       "parentUuid": "6e1c62b0_fab8198e",
       "revId": "e6ffe3745c940a9c211f2b61f379f05f4d2a541e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f09b51d3_66470663",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-10-16T15:36:22Z",
+      "side": 1,
+      "message": "I think I\u0027d prefer to relax the rule in cases like this but it\u0027s not that important, changing to lowercase would be fine too.",
+      "parentUuid": "77da4c90_c68bb06b",
+      "revId": "e6ffe3745c940a9c211f2b61f379f05f4d2a541e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
