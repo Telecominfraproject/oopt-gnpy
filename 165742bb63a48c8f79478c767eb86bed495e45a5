@@ -50,6 +50,24 @@
       "message": "The fix would not harm, but I think this is only relevant when the user provides an explicit null value for a particular degree. Why would we want to support that? I always thought that the intention here was to have a \"per ROADM node\" value, and make it possible to override these on a per-degree basis where needed. If it isn\u0027t needed, why mark that via an explicit null if we can just as well skip that entry?\n\nBut perhaps I\u0027m missing something.",
       "revId": "165742bb63a48c8f79478c767eb86bed495e45a5",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe42f018_8940ef8f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-10-18T09:26:51Z",
+      "side": 1,
+      "message": "OK. Then I abandon this one.",
+      "parentUuid": "57b26047_13b17137",
+      "revId": "165742bb63a48c8f79478c767eb86bed495e45a5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
