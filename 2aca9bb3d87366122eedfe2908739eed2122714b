@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9152224d_f5045c65",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 21
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-10-19T12:44:22Z",
+      "side": 1,
+      "message": "I don\u0027t think the pmd attribute here should represent the penalty (usually measured in dB) but rather the actual pmd value in units of ps.",
+      "range": {
+        "startLine": 662,
+        "startChar": 54,
+        "endLine": 662,
+        "endChar": 61
+      },
+      "revId": "2aca9bb3d87366122eedfe2908739eed2122714b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
