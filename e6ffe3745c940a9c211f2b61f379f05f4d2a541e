@@ -35,6 +35,24 @@
       "parentUuid": "77da4c90_c68bb06b",
       "revId": "e6ffe3745c940a9c211f2b61f379f05f4d2a541e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29f3be43_8e74570a",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-19T10:03:44Z",
+      "side": 1,
+      "message": "During the call we decided to relax this.",
+      "parentUuid": "f09b51d3_66470663",
+      "revId": "e6ffe3745c940a9c211f2b61f379f05f4d2a541e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
