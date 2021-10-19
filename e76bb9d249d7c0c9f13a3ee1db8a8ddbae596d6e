@@ -133,6 +133,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "381a5dbf_e607b702",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-19T08:51:04Z",
+      "side": 1,
+      "message": "We have to weigh two scenarios:\n\n- A user who invokes GNPy over a remote API. In this case there will be no warning because there\u0027s no stdout/stderr to print to. In that case I think an appropriate action is to return an error because the value is out-of-bounds.\n\n- A physicist such as yourself is exploring completely new scenarios. In that case, a hard error is not a desirable outcome, *however*, the user can very easily extend the range of allowed values (by essentially taking their best guess and extrapolating themselves).\n\nI think that it\u0027s acceptable to inconvenience the second group of users. They will have to make a one-time action in case they want to run the simulation outside of range of values we tested. Does that sound like a reasonable trade-off to you?",
+      "parentUuid": "50e412f8_1fcb65c6",
+      "range": {
+        "startLine": 362,
+        "startChar": 0,
+        "endLine": 363,
+        "endChar": 86
+      },
+      "revId": "e76bb9d249d7c0c9f13a3ee1db8a8ddbae596d6e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d4564456_fadba5b2",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 16
@@ -238,6 +262,30 @@
       "side": 1,
       "message": "At this point, the RamanFiber pref update method has to take into account the Raman loss profile as the total output power is not exactly the total input power times the average fiber attenuation. In the next change, where the Raman loss profile is considered also in the standard Fiber, the pref update method is fixed as in the RamanFiber. \nIn general, the latter calculation is more accurate when the signal power is not flat.",
       "parentUuid": "22ef4340_9e49c183",
+      "range": {
+        "startLine": 485,
+        "startChar": 0,
+        "endLine": 486,
+        "endChar": 46
+      },
+      "revId": "e76bb9d249d7c0c9f13a3ee1db8a8ddbae596d6e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20cd8cd1_6df67fb9",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-19T08:51:04Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9bf83eb9_4c54dc10",
       "range": {
         "startLine": 485,
         "startChar": 0,
