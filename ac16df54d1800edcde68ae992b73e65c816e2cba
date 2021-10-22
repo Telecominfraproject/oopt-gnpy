@@ -103,6 +103,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e46be4a3_3fec5f86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-10-22T16:15:37Z",
+      "side": 1,
+      "message": "Seems that this is due to the rounding introduced by \"e1f2c55942d36019ae6ff4d13c2d6c91a1e40e47 Remove the representation error due to floating point\"\nAll errors come from the same figure 17.5267625, that is rounding sometimes 17.526762 and sometimes 17.526763\n\nHere is the diff.\n\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n92574c92574\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n101162c101162\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n101181c101181\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n101200c101200\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n101219c101219\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n101238c101238\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n101257c101257\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n101276c101276\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n101295c101295\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n101314c101314\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n101333c101333\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n101352c101352\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n101371c101371\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n101390c101390\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n101409c101409\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n101428c101428\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n134488c134488\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n134507c134507\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n134526c134526\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n134545c134545\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n134564c134564\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n134583c134583\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n134602c134602\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n134621c134621\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n134640c134640\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n134659c134659\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n134678c134678\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n134697c134697\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n134716c134716\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n134735c134735\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,\n134754c134754\n\u003c         \"gain_target\": 17.526762,\n---\n\u003e         \"gain_target\": 17.526763,",
+      "parentUuid": "2dd3bfec_a491df45",
+      "revId": "ac16df54d1800edcde68ae992b73e65c816e2cba",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97b71948_b4f26e6c",
