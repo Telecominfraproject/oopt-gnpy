@@ -32,7 +32,7 @@ def test_raman_fiber():
     spectral_info_params.pop('sys_margins')
     spectral_info_input = create_input_spectral_information(power=power, **spectral_info_params)
     SimParams.set_params(load_json(TEST_DIR / 'data' / 'sim_params.json'))
-    fiber = RamanFiber(**load_json(TEST_DIR / 'data' / 'raman_fiber_config.json'))
+    fiber = RamanFiber(**load_json(TEST_DIR / 'data' / 'test_science_utils_fiber_config.json'))
 
     # propagation
     spectral_info_out = fiber(spectral_info_input)
@@ -41,7 +41,7 @@ def test_raman_fiber():
     p_ase = [carrier.power.ase for carrier in spectral_info_out.carriers]
     p_nli = [carrier.power.nli for carrier in spectral_info_out.carriers]
 
-    expected_results = read_csv(TEST_DIR / 'data' / 'test_science_utils_expected_results.csv')
+    expected_results = read_csv(TEST_DIR / 'data' / 'test_raman_fiber_expected_results.csv')
     assert_allclose(p_signal, expected_results['signal'], rtol=1e-3)
     assert_allclose(p_ase, expected_results['ase'], rtol=1e-3)
     assert_allclose(p_nli, expected_results['nli'], rtol=1e-3)
