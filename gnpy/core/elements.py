@@ -370,21 +370,23 @@ class Fiber(_Node):
 
         return alpha
 
-    def alpha0(self, f_ref=193.5e12):
+    def alpha0(self, freq=None):
         """It returns the zero element of the series expansion of attenuation coefficient alpha(f) in the
         reference frequency f_ref
 
-        :param f_ref: reference frequency of series expansion [Hz]
-        :return: alpha0: power attenuation coefficient in f_ref [Neper/m]
+        :param freq: reference frequency of series expansion [Hz]
+        :return: alpha0: power attenuation coefficient in freq [Neper/m]
         """
-        return self.alpha(f_ref * ones(1))[0]
+        freq = self.params.ref_frequency if freq is None else freq
+        return self.alpha(freq * ones(1))[0]
 
-    def chromatic_dispersion(self, freq=193.5e12):
+    def chromatic_dispersion(self, freq=None):
         """Returns accumulated chromatic dispersion (CD).
 
         :param freq: the frequency at which the chromatic dispersion is computed
         :return: chromatic dispersion: the accumulated dispersion [s/m]
         """
+        freq = self.params.ref_frequency if freq is None else freq
         beta2 = self.params.beta2
         beta3 = self.params.beta3
         ref_f = self.params.ref_frequency
