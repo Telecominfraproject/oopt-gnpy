@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "511f4006_2cf666d4",
+        "filename": "docs/json.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-10-26T12:14:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5f7775a_57ca518f",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 42
+      },
+      "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05282117_c91dcde4",
@@ -37,6 +61,24 @@
       "writtenOn": "2021-10-05T07:23:55Z",
       "side": 1,
       "message": "This should explain the change in operation in more detail while targeting \"your regular network engineer\" who has zero background in GNPy. The way I remember your introduction, this flag \"improves the model\" by taking into account the energy transfer from higher frequencies to the lower ones, and it also enables use of Raman amplifiers -- and I think this is roughly what the docs should say.",
+      "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a70c0bd_f633c330",
+        "filename": "docs/json.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-10-26T12:14:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05282117_c91dcde4",
       "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -58,6 +100,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "59665d34_8ba95611",
+        "filename": "docs/json.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-10-26T12:14:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7e93a90_d6ea4db8",
+      "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e90bb247_4663a445",
@@ -71,6 +131,24 @@
       "writtenOn": "2021-10-05T07:23:55Z",
       "side": 1,
       "message": "There are five parameters which are only documented as a \"tuning parameter for $FOO\". I know that I don\u0027t understand their purpose, so I wonder why we\u0027re exposing these options to users. If we expect them to change these, we need to document what they control. If we do not expect our users to tweak these, let\u0027s stop exposing them.",
+      "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "decd6013_5bd0afde",
+        "filename": "docs/json.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-10-26T12:14:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e90bb247_4663a445",
       "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -92,6 +170,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f0b0908_ded02535",
+        "filename": "docs/json.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-10-26T12:14:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21d75a5f_9ef3845e",
+      "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0405c76_17c9960f",
@@ -109,6 +205,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b56b343f_5bdad7be",
+        "filename": "docs/json.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-10-26T12:14:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0405c76_17c9960f",
+      "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "285a6d12_ded8e911",
@@ -122,6 +236,24 @@
       "writtenOn": "2021-10-05T07:23:55Z",
       "side": 1,
       "message": "This does not explain how it is related to the SpectrumInformation, or how it plays with the flexgrid patches.",
+      "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "add445dc_50372e49",
+        "filename": "docs/json.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-10-26T12:14:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "285a6d12_ded8e911",
       "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
