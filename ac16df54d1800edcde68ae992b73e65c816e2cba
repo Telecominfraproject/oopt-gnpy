@@ -157,6 +157,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd34ce0d_615d02a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-10-26T16:20:16Z",
+      "side": 1,
+      "message": "Ahhh ! This explains!\nthanks ! \nAny other idea instead of using truncating in the place of round ?",
+      "parentUuid": "50b88fef_033736fd",
+      "revId": "ac16df54d1800edcde68ae992b73e65c816e2cba",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97b71948_b4f26e6c",
