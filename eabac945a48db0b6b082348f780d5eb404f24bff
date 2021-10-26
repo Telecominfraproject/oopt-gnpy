@@ -329,6 +329,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bb4e456_771284a3",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-10-26T13:50:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e38d9390_5a9942d8",
+      "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9a341656_80912e51",
@@ -530,6 +548,30 @@
       "side": 1,
       "message": "I think it can be useful to distinguish the error messages for the Fiber and the RamanFiber. The Fiber.__init__ cannot be used for this purpose as it would produce a repetition of the prints in self.update_attr in case of missing parameters.",
       "parentUuid": "0fb2c45a_84b654bc",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 101
+      },
+      "revId": "eabac945a48db0b6b082348f780d5eb404f24bff",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccf03e3b_e3cb3335",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-10-26T13:50:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bce474de_0024f113",
       "range": {
         "startLine": 134,
         "startChar": 0,
