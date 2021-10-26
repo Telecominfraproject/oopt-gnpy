@@ -136,6 +136,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6a21a3a_d45226f3",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-10-26T13:42:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "738955f1_91588354",
+      "revId": "87a43209716baa4baef1ecd5e00d50f0efaf179a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb148122_b419f527",
@@ -197,6 +215,30 @@
       "side": 1,
       "message": "A fixed state for each test run is typically implemented via pytest fixtures directly, without manipulating a global hidden state. I\u0027m sorry, this is one more reason why hiding the state behind a global variable (in this case, a static memeber of a class which is conceptually the exactly same thing) makes things more complicated. Here, the code introduces a shared state, and then the code adds more ways to reset that state. I would *much* prefer a solution where the state is passed explicitly to all places which need it. What disadvantages do you see in that approach?",
       "parentUuid": "1593de46_4c6f21fb",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 77
+      },
+      "revId": "87a43209716baa4baef1ecd5e00d50f0efaf179a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3139a5a_cc18502e",
+        "filename": "tests/test_parameters.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-10-26T13:42:48Z",
+      "side": 1,
+      "message": "As we discussed during the PSE coders call, this would be addressed in future patches",
+      "parentUuid": "f07b6cdd_723e93cf",
       "range": {
         "startLine": 12,
         "startChar": 0,
