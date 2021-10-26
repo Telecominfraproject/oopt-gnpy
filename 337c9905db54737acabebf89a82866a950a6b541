@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bff61a2_02a7b7b9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-26T14:41:34Z",
+      "side": 1,
+      "message": "nit: please make sure that commit message is properly wrapped. Default git settings should do the trick. Fixed.",
+      "revId": "337c9905db54737acabebf89a82866a950a6b541",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
