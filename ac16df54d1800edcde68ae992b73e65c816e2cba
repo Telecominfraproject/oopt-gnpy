@@ -139,6 +139,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50b88fef_033736fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-10-26T13:26:43Z",
+      "side": 1,
+      "message": "The reason for the failure seems to be that after this change, self.effective_gain is of type numpy.float64 while before it is standard python float and these behave differently when rounding:\n\n \u003e\u003e\u003e round(17.5267625, 6)\n 17.526763\n \u003e\u003e\u003e round(np.float64(17.5267625), 6)\n 17.526762\n\nI\u0027m not sure just truncating instead is the correct solution...",
+      "parentUuid": "7af6c602_4d5620c9",
+      "revId": "ac16df54d1800edcde68ae992b73e65c816e2cba",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97b71948_b4f26e6c",
