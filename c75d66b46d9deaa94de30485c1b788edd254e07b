@@ -155,6 +155,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7004144d_d239aff3",
+        "filename": "docs/json.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-26T14:32:11Z",
+      "side": 1,
+      "message": "This one remains effectively undocumented. I see that it is about https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_bvp.html, even that won\u0027t help me.\n\nDo you expect our users to change this? If so, please explain what it is about and *how* these changes affect the result, what the reasonable values are, etc. Or just remove it from the docs and from the code if there are no guidelines for users on how to use this.",
+      "parentUuid": "decd6013_5bd0afde",
+      "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "21d75a5f_9ef3845e",
         "filename": "docs/json.rst",
         "patchSetId": 4
@@ -184,6 +202,24 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "21d75a5f_9ef3845e",
+      "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "207620bc_1fea0d00",
+        "filename": "docs/json.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-26T14:32:11Z",
+      "side": 1,
+      "message": "Unfortunately, the RST format doesn\u0027t support lists in a table (unless one uses a special `list-table` thing https://docutils.sourceforge.io/docs/ref/rst/directives.html#list-table, which is insane IMHO). I\u0027ve rephrased this.",
+      "parentUuid": "5f0b0908_ded02535",
       "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -254,6 +290,24 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "285a6d12_ded8e911",
+      "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a46d316_dde81ef0",
+        "filename": "docs/json.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-26T14:32:11Z",
+      "side": 1,
+      "message": "There\u0027s been no change to this documentation since my last comment.",
+      "parentUuid": "add445dc_50372e49",
       "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
