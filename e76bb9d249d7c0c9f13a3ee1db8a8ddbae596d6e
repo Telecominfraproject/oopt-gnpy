@@ -155,6 +155,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "59a0a0f2_f7649463",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-10-26T13:48:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "381a5dbf_e607b702",
+      "range": {
+        "startLine": 362,
+        "startChar": 0,
+        "endLine": 363,
+        "endChar": 86
+      },
+      "revId": "e76bb9d249d7c0c9f13a3ee1db8a8ddbae596d6e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4564456_fadba5b2",

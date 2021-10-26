@@ -190,6 +190,24 @@
       "message": "I prefer fixes like these done in a separate commit.",
       "revId": "ac16df54d1800edcde68ae992b73e65c816e2cba",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c0f5cc7_066cea99",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-10-26T13:48:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8581e30_623da6bf",
+      "revId": "ac16df54d1800edcde68ae992b73e65c816e2cba",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
