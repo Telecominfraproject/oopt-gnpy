@@ -171,6 +171,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c25b76c6_b339a6ed",
+        "filename": "docs/json.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-10-27T09:36:40Z",
+      "side": 1,
+      "message": "This is one of the parameters that has been replaced in the successive changes. As we agreed during the PSE coders call, it is not worth to introduce a more detailed documentation for a parameter that has been replaced",
+      "parentUuid": "7004144d_d239aff3",
+      "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21d75a5f_9ef3845e",
@@ -308,6 +326,24 @@
       "side": 1,
       "message": "There\u0027s been no change to this documentation since my last comment.",
       "parentUuid": "add445dc_50372e49",
+      "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c69d340a_6ca2422d",
+        "filename": "docs/json.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-10-27T09:36:40Z",
+      "side": 1,
+      "message": "This is one of the parameters that has been removed in the successive changes. \nIn the flexgrid patches I use directly the information of the slot width within the SpectralInformation",
+      "parentUuid": "6a46d316_dde81ef0",
       "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
