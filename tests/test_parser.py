@@ -21,7 +21,6 @@ import shutil
 from pandas import read_csv
 from xlrd import open_workbook
 import pytest
-from tests.compare import compare_networks, compare_services
 from copy import deepcopy
 from gnpy.core.utils import automatic_nch, lin2db
 from gnpy.core.network import build_network
@@ -56,15 +55,7 @@ def test_excel_json_generation(tmpdir, xls_input, expected_json_output):
     actual_json_output = xls_copy.with_suffix('.json')
     actual = load_json(actual_json_output)
     unlink(actual_json_output)
-    expected = load_json(expected_json_output)
-
-    results = compare_networks(expected, actual)
-    assert not results.elements.missing
-    assert not results.elements.extra
-    assert not results.elements.different
-    assert not results.connections.missing
-    assert not results.connections.extra
-    assert not results.connections.different
+    assert actual == load_json(expected_json_output)
 
 # assume xls entries
 # test that the build network gives correct results in gain mode
@@ -95,15 +86,7 @@ def test_auto_design_generation_fromxlsgainmode(tmpdir, xls_input, expected_json
     save_network(network, actual_json_output)
     actual = load_json(actual_json_output)
     unlink(actual_json_output)
-    expected = load_json(expected_json_output)
-
-    results = compare_networks(expected, actual)
-    assert not results.elements.missing
-    assert not results.elements.extra
-    assert not results.elements.different
-    assert not results.connections.missing
-    assert not results.connections.extra
-    assert not results.connections.different
+    assert actual == load_json(expected_json_output)
 
 # test that autodesign creates same file as an input file already autodesigned
 
@@ -134,15 +117,7 @@ def test_auto_design_generation_fromjson(tmpdir, json_input, power_mode):
     save_network(network, actual_json_output)
     actual = load_json(actual_json_output)
     unlink(actual_json_output)
-    expected = load_json(json_input)
-
-    results = compare_networks(expected, actual)
-    assert not results.elements.missing
-    assert not results.elements.extra
-    assert not results.elements.different
-    assert not results.connections.missing
-    assert not results.connections.extra
-    assert not results.connections.different
+    assert actual == load_json(json_input)
 
 # test services creation
 
@@ -162,15 +137,7 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
                                              equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
     from_xls = read_service_sheet(xls_input, equipment, network, network_filename=DATA_DIR / 'testTopology.xls')
-    expected = load_json(expected_json_output)
-
-    results = compare_services(expected, from_xls)
-    assert not results.requests.missing
-    assert not results.requests.extra
-    assert not results.requests.different
-    assert not results.synchronizations.missing
-    assert not results.synchronizations.extra
-    assert not results.synchronizations.different
+    assert from_xls == load_json(expected_json_output)
 
     # TODO verify that requested bandwidth is not zero !
 
