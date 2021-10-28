@@ -211,6 +211,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c1b980b_dda01d67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-10-28T18:10:09Z",
+      "side": 1,
+      "message": "\u003e\u003e round(float(format_float_positional(self.effective_gain, 6)), 6)\n\nI think just casting to float should also \"solve\" it:\n round(float(self.effective_gain), 6)\n\n...but changing the expected values is fine for me too.\n\nOn another note, I\u0027m not crazy about rounding the output in the first place. This means that if a user inputs a file with gain targets with more than 6 digits, the output will be different from the input, which may be confusing. It would be better to handle this on the input side and not allow more than a specified number of digits but as you say, this should be \"solved\" by YANG.",
+      "parentUuid": "3d5de81a_f068e510",
+      "revId": "ac16df54d1800edcde68ae992b73e65c816e2cba",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97b71948_b4f26e6c",
