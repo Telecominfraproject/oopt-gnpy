@@ -36,6 +36,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0df9abe9_59e4156e",
+        "filename": "docs/json.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-28T14:20:20Z",
+      "side": 1,
+      "message": "removed",
+      "parentUuid": "a8955f2e_e1cc201d",
+      "revId": "b83fd4a8e484c3d8e57b984a67d4593063e790e6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2fc7b4d8_c7f5bd60",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "This is one of the parameters that has been removed in the successive changes.",
       "parentUuid": "2fc7b4d8_c7f5bd60",
+      "revId": "b83fd4a8e484c3d8e57b984a67d4593063e790e6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f7adc7f_d4f02049",
+        "filename": "docs/json.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-28T14:20:20Z",
+      "side": 1,
+      "message": "removed",
+      "parentUuid": "f0d1e6c1_5ea5a612",
       "revId": "b83fd4a8e484c3d8e57b984a67d4593063e790e6",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }

@@ -189,6 +189,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bfdcef2_4c1e6023",
+        "filename": "docs/json.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-28T14:20:20Z",
+      "side": 1,
+      "message": "Agreed, but I didn\u0027t realize that it\u0027s being removed. In that case I think it\u0027s much easier to simply *not* add this documentation in the first place. Changed in a new version of the patch.",
+      "parentUuid": "c25b76c6_b339a6ed",
+      "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21d75a5f_9ef3845e",
@@ -344,6 +362,24 @@
       "side": 1,
       "message": "This is one of the parameters that has been removed in the successive changes. \nIn the flexgrid patches I use directly the information of the slot width within the SpectralInformation",
       "parentUuid": "6a46d316_dde81ef0",
+      "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f63a4dd_d3a36131",
+        "filename": "docs/json.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-28T14:20:20Z",
+      "side": 1,
+      "message": "Remvoed, then.",
+      "parentUuid": "c69d340a_6ca2422d",
       "revId": "c75d66b46d9deaa94de30485c1b788edd254e07b",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
