@@ -29,7 +29,7 @@ The NF is expressed as a third-degree polynomial:
 
        f(x) &= \text{a}x^3 + \text{b}x^2 + \text{c}x + \text{d}
 
-  \text{NF} &= f(G_\text{max} - G)
+  \text{NF} &= f(G - G_\text{max})
 
 This model can be also used for fixed-gain fixed-NF amplifiers.
 In that case, use:
