@@ -229,6 +229,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "852f8ee5_2b386a60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-10-28T18:52:40Z",
+      "side": 1,
+      "message": "On yet another note: I\u0027ve had issues with numpy types before when serializing to different formats. For example, json handles np.float64 but it crashes on np.float32:\n json.dumps(np.float32(1.0))\n ...\n TypeError: Object of type float32 is not JSON serializable\n\nMaybe we should cast all parameters to native python types before json conversion?",
+      "parentUuid": "5c1b980b_dda01d67",
+      "revId": "ac16df54d1800edcde68ae992b73e65c816e2cba",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97b71948_b4f26e6c",
