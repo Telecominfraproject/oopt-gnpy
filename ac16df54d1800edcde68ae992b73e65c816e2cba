@@ -177,6 +177,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "09ed16d7_fbde653c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-28T15:23:04Z",
+      "side": 1,
+      "message": "I dug into this a little bit, and it turns out that there are even more rounding options in numpy. These are well explained here:\n\nhttps://numpy.org/doc/stable/reference/generated/numpy.around.html\n\nMy TL;DR is that there\u0027s np.round(), np.around() and also np.format_float_positional(). As a super-dirty hack, this one presents a \"stable\" JSON roundtrip (on my laptop, anyway):\n\n --- a/gnpy/core/elements.py\n +++ b/gnpy/core/elements.py\n @@ -579,7 +580,7 @@ class Edfa(_Node):\n                  \u0027type\u0027: type(self).__name__,\n                  \u0027type_variety\u0027: self.params.type_variety,\n                  \u0027operational\u0027: {\n -                    \u0027gain_target\u0027: round(self.effective_gain, 6),\n +                    \u0027gain_target\u0027: round(float(format_float_positional(self.effective_gain, 6)), 6),\n                      \u0027delta_p\u0027: self.delta_p,\n                      \u0027tilt_target\u0027: self.tilt_target,\n                      \u0027out_voa\u0027: self.out_voa\n\n...but doing that would be obviously rather ugly. We should also keep in mind that the output here is JSON, and that https://datatracker.ietf.org/doc/html/rfc7159#section-6 doesn\u0027t say much about any required precision or stability. This will be \"solved\" by the YANG I/O format which uses decimal64 data type with an explicit number of decimal points (at which point we will have to decide how to generate these values, and what do we expect of them in general).\n\nCan we simply adjust the expected data for this particular failure?",
+      "parentUuid": "bd34ce0d_615d02a7",
+      "revId": "ac16df54d1800edcde68ae992b73e65c816e2cba",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "97b71948_b4f26e6c",
         "filename": "gnpy/core/info.py",
         "patchSetId": 21
