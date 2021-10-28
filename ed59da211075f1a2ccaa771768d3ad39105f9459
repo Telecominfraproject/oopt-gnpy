@@ -533,6 +533,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6efbad01_8662f067",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 8
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-10-28T06:47:18Z",
+      "side": 1,
+      "message": "Actually, it should be NF \u003d f(gain - gain_max) to match existing code, see the multiple github issues related to this confusion.",
+      "parentUuid": "20336f82_20889ca7",
+      "revId": "ed59da211075f1a2ccaa771768d3ad39105f9459",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8849c371_478b7142",
         "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
         "patchSetId": 8
