@@ -1,0 +1,22 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b577d95_0c1815a3",
+        "filename": "tests/test_science_utils.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-29T11:18:04Z",
+      "side": 1,
+      "message": "\u003e linters-diff-ci: F401 \u0027tests.test_parameters.set_sim_params\u0027 imported but unused\n\u003e ...\n\u003e linters-diff-ci: F811 redefinition of unused \u0027set_sim_params\u0027 from line 17\n\nThese two were another place where this way of managing the global state showed its problems. I\u0027ve refactored this to use a more pytest-common way of doing this via `conftest.py`. While changing that, I found out that the MockSimParams class does not perform anything on top of what SimParams is already capable of, so I simply removed that one. The behavior that you test for stays the same.\n\nCan you please take a look and check that I have not missed anything that you care about, Andrea?",
+      "parentUuid": "7d86dc84_96e9278e",
+      "revId": "bf83b8cdb45aa981efddf1b602475846cb812da8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
