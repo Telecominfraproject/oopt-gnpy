@@ -16,6 +16,24 @@
       "message": "That\u0027s look OK to me! The rendering is not so easy to read on the commit message.\n",
       "revId": "399eb9700f2c64934e2063eba7df1d309d4f7b5a",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb5d8798_85ba7a94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-29T09:00:17Z",
+      "side": 1,
+      "message": "Yeah, I just wanted to preserve that thing exactly as-is in my terminal.  If one removes the overly long lines, then it becomes easier, but then that would be cheating, in my opinion :).",
+      "parentUuid": "35de5d1c_eae59527",
+      "revId": "399eb9700f2c64934e2063eba7df1d309d4f7b5a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
