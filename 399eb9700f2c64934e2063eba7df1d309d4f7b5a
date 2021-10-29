@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35de5d1c_eae59527",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-10-29T07:37:14Z",
+      "side": 1,
+      "message": "That\u0027s look OK to me! The rendering is not so easy to read on the commit message.\n",
+      "revId": "399eb9700f2c64934e2063eba7df1d309d4f7b5a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
