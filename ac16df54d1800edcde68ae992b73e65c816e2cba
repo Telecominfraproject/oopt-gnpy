@@ -247,6 +247,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04199c01_569e9462",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-10-29T09:33:17Z",
+      "side": 1,
+      "message": "That\u0027s because their \"most common\" floating format, np.float64, inherits from Python\u0027s native float, and therefore it gets that JSON conversion.\n\nAt this point I am comfortable just changing the test data, and when we switch to YANG, I propose adjusting everything to two decimal places. That way we do not pretend that our precision/certainty is for 8+ significant digits when we know that benchmarks have about 0.5dB uncertainty anyway.",
+      "parentUuid": "852f8ee5_2b386a60",
+      "revId": "ac16df54d1800edcde68ae992b73e65c816e2cba",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97b71948_b4f26e6c",
