@@ -59,20 +59,21 @@ class SpectralInformation(object):
         self._channel_number = [*range(1, self._number_of_channels + 1)]
         self._slot_width = slot_width[indices]
         self._baud_rate = baud_rate[indices]
+        self._roll_off = roll_off[indices]
         overlap = self._frequency[:-1] + self._slot_width[:-1] / 2 > self._frequency[1:] - self._slot_width[1:] / 2
         if any(overlap):
             overlap = [pair for pair in zip(overlap * self._channel_number[:-1], overlap * self._channel_number[1:])
                        if pair != (0, 0)]
             raise SpectrumError(f'Spectrum required slot widths larger than the frequency spectral distances '
                                 f'between channels: {overlap}.')
-        exceed = self._baud_rate > self._slot_width
+        # multiply roll_off by factor 0.9 to not be too strict when estimating spectrum width:
+        exceed = self._baud_rate * (1 + 0.9 * self._roll_off) > self._slot_width
         if any(exceed):
             raise SpectrumError(f'Spectrum baud rate, including the roll off, larger than the slot width for channels: '
                                 f'{[ch for ch in exceed * self._channel_number if ch]}.')
         self._signal = signal[indices]
         self._nli = nli[indices]
         self._ase = ase[indices]
-        self._roll_off = roll_off[indices]
         self._chromatic_dispersion = chromatic_dispersion[indices]
         self._pmd = pmd[indices]
         pref = lin2db(mean(signal) * 1e3)

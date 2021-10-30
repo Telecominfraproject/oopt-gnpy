@@ -31,7 +31,7 @@ def nch_and_spacing(request):
 @pytest.fixture()
 def bw():
     """parametrize signal bandwidth (Hz)"""
-    return 45e9
+    return 44e9
 
 
 @pytest.fixture()
