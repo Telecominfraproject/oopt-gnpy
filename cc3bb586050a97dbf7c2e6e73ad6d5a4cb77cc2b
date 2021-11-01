@@ -22,6 +22,30 @@
       },
       "revId": "cc3bb586050a97dbf7c2e6e73ad6d5a4cb77cc2b",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4d3fc5d_ef49ff7d",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-11-01T20:09:26Z",
+      "side": 1,
+      "message": "I wouldn\u0027t mind adjusting the eqpt library but it\u0027s not so straightforward what to adjust. One problem is that adjusting the roll off of impacted transceiver modes does not solve it since the propagate_and_optimize_mode function ignores the roll of defined for the mode and uses the value defined in SI:\nhttps://github.com/Telecominfraproject/oopt-gnpy/blob/171450fa542f0a52b7d3b0e1625ae12797df4429/gnpy/topology/request.py#L376\nWe should probably fix that first.",
+      "parentUuid": "2cd89e04_3a0678a3",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 80
+      },
+      "revId": "cc3bb586050a97dbf7c2e6e73ad6d5a4cb77cc2b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
