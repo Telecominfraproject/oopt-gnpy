@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cd89e04_3a0678a3",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-11-01T18:01:40Z",
+      "side": 1,
+      "message": "In effect, this takes the user-provided parameter (which we used to ignore), reduce it by 10%, and enforces the result. I think that this goes against the definition on how the roll off is supposed to behave. I would prefer to adjust our equipment library to make the test suite pass. Is there something that I am missing here?",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 80
+      },
+      "revId": "cc3bb586050a97dbf7c2e6e73ad6d5a4cb77cc2b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
