@@ -358,7 +358,7 @@ def propagate(path, req, equipment):
 def propagate_and_optimize_mode(path, req, equipment):
     # if mode is unknown : loops on the modes starting from the highest baudrate fiting in the
     # step 1: create an ordered list of modes based on baudrate
-    baudrate_to_explore = list(set([this_mode['baud_rate']
+    baudrate_to_explore = list(set([(this_mode['baud_rate'], this_mode['roll_off'])
                                     for this_mode in equipment['Transceiver'][req.tsp].mode
                                     if float(this_mode['min_spacing']) <= req.spacing]))
     # TODO be carefull on limits cases if spacing very close to req spacing eg 50.001 50.000
@@ -372,18 +372,16 @@ def propagate_and_optimize_mode(path, req, equipment):
         return [], None
 
     # at least 1 baudrate can be tested wrt spacing
-    for this_br in baudrate_to_explore:
+    for (this_br, roll_off) in baudrate_to_explore:
         modes_to_explore = [this_mode for this_mode in equipment['Transceiver'][req.tsp].mode
-                            if this_mode['baud_rate'] == this_br and
+                            if this_mode['baud_rate'] == this_br and this_mode['roll_off'] == roll_off and
                             float(this_mode['min_spacing']) <= req.spacing]
         modes_to_explore = sorted(modes_to_explore,
-                                  key=lambda x: x['bit_rate'], reverse=True)
+                                  key=lambda x: (x['bit_rate'], x['roll_off']), reverse=True)
         # print(modes_to_explore)
         # step2: computes propagation for each baudrate: stop and select the first that passes
-        # TODO: the case of roll of is not included: for now use SI one
         # TODO: if the loop in mode optimization does not have a feasible path, then bugs
-        spc_info = create_input_spectral_information(req.f_min, req.f_max,
-                                                     equipment['SI']['default'].roll_off,
+        spc_info = create_input_spectral_information(req.f_min, req.f_max, roll_off,
                                                      this_br, req.power, req.spacing)
         for i, el in enumerate(path):
             if isinstance(el, Roadm):
