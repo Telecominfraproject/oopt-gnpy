@@ -17,6 +17,24 @@
       "parentUuid": "7d86dc84_96e9278e",
       "revId": "bf83b8cdb45aa981efddf1b602475846cb812da8",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "075c3c8c_fd9befb2",
+        "filename": "tests/test_science_utils.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-11-02T08:54:35Z",
+      "side": 1,
+      "message": "I had a look, I think this solution works perfectly and seems way more clean.",
+      "parentUuid": "9b577d95_0c1815a3",
+      "revId": "bf83b8cdb45aa981efddf1b602475846cb812da8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
