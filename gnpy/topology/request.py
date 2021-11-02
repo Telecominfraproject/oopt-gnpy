@@ -363,56 +363,56 @@ def propagate_and_optimize_mode(path, req, equipment):
                                     if float(this_mode['min_spacing']) <= req.spacing]))
     # TODO be carefull on limits cases if spacing very close to req spacing eg 50.001 50.000
     baudrate_to_explore = sorted(baudrate_to_explore, reverse=True)
-    if baudrate_to_explore:
-        # at least 1 baudrate can be tested wrt spacing
-        for this_br in baudrate_to_explore:
-            modes_to_explore = [this_mode for this_mode in equipment['Transceiver'][req.tsp].mode
-                                if this_mode['baud_rate'] == this_br and
-                                float(this_mode['min_spacing']) <= req.spacing]
-            modes_to_explore = sorted(modes_to_explore,
-                                      key=lambda x: x['bit_rate'], reverse=True)
-            # print(modes_to_explore)
-            # step2: computes propagation for each baudrate: stop and select the first that passes
-            # TODO: the case of roll of is not included: for now use SI one
-            # TODO: if the loop in mode optimization does not have a feasible path, then bugs
-            spc_info = create_input_spectral_information(req.f_min, req.f_max,
-                                                         equipment['SI']['default'].roll_off,
-                                                         this_br, req.power, req.spacing)
-            for i, el in enumerate(path):
-                if isinstance(el, Roadm):
-                    spc_info = el(spc_info, degree=path[i+1].uid)
-                else:
-                    spc_info = el(spc_info)
-            for this_mode in modes_to_explore:
-                if path[-1].snr is not None:
-                    path[0].update_snr(this_mode['tx_osnr'])
-                    if any(isinstance(el, Roadm) for el in path):
-                        path[-1].update_snr(this_mode['tx_osnr'], equipment['Roadm']['default'].add_drop_osnr)
-                    else:
-                        path[-1].update_snr(this_mode['tx_osnr'])
-                    if round(min(path[-1].snr + lin2db(this_br / (12.5e9))), 2) \
-                            > this_mode['OSNR'] + equipment['SI']['default'].sys_margins:
-                        return path, this_mode
-                    else:
-                        last_explored_mode = this_mode
-                else:
-                    req.blocking_reason = 'NO_COMPUTED_SNR'
-                    return path, None
-        # only get to this point if no baudrate/mode satisfies OSNR requirement
-
-        # returns the last propagated path and mode
-        msg = f'\tWarning! Request {req.request_id}: no mode satisfies path SNR requirement.\n'
-        print(msg)
-        LOGGER.info(msg)
-        req.blocking_reason = 'NO_FEASIBLE_MODE'
-        return path, last_explored_mode
-    else:
+    if not baudrate_to_explore:
         # no baudrate satisfying spacing
         msg = f'\tWarning! Request {req.request_id}: no baudrate satisfies spacing requirement.\n'
         print(msg)
         LOGGER.info(msg)
         req.blocking_reason = 'NO_FEASIBLE_BAUDRATE_WITH_SPACING'
         return [], None
+
+    # at least 1 baudrate can be tested wrt spacing
+    for this_br in baudrate_to_explore:
+        modes_to_explore = [this_mode for this_mode in equipment['Transceiver'][req.tsp].mode
+                            if this_mode['baud_rate'] == this_br and
+                            float(this_mode['min_spacing']) <= req.spacing]
+        modes_to_explore = sorted(modes_to_explore,
+                                  key=lambda x: x['bit_rate'], reverse=True)
+        # print(modes_to_explore)
+        # step2: computes propagation for each baudrate: stop and select the first that passes
+        # TODO: the case of roll of is not included: for now use SI one
+        # TODO: if the loop in mode optimization does not have a feasible path, then bugs
+        spc_info = create_input_spectral_information(req.f_min, req.f_max,
+                                                     equipment['SI']['default'].roll_off,
+                                                     this_br, req.power, req.spacing)
+        for i, el in enumerate(path):
+            if isinstance(el, Roadm):
+                spc_info = el(spc_info, degree=path[i+1].uid)
+            else:
+                spc_info = el(spc_info)
+        for this_mode in modes_to_explore:
+            if path[-1].snr is not None:
+                path[0].update_snr(this_mode['tx_osnr'])
+                if any(isinstance(el, Roadm) for el in path):
+                    path[-1].update_snr(this_mode['tx_osnr'], equipment['Roadm']['default'].add_drop_osnr)
+                else:
+                    path[-1].update_snr(this_mode['tx_osnr'])
+                if round(min(path[-1].snr + lin2db(this_br / (12.5e9))), 2) \
+                        > this_mode['OSNR'] + equipment['SI']['default'].sys_margins:
+                    return path, this_mode
+                else:
+                    last_explored_mode = this_mode
+            else:
+                req.blocking_reason = 'NO_COMPUTED_SNR'
+                return path, None
+    # only get to this point if no baudrate/mode satisfies OSNR requirement
+
+    # returns the last propagated path and mode
+    msg = f'\tWarning! Request {req.request_id}: no mode satisfies path SNR requirement.\n'
+    print(msg)
+    LOGGER.info(msg)
+    req.blocking_reason = 'NO_FEASIBLE_MODE'
+    return path, last_explored_mode
 
 
 def jsontopath_metric(path_metric):
