@@ -16,6 +16,23 @@
       "message": "I think the sorting before the outer loop should be done differently so that modes with higher bitrate are tested first, rather than modes with higher roll off.",
       "revId": "1f8c7ee7cd898c1123126292cdc7058a8a710c6c",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57f143e3_dc97c9f0",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-11-02T21:41:39Z",
+      "side": 1,
+      "message": "Maybe we could filter by the baud_rate * (1 + roll_off) \u003c spacing criteria here as well since such modes will raise an error when later creating the spectral information.",
+      "revId": "1f8c7ee7cd898c1123126292cdc7058a8a710c6c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
