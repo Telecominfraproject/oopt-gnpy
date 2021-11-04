@@ -26,8 +26,9 @@ from copy import deepcopy
 from gnpy.core.utils import automatic_nch, lin2db
 from gnpy.core.network import build_network
 from gnpy.core.exceptions import ServiceError
-from gnpy.topology.request import (jsontocsv, requests_aggregation, compute_path_dsjctn, deduplicate_disjunctions,
-                                   compute_path_with_disjunction, ResultElement, PathRequest)
+from gnpy.topology.request import (jsontoparams, jsontocsv, requests_aggregation, compute_path_dsjctn,
+                                   deduplicate_disjunctions, compute_path_with_disjunction, ResultElement,
+                                   PathRequest)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.convert import convert_file
 from gnpy.tools.json_io import (load_json, load_network, save_network, load_equipment, requests_from_json,
@@ -538,3 +539,38 @@ def test_eqpt_creation(tmpdir):
     # check that all amp in the converted files corresponds to an eqpt line
     for ampuid in jsonconverted.keys():
         assert ampuid in possiblename
+
+
+@pytest.mark.parametrize('json_input', (DATA_DIR / 'testTopology_response.json',))
+def test_jsontoparams_no_mode(json_input):
+    """ Test return values in case there is no feasible mode to explore.
+    """
+    json_data = load_json(json_input)
+    equipment = load_equipment(eqpt_filename)
+    path = json_data['response'][0]
+    transponder_type = 'Voyager'
+    _, min_osnr, baud_rate, bit_rate, cost, \
+        _, _, _, _, _, _ = jsontoparams(path, transponder_type, None, equipment)
+    assert min_osnr == ''
+    assert baud_rate == ''
+    assert bit_rate == ''
+    assert cost == ''
+
+
+@pytest.mark.parametrize('json_response, expected_csv',
+                         [(DATA_DIR / 'response_not_feasible.json', DATA_DIR / 'response_not_feasible_expected.csv')])
+def test_jsontocsv_no_path(tmpdir, json_response, expected_csv):
+    """ Test return when path selected is not feasible. In order to generate this set of response,
+    impossible services were created (too large OSNR, not enough spectrum, no feasible modes, unfeasible constraint
+    or path)
+    """
+    json_data = load_json(json_response)
+    csv_filename = Path(tmpdir / json_response.name).with_suffix('.csv')
+    with open(csv_filename, 'w', encoding='utf-8') as file_csv:
+        jsontocsv(json_data, equipment, file_csv)
+    with open(csv_filename, 'r') as actualfile, \
+         open(expected_csv, 'r') as expectedfile:
+        output = actualfile.readlines()
+        expected = expectedfile.readlines()
+    assert set(output) == set(expected)
+    unlink(csv_filename)
