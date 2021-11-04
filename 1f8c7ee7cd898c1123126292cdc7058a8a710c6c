@@ -51,6 +51,24 @@
       "parentUuid": "57f143e3_dc97c9f0",
       "revId": "1f8c7ee7cd898c1123126292cdc7058a8a710c6c",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e379ef4b_8a338bb2",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-11-04T18:14:05Z",
+      "side": 1,
+      "message": "Yes, we could change the test in the trx_mode_params function in equipment.py (the test in _check_one_request would not really be relevant in this case since an error would be raised before that function is reached). The difference compared to filtering here is that an error would be raised causing the whole simulation to stop as opposed to just not \"exploring\" that mode further. It depends on how strict we want to be. If we want to be strict we could also raise an error even earlier already when loading the equipment library in _equipment_from_json.",
+      "parentUuid": "6c0a614a_349756b7",
+      "revId": "1f8c7ee7cd898c1123126292cdc7058a8a710c6c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
