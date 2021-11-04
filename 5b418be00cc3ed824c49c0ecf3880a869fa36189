@@ -52,6 +52,24 @@
       "parentUuid": "8acb26c5_3cba483d",
       "revId": "5b418be00cc3ed824c49c0ecf3880a869fa36189",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37aa064e_d4b2b6df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-11-04T14:47:20Z",
+      "side": 1,
+      "message": "I agree, I chose the frequency because it was the most used value as reference, but if we agree that the wavelength 1550 should be the real reference, I can change the code accordingly.",
+      "parentUuid": "0f1e9d24_808b1632",
+      "revId": "5b418be00cc3ed824c49c0ecf3880a869fa36189",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
