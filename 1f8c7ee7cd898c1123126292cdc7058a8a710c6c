@@ -69,6 +69,24 @@
       "parentUuid": "6c0a614a_349756b7",
       "revId": "1f8c7ee7cd898c1123126292cdc7058a8a710c6c",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec51701a_33a97a57",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-11-04T18:34:03Z",
+      "side": 1,
+      "message": "Actually, the test in trx_mode_params is not applicable in this case since it is only performed when the user has already defined the mode. So I think the choice is between testing this already when loading the equipment library (in which case the test in trx_mode_params would be redundant and could be removed) or just filtering here.",
+      "parentUuid": "e379ef4b_8a338bb2",
+      "revId": "1f8c7ee7cd898c1123126292cdc7058a8a710c6c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
