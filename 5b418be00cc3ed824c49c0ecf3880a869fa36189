@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "943f27c4_d28daa97",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-11-04T13:40:18Z",
+      "side": 1,
+      "message": "Could you clarify what are the \"consistency reasons\" for using frequency reference instead of wavelength reference? As far as I know, ITU-T recommendations related to optical fibers as well as specifications from fiber manufacturers use 1550 nm reference wavelength.",
+      "revId": "5b418be00cc3ed824c49c0ecf3880a869fa36189",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
