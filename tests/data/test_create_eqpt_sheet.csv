@@ -1,0 +1,9 @@
+node_a,node_z,amp_type,att_in,amp_gain,tilt,att_out,amp_type,att_in,amp_gain,tilt,att_out
+a,b
+a,d
+a,e
+c,b
+c,d
+c,e
+d,c
+e,a
