@@ -16,6 +16,24 @@
       "message": "Could you clarify what are the \"consistency reasons\" for using frequency reference instead of wavelength reference? As far as I know, ITU-T recommendations related to optical fibers as well as specifications from fiber manufacturers use 1550 nm reference wavelength.",
       "revId": "5b418be00cc3ed824c49c0ecf3880a869fa36189",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8acb26c5_3cba483d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-11-04T14:09:56Z",
+      "side": 1,
+      "message": "I mean internal consistency. The loss coefficient, for example, is defined with a reference frequency of 193.5THz. Moreover, in core.elements.Fiber the attribute alpha0 and chromatic dispersion were calculated with respect a reference frequency with default vale of 193.5 THz. I think I will push a change where this reference frequency is used in all this cases, leaving out hard coded values.",
+      "parentUuid": "943f27c4_d28daa97",
+      "revId": "5b418be00cc3ed824c49c0ecf3880a869fa36189",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
