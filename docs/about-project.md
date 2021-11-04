@@ -7,6 +7,7 @@ There are weekly calls about our progress.
 Newcomers, users and telecom operators are especially welcome there.
 We encourage all interested people outside the TIP to [join the project](https://telecominfraproject.com/apply-for-membership/) and especially to [get in touch with us](https://github.com/Telecominfraproject/oopt-gnpy/discussions).
 
+(contributing)=
 ## Contributing
 
 `gnpy` is looking for additional contributors, especially those with experience planning and maintaining large-scale, real-world mesh optical networks.
