@@ -34,6 +34,24 @@
       "parentUuid": "943f27c4_d28daa97",
       "revId": "5b418be00cc3ed824c49c0ecf3880a869fa36189",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f1e9d24_808b1632",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-11-04T14:35:11Z",
+      "side": 1,
+      "message": "Ok, I agree it\u0027s good to be internally consistent. But that doesn\u0027t motivate using frequency instead of wavelength as original reference. We could still calculate reference frequency based on 1550 nm wavelength and use that in all those cases.",
+      "parentUuid": "8acb26c5_3cba483d",
+      "revId": "5b418be00cc3ed824c49c0ecf3880a869fa36189",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
