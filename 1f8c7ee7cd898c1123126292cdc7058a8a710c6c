@@ -33,6 +33,24 @@
       "message": "Maybe we could filter by the baud_rate * (1 + roll_off) \u003c spacing criteria here as well since such modes will raise an error when later creating the spectral information.",
       "revId": "1f8c7ee7cd898c1123126292cdc7058a8a710c6c",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c0a614a_349756b7",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-11-04T16:21:11Z",
+      "side": 1,
+      "message": "I think that such filtering should be performed when loading the library and requests, and raising an error, not at this stage. for example in equipment.py there is a test:\n\"if trx_params[\u0027baud_rate\u0027] \u003e trx_params[\u0027min_spacing\u0027]:\" \ncould be changed to \n\"trx_params[\u0027baud_rate\u0027] * (1 + trx_params[\u0027roll_off\u0027]) \u003e trx_params[\u0027min_spacing\u0027]:\"\n\nthen the test in json_io.py _check_one_request \n\"if params[\u0027min_spacing\u0027] \u003e params[\u0027spacing\u0027]:\"\nwould catch the issue earlier",
+      "parentUuid": "57f143e3_dc97c9f0",
+      "revId": "1f8c7ee7cd898c1123126292cdc7058a8a710c6c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
