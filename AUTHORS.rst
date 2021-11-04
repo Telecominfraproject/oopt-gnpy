@@ -28,6 +28,7 @@ To learn how to contribute, please see CONTRIBUTING.md
 - Raj Nagarajan (Lumentum) <raj.nagarajan@lumentum.com>
 - Renato Ambrosone (Politecnico di Torino) <renato.ambrosone@polito.it>
 - Roberts Miculens (Lattelecom) <roberts.miculens@lattelecom.lv>
+- Rodrigo Sasse David (Orange) <rodrigo.sassedavid@orange.com>
 - Sami Alavi (NUST) <sami.mansooralavi1999@gmail.com>
 - Shengxiang Zhu (University of Arizona) <szhu@email.arizona.edu>
 - Stefan Melin (Telia Company) <Stefan.Melin@teliacompany.com>
