@@ -33,6 +33,24 @@
       "message": "I think we should use slot_width instead of spacing when defining a flexgrid spectrum.",
       "revId": "603b28ac080c49fd83f4c2264693556a8aa8a16e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c9a602b_e61d54ed",
+        "filename": "gnpy/example-data/initial_spectrum2.json",
+        "patchSetId": 19
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-11-10T17:36:49Z",
+      "side": 1,
+      "message": "I have changed that",
+      "parentUuid": "a1eec7e8_e4cb62d5",
+      "revId": "603b28ac080c49fd83f4c2264693556a8aa8a16e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
