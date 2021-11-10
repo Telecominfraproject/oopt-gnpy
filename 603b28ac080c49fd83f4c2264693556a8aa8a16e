@@ -51,6 +51,24 @@
       "parentUuid": "a1eec7e8_e4cb62d5",
       "revId": "603b28ac080c49fd83f4c2264693556a8aa8a16e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "133cdb61_c1f0e968",
+        "filename": "gnpy/example-data/initial_spectrum2.json",
+        "patchSetId": 19
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-11-10T17:37:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c9a602b_e61d54ed",
+      "revId": "603b28ac080c49fd83f4c2264693556a8aa8a16e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
