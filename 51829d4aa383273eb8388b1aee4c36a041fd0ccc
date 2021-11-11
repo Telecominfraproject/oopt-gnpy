@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e973814_4c9c73b9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-11-11T16:16:29Z",
+      "side": 1,
+      "message": "From the past discussion (https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/497874) I remember that the plan was to work on a two-dimensional space of (CD, PMD) -\u003e penalty. That appears to be in-line with what is defined in IETF-CCAMP WG: https://github.com/ietf-ccamp-wg/ietf-ccamp-layer0-types-ext/blob/f8ec710/ietf-layer0-types-ext.yang#L573-L608\n\nShould we follow the more complex way how this is defined in a CCAMP draft? If you ask me, yes.",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 8
+      },
+      "revId": "51829d4aa383273eb8388b1aee4c36a041fd0ccc",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
