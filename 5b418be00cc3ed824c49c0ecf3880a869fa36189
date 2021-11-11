@@ -70,6 +70,24 @@
       "parentUuid": "0f1e9d24_808b1632",
       "revId": "5b418be00cc3ed824c49c0ecf3880a869fa36189",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3e20db7_ecab6369",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-11-11T17:26:00Z",
+      "side": 1,
+      "message": "I think that the point here is that these two nice round numbers do not match each other *exactly*. Jonas has a good point that the standards (or fiber datasheets, etc) define parameters at 1550nm, so just assuming that they apply at 193.5 THz might be wrong by a tiny tiny number. That means that we should replace that `193.5e12` magic number with gnpy.core.utils.wavelength2freq(1550e-9).\n\nHowever, that\u0027s not how the code looks like. Code has been extended with support for defining various parameters as a function of frequency *or* as a function of wavelength *or* as something which is defined as a scalar at 1550nm, that was back in 2019 in commit c41cddfff543e46b29f2496949d82f12eb1451a4. In my book that\u0027s excessive complexity; we should firmly define whether we take frequency or wavelength, and delegate this complexity to whoever is playing around with this code.\n\nA lot of this code is actually unused (see the variables and input-dict-parsing being renamed with no visible effect). Let\u0027s take this in for now (and Jonas, please complain if I misunderstood you).",
+      "parentUuid": "37aa064e_d4b2b6df",
+      "revId": "5b418be00cc3ed824c49c0ecf3880a869fa36189",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
