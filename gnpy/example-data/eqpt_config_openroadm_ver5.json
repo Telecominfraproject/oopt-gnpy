@@ -127,6 +127,24 @@
                     "bit_rate": 100e9,
                     "roll_off": null,
                     "tx_osnr": 33,
+                    "penalties": [
+                        {
+                            "chromatic_dispersion": 4e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 18e3,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pmd": 10,
+                            "penalty_value": 0
+                        },
+                        {
+                            "pmd": 30,
+                            "penalty_value": 0.5
+                        }
+                    ],
                     "min_spacing": 50e9,
                     "cost": 1
                 },
@@ -137,6 +155,28 @@
                     "bit_rate": 100e9,
                     "roll_off": 0.15,
                     "tx_osnr": 36,
+                    "penalties": [
+                        {
+                            "chromatic_dispersion": -1e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 4e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 48e3,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pmd": 10,
+                            "penalty_value": 0
+                        },
+                        {
+                            "pmd": 30,
+                            "penalty_value": 0.5
+                        }
+                    ],
                     "min_spacing": 50e9,
                     "cost": 1
                 },
@@ -147,6 +187,28 @@
                     "bit_rate": 100e9,
                     "roll_off": 0.15,
                     "tx_osnr": 36,
+                    "penalties": [
+                        {
+                            "chromatic_dispersion": -1e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 4e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 24e3,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pmd": 10,
+                            "penalty_value": 0
+                        },
+                        {
+                            "pmd": 30,
+                            "penalty_value": 0.5
+                        }
+                    ],
                     "min_spacing": 50e9,
                     "cost": 1
                 },
@@ -157,6 +219,28 @@
                     "bit_rate": 200e9,
                     "roll_off": 0.15,
                     "tx_osnr": 36,
+                    "penalties": [
+                        {
+                            "chromatic_dispersion": -1e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 4e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 24e3,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pmd": 10,
+                            "penalty_value": 0
+                        },
+                        {
+                            "pmd": 25,
+                            "penalty_value": 0.5
+                        }
+                    ],
                     "min_spacing": 87.5e9,
                     "cost": 1
                 },
@@ -167,6 +251,28 @@
                     "bit_rate": 300e9,
                     "roll_off": 0.15,
                     "tx_osnr": 36,
+                    "penalties": [
+                        {
+                            "chromatic_dispersion": -1e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 4e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 18e3,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pmd": 10,
+                            "penalty_value": 0
+                        },
+                        {
+                            "pmd": 25,
+                            "penalty_value": 0.5
+                        }
+                    ],
                     "min_spacing": 87.5e9,
                     "cost": 1
                 },
@@ -177,6 +283,28 @@
                     "bit_rate": 400e9,
                     "roll_off": 0.15,
                     "tx_osnr": 36,
+                    "penalties": [
+                        {
+                            "chromatic_dispersion": -1e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 4e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 12e3,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pmd": 10,
+                            "penalty_value": 0
+                        },
+                        {
+                            "pmd": 20,
+                            "penalty_value": 0.5
+                        }
+                    ],
                     "min_spacing": 87.5e9,
                     "cost": 1
                 }

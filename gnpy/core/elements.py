@@ -83,6 +83,8 @@ class Transceiver(_Node):
         self.baud_rate = None
         self.chromatic_dispersion = None
         self.pmd = None
+        self.penalties = {}
+        self.total_penalty = 0
 
     def _calc_cd(self, spectral_info):
         """ Updates the Transceiver property with the CD of the received channels. CD in ps/nm.
@@ -93,6 +95,18 @@ class Transceiver(_Node):
         """Updates the Transceiver property with the PMD of the received channels. PMD in ps.
         """
         self.pmd = [carrier.pmd*1e12 for carrier in spectral_info.carriers]
+
+    def _calc_penalty(self, impairment_value, boundary_list):
+        return interp(impairment_value, boundary_list['up_to_boundary'], boundary_list['penalty_value'],
+                      left=float('inf'), right=float('inf'))
+
+    def calc_penalties(self, penalties):
+        """Updates the Transceiver property with penalties (CD, PMD, etc.) of the received channels in dB.
+           Penalties are linearly interpolated between given points and set to 'inf' outside interval.
+        """
+        self.penalties = {impairment: self._calc_penalty(getattr(self, impairment), boundary_list)
+                          for impairment, boundary_list in penalties.items()}
+        self.total_penalty = sum(list(self.penalties.values()), axis=0)
 
     def _calc_snr(self, spectral_info):
         with errstate(divide='ignore'):
@@ -154,7 +168,8 @@ class Transceiver(_Node):
                 f'osnr_nli={self.osnr_nli!r}, '
                 f'snr={self.snr!r}, '
                 f'chromatic_dispersion={self.chromatic_dispersion!r}, '
-                f'pmd={self.pmd!r})')
+                f'pmd={self.pmd!r}, '
+                f'penalties={self.penalties!r})')
 
     def __str__(self):
         if self.snr is None or self.osnr_ase is None:
@@ -167,7 +182,7 @@ class Transceiver(_Node):
         cd = mean(self.chromatic_dispersion)
         pmd = mean(self.pmd)
 
-        return '\n'.join([f'{type(self).__name__} {self.uid}',
+        result = '\n'.join([f'{type(self).__name__} {self.uid}',
 
                           f'  GSNR (0.1nm, dB):          {snr_01nm:.2f}',
                           f'  GSNR (signal bw, dB):      {snr:.2f}',
@@ -175,6 +190,15 @@ class Transceiver(_Node):
                           f'  OSNR ASE (signal bw, dB):  {osnr_ase:.2f}',
                           f'  CD (ps/nm):                {cd:.2f}',
                           f'  PMD (ps):                  {pmd:.2f}'])
+
+        cd_penalty = self.penalties.get('chromatic_dispersion')
+        if cd_penalty is not None:
+            result += f'\n  CD penalty (dB):           {mean(cd_penalty):.2f}'
+        pmd_penalty = self.penalties.get('pmd')
+        if pmd_penalty is not None:
+            result += f'\n  PMD penalty (dB):          {mean(pmd_penalty):.2f}'
+
+        return result
 
     def __call__(self, spectral_info):
         self._calc_snr(spectral_info)
