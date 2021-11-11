@@ -88,6 +88,24 @@
       "parentUuid": "37aa064e_d4b2b6df",
       "revId": "5b418be00cc3ed824c49c0ecf3880a869fa36189",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3223f694_4ce6706c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-11-11T20:21:29Z",
+      "side": 1,
+      "message": "\u003eThat means that we should replace that `193.5e12` magic number with gnpy.core.utils.wavelength2freq(1550e-9).\n\nRight, and that is what the code does now AFAICT, so LGTM.",
+      "parentUuid": "b3e20db7_ecab6369",
+      "revId": "5b418be00cc3ed824c49c0ecf3880a869fa36189",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
