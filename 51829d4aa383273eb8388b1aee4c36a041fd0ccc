@@ -22,6 +22,30 @@
       },
       "revId": "51829d4aa383273eb8388b1aee4c36a041fd0ccc",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b3f7b71_cfbdb52f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-11-11T20:36:25Z",
+      "side": 1,
+      "message": "This patch uses the same model for calculating penalty as was previously proposed by Alessio together with Lumentum. I don\u0027t remember any discussion from that time about using a \"two-dimensional space of (CD, PMD) -\u003e penalty\" (although strictly speaking the proposed model can also be seen as a 2D-function, i.e. penalty \u003d f(CD, PMD)). The problem I have with the IETF definition is that nobody specifies penalty like that today. I would prefer to use a model where we can input values now based on vendor data sheets and organizations like openroadm.",
+      "parentUuid": "2e973814_4c9c73b9",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 8
+      },
+      "revId": "51829d4aa383273eb8388b1aee4c36a041fd0ccc",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
