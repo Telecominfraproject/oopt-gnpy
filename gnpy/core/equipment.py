@@ -35,6 +35,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             mode_params = {"format": "undetermined",
                            "baud_rate": None,
                            "OSNR": None,
+                           "penalties": None,
                            "bit_rate": None,
                            "roll_off": None,
                            "tx_osnr": None,
@@ -59,6 +60,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             trx_params['baud_rate'] = default_si_data.baud_rate
             trx_params['spacing'] = default_si_data.spacing
             trx_params['OSNR'] = None
+            trx_params['penalties'] = {}
             trx_params['bit_rate'] = None
             trx_params['cost'] = None
             trx_params['roll_off'] = default_si_data.roll_off
