@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e1e52ba_146b858b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-11-11T16:35:49Z",
+      "side": 1,
+      "message": "Hi Gert, based on your feedback, here\u0027s an improved version of the docs on how vendors can improve GNPy.",
+      "revId": "4becc9060ccabc3dd8733f8c1123579cfc724974",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
