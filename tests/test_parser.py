@@ -358,6 +358,7 @@ def test_excel_ila_constraints(source, destination, route_list, hoptype, expecte
         'cost': None,
         'roll_off': 0,
         'tx_osnr': 0,
+        'penalties': None,
         'min_spacing': None,
         'nb_channel': 0,
         'power': 0,
