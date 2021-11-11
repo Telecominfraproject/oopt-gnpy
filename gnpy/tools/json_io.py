@@ -63,6 +63,8 @@ class SI(_JsonThing):
         "power_range_db": [0, 0, 0.5],
         "roll_off": 0.15,
         "tx_osnr": 45,
+        "cd_penalty": {"threshold": 0, "limit": 200e3, "osnr_penalty": 0},
+        "pmd_penalty": {"threshold": 0, "limit": 200, "osnr_penalty": 0},
         "sys_margins": 0
     }
 

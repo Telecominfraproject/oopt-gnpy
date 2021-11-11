@@ -259,6 +259,16 @@
             "power_range_db": [0,0,1],
             "roll_off": 0.15,
             "tx_osnr": 40,
+            "cd_penalty": {
+                  "threshold": 0,
+                  "limit": 200e3,
+                  "osnr_penalty": 0
+                  },
+            "pmd_penalty": {
+                  "threshold": 0,
+                  "limit": 200,
+                  "osnr_penalty": 0
+                  },
             "sys_margins": 2
             }],
       "Transceiver":[
@@ -277,6 +287,16 @@
                        "bit_rate": 100e9,
                        "roll_off": 0.15,
                        "tx_osnr": 40,
+                       "cd_penalty": {
+                              "threshold": 0,
+                              "limit": 200e3,
+                              "osnr_penalty": 0
+                              },
+                       "pmd_penalty": {
+                              "threshold": 0,
+                              "limit": 200,
+                              "osnr_penalty": 0
+                              },
                        "min_spacing": 37.5e9,
                        "cost":1
                        },
@@ -287,6 +307,16 @@
                        "bit_rate": 200e9,
                        "roll_off": 0.15,
                        "tx_osnr": 40,
+                       "cd_penalty": {
+                              "threshold": 0,
+                              "limit": 200e3,
+                              "osnr_penalty": 0
+                              },
+                       "pmd_penalty": {
+                              "threshold": 0,
+                              "limit": 200,
+                              "osnr_penalty": 0
+                              },
                        "min_spacing": 75e9,
                        "cost":1
                        }
@@ -306,6 +336,16 @@
                        "bit_rate": 100e9,
                        "roll_off": 0.15,
                        "tx_osnr": 40,
+                       "cd_penalty": {
+                              "threshold": 0,
+                              "limit": 200e3,
+                              "osnr_penalty": 0
+                              },
+                       "pmd_penalty": {
+                              "threshold": 0,
+                              "limit": 200,
+                              "osnr_penalty": 0
+                              },
                        "min_spacing": 37.5e9,
                        "cost":1
                        },
@@ -316,6 +356,16 @@
                        "bit_rate": 300e9,
                        "roll_off": 0.15,
                        "tx_osnr": 40,
+                       "cd_penalty": {
+                              "threshold": 0,
+                              "limit": 200e3,
+                              "osnr_penalty": 0
+                              },
+                       "pmd_penalty": {
+                              "threshold": 0,
+                              "limit": 200,
+                              "osnr_penalty": 0
+                              },
                        "min_spacing": 62.5e9,
                        "cost":1
                        },
@@ -326,6 +376,16 @@
                        "bit_rate": 400e9,
                        "roll_off": 0.15,
                        "tx_osnr": 40,
+                       "cd_penalty": {
+                              "threshold": 0,
+                              "limit": 200e3,
+                              "osnr_penalty": 0
+                              },
+                       "pmd_penalty": {
+                              "threshold": 0,
+                              "limit": 200,
+                              "osnr_penalty": 0
+                              },
                        "min_spacing": 75e9,
                        "cost":1
                        },
@@ -336,6 +396,16 @@
                        "bit_rate": 200e9,
                        "roll_off": 0.15,
                        "tx_osnr": 40,
+                       "cd_penalty": {
+                              "threshold": 0,
+                              "limit": 200e3,
+                              "osnr_penalty": 0
+                              },
+                       "pmd_penalty": {
+                              "threshold": 0,
+                              "limit": 200,
+                              "osnr_penalty": 0
+                              },
                        "min_spacing": 75e9,
                        "cost":1
                        }

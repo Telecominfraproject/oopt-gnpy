@@ -26,6 +26,10 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
                                if trx == trx_type_variety
                                for mode in trxs[trx].mode
                                if mode['format'] == trx_mode)
+            # Use cd and pmd penalty from SI if missing from trx mode params to handle backwards
+            # compatibility with old eqpt_config files
+            mode_params.setdefault('cd_penalty', default_si_data.cd_penalty)
+            mode_params.setdefault('pmd_penalty', default_si_data.pmd_penalty)
             trx_params = {**mode_params}
             # sanity check: spacing baudrate must be smaller than min spacing
             if trx_params['baud_rate'] > trx_params['min_spacing']:
@@ -35,6 +39,8 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             mode_params = {"format": "undetermined",
                            "baud_rate": None,
                            "OSNR": None,
+                           "cd_penalty": None,
+                           "pmd_penalty": None,
                            "bit_rate": None,
                            "roll_off": None,
                            "tx_osnr": None,
@@ -59,6 +65,8 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             trx_params['baud_rate'] = default_si_data.baud_rate
             trx_params['spacing'] = default_si_data.spacing
             trx_params['OSNR'] = None
+            trx_params['cd_penalty'] = default_si_data.cd_penalty
+            trx_params['pmd_penalty'] = default_si_data.pmd_penalty
             trx_params['bit_rate'] = None
             trx_params['cost'] = None
             trx_params['roll_off'] = default_si_data.roll_off
