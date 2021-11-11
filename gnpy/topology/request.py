@@ -20,7 +20,7 @@ from logging import getLogger
 from networkx import (dijkstra_path, NetworkXNoPath,
                       all_simple_paths, shortest_simple_paths)
 from networkx.utils import pairwise
-from numpy import mean
+from numpy import mean, argmin
 from gnpy.core.elements import Transceiver, Roadm
 from gnpy.core.utils import lin2db
 from gnpy.core.info import create_input_spectral_information
@@ -34,8 +34,8 @@ LOGGER = getLogger(__name__)
 
 RequestParams = namedtuple('RequestParams', 'request_id source destination bidir trx_type' +
                            ' trx_mode nodes_list loose_list spacing power nb_channel f_min' +
-                           ' f_max format baud_rate OSNR bit_rate roll_off tx_osnr' +
-                           ' min_spacing cost path_bandwidth effective_freq_slot')
+                           ' f_max format baud_rate OSNR cd_penalty pmd_penalty bit_rate' +
+                           ' roll_off tx_osnr min_spacing cost path_bandwidth effective_freq_slot')
 DisjunctionParams = namedtuple('DisjunctionParams', 'disjunction_id relaxable link' +
                                '_diverse node_diverse disjunctions_req')
 
@@ -62,6 +62,8 @@ class PathRequest:
         self.f_max = params.f_max
         self.format = params.format
         self.OSNR = params.OSNR
+        self.cd_penalty = params.cd_penalty
+        self.pmd_penalty = params.pmd_penalty
         self.bit_rate = params.bit_rate
         self.roll_off = params.roll_off
         self.tx_osnr = params.tx_osnr
@@ -348,10 +350,12 @@ def propagate(path, req, equipment):
         else:
             si = el(si)
     path[0].update_snr(req.tx_osnr)
+    path[0].calc_cd_pmd_penalty(req.cd_penalty, req.pmd_penalty)
     if any(isinstance(el, Roadm) for el in path):
         path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
     else:
         path[-1].update_snr(req.tx_osnr)
+    path[-1].calc_cd_pmd_penalty(req.cd_penalty, req.pmd_penalty)
     return si
 
 
@@ -386,11 +390,13 @@ def propagate_and_optimize_mode(path, req, equipment):
             for this_mode in modes_to_explore:
                 if path[-1].snr is not None:
                     path[0].update_snr(this_mode['tx_osnr'])
+                    path[0].calc_cd_pmd_penalty(this_mode['cd_penalty'], this_mode['pmd_penalty'])
                     if any(isinstance(el, Roadm) for el in path):
                         path[-1].update_snr(this_mode['tx_osnr'], equipment['Roadm']['default'].add_drop_osnr)
                     else:
                         path[-1].update_snr(this_mode['tx_osnr'])
-                    if round(min(path[-1].snr + lin2db(this_br / (12.5e9))), 2) \
+                    path[-1].calc_cd_pmd_penalty(this_mode['cd_penalty'], this_mode['pmd_penalty'])
+                    if round(min(path[-1].snr_01nm - path[-1].cd_penalty - path[-1].pmd_penalty), 2) \
                             > this_mode['OSNR'] + equipment['SI']['default'].sys_margins:
                         return path, this_mode
                     else:
@@ -1107,12 +1113,17 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 # means that at this point the mode was entered/forced by user and thus a
                 # baud_rate was defined
                 propagate(total_path, pathreq, equipment)
-                temp_snr01nm = round(mean(total_path[-1].snr+lin2db(pathreq.baud_rate/(12.5e9))), 2)
-                if temp_snr01nm < pathreq.OSNR + equipment['SI']['default'].sys_margins:
+                snr01nm_with_penalty = total_path[-1].snr_01nm \
+                                        - total_path[-1].cd_penalty - total_path[-1].pmd_penalty
+                min_ind = argmin(snr01nm_with_penalty)
+                if round(snr01nm_with_penalty[min_ind], 2) < pathreq.OSNR + equipment['SI']['default'].sys_margins:
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
-                          f' {pathreq.source} to {pathreq.destination} does not pass with' +\
-                          f' {pathreq.tsp_mode}\n\tcomputedSNR in 0.1nm = {temp_snr01nm} ' +\
-                          f'- required osnr {pathreq.OSNR} + {equipment["SI"]["default"].sys_margins} margin'
+                          f' {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}' +\
+                          f'\n\tcomputed SNR in 0.1nm = {round(total_path[-1].snr_01nm[min_ind], 2)}' +\
+                          f'\n\tCD penalty = {round(total_path[-1].cd_penalty[min_ind], 2)}' +\
+                          f'\n\tPMD penalty = {round(total_path[-1].pmd_penalty[min_ind], 2)}' +\
+                          f'\n\trequired osnr = {pathreq.OSNR}' +\
+                          f'\n\tsystem margin = {equipment["SI"]["default"].sys_margins}'
                     print(msg)
                     LOGGER.warning(msg)
                     pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
@@ -1152,14 +1163,18 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 print(f'\tPath (roadsm) {[r.uid for r in rev_p if isinstance(r,Roadm)]}\n')
                 propagate(rev_p, pathreq, equipment)
                 propagated_reversed_path = rev_p
-                temp_snr01nm = round(mean(propagated_reversed_path[-1].snr +\
-                                          lin2db(pathreq.baud_rate/(12.5e9))), 2)
-                if temp_snr01nm < pathreq.OSNR + equipment['SI']['default'].sys_margins:
+                snr01nm_with_penalty = propagated_reversed_path[-1].snr_01nm \
+                                        - propagated_reversed_path[-1].cd_penalty \
+                                        - propagated_reversed_path[-1].pmd_penalty
+                min_ind = argmin(snr01nm_with_penalty)
+                if round(snr01nm_with_penalty[min_ind], 2) < pathreq.OSNR + equipment['SI']['default'].sys_margins:
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
-                          f' {pathreq.source} to {pathreq.destination} does not pass with' +\
-                          f' {pathreq.tsp_mode}\n' +\
-                          f'\tcomputedSNR in 0.1nm = {temp_snr01nm} -' \
-                          f' required osnr {pathreq.OSNR} + {equipment["SI"]["default"].sys_margins} margin'
+                          f' {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}' +\
+                          f'\n\tcomputed SNR in 0.1nm = {round(propagated_reversed_path[-1].snr_01nm[min_ind], 2)}' +\
+                          f'\n\tCD penalty = {round(propagated_reversed_path[-1].cd_penalty[min_ind], 2)}' +\
+                          f'\n\tPMD penalty = {round(propagated_reversed_path[-1].pmd_penalty[min_ind], 2)}' +\
+                          f'\n\trequired osnr = {pathreq.OSNR}' +\
+                          f'\n\tsystem margin = {equipment["SI"]["default"].sys_margins}'
                     print(msg)
                     LOGGER.warning(msg)
                     # TODO selection of mode should also be on reversed direction !!

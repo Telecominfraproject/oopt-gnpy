@@ -30,6 +30,8 @@ def test_raman_fiber():
     spectral_info_params.pop('power_range_db')
     spectral_info_params.pop('tx_osnr')
     spectral_info_params.pop('sys_margins')
+    spectral_info_params.pop('cd_penalty')
+    spectral_info_params.pop('pmd_penalty')
     spectral_info_input = create_input_spectral_information(power=power, **spectral_info_params)
     SimParams.set_params(load_json(TEST_DIR / 'data' / 'sim_params.json'))
     fiber = RamanFiber(**load_json(TEST_DIR / 'data' / 'raman_fiber_config.json'))

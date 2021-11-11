@@ -122,6 +122,16 @@
             "power_range_db": [0,0,1],
             "roll_off": 0.15,
             "tx_osnr": 35,
+            "cd_penalty": {
+                  "threshold": 4e3,
+                  "limit": 40e3,
+                  "osnr_penalty": 0.5
+            },
+            "pmd_penalty": {
+                  "threshold": 10,
+                  "limit": 30,
+                  "osnr_penalty": 0.5
+            },
             "sys_margins": 2
             }
       ],
@@ -140,16 +150,36 @@
                        "bit_rate": 100e9,
                        "roll_off": null,
                        "tx_osnr": 33,
+                       "cd_penalty": {
+                              "threshold": 4e3,
+                              "limit": 18e3,
+                              "osnr_penalty": 0.5
+                              },
+                       "pmd_penalty": {
+                              "threshold": 10,
+                              "limit": 30,
+                              "osnr_penalty": 0.5
+                              },
                        "min_spacing": 50e9,
                        "cost":1
                        },
-					   {
+			     {
                        "format": "100 Gbit/s, 31.57 Gbaud, DP-QPSK",
                        "baud_rate": 31.57e9,
                        "OSNR": 12,
                        "bit_rate": 100e9,
                        "roll_off": 0.15,
                        "tx_osnr": 35,
+                       "cd_penalty": {
+                              "threshold": 4e3,
+                              "limit": 40e3,
+                              "osnr_penalty": 0.5
+                              },
+                       "pmd_penalty": {
+                              "threshold": 10,
+                              "limit": 30,
+                              "osnr_penalty": 0.5
+                              },
                        "min_spacing": 50e9,
                        "cost":1
                        },
@@ -160,6 +190,16 @@
                        "bit_rate": 200e9,
                        "roll_off": 0.15,
                        "tx_osnr": 36,
+                       "cd_penalty": {
+                              "threshold": 4e3,
+                              "limit": 24e3,
+                              "osnr_penalty": 0.5
+                              },
+                       "pmd_penalty": {
+                              "threshold": 10,
+                              "limit": 25,
+                              "osnr_penalty": 0.5
+                              }, 
                        "min_spacing": 87.5e9,
                        "cost":1
                        },
@@ -170,6 +210,16 @@
                        "bit_rate": 300e9,
                        "roll_off": 0.15,
                        "tx_osnr": 36,
+                       "cd_penalty": {
+                              "threshold": 4e3,
+                              "limit": 18e3,
+                              "osnr_penalty": 0.5
+                              },
+                       "pmd_penalty": {
+                              "threshold": 10,
+                              "limit": 25,
+                              "osnr_penalty": 0.5
+                              },
                        "min_spacing": 87.5e9,
                        "cost":1
                        },
@@ -180,6 +230,16 @@
                        "bit_rate": 400e9,
                        "roll_off": 0.15,
                        "tx_osnr": 36,
+                       "cd_penalty": {
+                              "threshold": 4e3,
+                              "limit": 12e3,
+                              "osnr_penalty": 0.5
+                              },
+                       "pmd_penalty": {
+                              "threshold": 10,
+                              "limit": 20,
+                              "osnr_penalty": 0.5
+                              },
                        "min_spacing": 87.5e9,
                        "cost":1
                        }
