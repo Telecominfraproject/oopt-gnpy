@@ -113,6 +113,18 @@ class Transceiver(_JsonThing):
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Transceiver')
+        for mode_params in self.mode:
+            penalties = mode_params.setdefault('penalties', {})
+            for impairment, boundaries in penalties.items():
+                if impairment in ('chromatic_dispersion', 'pmd') and all(b['up_to_boundary'] > 0 for b in boundaries):
+                    # make sure the list of penalty values include a proper lower boundary
+                    # (we assume 0 penalty for 0 impairment)
+                    boundaries.insert(0, {'up_to_boundary': 0, 'penalty_value': 0})
+                # make sure the list of penalty values is are sorted by up_to_boundary
+                boundaries.sort(key=lambda i: i['up_to_boundary'])
+                # rearrange as dict of lists instead of list of dicts:
+                penalties[impairment] = {'up_to_boundary': [b['up_to_boundary'] for b in boundaries],
+                                         'penalty_value': [b['penalty_value'] for b in boundaries]}
 
 
 class Fiber(_JsonThing):
