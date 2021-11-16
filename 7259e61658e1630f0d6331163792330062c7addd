@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4f0986fd_234330f4",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-11-16T09:17:12Z",
+      "side": 1,
+      "message": "if I\u0027m reading this correctly, this code takes the provided parameters, which describe how a \"positive delta of frequency\" affect the \"cr parameter\", and applies a negative value of each CR to each \"negative frequency offset\". In other words, there\u0027s some undocumented transformation of the data.\n\nI suppose that this is scientifically sound, but please:\n- add an inline comment to the code explaining what\u0027s going on here,\n- document the CR parameter in the docs, including the fact that the other, symmetrical part is auto-generated at runtime",
+      "range": {
+        "startLine": 320,
+        "startChar": 0,
+        "endLine": 324,
+        "endChar": 89
+      },
+      "revId": "7259e61658e1630f0d6331163792330062c7addd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6ac8b4d1_6c9405a1",
         "filename": "gnpy/core/parameters.py",
         "patchSetId": 25
@@ -14,6 +37,47 @@
       "writtenOn": "2021-11-16T08:33:13Z",
       "side": 1,
       "message": "Ramam pump units typically use two orthogonally polarized pump lasers per frequency combined with a PBC. Does the power here refer to power per polarization or total power in both polarizations?",
+      "revId": "7259e61658e1630f0d6331163792330062c7addd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee3bd106_4d110e2b",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-11-16T09:17:12Z",
+      "side": 1,
+      "message": "\u003e linters-diff-ci: F541 f-string is missing placeholders\n\nPlease fix.",
+      "parentUuid": "81456c4c_5faba2b2",
+      "revId": "7259e61658e1630f0d6331163792330062c7addd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab2fa64c_02a337f6",
+        "filename": "tests/invocation/openroadm-v5-Stockholm-Gothenburg",
+        "patchSetId": 25
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-11-16T09:17:12Z",
+      "side": 1,
+      "message": "I\u0027m not super-thrilled by this. From the user experience point of view, does it add value to print this?",
+      "range": {
+        "startLine": 1,
+        "startChar": 1,
+        "endLine": 9,
+        "endChar": 45
+      },
       "revId": "7259e61658e1630f0d6331163792330062c7addd",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
