@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "037af897_07a30000",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-11-16T11:12:37Z",
+      "side": 1,
+      "message": "During today\u0027s call Andre4a volunteered to add a new patch as a parent of this one. In that patch, the `gamma` and `CR` parameter will be changed into an `effective-area` from which `gamma` will be derived. The CR *shape* will be provided via code (i.e., not via the equipt_config.json), and the actual effective value of CR will be determined from this predefined shape and the effective_area of the fiber. There will also be an option for providing a vector of the CR as a function of frequency; in that case, the built-in CR shape won\u0027t be used at all for that particular fiber type.",
+      "revId": "7259e61658e1630f0d6331163792330062c7addd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4f0986fd_234330f4",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 25
@@ -14,6 +31,30 @@
       "writtenOn": "2021-11-16T09:17:12Z",
       "side": 1,
       "message": "if I\u0027m reading this correctly, this code takes the provided parameters, which describe how a \"positive delta of frequency\" affect the \"cr parameter\", and applies a negative value of each CR to each \"negative frequency offset\". In other words, there\u0027s some undocumented transformation of the data.\n\nI suppose that this is scientifically sound, but please:\n- add an inline comment to the code explaining what\u0027s going on here,\n- document the CR parameter in the docs, including the fact that the other, symmetrical part is auto-generated at runtime",
+      "range": {
+        "startLine": 320,
+        "startChar": 0,
+        "endLine": 324,
+        "endChar": 89
+      },
+      "revId": "7259e61658e1630f0d6331163792330062c7addd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53bbef8b_13ff412b",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-11-16T11:12:37Z",
+      "side": 1,
+      "message": "Andrea reported during the call that this is just an implementation detail. I would like to have an inline comment in the code for that, though.",
+      "parentUuid": "4f0986fd_234330f4",
       "range": {
         "startLine": 320,
         "startChar": 0,
@@ -79,6 +120,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d8bf82a6_82341708",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-11-16T11:12:37Z",
+      "side": 1,
+      "message": "+1, please document this in the docs",
+      "parentUuid": "25745215_be6c0af7",
+      "revId": "7259e61658e1630f0d6331163792330062c7addd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ee3bd106_4d110e2b",
         "filename": "gnpy/tools/json_io.py",
         "patchSetId": 25
@@ -108,6 +167,30 @@
       "writtenOn": "2021-11-16T09:17:12Z",
       "side": 1,
       "message": "I\u0027m not super-thrilled by this. From the user experience point of view, does it add value to print this?",
+      "range": {
+        "startLine": 1,
+        "startChar": 1,
+        "endLine": 9,
+        "endChar": 45
+      },
+      "revId": "7259e61658e1630f0d6331163792330062c7addd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85a4523c_468fc206",
+        "filename": "tests/invocation/openroadm-v5-Stockholm-Gothenburg",
+        "patchSetId": 25
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-11-16T11:12:37Z",
+      "side": 1,
+      "message": "During the call we decided to not take any direct action for this. However, as per the gamma -\u003e effective_area change and the move of actual CR shape to code (see the patchset-level comment), this will actually be solved as a side effect of that.",
+      "parentUuid": "ab2fa64c_02a337f6",
       "range": {
         "startLine": 1,
         "startChar": 1,
