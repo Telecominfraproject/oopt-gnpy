@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ac8b4d1_6c9405a1",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-11-16T08:33:13Z",
+      "side": 1,
+      "message": "Ramam pump units typically use two orthogonally polarized pump lasers per frequency combined with a PBC. Does the power here refer to power per polarization or total power in both polarizations?",
+      "revId": "7259e61658e1630f0d6331163792330062c7addd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
