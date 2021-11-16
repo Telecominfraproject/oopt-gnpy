@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "24a08be2_42a09c00",
+        "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-11-16T08:20:54Z",
+      "side": 1,
+      "message": "Earlier versions included geo-location, i.e. latitude and longitude of nodes. Why was this dropped? I think we need it.",
+      "revId": "091a87e03cd047023a40a091fb3cd2b917951fe3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "88b8d168_5a7f94de",
         "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
         "patchSetId": 4
