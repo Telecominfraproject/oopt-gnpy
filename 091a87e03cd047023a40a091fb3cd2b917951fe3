@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e5ef402e_3412d062",
+        "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-11-16T09:00:42Z",
+      "side": 1,
+      "message": "I agree that it is important for feature parity, but it was not really needed in the first phase as a \"technology demonstrator\". If I recall correctly, the first versions of the draft also insisted on specifying a lat/lon coordinate pair, which makes \"toy topologies\" with X/Y cartesian coordinates harder to implement -- but when I review the draft history today, these are already present in the very first version. So I think the only reason for removal was to implement the bare minimum to let GNPy run.\n\nTL;DR: I\u0027ll bring it back in, it is important for any UI.",
+      "parentUuid": "24a08be2_42a09c00",
+      "revId": "091a87e03cd047023a40a091fb3cd2b917951fe3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "88b8d168_5a7f94de",
         "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
         "patchSetId": 4
