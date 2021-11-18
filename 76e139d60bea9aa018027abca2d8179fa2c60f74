@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84027ecf_903b2270",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-11-18T10:44:33Z",
+      "side": 1,
+      "message": "Just a note: With the new definition of spectral information, the behaviour of elements __call__ function has changed. Before, it was an immutable namedtuple and the __call__ function returned a new spectral info without changing the input. Now it does change the input, which tricked me when plotting the spectrum after every element in gnpy.app. I don\u0027t think it\u0027s a problem since probably no one else is using low level gnpy functions like that but I thought I\u0027d leave a note here anyway.",
+      "range": {
+        "startLine": 443,
+        "startChar": 4,
+        "endLine": 448,
+        "endChar": 28
+      },
+      "revId": "76e139d60bea9aa018027abca2d8179fa2c60f74",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
