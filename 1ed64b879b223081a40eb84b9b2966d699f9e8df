@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d4a922d_5a149910",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-11-24T10:25:22Z",
+      "side": 1,
+      "message": "This proposal has been reworked compared to the first version to be more aligned with the org-openroadm-operational-mode-catalog.yang module (which I had not seen before submitting the first version). When thinking more about how OpenROADM defines penalties in their yang module, I realized that the approach with a list of up_to_boundary/penalty_value pairs is more flexible and allows a user to specify penalties in more detail by defining more points on the penalty curve, while still being compatible with specifications from vendors and other organizations.",
+      "revId": "1ed64b879b223081a40eb84b9b2966d699f9e8df",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
