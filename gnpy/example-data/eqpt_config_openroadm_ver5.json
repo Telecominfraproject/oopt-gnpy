@@ -117,6 +117,7 @@
             "target_pch_out_db": -20,
             "add_drop_osnr": 33,
             "pmd": 3e-12,
+            "pdl": 1.5,
             "restrictions": {
                 "preamp_variety_list": ["openroadm_mw_mw_preamp_worstcase_ver5"],
                 "booster_variety_list": ["openroadm_mw_mw_booster"]
@@ -167,6 +168,22 @@
                         {
                             "pmd": 30,
                             "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 1,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 2,
+                            "penalty_value": 1
+                        },
+                        {
+                            "pdl": 4,
+                            "penalty_value": 2.5
+                        },
+                        {
+                            "pdl": 6,
+                            "penalty_value": 4
                         }
                     ],
                     "min_spacing": 50e9,
@@ -199,6 +216,22 @@
                         {
                             "pmd": 30,
                             "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 1,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 2,
+                            "penalty_value": 1
+                        },
+                        {
+                            "pdl": 4,
+                            "penalty_value": 2.5
+                        },
+                        {
+                            "pdl": 6,
+                            "penalty_value": 4
                         }
                     ],
                     "min_spacing": 50e9,
@@ -231,6 +264,22 @@
                         {
                             "pmd": 30,
                             "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 1,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 2,
+                            "penalty_value": 1
+                        },
+                        {
+                            "pdl": 4,
+                            "penalty_value": 2.5
+                        },
+                        {
+                            "pdl": 6,
+                            "penalty_value": 4
                         }
                     ],
                     "min_spacing": 50e9,
@@ -263,6 +312,18 @@
                         {
                             "pmd": 25,
                             "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 1,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 2,
+                            "penalty_value": 1
+                        },
+                        {
+                            "pdl": 4,
+                            "penalty_value": 2.5
                         }
                     ],
                     "min_spacing": 87.5e9,
@@ -295,6 +356,18 @@
                         {
                             "pmd": 25,
                             "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 1,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 2,
+                            "penalty_value": 1
+                        },
+                        {
+                            "pdl": 4,
+                            "penalty_value": 2.5
                         }
                     ],
                     "min_spacing": 87.5e9,
@@ -327,6 +400,18 @@
                         {
                             "pmd": 20,
                             "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 1,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 2,
+                            "penalty_value": 1
+                        },
+                        {
+                            "pdl": 4,
+                            "penalty_value": 2.5
                         }
                     ],
                     "min_spacing": 87.5e9,
