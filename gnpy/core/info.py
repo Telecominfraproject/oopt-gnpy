@@ -27,7 +27,7 @@ class Power(namedtuple('Power', 'signal nli ase')):
 
 
 class Channel(namedtuple('Channel',
-                         'channel_number frequency baud_rate slot_width roll_off power chromatic_dispersion pmd')):
+                         'channel_number frequency baud_rate slot_width roll_off power chromatic_dispersion pmd pdl')):
     """ Class containing the parameters of a WDM signal.
         :param channel_number: channel number in the WDM grid
         :param frequency: central frequency of the signal (Hz)
@@ -37,6 +37,7 @@ class Channel(namedtuple('Channel',
         :param power (gnpy.core.info.Power): power of signal, ASE noise and NLI (W)
         :param chromatic_dispersion: chromatic dispersion (s/m)
         :param pmd: polarization mode dispersion (s)
+        :param pdl: polarization dependent loss (dB)
     """
 
 
@@ -51,7 +52,7 @@ class SpectralInformation(object):
     """ Class containing the parameters of the entire WDM comb."""
 
     def __init__(self, frequency: array, baud_rate: array, slot_width: array, signal: array, nli: array, ase: array,
-                 roll_off: array, chromatic_dispersion: array, pmd: array):
+                 roll_off: array, chromatic_dispersion: array, pmd: array, pdl: array):
         indices = argsort(frequency)
         self._frequency = frequency[indices]
         self._df = outer(ones(frequency.shape), frequency) - outer(frequency, ones(frequency.shape))
@@ -75,6 +76,7 @@ class SpectralInformation(object):
         self._roll_off = roll_off[indices]
         self._chromatic_dispersion = chromatic_dispersion[indices]
         self._pmd = pmd[indices]
+        self._pdl = pdl[indices]
         pref = lin2db(mean(signal) * 1e3)
         self._pref = Pref(pref, pref, lin2db(self._number_of_channels))
 
@@ -158,13 +160,21 @@ class SpectralInformation(object):
         self._pmd = pmd
 
     @property
+    def pdl(self):
+        return self._pdl
+
+    @pdl.setter
+    def pdl(self, pdl):
+        self._pdl = pdl
+
+    @property
     def channel_number(self):
         return self._channel_number
 
     @property
     def carriers(self):
         entries = zip(self.channel_number, self.frequency, self.baud_rate, self.slot_width,
-                      self.roll_off, self.powers, self.chromatic_dispersion, self.pmd)
+                      self.roll_off, self.powers, self.chromatic_dispersion, self.pmd, self.pdl)
         return [Channel(*entry) for entry in entries]
 
     def __add__(self, other: SpectralInformation):
@@ -177,13 +187,15 @@ class SpectralInformation(object):
                                        roll_off=append(self.roll_off, other.roll_off),
                                        chromatic_dispersion=append(self.chromatic_dispersion,
                                                                    other.chromatic_dispersion),
-                                       pmd=append(self.pmd, other.pmd))
+                                       pmd=append(self.pmd, other.pmd),
+                                       pdl=append(self.pdl, other.pdl))
         except SpectrumError:
             raise SpectrumError('Spectra cannot be summed: channels overlapping.')
 
     def _replace(self, carriers, pref):
         self.chromatic_dispersion = array([c.chromatic_dispersion for c in carriers])
         self.pmd = array([c.pmd for c in carriers])
+        self.pdl = array([c.pdl for c in carriers])
         self.signal = array([c.power.signal for c in carriers])
         self.nli = array([c.power.nli for c in carriers])
         self.ase = array([c.power.ase for c in carriers])
@@ -197,7 +209,8 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, in
                                           slot_width: Union[int, float, ndarray, Iterable] = None,
                                           roll_off: Union[int, float, ndarray, Iterable] = 0.,
                                           chromatic_dispersion: Union[int, float, ndarray, Iterable] = 0.,
-                                          pmd: Union[int, float, ndarray, Iterable] = 0.):
+                                          pmd: Union[int, float, ndarray, Iterable] = 0.,
+                                          pdl: Union[int, float, ndarray, Iterable] = 0.):
     """This is just a wrapper around the SpectralInformation.__init__() that simplifies the creation of
     a non-uniform spectral information with NLI and ASE powers set to zero."""
     frequency = asarray(frequency)
@@ -210,12 +223,14 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, in
             ceil((1 + roll_off) * baud_rate / DEFAULT_SLOT_WIDTH_STEP) * DEFAULT_SLOT_WIDTH_STEP
         chromatic_dispersion = full(number_of_channels, chromatic_dispersion)
         pmd = full(number_of_channels, pmd)
+        pdl = full(number_of_channels, pdl)
         nli = zeros(number_of_channels)
         ase = zeros(number_of_channels)
         return SpectralInformation(frequency=frequency, slot_width=slot_width,
                                    signal=signal, nli=nli, ase=ase,
                                    baud_rate=baud_rate, roll_off=roll_off,
-                                   chromatic_dispersion=chromatic_dispersion, pmd=pmd)
+                                   chromatic_dispersion=chromatic_dispersion,
+                                   pmd=pmd, pdl=pdl)
     except ValueError as e:
         if 'could not broadcast' in str(e):
             raise SpectrumError('Dimension mismatch in input fields.')
