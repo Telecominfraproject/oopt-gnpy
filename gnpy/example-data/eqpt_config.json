@@ -221,6 +221,7 @@
             "target_pch_out_db": -20,
             "add_drop_osnr": 38,
             "pmd": 0,
+            "pdl": 0,
             "restrictions": {
                             "preamp_variety_list":[],
                             "booster_variety_list":[]

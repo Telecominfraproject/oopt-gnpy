@@ -94,6 +94,7 @@ class Roadm(_JsonThing):
         'target_pch_out_db': -17,
         'add_drop_osnr': 100,
         'pmd': 0,
+        'pdl': 0,
         'restrictions': {
             'preamp_variety_list': [],
             'booster_variety_list': []
