@@ -94,6 +94,7 @@ class Roadm(_JsonThing):
         'target_pch_out_db': -17,
         'add_drop_osnr': 100,
         'pmd': 0,
+        'pdl': 0,
         'restrictions': {
             'preamp_variety_list': [],
             'booster_variety_list': []
@@ -116,7 +117,7 @@ class Transceiver(_JsonThing):
         for mode_params in self.mode:
             penalties = mode_params.setdefault('penalties', {})
             for impairment, boundaries in penalties.items():
-                if impairment in ('chromatic_dispersion', 'pmd') and all(b['up_to_boundary'] > 0 for b in boundaries):
+                if impairment in ('chromatic_dispersion', 'pmd', 'pdl') and all(b['up_to_boundary'] > 0 for b in boundaries):
                     # make sure the list of penalty values include a proper lower boundary
                     # (we assume 0 penalty for 0 impairment)
                     boundaries.insert(0, {'up_to_boundary': 0, 'penalty_value': 0})

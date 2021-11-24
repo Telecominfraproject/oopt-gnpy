@@ -250,6 +250,7 @@ Transceiver trx Lannion_CAS
   OSNR ASE (signal bw, dB):  95.92
   CD (ps/nm):                0.00
   PMD (ps):                  0.00
+  PDL (dB):                  0.00
 Roadm roadm Lannion_CAS
   effective loss (dB):  23.00
   pch out (dBm):        -20.00
@@ -317,6 +318,7 @@ Transceiver trx Lorient_KMA
   OSNR ASE (signal bw, dB):  20.20
   CD (ps/nm):                2171.00
   PMD (ps):                  0.46
+  PDL (dB):                  0.00
 
 Transmission result for input power = 3.00 dBm:
   Final GSNR (0.1 nm): [1;36;40m23.94 dB[0m

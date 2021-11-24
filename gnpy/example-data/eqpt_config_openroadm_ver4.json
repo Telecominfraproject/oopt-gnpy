@@ -282,7 +282,8 @@
         {
             "target_pch_out_db": -20,
             "add_drop_osnr": 30,
-            "pmd": 0,
+            "pmd": 3e-12,
+            "pdl": 1.5,
             "restrictions": {
                 "preamp_variety_list": [
                     "openroadm_mw_mw_preamp"
