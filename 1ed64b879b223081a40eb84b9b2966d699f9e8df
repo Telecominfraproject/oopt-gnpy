@@ -16,6 +16,40 @@
       "message": "This proposal has been reworked compared to the first version to be more aligned with the org-openroadm-operational-mode-catalog.yang module (which I had not seen before submitting the first version). When thinking more about how OpenROADM defines penalties in their yang module, I realized that the approach with a list of up_to_boundary/penalty_value pairs is more flexible and allows a user to specify penalties in more detail by defining more points on the penalty curve, while still being compatible with specifications from vendors and other organizations.",
       "revId": "1ed64b879b223081a40eb84b9b2966d699f9e8df",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46bddb9a_aa1a3e0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-11-25T10:11:13Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "1ed64b879b223081a40eb84b9b2966d699f9e8df",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4d33fda_e21f2f26",
+        "filename": "gnpy/example-data/eqpt_config_openroadm_ver5.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-11-25T10:11:13Z",
+      "side": 1,
+      "message": "That\u0027s now very close to the IETF CCAMP proposal, except that you fix that there will never be combined penalties. Would it be acceptable to have penalties expressed this way ?:\n\"penalties\": [\n       {\"chromatic_dispersion_up_to_boundary\": 4e3,\n        \"penalty_value\": 0}\n       {\"chromatic_dispersion_up_to_boundary\": 18e3,\n        \"penalty_value\": 0.5},\n       {\"pmd_up_to_boundary\": 10,\n        \"penalty_value\": 0},\n       {\"pmd_up_to_boundary\": 30,\n        \"penalty_value\": 0.5}\n             ]\nin this way, we could be flexible to accept entries like this one:\n       {\"chromatic_dispersion_up_to_boundary\": 1e3,\n        \"pmd_up_to_boundary\": 35,\n        \"penalty_value\": 0.7}",
+      "revId": "1ed64b879b223081a40eb84b9b2966d699f9e8df",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
