@@ -4,7 +4,7 @@ Extending GNPy with vendor-specific data
 ========================================
 
 GNPy ships with an :ref:`equipment library<concepts-equipment>` containing machine-readable datasheets of networking equipment.
-Vendors who are willing to contribute descriptions of their supported products are encouraged to `submit a patch <https://review.gerrithub.io/Documentation/intro-gerrit-walkthrough-github.html>`__.
+Vendors who are willing to contribute descriptions of their supported products are encouraged to `submit a patch <https://review.gerrithub.io/Documentation/intro-gerrit-walkthrough-github.html>`__ -- or just :ref:`get in touch with us directly<contributing>`.
 
 This chapter discusses option for modeling performance of :ref:`EDFA amplifiers<extending-edfa>`, :ref:`Raman amplifiers<extending-raman>`, :ref:`transponders<extending-transponder>` and :ref:`ROADMs<extending-roadm>`.
 
