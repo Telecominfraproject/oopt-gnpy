@@ -68,6 +68,24 @@
       "parentUuid": "d4d33fda_e21f2f26",
       "revId": "1ed64b879b223081a40eb84b9b2966d699f9e8df",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58ef9413_dbb5fe26",
+        "filename": "gnpy/example-data/eqpt_config_openroadm_ver5.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-11-25T14:16:25Z",
+      "side": 1,
+      "message": "I updated the patch according to this proposal. Hope we can have agreement now :)",
+      "parentUuid": "04399bc8_94d987dd",
+      "revId": "1ed64b879b223081a40eb84b9b2966d699f9e8df",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
