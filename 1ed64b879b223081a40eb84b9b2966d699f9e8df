@@ -37,6 +37,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "52b7eafb_229925e4",
+        "filename": "gnpy/example-data/eqpt_config_openroadm_ver4.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-11-25T14:48:50Z",
+      "side": 1,
+      "message": "can you please push this coding style cleanup to an extra commit?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 15
+      },
+      "revId": "1ed64b879b223081a40eb84b9b2966d699f9e8df",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d4d33fda_e21f2f26",
         "filename": "gnpy/example-data/eqpt_config_openroadm_ver5.json",
         "patchSetId": 4
@@ -83,6 +106,24 @@
       "writtenOn": "2021-11-25T14:16:25Z",
       "side": 1,
       "message": "I updated the patch according to this proposal. Hope we can have agreement now :)",
+      "parentUuid": "04399bc8_94d987dd",
+      "revId": "1ed64b879b223081a40eb84b9b2966d699f9e8df",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0caabfdd_fd32ec90",
+        "filename": "gnpy/example-data/eqpt_config_openroadm_ver5.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-11-25T14:48:50Z",
+      "side": 1,
+      "message": "I think that the specific format in the JSON file is not super-important because we\u0027ll be replacing this with YANG, hopefully soon, and YANG dictates how lists are serialized.\n\nWe have not yet agreed on whether we\u0027ll be accepting a combined definition of penalties (I hope someone will provide some news about CCAMP for our next coders call), so I would prefer not to merge this until we have reached a conclusion.",
       "parentUuid": "04399bc8_94d987dd",
       "revId": "1ed64b879b223081a40eb84b9b2966d699f9e8df",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
