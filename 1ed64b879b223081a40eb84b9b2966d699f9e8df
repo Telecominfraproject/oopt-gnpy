@@ -145,6 +145,24 @@
       "parentUuid": "04399bc8_94d987dd",
       "revId": "1ed64b879b223081a40eb84b9b2966d699f9e8df",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6279739b_d8bbe0db",
+        "filename": "gnpy/example-data/eqpt_config_openroadm_ver5.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2021-11-25T15:52:17Z",
+      "side": 1,
+      "message": "that last message was for Jonas, sorry... @Jan: I think that the current json is important to me because we have a short term decision on what to push to openconfig, and if we can have an agreement on this type of format, already between GNPy and CCAMP that would be great.",
+      "parentUuid": "fa6eee13_8112758c",
+      "revId": "1ed64b879b223081a40eb84b9b2966d699f9e8df",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
