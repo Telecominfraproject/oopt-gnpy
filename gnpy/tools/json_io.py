@@ -183,7 +183,9 @@ class Amp(_JsonThing):
         'gain_ripple': None,
         'out_voa_auto': False,
         'allowed_for_design': False,
-        'raman': False
+        'raman': False,
+        'pmd': 0,
+        'pdl': 0
     }
 
     def __init__(self, **kwargs):
