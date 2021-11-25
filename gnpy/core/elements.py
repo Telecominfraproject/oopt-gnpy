@@ -935,7 +935,9 @@ class Edfa(_Node):
             pwr = pwr._replace(signal=pwr.signal * gain / att,
                                nli=pwr.nli * gain / att,
                                ase=(pwr.ase + carrier_ase) * gain / att)
-            yield carrier._replace(power=pwr)
+            pmd = sqrt(carrier.pmd**2 + self.params.pmd**2)
+            pdl = sqrt(carrier.pdl**2 + self.params.pdl**2)
+            yield carrier._replace(power=pwr, pmd=pmd, pdl=pdl)
 
     def update_pref(self, pref):
         return pref._replace(p_span0=pref.p_span0,
