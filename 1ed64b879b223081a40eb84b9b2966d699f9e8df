@@ -50,6 +50,24 @@
       "message": "That\u0027s now very close to the IETF CCAMP proposal, except that you fix that there will never be combined penalties. Would it be acceptable to have penalties expressed this way ?:\n\"penalties\": [\n       {\"chromatic_dispersion_up_to_boundary\": 4e3,\n        \"penalty_value\": 0}\n       {\"chromatic_dispersion_up_to_boundary\": 18e3,\n        \"penalty_value\": 0.5},\n       {\"pmd_up_to_boundary\": 10,\n        \"penalty_value\": 0},\n       {\"pmd_up_to_boundary\": 30,\n        \"penalty_value\": 0.5}\n             ]\nin this way, we could be flexible to accept entries like this one:\n       {\"chromatic_dispersion_up_to_boundary\": 1e3,\n        \"pmd_up_to_boundary\": 35,\n        \"penalty_value\": 0.7}",
       "revId": "1ed64b879b223081a40eb84b9b2966d699f9e8df",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04399bc8_94d987dd",
+        "filename": "gnpy/example-data/eqpt_config_openroadm_ver5.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-11-25T12:43:28Z",
+      "side": 1,
+      "message": "\u003e you fix that there will never be combined penalties\n\n\"Never\" is a strong word. I mean even standards can change so I don\u0027t think it\u0027s impossible to update gnpy later. But I could accept your proposal. I would remove the redundant \"_up_to_boundary\" for every entry and just have:\n\n \"penalties\": [\n   {\"chromatic_dispersion\": 4e3,\n    \"penalty_value\": 0},\n   {\"chromatic_dispersion\": 18e3,\n    \"penalty_value\": 0.5},\n   etc.\n ]\n\nAnd I don\u0027t think we should accept combined cd and pmd (or pdl, etc.) entries now before we know how to handle them. Would that be acceptable to you?",
+      "parentUuid": "d4d33fda_e21f2f26",
+      "revId": "1ed64b879b223081a40eb84b9b2966d699f9e8df",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
