@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "248bf448_b38def4e",
+        "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
+        "patchSetId": 17
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-11-30T13:51:34Z",
+      "side": 1,
+      "message": "I think I have a slight preference for loss-per-km just because with total-loss there may be more confusion about whether all other losses (con-in, con-out, etc. and maybe more lumped losses later) are included in the total-loss or not.",
+      "parentUuid": "58ca7745_42120e05",
+      "revId": "c67a895f0754df55a4d5bd680aaaca7127ed3efb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5d1d7d87_6638f4b8",
         "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
         "patchSetId": 17
