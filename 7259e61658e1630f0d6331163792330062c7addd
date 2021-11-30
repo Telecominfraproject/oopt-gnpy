@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4320a12c_215b5df1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-11-30T11:06:52Z",
+      "side": 1,
+      "message": "On today\u0027s call Andrea reported that when he derives the Aeff from gamma, there\u0027s some small discrepancy. Jonas suggested to take a look at the actual difference, and if it\u0027s a non-negligible one, we should probably distribute several fiber types in the library.\n\nAndrea will convert the gamma into Aeff and upload a patch which switches GNPy to compute gamma from Aeff.",
+      "parentUuid": "037af897_07a30000",
+      "revId": "7259e61658e1630f0d6331163792330062c7addd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4f0986fd_234330f4",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 25
