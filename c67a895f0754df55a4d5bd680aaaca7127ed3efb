@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "58ca7745_42120e05",
+        "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
+        "patchSetId": 17
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-11-30T11:06:05Z",
+      "side": 1,
+      "message": "OK. I think that a typical OTDR measurement says \"total loss @ XYZ nm is ABC\", but I might be mistaken. Should we track loss-per-km per wavelength, or should we track total-loss per wavelength?",
+      "parentUuid": "7a916f71_d73356a9",
+      "revId": "c67a895f0754df55a4d5bd680aaaca7127ed3efb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5d1d7d87_6638f4b8",
         "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
         "patchSetId": 17
@@ -108,6 +126,23 @@
         "endLine": 170,
         "endChar": 25
       },
+      "revId": "c67a895f0754df55a4d5bd680aaaca7127ed3efb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4eba9682_2c8e3668",
+        "filename": "gnpy/yang/tip/tip-photonic-topology.yang",
+        "patchSetId": 17
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-11-30T11:06:05Z",
+      "side": 1,
+      "message": "On today\u0027s call we agreed that we all prefer to have an explicit node for \"Raman pumps\". That\u0027s better than the old-style Fiber vs. RamanFiber distinction which we appear to be abandoning via Andrea\u0027s patches.",
       "revId": "c67a895f0754df55a4d5bd680aaaca7127ed3efb",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
