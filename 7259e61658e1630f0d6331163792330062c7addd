@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a62af1b7_1a15ff75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-11-30T21:57:19Z",
+      "side": 1,
+      "message": "About the fiber type varieties I added to the eqpt library a long time ago:\n\nNZDF of course stands for Nonzero Dispersion Fiber and was modeled on OFS TrueWave (Corning LEAF is similar) with effective area of 72 μm²:\n\nhttps://fiber-optic-catalog.ofsoptics.com/documents/pdf/TrueWave-LA-Fiber-158-web.pdf\n\nLOF was modeled on OFS TeraWave with a large effective area of 125 μm²:\n\nhttps://fiber-optic-catalog.ofsoptics.com/documents/pdf/TeraWave-ULL-Single-mode-Fiber-fap-162-web.pdf\n\nSince there is no \"industry standard\" abbreviation for this type of fiber I think I just picked LOF for Linear Optical Fiber.\n\nFor converting Aeff to gamma I think I assumed a nonlinear index, n2, of 2.6e-20 m²/W.\n\nAll these numbers seem reasonable and I don\u0027t think there is any need to change results of existing simulations.",
+      "parentUuid": "4320a12c_215b5df1",
+      "revId": "7259e61658e1630f0d6331163792330062c7addd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4f0986fd_234330f4",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 25
