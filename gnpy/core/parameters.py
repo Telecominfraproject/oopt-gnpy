@@ -9,7 +9,7 @@ This module contains all parameters to configure standard network elements.
 """
 
 from scipy.constants import c, pi
-from numpy import asarray
+from numpy import asarray, array
 
 from gnpy.core.utils import convert_length
 from gnpy.core.exceptions import ParametersError
@@ -86,6 +86,28 @@ class SimParams(Parameters):
         return self._shared_dict['raman_params']
 
 
+# SSMF Raman coefficient profile normalized with respect to the effective area (Cr * A_eff)
+CR_NORM = array([
+    0., 7.802e-16, 2.4236e-15, 4.0504e-15, 5.6606e-15, 6.8973e-15, 7.802e-15, 8.4162e-15, 8.8727e-15, 9.2877e-15,
+    1.01011e-14, 1.05244e-14, 1.13295e-14, 1.2367e-14, 1.3695e-14, 1.5023e-14, 1.64091e-14, 1.81936e-14, 2.04927e-14,
+    2.28167e-14, 2.48917e-14, 2.66098e-14, 2.82615e-14, 2.98136e-14, 3.1042e-14, 3.17558e-14, 3.18803e-14, 3.17558e-14,
+    3.15566e-14, 3.11748e-14, 2.94567e-14, 3.14985e-14, 2.8552e-14, 2.43439e-14, 1.67992e-14, 9.6114e-15, 7.02180e-15,
+    5.9262e-15, 5.6938e-15, 7.055e-15, 7.4119e-15, 7.4783e-15, 6.7645e-15, 5.5361e-15, 3.6271e-15, 2.7224e-15,
+    2.4568e-15, 2.1995e-15, 2.1331e-15, 2.3323e-15, 2.5564e-15, 3.0461e-15, 4.8555e-15, 5.5029e-15, 5.2788e-15,
+    4.565e-15, 3.3698e-15, 2.2991e-15, 2.0086e-15, 1.5521e-15, 1.328e-15, 1.162e-15, 9.379e-16, 8.715e-16, 8.134e-16,
+    8.134e-16, 9.379e-16, 1.3612e-15, 1.6185e-15, 1.9754e-15, 1.8758e-15, 1.6849e-15, 1.2284e-15, 9.047e-16, 8.134e-16,
+    8.715e-16, 9.711e-16, 1.0375e-15, 1.0043e-15, 9.047e-16, 8.134e-16, 6.806e-16, 5.478e-16, 3.901e-16, 2.241e-16,
+    1.577e-16, 9.96e-17, 3.32e-17, 1.66e-17, 8.3e-18])
+
+# Note the non-uniform spacing of this range; this is required for properly capturing the Raman peak shape.
+FREQ_OFFSET = array([
+    0., 0.5, 1., 1.5, 2., 2.5, 3., 3.5, 4., 4.5, 5., 5.5, 6., 6.5, 7., 7.5, 8., 8.5, 9., 9.5, 10., 10.5, 11., 11.5, 12.,
+    12.5, 12.75, 13., 13.25, 13.5, 14., 14.5, 14.75, 15., 15.5, 16., 16.5, 17., 17.5, 18., 18.25, 18.5, 18.75, 19.,
+    19.5, 20., 20.5, 21., 21.5, 22., 22.5, 23., 23.5, 24., 24.5, 25., 25.5, 26., 26.5, 27., 27.5, 28., 28.5, 29., 29.5,
+    30., 30.5, 31., 31.5, 32., 32.5, 33., 33.5, 34., 34.5, 35., 35.5, 36., 36.5, 37., 37.5, 38., 38.5, 39., 39.5, 40.,
+    40.5, 41., 41.5, 42.]) * 1e12
+
+
 class FiberParams(Parameters):
     def __init__(self, **kwargs):
         try:
@@ -115,7 +137,18 @@ class FiberParams(Parameters):
             # (accessed on 25 March 2018) (2005).
             self._beta3 = ((self.dispersion_slope - (4*pi*c/self.ref_wavelength**3) * self.beta2) /
                            (2*pi*c/self.ref_wavelength**2)**2)
-            self._gamma = kwargs['gamma']  # 1/W/m
+            self._effective_area = kwargs.get('effective_area')  # m^2
+            n2 = 2.6e-20  # m^2/W
+            if self._effective_area:
+                self._gamma = kwargs.get('gamma', 2 * pi * n2 / (self.ref_wavelength * self._effective_area))  # 1/W/m
+            elif 'gamma' in kwargs:
+                self._gamma = kwargs['gamma']  # 1/W/m
+                self._effective_area = 2 * pi * n2 / (self.ref_wavelength * self._gamma)  # m^2
+            else:
+                self._gamma = 0  # 1/W/m
+                self._effective_area = 83e-12  # m^2
+            default_raman_efficiency = {'cr': CR_NORM / self._effective_area, 'frequency_offset': FREQ_OFFSET}
+            self._raman_efficiency = kwargs.get('raman_efficiency', default_raman_efficiency)
             self._pmd_coef = kwargs['pmd_coef']  # s/sqrt(m)
             if type(kwargs['loss_coef']) == dict:
                 self._loss_coef = asarray(kwargs['loss_coef']['value']) * 1e-3  # lineic loss dB/m
@@ -123,8 +156,6 @@ class FiberParams(Parameters):
             else:
                 self._loss_coef = asarray(kwargs['loss_coef']) * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = asarray(self._ref_frequency)  # Hz
-            # raman parameters (not compulsory)
-            self._raman_efficiency = kwargs.get('raman_efficiency')
             self._pumps_loss_coef = kwargs.get('pumps_loss_coef')
         except KeyError as e:
             raise ParametersError(f'Fiber configurations json must include {e}. Configuration: {kwargs}')
