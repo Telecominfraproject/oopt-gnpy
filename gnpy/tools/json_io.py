@@ -119,30 +119,20 @@ class Fiber(_JsonThing):
     default_values = {
         'type_variety': '',
         'dispersion': None,
-        'gamma': 0,
+        'effective_area': None,
         'pmd_coef': 0
     }
 
     def __init__(self, **kwargs):
-        self.update_attr(self.default_values, kwargs, 'Fiber')
+        self.update_attr(self.default_values, kwargs, self.__class__.__name__)
+        for optional in ['gamma', 'raman_efficiency']:
+            if optional in kwargs:
+                setattr(self, optional, kwargs[optional])
 
 
-class RamanFiber(_JsonThing):
-    default_values = {
-        'type_variety': '',
-        'dispersion': None,
-        'gamma': 0,
-        'pmd_coef': 0,
-        'raman_efficiency': None
-    }
-
+class RamanFiber(Fiber):
     def __init__(self, **kwargs):
-        self.update_attr(self.default_values, kwargs, 'RamanFiber')
-        for param in ('cr', 'frequency_offset'):
-            if param not in self.raman_efficiency:
-                raise EquipmentConfigError(f'RamanFiber.raman_efficiency: missing "{param}" parameter')
-        if self.raman_efficiency['frequency_offset'] != sorted(self.raman_efficiency['frequency_offset']):
-            raise EquipmentConfigError(f'RamanFiber.raman_efficiency.frequency_offset is not sorted')
+        super().__init__(**kwargs)
 
 
 class Amp(_JsonThing):
@@ -273,19 +263,20 @@ def _roadm_restrictions_sanity_check(equipment):
 
 
 def _check_fiber_vs_raman_fiber(equipment):
-    """Ensure that Fiber and RamanFiber with the same name define common properties equally"""
-    if 'RamanFiber' not in equipment:
-        return
-    for fiber_type in set(equipment['Fiber'].keys()) & set(equipment['RamanFiber'].keys()):
-        for attr in ('dispersion', 'dispersion-slope', 'gamma', 'pmd-coefficient'):
-            fiber = equipment['Fiber'][fiber_type]
-            raman = equipment['RamanFiber'][fiber_type]
-            a = getattr(fiber, attr, None)
-            b = getattr(raman, attr, None)
-            if a != b:
-                raise EquipmentConfigError(f'WARNING: Fiber and RamanFiber definition of "{fiber_type}" '
-                                           f'disagrees for "{attr}": {a} != {b}')
-
+    pass
+    # """Ensure that Fiber and RamanFiber with the same name define common properties equally"""
+    # if 'RamanFiber' not in equipment:
+    #     return
+    # for fiber_type in set(equipment['Fiber'].keys()) & set(equipment['RamanFiber'].keys()):
+    #     for attr in ('dispersion', 'dispersion-slope', 'effective_area', 'gamma', 'pmd-coefficient'):
+    #         fiber = equipment['Fiber'][fiber_type]
+    #         raman = equipment['RamanFiber'][fiber_type]
+    #         a = getattr(fiber, attr, None)
+    #         b = getattr(raman, attr, None)
+    #         if a != b:
+    #             raise EquipmentConfigError(f'WARNING: Fiber and RamanFiber definition of "{fiber_type}" '
+    #                                        f'disagrees for "{attr}": {a} != {b}')
+    #
 
 def _equipment_from_json(json_data, filename):
     """build global dictionnary eqpt_library that stores all eqpt characteristics:
