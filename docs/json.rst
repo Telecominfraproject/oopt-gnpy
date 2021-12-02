@@ -73,13 +73,24 @@ The fiber library currently describes SSMF and NZDF but additional fiber types c
 | ``dispersion_slope`` | (number)  | In :math:`s \times m^{-1} \times m^{-1}  |
 |                      |           | \times m^{-1}`                           |
 +----------------------+-----------+------------------------------------------+
-| ``gamma``            | (number)  | :math:`2\pi\times n^2/(\lambda*A_{eff})`,|
+| ``effective_area``   | (number)  | Effective aread of the fiber (not just   |
+|                      |           | the MFD circle). This is the             |
+|                      |           | :math:`A_{eff}`, see e.g., the           |
+|                      |           | `Corning whitepaper on MFD/EA`_.         |
+|                      |           | Specified in :math:`m^{2}`.              |
++----------------------+-----------+------------------------------------------+
+| ``gamma``            | (number)  | Accepted for backwards compatibility in  |
+|                      |           | case the :math:`A_{eff}` is not          |
+|                      |           | specified.                               |
+|                      |           | :math:`2\pi\times n^2/(\lambda*A_{eff})`,|
 |                      |           | in :math:`w^{-1} \times m^{-1}`.         |
 +----------------------+-----------+------------------------------------------+
 | ``pmd_coef``         | (number)  | Polarization mode dispersion (PMD)       |
 |                      |           | coefficient. In                          |
 |                      |           | :math:`s\times\sqrt{m}^{-1}`.            |
 +----------------------+-----------+------------------------------------------+
+
+.. _Corning whitepaper on MFD/EA: https://www.corning.com/microsites/coc/oem/documents/specialty-fiber/WP7071-Mode-Field-Diam-and-Eff-Area.pdf
 
 Transceiver
 ~~~~~~~~~~~
