@@ -73,6 +73,8 @@ The fiber library currently describes SSMF and NZDF but additional fiber types c
 | ``dispersion_slope`` | (number)  | In :math:`s \times m^{-1} \times m^{-1}  |
 |                      |           | \times m^{-1}`                           |
 +----------------------+-----------+------------------------------------------+
+| ``effective_area``   | (number)  | In :math:`m^{2}`                         |
++----------------------+-----------+------------------------------------------+
 | ``gamma``            | (number)  | :math:`2\pi\times n^2/(\lambda*A_{eff})`,|
 |                      |           | in :math:`w^{-1} \times m^{-1}`.         |
 +----------------------+-----------+------------------------------------------+
