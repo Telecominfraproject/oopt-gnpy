@@ -150,6 +150,7 @@ class FiberParams(Parameters):
             default_raman_efficiency = {'cr': CR_NORM / self._effective_area, 'frequency_offset': FREQ_OFFSET}
             self._raman_efficiency = kwargs.get('raman_efficiency', default_raman_efficiency)
             self._pmd_coef = kwargs['pmd_coef']  # s/sqrt(m)
+            self._loss_coef_per_km = kwargs['loss_coef']
             if type(kwargs['loss_coef']) == dict:
                 self._loss_coef = asarray(kwargs['loss_coef']['value']) * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = asarray(kwargs['loss_coef']['frequency'])  # Hz
@@ -223,6 +224,10 @@ class FiberParams(Parameters):
     @property
     def beta3(self):
         return self._beta3
+
+    @property
+    def loss_coef_per_km(self):
+        return self._loss_coef_per_km
 
     @property
     def loss_coef(self):
