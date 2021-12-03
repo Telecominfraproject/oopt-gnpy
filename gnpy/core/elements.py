@@ -579,7 +579,7 @@ class Edfa(_Node):
                 'type': type(self).__name__,
                 'type_variety': self.params.type_variety,
                 'operational': {
-                    'gain_target': round(self.effective_gain, 6),
+                    'gain_target': self.effective_gain,
                     'delta_p': self.delta_p,
                     'tilt_target': self.tilt_target,
                     'out_voa': self.out_voa
