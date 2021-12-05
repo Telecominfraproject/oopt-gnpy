@@ -54,6 +54,23 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea5a067d_03033358",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-12-05T21:53:35Z",
+      "side": 1,
+      "message": "\u003e The Raman pump parameter pump_loss_coef has been removed\n\nThis is a bit confusing since I can\u0027t find any pump_loss_coef parameter in the current version of the code.",
+      "revId": "7259e61658e1630f0d6331163792330062c7addd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f0986fd_234330f4",
@@ -97,6 +114,23 @@
         "endLine": 324,
         "endChar": 89
       },
+      "revId": "7259e61658e1630f0d6331163792330062c7addd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9ff2218_4e156138",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-12-05T21:53:35Z",
+      "side": 1,
+      "message": "Simulation crashes when temperature is missing so why not raise an error already here for this case as well?",
       "revId": "7259e61658e1630f0d6331163792330062c7addd",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
