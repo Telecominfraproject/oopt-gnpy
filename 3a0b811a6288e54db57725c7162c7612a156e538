@@ -164,6 +164,30 @@
       },
       "revId": "3a0b811a6288e54db57725c7162c7612a156e538",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab17f5a4_350c4d3c",
+        "filename": "gnpy/example-data/eqpt_config.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-12-06T22:25:43Z",
+      "side": 1,
+      "message": "Sure, I didn\u0027t realized it, thanks",
+      "parentUuid": "52b7af22_b0ff5831",
+      "range": {
+        "startLine": 189,
+        "startChar": 30,
+        "endLine": 189,
+        "endChar": 37
+      },
+      "revId": "3a0b811a6288e54db57725c7162c7612a156e538",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
