@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca0825ac_7fa84ccb",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-12-06T21:36:49Z",
+      "side": 1,
+      "message": "Yes, I think a specific value of gamma should take precedence.",
+      "parentUuid": "12a35516_460615c3",
+      "range": {
+        "startLine": 140,
+        "startChar": 16,
+        "endLine": 140,
+        "endChar": 118
+      },
+      "revId": "3a0b811a6288e54db57725c7162c7612a156e538",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "efe930a0_3a7927b1",
@@ -47,6 +71,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e4e097b_480d2157",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-12-06T21:36:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "efe930a0_3a7927b1",
+      "range": {
+        "startLine": 141,
+        "startChar": 16,
+        "endLine": 142,
+        "endChar": 97
+      },
+      "revId": "3a0b811a6288e54db57725c7162c7612a156e538",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3baedc4_2d213683",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-12-06T20:35:19Z",
       "side": 1,
       "message": "Is this a typo?",
+      "range": {
+        "startLine": 189,
+        "startChar": 30,
+        "endLine": 189,
+        "endChar": 37
+      },
+      "revId": "3a0b811a6288e54db57725c7162c7612a156e538",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52a33114_70749e5f",
+        "filename": "gnpy/example-data/eqpt_config.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-12-06T21:36:49Z",
+      "side": 1,
+      "message": "This value gives gamma \u003d 0.00127 at 1550 nm considering n2\u003d2.6e-20.",
+      "parentUuid": "a3baedc4_2d213683",
       "range": {
         "startLine": 189,
         "startChar": 30,
