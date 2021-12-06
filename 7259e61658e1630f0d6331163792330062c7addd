@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "362d7933_586ec512",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-12-06T22:35:27Z",
+      "side": 1,
+      "message": "The attribute \u0027pumps_loss_coef\u0027 was not used in the code. But there was the possibility to specify it in the fiber parameters. In this new implementation, if the user want to specified a different loss coefficient for the pumps they should specified it in the loss_coff fiber parameter as a dictionary. I wanted to mention it in the commit message as we discussed about it during a coders call (long time ago). Do you think it is better to remove this comment because that parameter wasn\u0027t used before?",
+      "parentUuid": "513c6c76_04bdceca",
+      "revId": "7259e61658e1630f0d6331163792330062c7addd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4f0986fd_234330f4",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 25
