@@ -103,6 +103,30 @@
       },
       "revId": "b30b86ca9a4108a90c717480faca9c81d61bcba3",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16bd0e09_d5c2575b",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-12-07T09:38:17Z",
+      "side": 1,
+      "message": "That was my first idea but then I realized that some elements have spacing of 0.25e12. I think these points are needed as they characterized the Raman peak shape.",
+      "parentUuid": "bc16b9e5_060f317b",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 33
+      },
+      "revId": "b30b86ca9a4108a90c717480faca9c81d61bcba3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }

@@ -72,6 +72,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "63a3ea4f_0cb01320",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-12-07T09:38:17Z",
+      "side": 1,
+      "message": "Both are effective parameters (not fundamental). We decided to change from gamma to A_eff because the latter is what is usually reported in fiber data sheets and also because it can be used to evaluate the peak of the Raman coefficient profile.\nThe reason for giving gamma the precedence when provided is that this parameter can be \"directly\" measured and from this measure the ratio n2/A_eff is usually estimated. Moreover, if we consider the fiber data sheets, the effective area can significantly varies (e.g. SSMF A_eff from 70 to 90 10^-12 m, roughly). This would have a limited effect on the Raman coefficient shape, but a large effect on the gamma. Therefore, if a user has a precise measurement of gamma, they should be able to use it in their simulation, even if this value is not matching with the formula gamma\u003d 2*pi*f*n2/(lambda * A_eff).",
+      "parentUuid": "18defe40_bafcbc32",
+      "range": {
+        "startLine": 140,
+        "startChar": 16,
+        "endLine": 140,
+        "endChar": 118
+      },
+      "revId": "3a0b811a6288e54db57725c7162c7612a156e538",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "efe930a0_3a7927b1",
