@@ -79,6 +79,30 @@
       },
       "revId": "b30b86ca9a4108a90c717480faca9c81d61bcba3",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "460bc802_99bd80b4",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-12-07T09:37:21Z",
+      "side": 1,
+      "message": "This will also be different since the original array is not equidistant (the spacing changes from 0.5 to 0.25 between 12.5 and 13.5). Andrea, is there a reason for this?",
+      "parentUuid": "bc16b9e5_060f317b",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 33
+      },
+      "revId": "b30b86ca9a4108a90c717480faca9c81d61bcba3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
