@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f9da0c4_f1d8bd49",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-12-07T09:03:58Z",
+      "side": 1,
+      "message": "nit: please configure your editor for line wrapping of commit messages, that\u0027s just how it\u0027s done with git. Fixed since I\u0027m amending anyway.",
+      "revId": "b30b86ca9a4108a90c717480faca9c81d61bcba3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbe7e3b9_5589bc3d",
+        "filename": "docs/json.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-12-07T09:03:58Z",
+      "side": 1,
+      "message": "I tried to improve this a bit.",
+      "revId": "b30b86ca9a4108a90c717480faca9c81d61bcba3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "640ab648_08315226",
+        "filename": "docs/json.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-12-07T09:03:58Z",
+      "side": 1,
+      "message": "added a cross-reference to the effective area",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 79
+      },
+      "revId": "b30b86ca9a4108a90c717480faca9c81d61bcba3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc16b9e5_060f317b",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-12-07T09:03:58Z",
+      "side": 1,
+      "message": "This looks less error-prone:\n array([1e12 * 0.5 * x for x in range(0, 85)])\n\n...but I see the numeric representation is slightly different (my Python shell prints out the current version with three decimal places while my proposal shows just two). Is that relevant? Can we use a range here?",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 33
+      },
+      "revId": "b30b86ca9a4108a90c717480faca9c81d61bcba3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
