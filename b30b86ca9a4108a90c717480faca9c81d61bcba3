@@ -127,6 +127,30 @@
       },
       "revId": "b30b86ca9a4108a90c717480faca9c81d61bcba3",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7853686_07382d45",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-12-07T11:35:57Z",
+      "side": 1,
+      "message": "Thanks, I missed that when I read this patch, so I\u0027ve now added a comment which warns that the spacing is not uniform.",
+      "parentUuid": "16bd0e09_d5c2575b",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 33
+      },
+      "revId": "b30b86ca9a4108a90c717480faca9c81d61bcba3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }

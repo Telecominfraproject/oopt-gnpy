@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0670766_900ac954",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-12-07T11:35:57Z",
+      "side": 1,
+      "message": "Changed to \"SSMF\", hope I did the right thing.",
+      "range": {
+        "startLine": 89,
+        "startChar": 2,
+        "endLine": 89,
+        "endChar": 6
+      },
+      "revId": "dd4b0eca1fc3a5ddd058c8bd083e30fde788f220",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e5e3402_2f7cf444",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-12-07T11:35:57Z",
+      "side": 1,
+      "message": "This relaxes a sanity check which -- I think -- is there for a good reason. Why not keep the `gamma` in here and add the `effective_area` as well?",
+      "revId": "dd4b0eca1fc3a5ddd058c8bd083e30fde788f220",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
