@@ -39,6 +39,24 @@
       "message": "This relaxes a sanity check which -- I think -- is there for a good reason. Why not keep the `gamma` in here and add the `effective_area` as well?",
       "revId": "dd4b0eca1fc3a5ddd058c8bd083e30fde788f220",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56c79544_a402fa5f",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-12-07T12:04:10Z",
+      "side": 1,
+      "message": "I considered the following use case, which will not pass this sanity check if gamma and effective area are included:\nA user has measured the gamma for a specific fiber and they are not using Raman amplification so he does not use any RamanFiber elements. They include the gamma in given equipment json file for the specific Fiber type. As the RamanFiber contains only the effective area, the check would fail and the user is forced to include the gamma also in the RamanFiber. \nHow should the code behaves in this scenario?\nI think the ambiguity arises from the definition of two distinct \"entities\" for the Fiber and the RamanFiber, and this sanity check, which is performed on the equipment json file, does not completely solve this ambiguity.",
+      "parentUuid": "8e5e3402_2f7cf444",
+      "revId": "dd4b0eca1fc3a5ddd058c8bd083e30fde788f220",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
