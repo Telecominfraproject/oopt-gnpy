@@ -10,7 +10,6 @@ Common code for CLI examples
 
 import argparse
 import logging
-import os.path
 import sys
 from math import ceil
 from numpy import linspace, mean
