@@ -127,6 +127,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "934d1ac1_34af6bbb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-12-07T07:50:35Z",
+      "side": 1,
+      "message": "\u003e The attribute \u0027pumps_loss_coef\u0027 was not used in the code. But there was the possibility to specify it in the fiber parameters.\n\nAh, the commit message mentions \u0027pump_loss_coef\u0027 (not \u0027pumps_loss_coef\u0027), which is why I didn\u0027t find it in the code. And since the parameter was not used, it was in fact not possible for a user to specify a different loss for the pumps.\n\n\u003e In this new implementation, if the user want to specified a different loss coefficient for the pumps they should specified it in the loss_coff fiber parameter as a dictionary.\n\nThis seems like quite important information that should be explained somewhere in the documentation.\n\n\u003e I wanted to mention it in the commit message as we discussed about it during a coders call (long time ago). Do you think it is better to remove this comment because that parameter wasn\u0027t used before?\n\nIf you want to mention it, I think you should also mention that it wasn\u0027t used, to avoid confusion. And that the possibility to specify different loss for the pumps is actually a new feature.",
+      "parentUuid": "362d7933_586ec512",
+      "revId": "7259e61658e1630f0d6331163792330062c7addd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4f0986fd_234330f4",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 25

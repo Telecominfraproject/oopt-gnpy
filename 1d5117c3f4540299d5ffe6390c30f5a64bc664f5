@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68850b2f_301c85b7",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-12-07T07:50:35Z",
+      "side": 1,
+      "message": "This also should be removed, right?",
+      "range": {
+        "startLine": 154,
+        "startChar": 12,
+        "endLine": 154,
+        "endChar": 65
+      },
+      "revId": "1d5117c3f4540299d5ffe6390c30f5a64bc664f5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
