@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6f66365_208d9466",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-12-07T14:25:04Z",
+      "side": 1,
+      "message": "nothing relevant is shown on github PR, so let\u0027s try to merge this and see what the branch analysis reports back",
+      "revId": "2ba1e86b28010d5f43ef2d289faccc540a146231",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
