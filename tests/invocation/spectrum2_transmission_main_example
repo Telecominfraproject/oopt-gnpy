@@ -1,5 +1,4 @@
 User input for spectrum used for propagation instead of SI
-There are 60 channels propagating
 Power mode is set to True
 => it can be modified in eqpt_config.json - Span
 
@@ -8,6 +7,7 @@ There are 3 fiber spans over 130 km between trx Lannion_CAS and trx Lorient_KMA
 Now propagating between trx Lannion_CAS and trx Lorient_KMA:
 
 Propagating with input power = [1;36;40m0.00 dBm[0m:
+There are 60 channels propagating
 Transceiver trx Lannion_CAS
   GSNR (0.1nm, dB):          mode_1: 40.00, mode_2: 40.00
   GSNR (signal bw, dB):      mode_1: 35.92, mode_2: 32.91

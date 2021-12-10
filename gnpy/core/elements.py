@@ -27,12 +27,12 @@ from scipy.interpolate import interp1d
 from collections import namedtuple
 from typing import Union
 
-
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_average, pretty_summary_print, \
-    watt2dbm, psd2powerdbm
+    watt2dbm, psd2powerdbm, nice_column_str
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational
 from gnpy.core.science_utils import NliSolver, RamanSolver
-from gnpy.core.info import SpectralInformation, ReferenceCarrier, demuxed_spectral_information
+from gnpy.core.info import SpectralInformation, ReferenceCarrier, muxed_spectral_information, \
+    demuxed_spectral_information
 from gnpy.core.exceptions import NetworkTopologyError, SpectrumError, ParametersError
 
 
@@ -1043,3 +1043,69 @@ class Edfa(_Node):
             self.update_pref(spectral_info)
             return spectral_info
         raise ValueError('Defined propagation band does not match amplifiers band.')
+
+
+class Multiband_amplifier(_Node):
+    """ the class implements each amp on their bands
+    """
+    # separate the top level type_variety from kwargs to avoid having multiple type_varieties on each element processing
+    def __init__(self, *args, amplifiers, params, type_variety, **kwargs):
+        super().__init__(params=EdfaParams(**params), **kwargs)
+        self.amplifiers = {}
+        self.type_variety = type_variety
+        for amp in amplifiers:
+            # amplifiers dict uses f_min as key to represent the band
+            self.amplifiers[amp['params']['f_min']] = Edfa(**amp, **kwargs)
+
+    def __call__(self, spectral_info):
+        """ propagates in each amp and returns the muxed spectrum
+        """
+        out_si = []
+        for amp in self.amplifiers.values():
+            si = demuxed_spectral_information(spectral_info, amp.params.bands[0])
+            # if spectral_info frequencies are outside amp band, si is None
+            if si:
+                si = amp(si)
+                out_si.append(si)
+        if not out_si:
+            raise ValueError('Defined propagation band does not match amplifiers band.')
+        return muxed_spectral_information(out_si)
+
+    @property
+    def to_json(self):
+        return {'uid': self.uid,
+                'type': type(self).__name__,
+                'type_variety': self.type_variety,
+                'amplifiers': [{
+                    'type_variety': amp.type_variety,
+                    'operational': {
+                        'gain_target': round(amp.effective_gain, 6),
+                        'delta_p': amp.delta_p,
+                        'tilt_target': amp.tilt_target,
+                        'out_voa': amp.out_voa
+                    }} for amp in self.amplifiers.values()
+                ],
+                'metadata': {
+                    'location': self.metadata['location']._asdict()
+                }
+                }
+
+    def __repr__(self):
+        return (f'{type(self).__name__}(uid={self.uid!r}, '
+                f'type_variety={self.params.type_variety!r}, ')
+
+    def __str__(self):
+        amp_str = [f'{type(self).__name__} {self.uid}',
+                   f'  type_variety:           {self.params.type_variety}']
+        multi_str_data = []
+        max_width = 0
+        for amp in self.amplifiers.values():
+            lines = amp.__str__().split('\n')
+            # start at index 1 to remove uid from each amp list of strings
+            # records only if amp is used ie si has frequencies in amp) otherwise there is no other string than the uid
+            if len(lines) > 1:
+                max_width = max(max_width, max([len(line) for line in lines[1:]]))
+                multi_str_data.append(lines[1:])
+        # multi_str_data contains lines with each amp str, instead we want to print per column: transpose the string
+        transposed_data = list(map(list, zip(*multi_str_data)))
+        return '\n'.join(amp_str) + '\n' + nice_column_str(data=transposed_data, max_length=max_width + 2, padding=3)

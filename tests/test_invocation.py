@@ -28,6 +28,8 @@ SRC_ROOT = Path(__file__).parent.parent
      ['--spectrum', 'gnpy/example-data/initial_spectrum2.json', 'gnpy/example-data/meshTopologyExampleV2.xls', '--show-channels', ]),
     ('path_requests_run_CD_PMD_PDL_missing', path_requests_run,
      ['tests/data/CORONET_Global_Topology_expected.json', 'tests/data/CORONET_services.json']),
+    ('multiband_transmission', transmission_main_example,
+     ['gnpy/example-data/multiband_example_network.json', 'Site_A', 'Site_D', '-e', 'gnpy/example-data/eqpt_config_multiband.json', '--show-channels'])
 ))
 def test_example_invocation(capfd, output, handler, args):
     """Make sure that our examples produce useful output"""

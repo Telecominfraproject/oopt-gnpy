@@ -21,9 +21,10 @@ from networkx import (dijkstra_path, NetworkXNoPath,
                       all_simple_paths, shortest_simple_paths)
 from networkx.utils import pairwise
 from numpy import mean, argmin
-from gnpy.core.elements import Transceiver, Roadm
+from gnpy.core.elements import Transceiver, Roadm, Edfa, Multiband_amplifier
 from gnpy.core.utils import lin2db
-from gnpy.core.info import create_input_spectral_information, carriers_to_spectral_information, ReferenceCarrier
+from gnpy.core.info import create_input_spectral_information, carriers_to_spectral_information, ReferenceCarrier, \
+    demuxed_spectral_information, muxed_spectral_information
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 import gnpy.core.ansi_escapes as ansi_escapes
 from copy import deepcopy
@@ -343,8 +344,27 @@ def ref_carrier(equipment):
                             slot_width=equipment['SI']['default'].spacing)
 
 
+def filter_si(path, equipment, si):
+    """Filter spectral information based on the amplifiers common range"""
+    # First retrieve f_min, f_max spectrum according to amplifiers' spectrum on the path
+    common_range = find_elements_common_range(path, equipment)
+    # filter out frequencies that should not be created
+    filtered_si = []
+    for band in common_range:
+        temp = demuxed_spectral_information(si, band)
+        if temp:
+            filtered_si.append(temp)
+    if not filtered_si:
+        raise ValueError('Defined propagation band does not match amplifiers band.')
+    return muxed_spectral_information(filtered_si)
+
+
 def propagate(path, req, equipment):
-    """propagates signals in each element according to initial spectrum set by user"""
+    """ propagate the spectrum through each element in the path
+    Spectrum form is specified in request through f_min, f_max and spacing,  and amps
+    frequency band on the path is used to filter out frequencies
+    """
+    # generates spectrum based on request
     if req.initial_spectrum is not None:
         si = carriers_to_spectral_information(initial_spectrum=req.initial_spectrum,
                                               power=req.power, ref_carrier=ref_carrier(equipment))
@@ -352,9 +372,12 @@ def propagate(path, req, equipment):
         si = create_input_spectral_information(
             f_min=req.f_min, f_max=req.f_max, roll_off=req.roll_off, baud_rate=req.baud_rate,
             power=req.power, spacing=req.spacing, tx_osnr=req.tx_osnr, ref_carrier=ref_carrier(equipment))
+    # filter out frequencies that should not be created
+    si = filter_si(path, equipment, si)
+
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
-            si = el(si, degree=path[i+1].uid)
+            si = el(si, degree=path[i + 1].uid)
         else:
             si = el(si)
     path[0].update_snr(si.tx_osnr)
@@ -395,6 +418,7 @@ def propagate_and_optimize_mode(path, req, equipment):
                                                          roll_off=equipment['SI']['default'].roll_off,
                                                          baud_rate=this_br, power=req.power, spacing=req.spacing,
                                                          tx_osnr=req.tx_osnr, ref_carrier=ref_carrier(equipment))
+            spc_info = filter_si(path, equipment, spc_info)
             for i, el in enumerate(path):
                 if isinstance(el, Roadm):
                     spc_info = el(spc_info, degree=path[i+1].uid)
@@ -1227,3 +1251,27 @@ def _penalty_msg(total_path, msg, min_ind):
         else:
             msg += f'\n\t{pretty} penalty not evaluated'
     return msg
+
+
+def find_elements_common_range(el_list, equipment):
+    """ Find the common frequency range of amps of a given list of elements (for example an OMS or a path)
+    If there are no amplifiers in the path, then use the SI
+    """
+    amp_bands = [n.params.bands for n in el_list if isinstance(n, (Edfa, Multiband_amplifier))]
+    # order amp_bands
+    amp_bands = [sorted(amp, key=lambda x: x['f_min']) for amp in amp_bands]
+    # remove duplicate
+    unique_amp_bands = []
+    for amp in amp_bands:
+        if amp not in unique_amp_bands:
+            unique_amp_bands.append(amp)
+    if unique_amp_bands:
+        common_range = amp_bands[0]
+    else:
+        common_range = [{'f_min': equipment['SI']['default'].f_min, 'f_max': equipment['SI']['default'].f_max}]
+        tcommon_range = common_range
+    for bands in amp_bands:
+        tcommon_range = [{'f_min': max(first['f_min'], second['f_min']), 'f_max': min(first['f_max'], second['f_max'])}
+                         for first in common_range for second in bands
+                         if max(first['f_min'], second['f_min']) <= min(first['f_max'], second['f_max'])]
+    return sorted(tcommon_range, key=lambda x: x['f_min'])

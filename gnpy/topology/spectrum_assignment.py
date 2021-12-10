@@ -15,9 +15,9 @@ element/oms correspondace
 
 from collections import namedtuple
 from logging import getLogger
-from gnpy.core.elements import Roadm, Transceiver, Edfa
+from gnpy.core.elements import Roadm, Transceiver, Edfa, Multiband_amplifier
 from gnpy.core.exceptions import ServiceError, SpectrumError
-from gnpy.topology.request import compute_spectrum_slot_vs_bandwidth
+from gnpy.topology.request import compute_spectrum_slot_vs_bandwidth, find_elements_common_range
 
 LOGGER = getLogger(__name__)
 
@@ -230,28 +230,31 @@ def align_grids(oms_list):
 def find_network_freq_range(network, equipment):
     """ Find the lowest freq from amps and highest freq among all amps to determine the resulting bitmap
     """
-    amp_varieties = [n.params.type_variety for n in network.nodes() if isinstance(n, Edfa)]
-    amp_varieties = list(set(amp_varieties))
-    min_frequencies = [equipment['Edfa'][a].f_min for a in amp_varieties]
-    max_frequencies = [equipment['Edfa'][a].f_max for a in amp_varieties]
+    amp_bands = [band for n in network.nodes() if isinstance(n, (Edfa, Multiband_amplifier)) for band in n.params.bands]
+    min_frequencies = [a['f_min'] for a in amp_bands]
+    max_frequencies = [a['f_max'] for a in amp_bands]
     return min(min_frequencies), max(max_frequencies)
 
 
 def create_oms_bitmap(oms, equipment, f_min, f_max, guardband, grid):
-    """ Find the highest low freq from oms amps and lowest high freq among oms amps to determine the possible bitmap window
-    f_min and f_max represent the useable spectrum (not the useable center frequencies)
-    ie n smaller than frequency_to_n(min_freq, grid) are not useable
+    """ create the bitmap window corresponding to the common frequency range on the OMS
     """
-    amp_varieties = [n.params.type_variety for n in oms.el_list if isinstance(n, Edfa)]
-    amp_varieties = list(set(amp_varieties))
-    min_frequencies = [equipment['Edfa'][a].f_min for a in amp_varieties]
-    max_frequencies = [equipment['Edfa'][a].f_max for a in amp_varieties]
-    min_freq, max_freq = max(min_frequencies), min(max_frequencies)
-    net_n_min = frequency_to_n(min_freq, grid)
-    net_n_max = frequency_to_n(max_freq, grid)
     n_min = frequency_to_n(f_min - guardband, grid)
     n_max = frequency_to_n(f_max + guardband, grid) - 1
-    bitmap = [0] * (net_n_min - n_min) + [1] * (net_n_max - net_n_min + 1) + [0] * (n_max - net_n_max)
+    common_range = find_elements_common_range(oms.el_list, equipment)
+    band0 = common_range[0]
+    band0_n_min = frequency_to_n(band0['f_min'], grid)
+    band0_n_max = frequency_to_n(band0['f_max'], grid)
+    bitmap = [0] * (band0_n_min - n_min) + [1] * (band0_n_max - band0_n_min + 1)
+    i = 1
+    while i < len(common_range):
+        band = common_range[i]
+        band_n_min = frequency_to_n(band['f_min'], grid)
+        band_n_max = frequency_to_n(band['f_max'], grid)
+        bitmap = bitmap + [0] * (band_n_min - band0_n_max - 1) + [1] * (band_n_max - band_n_min + 1)
+        band0_n_max = band_n_max
+        i += 1
+    bitmap = bitmap + [0] * (n_max - band0_n_max)
     return bitmap
 
 
