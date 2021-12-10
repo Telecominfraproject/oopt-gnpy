@@ -229,8 +229,7 @@ class SpectralInformation(object):
             # Note that pref.p_spanx from "self" and "other" must be identical for a given simulation (correspond to the
             # the simulation setup):
             # - for a given simulation there is only one design (one p_span0),
-            # - and p_spani is the propagation result of p_span0 so there should not be different p_spani either.
-            if (self.pref.p_span0 != other.pref.p_span0) or (self.pref.p_spani != other.pref.p_spani):
+            if (self.pref.p_span0 != other.pref.p_span0):
                 raise SpectrumError('reference powers of the spectrum are not identical')
             return SpectralInformation(frequency=append(self.frequency, other.frequency),
                                        slot_width=append(self.slot_width, other.slot_width),

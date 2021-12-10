@@ -205,14 +205,29 @@ def transmission_main_example(args=None):
     params['nb_channel'] = nb_channels
     req = PathRequest(**params)
     req.initial_spectrum = initial_spectrum
-    print(f'There are {nb_channels} channels propagating')
+    # change nb_channel due to multiband: depends on the path
     power_mode = equipment['Span']['default'].power_mode
     print('\n'.join([f'Power mode is set to {power_mode}',
-                     f'=> it can be modified in eqpt_config.json - Span']))
-
+                     '=> it can be modified in eqpt_config.json - Span']))
+    # if the SI f_min f_max exceeds the amplifiers band then warns the user and restrict the
+    # nb of channels to the max band among all amps except raman one
+    max_edfa_band = max(amp.f_max - amp.f_min
+                        for amp in equipment['Edfa'].values()
+                        if hasattr(amp, 'f_min') and hasattr(amp, 'raman') and not amp.raman)
+    max_possible_nb_channel = max_edfa_band // req.spacing
+    # TODO: autodesign networks accounting for multiband, ...
     # Keep the reference channel for design: the one from SI, with full load same channels
+    if req.nb_channel > max_possible_nb_channel:
+        msg = f'{ansi_escapes.red}{req.nb_channel} channels are defined for this design and this is not ' \
+              + f'consistent with amplifiers\' library. Max nb of channels with this spacing is ' \
+              + f'{max_possible_nb_channel} among all non Raman amps of the library. Please note that ' \
+              + f'multiband autodesign is not supported yet and autodesign will consider {max_possible_nb_channel} ' \
+              + f'for the network design.{ansi_escapes.reset}'
+        print(msg)
+        _logger.warning(msg)
     pref_ch_db = lin2db(req.power * 1e3)  # reference channel power / span (SL=20dB)
-    pref_total_db = pref_ch_db + lin2db(req.nb_channel)  # reference total power / span (SL=20dB)
+    # reference total power / span (SL=20dB)
+    pref_total_db = pref_ch_db + lin2db(min(req.nb_channel, max_possible_nb_channel))
     try:
         build_network(network, equipment, pref_ch_db, pref_total_db, args.no_insert_edfas)
     except exceptions.NetworkTopologyError as e:
@@ -249,6 +264,7 @@ def transmission_main_example(args=None):
         else:
             print(f'\nPropagating in {ansi_escapes.cyan}gain mode{ansi_escapes.reset}: power cannot be set manually')
         infos = propagate(path, req, equipment)
+        print(f'There are {infos.number_of_channels} channels propagating')
         if len(power_range) == 1:
             for elem in path:
                 print(elem)

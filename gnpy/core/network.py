@@ -324,7 +324,24 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
                 node.delta_p = dp if power_mode else None
                 node.effective_gain = gain_target
                 set_amplifier_voa(node, power_target, power_mode)
+            if isinstance(node, elements.Multiband_amplifier):
+                for amp in node.amplifiers.values():
+                    node_loss = span_loss(network, prev_node)
+                    voa = amp.out_voa if amp.out_voa else 0
+                    if amp.delta_p is None:
+                        dp = target_power(network, next_node, equipment) + voa
+                    else:
+                        dp = amp.delta_p
+                    if amp.effective_gain is None or power_mode:
+                        gain_target = node_loss + dp - prev_dp + prev_voa
+                    else:  # gain mode with effective_gain
+                        gain_target = amp.effective_gain
+                        dp = prev_dp - node_loss - prev_voa + gain_target
 
+                    power_target = pref_total_db + dp
+                    amp.delta_p = dp if power_mode else None
+                    amp.effective_gain = gain_target
+                    set_amplifier_voa(amp, power_target, power_mode)
             prev_dp = dp
             prev_voa = voa
             prev_node = node
@@ -355,7 +372,10 @@ def set_roadm_per_degree_targets(roadm, network):
 
 def add_roadm_booster(network, roadm):
     next_nodes = [n for n in network.successors(roadm)
-                  if not (isinstance(n, elements.Transceiver) or isinstance(n, elements.Fused) or isinstance(n, elements.Edfa))]
+                  if not (isinstance(n, elements.Transceiver)
+                  or isinstance(n, elements.Fused)
+                  or isinstance(n, elements.Edfa)
+                  or isinstance(n, elements.Multiband_amplifier))]
     # no amplification for fused spans or TRX
     for next_node in next_nodes:
         network.remove_edge(roadm, next_node)
@@ -381,7 +401,10 @@ def add_roadm_booster(network, roadm):
 
 def add_roadm_preamp(network, roadm):
     prev_nodes = [n for n in network.predecessors(roadm)
-                  if not (isinstance(n, elements.Transceiver) or isinstance(n, elements.Fused) or isinstance(n, elements.Edfa))]
+                  if not (isinstance(n, elements.Transceiver)
+                  or isinstance(n, elements.Fused)
+                  or isinstance(n, elements.Edfa)
+                  or isinstance(n, elements.Multiband_amplifier))]
     # no amplification for fused spans or TRX
     for prev_node in prev_nodes:
         network.remove_edge(prev_node, roadm)

@@ -411,3 +411,23 @@ def convert_length(value, units):
         return value * 1e3
     else:
         raise ConfigurationError(f'Cannot convert length in "{units}" into meters')
+
+
+def nice_column_str(data, max_length=30, padding=1):
+    """data is a list of rows, creates strings with nice alignment per colum and padding with spaces
+    letf justified
+
+    >>> table_data = [['aaa', 'b', 'c'], ['aaaaaaaa', 'bbb', 'c'], ['a', 'bbbbbbbbbb', 'c']]
+    >>> print(nice_column_str(table_data))
+    aaa      b          c 
+    aaaaaaaa bbb        c 
+    a        bbbbbbbbbb c 
+    """
+    # transpose data to determine size of columns
+    transposed_data = list(map(list, zip(*data)))
+    column_width = [max(len(word) for word in column) + padding for column in transposed_data]
+    nice_str = []
+    for row in data:
+        column = ''.join(word[0:max_length].ljust(min(width, max_length)) for width, word in zip(column_width, row))
+        nice_str.append(f'{column}')
+    return '\n'.join(nice_str)
