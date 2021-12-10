@@ -228,7 +228,7 @@ def transmission_main_example(args=None):
             print(f'Input optical power reference in span = {ansi_escapes.cyan}{power_dbm:.2f} '
                   + f'dBm{ansi_escapes.reset}:')
         else:
-            print('\nPropagating in gain mode: power cannot be set manually')
+            print('\nPropagating in {ansi_escapes.cyan}gain mode{ansi_escapes.reset}: power cannot be set manually')
         if len(powers_dbm) == 1:
             for elem in path:
                 print(elem)

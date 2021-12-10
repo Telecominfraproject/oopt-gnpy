@@ -422,7 +422,7 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
                         restrictions = next_node.restrictions['preamp_variety_list']
                     else:
                         restrictions = None
-                    edfa_eqpt = {n: a for n, a in equipment['Edfa'].items()}
+                    edfa_eqpt = {n: a for n, a in equipment['Edfa'].items() if a.type_def != 'multi_band'}
                     edfa_variety, power_reduction = \
                         select_edfa(raman_allowed, gain_target, power_target, edfa_eqpt,
                                     node.uid,
@@ -480,6 +480,35 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
                     node.target_pch_out_dbm = None
             elif isinstance(node, elements.RamanFiber):
                 _ = span_loss(network, node, equipment, input_power=pref_ch_db + dp)
+            if isinstance(node, elements.Multiband_amplifier):
+                for amp in node.amplifiers.values():
+                    node_loss = span_loss(network, prev_node, equipment)
+                    voa = amp.out_voa if amp.out_voa else 0
+                    if amp.delta_p is None:
+                        dp = target_power(network, next_node, equipment) + voa
+                    else:
+                        dp = amp.delta_p
+                    if amp.effective_gain is None or power_mode:
+                        gain_target = node_loss + dp - prev_dp + prev_voa
+                    else:  # gain mode with effective_gain
+                        gain_target = amp.effective_gain
+                        dp = prev_dp - node_loss - prev_voa + gain_target
+
+                    power_target = pref_total_db + dp
+                    amp.delta_p = dp if power_mode else None
+                    amp.effective_gain = gain_target
+                    set_amplifier_voa(amp, power_target, power_mode)
+                    amp._delta_p = amp.delta_p if power_mode else dp
+                    # target_pch_out_dbm records target power for design: If user defines one, then this is displayed,
+                    # else display the one computed during design
+                    if amp.delta_p is not None and amp.operational.delta_p is not None:
+                        # use the user defined target
+                        amp.target_pch_out_dbm = round(amp.operational.delta_p + pref_ch_db, 2)
+                    elif amp.delta_p is not None:
+                        # use the design target if no target were set
+                        amp.target_pch_out_dbm = round(amp.delta_p + pref_ch_db, 2)
+                    elif amp.delta_p is None:
+                        amp.target_pch_out_dbm = None
             prev_dp = dp
             prev_voa = voa
             prev_node = node
@@ -549,6 +578,10 @@ def set_roadm_input_powers(network, roadm, equipment, pref_ch_db):
                 node.get_per_degree_ref_power(degree=previous_node.uid) - loss
         elif isinstance(node, elements.Transceiver):
             roadm.ref_pch_in_dbm[element.uid] = pref_ch_db - loss
+        elif isinstance(node, elements.Multiband_amplifier):
+            # use the worst (min) value among amps
+            roadm.ref_pch_in_dbm[element.uid] = min([pref_ch_db + amp._delta_p - amp.out_voa - loss
+                                                     for amp in node.amplifiers.values()])
     # check if target power can be met
     temp = []
     if roadm.per_degree_pch_out_dbm:
@@ -598,6 +631,9 @@ def set_fiber_input_power(network, fiber, equipment, pref_ch_db):
         fiber.ref_pch_in_dbm = pref_ch_db + node._delta_p - node.out_voa - loss
     elif isinstance(node, elements.Transceiver):
         fiber.ref_pch_in_dbm = pref_ch_db - loss
+    elif isinstance(node, elements.Multiband_amplifier):
+        # use the worst (min) value among amps
+        fiber.ref_pch_in_dbm = min([pref_ch_db + amp._delta_p - amp.out_voa - loss for amp in node.amplifiers.values()])
 
 
 def set_roadm_internal_paths(roadm, network):
@@ -658,7 +694,8 @@ def set_roadm_internal_paths(roadm, network):
 
 def add_roadm_booster(network, roadm):
     next_nodes = [n for n in network.successors(roadm)
-                  if not isinstance(n, (elements.Transceiver, elements.Fused, elements.Edfa))]
+                  if not isinstance(n, (elements.Transceiver, elements.Fused, elements.Edfa,
+                                        elements.Multiband_amplifier))]
     # no amplification for fused spans or TRX
     for next_node in next_nodes:
         network.remove_edge(roadm, next_node)
@@ -684,7 +721,8 @@ def add_roadm_booster(network, roadm):
 
 def add_roadm_preamp(network, roadm):
     prev_nodes = [n for n in network.predecessors(roadm)
-                  if not isinstance(n, (elements.Transceiver, elements.Fused, elements.Edfa))]
+                  if not isinstance(n, (elements.Transceiver, elements.Fused, elements.Edfa,
+                                        elements.Multiband_amplifier))]
     # no amplification for fused spans or TRX
     for prev_node in prev_nodes:
         network.remove_edge(prev_node, roadm)

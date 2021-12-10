@@ -472,6 +472,26 @@ def calculate_absolute_min_or_zero(x: array) -> array:
     return (abs(x) - x) / 2
 
 
+def nice_column_str(data: List[List[str]], max_length: int = 30, padding: int = 1) -> str:
+    """data is a list of rows, creates strings with nice alignment per colum and padding with spaces
+    letf justified
+
+    >>> table_data = [['aaa', 'b', 'c'], ['aaaaaaaa', 'bbb', 'c'], ['a', 'bbbbbbbbbb', 'c']]
+    >>> print(nice_column_str(table_data))
+    aaa      b          c 
+    aaaaaaaa bbb        c 
+    a        bbbbbbbbbb c 
+    """
+    # transpose data to determine size of columns
+    transposed_data = list(map(list, zip(*data)))
+    column_width = [max(len(word) for word in column) + padding for column in transposed_data]
+    nice_str = []
+    for row in data:
+        column = ''.join(word[0:max_length].ljust(min(width, max_length)) for width, word in zip(column_width, row))
+        nice_str.append(f'{column}')
+    return '\n'.join(nice_str)
+
+
 def find_common_range(amp_bands: List[List[dict]], default_band_f_min: float, default_band_f_max: float) \
         -> List[dict]:
     """Find the common frequency range of bands
