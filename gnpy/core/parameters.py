@@ -8,7 +8,8 @@ gnpy.core.parameters
 This module contains all parameters to configure standard network elements.
 """
 from collections import namedtuple
-
+from copy import deepcopy
+from dataclasses import dataclass
 from scipy.constants import c, pi
 from numpy import asarray, array, exp, sqrt, log, outer, ones, squeeze, append, flip, linspace, full
 
@@ -593,7 +594,7 @@ class EdfaParams:
 
     def update_params(self, kwargs):
         for k, v in kwargs.items():
-            setattr(self, k, self.update_params(**v) if isinstance(v, dict) else v)
+            setattr(self, k, v)
 
 
 class EdfaOperational:
@@ -616,3 +617,56 @@ class EdfaOperational:
         return (f'{type(self).__name__}('
                 f'gain_target={self.gain_target!r}, '
                 f'tilt_target={self.tilt_target!r})')
+
+
+class MultiBandParams:
+    default_values = {
+        'bands': [],
+        'type_variety': '',
+        'type_def': None,
+        'allowed_for_design': False
+    }
+
+    def __init__(self, **params):
+        try:
+            self.update_attr(params)
+        except KeyError as e:
+            raise ParametersError(f'Multiband configurations json must include {e}. Configuration: {params}')
+
+    def update_attr(self, kwargs):
+        clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
+        for k, v in self.default_values.items():
+            # use deepcopy to avoid sharing same object amongst all instance when v is a list or a dict!
+            if isinstance(v, (list, dict)):
+                setattr(self, k, clean_kwargs.get(k, deepcopy(v)))
+            else:
+                setattr(self, k, clean_kwargs.get(k, v))
+
+
+@dataclass
+class FrequencyBand:
+    """Frequency band
+    """
+    f_min: float
+    f_max: float
+
+
+DEFAULT_BANDS_DEFINITION = {
+    "LBAND": FrequencyBand(f_min=187e12, f_max=189e12),
+    "CBAND": FrequencyBand(f_min=191.3e12, f_max=196.0e12)
+}
+# use this definition to index amplifiers'element of a multiband amplifier.
+# this is not the design band
+
+
+def find_band_name(band: FrequencyBand) -> str:
+    """return the default band name (CBAND, LBAND, ...) that corresponds to the band frequency range
+    Use the band center frequency: if center frequency is inside the band then returns CBAND.
+    This is to flexibly encompass all kind of bands definitions.
+    returns the first matching band name.
+    """
+    for band_name, frequency_range in DEFAULT_BANDS_DEFINITION.items():
+        center_frequency = (band.f_min + band.f_max) / 2
+        if center_frequency >= frequency_range.f_min and center_frequency <= frequency_range.f_max:
+            return band_name
+    return 'unknown_band'

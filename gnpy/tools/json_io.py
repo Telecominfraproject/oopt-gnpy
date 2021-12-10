@@ -14,14 +14,15 @@ from pathlib import Path
 import json
 from collections import namedtuple
 from numpy import arange
+from copy import deepcopy
 
 from gnpy.core import elements
-from gnpy.core.equipment import trx_mode_params
+from gnpy.core.equipment import trx_mode_params, find_type_variety
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError, ServiceError
 from gnpy.core.science_utils import estimate_nf_model
 from gnpy.core.info import Carrier
 from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions, dbm2watt
-from gnpy.core.parameters import DEFAULT_RAMAN_COEFFICIENT, EdfaParams
+from gnpy.core.parameters import DEFAULT_RAMAN_COEFFICIENT, EdfaParams, MultiBandParams
 from gnpy.topology.request import PathRequest, Disjunction, compute_spectrum_slot_vs_bandwidth
 from gnpy.topology.spectrum_assignment import mvalue_to_slots
 from gnpy.tools.convert import xls_to_json_data
@@ -197,6 +198,7 @@ class Amp(_JsonThing):
         type_def = kwargs.get('type_def', 'variable_gain')  # default compatibility with older json eqpt files
         nf_def = None
         dual_stage_def = None
+        amplifiers = None
 
         if type_def == 'fixed_gain':
             try:
@@ -241,16 +243,25 @@ class Amp(_JsonThing):
                 preamp_variety = kwargs.pop('preamp_variety')
                 booster_variety = kwargs.pop('booster_variety')
             except KeyError:
-                msg = f'missing preamp/booster variety input for amplifier: {type_variety} in equipment config'
-                raise EquipmentConfigError(msg)
+                raise EquipmentConfigError(f'missing preamp/booster variety input for amplifier: {type_variety}'
+                                           + ' in equipment config')
             dual_stage_def = Model_dual_stage(preamp_variety, booster_variety)
+        elif type_def == 'multi_band':
+            amplifiers = kwargs['amplifiers']
         else:
             raise EquipmentConfigError(f'Edfa type_def {type_def} does not exist')
 
         json_data = load_json(config)
-
+        # raise an error if config does not contain f_min, f_max
+        if 'f_min' not in json_data or 'f_max' not in json_data:
+            raise EquipmentConfigError('default Edfa config does not contain f_min and f_max values.'
+                                       + ' Please correct file.')
+        # use f_min, f_max from kwargs
+        if 'f_min' in kwargs:
+            json_data.pop('f_min', None)
+            json_data.pop('f_max', None)
         return cls(**{**kwargs, **json_data,
-                      'nf_model': nf_def, 'dual_stage_model': dual_stage_def})
+                      'nf_model': nf_def, 'dual_stage_model': dual_stage_def, 'multi_band': amplifiers})
 
 
 def _automatic_spacing(baud_rate):
@@ -490,6 +501,8 @@ def _cls_for(equipment_type):
         return elements.Fiber
     elif equipment_type == 'RamanFiber':
         return elements.RamanFiber
+    elif equipment_type == 'Multiband_amplifier':
+        return elements.Multiband_amplifier
     else:
         raise ConfigurationError(f'Unknown network equipment "{equipment_type}"')
 
@@ -503,7 +516,53 @@ def network_from_json(json_data, equipment):
         typ = el_config.pop('type')
         variety = el_config.pop('type_variety', 'default')
         cls = _cls_for(typ)
-        if typ == 'Fused':
+        if typ == 'Multiband_amplifier':
+            if variety in ['default', '']:
+                extra_params = None
+                temp = el_config.setdefault('params', {})
+                temp = merge_amplifier_restrictions(temp, deepcopy(MultiBandParams.default_values))
+                el_config['params'] = temp
+            else:
+                extra_params = equipment['Edfa'][variety]
+                temp = el_config.setdefault('params', {})
+                # use config params preferably to library params, only use library params to fill in
+                # the missing attribute
+                temp = merge_amplifier_restrictions(temp, deepcopy(extra_params.__dict__))
+                el_config['params'] = temp
+                el_config['type_variety'] = variety
+            # if config does not contain any amp list create one
+            amps = el_config.setdefault('amplifiers', [])
+            for amp in amps:
+                amp_variety = amp['type_variety']    # juste pour essayer
+                amp_extra_params = equipment['Edfa'][amp_variety]
+                temp = amp.setdefault('params', {})
+                temp = merge_amplifier_restrictions(temp, amp_extra_params.__dict__)
+                amp['params'] = temp
+                amp['type_variety'] = amp_variety
+            # check type_variety consistant with amps type_variety
+            if amps:
+                try:
+                    multiband_type_variety = find_type_variety([a['type_variety'] for a in amps], equipment)
+                except ConfigurationError as e:
+                    msg = f'Node {el_config["uid"]}: {e}'
+                    raise ConfigurationError(msg)
+                if variety is not None and variety != multiband_type_variety:
+                    raise ConfigurationError(f'In node {el_config["uid"]}: multiband amplifier type_variety is not '
+                                             + 'consistent with its amps type varieties.')
+            if not amps and extra_params is not None:
+                # the amp config does not contain the amplifiers operational settings, but has a type_variety
+                # defined so that it is possible to create the template of amps for design for each band. This
+                # defines the default design bands.
+                # This lopp populates each amp with default values, for each band
+                for band in extra_params.bands:
+                    params = {k: v for k, v in Amp.default_values.items()}
+                    # update frequencies with band values
+                    params['f_min'] = band['f_min']
+                    params['f_max'] = band['f_max']
+                    amps.append({'params': params})
+            # without type_variety, it is not possible to set the amplifier dict at this point: need to wait
+            # for design, and use user defined design-bands
+        elif typ == 'Fused':
             # well, there's no variety for the 'Fused' node type
             pass
         elif variety in equipment[typ]:
