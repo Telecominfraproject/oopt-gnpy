@@ -15,7 +15,8 @@ element/oms correspondace
 
 from collections import namedtuple
 from logging import getLogger
-from gnpy.core.elements import Roadm, Transceiver, Edfa
+
+from gnpy.core.elements import Roadm, Transceiver, Edfa, Multiband_amplifier
 from gnpy.core.exceptions import ServiceError, SpectrumError
 from gnpy.core.utils import order_slots, restore_order
 from gnpy.topology.request import compute_spectrum_slot_vs_bandwidth, find_elements_common_range
@@ -230,7 +231,7 @@ def align_grids(oms_list):
 def find_network_freq_range(network, equipment):
     """Find the lowest freq from amps and highest freq among all amps to determine the resulting bitmap
     """
-    amp_bands = [band for n in network.nodes() if isinstance(n, Edfa) for band in n.params.bands]
+    amp_bands = [band for n in network.nodes() if isinstance(n, (Edfa, Multiband_amplifier)) for band in n.params.bands]
     min_frequencies = [a['f_min'] for a in amp_bands]
     max_frequencies = [a['f_max'] for a in amp_bands]
     return min(min_frequencies), max(max_frequencies)
