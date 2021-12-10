@@ -7,8 +7,11 @@ gnpy.core.equipment
 
 This module contains functionality for specifying equipment.
 """
+from collections import defaultdict
+from functools import reduce
+from typing import List
 
-from gnpy.core.exceptions import EquipmentConfigError
+from gnpy.core.exceptions import EquipmentConfigError, ConfigurationError
 
 
 def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=False):
@@ -80,3 +83,50 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
 
     trx_params = {**default_trx_params}
     return trx_params
+
+
+def find_type_variety(amps: List[str], equipment: dict) -> str:
+    """Returns the multiband type_variety associated with a list of single band type_varieties
+    Args:
+    amps (List[str]): A list of single band type_varieties.
+    equipment (dict): A dictionary containing equipment information.
+
+    Returns:
+    str: an amplifier type variety
+    """
+    listes = find_type_varieties(amps, equipment)
+
+    _found_type = list(reduce(lambda x, y: set(x) & set(y), listes))
+    # Given a list of single band amplifiers, find the multiband amplifier whose multi_band group
+    # matches. For example, if amps list contains ["a1_LBAND", "a2_CBAND"], with a1.multi_band = [a1_LBAND, a1_CBAND]
+    # and a2.multi_band = [a1_LBAND, a2_CBAND], then:
+    # possible_type_varieties = {"a1_LBAND": ["a1", "a2"], "a2_CBAND": ["a2"]}
+    # listes = [["a1", "a2"],  ["a2"]]
+    # and _found_type = [a2]
+    if not _found_type:
+        msg = f'{amps} amps do not belong to the same amp type {listes}'
+        raise ConfigurationError(msg)
+    return _found_type[0]
+
+
+def find_type_varieties(amps: List[str], equipment: dict) -> List[List[str]]:
+    """Returns the multiband list of type_varieties associated with a list of single band type_varieties
+    Args:
+    amps (List[str]): A list of single band type_varieties.
+    equipment (dict): A dictionary containing equipment information.
+
+    Returns:
+    List[List[str]]: A list of lists containing the multiband type_varieties
+    associated with each single band type_variety.
+    """
+    possible_type_varieties = defaultdict(list)
+    for amp_name, amp in equipment['Edfa'].items():
+        if amp.multi_band is not None:
+            for elem in amp.multi_band:
+                # possible_type_varieties stores the list of multiband amp names that list this elem as
+                # a possible amplifier of the multiband group. For example, if "std_medium_gain_multiband"
+                # and "std_medium_gain_multiband_new" contain "std_medium_gain_C" in their "multi_band" list, then:
+                # possible_type_varieties["std_medium_gain_C"] =
+                # ["std_medium_gain_multiband", "std_medium_gain_multiband_new"]
+                possible_type_varieties[elem].append(amp_name)
+    return [possible_type_varieties[a] for a in amps]

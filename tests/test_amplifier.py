@@ -9,7 +9,7 @@ from gnpy.core.elements import Transceiver, Edfa, Fiber
 from gnpy.core.utils import automatic_fmax, lin2db, db2lin, merge_amplifier_restrictions, dbm2watt, watt2dbm
 from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information
 from gnpy.core.network import build_network, set_amplifier_voa
-from gnpy.tools.json_io import load_network, load_equipment, network_from_json
+from gnpy.tools.json_io import load_network, load_equipment, load_json, _equipment_from_json, network_from_json
 from pathlib import Path
 import pytest
 
@@ -365,3 +365,141 @@ def test_set_out_voa():
     assert amp.out_voa == 4.0
     assert amp.effective_gain == 20.0 + 4.0
     assert amp.delta_p == -3.0 + 4.0
+
+
+def test_multiband():
+
+    equipment_json = load_json(eqpt_library)
+    # add some multiband amplifiers
+    amps = [
+        {
+            "type_variety": "std_medium_gain_C",
+            "f_min": 191.25e12,
+            "f_max": 196.15e12,
+            "type_def": "variable_gain",
+            "gain_flatmax": 26,
+            "gain_min": 15,
+            "p_max": 21,
+            "nf_min": 6,
+            "nf_max": 10,
+            "out_voa_auto": False,
+            "allowed_for_design": True},
+        {
+            "type_variety": "std_medium_gain_L",
+            "f_min": 186.55e12,
+            "f_max": 190.05e12,
+            "type_def": "variable_gain",
+            "gain_flatmax": 26,
+            "gain_min": 15,
+            "p_max": 21,
+            "nf_min": 6,
+            "nf_max": 10,
+            "out_voa_auto": False,
+            "allowed_for_design": True},
+        {
+            "type_variety": "std_medium_gain_multiband",
+            "type_def": "multi_band",
+            "amplifiers": [
+                "std_medium_gain_C",
+                "std_medium_gain_L"
+            ],
+            "allowed_for_design": False
+        }
+    ]
+    equipment_json['Edfa'].extend(amps)
+
+    equipment = _equipment_from_json(equipment_json, eqpt_library)
+
+    el_config = {
+        "uid": "Edfa1",
+        "type": "Multiband_amplifier",
+        "type_variety": "std_medium_gain_multiband",
+        "amplifiers": [
+            {
+                "type_variety": "std_medium_gain_C",
+                "operational": {
+                    "gain_target": 22.55,
+                    "delta_p": 0.9,
+                    "out_voa": 3.0,
+                    "tilt_target": 0.0,
+                }
+            },
+            {
+                "type_variety": "std_medium_gain_L",
+                "operational": {
+                    "gain_target": 21,
+                    "delta_p": 3.0,
+                    "out_voa": 3.0,
+                    "tilt_target": 0.0,
+                }
+            }
+        ]
+    }
+    fused_config = {
+        "uid": "[83/WR-2-4-SIG=>930/WRT-1-2-SIG]-Tl/9300",
+        "type": "Fused",
+        "params": {
+            "loss": 20
+        }
+    }
+    json_data = {
+        "elements": [
+            el_config,
+            fused_config
+        ],
+        "connections": []
+    }
+    network = network_from_json(json_data, equipment)
+    amp = next(n for n in network.nodes() if n.uid == 'Edfa1')
+    fused = next(n for n in network.nodes() if n.uid == '[83/WR-2-4-SIG=>930/WRT-1-2-SIG]-Tl/9300')
+    si = create_input_spectral_information(f_min=186e12, f_max=196e12, roll_off=0.15, baud_rate=32e9, tx_power=1e-3,
+                                           spacing=50e9, tx_osnr=40.0)
+    assert si.number_of_channels == 200
+    si = fused(si)
+    si = amp(si)
+    # assert nb of channel after mux/demux
+    assert si.number_of_channels == 164    # computed based on amp bands
+    # Check that multiband amp is correctly created with correct __str__
+    actual_c_amp = amp.amplifiers["CBAND"].__str__()
+    expected_c_amp = '\n'.join([
+        'Edfa Edfa1',
+        '  type_variety:           std_medium_gain_C',
+        '  effective gain(dB):     21.22',
+        '  (before att_in and before output VOA)',
+        '  noise figure (dB):      6.32',
+        '  (including att_in)',
+        '  pad att_in (dB):        0.00',
+        '  Power In (dBm):         -0.22',
+        '  Power Out (dBm):        21.01',
+        '  Delta_P (dB):           0.90',
+        '  target pch (dBm):       None',
+        '  actual pch out (dBm):   -1.77',
+        '  output VOA (dB):        3.00'])
+    assert actual_c_amp == expected_c_amp
+    actual_l_amp = amp.amplifiers["LBAND"].__str__()
+    expected_l_amp = '\n'.join([
+        'Edfa Edfa1',
+        '  type_variety:           std_medium_gain_L',
+        '  effective gain(dB):     21.00',
+        '  (before att_in and before output VOA)',
+        '  noise figure (dB):      6.36',
+        '  (including att_in)',
+        '  pad att_in (dB):        0.00',
+        '  Power In (dBm):         -1.61',
+        '  Power Out (dBm):        19.40',
+        '  Delta_P (dB):           3.00',
+        '  target pch (dBm):       None',
+        '  actual pch out (dBm):   -1.99',
+        '  output VOA (dB):        3.00'])
+    assert actual_l_amp == expected_l_amp
+
+    # check that f_min, f_max of si are within amp band
+    assert amp.amplifiers["LBAND"].params.f_min == 186.55e12
+    assert si.frequency[0] >= amp.amplifiers["LBAND"].params.f_min
+    assert amp.amplifiers["CBAND"].params.f_max == 196.15e12
+    assert si.frequency[-1] <= amp.amplifiers["CBAND"].params.f_max
+    for freq in si.frequency:
+        if freq > 190.05e12:
+            assert freq >= 191.25e12
+        if freq < 191.25e12:
+            assert freq <= 190.25e12

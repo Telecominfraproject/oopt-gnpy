@@ -5,12 +5,12 @@
 gnpy.core.elements
 ==================
 
-Standard network elements which propagate optical spectrum
+Standard network elements which propagate optical spectrum.
 
 A network element is a Python callable. It takes a :class:`.info.SpectralInformation`
 object and returns a copy with appropriate fields affected. This structure
-represents spectral information that is "propogated" by this network element.
-Network elements must have only a local "view" of the network and propogate
+represents spectral information that is "propagated" by this network element.
+Network elements must have only a local "view" of the network and propagate
 :class:`.info.SpectralInformation` using only this information. They should be independent and
 self-contained.
 
@@ -25,16 +25,16 @@ from numpy import abs, array, errstate, ones, interp, mean, pi, polyfit, polyval
 from scipy.constants import h, c
 from scipy.interpolate import interp1d
 from collections import namedtuple
-from typing import Union
+from typing import Union, List
 from logging import getLogger
 import warnings
 
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_average, pretty_summary_print, \
-    watt2dbm, psd2powerdbm, calculate_absolute_min_or_zero
+    watt2dbm, psd2powerdbm, calculate_absolute_min_or_zero, nice_column_str
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational, \
-    RoadmPath, RoadmImpairment
+    MultiBandParams, RoadmPath, RoadmImpairment, find_band_name, FrequencyBand
 from gnpy.core.science_utils import NliSolver, RamanSolver
-from gnpy.core.info import SpectralInformation, demuxed_spectral_information
+from gnpy.core.info import SpectralInformation, muxed_spectral_information, demuxed_spectral_information
 from gnpy.core.exceptions import NetworkTopologyError, SpectrumError, ParametersError
 
 
@@ -1211,3 +1211,119 @@ class Edfa(_Node):
             self.propagate(spectral_info)
             return spectral_info
         raise ValueError(f'Amp {self.uid} Defined propagation band does not match amplifiers band.')
+
+
+class Multiband_amplifier(_Node):
+    """Represents a multiband amplifier that manages multiple amplifiers across different frequency bands.
+
+    This class allows for the initialization and management of amplifiers, each associated with a specific
+    frequency band. It provides methods for signal propagation through the amplifiers and for exporting
+    to JSON format.
+
+    param: amplifiers: list of dict. A list of dictionaries, each containing parameters for setting an
+    individual amplifier.
+    param: params : dict. A dictionary of parameters for the multiband amplifier, which must include
+    necessary configuration settings.
+    param: args, kwargs: Additional positional and keyword arguments passed to the parent class `_Node`.
+
+    Attributes:
+    -----------
+    variety_list : A list of varieties associated with the amplifier.
+    amplifiers : A dictionary mapping band names to their corresponding amplifier instances.
+
+    Methods:
+    --------
+    __call__(spectral_info):
+    Propagates the input spectral information through each amplifier and returns the multiplexed spectrum.
+
+    to_json:
+    Converts the amplifier's state to a JSON-compatible dictionary.
+
+    __repr__():
+    Returns a string representation of the multiband amplifier instance.
+
+    __str__():
+    Returns a formatted string representation of the multiband amplifier and its amplifiers.
+
+    Raises:
+    -------
+    ParametersError: If there are conflicting amplifier definitions for the same frequency band during initialization.
+
+    ValueError: If the input spectral information does not match any defined amplifier bands during propagation.
+    """
+    # separate the top level type_variety from kwargs to avoid having multiple type_varieties on each element processing
+    def __init__(self, *args, amplifiers: List[dict], params: dict, **kwargs):
+        self.variety_list = kwargs.pop('variety_list', None)
+        try:
+            super().__init__(params=MultiBandParams(**params), **kwargs)
+        except ParametersError as e:
+            raise ParametersError(f'{kwargs["uid"]}: {e}')
+        self.amplifiers = {}
+        if 'type_variety' in kwargs:
+            kwargs.pop('type_variety')
+        self.passive = False
+        for amp_dict in amplifiers:
+            # amplifiers dict uses default names as key to represent the band
+            amp = Edfa(**amp_dict, **kwargs)
+            band = next(b for b in amp.params.bands)
+            band_name = find_band_name(FrequencyBand(f_min=band["f_min"], f_max=band["f_max"]))
+            if band_name not in self.amplifiers.keys() and band not in self.params.bands:
+                self.params.bands.append(band)
+                self.amplifiers[band_name] = amp
+            elif band_name not in self.amplifiers.keys() and band in self.params.bands:
+                self.amplifiers[band_name] = amp
+            else:
+                raise ParametersError(f'{kwargs["uid"]}: has more than one amp defined for the same band')
+
+    def __call__(self, spectral_info: SpectralInformation):
+        """propagates in each amp and returns the muxed spectrum
+        """
+        out_si = []
+        for _, amp in self.amplifiers.items():
+            si = demuxed_spectral_information(spectral_info, amp.params.bands[0])
+            # if spectral_info frequencies are outside amp band, si is None
+            if si:
+                si = amp(si)
+                out_si.append(si)
+        if not out_si:
+            raise ValueError('Defined propagation band does not match amplifiers band.')
+        return muxed_spectral_information(out_si)
+
+    @property
+    def to_json(self):
+        return {'uid': self.uid,
+                'type': type(self).__name__,
+                'type_variety': self.type_variety,
+                'amplifiers': [{
+                    'type_variety': amp.type_variety,
+                    'operational': {
+                        'gain_target': round(amp.effective_gain, 6),
+                        'delta_p': amp.delta_p,
+                        'tilt_target': amp.tilt_target,
+                        'out_voa': amp.out_voa
+                    }} for amp in self.amplifiers.values()
+                ],
+                'metadata': {
+                    'location': self.metadata['location']._asdict()
+                }
+                }
+
+    def __repr__(self):
+        return (f'{type(self).__name__}(uid={self.uid!r}, '
+                f'type_variety={self.type_variety!r}, ')
+
+    def __str__(self):
+        amp_str = [f'{type(self).__name__} {self.uid}',
+                   f'  type_variety:           {self.type_variety}']
+        multi_str_data = []
+        max_width = 0
+        for amp in self.amplifiers.values():
+            lines = amp.__str__().split('\n')
+            # start at index 1 to remove uid from each amp list of strings
+            # records only if amp is used ie si has frequencies in amp) otherwise there is no other string than the uid
+            if len(lines) > 1:
+                max_width = max(max_width, max([len(line) for line in lines[1:]]))
+                multi_str_data.append(lines[1:])
+        # multi_str_data contains lines with each amp str, instead we want to print per column: transpose the string
+        transposed_data = list(map(list, zip(*multi_str_data)))
+        return '\n'.join(amp_str) + '\n' + nice_column_str(data=transposed_data, max_length=max_width + 2, padding=3)
