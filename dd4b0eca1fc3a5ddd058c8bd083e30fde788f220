@@ -57,6 +57,24 @@
       "parentUuid": "8e5e3402_2f7cf444",
       "revId": "dd4b0eca1fc3a5ddd058c8bd083e30fde788f220",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15e51ccb_cb1b7187",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2021-12-14T10:30:56Z",
+      "side": 1,
+      "message": "This is intentional; the difference (or \"split\") of \"a fiber type\" between the Fiber and RamanFiber blocks in the equipment library is largely just an artificial difference, and this check aims to actually *force* the user to provide the same datasheet values for \"a fiber\". I\u0027ve put \"gamma\" and \"effective_area\" back.",
+      "parentUuid": "56c79544_a402fa5f",
+      "revId": "dd4b0eca1fc3a5ddd058c8bd083e30fde788f220",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
