@@ -75,6 +75,24 @@
       "parentUuid": "56c79544_a402fa5f",
       "revId": "dd4b0eca1fc3a5ddd058c8bd083e30fde788f220",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b70601ca_81a919c2",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-12-15T12:58:33Z",
+      "side": 1,
+      "message": "Is there any good reason to keep this \"artificial\" split between Fiber and RamanFiber? Can\u0027t we just get rid of it?",
+      "parentUuid": "15e51ccb_cb1b7187",
+      "revId": "dd4b0eca1fc3a5ddd058c8bd083e30fde788f220",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
