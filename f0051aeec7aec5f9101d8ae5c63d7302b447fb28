@@ -16,6 +16,46 @@
       "message": "This is good to go from my perspective.",
       "revId": "f0051aeec7aec5f9101d8ae5c63d7302b447fb28",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d897c8d7_4a495565",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-12-15T14:40:59Z",
+      "side": 1,
+      "message": "This default means that if both effective_area and gamma are missing in the eqpt config, the following error will be raised:\n\n Simulation parameters error: Fiber configurations json must include \u0027gamma\u0027\n\nwhich may be confusing. Maybe effective_area can be set to some reasonable default (before default gamma was 0, i.e. no nonlinearities, but that doesn\u0027t work anymore since it would result in division by zero error when calculating effective_area)? If this is not possible, I think something should at least be done about the error message.",
+      "revId": "f0051aeec7aec5f9101d8ae5c63d7302b447fb28",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6bb9040_64129c4d",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-12-15T14:40:59Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this also be included in RamanFiber __init__ below?",
+      "range": {
+        "startLine": 128,
+        "startChar": 8,
+        "endLine": 130,
+        "endChar": 57
+      },
+      "revId": "f0051aeec7aec5f9101d8ae5c63d7302b447fb28",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
