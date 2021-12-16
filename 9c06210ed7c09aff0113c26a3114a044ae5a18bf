@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cd748dd_9eb84e14",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 26
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-12-16T21:37:43Z",
+      "side": 1,
+      "message": "This patch speeds up fiber propagation for \"gn_model_analytic\" quite a lot, which is nice. But it doesn\u0027t seem to do much for \"ggn_spectrally_separated\", which makes the speed difference between the methods even larger than before. Is there any way to take advantage of the new spectral info structure to speed up also \"ggn_spectrally_separated\" or is it already optimized? (I don\u0027t want to hold up this patch, just curious about potential further development.) ",
+      "revId": "9c06210ed7c09aff0113c26a3114a044ae5a18bf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
