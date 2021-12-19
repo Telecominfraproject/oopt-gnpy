@@ -527,7 +527,6 @@ def build_network(network, equipment, pref_ch_db, pref_total_db, no_insert_edfas
     # set roadm loss for gain_mode before to build network
     fibers = [f for f in network.nodes() if isinstance(f, elements.Fiber)]
     add_connector_loss(network, fibers, default_span_data.con_in, default_span_data.con_out, default_span_data.EOL)
-    add_fiber_padding(network, fibers, default_span_data.padding)
     # don't group split fiber and add amp in the same loop
     # =>for code clarity (at the expense of speed):
 
@@ -544,6 +543,8 @@ def build_network(network, equipment, pref_ch_db, pref_total_db, no_insert_edfas
         fibers = [f for f in network.nodes() if isinstance(f, elements.Fiber)]
         for fiber in fibers:
             add_inline_amplifier(network, fiber)
+
+    add_fiber_padding(network, fibers, default_span_data.padding)
 
     for roadm in roadms:
         set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db)
