@@ -432,10 +432,10 @@ def calculate_new_length(fiber_length, bounds, target_length):
         return (length1, n_spans1)
     elif (bounds.start <= length2 <= bounds.stop) and not(bounds.start <= length1 <= bounds.stop):
         return (length2, n_spans2)
-    elif target_length - length1 < length2 - target_length:
-        return (length1, n_spans1)
-    else:
+    elif length2 - target_length <= target_length - length1 and length2 <= bounds.stop:
         return (length2, n_spans2)
+    else:
+        return (length1, n_spans1)
 
 
 def split_fiber(network, fiber, bounds, target_length, equipment):
