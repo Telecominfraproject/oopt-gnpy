@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7dbb58c_258b6a20",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-12-20T21:41:07Z",
+      "side": 1,
+      "message": "I think this could be turned into an elif.",
+      "range": {
+        "startLine": 144,
+        "startChar": 12,
+        "endLine": 145,
+        "endChar": 18
+      },
+      "revId": "292c7fb926cf3866ac4794735233601a9fa3ab22",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61b23ef9_04a4c81d",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-12-20T21:41:07Z",
+      "side": 1,
+      "message": "Minor detail but this is redundant. You could just have:\n\n class RamanFiber(Fiber):\n     pass",
+      "range": {
+        "startLine": 134,
+        "startChar": 4,
+        "endLine": 135,
+        "endChar": 34
+      },
+      "revId": "292c7fb926cf3866ac4794735233601a9fa3ab22",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d946d14a_e3c7607e",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2021-12-20T21:41:07Z",
+      "side": 1,
+      "message": "Why did you comment out the check?",
+      "range": {
+        "startLine": 266,
+        "startChar": 4,
+        "endLine": 266,
+        "endChar": 8
+      },
+      "revId": "292c7fb926cf3866ac4794735233601a9fa3ab22",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
