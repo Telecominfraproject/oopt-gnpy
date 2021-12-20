@@ -16,6 +16,24 @@
       "message": "This patch speeds up fiber propagation for \"gn_model_analytic\" quite a lot, which is nice. But it doesn\u0027t seem to do much for \"ggn_spectrally_separated\", which makes the speed difference between the methods even larger than before. Is there any way to take advantage of the new spectral info structure to speed up also \"ggn_spectrally_separated\" or is it already optimized? (I don\u0027t want to hold up this patch, just curious about potential further development.) ",
       "revId": "9c06210ed7c09aff0113c26a3114a044ae5a18bf",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77d5867f_66d00581",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 26
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2021-12-20T20:50:10Z",
+      "side": 1,
+      "message": "When using the \"ggn_spectrally_separated\" there are two processes that slow down the simulation: the Raman solver and the actual calculation of the NLI. In the \"Raman speed up...\" patch I sped up the Raman solver. In order to speed up the actual calculation of the NLI more implementations are needed (I am already working on them), but the new spectral information is the right structure to start with.",
+      "parentUuid": "4cd748dd_9eb84e14",
+      "revId": "9c06210ed7c09aff0113c26a3114a044ae5a18bf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
