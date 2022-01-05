@@ -22,6 +22,30 @@
       },
       "revId": "a06146d7c43b36b10b686d6abe3d818ea0c21d92",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d38fa46_e9c7a086",
+        "filename": "gnpy/example-data/raman_edfa_example_network.json",
+        "patchSetId": 26
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2022-01-05T17:32:11Z",
+      "side": 1,
+      "message": "In general, the fused element after a Raman amplified fiber is needed to take into account the loss after the Raman pumps, in this way the Fiber.con_out loss takes include only the loss before the Raman pumps and it can be applied to them separately.\nIn this specific case, I added the fused even if the introduced loss is zero in order to have a complete Raman pump template. I did set zero loss for the fused because it would have changed all the results of the tests.",
+      "parentUuid": "f81a5a25_60978a3f",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 6
+      },
+      "revId": "a06146d7c43b36b10b686d6abe3d818ea0c21d92",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
