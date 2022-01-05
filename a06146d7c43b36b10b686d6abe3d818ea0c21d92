@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f81a5a25_60978a3f",
+        "filename": "gnpy/example-data/raman_edfa_example_network.json",
+        "patchSetId": 26
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-01-05T08:31:39Z",
+      "side": 1,
+      "message": "I am not against this change, but I do not understand it: could you please explain why you added a fused element in this example ?",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 6
+      },
+      "revId": "a06146d7c43b36b10b686d6abe3d818ea0c21d92",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
