@@ -46,6 +46,30 @@
       },
       "revId": "a06146d7c43b36b10b686d6abe3d818ea0c21d92",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4d311a5_7d1850f6",
+        "filename": "gnpy/example-data/raman_edfa_example_network.json",
+        "patchSetId": 26
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-01-05T17:56:53Z",
+      "side": 1,
+      "message": "Very clear! thanks!",
+      "parentUuid": "7d38fa46_e9c7a086",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 6
+      },
+      "revId": "a06146d7c43b36b10b686d6abe3d818ea0c21d92",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
