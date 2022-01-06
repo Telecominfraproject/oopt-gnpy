@@ -16,14 +16,17 @@ See: draft-ietf-teas-yang-path-computation-01.txt
 """
 
 from collections import namedtuple, OrderedDict
+from typing import List
 from logging import getLogger
 from networkx import (dijkstra_path, NetworkXNoPath,
                       all_simple_paths, shortest_simple_paths)
 from networkx.utils import pairwise
 from numpy import mean, argmin
-from gnpy.core.elements import Transceiver, Roadm
-from gnpy.core.utils import lin2db
-from gnpy.core.info import create_input_spectral_information, carriers_to_spectral_information
+
+from gnpy.core.elements import Transceiver, Roadm, Edfa
+from gnpy.core.utils import lin2db, find_common_range
+from gnpy.core.info import create_input_spectral_information, carriers_to_spectral_information, \
+    demuxed_spectral_information, muxed_spectral_information, SpectralInformation
 from gnpy.core import network as network_module
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 from copy import deepcopy
@@ -332,14 +335,34 @@ def compute_constrained_path(network, req):
     return total_path
 
 
+def filter_si(path: list, equipment: dict, si: SpectralInformation) -> SpectralInformation:
+    """Filter spectral information based on the amplifiers common range"""
+    # First retrieve f_min, f_max spectrum according to amplifiers' spectrum on the path
+    common_range = find_elements_common_range(path, equipment)
+    # filter out frequencies that should not be created
+    filtered_si = []
+    for band in common_range:
+        temp = demuxed_spectral_information(si, band)
+        if temp:
+            filtered_si.append(temp)
+    if not filtered_si:
+        raise ValueError('Defined propagation band does not match amplifiers band.')
+    return muxed_spectral_information(filtered_si)
+
+
 def propagate(path, req, equipment):
-    """propagates signals in each element according to initial spectrum set by user"""
+    """propagates signals in each element according to initial spectrum set by user
+    Spectrum is specified in request through f_min, f_max and spacing, or initial_spectrum
+    and amps frequency band on the path is used to filter out frequencies"""
+    # generates spectrum based on request
     if req.initial_spectrum is not None:
         si = carriers_to_spectral_information(initial_spectrum=req.initial_spectrum, power=req.power)
     else:
         si = create_input_spectral_information(
             f_min=req.f_min, f_max=req.f_max, roll_off=req.roll_off, baud_rate=req.baud_rate,
             spacing=req.spacing, tx_osnr=req.tx_osnr, tx_power=req.tx_power, delta_pdb=req.offset_db)
+    # filter out frequencies that should not be created
+    si = filter_si(path, equipment, si)
     roadm_osnr = []
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
@@ -385,6 +408,7 @@ def propagate_and_optimize_mode(path, req, equipment):
                                                          baud_rate=this_br, spacing=req.spacing,
                                                          delta_pdb=this_offset, tx_osnr=req.tx_osnr,
                                                          tx_power=req.tx_power)
+            spc_info = filter_si(path, equipment, spc_info)
             roadm_osnr = []
             for i, el in enumerate(path):
                 if isinstance(el, Roadm):
@@ -1225,3 +1249,11 @@ def _penalty_msg(total_path, msg, min_ind):
         else:
             msg += f'\n\t{pretty} penalty not evaluated'
     return msg
+
+
+def find_elements_common_range(el_list: list, equipment: dict) -> List[dict]:
+    """Find the common frequency range of amps of a given list of elements (for example an OMS or a path)
+    If there are no amplifiers in the path, then use the SI
+    """
+    amp_bands = [n.params.bands for n in el_list if isinstance(n, (Edfa))]
+    return find_common_range(amp_bands, equipment['SI']['default'].f_min, equipment['SI']['default'].f_max)
