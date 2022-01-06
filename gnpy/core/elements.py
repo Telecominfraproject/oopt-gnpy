@@ -32,7 +32,7 @@ from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_la
     watt2dbm, psd2powerdbm
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational
 from gnpy.core.science_utils import NliSolver, RamanSolver
-from gnpy.core.info import SpectralInformation, ReferenceCarrier
+from gnpy.core.info import SpectralInformation, ReferenceCarrier, demuxed_spectral_information
 from gnpy.core.exceptions import NetworkTopologyError, SpectrumError, ParametersError
 
 
@@ -1036,6 +1036,10 @@ class Edfa(_Node):
                                         p_spani=spectral_info.pref.p_spani + self.effective_gain - self.out_voa)
 
     def __call__(self, spectral_info):
-        self.propagate(spectral_info)
-        self.update_pref(spectral_info)
-        return spectral_info
+        # filter out carriers outside the amplifier band
+        spectral_info = demuxed_spectral_information(spectral_info, self.params.bands[0])
+        if spectral_info.carriers:
+            self.propagate(spectral_info)
+            self.update_pref(spectral_info)
+            return spectral_info
+        raise ValueError('Defined propagation band does not match amplifiers band.')

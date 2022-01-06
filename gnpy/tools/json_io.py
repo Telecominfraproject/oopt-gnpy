@@ -173,8 +173,9 @@ class RamanFiber(Fiber):
 
 class Amp(_JsonThing):
     default_values = {
-        'f_min': 191.35e12,
+        'f_min': 191.3e12,
         'f_max': 196.1e12,
+        'bands': [],
         'type_variety': '',
         'type_def': '',
         'gain_flatmax': None,
@@ -199,7 +200,7 @@ class Amp(_JsonThing):
     @classmethod
     def from_json(cls, filename, **kwargs):
         config = Path(filename).parent / 'default_edfa_config.json'
-
+        # default_edfa_config.json assumes a DGT profile independantly from fmin/fmax, that's a generic profile
         type_variety = kwargs['type_variety']
         type_def = kwargs.get('type_def', 'variable_gain')  # default compatibility with older json eqpt files
         nf_def = None
@@ -338,6 +339,18 @@ def _spectrum_from_json(json_data):
     return spectrum
 
 
+def _update_band(equipment):
+    """Retrieve the frequency band of this amplifier.
+
+    Anticipate on multi band case where the amp may have several bands
+    """
+    amp_dict = equipment['Edfa']
+    for amplifier in amp_dict.values():
+        amplifier.bands = [{'f_min': amplifier.f_min,
+                           'f_max': amplifier.f_max}]
+    return equipment
+
+
 def load_equipment(filename):
     json_data = load_json(filename)
     return _equipment_from_json(json_data, filename)
@@ -423,6 +436,7 @@ def _equipment_from_json(json_data, filename):
                 raise EquipmentConfigError(f'Unrecognized network element type "{key}"')
     _check_fiber_vs_raman_fiber(equipment)
     equipment = _update_dual_stage(equipment)
+    equipment = _update_band(equipment)
     _roadm_restrictions_sanity_check(equipment)
     return equipment
 

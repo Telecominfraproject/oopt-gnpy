@@ -386,3 +386,54 @@ class ReferenceCarrier:
     """
     baud_rate: float
     slot_width: float
+
+
+def is_in_band(frequency: float, band):
+    """Check if frequency is in band
+    band has {"f_min": value, "f_max": value} format
+    """
+    if frequency >= band['f_min'] and frequency <= band['f_max']:
+        return True
+    return False
+
+
+def demuxed_spectral_information(input_si, band):
+    """Filter the spectral information object based on band
+    """
+    filtered_indices = [i for i, f in enumerate(input_si.frequency) if is_in_band(f, band)]
+    if filtered_indices:
+        frequency = input_si.frequency[filtered_indices]
+        baud_rate = input_si.baud_rate[filtered_indices]
+        slot_width = input_si.slot_width[filtered_indices]
+        signal = input_si.signal[filtered_indices]
+        nli = input_si.nli[filtered_indices]
+        ase = input_si.ase[filtered_indices]
+        roll_off = input_si.roll_off[filtered_indices]
+        chromatic_dispersion = input_si.chromatic_dispersion[filtered_indices]
+        pmd = input_si.pmd[filtered_indices]
+        pdl = input_si.pdl[filtered_indices]
+        delta_pdb_per_channel = input_si.delta_pdb_per_channel[filtered_indices]
+        tx_osnr = input_si.tx_osnr[filtered_indices]
+        label = input_si.label[filtered_indices]
+        pref = Pref(p_span0=input_si.pref.p_span0, p_spani=input_si.pref.p_spani, ref_carrier=input_si.pref.ref_carrier)
+        # TODO do not forget to insert Pref when later comits with Pref are merged
+        return SpectralInformation(frequency=frequency, baud_rate=baud_rate, slot_width=slot_width, signal=signal,
+                                   nli=nli, ase=ase, roll_off=roll_off, chromatic_dispersion=chromatic_dispersion,
+                                   pmd=pmd, pdl=pdl, delta_pdb_per_channel=delta_pdb_per_channel, tx_osnr=tx_osnr,
+                                   ref_power=pref, label=label)
+    return None
+
+
+def muxed_spectral_information(input_si_list):
+    """Assemble spectral information objects to form a single spectrum information
+    """
+    # TODO recompute p_span-i and 0 instead of picking first in the list
+    if input_si_list and len(input_si_list) > 1:
+        si = input_si_list[0] + muxed_spectral_information(input_si_list[1:])
+        pref = Pref(p_span0=input_si_list[0].pref.p_span0, p_spani=input_si_list[0].pref.p_spani,
+                    ref_carrier=input_si_list[0].pref.ref_carrier)
+        si.pref = pref
+        return si
+    if input_si_list and len(input_si_list) == 1:
+        return input_si_list[0]
+    raise ValueError('Empty list of spectrum information, cannot apply mux')

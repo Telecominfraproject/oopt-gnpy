@@ -15,7 +15,7 @@ element/oms correspondace
 
 from collections import namedtuple
 from logging import getLogger
-from gnpy.core.elements import Roadm, Transceiver
+from gnpy.core.elements import Roadm, Transceiver, Edfa
 from gnpy.core.exceptions import ServiceError, SpectrumError
 from gnpy.topology.request import compute_spectrum_slot_vs_bandwidth
 
@@ -36,6 +36,7 @@ class Bitmap:
         self.freq_index_min = frequency_to_n(f_min)
         self.freq_index_max = frequency_to_n(f_max)
         self.freq_index = list(range(n_min, n_max + 1))
+        self.guardband = guardband
         if bitmap is None:
             self.bitmap = [1] * (n_max - n_min + 1)
         elif len(bitmap) == len(self.freq_index):
@@ -99,24 +100,20 @@ class OMS:
 
     def update_spectrum(self, f_min, f_max, guardband=0.15e12, existing_spectrum=None,
                         grid=0.00625e12):
-        """frequencies expressed in Hz"""
-        if existing_spectrum is None:
-            # add some 150 GHz margin to enable a center channel on f_min
-            # use ITU-T G694.1
-            # Flexible DWDM grid definition
-            # For the flexible DWDM grid, the allowed frequency slots have a nominal
-            # central frequency (in THz) defined by:
-            # 193.1 + n × 0.00625 where n is a positive or negative integer including 0
-            # and 0.00625 is the nominal central frequency granularity in THz
-            # and a slot width defined by:
-            # 12.5 × m where m is a positive integer and 12.5 is the slot width granularity in
-            # GHz.
-            # Any combination of frequency slots is allowed as long as no two frequency
-            # slots overlap.
-
-            # TODO : add explaination on that / parametrize ....
-            self.spectrum_bitmap = Bitmap(f_min, f_max, grid, guardband)
-            # print(len(self.spectrum_bitmap.bitmap))
+        """frequencies expressed in Hz
+        add some 150 GHz margin to enable a center channel on f_min
+        use ITU-T G694.1 Flexible DWDM grid definition
+        For the flexible DWDM grid, the allowed frequency slots have a nominal central frequency (in THz) defined by:
+        193.1 + n × 0.00625 where n is a positive or negative integer including 0
+        and 0.00625 is the nominal central frequency granularity in THz
+        and a slot width defined by:
+        12.5 × m where m is a positive integer and 12.5 is the slot width granularity in GHz.
+        Any combination of frequency slots is allowed as long as no two frequency slots overlap.
+        if bitmap is not None, then use it: Bitmap checks its consistency with f_min f_max
+        else a virgin bitmap is created
+        """
+        self.spectrum_bitmap = Bitmap(f_min=f_min, f_max=f_max, grid=grid, guardband=guardband,
+                                      bitmap=existing_spectrum)
 
     def assign_spectrum(self, nvalue, mvalue):
         """change oms spectrum to mark spectrum assigned"""
@@ -230,6 +227,34 @@ def align_grids(oms_list):
     return oms_list
 
 
+def find_network_freq_range(network, equipment):
+    """ Find the lowest freq from amps and highest freq among all amps to determine the resulting bitmap
+    """
+    amp_varieties = [n.params.type_variety for n in network.nodes() if isinstance(n, Edfa)]
+    amp_varieties = list(set(amp_varieties))
+    min_frequencies = [equipment['Edfa'][a].f_min for a in amp_varieties]
+    max_frequencies = [equipment['Edfa'][a].f_max for a in amp_varieties]
+    return min(min_frequencies), max(max_frequencies)
+
+
+def create_oms_bitmap(oms, equipment, f_min, f_max, guardband, grid):
+    """ Find the highest low freq from oms amps and lowest high freq among oms amps to determine the possible bitmap window
+    f_min and f_max represent the useable spectrum (not the useable center frequencies)
+    ie n smaller than frequency_to_n(min_freq, grid) are not useable
+    """
+    amp_varieties = [n.params.type_variety for n in oms.el_list if isinstance(n, Edfa)]
+    amp_varieties = list(set(amp_varieties))
+    min_frequencies = [equipment['Edfa'][a].f_min for a in amp_varieties]
+    max_frequencies = [equipment['Edfa'][a].f_max for a in amp_varieties]
+    min_freq, max_freq = max(min_frequencies), min(max_frequencies)
+    net_n_min = frequency_to_n(min_freq, grid)
+    net_n_max = frequency_to_n(max_freq, grid)
+    n_min = frequency_to_n(f_min - guardband, grid)
+    n_max = frequency_to_n(f_max + guardband, grid) - 1
+    bitmap = [0] * (net_n_min - n_min) + [1] * (net_n_max - net_n_min + 1) + [0] * (n_max - net_n_max)
+    return bitmap
+
+
 def build_oms_list(network, equipment):
     """initialization of OMS list in the network
 
@@ -241,6 +266,9 @@ def build_oms_list(network, equipment):
     """
     oms_id = 0
     oms_list = []
+    # determine the size of the bitmap common to all the omses: find min and max frequencies of all amps
+    # in the network. These gives the band not the center frequency, so there is no guardband in this case:
+    f_min, f_max = find_network_freq_range(network, equipment)
     for node in [n for n in network.nodes() if isinstance(n, Roadm)]:
         for edge in network.edges([node]):
             if not isinstance(edge[1], Transceiver):
@@ -275,8 +303,8 @@ def build_oms_list(network, equipment):
                     nd_out.oms_list = []
                     nd_out.oms_list.append(oms_id)
 
-                oms.update_spectrum(equipment['SI']['default'].f_min,
-                                    equipment['SI']['default'].f_max, grid=0.00625e12)
+                bitmap = create_oms_bitmap(oms, equipment, f_min=f_min, f_max=f_max, guardband=150e9, grid=0.00625e12)
+                oms.update_spectrum(f_min, f_max, guardband=150e9, grid=0.00625e12, existing_spectrum=bitmap)
                 # oms.assign_spectrum(13,7) gives back (193137500000000.0, 193225000000000.0)
                 # as in the example in the standard
                 # oms.assign_spectrum(13,7)

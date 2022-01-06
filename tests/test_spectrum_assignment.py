@@ -203,12 +203,12 @@ def test_bitmap_assignment(setup):
 
     btmp = deepcopy(random_oms.spectrum_bitmap.bitmap)
     # try a first assignment that must pass
-    spectrum_btmp = Bitmap(cband_freq_min, cband_freq_max, grid=0.00625e12, guardband=0.15e12, bitmap=btmp)
+    _ = Bitmap(cband_freq_min, cband_freq_max, grid=0.00625e12, guardband=guardband, bitmap=btmp)
 
     # try a wrong assignment that should not pass
     btmp = btmp[1:-1]
     with pytest.raises(SpectrumError):
-        spectrum_btmp = Bitmap(cband_freq_min, cband_freq_max, grid=0.00625e12, guardband=0.15e12, bitmap=btmp)
+        _ = Bitmap(cband_freq_min, cband_freq_max, grid=0.00625e12, guardband=guardband, bitmap=btmp)
 
 
 @pytest.fixture()
