@@ -192,7 +192,7 @@ class Amp(_JsonThing):
     @classmethod
     def from_json(cls, filename, **kwargs):
         config = Path(filename).parent / 'default_edfa_config.json'
-
+        # default_edfa_config.json assumes a DGT profile independantly from fmin/fmax, that's a generic profile
         type_variety = kwargs['type_variety']
         type_def = kwargs.get('type_def', 'variable_gain')  # default compatibility with older json eqpt files
         nf_def = None
@@ -367,6 +367,31 @@ def _update_dual_stage(equipment):
     return equipment
 
 
+def _update_band(equipment: dict) -> dict:
+    """Creates a list of bands for this amplifier, and remove other parameters which are not applicable
+    """
+    amp_dict = equipment['Edfa']
+    for amplifier in amp_dict.values():
+        if amplifier.type_def != 'multi_band':
+            amplifier.bands = [{'f_min': amplifier.f_min,
+                                'f_max': amplifier.f_max}]
+            # updates band parameter
+        else:
+            _bands = [{'f_min': amp_dict[a].f_min,
+                       'f_max': amp_dict[a].f_max} for a in amp_dict[amplifier.type_variety].multi_band]
+            # remove duplicates
+            amplifier.bands = []
+            for b in _bands:
+                if b not in amplifier.bands:
+                    amplifier.bands.append(b)
+            # remove non applicable parameters
+            for key in ['f_min', 'f_max', 'gain_flatmax', 'gain_min', 'p_max', 'nf_model', 'dual_stage_model',
+                        'nf_fit_coeff', 'nf_ripple', 'dgt', 'gain_ripple']:
+                delattr(amplifier, key)
+
+    return equipment
+
+
 def _roadm_restrictions_sanity_check(equipment):
     """verifies that booster and preamp restrictions specified in roadm equipment are listed in the edfa."""
     for roadm_type, roadm_eqpt in equipment['Roadm'].items():
@@ -428,6 +453,7 @@ def _equipment_from_json(json_data, filename):
                 raise EquipmentConfigError(f'Unrecognized network element type "{key}"')
     _check_fiber_vs_raman_fiber(equipment)
     equipment = _update_dual_stage(equipment)
+    equipment = _update_band(equipment)
     _roadm_restrictions_sanity_check(equipment)
     return equipment
 

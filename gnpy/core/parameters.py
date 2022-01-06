@@ -463,10 +463,10 @@ class FiberParams(Parameters):
 
 class EdfaParams:
     default_values = {
-        'f_min': 191.3e12,
-        'f_max': 196.1e12,
+        'f_min': None,
+        'f_max': None,
         'multi_band': None,
-        'bands': [],
+        'bands': None,
         'type_variety': '',
         'type_def': '',
         'gain_flatmax': None,
@@ -502,9 +502,11 @@ class EdfaParams:
             # Bandwidth
             self.f_min = params['f_min']
             self.f_max = params['f_max']
-            self.bandwidth = self.f_max - self.f_min
-            self.f_cent = (self.f_max + self.f_min) / 2
+            self.bandwidth = self.f_max - self.f_min if self.f_max and self.f_min else None
+            self.f_cent = (self.f_max + self.f_min) / 2 if self.f_max and self.f_min else None
             self.f_ripple_ref = params['f_ripple_ref']
+            self.bands = [{'f_min': params['f_min'],
+                           'f_max': params['f_max']}]
 
             # Gain
             self.gain_flatmax = params['gain_flatmax']

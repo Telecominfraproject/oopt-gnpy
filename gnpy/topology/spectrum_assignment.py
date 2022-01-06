@@ -15,28 +15,30 @@ element/oms correspondace
 
 from collections import namedtuple
 from logging import getLogger
-from gnpy.core.elements import Roadm, Transceiver
+from gnpy.core.elements import Roadm, Transceiver, Edfa
 from gnpy.core.exceptions import ServiceError, SpectrumError
 from gnpy.core.utils import order_slots, restore_order
-from gnpy.topology.request import compute_spectrum_slot_vs_bandwidth
+from gnpy.topology.request import compute_spectrum_slot_vs_bandwidth, find_elements_common_range
 
 LOGGER = getLogger(__name__)
+GUARDBAND = 25e9
 
 
 class Bitmap:
     """records the spectrum occupation"""
 
-    def __init__(self, f_min, f_max, grid, guardband=0.15e12, bitmap=None):
-        # n is the min index including guardband. Guardband is require to be sure
+    def __init__(self, f_min, f_max, grid, guardband=GUARDBAND, bitmap=None):
+        # n is the min index including guardband. Guardband is required to be sure
         # that a channel can be assigned  with center frequency fmin (means that its
         # slot occupation goes below freq_index_min
-        n_min = frequency_to_n(f_min - guardband, grid)
-        n_max = frequency_to_n(f_max + guardband, grid) - 1
+        n_min = frequency_to_n(f_min, grid)
+        n_max = frequency_to_n(f_max, grid)
         self.n_min = n_min
         self.n_max = n_max
-        self.freq_index_min = frequency_to_n(f_min)
-        self.freq_index_max = frequency_to_n(f_max)
+        self.freq_index_min = frequency_to_n(f_min + guardband)
+        self.freq_index_max = frequency_to_n(f_max - guardband)
         self.freq_index = list(range(n_min, n_max + 1))
+        self.guardband = guardband
         if bitmap is None:
             self.bitmap = [1] * (n_max - n_min + 1)
         elif len(bitmap) == len(self.freq_index):
@@ -83,7 +85,6 @@ class OMS:
         self.spectrum_bitmap = []
         self.nb_channels = 0
         self.service_list = []
-    # TODO
 
     def __str__(self):
         return '\n\t'.join([f'{type(self).__name__} {self.oms_id}',
@@ -98,7 +99,7 @@ class OMS:
         self.el_id_list.append(elem.uid)
         self.el_list.append(elem)
 
-    def update_spectrum(self, f_min, f_max, guardband=0.15e12, existing_spectrum=None, grid=0.00625e12):
+    def update_spectrum(self, f_min, f_max, guardband=GUARDBAND, existing_spectrum=None, grid=0.00625e12):
         """Frequencies expressed in Hz.
         Add 150 GHz margin to enable a center channel on f_min
         Use ITU-T G694.1 Flexible DWDM grid definition
@@ -226,6 +227,40 @@ def align_grids(oms_list):
     return oms_list
 
 
+def find_network_freq_range(network, equipment):
+    """Find the lowest freq from amps and highest freq among all amps to determine the resulting bitmap
+    """
+    amp_bands = [band for n in network.nodes() if isinstance(n, Edfa) for band in n.params.bands]
+    min_frequencies = [a['f_min'] for a in amp_bands]
+    max_frequencies = [a['f_max'] for a in amp_bands]
+    return min(min_frequencies), max(max_frequencies)
+
+
+def create_oms_bitmap(oms, equipment, f_min, f_max, guardband, grid):
+    """Find the highest low freq from oms amps and lowest high freq among oms amps to determine
+    the possible bitmap window.
+    f_min and f_max represent the useable spectrum (not the useable center frequencies)
+    ie n smaller than frequency_to_n(min_freq, grid) are not useable
+    """
+    n_min = frequency_to_n(f_min, grid)
+    n_max = frequency_to_n(f_max, grid) - 1
+    common_range = find_elements_common_range(oms.el_list, equipment)
+    band0 = common_range[0]
+    band0_n_min = frequency_to_n(band0['f_min'], grid)
+    band0_n_max = frequency_to_n(band0['f_max'], grid)
+    bitmap = [0] * (band0_n_min - n_min) + [1] * (band0_n_max - band0_n_min + 1)
+    i = 1
+    while i < len(common_range):
+        band = common_range[i]
+        band_n_min = frequency_to_n(band['f_min'], grid)
+        band_n_max = frequency_to_n(band['f_max'], grid)
+        bitmap = bitmap + [0] * (band_n_min - band0_n_max - 1) + [1] * (band_n_max - band_n_min + 1)
+        band0_n_max = band_n_max
+        i += 1
+    bitmap = bitmap + [0] * (n_max - band0_n_max)
+    return bitmap
+
+
 def build_oms_list(network, equipment):
     """initialization of OMS list in the network
 
@@ -237,7 +272,15 @@ def build_oms_list(network, equipment):
     """
     oms_id = 0
     oms_list = []
-    for node in [n for n in network.nodes() if isinstance(n, Roadm)]:
+    # identify all vertices of OMS: of course ROADM, but aso links to external chassis transponders
+    oms_vertices = [n for n in network.nodes() if isinstance(n, Roadm)] +\
+                   [n for n in network.nodes() if isinstance(n, Transceiver)
+                    and not isinstance(next(network.successors(n)), Roadm)]
+    # determine the size of the bitmap common to all the omses: find min and max frequencies of all amps
+    # in the network. These gives the band not the center frequency. Thhen we use a reference channel
+    # slot width (50GHz) to set the f_min, f_max
+    f_min, f_max = find_network_freq_range(network, equipment)
+    for node in oms_vertices:
         for edge in network.edges([node]):
             if not isinstance(edge[1], Transceiver):
                 nd_in = edge[0]  # nd_in is a Roadm
@@ -271,8 +314,9 @@ def build_oms_list(network, equipment):
                     nd_out.oms_list = []
                     nd_out.oms_list.append(oms_id)
 
-                oms.update_spectrum(equipment['SI']['default'].f_min,
-                                    equipment['SI']['default'].f_max, grid=0.00625e12)
+                bitmap = create_oms_bitmap(oms, equipment, f_min=f_min, f_max=f_max, guardband=GUARDBAND,
+                                           grid=0.00625e12)
+                oms.update_spectrum(f_min, f_max, guardband=GUARDBAND, grid=0.00625e12, existing_spectrum=bitmap)
                 # oms.assign_spectrum(13,7) gives back (193137500000000.0, 193225000000000.0)
                 # as in the example in the standard
                 # oms.assign_spectrum(13,7)
@@ -333,10 +377,11 @@ def aggregate_oms_bitmap(path_oms, oms_list):
         'el_id_list': 0,
         'el_list': []
     }
-    freq_min = nvalue_to_frequency(spectrum.freq_index_min)
-    freq_max = nvalue_to_frequency(spectrum.freq_index_max)
+    freq_min = nvalue_to_frequency(spectrum.n_min)
+    freq_max = nvalue_to_frequency(spectrum.n_max)
     aggregate_oms = OMS(**params)
-    aggregate_oms.update_spectrum(freq_min, freq_max, grid=0.00625e12, existing_spectrum=bitmap)
+    aggregate_oms.update_spectrum(freq_min, freq_max, grid=0.00625e12, guardband=spectrum.guardband,
+                                  existing_spectrum=bitmap)
     return aggregate_oms
 
 
