@@ -34,6 +34,24 @@
       "parentUuid": "649944e6_fe3fde17",
       "revId": "63eafb621d674bcf622a20be25d38728404f8ed9",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7abed735_b40ce2b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2022-01-06T11:58:18Z",
+      "side": 1,
+      "message": "The lumped losses are considered to calculate the spatial loss profile both if the SRS is considered or not.\nAs we discuss during the coders call, in GNPy the NLI is evaluated at the fiber input and then the spatial loss profile is applied.\nIn this sense, the lumped losses are included also when the \u0027gn_model_analytic\u0027 is used.\nMore precisely, the \u0027gn_model_analytic\u0027 use an approximation that does not take into account the lumped losses, therefore, the NLI evaluated at the fiber input would be an overestimation of the actual NLI (e.g. lumped losses within the effective length would reduce the signal power and therefore the NLI generation).\nIt is not straightforward to include this behavior in the \u0027gn_model_analytic\u0027 because of the NLI correlation.",
+      "parentUuid": "f40b5555_561a0685",
+      "revId": "63eafb621d674bcf622a20be25d38728404f8ed9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
