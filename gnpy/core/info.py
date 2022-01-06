@@ -11,7 +11,7 @@ This module contains classes for modelling :class:`SpectralInformation`.
 from __future__ import annotations
 from collections import namedtuple
 from collections.abc import Iterable
-from typing import Union
+from typing import Union, List
 from dataclasses import dataclass
 from numpy import argsort, mean, array, append, ones, ceil, any, zeros, outer, full, ndarray, asarray
 
@@ -315,6 +315,56 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, spacing
     return create_arbitrary_spectral_information(frequency, slot_width=spacing, signal=tx_power, baud_rate=baud_rate,
                                                  roll_off=roll_off, delta_pdb_per_channel=delta_pdb_per_channel,
                                                  tx_osnr=tx_osnr, tx_power=tx_power, label=label)
+
+
+def is_in_band(frequency: float, band: dict) -> bool:
+    """band has {"f_min": value, "f_max": value} format
+    """
+    if frequency >= band['f_min'] and frequency <= band['f_max']:
+        return True
+    return False
+
+
+def demuxed_spectral_information(input_si: SpectralInformation, band: dict) -> SpectralInformation:
+    """extract a si based on band
+    """
+    filtered_indices = [i for i, f in enumerate(input_si.frequency)
+                        if is_in_band(f - input_si.slot_width[i] / 2, band)
+                        and is_in_band(f + input_si.slot_width[i] / 2, band)]
+    if filtered_indices:
+        frequency = input_si.frequency[filtered_indices]
+        baud_rate = input_si.baud_rate[filtered_indices]
+        slot_width = input_si.slot_width[filtered_indices]
+        signal = input_si.signal[filtered_indices]
+        nli = input_si.nli[filtered_indices]
+        ase = input_si.ase[filtered_indices]
+        roll_off = input_si.roll_off[filtered_indices]
+        chromatic_dispersion = input_si.chromatic_dispersion[filtered_indices]
+        pmd = input_si.pmd[filtered_indices]
+        pdl = input_si.pdl[filtered_indices]
+        latency = input_si.latency[filtered_indices]
+        delta_pdb_per_channel = input_si.delta_pdb_per_channel[filtered_indices]
+        tx_osnr = input_si.tx_osnr[filtered_indices]
+        tx_power = input_si.tx_power[filtered_indices]
+        label = input_si.label[filtered_indices]
+
+        return SpectralInformation(frequency=frequency, baud_rate=baud_rate, slot_width=slot_width, signal=signal,
+                                   nli=nli, ase=ase, roll_off=roll_off, chromatic_dispersion=chromatic_dispersion,
+                                   pmd=pmd, pdl=pdl, latency=latency, delta_pdb_per_channel=delta_pdb_per_channel,
+                                   tx_osnr=tx_osnr, tx_power=tx_power, label=label)
+    return None
+
+
+def muxed_spectral_information(input_si_list: List[SpectralInformation]) -> SpectralInformation:
+    """return the assembled spectrum
+    """
+    if input_si_list and len(input_si_list) > 1:
+        si = input_si_list[0] + muxed_spectral_information(input_si_list[1:])
+        return si
+    elif input_si_list and len(input_si_list) == 1:
+        return input_si_list[0]
+    else:
+        raise ValueError('liste vide')
 
 
 def carriers_to_spectral_information(initial_spectrum: dict[float, Carrier],

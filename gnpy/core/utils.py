@@ -12,6 +12,7 @@ from csv import writer
 from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and, mean, array
 from scipy import constants
 from copy import deepcopy
+from typing import List
 
 from gnpy.core.exceptions import ConfigurationError
 
@@ -458,3 +459,49 @@ def calculate_absolute_min_or_zero(x: array) -> array:
     array([1., 0., 3.])
     """
     return (abs(x) - x) / 2
+
+
+def find_common_range(amp_bands: List[List[dict]], default_band_f_min: float, default_band_f_max: float) \
+        -> List[dict]:
+    """Find the common frequency range of bands
+    If there are no amplifiers in the path, then use default band
+
+    >>> amp_bands = [[{'f_min': 191e12, 'f_max' : 195e12}, {'f_min': 186e12, 'f_max' : 190e12} ], \
+        [{'f_min': 185e12, 'f_max' : 189e12}, {'f_min': 192e12, 'f_max' : 196e12}], \
+        [{'f_min': 186e12, 'f_max': 193e12}]]
+    >>> find_common_range(amp_bands, 190e12, 195e12)
+    [{'f_min': 186000000000000.0, 'f_max': 189000000000000.0}, {'f_min': 192000000000000.0, 'f_max': 193000000000000.0}]
+    >>> amp_bands = [[{'f_min': 191e12, 'f_max' : 195e12}, {'f_min': 186e12, 'f_max' : 190e12} ], \
+        [{'f_min': 185e12, 'f_max' : 189e12}, {'f_min': 192e12, 'f_max' : 196e12}], \
+        [{'f_min': 186e12, 'f_max': 192e12}]]
+    >>> find_common_range(amp_bands, 190e12, 195e12)
+    [{'f_min': 186000000000000.0, 'f_max': 189000000000000.0}]
+
+    """
+    _amp_bands = [sorted(amp, key=lambda x: x['f_min']) for amp in amp_bands]
+    _temp = []
+    # remove None bands
+    for amp in _amp_bands:
+        is_band = True
+        for band in amp:
+            if not (is_band and band['f_min'] and band['f_max']):
+                is_band = False
+        if is_band:
+            _temp.append(amp)
+
+    # remove duplicate
+    unique_amp_bands = []
+    for amp in _temp:
+        if amp not in unique_amp_bands:
+            unique_amp_bands.append(amp)
+    if unique_amp_bands:
+        common_range = unique_amp_bands[0]
+    else:
+        if default_band_f_min is None or default_band_f_max is None:
+            return []
+        common_range = [{'f_min': default_band_f_min, 'f_max': default_band_f_max}]
+    for bands in unique_amp_bands:
+        common_range = [{'f_min': max(first['f_min'], second['f_min']), 'f_max': min(first['f_max'], second['f_max'])}
+                        for first in common_range for second in bands
+                        if max(first['f_min'], second['f_min']) < min(first['f_max'], second['f_max'])]
+    return sorted(common_range, key=lambda x: x['f_min'])

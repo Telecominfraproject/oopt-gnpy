@@ -33,7 +33,7 @@ SERVICE_FILENAME = DATA_DIR / 'testTopology_services_expected.json'
 
 grid = 0.00625e12
 slot = 0.0125e12
-guardband = 0.15e12
+guardband = 25.0e9
 cband_freq_min = 191.3e12
 cband_freq_max = 196.1e12
 
@@ -101,14 +101,15 @@ def test_wrong_values(nval, mval, setup):
 def test_aligned(nmin, nmax, setup):
     """Checks that the OMS grid is correctly aligned
 
-    Note that bitmap index uses guardband on both ends so that if nmin, nmax = -200, +200,
+    Note that bitmap index uses guardband on both ends so that if center frequencies nmin, nmax = -200, +200,
     min/max navalue in bitmap are -224, +223, which makes 223 -(-224) +1 frequencies.
     """
     network, oms_list = setup
     nguard = guardband / grid
     center = 193.1e12
-    freq_min = center + nmin * grid
-    freq_max = center + nmax * grid
+    # amplification band
+    freq_min = center + nmin * grid - guardband
+    freq_max = center + nmax * grid + guardband
     random_oms = oms_list[10]
 
     # We're always starting with full C-band
@@ -116,9 +117,9 @@ def test_aligned(nmin, nmax, setup):
     assert pytest.approx(nvalue_to_frequency(random_oms.spectrum_bitmap.freq_index_max) * 1e-12, abs=1e-12) == 196.1
     ind_max = len(random_oms.spectrum_bitmap.bitmap) - 1
 
-    # "inner" frequencies, without the guard baand
+    # "inner" frequencies, without the guard band
     inner_n_min = random_oms.spectrum_bitmap.getn(0) + nguard
-    inner_n_max = random_oms.spectrum_bitmap.getn(ind_max) - nguard + 1
+    inner_n_max = random_oms.spectrum_bitmap.getn(ind_max) - nguard
     assert inner_n_min == random_oms.spectrum_bitmap.freq_index_min
     assert inner_n_max == random_oms.spectrum_bitmap.freq_index_max
     assert inner_n_min == -288
@@ -136,7 +137,7 @@ def test_aligned(nmin, nmax, setup):
 
     ind_max = len(random_oms.spectrum_bitmap.bitmap) - 1
     inner_n_min = random_oms.spectrum_bitmap.getn(0) + nguard
-    inner_n_max = random_oms.spectrum_bitmap.getn(ind_max) - nguard + 1
+    inner_n_max = random_oms.spectrum_bitmap.getn(ind_max) - nguard
     assert inner_n_min == random_oms.spectrum_bitmap.freq_index_min
     assert inner_n_max == random_oms.spectrum_bitmap.freq_index_max
 
@@ -198,18 +199,20 @@ def test_assign_and_sum(nval1, nval2, setup):
 
 def test_bitmap_assignment(setup):
     """test that a bitmap can be assigned"""
-    network, oms_list = setup
+    _, oms_list = setup
     random_oms = oms_list[2]
     random_oms.assign_spectrum(13, 7)
 
     btmp = deepcopy(random_oms.spectrum_bitmap.bitmap)
     # try a first assignment that must pass
-    spectrum_btmp = Bitmap(cband_freq_min, cband_freq_max, grid=0.00625e12, guardband=0.15e12, bitmap=btmp)
+    freq_min = nvalue_to_frequency(random_oms.spectrum_bitmap.n_min)
+    freq_max = nvalue_to_frequency(random_oms.spectrum_bitmap.n_max)
+    _ = Bitmap(freq_min, freq_max, grid=0.00625e12, guardband=guardband, bitmap=btmp)
 
     # try a wrong assignment that should not pass
     btmp = btmp[1:-1]
     with pytest.raises(SpectrumError):
-        spectrum_btmp = Bitmap(cband_freq_min, cband_freq_max, grid=0.00625e12, guardband=0.15e12, bitmap=btmp)
+        _ = Bitmap(cband_freq_min, cband_freq_max, grid=0.00625e12, guardband=guardband, bitmap=btmp)
 
 
 @pytest.fixture()
