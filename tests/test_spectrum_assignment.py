@@ -20,7 +20,8 @@ from gnpy.core.elements import Roadm, Transceiver
 from gnpy.core.exceptions import ServiceError, SpectrumError
 from gnpy.topology.request import compute_path_dsjctn, find_reversed_path, deduplicate_disjunctions, PathRequest
 from gnpy.topology.spectrum_assignment import (build_oms_list, align_grids, nvalue_to_frequency,
-                                           bitmap_sum, Bitmap, spectrum_selection, pth_assign_spectrum)
+                                               bitmap_sum, Bitmap, spectrum_selection, pth_assign_spectrum,
+                                               frequency_to_n)
 from gnpy.tools.json_io import (load_equipment, load_network, requests_from_json, disjunctions_from_json,
                                 _check_one_request)
 
@@ -35,6 +36,8 @@ slot = 0.0125e12
 guardband = 0.15e12
 cband_freq_min = 191.3e12
 cband_freq_max = 196.1e12
+lband_freq_min = 186.4e12
+lband_freq_max = 190.9e12
 
 
 @pytest.fixture()
@@ -81,6 +84,7 @@ def test_acceptable_values(nval, mval, setup):
 
 @pytest.mark.parametrize('nval,mval', (
     (0, 600),
+    (-289, 4),
     (-300, 1),
     (500, 1),
     (0, -2),
@@ -408,3 +412,75 @@ def test_reversed_direction(equipment, setup, requests, services):
                       f'{this_path[len(this_path)-j-1].oms.spectrum_bitmap.bitmap[imin:imax]}')
                 assert elem.oms.spectrum_bitmap.bitmap[imin:imax] == \
                     this_path[len(this_path) - j - 1].oms.spectrum_bitmap.bitmap[imin:imax]
+
+
+@pytest.mark.parametrize('req_n, req_m, final0_n, final0_m, final1_n, final1_m', [
+    # regular requests that should be correctly assigned:
+    # case 1: assign on the min n availabe on the path
+    (None, None, -256, 32, -1040, 32),
+    # case 2: second request can not be assigned since spectrum has been assigned for the first one
+    (150, 50, 150, 50, None, None),
+    # case 3: first request can not be assigned since all its oms do not span on L band (center n -1000 is in L band)
+    (-1000, 50, None, None, -1000, 50),
+    # case 4: center n below min center frequency of some oms
+    (-280, 32, None, None, -280, 32),
+    # case 5: center n below min center frequency of all oms
+    (-280, 33, None, None, None, None)
+])
+def test_C_L_case(req_n, req_m, final0_n, final0_m, final1_n, final1_m, setup, request_set):
+    """ check that assignment is feasible when only some links have a C+L band
+    """
+    network, oms_list = setup
+    # with this set up boundaries for the amplifiers is set to f_min and f_max default values of json io
+    # ie 191.3THz. wich means that min index should be -288
+    test_bitmap = oms_list[0].spectrum_bitmap
+    lower_boundary = test_bitmap.geti(frequency_to_n(191.3e12))
+    assert test_bitmap.bitmap[lower_boundary - 1:lower_boundary + 1] == [0, 1]
+    oms_ac = [13, 16]
+    # first assert that these indices correspond to OMS A-C
+    some_oms = [oms_list[i] for i in oms_ac]
+    assert all([s.el_id_list[index] in ['roadm a', 'roadm c'] for s in some_oms for index in [0, -1]])
+    # Artificially creates C+L bitmap [-1096 , -329] [-312 , 503]
+    ln_min = frequency_to_n(lband_freq_min - guardband, grid)
+    ln_max = frequency_to_n(lband_freq_max + guardband, grid) - 1
+    cn_min = frequency_to_n(cband_freq_min - guardband, grid)
+    cn_max = frequency_to_n(cband_freq_max + guardband, grid) - 1
+
+    bitmap = [1] * (ln_max - ln_min + 1) + [0] * (cn_min - 1 - ln_max) + [1] * (cn_max - cn_min + 1)
+    # note that center frequency boundaries is defined by cband_freq_min
+    # so that min center frequency is either frequency_to_n(cband_freq_min) +32 = -256 for C band
+    # or frequency_to_n(lband_freq_min) + 32 = -1040 for L band  for 32 slots
+
+    for oms in some_oms:
+        oms.update_spectrum(f_min=lband_freq_min, f_max=cband_freq_max, guardband=guardband,
+                            existing_spectrum=bitmap, grid=grid)
+    oms_list = align_grids(oms_list)
+
+    # assert that bitmap has not changed with this homogeneisation of bitmaps
+    assert all(bitmap == s.spectrum_bitmap.bitmap for s in some_oms)
+    # create 2 requests, one  crossing C+L and C band OMSes, and one with C+L only
+    params = {k: v for k, v in request_set.items()}
+    params['destination'] = 'trx g'
+    params['nodes_list'] = []
+    params['loose_list'] = []
+    params['effective_freq_slot'] = {'N': req_n, 'M': req_m}
+    _check_one_request(params, 196.3e12)
+    rq0 = PathRequest(**params)
+    params = {k: v for k, v in request_set.items()}
+    params['request_id'] = '1'
+    params['destination'] = 'trx c'
+    params['nodes_list'] = []
+    params['loose_list'] = []
+    params['effective_freq_slot'] = {'N': req_n, 'M': req_m}
+    rq1 = PathRequest(**params)
+    # since req1 only cross roadm a-roadm c OMS, L band assigmnement is feasible
+    rqs = [rq0, rq1]
+    paths = compute_path_dsjctn(network, equipment, rqs, [])
+    rpaths = [find_reversed_path(p) for p in paths]
+    # function to be tested:
+    pth_assign_spectrum(paths, rqs, oms_list, rpaths)
+    # check that spectrum is correctly assigned
+    assert rq0.N == final0_n
+    assert rq0.M == final0_m
+    assert rq1.N == final1_n
+    assert rq1.M == final1_m
