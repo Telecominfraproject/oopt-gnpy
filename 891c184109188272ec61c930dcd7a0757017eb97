@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b94f826_10c22c14",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 32
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-10T20:29:24Z",
+      "side": 1,
+      "message": "After this change, the lin_attenuation() become unused. I checked that it is also not used by the subsequent changes (I looked at the end of the patch series), so I\u0027ve removed that method.",
+      "range": {
+        "startLine": 451,
+        "startChar": 0,
+        "endLine": 453,
+        "endChar": 62
+      },
+      "revId": "891c184109188272ec61c930dcd7a0757017eb97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
