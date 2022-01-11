@@ -118,6 +118,30 @@
       },
       "revId": "9eefc40d36f931c57f7a7cbcbcd710531f9bd76e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "618c7479_9a346a1f",
+        "filename": "tests/data/CORONET_Global_Topology_auto_design_expected.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 82960,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-01-11T19:47:19Z",
+      "side": 1,
+      "message": "\u003e Ah OK now I understand! I assumed fiber loss \u003d loss_coef * length, so for the example, fiber loss is 0.2 * 84.23775 \u003d 16.84755.\n\nExcept that with floating point arithmetic:\n\n \u003e\u003e\u003e 0.2 * 84.23775\n 16.847550000000002",
+      "parentUuid": "94154fba_fdf1a6fa",
+      "range": {
+        "startLine": 82960,
+        "startChar": 0,
+        "endLine": 82960,
+        "endChar": 42
+      },
+      "revId": "9eefc40d36f931c57f7a7cbcbcd710531f9bd76e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
