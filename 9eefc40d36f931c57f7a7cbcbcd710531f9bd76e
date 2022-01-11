@@ -70,6 +70,30 @@
       },
       "revId": "9eefc40d36f931c57f7a7cbcbcd710531f9bd76e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d045bf3_ceb82cf4",
+        "filename": "tests/data/CORONET_Global_Topology_auto_design_expected.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 82960,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-01-11T17:10:23Z",
+      "side": 1,
+      "message": "No, sorry, it\u0027s still not clear to me. I ran the command you suggested and when I look at coucou.json, the fiber span loss, 16.84755 dB, is not reported there because span loss is not part of the topology json, only fiber length and loss_coef are.",
+      "parentUuid": "086fab25_84cc7232",
+      "range": {
+        "startLine": 82960,
+        "startChar": 0,
+        "endLine": 82960,
+        "endChar": 42
+      },
+      "revId": "9eefc40d36f931c57f7a7cbcbcd710531f9bd76e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
