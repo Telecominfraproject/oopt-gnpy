@@ -22,6 +22,30 @@
       },
       "revId": "9eefc40d36f931c57f7a7cbcbcd710531f9bd76e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d49df43_d6c8e341",
+        "filename": "tests/data/CORONET_Global_Topology_auto_design_expected.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 82960,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-01-11T15:01:58Z",
+      "side": 1,
+      "message": "\u003e I understand the motivation for the this change, but leaving these digits then leads to inconsistency with previous fiber loss (16.84755 dB) and delta_p (0dBm).\n\nI\u0027m not following this reasoning. What inconsistency? The previous fiber span loss is not printed or saved anywhere. The gain_target here is simply the result of the calculation of the previous span loss, 0.2*84.23775, using floating point arithmetic.\n\nI agree that we should rather limit the user input but as Jan explained, this is difficult without YANG, and I\u0027m not sure it solves all issues with floating point arithmetic either.",
+      "parentUuid": "10750aae_9ceb840b",
+      "range": {
+        "startLine": 82960,
+        "startChar": 0,
+        "endLine": 82960,
+        "endChar": 42
+      },
+      "revId": "9eefc40d36f931c57f7a7cbcbcd710531f9bd76e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
