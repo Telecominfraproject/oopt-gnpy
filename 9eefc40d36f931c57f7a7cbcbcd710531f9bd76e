@@ -46,6 +46,30 @@
       },
       "revId": "9eefc40d36f931c57f7a7cbcbcd710531f9bd76e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "086fab25_84cc7232",
+        "filename": "tests/data/CORONET_Global_Topology_auto_design_expected.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 82960,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-01-11T16:04:19Z",
+      "side": 1,
+      "message": "I meant \"fiber (Dallas → Abilene)-_(4/4)\" for the example and you are right there is no delta_p reported in this topology. I meant if you set delta_p to 0 on the amplifier previous to this span (run gnpy-transmission-example tests/data/CORONET_Global_Topology.xlsx --save-network coucou.json -e tests/data/eqpt_config.json) and look at coucou.json, then the succession of delta_p + fiber loss + gain is not consistant:\n0 - 16.84755 + 16.847550000000002 !\u003d 0 (value of delta_p of this amp)\nwhereas this was consistant before your change (gain and loss equal to 16.84755) or before  e1f2c55942d3601 change (gain and loss equal to 16.847550000000002)\n\nhope this is clearer",
+      "parentUuid": "5d49df43_d6c8e341",
+      "range": {
+        "startLine": 82960,
+        "startChar": 0,
+        "endLine": 82960,
+        "endChar": 42
+      },
+      "revId": "9eefc40d36f931c57f7a7cbcbcd710531f9bd76e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
