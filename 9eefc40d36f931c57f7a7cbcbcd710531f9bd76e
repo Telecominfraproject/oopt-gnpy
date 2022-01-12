@@ -142,6 +142,30 @@
       },
       "revId": "9eefc40d36f931c57f7a7cbcbcd710531f9bd76e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f418c2e9_fb27c923",
+        "filename": "tests/data/CORONET_Global_Topology_auto_design_expected.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 82960,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-01-12T08:54:04Z",
+      "side": 1,
+      "message": "You are right, I shouldn\u0027t have mixed computations. I still prefer the rounding for json output and limit user input to some digits, but I can also go on with your change.",
+      "parentUuid": "618c7479_9a346a1f",
+      "range": {
+        "startLine": 82960,
+        "startChar": 0,
+        "endLine": 82960,
+        "endChar": 42
+      },
+      "revId": "9eefc40d36f931c57f7a7cbcbcd710531f9bd76e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
