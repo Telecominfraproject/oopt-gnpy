@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4dc2d26_518206d4",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-14T11:01:47Z",
+      "side": 1,
+      "message": "I\u0027m risking asking a stupid question here, and I realize that the situation is probably the same as with PMD, but better ask if I don\u0027t know something.\n\nWhat\u0027s the math behind the sqrt(orig^2 + new^2) here, and why is it appropriate? Can you please explain that in the commit message? Pointing out to something well-known from statistics is perfectly OK.",
+      "revId": "8642a246fe9213e9788869097d41efe80d3cfa11",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d57979c0_dfb87181",
+        "filename": "gnpy/example-data/eqpt_config_openroadm_ver4.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-14T11:01:47Z",
+      "side": 1,
+      "message": "this should go into a separate commit (and please explain why in the commit message)",
+      "range": {
+        "startLine": 109,
+        "startChar": 12,
+        "endLine": 109,
+        "endChar": 26
+      },
+      "revId": "8642a246fe9213e9788869097d41efe80d3cfa11",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
