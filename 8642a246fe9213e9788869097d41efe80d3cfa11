@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b84d183a_d4525a3f",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-01-14T12:40:01Z",
+      "side": 1,
+      "message": "It\u0027s not a stupid question. Statistics of polarization effects are complicated and I think it\u0027s far from obvious that PDL in dB should behave statistically the same as PMD is ps. I can only point to well accepted publications showing this to be the case:\n\nhttps://ieeexplore.ieee.org/document/986797\nhttps://ieeexplore.ieee.org/document/1159061",
+      "parentUuid": "d4dc2d26_518206d4",
+      "revId": "8642a246fe9213e9788869097d41efe80d3cfa11",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d57979c0_dfb87181",
         "filename": "gnpy/example-data/eqpt_config_openroadm_ver4.json",
         "patchSetId": 4
