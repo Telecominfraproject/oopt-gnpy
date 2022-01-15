@@ -58,6 +58,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "730b1847_b99fa195",
+        "filename": "gnpy/example-data/eqpt_config_openroadm_ver4.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-01-15T15:50:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52b7eafb_229925e4",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 15
+      },
+      "revId": "1ed64b879b223081a40eb84b9b2966d699f9e8df",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4d33fda_e21f2f26",
