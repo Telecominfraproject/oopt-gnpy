@@ -229,7 +229,7 @@ Transceiver trx_Gothenburg
   OSNR ASE (0.1nm, dB):      21.20
   OSNR ASE (signal bw, dB):  17.18
   CD (ps/nm):                8350.42
-  PMD (ps):                  0.89
+  PMD (ps):                  7.40
 
 Transmission result for input power = 2.00 dBm:
   Final GSNR (0.1 nm): [1;36;40m18.90 dB[0m
