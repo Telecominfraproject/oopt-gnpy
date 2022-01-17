@@ -123,6 +123,24 @@
       "parentUuid": "822c17ff_6fa384e5",
       "revId": "da4909829a7efc7e043e6f88d33c69d5ea4398c0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e586c49_a722af2b",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-01-17T16:47:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "376559e4_d4897a68",
+      "revId": "da4909829a7efc7e043e6f88d33c69d5ea4398c0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
