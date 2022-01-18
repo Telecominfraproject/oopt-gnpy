@@ -1,0 +1,227 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2058d9a_1445d5a8",
+        "filename": "docs/json.rst",
+        "patchSetId": 19
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-18T19:16:08Z",
+      "side": 1,
+      "message": "My understanding of this docs is the following:\n\n \"lumped_losses\": {\n   \"loss\": [1.33, 0.12, 0.35],\n   \"position\": [10, 30, 40]\n }\n\n...which would not be that nice. Fortunately, the actual IO format is nicer:\n\n \"lumped_losses\": [\n    {\"position\": 10, \"loss\": 1.33},\n    {\"position\": 30, \"loss\": 0.12},\n    {\"position\": 40, \"loss\": 0.35}\n ]\n \nThe docs need to be adjusted.",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 85
+      },
+      "revId": "01645eac7a8701e48cc8d4818d63337cbd1b701b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9bc3993_b8b422b5",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-18T19:16:08Z",
+      "side": 1,
+      "message": "I would prefer to not create a special empty state here, but to convert to something which is of the same type as if there were some lumped losses. That way, the code which consumes this becomes much simpler.\n\n self.lumped_losses \u003d [1.0]\n self.z_lumped_losses \u003d self.params.length * 1e3",
+      "range": {
+        "startLine": 340,
+        "startChar": 0,
+        "endLine": 341,
+        "endChar": 39
+      },
+      "revId": "01645eac7a8701e48cc8d4818d63337cbd1b701b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4a31c8c_60e79543",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-18T19:16:08Z",
+      "side": 1,
+      "message": "Any reason for introducing a special state (\"None\") instead of always making sure that this is an array of numbers, possibly empty?",
+      "revId": "01645eac7a8701e48cc8d4818d63337cbd1b701b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac1f9d95_0e066cf1",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-18T19:16:08Z",
+      "side": 1,
+      "message": "I guess I don\u0027t understand this algorithm, which is probably a good indication that it needs an inline comment explaining what it is doing, and also why it is doing that in that way.\n\nIt seems to me that `lumped_loss_acc` is a one-dimensional array holding two elements, the first one being 1.0, and the other one is the \"sum of all individual losses\" (except that done in a linear domain, not in dB). However, that thing is only used for multiplication with \"an array based on alpha per-frequency\", and it seems to me that it\u0027s the same thing as simply:\n\n lumped_loss_acc \u003d prod(fiber.lumped_losses)\n\nThat at least tells me \"this is the sum of all the losses, and the variable is called accumulated loss, OK\", and no detour via argwhere and some iteration is not needed. The real code then uses that number to get a \"loss profile\", except that it\u0027s really just the beginning and end of that profile, yielding this as the new body of this function:\n\n z \u003d array([0, fiber.params.length])\n lumped_loss_acc \u003d prod(fiber.lumped_losses) if fiber.lumped_losses is not None else 1.0\n alpha \u003d fiber.alpha(spectral_info.frequency)\n loss_profile \u003d exp(- outer(alpha, z)) * [1., lumped_loss_acc]\n power_profile \u003d outer(spectral_info.signal, ones(z.size)) * loss_profile\n return StimulatedRamanScattering(power_profile, loss_profile, spectral_info.frequency, z)\n\nThat means that the docstring of this function, which mentions the \"attenuation profile\", is not accurate because there\u0027s no profile -- just the beginning and end points of this profile are considered.\n\n- Do I understand the code correctly?\n- Is this the intended behavior? How come that \"internals\" of the actual profile is not needed here?",
+      "revId": "01645eac7a8701e48cc8d4818d63337cbd1b701b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72c25467_e3fa7c5a",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-18T19:16:08Z",
+      "side": 1,
+      "message": "can we remove this?",
+      "range": {
+        "startLine": 220,
+        "startChar": 41,
+        "endLine": 220,
+        "endChar": 46
+      },
+      "revId": "01645eac7a8701e48cc8d4818d63337cbd1b701b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09ebff6a_08eaf840",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-18T19:16:08Z",
+      "side": 1,
+      "message": "This can be simplified:\n lumped_losses if lumped_losses is not None else ones(z.size)\n\n...but I would prefer not having to handle None here.",
+      "range": {
+        "startLine": 245,
+        "startChar": 24,
+        "endLine": 245,
+        "endChar": 86
+      },
+      "revId": "01645eac7a8701e48cc8d4818d63337cbd1b701b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5bc4e40_82d5c1b7",
+        "filename": "tests/data/test_lumped_losses_fiber_no_pumps.npy",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-18T19:16:08Z",
+      "side": 1,
+      "message": "This is a binary file, which makes it very hard to review any future changes. Please use a text format for any test data.",
+      "revId": "01645eac7a8701e48cc8d4818d63337cbd1b701b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77a7e00b_72e3d220",
+        "filename": "tests/data/test_lumped_losses_raman_fiber_config.json",
+        "patchSetId": 19
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-18T19:16:08Z",
+      "side": 1,
+      "message": "I would prefer the JSON file to have the same indenting everywhere. The rest of the file appears to be two spaces, so let\u0027s use that here as well.",
+      "range": {
+        "startLine": 10,
+        "startChar": 21,
+        "endLine": 12,
+        "endChar": 14
+      },
+      "revId": "01645eac7a8701e48cc8d4818d63337cbd1b701b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d4a8d8d_37b7ebbb",
+        "filename": "tests/data/test_lumped_losses_raman_fiber_config.json",
+        "patchSetId": 19
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-18T19:16:08Z",
+      "side": 1,
+      "message": "this can be removed",
+      "range": {
+        "startLine": 32,
+        "startChar": 3,
+        "endLine": 40,
+        "endChar": 3
+      },
+      "revId": "01645eac7a8701e48cc8d4818d63337cbd1b701b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "526d92b8_de6b2646",
+        "filename": "tests/test_science_utils.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-18T19:16:08Z",
+      "side": 1,
+      "message": "duplicate of line 14",
+      "revId": "01645eac7a8701e48cc8d4818d63337cbd1b701b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7beba6d_abd3802d",
+        "filename": "tests/test_science_utils.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-18T19:16:08Z",
+      "side": 1,
+      "message": "better like this, because it is more specific:\n \"\"\"Lumped losses length sanity checking\"\"\"",
+      "revId": "01645eac7a8701e48cc8d4818d63337cbd1b701b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
