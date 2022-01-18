@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da090d29_30cbde86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-18T11:39:18Z",
+      "side": 1,
+      "message": "I\u0027m temporarily removing my CR+2 so that the Polito team can review this change (and others in the series) -- as agreed during today\u0027s call.",
+      "revId": "14591c7a11a33edf9ae97168f302705ee9c509d9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
