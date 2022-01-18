@@ -9,9 +9,9 @@ This module contains all parameters to configure standard network elements.
 """
 
 from scipy.constants import c, pi
-from numpy import squeeze, log10, exp
+from numpy import asarray, array
 
-from gnpy.core.utils import db2lin, convert_length
+from gnpy.core.utils import convert_length
 from gnpy.core.exceptions import ParametersError
 
 
@@ -34,20 +34,20 @@ class PumpParams(Parameters):
 
 
 class RamanParams(Parameters):
-    def __init__(self, flag=False, space_resolution=10e3, tolerance=None):
+    def __init__(self, flag=False, result_spatial_resolution=10e3, solver_spatial_resolution=50):
         """ Simulation parameters used within the Raman Solver
-        :params flag: boolean for enabling/disable the evaluation of the Raman Power profile in frequency and position
-        :params space_resolution: spatial resolution of the evaluated Raman Power profile
-        :params tolerance: tuning parameter for scipy.integrate.solve_bvp solution
+        :params flag: boolean for enabling/disable the evaluation of the Raman power profile in frequency and position
+        :params result_spatial_resolution: spatial resolution of the evaluated Raman power profile
+        :params solver_spatial_resolution: spatial step for the iterative solution of the first order ode
         """
         self.flag = flag
-        self.space_resolution = space_resolution  # [m]
-        self.tolerance = tolerance
+        self.result_spatial_resolution = result_spatial_resolution  # [m]
+        self.solver_spatial_resolution = solver_spatial_resolution  # [m]
 
 
 class NLIParams(Parameters):
     def __init__(self, method='gn_model_analytic', dispersion_tolerance=1, phase_shift_tolerance=0.1,
-                 computed_channels=None, wdm_grid_size=None, f_cut_resolution=None, f_pump_resolution=None):
+                 computed_channels=None):
         """ Simulation parameters used within the Nli Solver
         :params method: formula for NLI calculation
         :params dispersion_tolerance: tuning parameter for ggn model solution
@@ -58,9 +58,6 @@ class NLIParams(Parameters):
         self.dispersion_tolerance = dispersion_tolerance
         self.phase_shift_tolerance = phase_shift_tolerance
         self.computed_channels = computed_channels
-        self.wdm_grid_size = wdm_grid_size
-        self.f_cut_resolution = f_cut_resolution
-        self.f_pump_resolution = f_pump_resolution
 
 
 class SimParams(Parameters):
@@ -89,50 +86,76 @@ class SimParams(Parameters):
         return self._shared_dict['raman_params']
 
 
+# SSMF Raman coefficient profile normalized with respect to the effective area (Cr * A_eff)
+CR_NORM = array([
+    0., 7.802e-16, 2.4236e-15, 4.0504e-15, 5.6606e-15, 6.8973e-15, 7.802e-15, 8.4162e-15, 8.8727e-15, 9.2877e-15,
+    1.01011e-14, 1.05244e-14, 1.13295e-14, 1.2367e-14, 1.3695e-14, 1.5023e-14, 1.64091e-14, 1.81936e-14, 2.04927e-14,
+    2.28167e-14, 2.48917e-14, 2.66098e-14, 2.82615e-14, 2.98136e-14, 3.1042e-14, 3.17558e-14, 3.18803e-14, 3.17558e-14,
+    3.15566e-14, 3.11748e-14, 2.94567e-14, 3.14985e-14, 2.8552e-14, 2.43439e-14, 1.67992e-14, 9.6114e-15, 7.02180e-15,
+    5.9262e-15, 5.6938e-15, 7.055e-15, 7.4119e-15, 7.4783e-15, 6.7645e-15, 5.5361e-15, 3.6271e-15, 2.7224e-15,
+    2.4568e-15, 2.1995e-15, 2.1331e-15, 2.3323e-15, 2.5564e-15, 3.0461e-15, 4.8555e-15, 5.5029e-15, 5.2788e-15,
+    4.565e-15, 3.3698e-15, 2.2991e-15, 2.0086e-15, 1.5521e-15, 1.328e-15, 1.162e-15, 9.379e-16, 8.715e-16, 8.134e-16,
+    8.134e-16, 9.379e-16, 1.3612e-15, 1.6185e-15, 1.9754e-15, 1.8758e-15, 1.6849e-15, 1.2284e-15, 9.047e-16, 8.134e-16,
+    8.715e-16, 9.711e-16, 1.0375e-15, 1.0043e-15, 9.047e-16, 8.134e-16, 6.806e-16, 5.478e-16, 3.901e-16, 2.241e-16,
+    1.577e-16, 9.96e-17, 3.32e-17, 1.66e-17, 8.3e-18])
+
+# Note the non-uniform spacing of this range; this is required for properly capturing the Raman peak shape.
+FREQ_OFFSET = array([
+    0., 0.5, 1., 1.5, 2., 2.5, 3., 3.5, 4., 4.5, 5., 5.5, 6., 6.5, 7., 7.5, 8., 8.5, 9., 9.5, 10., 10.5, 11., 11.5, 12.,
+    12.5, 12.75, 13., 13.25, 13.5, 14., 14.5, 14.75, 15., 15.5, 16., 16.5, 17., 17.5, 18., 18.25, 18.5, 18.75, 19.,
+    19.5, 20., 20.5, 21., 21.5, 22., 22.5, 23., 23.5, 24., 24.5, 25., 25.5, 26., 26.5, 27., 27.5, 28., 28.5, 29., 29.5,
+    30., 30.5, 31., 31.5, 32., 32.5, 33., 33.5, 34., 34.5, 35., 35.5, 36., 36.5, 37., 37.5, 38., 38.5, 39., 39.5, 40.,
+    40.5, 41., 41.5, 42.]) * 1e12
+
+
 class FiberParams(Parameters):
     def __init__(self, **kwargs):
         try:
             self._length = convert_length(kwargs['length'], kwargs['length_units'])
             # fixed attenuator for padding
-            self._att_in = kwargs['att_in'] if 'att_in' in kwargs else 0
+            self._att_in = kwargs.get('att_in', 0)
             # if not defined in the network json connector loss in/out
             # the None value will be updated in network.py[build_network]
             # with default values from eqpt_config.json[Spans]
-            self._con_in = kwargs['con_in'] if 'con_in' in kwargs else None
-            self._con_out = kwargs['con_out'] if 'con_out' in kwargs else None
+            self._con_in = kwargs.get('con_in')
+            self._con_out = kwargs.get('con_out')
             if 'ref_wavelength' in kwargs:
                 self._ref_wavelength = kwargs['ref_wavelength']
-                self._ref_frequency = c / self.ref_wavelength
+                self._ref_frequency = c / self._ref_wavelength
             elif 'ref_frequency' in kwargs:
                 self._ref_frequency = kwargs['ref_frequency']
-                self._ref_wavelength = c / self.ref_frequency
+                self._ref_wavelength = c / self._ref_frequency
             else:
-                self._ref_wavelength = 1550e-9
-                self._ref_frequency = c / self.ref_wavelength
+                self._ref_wavelength = 1550e-9  # conventional central C band wavelength [m]
+                self._ref_frequency = c / self._ref_wavelength
             self._dispersion = kwargs['dispersion']  # s/m/m
-            self._dispersion_slope = kwargs['dispersion_slope'] if 'dispersion_slope' in kwargs else \
-                -2 * self._dispersion/self.ref_wavelength  # s/m/m/m
+            self._dispersion_slope = \
+                kwargs.get('dispersion_slope', -2 * self._dispersion / self.ref_wavelength)  # s/m/m/m
             self._beta2 = -(self.ref_wavelength ** 2) * self.dispersion / (2 * pi * c)  # 1/(m * Hz^2)
             # Eq. (3.23) in  Abramczyk, Halina. "Dispersion phenomena in optical fibers." Virtual European University
             # on Lasers. Available online: http://mitr.p.lodz.pl/evu/lectures/Abramczyk3.pdf
             # (accessed on 25 March 2018) (2005).
             self._beta3 = ((self.dispersion_slope - (4*pi*c/self.ref_wavelength**3) * self.beta2) /
                            (2*pi*c/self.ref_wavelength**2)**2)
-            self._gamma = kwargs['gamma']  # 1/W/m
+            self._effective_area = kwargs.get('effective_area')  # m^2
+            n2 = 2.6e-20  # m^2/W
+            if self._effective_area:
+                self._gamma = kwargs.get('gamma', 2 * pi * n2 / (self.ref_wavelength * self._effective_area))  # 1/W/m
+            elif 'gamma' in kwargs:
+                self._gamma = kwargs['gamma']  # 1/W/m
+                self._effective_area = 2 * pi * n2 / (self.ref_wavelength * self._gamma)  # m^2
+            else:
+                self._gamma = 0  # 1/W/m
+                self._effective_area = 83e-12  # m^2
+            default_raman_efficiency = {'cr': CR_NORM / self._effective_area, 'frequency_offset': FREQ_OFFSET}
+            self._raman_efficiency = kwargs.get('raman_efficiency', default_raman_efficiency)
             self._pmd_coef = kwargs['pmd_coef']  # s/sqrt(m)
             if type(kwargs['loss_coef']) == dict:
-                self._loss_coef = squeeze(kwargs['loss_coef']['loss_coef_power']) * 1e-3  # lineic loss dB/m
-                self._f_loss_ref = squeeze(kwargs['loss_coef']['frequency'])  # Hz
+                self._loss_coef = asarray(kwargs['loss_coef']['value']) * 1e-3  # lineic loss dB/m
+                self._f_loss_ref = asarray(kwargs['loss_coef']['frequency'])  # Hz
             else:
-                self._loss_coef = kwargs['loss_coef'] * 1e-3  # lineic loss dB/m
-                self._f_loss_ref = 193.5e12  # Hz
-            self._lin_attenuation = db2lin(self.length * self.loss_coef)
-            self._lin_loss_exp = self.loss_coef / (10 * log10(exp(1)))  # linear power exponent loss Neper/m
-            self._effective_length = (1 - exp(- self.lin_loss_exp * self.length)) / self.lin_loss_exp
-            self._asymptotic_length = 1 / self.lin_loss_exp
-            # raman parameters (not compulsory)
-            self._raman_efficiency = kwargs['raman_efficiency'] if 'raman_efficiency' in kwargs else None
-            self._pumps_loss_coef = kwargs['pumps_loss_coef'] if 'pumps_loss_coef' in kwargs else None
+                self._loss_coef = asarray(kwargs['loss_coef']) * 1e-3  # lineic loss dB/m
+                self._f_loss_ref = asarray(self._ref_frequency)  # Hz
         except KeyError as e:
             raise ParametersError(f'Fiber configurations json must include {e}. Configuration: {kwargs}')
 
@@ -210,31 +233,13 @@ class FiberParams(Parameters):
         return self._f_loss_ref
 
     @property
-    def lin_loss_exp(self):
-        return self._lin_loss_exp
-
-    @property
-    def lin_attenuation(self):
-        return self._lin_attenuation
-
-    @property
-    def effective_length(self):
-        return self._effective_length
-
-    @property
-    def asymptotic_length(self):
-        return self._asymptotic_length
-
-    @property
     def raman_efficiency(self):
         return self._raman_efficiency
-
-    @property
-    def pumps_loss_coef(self):
-        return self._pumps_loss_coef
 
     def asdict(self):
         dictionary = super().asdict()
         dictionary['loss_coef'] = self.loss_coef * 1e3
         dictionary['length_units'] = 'm'
+        if not self.raman_efficiency:
+            dictionary.pop('raman_efficiency')
         return dictionary
