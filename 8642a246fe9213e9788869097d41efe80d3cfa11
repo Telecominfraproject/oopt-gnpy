@@ -54,6 +54,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd06b777_e6c4c2ce",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-18T09:24:32Z",
+      "side": 1,
+      "message": "awesome, thanks!",
+      "parentUuid": "7f3e769f_2c4c580f",
+      "revId": "8642a246fe9213e9788869097d41efe80d3cfa11",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d57979c0_dfb87181",
