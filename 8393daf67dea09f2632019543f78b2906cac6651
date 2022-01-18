@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "300a5150_6be7a9e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-18T11:40:12Z",
+      "side": 1,
+      "message": "hope I rebased this correctly. Too bad `python -m json.tool` wants to rewrite the numbers...",
+      "revId": "8393daf67dea09f2632019543f78b2906cac6651",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
