@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed52ea17_41d3ab60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-18T09:34:55Z",
+      "side": 1,
+      "message": "recheck\n\n(I\u0027m surprised by some coverage test reports and by a one-shot test failure that I got locally; let\u0027s get some another set of fresh results from the CI.)",
+      "revId": "ddbb7ea973ee7aeea7ab893ea9d3d858bc64b19d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
