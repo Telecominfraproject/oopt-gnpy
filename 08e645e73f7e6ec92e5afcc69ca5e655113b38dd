@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59bfd2c2_3b4e1064",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-18T19:23:28Z",
+      "side": 1,
+      "message": "Is this an intentional change?",
+      "revId": "08e645e73f7e6ec92e5afcc69ca5e655113b38dd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aae0ee80_9af2f5f1",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-18T19:23:28Z",
+      "side": 1,
+      "message": "nit: capitalize \"JSON\", please.\n\nI would prefer not to mention the JSON as an implementation detail in this layer, saying instead something like:\n f\u0027ROADM parameters are missing \"{e}\" for element {self.uid}\u0027\n\n...but I won\u0027t insist on that one.",
+      "range": {
+        "startLine": 98,
+        "startChar": 57,
+        "endLine": 98,
+        "endChar": 61
+      },
+      "revId": "08e645e73f7e6ec92e5afcc69ca5e655113b38dd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
