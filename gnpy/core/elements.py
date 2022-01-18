@@ -491,6 +491,10 @@ class RamanFiber(Fiber):
                                  for p in self.operational['raman_pumps'])
         self.temperature = self.operational['temperature']
 
+    @property
+    def to_json(self):
+        return dict(super().to_json, operational=self.operational)
+
     def propagate(self, spectral_info: SpectralInformation):
         """Modifies the spectral information computing the attenuation, the non-linear interference generation,
         the CD and PMD accumulation.
