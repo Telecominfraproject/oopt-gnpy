@@ -46,6 +46,30 @@
       },
       "revId": "51829d4aa383273eb8388b1aee4c36a041fd0ccc",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "582e5d1e_f55718dc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-18T09:17:24Z",
+      "side": 1,
+      "message": "We\u0027ve brought this up at the CCAMP meeting, let\u0027s solve it there. The format chosen here does not have to match 100%, and since Esther is happy with this one, so am I.",
+      "parentUuid": "7b3f7b71_cfbdb52f",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 8
+      },
+      "revId": "51829d4aa383273eb8388b1aee4c36a041fd0ccc",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }

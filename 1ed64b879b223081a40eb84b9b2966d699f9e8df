@@ -187,6 +187,24 @@
       "parentUuid": "fa6eee13_8112758c",
       "revId": "1ed64b879b223081a40eb84b9b2966d699f9e8df",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f3d847a_25faadff",
+        "filename": "gnpy/example-data/eqpt_config_openroadm_ver5.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-18T09:17:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6279739b_d8bbe0db",
+      "revId": "1ed64b879b223081a40eb84b9b2966d699f9e8df",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
