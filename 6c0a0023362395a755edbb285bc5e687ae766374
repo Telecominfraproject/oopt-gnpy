@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43371627_55885b32",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-01-19T16:10:53Z",
+      "side": 1,
+      "message": "Following some users feedbacks: I have added a new patch here to clean a bit the function and order partitions in case the user loads parts not following order of frquencies",
+      "revId": "6c0a0023362395a755edbb285bc5e687ae766374",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
