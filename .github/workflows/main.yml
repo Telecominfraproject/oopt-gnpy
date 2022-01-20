@@ -26,7 +26,8 @@ jobs:
       matrix:
         tox_env:
           - py38
-          - py39-cover
+          - py39
+          - py310-cover
         include:
           - tox_env: docs
             dnf_install: graphviz
@@ -43,7 +44,7 @@ jobs:
       - uses: actions/setup-python@v2
         name: Install Python
         with:
-          python-version: '3.9'
+          python-version: '3.10'
       - uses: casperdcl/deploy-pypi@bb869aafd89f657ceaafe9561d3b5584766c0f95
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
@@ -103,9 +104,9 @@ jobs:
           python-version: ${{ matrix.python_version }}
       - run: |
           pip install --editable .
-          pip install 'pytest>=5.0.0,<6'
+          pip install 'pytest>=6.2.5,<7'
           pytest -vv
     strategy:
       matrix:
         python_version:
-          - "3.9"
+          - "3.10"
