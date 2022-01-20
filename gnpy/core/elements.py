@@ -83,6 +83,9 @@ class Transceiver(_Node):
         self.baud_rate = None
         self.chromatic_dispersion = None
         self.pmd = None
+        self.pdl = None
+        self.penalties = {}
+        self.total_penalty = 0
 
     def _calc_cd(self, spectral_info):
         """ Updates the Transceiver property with the CD of the received channels. CD in ps/nm.
@@ -93,6 +96,23 @@ class Transceiver(_Node):
         """Updates the Transceiver property with the PMD of the received channels. PMD in ps.
         """
         self.pmd = [carrier.pmd*1e12 for carrier in spectral_info.carriers]
+
+    def _calc_pdl(self, spectral_info):
+        """Updates the Transceiver property with the PDL of the received channels. PDL in dB.
+        """
+        self.pdl = spectral_info.pdl
+
+    def _calc_penalty(self, impairment_value, boundary_list):
+        return interp(impairment_value, boundary_list['up_to_boundary'], boundary_list['penalty_value'],
+                      left=float('inf'), right=float('inf'))
+
+    def calc_penalties(self, penalties):
+        """Updates the Transceiver property with penalties (CD, PMD, etc.) of the received channels in dB.
+           Penalties are linearly interpolated between given points and set to 'inf' outside interval.
+        """
+        self.penalties = {impairment: self._calc_penalty(getattr(self, impairment), boundary_list)
+                          for impairment, boundary_list in penalties.items()}
+        self.total_penalty = sum(list(self.penalties.values()), axis=0)
 
     def _calc_snr(self, spectral_info):
         with errstate(divide='ignore'):
@@ -154,7 +174,9 @@ class Transceiver(_Node):
                 f'osnr_nli={self.osnr_nli!r}, '
                 f'snr={self.snr!r}, '
                 f'chromatic_dispersion={self.chromatic_dispersion!r}, '
-                f'pmd={self.pmd!r})')
+                f'pmd={self.pmd!r}, '
+                f'pdl={self.pdl!r}, '
+                f'penalties={self.penalties!r})')
 
     def __str__(self):
         if self.snr is None or self.osnr_ase is None:
@@ -166,24 +188,39 @@ class Transceiver(_Node):
         snr_01nm = round(mean(self.snr_01nm), 2)
         cd = mean(self.chromatic_dispersion)
         pmd = mean(self.pmd)
+        pdl = mean(self.pdl)
 
-        return '\n'.join([f'{type(self).__name__} {self.uid}',
+        result = '\n'.join([f'{type(self).__name__} {self.uid}',
 
                           f'  GSNR (0.1nm, dB):          {snr_01nm:.2f}',
                           f'  GSNR (signal bw, dB):      {snr:.2f}',
                           f'  OSNR ASE (0.1nm, dB):      {osnr_ase_01nm:.2f}',
                           f'  OSNR ASE (signal bw, dB):  {osnr_ase:.2f}',
                           f'  CD (ps/nm):                {cd:.2f}',
-                          f'  PMD (ps):                  {pmd:.2f}'])
+                          f'  PMD (ps):                  {pmd:.2f}',
+                          f'  PDL (dB):                  {pdl:.2f}'])
+
+        cd_penalty = self.penalties.get('chromatic_dispersion')
+        if cd_penalty is not None:
+            result += f'\n  CD penalty (dB):           {mean(cd_penalty):.2f}'
+        pmd_penalty = self.penalties.get('pmd')
+        if pmd_penalty is not None:
+            result += f'\n  PMD penalty (dB):          {mean(pmd_penalty):.2f}'
+        pdl_penalty = self.penalties.get('pdl')
+        if pdl_penalty is not None:
+            result += f'\n  PDL penalty (dB):          {mean(pdl_penalty):.2f}'
+
+        return result
 
     def __call__(self, spectral_info):
         self._calc_snr(spectral_info)
         self._calc_cd(spectral_info)
         self._calc_pmd(spectral_info)
+        self._calc_pdl(spectral_info)
         return spectral_info
 
 
-RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr pmd restrictions per_degree_pch_out_db')
+RoadmParams = namedtuple('RoadmParams', 'target_pch_out_db add_drop_osnr pmd pdl restrictions per_degree_pch_out_db')
 
 
 class Roadm(_Node):
@@ -246,7 +283,8 @@ class Roadm(_Node):
                                nli=pwr.nli / carrier_att,
                                ase=pwr.ase / carrier_att)
             pmd = sqrt(carrier.pmd**2 + self.params.pmd**2)
-            yield carrier._replace(power=pwr, pmd=pmd)
+            pdl = sqrt(carrier.pdl**2 + self.params.pdl**2)
+            yield carrier._replace(power=pwr, pmd=pmd, pdl=pdl)
 
     def update_pref(self, pref):
         return pref._replace(p_span0=pref.p_span0, p_spani=self.effective_pch_out_db)
@@ -926,7 +964,9 @@ class Edfa(_Node):
             pwr = pwr._replace(signal=pwr.signal * gain / att,
                                nli=pwr.nli * gain / att,
                                ase=(pwr.ase + carrier_ase) * gain / att)
-            yield carrier._replace(power=pwr)
+            pmd = sqrt(carrier.pmd**2 + self.params.pmd**2)
+            pdl = sqrt(carrier.pdl**2 + self.params.pdl**2)
+            yield carrier._replace(power=pwr, pmd=pmd, pdl=pdl)
 
     def update_pref(self, pref):
         return pref._replace(p_span0=pref.p_span0,

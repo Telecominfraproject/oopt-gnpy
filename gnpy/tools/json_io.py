@@ -94,6 +94,7 @@ class Roadm(_JsonThing):
         'target_pch_out_db': -17,
         'add_drop_osnr': 100,
         'pmd': 0,
+        'pdl': 0,
         'restrictions': {
             'preamp_variety_list': [],
             'booster_variety_list': []
@@ -113,6 +114,26 @@ class Transceiver(_JsonThing):
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Transceiver')
+        for mode_params in self.mode:
+            penalties = mode_params.get('penalties')
+            mode_params['penalties'] = {}
+            if not penalties:
+                continue
+            for impairment in ('chromatic_dispersion', 'pmd', 'pdl'):
+                imp_penalties = [p for p in penalties if impairment in p]
+                if not imp_penalties:
+                    continue
+                if all(p[impairment] > 0 for p in imp_penalties):
+                    # make sure the list of penalty values include a proper lower boundary
+                    # (we assume 0 penalty for 0 impairment)
+                    imp_penalties.insert(0, {impairment: 0, 'penalty_value': 0})
+                # make sure the list of penalty values are sorted by impairment value
+                imp_penalties.sort(key=lambda i: i[impairment])
+                # rearrange as dict of lists instead of list of dicts
+                mode_params['penalties'][impairment] = {
+                    'up_to_boundary': [p[impairment] for p in imp_penalties],
+                    'penalty_value': [p['penalty_value'] for p in imp_penalties]
+                }
 
 
 class Fiber(_JsonThing):
@@ -151,7 +172,9 @@ class Amp(_JsonThing):
         'gain_ripple': None,
         'out_voa_auto': False,
         'allowed_for_design': False,
-        'raman': False
+        'raman': False,
+        'pmd': 0,
+        'pdl': 0
     }
 
     def __init__(self, **kwargs):

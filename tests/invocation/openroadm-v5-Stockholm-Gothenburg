@@ -14,6 +14,7 @@ Transceiver trx_Stockholm
   OSNR ASE (signal bw, dB):  30.98
   CD (ps/nm):                0.00
   PMD (ps):                  0.00
+  PDL (dB):                  0.00
 Roadm roadm_Stockholm
   effective loss (dB):  22.00
   pch out (dBm):        -20.00
@@ -229,7 +230,8 @@ Transceiver trx_Gothenburg
   OSNR ASE (0.1nm, dB):      21.84
   OSNR ASE (signal bw, dB):  17.82
   CD (ps/nm):                8350.42
-  PMD (ps):                  0.89
+  PMD (ps):                  7.99
+  PDL (dB):                  3.74
 
 Transmission result for input power = 2.00 dBm:
   Final GSNR (0.1 nm): [1;36;40m19.27 dB[0m

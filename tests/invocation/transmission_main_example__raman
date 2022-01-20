@@ -14,6 +14,7 @@ Transceiver Site_A
   OSNR ASE (signal bw, dB):  35.92
   CD (ps/nm):                0.00
   PMD (ps):                  0.00
+  PDL (dB):                  0.00
 RamanFiber          Span1
   type_variety:                SSMF
   length (km):                 80.00
@@ -44,6 +45,7 @@ Transceiver Site_B
   OSNR ASE (signal bw, dB):  30.14
   CD (ps/nm):                1336.00
   PMD (ps):                  0.36
+  PDL (dB):                  0.00
 
 Transmission result for input power = 0.00 dBm:
   Final GSNR (0.1 nm): [1;36;40m31.44 dB[0m
