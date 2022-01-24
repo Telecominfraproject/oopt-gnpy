@@ -16,6 +16,52 @@
       "message": "Thank you for your comments, I fixed all the listed points.",
       "revId": "faeb5629539a68aab3e84502a1421496e2ba6511",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fce49e3_74d7be8f",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-24T20:19:02Z",
+      "side": 1,
+      "message": "This is very similar to the code in calculate_attenutation_profile (up to lumped_loss_acc in the other function). The only difference is that this function tries to ignore duplicate elements.\n\n- can you please refactor the common code to a helper function?\n- please explain why it\u0027s needed to filter out duplicates here, and why it is not important to handle that in the other function",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 20
+      },
+      "revId": "faeb5629539a68aab3e84502a1421496e2ba6511",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48ed4dab_80365783",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-24T20:19:02Z",
+      "side": 1,
+      "message": "Thanks for adding these.",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 114
+      },
+      "revId": "faeb5629539a68aab3e84502a1421496e2ba6511",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
