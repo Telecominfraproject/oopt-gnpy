@@ -1,0 +1,118 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6817ba03_f188b577",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-24T20:37:53Z",
+      "side": 1,
+      "message": "nits:\n\n- please remove the trailing space\n- use correct capitalization, please (dBm, Watt)",
+      "revId": "8ebd719faff4c4d5d05e025149ac24ebfc71d046",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afb02f52_a500eed2",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-24T20:37:53Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "8ebd719faff4c4d5d05e025149ac24ebfc71d046",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3739c5e7_3b19ddd5",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-24T20:37:53Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 134,
+        "startChar": 68,
+        "endLine": 134,
+        "endChar": 70
+      },
+      "revId": "8ebd719faff4c4d5d05e025149ac24ebfc71d046",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5491362_12011721",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-24T20:37:53Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "8ebd719faff4c4d5d05e025149ac24ebfc71d046",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87a50a3f_9a8eb84c",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-24T20:37:53Z",
+      "side": 1,
+      "message": "and here.",
+      "revId": "8ebd719faff4c4d5d05e025149ac24ebfc71d046",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe53eb10_1ea2da06",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-01-24T20:37:53Z",
+      "side": 1,
+      "message": "nit: I would prefer a more succinct docstrings, such as:\n \n\"\"\"Create XYZ based on default spectrum info, but with a specified requested per-channel power\"\"\"\n\nBut I wonder what that \"XYZ\" is in this context. It is not the SI data structure, it looks like a dict which is formatted the same way as if it was an incoming JSON request. Dunno how to describe that in one word :)",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 343,
+        "endChar": 7
+      },
+      "revId": "8ebd719faff4c4d5d05e025149ac24ebfc71d046",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
