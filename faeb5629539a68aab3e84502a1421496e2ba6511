@@ -18,6 +18,23 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38ec3db9_0e932540",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2022-01-25T12:57:35Z",
+      "side": 1,
+      "message": "All the comments have been addressed.\n\nA clarification regarding the use of lumped losses has been added in the documentation.",
+      "revId": "faeb5629539a68aab3e84502a1421496e2ba6511",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8fce49e3_74d7be8f",
@@ -31,6 +48,30 @@
       "writtenOn": "2022-01-24T20:19:02Z",
       "side": 1,
       "message": "This is very similar to the code in calculate_attenutation_profile (up to lumped_loss_acc in the other function). The only difference is that this function tries to ignore duplicate elements.\n\n- can you please refactor the common code to a helper function?\n- please explain why it\u0027s needed to filter out duplicates here, and why it is not important to handle that in the other function",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 20
+      },
+      "revId": "faeb5629539a68aab3e84502a1421496e2ba6511",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea17a818_9066662b",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2022-01-25T12:57:35Z",
+      "side": 1,
+      "message": "The definition of the z array and the lumped losses array has been refactored selecting the correct definition according to the simulation parameters.\n\nWhen numerical Raman solver is called, there is the possibility that duplicates of the same position can arise in the z array due to the z step definition and the given lumped losses positions. The unique function is needed to avoid this issue.",
+      "parentUuid": "8fce49e3_74d7be8f",
       "range": {
         "startLine": 105,
         "startChar": 0,

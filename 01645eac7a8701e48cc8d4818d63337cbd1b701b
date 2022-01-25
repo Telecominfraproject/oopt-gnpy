@@ -365,6 +365,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a031ee27_4933f27c",
+        "filename": "tests/data/test_lumped_losses_raman_fiber_config.json",
+        "patchSetId": 19
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2022-01-25T12:57:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6608cdd7_bbf7095c",
+      "range": {
+        "startLine": 10,
+        "startChar": 21,
+        "endLine": 12,
+        "endChar": 14
+      },
+      "revId": "01645eac7a8701e48cc8d4818d63337cbd1b701b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4d4a8d8d_37b7ebbb",
