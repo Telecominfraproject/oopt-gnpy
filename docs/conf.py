@@ -190,3 +190,5 @@ autodoc_default_options = {
 }
 
 graphviz_output_format = 'svg'
+
+bibtex_bibfiles = ['biblio.bib']
