@@ -16,6 +16,24 @@
       "message": "Let\u0027s just put the type annotation into the function\u0027s definition. After that this `:param` comment can be safely removed because it doesn\u0027t improve readability.",
       "revId": "f0d4e3869e10921e9c04af1efba917d1822d7185",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89c86284_e9332d1a",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 714,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2022-02-03T23:18:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a8a29579_bed7521c",
+      "revId": "f0d4e3869e10921e9c04af1efba917d1822d7185",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
