@@ -18,6 +18,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "330ce912_0e014ec6",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2022-02-03T17:55:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59bfd2c2_3b4e1064",
+      "revId": "08e645e73f7e6ec92e5afcc69ca5e655113b38dd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aae0ee80_9af2f5f1",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-01-18T19:23:28Z",
       "side": 1,
       "message": "nit: capitalize \"JSON\", please.\n\nI would prefer not to mention the JSON as an implementation detail in this layer, saying instead something like:\n f\u0027ROADM parameters are missing \"{e}\" for element {self.uid}\u0027\n\n...but I won\u0027t insist on that one.",
+      "range": {
+        "startLine": 98,
+        "startChar": 57,
+        "endLine": 98,
+        "endChar": 61
+      },
+      "revId": "08e645e73f7e6ec92e5afcc69ca5e655113b38dd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fe6da85_8e027b46",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2022-02-03T17:55:58Z",
+      "side": 1,
+      "message": "I removed the json reference. I agree with you that a better error string, which includes also the element uid, would be much more useful (also for the other elements).\nProbably the best would be to have a dedicated commit for this.",
+      "parentUuid": "aae0ee80_9af2f5f1",
       "range": {
         "startLine": 98,
         "startChar": 57,

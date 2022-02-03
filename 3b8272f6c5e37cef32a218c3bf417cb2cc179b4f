@@ -354,6 +354,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f324cc9c_1ed1981c",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2022-02-03T17:55:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0c0883c_ce3da86f",
+      "revId": "3b8272f6c5e37cef32a218c3bf417cb2cc179b4f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8eaaa65_426cf028",
