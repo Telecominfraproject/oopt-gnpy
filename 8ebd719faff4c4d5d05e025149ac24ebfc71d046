@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a7db8e38_200f7790",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-04T18:10:12Z",
+      "side": 1,
+      "message": "Found the capital, but not the trailing space ... which one ?",
+      "parentUuid": "6817ba03_f188b577",
+      "revId": "8ebd719faff4c4d5d05e025149ac24ebfc71d046",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "afb02f52_a500eed2",
         "filename": "gnpy/core/utils.py",
         "patchSetId": 12
@@ -105,6 +123,30 @@
       "writtenOn": "2022-01-24T20:37:53Z",
       "side": 1,
       "message": "nit: I would prefer a more succinct docstrings, such as:\n \n\"\"\"Create XYZ based on default spectrum info, but with a specified requested per-channel power\"\"\"\n\nBut I wonder what that \"XYZ\" is in this context. It is not the SI data structure, it looks like a dict which is formatted the same way as if it was an incoming JSON request. Dunno how to describe that in one word :)",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 343,
+        "endChar": 7
+      },
+      "revId": "8ebd719faff4c4d5d05e025149ac24ebfc71d046",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f340c1f5_26d83ecc",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-04T18:10:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe53eb10_1ea2da06",
       "range": {
         "startLine": 342,
         "startChar": 0,
