@@ -36,6 +36,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55507f68_91b8cf03",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-10T17:44:04Z",
+      "side": 1,
+      "message": "sorry, I meant the leading space :). fixed.",
+      "parentUuid": "a7db8e38_200f7790",
+      "revId": "8ebd719faff4c4d5d05e025149ac24ebfc71d046",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "afb02f52_a500eed2",
@@ -49,6 +67,24 @@
       "writtenOn": "2022-01-24T20:37:53Z",
       "side": 1,
       "message": "same here",
+      "revId": "8ebd719faff4c4d5d05e025149ac24ebfc71d046",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60bd884b_c5965724",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-10T17:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afb02f52_a500eed2",
       "revId": "8ebd719faff4c4d5d05e025149ac24ebfc71d046",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -76,6 +112,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3601a30b_e155ee9d",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-10T17:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3739c5e7_3b19ddd5",
+      "range": {
+        "startLine": 134,
+        "startChar": 68,
+        "endLine": 134,
+        "endChar": 70
+      },
+      "revId": "8ebd719faff4c4d5d05e025149ac24ebfc71d046",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b5491362_12011721",
@@ -93,6 +153,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8279c39_0be84a61",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-10T17:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5491362_12011721",
+      "revId": "8ebd719faff4c4d5d05e025149ac24ebfc71d046",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "87a50a3f_9a8eb84c",
@@ -106,6 +184,24 @@
       "writtenOn": "2022-01-24T20:37:53Z",
       "side": 1,
       "message": "and here.",
+      "revId": "8ebd719faff4c4d5d05e025149ac24ebfc71d046",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f7068f7_be737f82",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-10T17:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "87a50a3f_9a8eb84c",
       "revId": "8ebd719faff4c4d5d05e025149ac24ebfc71d046",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
