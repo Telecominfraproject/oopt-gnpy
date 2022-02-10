@@ -1,0 +1,228 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63525905_ef9cf7dd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-10T18:00:58Z",
+      "side": 1,
+      "message": "One of these positive values is given without a sign, while the other one has an explicit \"+\". Is that intentional?",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 19,
+        "endChar": 43
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e69f46c_35224017",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-10T18:00:58Z",
+      "side": 1,
+      "message": "What happens when the p_span0 reference channel is, say, +3dBm? The sentence that I highlighted makes me think that somehow it\u0027s relevant, but then I have no clue what actually happens. Are the p_span0_per_channel relative offsets, or something else?",
+      "range": {
+        "startLine": 20,
+        "startChar": 36,
+        "endLine": 22,
+        "endChar": 35
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5b09972_68301577",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-10T18:00:58Z",
+      "side": 1,
+      "message": "these should be removed, Gerrit only sees the \"footers\" which are defined as \"last paragraph\", i.e., anything after the last blank line",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 52
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9a4405f_68fe8c05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-10T18:00:58Z",
+      "side": 1,
+      "message": "When I look at this commit in isolation, I do not fully understand why it is a correct change. So far in today\u0027s master, there\u0027s \"some\" overlap between the SpectralInformation and Pref, and I think that this change blurs the distinction between these a little more, and I\u0027m not happy about that. *Some* of my concerns look like they are partially addressed by the subsequent commits in the series, but I feel like I am missing the big picture here.\n\nEsther, would it be possible to write down a few paragraphs of text (or slides) explaining how you think the end result should look like? How is the spectrum *defined* by the code at the beginning of the propagation, and what data structures are used? What is the reference power, how is it determined, and in what ways is that changed compared to v2.4?",
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60189d16_86e61559",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-10T18:00:58Z",
+      "side": 1,
+      "message": "Let\u0027s make this easier to understand, please:\n\n- Start with a brief summary.\n- Do not say \"Update foo. bar and baz are not updated\" because the visual difference between \",\" and \".\" is very hard to notice.\n- Remove the leading space of the docstring.\n\nWhat about:\n\n \"\"\"Update reference power\n \n This modifies the spectral info in-place. Only the `pref` is updated,\n while p_span0 and p_span0_per_channel are not changed.\n \"\"\"",
+      "range": {
+        "startLine": 281,
+        "startChar": 0,
+        "endLine": 282,
+        "endChar": 89
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a1bc319_4791c029",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-10T18:00:58Z",
+      "side": 1,
+      "message": "typo? I *think* this should be \"mixture\", right?",
+      "range": {
+        "startLine": 665,
+        "startChar": 112,
+        "endLine": 665,
+        "endChar": 116
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a366f75_046eefc2",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-10T18:00:58Z",
+      "side": 1,
+      "message": "remove this? if it\u0027s \"just a previous version\", remove it; if it\u0027s still relevant somehow, please add a comment to the code explaining why",
+      "range": {
+        "startLine": 670,
+        "startChar": 12,
+        "endLine": 670,
+        "endChar": 62
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c58fc11_d71ca0fa",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-10T18:00:58Z",
+      "side": 1,
+      "message": "This is a docstring of a data structure which now explains why something was removed; please remove it.",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 77
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dca5a9d5_279d29ec",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-10T18:00:58Z",
+      "side": 1,
+      "message": "This parameter includes information which is already available in the `signal` argument.\n\n(This comment also applies to other functions below which take the same parameter.)",
+      "range": {
+        "startLine": 58,
+        "startChar": 87,
+        "endLine": 58,
+        "endChar": 102
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca3bf575_0731b9ee",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-10T18:00:58Z",
+      "side": 1,
+      "message": "this assignment is the same one as the statement 20 lines up",
+      "range": {
+        "startLine": 83,
+        "startChar": 8,
+        "endLine": 83,
+        "endChar": 72
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
