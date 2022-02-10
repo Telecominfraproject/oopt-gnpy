@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8bb196f_b9369c8a",
+        "filename": "docs/json.rst",
+        "patchSetId": 22
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-10T17:44:04Z",
+      "side": 1,
+      "message": "In the end I moved this to the commit message. These docs essentially say \"this parameter is not ignored no matter what you do\", which is a good thing, but not something to show to the user in my opinion (and definitely not in the docs of a specific IO format).\n\nIt\u0027s a good description on \"how stuff is implemented\", and at the same time the implementation is not really just in one helper function -\u003e the commit message looks like a perfect place to me.",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 107
+      },
+      "revId": "2b3e2fee74f43890409054a4ef360b6ee6f9e82d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}

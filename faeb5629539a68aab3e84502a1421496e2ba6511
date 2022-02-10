@@ -84,6 +84,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "e251b1bb_6234e181",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-10T17:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea17a818_9066662b",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 20
+      },
+      "revId": "faeb5629539a68aab3e84502a1421496e2ba6511",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "48ed4dab_80365783",
         "filename": "gnpy/core/science_utils.py",
         "patchSetId": 20
