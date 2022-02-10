@@ -22,6 +22,30 @@
       },
       "revId": "2b3e2fee74f43890409054a4ef360b6ee6f9e82d",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a26dab3_8a9caf29",
+        "filename": "docs/json.rst",
+        "patchSetId": 22
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-10T19:27:38Z",
+      "side": 1,
+      "message": "I would disagree with this. The way the parameter is taken into account is fundamentally different in the two cases and not just an implementation detail. I would even have preferred to not support lumped losses when gn_model_analytic is used and raise an error in this case.",
+      "parentUuid": "b8bb196f_b9369c8a",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 107
+      },
+      "revId": "2b3e2fee74f43890409054a4ef360b6ee6f9e82d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
