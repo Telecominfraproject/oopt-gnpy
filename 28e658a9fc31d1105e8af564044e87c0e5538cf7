@@ -87,6 +87,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d366c7d2_b03a085d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-11T08:24:45Z",
+      "side": 1,
+      "message": "It is skipped intentionnally. should I put abandon on it ?",
+      "parentUuid": "bb7f66a9_cf2d7bac",
+      "revId": "28e658a9fc31d1105e8af564044e87c0e5538cf7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ceb5b7c0_4523554a",
