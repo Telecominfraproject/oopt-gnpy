@@ -89,6 +89,41 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "95bdd0b1_619201d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-11T17:31:11Z",
+      "side": 1,
+      "message": "I presented some slides during a call to explain the changes. I don\u0027t know how to attach them here.\nHere is some more explanation.\nIn v2.4, gains and delta powers are computed based on a noiseless reference. This noiseless reference is recorded into a Pref object propagated along with carriers.\nWhen using transmission-main-example, this noiseless reference refers to the same type of carrier for design and propagation (the one defined in SI) \nWhen using path-request-run, this reference is used for design, but for propagation the user has the possibility to specify other types of carriers (using transceivers type, mode, ref power...), and then the power values in Pref correspond to this user defined request (p_span0 might differ from the power defined in SI). In this case, it means that p_spani corresponds to the propagated carrier, not the one used for design. and this is used by amplifier elements to apply saturation for example.\nIn both cases the same ROADM equalization is used: target_power out of the ROADM is the same for all channels.\n\nThe idea behind all my commits is to better separate what is the reference channel used for the design and what is the user defined spectrum to be propagated, and to enable user defined equalization. But still, all the change keep the same role for the Pref object: it is only the noiseless reference.\n\nIn summary: with the mixed rate feature, there are several issues:\n- the reference used for design and the channels propagated might be different, also in the case of transmission-main-example\n- a single reference value is not enough to represent mixed rates and different powers, especially to allow differentiated per channel equalization in ROADM.\n- the nb of channels can not be computed based on a single spacing\n- the update of the reference on each element can no more rely on a computed loss based on an average power.\n\nSo the final aim of the Pref is to continue carrying the noiseless reference channel, but accounting for mixed rate, and enabling user-defined equalization in ROADM.\n\np_spani and p_span0 represent the same thing as in v2.4: the noiseless reference.\nin addition to these already existing parameters, I added the following 2 ones:\n- p_span0_per_channel represents the user defined inital target carriers power distribution. It can be used in ROADM to apply a specific user defined equalization. \n- ref_carrier carries the reference carrier (the one of the SI with the user defined power). It is used as reference for power computation based on uniform PSD, and is consistent with p_spani and p_span0\n\nThe example in the commit can be detailed like that:\n- For example, assume that SI reference is 0dBm and user defined spectrum is \n  freq1: 1dBm, freq2: 3dBm, freq3:-3dBm. \n- Then if target power on the ROADM degree is -20dBm, the following equalization is applied: \n  freq1: -19dBm, freq2: -17dBm, freq3:-23dBm. \n- If power reference had been 3dBm (ie p_span0 \u003d 3 dBm), then  the equalization would be \n  freq1: -22dBm, freq2: -20dBm, freq3:-26dBm.\n- If target power on the ROADM degree is 3.125e-4mW/GHz, the same deviation on power is applied on top of PSD. This means that if freq 1 and 2 have baud rate 32 Gbauds and freq3 has baud rate 64Gbauds, and power in SI is 0dBm fo 32 Gbauds :\n  freq1: -19dBm, freq2: -17dBm, freq3: ~-20dBm. \n- If power reference had been 3dBm, then  the equalization would be \n  freq1: -22dBm, freq2: -20dBm, freq3:~-23dBm.\n  \nNote that these changes do not affect the spectrumInformation: this is still the object that contains the propagation of signals and all effects.\n\n\nI don\u0027t know what is the overlap you refer to. Maybe you refer to the use of p_spani to compute loss or to carriers to compute p_spani ?\n\nThe spectrum is defined by the user: \n- if the user does not use -spectrum , then the program uses the SI in eqpt_config.json as usual (f_min, f_mx, and same carriers spaced by spacing, power defined by SI or power sweep)\n- if the user uses -specrum option, then the spectrum is built according to a list of \"SI\": a concatenation of SI-like pieces of spectrum. this is recorded in the request that is used for the propagation function.\n\nIn the first case, the existing function create_input_spectral_information can be used to generate the si to be propagated (as in current master) In the second case, I created an additional function that creates the si according to the spectrum list.  In both function the Pref object is initialized.\nThen the propagation in elements remains the same.",
+      "parentUuid": "e9a4405f_68fe8c05",
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8fd6072_5a28c907",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-11T17:31:11Z",
+      "side": 1,
+      "message": "Thanks for the review. I will consider all your suggestion asap. I have written some paragraph to explain. Hope this helps. We can also talk during the coder calls, so that I can better understand and answer your questions.",
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "60189d16_86e61559",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 15
