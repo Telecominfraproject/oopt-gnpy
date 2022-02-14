@@ -506,3 +506,72 @@ def test_eqpt_creation(tmpdir):
     # check that all amp in the converted files corresponds to an eqpt line
     for ampuid in jsonconverted.keys():
         assert ampuid in possiblename
+
+def test_read_service_json():
+    """test that the constraints are read in correct order
+    """
+
+    unsorted_request = {
+        "request-id": "unsorted",
+        "source": "trx Brest_KLA",
+        "destination": "trx Vannes_KBE",
+        "src-tp-id": "trx Brest_KLA",
+        "dst-tp-id": "trx Vannes_KBE",
+        "bidirectional": False,
+        "path-constraints": {
+            "te-bandwidth": {
+                "technology": "flexi-grid",
+                "trx_type": "Voyager",
+                "trx_mode": "mode 1",
+                "spacing": 50000000000.0,
+                "output-power": 0.001,
+                "path_bandwidth": 10000000000.0
+            }
+        },
+        "explicit-route-objects": {
+            "route-object-include-exclude": [
+            {
+                "explicit-route-usage": "route-include-ero",
+                "index": 2,
+                "num-unnum-hop": {
+                    "node-id": "roadm Lorient_KMA",
+                    "link-tp-id": "link-tp-id is not used",
+                    "hop-type": "STRICT"
+                }
+            },
+            {
+                "explicit-route-usage": "route-include-ero",
+                "index": 3,
+                "num-unnum-hop": {
+                    "node-id": "roadm Vannes_KBE",
+                    "link-tp-id": "link-tp-id is not used",
+                    "hop-type": "STRICT"
+                }
+            },
+            {
+                "explicit-route-usage": "route-include-ero",
+                "index": 1,
+                "num-unnum-hop": {
+                    "node-id": "roadm Lannion_CAS",
+                    "link-tp-id": "link-tp-id is not used",
+                    "hop-type": "LOOSE"
+                }
+            },
+            {
+                "explicit-route-usage": "route-include-ero",
+                "index": 0,
+                "num-unnum-hop": {
+                    "node-id": "roadm Brest_KLA",
+                    "link-tp-id": "link-tp-id is not used",
+                    "hop-type": "STRICT"
+                }
+            }
+            ]
+        }
+    }
+
+    data = {'path-request': []}
+    data['path-request'].append(unsorted_request)
+    rqs = requests_from_json(data, equipment)
+    assert rqs[0].nodes_list == ['roadm Brest_KLA', 'roadm Lannion_CAS', 'roadm Lorient_KMA', 'roadm Vannes_KBE']
+    assert rqs[0].loose_list == ['STRICT', 'LOOSE', 'STRICT', 'STRICT']
