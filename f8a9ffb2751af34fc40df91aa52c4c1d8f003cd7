@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "594e990e_36d8bcb6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-14T09:57:47Z",
+      "side": 1,
+      "message": "No intention there, I remove it.",
+      "parentUuid": "63525905_ef9cf7dd",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 19,
+        "endChar": 43
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e69f46c_35224017",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8d0b18fa_acad4344",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-14T09:57:47Z",
+      "side": 1,
+      "message": "I understand your confusion, since there was typos for the freq 2 and freq 3! I corrected it. p_span0_per_channel is used to compute the offset relative to p_span0 as stated in the equation:\n\n  p_out_target[f1, f2, f3] \u003d target_pch_out_db + \\\n                             p_span0_per_channel[f1, f2, f3] - p_span0\n                             \nso with p_span0 equal to 3dBm, and target_pch_out_db \u003d -20dBm\np_out_target[f1, f2, f3] \u003d -22, -20, -26",
+      "parentUuid": "6e69f46c_35224017",
+      "range": {
+        "startLine": 20,
+        "startChar": 36,
+        "endLine": 22,
+        "endChar": 35
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f5b09972_68301577",
         "filename": "/COMMIT_MSG",
         "patchSetId": 15
@@ -60,6 +108,30 @@
       "writtenOn": "2022-02-10T18:00:58Z",
       "side": 1,
       "message": "these should be removed, Gerrit only sees the \"footers\" which are defined as \"last paragraph\", i.e., anything after the last blank line",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 52
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "039f00e0_f32a066a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-14T09:57:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5b09972_68301577",
       "range": {
         "startLine": 41,
         "startChar": 0,
@@ -122,6 +194,41 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b58b4abc_3c433f6a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-14T09:57:47Z",
+      "side": 1,
+      "message": "Thanks for the review! Let me know if I answered to your questions.",
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5d0c275_604ad834",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-14T09:57:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "95bdd0b1_619201d0",
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60189d16_86e61559",
@@ -135,6 +242,30 @@
       "writtenOn": "2022-02-10T18:00:58Z",
       "side": 1,
       "message": "Let\u0027s make this easier to understand, please:\n\n- Start with a brief summary.\n- Do not say \"Update foo. bar and baz are not updated\" because the visual difference between \",\" and \".\" is very hard to notice.\n- Remove the leading space of the docstring.\n\nWhat about:\n\n \"\"\"Update reference power\n \n This modifies the spectral info in-place. Only the `pref` is updated,\n while p_span0 and p_span0_per_channel are not changed.\n \"\"\"",
+      "range": {
+        "startLine": 281,
+        "startChar": 0,
+        "endLine": 282,
+        "endChar": 89
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8081bc0_4c0ffd90",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-14T09:57:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60189d16_86e61559",
       "range": {
         "startLine": 281,
         "startChar": 0,
@@ -168,6 +299,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a39ccd9_9a37b7c7",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-14T09:57:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a1bc319_4791c029",
+      "range": {
+        "startLine": 665,
+        "startChar": 112,
+        "endLine": 665,
+        "endChar": 116
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a366f75_046eefc2",
@@ -191,6 +346,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94ca5498_213efa5f",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-14T09:57:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a366f75_046eefc2",
+      "range": {
+        "startLine": 670,
+        "startChar": 12,
+        "endLine": 670,
+        "endChar": 62
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c58fc11_d71ca0fa",
@@ -204,6 +383,30 @@
       "writtenOn": "2022-02-10T18:00:58Z",
       "side": 1,
       "message": "This is a docstring of a data structure which now explains why something was removed; please remove it.",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 77
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e69bb03_bb7cbad2",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-14T09:57:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c58fc11_d71ca0fa",
       "range": {
         "startLine": 48,
         "startChar": 4,
@@ -239,6 +442,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1daafb17_0dd7df02",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-14T09:57:47Z",
+      "side": 1,
+      "message": "I guess this comment is unrelated to this commit, but more in general to the use of Pref. And I do not agree: Pref information is not included in signal.\n\nPref values are not identical to signal in general. Only propagated signal powers are recorded in signal, not the values for the noiseless reference and not the initial power power distribution. They only correspond:\n- if there are no ROADM in the path  (because ROADM equalize accounting for noise)\n- if the slope of the loss of fiber is zero (because the reference is taken at the reference frequency)\n- if the gain is completely flat (no tilt).\n- if there is no Raman\n- if ggn is not used\n\nin all other cases, there are not identical.\nMoreover, in next commits, the distribution of powers will be needed in order to take into account user defined input.  Without Pref, there is no clue on how to equalize accounting for this.",
+      "parentUuid": "dca5a9d5_279d29ec",
+      "range": {
+        "startLine": 58,
+        "startChar": 87,
+        "endLine": 58,
+        "endChar": 102
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ca3bf575_0731b9ee",
         "filename": "gnpy/core/info.py",
         "patchSetId": 15
@@ -250,6 +477,30 @@
       "writtenOn": "2022-02-10T18:00:58Z",
       "side": 1,
       "message": "this assignment is the same one as the statement 20 lines up",
+      "range": {
+        "startLine": 83,
+        "startChar": 8,
+        "endLine": 83,
+        "endChar": 72
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6ade40c_8d5abe1d",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-14T09:57:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca3bf575_0731b9ee",
       "range": {
         "startLine": 83,
         "startChar": 8,
