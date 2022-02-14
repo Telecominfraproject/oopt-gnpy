@@ -466,7 +466,7 @@ def requests_from_json(json_data, equipment):
         params['format'] = params['trx_mode']
         params['spacing'] = req['path-constraints']['te-bandwidth']['spacing']
         try:
-            nd_list = req['explicit-route-objects']['route-object-include-exclude']
+            nd_list = sorted(req['explicit-route-objects']['route-object-include-exclude'], key=lambda x: x['index'])
         except KeyError:
             nd_list = []
         params['nodes_list'] = [n['num-unnum-hop']['node-id'] for n in nd_list]
