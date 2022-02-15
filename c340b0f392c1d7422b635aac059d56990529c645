@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5395baf4_625983fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-15T11:50:38Z",
+      "side": 1,
+      "message": "Here\u0027s how the changed docs look like:\n\n- https://object-storage.public.mtl1.vexxhost.net/swift/v1/bfd521072e894ebb99e66f72619daa8a/zuul-logs-telecominfraproject_8cc/533209/1/check/tox-docs-f35/8cc6af8/docs/concepts.html#simulation\n\n- https://object-storage.public.mtl1.vexxhost.net/swift/v1/bfd521072e894ebb99e66f72619daa8a/zuul-logs-telecominfraproject_8cc/533209/1/check/tox-docs-f35/8cc6af8/docs/json.html#global-parameters",
+      "revId": "c340b0f392c1d7422b635aac059d56990529c645",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
