@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75f8e419_bc2a8b7b",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 29
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-15T21:23:19Z",
+      "side": 1,
+      "message": "\"warning\" seems a bit exaggerated.",
+      "range": {
+        "startLine": 204,
+        "startChar": 15,
+        "endLine": 204,
+        "endChar": 22
+      },
+      "revId": "e352cdeeac30cc1116571b8598ba55837b1cf87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bc1f35c_a91fadcf",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 29
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-15T21:23:19Z",
+      "side": 1,
+      "message": "spelling",
+      "range": {
+        "startLine": 240,
+        "startChar": 15,
+        "endLine": 240,
+        "endChar": 21
+      },
+      "revId": "e352cdeeac30cc1116571b8598ba55837b1cf87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15aef598_6150e80a",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 29
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-15T21:23:19Z",
+      "side": 1,
+      "message": "Why use a loop index here when you anyway overwrite it below?",
+      "range": {
+        "startLine": 284,
+        "startChar": 8,
+        "endLine": 284,
+        "endChar": 13
+      },
+      "revId": "e352cdeeac30cc1116571b8598ba55837b1cf87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0e7bc16_5160333c",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 29
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-15T21:23:19Z",
+      "side": 1,
+      "message": "Note that the .keys() part is redundant here.",
+      "range": {
+        "startLine": 286,
+        "startChar": 30,
+        "endLine": 286,
+        "endChar": 37
+      },
+      "revId": "e352cdeeac30cc1116571b8598ba55837b1cf87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec702729_30517a01",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 29
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-15T21:23:19Z",
+      "side": 1,
+      "message": "I think this way of defining the spectrum is unintuitive, especially when defining multiple spectrum partitions. I understand the desire to be consistent with existing code but it would be so much more intuitive if f_min was the first frequency in the partition.",
+      "range": {
+        "startLine": 288,
+        "startChar": 22,
+        "endLine": 288,
+        "endChar": 106
+      },
+      "revId": "e352cdeeac30cc1116571b8598ba55837b1cf87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a79750f1_d4d10c46",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 29
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-15T21:23:19Z",
+      "side": 1,
+      "message": "This looks like it could be more naturally implemented as a for loop:\n\n for current_freq in range(part[\u0027f_min\u0027] + part[\u0027slot_width\u0027],\n                           part[\u0027f_max\u0027] + part[\u0027slot_width\u0027],\n                           part[\u0027slot_width\u0027]):",
+      "range": {
+        "startLine": 299,
+        "startChar": 12,
+        "endLine": 299,
+        "endChar": 48
+      },
+      "revId": "e352cdeeac30cc1116571b8598ba55837b1cf87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
