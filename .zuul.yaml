@@ -17,12 +17,6 @@
         - tox-linters-diff-n-report:
             voting: false
         - tox-py310-cover-previous
-    gate:
-      jobs:
-        - tox-py38
-        - tox-py39-f34
-        - tox-py310-f35
-        - tox-docs-f35
     tag:
       jobs:
         - oopt-release-python:
