@@ -93,7 +93,10 @@ The fiber library currently describes SSMF and NZDF but additional fiber types c
 | ``lumped_losses``    | (array)   | Places along the fiber length with extra |
 |                      |           | losses. Specified as a loss in dB at     |
 |                      |           | each relevant position (in km):          |
-|                      |           | ``{"position": 10, "loss": 1.5}``)       |
+|                      |           | ``{"position": 10, "loss": 1.5}``.       |
+|                      |           | The lumped losses are not fully          |
+|                      |           | considered when using the                |
+|                      |           | ``gn_model_analytic`` NLI model.         |
 +----------------------+-----------+------------------------------------------+
 
 .. _Corning whitepaper on MFD/EA: https://www.corning.com/microsites/coc/oem/documents/specialty-fiber/WP7071-Mode-Field-Diam-and-Eff-Area.pdf
@@ -207,6 +210,8 @@ The user can only modify the value of existing parameters:
 |                          |           | output.                                     |
 +--------------------------+-----------+---------------------------------------------+
 
+.. _json-global-params:
+
 Global parameters
 -----------------
 
@@ -265,6 +270,8 @@ the ``gnpy.science_utils.NliSolver`` for the evaluation of the Raman profile and
 |                                             |           | ``ggn_spectrally_separated`` (see eq. 21    |
 |                                             |           | from `arXiv:1710.02225                      |
 |                                             |           | <https://arxiv.org/abs/1710.02225>`_).      |
+|                                             |           | The recommended model for general use is    |
+|                                             |           | ``ggn_spectrally_separated``.               |
 +---------------------------------------------+-----------+---------------------------------------------+
 | ``nli_params.computed_channels``            | (number)  | The channels on which the NLI is            |
 |                                             |           | explicitly evaluated.                       |

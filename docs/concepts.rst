@@ -268,3 +268,10 @@ When the network model has been instantiated and the physical properties and ope
 
 This set of input parameters include options such as the *spectrum allocation*, i.e., the number of channels and their spacing.
 Various strategies for network optimization can be provided as well.
+
+GNPy supports different modeling engines which differ in their accuracy, capabilities, and computational time.
+These are controled via the :ref:`simulation options<json-global-params>`:
+
+- The ``ggn_spectrally_separated`` is a more accurate model which is recommended for general use.
+
+- The ``gn_model_analytic`` is less accurate, but faster to compute since it employs certain numeric approximations and disregards some of the more-detailed input data.
