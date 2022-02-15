@@ -490,6 +490,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f42371dc_ee6f1a61",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-15T18:00:01Z",
+      "side": 1,
+      "message": "For me the question is still if ref_power needs to be included in the __init__ arguments here (or in create_arbitrary_spectral_information). I guess I have to look at later commits to understand this.",
+      "parentUuid": "1daafb17_0dd7df02",
+      "range": {
+        "startLine": 58,
+        "startChar": 87,
+        "endLine": 58,
+        "endChar": 102
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ca3bf575_0731b9ee",
         "filename": "gnpy/core/info.py",
         "patchSetId": 15
