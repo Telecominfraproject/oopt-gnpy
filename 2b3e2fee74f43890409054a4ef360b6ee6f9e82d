@@ -46,6 +46,30 @@
       },
       "revId": "2b3e2fee74f43890409054a4ef360b6ee6f9e82d",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1ce0be8_570c79dd",
+        "filename": "docs/json.rst",
+        "patchSetId": 22
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-15T11:42:25Z",
+      "side": 1,
+      "message": "We covered this today on the call, and https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/533209 is the result. Thanks for noticing!",
+      "parentUuid": "1a26dab3_8a9caf29",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 107
+      },
+      "revId": "2b3e2fee74f43890409054a4ef360b6ee6f9e82d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
