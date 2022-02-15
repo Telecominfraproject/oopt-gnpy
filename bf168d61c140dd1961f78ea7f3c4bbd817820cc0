@@ -16,6 +16,29 @@
       "message": "(looking for info re coding style for these identifiers)",
       "revId": "bf168d61c140dd1961f78ea7f3c4bbd817820cc0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "457c6211_a1a2a2fc",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-15T19:41:13Z",
+      "side": 1,
+      "message": "It\u0027s not clear what is the difference between \"power\" and \"req_power\" and why both are needed. Some explanation in the docstring would be helpful.",
+      "range": {
+        "startLine": 347,
+        "startChar": 4,
+        "endLine": 348,
+        "endChar": 40
+      },
+      "revId": "bf168d61c140dd1961f78ea7f3c4bbd817820cc0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
