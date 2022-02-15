@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d48182c_7c4b7cc3",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-15T20:04:39Z",
+      "side": 1,
+      "message": "So now we have p_span0 (which is \"power for a reference channel\"), ref_carrier[\u0027req_power\u0027] and ref_carrier[\u0027power\u0027]. I\u0027m confused. Why do we need all of them?",
+      "revId": "9d2cadb90dc80b8eb496c3a6675e1aa3c7a0a48d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
