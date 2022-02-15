@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a635de18_d4d1095d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-15T13:09:35Z",
+      "side": 1,
+      "message": "If the old parameter name (pch_out_db) is misleading, wouldn\u0027t it be even more important to change it in the user-facing eqpt json file?",
+      "revId": "6d920bd5d41b83bbcd08e4a139f134c3d0d2a747",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
