@@ -16,6 +16,23 @@
       "message": "Here\u0027s how the changed docs look like:\n\n- https://object-storage.public.mtl1.vexxhost.net/swift/v1/bfd521072e894ebb99e66f72619daa8a/zuul-logs-telecominfraproject_8cc/533209/1/check/tox-docs-f35/8cc6af8/docs/concepts.html#simulation\n\n- https://object-storage.public.mtl1.vexxhost.net/swift/v1/bfd521072e894ebb99e66f72619daa8a/zuul-logs-telecominfraproject_8cc/533209/1/check/tox-docs-f35/8cc6af8/docs/json.html#global-parameters",
       "revId": "c340b0f392c1d7422b635aac059d56990529c645",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f69c97fa_1eac0995",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-15T12:36:15Z",
+      "side": 1,
+      "message": "recheck\n\nPython 3.6 builds are fixed again in the CI.",
+      "revId": "c340b0f392c1d7422b635aac059d56990529c645",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
