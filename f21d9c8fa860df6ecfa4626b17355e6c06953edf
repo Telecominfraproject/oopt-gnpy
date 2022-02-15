@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "447cd3e8_428e6f61",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-15T19:42:23Z",
+      "side": 1,
+      "message": "I don\u0027t really like this mixing of info from multiple input files. I feel that if the user inputs a separate initial spectrum file it should fully define the spectrum and we should not depend on information from SI in the eqpt file.",
+      "revId": "f21d9c8fa860df6ecfa4626b17355e6c06953edf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
