@@ -39,6 +39,30 @@
       },
       "revId": "bf168d61c140dd1961f78ea7f3c4bbd817820cc0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10755c45_a75cb793",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-16T08:58:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "457c6211_a1a2a2fc",
+      "range": {
+        "startLine": 347,
+        "startChar": 4,
+        "endLine": 348,
+        "endChar": 40
+      },
+      "revId": "bf168d61c140dd1961f78ea7f3c4bbd817820cc0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }

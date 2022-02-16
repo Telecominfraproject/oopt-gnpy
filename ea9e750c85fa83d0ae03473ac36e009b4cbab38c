@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31ba7658_b94173d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-16T08:58:39Z",
+      "side": 1,
+      "message": "Thanks for the comments, I have changed the function name and added explanation in the docstring.",
+      "revId": "ea9e750c85fa83d0ae03473ac36e009b4cbab38c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
