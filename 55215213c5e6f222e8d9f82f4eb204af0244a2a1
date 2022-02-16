@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "804947ba_590b4692",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 30
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-16T20:12:47Z",
+      "side": 1,
+      "message": "Looks like the label argument is an array and not a string.",
+      "range": {
+        "startLine": 57,
+        "startChar": 111,
+        "endLine": 57,
+        "endChar": 114
+      },
+      "revId": "55215213c5e6f222e8d9f82f4eb204af0244a2a1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
