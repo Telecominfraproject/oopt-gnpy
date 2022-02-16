@@ -33,6 +33,29 @@
       "message": "recheck\n\nPython 3.6 builds are fixed again in the CI.",
       "revId": "c340b0f392c1d7422b635aac059d56990529c645",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87be0cab_ae6881f0",
+        "filename": "docs/json.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-16T21:49:34Z",
+      "side": 1,
+      "message": "I think \"not fully considered\" is still too vague. Can\u0027t we be specific and say that the total of all lumped losses is applied at the end of the fiber so that they have no impact on NLI generation (or at least not on SNR_NLI)?",
+      "range": {
+        "startLine": 97,
+        "startChar": 36,
+        "endLine": 99,
+        "endChar": 70
+      },
+      "revId": "c340b0f392c1d7422b635aac059d56990529c645",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
