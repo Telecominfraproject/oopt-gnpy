@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6c90b7bb_a12289e0",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-16T20:10:19Z",
+      "side": 1,
+      "message": "Right, but I was thinking about the min_power part, which looks wrong to me. Say that per_degree_pch is -20 dBm and the min power channel comes in with -25 dBm but has delta_channel_power \u003d -10 dB. Normally, this channel should be attenuated by 5 dB so that its output power is -30 dBm. But since per_degree_pch has now been changed to -25 dBm, the calculation on line 275 results in 10 dB attenuation instead. I think the delta_channel_power should be taken into account when calculating min_power.",
+      "parentUuid": "0921042d_ca32f5c8",
+      "range": {
+        "startLine": 269,
+        "startChar": 8,
+        "endLine": 270,
+        "endChar": 84
+      },
+      "revId": "05b95fe266a672710ef4abf8a9d8b4d8d4769b63",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dd02e962_c4e96be3",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 16

@@ -16,6 +16,29 @@
       "message": "Thanks for your review! I hope I have addressed your comments. I left opened those for which I a not sure.",
       "revId": "5259d6dffe69fe069cc65bfaa7f0384c5db3404f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94583e27_1994d543",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-16T20:10:19Z",
+      "side": 1,
+      "message": "Shouldn\u0027t the sorting of p_span0_per_channel rather be done in the __init__ method of SpectralInformation like it is for all the other vectors? Otherwise they may not match.\n\nAlso, what is the use case for this __add__ method? I can\u0027t find anywhere it is being used in the code.",
+      "range": {
+        "startLine": 208,
+        "startChar": 11,
+        "endLine": 209,
+        "endChar": 112
+      },
+      "revId": "5259d6dffe69fe069cc65bfaa7f0384c5db3404f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
