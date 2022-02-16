@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0921042d_ca32f5c8",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-16T17:06:37Z",
+      "side": 1,
+      "message": "per_degree_pch is not the value per channel, but the value for the reference channel. The relative difference is applied on ine 275.",
+      "parentUuid": "68657b3f_1f41f770",
+      "range": {
+        "startLine": 269,
+        "startChar": 8,
+        "endLine": 270,
+        "endChar": 84
+      },
+      "revId": "05b95fe266a672710ef4abf8a9d8b4d8d4769b63",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dd02e962_c4e96be3",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 16
@@ -37,6 +61,30 @@
       "writtenOn": "2022-02-15T18:00:01Z",
       "side": 1,
       "message": "I don\u0027t think you need a list comprehension here, just work with the numpy arrays directly:\n\n input_total_power \u003d lin2db(sum(pref.p_spani + delta_channel_power))",
+      "range": {
+        "startLine": 670,
+        "startChar": 39,
+        "endLine": 670,
+        "endChar": 94
+      },
+      "revId": "05b95fe266a672710ef4abf8a9d8b4d8d4769b63",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63b92881_beff72aa",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-16T17:06:37Z",
+      "side": 1,
+      "message": "OK, with lin2db(sum(db2lin(pref.p_spani + delta_channel_power)))\nThanks",
+      "parentUuid": "dd02e962_c4e96be3",
       "range": {
         "startLine": 670,
         "startChar": 39,
@@ -64,6 +112,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "048b6179_a8405581",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-16T17:06:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67a3ca66_df71d82d",
+      "revId": "05b95fe266a672710ef4abf8a9d8b4d8d4769b63",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3678ab3_67ed0fdb",
@@ -77,6 +143,30 @@
       "writtenOn": "2022-02-15T18:00:01Z",
       "side": 1,
       "message": "What if p_span0 and p_spani is different in other SI?",
+      "range": {
+        "startLine": 202,
+        "startChar": 12,
+        "endLine": 203,
+        "endChar": 94
+      },
+      "revId": "05b95fe266a672710ef4abf8a9d8b4d8d4769b63",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "636eae17_c65443ba",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-16T17:06:37Z",
+      "side": 1,
+      "message": "This case should not happen:\n- for a given simulation there is only one design (one p_span0),\n- and p_spani is the propagation result of p_span0 so there should not be different p_spani either.\nI have added a check here.\n\nHowever there is a mistake there if the frequencies are not ordered, the p_span0_per_channel is not correctly added. I have corected that.",
+      "parentUuid": "e3678ab3_67ed0fdb",
       "range": {
         "startLine": 202,
         "startChar": 12,
