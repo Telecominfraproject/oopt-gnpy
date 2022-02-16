@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "88998451_9f41b606",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-16T21:35:34Z",
+      "side": 1,
+      "message": "So as I said before, I think for psd we should have the option of calculating this based on either baud_rate or slot_width, since the OpenROADM MSA (and TransportPCE) currently specifies power levels based on slot_width.\n\nTo complicate things further, OpenROADM seems to be moving towards defining an additional channel-width attribute that is different from both baud_rate and slot_width:\n\nhttps://github.com/OpenROADM/OpenROADM_MSA_Public/blob/master/model/Specifications/body-rpc-add-operational-modes-to-catalog-10-1.json#L36\n\nMaybe we will also need to add this attribute in GNPy. Alternatively, we could calculate psd based on baud_rate*(1+roll_off) and set roll_off for the OpenROADM Transceiver modes to be consistent with their specified channel-width.",
+      "parentUuid": "f23800f3_4d35560d",
+      "revId": "cf0c0c0ea41f6febe3e7a57a5f630289291f7ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0321290c_9acf479c",
         "filename": "gnpy/tools/json_io.py",
         "patchSetId": 8
