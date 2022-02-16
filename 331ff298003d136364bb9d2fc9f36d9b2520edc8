@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1727b512_b8d3fc9b",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 27
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-16T21:04:16Z",
+      "side": 1,
+      "message": "I don\u0027t think these names are ideal and it\u0027s not obvious that \"total\" refers to signal+ase+nli in this context. How about changing names to \"reference pch out\" and \"actual pch out\"?",
+      "range": {
+        "startLine": 252,
+        "startChar": 26,
+        "endLine": 253,
+        "endChar": 66
+      },
+      "revId": "331ff298003d136364bb9d2fc9f36d9b2520edc8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fc6ff4f_7d27ea62",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 27
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-16T21:04:16Z",
+      "side": 1,
+      "message": "Why doing this in update_pref here when it\u0027s done in propagate for the other elements? Seems inconsistent.",
+      "range": {
+        "startLine": 504,
+        "startChar": 7,
+        "endLine": 505,
+        "endChar": 40
+      },
+      "revId": "331ff298003d136364bb9d2fc9f36d9b2520edc8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
