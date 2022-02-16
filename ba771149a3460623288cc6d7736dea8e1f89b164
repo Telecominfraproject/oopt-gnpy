@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b518260_c2202a7f",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-16T14:16:36Z",
+      "side": 1,
+      "message": "This is a matter pf preference but I think it\u0027s cleaner to use zip instead of enumerate:\n\n vals \u003d [val for val, lab in zip(values, labels) if lab \u003d\u003d label]",
+      "range": {
+        "startLine": 240,
+        "startChar": 8,
+        "endLine": 240,
+        "endChar": 74
+      },
+      "revId": "ba771149a3460623288cc6d7736dea8e1f89b164",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8cbcb82_794c3277",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-16T14:16:36Z",
+      "side": 1,
+      "message": "I think this has already been rounded in the per_label_summary function so using round again here seems unnecessary.",
+      "range": {
+        "startLine": 249,
+        "startChar": 18,
+        "endLine": 249,
+        "endChar": 23
+      },
+      "revId": "ba771149a3460623288cc6d7736dea8e1f89b164",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bcfd2c1_82b58ad9",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-16T14:16:36Z",
+      "side": 1,
+      "message": "The last comma is a bit unnecessary and makes the output harder to read. Maybe instead:\n\n text \u003d \u0027, \u0027.join([f\u0027{label}: {value:.2f}\u0027 for label, value in summary.items()])",
+      "range": {
+        "startLine": 252,
+        "startChar": 38,
+        "endLine": 252,
+        "endChar": 39
+      },
+      "revId": "ba771149a3460623288cc6d7736dea8e1f89b164",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
