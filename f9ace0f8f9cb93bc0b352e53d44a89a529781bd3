@@ -16,6 +16,161 @@
       "message": "ta",
       "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da993a11_d1fc60e6",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-18T14:10:58Z",
+      "side": 1,
+      "message": "Simpler:\n\n self.target_pch_out_db \u003d kwargs.get(\u0027target_pch_out_db\u0027)",
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "235c9d1a_cdcb16db",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-18T14:10:58Z",
+      "side": 1,
+      "message": "Same comment.",
+      "range": {
+        "startLine": 92,
+        "startChar": 8,
+        "endLine": 93,
+        "endChar": 94
+      },
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eee06bac_8f77c6fa",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-18T14:10:58Z",
+      "side": 1,
+      "message": "Simpler:\n\n self.per_degree_pch_out_db \u003d kwargs.get(\u0027per_degree_pch_out_db\u0027, {})",
+      "range": {
+        "startLine": 96,
+        "startChar": 8,
+        "endLine": 96,
+        "endChar": 113
+      },
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6581c94_8ef94aeb",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-18T14:10:58Z",
+      "side": 1,
+      "message": "Same comment.",
+      "range": {
+        "startLine": 97,
+        "startChar": 8,
+        "endLine": 98,
+        "endChar": 100
+      },
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20c06cf4_bf7e0e9d",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-18T14:10:58Z",
+      "side": 1,
+      "message": "I\u0027m not sure what this is trying to check but I think it is wrong since it means the warning will not be printed for other missing attributes.",
+      "range": {
+        "startLine": 50,
+        "startChar": 12,
+        "endLine": 52,
+        "endChar": 96
+      },
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82a0e351_3d007663",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-18T14:10:58Z",
+      "side": 1,
+      "message": "Why this change? Shouldn\u0027t this have a default value different from None?",
+      "range": {
+        "startLine": 97,
+        "startChar": 29,
+        "endLine": 97,
+        "endChar": 33
+      },
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32e6aa23_6aa03be7",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-18T14:10:58Z",
+      "side": 1,
+      "message": "I\u0027m very confused by this. Where is the \"general one from SI\" retrieved? Do you mean from Roadm in the eqpt config rather than SI? Also, this sounds similar to what the (misnamed?) merge_amplifier_restrictions function does. I think this whole code part is very difficult to read and understand.",
+      "range": {
+        "startLine": 457,
+        "startChar": 16,
+        "endLine": 459,
+        "endChar": 69
+      },
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
