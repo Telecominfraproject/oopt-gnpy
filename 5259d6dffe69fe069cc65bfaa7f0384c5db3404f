@@ -37,6 +37,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a804ac80_f26555f2",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-19T17:27:00Z",
+      "side": 1,
+      "message": "I\u0027m a bit confused by this since I thought p_span0_per_channel was representing a power offset from p_span0. Either this is wrong or I have misunderstood and I need to think more about this.",
+      "range": {
+        "startLine": 669,
+        "startChar": 8,
+        "endLine": 670,
+        "endChar": 83
+      },
+      "revId": "5259d6dffe69fe069cc65bfaa7f0384c5db3404f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "94583e27_1994d543",
         "filename": "gnpy/core/info.py",
         "patchSetId": 18
