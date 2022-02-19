@@ -20,6 +20,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8259cf45_b152edef",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-19T13:48:30Z",
+      "side": 1,
+      "message": "Simpler:\n\n ref_per_degree_pch \u003d self.per_degree_pch_out_db.get(degree, self.target_pch_out_dbm)\n per_degree_pch \u003d full(len(spectral_info.channel_number), ref_per_degree_pch)\n \nUsing numpy.full is more efficient than multiplying with numpy.ones.",
+      "range": {
+        "startLine": 281,
+        "startChar": 12,
+        "endLine": 284,
+        "endChar": 85
+      },
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "758b0911_368749f7",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-19T13:48:30Z",
+      "side": 1,
+      "message": "Can this be simplified to:\n\n this_node_degree \u003d this_node.getattr(\u0027per_degree_pch_out_db\u0027, {})\n this_node_degree_psd \u003d this_node.getattr(\u0027per_degree_pch_psd\u0027, {})",
+      "range": {
+        "startLine": 242,
+        "startChar": 4,
+        "endLine": 248,
+        "endChar": 68
+      },
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "da993a11_d1fc60e6",
         "filename": "gnpy/core/parameters.py",
         "patchSetId": 28
