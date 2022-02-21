@@ -111,6 +111,30 @@
       },
       "revId": "bf168d61c140dd1961f78ea7f3c4bbd817820cc0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ac25ce7_fa8ed39e",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-21T21:09:26Z",
+      "side": 1,
+      "message": "I would prefer not to add stuff that is not used.",
+      "parentUuid": "dc79fef7_b174e178",
+      "range": {
+        "startLine": 347,
+        "startChar": 4,
+        "endLine": 348,
+        "endChar": 40
+      },
+      "revId": "bf168d61c140dd1961f78ea7f3c4bbd817820cc0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
