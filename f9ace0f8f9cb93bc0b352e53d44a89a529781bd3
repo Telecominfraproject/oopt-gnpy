@@ -18,6 +18,23 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5ef04bd_c53eb3df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 28
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-21T16:07:34Z",
+      "side": 1,
+      "message": "Thanks for your deep review! I am taking them into account!",
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8259cf45_b152edef",

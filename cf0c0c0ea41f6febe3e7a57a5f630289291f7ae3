@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0db0574f_61a16cad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-21T16:07:34Z",
+      "side": 1,
+      "message": "I think we should keed the PSD equalization based on baudrate only. including roll-off in the calculation was not OK for Andrea. We can additionally offer additional alternatives as the ones you propose:\n- target_pch_out_db: means same power\n- target_psd_out_mWperGHz : means equalization based on PSD computed with baud rate\n- target_out_mWperSlotWidth: means equalization based on slot width (which should be filled with min_spacing from transceivers). I am not sure we can call that a PSD.\n- target_out_mWperRolloffGHz : means equalization based on baudrate*(1+roll-off)\n\nfor the one you specify, I think the easiest way is to use the power in  the spectrum to differentiate, and keep power equalization.\n(isn\u0027t there a type on the spacings ? on the excel it is specified at 87.5GHz...)\n\nIs that OK for you ?",
+      "parentUuid": "88998451_9f41b606",
+      "revId": "cf0c0c0ea41f6febe3e7a57a5f630289291f7ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0321290c_9acf479c",
         "filename": "gnpy/tools/json_io.py",
         "patchSetId": 8
