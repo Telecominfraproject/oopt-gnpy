@@ -96,6 +96,30 @@
       },
       "revId": "5259d6dffe69fe069cc65bfaa7f0384c5db3404f",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b57d679f_ee6f6c38",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-21T17:50:43Z",
+      "side": 1,
+      "message": "The add method is not used here, but I think it is very usefull to \"multiplex\" spectrum. I have been working on a multi-band feature for which this is nice to have.",
+      "parentUuid": "94583e27_1994d543",
+      "range": {
+        "startLine": 208,
+        "startChar": 11,
+        "endLine": 209,
+        "endChar": 112
+      },
+      "revId": "5259d6dffe69fe069cc65bfaa7f0384c5db3404f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
