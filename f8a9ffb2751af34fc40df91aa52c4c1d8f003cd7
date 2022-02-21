@@ -169,6 +169,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7094ffad_33461234",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-21T09:43:34Z",
+      "side": 1,
+      "message": "Yes you are right, and that was not my intent. I can solve this:\n- I could use the ref_carrier[\u0027power\u0027] instead of p_span0 to compute the delat on a unchanged reference. \n- or change p_span0_per_channel to a delta_span0_per_channel, ie working in delta power.",
+      "parentUuid": "7d655091_e570b137",
+      "range": {
+        "startLine": 20,
+        "startChar": 36,
+        "endLine": 22,
+        "endChar": 35
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f5b09972_68301577",
         "filename": "/COMMIT_MSG",
         "patchSetId": 15
