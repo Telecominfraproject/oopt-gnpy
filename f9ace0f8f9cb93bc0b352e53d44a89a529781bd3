@@ -58,6 +58,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc36d7d7_2ba2f53b",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-21T17:08:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8259cf45_b152edef",
+      "range": {
+        "startLine": 281,
+        "startChar": 12,
+        "endLine": 284,
+        "endChar": 85
+      },
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "758b0911_368749f7",
@@ -71,6 +95,30 @@
       "writtenOn": "2022-02-19T13:48:30Z",
       "side": 1,
       "message": "Can this be simplified to:\n\n this_node_degree \u003d this_node.getattr(\u0027per_degree_pch_out_db\u0027, {})\n this_node_degree_psd \u003d this_node.getattr(\u0027per_degree_pch_psd\u0027, {})",
+      "range": {
+        "startLine": 242,
+        "startChar": 4,
+        "endLine": 248,
+        "endChar": 68
+      },
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e4bef4e_4d6dfdc0",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-21T17:08:08Z",
+      "side": 1,
+      "message": "OK",
+      "parentUuid": "758b0911_368749f7",
       "range": {
         "startLine": 242,
         "startChar": 4,
@@ -98,6 +146,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e266ea6_7b7d4b93",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-21T17:08:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da993a11_d1fc60e6",
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "235c9d1a_cdcb16db",
@@ -111,6 +177,30 @@
       "writtenOn": "2022-02-18T14:10:58Z",
       "side": 1,
       "message": "Same comment.",
+      "range": {
+        "startLine": 92,
+        "startChar": 8,
+        "endLine": 93,
+        "endChar": 94
+      },
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "080e6f1d_674ca9c1",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-21T17:08:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "235c9d1a_cdcb16db",
       "range": {
         "startLine": 92,
         "startChar": 8,
@@ -144,6 +234,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "459dda57_612e6992",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-21T17:08:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eee06bac_8f77c6fa",
+      "range": {
+        "startLine": 96,
+        "startChar": 8,
+        "endLine": 96,
+        "endChar": 113
+      },
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6581c94_8ef94aeb",
@@ -157,6 +271,30 @@
       "writtenOn": "2022-02-18T14:10:58Z",
       "side": 1,
       "message": "Same comment.",
+      "range": {
+        "startLine": 97,
+        "startChar": 8,
+        "endLine": 98,
+        "endChar": 100
+      },
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "773a4c33_113fc601",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-21T17:08:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6581c94_8ef94aeb",
       "range": {
         "startLine": 97,
         "startChar": 8,
