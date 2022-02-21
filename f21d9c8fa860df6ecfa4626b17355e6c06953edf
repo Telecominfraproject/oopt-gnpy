@@ -16,6 +16,24 @@
       "message": "I don\u0027t really like this mixing of info from multiple input files. I feel that if the user inputs a separate initial spectrum file it should fully define the spectrum and we should not depend on information from SI in the eqpt file.",
       "revId": "f21d9c8fa860df6ecfa4626b17355e6c06953edf",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6fefdc3_1af13c7b",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-21T17:51:26Z",
+      "side": 1,
+      "message": "The two files are targetting different purpose:\n- SI in eqpt_config.json is used for design\n- SI(s) in the spectrum is defining the spectrum to be propagated.\n\nThe former one is not contained in the second one.\nPreviously, the knowledge about the reference carrier used for the design was not needed, but this is no more the case for mixed rate and PSD equalization: you need to know what was the reference channel to compute to output power of the ROADM for this reference channel to display it.",
+      "parentUuid": "447cd3e8_428e6f61",
+      "revId": "f21d9c8fa860df6ecfa4626b17355e6c06953edf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
