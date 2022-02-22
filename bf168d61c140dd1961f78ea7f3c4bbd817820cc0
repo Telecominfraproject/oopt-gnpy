@@ -159,6 +159,30 @@
       },
       "revId": "bf168d61c140dd1961f78ea7f3c4bbd817820cc0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dab521ce_a9aefc06",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-22T08:59:33Z",
+      "side": 1,
+      "message": "I have committed the function with only used parameters in the commit where it is used.",
+      "parentUuid": "c3f84bdc_d634dca4",
+      "range": {
+        "startLine": 347,
+        "startChar": 4,
+        "endLine": 348,
+        "endChar": 40
+      },
+      "revId": "bf168d61c140dd1961f78ea7f3c4bbd817820cc0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
