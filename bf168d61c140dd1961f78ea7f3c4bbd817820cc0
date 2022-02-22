@@ -135,6 +135,30 @@
       },
       "revId": "bf168d61c140dd1961f78ea7f3c4bbd817820cc0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3f84bdc_d634dca4",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-22T08:24:37Z",
+      "side": 1,
+      "message": "I would also prefer to only add utility code when it is needed, so I propose not to add this function at this time.\n\nThe exception is a case when the new \"big feature\" that is being added is \"too big\", in which case it makes sense (IMHO) to add some self-contained helpers first -- but in that case the commit message should explain how these are being used in the subsequent patches in a commit series.",
+      "parentUuid": "8ac25ce7_fa8ed39e",
+      "range": {
+        "startLine": 347,
+        "startChar": 4,
+        "endLine": 348,
+        "endChar": 40
+      },
+      "revId": "bf168d61c140dd1961f78ea7f3c4bbd817820cc0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
