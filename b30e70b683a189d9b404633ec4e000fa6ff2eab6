@@ -16,6 +16,75 @@
       "message": "Thanks !",
       "revId": "b30e70b683a189d9b404633ec4e000fa6ff2eab6",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "637bfd86_eb703d08",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-22T08:38:41Z",
+      "side": 1,
+      "message": "typo: \"dbm\"",
+      "range": {
+        "startLine": 263,
+        "startChar": 36,
+        "endLine": 263,
+        "endChar": 38
+      },
+      "revId": "b30e70b683a189d9b404633ec4e000fa6ff2eab6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46284ecc_722ac7f5",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-22T08:38:41Z",
+      "side": 1,
+      "message": "I am not sure I fully understand the comment, perhaps it\u0027s my English (not a native speaker here obviously). What about this:\n\n # Depending on the propagation input power (p_spani) the reference power\n # might be smaller than the target power for this ROADM degree\u0027s egress.\n\nDid I understand the comment correctly?",
+      "range": {
+        "startLine": 263,
+        "startChar": 66,
+        "endLine": 264,
+        "endChar": 110
+      },
+      "revId": "b30e70b683a189d9b404633ec4e000fa6ff2eab6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4112c462_e999b04c",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-22T08:38:41Z",
+      "side": 1,
+      "message": "This doesn\u0027t help me understand the code; I see it in the expression that it\u0027s somehow based on the reference. What would help me more is explaining what the `effective_loss` is doing. Perhaps:\n\n # Total losses of this ROADM for a reference channel (this might differ from \"a channel\" in flexgrid)",
+      "range": {
+        "startLine": 266,
+        "startChar": 8,
+        "endLine": 266,
+        "endChar": 71
+      },
+      "revId": "b30e70b683a189d9b404633ec4e000fa6ff2eab6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }

@@ -34,6 +34,24 @@
       "parentUuid": "a635de18_d4d1095d",
       "revId": "6d920bd5d41b83bbcd08e4a139f134c3d0d2a747",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0167895_eb1af4a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-22T08:38:41Z",
+      "side": 1,
+      "message": "I would prefer not to change the IO format. If we did that, then we would have to implement backwards compatibility in the data reader. Instead, I think it\u0027s less work to make sure that we use a correct name in the YANG model. Will this work for you?",
+      "parentUuid": "d603ba33_995fa0b5",
+      "revId": "6d920bd5d41b83bbcd08e4a139f134c3d0d2a747",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
