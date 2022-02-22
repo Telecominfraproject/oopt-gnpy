@@ -80,6 +80,30 @@
       },
       "revId": "c340b0f392c1d7422b635aac059d56990529c645",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa9cf1a5_b17a7c3a",
+        "filename": "docs/json.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-22T08:20:51Z",
+      "side": 1,
+      "message": "Andrea, last week you mentioned that you can clarify how this can be improved. Can you please provide the information?",
+      "parentUuid": "bbba05b5_c9a16287",
+      "range": {
+        "startLine": 97,
+        "startChar": 36,
+        "endLine": 99,
+        "endChar": 70
+      },
+      "revId": "c340b0f392c1d7422b635aac059d56990529c645",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
