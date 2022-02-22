@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b50d0801_dee69432",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-22T09:39:24Z",
+      "side": 1,
+      "message": "typo: \"input\"",
+      "range": {
+        "startLine": 271,
+        "startChar": 68,
+        "endLine": 271,
+        "endChar": 72
+      },
+      "revId": "d5023ef2b846b5adf3fac17514a2e9157754582b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "387f11e7_0ceddc17",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-22T09:39:24Z",
+      "side": 1,
+      "message": "typo: \"applied\"",
+      "range": {
+        "startLine": 276,
+        "startChar": 78,
+        "endLine": 276,
+        "endChar": 85
+      },
+      "revId": "d5023ef2b846b5adf3fac17514a2e9157754582b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7717b25_37a2f848",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-22T09:39:24Z",
+      "side": 1,
+      "message": "I think I got the point, but it would really help me if the comment is written in sentences. Without sentences with proper capitalization and periods, I tend to get lost when a \"precondition\" ends and an \"action or what happens\" begins. Sorry for nitpicking, but I see this as a pattern in the existing code, and it makes it harder for me to wrap my head around this.",
+      "revId": "d5023ef2b846b5adf3fac17514a2e9157754582b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc60effe_97be6949",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-22T09:39:24Z",
+      "side": 1,
+      "message": "nit: extra space",
+      "range": {
+        "startLine": 293,
+        "startChar": 22,
+        "endLine": 293,
+        "endChar": 23
+      },
+      "revId": "d5023ef2b846b5adf3fac17514a2e9157754582b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a21671bc_334ae8e8",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-22T09:39:24Z",
+      "side": 1,
+      "message": "nit: duplicated",
+      "range": {
+        "startLine": 201,
+        "startChar": 101,
+        "endLine": 201,
+        "endChar": 120
+      },
+      "revId": "d5023ef2b846b5adf3fac17514a2e9157754582b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1662dd5c_a002719f",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-22T09:39:24Z",
+      "side": 1,
+      "message": "If the Pref\u0027s constructor accepts a \"flat array of deltas from a reference power\" to override stuff on a per-channel basis, that same list of deltas could be used here instead of the full-blown Pref.",
+      "range": {
+        "startLine": 242,
+        "startChar": 42,
+        "endLine": 242,
+        "endChar": 64
+      },
+      "revId": "d5023ef2b846b5adf3fac17514a2e9157754582b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}

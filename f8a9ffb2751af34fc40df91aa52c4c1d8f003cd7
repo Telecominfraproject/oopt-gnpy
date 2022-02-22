@@ -610,6 +610,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9a7743c0_ec487fed",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-22T09:39:24Z",
+      "side": 1,
+      "message": "I think that the Pref is not required as an input parameter, and that a flat array of deltas would work just as well. As far as I understand this, the point of this patch is to \"make it possible to tell how ROADMs should equalize this spectrum\", and for that the deltas are all that is required.\n\nBut I admit it\u0027s possible that I don\u0027t know what I don\u0027t know...",
+      "parentUuid": "f42371dc_ee6f1a61",
+      "range": {
+        "startLine": 58,
+        "startChar": 87,
+        "endLine": 58,
+        "endChar": 102
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ca3bf575_0731b9ee",
         "filename": "gnpy/core/info.py",
         "patchSetId": 15

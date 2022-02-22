@@ -77,6 +77,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b38b1456_cca07ac8",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-22T09:39:24Z",
+      "side": 1,
+      "message": "Hmm, I think that both understandings (p_span0_per_channel relative vs. absolute) are possible, so this needs a better description in my opinion. On the other hand, the documentation for the Pref class makes it clear that it\u0027s an absolute power (while not explaining that it will in fact change when using the --power option). Should this be reflected in the commit message to make it clear that it is not an offset?",
+      "parentUuid": "a804ac80_f26555f2",
+      "range": {
+        "startLine": 669,
+        "startChar": 8,
+        "endLine": 670,
+        "endChar": 83
+      },
+      "revId": "5259d6dffe69fe069cc65bfaa7f0384c5db3404f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "94583e27_1994d543",
         "filename": "gnpy/core/info.py",
         "patchSetId": 18
@@ -112,6 +136,30 @@
       "side": 1,
       "message": "The add method is not used here, but I think it is very usefull to \"multiplex\" spectrum. I have been working on a multi-band feature for which this is nice to have.",
       "parentUuid": "94583e27_1994d543",
+      "range": {
+        "startLine": 208,
+        "startChar": 11,
+        "endLine": 209,
+        "endChar": 112
+      },
+      "revId": "5259d6dffe69fe069cc65bfaa7f0384c5db3404f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efc0f0e2_76b16f16",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-02-22T09:39:24Z",
+      "side": 1,
+      "message": "Na matter whether the __add__ is used or not, it\u0027s already present in the code. We can either remove it (in a separate commit) and add it later on if it will be needed, or we can modify it in this one since the rest of this class is getting changed.",
+      "parentUuid": "b57d679f_ee6f6c38",
       "range": {
         "startLine": 208,
         "startChar": 11,
