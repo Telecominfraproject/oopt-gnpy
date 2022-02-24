@@ -101,6 +101,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "747b4a8a_bdf47065",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-24T09:13:35Z",
+      "side": 1,
+      "message": "Now this is a delta power which is conveyed. so I think this is solved",
+      "parentUuid": "b38b1456_cca07ac8",
+      "range": {
+        "startLine": 669,
+        "startChar": 8,
+        "endLine": 670,
+        "endChar": 83
+      },
+      "revId": "5259d6dffe69fe069cc65bfaa7f0384c5db3404f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "94583e27_1994d543",
         "filename": "gnpy/core/info.py",
         "patchSetId": 18
@@ -160,6 +184,30 @@
       "side": 1,
       "message": "Na matter whether the __add__ is used or not, it\u0027s already present in the code. We can either remove it (in a separate commit) and add it later on if it will be needed, or we can modify it in this one since the rest of this class is getting changed.",
       "parentUuid": "b57d679f_ee6f6c38",
+      "range": {
+        "startLine": 208,
+        "startChar": 11,
+        "endLine": 209,
+        "endChar": 112
+      },
+      "revId": "5259d6dffe69fe069cc65bfaa7f0384c5db3404f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90cf0d30_e070ceb8",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-24T09:13:35Z",
+      "side": 1,
+      "message": "I think the sortingquestion is solved, but not the question on __add__ method: Do you agree to keep the method ?",
+      "parentUuid": "efc0f0e2_76b16f16",
       "range": {
         "startLine": 208,
         "startChar": 11,

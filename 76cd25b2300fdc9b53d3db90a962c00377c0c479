@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd7dd7ed_ba74871e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 20
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-24T09:13:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c269508_8a9bf519",
+      "range": {
+        "startLine": 19,
+        "startChar": 30,
+        "endLine": 19,
+        "endChar": 41
+      },
+      "revId": "76cd25b2300fdc9b53d3db90a962c00377c0c479",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd6e1b21_8f4c3fd8",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-02-22T09:39:24Z",
       "side": 1,
       "message": "In the comment above, the p_span0_per_channel and p_span0 are described as two independent values. In this comment, some value of \"the reference channel\" (which is p_span0, right? that\u0027s implied above) is documented as having some influence over p_span0_per_channel. I got lost here; are these independent, or not?",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 60
+      },
+      "revId": "76cd25b2300fdc9b53d3db90a962c00377c0c479",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5ef51b9_4a1f94ba",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 20
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-24T09:13:35Z",
+      "side": 1,
+      "message": "I think this is now solved",
+      "parentUuid": "fd6e1b21_8f4c3fd8",
       "range": {
         "startLine": 30,
         "startChar": 0,
