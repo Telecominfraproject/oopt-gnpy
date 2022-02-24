@@ -658,6 +658,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6cf292d5_3a0bbaaf",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-24T13:23:40Z",
+      "side": 1,
+      "message": "Can I close this one ?",
+      "parentUuid": "9a7743c0_ec487fed",
+      "range": {
+        "startLine": 58,
+        "startChar": 87,
+        "endLine": 58,
+        "endChar": 102
+      },
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ca3bf575_0731b9ee",
         "filename": "gnpy/core/info.py",
         "patchSetId": 15
