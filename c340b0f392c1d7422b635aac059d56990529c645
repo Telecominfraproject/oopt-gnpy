@@ -104,6 +104,30 @@
       },
       "revId": "c340b0f392c1d7422b635aac059d56990529c645",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ac8c81c_77aca315",
+        "filename": "docs/json.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2022-02-24T10:09:41Z",
+      "side": 1,
+      "message": "I would rather remove the comment on the NLI model here because the gn_model_analytic takes into account only the fiber loss coefficient also when there are not any lumped losses.\n\nAs a consequence: \n\n- no lumped losses, no Raman: the gn_model_analytic provides similar result with respect to the ggn_spectrally_separated;\n\n- no lumped losses, Raman: the gn_model_analytic is inaccurate and yet can be useful for a fast and approximated evaluation (especially if the transmission bandwidth is limited to the C-band);\n\n- lumped losses, no Raman: the gn_model_analytic is equivalent to the the NLI calculated with all the lumped losses are at the fiber end, even if, from the implementation standpoint, the loss profile includes the lumped losses in the right positions;\n \n- lumped losses, Raman: same as the case of no lumped losses, Raman.\n\nTherefore, if we want to be more specific, I would add a paragraph in the docs/concept.rst file regarding the lumped losses including the description that have been moved in the commit message of \u0027Management of lumped losses along a fiber span\u0027.",
+      "parentUuid": "aa9cf1a5_b17a7c3a",
+      "range": {
+        "startLine": 97,
+        "startChar": 36,
+        "endLine": 99,
+        "endChar": 70
+      },
+      "revId": "c340b0f392c1d7422b635aac059d56990529c645",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
