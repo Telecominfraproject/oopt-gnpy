@@ -34,6 +34,24 @@
       "parentUuid": "6d48182c_7c4b7cc3",
       "revId": "9d2cadb90dc80b8eb496c3a6675e1aa3c7a0a48d",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a670d26_db6193f9",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-25T17:09:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04096302_a166a12a",
+      "revId": "9d2cadb90dc80b8eb496c3a6675e1aa3c7a0a48d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
