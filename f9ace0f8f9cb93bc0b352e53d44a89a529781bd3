@@ -129,6 +129,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18c90a6b_2cc1bea8",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-25T17:07:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e4bef4e_4d6dfdc0",
+      "range": {
+        "startLine": 242,
+        "startChar": 4,
+        "endLine": 248,
+        "endChar": 68
+      },
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da993a11_d1fc60e6",
@@ -328,6 +352,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecad4582_cfdef9ea",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-25T17:07:30Z",
+      "side": 1,
+      "message": "This has been changed",
+      "parentUuid": "20c06cf4_bf7e0e9d",
+      "range": {
+        "startLine": 50,
+        "startChar": 12,
+        "endLine": 52,
+        "endChar": 96
+      },
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "82a0e351_3d007663",
@@ -351,6 +399,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75ae7ddb_19cc4478",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-25T17:07:30Z",
+      "side": 1,
+      "message": "I understand your concern and I have changed this: now the default ROADM equalization is set up to power -20dBm if no equalization is present in the config file. this is done in th init method",
+      "parentUuid": "82a0e351_3d007663",
+      "range": {
+        "startLine": 97,
+        "startChar": 29,
+        "endLine": 97,
+        "endChar": 33
+      },
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32e6aa23_6aa03be7",
@@ -364,6 +436,30 @@
       "writtenOn": "2022-02-18T14:10:58Z",
       "side": 1,
       "message": "I\u0027m very confused by this. Where is the \"general one from SI\" retrieved? Do you mean from Roadm in the eqpt config rather than SI? Also, this sounds similar to what the (misnamed?) merge_amplifier_restrictions function does. I think this whole code part is very difficult to read and understand.",
+      "range": {
+        "startLine": 457,
+        "startChar": 16,
+        "endLine": 459,
+        "endChar": 69
+      },
+      "revId": "f9ace0f8f9cb93bc0b352e53d44a89a529781bd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27b63c5e_2af66e92",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-25T17:07:30Z",
+      "side": 1,
+      "message": "the merge_equalization removes the default values from ROADM equipment if the element config already contains one equalization.\nI have rewritten the code and added comments to make this clearer",
+      "parentUuid": "32e6aa23_6aa03be7",
       "range": {
         "startLine": 457,
         "startChar": 16,
