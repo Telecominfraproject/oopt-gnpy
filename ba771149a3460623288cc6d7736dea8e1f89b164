@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27e47461_0e701aa3",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-25T17:08:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b518260_c2202a7f",
+      "range": {
+        "startLine": 240,
+        "startChar": 8,
+        "endLine": 240,
+        "endChar": 74
+      },
+      "revId": "ba771149a3460623288cc6d7736dea8e1f89b164",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8cbcb82_794c3277",
@@ -47,6 +71,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6eded707_c1883f5a",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-25T17:08:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8cbcb82_794c3277",
+      "range": {
+        "startLine": 249,
+        "startChar": 18,
+        "endLine": 249,
+        "endChar": 23
+      },
+      "revId": "ba771149a3460623288cc6d7736dea8e1f89b164",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5bcfd2c1_82b58ad9",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-02-16T14:16:36Z",
       "side": 1,
       "message": "The last comma is a bit unnecessary and makes the output harder to read. Maybe instead:\n\n text \u003d \u0027, \u0027.join([f\u0027{label}: {value:.2f}\u0027 for label, value in summary.items()])",
+      "range": {
+        "startLine": 252,
+        "startChar": 38,
+        "endLine": 252,
+        "endChar": 39
+      },
+      "revId": "ba771149a3460623288cc6d7736dea8e1f89b164",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68f37274_4c82bdc4",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-25T17:08:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5bcfd2c1_82b58ad9",
       "range": {
         "startLine": 252,
         "startChar": 38,
