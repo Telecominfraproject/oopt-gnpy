@@ -34,6 +34,24 @@
       "parentUuid": "447cd3e8_428e6f61",
       "revId": "f21d9c8fa860df6ecfa4626b17355e6c06953edf",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cf6b15a_b720a134",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-25T17:10:26Z",
+      "side": 1,
+      "message": "Can I close this one ?",
+      "parentUuid": "b6fefdc3_1af13c7b",
+      "revId": "f21d9c8fa860df6ecfa4626b17355e6c06953edf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
