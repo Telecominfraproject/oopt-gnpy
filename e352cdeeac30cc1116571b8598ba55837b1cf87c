@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e414559b_5ad37a4f",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 29
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-25T17:09:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75f8e419_bc2a8b7b",
+      "range": {
+        "startLine": 204,
+        "startChar": 15,
+        "endLine": 204,
+        "endChar": 22
+      },
+      "revId": "e352cdeeac30cc1116571b8598ba55837b1cf87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4bc1f35c_a91fadcf",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-02-15T21:23:19Z",
       "side": 1,
       "message": "spelling",
+      "range": {
+        "startLine": 240,
+        "startChar": 15,
+        "endLine": 240,
+        "endChar": 21
+      },
+      "revId": "e352cdeeac30cc1116571b8598ba55837b1cf87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c646c34_53a622c1",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 29
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-25T17:09:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4bc1f35c_a91fadcf",
       "range": {
         "startLine": 240,
         "startChar": 15,
@@ -70,6 +118,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f54330e6_6f810058",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 29
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-25T17:09:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "15aef598_6150e80a",
+      "range": {
+        "startLine": 284,
+        "startChar": 8,
+        "endLine": 284,
+        "endChar": 13
+      },
+      "revId": "e352cdeeac30cc1116571b8598ba55837b1cf87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0e7bc16_5160333c",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-02-15T21:23:19Z",
       "side": 1,
       "message": "Note that the .keys() part is redundant here.",
+      "range": {
+        "startLine": 286,
+        "startChar": 30,
+        "endLine": 286,
+        "endChar": 37
+      },
+      "revId": "e352cdeeac30cc1116571b8598ba55837b1cf87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d999268_dfbebc40",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 29
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-25T17:09:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0e7bc16_5160333c",
       "range": {
         "startLine": 286,
         "startChar": 30,
@@ -118,6 +214,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5c1c8e2c_0610658e",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 29
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-25T17:09:13Z",
+      "side": 1,
+      "message": "I would really prefer to preserve consistency between running spectrum with the SI in eqpt_config and using the -spectrum option: entering same SI in both places should end up with the same spectrum. So either we keep this non intuitive starting, or we change the automatic_nch and historic numbering.\nI would prefer this option.",
+      "parentUuid": "ec702729_30517a01",
+      "range": {
+        "startLine": 288,
+        "startChar": 22,
+        "endLine": 288,
+        "endChar": 106
+      },
+      "revId": "e352cdeeac30cc1116571b8598ba55837b1cf87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a79750f1_d4d10c46",
         "filename": "gnpy/tools/json_io.py",
         "patchSetId": 29
@@ -129,6 +249,30 @@
       "writtenOn": "2022-02-15T21:23:19Z",
       "side": 1,
       "message": "This looks like it could be more naturally implemented as a for loop:\n\n for current_freq in range(part[\u0027f_min\u0027] + part[\u0027slot_width\u0027],\n                           part[\u0027f_max\u0027] + part[\u0027slot_width\u0027],\n                           part[\u0027slot_width\u0027]):",
+      "range": {
+        "startLine": 299,
+        "startChar": 12,
+        "endLine": 299,
+        "endChar": 48
+      },
+      "revId": "e352cdeeac30cc1116571b8598ba55837b1cf87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4834e88e_0f79eb01",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 29
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-25T17:09:13Z",
+      "side": 1,
+      "message": "range does not with float steps. I used numpy.arange instead. max limit for the range should not be part[\u0027f_max\u0027] + part[\u0027slot_width\u0027], because this may end up with upper freq above f_max if f_max is not aligned with the slot_width. eg with {\u0027f_min\u0027: 4, \u0027f_max\u0027: 9, \u0027slot_width\u0027: 1.5}\ngives freqs: 5.5, 7.0, 8.5, 10.0. Instead I used the max freq multiple of slot_width.",
+      "parentUuid": "a79750f1_d4d10c46",
       "range": {
         "startLine": 299,
         "startChar": 12,
