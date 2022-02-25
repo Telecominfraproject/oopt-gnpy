@@ -153,6 +153,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd9bcb40_e98c221d",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-25T17:11:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc60effe_97be6949",
+      "range": {
+        "startLine": 293,
+        "startChar": 22,
+        "endLine": 293,
+        "endChar": 23
+      },
+      "revId": "d5023ef2b846b5adf3fac17514a2e9157754582b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a21671bc_334ae8e8",
