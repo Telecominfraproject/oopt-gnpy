@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5a1f981_d35094dd",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-26T12:50:33Z",
+      "side": 1,
+      "message": "Just curious, why didn\u0027t you change the name here as well for consistency?",
+      "range": {
+        "startLine": 224,
+        "startChar": 13,
+        "endLine": 224,
+        "endChar": 34
+      },
+      "revId": "5462ff00a85a821474c595d50060881c7b1e9bbf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "716cf14e_011466ae",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-26T12:50:33Z",
+      "side": 1,
+      "message": "Same comment as in other patches. It\u0027s simpler to write:\n\nper_degree_pch \u003d self.per_degree_pch_out_db.get(degree, self.ref_pch_out_dbm)\n\n(I know this was not introduced in this patch but why not change it when touching the code anyway.)",
+      "range": {
+        "startLine": 261,
+        "startChar": 8,
+        "endLine": 262,
+        "endChar": 77
+      },
+      "revId": "5462ff00a85a821474c595d50060881c7b1e9bbf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
