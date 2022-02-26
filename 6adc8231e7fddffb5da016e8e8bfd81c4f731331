@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56b6201b_e7caa71a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-26T13:36:07Z",
+      "side": 1,
+      "message": "The commit message is a bit confusing:\n\n1. What does the title refer to? What it this ref_power being changed?\n2. The text indicates that ref_carrier includes roll-off and slot-width, while currently it only includes baudrate, right?",
+      "revId": "6adc8231e7fddffb5da016e8e8bfd81c4f731331",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c88ff3b_3b3efe1c",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-26T13:36:07Z",
+      "side": 1,
+      "message": "I still don\u0027t see what is the difference between p_span0 and ref_carrier[\u0027req_power\u0027].",
+      "revId": "6adc8231e7fddffb5da016e8e8bfd81c4f731331",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
