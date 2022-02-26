@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38c0ddc4_1c91d0ac",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-26T13:13:34Z",
+      "side": 1,
+      "message": "It\u0027s not obvious to me that keeping the same differences is the right thing to do in this case. Do you think that is how a real ROADM normally operates?",
+      "range": {
+        "startLine": 284,
+        "startChar": 8,
+        "endLine": 289,
+        "endChar": 59
+      },
+      "revId": "f1b58633622034edb80f15d9b6ede1f6f6c16923",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}

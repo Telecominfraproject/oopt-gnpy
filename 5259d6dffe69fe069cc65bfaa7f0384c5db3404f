@@ -123,6 +123,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1dbe946_3c1e92bb",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-26T13:13:34Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "747b4a8a_bdf47065",
+      "range": {
+        "startLine": 669,
+        "startChar": 8,
+        "endLine": 670,
+        "endChar": 83
+      },
+      "revId": "5259d6dffe69fe069cc65bfaa7f0384c5db3404f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94583e27_1994d543",
@@ -208,6 +232,30 @@
       "side": 1,
       "message": "I think the sortingquestion is solved, but not the question on __add__ method: Do you agree to keep the method ?",
       "parentUuid": "efc0f0e2_76b16f16",
+      "range": {
+        "startLine": 208,
+        "startChar": 11,
+        "endLine": 209,
+        "endChar": 112
+      },
+      "revId": "5259d6dffe69fe069cc65bfaa7f0384c5db3404f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df302e66_60ef85f8",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-26T13:13:34Z",
+      "side": 1,
+      "message": "In general I prefer not to add code until it\u0027s needed but I\u0027m ok with keeping this.",
+      "parentUuid": "90cf0d30_e070ceb8",
       "range": {
         "startLine": 208,
         "startChar": 11,
