@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "840364a3_2a06518e",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 38
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-26T13:47:49Z",
+      "side": 1,
+      "message": "Now index is not used so I think it can be removed.",
+      "range": {
+        "startLine": 287,
+        "startChar": 8,
+        "endLine": 287,
+        "endChar": 13
+      },
+      "revId": "1d05556f9165385a2fb42456f909d17a648b0167",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
