@@ -52,6 +52,24 @@
       "parentUuid": "b6fefdc3_1af13c7b",
       "revId": "f21d9c8fa860df6ecfa4626b17355e6c06953edf",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d5700fc_28789d02",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-02-26T13:27:12Z",
+      "side": 1,
+      "message": "It\u0027s possible to run a simulation without involving auto-design (not with the current transmission_main_example, I know, but in general). In this case, the SI in eqpt config is just a reference for the propagated spectrum, defined in a separate file, which can cause confusion. I\u0027m ok with keeping it like this for now but I think we should think more carefully about how to structure this in the new yang definitions.",
+      "parentUuid": "2cf6b15a_b720a134",
+      "revId": "f21d9c8fa860df6ecfa4626b17355e6c06953edf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
