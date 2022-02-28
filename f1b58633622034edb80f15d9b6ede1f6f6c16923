@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e77950b3_f80d402e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-28T07:59:21Z",
+      "side": 1,
+      "message": "Thanks !",
+      "revId": "f1b58633622034edb80f15d9b6ede1f6f6c16923",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38c0ddc4_1c91d0ac",
@@ -14,6 +31,30 @@
       "writtenOn": "2022-02-26T13:13:34Z",
       "side": 1,
       "message": "It\u0027s not obvious to me that keeping the same differences is the right thing to do in this case. Do you think that is how a real ROADM normally operates?",
+      "range": {
+        "startLine": 284,
+        "startChar": 8,
+        "endLine": 289,
+        "endChar": 59
+      },
+      "revId": "f1b58633622034edb80f15d9b6ede1f6f6c16923",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bcd5142_656b9051",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-02-28T07:59:21Z",
+      "side": 1,
+      "message": "I think the maintaining the power ratio between channels is prioritary for this equalization. But I might be wrong. What do you think should be the behaviour in this case ?",
+      "parentUuid": "38c0ddc4_1c91d0ac",
       "range": {
         "startLine": 284,
         "startChar": 8,
