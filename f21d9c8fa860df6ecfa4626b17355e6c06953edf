@@ -70,6 +70,24 @@
       "parentUuid": "2cf6b15a_b720a134",
       "revId": "f21d9c8fa860df6ecfa4626b17355e6c06953edf",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "199a3a51_a77b8291",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-03-02T16:31:04Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3d5700fc_28789d02",
+      "revId": "f21d9c8fa860df6ecfa4626b17355e6c06953edf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
