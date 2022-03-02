@@ -22,6 +22,30 @@
       },
       "revId": "1d05556f9165385a2fb42456f909d17a648b0167",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a8362d3_f2f84d3d",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 38
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-03-02T17:18:58Z",
+      "side": 1,
+      "message": "index is used for label creation",
+      "parentUuid": "840364a3_2a06518e",
+      "range": {
+        "startLine": 287,
+        "startChar": 8,
+        "endLine": 287,
+        "endChar": 13
+      },
+      "revId": "1d05556f9165385a2fb42456f909d17a648b0167",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
