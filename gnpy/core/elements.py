@@ -26,7 +26,7 @@ from scipy.constants import h, c
 from scipy.interpolate import interp1d
 from collections import namedtuple
 
-from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum
+from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, watt2dbm
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational
 from gnpy.core.science_utils import NliSolver, RamanSolver
 from gnpy.core.info import SpectralInformation
@@ -647,7 +647,7 @@ class Edfa(_Node):
 
         self.nch = spectral_info.number_of_channels
         pin = spectral_info.signal + spectral_info.ase + spectral_info.nli
-        self.pin_db = lin2db(sum(pin * 1e3))
+        self.pin_db = watt2dbm(sum(pin))
         # The following should be changed when we have the new spectral information including slot widths.
         # For now, with homogeneous spectrum, we can calculate it as the difference between neighbouring channels.
         self.slot_width = self.channel_freq[1] - self.channel_freq[0]
@@ -660,15 +660,14 @@ class Edfa(_Node):
             self.effective_gain = self.target_pch_out_db - pref.p_spani
 
         """check power saturation and correct effective gain & power accordingly:"""
+        # Compute the saturation accounting for actual power at the input of the amp
         self.effective_gain = min(
             self.effective_gain,
-            self.params.p_max - (pref.p_spani + pref.neq_ch)
+            self.params.p_max - self.pin_db
         )
-        #print(self.uid, self.effective_gain, self.operational.gain_target)
         self.effective_pch_out_db = round(pref.p_spani + self.effective_gain, 2)
 
         """check power saturation and correct target_gain accordingly:"""
-        #print(self.uid, self.effective_gain, self.pin_db, pref.p_spani)
         self.nf = self._calc_nf()
         self.gprofile = self._gain_profile(pin)
 
