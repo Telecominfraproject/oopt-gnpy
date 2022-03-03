@@ -297,19 +297,19 @@ Fiber          fiber (Loudeac → Lorient_KMA)-F054
   pch out (dBm): -26.82
 Edfa west edfa in Lorient_KMA to Loudeac
   type_variety:           test
-  effective gain(dB):     28.00
+  effective gain(dB):     27.99
   (before att_in and before output VOA)
   noise figure (dB):      5.76
   (including att_in)
   pad att_in (dB):        0.00
   Power In (dBm):         -6.99
-  Power Out (dBm):        21.04
+  Power Out (dBm):        21.03
   Delta_P (dB):           -1.82
   target pch (dBm):       1.18
-  effective pch (dBm):    1.18
+  effective pch (dBm):    1.17
   output VOA (dB):        0.00
 Roadm roadm Lorient_KMA
-  effective loss (dB):  21.18
+  effective loss (dB):  21.17
   pch out (dBm):        -20.00
 Transceiver trx Lorient_KMA
   GSNR (0.1nm, dB):          23.94
