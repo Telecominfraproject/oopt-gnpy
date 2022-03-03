@@ -4,11 +4,12 @@
 # @Date:   2018-02-02 14:06:55
 
 from numpy import zeros, array
-from gnpy.core.elements import Transceiver, Edfa
-from gnpy.core.utils import automatic_fmax, lin2db, db2lin, merge_amplifier_restrictions
-from gnpy.core.info import create_input_spectral_information, Pref
+from numpy.testing import assert_allclose
+from gnpy.core.elements import Transceiver, Edfa, Fiber
+from gnpy.core.utils import automatic_fmax, lin2db, db2lin, merge_amplifier_restrictions, dbm2watt, watt2dbm
+from gnpy.core.info import create_input_spectral_information
 from gnpy.core.network import build_network
-from gnpy.tools.json_io import load_network, load_equipment
+from gnpy.tools.json_io import load_network, load_equipment, network_from_json
 from pathlib import Path
 import pytest
 
@@ -195,3 +196,91 @@ def test_ase_noise(gain, si, setup_trx, bw):
     si = trx(si)
     osnr = trx.osnr_ase_01nm[0]
     assert pytest.approx(osnr_expected, abs=0.01) == osnr
+
+
+@pytest.mark.parametrize('delta_p', [0, None, 2])
+@pytest.mark.parametrize('tilt_target', [0, -4])
+def test_amp_behaviour(tilt_target, delta_p):
+    """Check that amp correctly applies saturation, when there is tilt
+    """
+    json_data = {
+        "elements": [{
+            "uid": "Edfa1",
+            "type": "Edfa",
+            "type_variety": "test",
+            "operational": {
+                "delta_p": delta_p,
+                "gain_target": 20,
+                "tilt_target": tilt_target,
+                "out_voa": 0
+            }
+        },
+        {
+            "uid": "Span1",
+            "type": "Fiber",
+            "type_variety": "SSMF",
+            "params": {
+                "length": 100,
+                "loss_coef": 0.2,
+                "length_units": "km"
+            }
+        }],
+        "connections": []
+    }
+    equipment = load_equipment(eqpt_library)
+    network = network_from_json(json_data, equipment)
+    edfa = [n for n in network.nodes() if isinstance(n, Edfa)][0]
+    fiber = [n for n in network.nodes() if isinstance(n, Fiber)][0]
+    fiber.params.con_in = 0
+    fiber.params.con_out = 0
+    si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12, roll_off=0.15, baud_rate=64e9, power=0.001,
+                                           spacing=75e9, tx_osnr=None)
+    si = fiber(si)
+    total_sig_powerin = sum(si.signal)
+    sig_in = lin2db(si.signal)
+    si = edfa(si)
+    sig_out = lin2db(si.signal)
+    total_sig_powerout = sum(si.signal)
+    gain = lin2db(total_sig_powerout / total_sig_powerin)
+    expected_total_power_out = total_sig_powerin * 100 * db2lin(delta_p) if delta_p else total_sig_powerin * 100
+    assert pytest.approx(total_sig_powerout, abs=1e-6) == min(expected_total_power_out, dbm2watt(21))
+    assert pytest.approx(edfa.effective_gain, 1e-5) == gain
+    assert watt2dbm(sum(si.signal + si.nli + si.ase)) <= 21.01
+    # If there is no tilt on the amp: the gain is identical for all carriers
+    if tilt_target == 0:
+        assert_allclose(sig_in + gain, sig_out, rtol=1e-13)
+    else:
+        if delta_p != 2:
+            expected_sig_out = [
+                -32.00528446, -31.93540153, -31.86553457, -31.79417185, -31.71902448,
+                -31.64239254, -31.56530301, -31.48774555, -31.41467483, -31.35972408,
+                -31.3228563, -31.2860141, -31.24728134, -31.20085609, -31.14670771,
+                -31.08701662, -31.01340951, -30.93429209, -30.87790607, -30.8441228,
+                -30.81604852, -30.78823862, -30.76069954, -30.73318071, -30.70493003,
+                -30.67367373, -30.63939896, -30.60177255, -30.55584627, -30.50664457,
+                -30.43425402, -30.33847179, -30.24469886, -30.18219572, -30.15075447,
+                -30.11933483, -30.08775449, -30.05546819, -30.0224878, -29.98953005,
+                -29.95660056, -29.92368959, -29.88546294, -29.84192447, -29.79236976,
+                -29.72451292, -29.63849315, -29.54786724, -29.44579754, -29.33922625,
+                -29.23274599, -29.10287821, -28.91423877, -28.70202993, -28.50669002,
+                -28.3282338, -28.15893418, -28.00904652, -27.87862787, -27.76314047,
+                -27.68521194, -27.62258449, -27.58074654]
+
+        else:
+            expected_sig_out = [
+                -30.00528446, -29.93540153, -29.86553457, -29.79417185, -29.71902448,
+                -29.64239254, -29.56530301, -29.48774555, -29.41467483, -29.35972408,
+                -29.3228563, -29.2860141, -29.24728134, -29.20085609, -29.14670771,
+                -29.08701662, -29.01340951, -28.93429209, -28.87790607, -28.8441228,
+                -28.81604852, -28.78823862, -28.76069954, -28.73318071, -28.70493003,
+                -28.67367373, -28.63939896, -28.60177255, -28.55584627, -28.50664457,
+                -28.43425402, -28.33847179, -28.24469886, -28.18219572, -28.15075447,
+                -28.11933483, -28.08775449, -28.05546819, -28.0224878, -27.98953005,
+                -27.95660056, -27.92368959, -27.88546294, -27.84192447, -27.79236976,
+                -27.72451292, -27.63849315, -27.54786724, -27.44579754, -27.33922625,
+                -27.23274599, -27.10287821, -26.91423877, -26.70202993, -26.50669002,
+                -26.3282338, -26.15893418, -26.00904652, -25.87862787, -25.76314047,
+                -25.68521194, -25.62258449, -25.58074654]
+
+        print(sig_out)
+        assert_allclose(sig_out, expected_sig_out, rtol=1e-9)
