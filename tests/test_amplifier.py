@@ -7,7 +7,8 @@ from numpy import zeros, array
 from numpy.testing import assert_allclose
 from gnpy.core.elements import Transceiver, Edfa, Fiber
 from gnpy.core.utils import automatic_fmax, lin2db, db2lin, merge_amplifier_restrictions, dbm2watt, watt2dbm
-from gnpy.core.info import create_input_spectral_information
+from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information, Pref, \
+    ReferenceCarrier
 from gnpy.core.network import build_network
 from gnpy.tools.json_io import load_network, load_equipment, network_from_json
 from pathlib import Path
@@ -284,3 +285,52 @@ def test_amp_behaviour(tilt_target, delta_p):
 
         print(sig_out)
         assert_allclose(sig_out, expected_sig_out, rtol=1e-9)
+
+
+@pytest.mark.parametrize('delta_p', [0, None, 20])
+@pytest.mark.parametrize('base_power', [0, 20])
+@pytest.mark.parametrize('delta_pdb_per_channel',
+                         [[0, 1, 3, 0.5, -2],
+                          [0, 0, 0, 0, 0],
+                          [-2, -2, -2, -2, -2],
+                          [0, 2, -2, -5, 4],
+                          [0, 1, 3, 0.5, -2], ])
+def test_amp_saturation(delta_pdb_per_channel, base_power, delta_p):
+    """Check that amp correctly applies saturation
+    """
+    json_data = {
+        "elements": [{
+            "uid": "Edfa1",
+            "type": "Edfa",
+            "type_variety": "test",
+            "operational": {
+                "delta_p": delta_p,
+                "gain_target": 20,
+                "tilt_target": 0,
+                "out_voa": 0
+            }
+        }],
+        "connections": []
+    }
+    equipment = load_equipment(eqpt_library)
+    network = network_from_json(json_data, equipment)
+    edfa = [n for n in network.nodes()][0]
+    frequency = 193e12 + array([0, 50e9, 150e9, 225e9, 275e9])
+    slot_width = array([37.5e9, 50e9, 75e9, 50e9, 37.5e9])
+    baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
+    signal = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]) + array(delta_pdb_per_channel) + base_power)
+    ref_carrier = ReferenceCarrier(baud_rate=32e9)
+    pref = Pref(p_span0=0, p_spani=-20 + base_power, ref_carrier=ref_carrier)
+    si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
+                                               signal=signal, baud_rate=baud_rate, roll_off=0.15,
+                                               delta_pdb_per_channel=delta_pdb_per_channel,
+                                               tx_osnr=None, ref_power=pref)
+    total_sig_powerin = sum(si.signal)
+    sig_in = lin2db(si.signal)
+    si = edfa(si)
+    sig_out = lin2db(si.signal)
+    total_sig_powerout = sum(si.signal)
+    gain = lin2db(total_sig_powerout / total_sig_powerin)
+    assert watt2dbm(sum(si.signal + si.nli + si.ase)) <= 21.02
+    assert pytest.approx(edfa.effective_gain, 1e-13) == gain
+    assert_allclose(sig_in + gain, sig_out, rtol=1e-13)
