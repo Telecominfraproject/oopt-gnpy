@@ -16,6 +16,23 @@
       "message": "recheck",
       "revId": "0292a28013f0a8d0d7b37b8194448e51c7428156",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "899c1178_5d1b585e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-03-08T17:42:32Z",
+      "side": 1,
+      "message": "\u003e A new function is added to use requests specs based on transceivers\n\nWhat is meant by this? I see nothing related to transceivers in this commit.",
+      "revId": "0292a28013f0a8d0d7b37b8194448e51c7428156",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
