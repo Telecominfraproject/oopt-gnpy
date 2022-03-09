@@ -16,6 +16,29 @@
       "message": "\u003e With this change, we enable 3 equalizations (taht can be mixed)\n\u003e - power\n\u003e - power spectral density (psd)\n\u003e - user defined power delta\n\nI think this description is potentially misleading. The way I currently understand it is there are 2 equalization options (not 3): power and psd. In addition to that, a user can define a delta per channel which is applied for both power and psd options.",
       "revId": "22ed5574f656b53b8b63fee4d8204609a168c1db",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24165896_5a1824ae",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 39
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-03-09T10:02:35Z",
+      "side": 1,
+      "message": "All of these should probably check explicitly for None. Otherwise, this will be false if target_pch_out_dbm is set to 0 dBm.",
+      "range": {
+        "startLine": 279,
+        "startChar": 8,
+        "endLine": 279,
+        "endChar": 34
+      },
+      "revId": "22ed5574f656b53b8b63fee4d8204609a168c1db",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
