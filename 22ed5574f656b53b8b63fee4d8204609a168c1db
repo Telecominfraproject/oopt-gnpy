@@ -39,6 +39,29 @@
       },
       "revId": "22ed5574f656b53b8b63fee4d8204609a168c1db",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77b880a5_1a38adde",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 39
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-03-09T10:47:07Z",
+      "side": 1,
+      "message": "The commit message says that mixing equalizations is supported so that e.g. the default is power but you can specify psd for one specific degree. However, this code doesn\u0027t work like that. If the general target_psd_out_mWperGHz is not set, it will not use psd for any degree even if it is defined. What is the intended functionality?",
+      "range": {
+        "startLine": 282,
+        "startChar": 8,
+        "endLine": 284,
+        "endChar": 66
+      },
+      "revId": "22ed5574f656b53b8b63fee4d8204609a168c1db",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
