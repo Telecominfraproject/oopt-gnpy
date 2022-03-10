@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bdb0b878_5343d395",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 39
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-03-10T08:30:45Z",
+      "side": 1,
+      "message": "ref_baud_rate is only used in one place so I think this assignment to a separate variable is unnecessary.",
+      "range": {
+        "startLine": 278,
+        "startChar": 8,
+        "endLine": 278,
+        "endChar": 67
+      },
+      "revId": "22ed5574f656b53b8b63fee4d8204609a168c1db",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "24165896_5a1824ae",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 39
