@@ -33,6 +33,29 @@
       "message": "recheck",
       "revId": "d1a9516bcb3d20e7a5d59125c41694f83dee77c9",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7124b628_b123606e",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-03-10T13:11:06Z",
+      "side": 1,
+      "message": "This is no longer correct when psd is used for ROADM equalization. We need to take into account that channels with different baudrates will have different input power.",
+      "range": {
+        "startLine": 683,
+        "startChar": 8,
+        "endLine": 683,
+        "endChar": 83
+      },
+      "revId": "d1a9516bcb3d20e7a5d59125c41694f83dee77c9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
