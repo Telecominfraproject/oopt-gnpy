@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "48c46ca8_dfb4a109",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 39
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-03-11T15:24:55Z",
+      "side": 1,
+      "message": "After having used and thought about this a bit, I feel like this way of indicating equalization option, i.e. by which parameter is set (target_pch_out_db vs. target_psd_out_mWperGHz) adds unnecessary complexity to the code. I think it would be simpler to add a separate enum attribute indicating equalization option and always specify target in dBm (mW/GHz requires users to do extra calculations and is more difficult to think about). It would also be easier to extend to other equalization options in the future (psd by slotwidth, etc.). Anyway, something for discussion...",
+      "revId": "22ed5574f656b53b8b63fee4d8204609a168c1db",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bdb0b878_5343d395",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 39
