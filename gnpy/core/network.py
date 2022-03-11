@@ -26,8 +26,7 @@ def edfa_nf(gain_target, variety_type, equipment):
         }
     )
     amp.pin_db = 0
-    amp.nch = 88
-    amp.slot_width = 50e9
+    amp.total_occupied_spectrum_width = 4.4e12
     return amp._calc_nf(True)
 
 

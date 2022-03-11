@@ -563,7 +563,7 @@ class Edfa(_Node):
         self.nf = None  # dB edfa nf at operational.gain_target
         self.gprofile = None
         self.pin_db = None
-        self.nch = None
+        self.total_occupied_spectrum_width = None
         self.pout_db = None
         self.target_pch_out_db = None
         self.effective_pch_out_db = None
@@ -637,12 +637,9 @@ class Edfa(_Node):
         amplifier_freq = arrange_frequencies(len(self.params.nf_ripple), self.params.f_min, self.params.f_max)  # Hz
         self.interpol_nf_ripple = interp(spectral_info.frequency, amplifier_freq, self.params.nf_ripple)
 
-        self.nch = spectral_info.number_of_channels
+        self.total_occupied_spectrum_width = sum(spectral_info.slot_width)
         pin = spectral_info.signal + spectral_info.ase + spectral_info.nli
         self.pin_db = lin2db(sum(pin * 1e3))
-        # The following should be changed when we have the new spectral information including slot widths.
-        # For now, with homogeneous spectrum, we can calculate it as the difference between neighbouring channels.
-        self.slot_width = self.channel_freq[1] - self.channel_freq[0]
 
         """in power mode: delta_p is defined and can be used to calculate the power target
         This power target is used calculate the amplifier gain"""
@@ -682,14 +679,14 @@ class Edfa(_Node):
             nf_avg = nf_model.nf0
         elif type_def == 'openroadm':
             # OpenROADM specifies OSNR vs. input power per channel for 50 GHz slot width so we
-            # scale it to 50 GHz based on actual slot width.
-            pin_ch_50GHz = self.pin_db - lin2db(self.nch) + lin2db(50e9 / self.slot_width)
+            # calculate this power level based on total input power and total occupied spectrum.
+            pin_ch_50GHz = self.pin_db + lin2db(50e9 / self.total_occupied_spectrum_width)
             # model OSNR = f(Pin per 50 GHz channel)
             nf_avg = pin_ch_50GHz - polyval(nf_model.nf_coef, pin_ch_50GHz) + 58
         elif type_def == 'openroadm_preamp':
             # OpenROADM specifies OSNR vs. input power per channel for 50 GHz slot width so we
-            # scale it to 50 GHz based on actual slot width.
-            pin_ch_50GHz = self.pin_db - lin2db(self.nch) + lin2db(50e9 / self.slot_width)
+            # calculate this power level based on total input power and total occupied spectrum.
+            pin_ch_50GHz = self.pin_db + lin2db(50e9 / self.total_occupied_spectrum_width)
             # model OSNR = f(Pin per 50 GHz channel)
             nf_avg = pin_ch_50GHz - min((4 * pin_ch_50GHz + 275) / 7, 33) + 58
         elif type_def == 'openroadm_booster':
