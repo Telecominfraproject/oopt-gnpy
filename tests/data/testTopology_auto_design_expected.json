@@ -240,7 +240,6 @@
           "east edfa in Rennes_STA to Stbrieuc": -20,
           "east edfa in Rennes_STA to Ploermel": -20
         }
-
       },
       "metadata": {
         "location": {
@@ -310,7 +309,7 @@
           ],
           "booster_variety_list": []
         },
-        "per_degree_pch_out_db":{
+        "per_degree_pch_out_db": {
           "east edfa in b to a": -20,
           "east edfa in b to f": -20
         }
@@ -333,7 +332,7 @@
           "preamp_variety_list": [],
           "booster_variety_list": []
         },
-        "per_degree_pch_out_db":{
+        "per_degree_pch_out_db": {
           "east edfa in c to a": -20,
           "east edfa in c to d": -20,
           "east edfa in c to f": -20
@@ -430,7 +429,7 @@
         "per_degree_pch_out_db": {
           "east edfa in g to e": -20,
           "east edfa in g to h": -20
-         }
+        }
       },
       "metadata": {
         "location": {
@@ -1593,7 +1592,7 @@
       "type": "Edfa",
       "type_variety": "std_medium_gain",
       "operational": {
-        "gain_target": 18.5,
+        "gain_target": 13.177288,
         "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
@@ -2235,7 +2234,7 @@
       "type": "Edfa",
       "type_variety": "std_low_gain",
       "operational": {
-        "gain_target": 6.5,
+        "gain_target": 11.822712,
         "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
@@ -2292,7 +2291,7 @@
       "type": "Edfa",
       "type_variety": "std_low_gain",
       "operational": {
-        "gain_target": 13.82,
+        "gain_target": 13.822712,
         "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
@@ -2311,7 +2310,7 @@
       "type": "Edfa",
       "type_variety": "test_fixed_gain",
       "operational": {
-        "gain_target": 15.18,
+        "gain_target": 15.177288,
         "delta_p": null,
         "tilt_target": 0,
         "out_voa": 0
