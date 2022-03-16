@@ -6,13 +6,13 @@ Power mode is set to True
     a power reduction of -1.82 is applied
 
 [1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Lannion_CAS to Stbrieuc is above user specified amplifier std_low_gain
-max flat gain: 16dB ; required gain: 23.0dB. Please check amplifier type.
+max flat gain: 16dB ; required gain: 21.18dB. Please check amplifier type.
 [1;31;40mWARNING:[0m target gain and power in node west edfa in Rennes_STA to Stbrieuc
      is beyond all available amplifiers capabilities and/or extended_gain_range:
     a power reduction of -1.82 is applied
 
 [1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Lannion_CAS to Morlaix is above user specified amplifier std_low_gain
-max flat gain: 16dB ; required gain: 23.5dB. Please check amplifier type.
+max flat gain: 16dB ; required gain: 21.18dB. Please check amplifier type.
 [1;31;40mWARNING:[0m target gain and power in node west edfa in Brest_KLA to Morlaix
      is beyond all available amplifiers capabilities and/or extended_gain_range:
     a power reduction of -1.82 is applied
@@ -22,7 +22,7 @@ max flat gain: 16dB ; required gain: 23.5dB. Please check amplifier type.
     a power reduction of -1.82 is applied
 
 [1;31;40mWARNING[0m: WARNING: effective gain in Node west edfa in Lannion_CAS to Corlay is above user specified amplifier test
-max flat gain: 25dB ; required gain: 29.82dB. Please check amplifier type.
+max flat gain: 25dB ; required gain: 28.0dB. Please check amplifier type.
 [1;31;40mWARNING:[0m target gain and power in node east edfa in Lorient_KMA to Vannes_KBE
      is beyond all available amplifiers capabilities and/or extended_gain_range:
     a power reduction of -1.82 is applied
@@ -88,7 +88,7 @@ max flat gain: 25dB ; required gain: 29.82dB. Please check amplifier type.
     a power reduction of -1.82 is applied
 
 [1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Brest_KLA to Quimper is above user specified amplifier std_low_gain
-max flat gain: 16dB ; required gain: 23.0dB. Please check amplifier type.
+max flat gain: 16dB ; required gain: 21.18dB. Please check amplifier type.
 [1;31;40mWARNING:[0m target gain and power in node east edfa in Quimper to Lorient_KMA
      is beyond all available amplifiers capabilities and/or extended_gain_range:
     a power reduction of -1.82 is applied
@@ -264,8 +264,8 @@ Edfa east edfa in Lannion_CAS to Corlay
   pad att_in (dB):        0.00
   Power In (dBm):         -0.18
   Power Out (dBm):        21.01
-  Delta_P (dB):           0.00
-  target pch (dBm):       3.00
+  Delta_P (dB):           -1.82
+  target pch (dBm):       1.18
   effective pch (dBm):    1.18
   actual pch out (dBm):   1.18
   output VOA (dB):        0.00
@@ -301,10 +301,10 @@ Fiber          fiber (Loudeac → Lorient_KMA)-F054
   reference pch out (dBm):     -26.82
   actual pch out (dBm):        -26.81
 Edfa west edfa in Lorient_KMA to Loudeac
-  type_variety:           test
+  type_variety:           std_medium_gain
   effective gain(dB):     27.99
   (before att_in and before output VOA)
-  noise figure (dB):      5.76
+  noise figure (dB):      5.98
   (including att_in)
   pad att_in (dB):        0.00
   Power In (dBm):         -6.99
@@ -319,16 +319,16 @@ Roadm roadm Lorient_KMA
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
 Transceiver trx Lorient_KMA
-  GSNR (0.1nm, dB):          23.94
-  GSNR (signal bw, dB):      19.85
-  OSNR ASE (0.1nm, dB):      24.29
-  OSNR ASE (signal bw, dB):  20.20
+  GSNR (0.1nm, dB):          23.78
+  GSNR (signal bw, dB):      19.69
+  OSNR ASE (0.1nm, dB):      24.11
+  OSNR ASE (signal bw, dB):  20.03
   CD (ps/nm):                2171.00
   PMD (ps):                  0.46
   PDL (dB):                  0.00
 
 Transmission result for input power = 3.00 dBm:
-  Final GSNR (0.1 nm): [1;36;40m23.94 dB[0m
+  Final GSNR (0.1 nm): [1;36;40m23.78 dB[0m
 
 (Invalid source node 'lannion' replaced with trx Lannion_CAS)
 
