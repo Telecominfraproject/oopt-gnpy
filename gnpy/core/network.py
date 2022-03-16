@@ -54,15 +54,8 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
     # power attribut include power AND gain limitations
     edfa_list = [Edfa_list(
         variety=edfa_variety,
-        power=min(
-            pin
-            + edfa.gain_flatmax
-            + TARGET_EXTENDED_GAIN,
-            edfa.p_max
-        )
-        - power_target,
-        gain_min=gain_target + 3
-        - edfa.gain_min,
+        power=min(pin + edfa.gain_flatmax + TARGET_EXTENDED_GAIN, edfa.p_max) - power_target,
+        gain_min=gain_target + 3 - edfa.gain_min,
         nf=edfa_nf(gain_target, edfa_variety, equipment))
         for edfa_variety, edfa in edfa_dict.items()
         if ((edfa.allowed_for_design or restrictions is not None) and not edfa.raman)]
@@ -71,15 +64,8 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
     # do not allow extended gain min for Raman
     raman_list = [Edfa_list(
         variety=edfa_variety,
-        power=min(
-            pin
-            + edfa.gain_flatmax
-            + TARGET_EXTENDED_GAIN,
-            edfa.p_max
-        )
-        - power_target,
-        gain_min=gain_target
-        - edfa.gain_min,
+        power=min(pin + edfa.gain_flatmax + TARGET_EXTENDED_GAIN, edfa.p_max) - power_target,
+        gain_min=gain_target - edfa.gain_min,
         nf=edfa_nf(gain_target, edfa_variety, equipment))
         for edfa_variety, edfa in edfa_dict.items()
         if (edfa.allowed_for_design and edfa.raman)] \
@@ -126,13 +112,11 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
     #       =>chose the amp with the best NF among the acceptable ones:
     selected_edfa = min(acceptable_power_list, key=attrgetter('nf'))  # filter on NF
     # check what are the gain and power limitations of this amp
-    power_reduction = round(min(selected_edfa.power, 0), 2)
+    power_reduction = min(selected_edfa.power, 0)
     if power_reduction < -0.5:
-        print(
-            f'{ansi_escapes.red}WARNING:{ansi_escapes.reset} target gain and power in node {uid}\n \
-    is beyond all available amplifiers capabilities and/or extended_gain_range:\n\
-    a power reduction of {power_reduction} is applied\n'
-        )
+        print(f'{ansi_escapes.red}WARNING:{ansi_escapes.reset} target gain and power in node {uid}\n'
+              + '     is beyond all available amplifiers capabilities and/or extended_gain_range:\n'
+              + f'    a power reduction of {round(power_reduction, 2)} is applied\n')
 
     return selected_edfa.variety, power_reduction
 
@@ -313,6 +297,15 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
                     dp += power_reduction
                     gain_target += power_reduction
                 else:
+                    # Check power saturation also in this case
+                    p_max = equipment['Edfa'][node.params.type_variety].p_max
+                    if power_mode:
+                        power_reduction = min(0, p_max - (pref_total_db + dp))
+                    else:
+                        pout = pref_total_db + prev_dp - node_loss - prev_voa + gain_target
+                        power_reduction = min(0, p_max - pout)
+                    dp += power_reduction
+                    gain_target += power_reduction
                     if node.params.raman and not raman_allowed:
                         if isinstance(prev_node, elements.Fiber):
                             print(f'{ansi_escapes.red}WARNING{ansi_escapes.reset}: raman is used in node {node.uid}\n '
@@ -329,7 +322,7 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
                               f'WARNING: effective gain in Node {node.uid} is above user '
                               f'specified amplifier {node.params.type_variety}\n'
                               f'max flat gain: {equipment["Edfa"][node.params.type_variety].gain_flatmax}dB ; '
-                              f'required gain: {gain_target}dB. Please check amplifier type.')
+                              f'required gain: {round(gain_target, 2)}dB. Please check amplifier type.')
 
                 node.delta_p = dp if power_mode else None
                 node.effective_gain = gain_target
