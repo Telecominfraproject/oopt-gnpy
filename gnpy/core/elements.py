@@ -20,8 +20,8 @@ unique identifier and a printable name, and provide the :py:meth:`__call__` meth
 instance as a result.
 """
 
-from numpy import abs, array, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, exp, asarray, full,\
-    squeeze, zeros, append, flip, outer
+from numpy import abs, array, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, exp, atleast_1d, \
+    full, squeeze, zeros, append, flip, outer
 from scipy.constants import h, c
 from scipy.interpolate import interp1d
 from collections import namedtuple
@@ -386,7 +386,7 @@ class Fiber(_Node):
                           f'  pch out (dBm): {self.pch_out_db:.2f}'])
 
     def loss_coef_func(self, frequency):
-        frequency = asarray(frequency)
+        frequency = atleast_1d(frequency)
         if self.params.loss_coef.size > 1:
             try:
                 loss_coef = interp1d(self.params.f_loss_ref, self.params.loss_coef)(frequency)
