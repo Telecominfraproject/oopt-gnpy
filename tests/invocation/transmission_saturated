@@ -29,8 +29,8 @@ Edfa east edfa in Lannion_CAS to Corlay
   pad att_in (dB):        0.00
   Power In (dBm):         -0.18
   Power Out (dBm):        21.01
-  Delta_P (dB):           0.00
-  target pch (dBm):       3.00
+  Delta_P (dB):           -1.82
+  target pch (dBm):       1.18
   effective pch (dBm):    1.18
   actual pch out (dBm):   1.18
   output VOA (dB):        0.00
@@ -66,10 +66,10 @@ Fiber          fiber (Loudeac → Lorient_KMA)-F054
   reference pch out (dBm):     -26.82
   actual pch out (dBm):        -26.81
 Edfa west edfa in Lorient_KMA to Loudeac
-  type_variety:           test
+  type_variety:           std_medium_gain
   effective gain(dB):     27.99
   (before att_in and before output VOA)
-  noise figure (dB):      5.76
+  noise figure (dB):      5.98
   (including att_in)
   pad att_in (dB):        0.00
   Power In (dBm):         -6.99
@@ -84,17 +84,17 @@ Roadm roadm Lorient_KMA
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
 Transceiver trx Lorient_KMA
-  GSNR (0.1nm, dB):          23.93
-  GSNR (signal bw, dB):      19.85
-  OSNR ASE (0.1nm, dB):      24.29
-  OSNR ASE (signal bw, dB):  20.20
+  GSNR (0.1nm, dB):          23.77
+  GSNR (signal bw, dB):      19.69
+  OSNR ASE (0.1nm, dB):      24.11
+  OSNR ASE (signal bw, dB):  20.03
   CD (ps/nm):                2171.00
   PMD (ps):                  0.46
   PDL (dB):                  0.00
   Latency (ms):              0.64
 
 Transmission result for input power = 3.00 dBm:
-  Final GSNR (0.1 nm): [1;36;40m23.93 dB[0m
+  Final GSNR (0.1 nm): [1;36;40m23.77 dB[0m
 
 (Invalid source node 'lannion' replaced with trx Lannion_CAS)
 

@@ -8,7 +8,7 @@ WARNING  gnpy.core.network:network.py
 WARNING  gnpy.core.network:network.py 
 	WARNING: effective gain in Node east edfa in Lannion_CAS to Stbrieuc
 	is above user specified amplifier std_low_gain
-	max flat gain: 16dB ; required gain: 23.0dB. Please check amplifier type.
+	max flat gain: 16dB ; required gain: 21.18dB. Please check amplifier type.
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Rennes_STA to Stbrieuc
@@ -18,7 +18,7 @@ WARNING  gnpy.core.network:network.py
 WARNING  gnpy.core.network:network.py 
 	WARNING: effective gain in Node east edfa in Lannion_CAS to Morlaix
 	is above user specified amplifier std_low_gain
-	max flat gain: 16dB ; required gain: 23.5dB. Please check amplifier type.
+	max flat gain: 16dB ; required gain: 21.18dB. Please check amplifier type.
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Brest_KLA to Morlaix
@@ -33,7 +33,7 @@ WARNING  gnpy.core.network:network.py
 WARNING  gnpy.core.network:network.py 
 	WARNING: effective gain in Node west edfa in Lannion_CAS to Corlay
 	is above user specified amplifier test
-	max flat gain: 25dB ; required gain: 29.82dB. Please check amplifier type.
+	max flat gain: 25dB ; required gain: 28.0dB. Please check amplifier type.
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in Lorient_KMA to Vannes_KBE
@@ -118,7 +118,7 @@ WARNING  gnpy.core.network:network.py
 WARNING  gnpy.core.network:network.py 
 	WARNING: effective gain in Node east edfa in Brest_KLA to Quimper
 	is above user specified amplifier std_low_gain
-	max flat gain: 16dB ; required gain: 23.0dB. Please check amplifier type.
+	max flat gain: 16dB ; required gain: 21.18dB. Please check amplifier type.
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in Quimper to Lorient_KMA
