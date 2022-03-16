@@ -739,7 +739,12 @@ class Edfa(_Node):
         """in power mode: delta_p is defined and can be used to calculate the power target
         This power target is used calculate the amplifier gain"""
         pref = spectral_info.pref
-        if self.delta_p is not None:
+        if self.delta_p is not None and self.operational.delta_p is not None:
+            # use the user defined target
+            self.target_pch_out_db = round(self.operational.delta_p + pref.p_span0, 2)
+            self.effective_gain = self.target_pch_out_db - pref.p_spani
+        elif self.delta_p is not None:
+            # use the design target if no target were set
             self.target_pch_out_db = round(self.delta_p + pref.p_span0, 2)
             self.effective_gain = self.target_pch_out_db - pref.p_spani
 
