@@ -196,6 +196,8 @@ def transmission_main_example(args=None):
     trx_params = trx_mode_params(equipment)
     if args.power:
         trx_params['power'] = db2lin(float(args.power)) * 1e-3
+        # update also equipment:
+        equipment['Span']['default'].power_dbm = args.power
     params.update(trx_params)
     req = PathRequest(**params)
     if args.mixed_rate_spectrum_file:
