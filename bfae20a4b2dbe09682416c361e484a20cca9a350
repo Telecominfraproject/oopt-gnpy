@@ -16,6 +16,24 @@
       "message": "I think we also need to somehow make it possible to specify different tx_osnr and penalties per spectrum partition.",
       "revId": "bfae20a4b2dbe09682416c361e484a20cca9a350",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b160e87_92f910e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 41
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-03-18T16:42:45Z",
+      "side": 1,
+      "message": "OK I will add that",
+      "parentUuid": "7b1ddeca_7f0eef48",
+      "revId": "bfae20a4b2dbe09682416c361e484a20cca9a350",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
