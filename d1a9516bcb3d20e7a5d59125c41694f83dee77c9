@@ -56,6 +56,30 @@
       },
       "revId": "d1a9516bcb3d20e7a5d59125c41694f83dee77c9",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9253ea5_d7fd6bd3",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-03-18T16:31:38Z",
+      "side": 1,
+      "message": "OK: done in an additional separate commit (added prior to this one)",
+      "parentUuid": "7124b628_b123606e",
+      "range": {
+        "startLine": 683,
+        "startChar": 8,
+        "endLine": 683,
+        "endChar": 83
+      },
+      "revId": "d1a9516bcb3d20e7a5d59125c41694f83dee77c9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
