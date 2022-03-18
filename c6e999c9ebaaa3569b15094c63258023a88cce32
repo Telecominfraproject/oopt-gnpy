@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76602c0d_5e6d4a02",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-03-18T17:00:50Z",
+      "side": 1,
+      "message": "I don\u0027t think this makes any difference since build_network already takes this power as input explicitly (pref_ch_db is based on req.power which is based on args.power).",
+      "revId": "c6e999c9ebaaa3569b15094c63258023a88cce32",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
