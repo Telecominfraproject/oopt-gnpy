@@ -51,6 +51,24 @@
       "message": "I still don\u0027t see what is the difference between p_span0 and ref_carrier[\u0027req_power\u0027].",
       "revId": "6adc8231e7fddffb5da016e8e8bfd81c4f731331",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7954a434_8fd0be5c",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-03-18T16:40:34Z",
+      "side": 1,
+      "message": "There  is no difference except one in watt and the other in dBm. I remove it from the carrier, but I need it to initialize p_span0.",
+      "parentUuid": "2c88ff3b_3b3efe1c",
+      "revId": "6adc8231e7fddffb5da016e8e8bfd81c4f731331",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
