@@ -35,6 +35,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3298543_17a630e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-03-18T16:40:06Z",
+      "side": 1,
+      "message": "I meant baud rate associated with the intended transceivers specs... I changed this to be clearer",
+      "parentUuid": "899c1178_5d1b585e",
+      "revId": "0292a28013f0a8d0d7b37b8194448e51c7428156",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2943327_fb87376d",
@@ -48,6 +66,30 @@
       "writtenOn": "2022-03-08T21:47:06Z",
       "side": 1,
       "message": "Maybe it would be cleaner to add an initial_spectrum attribute to the PathRequest.__init__ method, set to None by default, and check for None here instead of hasattr.",
+      "range": {
+        "startLine": 355,
+        "startChar": 4,
+        "endLine": 355,
+        "endChar": 40
+      },
+      "revId": "0292a28013f0a8d0d7b37b8194448e51c7428156",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23b29a87_01d45b19",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 27
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-03-18T16:40:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2943327_fb87376d",
       "range": {
         "startLine": 355,
         "startChar": 4,
