@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcc6cc23_097f1d9e",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 42
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-03-18T17:06:02Z",
+      "side": 1,
+      "message": "This check also needs to change now since you introduced initial_spectrum in PathRequest.__init__ in a previous commit, right?",
+      "revId": "841f3d2bcafc2ccc50681acc02aea0d9e61a64c5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3272867_6468639e",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 42
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-03-18T17:06:02Z",
+      "side": 1,
+      "message": "Same as above.",
+      "revId": "841f3d2bcafc2ccc50681acc02aea0d9e61a64c5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
