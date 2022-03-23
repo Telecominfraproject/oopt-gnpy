@@ -35,6 +35,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "706d3ff3_1eaf7654",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 39
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-03-23T13:35:14Z",
+      "side": 1,
+      "message": "I have change the commit comment with your suggestion",
+      "parentUuid": "826dd485_a98c179b",
+      "revId": "22ed5574f656b53b8b63fee4d8204609a168c1db",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bdb0b878_5343d395",
@@ -58,6 +76,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "314f0cee_bde4d450",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 39
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-03-23T13:35:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bdb0b878_5343d395",
+      "range": {
+        "startLine": 278,
+        "startChar": 8,
+        "endLine": 278,
+        "endChar": 67
+      },
+      "revId": "22ed5574f656b53b8b63fee4d8204609a168c1db",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24165896_5a1824ae",
@@ -71,6 +113,30 @@
       "writtenOn": "2022-03-09T10:02:35Z",
       "side": 1,
       "message": "All of these should probably check explicitly for None. Otherwise, this will be false if target_pch_out_dbm is set to 0 dBm.",
+      "range": {
+        "startLine": 279,
+        "startChar": 8,
+        "endLine": 279,
+        "endChar": 34
+      },
+      "revId": "22ed5574f656b53b8b63fee4d8204609a168c1db",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45686925_1514debd",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 39
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-03-23T13:35:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24165896_5a1824ae",
       "range": {
         "startLine": 279,
         "startChar": 8,
