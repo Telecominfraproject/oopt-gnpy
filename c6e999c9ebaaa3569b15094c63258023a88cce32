@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbbe9919_8073816c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-03-23T10:56:54Z",
+      "side": 1,
+      "message": "thanks for reviewing!",
+      "revId": "c6e999c9ebaaa3569b15094c63258023a88cce32",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76602c0d_5e6d4a02",
@@ -14,6 +31,24 @@
       "writtenOn": "2022-03-18T17:00:50Z",
       "side": 1,
       "message": "I don\u0027t think this makes any difference since build_network already takes this power as input explicitly (pref_ch_db is based on req.power which is based on args.power).",
+      "revId": "c6e999c9ebaaa3569b15094c63258023a88cce32",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc279460_59e0cf8f",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-03-23T10:56:54Z",
+      "side": 1,
+      "message": "Indeed, this does not ake any difference, but without this change there is an unconsistency: the SI in equipment does no more refer to the reference channel power used for design. If we forget about this in future dev, that mays be confusing. The change only ensures this consistency.",
+      "parentUuid": "76602c0d_5e6d4a02",
       "revId": "c6e999c9ebaaa3569b15094c63258023a88cce32",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
