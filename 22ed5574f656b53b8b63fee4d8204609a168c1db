@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "18ddab78_1bba0410",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 39
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-03-24T09:45:40Z",
+      "side": 1,
+      "message": "OK for me: would something like this be OK?\n\n`\n    roadm_config \u003d {\n        \"uid\": \"roadm Brest_KLA\",\n        \"params\": {\n            \"equalization\": \"power\",    \u003c- enum(\"power\", \"psd\")\n            \"target_pch_out_db\": -20,   \u003c- default power for the ref channel\n            \"per_degree_pch_out_db\": {\n                \"east edfa in Lannion_CAS to Corlay\": -16 \u003c- same per degree definition as before\n            }\n            per_degree-equalization: {    \u003c- additional information per degree\n                                          use default equalization if degree not\n                                          present\n                \"east edfa in Lannion_CAS to Corlay\": \"power\"\n                \"east edfa in Lannion_CAS to Stbrieuc\": \"psd\"\n            }\n        }\n    }\n`",
+      "parentUuid": "48c46ca8_dfb4a109",
+      "revId": "22ed5574f656b53b8b63fee4d8204609a168c1db",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bdb0b878_5343d395",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 39
@@ -160,6 +178,30 @@
       "writtenOn": "2022-03-09T10:47:07Z",
       "side": 1,
       "message": "The commit message says that mixing equalizations is supported so that e.g. the default is power but you can specify psd for one specific degree. However, this code doesn\u0027t work like that. If the general target_psd_out_mWperGHz is not set, it will not use psd for any degree even if it is defined. What is the intended functionality?",
+      "range": {
+        "startLine": 282,
+        "startChar": 8,
+        "endLine": 284,
+        "endChar": 66
+      },
+      "revId": "22ed5574f656b53b8b63fee4d8204609a168c1db",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b48bbf3_cf4c548d",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 39
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-03-24T09:45:40Z",
+      "side": 1,
+      "message": "I wanted to do what\u0027s written in the commit however forgot to do it. I have changed the code accordingly.\n(I correct this first and then process towards the enum format)",
+      "parentUuid": "77b880a5_1a38adde",
       "range": {
         "startLine": 282,
         "startChar": 8,
