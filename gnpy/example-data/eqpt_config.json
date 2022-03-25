@@ -228,9 +228,9 @@
                             }            
             }],
       "SI":[{
-            "f_min": 191.3e12,
+            "f_min": 191.35e12,
             "baud_rate": 32e9,
-            "f_max":195.1e12,
+            "f_max":195.15e12,
             "spacing": 50e9,
             "power_dbm": 0,
             "power_range_db": [0,0,1],

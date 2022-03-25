@@ -227,7 +227,7 @@ Roadm roadm_Gothenburg
 Transceiver trx_Gothenburg
   GSNR (0.1nm, dB):          19.27
   GSNR (signal bw, dB):      15.24
-  OSNR ASE (0.1nm, dB):      21.84
+  OSNR ASE (0.1nm, dB):      21.85
   OSNR ASE (signal bw, dB):  17.82
   CD (ps/nm):                8350.42
   PMD (ps):                  7.99
