@@ -336,31 +336,31 @@ def silent_remove(this_list, elem):
 def automatic_nch(f_min, f_max, spacing):
     """How many channels are available in the spectrum
 
-    :param f_min Lowest frequenecy [Hz]
-    :param f_max Highest frequency [Hz]
+    :param f_min lowest central frequency [Hz]
+    :param f_max highest central frequency [Hz]
     :param spacing Channel width [Hz]
     :return Number of uniform channels
 
-    >>> automatic_nch(191.325e12, 196.125e12, 50e9)
-    96
+    >>> automatic_nch(191.3e12, 196.1e12, 50e9)
+    97
     >>> automatic_nch(193.475e12, 193.525e12, 50e9)
-    1
+    2
     """
-    return int((f_max - f_min) // spacing)
+    return int((f_max - f_min) // spacing + 1)
 
 
 def automatic_fmax(f_min, spacing, nch):
-    """Find the high-frequenecy boundary of a spectrum
+    """Find the highest central frequency of a spectrum
 
-    :param f_min Start of the spectrum (lowest frequency edge) [Hz]
+    :param f_min Start of the spectrum (lowest central frequency) [Hz]
     :param spacing Grid/channel spacing [Hz]
     :param nch Number of channels
-    :return End of the spectrum (highest frequency) [Hz]
+    :return highest central frequency [Hz]
 
-    >>> automatic_fmax(191.325e12, 50e9, 96)
-    196125000000000.0
+    >>> automatic_fmax(191.3e12, 50e9, 97)
+    196100000000000.0
     """
-    return f_min + spacing * nch
+    return f_min + spacing * (nch - 1)
 
 
 def convert_length(value, units):

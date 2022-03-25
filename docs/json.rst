@@ -412,9 +412,13 @@ While the code libraries allow for different carriers and power levels, the curr
 | field                |   type    | description                               |
 +======================+===========+===========================================+
 | ``f_min``,           | (number)  | In Hz. Define spectrum boundaries. Note   |
-| ``f_max``            |           | that due to backward compatibility, the   |
-|                      |           | first channel central frequency is placed |
-|                      |           | at :math:`f_{min} + spacing` and the last |
+| ``f_max``            |           | that starting from release 2.7, the first |
+|                      |           | channel central frequency is placed at    |
+|                      |           | :math:`f_{min} and the last one at        |
+|                      |           | :math:`f_{max}                            |
+|                      |           | For releases <= 2.6 the first channel     |
+|                      |           | central frequency is placed at            |
+|                      |           | :math:`f_{min} + spacing` and the last    |
 |                      |           | one at :math:`f_{max}`.                   |
 +----------------------+-----------+-------------------------------------------+
 | ``baud_rate``        | (number)  | In Hz. Simulated baud rate.               |

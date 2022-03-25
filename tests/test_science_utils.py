@@ -27,7 +27,7 @@ def test_fiber():
     fiber = Fiber(**load_json(TEST_DIR / 'data' / 'test_science_utils_fiber_config.json'))
 
     # fix grid spectral information generation
-    spectral_info_input = create_input_spectral_information(f_min=191.3e12, f_max=196.1e12, roll_off=0.15,
+    spectral_info_input = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12, roll_off=0.15,
                                                             baud_rate=32e9, power=1e-3, spacing=50e9, tx_osnr=40.0)
     # propagation
     spectral_info_out = fiber(spectral_info_input)
@@ -66,7 +66,7 @@ def test_fiber():
 def test_raman_fiber():
     """ Test the accuracy of propagating the RamanFiber."""
     # spectral information generation
-    spectral_info_input = create_input_spectral_information(f_min=191.3e12, f_max=196.1e12, roll_off=0.15,
+    spectral_info_input = create_input_spectral_information(f_min=191.35e12, f_max=196.1e12, roll_off=0.15,
                                                             baud_rate=32e9, power=1e-3, spacing=50e9, tx_osnr=40.0)
     SimParams.set_params(load_json(TEST_DIR / 'data' / 'sim_params.json'))
     fiber = RamanFiber(**load_json(TEST_DIR / 'data' / 'test_science_utils_fiber_config.json'))
@@ -103,9 +103,8 @@ def test_fiber_lumped_losses(loss, position, errmsg, set_sim_params):
 def test_fiber_lumped_losses_srs(set_sim_params):
     """ Test the accuracy of Fiber with lumped losses propagation."""
     # spectral information generation
-    spectral_info_input = create_input_spectral_information(f_min=191.3e12, f_max=196.1e12, roll_off=0.15,
+    spectral_info_input = create_input_spectral_information(f_min=191.35e12, f_max=196.1e12, roll_off=0.15,
                                                             baud_rate=32e9, power=1e-3, spacing=50e9, tx_osnr=40.0)
-
     SimParams.set_params(load_json(TEST_DIR / 'data' / 'sim_params.json'))
     fiber = Fiber(**load_json(TEST_DIR / 'data' / 'test_lumped_losses_raman_fiber_config.json'))
     raman_fiber = RamanFiber(**load_json(TEST_DIR / 'data' / 'test_lumped_losses_raman_fiber_config.json'))
