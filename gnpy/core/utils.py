@@ -346,7 +346,7 @@ def automatic_nch(f_min, f_max, spacing):
     >>> automatic_nch(193.475e12, 193.525e12, 50e9)
     1
     """
-    return int((f_max - f_min) // spacing)
+    return int((f_max - f_min) // spacing + 1)
 
 
 def automatic_fmax(f_min, spacing, nch):
@@ -360,7 +360,7 @@ def automatic_fmax(f_min, spacing, nch):
     >>> automatic_fmax(191.325e12, 50e9, 96)
     196125000000000.0
     """
-    return f_min + spacing * nch
+    return f_min + spacing * (nch - 1)
 
 
 def convert_length(value, units):
