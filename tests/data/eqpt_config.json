@@ -92,7 +92,7 @@
                             }    
             }],
       "SI":[{
-            "f_min": 191.3e12,
+            "f_min": 191.35e12,
             "f_max":196.1e12,
             "baud_rate": 32e9,
             "spacing": 50e9,
@@ -106,7 +106,7 @@
             {
             "type_variety": "vendorA_trx-type1",
             "frequency":{
-                        "min": 191.35e12,
+                        "min": 191.4e12,
                         "max": 196.1e12
                         },
             "mode":[
@@ -155,7 +155,7 @@
             {
             "type_variety": "Voyager_16QAM",
             "frequency":{
-                        "min": 191.35e12,
+                        "min": 191.4e12,
                         "max": 196.1e12
                         },
             "mode":[
@@ -174,7 +174,7 @@
             {
             "type_variety": "Voyager",
             "frequency":{
-                        "min": 191.35e12,
+                        "min": 191.4e12,
                         "max": 196.1e12
                         },
             "mode":[
