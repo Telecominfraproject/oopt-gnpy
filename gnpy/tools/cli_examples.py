@@ -15,21 +15,24 @@ Common code for CLI examples
 
 import argparse
 import logging
-import sys
+
 from pathlib import Path
-from typing import Union, List
+import sys
+from typing import Union, List, Dict, Tuple
 from math import ceil
 from numpy import mean
+from networkx import DiGraph
 import pandas as pd
 from tabulate import tabulate
 
-
 from gnpy.core import ansi_escapes
-from gnpy.core.elements import Transceiver, Fiber, RamanFiber
+# use an alias fro Transceiver import because autodoc from sphinx mixes json_io and elements Transceiver
+from gnpy.core.elements import Transceiver as elementTransceiver, Fiber, RamanFiber, Roadm
+from gnpy.core.equipment import trx_mode_params
 from gnpy.core import exceptions
 from gnpy.core.parameters import SimParams
 from gnpy.core.utils import lin2db, pretty_summary_print, per_label_average, watt2dbm
-from gnpy.topology.request import (ResultElement, jsontocsv, BLOCKING_NOPATH)
+from gnpy.topology.request import (ResultElement, jsontocsv, BLOCKING_NOPATH, PathRequest, correct_json_route_list)
 from gnpy.tools.json_io import (load_equipments_and_configs, load_network, load_json, load_requests, save_network,
                                 requests_from_json, save_json, load_initial_spectrum, DEFAULT_EQPT_CONFIG)
 from gnpy.tools.plots import plot_baseline, plot_results
@@ -159,6 +162,186 @@ def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
                              f'Existing configs:\n{_default_config_files}')
 
 
+def _infer_trx(target_roadm_uid: str, all_roadms: Dict, network: DiGraph):
+    """Return the 'trx' of the 'target_roadm' (uid) among 'all_roadm's (dict) of 'network'.
+
+    :param target_roadm_uid: The UID of the target ROADM.
+    :type target_roadm_uid: str
+    :param all_roadms: A dictionary of all ROADMs in the network.
+    :type all_roadms: Dict
+    :param network: The network object.
+    :type network: DiGraph
+    :return: The Transceiver object associated with the target ROADM.
+    :raises exceptions.NetworkTopologyError: If no transceiver can be associated with the target ROADM.
+    """
+    target_trx = [n for n in network.successors(all_roadms[target_roadm_uid]) if isinstance(n, elementTransceiver)]
+    if not target_trx:
+        msg = f'Could not associate a transceiver with node: {target_roadm_uid}'
+        raise exceptions.NetworkTopologyError(msg)
+    target = target_trx[0]
+    msg = f'Picking transceiver from provided path: {target.uid}'
+    print(msg)
+    _logger.info(msg)
+    return target
+
+
+def _get_nodes_from_path(path_list: List[str], all_roadms: Dict) -> List[str]:
+    """
+    Return a Nodes-list made from the parsed 'path_string'
+    and which are part of 'all_roadms'.
+
+    :param path_list: A list of path elements to check.
+    :type path_list: List[str]
+    :param all_roadms: A dictionary of all ROADMs in the network.
+    :type all_roadms: dict
+    :return: A list of nodes corresponding to the path elements.
+    :rtype: List[str]
+    :raises exceptions.NetworkTopologyError: If some elements in the requested path could not be resolved.
+    """
+    path_check = set(path_list)
+    # check if all elements of the path are valid
+    for p in set(path_list):
+        for r in all_roadms.keys():
+            if p.lower() in r.lower():
+                path_check.remove(p)
+
+    if not path_check:
+        # build the requested path using the identified Roadms
+        nodes = [r for p in path_list for r in all_roadms.keys() if p.lower() in r.lower()]
+        return nodes
+    msg = f'Some element(s) in requested path could not be resolved: {path_check}'
+    raise exceptions.NetworkTopologyError(msg)
+
+
+def _get_params_from_path(path_raw: List[str], network, source: elementTransceiver, destination: elementTransceiver,
+                          args_source: str, args_destination: str) -> Tuple[elementTransceiver, elementTransceiver,
+                                                                            List[str], List[str]]:
+    """Extract the explicit path from the provided raw path argument.
+
+    :param path_raw: A list of raw path elements.
+    :type path_raw: List[str]
+    :param network: The network object.
+    :type network: Any
+    :param source: The source Transceiver object.
+    :type source: elementTransceiver
+    :param destination: The destination elementTransceiver object.
+    :type destination: elementTransceiver
+    :param args_source: The command-line argument for the source node.
+    :type args_source: str
+    :param args_destination: The command-line argument for the destination node.
+    :type args_destination: str
+    :return: A tuple containing the source, destination, nodes list, and loose list.
+    :rtype: Tuple[elementTransceiver, elementTransceiver, List[str], List[str]]
+    :raises exceptions.NetworkTopologyError: If some elements in the requested path could not be resolved.
+    """
+    # List all roadm nodes that can possible be part of the path
+    all_roadms = {n.uid: n for n in network.nodes() if isinstance(n, Roadm)}
+    # Verify that each name in path exists in this list. The check is case insensitive and with loose match
+    # to ease user experience
+    path_neg = set(path_raw)
+    for p in set(path_raw):
+        for r in all_roadms.keys():
+            if p.lower() in r.lower():
+                path_neg.remove(p)
+    if path_neg:
+        msg = f'Some element(s) in requested path could not be resolved: {path_neg}'
+        raise exceptions.NetworkTopologyError(msg)
+    nodes = _get_nodes_from_path(path_raw, all_roadms)
+    # inferring missing source transceiver from first roadm in path
+    if not args_source:
+        source_roadm_uid = nodes[0].strip()
+        source = _infer_trx(source_roadm_uid, all_roadms, network)
+
+    # inferring missing destination transceiver from last roadm in path
+    if not args_destination:
+        destination_roadm_uid = nodes[-1].strip()
+        destination = _infer_trx(destination_roadm_uid, all_roadms, network)
+    nodes_list = nodes + [destination.uid]
+    loose_list = len(nodes_list) * ['STRICT']
+    return source, destination, nodes_list, loose_list
+
+
+def _get_rq_from_service(service: Path, route_id: str, network, equipment,
+                         args_topology: Path) -> Tuple[elementTransceiver, elementTransceiver, PathRequest]:
+    """Retrieve the request from the service file.
+
+    :param service: The path to the service request file.
+    :type service: Path
+    :param route_id: The ID of the route to retrieve.
+    :type route_id: str
+    :param network: The network object.
+    :type network: Any
+    :param equipment: The equipment configuration.
+    :type equipment: Any
+    :param args_topology: The path to the topology file.
+    :type args_topology: Path
+    :return: A tuple containing the source and destination Transceiver objects, and the request.
+    :rtype: Tuple[elementTransceiver, elementTransceiver, PathRequest]
+    :raises exceptions.ServiceError: If the requested route_id could not be found.
+    """
+    data = load_requests(service, equipment, bidir=False, network=network, network_filename=args_topology)
+    rqs = requests_from_json(data, equipment)
+    all_ids = [r.request_id for r in rqs]
+
+    if route_id not in all_ids:
+        msg = f'Requested route_id \'{route_id}\' could not be found among {all_ids} of the Service-sheet \'{service}\''
+        raise exceptions.ServiceError(msg)
+
+    # picking the request matching the selected route_id
+    rqs = [rqs[all_ids.index(route_id)]]
+    # correct as done in path_request_run()
+    rqs = correct_json_route_list(network, rqs)
+
+    transceivers = {n.uid: n for n in network.nodes() if isinstance(n, elementTransceiver)}
+    # find the proper trx of source and destination
+    source = next((transceivers.pop(uid) for uid in transceivers
+                   if (rqs[0].source).lower() in uid.lower()), None)
+    destination = next((transceivers.pop(uid) for uid in transceivers
+                        if (rqs[0].destination).lower() in uid.lower()), None)
+
+    # ensure a 'Mode' is defined for the Service
+    if not rqs[0].tsp_mode:
+        msg = f'Missing "Mode" for Service "{rqs[0].request_id}" in the Service-file {service}'
+        _logger.warning(msg)
+        modes = equipment['Transceiver'][rqs[0].tsp].mode
+
+        # Sort compatible modes by decreasing baud_rate
+        modes_sorted = sorted({(this_mode['baud_rate'], this_mode['equalization_offset_db'])
+                               for this_mode in modes
+                               if float(this_mode['min_spacing']) <= rqs[0].spacing}, reverse=True)
+        if modes_sorted:
+            this_br, _ = modes_sorted[0]
+            modes_to_explore = [this_mode for this_mode in modes
+                                if abs(this_mode['baud_rate'] - this_br) <= 5.0e9
+                                and float(this_mode['min_spacing']) <= rqs[0].spacing]
+            modes_to_explore = sorted(modes_to_explore,
+                                      key=lambda x: (x['bit_rate'], x['equalization_offset_db']), reverse=True)
+            trx_params = trx_mode_params(equipment, rqs[0].tsp, modes_to_explore[0]['format'], True)
+            rqs[0].tsp_mode = trx_params['format']
+            rqs[0].format = trx_params['format']
+            rqs[0].baud_rate = trx_params['baud_rate']
+            rqs[0].roll_off = trx_params['roll_off']
+            rqs[0].bit_rate = trx_params['bit_rate']
+            rqs[0].OSNR = trx_params['OSNR']
+            rqs[0].tx_osnr = trx_params['tx_osnr']
+            rqs[0].min_spacing = trx_params['min_spacing']
+            rqs[0].cost = trx_params['cost']
+            rqs[0].penalties = trx_params['penalties']
+            rqs[0].cost = trx_params['cost']
+            rqs[0].offset_db = trx_params['equalization_offset_db']
+            mode_name = trx_params['format']
+            baud_rate_ghz = rqs[0].baud_rate * 1e-9  # Convert to GHz
+            spacing_ghz = rqs[0].spacing * 1e-9  # Convert to GHz
+            msg = 'Choosing first compatible mode.' \
+                + f'Selected mode: {mode_name}, Baud rate: {baud_rate_ghz:.2f} GHz, Spacing: {spacing_ghz:.2f} GHz'
+            _logger.warning(msg)
+
+        else:
+            raise exceptions.ServiceError("No compatible mode found.")
+
+    return source, destination, rqs[0]
+
+
 def transmission_main_example(args: Union[List[str], None] = None):
     """Main script running a single simulation. It returns the detailed power across crossed elements and
     average performance accross all channels.
@@ -179,6 +362,12 @@ def transmission_main_example(args: Union[List[str], None] = None):
     parser.add_argument('--spectrum', type=Path, help='user defined mixed rate spectrum JSON file')
     parser.add_argument('source', nargs='?', help='source node')
     parser.add_argument('destination', nargs='?', help='destination node')
+    parser.add_argument('-p', '--path', type=str, nargs='?', help='Compute for the given path succession of ROADM '
+                        + 'element name(s) where the separating element can be "|" or ","')
+    parser.add_argument('-s', '--service', nargs='?', type=Path, required='--route_id' in sys.argv or '-r' in sys.argv,
+                        metavar='SERVICES-REQUESTS.(json|xls|xlsx)', help='Input Service-file')
+    parser.add_argument('-r', '--route_id', nargs='?', required='--service' in sys.argv or '-s' in sys.argv,
+                        help='Compute for the given route-id of the Service')
 
     args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
@@ -189,7 +378,7 @@ def transmission_main_example(args: Union[List[str], None] = None):
     if args.plot:
         plot_baseline(network)
 
-    transceivers = {n.uid: n for n in network.nodes() if isinstance(n, Transceiver)}
+    transceivers = {n.uid: n for n in network.nodes() if isinstance(n, elementTransceiver)}
 
     if not transceivers:
         sys.exit('Network has no transceivers!')
@@ -218,14 +407,43 @@ def transmission_main_example(args: Union[List[str], None] = None):
 
     # If no exact match try to find partial match
     if args.source and not source:
-        # TODO code a more advanced regex to find nodes match
+        # Do not code a more advanced regex to find nodes match (keep simple behaviour)
         source = next((transceivers.pop(uid) for uid in transceivers
                        if args.source.lower() in uid.lower()), None)
 
     if args.destination and not destination:
-        # TODO code a more advanced regex to find nodes match
+        # Do not code a more advanced regex to find nodes match (keep simple behaviour)
         destination = next((transceivers.pop(uid) for uid in transceivers
                             if args.destination.lower() in uid.lower()), None)
+        nodes_list = [destination.uid]
+        loose_list = ['STRICT']
+
+    if args.path:
+        print(f'Requested path: {args.path}')
+        # the path elements can be separated by '|' or ','
+        if '|' in args.path:
+            path_raw = [k.strip() for k in (args.path).split('|')]
+        elif ',' in args.path:
+            path_raw = [k.strip() for k in (args.path).split(',')]
+        else:
+            path_raw = [(args.path).strip()]
+
+        source, destination, nodes_list, loose_list = \
+            _get_params_from_path(path_raw, network, source, destination, args.source, args.destination)
+
+    if args.route_id and not args.service:
+        raise exceptions.ServiceError(f'Requested route_id {args.route_id} requires a Service-file')
+
+    rq = None
+    if args.service:
+        print(f'Requested route_id: {args.route_id}')
+        service = args.service
+        try:
+            source, destination, rq = _get_rq_from_service(service, args.route_id, network, equipment, args.topology)
+            nodes_list = rq.nodes_list.append(destination.uid)
+            loose_list = rq.loose_list.append('STRICT')
+        except exceptions.ServiceError as e:
+            raise exceptions.ServiceError(f'Service error: {e}')
 
     # If no partial match or no source/destination provided pick random
     if not source:
