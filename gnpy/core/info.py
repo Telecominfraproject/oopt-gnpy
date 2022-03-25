@@ -299,7 +299,7 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, 
     """ Creates a fixed slot width spectral information with flat power.
     all arguments are scalar values"""
     number_of_channels = automatic_nch(f_min, f_max, spacing)
-    frequency = [(f_min + spacing * i) for i in range(1, number_of_channels + 1)]
+    frequency = [(f_min + spacing * i) for i in range(number_of_channels)]
     p_span0 = watt2dbm(power)
     p_spani = watt2dbm(power)
     delta_pdb_per_channel = zeros(number_of_channels)

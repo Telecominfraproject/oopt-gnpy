@@ -259,15 +259,14 @@ def test_json_response_generation(xls_input, expected_response_file):
     temp = {
         'response': [n.json for n in result]
     }
-
     expected = load_json(expected_response_file)
 
     for i, response in enumerate(temp['response']):
         if i == 2:
             # compare response must be False because z-a metric is missing
             # (request with bidir option to cover bidir case)
-            assert expected['response'][i] != response
             print(f'response {response["response-id"]} should not match')
+            assert expected['response'][i] != response
             expected['response'][2]['path-properties']['z-a-path-metric'] = [
                 {'metric-type': 'SNR-bandwidth', 'accumulative-value': 22.809999999999999},
                 {'metric-type': 'SNR-0.1nm', 'accumulative-value': 26.890000000000001},
