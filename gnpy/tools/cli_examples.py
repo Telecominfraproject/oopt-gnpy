@@ -16,7 +16,7 @@ from numpy import linspace, mean
 from pathlib import Path
 
 import gnpy.core.ansi_escapes as ansi_escapes
-from gnpy.core.elements import Transceiver, Fiber, RamanFiber
+from gnpy.core.elements import Transceiver, Fiber, RamanFiber, Roadm
 from gnpy.core.equipment import trx_mode_params
 import gnpy.core.exceptions as exceptions
 from gnpy.core.network import build_network
@@ -107,6 +107,47 @@ def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
                         help='Disable insertion of EDFAs after ROADMs and fibers '
                              'as well as splitting of fibers by auto-design.')
 
+def _infer_trx(target_roadm_uid, all_roadms, network):
+    """
+    Return the 'trx' of the 'target_roadm' (uid) among 'all_roadm's (dict) of 'network'
+    """
+    target_trx = [n for n in network.successors(all_roadms[target_roadm_uid]) if isinstance(n, Transceiver)]
+    if not target_trx:
+        msg = f'Could not associate a transceiver with node: {target_roadm_uid}'
+        raise exceptions.NetworkTopologyError(msg)
+    else:
+        target = target_trx[0]
+    msg = f'Picking transceiver from provided path: {target.uid}'
+    _logger.info(msg)
+    print(msg)
+    return target
+
+def _get_nodes_from_path(path_string, all_roadms):
+    """
+    Return a Nodes-list made from the parsed 'path_string'
+    and which are part of 'all_romds'.
+    """
+    if '|' in path_string:
+        path_list = [k.strip() for k in (path_string).split('|')]
+    elif ',' in path_string:
+        path_list = [k.strip() for k in (path_string).split(',')]
+    else:
+        path_list = [(path_string).strip()]
+
+    path_check = set(path_list)
+    # check if all elements of the path are valid
+    for p in set(path_list):
+        for r in all_roadms.keys():
+            if p.lower() in r.lower():
+                path_check.remove(p)
+
+    if not path_check:
+        # build the requested path using the identified Roadms
+        nodes = [r for p in path_list for r in all_roadms.keys() if p.lower() in r.lower()]
+        return nodes
+    else:
+        msg = f'Some element(s) in requested path could not be resolved: {path_check}'
+        raise exceptions.NetworkTopologyError(msg)
 
 def transmission_main_example(args=None):
     parser = argparse.ArgumentParser(
@@ -122,6 +163,9 @@ def transmission_main_example(args=None):
     parser.add_argument('--spectrum', type=Path, help='user defined mixed rate spectrum JSON file')
     parser.add_argument('source', nargs='?', help='source node')
     parser.add_argument('destination', nargs='?', help='destination node')
+    parser.add_argument('-p', '--path', type=str, nargs='?', help='Compute for the given path succession of ROADM element name(s) where the separating element can be "|" or ","')
+    parser.add_argument('-s', '--service', nargs='?', type=Path, required='--route_id' in sys.argv or '-r' in sys.argv, metavar='SERVICES-REQUESTS.(json|xls|xlsx)', help='Input Service-file')
+    parser.add_argument('-r', '--route_id', nargs='?', required='--service' in sys.argv or '-s' in sys.argv, help='Compute for the given route-id of the Service')
 
     args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
@@ -177,6 +221,60 @@ def transmission_main_example(args=None):
     if not destination:
         destination = list(transceivers.values())[0]
 
+    # helper variables initialized with legacy default values
+    nodes_list = [destination.uid]
+    loose_list = ['STRICT']
+
+    if args.path:
+        all_roadms = {n.uid: n for n in network.nodes() if isinstance(n, Roadm)}
+        nodes = _get_nodes_from_path(args.path, all_roadms)
+
+        # inferring missing source transceiver from first roadm in path
+        if not args.source:
+            source_roadm_uid = nodes[0].strip()
+            source = _infer_trx(source_roadm_uid, all_roadms, network)
+
+        # inferring missing destination transceiver from last roadm in path
+        if not args.destination:
+            destination_roadm_uid = nodes[-1].strip()
+            destination = _infer_trx(destination_roadm_uid, all_roadms, network)
+
+        nodes_list = nodes + [destination.uid]
+        loose_list = len(nodes_list)*['STRICT']
+
+    if args.service:
+        service = args.service
+        try:
+            data = load_requests(service, equipment, bidir=False, network=network, network_filename=args.topology)
+            rqs = requests_from_json(data, equipment)
+        except exceptions.ServiceError as e:
+            msg = f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {e}'
+            raise exceptions.ServiceError(msg)
+
+        all_ids = [r.request_id for r in rqs]
+
+        if args.route_id not in all_ids:
+            msg = f'Requested route_id \'{args.route_id}\' could not be found among {all_ids} of the Service-sheet \'{args.service}\''
+            raise exceptions.ServiceError(msg)
+        route_id = args.route_id
+
+        # picking the request matching the selected route_id
+        rq = [rqs[all_ids.index(route_id)]]
+        # correct as done in path_request_run()
+        rq = correct_json_route_list(network, rq)
+
+        transceivers2 = {n.uid: n for n in network.nodes() if isinstance(n, Transceiver)}
+        # find the proper trx of source and destination
+        source = next((transceivers2.pop(uid) for uid in transceivers2
+                       if (rq[0].source).lower() in uid.lower()), None)
+        destination = next((transceivers2.pop(uid) for uid in transceivers2
+                       if (rq[0].destination).lower() in uid.lower()), None)
+
+        rq[0].nodes_list += [destination.uid]
+        rq[0].loose_list = len(rq[0].nodes_list)*['STRICT']
+        rq[0].source = source.uid
+        rq[0].destination = destination.uid
+
     _logger.info(f'source = {args.source!r}')
     _logger.info(f'destination = {args.destination!r}')
 
@@ -187,8 +285,8 @@ def transmission_main_example(args=None):
     params['source'] = source.uid
     params['destination'] = destination.uid
     params['bidir'] = False
-    params['nodes_list'] = [destination.uid]
-    params['loose_list'] = ['strict']
+    params['nodes_list'] = nodes_list
+    params['loose_list'] = loose_list
     params['format'] = ''
     params['path_bandwidth'] = 0
     params['effective_freq_slot'] = None
@@ -203,7 +301,10 @@ def transmission_main_example(args=None):
         nb_channels = len(initial_spectrum)
         print('User input for spectrum used for propagation instead of SI')
     params['nb_channel'] = nb_channels
-    req = PathRequest(**params)
+    if args.service:
+        req = rq[0]
+    else:
+        req = PathRequest(**params)
     req.initial_spectrum = initial_spectrum
     print(f'There are {nb_channels} channels propagating')
     power_mode = equipment['Span']['default'].power_mode
