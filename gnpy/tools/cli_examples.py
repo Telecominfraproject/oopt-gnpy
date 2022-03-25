@@ -15,7 +15,7 @@ from math import ceil
 from numpy import linspace, mean
 from pathlib import Path
 import gnpy.core.ansi_escapes as ansi_escapes
-from gnpy.core.elements import Transceiver, Fiber, RamanFiber
+from gnpy.core.elements import Transceiver, Fiber, RamanFiber, Roadm
 from gnpy.core.equipment import trx_mode_params
 import gnpy.core.exceptions as exceptions
 from gnpy.core.network import build_network
@@ -120,6 +120,9 @@ def transmission_main_example(args=None):
     parser.add_argument('-po', '--power', default=0, help='channel ref power in dBm')
     parser.add_argument('source', nargs='?', help='source node')
     parser.add_argument('destination', nargs='?', help='destination node')
+    parser.add_argument('-p', '--path', type=str, nargs='?', help='Compute for the given path succession of ROADM element name(s) where the separating element can be "|" or ","')
+    parser.add_argument('-s', '--service', nargs='?', type=Path, metavar='SERVICES-REQUESTS.(json|xls|xlsx)', help='Input Service-file')
+    parser.add_argument('-r', '--route_id', nargs='?', help='Compute for the given route-id of the Service')
 
     args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
@@ -175,6 +178,109 @@ def transmission_main_example(args=None):
     if not destination:
         destination = list(transceivers.values())[0]
 
+    # helper variables initialized with legacy default values
+    nodes_list = [destination.uid]
+    loose_list = ['STRICT']
+
+    if args.path:
+        print(f'Requested path: {args.path}')
+        # the path elements can be separated by '|' or ','
+        if '|' in args.path:
+            path_raw = [k.strip() for k in (args.path).split('|')]
+        elif ',' in args.path:
+            path_raw = [k.strip() for k in (args.path).split(',')]
+        else:
+            path_raw = [(args.path).strip()]
+
+        # helper variable for checking the elements of the requested path
+        roadms = {n.uid: n for n in network.nodes() if isinstance(n, Roadm)}
+        # helper variable to check consistency of requested path
+        path_neg = set(path_raw)
+        # check if all elements of the path are valid
+        for p in set(path_raw):
+            for r in roadms.keys():
+                if p.lower() in r.lower():
+                    path_neg.remove(p)
+
+        if not path_neg:
+            # build the requested path using the indentified Roadms
+            nodes = [r for p in path_raw for r in roadms.keys() if p.lower() in r.lower()]
+        else:
+            msg = f'Some element(s) in requested path could not be resolved: {path_neg}'
+            raise exceptions.NetworkTopologyError(msg)
+
+        # inferring missing source transceiver from first roadm in path
+        if not args.source:
+            source_roadm_uid = nodes[0].strip()
+            source_trx = [n for n in network.successors(roadms[source_roadm_uid]) if isinstance(n, Transceiver)]
+            if source_trx:
+                source = source_trx[0]
+            else:
+                msg = f'Could not associate a transceiver with node: {source_roadm_uid}'
+                raise exceptions.NetworkTopologyError(msg)
+            _logger.info(f'Picking source transceiver from provided path: {source.uid}')
+            print(f'Picking source transceiver from provided path: {source.uid}')
+
+        # inferring missing destination transceiver from last roadm in path
+        if not args.destination:
+            destination_roadm_uid = nodes[-1].strip()
+            destination_trx = {n.uid: n for n in network.successors(roadms[destination_roadm_uid]) if isinstance(n, Transceiver)}
+            destination = list(destination_trx.values())[0]
+            _logger.info(f'Picking destination transceiver from provided path: {destination.uid}')
+            print(f'Picking destination transceiver from provided path: {destination.uid}')
+
+        nodes_list = nodes + [destination.uid]
+        loose_list = len(nodes_list)*['STRICT']
+
+    if args.route_id and not args.service:
+        msg = f'Requested route_id {args.route_id} requires a Service-file'
+        _logger.critical(msg)
+        raise exceptions.ServiceError(msg)
+
+    # TODO shall we consider the case of handling a specific path within a service request?
+    if args.service:
+        print(f'Requested route_id: {args.route_id}')
+        service = args.service
+        try:
+            data = load_requests(service, equipment, bidir=False, network=network, network_filename=args.topology)
+            rqs = requests_from_json(data, equipment)
+        except exceptions.ServiceError as e:
+            print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {e}')
+
+        all_ids = [r.request_id for r in rqs]
+
+        if args.route_id:
+            # is the provided route_id valid?
+            if args.route_id in all_ids:
+                route_id = args.route_id
+            else:
+                msg = f'Requested route_id \'{args.route_id}\' could not be found among {all_ids} of the Service-sheet \'{args.service}\''
+                _logger.critical(msg)
+                raise exceptions.ServiceError(msg)
+        else:
+            # no route_id specified by user but valid services exists: take 1st
+            route_id = all_ids[0]
+            print(f'No particular route specified, picking the 1st from the Service-file: {route_id}')
+
+        # picking the first request matching the selected route_id
+        rq = [rqs[all_ids.index(route_id)]]
+        # correct as done in path_request_run()
+        rq = correct_json_route_list(network, rq)
+
+        # helper variable
+        transceivers2 = {n.uid: n for n in network.nodes() if isinstance(n, Transceiver)}
+        # find the proper trx of source and destination
+        source = next((transceivers2.pop(uid) for uid in transceivers2
+                       if (rq[0].source).lower() in uid.lower()), None)
+        destination = next((transceivers2.pop(uid) for uid in transceivers2
+                       if (rq[0].destination).lower() in uid.lower()), None)
+
+        # update the request rq[0]
+        rq[0].nodes_list += [destination.uid]
+        rq[0].loose_list = len(rq[0].nodes_list)*['STRICT']
+        rq[0].source = source.uid
+        rq[0].destination = destination.uid
+
     _logger.info(f'source = {args.source!r}')
     _logger.info(f'destination = {args.destination!r}')
 
@@ -185,8 +291,8 @@ def transmission_main_example(args=None):
     params['source'] = source.uid
     params['destination'] = destination.uid
     params['bidir'] = False
-    params['nodes_list'] = [destination.uid]
-    params['loose_list'] = ['strict']
+    params['nodes_list'] = nodes_list
+    params['loose_list'] = loose_list
     params['format'] = ''
     params['path_bandwidth'] = 0
     params['effective_freq_slot'] = None
@@ -194,7 +300,10 @@ def transmission_main_example(args=None):
     if args.power:
         trx_params['power'] = db2lin(float(args.power)) * 1e-3
     params.update(trx_params)
-    req = PathRequest(**params)
+    if args.service:
+        req = rq[0]
+    else:
+        req = PathRequest(**params)
 
     power_mode = equipment['Span']['default'].power_mode
     print('\n'.join([f'Power mode is set to {power_mode}',

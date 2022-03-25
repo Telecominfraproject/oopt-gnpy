@@ -20,7 +20,17 @@ SRC_ROOT = Path(__file__).parent.parent
      ['-e', 'gnpy/example-data/eqpt_config_openroadm_ver4.json', 'gnpy/example-data/Sweden_OpenROADMv4_example_network.json', ]),
     ('openroadm-v5-Stockholm-Gothenburg', transmission_main_example,
      ['-e', 'gnpy/example-data/eqpt_config_openroadm_ver5.json', 'gnpy/example-data/Sweden_OpenROADMv5_example_network.json', ]),
-))
+    ('transmission_main_example__path_1', transmission_main_example,
+     ['tests/data/testTopology.xls', 'lorient', 'brest', '-e', 'tests/data/eqpt_config.json', '--path', 'rennes']),
+    ('transmission_main_example__path_2', transmission_main_example,
+     ['tests/data/testTopology.xls', '-e', 'tests/data/eqpt_config.json', '--path', '''lorient, rennes, brest''']),
+    ('transmission_main_example__service_1', transmission_main_example,
+     ['tests/data/testTopology.xls', '-e', 'tests/data/eqpt_config.json', '--service',  'tests/data/testService.xls']),
+    ('transmission_main_example__service_2', transmission_main_example,
+     ['tests/data/testTopology.xls', '-e', 'tests/data/eqpt_config.json', '--service',  'tests/data/testService.xls', '--route_id', '1'])
+    ))
+
+
 def test_example_invocation(capfd, output, handler, args):
     '''Make sure that our examples produce useful output'''
     os.chdir(SRC_ROOT)
