@@ -210,6 +210,30 @@
       },
       "revId": "22ed5574f656b53b8b63fee4d8204609a168c1db",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53d6e374_eb3bc8fa",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 39
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-03-25T17:57:53Z",
+      "side": 1,
+      "message": "Done. I have added a set of tests on the test_equalization commit to check that all combinations are ok",
+      "parentUuid": "7b48bbf3_cf4c548d",
+      "range": {
+        "startLine": 282,
+        "startChar": 8,
+        "endLine": 284,
+        "endChar": 66
+      },
+      "revId": "22ed5574f656b53b8b63fee4d8204609a168c1db",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
