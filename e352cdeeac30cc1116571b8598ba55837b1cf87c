@@ -284,6 +284,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c68b4dd9_f7e92089",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 29
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-03-25T17:55:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eecc2f9a_433e4ed1",
+      "range": {
+        "startLine": 288,
+        "startChar": 22,
+        "endLine": 288,
+        "endChar": 106
+      },
+      "revId": "e352cdeeac30cc1116571b8598ba55837b1cf87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a79750f1_d4d10c46",
