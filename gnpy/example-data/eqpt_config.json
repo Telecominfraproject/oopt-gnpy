@@ -228,7 +228,7 @@
                             }            
             }],
       "SI":[{
-            "f_min": 191.3e12,
+            "f_min": 191.35e12,
             "baud_rate": 32e9,
             "f_max":195.1e12,
             "spacing": 50e9,
@@ -243,7 +243,7 @@
             "type_variety": "vendorA_trx-type1",
             "frequency":{
                         "min": 191.35e12,
-                        "max": 196.1e12
+                        "max": 196.05e12
                         },
             "mode":[
                        {
@@ -273,7 +273,7 @@
             "type_variety": "Voyager",
             "frequency":{
                         "min": 191.35e12,
-                        "max": 196.1e12
+                        "max": 196.05e12
                         },
             "mode":[
                        {
