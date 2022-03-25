@@ -346,18 +346,17 @@ def spectrum_selection(pth, oms_list, requested_m, requested_n=None):
         freq_availability = bitmap_sum(oms_list[oms].spectrum_bitmap.bitmap, freq_availability)
     if requested_n is None:
         # avoid slots reserved on the edge 0.15e-12 on both sides -> 24
-        candidates = [(freq_index[i] + requested_m, freq_index[i], freq_index[i] + 2 * requested_m - 1)
+        # candidate is a tupple (center_n, startn, stopn)
+        # min center_n corresponds to the f_min of the request
+        candidates = [(freq_index[i], freq_index[i] - requested_m, freq_index[i] + requested_m - 1)
                       for i in range(len(freq_availability))
-                      if freq_availability[i:i + 2 * requested_m] == [1] * (2 * requested_m)
-                      and freq_index[i] >= freq_index_min
-                      and freq_index[i + 2 * requested_m - 1] <= freq_index_max]
+                      if freq_availability[i - requested_m:i + requested_m] == [1] * (2 * requested_m)
+                      and freq_index[i - requested_m] >= freq_index_min
+                      and freq_index[i + requested_m - 1] <= freq_index_max]
 
         candidate = select_candidate(candidates, policy='first_fit')
     else:
         i = oms_list[path_oms[0]].spectrum_bitmap.geti(requested_n)
-        # print(f'N {requested_n} i {i}')
-        # print(freq_availability[i-m:i+m] )
-        # print(freq_index[i-m:i+m])
         if (freq_availability[i - requested_m:i + requested_m] == [1] * (2 * requested_m) and
                 freq_index[i - requested_m] >= freq_index_min
                 and freq_index[i + requested_m - 1] <= freq_index_max):
@@ -365,12 +364,7 @@ def spectrum_selection(pth, oms_list, requested_m, requested_n=None):
             candidate = (requested_n, requested_n - requested_m, requested_n + requested_m - 1)
         else:
             candidate = (None, None, None)
-        # print("coucou11")
-        # print(candidate)
-    # print(freq_availability[321:321+2*m])
-    # a = [i+321 for i in range(2*m)]
-    # print(a)
-    # print(candidate)
+
     return candidate, path_oms
 
 

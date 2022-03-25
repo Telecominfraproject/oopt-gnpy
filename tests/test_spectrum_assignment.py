@@ -49,6 +49,8 @@ def setup(equipment):
     """
     network = load_network(NETWORK_FILENAME, equipment)
     spectrum = equipment['SI']['default']
+    spectrum.f_min = cband_freq_min
+    spectrum.f_max = cband_freq_max
     p_db = spectrum.power_dbm
     p_total_db = p_db + lin2db(automatic_nch(spectrum.f_min, spectrum.f_max, spectrum.spacing))
     build_network(network, equipment, p_db, p_total_db)
