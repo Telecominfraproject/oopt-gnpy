@@ -53,7 +53,13 @@ SRC_ROOT = Path(__file__).parent.parent
       '--spectrum', 'gnpy/example-data/multiband_spectrum.json', '--show-channels']),
     ('path_requests_run_extra_equipment', 'logs_path_requests_run_extra_equipment', path_requests_run,
      ['gnpy/example-data/meshTopologyExampleV2.xls', 'gnpy/example-data/service_pluggable.json', '--extra-equipment', 'gnpy/example-data/extra_eqpt_config.json', 'tests/data/extra_eqpt_config.json',
-      '--extra-config', 'tests/data/user_edfa_config.json'])
+      '--extra-config', 'tests/data/user_edfa_config.json']),
+    ('transmission_main_example__path', 'logs_transmission_main_example__path', transmission_main_example,
+     ['tests/data/testTopology.xls', 'lorient', 'brest', '-e', 'tests/data/eqpt_config.json', '--path', 'rennes']),
+    ('transmission_main_example__path_only', None, transmission_main_example,
+     ['tests/data/testTopology.xls', '-e', 'tests/data/eqpt_config.json', '--path', '''lorient, rennes, brest''']),
+    ('transmission_main_example__service_routeid', None, transmission_main_example,
+     ['tests/data/testTopology.xls', '-e', 'tests/data/eqpt_config.json', '--service', 'tests/data/testService.xls', '--route_id', '1'])
 ))
 def test_example_invocation(capfd, caplog, output, log, handler, args):
     """Make sure that our examples produce useful output"""
