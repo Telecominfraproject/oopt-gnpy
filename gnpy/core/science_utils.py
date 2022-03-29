@@ -138,7 +138,7 @@ class RamanSolver:
                     co_power_profile = \
                         RamanSolver.first_order_derivative_solution(co_power, co_alpha, co_cr, z, lumped_losses)
                 # Counter-propagating profile initialization
-                cnt_power_profile = empty([co_frequency.size, z.size])
+                cnt_power_profile = empty([cnt_frequency.size, z.size])
                 if cnt_frequency.size:
                     cnt_cr = fiber.cr(cnt_frequency)
                     cnt_alpha = fiber.alpha(cnt_frequency)
