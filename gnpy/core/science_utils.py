@@ -10,7 +10,7 @@ Solver definitions to calculate the Raman effect and the nonlinear interference 
 The solvers take as input instances of the spectral information, the fiber and the simulation parameters
 """
 
-from numpy import interp, pi, zeros, shape, where, cos, array, append, ones, exp, arange, sqrt, empty, trapz, arcsinh, \
+from numpy import interp, pi, zeros, shape, where, cos, array, append, ones, exp, arange, sqrt, trapz, arcsinh, \
     clip, abs, sum, concatenate, flip, outer, inner, transpose, max, format_float_scientific, diag, prod, argwhere, \
     unique, argsort, cumprod
 from logging import getLogger
@@ -131,14 +131,14 @@ class RamanSolver:
                 cnt_frequency = array([pump.frequency for pump in fiber.raman_pumps
                                        if pump.propagation_direction == 'counterprop'])
                 # Co-propagating profile initialization
-                co_power_profile = empty([co_frequency.size, z.size])
+                co_power_profile = zeros([co_frequency.size, z.size])
                 if co_frequency.size:
                     co_cr = fiber.cr(co_frequency)
                     co_alpha = fiber.alpha(co_frequency)
                     co_power_profile = \
                         RamanSolver.first_order_derivative_solution(co_power, co_alpha, co_cr, z, lumped_losses)
                 # Counter-propagating profile initialization
-                cnt_power_profile = empty([cnt_frequency.size, z.size])
+                cnt_power_profile = zeros([cnt_frequency.size, z.size])
                 if cnt_frequency.size:
                     cnt_cr = fiber.cr(cnt_frequency)
                     cnt_alpha = fiber.alpha(cnt_frequency)
