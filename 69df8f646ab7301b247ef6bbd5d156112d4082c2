@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fdf0a7e_bb141952",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-04-04T16:11:46Z",
+      "side": 1,
+      "message": "I thought you didn\u0027t want to change this. Did you change your mind?",
+      "revId": "69df8f646ab7301b247ef6bbd5d156112d4082c2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b962167_a5f0d60b",
+        "filename": "gnpy/example-data/eqpt_config.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-04-04T16:11:46Z",
+      "side": 1,
+      "message": "Why do you change f_max? Shouldn\u0027t you rather change the automatic_nch function?",
+      "revId": "69df8f646ab7301b247ef6bbd5d156112d4082c2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
