@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6c144029_ad14fac1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-04-05T08:10:26Z",
+      "side": 1,
+      "message": "Instead of changing all the expected test outputs, shouldn\u0027t we rather modify input files (like you tried to do for eqpt_config.json but not e.g. the openroadm eqpt configs) so that simulations are the same as before?",
+      "revId": "69df8f646ab7301b247ef6bbd5d156112d4082c2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0b962167_a5f0d60b",
         "filename": "gnpy/example-data/eqpt_config.json",
         "patchSetId": 1
