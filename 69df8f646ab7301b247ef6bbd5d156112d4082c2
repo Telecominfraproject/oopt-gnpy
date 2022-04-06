@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2e3f5df6_a8f1ce7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-04-06T11:48:18Z",
+      "side": 1,
+      "message": "OK, Should be the case now.",
+      "parentUuid": "6c144029_ad14fac1",
+      "revId": "69df8f646ab7301b247ef6bbd5d156112d4082c2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0b962167_a5f0d60b",
         "filename": "gnpy/example-data/eqpt_config.json",
         "patchSetId": 1
@@ -48,6 +66,24 @@
       "writtenOn": "2022-04-04T16:11:46Z",
       "side": 1,
       "message": "Why do you change f_max? Shouldn\u0027t you rather change the automatic_nch function?",
+      "revId": "69df8f646ab7301b247ef6bbd5d156112d4082c2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74b8440a_2a84a707",
+        "filename": "gnpy/example-data/eqpt_config.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-04-06T11:48:18Z",
+      "side": 1,
+      "message": "That was a mistake. Yes I changed the automatic_nch and _fmax functions",
+      "parentUuid": "0b962167_a5f0d60b",
       "revId": "69df8f646ab7301b247ef6bbd5d156112d4082c2",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
