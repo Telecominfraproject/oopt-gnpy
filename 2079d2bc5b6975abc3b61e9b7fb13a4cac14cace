@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d04d2fc_0b4fdd9c",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1154,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2022-04-08T13:42:34Z",
+      "side": 1,
+      "message": "Not related to this patch but this code seems unnecessarily complex. Could it be simplified to:\n\n if getattr(pathreq, \u0027blocking_reason\u0027, None) in BLOCKING_NOPATH:\n     total_path \u003d []\n else:\n     pathreq.baud_rate \u003d mode[\u0027baud_rate\u0027]\n     pathreq.tsp_mode \u003d mode[\u0027format\u0027]\n     pathreq.format \u003d mode[\u0027format\u0027]\n     pathreq.OSNR \u003d mode[\u0027OSNR\u0027]\n     pathreq.tx_osnr \u003d mode[\u0027tx_osnr\u0027]\n     pathreq.bit_rate \u003d mode[\u0027bit_rate\u0027]\n     pathreq.penalties \u003d mode[\u0027penalties\u0027]",
+      "range": {
+        "startLine": 1135,
+        "startChar": 16,
+        "endLine": 1154,
+        "endChar": 57
+      },
+      "revId": "2079d2bc5b6975abc3b61e9b7fb13a4cac14cace",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
