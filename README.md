@@ -26,4 +26,6 @@ This example demonstrates how GNPy can be used to check the expected SNR at the 
 ![Running a simple simulation example](https://telecominfraproject.github.io/oopt-gnpy/docs/images/transmission_main_example.svg)
 
 GNPy can do much more, including acting as a Path Computation Engine, tracking bandwidth requests, or advising the SDN controller about a best possible path through a large DWDM network.
-Learn more about this [in the documentation](https://gnpy.readthedocs.io/).
+Learn more about this [in the documentation](https://gnpy.readthedocs.io/), or give it a [try online at `gnpy.app`](https://gnpy.app/):
+
+[![Path propagation at gnpy.app](docs/images/2022-04-12-gnpy-app.png)](https://gnpy.app/)
