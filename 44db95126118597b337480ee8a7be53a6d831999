@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f70058f_5ff7ada9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-04-12T09:44:43Z",
+      "side": 1,
+      "message": "Here\u0027s how it renders: https://github.com/Telecominfraproject/oopt-gnpy/tree/44db95126118597b337480ee8a7be53a6d831999",
+      "revId": "44db95126118597b337480ee8a7be53a6d831999",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
