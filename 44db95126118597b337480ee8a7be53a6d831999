@@ -33,6 +33,23 @@
       "message": "recheck",
       "revId": "44db95126118597b337480ee8a7be53a6d831999",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e23e8cd_e7542ba7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-04-28T15:22:19Z",
+      "side": 1,
+      "message": "recheck\n\nLooks like the f35 VMs work now.",
+      "revId": "44db95126118597b337480ee8a7be53a6d831999",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
