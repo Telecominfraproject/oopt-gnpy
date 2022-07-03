@@ -6,8 +6,9 @@
 # see LICENSE.md for a list of contributors
 #
 
-from gnpy.yang import external_path, model_path
+from gnpy.yang import external_path, model_path, load_data, Error as YangError
 import os
+import json
 from pathlib import Path
 from typing import List
 import pytest
@@ -48,3 +49,21 @@ def _validate_yang_model(filename: Path, options: List[str]):
     assert proc.stderr == ''
     assert proc.stdout == ''
     assert proc.returncode == 0
+
+
+@pytest.mark.parametrize("filename", (Path(__file__).parent / 'yang').glob('*.json'), ids=_get_basename)
+def test_validate_yang_data(filename: Path):
+    '''Validate a JSON file against our YANG models'''
+    data = load_data(filename.read_text())
+
+
+@pytest.mark.parametrize("data, error_message", (
+    ({"tip-photonic-equipment:amplifier": [{"type": "fixed", "polynomial-NF": {"x": 666}}]},
+     'Node "x" not found as a child of "polynomial-NF" node.'),
+))
+def test_invalid_yang_json(data, error_message):
+    with pytest.raises(YangError) as excinfo:
+        load_data(json.dumps(data))
+    exc = excinfo.value
+    assert exc.errors != []
+    assert exc.errors[0].what.startswith(error_message)
