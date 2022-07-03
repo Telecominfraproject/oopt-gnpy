@@ -22,6 +22,30 @@
       },
       "revId": "2aca9bb3d87366122eedfe2908739eed2122714b",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06999e06_9678a61a",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 21
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-07-03T00:35:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9152224d_f5045c65",
+      "range": {
+        "startLine": 662,
+        "startChar": 54,
+        "endLine": 662,
+        "endChar": 61
+      },
+      "revId": "2aca9bb3d87366122eedfe2908739eed2122714b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
