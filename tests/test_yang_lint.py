@@ -25,6 +25,6 @@ def _get_basename(filename: Path) -> str:
 def test_lint_yang(yang_model):
     '''Run a linter on each YANG model'''
     c = ly.Context(str(external_path()) + os.pathsep + str(model_path()),
-                   ly.ContextOptions.NoYangLibrary | ly.ContextOptions.DisableSearchCwd)
+                   ly.ContextOptions.AllImplemented | ly.ContextOptions.DisableSearchCwd)
     assert c.parse_module(yang_model, ly.SchemaFormat.YANG) is not None
     assert c.errors() == []
