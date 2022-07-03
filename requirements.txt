@@ -1,7 +1,7 @@
 matplotlib>=3.5.1,<4
 networkx>=2.6,<3
 numpy>=1.22.0,<2
-oopt_gnpy_libyang>0.0.6
+oopt_gnpy_libyang>0.0.8
 pbr>=5.7.0,<6
 scipy>=1.7.3,<2
 xlrd>=1.2.0,<2
