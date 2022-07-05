@@ -92,9 +92,9 @@ jobs:
             telecominfraproject/oopt-gnpy:${{ steps.extract_tag_name.outputs.GIT_DESC }}
             telecominfraproject/oopt-gnpy:latest
 
-  windows:
-    name: Tests on Windows
-    runs-on: windows-2019
+  other-platforms:
+    name: Tests on other platforms
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -108,5 +108,8 @@ jobs:
           pytest -vv
     strategy:
       matrix:
-        python_version:
-          - "3.10"
+        include:
+          - os: windows-2019
+            python_version: "3.10"
+          - os: macos-12
+            python_version: "3.10"
