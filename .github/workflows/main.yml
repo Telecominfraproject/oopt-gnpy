@@ -103,8 +103,8 @@ jobs:
         with:
           python-version: ${{ matrix.python_version }}
       - run: |
+          pip install -r tests/requirements.txt
           pip install --editable .
-          pip install 'pytest>=6.2.5,<7'
           pytest -vv
     strategy:
       matrix:
