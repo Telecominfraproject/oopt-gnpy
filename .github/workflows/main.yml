@@ -23,6 +23,7 @@ jobs:
         with:
           files: ${{ github.workspace }}/cover/coverage.xml
     strategy:
+      fail-fast: false
       matrix:
         tox_env:
           - py38
@@ -107,6 +108,7 @@ jobs:
           pip install --editable .
           pytest -vv
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: windows-2019
