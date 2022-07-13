@@ -144,7 +144,7 @@ class RamanSolver:
                     cnt_alpha = fiber.alpha(cnt_frequency)
                     cnt_power_profile = \
                         flip(RamanSolver.first_order_derivative_solution(cnt_power, cnt_alpha, cnt_cr,
-                                                                         z[-1] - flip(z), flip(lumped_losses)))
+                                                                         z[-1] - flip(z), flip(lumped_losses)), axis=1)
                 # Co-propagating and Counter-propagating Profile Computation
                 if co_frequency.size and cnt_frequency.size:
                     co_power_profile, cnt_power_profile = \
