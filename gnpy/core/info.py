@@ -54,7 +54,7 @@ class SpectralInformation(object):
 
     def __init__(self, frequency: array, baud_rate: array, slot_width: array, signal: array, nli: array, ase: array,
                  roll_off: array, chromatic_dispersion: array, pmd: array, pdl: array, delta_pdb_per_channel: array,
-                 ref_power: Pref):
+                 tx_osnr: array, ref_power: Pref):
         indices = argsort(frequency)
         self._frequency = frequency[indices]
         self._df = outer(ones(frequency.shape), frequency) - outer(frequency, ones(frequency.shape))
@@ -80,6 +80,7 @@ class SpectralInformation(object):
         self._pmd = pmd[indices]
         self._pdl = pdl[indices]
         self._delta_pdb_per_channel = delta_pdb_per_channel[indices]
+        self._tx_osnr = tx_osnr[indices]
         self._pref = ref_power
 
     @property
@@ -178,6 +179,14 @@ class SpectralInformation(object):
         self.delta_pdb_per_channel = delta_pdb_per_channel
 
     @property
+    def tx_osnr(self):
+        return self._tx_osnr
+
+    @tx_osnr.setter
+    def tx_osnr(self, tx_osnr):
+        self._tx_osnr = tx_osnr
+
+    @property
     def channel_number(self):
         return self._channel_number
 
@@ -225,6 +234,7 @@ class SpectralInformation(object):
                                        pdl=append(self.pdl, other.pdl),
                                        delta_pdb_per_channel=append(self.delta_pdb_per_channel,
                                                                     other.delta_pdb_per_channel),
+                                       tx_osnr=append(self.tx_osnr, other.tx_osnr),
                                        ref_power=Pref(self.pref.p_span0, self.pref.p_spani))
         except SpectrumError:
             raise SpectrumError('Spectra cannot be summed: channels overlapping.')
@@ -244,6 +254,7 @@ class SpectralInformation(object):
 def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, int, float],
                                           signal: Union[int, float, ndarray, Iterable],
                                           baud_rate: Union[int, float, ndarray, Iterable],
+                                          tx_osnr: Union[int, float, ndarray, Iterable],
                                           delta_pdb_per_channel: Union[int, float, ndarray, Iterable] = 0.,
                                           slot_width: Union[int, float, ndarray, Iterable] = None,
                                           roll_off: Union[int, float, ndarray, Iterable] = 0.,
@@ -267,12 +278,14 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, in
         nli = zeros(number_of_channels)
         ase = zeros(number_of_channels)
         delta_pdb_per_channel = full(number_of_channels, delta_pdb_per_channel)
+        tx_osnr = full(number_of_channels, tx_osnr)
         return SpectralInformation(frequency=frequency, slot_width=slot_width,
                                    signal=signal, nli=nli, ase=ase,
                                    baud_rate=baud_rate, roll_off=roll_off,
                                    chromatic_dispersion=chromatic_dispersion,
                                    pmd=pmd, pdl=pdl,
                                    delta_pdb_per_channel=delta_pdb_per_channel,
+                                   tx_osnr=tx_osnr,
                                    ref_power=ref_power)
     except ValueError as e:
         if 'could not broadcast' in str(e):
@@ -281,7 +294,7 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, in
             raise
 
 
-def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing):
+def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing, tx_osnr):
     """ Creates a fixed slot width spectral information with flat power.
     all arguments are scalar values"""
     number_of_channels = automatic_nch(f_min, f_max, spacing)
@@ -291,7 +304,7 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, 
     delta_pdb_per_channel = zeros(number_of_channels)
     return create_arbitrary_spectral_information(frequency, slot_width=spacing, signal=power, baud_rate=baud_rate,
                                                  roll_off=roll_off, delta_pdb_per_channel=delta_pdb_per_channel,
-                                                 ref_power=Pref(p_span0=p_span0, p_spani=p_spani))
+                                                 tx_osnr=tx_osnr, ref_power=Pref(p_span0=p_span0, p_spani=p_spani))
 
 
 def use_initial_spectrum(initial_spectrum, ref_carrier):
@@ -304,9 +317,10 @@ def use_initial_spectrum(initial_spectrum, ref_carrier):
     baud_rate = [s['baud_rate'] for s in initial_spectrum.values()]
     delta_pdb_per_channel = array([s['delta_pdb'] for s in initial_spectrum.values()])
     slot_width = [s['slot_width'] for s in initial_spectrum.values()]
+    tx_osnr = [s['tx_osnr'] for s in initial_spectrum.values()]
     p_span0 = watt2dbm(ref_carrier['req_power'])
     p_spani = watt2dbm(ref_carrier['req_power'])
     return create_arbitrary_spectral_information(frequency=frequency, signal=signal, baud_rate=baud_rate,
                                                  slot_width=slot_width, roll_off=roll_off,
-                                                 delta_pdb_per_channel=delta_pdb_per_channel,
+                                                 delta_pdb_per_channel=delta_pdb_per_channel, tx_osnr=tx_osnr,
                                                  ref_power=Pref(p_span0=p_span0, p_spani=p_spani))
