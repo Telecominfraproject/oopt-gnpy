@@ -28,7 +28,7 @@ def test_fiber():
 
     # fix grid spectral information generation
     spectral_info_input = create_input_spectral_information(f_min=191.3e12, f_max=196.1e12, roll_off=0.15,
-                                                            baud_rate=32e9, power=1e-3, spacing=50e9)
+                                                            baud_rate=32e9, power=1e-3, spacing=50e9, tx_osnr=40.0)
     # propagation
     spectral_info_out = fiber(spectral_info_input)
 
@@ -49,7 +49,7 @@ def test_fiber():
     spectral_info_input = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
                                                                 signal=signal, baud_rate=baud_rate, roll_off=0.15,
                                                                 delta_pdb_per_channel=delta_pdb_per_channel,
-                                                                ref_power=pref)
+                                                                tx_osnr=40.0, ref_power=pref)
 
     # propagation
     spectral_info_out = fiber(spectral_info_input)
@@ -67,7 +67,7 @@ def test_raman_fiber():
     """ Test the accuracy of propagating the RamanFiber."""
     # spectral information generation
     spectral_info_input = create_input_spectral_information(f_min=191.3e12, f_max=196.1e12, roll_off=0.15,
-                                                            baud_rate=32e9, power=1e-3, spacing=50e9)
+                                                            baud_rate=32e9, power=1e-3, spacing=50e9, tx_osnr=40.0)
     SimParams.set_params(load_json(TEST_DIR / 'data' / 'sim_params.json'))
     fiber = RamanFiber(**load_json(TEST_DIR / 'data' / 'test_science_utils_fiber_config.json'))
 
@@ -104,7 +104,7 @@ def test_fiber_lumped_losses_srs(set_sim_params):
     """ Test the accuracy of Fiber with lumped losses propagation."""
     # spectral information generation
     spectral_info_input = create_input_spectral_information(f_min=191.3e12, f_max=196.1e12, roll_off=0.15,
-                                                            baud_rate=32e9, power=1e-3, spacing=50e9)
+                                                            baud_rate=32e9, power=1e-3, spacing=50e9, tx_osnr=40.0)
 
     SimParams.set_params(load_json(TEST_DIR / 'data' / 'sim_params.json'))
     fiber = Fiber(**load_json(TEST_DIR / 'data' / 'test_lumped_losses_raman_fiber_config.json'))
