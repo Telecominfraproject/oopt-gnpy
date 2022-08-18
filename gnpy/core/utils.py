@@ -399,6 +399,7 @@ class Carrier:
     baud_rate: float
     slot_width: float
     roll_off: float
+    tx_osnr: float
 
 
 @dataclass
