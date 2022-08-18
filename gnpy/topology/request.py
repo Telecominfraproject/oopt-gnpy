@@ -357,19 +357,19 @@ def propagate(path, req, equipment):
         si = use_initial_spectrum(req.initial_spectrum, ref_carrier=ref_carrier(req.power, equipment))
     else:
         si = create_input_spectral_information(
-            req.f_min, req.f_max, req.roll_off, req.baud_rate,
-            req.power, req.spacing)
+            f_min=req.f_min, f_max=req.f_max, roll_off=req.roll_off, baud_rate=req.baud_rate,
+            power=req.power, spacing=req.spacing, tx_osnr=req.tx_osnr)
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
             si = el(si, degree=path[i+1].uid)
         else:
             si = el(si)
-    path[0].update_snr(req.tx_osnr)
+    path[0].update_snr(si.tx_osnr)
     path[0].calc_penalties(req.penalties)
     if any(isinstance(el, Roadm) for el in path):
-        path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
+        path[-1].update_snr(si.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
     else:
-        path[-1].update_snr(req.tx_osnr)
+        path[-1].update_snr(si.tx_osnr)
     path[-1].calc_penalties(req.penalties)
     return si
 
@@ -390,9 +390,8 @@ def propagate_and_optimize_mode(path, req, equipment):
                                 float(this_mode['min_spacing']) <= req.spacing]
             modes_to_explore = sorted(modes_to_explore,
                                       key=lambda x: x['bit_rate'], reverse=True)
-            # print(modes_to_explore)
             # step2: computes propagation for each baudrate: stop and select the first that passes
-            # TODO: the case of roll of is not included: for now use SI one
+            # TODO: the case of roll off is not included: for now use SI one
             # TODO: if the loop in mode optimization does not have a feasible path, then bugs
             if req.initial_spectrum is not None:
                 # this case is not yet handled: spectrum can not be defined for the path-request-run function
@@ -403,7 +402,8 @@ def propagate_and_optimize_mode(path, req, equipment):
                 print(msg)
             spc_info = create_input_spectral_information(f_min=req.f_min, f_max=req.f_max,
                                                          roll_off=equipment['SI']['default'].roll_off,
-                                                         baud_rate=this_br, power=req.power, spacing=req.spacing)
+                                                         baud_rate=this_br, power=req.power, spacing=req.spacing,
+                                                         tx_osnr=req.tx_osnr)
             for i, el in enumerate(path):
                 if isinstance(el, Roadm):
                     spc_info = el(spc_info, degree=path[i+1].uid)
