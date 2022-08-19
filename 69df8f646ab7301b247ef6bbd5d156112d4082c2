@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "386cb939_1f350959",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-08-19T09:19:15Z",
+      "side": 1,
+      "message": "Only assigned frequencies are changed, because functions have been changes. This is to keep consistency beetween these automatic functions  and spectrum_assignment.py functions",
+      "parentUuid": "2e3f5df6_a8f1ce7b",
+      "revId": "69df8f646ab7301b247ef6bbd5d156112d4082c2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0b962167_a5f0d60b",
         "filename": "gnpy/example-data/eqpt_config.json",
         "patchSetId": 1
