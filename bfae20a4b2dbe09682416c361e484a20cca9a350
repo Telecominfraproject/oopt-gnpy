@@ -34,6 +34,24 @@
       "parentUuid": "7b1ddeca_7f0eef48",
       "revId": "bfae20a4b2dbe09682416c361e484a20cca9a350",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a082f7f_40ed01dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 41
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-08-19T12:58:37Z",
+      "side": 1,
+      "message": "I have added the tx_osnr.\npenalties will come later on",
+      "parentUuid": "5b160e87_92f910e4",
+      "revId": "bfae20a4b2dbe09682416c361e484a20cca9a350",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
