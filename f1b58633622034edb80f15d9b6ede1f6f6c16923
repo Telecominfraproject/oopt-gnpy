@@ -63,6 +63,30 @@
       },
       "revId": "f1b58633622034edb80f15d9b6ede1f6f6c16923",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c6c28b5_ae025ac3",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-08-19T12:52:18Z",
+      "side": 1,
+      "message": "Now the equalization is performed according to https://telecominfraproject.atlassian.net/wiki/spaces/OOPT/pages/669679645/PSE+Meeting+Minutes from 31/03/2022:\n\nif in power of some channels is not sufficient, those channel power are no more equalized, and only channels above threshold are equalized according to the ROADM policy and per chennel targets.\n\nFor now ther is no min loss implemented for the ROADM.\n\nCan I close this one ?",
+      "parentUuid": "2bcd5142_656b9051",
+      "range": {
+        "startLine": 284,
+        "startChar": 8,
+        "endLine": 289,
+        "endChar": 59
+      },
+      "revId": "f1b58633622034edb80f15d9b6ede1f6f6c16923",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
