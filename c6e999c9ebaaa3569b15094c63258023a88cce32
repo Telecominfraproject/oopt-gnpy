@@ -51,6 +51,24 @@
       "parentUuid": "76602c0d_5e6d4a02",
       "revId": "c6e999c9ebaaa3569b15094c63258023a88cce32",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d714821_56e1e33f",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-08-22T08:07:34Z",
+      "side": 1,
+      "message": "Can I close this one ?",
+      "parentUuid": "fc279460_59e0cf8f",
+      "revId": "c6e999c9ebaaa3569b15094c63258023a88cce32",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
