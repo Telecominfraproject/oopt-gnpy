@@ -100,10 +100,10 @@ Raman Amplifiers
 
 An accurate simulation of Raman amplification requires knowledge of:
 
-- the *power* and *wavelength* of all Raman pumping lasers,
-- the *direction*, whether it is co-propagating or counter-propagating,
-- the Raman efficiency of the fiber,
-- the fiber temperature.
+* the *power* and *wavelength* of all Raman pumping lasers,
+* the *direction*, whether it is co-propagating or counter-propagating,
+* the Raman efficiency of the fiber,
+* the fiber temperature.
 
 Under certain scenarios it is useful to be able to run a simulation without an accurate Raman description.
 For these purposes, it is possible to approximate a Raman amplifier via a fixed-gain EDFA with the :ref:`polynomial NF<ext-nf-model-polynomial-NF>` model using :math:`\text{a} = \text{b} = \text{c} = 0`, and a desired effective :math:`\text{d} = NF`.
