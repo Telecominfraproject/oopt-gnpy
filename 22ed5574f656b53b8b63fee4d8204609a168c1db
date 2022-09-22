@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e7025b61_04c4d5e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 39
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-09-22T12:43:56Z",
+      "side": 1,
+      "message": "After sharing this internally with users, I feel that this change may confuse users: for example one may define per_degree_pch_out_db in a Roadm, and be confused that it is not this power that is applied (not understanding the equalisation parameter). So I\u0027d rather not change the current way.",
+      "parentUuid": "18ddab78_1bba0410",
+      "revId": "22ed5574f656b53b8b63fee4d8204609a168c1db",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bdb0b878_5343d395",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 39
