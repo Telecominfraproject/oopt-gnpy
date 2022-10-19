@@ -351,8 +351,7 @@ def set_roadm_output_targets(roadm, network):
                 roadm_degree_psd[node.uid] = roadm.params.target_psd_out_mWperGHz
             else:
                 raise ConfigurationError(roadm.uid,
-                                         'needs a target_pch_out_db or a target_psd_out_mWperGHz'
-                                         + 'or a target_out_mWperSlotWidth')
+                                         'needs a target_pch_out_db or a target_psd_out_mWperGHz')
     roadm.per_degree_pch_out_dbm = {k: v for k, v in roadm_degree.items()}
     roadm.per_degree_pch_psd = {k: v for k, v in roadm_degree_psd.items()}
 
