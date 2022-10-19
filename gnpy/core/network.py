@@ -8,11 +8,13 @@ gnpy.core.network
 Working with networks which consist of network elements
 '''
 
+from copy import deepcopy
 from operator import attrgetter
 from gnpy.core import ansi_escapes, elements
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
-from gnpy.core.utils import round2float, convert_length, psd2powerdbm, lin2db, watt2dbm
-from gnpy.core.info import ReferenceCarrier
+from gnpy.core.utils import round2float, convert_length, psd2powerdbm, lin2db, watt2dbm, dbm2watt
+from gnpy.core.info import ReferenceCarrier, create_input_spectral_information
+from gnpy.core.parameters import SimParams
 from collections import namedtuple
 
 
@@ -130,7 +132,7 @@ def target_power(network, node, equipment):  # get_fiber_dp
     SPAN_LOSS_REF = 20
     POWER_SLOPE = 0.3
     dp_range = list(equipment['Span']['default'].delta_power_range_db)
-    node_loss = span_loss(network, node)
+    node_loss = span_loss(network, node, equipment)
 
     try:
         dp = round2float((node_loss - SPAN_LOSS_REF) * POWER_SLOPE, dp_range[2])
@@ -177,12 +179,64 @@ def next_node_generator(network, node):
         yield from next_node_generator(network, next_node)
 
 
-def span_loss(network, node):
+def estimate_raman_gain(node, equipment):
+    """If node is RamanFiber, then estimate the possible Raman gain if any
+    for this purpose propagate a fake signal in a copy.
+    to be accurate the nb of channel should be the same as in SI, but this increases computation time
+    """
+    f_min = equipment['SI']['default'].f_min
+    f_max = equipment['SI']['default'].f_max
+    roll_off = equipment['SI']['default'].roll_off
+    baud_rate = equipment['SI']['default'].baud_rate
+    power_dbm = equipment['SI']['default'].power_dbm
+    power = dbm2watt(equipment['SI']['default'].power_dbm)
+    spacing = equipment['SI']['default'].spacing
+    tx_osnr = equipment['SI']['default'].tx_osnr
+
+    sim_params = {
+        "raman_params": {
+            "flag": True,
+            "result_spatial_resolution": 10e3,
+            "solver_spatial_resolution": 50
+        },
+        "nli_params": {
+            "method": "ggn_spectrally_separated",
+            "dispersion_tolerance": 1,
+            "phase_shift_tolerance": 0.1,
+            "computed_channels": [1, 18, 37, 56, 75]
+        }
+    }
+    if isinstance(node, elements.RamanFiber):
+        # in order to take into account gain generated in RamanFiber, propagate in the RamanFiber with
+        # SI reference channel.
+        spectral_info_input = create_input_spectral_information(f_min=f_min, f_max=f_max, roll_off=roll_off,
+                                                                baud_rate=baud_rate, power=power, spacing=spacing,
+                                                                tx_osnr=tx_osnr)
+        n_copy = deepcopy(node)
+        # need to set ref_pch_in_dbm in order to correctly run propagate of the element, because this
+        # setting has not yet been done by autodesign
+        n_copy.ref_pch_in_dbm = power_dbm
+        SimParams.set_params(sim_params)
+        pin = watt2dbm(sum(spectral_info_input.signal))
+        spectral_info_out = n_copy(spectral_info_input)
+        pout = watt2dbm(sum(spectral_info_out.signal))
+        estimated_gain = pout - pin + node.loss
+        return round(estimated_gain, 2)
+    else:
+        return 0.0
+
+
+def span_loss(network, node, equipment):
     """Total loss of a span (Fiber and Fused nodes) which contains the given node"""
     loss = node.loss if node.passive else 0
     loss += sum(n.loss for n in prev_node_generator(network, node))
     loss += sum(n.loss for n in next_node_generator(network, node))
-    return loss
+    # add the possible Raman gain
+    gain = estimate_raman_gain(node, equipment)
+    gain += sum(estimate_raman_gain(n, equipment) for n in prev_node_generator(network, node))
+    gain += sum(estimate_raman_gain(n, equipment) for n in next_node_generator(network, node))
+
+    return loss - gain
 
 
 def find_first_node(network, node):
@@ -248,7 +302,7 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
             if next_node in visited_nodes:
                 raise NetworkTopologyError(f'Loop detected for {type(node).__name__} {node.uid}, please check network topology')
             if isinstance(node, elements.Edfa):
-                node_loss = span_loss(network, prev_node)
+                node_loss = span_loss(network, prev_node, equipment)
                 voa = node.out_voa if node.out_voa else 0
                 if node.operational.delta_p is None:
                     dp = target_power(network, next_node, equipment) + voa
@@ -603,7 +657,7 @@ def add_connector_loss(network, fibers, default_con_in, default_con_out, EOL):
             fiber.params.con_out += EOL
 
 
-def add_fiber_padding(network, fibers, padding):
+def add_fiber_padding(network, fibers, padding, equipment):
     """last_fibers = (fiber for n in network.nodes()
                          if not (isinstance(n, elements.Fiber) or isinstance(n, elements.Fused))
                          for fiber in network.predecessors(n)
@@ -612,7 +666,7 @@ def add_fiber_padding(network, fibers, padding):
         next_node = get_next_node(fiber, network)
         if isinstance(next_node, elements.Fused):
             continue
-        this_span_loss = span_loss(network, fiber)
+        this_span_loss = span_loss(network, fiber, equipment)
         if this_span_loss < padding:
             # add a padding att_in at the input of the 1st fiber:
             # address the case when several fibers are spliced together
@@ -653,7 +707,7 @@ def add_missing_fiber_attributes(network, equipment):
     add_connector_loss(network, fibers, default_span_data.con_in, default_span_data.con_out, default_span_data.EOL)
     # don't group split fiber and add amp in the same loop
     # =>for code clarity (at the expense of speed):
-    add_fiber_padding(network, fibers, default_span_data.padding)
+    add_fiber_padding(network, fibers, default_span_data.padding, equipment)
 
 
 def build_network(network, equipment, pref_ch_db, pref_total_db, set_connector_losses=True, verbose=True):
