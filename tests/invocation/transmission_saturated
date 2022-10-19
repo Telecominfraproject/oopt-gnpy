@@ -315,7 +315,7 @@ Edfa west edfa in Lorient_KMA to Loudeac
   actual pch out (dBm):   1.21
   output VOA (dB):        0.00
 Roadm roadm Lorient_KMA
-  effective loss (dB):     21.17
+  effective loss (dB):     21.18
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
 Transceiver trx Lorient_KMA
