@@ -401,7 +401,7 @@ def set_roadm_input_powers(network, roadm, equipment, pref_ch_db):
     if roadm.params.target_pch_out_db:
         temp.append(roadm.params.target_pch_out_db)
     if roadm.params.target_psd_out_mWperGHz:
-        temp.append(roadm.params.target_psd_out_mWperGHz)
+        temp.append(psd2powerdbm(roadm.params.target_psd_out_mWperGHz, ref_br))
     if not temp:
         raise ConfigurationError(f'Could not find target power/PSD in ROADM "{roadm.uid}"')
     target_to_be_supported = max(temp)
@@ -412,6 +412,31 @@ def set_roadm_input_powers(network, roadm, equipment, pref_ch_db):
                 + f'in ROADM "{roadm.uid}" can not be met for at least one crossing path. Min input power '
                 + f'from "{from_degree}" direction is {round(in_power, 2)}dBm. Please correct input topology.'
             )
+
+
+def set_fiber_input_power(network, fiber, equipment, pref_ch_db):
+    """Set reference powers at fiber input for a reference channel.
+    Supposes that target power out of ROADMs and amplifiers are consistent.
+    This is only for visualisation purpose
+    """
+    ref_br = equipment['SI']['default'].baud_rate
+    loss = 0.0
+    node = next(network.predecessors(fiber))
+    while isinstance(node, elements.Fused):
+        loss += node.loss
+        previous_node = node
+        node = next(network.predecessors(node))
+    if isinstance(node, (elements.Fiber, elements.RamanFiber)) and node.ref_pch_in_dbm is not None:
+        fiber.ref_pch_in_dbm = node.ref_pch_in_dbm - loss - node.loss
+    if isinstance(node, (elements.Fiber, elements.RamanFiber)) and node.ref_pch_in_dbm is None:
+        set_fiber_input_power(network, node, equipment, pref_ch_db)
+        fiber.ref_pch_in_dbm = node.ref_pch_in_dbm - loss - node.loss
+    elif isinstance(node, elements.Roadm):
+        fiber.ref_pch_in_dbm = get_target_power(node, previous_node.uid, ref_br) - loss
+    elif isinstance(node, elements.Edfa):
+        fiber.ref_pch_in_dbm = pref_ch_db + node._delta_p - node.out_voa - loss
+    elif isinstance(node, elements.Transceiver):
+        fiber.ref_pch_in_dbm = pref_ch_db - loss
 
 
 def add_roadm_booster(network, roadm):
@@ -608,7 +633,7 @@ def build_network(network, equipment, pref_ch_db, pref_total_db, no_insert_edfas
     # =>for code clarity (at the expense of speed):
 
     roadms = [r for r in network.nodes() if isinstance(r, elements.Roadm)]
-
+    transceivers = [t for t in network.nodes() if isinstance(t, elements.Transceiver)]
     if not no_insert_edfas:
         for fiber in fibers:
             split_fiber(network, fiber, bounds, target_length, equipment)
@@ -625,10 +650,12 @@ def build_network(network, equipment, pref_ch_db, pref_total_db, no_insert_edfas
 
     for roadm in roadms:
         set_roadm_output_targets(roadm, network)
-    for roadm in roadms:
+    for roadm in roadms + transceivers:
         set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db)
     for roadm in roadms:
         set_roadm_input_powers(network, roadm, equipment, pref_ch_db)
+    for fiber in [f for f in network.nodes() if isinstance(f, (elements.Fiber, elements.RamanFiber))]:
+        set_fiber_input_power(network, fiber, equipment, pref_ch_db)
 
     trx = [t for t in network.nodes() if isinstance(t, elements.Transceiver)]
     for t in trx:
