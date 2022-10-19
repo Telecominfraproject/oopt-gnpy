@@ -20,7 +20,7 @@ import gnpy.core.ansi_escapes as ansi_escapes
 from gnpy.core.elements import Transceiver, Fiber, RamanFiber
 from gnpy.core.equipment import trx_mode_params
 import gnpy.core.exceptions as exceptions
-from gnpy.core.network import build_network
+from gnpy.core.network import build_network, add_missing_elements_in_network
 from gnpy.core.parameters import SimParams
 from gnpy.core.utils import db2lin, lin2db, automatic_nch
 from gnpy.topology.request import (ResultElement, jsontocsv, compute_path_dsjctn, requests_aggregation,
@@ -107,6 +107,19 @@ def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
     parser.add_argument('--no-insert-edfas', action='store_true',
                         help='Disable insertion of EDFAs after ROADMs and fibers '
                              'as well as splitting of fibers by auto-design.')
+
+
+def decorator_network_exceptions(myfunc):
+    def wrapper_func(*args, **kwargs):
+        try:
+            return myfunc(*args, **kwargs)
+        except exceptions.NetworkTopologyError as e:
+            print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
+            sys.exit(1)
+        except exceptions.ConfigurationError as e:
+            print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
+            sys.exit(1)    
+    return wrapper_func
 
 
 def transmission_main_example(args=None):
@@ -210,18 +223,16 @@ def transmission_main_example(args=None):
     power_mode = equipment['Span']['default'].power_mode
     print('\n'.join([f'Power mode is set to {power_mode}',
                      f'=> it can be modified in eqpt_config.json - Span']))
+    if not args.no_insert_edfas:
+        decorated_add_missing_elements_in_network = decorator_network_exceptions(add_missing_elements_in_network)
+        decorated_add_missing_elements_in_network(network, equipment)
 
     # Keep the reference channel for design: the one from SI, with full load same channels
     pref_ch_db = lin2db(req.power * 1e3)  # reference channel power / span (SL=20dB)
     pref_total_db = pref_ch_db + lin2db(req.nb_channel)  # reference total power / span (SL=20dB)
-    try:
-        build_network(network, equipment, pref_ch_db, pref_total_db, args.no_insert_edfas)
-    except exceptions.NetworkTopologyError as e:
-        print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
-        sys.exit(1)
-    except exceptions.ConfigurationError as e:
-        print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
-        sys.exit(1)
+    decorated_build_network = decorator_network_exceptions(build_network)
+    decorated_build_network(network, equipment, pref_ch_db, pref_total_db)
+
     path = compute_constrained_path(network, req)
 
     spans = [s.params.length for s in path if isinstance(s, RamanFiber) or isinstance(s, Fiber)]
@@ -337,18 +348,16 @@ def path_requests_run(args=None):
     # Build the network once using the default power defined in SI in eqpt config
     # TODO power density: db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
     # spacing, f_min and f_max
-    p_db = equipment['SI']['default'].power_dbm
+    if not args.no_insert_edfas:
+        decorated_add_missing_elements_in_network = decorator_network_exceptions(add_missing_elements_in_network)
+        decorated_add_missing_elements_in_network(network, equipment)
 
+    p_db = equipment['SI']['default'].power_dbm
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
                                              equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
-    try:
-        build_network(network, equipment, p_db, p_total_db, args.no_insert_edfas)
-    except exceptions.NetworkTopologyError as e:
-        print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
-        sys.exit(1)
-    except exceptions.ConfigurationError as e:
-        print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
-        sys.exit(1)
+    decorated_build_network = decorator_network_exceptions(build_network)
+    decorated_build_network(network, equipment, p_db, p_total_db)
+
     if args.save_network is not None:
         save_network(network, args.save_network)
         print(f'{ansi_escapes.blue}Network (after autodesign) saved to {args.save_network}{ansi_escapes.reset}')
