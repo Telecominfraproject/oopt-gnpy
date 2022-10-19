@@ -1,4 +1,4 @@
-INFO     gnpy.tools.cli_examples:cli_examples.py:326 Computing path requests CORONET_services.json into JSON format
+INFO     gnpy.tools.cli_examples:cli_examples.py:336 Computing path requests CORONET_services.json into JSON format
 INFO     gnpy.topology.request:request.py:1104 
 	request 0
 	Computing path from trx Abilene to trx Albany
