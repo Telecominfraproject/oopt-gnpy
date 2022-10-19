@@ -320,7 +320,7 @@ def test_amp_saturation(delta_pdb_per_channel, base_power, delta_p):
     slot_width = array([37.5e9, 50e9, 75e9, 50e9, 37.5e9])
     baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
     signal = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]) + array(delta_pdb_per_channel) + base_power)
-    ref_carrier = ReferenceCarrier(baud_rate=32e9)
+    ref_carrier = ReferenceCarrier(baud_rate=32e9, slot_width=50e9)
     pref = Pref(p_span0=0, p_spani=-20 + base_power, ref_carrier=ref_carrier)
     si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
                                                signal=signal, baud_rate=baud_rate, roll_off=0.15,
