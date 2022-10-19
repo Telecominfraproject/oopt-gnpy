@@ -113,6 +113,7 @@ def test_auto_design_generation_fromjson(tmpdir, json_input, power_mode):
     p_db = equipment['SI']['default'].power_dbm
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
                                              equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    add_missing_elements_in_network(network, equipment)
     build_network(network, equipment, p_db, p_total_db)
     actual_json_output = tmpdir / json_input.with_name(json_input.stem + '_auto_design').with_suffix('.json').name
     save_network(network, actual_json_output)
