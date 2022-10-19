@@ -19,7 +19,7 @@ import gnpy.core.ansi_escapes as ansi_escapes
 from gnpy.core.elements import Transceiver, Fiber, RamanFiber
 from gnpy.core.equipment import trx_mode_params
 import gnpy.core.exceptions as exceptions
-from gnpy.core.network import build_network, add_missing_elements_in_network
+from gnpy.core.network import add_missing_elements_in_network, design_network
 from gnpy.core.parameters import SimParams
 from gnpy.core.utils import db2lin, lin2db, automatic_nch
 from gnpy.topology.request import (ResultElement, jsontocsv, compute_path_dsjctn, requests_aggregation,
@@ -217,6 +217,7 @@ def transmission_main_example(args=None):
         print('User input for spectrum used for propagation instead of SI')
     params['nb_channel'] = nb_channels
     req = PathRequest(**params)
+    pref_ch_db = lin2db(req.power * 1e3)  # reference channel power / span (SL=20dB)
     req.initial_spectrum = initial_spectrum
     print(f'There are {nb_channels} channels propagating')
     power_mode = equipment['Span']['default'].power_mode
@@ -226,19 +227,8 @@ def transmission_main_example(args=None):
         decorated_add_missing_elements_in_network = decorator_network_exceptions(add_missing_elements_in_network)
         decorated_add_missing_elements_in_network(network, equipment)
 
-    # Keep the reference channel for design: the one from SI, with full load same channels
-    pref_ch_db = lin2db(req.power * 1e3)  # reference channel power / span (SL=20dB)
-    pref_total_db = pref_ch_db + lin2db(req.nb_channel)  # reference total power / span (SL=20dB)
-    decorated_build_network = decorator_network_exceptions(build_network)
-    decorated_build_network(network, equipment, pref_ch_db, pref_total_db)
-
     path = compute_constrained_path(network, req)
-
     spans = [s.params.length for s in path if isinstance(s, RamanFiber) or isinstance(s, Fiber)]
-    print(f'\nThere are {len(spans)} fiber spans over {sum(spans)/1000:.0f} km between {source.uid} '
-          f'and {destination.uid}')
-    print(f'\nNow propagating between {source.uid} and {destination.uid}:')
-
     power_range = [0]
     if power_mode:
         # power cannot be changed in gain mode
@@ -248,6 +238,13 @@ def transmission_main_example(args=None):
             power_range = list(linspace(p_start, p_stop, p_num))
         except TypeError:
             print('invalid power range definition in eqpt_config, should be power_range_db: [lower, upper, step]')
+    # initial network is designed using req.power. that is that any missing information (amp gain or delta_p) is filled
+    # using this req.power, previous to any sweep requested later on.
+    decorated_design_network = decorator_network_exceptions(design_network)
+    decorated_design_network(req, network, equipment, verbose=True)
+    print(f'\nThere are {len(spans)} fiber spans over {sum(spans)/1000:.0f} km between {source.uid} '
+          f'and {destination.uid}')
+    print(f'\nNow propagating between {source.uid} and {destination.uid}:')
     for dp_db in power_range:
         req.power = db2lin(pref_ch_db + dp_db) * 1e-3
         # if initial spectrum did not contain any power, now we need to use this one.
@@ -345,11 +342,26 @@ def path_requests_run(args=None):
         decorated_add_missing_elements_in_network = decorator_network_exceptions(add_missing_elements_in_network)
         decorated_add_missing_elements_in_network(network, equipment)
 
-    p_db = equipment['SI']['default'].power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
-                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
-    decorated_build_network = decorator_network_exceptions(build_network)
-    decorated_build_network(network, equipment, p_db, p_total_db)
+    params = {
+        'request_id': 'reference',
+        'trx_type': '',
+        'trx_mode': '',
+        'source': None,
+        'destination': None,
+        'bidir': False,
+        'nodes_list': [],
+        'loose_list': [],
+        'format': '',
+        'path_bandwidth': 0,
+        'effective_freq_slot': None,
+        'nb_channel': automatic_nch(equipment['SI']['default'].f_min, equipment['SI']['default'].f_max,
+                                    equipment['SI']['default'].spacing)
+    }
+    trx_params = trx_mode_params(equipment)
+    params.update(trx_params)
+    reference_channel = PathRequest(**params)
+    decorated_design_network = decorator_network_exceptions(design_network)
+    decorated_design_network(reference_channel, network, equipment, verbose=True)
 
     if args.save_network is not None:
         save_network(network, args.save_network)
