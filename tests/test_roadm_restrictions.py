@@ -13,12 +13,12 @@ checks that restrictions in roadms are correctly applied during autodesign
 from pathlib import Path
 import pytest
 from numpy.testing import assert_allclose
-from numpy import ndarray
+from numpy import ndarray, mean
 from copy import deepcopy
 from gnpy.core.utils import lin2db, automatic_nch
 from gnpy.core.elements import Fused, Roadm, Edfa, Transceiver, EdfaOperational, EdfaParams, Fiber
 from gnpy.core.parameters import FiberParams, RoadmParams, FusedParams
-from gnpy.core.network import build_network
+from gnpy.core.network import build_network, design_network
 from gnpy.tools.json_io import network_from_json, load_equipment, load_json, Amp
 from gnpy.core.equipment import trx_mode_params
 from gnpy.topology.request import PathRequest, compute_constrained_path, ref_carrier, propagate
@@ -454,9 +454,8 @@ def test_compare_design_propagation_settings(power_dbm, req_power, amp_with_delt
     p_total_db = p_db + lin2db(automatic_nch(eqpt['SI']['default'].f_min,
                                              eqpt['SI']['default'].f_max,
                                              eqpt['SI']['default'].spacing))
-    build_network(network, eqpt, p_db, p_total_db)
+    build_network(network, eqpt, p_db, p_total_db, verbose=False)
     # record network settings before propagating
-    network_copy = deepcopy(network)
     # propagate on each oms
     req_list = create_per_oms_request(network, eqpt, req_power)
     paths = [compute_constrained_path(network, r) for r in req_list]
@@ -467,10 +466,10 @@ def test_compare_design_propagation_settings(power_dbm, req_power, amp_with_delt
     for path, req in zip(paths, req_list):
         # check all elements except source and destination trx
         # in order to have clean initialization, use deecopy of paths
+        design_network(req, network, eqpt, verbose=False)
+        network_copy = deepcopy(network)
         pth = deepcopy(path)
         _ = propagate(pth, req, eqpt)
-        previous_power = None
-        previous_deltap = None
         for i, element in enumerate(pth[1:-1]):
             element_is_first_amp = False
             # index of previous element in path is i
@@ -493,23 +492,26 @@ def test_compare_design_propagation_settings(power_dbm, req_power, amp_with_delt
                             assert getattr(element, key) == getattr(element_copy, key)
                     else:
                         dp = element.out_voa if element.uid not in amp_with_deltap_one else element.out_voa + 1
-                        if element_is_first_amp:
-                            assert element.effective_gain - element_copy.effective_gain ==\
-                                pytest.approx(min(pch_max, req_power + max(element.delta_p, dp))
-                                              - min(pch_max, power_dbm + dp), abs=1e-2)
-                            # if target power is above pch_max then gain should be saturated during propagation
-                            assert element.effective_pch_out_db ==\
-                                pytest.approx(min(pch_max, req_power + max(element.delta_p, dp)), abs=1e-2)
+                        # check that target power is correctly set
+                        assert element.target_pch_out_db == req_power + dp
+                        # check that designed gain is exactly applied except if target power exceeds max power, then
+                        # gain is slightly less than the one computed during design for the noiseless reference,
+                        # because during propagation, noise has accumulated, additing to signal.
+                        # check that delta_p is unchanged unless for saturation
+                        if element.target_pch_out_db > pch_max:
+                            assert element.effective_gain == pytest.approx(element_copy.effective_gain, abs=2e-2)
                         else:
-                            assert element.effective_gain - element_copy.effective_gain ==\
-                                pytest.approx(min(pch_max, req_power + max(element.delta_p, dp))
-                                              - min(pch_max, previous_power)
-                                              - min(pch_max, power_dbm + element.delta_p)
-                                              + min(pch_max, power_dbm + previous_deltap), abs=2e-2)
-                        assert element.delta_p == pytest.approx(min(power_dbm + dp, pch_max) - power_dbm, abs=1e-2)
-
-                        previous_deltap = element.delta_p
-                        previous_power = min(pch_max, req_power + max(element.delta_p, dp))
+                            assert element.effective_gain == element_copy.effective_gain
+                        # check that delta_p is unchanged unless for saturation
+                        assert element.delta_p == element_copy.delta_p
+                        if element_is_first_amp:
+                            # if element is first amp on path, then it is the one that will saturate if req_power is
+                            # too high
+                            assert mean(element.pch_out_dbm) ==\
+                                pytest.approx(min(pch_max, req_power + element.delta_p - element.out_voa), abs=2e-2)
+                        # check that delta_p is unchanged unless due to saturation
+                        assert element.delta_p == pytest.approx(min(req_power + dp, pch_max) - req_power, abs=1e-2)
+                        # check that delta_p is unchanged unless for saturation
                 else:
                     # for all subkeys, before and after design should be the same
                     for subkey in list_element_attr(getattr(element, key)):

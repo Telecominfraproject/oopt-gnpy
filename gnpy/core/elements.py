@@ -733,7 +733,6 @@ class Edfa(_Node):
                           f'  Power Out (dBm):        {self.pout_db:.2f}',
                           f'  Delta_P (dB):           ' + (f'{self.delta_p:.2f}' if self.delta_p is not None else 'None'),
                           f'  target pch (dBm):       ' + (f'{self.target_pch_out_db:.2f}' if self.target_pch_out_db is not None else 'None'),
-                          f'  effective pch (dBm):    {self.effective_pch_out_db:.2f}',
                           f'  actual pch out (dBm):   {total_pch}',
                           f'  output VOA (dB):        {self.out_voa:.2f}'])
 
@@ -762,16 +761,14 @@ class Edfa(_Node):
         self.slot_width = self.channel_freq[1] - self.channel_freq[0]
 
         """in power mode: delta_p is defined and can be used to calculate the power target
-        This power target is used calculate the amplifier gain"""
+        This power target correspond to the channel used for design"""
         pref = spectral_info.pref
         if self.delta_p is not None and self.operational.delta_p is not None:
             # use the user defined target
             self.target_pch_out_db = round(self.operational.delta_p + pref.p_span0, 2)
-            self.effective_gain = self.target_pch_out_db - pref.p_spani
         elif self.delta_p is not None:
             # use the design target if no target were set
             self.target_pch_out_db = round(self.delta_p + pref.p_span0, 2)
-            self.effective_gain = self.target_pch_out_db - pref.p_spani
 
         """check power saturation and correct effective gain & power accordingly:"""
         # Compute the saturation accounting for actual power at the input of the amp
@@ -779,7 +776,6 @@ class Edfa(_Node):
             self.effective_gain,
             self.params.p_max - self.pin_db
         )
-        self.effective_pch_out_db = round(pref.p_spani + self.effective_gain, 2)
 
         """check power saturation and correct target_gain accordingly:"""
         self.nf = self._calc_nf()

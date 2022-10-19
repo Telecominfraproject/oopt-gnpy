@@ -275,12 +275,12 @@ def test_2low_input_power(target_out, delta_pdb_per_channel, correction):
     assert (watt2dbm(si.signal) == target - correction).all()
 
 
-def net_setup(equipment):
+def net_setup(equipment, deltap=0):
     """ common setup for tests: builds network, equipment and oms only once
     """
     network = load_network(NETWORK_FILENAME, equipment)
     spectrum = equipment['SI']['default']
-    p_db = spectrum.power_dbm
+    p_db = spectrum.power_dbm + deltap
     p_total_db = p_db + lin2db(automatic_nch(spectrum.f_min, spectrum.f_max, spectrum.spacing))
     build_network(network, equipment, p_db, p_total_db)
     return network
@@ -433,13 +433,13 @@ def ref_network():
     return network
 
 
-@pytest.mark.parametrize('deltap', [0, +1.2, -0.5])
+@pytest.mark.parametrize('deltap', [0, +1.18, -0.5])
 def test_target_psd_out_mwperghz_deltap(deltap):
     """ checks that if target_psd_out_mWperGHz is defined, delta_p of amps is correctly updated
-    Power over 1.2dBm saturate amp with this test: TODO add a test on this saturation
+    Power over 1.18dBm saturate amp with this test: TODO add a test on this saturation
     """
     equipment = load_equipment(EQPT_FILENAME)
-    network = net_setup(equipment)
+    network = net_setup(equipment, deltap)
     req = create_voyager_req(equipment, 'trx Brest_KLA', 'trx Vannes_KBE', False, ['trx Vannes_KBE'], ['STRICT'],
                              'mode 1', 50e9, deltap)
     temp = [{
