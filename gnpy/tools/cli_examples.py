@@ -234,7 +234,7 @@ def transmission_main_example(args=None):
     # initial network is designed using req.power. that is that any missing information (amp gain or delta_p) is filled
     # using this req.power, previous to any sweep requested later on.
     try:
-        design_network(req, network, equipment, verbose=True)
+        design_network(req, network, equipment, set_connector_losses=True, verbose=True)
     except exceptions.NetworkTopologyError as e:
         print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
         sys.exit(1)
@@ -247,6 +247,7 @@ def transmission_main_example(args=None):
     print(f'\nNow propagating between {source.uid} and {destination.uid}:')
     for dp_db in power_range:
         req.power = db2lin(pref_ch_db + dp_db) * 1e-3
+        design_network(req, network, equipment, set_connector_losses=False, verbose=False)
         # if initial spectrum did not contain any power, now we need to use this one.
         # note the initial power defines a differential wrt req.power so that if req.power is set to 2mW (3dBm)
         # and initial spectrum was set to 0, this sets a initial per channel delta power to -3dB, so that

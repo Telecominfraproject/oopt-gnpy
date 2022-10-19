@@ -1,4 +1,4 @@
-INFO     gnpy.tools.cli_examples:cli_examples.py:336 Computing path requests meshTopologyExampleV2.xls into JSON format
+INFO     gnpy.tools.cli_examples:cli_examples.py:335 Computing path requests meshTopologyExampleV2.xls into JSON format
 INFO     gnpy.tools.json_io:json_io.py:548 Automatically converting requests from XLS to JSON
 INFO     gnpy.topology.request:request.py:1104 
 	request 0
