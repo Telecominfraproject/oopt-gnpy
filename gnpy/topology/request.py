@@ -360,7 +360,7 @@ def propagate(path, req, equipment):
             power=req.power, spacing=req.spacing, tx_osnr=req.tx_osnr, ref_carrier=ref_carrier(equipment))
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
-            si = el(si, degree=path[i+1].uid)
+            si = el(si, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
         else:
             si = el(si)
     path[0].update_snr(si.tx_osnr)
@@ -404,7 +404,7 @@ def propagate_and_optimize_mode(path, req, equipment):
                                                          tx_osnr=req.tx_osnr, ref_carrier=ref_carrier(equipment))
             for i, el in enumerate(path):
                 if isinstance(el, Roadm):
-                    spc_info = el(spc_info, degree=path[i+1].uid)
+                    spc_info = el(spc_info, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
                 else:
                     spc_info = el(spc_info)
             for this_mode in modes_to_explore:
