@@ -66,6 +66,7 @@ def test_equalization_combination_degree(delta_pdb_per_channel, degree, equaliza
         }
     }
     roadm = Roadm(**roadm_config)
+    roadm.ref_pch_in_dbm['tata'] = 0
     frequency = 191e12 + array([0, 50e9, 150e9, 225e9, 275e9])
     slot_width = array([37.5e9, 50e9, 75e9, 50e9, 37.5e9])
     baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
@@ -91,7 +92,7 @@ def test_equalization_combination_degree(delta_pdb_per_channel, degree, equaliza
         'metadata': {'location': {'latitude': 0, 'longitude': 0, 'city': None, 'region': None}}
     }
     assert roadm.to_json == to_json_before_propagation
-    si = roadm(si, degree)
+    si = roadm(si, degree=degree, from_degree='tata')
     assert roadm.ref_pch_out_dbm == pytest.approx(expected_pch_out_dbm, rel=1e-4)
 
 
@@ -236,7 +237,8 @@ def test_low_input_power(target_out, delta_pdb_per_channel, correction):
         }
     }
     roadm = Roadm(**roadm_config)
-    si = roadm(si, 'toto')
+    roadm.ref_pch_in_dbm['tata'] = 0
+    si = roadm(si, degree='toto', from_degree='tata')
     assert (watt2dbm(si.signal) == target - correction).all()
     # in other words check that if target is below input power, target is applied else power is unchanged
     assert (((watt2dbm(signal) >= target) * target + (watt2dbm(signal) < target) * watt2dbm(signal))
@@ -288,7 +290,8 @@ def test_2low_input_power(target_out, delta_pdb_per_channel, correction):
         }
     }
     roadm = Roadm(**roadm_config)
-    si = roadm(si, 'toto')
+    roadm.ref_pch_in_dbm['tata'] = 0
+    si = roadm(si, degree='toto', from_degree='tata')
     assert (watt2dbm(si.signal) == target - correction).all()
 
 
@@ -532,7 +535,7 @@ def test_equalization(case, deltap, target, mode, slot_width, equalization):
         spacing=req.spacing, tx_osnr=req.tx_osnr, ref_carrier=ref)
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
-            si = el(si, degree=path[i + 1].uid)
+            si = el(si, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
             if case in ['SI', 'nodes', 'degrees']:
                 if equalization == 'target_psd_out_mWperGHz':
                     assert_allclose(power_dbm_to_psd_mw_ghz(watt2dbm(si.signal + si.ase + si.nli), si.baud_rate),

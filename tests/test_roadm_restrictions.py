@@ -262,7 +262,7 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
             power_in_roadm = si.signal + si.ase + si.nli
-            si = el(si, degree=path[i + 1].uid)
+            si = el(si, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
             power_out_roadm = si.signal + si.ase + si.nli
             if el.uid == 'roadm node B':
                 # if previous was an EDFA, power level at ROADM input is enough for the ROADM to apply its
