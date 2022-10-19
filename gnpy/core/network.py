@@ -31,7 +31,7 @@ def edfa_nf(gain_target, variety_type, equipment):
     return amp._calc_nf(True)
 
 
-def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restrictions=None):
+def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restrictions=None, verbose=True):
     """amplifer selection algorithm
     @Orange Jean-Luc Augé
     """
@@ -89,10 +89,11 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
                     please increase span fiber padding')
         else:
             # TODO: convert to logging
-            print(
-                f'{ansi_escapes.red}WARNING:{ansi_escapes.reset} target gain in node {uid} is below all available amplifiers min gain: \
-                  amplifier input padding will be assumed, consider increase span fiber padding instead'
-            )
+            if verbose:
+                print(
+                    f'{ansi_escapes.red}WARNING:{ansi_escapes.reset} target gain in node {uid} is below all available amplifiers min gain: \
+                      amplifier input padding will be assumed, consider increase span fiber padding instead'
+                )
             acceptable_gain_min_list = edfa_list
 
     # filter on gain+power limitation:
@@ -113,7 +114,7 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
     selected_edfa = min(acceptable_power_list, key=attrgetter('nf'))  # filter on NF
     # check what are the gain and power limitations of this amp
     power_reduction = min(selected_edfa.power, 0)
-    if power_reduction < -0.5:
+    if power_reduction < -0.5 and verbose:
         print(f'{ansi_escapes.red}WARNING:{ansi_escapes.reset} target gain and power in node {uid}\n'
               + '     is beyond all available amplifiers capabilities and/or extended_gain_range:\n'
               + f'    a power reduction of {round(power_reduction, 2)} is applied\n')
@@ -229,7 +230,7 @@ def get_target_power(roadm, degree, ref_br):
                                  + f'in ROADM "{roadm.uid}"')
 
 
-def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_db):
+def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_db, verbose):
     """ this node can be a transceiver or a ROADM (same function called in both cases)
     """
     power_mode = equipment['Span']['default'].power_mode
@@ -288,7 +289,7 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
                         restrictions = next_node.restrictions['preamp_variety_list']
                     else:
                         restrictions = None
-                    edfa_variety, power_reduction = select_edfa(raman_allowed, gain_target, power_target, equipment, node.uid, restrictions)
+                    edfa_variety, power_reduction = select_edfa(raman_allowed, gain_target, power_target, equipment, node.uid, restrictions, verbose)
                     extra_params = equipment['Edfa'][edfa_variety]
                     node.params.update_params(extra_params.__dict__)
                     dp += power_reduction
@@ -313,7 +314,7 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
                     # if variety is imposed by user, and if the gain_target (computed or imposed) is also above
                     # variety max gain + extended range, then warn that gain > max_gain + extended range
                     if gain_target - equipment['Edfa'][node.params.type_variety].gain_flatmax - \
-                            equipment['Span']['default'].target_extended_gain > 1e-2:
+                            equipment['Span']['default'].target_extended_gain > 1e-2 and verbose:
                         # 1e-2 to allow a small margin according to round2float min step
                         print(f'{ansi_escapes.red}WARNING{ansi_escapes.reset}: '
                               f'WARNING: effective gain in Node {node.uid} is above user '
@@ -642,7 +643,11 @@ def add_missing_elements_in_network(network, equipment):
         add_inline_amplifier(network, fiber)
 
 
-def build_network(network, equipment, pref_ch_db, pref_total_db):
+def build_network(network, equipment, pref_ch_db, pref_total_db, verbose=True):
+    """Autodesign: add connector losses and EOL margin, set targets out of ROADMs,
+    and settings of amplifiers. Add padding attenuation in fibers, fill in information
+    about reference channel powers at ROADM and fiber input, for visualisation purpose
+    """
     default_span_data = equipment['Span']['default']
     # set roadm loss for gain_mode before to build network
     fibers = [f for f in network.nodes() if isinstance(f, elements.Fiber)]
@@ -658,7 +663,7 @@ def build_network(network, equipment, pref_ch_db, pref_total_db):
     for roadm in roadms:
         set_roadm_output_targets(roadm, network)
     for roadm in roadms + transceivers:
-        set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db)
+        set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db, verbose)
     for roadm in roadms:
         set_roadm_input_powers(network, roadm, equipment, pref_ch_db)
     for fiber in [f for f in network.nodes() if isinstance(f, (elements.Fiber, elements.RamanFiber))]:
