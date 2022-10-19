@@ -31,7 +31,6 @@ Edfa Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Norrköping)_(1/2)
   Power Out (dBm):        21.82
   Delta_P (dB):           0.00
   target pch (dBm):       2.00
-  effective pch (dBm):    2.00
   actual pch out (dBm):   2.00
   output VOA (dB):        0.00
 Fiber          fiber (Stockholm → Norrköping)_(1/2)
@@ -54,8 +53,7 @@ Edfa Edfa_fiber (Stockholm → Norrköping)_(1/2)
   Power Out (dBm):        21.84
   Delta_P (dB):           0.00
   target pch (dBm):       2.00
-  effective pch (dBm):    2.00
-  actual pch out (dBm):   2.02
+  actual pch out (dBm):   2.01
   output VOA (dB):        0.00
 Fiber          fiber (Stockholm → Norrköping)_(2/2)
   type_variety:                SSMF
@@ -70,15 +68,14 @@ Edfa Edfa_preamp_roadm_Norrköping_from_fiber (Stockholm → Norrköping)_(2/2)
   type_variety:           openroadm_mw_mw_preamp_worstcase_ver5
   effective gain(dB):     16.33
   (before att_in and before output VOA)
-  noise figure (dB):      11.44
+  noise figure (dB):      11.43
   (including att_in)
   pad att_in (dB):        0.00
-  Power In (dBm):         5.53
-  Power Out (dBm):        21.86
+  Power In (dBm):         5.52
+  Power Out (dBm):        21.85
   Delta_P (dB):           0.00
   target pch (dBm):       2.00
-  effective pch (dBm):    2.00
-  actual pch out (dBm):   2.04
+  actual pch out (dBm):   2.03
   output VOA (dB):        0.00
 Roadm roadm_Norrköping
   effective loss (dB):     22.00
@@ -95,7 +92,6 @@ Edfa Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Linköping)
   Power Out (dBm):        21.82
   Delta_P (dB):           0.00
   target pch (dBm):       2.00
-  effective pch (dBm):    2.00
   actual pch out (dBm):   2.00
   output VOA (dB):        0.00
 Fiber          fiber (Norrköping → Linköping)
@@ -118,7 +114,6 @@ Edfa Edfa_preamp_roadm_Linköping_from_fiber (Norrköping → Linköping)
   Power Out (dBm):        21.83
   Delta_P (dB):           0.00
   target pch (dBm):       2.00
-  effective pch (dBm):    2.00
   actual pch out (dBm):   2.01
   output VOA (dB):        0.00
 Roadm roadm_Linköping
@@ -136,7 +131,6 @@ Edfa Edfa_booster_roadm_Linköping_to_fiber (Linköping → Jönköping)
   Power Out (dBm):        21.82
   Delta_P (dB):           0.00
   target pch (dBm):       2.00
-  effective pch (dBm):    2.00
   actual pch out (dBm):   2.00
   output VOA (dB):        0.00
 Fiber          fiber (Linköping → Jönköping)
@@ -156,10 +150,9 @@ Edfa Edfa_preamp_roadm_Jönköping_from_fiber (Linköping → Jönköping)
   (including att_in)
   pad att_in (dB):        0.00
   Power In (dBm):         -4.97
-  Power Out (dBm):        21.86
+  Power Out (dBm):        21.87
   Delta_P (dB):           0.00
   target pch (dBm):       2.00
-  effective pch (dBm):    2.00
   actual pch out (dBm):   2.04
   output VOA (dB):        0.00
 Roadm roadm_Jönköping
@@ -177,7 +170,6 @@ Edfa Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Borås)
   Power Out (dBm):        21.82
   Delta_P (dB):           0.00
   target pch (dBm):       2.00
-  effective pch (dBm):    2.00
   actual pch out (dBm):   2.00
   output VOA (dB):        0.00
 Fiber          fiber (Jönköping → Borås)
@@ -200,8 +192,7 @@ Edfa Edfa_preamp_roadm_Borås_from_fiber (Jönköping → Borås)
   Power Out (dBm):        21.84
   Delta_P (dB):           0.00
   target pch (dBm):       2.00
-  effective pch (dBm):    2.00
-  actual pch out (dBm):   2.01
+  actual pch out (dBm):   2.02
   output VOA (dB):        0.00
 Roadm roadm_Borås
   effective loss (dB):     22.00
@@ -218,7 +209,6 @@ Edfa Edfa_booster_roadm_Borås_to_fiber (Borås → Gothenburg)
   Power Out (dBm):        21.82
   Delta_P (dB):           0.00
   target pch (dBm):       2.00
-  effective pch (dBm):    2.00
   actual pch out (dBm):   2.00
   output VOA (dB):        0.00
 Fiber          fiber (Borås → Gothenburg)
@@ -241,7 +231,6 @@ Edfa Edfa_preamp_roadm_Gothenburg_from_fiber (Borås → Gothenburg)
   Power Out (dBm):        21.84
   Delta_P (dB):           0.00
   target pch (dBm):       2.00
-  effective pch (dBm):    2.00
   actual pch out (dBm):   2.02
   output VOA (dB):        0.00
 Roadm roadm_Gothenburg

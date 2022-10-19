@@ -28,7 +28,6 @@ def nch_and_spacing(request):
 def propagation(input_power, con_in, con_out, dest):
     equipment = load_equipment(eqpt_library_name)
     network = load_network(network_file_name, equipment)
-    build_network(network, equipment, 0, 20)
 
     # parametrize the network elements with the con losses and adapt gain
     # (assumes all spans are identical)
@@ -39,6 +38,8 @@ def propagation(input_power, con_in, con_out, dest):
             e.params.con_out = con_out
         if isinstance(e, Edfa):
             e.operational.gain_target = loss + con_in + con_out
+
+    build_network(network, equipment, 0, 20)
 
     transceivers = {n.uid: n for n in network.nodes() if isinstance(n, Transceiver)}
 
