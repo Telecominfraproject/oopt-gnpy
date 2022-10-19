@@ -1,0 +1,377 @@
+There are 95 channels propagating
+Power mode is set to True
+=> it can be modified in eqpt_config.json - Span
+[1;31;40mWARNING:[0m target gain and power in node west edfa in Lorient_KMA to Loudeac
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Lannion_CAS to Stbrieuc is above user specified amplifier std_low_gain
+max flat gain: 16dB ; required gain: 21.22dB. Please check amplifier type.
+[1;31;40mWARNING:[0m target gain and power in node west edfa in Rennes_STA to Stbrieuc
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Lannion_CAS to Morlaix is above user specified amplifier std_low_gain
+max flat gain: 16dB ; required gain: 21.22dB. Please check amplifier type.
+[1;31;40mWARNING:[0m target gain and power in node west edfa in Brest_KLA to Morlaix
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in Lorient_KMA to Loudeac
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING[0m: WARNING: effective gain in Node west edfa in Lannion_CAS to Corlay is above user specified amplifier test
+max flat gain: 25dB ; required gain: 28.0dB. Please check amplifier type.
+[1;31;40mWARNING:[0m target gain and power in node east edfa in Lorient_KMA to Vannes_KBE
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in Vannes_KBE to Lorient_KMA
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in Lorient_KMA to Quimper
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in Quimper to Lorient_KMA
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in Brest_KLA to Quimper
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in Vannes_KBE to Lorient_KMA
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in Lorient_KMA to Vannes_KBE
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in Vannes_KBE to Ploermel
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in Ploermel to Vannes_KBE
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in Rennes_STA to Ploermel
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in Rennes_STA to Stbrieuc
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in Stbrieuc to Rennes_STA
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in Lannion_CAS to Stbrieuc
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in Rennes_STA to Ploermel
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in Vannes_KBE to Ploermel
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in Brest_KLA to Morlaix
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING[0m: WARNING: effective gain in Node east edfa in Brest_KLA to Quimper is above user specified amplifier std_low_gain
+max flat gain: 16dB ; required gain: 21.22dB. Please check amplifier type.
+[1;31;40mWARNING:[0m target gain and power in node east edfa in Quimper to Lorient_KMA
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in Lorient_KMA to Quimper
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in a to b
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in b to a
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in a to c
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in c to a
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in b to a
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in a to b
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in b to f
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in f to b
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in c to a
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in a to c
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in d to c
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in c to f
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in f to c
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in d to c
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in c to d
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in d to e
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in e to d
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in e to d
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in d to e
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in e to g
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in g to e
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in f to c
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in c to f
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in f to b
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in b to f
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in f to h
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in h to f
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in g to e
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in e to g
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in g to h
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in h to g
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in h to f
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in f to h
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node east edfa in h to g
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+[1;31;40mWARNING:[0m target gain and power in node west edfa in g to h
+     is beyond all available amplifiers capabilities and/or extended_gain_range:
+    a power reduction of -1.78 is applied
+
+
+There are 4 fiber spans over 200 km between trx Brest_KLA and trx Rennes_STA
+
+Now propagating between trx Brest_KLA and trx Rennes_STA:
+
+Propagating with input power = [1;36;40m-3.00 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          23.73
+  GSNR (signal bw, dB):      19.65
+  OSNR ASE (0.1nm, dB):      23.99
+  OSNR ASE (signal bw, dB):  19.91
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+
+Propagating with input power = [1;36;40m-2.50 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.01
+  GSNR (signal bw, dB):      19.93
+  OSNR ASE (0.1nm, dB):      24.37
+  OSNR ASE (signal bw, dB):  20.29
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+
+Propagating with input power = [1;36;40m-2.00 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.26
+  GSNR (signal bw, dB):      20.17
+  OSNR ASE (0.1nm, dB):      24.74
+  OSNR ASE (signal bw, dB):  20.66
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+
+Propagating with input power = [1;36;40m-1.50 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.45
+  GSNR (signal bw, dB):      20.37
+  OSNR ASE (0.1nm, dB):      25.10
+  OSNR ASE (signal bw, dB):  21.01
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+
+Propagating with input power = [1;36;40m-1.00 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.58
+  GSNR (signal bw, dB):      20.50
+  OSNR ASE (0.1nm, dB):      25.44
+  OSNR ASE (signal bw, dB):  21.36
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+
+Propagating with input power = [1;36;40m-0.50 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.64
+  GSNR (signal bw, dB):      20.56
+  OSNR ASE (0.1nm, dB):      25.77
+  OSNR ASE (signal bw, dB):  21.69
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+
+Propagating with input power = [1;36;40m-0.00 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.62
+  GSNR (signal bw, dB):      20.53
+  OSNR ASE (0.1nm, dB):      26.09
+  OSNR ASE (signal bw, dB):  22.00
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+
+Propagating with input power = [1;36;40m0.50 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.44
+  GSNR (signal bw, dB):      20.35
+  OSNR ASE (0.1nm, dB):      26.29
+  OSNR ASE (signal bw, dB):  22.20
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+
+Propagating with input power = [1;36;40m1.00 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.17
+  GSNR (signal bw, dB):      20.09
+  OSNR ASE (0.1nm, dB):      26.47
+  OSNR ASE (signal bw, dB):  22.39
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+
+Propagating with input power = [1;36;40m1.50 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.03
+  GSNR (signal bw, dB):      19.95
+  OSNR ASE (0.1nm, dB):      26.55
+  OSNR ASE (signal bw, dB):  22.47
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+
+Propagating with input power = [1;36;40m2.00 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.03
+  GSNR (signal bw, dB):      19.95
+  OSNR ASE (0.1nm, dB):      26.55
+  OSNR ASE (signal bw, dB):  22.47
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+
+Propagating with input power = [1;36;40m2.50 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.03
+  GSNR (signal bw, dB):      19.95
+  OSNR ASE (0.1nm, dB):      26.55
+  OSNR ASE (signal bw, dB):  22.47
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+
+Propagating with input power = [1;36;40m3.00 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.03
+  GSNR (signal bw, dB):      19.95
+  OSNR ASE (0.1nm, dB):      26.55
+  OSNR ASE (signal bw, dB):  22.47
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+
+(Invalid source node 'brest' replaced with trx Brest_KLA)
+
+(Invalid destination node 'rennes' replaced with trx Rennes_STA)
