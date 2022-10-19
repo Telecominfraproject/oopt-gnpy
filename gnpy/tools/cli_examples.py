@@ -21,7 +21,7 @@ from gnpy.core.equipment import trx_mode_params
 import gnpy.core.exceptions as exceptions
 from gnpy.core.network import add_missing_elements_in_network, design_network
 from gnpy.core.parameters import SimParams
-from gnpy.core.utils import db2lin, lin2db, automatic_nch
+from gnpy.core.utils import db2lin, lin2db, automatic_nch, watt2dbm, dbm2watt
 from gnpy.topology.request import (ResultElement, jsontocsv, compute_path_dsjctn, requests_aggregation,
                                    BLOCKING_NOPATH, correct_json_route_list,
                                    deduplicate_disjunctions, compute_path_with_disjunction,
@@ -197,16 +197,22 @@ def transmission_main_example(args=None):
         trx_params['power'] = db2lin(float(args.power)) * 1e-3
     params.update(trx_params)
     initial_spectrum = None
-    nb_channels = automatic_nch(trx_params['f_min'], trx_params['f_max'], trx_params['spacing'])
+    params['nb_channel'] = automatic_nch(trx_params['f_min'], trx_params['f_max'], trx_params['spacing'])
+    # use ref_req to hold reference channel used for design and req for the propagation
+    # and req to hold channels to be propagated
+    # apply power sweep on the design and on the channels
+    ref_req = PathRequest(**params)
+    pref_ch_db = watt2dbm(ref_req.power)
     if args.spectrum:
+        # use the spectrum defined by user for the propagation.
+        # the nb of channel for design remains the one of the reference channel
         initial_spectrum = load_initial_spectrum(args.spectrum)
-        nb_channels = len(initial_spectrum)
+        params['nb_channel'] = len(initial_spectrum)
         print('User input for spectrum used for propagation instead of SI')
-    params['nb_channel'] = nb_channels
     req = PathRequest(**params)
-    pref_ch_db = lin2db(req.power * 1e3)  # reference channel power / span (SL=20dB)
+    p_ch_db = watt2dbm(req.power)
     req.initial_spectrum = initial_spectrum
-    print(f'There are {nb_channels} channels propagating')
+    print(f'There are {req.nb_channel} channels propagating')
     power_mode = equipment['Span']['default'].power_mode
     print('\n'.join([f'Power mode is set to {power_mode}',
                      '=> it can be modified in eqpt_config.json - Span']))
@@ -234,7 +240,7 @@ def transmission_main_example(args=None):
     # initial network is designed using req.power. that is that any missing information (amp gain or delta_p) is filled
     # using this req.power, previous to any sweep requested later on.
     try:
-        design_network(req, network, equipment, verbose=True)
+        design_network(ref_req, network, equipment, set_connector_losses=True, verbose=True)
     except exceptions.NetworkTopologyError as e:
         print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
         sys.exit(1)
@@ -246,14 +252,17 @@ def transmission_main_example(args=None):
           f'and {destination.uid}')
     print(f'\nNow propagating between {source.uid} and {destination.uid}:')
     for dp_db in power_range:
-        req.power = db2lin(pref_ch_db + dp_db) * 1e-3
+        ref_req.power = dbm2watt(pref_ch_db + dp_db)
+        req.power = dbm2watt(p_ch_db + dp_db)
+        design_network(ref_req, network, equipment, set_connector_losses=False, verbose=False)
         # if initial spectrum did not contain any power, now we need to use this one.
         # note the initial power defines a differential wrt req.power so that if req.power is set to 2mW (3dBm)
         # and initial spectrum was set to 0, this sets a initial per channel delta power to -3dB, so that
         # whatever the equalization, -3 dB is applied on all channels (ie initial power in initial spectrum pre-empts
         # "--power" option)
         if power_mode:
-            print(f'\nPropagating with input power = {ansi_escapes.cyan}{lin2db(req.power*1e3):.2f} dBm{ansi_escapes.reset}:')
+            print(f'\nPropagating with input power = {ansi_escapes.cyan}{watt2dbm(req.power):.2f} '
+                  + f'dBm{ansi_escapes.reset}:')
         else:
             print(f'\nPropagating in {ansi_escapes.cyan}gain mode{ansi_escapes.reset}: power cannot be set manually')
         infos = propagate(path, req, equipment)

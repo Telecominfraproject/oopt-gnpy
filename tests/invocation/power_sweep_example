@@ -1,0 +1,154 @@
+There are 95 channels propagating
+Power mode is set to True
+=> it can be modified in eqpt_config.json - Span
+
+There are 4 fiber spans over 200 km between trx Brest_KLA and trx Rennes_STA
+
+Now propagating between trx Brest_KLA and trx Rennes_STA:
+
+Propagating with input power = [1;36;40m-3.00 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          23.73
+  GSNR (signal bw, dB):      19.65
+  OSNR ASE (0.1nm, dB):      23.99
+  OSNR ASE (signal bw, dB):  19.91
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+  Latency (ms):              0.98
+
+Propagating with input power = [1;36;40m-2.50 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.01
+  GSNR (signal bw, dB):      19.93
+  OSNR ASE (0.1nm, dB):      24.37
+  OSNR ASE (signal bw, dB):  20.29
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+  Latency (ms):              0.98
+
+Propagating with input power = [1;36;40m-2.00 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.25
+  GSNR (signal bw, dB):      20.17
+  OSNR ASE (0.1nm, dB):      24.74
+  OSNR ASE (signal bw, dB):  20.66
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+  Latency (ms):              0.98
+
+Propagating with input power = [1;36;40m-1.50 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.44
+  GSNR (signal bw, dB):      20.36
+  OSNR ASE (0.1nm, dB):      25.10
+  OSNR ASE (signal bw, dB):  21.01
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+  Latency (ms):              0.98
+
+Propagating with input power = [1;36;40m-1.00 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.57
+  GSNR (signal bw, dB):      20.49
+  OSNR ASE (0.1nm, dB):      25.44
+  OSNR ASE (signal bw, dB):  21.36
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+  Latency (ms):              0.98
+
+Propagating with input power = [1;36;40m-0.50 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.63
+  GSNR (signal bw, dB):      20.55
+  OSNR ASE (0.1nm, dB):      25.77
+  OSNR ASE (signal bw, dB):  21.69
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+  Latency (ms):              0.98
+
+Propagating with input power = [1;36;40m-0.00 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.60
+  GSNR (signal bw, dB):      20.52
+  OSNR ASE (0.1nm, dB):      26.09
+  OSNR ASE (signal bw, dB):  22.00
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+  Latency (ms):              0.98
+
+Propagating with input power = [1;36;40m0.50 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.42
+  GSNR (signal bw, dB):      20.34
+  OSNR ASE (0.1nm, dB):      26.29
+  OSNR ASE (signal bw, dB):  22.20
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+  Latency (ms):              0.98
+
+Propagating with input power = [1;36;40m1.00 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.16
+  GSNR (signal bw, dB):      20.08
+  OSNR ASE (0.1nm, dB):      26.47
+  OSNR ASE (signal bw, dB):  22.39
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+  Latency (ms):              0.98
+
+Propagating with input power = [1;36;40m1.50 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.02
+  GSNR (signal bw, dB):      19.94
+  OSNR ASE (0.1nm, dB):      26.55
+  OSNR ASE (signal bw, dB):  22.47
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+  Latency (ms):              0.98
+
+Propagating with input power = [1;36;40m2.00 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.02
+  GSNR (signal bw, dB):      19.94
+  OSNR ASE (0.1nm, dB):      26.55
+  OSNR ASE (signal bw, dB):  22.47
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+  Latency (ms):              0.98
+
+Propagating with input power = [1;36;40m2.50 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.02
+  GSNR (signal bw, dB):      19.94
+  OSNR ASE (0.1nm, dB):      26.55
+  OSNR ASE (signal bw, dB):  22.47
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+  Latency (ms):              0.98
+
+Propagating with input power = [1;36;40m3.00 dBm[0m:
+Transceiver trx Rennes_STA
+  GSNR (0.1nm, dB):          24.02
+  GSNR (signal bw, dB):      19.94
+  OSNR ASE (0.1nm, dB):      26.55
+  OSNR ASE (signal bw, dB):  22.47
+  CD (ps/nm):                3340.00
+  PMD (ps):                  0.57
+  PDL (dB):                  0.00
+  Latency (ms):              0.98
+
+(Invalid source node 'brest' replaced with trx Brest_KLA)
+
+(Invalid destination node 'rennes' replaced with trx Rennes_STA)
