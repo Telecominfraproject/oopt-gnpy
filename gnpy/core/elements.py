@@ -669,6 +669,7 @@ class Edfa(_Node):
         self.att_in = None
         self.effective_gain = self.operational.gain_target
         self.delta_p = self.operational.delta_p  # delta P with Pref (power swwep) in power mode
+        self._delta_p = None  # contains computed delta_p during design even if gain mode (then delta is None)
         self.tilt_target = self.operational.tilt_target
         self.out_voa = self.operational.out_voa
         self.propagated_labels = [""]
