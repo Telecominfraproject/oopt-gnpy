@@ -432,6 +432,7 @@ class Fiber(_Node):
                                        f"({1e-3 * self.params.length} km), boundaries excluded.")
         self.lumped_losses = db2lin(- lumped_losses_power)  # [linear units]
         self.z_lumped_losses = array(z_lumped_losses) * 1e3  # [m]
+        self.ref_pch_in_dbm = None
 
     @property
     def to_json(self):
@@ -578,6 +579,12 @@ class Fiber(_Node):
         self._psig_in = sum(spectral_info.signal)
         self.propagate(spectral_info)
         self.update_pref(spectral_info)
+        # In case of Raman, the resulting loss of the fiber is not equivalent to self.loss
+        # because of Raman gain. The resulting loss is:
+        # power_out - power_in. We use the total signal power (sum on all channels) to compute
+        # this loss.
+        loss = round(lin2db(self._psig_in / sum(spectral_info.signal)), 2)
+        self.pch_out_db = self.ref_pch_in_dbm - loss
         return spectral_info
 
 
