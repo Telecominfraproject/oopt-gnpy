@@ -357,6 +357,62 @@ def set_roadm_output_targets(roadm, network):
     roadm.per_degree_pch_psd = {k: v for k, v in roadm_degree_psd.items()}
 
 
+def set_roadm_input_powers(network, roadm, equipment, pref_ch_db):
+    """Set reference powers at ROADM input for a reference channel and based on the adjacent OMS.
+    This supposes that there is no dependency on path. For example, the succession:
+    node                             power out of element
+    roadm A (target power -10dBm)   -10dBm
+    fiber A (16 dB loss)            -26dBm
+    roadm B (target power -12dBm)   -26dBm
+    fiber B (10 dB loss)            -36dBm
+    roadm C (target power -14dBm)   -36dBm
+    is not consistent because target powers in roadm B and roadm C can not be met.
+    input power for the reference channel will be set -26 dBm in roadm B and -22dBm in roadm C,
+    because at design time we can not know about path.
+    The function raises a warning if target powers can not be met with the design.
+    User should be aware that design was not successfull and that power reduction was applied.
+    Note that this value is only used for visualisation purpose (to compute ROADM loss in elements).
+    """
+    ref_br = equipment['SI']['default'].baud_rate
+    previous_elements = [n for n in network.predecessors(roadm)]
+    roadm.ref_pch_in_dbm = {}
+    for element in previous_elements:
+        node = element
+        loss = 0.0
+        while isinstance(node, (elements.Fiber, elements.Fused, elements.RamanFiber)):
+            # go through all predecessors until a power target is found either in an amplifier, a ROADM or a transceiver
+            # then deduce power at ROADM input from this degree based on this target and crossed losses
+            loss += node.loss
+            previous_node = node
+            node = next(network.predecessors(node))
+        if isinstance(node, elements.Edfa):
+            roadm.ref_pch_in_dbm[element.uid] = pref_ch_db + node._delta_p - node.out_voa - loss
+        elif isinstance(node, elements.Roadm):
+            roadm.ref_pch_in_dbm[element.uid] = get_target_power(node, previous_node.uid, ref_br) - loss
+        elif isinstance(node, elements.Transceiver):
+            roadm.ref_pch_in_dbm[element.uid] = pref_ch_db - loss
+    # check if target power can be met
+    temp = []
+    if roadm.per_degree_pch_out_dbm:
+        temp.append(max([p for p in roadm.per_degree_pch_out_dbm.values()]))
+    if roadm.per_degree_pch_psd:
+        temp.append(max([psd2powerdbm(p, ref_br) for p in roadm.per_degree_pch_psd.values()]))
+    if roadm.params.target_pch_out_db:
+        temp.append(roadm.params.target_pch_out_db)
+    if roadm.params.target_psd_out_mWperGHz:
+        temp.append(roadm.params.target_psd_out_mWperGHz)
+    if not temp:
+        raise ConfigurationError(f'Could not find target power/PSD in ROADM "{roadm.uid}"')
+    target_to_be_supported = max(temp)
+    for from_degree, in_power in roadm.ref_pch_in_dbm.items():
+        if in_power < target_to_be_supported:
+            print(
+                f'{ansi_escapes.red}WARNING:{ansi_escapes.reset} maximum target power {target_to_be_supported}dBm '
+                + f'in ROADM "{roadm.uid}" can not be met for at least one crossing path. Min input power '
+                + f'from "{from_degree}" direction is {round(in_power, 2)}dBm. Please correct input topology.'
+            )
+
+
 def add_roadm_booster(network, roadm):
     next_nodes = [n for n in network.successors(roadm)
                   if not (isinstance(n, elements.Transceiver) or isinstance(n, elements.Fused) or isinstance(n, elements.Edfa))]
@@ -570,6 +626,8 @@ def build_network(network, equipment, pref_ch_db, pref_total_db, no_insert_edfas
         set_roadm_output_targets(roadm, network)
     for roadm in roadms:
         set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db)
+    for roadm in roadms:
+        set_roadm_input_powers(network, roadm, equipment, pref_ch_db)
 
     trx = [t for t in network.nodes() if isinstance(t, elements.Transceiver)]
     for t in trx:
