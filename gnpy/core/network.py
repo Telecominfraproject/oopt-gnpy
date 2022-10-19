@@ -11,7 +11,7 @@ Working with networks which consist of network elements
 from operator import attrgetter
 from gnpy.core import ansi_escapes, elements
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
-from gnpy.core.utils import round2float, convert_length, psd2powerdbm
+from gnpy.core.utils import round2float, convert_length, psd2powerdbm, lin2db, watt2dbm
 from collections import namedtuple
 
 
@@ -666,3 +666,12 @@ def build_network(network, equipment, pref_ch_db, pref_total_db, verbose=True):
         set_roadm_input_powers(network, roadm, equipment, pref_ch_db)
     for fiber in [f for f in network.nodes() if isinstance(f, (elements.Fiber, elements.RamanFiber))]:
         set_fiber_input_power(network, fiber, equipment, pref_ch_db)
+
+
+def design_network(reference_channel, network, equipment, verbose=True):
+    """Network is designed according to reference channel. Verbose indicate if the function should
+    print all warnings or not
+    """
+    pref_ch_db = watt2dbm(reference_channel.power)  # reference channel power
+    pref_total_db = pref_ch_db + lin2db(reference_channel.nb_channel)  # reference total power
+    build_network(network, equipment, pref_ch_db, pref_total_db, verbose)
