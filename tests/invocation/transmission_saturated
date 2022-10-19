@@ -266,7 +266,6 @@ Edfa east edfa in Lannion_CAS to Corlay
   Power Out (dBm):        21.01
   Delta_P (dB):           -1.82
   target pch (dBm):       1.18
-  effective pch (dBm):    1.18
   actual pch out (dBm):   1.18
   output VOA (dB):        0.00
 Fiber          fiber (Lannion_CAS → Corlay)-F061
@@ -311,7 +310,6 @@ Edfa west edfa in Lorient_KMA to Loudeac
   Power Out (dBm):        21.03
   Delta_P (dB):           -1.82
   target pch (dBm):       1.18
-  effective pch (dBm):    1.17
   actual pch out (dBm):   1.21
   output VOA (dB):        0.00
 Roadm roadm Lorient_KMA
