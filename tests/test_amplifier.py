@@ -235,6 +235,7 @@ def test_amp_behaviour(tilt_target, delta_p):
     fiber = [n for n in network.nodes() if isinstance(n, Fiber)][0]
     fiber.params.con_in = 0
     fiber.params.con_out = 0
+    fiber.ref_pch_in_dbm = 0.0
     si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12, roll_off=0.15, baud_rate=64e9, power=0.001,
                                            spacing=75e9, tx_osnr=None)
     si = fiber(si)
