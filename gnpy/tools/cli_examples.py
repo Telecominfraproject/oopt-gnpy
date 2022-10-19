@@ -248,6 +248,7 @@ def transmission_main_example(args=None):
     print(f'\nNow propagating between {source.uid} and {destination.uid}:')
     for dp_db in power_range:
         req.power = db2lin(pref_ch_db + dp_db) * 1e-3
+        design_network(req, network, equipment, verbose=False)
         # if initial spectrum did not contain any power, now we need to use this one.
         # note the initial power defines a differential wrt req.power so that if req.power is set to 2mW (3dBm)
         # and initial spectrum was set to 0, this sets a initial per channel delta power to -3dB, so that
