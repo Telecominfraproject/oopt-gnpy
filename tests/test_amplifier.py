@@ -88,6 +88,7 @@ def test_variable_gain_nf(gain, nf_expected, setup_edfa_variable_gain, si):
     si.nli /= db2lin(gain)
     si.ase /= db2lin(gain)
     edfa.operational.gain_target = gain
+    edfa.effective_gain = gain
     si.pref = si.pref._replace(p_span0=0, p_spani=-gain)
     edfa.interpol_params(si)
     result = edfa.nf
@@ -102,6 +103,7 @@ def test_fixed_gain_nf(gain, nf_expected, setup_edfa_fixed_gain, si):
     si.nli /= db2lin(gain)
     si.ase /= db2lin(gain)
     edfa.operational.gain_target = gain
+    edfa.effective_gain = gain
     si.pref = si.pref._replace(p_span0=0, p_spani=-gain)
     edfa.interpol_params(si)
     assert pytest.approx(nf_expected, abs=0.01) == edfa.nf[0]
@@ -126,6 +128,7 @@ def test_compare_nf_models(gain, setup_edfa_variable_gain, si):
     si.nli /= db2lin(gain)
     si.ase /= db2lin(gain)
     edfa.operational.gain_target = gain
+    edfa.effective_gain = gain
     # edfa is variable gain type
     si.pref = si.pref._replace(p_span0=0, p_spani=-gain)
     edfa.interpol_params(si)
@@ -212,7 +215,7 @@ def test_amp_behaviour(tilt_target, delta_p):
             "type_variety": "test",
             "operational": {
                 "delta_p": delta_p,
-                "gain_target": 20,
+                "gain_target": 20 + delta_p if delta_p else 20,
                 "tilt_target": tilt_target,
                 "out_voa": 0
             }
