@@ -30,7 +30,6 @@ Edfa booster A
   Power Out (dBm):        19.83
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  effective pch (dBm):    0.00
   actual pch out (dBm):   0.01
   output VOA (dB):        0.00
 Fiber          Span1
@@ -53,7 +52,6 @@ Edfa Edfa1
   Power Out (dBm):        19.84
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  effective pch (dBm):    0.00
   actual pch out (dBm):   0.02
   output VOA (dB):        0.00
 Fiber          Span2
@@ -76,7 +74,6 @@ Edfa Edfa2
   Power Out (dBm):        19.85
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  effective pch (dBm):    0.00
   actual pch out (dBm):   0.03
   output VOA (dB):        0.00
 Fiber          Span3
@@ -99,7 +96,6 @@ Edfa Edfa3
   Power Out (dBm):        19.86
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  effective pch (dBm):    0.00
   actual pch out (dBm):   0.04
   output VOA (dB):        0.00
 Fiber          Span4
@@ -122,7 +118,6 @@ Edfa Edfa4
   Power Out (dBm):        19.87
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  effective pch (dBm):    0.00
   actual pch out (dBm):   0.05
   output VOA (dB):        0.00
 Fiber          Span5
@@ -145,7 +140,6 @@ Edfa Edfa5
   Power Out (dBm):        19.88
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  effective pch (dBm):    0.00
   actual pch out (dBm):   0.06
   output VOA (dB):        0.00
 Roadm roadm Site C
@@ -163,7 +157,6 @@ Edfa booster C
   Power Out (dBm):        19.83
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  effective pch (dBm):    0.00
   actual pch out (dBm):   0.01
   output VOA (dB):        0.00
 Fiber          Span6
@@ -186,7 +179,6 @@ Edfa Edfa6
   Power Out (dBm):        19.84
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  effective pch (dBm):    0.00
   actual pch out (dBm):   0.02
   output VOA (dB):        0.00
 Fiber          Span7
@@ -209,7 +201,6 @@ Edfa Edfa7
   Power Out (dBm):        19.85
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  effective pch (dBm):    0.00
   actual pch out (dBm):   0.03
   output VOA (dB):        0.00
 Fiber          Span8
@@ -232,7 +223,6 @@ Edfa Edfa8
   Power Out (dBm):        19.86
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  effective pch (dBm):    0.00
   actual pch out (dBm):   0.04
   output VOA (dB):        0.00
 Fiber          Span9
@@ -255,7 +245,6 @@ Edfa Edfa9
   Power Out (dBm):        19.87
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  effective pch (dBm):    0.00
   actual pch out (dBm):   0.05
   output VOA (dB):        0.00
 Fiber          Span10
@@ -278,7 +267,6 @@ Edfa Edfa10
   Power Out (dBm):        19.88
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  effective pch (dBm):    0.00
   actual pch out (dBm):   0.06
   output VOA (dB):        0.00
 Roadm roadm Site D
@@ -296,7 +284,6 @@ Edfa booster D
   Power Out (dBm):        19.83
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  effective pch (dBm):    0.00
   actual pch out (dBm):   0.01
   output VOA (dB):        0.00
 Fiber          Span11
@@ -319,7 +306,6 @@ Edfa Edfa11
   Power Out (dBm):        19.84
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  effective pch (dBm):    0.00
   actual pch out (dBm):   0.02
   output VOA (dB):        0.00
 Fiber          Span12
@@ -342,7 +328,6 @@ Edfa Edfa12
   Power Out (dBm):        19.85
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  effective pch (dBm):    0.00
   actual pch out (dBm):   0.03
   output VOA (dB):        0.00
 Roadm roadm Site E
@@ -360,7 +345,6 @@ Edfa booster E
   Power Out (dBm):        19.83
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  effective pch (dBm):    0.00
   actual pch out (dBm):   0.01
   output VOA (dB):        0.00
 Fiber          Span13
@@ -383,7 +367,6 @@ Edfa Edfa13
   Power Out (dBm):        19.84
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  effective pch (dBm):    0.00
   actual pch out (dBm):   0.02
   output VOA (dB):        0.00
 Fiber          Span14
@@ -406,7 +389,6 @@ Edfa Edfa14
   Power Out (dBm):        19.85
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  effective pch (dBm):    0.00
   actual pch out (dBm):   0.03
   output VOA (dB):        0.00
 Fiber          Span15
@@ -429,7 +411,6 @@ Edfa Edfa15
   Power Out (dBm):        19.86
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  effective pch (dBm):    0.00
   actual pch out (dBm):   0.04
   output VOA (dB):        0.00
 Roadm roadm Site B
