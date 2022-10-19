@@ -49,7 +49,7 @@ def test_span_loss(node, attenuation):
     network = load_network(NETWORK_FILENAME, equipment)
     for x in network.nodes():
         if x.uid == node:
-            assert attenuation == span_loss(network, x)
+            assert attenuation == span_loss(network, x, equipment)
             return
     assert not f'node "{node}" referenced from test but not found in the topology'  # pragma: no cover
 
@@ -61,4 +61,4 @@ def test_span_loss_unconnected(node):
     network = load_network(NETWORK_FILENAME, equipment)
     x = next(x for x in network.nodes() if x.uid == node)
     with pytest.raises(NetworkTopologyError):
-        span_loss(network, x)
+        span_loss(network, x, equipment)
