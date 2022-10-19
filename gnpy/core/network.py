@@ -250,10 +250,10 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
             if isinstance(node, elements.Edfa):
                 node_loss = span_loss(network, prev_node)
                 voa = node.out_voa if node.out_voa else 0
-                if node.delta_p is None:
+                if node.operational.delta_p is None:
                     dp = target_power(network, next_node, equipment) + voa
                 else:
-                    dp = node.delta_p
+                    dp = node.operational.delta_p
                 if node.effective_gain is None or power_mode:
                     gain_target = node_loss + dp - prev_dp + prev_voa
                 else:  # gain mode with effective_gain
@@ -676,10 +676,10 @@ def build_network(network, equipment, pref_ch_db, pref_total_db, set_connector_l
         set_fiber_input_power(network, fiber, equipment, pref_ch_db)
 
 
-def design_network(reference_channel, network, equipment, verbose=True):
+def design_network(reference_channel, network, equipment, set_connector_losses=True, verbose=True):
     """Network is designed according to reference channel. Verbose indicate if the function should
     print all warnings or not
     """
     pref_ch_db = watt2dbm(reference_channel.power)  # reference channel power
     pref_total_db = pref_ch_db + lin2db(reference_channel.nb_channel)  # reference total power
-    build_network(network, equipment, pref_ch_db, pref_total_db, verbose)
+    build_network(network, equipment, pref_ch_db, pref_total_db, set_connector_losses=set_connector_losses, verbose=verbose)
