@@ -720,7 +720,14 @@ class Edfa(_Node):
         self.passive = False
         self.att_in = None
         self.effective_gain = self.operational.gain_target
-        self.delta_p = self.operational.delta_p  # delta P with Pref (power swwep) in power mode
+        # self.operational.delta_p is defined by user for reference channel
+        # self.delta_p is set with self.operational.delta_p, but it may be changed during design:
+        # - if operational.delta_p is None, self.delta_p is computed at design phase
+        # - if operational.delta_p can not be applied because of saturation, self.delta_p is recomputed
+        # - if power_mode is False, then it is set to None
+        self.delta_p = self.operational.delta_p
+        # self._delta_p contains computed delta_p during design even if power_mode is False
+        self._delta_p = None
         self.tilt_target = self.operational.tilt_target
         self.out_voa = self.operational.out_voa
         self.propagated_labels = [""]
