@@ -325,6 +325,7 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
                               f'required gain: {round(gain_target, 2)}dB. Please check amplifier type.')
 
                 node.delta_p = dp if power_mode else None
+                node._delta_p = dp
                 node.effective_gain = gain_target
                 set_amplifier_voa(node, power_target, power_mode)
 
