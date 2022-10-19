@@ -24,6 +24,7 @@ from numpy import mean, argmin
 from gnpy.core.elements import Transceiver, Roadm
 from gnpy.core.utils import lin2db
 from gnpy.core.info import create_input_spectral_information, carriers_to_spectral_information, ReferenceCarrier
+from gnpy.core import network as network_module
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 from copy import deepcopy
 from csv import writer
@@ -1102,6 +1103,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         # elements to simulate performance, several demands having the same destination
         # may use the same transponder for the performance simulation. This is why
         # we use deepcopy: to ensure that each propagation is recorded and not overwritten
+        network_module.design_network(pathreq, network, equipment, verbose=False)
         total_path = deepcopy(pathlist[i])
         msg = msg + f'\n\tComputed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}'
         LOGGER.info(msg)
