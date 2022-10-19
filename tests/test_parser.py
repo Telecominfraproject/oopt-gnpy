@@ -23,7 +23,7 @@ from xlrd import open_workbook
 import pytest
 from copy import deepcopy
 from gnpy.core.utils import automatic_nch, lin2db
-from gnpy.core.network import build_network
+from gnpy.core.network import build_network, add_missing_elements_in_network
 from gnpy.core.exceptions import ServiceError
 from gnpy.topology.request import (jsontocsv, requests_aggregation, compute_path_dsjctn, deduplicate_disjunctions,
                                    compute_path_with_disjunction, ResultElement, PathRequest)
@@ -73,6 +73,7 @@ def test_auto_design_generation_fromxlsgainmode(tmpdir, xls_input, expected_json
     """
     equipment = load_equipment(eqpt_filename)
     network = load_network(xls_input, equipment)
+    add_missing_elements_in_network(network, equipment)
     # in order to test the Eqpt sheet and load gain target,
     # change the power-mode to False (to be in gain mode)
     equipment['Span']['default'].power_mode = False

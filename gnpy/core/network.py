@@ -242,10 +242,7 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
         visited_nodes = []
         while not (isinstance(node, elements.Roadm) or isinstance(node, elements.Transceiver)):
             # go through all nodes in the OMS (loop until next Roadm instance)
-            try:
-                next_node = next(network.successors(node))
-            except StopIteration:
-                raise NetworkTopologyError(f'{type(node).__name__} {node.uid} is not properly connected, please check network topology')
+            next_node = get_next_node(node, network)
             visited_nodes.append(node)
             if next_node in visited_nodes:
                 raise NetworkTopologyError(f'Loop detected for {type(node).__name__} {node.uid}, please check network topology')
@@ -497,7 +494,7 @@ def add_roadm_preamp(network, roadm):
 
 
 def add_inline_amplifier(network, fiber):
-    next_node = next(network.successors(fiber))
+    next_node = get_next_node(fiber, network)
     if isinstance(next_node, elements.Fiber) or isinstance(next_node, elements.RamanFiber):
         # no amplification for fused spans or TRX
         network.remove_edge(fiber, next_node)
@@ -539,6 +536,17 @@ def calculate_new_length(fiber_length, bounds, target_length):
         return (length1, n_spans1)
     else:
         return (length2, n_spans2)
+
+
+def get_next_node(node, network):
+    """get_next node else raise tha appropriate error
+    """
+    try:
+        next_node = next(network.successors(node))
+        return next_node
+    except StopIteration:
+        raise NetworkTopologyError(
+            f'{type(node).__name__} {node.uid} is not properly connected, please check network topology')
 
 
 def split_fiber(network, fiber, bounds, target_length, equipment):
@@ -585,10 +593,7 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
 
 def add_connector_loss(network, fibers, default_con_in, default_con_out, EOL):
     for fiber in fibers:
-        try:
-            next_node = next(network.successors(fiber))
-        except StopIteration:
-            raise NetworkTopologyError(f'Fiber {fiber.uid} is not properly connected, please check network topology')
+        next_node = get_next_node(fiber, network)
         if fiber.params.con_in is None:
             fiber.params.con_in = default_con_in
         if fiber.params.con_out is None:
@@ -603,10 +608,7 @@ def add_fiber_padding(network, fibers, padding):
                          for fiber in network.predecessors(n)
                          if isinstance(fiber, elements.Fiber))"""
     for fiber in fibers:
-        try:
-            next_node = next(network.successors(fiber))
-        except StopIteration:
-            raise NetworkTopologyError(f'Fiber {fiber.uid} is not properly connected, please check network topology')
+        next_node = get_next_node(fiber, network)
         if isinstance(next_node, elements.Fused):
             continue
         this_span_loss = span_loss(network, fiber)
@@ -620,46 +622,54 @@ def add_fiber_padding(network, fibers, padding):
                 first_fiber.params.att_in = first_fiber.params.att_in + padding - this_span_loss
 
 
-def build_network(network, equipment, pref_ch_db, pref_total_db, no_insert_edfas=False):
+def add_missing_elements_in_network(network, equipment):
+    """Autodesign network: add missing elements. split fibers if their length is too big
+    add ROADM preamp or booster and inline amplifiers between fibers
+    """
     default_span_data = equipment['Span']['default']
     max_length = int(convert_length(default_span_data.max_length, default_span_data.length_units))
     min_length = max(int(default_span_data.padding / 0.2 * 1e3), 50_000)
     bounds = range(min_length, max_length)
     target_length = max(min_length, min(max_length, 90_000))
+    fibers = [f for f in network.nodes() if isinstance(f, elements.Fiber)]
+    for fiber in fibers:
+        split_fiber(network, fiber, bounds, target_length, equipment)
+    roadms = [r for r in network.nodes() if isinstance(r, elements.Roadm)]
+    for roadm in roadms:
+        add_roadm_preamp(network, roadm)
+        add_roadm_booster(network, roadm)
+    fibers = [f for f in network.nodes() if isinstance(f, elements.Fiber)]
+    for fiber in fibers:
+        add_inline_amplifier(network, fiber)
 
-    # set roadm loss for gain_mode before to build network
+
+def add_missing_fiber_attributes(network, equipment):
+    """Fill in connector loss with default values. Add the padding loss is required.
+    EOL is added as a connector loss
+    """
+    default_span_data = equipment['Span']['default']
     fibers = [f for f in network.nodes() if isinstance(f, elements.Fiber)]
     add_connector_loss(network, fibers, default_span_data.con_in, default_span_data.con_out, default_span_data.EOL)
     # don't group split fiber and add amp in the same loop
     # =>for code clarity (at the expense of speed):
-
-    roadms = [r for r in network.nodes() if isinstance(r, elements.Roadm)]
-    transceivers = [t for t in network.nodes() if isinstance(t, elements.Transceiver)]
-    if not no_insert_edfas:
-        for fiber in fibers:
-            split_fiber(network, fiber, bounds, target_length, equipment)
-
-        for roadm in roadms:
-            add_roadm_preamp(network, roadm)
-            add_roadm_booster(network, roadm)
-
-        fibers = [f for f in network.nodes() if isinstance(f, elements.Fiber)]
-        for fiber in fibers:
-            add_inline_amplifier(network, fiber)
-
     add_fiber_padding(network, fibers, default_span_data.padding)
 
+
+def build_network(network, equipment, pref_ch_db, pref_total_db, set_connector_losses=True):
+    """Set roadm equalization target and amplifier gain and power
+    """
+    roadms = [r for r in network.nodes() if isinstance(r, elements.Roadm)]
+    transceivers = [t for t in network.nodes() if isinstance(t, elements.Transceiver)]
+
+    if set_connector_losses:
+        add_missing_fiber_attributes(network, equipment)
+    # set roadm equalization targets first
     for roadm in roadms:
         set_roadm_per_degree_targets(roadm, network)
+    # then set amplifiers gain, delta_p and out_voa on each OMS
     for roadm in roadms + transceivers:
         set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db)
     for roadm in roadms:
         set_roadm_input_powers(network, roadm, equipment, pref_ch_db)
     for fiber in [f for f in network.nodes() if isinstance(f, (elements.Fiber, elements.RamanFiber))]:
         set_fiber_input_power(network, fiber, equipment, pref_ch_db)
-
-    # trx = [t for t in network.nodes() if isinstance(t, elements.Transceiver)]
-    # for t in trx:
-    #     next_node = next(network.successors(t), None)
-    #     if next_node and not isinstance(next_node, elements.Roadm):
-    #         set_egress_amplifier(network, t, equipment, 0, pref_total_db)
