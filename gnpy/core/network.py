@@ -318,6 +318,8 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
                 node.delta_p = dp if power_mode else None
                 node.effective_gain = gain_target
                 set_amplifier_voa(node, power_target, power_mode)
+                # set_amplifier_voa may change delta_p in power_mode
+                node._delta_p = node.delta_p if power_mode else dp
 
             prev_dp = dp
             prev_voa = voa
