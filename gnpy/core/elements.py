@@ -376,17 +376,8 @@ class Roadm(_Node):
         self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
         self.propagated_labels = spectral_info.label
 
-    def update_pref(self, spectral_info):
-        """Update Reference power
-
-        This modifies the spectral info in-place. Only the `pref` is updated with new p_spani,
-        while p_span0 is not changed.
-        """
-        spectral_info.pref = spectral_info.pref._replace(p_spani=self.ref_pch_out_dbm)
-
     def __call__(self, spectral_info, degree, from_degree):
         self.propagate(spectral_info, degree=degree, from_degree=from_degree)
-        self.update_pref(spectral_info)
         return spectral_info
 
 
@@ -420,13 +411,9 @@ class Fused(_Node):
     def propagate(self, spectral_info):
         spectral_info.apply_attenuation_db(self.loss)
 
-    def update_pref(self, spectral_info):
-        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
-                                                         p_spani=spectral_info.pref.p_spani - self.loss)
 
     def __call__(self, spectral_info):
         self.propagate(spectral_info)
-        self.update_pref(spectral_info)
         return spectral_info
 
 
@@ -590,21 +577,10 @@ class Fiber(_Node):
         self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
         self.propagated_labels = spectral_info.label
 
-    def update_pref(self, spectral_info):
-        # in case of Raman, the resulting loss of the fiber is not equivalent to self.loss
-        # because of Raman gain. In order to correctly update pref, we need the resulting loss:
-        # power_out - power_in. We use the total signal power (sum on all channels) to compute
-        # this loss, because pref is a noiseless reference.
-        loss = round(lin2db(self._psig_in / sum(spectral_info.signal)), 2)
-        self.pch_out_db = spectral_info.pref.p_spani - loss
-        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
-                                                         p_spani=self.pch_out_db)
-
     def __call__(self, spectral_info):
         # _psig_in records the total signal power of the spectral information before propagation.
         self._psig_in = sum(spectral_info.signal)
         self.propagate(spectral_info)
-        self.update_pref(spectral_info)
         # In case of Raman, the resulting loss of the fiber is not equivalent to self.loss
         # because of Raman gain. The resulting loss is:
         # power_out - power_in. We use the total signal power (sum on all channels) to compute
@@ -1022,12 +998,7 @@ class Edfa(_Node):
         self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
         self.propagated_labels = spectral_info.label
 
-    def update_pref(self, spectral_info):
-        spectral_info.pref = \
-            spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
-                                        p_spani=spectral_info.pref.p_spani + self.effective_gain - self.out_voa)
 
     def __call__(self, spectral_info):
         self.propagate(spectral_info)
-        self.update_pref(spectral_info)
         return spectral_info
