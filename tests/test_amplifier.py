@@ -88,7 +88,6 @@ def test_variable_gain_nf(gain, nf_expected, setup_edfa_variable_gain, si):
     si.ase /= db2lin(gain)
     edfa.operational.gain_target = gain
     edfa.effective_gain = gain
-    si.pref = si.pref._replace(p_span0=0, p_spani=-gain)
     edfa.interpol_params(si)
     result = edfa.nf
     assert pytest.approx(nf_expected, abs=0.01) == result[0]
@@ -103,7 +102,6 @@ def test_fixed_gain_nf(gain, nf_expected, setup_edfa_fixed_gain, si):
     si.ase /= db2lin(gain)
     edfa.operational.gain_target = gain
     edfa.effective_gain = gain
-    si.pref = si.pref._replace(p_span0=0, p_spani=-gain)
     edfa.interpol_params(si)
     assert pytest.approx(nf_expected, abs=0.01) == edfa.nf[0]
 
@@ -129,7 +127,7 @@ def test_compare_nf_models(gain, setup_edfa_variable_gain, si):
     edfa.operational.gain_target = gain
     edfa.effective_gain = gain
     # edfa is variable gain type
-    si.pref = si.pref._replace(p_span0=0, p_spani=-gain)
+    si.pref = si.pref._replace(p_span0=0)
     edfa.interpol_params(si)
     nf_model = edfa.nf[0]
 
@@ -184,7 +182,7 @@ def test_ase_noise(gain, si, setup_trx, bw):
     si = span(si)
     print(span)
 
-    si.pref = si.pref._replace(p_span0=0, p_spani=-gain)
+    si.pref = si.pref._replace(p_span0=0)
     edfa.interpol_params(si)
     nf = edfa.nf
     print('nf', nf)
@@ -324,7 +322,7 @@ def test_amp_saturation(delta_pdb_per_channel, base_power, delta_p):
     baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
     signal = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]) + array(delta_pdb_per_channel) + base_power)
     ref_carrier = ReferenceCarrier(baud_rate=32e9)
-    pref = Pref(p_span0=0, p_spani=-20 + base_power, ref_carrier=ref_carrier)
+    pref = Pref(p_span0=0, ref_carrier=ref_carrier)
     si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
                                                signal=signal, baud_rate=baud_rate, roll_off=0.15,
                                                delta_pdb_per_channel=delta_pdb_per_channel,
