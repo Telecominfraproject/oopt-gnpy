@@ -68,7 +68,7 @@ def test_equalization_combination_degree(delta_pdb_per_channel, degree, equaliza
     baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
     signal = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]))
     ref_carrier = ReferenceCarrier(baud_rate=32e9)
-    pref = Pref(p_span0=0, p_spani=0, ref_carrier=ref_carrier)
+    pref = Pref(p_span0=0, ref_carrier=ref_carrier)
     si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
                                                signal=signal, baud_rate=baud_rate, roll_off=0.15,
                                                delta_pdb_per_channel=delta_pdb_per_channel,
@@ -189,7 +189,7 @@ def test_low_input_power(target_out, delta_pdb_per_channel, correction):
     signal = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]))
     target = target_out + array(delta_pdb_per_channel)
     ref_carrier = ReferenceCarrier(baud_rate=32e9)
-    pref = Pref(p_span0=0, p_spani=-20, ref_carrier=ref_carrier)
+    pref = Pref(p_span0=0, ref_carrier=ref_carrier)
     si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
                                                signal=signal, baud_rate=baud_rate, roll_off=0.15,
                                                delta_pdb_per_channel=delta_pdb_per_channel,
@@ -242,7 +242,7 @@ def test_2low_input_power(target_out, delta_pdb_per_channel, correction):
     signal = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]))
     target = psd2powerdbm(target_out, baud_rate) + array(delta_pdb_per_channel)
     ref_carrier = ReferenceCarrier(baud_rate=32e9)
-    pref = Pref(p_span0=0, p_spani=-20, ref_carrier=ref_carrier)
+    pref = Pref(p_span0=0, ref_carrier=ref_carrier)
     si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
                                                signal=signal, baud_rate=baud_rate, roll_off=0.15,
                                                delta_pdb_per_channel=delta_pdb_per_channel,
