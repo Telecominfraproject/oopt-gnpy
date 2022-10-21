@@ -41,10 +41,9 @@ class Channel(namedtuple('Channel',
     """
 
 
-class Pref(namedtuple('Pref', 'p_span0, p_spani, ref_carrier')):
+class Pref(namedtuple('Pref', 'p_span0, ref_carrier')):
     """noiseless reference power in dBm:
     p_span0: inital target carrier power for a reference channel defined by user
-    p_spani: carrier power after element i for a reference channel defined by user
     ref_carrier records the power and baud rate of the reference channel
     """
 
@@ -225,8 +224,7 @@ class SpectralInformation(object):
             # Note that pref.p_spanx from "self" and "other" must be identical for a given simulation (correspond to the
             # the simulation setup):
             # - for a given simulation there is only one design (one p_span0),
-            # - and p_spani is the propagation result of p_span0 so there should not be different p_spani either.
-            if (self.pref.p_span0 != other.pref.p_span0) or (self.pref.p_spani != other.pref.p_spani):
+            if (self.pref.p_span0 != other.pref.p_span0):
                 raise SpectrumError('reference powers of the spectrum are not identical')
             return SpectralInformation(frequency=append(self.frequency, other.frequency),
                                        slot_width=append(self.slot_width, other.slot_width),
@@ -241,7 +239,7 @@ class SpectralInformation(object):
                                        delta_pdb_per_channel=append(self.delta_pdb_per_channel,
                                                                     other.delta_pdb_per_channel),
                                        tx_osnr=append(self.tx_osnr, other.tx_osnr),
-                                       ref_power=Pref(self.pref.p_span0, self.pref.p_spani, self.pref.ref_carrier),
+                                       ref_power=Pref(self.pref.p_span0, self.pref.ref_carrier),
                                        label=append(self.label, other.label))
         except SpectrumError:
             raise SpectrumError('Spectra cannot be summed: channels overlapping.')
@@ -310,14 +308,12 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, 
     number_of_channels = automatic_nch(f_min, f_max, spacing)
     frequency = [(f_min + spacing * i) for i in range(number_of_channels)]
     p_span0 = watt2dbm(power)
-    p_spani = watt2dbm(power)
     delta_pdb_per_channel = zeros(number_of_channels)
     label = ["0" for i in range(number_of_channels)]
     return create_arbitrary_spectral_information(frequency, slot_width=spacing, signal=power, baud_rate=baud_rate,
                                                  roll_off=roll_off, delta_pdb_per_channel=delta_pdb_per_channel,
                                                  tx_osnr=tx_osnr,
-                                                 ref_power=Pref(p_span0=p_span0, p_spani=p_spani,
-                                                                ref_carrier=ref_carrier),
+                                                 ref_power=Pref(p_span0=p_span0, ref_carrier=ref_carrier),
                                                  label=label)
 
 
@@ -345,10 +341,8 @@ def use_pre_defined_spectrum_to_create_input_si(initial_spectrum: dict[float, ca
     tx_osnr = [s['tx_osnr'] for s in initial_spectrum.values()]
     label = [s['label'] for s in initial_spectrum.values()]
     p_span0 = watt2dbm(power)
-    p_spani = watt2dbm(power)
     return create_arbitrary_spectral_information(frequency=frequency, signal=signal, baud_rate=baud_rate,
                                                  slot_width=slot_width, roll_off=roll_off,
                                                  delta_pdb_per_channel=delta_pdb_per_channel, tx_osnr=tx_osnr,
-                                                 ref_power=Pref(p_span0=p_span0, p_spani=p_spani,
-                                                                ref_carrier=ref_carrier),
+                                                 ref_power=Pref(p_span0=p_span0, ref_carrier=ref_carrier),
                                                  label=label)
