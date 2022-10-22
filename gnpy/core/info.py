@@ -42,9 +42,8 @@ class Channel(namedtuple('Channel',
     """
 
 
-class Pref(namedtuple('Pref', 'p_span0, ref_carrier')):
-    """noiseless reference power in dBm:
-    p_span0: inital target carrier power for a reference channel defined by user
+class Pref(namedtuple('Pref', 'ref_carrier')):
+    """reference channel used during design:
     ref_carrier records the baud rate of the reference channel
     """
 
@@ -224,9 +223,6 @@ class SpectralInformation(object):
         try:
             # Note that pref.p_spanx from "self" and "other" must be identical for a given simulation (correspond to the
             # the simulation setup):
-            # - for a given simulation there is only one design (one p_span0),
-            if (self.pref.p_span0 != other.pref.p_span0):
-                raise SpectrumError('reference powers of the spectrum are not identical')
             return SpectralInformation(frequency=append(self.frequency, other.frequency),
                                        slot_width=append(self.slot_width, other.slot_width),
                                        signal=append(self.signal, other.signal), nli=append(self.nli, other.nli),
@@ -240,7 +236,7 @@ class SpectralInformation(object):
                                        delta_pdb_per_channel=append(self.delta_pdb_per_channel,
                                                                     other.delta_pdb_per_channel),
                                        tx_osnr=append(self.tx_osnr, other.tx_osnr),
-                                       ref_power=Pref(self.pref.p_span0, self.pref.ref_carrier),
+                                       ref_power=Pref(self.pref.ref_carrier),
                                        label=append(self.label, other.label))
         except SpectrumError:
             raise SpectrumError('Spectra cannot be summed: channels overlapping.')
@@ -307,13 +303,12 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, 
     all arguments are scalar values"""
     number_of_channels = automatic_nch(f_min, f_max, spacing)
     frequency = [(f_min + spacing * i) for i in range(1, number_of_channels + 1)]
-    p_span0 = watt2dbm(power)
     delta_pdb_per_channel = zeros(number_of_channels)
     label = [f'{baud_rate * 1e-9 :.2f}G' for i in range(number_of_channels)]
     return create_arbitrary_spectral_information(frequency, slot_width=spacing, signal=power, baud_rate=baud_rate,
                                                  roll_off=roll_off, delta_pdb_per_channel=delta_pdb_per_channel,
                                                  tx_osnr=tx_osnr,
-                                                 ref_power=Pref(p_span0=p_span0, ref_carrier=ref_carrier),
+                                                 ref_power=Pref(ref_carrier=ref_carrier),
                                                  label=label)
 
 
@@ -337,7 +332,7 @@ def carriers_to_spectral_information(initial_spectrum: dict[Union[int, float], C
     return create_arbitrary_spectral_information(frequency=frequency, signal=signal, baud_rate=baud_rate,
                                                  slot_width=slot_width, roll_off=roll_off,
                                                  delta_pdb_per_channel=delta_pdb_per_channel, tx_osnr=tx_osnr,
-                                                 ref_power=Pref(p_span0=p_span0, ref_carrier=ref_carrier),
+                                                 ref_power=Pref(ref_carrier=ref_carrier),
                                                  label=label)
 
 
