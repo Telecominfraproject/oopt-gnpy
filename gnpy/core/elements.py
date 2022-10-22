@@ -665,12 +665,13 @@ class Edfa(_Node):
         self.pin_db = None
         self.nch = None
         self.pout_db = None
-        self.target_pch_out_db = None
+        self.target_pch_out_dbm = None
         self.effective_pch_out_db = None
         self.passive = False
         self.att_in = None
         self.effective_gain = self.operational.gain_target
-        self.delta_p = self.operational.delta_p  # delta P with Pref (power swwep) in power mode
+        # delta P defined by user (usedby design  in power mode, ignored in power_mode False
+        self.delta_p = self.operational.delta_p
         self._delta_p = None  # contains computed delta_p during design even if gain mode (then delta is None)
         self.tilt_target = self.operational.tilt_target
         self.out_voa = self.operational.out_voa
@@ -719,7 +720,8 @@ class Edfa(_Node):
                           f'  Power In (dBm):         {self.pin_db:.2f}',
                           f'  Power Out (dBm):        {self.pout_db:.2f}',
                           f'  Delta_P (dB):           ' + (f'{self.delta_p:.2f}' if self.delta_p is not None else 'None'),
-                          f'  target pch (dBm):       ' + (f'{self.target_pch_out_db:.2f}' if self.target_pch_out_db is not None else 'None'),
+                          '  target pch (dBm):       '
+                          + (f'{self.target_pch_out_dbm:.2f}' if self.target_pch_out_dbm is not None else 'None'),
                           f'  actual pch out (dBm):   {total_pch}',
                           f'  output VOA (dB):        {self.out_voa:.2f}'])
 
@@ -746,16 +748,6 @@ class Edfa(_Node):
         # The following should be changed when we have the new spectral information including slot widths.
         # For now, with homogeneous spectrum, we can calculate it as the difference between neighbouring channels.
         self.slot_width = self.channel_freq[1] - self.channel_freq[0]
-
-        """in power mode: delta_p is defined and can be used to calculate the power target
-        This power target correspond to the channel used for design"""
-        pref = spectral_info.pref
-        if self.delta_p is not None and self.operational.delta_p is not None:
-            # use the user defined target
-            self.target_pch_out_db = round(self.operational.delta_p + pref.p_span0, 2)
-        elif self.delta_p is not None:
-            # use the design target if no target were set
-            self.target_pch_out_db = round(self.delta_p + pref.p_span0, 2)
 
         """check power saturation and correct effective gain & power accordingly:"""
         # Compute the saturation accounting for actual power at the input of the amp
