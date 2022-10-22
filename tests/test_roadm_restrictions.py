@@ -491,12 +491,12 @@ def test_compare_design_propagation_settings(power_dbm, req_power, amp_with_delt
                     else:
                         dp = element.out_voa if element.uid not in amp_with_deltap_one else element.out_voa + 1
                         # check that target power is correctly set
-                        assert element.target_pch_out_db == req_power + dp
+                        assert element.target_pch_out_dbm == req_power + dp
                         # check that designed gain is exactly applied except if target power exceeds max power, then
                         # gain is slightly less than the one computed during design for the noiseless reference,
                         # because during propagation, noise has accumulated, additing to signal.
                         # check that delta_p is unchanged unless for saturation
-                        if element.target_pch_out_db > pch_max:
+                        if element.target_pch_out_dbm > pch_max:
                             assert element.effective_gain == pytest.approx(element_copy.effective_gain, abs=2e-2)
                         else:
                             assert element.effective_gain == element_copy.effective_gain
