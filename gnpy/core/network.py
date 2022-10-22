@@ -369,9 +369,22 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
 
                 node.delta_p = dp if power_mode else None
                 node.effective_gain = gain_target
+                # if voa is not set, then set it and possibly optimize it with gain and update delta_p and
+                # effective_gain values
                 set_amplifier_voa(node, power_target, power_mode)
                 # set_amplifier_voa may change delta_p in power_mode
                 node._delta_p = node.delta_p if power_mode else dp
+
+                # target_pch_out_dbm records target power for design: If user defines one, then this is displayed,
+                # else display the one computed during design
+                if node.delta_p is not None and node.operational.delta_p is not None:
+                    # use the user defined target
+                    node.target_pch_out_dbm = round(node.operational.delta_p + pref_ch_db, 2)
+                elif node.delta_p is not None:
+                    # use the design target if no target were set
+                    node.target_pch_out_dbm = round(node.delta_p + pref_ch_db, 2)
+                elif node.delta_p is None:
+                    node.target_pch_out_dbm = None
 
             prev_dp = dp
             prev_voa = voa
