@@ -402,6 +402,14 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
             node = next_node
 
 
+def set_roadm_ref_carrier(roadm, equipment):
+    """Create a reference carier based SI information with the specified request's power:
+    ref_carrier['req_power'] records the power in W that the user has defined for a given request
+    (which might be different from the one used for the design).
+    """
+    roadm.ref_carrier = {'baud_rate': equipment['SI']['default'].baud_rate}
+
+
 def set_roadm_output_targets(roadm, network):
     """Set target powers/PSD on all degrees
     """
@@ -730,6 +738,7 @@ def build_network(network, equipment, pref_ch_db, pref_total_db, verbose=True):
 
     for roadm in roadms:
         set_roadm_output_targets(roadm, network)
+        set_roadm_ref_carrier(roadm, equipment)
     for roadm in roadms + transceivers:
         set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db, verbose)
     for roadm in roadms:
