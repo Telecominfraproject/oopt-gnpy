@@ -16,8 +16,7 @@ from numpy import array
 from gnpy.core.utils import lin2db, automatic_nch, dbm2watt, power_dbm_to_psd_mw_ghz, watt2dbm, psd2powerdbm
 from gnpy.core.network import build_network
 from gnpy.core.elements import Roadm
-from gnpy.core.info import create_input_spectral_information, Pref, create_arbitrary_spectral_information, \
-    ReferenceCarrier
+from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information, ReferenceCarrier
 from gnpy.core.equipment import trx_mode_params
 from gnpy.core.exceptions import ConfigurationError
 from gnpy.tools.json_io import network_from_json, load_equipment, load_network, _spectrum_from_json, load_json
@@ -58,16 +57,15 @@ def test_equalization_combination_degree(delta_pdb_per_channel, equalization_typ
         "east edfa in Lannion_CAS to Morlaix"]
     roadm = Roadm(**roadm_config)
     roadm.ref_pch_in_dbm['tata'] = 0
+    roadm.ref_carrier = ReferenceCarrier(baud_rate=32e9)
     frequency = 191e12 + array([0, 50e9, 150e9, 225e9, 275e9])
     slot_width = array([37.5e9, 50e9, 75e9, 50e9, 37.5e9])
     baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
     signal = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]))
-    ref_carrier = ReferenceCarrier(baud_rate=32e9)
-    pref = Pref(ref_carrier=ref_carrier)
     si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
                                                signal=signal, baud_rate=baud_rate, roll_off=0.15,
                                                delta_pdb_per_channel=delta_pdb_per_channel,
-                                               tx_osnr=None, ref_power=pref)
+                                               tx_osnr=None)
     to_json_before_propagation = {
         'uid': 'roadm Lannion_CAS',
         'type': 'Roadm',
@@ -191,12 +189,10 @@ def test_low_input_power(target_out, delta_pdb_per_channel, correction):
     baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
     signal = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]))
     target = target_out + array(delta_pdb_per_channel)
-    ref_carrier = ReferenceCarrier(baud_rate=32e9)
-    pref = Pref(ref_carrier=ref_carrier)
     si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
                                                signal=signal, baud_rate=baud_rate, roll_off=0.15,
                                                delta_pdb_per_channel=delta_pdb_per_channel,
-                                               tx_osnr=None, ref_power=pref)
+                                               tx_osnr=None)
     roadm_config = {
         "uid": "roadm Brest_KLA",
         "params": {
@@ -221,6 +217,7 @@ def test_low_input_power(target_out, delta_pdb_per_channel, correction):
     }
     roadm = Roadm(**roadm_config)
     roadm.ref_pch_in_dbm['tata'] = 0
+    roadm.ref_carrier = ReferenceCarrier(baud_rate=32e9)
     si = roadm(si, degree='toto', from_degree='tata')
     assert (watt2dbm(si.signal) == target - correction).all()
     # in other words check that if target is below input power, target is applied else power is unchanged
@@ -244,12 +241,10 @@ def test_2low_input_power(target_out, delta_pdb_per_channel, correction):
     baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
     signal = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]))
     target = psd2powerdbm(target_out, baud_rate) + array(delta_pdb_per_channel)
-    ref_carrier = ReferenceCarrier(baud_rate=32e9)
-    pref = Pref(ref_carrier=ref_carrier)
     si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
                                                signal=signal, baud_rate=baud_rate, roll_off=0.15,
                                                delta_pdb_per_channel=delta_pdb_per_channel,
-                                               tx_osnr=None, ref_power=pref)
+                                               tx_osnr=None)
     roadm_config = {
         "uid": "roadm Brest_KLA",
         "params": {
@@ -274,6 +269,7 @@ def test_2low_input_power(target_out, delta_pdb_per_channel, correction):
     }
     roadm = Roadm(**roadm_config)
     roadm.ref_pch_in_dbm['tata'] = 0
+    roadm.ref_carrier = ReferenceCarrier(baud_rate=32e9)
     si = roadm(si, degree='toto', from_degree='tata')
     assert (watt2dbm(si.signal) == target - correction).all()
 
@@ -495,7 +491,6 @@ def test_equalization(case, deltap, target, mode, slot_width):
     # boosters = ['east edfa in Brest_KLA to Quimper', 'east edfa in Lorient_KMA to Loudeac',
     #             'east edfa in Lannion_CAS to Stbrieuc']
     target_psd = power_dbm_to_psd_mw_ghz(target, 32e9)
-    ref = ReferenceCarrier(baud_rate=32e9)
     if case == 'SI':
         delattr(equipment['Roadm']['default'], 'target_pch_out_db')
         setattr(equipment['Roadm']['default'], 'target_psd_out_mWperGHz',
@@ -519,7 +514,7 @@ def test_equalization(case, deltap, target, mode, slot_width):
     path = compute_constrained_path(network, req)
     si = create_input_spectral_information(
         f_min=req.f_min, f_max=req.f_max, roll_off=req.roll_off, baud_rate=req.baud_rate, power=req.power,
-        spacing=req.spacing, tx_osnr=req.tx_osnr, ref_carrier=ref)
+        spacing=req.spacing, tx_osnr=req.tx_osnr)
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
             si = el(si, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
