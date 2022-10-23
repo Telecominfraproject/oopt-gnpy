@@ -126,6 +126,10 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
 
 
 def target_power(network, node, equipment):  # get_fiber_dp
+    """Computes target power using J. -L. Auge, V. Curri and E. Le Rouzic,
+    Open Design for Multi-Vendor Optical Networks, OFC 2019.
+    equation 4
+    """
     if isinstance(node, elements.Roadm):
         return 0
 
@@ -139,8 +143,8 @@ def target_power(network, node, equipment):  # get_fiber_dp
         dp = max(dp_range[0], dp)
         dp = min(dp_range[1], dp)
     except IndexError:
-        raise ConfigurationError(f'invalid delta_power_range_db definition in eqpt_config[Span]'
-                                 f'delta_power_range_db: [lower_bound, upper_bound, step]')
+        raise ConfigurationError('invalid delta_power_range_db definition in eqpt_config[Span]'
+                                 'delta_power_range_db: [lower_bound, upper_bound, step]')
 
     return dp
 
@@ -286,7 +290,11 @@ def get_target_power(roadm, degree, ref_br):
 
 
 def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_db, verbose):
-    """ this node can be a transceiver or a ROADM (same function called in both cases)
+    """This node can be a transceiver or a ROADM (same function called in both cases).
+    go through each link staring from this_node until next Roadm or Transceiver and
+    set gain and delta_p according to configurations set by user.
+    power_mode = True, set amplifiers delta_p and effective_gain
+    power_mode = False, set amplifiers effective_gain and ignore delta_p config: set it to None
     """
     power_mode = equipment['Span']['default'].power_mode
     ref_br = equipment['SI']['default'].baud_rate
@@ -595,6 +603,9 @@ def add_inline_amplifier(network, fiber):
 
 
 def calculate_new_length(fiber_length, bounds, target_length):
+    """If fiber is over boundary, then assume this is a link "intent" and computes the set of
+    identical fiber spans this link should be composed of.
+    """
     if fiber_length < bounds.stop:
         return fiber_length, 1
 
@@ -625,7 +636,10 @@ def get_next_node(node, network):
             f'{type(node).__name__} {node.uid} is not properly connected, please check network topology')
 
 
-def split_fiber(network, fiber, bounds, target_length, equipment):
+def split_fiber(network, fiber, bounds, target_length):
+    """If fiber length exceeds boundary then assume this is a link "intent", and replace this one-span link
+    with an n_spans link, with identical fiber types.
+    """
     new_length, n_spans = calculate_new_length(fiber.params.length, bounds, target_length)
     if n_spans == 1:
         return
@@ -668,6 +682,8 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
 
 
 def add_connector_loss(network, fibers, default_con_in, default_con_out, EOL):
+    """Add default connector loss if no loss are defined. EOL repair margin is added as a connector loss
+    """
     for fiber in fibers:
         next_node = get_next_node(fiber, network)
         if fiber.params.con_in is None:
@@ -679,10 +695,8 @@ def add_connector_loss(network, fibers, default_con_in, default_con_out, EOL):
 
 
 def add_fiber_padding(network, fibers, padding, equipment):
-    """last_fibers = (fiber for n in network.nodes()
-                         if not (isinstance(n, elements.Fiber) or isinstance(n, elements.Fused))
-                         for fiber in network.predecessors(n)
-                         if isinstance(fiber, elements.Fiber))"""
+    """Add a padding att_in at the input of the 1st fiber of a succession of fibers and fused
+    """
     for fiber in fibers:
         next_node = get_next_node(fiber, network)
         if isinstance(next_node, elements.Fused):
@@ -709,7 +723,7 @@ def add_missing_elements_in_network(network, equipment):
     target_length = max(min_length, min(max_length, 90_000))
     fibers = [f for f in network.nodes() if isinstance(f, elements.Fiber)]
     for fiber in fibers:
-        split_fiber(network, fiber, bounds, target_length, equipment)
+        split_fiber(network, fiber, bounds, target_length)
     roadms = [r for r in network.nodes() if isinstance(r, elements.Roadm)]
     for roadm in roadms:
         add_roadm_preamp(network, roadm)
