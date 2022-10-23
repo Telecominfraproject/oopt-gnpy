@@ -242,6 +242,7 @@ class Roadm(_Node):
         self.per_degree_pch_out_dbm = self.params.per_degree_pch_out_db
         self.per_degree_pch_psd = self.params.per_degree_pch_psd
         self.ref_pch_in_dbm = {}
+        self.ref_carrier = None
 
     @property
     def to_json(self):
@@ -279,7 +280,7 @@ class Roadm(_Node):
                           f'  reference pch out (dBm): {self.ref_pch_out_dbm:.2f}',
                           f'  actual pch out (dBm):    {total_pch}'])
 
-    def get_roadm_target_power(self, reference_baudrate=None, spectral_info=None):
+    def get_roadm_target_power(self, spectral_info=None):
         """Computes the power in dBm for a reference carrier or for a spectral information.
         power is computed based on equalization target.
         if spectral_info baud_rate is baud_rate = [32e9, 42e9, 64e9, 42e9, 32e9], and 
@@ -299,18 +300,18 @@ class Roadm(_Node):
             if self.target_pch_out_dbm is not None:
                 return self.target_pch_out_dbm
             if self.target_psd_out_mWperGHz is not None:
-                return psd2powerdbm(self.target_psd_out_mWperGHz, reference_baudrate)
+                return psd2powerdbm(self.target_psd_out_mWperGHz, self.ref_carrier.baud_rate)
         return None
 
-    def get_per_degree_ref_power(self, degree, reference_baudrate):
+    def get_per_degree_ref_power(self, degree):
         """Get the target power in dBm out of ROADM degree for the reference bandwidth
         If no equalization is defined on this degree use the ROADM level one.
         """
         if degree in self.per_degree_pch_out_dbm:
             return self.per_degree_pch_out_dbm[degree]
         elif degree in self.per_degree_pch_psd:
-            return psd2powerdbm(self.per_degree_pch_psd[degree], reference_baudrate)
-        return self.get_roadm_target_power(reference_baudrate=reference_baudrate)
+            return psd2powerdbm(self.per_degree_pch_psd[degree], self.ref_carrier.baud_rate)
+        return self.get_roadm_target_power()
 
     def propagate(self, spectral_info, degree, from_degree):
         """Equalization targets are read from topology file if defined and completed with default
@@ -323,7 +324,7 @@ class Roadm(_Node):
         # TODO maybe add a minimum loss for the ROADM
 
         # find the target power for the reference carrier
-        ref_per_degree_pch = self.get_per_degree_ref_power(degree, spectral_info.pref.ref_carrier.baud_rate)
+        ref_per_degree_pch = self.get_per_degree_ref_power(degree)
         # find the target powers for each signal carrier
         per_degree_pch = self.get_roadm_target_power(spectral_info=spectral_info)
 

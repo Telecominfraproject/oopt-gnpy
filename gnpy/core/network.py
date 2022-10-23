@@ -13,7 +13,7 @@ from operator import attrgetter
 from gnpy.core import ansi_escapes, elements
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.utils import round2float, convert_length, psd2powerdbm, lin2db, watt2dbm, dbm2watt
-from gnpy.core.info import create_input_spectral_information
+from gnpy.core.info import create_input_spectral_information, ReferenceCarrier
 from gnpy.core.parameters import SimParams
 from collections import namedtuple
 
@@ -287,8 +287,7 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
             this_node_out_power = 0.0     # default value if this_node is a transceiver
         if isinstance(this_node, elements.Roadm):
             # get target power out from ROADM for the reference carrier based on equalization settings
-            this_node_out_power = this_node.get_per_degree_ref_power(degree=node.uid,
-                                                                     reference_baudrate=reference_baudrate)
+            this_node_out_power = this_node.get_per_degree_ref_power(degree=node.uid)
         # use the target power on this degree
         prev_dp = this_node_out_power - pref_ch_db
         dp = prev_dp
@@ -392,6 +391,12 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
             node = next_node
 
 
+def set_roadm_ref_carrier(roadm, equipment):
+    """ref_carrier records carrier information used for design and usefull for equalization
+    """
+    roadm.ref_carrier = ReferenceCarrier(baud_rate=equipment['SI']['default'].baud_rate)
+
+
 def set_roadm_per_degree_targets(roadm, network):
     """Set target powers/PSD on all degrees
     This is needed to populate per_degree_pch_out_dbm or per_degree_pch_psd dicts when they are
@@ -444,7 +449,7 @@ def set_roadm_input_powers(network, roadm, equipment, pref_ch_db):
             roadm.ref_pch_in_dbm[element.uid] = pref_ch_db + node._delta_p - node.out_voa - loss
         elif isinstance(node, elements.Roadm):
             roadm.ref_pch_in_dbm[element.uid] = \
-                node.get_per_degree_ref_power(degree=previous_node.uid, reference_baudrate=ref_br) - loss
+                node.get_per_degree_ref_power(degree=previous_node.uid) - loss
         elif isinstance(node, elements.Transceiver):
             roadm.ref_pch_in_dbm[element.uid] = pref_ch_db - loss
     # check if target power can be met
@@ -474,7 +479,6 @@ def set_fiber_input_power(network, fiber, equipment, pref_ch_db):
     Supposes that target power out of ROADMs and amplifiers are consistent.
     This is only for visualisation purpose
     """
-    ref_br = equipment['SI']['default'].baud_rate
     loss = 0.0
     node = next(network.predecessors(fiber))
     while isinstance(node, elements.Fused):
@@ -488,7 +492,7 @@ def set_fiber_input_power(network, fiber, equipment, pref_ch_db):
         fiber.ref_pch_in_dbm = node.ref_pch_in_dbm - loss - node.loss
     elif isinstance(node, elements.Roadm):
         fiber.ref_pch_in_dbm = \
-            node.get_per_degree_ref_power(degree=previous_node.uid, reference_baudrate=ref_br) - loss
+            node.get_per_degree_ref_power(degree=previous_node.uid) - loss
     elif isinstance(node, elements.Edfa):
         fiber.ref_pch_in_dbm = pref_ch_db + node._delta_p - node.out_voa - loss
     elif isinstance(node, elements.Transceiver):
@@ -719,6 +723,7 @@ def build_network(network, equipment, pref_ch_db, pref_total_db, verbose=True):
     add_fiber_padding(network, fibers, default_span_data.padding, equipment)
 
     for roadm in roadms:
+        set_roadm_ref_carrier(roadm, equipment)
         set_roadm_per_degree_targets(roadm, network)
     for roadm in roadms + transceivers:
         set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db, verbose)
