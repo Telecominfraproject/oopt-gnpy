@@ -42,19 +42,13 @@ class Channel(namedtuple('Channel',
     """
 
 
-class Pref(namedtuple('Pref', 'ref_carrier')):
-    """reference channel used during design:
-    ref_carrier records the baud rate of the reference channel
-    """
-
-
 class SpectralInformation(object):
     """ Class containing the parameters of the entire WDM comb.
     delta_pdb_per_channel: (per frequency) per channel delta power in dbm for the actual mix of channels"""
 
     def __init__(self, frequency: array, baud_rate: array, slot_width: array, signal: array, nli: array, ase: array,
                  roll_off: array, chromatic_dispersion: array, pmd: array, pdl: array, delta_pdb_per_channel: array,
-                 tx_osnr: array, ref_power: Pref, label: array):
+                 tx_osnr: array, label: array):
         indices = argsort(frequency)
         self._frequency = frequency[indices]
         self._df = outer(ones(frequency.shape), frequency) - outer(frequency, ones(frequency.shape))
@@ -81,17 +75,7 @@ class SpectralInformation(object):
         self._pdl = pdl[indices]
         self._delta_pdb_per_channel = delta_pdb_per_channel[indices]
         self._tx_osnr = tx_osnr[indices]
-        self._pref = ref_power
         self._label = label[indices]
-
-    @property
-    def pref(self):
-        """Instance of gnpy.info.Pref"""
-        return self._pref
-
-    @pref.setter
-    def pref(self, pref: Pref):
-        self._pref = pref
 
     @property
     def frequency(self):
@@ -221,8 +205,6 @@ class SpectralInformation(object):
 
     def __add__(self, other: SpectralInformation):
         try:
-            # Note that pref.p_spanx from "self" and "other" must be identical for a given simulation (correspond to the
-            # the simulation setup):
             return SpectralInformation(frequency=append(self.frequency, other.frequency),
                                        slot_width=append(self.slot_width, other.slot_width),
                                        signal=append(self.signal, other.signal), nli=append(self.nli, other.nli),
@@ -236,20 +218,17 @@ class SpectralInformation(object):
                                        delta_pdb_per_channel=append(self.delta_pdb_per_channel,
                                                                     other.delta_pdb_per_channel),
                                        tx_osnr=append(self.tx_osnr, other.tx_osnr),
-                                       ref_power=Pref(self.pref.ref_carrier),
                                        label=append(self.label, other.label))
         except SpectrumError:
             raise SpectrumError('Spectra cannot be summed: channels overlapping.')
 
-
-    def _replace(self, carriers, pref):
+    def _replace(self, carriers):
         self.chromatic_dispersion = array([c.chromatic_dispersion for c in carriers])
         self.pmd = array([c.pmd for c in carriers])
         self.pdl = array([c.pdl for c in carriers])
         self.signal = array([c.power.signal for c in carriers])
         self.nli = array([c.power.nli for c in carriers])
         self.ase = array([c.power.ase for c in carriers])
-        self.pref = pref
         return self
 
 
@@ -263,7 +242,6 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, in
                                           chromatic_dispersion: Union[int, float, ndarray, Iterable] = 0.,
                                           pmd: Union[int, float, ndarray, Iterable] = 0.,
                                           pdl: Union[int, float, ndarray, Iterable] = 0.,
-                                          ref_power: Pref = None,
                                           label: Union[str, ndarray, Iterable] = None):
     """This is just a wrapper around the SpectralInformation.__init__() that simplifies the creation of
     a non-uniform spectral information with NLI and ASE powers set to zero."""
@@ -289,8 +267,7 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, in
                                    chromatic_dispersion=chromatic_dispersion,
                                    pmd=pmd, pdl=pdl,
                                    delta_pdb_per_channel=delta_pdb_per_channel,
-                                   tx_osnr=tx_osnr,
-                                   ref_power=ref_power, label=label)
+                                   tx_osnr=tx_osnr, label=label)
     except ValueError as e:
         if 'could not broadcast' in str(e):
             raise SpectrumError('Dimension mismatch in input fields.')
@@ -298,7 +275,7 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, in
             raise
 
 
-def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing, tx_osnr, ref_carrier=None):
+def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing, tx_osnr):
     """ Creates a fixed slot width spectral information with flat power.
     all arguments are scalar values"""
     number_of_channels = automatic_nch(f_min, f_max, spacing)
@@ -307,18 +284,15 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, 
     label = ["0" for i in range(number_of_channels)]
     return create_arbitrary_spectral_information(frequency, slot_width=spacing, signal=power, baud_rate=baud_rate,
                                                  roll_off=roll_off, delta_pdb_per_channel=delta_pdb_per_channel,
-                                                 tx_osnr=tx_osnr,
-                                                 ref_power=Pref(ref_carrier=ref_carrier),
-                                                 label=label)
+                                                 tx_osnr=tx_osnr, label=label)
 
 
-def carriers_to_spectral_information(initial_spectrum: dict[Union[int, float], Carrier], power: float,
-                                     ref_carrier: ReferenceCarrier) -> SpectralInformation:
+def carriers_to_spectral_information(initial_spectrum: dict[Union[int, float], Carrier],
+                                     power: float) -> SpectralInformation:
     """Initial spectrum is a dict with key = carrier frequency, and value a Carrier object.
     :param initial_spectrum: indexed by frequency in Hz, with power offset (delta_pdb), baudrate, slot width,
     tx_osnr and roll off.
     :param power: power of the request
-    :param ref_carrier: reference carrier (baudrate) used for the reference channel
     """
     frequency = list(initial_spectrum.keys())
     signal = [power * db2lin(c.delta_pdb) for c in initial_spectrum.values()]
@@ -332,7 +306,6 @@ def carriers_to_spectral_information(initial_spectrum: dict[Union[int, float], C
     return create_arbitrary_spectral_information(frequency=frequency, signal=signal, baud_rate=baud_rate,
                                                  slot_width=slot_width, roll_off=roll_off,
                                                  delta_pdb_per_channel=delta_pdb_per_channel, tx_osnr=tx_osnr,
-                                                 ref_power=Pref(ref_carrier=ref_carrier),
                                                  label=label)
 
 
