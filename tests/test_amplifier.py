@@ -7,8 +7,7 @@ from numpy import zeros, array
 from numpy.testing import assert_allclose
 from gnpy.core.elements import Transceiver, Edfa, Fiber
 from gnpy.core.utils import automatic_fmax, lin2db, db2lin, merge_amplifier_restrictions, dbm2watt, watt2dbm
-from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information, Pref, \
-    ReferenceCarrier
+from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information
 from gnpy.core.network import build_network
 from gnpy.tools.json_io import load_network, load_equipment, network_from_json
 from pathlib import Path
@@ -319,12 +318,10 @@ def test_amp_saturation(delta_pdb_per_channel, base_power, delta_p):
     slot_width = array([37.5e9, 50e9, 75e9, 50e9, 37.5e9])
     baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
     signal = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]) + array(delta_pdb_per_channel) + base_power)
-    ref_carrier = ReferenceCarrier(baud_rate=32e9)
-    pref = Pref(ref_carrier=ref_carrier)
     si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
                                                signal=signal, baud_rate=baud_rate, roll_off=0.15,
                                                delta_pdb_per_channel=delta_pdb_per_channel,
-                                               tx_osnr=None, ref_power=pref)
+                                               tx_osnr=None)
     total_sig_powerin = sum(si.signal)
     sig_in = lin2db(si.signal)
     si = edfa(si)
