@@ -277,8 +277,6 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
     """ this node can be a transceiver or a ROADM (same function called in both cases)
     """
     power_mode = equipment['Span']['default'].power_mode
-    ref_carrier = ReferenceCarrier(baud_rate=equipment['SI']['default'].baud_rate,
-                                   slot_width=equipment['SI']['default'].spacing)
     next_oms = (n for n in network.successors(this_node) if not isinstance(n, elements.Transceiver))
     for oms in next_oms:
         # go through all the OMS departing from the ROADM
@@ -288,7 +286,7 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
             this_node_out_power = 0.0     # default value if this_node is a transceiver
         if isinstance(this_node, elements.Roadm):
             # get target power out from ROADM for the reference carrier based on equalization settings
-            this_node_out_power = this_node.get_per_degree_ref_power(degree=node.uid, ref_carrier=ref_carrier)
+            this_node_out_power = this_node.get_per_degree_ref_power(degree=node.uid)
         # use the target power on this degree
         prev_dp = this_node_out_power - pref_ch_db
         dp = prev_dp
@@ -392,6 +390,13 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
             node = next_node
 
 
+def set_roadm_ref_carrier(roadm, equipment):
+    """ref_carrier records carrier information used for design and usefull for equalization
+    """
+    roadm.ref_carrier = ReferenceCarrier(baud_rate=equipment['SI']['default'].baud_rate,
+                                         slot_width=equipment['SI']['default'].spacing)
+
+
 def set_roadm_per_degree_targets(roadm, network):
     """Set target powers/PSD on all degrees
     This is needed to populate per_degree_pch_out_dbm or per_degree_pch_psd or per_degree_pch_psw dicts when
@@ -432,8 +437,6 @@ def set_roadm_input_powers(network, roadm, equipment, pref_ch_db):
     User should be aware that design was not successfull and that power reduction was applied.
     Note that this value is only used for visualisation purpose (to compute ROADM loss in elements).
     """
-    ref_carrier = ReferenceCarrier(baud_rate=equipment['SI']['default'].baud_rate,
-                                   slot_width=equipment['SI']['default'].spacing)
     previous_elements = [n for n in network.predecessors(roadm)]
     roadm.ref_pch_in_dbm = {}
     for element in previous_elements:
@@ -449,7 +452,7 @@ def set_roadm_input_powers(network, roadm, equipment, pref_ch_db):
             roadm.ref_pch_in_dbm[element.uid] = pref_ch_db + node._delta_p - node.out_voa - loss
         elif isinstance(node, elements.Roadm):
             roadm.ref_pch_in_dbm[element.uid] = \
-                node.get_per_degree_ref_power(degree=previous_node.uid, ref_carrier=ref_carrier) - loss
+                node.get_per_degree_ref_power(degree=previous_node.uid) - loss
         elif isinstance(node, elements.Transceiver):
             roadm.ref_pch_in_dbm[element.uid] = pref_ch_db - loss
     # check if target power can be met
@@ -457,15 +460,15 @@ def set_roadm_input_powers(network, roadm, equipment, pref_ch_db):
     if roadm.per_degree_pch_out_dbm:
         temp.append(max([p for p in roadm.per_degree_pch_out_dbm.values()]))
     if roadm.per_degree_pch_psd:
-        temp.append(max([psd2powerdbm(p, ref_carrier.baud_rate) for p in roadm.per_degree_pch_psd.values()]))
+        temp.append(max([psd2powerdbm(p, roadm.ref_carrier.baud_rate) for p in roadm.per_degree_pch_psd.values()]))
     if roadm.per_degree_pch_psw:
-        temp.append(max([psd2powerdbm(p, ref_carrier.slot_width) for p in roadm.per_degree_pch_psw.values()]))
+        temp.append(max([psd2powerdbm(p, roadm.ref_carrier.slot_width) for p in roadm.per_degree_pch_psw.values()]))
     if roadm.params.target_pch_out_db:
         temp.append(roadm.params.target_pch_out_db)
     if roadm.params.target_psd_out_mWperGHz:
-        temp.append(psd2powerdbm(roadm.params.target_psd_out_mWperGHz, ref_carrier.baud_rate))
+        temp.append(psd2powerdbm(roadm.params.target_psd_out_mWperGHz, roadm.ref_carrier.baud_rate))
     if roadm.params.target_out_mWperSlotWidth:
-        temp.append(psd2powerdbm(roadm.params.target_out_mWperSlotWidth, ref_carrier.slot_width))
+        temp.append(psd2powerdbm(roadm.params.target_out_mWperSlotWidth, roadm.ref_carrier.slot_width))
     if not temp:
         raise ConfigurationError(f'Could not find target power/PSD/PSW in ROADM "{roadm.uid}"')
     target_to_be_supported = max(temp)
@@ -483,8 +486,6 @@ def set_fiber_input_power(network, fiber, equipment, pref_ch_db):
     Supposes that target power out of ROADMs and amplifiers are consistent.
     This is only for visualisation purpose
     """
-    ref_carrier = ReferenceCarrier(baud_rate=equipment['SI']['default'].baud_rate,
-                                   slot_width=equipment['SI']['default'].spacing)
     loss = 0.0
     node = next(network.predecessors(fiber))
     while isinstance(node, elements.Fused):
@@ -498,7 +499,7 @@ def set_fiber_input_power(network, fiber, equipment, pref_ch_db):
         fiber.ref_pch_in_dbm = node.ref_pch_in_dbm - loss - node.loss
     elif isinstance(node, elements.Roadm):
         fiber.ref_pch_in_dbm = \
-            node.get_per_degree_ref_power(degree=previous_node.uid, ref_carrier=ref_carrier) - loss
+            node.get_per_degree_ref_power(degree=previous_node.uid) - loss
     elif isinstance(node, elements.Edfa):
         fiber.ref_pch_in_dbm = pref_ch_db + node._delta_p - node.out_voa - loss
     elif isinstance(node, elements.Transceiver):
@@ -733,6 +734,7 @@ def build_network(network, equipment, pref_ch_db, pref_total_db, set_connector_l
         add_missing_fiber_attributes(network, equipment)
     # set roadm equalization targets first
     for roadm in roadms:
+        set_roadm_ref_carrier(roadm, equipment)
         set_roadm_per_degree_targets(roadm, network)
     # then set amplifiers gain, delta_p and out_voa on each OMS
     for roadm in roadms + transceivers:
