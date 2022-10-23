@@ -13,7 +13,7 @@ from operator import attrgetter
 from gnpy.core import ansi_escapes, elements
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.utils import round2float, convert_length, psd2powerdbm, lin2db, watt2dbm, dbm2watt
-from gnpy.core.info import create_input_spectral_information
+from gnpy.core.info import create_input_spectral_information, ReferenceCarrier
 from gnpy.core.parameters import SimParams
 from collections import namedtuple
 
@@ -402,6 +402,12 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
             node = next_node
 
 
+def set_roadm_ref_carrier(roadm, equipment):
+    """ref_carrier records carrier information used for design and usefull for equalization
+    """
+    roadm.ref_carrier = ReferenceCarrier(baud_rate=equipment['SI']['default'].baud_rate)
+
+
 def set_roadm_output_targets(roadm, network):
     """Set target powers/PSD on all degrees
     """
@@ -730,6 +736,7 @@ def build_network(network, equipment, pref_ch_db, pref_total_db, verbose=True):
 
     for roadm in roadms:
         set_roadm_output_targets(roadm, network)
+        set_roadm_ref_carrier(roadm, equipment)
     for roadm in roadms + transceivers:
         set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db, verbose)
     for roadm in roadms:
