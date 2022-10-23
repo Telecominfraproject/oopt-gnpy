@@ -7,8 +7,7 @@ from numpy import zeros, array
 from numpy.testing import assert_allclose
 from gnpy.core.elements import Transceiver, Edfa, Fiber
 from gnpy.core.utils import automatic_fmax, lin2db, db2lin, merge_amplifier_restrictions, dbm2watt, watt2dbm
-from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information, Pref, \
-    ReferenceCarrier
+from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information
 from gnpy.core.network import build_network
 from gnpy.tools.json_io import load_network, load_equipment, network_from_json
 from pathlib import Path
@@ -76,8 +75,7 @@ def si(nch_and_spacing, bw):
     f_min = 191.3e12
     f_max = automatic_fmax(f_min, spacing, nb_channel)
     return create_input_spectral_information(f_min=f_min, f_max=f_max, roll_off=0.15, baud_rate=bw, power=1e-3,
-                                             spacing=spacing, tx_osnr=40.0,
-                                             ref_carrier=ReferenceCarrier(baud_rate=32e9, slot_width=50e9))
+                                             spacing=spacing, tx_osnr=40.0)
 
 
 @pytest.mark.parametrize("gain, nf_expected", [(10, 15), (15, 10), (25, 5.8)])
@@ -320,12 +318,10 @@ def test_amp_saturation(delta_pdb_per_channel, base_power, delta_p):
     slot_width = array([37.5e9, 50e9, 75e9, 50e9, 37.5e9])
     baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
     signal = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]) + array(delta_pdb_per_channel) + base_power)
-    ref_carrier = ReferenceCarrier(baud_rate=32e9, slot_width=50e9)
-    pref = Pref(ref_carrier=ref_carrier)
     si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
                                                signal=signal, baud_rate=baud_rate, roll_off=0.15,
                                                delta_pdb_per_channel=delta_pdb_per_channel,
-                                               tx_osnr=None, ref_power=pref)
+                                               tx_osnr=None)
     total_sig_powerin = sum(si.signal)
     sig_in = lin2db(si.signal)
     si = edfa(si)
