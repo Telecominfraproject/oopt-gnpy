@@ -8,7 +8,7 @@ from numpy.testing import assert_allclose
 from gnpy.core.elements import Transceiver, Edfa, Fiber
 from gnpy.core.utils import automatic_fmax, lin2db, db2lin, merge_amplifier_restrictions, dbm2watt, watt2dbm
 from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information
-from gnpy.core.network import build_network
+from gnpy.core.network import build_network, set_amplifier_voa
 from gnpy.tools.json_io import load_network, load_equipment, network_from_json
 from pathlib import Path
 import pytest
@@ -331,3 +331,38 @@ def test_amp_saturation(delta_pdb_per_channel, base_power, delta_p):
     assert watt2dbm(sum(si.signal + si.nli + si.ase)) <= 21.02
     assert pytest.approx(edfa.effective_gain, 1e-13) == gain
     assert_allclose(sig_in + gain, sig_out, rtol=1e-13)
+
+
+def test_set_out_voa():
+    """Check that out_voa is correctly set if out_voa_auto is true
+    gain is maximized to obtain better NF:
+    if optimum input power in next span is -3 + pref_ch_db then total power at optimum is 19 -3 = 16dBm.
+    since amp has 21 dBm p_max, power out of amp can be set to 21dBm increasing out_voa by 5 to keep
+    same input power in the fiber. Since the optimisation contains a hard coded margin of 1 to account for
+    possible degradation on max power, the expected voa value is 4, and delta_p and gain are corrected
+    accordingly.
+    """
+    json_data = {
+        "elements": [{
+            "uid": "Edfa1",
+            "type": "Edfa",
+            "type_variety": "test",
+            "operational": {
+                "delta_p": -3,
+                "gain_target": 20,
+                "tilt_target": 0
+            }
+        }],
+        "connections": []
+    }
+    equipment = load_equipment(eqpt_library)
+    network = network_from_json(json_data, equipment)
+    amp = [n for n in network.nodes()][0]
+    print(amp.out_voa)
+    power_target = 19 + amp.delta_p
+    power_mode = True
+    amp.params.out_voa_auto = True
+    set_amplifier_voa(amp, power_target, power_mode)
+    assert amp.out_voa == 4.0
+    assert amp.effective_gain == 20.0 + 4.0
+    assert amp.delta_p == -3.0 + 4.0
