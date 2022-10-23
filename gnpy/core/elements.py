@@ -233,6 +233,7 @@ class Roadm(_Node):
         self.target_psd_out_mWperGHz = self.params.target_psd_out_mWperGHz
         self.per_degree_pch_psd = self.params.per_degree_pch_psd
         self.ref_pch_in_dbm = {}
+        self.ref_carrier = None
 
     @property
     def to_json(self):
@@ -289,14 +290,14 @@ class Roadm(_Node):
                 per_degree_pch = full(len(spectral_info.channel_number), ref_per_degree_pch)
             else:
                 per_degree_pch = psd2powerdbm(per_deg_psd, spectral_info.baud_rate)
-                ref_per_degree_pch = psd2powerdbm(per_deg_psd, spectral_info.pref.ref_carrier.baud_rate)
+                ref_per_degree_pch = psd2powerdbm(per_deg_psd, self.ref_carrier.baud_rate)
         elif self.target_psd_out_mWperGHz is not None:
             per_deg_pow = self.per_degree_pch_out_dbm.get(degree, None)
             if per_deg_pow is None:
                 per_degree_pch = psd2powerdbm(self.per_degree_pch_psd.get(degree, self.target_psd_out_mWperGHz),
                                               spectral_info.baud_rate)
                 ref_per_degree_pch = psd2powerdbm(self.per_degree_pch_psd.get(degree, self.target_psd_out_mWperGHz),
-                                                  spectral_info.pref.ref_carrier.baud_rate)
+                                                  self.ref_carrier.baud_rate)
             else:
                 ref_per_degree_pch = per_deg_pow
                 per_degree_pch = full(len(spectral_info.channel_number), per_deg_pow)
