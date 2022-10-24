@@ -47,7 +47,7 @@ def propagation(input_power, con_in, con_out, dest):
     spacing = 50e9  # THz
     si = create_input_spectral_information(f_min=191.3e12, f_max=191.3e12 + 79 * spacing, roll_off=0.15,
                                            baud_rate=32e9, power=p, spacing=spacing, tx_osnr=None,
-                                           ref_carrier=ReferenceCarrier(baud_rate=32e9))
+                                           ref_carrier=ReferenceCarrier(baud_rate=32e9, slot_width=50e9))
     source = next(transceivers[uid] for uid in transceivers if uid == 'trx A')
     sink = next(transceivers[uid] for uid in transceivers if uid == dest)
     path = dijkstra_path(network, source, sink)
