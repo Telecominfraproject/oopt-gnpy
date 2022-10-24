@@ -321,7 +321,7 @@ def rrc(ffs, baud_rate, alpha):
 def find_equalisation(params):
     """Find the equalization(s) defined in params. params can be a dict or a Roadm object.
     """
-    equalization_types = ["target_pch_out_db", "target_psd_out_mWperGHz"]
+    equalization_types = ["target_pch_out_db", "target_psd_out_mWperGHz", "target_out_mWperSlotWidth"]
     equalization = {e: False for e in equalization_types}
     for equ in equalization_types:
         if type(params) == dict:

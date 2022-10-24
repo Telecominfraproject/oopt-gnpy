@@ -338,3 +338,4 @@ class ReferenceCarrier:
     Other attributes (like slot_width or roll-off) may be added there for future equalization purpose.
     """
     baud_rate: float
+    slot_width: float

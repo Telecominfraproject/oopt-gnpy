@@ -107,17 +107,18 @@ class Roadm(_JsonThing):
         # if equalization is not defined in equipment, then use the default power equalization
         # target_pch_out_db -20 dBm. else use the one define in equipment. Only one type of equalization
         # must be defined: power (target_pch_out_db) or PSD (target_psd_out_mWperGHz)
-        equalisation_type = ['target_pch_out_db', 'target_psd_out_mWperGHz']
+        equalisation_type = ['target_pch_out_db', 'target_psd_out_mWperGHz', 'target_out_mWperSlotWidth']
         temp = [k in kwargs for k in equalisation_type]
         if sum(temp) > 1:
             raise EquipmentConfigError('WARNING only one equalization type should be set in ROADM, found'
-                                       + '\n target_pch_out_db and target_psd_out_mWperGHz')
+                                       + f'\n {[k for k in equalisation_type if k in kwargs]}')
         for key in equalisation_type:
             if key in kwargs:
                 setattr(self, key, kwargs[key])
                 break
         if not any(temp):
             setattr(self, 'target_pch_out_db', -20)
+
         self.update_attr(self.default_values, kwargs, 'Roadm')
 
 
@@ -487,7 +488,7 @@ def network_from_json(json_data, equipment):
                 if not extra_params:
                     raise ConfigurationError(f'ROADM {el_config["uid"]} has not a correct configuration'
                                              '\nplease check that ROADM contains at most per channel power or '
-                                             'power spectral density definition.')
+                                             'power spectral density definition or power per slot width.')
             temp = merge_amplifier_restrictions(temp, extra_params.__dict__)
             el_config['params'] = temp
             el_config['type_variety'] = variety

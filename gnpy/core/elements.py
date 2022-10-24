@@ -223,9 +223,9 @@ class Roadm(_Node):
 
         # Target output power for the reference carrier
         self.ref_pch_out_dbm = self.params.target_pch_out_db
-        # target power as defined by user
-        self.target_pch_out_dbm = self.params.target_pch_out_db
 
+        # reference power is target power by default. depending on propagation this may change (due to equalization)
+        self.ref_pch_out_dbm = self.params.target_pch_out_db
         self.loss = 0  # auto-design interest
 
         # Optical power of carriers are equalized by the ROADM, so that the experienced loss is not the same for
@@ -234,10 +234,13 @@ class Roadm(_Node):
 
         self.passive = True
         self.restrictions = self.params.restrictions
-        self.per_degree_pch_out_dbm = self.params.per_degree_pch_out_db
-        # element contains the two types of equalisation parameters, but only one is not None or empty
+        # element contains all types of equalisation parameters, but only one is not None
+        self.target_pch_out_dbm = self.params.target_pch_out_db
         self.target_psd_out_mWperGHz = self.params.target_psd_out_mWperGHz
+        self.target_out_mWperSlotWidth = self.params.target_out_mWperSlotWidth
+        self.per_degree_pch_out_dbm = self.params.per_degree_pch_out_db
         self.per_degree_pch_psd = self.params.per_degree_pch_psd
+        self.per_degree_pch_psw = self.params.per_degree_pch_psw
         self.ref_pch_in_dbm = {}
         self.ref_carrier = None
 
@@ -247,6 +250,8 @@ class Roadm(_Node):
             equalisation, value = 'target_pch_out_db', self.ref_pch_out_dbm
         if self.target_psd_out_mWperGHz is not None:
             equalisation, value = 'target_psd_out_mWperGHz', self.target_psd_out_mWperGHz
+        if self.target_out_mWperSlotWidth is not None:
+            equalisation, value = 'target_out_mWperSlotWidth', self.target_out_mWperSlotWidth
         to_json = {
             'uid': self.uid,
             'type': type(self).__name__,
@@ -262,6 +267,8 @@ class Roadm(_Node):
             to_json['params']['per_degree_pch_out_db'] = self.per_degree_pch_out_dbm
         if self.per_degree_pch_psd:
             to_json['params']['per_degree_psd_out_mWperGHz'] = self.per_degree_pch_psd
+        if self.per_degree_pch_psw:
+            to_json['params']['target_out_mWperSlotWidth'] = self.per_degree_pch_psw
         return to_json
 
     def __repr__(self):
@@ -284,6 +291,10 @@ class Roadm(_Node):
             return psd2powerdbm(self.target_psd_out_mWperGHz, self.ref_carrier.baud_rate)
         elif self.target_psd_out_mWperGHz is not None and spectral_info:
             return psd2powerdbm(self.target_psd_out_mWperGHz, spectral_info.baud_rate)
+        elif self.target_out_mWperSlotWidth is not None and spectral_info is None:
+            return psd2powerdbm(self.target_out_mWperSlotWidth, self.ref_carrier.slot_width)
+        elif self.target_out_mWperSlotWidth is not None and spectral_info:
+            return psd2powerdbm(self.target_out_mWperSlotWidth, spectral_info.slot_width)
         return None
 
     def get_per_degree_target_power(self, degree):
@@ -293,7 +304,10 @@ class Roadm(_Node):
             return self.per_degree_pch_out_dbm[degree]
         elif degree in self.per_degree_pch_psd:
             return psd2powerdbm(self.per_degree_pch_psd[degree], self.ref_carrier.baud_rate)
-        return self.get_target_power()
+        elif degree in self.per_degree_pch_psw:
+            return psd2powerdbm(self.per_degree_pch_psw[degree], self.ref_carrier.slot_width)
+        else:
+            return self.get_target_power()
 
     def get_per_ch_target_power(self, degree, spectral_info):
         """Get the target power in dBm out of ROADM degree for the reference bandwidth
@@ -302,7 +316,10 @@ class Roadm(_Node):
             return full(len(spectral_info.channel_number), self.per_degree_pch_out_dbm[degree])
         elif degree in self.per_degree_pch_psd:
             return psd2powerdbm(self.per_degree_pch_psd[degree], spectral_info.baud_rate)
-        return self.get_target_power(spectral_info)
+        elif degree in self.per_degree_pch_psw:
+            return psd2powerdbm(self.per_degree_pch_psw[degree], spectral_info.slot_width)
+        else:
+            return self.get_target_power(spectral_info)
 
     def propagate(self, spectral_info, degree, from_degree):
         # pin_target and loss are read from eqpt_config.json['Roadm']
