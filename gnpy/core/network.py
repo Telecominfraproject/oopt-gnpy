@@ -12,6 +12,7 @@ from operator import attrgetter
 from gnpy.core import ansi_escapes, elements
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.utils import round2float, convert_length
+from gnpy.core.info import ReferenceCarrier
 from collections import namedtuple
 
 
@@ -237,7 +238,8 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
     """ this node can be a transceiver or a ROADM (same function called in both cases)
     """
     power_mode = equipment['Span']['default'].power_mode
-    reference_baudrate = equipment['SI']['default'].baud_rate
+    ref_carrier = ReferenceCarrier(baud_rate=equipment['SI']['default'].baud_rate,
+                                   slot_width=equipment['SI']['default'].spacing)
     next_oms = (n for n in network.successors(this_node) if not isinstance(n, elements.Transceiver))
     for oms in next_oms:
         # go through all the OMS departing from the ROADM
@@ -247,8 +249,7 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
             this_node_out_power = 0.0     # default value if this_node is a transceiver
         if isinstance(this_node, elements.Roadm):
             # get target power out from ROADM for the reference carrier based on equalization settings
-            this_node_out_power = this_node.get_per_degree_ref_power(degree=node.uid,
-                                                                     reference_baudrate=reference_baudrate)
+            this_node_out_power = this_node.get_per_degree_ref_power(degree=node.uid, ref_carrier=ref_carrier)
         # use the target power on this degree
         prev_dp = this_node_out_power - pref_ch_db
         dp = prev_dp
@@ -333,22 +334,26 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
 
 def set_roadm_per_degree_targets(roadm, network):
     """Set target powers/PSD on all degrees
-    This is needed to populate per_degree_pch_out_dbm or per_degree_pch_psd dicts when they are
-    not initialized by users.
+    This is needed to populate per_degree_pch_out_dbm or per_degree_pch_psd or per_degree_pch_psw dicts when
+    they are not initialized by users.
     """
     next_oms = (n for n in network.successors(roadm) if not isinstance(n, elements.Transceiver))
 
     for node in next_oms:
         # go through all the OMS departing from the ROADM
-        if node.uid not in roadm.per_degree_pch_out_dbm and node.uid not in roadm.per_degree_pch_psd:
+        if node.uid not in roadm.per_degree_pch_out_dbm and node.uid not in roadm.per_degree_pch_psd and \
+                node.uid not in roadm.per_degree_pch_psw:
             # if no target power is defined on this degree or no per degree target power is given use the global one
             if roadm.params.target_pch_out_db:
                 roadm.per_degree_pch_out_dbm[node.uid] = roadm.params.target_pch_out_db
             elif roadm.params.target_psd_out_mWperGHz:
                 roadm.per_degree_pch_psd[node.uid] = roadm.params.target_psd_out_mWperGHz
+            elif roadm.params.target_out_mWperSlotWidth:
+                roadm.per_degree_pch_psw[node.uid] = roadm.params.target_out_mWperSlotWidth
             else:
                 raise ConfigurationError(roadm.uid,
-                                         'needs a target_pch_out_db or a target_psd_out_mWperGHz')
+                                         'needs a target_pch_out_db or a target_psd_out_mWperGHz'
+                                         + 'or a target_out_mWperSlotWidth')
 
 
 def add_roadm_booster(network, roadm):
