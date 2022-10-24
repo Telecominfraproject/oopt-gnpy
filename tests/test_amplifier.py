@@ -74,7 +74,8 @@ def si(nch_and_spacing, bw):
     f_min = 191.3e12
     f_max = automatic_fmax(f_min, spacing, nb_channel)
     return create_input_spectral_information(f_min=f_min, f_max=f_max, roll_off=0.15, baud_rate=bw, power=1e-3,
-                                             spacing=spacing, tx_osnr=40.0, ref_carrier=ReferenceCarrier(baud_rate=32e9))
+                                             spacing=spacing, tx_osnr=40.0,
+                                             ref_carrier=ReferenceCarrier(baud_rate=32e9, slot_width=50e9))
 
 
 @pytest.mark.parametrize("gain, nf_expected", [(10, 15), (15, 10), (25, 5.8)])
