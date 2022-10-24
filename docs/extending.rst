@@ -91,7 +91,8 @@ Advanced Specification
 **********************
 
 The amplifier performance can be further described in terms of gain ripple, NF ripple, and the dynamic gain tilt.
-When provided, the amplifier characteristic is fine-tuned as a function of carrier frequency.
+When provided, the amplifier characteristic is fine-tuned as a function of carrier frequency. Note that in this advanced
+specification tilt is defined vs frequency while tilt_target specified in EDFA instances is defined vs wavelength.
 
 .. _extending-raman:
 

@@ -118,7 +118,7 @@ class Eqpt(object):
         'east_att_in': 0,
         'east_amp_gain': None,
         'east_amp_dp': None,
-        'east_tilt': 0,
+        'east_tilt_vs_wavelength': 0,
         'east_att_out': None
     }
 
@@ -305,13 +305,13 @@ def create_east_eqpt_element(node):
         eqpt['type_variety'] = f'{node.east_amp_type}'
         eqpt['operational'] = {'gain_target': node.east_amp_gain,
                                'delta_p':     node.east_amp_dp,
-                               'tilt_target': node.east_tilt,
+                               'tilt_target': node.east_tilt_vs_wavelength,
                                'out_voa':     node.east_att_out}
     elif node.east_amp_type.lower() == '':
         eqpt['type'] = 'Edfa'
         eqpt['operational'] = {'gain_target': node.east_amp_gain,
                                'delta_p':     node.east_amp_dp,
-                               'tilt_target': node.east_tilt,
+                               'tilt_target': node.east_tilt_vs_wavelength,
                                'out_voa':     node.east_att_out}
     elif node.east_amp_type.lower() == 'fused':
         # fused edfa variety is a hack to indicate that there should not be
@@ -338,12 +338,12 @@ def create_west_eqpt_element(node):
         eqpt['type_variety'] = f'{node.west_amp_type}'
         eqpt['operational'] = {'gain_target': node.west_amp_gain,
                                'delta_p':     node.west_amp_dp,
-                               'tilt_target': node.west_tilt,
+                               'tilt_target': node.west_tilt_vs_wavelength,
                                'out_voa':     node.west_att_out}
     elif node.west_amp_type.lower() == '':
         eqpt['operational'] = {'gain_target': node.west_amp_gain,
                                'delta_p':     node.west_amp_dp,
-                               'tilt_target': node.west_tilt,
+                               'tilt_target': node.west_tilt_vs_wavelength,
                                'out_voa':     node.west_att_out}
     elif node.west_amp_type.lower() == 'fused':
         eqpt['type'] = 'Fused'

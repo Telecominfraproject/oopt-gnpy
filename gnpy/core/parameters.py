@@ -297,7 +297,7 @@ class EdfaOperational:
         'gain_target': None,
         'delta_p': None,
         'out_voa': None,
-        'tilt_target': 0
+        'tilt_target_vs_wavelength': 0
     }
 
     def __init__(self, **operational):
@@ -310,5 +310,5 @@ class EdfaOperational:
 
     def __repr__(self):
         return (f'{type(self).__name__}('
-                f'gain_target={self.gain_target!r}, '
-                f'tilt_target={self.tilt_target!r})')
+                f'gain_target={self.gain_target_vs_wavelength!r}, '
+                f'tilt_target={self.tilt_target_vs_wavelength!r})')
