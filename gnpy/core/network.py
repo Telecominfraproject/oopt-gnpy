@@ -285,7 +285,6 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
     power_mode = False, set amplifiers effective_gain and ignore delta_p config: set it to None
     """
     power_mode = equipment['Span']['default'].power_mode
-    reference_baudrate = equipment['SI']['default'].baud_rate
     next_oms = (n for n in network.successors(this_node) if not isinstance(n, elements.Transceiver))
     for oms in next_oms:
         # go through all the OMS departing from the ROADM
@@ -402,27 +401,32 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
 def set_roadm_ref_carrier(roadm, equipment):
     """ref_carrier records carrier information used for design and usefull for equalization
     """
-    roadm.ref_carrier = ReferenceCarrier(baud_rate=equipment['SI']['default'].baud_rate)
+    roadm.ref_carrier = ReferenceCarrier(baud_rate=equipment['SI']['default'].baud_rate,
+                                         slot_width=equipment['SI']['default'].spacing)
 
 
 def set_roadm_per_degree_targets(roadm, network):
     """Set target powers/PSD on all degrees
-    This is needed to populate per_degree_pch_out_dbm or per_degree_pch_psd dicts when they are
-    not initialized by users.
+    This is needed to populate per_degree_pch_out_dbm or per_degree_pch_psd or per_degree_pch_psw dicts when
+    they are not initialized by users.
     """
     next_oms = (n for n in network.successors(roadm) if not isinstance(n, elements.Transceiver))
 
     for node in next_oms:
         # go through all the OMS departing from the ROADM
-        if node.uid not in roadm.per_degree_pch_out_dbm and node.uid not in roadm.per_degree_pch_psd:
+        if node.uid not in roadm.per_degree_pch_out_dbm and node.uid not in roadm.per_degree_pch_psd and \
+                node.uid not in roadm.per_degree_pch_psw:
             # if no target power is defined on this degree or no per degree target power is given use the global one
             if roadm.params.target_pch_out_db:
                 roadm.per_degree_pch_out_dbm[node.uid] = roadm.params.target_pch_out_db
             elif roadm.params.target_psd_out_mWperGHz:
                 roadm.per_degree_pch_psd[node.uid] = roadm.params.target_psd_out_mWperGHz
+            elif roadm.params.target_out_mWperSlotWidth:
+                roadm.per_degree_pch_psw[node.uid] = roadm.params.target_out_mWperSlotWidth
             else:
                 raise ConfigurationError(roadm.uid,
-                                         'needs a target_pch_out_db or a target_psd_out_mWperGHz')
+                                         'needs a target_pch_out_db or a target_psd_out_mWperGHz'
+                                         + 'or a target_out_mWperSlotWidth')
 
 
 def set_roadm_input_powers(network, roadm, equipment, pref_ch_db):
@@ -441,7 +445,6 @@ def set_roadm_input_powers(network, roadm, equipment, pref_ch_db):
     User should be aware that design was not successfull and that power reduction was applied.
     Note that this value is only used for visualisation purpose (to compute ROADM loss in elements).
     """
-    ref_br = equipment['SI']['default'].baud_rate
     previous_elements = [n for n in network.predecessors(roadm)]
     roadm.ref_pch_in_dbm = {}
     for element in previous_elements:
@@ -465,13 +468,17 @@ def set_roadm_input_powers(network, roadm, equipment, pref_ch_db):
     if roadm.per_degree_pch_out_dbm:
         temp.append(max([p for p in roadm.per_degree_pch_out_dbm.values()]))
     if roadm.per_degree_pch_psd:
-        temp.append(max([psd2powerdbm(p, ref_br) for p in roadm.per_degree_pch_psd.values()]))
+        temp.append(max([psd2powerdbm(p, roadm.ref_carrier.baud_rate) for p in roadm.per_degree_pch_psd.values()]))
+    if roadm.per_degree_pch_psw:
+        temp.append(max([psd2powerdbm(p, roadm.ref_carrier.slot_width) for p in roadm.per_degree_pch_psw.values()]))
     if roadm.params.target_pch_out_db:
         temp.append(roadm.params.target_pch_out_db)
     if roadm.params.target_psd_out_mWperGHz:
-        temp.append(psd2powerdbm(roadm.params.target_psd_out_mWperGHz, ref_br))
+        temp.append(psd2powerdbm(roadm.params.target_psd_out_mWperGHz, roadm.ref_carrier.baud_rate))
+    if roadm.params.target_out_mWperSlotWidth:
+        temp.append(psd2powerdbm(roadm.params.target_out_mWperSlotWidth, roadm.ref_carrier.slot_width))
     if not temp:
-        raise ConfigurationError(f'Could not find target power/PSD in ROADM "{roadm.uid}"')
+        raise ConfigurationError(f'Could not find target power/PSD/PSW in ROADM "{roadm.uid}"')
     target_to_be_supported = max(temp)
     for from_degree, in_power in roadm.ref_pch_in_dbm.items():
         if in_power < target_to_be_supported:
