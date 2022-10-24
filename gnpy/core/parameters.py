@@ -90,13 +90,15 @@ class RoadmParams(Parameters):
     def __init__(self, **kwargs):
         self.target_pch_out_db = kwargs.get('target_pch_out_db')
         self.target_psd_out_mWperGHz = kwargs.get('target_psd_out_mWperGHz')
-        equalisation_type = ['target_pch_out_db', 'target_psd_out_mWperGHz']
+        self.target_out_mWperSlotWidth = kwargs.get('target_out_mWperSlotWidth')
+        equalisation_type = ['target_pch_out_db', 'target_psd_out_mWperGHz', 'target_out_mWperSlotWidth']
         temp = [kwargs.get(k) is not None for k in equalisation_type]
         if sum(temp) > 1:
             raise ParametersError('ROADM config contains more than one equalisation type.'
                                   + 'Please choose only one', kwargs)
         self.per_degree_pch_out_db = kwargs.get('per_degree_pch_out_db', {})
         self.per_degree_pch_psd = kwargs.get('per_degree_psd_out_mWperGHz', {})
+        self.per_degree_pch_psw = kwargs.get('per_degree_psd_out_mWperSlotWidth', {})
         try:
             self.add_drop_osnr = kwargs['add_drop_osnr']
             self.pmd = kwargs['pmd']
