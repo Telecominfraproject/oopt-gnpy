@@ -32,16 +32,20 @@ NETWORK_FILENAME = TEST_DIR / 'data/testTopology_expected.json'
 @pytest.mark.parametrize('degree, equalization_type, target, expected_pch_out_dbm',
     [('east edfa in Lannion_CAS to Morlaix', 'target_pch_out_db', -20, -20),
      ('east edfa in Lannion_CAS to Morlaix', 'target_psd_out_mWperGHz', 5e-4, -17.9588),
+     ('east edfa in Lannion_CAS to Morlaix', 'target_out_mWperSlotWidth', 3e-4, -18.2390),
      ('east edfa in Lannion_CAS to Corlay', 'target_pch_out_db', -20, -16),
      ('east edfa in Lannion_CAS to Corlay', 'target_psd_out_mWperGHz', 5e-4, -16),
+     ('east edfa in Lannion_CAS to Corlay', 'target_out_mWperSlotWidth', 5e-4, -16),
      ('east edfa in Lannion_CAS to Stbrieuc', 'target_pch_out_db', -20, -17.16699),
-     ('east edfa in Lannion_CAS to Stbrieuc', 'target_psd_out_mWperGHz', 5e-4, -17.16699)])
+     ('east edfa in Lannion_CAS to Stbrieuc', 'target_psd_out_mWperGHz', 5e-4, -17.16699),
+     ('east edfa in Lannion_CAS to Stbrieuc', 'target_out_mWperSlotWidth', 5e-4, -17.16699)])
 @pytest.mark.parametrize('delta_pdb_per_channel', [[0, 0, 0, 0, 0], [1, 3, 0, -5, 0]])
 def test_equalization_combination_degree(delta_pdb_per_channel, degree, equalization_type, target,
                                          expected_pch_out_dbm):
     """Check that ROADM correctly computes power of thr reference channel based on different
     combination of equalization for ROADM and per degree
     """
+
     roadm_config = {
         "uid": "roadm Lannion_CAS",
         "params": {
@@ -66,7 +70,7 @@ def test_equalization_combination_degree(delta_pdb_per_channel, degree, equaliza
     slot_width = array([37.5e9, 50e9, 75e9, 50e9, 37.5e9])
     baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
     signal = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]))
-    ref_carrier = ReferenceCarrier(baud_rate=32e9)
+    ref_carrier = ReferenceCarrier(baud_rate=32e9, slot_width=50e9)
     pref = Pref(p_span0=0, p_spani=0, ref_carrier=ref_carrier)
     si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
                                                signal=signal, baud_rate=baud_rate, roll_off=0.15,
@@ -91,7 +95,8 @@ def test_equalization_combination_degree(delta_pdb_per_channel, degree, equaliza
     assert roadm.ref_pch_out_dbm == pytest.approx(expected_pch_out_dbm, rel=1e-4)
 
 
-def test_wrong_element_config():
+@pytest.mark.parametrize('equalization_type',["target_psd_out_mWperGHz", "target_out_mWperSlotWidth"])
+def test_wrong_element_config(equalization_type):
     """Check that 2 equalization correcty raise a config error
     """
     roadm_config = {
@@ -99,7 +104,7 @@ def test_wrong_element_config():
         "params": {
             "per_degree_pch_out_db": {},
             "target_pch_out_db": -20,
-            "target_psd_out_mWperGHz": 3.125e-4,
+            equalization_type: 3.125e-4,
             "add_drop_osnr": 38,
             "pmd": 0,
             "pdl": 0,
@@ -148,6 +153,7 @@ def test_merge_equalization():
     roadm = [n for n in network.nodes()][0]
     assert roadm.target_pch_out_dbm is None
     assert roadm.target_psd_out_mWperGHz == 3.125e-4
+    assert roadm.target_out_mWperSlotWidth is None
     json_data = {
         "elements": [{
             "uid": "roadm Brest_KLA",
@@ -159,6 +165,7 @@ def test_merge_equalization():
     roadm = [n for n in network.nodes()][0]
     assert roadm.target_pch_out_dbm == -18
     assert roadm.target_psd_out_mWperGHz is None
+    assert roadm.target_out_mWperSlotWidth is None
     json_data = {
         "elements": [{
             "uid": "roadm Brest_KLA",
@@ -170,6 +177,19 @@ def test_merge_equalization():
     roadm = [n for n in network.nodes()][0]
     assert roadm.target_pch_out_dbm is None
     assert roadm.target_psd_out_mWperGHz == 5e-4
+    assert roadm.target_out_mWperSlotWidth is None
+    json_data = {
+        "elements": [{
+            "uid": "roadm Brest_KLA",
+            "type": "Roadm",
+            "params": {"target_out_mWperSlotWidth": 3e-4}}],
+        "connections": []
+    }
+    network = network_from_json(json_data, equipment)
+    roadm = [n for n in network.nodes()][0]
+    assert roadm.target_pch_out_dbm is None
+    assert roadm.target_psd_out_mWperGHz is None
+    assert roadm.target_out_mWperSlotWidth == 3e-4
 
 
 @pytest.mark.parametrize('target_out, delta_pdb_per_channel, correction',
@@ -187,7 +207,7 @@ def test_low_input_power(target_out, delta_pdb_per_channel, correction):
     baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
     signal = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]))
     target = target_out + array(delta_pdb_per_channel)
-    ref_carrier = ReferenceCarrier(baud_rate=32e9)
+    ref_carrier = ReferenceCarrier(baud_rate=32e9, slot_width=50e9)
     pref = Pref(p_span0=0, p_spani=-20, ref_carrier=ref_carrier)
     si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
                                                signal=signal, baud_rate=baud_rate, roll_off=0.15,
@@ -239,7 +259,7 @@ def test_2low_input_power(target_out, delta_pdb_per_channel, correction):
     baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
     signal = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]))
     target = psd2powerdbm(target_out, baud_rate) + array(delta_pdb_per_channel)
-    ref_carrier = ReferenceCarrier(baud_rate=32e9)
+    ref_carrier = ReferenceCarrier(baud_rate=32e9, slot_width=50e9)
     pref = Pref(p_span0=0, p_spani=-20, ref_carrier=ref_carrier)
     si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
                                                signal=signal, baud_rate=baud_rate, roll_off=0.15,
@@ -377,30 +397,24 @@ def test_initial_spectrum_not_identical():
     assert_raises(AssertionError, assert_array_equal, infos_expected.number_of_channels, infos_actual.number_of_channels)
 
 
-@pytest.mark.parametrize('with_initial_spectrum', [None, 0, +2, -0.5])
-def test_target_psd_out_mwperghz(with_initial_spectrum):
-    """ checks that if target_psd_out_mWperGHz is defined, it is used as equalization, and it gives same result if
-    computed target is the same
+
+@pytest.mark.parametrize('equalization, target_value', [
+    ('target_out_mWperSlotWidth', power_dbm_to_psd_mw_ghz(-20, 50e9)),
+    ('target_psd_out_mWperGHz', power_dbm_to_psd_mw_ghz(-20, 32e9))])
+@pytest.mark.parametrize('power_dbm', [0, 2, -0.5])
+def test_target_psd_or_psw(power_dbm, equalization, target_value):
+    """ checks that if target_out_mWperSlotWidth or target_psd_out_mWperGHz is defined, it is used as equalization
+    and it gives same result if computed target is the same
     """
     equipment = load_equipment(EQPT_FILENAME)
     network = net_setup(equipment)
     req = create_voyager_req(equipment, 'trx Brest_KLA', 'trx Vannes_KBE', False, ['trx Vannes_KBE'], ['STRICT'],
-                             'mode 1', 50e9, with_initial_spectrum)
-    if with_initial_spectrum:
-        temp = [{
-            "f_min": 191.35e12,     # align f_min , f_max on Voyager f_min, f_max and not SI !
-            "f_max": 196.05e12,
-            "baud_rate": req.baud_rate,
-            "slot_width": 50e9,
-            "roll_off": 0.15,
-            "tx_osnr": 40
-        }]
-        req.initial_spectrum = _spectrum_from_json(temp)
+                             'mode 1', 50e9, power_dbm)
     path = compute_constrained_path(network, req)
     infos_expected = propagate(path, req, equipment)
     # change default equalization to power spectral density
     delattr(equipment['Roadm']['default'], 'target_pch_out_db')
-    setattr(equipment['Roadm']['default'], 'target_psd_out_mWperGHz', power_dbm_to_psd_mw_ghz(-20, 32e9))
+    setattr(equipment['Roadm']['default'], equalization, target_value)
     # create a second instance with this roadm settings,
     network2 = net_setup(equipment)
     path2 = compute_constrained_path(network2, req)
@@ -466,11 +480,12 @@ def test_target_psd_out_mwperghz_deltap(deltap):
             assert expected_gain == pytest.approx(actual_gain, rel=1e-3)
 
 
+@pytest.mark.parametrize('equalization', ['target_psd_out_mWperGHz', 'target_out_mWperSlotWidth'])
 @pytest.mark.parametrize('case', ['SI', 'nodes'])
 @pytest.mark.parametrize('deltap', [0, +2, -0.5])
 @pytest.mark.parametrize('target', [-20, -21, -18])
 @pytest.mark.parametrize('mode, slot_width', (['mode 1', 50e9], ['mode 2', 75e9]))
-def test_equalization(case, deltap, target, mode, slot_width):
+def test_equalization(case, deltap, target, mode, slot_width, equalization):
     """check that power target on roadm is correct for these cases; check on booster
     - SI : target_pch_out_db / target_psd_out_mWperGHz
     - node : target_pch_out_db / target_psd_out_mWperGHz
@@ -489,17 +504,16 @@ def test_equalization(case, deltap, target, mode, slot_width):
     # boosters = ['east edfa in Brest_KLA to Quimper', 'east edfa in Lorient_KMA to Loudeac',
     #             'east edfa in Lannion_CAS to Stbrieuc']
     target_psd = power_dbm_to_psd_mw_ghz(target, 32e9)
-    ref = ReferenceCarrier(baud_rate=32e9)
+    ref = ReferenceCarrier(baud_rate=32e9, slot_width=50e9)
     if case == 'SI':
         delattr(equipment['Roadm']['default'], 'target_pch_out_db')
-        setattr(equipment['Roadm']['default'], 'target_psd_out_mWperGHz',
-                target_psd)
+        setattr(equipment['Roadm']['default'], equalization, target_psd)
         network = net_setup(equipment)
     elif case == 'nodes':
         json_data = load_json(NETWORK_FILENAME)
         for el in json_data['elements']:
             if el['uid'] in roadms:
-                el['params'] = {'target_psd_out_mWperGHz': target_psd}
+                el['params'] = {equalization: target_psd}
         network = network_from_json(json_data, equipment)
         spectrum = equipment['SI']['default']
         p_db = spectrum.power_dbm
@@ -510,6 +524,9 @@ def test_equalization(case, deltap, target, mode, slot_width):
         for roadm in pw_roadms:
             assert roadm.target_psd_out_mWperGHz is None
             assert roadm.target_pch_out_dbm == target
+        for roadm in [r for r in network.nodes() if r.uid in roadms and isinstance(r, Roadm)]:
+            assert roadm.target_pch_out_dbm is None
+            assert getattr(roadm, equalization) == target_psd
     path = compute_constrained_path(network, req)
     si = create_input_spectral_information(
         f_min=req.f_min, f_max=req.f_max, roll_off=req.roll_off, baud_rate=req.baud_rate, power=req.power,
@@ -518,8 +535,12 @@ def test_equalization(case, deltap, target, mode, slot_width):
         if isinstance(el, Roadm):
             si = el(si, degree=path[i + 1].uid)
             if case in ['SI', 'nodes', 'degrees']:
-                assert_allclose(power_dbm_to_psd_mw_ghz(watt2dbm(si.signal + si.ase + si.nli), si.baud_rate),
-                                target_psd, rtol=1e-3)
+                if equalization == 'target_psd_out_mWperGHz':
+                    assert_allclose(power_dbm_to_psd_mw_ghz(watt2dbm(si.signal + si.ase + si.nli), si.baud_rate),
+                                    target_psd, rtol=1e-3)
+                if equalization == 'target_out_mWperSlotWidth':
+                    assert_allclose(power_dbm_to_psd_mw_ghz(watt2dbm(si.signal + si.ase + si.nli), si.slot_width),
+                                    target_psd, rtol=1e-3)
         else:
             si = el(si)
         print(el.uid)
