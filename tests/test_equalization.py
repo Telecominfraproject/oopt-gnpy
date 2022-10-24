@@ -29,8 +29,8 @@ NETWORK_FILENAME = TEST_DIR / 'data/testTopology_expected.json'
 
 
 @pytest.mark.parametrize('equalization_type, target',
-    [('target_pch_out_db', -20), ('target_psd_out_mWperGHz', 5e-4)])
-@pytest.mark.parametrize('delta_pdb_per_channel', [[0, 0, 0, 0, 0], [1, 3, 0, -5, 0]])
+    [('target_pch_out_db', -20), ('target_psd_out_mWperGHz', 5e-4), ('target_out_mWperSlotWidth', 3e-4)])
+@pytest.mark.parametrize('delta_pdb_per_channel',[[0, 0, 0, 0, 0], [1, 3, 0, -5, 0]])
 def test_equalization_combination_degree(delta_pdb_per_channel, equalization_type, target):
     roadm_config = {
         "uid": "roadm Lannion_CAS",
@@ -57,7 +57,9 @@ def test_equalization_combination_degree(delta_pdb_per_channel, equalization_typ
         "east edfa in Lannion_CAS to Morlaix"]
     roadm = Roadm(**roadm_config)
     roadm.ref_pch_in_dbm['tata'] = 0
-    roadm.ref_carrier = ReferenceCarrier(baud_rate=32e9)
+    roadm.ref_carrier = ReferenceCarrier(baud_rate=32e9, slot_width=50.0e9)
+    roadm.per_degree_pch_out_dbm = {"east edfa in Lannion_CAS to Corlay": -16}
+    roadm.per_degree_pch_psd = {"east edfa in Lannion_CAS to Stbrieuc": 6e-4}
     frequency = 191e12 + array([0, 50e9, 150e9, 225e9, 275e9])
     slot_width = array([37.5e9, 50e9, 75e9, 50e9, 37.5e9])
     baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
@@ -87,6 +89,8 @@ def test_equalization_combination_degree(delta_pdb_per_channel, equalization_typ
             assert roadm.ref_pch_out_dbm == -20
         elif degree == 'east edfa in Lannion_CAS to Morlaix' and target == 5e-4:
             assert roadm.ref_pch_out_dbm == pytest.approx(-17.9588, rel=1e-4)
+        elif degree == 'east edfa in Lannion_CAS to Morlaix' and target == 3e-4:
+            assert roadm.ref_pch_out_dbm == pytest.approx(-18.2390, rel=1e-4)
         elif degree == "east edfa in Lannion_CAS to Corlay":
             assert roadm.ref_pch_out_dbm == -16
         elif degree == "east edfa in Lannion_CAS to Stbrieuc":
@@ -150,6 +154,7 @@ def test_merge_equalization():
     roadm = [n for n in network.nodes()][0]
     assert roadm.target_pch_out_dbm is None
     assert roadm.target_psd_out_mWperGHz == 3.125e-4
+    assert roadm.target_out_mWperSlotWidth is None
     json_data = {
         "elements": [{
             "uid": "roadm Brest_KLA",
@@ -161,6 +166,7 @@ def test_merge_equalization():
     roadm = [n for n in network.nodes()][0]
     assert roadm.target_pch_out_dbm == -18
     assert roadm.target_psd_out_mWperGHz is None
+    assert roadm.target_out_mWperSlotWidth is None
     json_data = {
         "elements": [{
             "uid": "roadm Brest_KLA",
@@ -172,6 +178,19 @@ def test_merge_equalization():
     roadm = [n for n in network.nodes()][0]
     assert roadm.target_pch_out_dbm is None
     assert roadm.target_psd_out_mWperGHz == 5e-4
+    assert roadm.target_out_mWperSlotWidth is None
+    json_data = {
+        "elements": [{
+            "uid": "roadm Brest_KLA",
+            "type": "Roadm",
+            "params": {"target_out_mWperSlotWidth": 3e-4}}],
+        "connections": []
+    }
+    network = network_from_json(json_data, equipment)
+    roadm = [n for n in network.nodes()][0]
+    assert roadm.target_pch_out_dbm is None
+    assert roadm.target_psd_out_mWperGHz is None
+    assert roadm.target_out_mWperSlotWidth == 3e-4
 
 
 @pytest.mark.parametrize('target_out, delta_pdb_per_channel, correction',
@@ -217,7 +236,7 @@ def test_low_input_power(target_out, delta_pdb_per_channel, correction):
     }
     roadm = Roadm(**roadm_config)
     roadm.ref_pch_in_dbm['tata'] = 0
-    roadm.ref_carrier = ReferenceCarrier(baud_rate=32e9)
+    roadm.ref_carrier = ReferenceCarrier(baud_rate=32e9, slot_width=50.0e9)
     si = roadm(si, degree='toto', from_degree='tata')
     assert (watt2dbm(si.signal) == target - correction).all()
     # in other words check that if target is below input power, target is applied else power is unchanged
@@ -269,7 +288,7 @@ def test_2low_input_power(target_out, delta_pdb_per_channel, correction):
     }
     roadm = Roadm(**roadm_config)
     roadm.ref_pch_in_dbm['tata'] = 0
-    roadm.ref_carrier = ReferenceCarrier(baud_rate=32e9)
+    roadm.ref_carrier = ReferenceCarrier(baud_rate=32e9, slot_width=50.0e9)
     si = roadm(si, degree='toto', from_degree='tata')
     assert (watt2dbm(si.signal) == target - correction).all()
 
