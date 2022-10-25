@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ef50f2c_ea6725a5",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 31
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-25T09:55:12Z",
+      "side": 1,
+      "message": "I would have preferred https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/522056/48 to be squashed here, but it\u0027s a very minor detail.",
+      "range": {
+        "startLine": 288,
+        "startChar": 26,
+        "endLine": 288,
+        "endChar": 50
+      },
+      "revId": "d5a167857ade2a7c76ce0a94a040322cab46a615",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9da05b42_8d525cd3",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 31
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-25T09:55:12Z",
+      "side": 1,
+      "message": "I\u0027m not a huge fan of this, I would have appreciated an explicit element-wise max(x, 0), but I see that spelling it out in a numpy way will require constructing a dummy array. I just wanted to share my feedback here;\u0027 no change is needed.",
+      "range": {
+        "startLine": 288,
+        "startChar": 22,
+        "endLine": 288,
+        "endChar": 25
+      },
+      "revId": "d5a167857ade2a7c76ce0a94a040322cab46a615",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}

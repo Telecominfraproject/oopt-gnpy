@@ -87,6 +87,30 @@
       },
       "revId": "f1b58633622034edb80f15d9b6ede1f6f6c16923",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42e3110e_d91a897a",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-25T09:55:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c6c28b5_ae025ac3",
+      "range": {
+        "startLine": 284,
+        "startChar": 8,
+        "endLine": 289,
+        "endChar": 59
+      },
+      "revId": "f1b58633622034edb80f15d9b6ede1f6f6c16923",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
