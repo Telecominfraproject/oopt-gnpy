@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c85d10e_9a60f120",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 33
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-25T09:58:39Z",
+      "side": 1,
+      "message": "I wrote these comments on Feb 22, but I forgot to push \"reply\" :(. Sorry.",
+      "revId": "4ad973831b02b43909680f93726a45135bc823e9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e75342fa_35f991e4",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 33
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-25T09:58:39Z",
+      "side": 1,
+      "message": "why not just throw an exception?",
+      "range": {
+        "startLine": 397,
+        "startChar": 0,
+        "endLine": 403,
+        "endChar": 26
+      },
+      "revId": "4ad973831b02b43909680f93726a45135bc823e9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}

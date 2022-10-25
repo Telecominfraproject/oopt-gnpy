@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7d241ef_e498f277",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-25T09:58:39Z",
+      "side": 1,
+      "message": "This function looks like something which parses a Python dict that corresponds to the existing early-IETF-draft JSON format we currently use for request handling, so it probably belongs to json_io.py.\n\nThe name should probably reflect that it\u0027s for parsing some input-format-specific data into a SpectralInfo structure.",
+      "range": {
+        "startLine": 285,
+        "startChar": 4,
+        "endLine": 285,
+        "endChar": 24
+      },
+      "revId": "93feb95cc1771b01e9adfab9291222d9914714b6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fef30676_53a5e767",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-25T09:58:39Z",
+      "side": 1,
+      "message": "please add type info for these",
+      "range": {
+        "startLine": 285,
+        "startChar": 25,
+        "endLine": 285,
+        "endChar": 54
+      },
+      "revId": "93feb95cc1771b01e9adfab9291222d9914714b6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e64eb414_7cf1ee5c",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-25T09:58:39Z",
+      "side": 1,
+      "message": "there\u0027s no `ref_power` argument",
+      "range": {
+        "startLine": 287,
+        "startChar": 44,
+        "endLine": 287,
+        "endChar": 116
+      },
+      "revId": "93feb95cc1771b01e9adfab9291222d9914714b6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
