@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c28ef246_d30a3e3f",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-25T16:02:37Z",
+      "side": 1,
+      "message": "This function does not directly reads the json file. there will be a spectrum_from_json function in json_io that will read that. This just translate the data into SI similar to create_input_spectral_information.\n\nI have tried to move it but I have circular dependency of imports when I move the function to json_io  (requests then need to import json_io, but json_io already imports some functions of requests). I have solved importing the whole json_io in requests, but this does not seem enough... Is this change really necessary ?",
+      "parentUuid": "f7d241ef_e498f277",
+      "range": {
+        "startLine": 285,
+        "startChar": 4,
+        "endLine": 285,
+        "endChar": 24
+      },
+      "revId": "93feb95cc1771b01e9adfab9291222d9914714b6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e64eb414_7cf1ee5c",
         "filename": "gnpy/core/info.py",
         "patchSetId": 21
