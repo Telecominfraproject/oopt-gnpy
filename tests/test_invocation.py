@@ -28,6 +28,12 @@ SRC_ROOT = Path(__file__).parent.parent
      ['--spectrum', 'gnpy/example-data/initial_spectrum2.json', 'gnpy/example-data/meshTopologyExampleV2.xls', '--show-channels', ]),
     ('power_sweep_example', transmission_main_example,
      ['tests/data/testTopology_expected.json', 'brest', 'rennes', '-e', 'tests/data/eqpt_config_sweep.json', '--pow', '3']),
+    ('transmission_long_pow', transmission_main_example,
+     ['-e', 'tests/data/eqpt_config.json', 'tests/data/test_long_network.json','--spectrum', 'gnpy/example-data/initial_spectrum2.json']),
+    ('transmission_long_psd', transmission_main_example,
+     ['-e', 'tests/data/eqpt_config_psd.json', 'tests/data/test_long_network.json', '--spectrum', 'gnpy/example-data/initial_spectrum2.json', ]),
+    ('transmission_long_psw', transmission_main_example,
+     ['-e', 'tests/data/eqpt_config_psw.json', 'tests/data/test_long_network.json', '--spectrum', 'gnpy/example-data/initial_spectrum2.json', ]),
     ))
 
 

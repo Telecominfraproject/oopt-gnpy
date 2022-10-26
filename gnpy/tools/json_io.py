@@ -108,6 +108,7 @@ class Roadm(_JsonThing):
         # If equalization is not defined in equipment, then raise an error.
         # else use the one defined in equipment. Only one type of equalization
         # must be defined: power (target_pch_out_db) or PSD (target_psd_out_mWperGHz)
+
         equalisation_type = ['target_pch_out_db', 'target_psd_out_mWperGHz', 'target_out_mWperSlotWidth']
         temp = [k in kwargs for k in equalisation_type]
         if sum(temp) > 1:
