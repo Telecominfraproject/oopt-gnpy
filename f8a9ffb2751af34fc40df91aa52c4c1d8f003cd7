@@ -16,6 +16,24 @@
       "message": "nit: unrelated change",
       "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7a993ea_75f9d874",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-26T10:06:44Z",
+      "side": 0,
+      "message": "removed this change",
+      "parentUuid": "d6d57d48_b0c4303b",
+      "revId": "f8a9ffb2751af34fc40df91aa52c4c1d8f003cd7",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }

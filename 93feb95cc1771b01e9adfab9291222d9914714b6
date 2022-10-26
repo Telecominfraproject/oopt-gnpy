@@ -97,6 +97,54 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "62bd7d30_45be66b6",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-26T10:06:44Z",
+      "side": 1,
+      "message": "\u0027The name should probably reflect that it\u0027s for parsing some input-format-specific data into a SpectralInfo structure.\u0027\n- \u003e I have changed the name to reflect this",
+      "parentUuid": "f44ce113_8330d597",
+      "range": {
+        "startLine": 285,
+        "startChar": 4,
+        "endLine": 285,
+        "endChar": 24
+      },
+      "revId": "93feb95cc1771b01e9adfab9291222d9914714b6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c484ef9d_4cbbaa74",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-26T10:06:44Z",
+      "side": 1,
+      "message": "I added a detailed definition for the Type. Did not spend time on carrier as it will be removed in coming commits",
+      "parentUuid": "fef30676_53a5e767",
+      "range": {
+        "startLine": 285,
+        "startChar": 25,
+        "endLine": 285,
+        "endChar": 54
+      },
+      "revId": "93feb95cc1771b01e9adfab9291222d9914714b6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e64eb414_7cf1ee5c",
         "filename": "gnpy/core/info.py",
         "patchSetId": 21
@@ -108,6 +156,30 @@
       "writtenOn": "2022-10-25T09:58:39Z",
       "side": 1,
       "message": "there\u0027s no `ref_power` argument",
+      "range": {
+        "startLine": 287,
+        "startChar": 44,
+        "endLine": 287,
+        "endChar": 116
+      },
+      "revId": "93feb95cc1771b01e9adfab9291222d9914714b6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d13136e6_0a0c0105",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-26T10:06:44Z",
+      "side": 1,
+      "message": "Corrected the docstring",
+      "parentUuid": "e64eb414_7cf1ee5c",
       "range": {
         "startLine": 287,
         "startChar": 44,
