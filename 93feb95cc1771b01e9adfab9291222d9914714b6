@@ -143,6 +143,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31b49e06_6d591b84",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-27T23:55:37Z",
+      "side": 1,
+      "message": "Since only `req_power` is used, let\u0027s save the indirection of going via a dict, and instead use a raw parameter for this. I\u0027ll move this comment to a proper place in the new code (Gerrit shows that in a weird way if it\u0027s a comment about removed code).",
+      "parentUuid": "62bd7d30_45be66b6",
+      "range": {
+        "startLine": 285,
+        "startChar": 4,
+        "endLine": 285,
+        "endChar": 24
+      },
+      "revId": "93feb95cc1771b01e9adfab9291222d9914714b6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e64eb414_7cf1ee5c",

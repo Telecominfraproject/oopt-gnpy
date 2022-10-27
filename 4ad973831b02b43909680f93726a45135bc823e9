@@ -63,6 +63,30 @@
       },
       "revId": "4ad973831b02b43909680f93726a45135bc823e9",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d904daa2_3256f699",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 33
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-27T23:55:37Z",
+      "side": 1,
+      "message": "let\u0027s simplify this even more, remove the ANSI color escapes and stick with plain text, please",
+      "parentUuid": "761b8a1e_234f5251",
+      "range": {
+        "startLine": 397,
+        "startChar": 0,
+        "endLine": 403,
+        "endChar": 26
+      },
+      "revId": "4ad973831b02b43909680f93726a45135bc823e9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }

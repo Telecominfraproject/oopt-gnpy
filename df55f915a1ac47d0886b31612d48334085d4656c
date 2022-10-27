@@ -1,0 +1,160 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bb5f10f_7c66c4aa",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-27T23:55:37Z",
+      "side": 1,
+      "message": "\u003e linters-diff-ci: N801 class name \u0027carrier\u0027 should use CapWords convention\n\nLet\u0027s stick with that convention and rename this to Carrier. Also, this needs a docstring which (briefly) clarifies what it\u0027s for, and also docs for the non-obvious members (`delta_pdb` in particular is something that\u0027s GNPy-specific, and therefore it needs docs).",
+      "parentUuid": "25862bb5_c3c321b9",
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e878c04_cd6cd443",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-27T23:55:37Z",
+      "side": 1,
+      "message": "Thanks for adding the type annotations! I took some time to look into the implementation, at it looks to me that this is just a type annotation, though, and that at runtime this thing is just an ordinary `dict`. I would prefer to use the [`@dataclass`](https://docs.python.org/3/library/dataclasses.html) construct for this. I think that using the dict syntax (`foo[\"something\"]`) is a bit too verbose, comparing to the usual attribute access (`foo.something`).\n\nTo be honest, I think the current situation in Python with this \"simple struct\" problem is a mess :). There\u0027s `NamedTuple`, `attrs`,... Oh well :). I think that we should pick something and use that throughout GNPy, but that\u0027s outside the scope of this patch. But since this is new code (and I\u0027m requesting other changes anyway), I wanted to ask about your opinion.\n\n-\u003e do you think that there\u0027s something that\u0027s better than `@dataclass`, or should we stick with that?",
+      "range": {
+        "startLine": 297,
+        "startChar": 14,
+        "endLine": 297,
+        "endChar": 23
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a684f718_52710b44",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-27T23:55:37Z",
+      "side": 1,
+      "message": "nit: perhaps something more succinct, like `carriers_to_spectral_information`?",
+      "range": {
+        "startLine": 304,
+        "startChar": 4,
+        "endLine": 304,
+        "endChar": 47
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd23391c_5f57a5ec",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-27T23:55:37Z",
+      "side": 1,
+      "message": "Since this function doesn\u0027t use any other data from `ref_carrier` but `ref_carrier[\u0027req_power\u0027]`, let\u0027s use a simple parameter (just a number) for representing that: `requested_power` looks like a reasonable choice to me.\n\nAlternatively, if that\u0027s not what is desirable (perhaps due to some future patches in this series when additional data are needed), ensure that `ref_carrier` is a full-blown `Carrier` instance -- but not a naked `dict`, please.",
+      "range": {
+        "startLine": 305,
+        "startChar": 48,
+        "endLine": 305,
+        "endChar": 65
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06f07fe6_88615171",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-27T23:55:37Z",
+      "side": 1,
+      "message": "nit: please use the `:param initial_spectrum: indexed by frequency in Hz` syntax\n\nAlso, I\u0027m just assuming that it\u0027s in Hz; if that\u0027s the case, why a `float`?",
+      "range": {
+        "startLine": 306,
+        "startChar": 4,
+        "endLine": 309,
+        "endChar": 7
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7449db25_b85ee322",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-27T23:55:37Z",
+      "side": 1,
+      "message": "nit: I think that the `initial_spectrum` holds a list of *carriers*, so I would prefer to call it `c` or something like that",
+      "range": {
+        "startLine": 311,
+        "startChar": 68,
+        "endLine": 311,
+        "endChar": 69
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e21fc98_d9ef8a2c",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-27T23:55:37Z",
+      "side": 1,
+      "message": "nit: all other parameters use an `Iterable`, but this one is a `numpy.array`; any reason for that?",
+      "range": {
+        "startLine": 314,
+        "startChar": 28,
+        "endLine": 314,
+        "endChar": 33
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
