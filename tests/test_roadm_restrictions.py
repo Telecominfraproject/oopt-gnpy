@@ -361,7 +361,7 @@ def list_element_attr(element):
         return ['target_pch_out_db', 'target_psd_out_mWperGHz', 'per_degree_pch_out_db', 'per_degree_pch_psd',
                 'add_drop_osnr', 'pmd', 'restrictions']
     if isinstance(element, Edfa):
-        return ['variety_list', 'uid', 'name', 'params', 'metadata', 'operational',
+        return ['uid', 'name', 'params', 'metadata', 'operational',
                 'passive', 'effective_gain', 'delta_p', 'tilt_target', 'out_voa']
         # TODO this exhaustive test highlighted that type_variety is not correctly updated from EdfaParams to
         # attributes in preamps
