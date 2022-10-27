@@ -330,9 +330,7 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
                     raman_allowed = False
 
                 if node.params.type_variety == '':
-                    if node.variety_list and isinstance(node.variety_list, list):
-                        restrictions = node.variety_list
-                    elif isinstance(prev_node, elements.Roadm) and prev_node.restrictions['booster_variety_list']:
+                    if isinstance(prev_node, elements.Roadm) and prev_node.restrictions['booster_variety_list']:
                         # implementation of restrictions on roadm boosters
                         restrictions = prev_node.restrictions['booster_variety_list']
                     elif isinstance(next_node, elements.Roadm) and next_node.restrictions['preamp_variety_list']:
