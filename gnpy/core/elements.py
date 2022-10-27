@@ -653,7 +653,6 @@ class Edfa(_Node):
             params = {}
         if operational is None:
             operational = {}
-        self.variety_list = kwargs.pop('variety_list', None)
         super().__init__(*args, params=EdfaParams(**params), operational=EdfaOperational(**operational), **kwargs)
         self.interpol_dgt = None  # interpolated dynamic gain tilt
         self.interpol_gain_ripple = None  # gain ripple
