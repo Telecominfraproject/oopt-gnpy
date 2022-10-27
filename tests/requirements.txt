@@ -1,4 +1,4 @@
-pytest>=6.2.5,<7
+pytest>=7.2.0,<8
 
 # https://github.com/PyCQA/flake8/issues/1638
 # https://github.com/lordmauve/flake8-html/issues/30
