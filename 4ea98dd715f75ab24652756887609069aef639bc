@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "115fb48d_b714c497",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-28T16:54:22Z",
+      "side": 1,
+      "message": "You can see later on (https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/507044/54) that for the initial spectrum definition, we decided to work this way. I think this change is needed because of consistency. Anyhow user were already confused with current f_min behaviour: they expect f_min being part of the simulation, and it adds additional headache to compute f_min with spacing to be sure that the intended f_min is used. I think this is something  Jonas suggested and I finally agreed that it is better.\nOK : \n- for the comm, you could add that in the release note\n- I have added an explaination in the doc",
+      "parentUuid": "c81cf92d_ab0feba9",
+      "revId": "4ea98dd715f75ab24652756887609069aef639bc",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5f05b9f7_e6ca7ad7",
         "filename": "gnpy/core/utils.py",
         "patchSetId": 10
