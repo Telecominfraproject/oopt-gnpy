@@ -35,7 +35,8 @@ LOGGER = getLogger(__name__)
 RequestParams = namedtuple('RequestParams', 'request_id source destination bidir trx_type'
                            ' trx_mode nodes_list loose_list spacing power nb_channel f_min'
                            ' f_max format baud_rate OSNR penalties bit_rate'
-                           ' roll_off tx_osnr min_spacing cost path_bandwidth effective_freq_slot')
+                           ' roll_off tx_osnr min_spacing cost path_bandwidth effective_freq_slot'
+                           ' equalization_offset_db')
 DisjunctionParams = namedtuple('DisjunctionParams', 'disjunction_id relaxable link_diverse'
                                ' node_diverse disjunctions_req')
 
@@ -43,7 +44,6 @@ DisjunctionParams = namedtuple('DisjunctionParams', 'disjunction_id relaxable li
 class PathRequest:
     """ the class that contains all attributes related to a request
     """
-
     def __init__(self, *args, **params):
         params = RequestParams(**params)
         self.request_id = params.request_id
@@ -73,6 +73,7 @@ class PathRequest:
             self.N = params.effective_freq_slot['N']
             self.M = params.effective_freq_slot['M']
         self.initial_spectrum = None
+        self.offset_db = params.equalization_offset_db
 
     def __str__(self):
         return '\n\t'.join([f'{type(self).__name__} {self.request_id}',
@@ -358,7 +359,8 @@ def propagate(path, req, equipment):
     else:
         si = create_input_spectral_information(
             f_min=req.f_min, f_max=req.f_max, roll_off=req.roll_off, baud_rate=req.baud_rate,
-            power=req.power, spacing=req.spacing, tx_osnr=req.tx_osnr, ref_carrier=ref_carrier(equipment))
+            power=req.power, spacing=req.spacing, tx_osnr=req.tx_osnr, delta_pdb=req.offset_db,
+            ref_carrier=ref_carrier(equipment))
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
             si = el(si, degree=path[i+1].uid)
@@ -376,20 +378,21 @@ def propagate(path, req, equipment):
 
 def propagate_and_optimize_mode(path, req, equipment):
     # if mode is unknown : loops on the modes starting from the highest baudrate fiting in the
-    # step 1: create an ordered list of modes based on baudrate
-    baudrate_to_explore = list(set([this_mode['baud_rate']
-                                    for this_mode in equipment['Transceiver'][req.tsp].mode
-                                    if float(this_mode['min_spacing']) <= req.spacing]))
+    # step 1: create an ordered list of modes based on baudrate and power offset
+    # order higher baudrate with higher power offset first
+    baudrate_offset_to_explore = list(set([(this_mode['baud_rate'], this_mode['equalization_offset_db'])
+                                           for this_mode in equipment['Transceiver'][req.tsp].mode
+                                           if float(this_mode['min_spacing']) <= req.spacing]))
     # TODO be carefull on limits cases if spacing very close to req spacing eg 50.001 50.000
-    baudrate_to_explore = sorted(baudrate_to_explore, reverse=True)
-    if baudrate_to_explore:
+    baudrate_offset_to_explore = sorted(baudrate_offset_to_explore, reverse=True)
+    if baudrate_offset_to_explore:
         # at least 1 baudrate can be tested wrt spacing
-        for this_br in baudrate_to_explore:
+        for (this_br, this_offset) in baudrate_offset_to_explore:
             modes_to_explore = [this_mode for this_mode in equipment['Transceiver'][req.tsp].mode
-                                if this_mode['baud_rate'] == this_br and
-                                float(this_mode['min_spacing']) <= req.spacing]
+                                if this_mode['baud_rate'] == this_br
+                                and float(this_mode['min_spacing']) <= req.spacing]
             modes_to_explore = sorted(modes_to_explore,
-                                      key=lambda x: x['bit_rate'], reverse=True)
+                                      key=lambda x: (x['bit_rate'], x['equalization_offset_db']), reverse=True)
             # step2: computes propagation for each baudrate: stop and select the first that passes
             # TODO: the case of roll off is not included: for now use SI one
             # TODO: if the loop in mode optimization does not have a feasible path, then bugs
@@ -401,6 +404,7 @@ def propagate_and_optimize_mode(path, req, equipment):
             spc_info = create_input_spectral_information(f_min=req.f_min, f_max=req.f_max,
                                                          roll_off=equipment['SI']['default'].roll_off,
                                                          baud_rate=this_br, power=req.power, spacing=req.spacing,
+                                                         delta_pdb=this_offset,
                                                          tx_osnr=req.tx_osnr, ref_carrier=ref_carrier(equipment))
             for i, el in enumerate(path):
                 if isinstance(el, Roadm):

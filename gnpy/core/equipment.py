@@ -33,6 +33,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
                                            + f' mode "{trx_params["format"]}" has baud rate'
                                            + f' {trx_params["baud_rate"] * 1e-9:.3f} GHz greater than min_spacing'
                                            + f' {trx_params["min_spacing"] * 1e-9:.3f}.')
+            trx_params['equalization_offset_db'] = trx_params.get('equalization_offset_db', 0)
         else:
             mode_params = {"format": "undetermined",
                            "baud_rate": None,
@@ -42,7 +43,8 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
                            "roll_off": None,
                            "tx_osnr": None,
                            "min_spacing": None,
-                           "cost": None}
+                           "cost": None,
+                           "equalization_offset_db": 0}
             trx_params = {**mode_params}
         trx_params['f_min'] = equipment['Transceiver'][trx_type_variety].frequency['min']
         trx_params['f_max'] = equipment['Transceiver'][trx_type_variety].frequency['max']
@@ -68,6 +70,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             trx_params['roll_off'] = default_si_data.roll_off
             trx_params['tx_osnr'] = default_si_data.tx_osnr
             trx_params['min_spacing'] = None
+            trx_params['equalization_offset_db'] = 0
 
     trx_params['power'] = db2lin(default_si_data.power_dbm) * 1e-3
 

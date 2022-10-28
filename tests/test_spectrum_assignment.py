@@ -295,7 +295,8 @@ def request_set():
         'min_spacing': 37.5e9,
         'nb_channel': None,
         'power': 0,
-        'path_bandwidth': 800e9}
+        'path_bandwidth': 800e9,
+        'equalization_offset_db': 0}
 
 
 def test_freq_slot_exist(setup, equipment, request_set):
