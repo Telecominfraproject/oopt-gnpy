@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94c30c23_b7b2c222",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-28T16:52:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5ad283ed_48bc9a87",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 59
+      },
+      "revId": "5827aa92891da522930700e33f9cb4499559a777",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e372fe31_3530e3f9",
@@ -47,6 +71,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5582bdae_daae3f9b",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-28T16:52:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e372fe31_3530e3f9",
+      "range": {
+        "startLine": 321,
+        "startChar": 39,
+        "endLine": 321,
+        "endChar": 46
+      },
+      "revId": "5827aa92891da522930700e33f9cb4499559a777",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2f8d85e_6b068f57",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-10-28T00:11:33Z",
       "side": 1,
       "message": "nit: unrelated change?",
+      "range": {
+        "startLine": 395,
+        "startChar": 1,
+        "endLine": 395,
+        "endChar": 76
+      },
+      "revId": "5827aa92891da522930700e33f9cb4499559a777",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e428767_9e4a41de",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-28T16:52:41Z",
+      "side": 1,
+      "message": "Yes, but I don\u0027t want to forget.",
+      "parentUuid": "e2f8d85e_6b068f57",
       "range": {
         "startLine": 395,
         "startChar": 1,
