@@ -59,6 +59,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "061093f3_5b58529e",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-28T17:48:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f05b9f7_e6ca7ad7",
+      "range": {
+        "startLine": 339,
+        "startChar": 0,
+        "endLine": 340,
+        "endChar": 39
+      },
+      "revId": "4ea98dd715f75ab24652756887609069aef639bc",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f7a7fab_b870b0f7",
@@ -82,6 +106,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aeb4ca90_88f0d4d0",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-28T17:48:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f7a7fab_b870b0f7",
+      "range": {
+        "startLine": 355,
+        "startChar": 57,
+        "endLine": 355,
+        "endChar": 61
+      },
+      "revId": "4ea98dd715f75ab24652756887609069aef639bc",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7bde4c1f_4086a778",
@@ -95,6 +143,24 @@
       "writtenOn": "2022-10-28T00:38:05Z",
       "side": 1,
       "message": "nit: unrelated change, but I think the `print` statement can be removed anyway",
+      "revId": "4ea98dd715f75ab24652756887609069aef639bc",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3703c43_44235d99",
+        "filename": "tests/test_parser.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-28T17:48:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bde4c1f_4086a778",
       "revId": "4ea98dd715f75ab24652756887609069aef639bc",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
