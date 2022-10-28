@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56cdf1c2_66527a3e",
+        "filename": "tests/data/test_long_network.json",
+        "patchSetId": 36
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-28T00:26:05Z",
+      "side": 1,
+      "message": "nit: please remove the trailing whitespace (or tell me and I\u0027ll do that)",
+      "range": {
+        "startLine": 30,
+        "startChar": 46,
+        "endLine": 30,
+        "endChar": 58
+      },
+      "revId": "2bba8ab87271aa0a4f1730daac8fb6528b4f4a65",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
