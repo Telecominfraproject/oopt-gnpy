@@ -18,6 +18,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44f2bd09_7333f79b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 36
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-28T16:00:45Z",
+      "side": 1,
+      "message": "baud rate of the reference channel is required because of the on the fly evaluation of loss for p_span_i and for visualization purpose.\nonce p_span_i removed, it is only required to show the target powers and the loss for the reference channel in the prints.",
+      "parentUuid": "1e30dca0_3a1fdbaf",
+      "revId": "53ec76d3eeec8bd7b83ef565807ee6eeba557b3d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77177a44_f1296f3e",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-10-28T00:25:03Z",
       "side": 1,
       "message": "I\u0027m confused -- the `gnpy.topology.request.ref_carrier` function got modified in this patch, and the result doesn\u0027t have its power set anymore. This needs adjustment, either in this comment or in that function\u0027s code, and also an explanation in the commit message.",
+      "revId": "53ec76d3eeec8bd7b83ef565807ee6eeba557b3d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d707418e_407a41e2",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 36
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-28T16:00:45Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "77177a44_f1296f3e",
       "revId": "53ec76d3eeec8bd7b83ef565807ee6eeba557b3d",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
