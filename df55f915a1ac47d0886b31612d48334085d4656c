@@ -42,6 +42,48 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "351a5939_0296f05a",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-28T15:52:46Z",
+      "side": 1,
+      "message": "I have no preference. Let s use the foo.something if you prefer.\nI have done that but I had to move it to utils, to avoid circular dependency when I use it in json_io to load spectrum later on",
+      "parentUuid": "8e878c04_cd6cd443",
+      "range": {
+        "startLine": 297,
+        "startChar": 14,
+        "endLine": 297,
+        "endChar": 23
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "222cbac1_6940ed6c",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-28T15:52:46Z",
+      "side": 1,
+      "message": "I have added comment in the code.\n\nI will add some docs in a separate commit (towards the end, after I have introduced all parameters)",
+      "parentUuid": "9bb5f10f_7c66c4aa",
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a684f718_52710b44",
@@ -55,6 +97,30 @@
       "writtenOn": "2022-10-27T23:55:37Z",
       "side": 1,
       "message": "nit: perhaps something more succinct, like `carriers_to_spectral_information`?",
+      "range": {
+        "startLine": 304,
+        "startChar": 4,
+        "endLine": 304,
+        "endChar": 47
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "657d00ba_e5c99096",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-28T15:52:46Z",
+      "side": 1,
+      "message": "LOL... I am really not good at giving names",
+      "parentUuid": "a684f718_52710b44",
       "range": {
         "startLine": 304,
         "startChar": 4,
@@ -88,6 +154,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a70bd17c_72c7a1ca",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-28T15:52:46Z",
+      "side": 1,
+      "message": "Well, in the next commits https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/545175/5/gnpy/core/network.py#401 ref_carrier will be only an attribute in ROADMs and disappear from info.\nBut OK let\u0027s add a special type for this, since it can not be a Carrier (no delta_pdb)",
+      "parentUuid": "dd23391c_5f57a5ec",
+      "range": {
+        "startLine": 305,
+        "startChar": 48,
+        "endLine": 305,
+        "endChar": 65
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06f07fe6_88615171",
@@ -101,6 +191,30 @@
       "writtenOn": "2022-10-27T23:55:37Z",
       "side": 1,
       "message": "nit: please use the `:param initial_spectrum: indexed by frequency in Hz` syntax\n\nAlso, I\u0027m just assuming that it\u0027s in Hz; if that\u0027s the case, why a `float`?",
+      "range": {
+        "startLine": 306,
+        "startChar": 4,
+        "endLine": 309,
+        "endChar": 7
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "283e1886_20955f9c",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-28T15:52:46Z",
+      "side": 1,
+      "message": "oh ! right integer is sufficient. I have put Union[int, float] to be consistent with other definitions",
+      "parentUuid": "06f07fe6_88615171",
       "range": {
         "startLine": 306,
         "startChar": 4,
@@ -134,6 +248,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2411302c_22a81f2e",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-28T15:52:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7449db25_b85ee322",
+      "range": {
+        "startLine": 311,
+        "startChar": 68,
+        "endLine": 311,
+        "endChar": 69
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e21fc98_d9ef8a2c",
@@ -157,6 +295,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b611acee_f70ca7bc",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-28T15:52:46Z",
+      "side": 1,
+      "message": "Yes, this is the only one I will need to do arithmetic operation later on.",
+      "parentUuid": "0e21fc98_d9ef8a2c",
+      "range": {
+        "startLine": 314,
+        "startChar": 28,
+        "endLine": 314,
+        "endChar": 33
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4311144_08187646",
@@ -170,6 +332,24 @@
       "writtenOn": "2022-10-28T00:17:31Z",
       "side": 1,
       "message": "Should this return an instance of the newly added `gnpy.core.info.carrier`?",
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac42bf81_f0d76a7d",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-10-28T15:52:46Z",
+      "side": 1,
+      "message": "No, it only returns some of the attributes of reference channel used for design, only those attributes that are  needed for equalization purpose. for example deltap_db is not part of the reference , and tx_osnr will never be usefull for this.  I would prefer not to use the type Carrier for this.",
+      "parentUuid": "e4311144_08187646",
       "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
