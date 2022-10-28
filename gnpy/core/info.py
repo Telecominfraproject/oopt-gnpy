@@ -307,14 +307,15 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, fl
             raise
 
 
-def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing, tx_osnr, ref_carrier=None):
+def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing, tx_osnr, delta_pdb=0,
+                                      ref_carrier=None):
     """Creates a fixed slot width spectral information with flat power.
     all arguments are scalar values"""
     number_of_channels = automatic_nch(f_min, f_max, spacing)
     frequency = [(f_min + spacing * i) for i in range(1, number_of_channels + 1)]
     p_span0 = watt2dbm(power)
     p_spani = watt2dbm(power)
-    delta_pdb_per_channel = zeros(number_of_channels)
+    delta_pdb_per_channel = delta_pdb * ones(number_of_channels)
     label = [f'{baud_rate * 1e-9 :.2f}G' for i in range(number_of_channels)]
     return create_arbitrary_spectral_information(frequency, slot_width=spacing, signal=power, baud_rate=baud_rate,
                                                  roll_off=roll_off, delta_pdb_per_channel=delta_pdb_per_channel,
