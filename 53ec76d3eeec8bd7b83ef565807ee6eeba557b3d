@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e30dca0_3a1fdbaf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 36
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-28T00:25:03Z",
+      "side": 1,
+      "message": "Can you please adjust the commit message so that it says what the \"reference channel\" is needed for? I understand it\u0027s required by the subsequent patches, but it will make it easier to reason about this change.",
+      "revId": "53ec76d3eeec8bd7b83ef565807ee6eeba557b3d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77177a44_f1296f3e",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 36
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-28T00:25:03Z",
+      "side": 1,
+      "message": "I\u0027m confused -- the `gnpy.topology.request.ref_carrier` function got modified in this patch, and the result doesn\u0027t have its power set anymore. This needs adjustment, either in this comment or in that function\u0027s code, and also an explanation in the commit message.",
+      "revId": "53ec76d3eeec8bd7b83ef565807ee6eeba557b3d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
