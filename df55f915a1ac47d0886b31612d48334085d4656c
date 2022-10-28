@@ -155,6 +155,23 @@
       },
       "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4311144_08187646",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-28T00:17:31Z",
+      "side": 1,
+      "message": "Should this return an instance of the newly added `gnpy.core.info.carrier`?",
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
