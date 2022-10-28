@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c81cf92d_ab0feba9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-28T00:38:05Z",
+      "side": 1,
+      "message": "I don\u0027t recall discussing this, but perhaps it\u0027s my fading memory.\n\nThis is a user-visible change of behavior, and it must be (as a minimum) well-documented (which means that this change should modify `docs/json.rst`) and clearly communicated. Since we\u0027ll be changing the IO format very soon anyway (YANG), should we maybe only change the internal code, but preserve the current, non-intuitive `f_min + spacing` for the legacy JSON, and only change the IO format for the YANG-based inputs?",
+      "revId": "4ea98dd715f75ab24652756887609069aef639bc",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f05b9f7_e6ca7ad7",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-28T00:38:05Z",
+      "side": 1,
+      "message": "please update the docstring so that it says lowest/highest *central* frequency. The current wording can be well interpreted as actual passband boundaries, and indeed that\u0027s what the example output below is checking. These examples should be changed so that they are aligned at the usual 50GHz grid, IMHO (it\u0027s OK to add exotic channels, but I think it\u0027s important to also test for the usual case).",
+      "range": {
+        "startLine": 339,
+        "startChar": 0,
+        "endLine": 340,
+        "endChar": 39
+      },
+      "revId": "4ea98dd715f75ab24652756887609069aef639bc",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f7a7fab_b870b0f7",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-28T00:38:05Z",
+      "side": 1,
+      "message": "this probably needs changing, right?",
+      "range": {
+        "startLine": 355,
+        "startChar": 57,
+        "endLine": 355,
+        "endChar": 61
+      },
+      "revId": "4ea98dd715f75ab24652756887609069aef639bc",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bde4c1f_4086a778",
+        "filename": "tests/test_parser.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-28T00:38:05Z",
+      "side": 1,
+      "message": "nit: unrelated change, but I think the `print` statement can be removed anyway",
+      "revId": "4ea98dd715f75ab24652756887609069aef639bc",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
