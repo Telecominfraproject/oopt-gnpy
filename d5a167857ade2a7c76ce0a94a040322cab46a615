@@ -45,6 +45,29 @@
       },
       "revId": "d5a167857ade2a7c76ce0a94a040322cab46a615",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cb6521e_089a01ff",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 31
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-28T00:03:36Z",
+      "side": 1,
+      "message": "Leading underscore is missing here -- assign to `self._delta_pdb_per_channel`.",
+      "range": {
+        "startLine": 178,
+        "startChar": 13,
+        "endLine": 178,
+        "endChar": 34
+      },
+      "revId": "d5a167857ade2a7c76ce0a94a040322cab46a615",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
