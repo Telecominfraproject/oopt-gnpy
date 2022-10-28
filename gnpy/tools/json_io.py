@@ -133,6 +133,7 @@ class Transceiver(_JsonThing):
         for mode_params in self.mode:
             penalties = mode_params.get('penalties')
             mode_params['penalties'] = {}
+            mode_params['equalization_offset_db'] = mode_params.get('equalization_offset_db', 0)
             if not penalties:
                 continue
             for impairment in ('chromatic_dispersion', 'pmd', 'pdl'):
@@ -574,7 +575,6 @@ def requests_from_json(json_data, equipment):
         # nb_channel is computed based on min max frequency and spacing
         trx_params = trx_mode_params(equipment, params['trx_type'], params['trx_mode'], True)
         params.update(trx_params)
-        # print(trx_params['min_spacing'])
         # optical power might be set differently in the request. if it is indicated then the
         # params['power'] is updated
         try:
