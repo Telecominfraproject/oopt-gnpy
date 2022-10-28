@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ad283ed_48bc9a87",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-28T00:11:33Z",
+      "side": 1,
+      "message": "nit: This is the most important part of the commit message because it explains \"why this change was made\", not \"what changes have been made\". I suggest to start the commit message by that because doing so makes the patch easier to review, IMHO.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 59
+      },
+      "revId": "5827aa92891da522930700e33f9cb4499559a777",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e372fe31_3530e3f9",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-28T00:11:33Z",
+      "side": 1,
+      "message": "nit: lowercase for consistency, please",
+      "range": {
+        "startLine": 321,
+        "startChar": 39,
+        "endLine": 321,
+        "endChar": 46
+      },
+      "revId": "5827aa92891da522930700e33f9cb4499559a777",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2f8d85e_6b068f57",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-28T00:11:33Z",
+      "side": 1,
+      "message": "nit: unrelated change?",
+      "range": {
+        "startLine": 395,
+        "startChar": 1,
+        "endLine": 395,
+        "endChar": 76
+      },
+      "revId": "5827aa92891da522930700e33f9cb4499559a777",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
