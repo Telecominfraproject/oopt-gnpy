@@ -106,15 +106,17 @@ class Roadm(_JsonThing):
         # if equalization is not defined in equipment, then use the default power equalization
         # target_pch_out_db -20 dBm. else use the one define in equipment. Only one type of equalization
         # must be defined: power (target_pch_out_db) or PSD (target_psd_out_mWperGHz)
-        if 'target_pch_out_db' not in kwargs and 'target_psd_out_mWperGHz' not in kwargs:
-            self.default_values['target_pch_out_db'] = -20
-        elif 'target_pch_out_db' in kwargs and 'target_psd_out_mWperGHz' not in kwargs:
-            self.default_values['target_pch_out_db'] = kwargs['target_pch_out_db']
-        elif 'target_pch_out_db' not in kwargs and 'target_psd_out_mWperGHz' in kwargs:
-            self.default_values['target_psd_out_mWperGHz'] = kwargs['target_psd_out_mWperGHz']
-        else:
+        equalisation_type = ['target_pch_out_db', 'target_psd_out_mWperGHz']
+        temp = [k in kwargs for k in equalisation_type]
+        if sum(temp) > 1:
             raise EquipmentConfigError('WARNING only one equalization type should be set in ROADM, found'
-                                       + '\n target_pch_out_db and target_psd_out_mWperGHz')
+                                       + '\n target_pch_out_db and target_psd_out_mWperGHz')           
+        for key in equalisation_type:
+            if key in kwargs:
+                setattr(self, key, kwargs[key])
+                break
+        if not any(temp):
+            setattr(self, 'target_pch_out_db', -20)
         self.update_attr(self.default_values, kwargs, 'Roadm')
 
 
