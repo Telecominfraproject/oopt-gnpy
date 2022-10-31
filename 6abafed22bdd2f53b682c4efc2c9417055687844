@@ -16,6 +16,75 @@
       "message": "Thanks for the review!",
       "revId": "6abafed22bdd2f53b682c4efc2c9417055687844",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61031b85_9cd35ec7",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 35
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T10:16:33Z",
+      "side": 1,
+      "message": "what about: `One channel in the initial mixed-rate spectrum definition`",
+      "range": {
+        "startLine": 395,
+        "startChar": 7,
+        "endLine": 395,
+        "endChar": 79
+      },
+      "revId": "6abafed22bdd2f53b682c4efc2c9417055687844",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94b970d0_0d7c443b",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 35
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T10:16:33Z",
+      "side": 1,
+      "message": "I would prefer to have this sentence as a docstring just for that particualar field, but I noticed a [weird pattern](https://stackoverflow.com/questions/51125415/how-do-i-document-a-constructor-for-a-class-using-python-dataclasses) in the generated docs when I try that. Resolving this might take some time, which is why I\u0027m leaving this comment; it won\u0027t block merging, but perhaps I\u0027ll be able to get this solved and propose a fix in time.",
+      "range": {
+        "startLine": 396,
+        "startChar": 4,
+        "endLine": 396,
+        "endChar": 33
+      },
+      "revId": "6abafed22bdd2f53b682c4efc2c9417055687844",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89568439_bc31883b",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 35
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T10:16:33Z",
+      "side": 1,
+      "message": "please explain what the \"reference carrier\" as a concept is; that\u0027s more important than saying that it\u0027s a data structure. E.g.:\n```\nReference channel is used during autodesign for FOO and BAR, and in ROADMs for BAZ. In typical scenarios, users would pick a 37.5 GBaud channel at 0dBm (the usual 200Gbps @ 50 GHz), which will neatly lead to the same PSD for 400 Gbps at XYZ GBaud at ABC dBm.\n```",
+      "range": {
+        "startLine": 406,
+        "startChar": 7,
+        "endLine": 406,
+        "endChar": 67
+      },
+      "revId": "6abafed22bdd2f53b682c4efc2c9417055687844",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }

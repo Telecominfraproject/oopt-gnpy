@@ -86,6 +86,48 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e5a89e41_1624aee2",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T10:16:33Z",
+      "side": 1,
+      "message": "I don\u0027t understand -- `gnpy.tools.json_io` is not imported from `gnpy.core.info`, and I think that this class belongs to `gnpy.core.info`. What was the error message + backtrace? I tried moving that myself, and the test suite passes (see the next PS that I\u0027ll be uploading shortly).",
+      "parentUuid": "351a5939_0296f05a",
+      "range": {
+        "startLine": 297,
+        "startChar": 14,
+        "endLine": 297,
+        "endChar": 23
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35f30e29_e95a618e",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T10:16:33Z",
+      "side": 1,
+      "message": "I prefer to have the code documented as it\u0027s being added; it makes it easier to reason about the code and perform the review. I see that the `delta_pdb` does have docs now, so there\u0027s nothing to change for this review point, but I still wanted to say that I much prefer code documented \"now\" over a code which only gets documented later 😊.",
+      "parentUuid": "222cbac1_6940ed6c",
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a684f718_52710b44",
         "filename": "gnpy/core/info.py",
         "patchSetId": 34
@@ -121,6 +163,30 @@
       "side": 1,
       "message": "LOL... I am really not good at giving names",
       "parentUuid": "a684f718_52710b44",
+      "range": {
+        "startLine": 304,
+        "startChar": 4,
+        "endLine": 304,
+        "endChar": 47
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6074c0c3_b95593b1",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T10:16:33Z",
+      "side": 1,
+      "message": "There are only three hard problems in SW engineering: naming, and off-by-one errors.",
+      "parentUuid": "657d00ba_e5c99096",
       "range": {
         "startLine": 304,
         "startChar": 4,
@@ -178,6 +244,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ce39743_ac80afd4",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T10:16:33Z",
+      "side": 1,
+      "message": "👍",
+      "parentUuid": "a70bd17c_72c7a1ca",
+      "range": {
+        "startLine": 305,
+        "startChar": 48,
+        "endLine": 305,
+        "endChar": 65
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06f07fe6_88615171",
@@ -215,6 +305,30 @@
       "side": 1,
       "message": "oh ! right integer is sufficient. I have put Union[int, float] to be consistent with other definitions",
       "parentUuid": "06f07fe6_88615171",
+      "range": {
+        "startLine": 306,
+        "startChar": 4,
+        "endLine": 309,
+        "endChar": 7
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d9ce1e6_7cd7ab20",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T10:16:33Z",
+      "side": 1,
+      "message": "Thanks. I had to look this up in the docs, but it turns out that just using `float` is [the correct way™ of doing this in Python](https://peps.python.org/pep-0484/#the-numeric-tower).",
+      "parentUuid": "283e1886_20955f9c",
       "range": {
         "startLine": 306,
         "startChar": 4,
@@ -321,6 +435,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "59482b80_95d1351e",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T10:16:33Z",
+      "side": 1,
+      "message": "I\u0027m confused -- there\u0027s no arithemtic in this function, and the result gets passed directly to `create_arbitrary_spectral_information()` whose type annotation for `delta_pdb_per_channel` says:\n```\ndelta_pdb_per_channel: Union[int, float, ndarray, Iterable] \u003d 0.,\n```\nSo either the type annotation is wrong, or the conversion to `numpy.array` is not needed. What happens when it gets removed? The test stuite still passes for me (see the next PS).",
+      "parentUuid": "b611acee_f70ca7bc",
+      "range": {
+        "startLine": 314,
+        "startChar": 28,
+        "endLine": 314,
+        "endChar": 33
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e4311144_08187646",
         "filename": "gnpy/topology/request.py",
         "patchSetId": 34
@@ -350,6 +488,24 @@
       "side": 1,
       "message": "No, it only returns some of the attributes of reference channel used for design, only those attributes that are  needed for equalization purpose. for example deltap_db is not part of the reference , and tx_osnr will never be usefull for this.  I would prefer not to use the type Carrier for this.",
       "parentUuid": "e4311144_08187646",
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "992d9219_7440a4f4",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T10:16:33Z",
+      "side": 1,
+      "message": "That makes sense, and I like that this uses a dedicated type now.",
+      "parentUuid": "ac42bf81_f0d76a7d",
       "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }

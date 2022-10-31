@@ -111,6 +111,30 @@
       },
       "revId": "4ad973831b02b43909680f93726a45135bc823e9",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "944f6eac_7e863a57",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 33
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T10:16:33Z",
+      "side": 1,
+      "message": "the code is logging the exception and raising it; that sounds redundant and that\u0027s what I had in mind when I suggested to just raise an exception (i.e., remove the logging)",
+      "parentUuid": "5fd1d89c_72002cc8",
+      "range": {
+        "startLine": 397,
+        "startChar": 0,
+        "endLine": 403,
+        "endChar": 26
+      },
+      "revId": "4ad973831b02b43909680f93726a45135bc823e9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
