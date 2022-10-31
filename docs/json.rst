@@ -44,7 +44,7 @@ For all amplifier models:
 | ``type_variety``       | (string)  | a unique name to ID the amplifier in the|
 |                        |           | JSON/Excel template topology input file |
 +------------------------+-----------+-----------------------------------------+
-| ``out_voa_auto``       | (boolean) | auto_design feature to optimize the     |
+| ``out_voa_auto``       | (boolean) | auto-design feature to optimize the     |
 |                        |           | amplifier output VOA. If true, output   |
 |                        |           | VOA is present and will be used to push |
 |                        |           | amplifier gain to its maximum, within   |
@@ -228,6 +228,10 @@ For amplifiers defined in the topology JSON input but whose ``gain = 0`` (placeh
 The file ``sim_params.json`` contains the tuning parameters used within both the ``gnpy.science_utils.RamanSolver`` and
 the ``gnpy.science_utils.NliSolver`` for the evaluation of the Raman profile and the NLI generation, respectively.
 
+If amplifiers don't have settings, auto-design also sets amplifiers gain, out_voa and target powers according to
+J. -L. Auge, V. Curri and E. Le Rouzic, Open Design for Multi-Vendor Optical Networks, OFC 2019, equation 4.
+See delta_power_range_db for more explaination.
+
 +---------------------------------------------+-----------+---------------------------------------------+
 | field                                       |   type    | description                                 |
 +=============================================+===========+=============================================+
@@ -288,23 +292,22 @@ Span configuration is not a list (which may change in later releases) and the us
 +-------------------------------------+-----------+---------------------------------------------+
 | field                               | type      | description                                 |
 +=====================================+===========+=============================================+
-| ``power_mode``                      | (boolean) | If false, gain mode. Auto-design sets       |
-|                                     |           | amplifier gain = preceding span loss,       |
-|                                     |           | unless the amplifier exists and its         |
-|                                     |           | gain > 0 in the topology input JSON.        |
-|                                     |           | If true, power mode (recommended for        |
-|                                     |           | auto-design and power sweep.)               |
-|                                     |           | Auto-design sets amplifier power            |
-|                                     |           | according to delta_power_range. If the      |
-|                                     |           | amplifier exists with gain > 0 in the       |
-|                                     |           | topology JSON input, then its gain is       |
-|                                     |           | translated into a power target/channel.     |
-|                                     |           | Moreover, when performing a power sweep     |
-|                                     |           | (see ``power_range_db`` in the SI           |
-|                                     |           | configuration library) the power sweep      |
-|                                     |           | is performed w/r/t this power target,       |
-|                                     |           | regardless of preceding amplifiers          |
-|                                     |           | power saturation/limitations.               |
+| ``power_mode``                      | (boolean) | If false, gain mode, ie only gain settings  |
+|                                     |           | are used for propagation (delta_p ignored). |
+|                                     |           | If no gain_target is set in an amplifier,   |
+|                                     |           | auto-design computes one according to       |
+|                                     |           | delta_power_range optimisation range. Gain  |
+|                                     |           | mode is recommended if all the amplifiers   |
+|                                     |           | have already consistent gain settings in    |
+|                                     |           | the topology input JSON.                    |
+|                                     |           |                                             |
+|                                     |           | If true, power mode ie only use delta_p     |
+|                                     |           | settings for propagation (gain_target       |
+|                                     |           | ignored and recomputed). Recommended for    |
+|                                     |           | auto-design and power sweep. if no delta_p  |
+|                                     |           | is set,                                     |
+|                                     |           | auto-design sets an amplifier power target  |
+|                                     |           | according to delta_power_range_db.          |
 +-------------------------------------+-----------+---------------------------------------------+
 | ``delta_power_range_db``            | (number)  | Auto-design only, power-mode                |
 |                                     |           | only. Specifies the [min, max, step]        |
@@ -435,23 +438,39 @@ Spectral Information).
 +----------------------+-----------+-------------------------------------------+
 | ``tx_osnr``          | (number)  | In dB. OSNR out from transponder.         |
 +----------------------+-----------+-------------------------------------------+
-| ``power_dbm``        | (number)  | Reference channel power. In gain mode     |
-|                      |           | (see spans/power_mode = false), all gain  |
-|                      |           | settings are offset w/r/t this reference  |
-|                      |           | power. In power mode, it is the           |
-|                      |           | reference power for                       |
+| ``power_dbm``        | (number)  | Reference channel power in dBm. In gain   |
+|                      |           | mode                                      |
+|                      |           | (see spans/power_mode = false), if no     |
+|                      |           | gain are set in amplifier, auto-design    |
+|                      |           | sets gain to meet this reference          |
+|                      |           | power. If amplifiers gain is set,         |
+|                      |           | power_dbm is                              |
+|                      |           | ignored. In power mode, it is the         |
+|                      |           | reference power for delta_p settings in   |
+|                      |           | amplifiers. It is also the reference for  |
+|                      |           | auto-design power optimisation range      |
 |                      |           | Spans/delta_power_range_db. For example,  |
 |                      |           | if delta_power_range_db = `[0,0,0]`, the  |
 |                      |           | same power=power_dbm is launched in every |
 |                      |           | spans. The network design is performed    |
 |                      |           | with the power_dbm value: even if a       |
 |                      |           | power sweep is defined (see after) the    |
-|                      |           | design is not repeated.                   |
+|                      |           | design is not repeated. Note that the     |
+|                      |           | -pow option replaces this value.          |
 +----------------------+-----------+-------------------------------------------+
 | ``power_range_db``   | (number)  | Power sweep excursion around power_dbm.   |
-|                      |           | It is not the min and max channel power   |
-|                      |           | values! The reference power becomes:      |
+|                      |           | Defines a list of reference powers to     |
+|                      |           | run the propagation, in the range         |
 |                      |           | power_range_db + power_dbm.               |
+|                      |           | Power sweep excursion is ignored in case  |
+|                      |           | of gain mode.                             |
+|                      |           | Power sweep uses the delta_p targets or   |
+|                      |           | the auto-design computed                  |
+|                      |           | ones if no design was set,                |
+|                      |           | regardless of preceding amplifiers        |
+|                      |           | power saturation/limitations.             |
+|                      |           | Power sweep is an easy way to find        |
+|                      |           | optimum reference power.                  |
 +----------------------+-----------+-------------------------------------------+
 | ``sys_margins``      | (number)  | In dB. Added margin on min required       |
 |                      |           | transceiver OSNR.                         |
