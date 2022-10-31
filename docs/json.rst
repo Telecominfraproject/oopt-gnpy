@@ -176,36 +176,41 @@ ROADM
 
 The user can only modify the value of existing parameters:
 
-+--------------------------+-----------+---------------------------------------------+
-| field                    |   type    | description                                 |
-+==========================+===========+=============================================+
-| ``target_pch_out_db``    | (number)  | Auto-design sets the ROADM egress channel   |
-|                          |           | power. This reflects typical control loop   |
-|                          |           | algorithms that adjust ROADM losses to      |
-|                          |           | equalize channels (eg coming from different |
-|                          |           | ingress direction or add ports)             |
-|                          |           | This is the default value                   |
-|                          |           | Roadm/params/target_pch_out_db if no value  |
-|                          |           | is given in the ``Roadm`` element in the    |
-|                          |           | topology input description.                 |
-|                          |           | This default value is ignored if a          |
-|                          |           | params/target_pch_out_db value is input in  |
-|                          |           | the topology for a given ROADM.             |
-+--------------------------+-----------+---------------------------------------------+
-| ``add_drop_osnr``        | (number)  | OSNR contribution from the add/drop ports   |
-+--------------------------+-----------+---------------------------------------------+
-| ``pmd``                  | (number)  | Polarization mode dispersion (PMD). (s)     |
-+--------------------------+-----------+---------------------------------------------+
-| ``restrictions``         | (dict of  | If non-empty, keys ``preamp_variety_list``  |
-|                          |  strings) | and ``booster_variety_list`` represent      |
-|                          |           | list of ``type_variety`` amplifiers which   |
-|                          |           | are allowed for auto-design within ROADM's  |
-|                          |           | line degrees.                               |
-|                          |           |                                             |
-|                          |           | If no booster should be placed on a degree, |
-|                          |           | insert a ``Fused`` node on the degree       |
-|                          |           | output.                                     |
-+--------------------------+-----------+---------------------------------------------+
++-----------------------------+-----------+---------------------------------------------+
+| field                       |   type    | description                                 |
++=============================+===========+=============================================+
+| ``target_pch_out_db`` or    | (number)  | Auto-design sets the ROADM egress channel   |
+| ``target_psd_out_mWperGHz`` |           | power. This reflects typical control loop   |
+|                             |           | algorithms that adjust ROADM losses to      |
+|                             |           | equalize channels (eg coming from different |
+|                             |           | ingress direction or add ports)             |
+|                             |           | This is the default value                   |
+|                             |           | Roadm/params/target_pch_out_db in dBm (or   |
+|                             |           | Roadm/params/target_psd_out_mWperGHz in     |
+|                             |           | mW/GHz) if no                               |
+|                             |           | value is given in the ``Roadm`` element in  |
+|                             |           | the topology input description.             |
+|                             |           | This default value is ignored if a          |
+|                             |           | params/target_pch_out_db (or                |
+|                             |           | Roadm/params/target_psd_out_mWperGHz) value |
+|                             |           | is input in the topology for a given ROADM. |
+|                             |           | See Equalization choices section for more   |
+|                             |           | explainations.                              |
++-----------------------------+-----------+---------------------------------------------+
+| ``add_drop_osnr``           | (number)  | OSNR contribution from the add/drop ports   |
++-----------------------------+-----------+---------------------------------------------+
+| ``pmd``                     | (number)  | Polarization mode dispersion (PMD). (s)     |
++-----------------------------+-----------+---------------------------------------------+
+| ``restrictions``            | (dict of  | If non-empty, keys ``preamp_variety_list``  |
+|                             |  strings) | and ``booster_variety_list`` represent      |
+|                             |           | list of ``type_variety`` amplifiers which   |
+|                             |           | are allowed for auto-design within ROADM's  |
+|                             |           | line degrees.                               |
+|                             |           |                                             |
+|                             |           | If no booster should be placed on a degree, |
+|                             |           | insert a ``Fused`` node on the degree       |
+|                             |           | output.                                     |
++-----------------------------+-----------+---------------------------------------------+
 
 Global parameters
 -----------------
@@ -406,7 +411,10 @@ SpectralInformation
 
 The user can only modify the value of existing parameters.
 It defines a spectrum of N identical carriers.
-While the code libraries allow for different carriers and power levels, the current user parametrization only allows one carrier type and one power/channel definition.
+While the code libraries allow for different carriers and power levels, the current user
+parametrization of release <= 2.6 only allows one carrier type and one power/channel definition.
+2.7 release enables the user to define a spectrum partition with different definition (predefined
+Spectral Information).
 
 +----------------------+-----------+-------------------------------------------+
 | field                |   type    | description                               |
@@ -448,3 +456,167 @@ While the code libraries allow for different carriers and power levels, the curr
 | ``sys_margins``      | (number)  | In dB. Added margin on min required       |
 |                      |           | transceiver OSNR.                         |
 +----------------------+-----------+-------------------------------------------+
+
+
+Prefined Spectral Information
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+With release 2.7, the user can import a predefined spectrum JSON file using the -spectrum option.
+The spectrum file must contain a list of partition each with its own spectral information.
+
+The user can only use these parameters, some of them are optional:
+
++----------------------+-----------+-------------------------------------------+
+| field                |   type    | description                               |
++======================+===========+===========================================+
+| ``f_min``,           | (number)  | In Hz. Mandatory.                         |
+| ``f_max``            |           | Define partition :math:`f_{min}` is       |
+|                      |           | the first carrier central frequency       |
+|                      |           | :math:`f_{max}` is the last one.          |
+|                      |           | :math:`f_{min}` -:math:`f_{max}`          |
+|                      |           | partitions must not overlap.              |
++----------------------+-----------+-------------------------------------------+
+| ``baud_rate``        | (number)  | In Hz. Mandatory. Simulated baud rate.    |
++----------------------+-----------+-------------------------------------------+
+| ``slot_width``       | (number)  | In Hz. Carrier spectrum occupation.       |
+|                      |           | Carrier of this partition are spaced by   |
+|                      |           | slot_width                                |
++----------------------+-----------+-------------------------------------------+
+| ``roll_off``         | (number)  | Pure number between 0 and 1. Mandatory    |
+|                      |           | TX signal roll-off shape. Used by         |
+|                      |           | Raman-aware simulation code.              |
++----------------------+-----------+-------------------------------------------+
+| ``tx_osnr``          | (number)  | In dB. Optional. OSNR out from            |
+|                      |           | transponder. default value is 40 dB       |
++----------------------+-----------+-------------------------------------------+
+| ``delta_pdb``        | (number)  | in dB. Optional. Power offset compared to |
+|                      |           | the reference power used for design       |
+|                      |           | (SI block in equipment library) to be     |
+|                      |           | applied by ROADM to equalize the carriers |
+|                      |           | in this partition. Default value is OdB.  |
++----------------------+-----------+-------------------------------------------+
+
+For example with this definition:
+
+.. code-block:: json
+
+    {
+      "SI":[
+            {
+            "f_min": 191.4e12,
+            "f_max":193.1e12,
+            "baud_rate": 32e9,
+            "slot_width": 50e9,
+            "roll_off": 0.15,
+            "tx_osnr": 40
+            },
+            {
+            "f_min": 193.1625e12,
+            "f_max":195e12,
+            "baud_rate": 64e9,
+            "delta_pdb": 3,
+            "slot_width": 75e9,
+            "roll_off": 0.15,
+            "tx_osnr": 40
+            }
+      ]
+    }
+
+Carriers with frequencies ranging from 191.4THz to 193.1THz will have 32Gbauds baud rate
+and will be spaced by 50Ghz, and carriers with frequencies ranging from 193.1625THz to
+195THz will have 64Gbaud baud rate and will be spaced by 75GHz with 3dB power offset.
+
+If SI reference carrier is set to power_dbm = 0dbm, and ROADM has target_pch_out_db  set to -20dBm
+then all channels ranging from 191.4THz to 193.1THz will have their power equalized to -20 + O dBm
+(OdB power offset) and  all channels ranging from 193.1625THz to 195THz will have their power equalized
+to -20 +3 = -17 dBm (total power signal + noise).
+
+Note that first carrier of the second partition has center frequency 193.1625THz and spectrum occupation
+ranging from 193.125THZ to 193.2THZ and last carrier of the second partition has center frequency
+193.1THZ and occupation ranging from 193.075THZ to 193.125THZ. There is no overlap of the occupation and
+both share the same boundary.
+
+
+Equalization choices
+~~~~~~~~~~~~~~~~~~~~
+
+3 equalizations options are possible. ROADMs can equalize using either constant power or constant power
+spectral density (PSD) to compute carriers' output power from ROADM. In addition, the user can define a power
+offset per channel using a predefined spectral information input file.
+
+without any other indication in ROADM instances, the default equalization is the one defined in the
+equipment library.
+
+Keywords for setting equalization in ROADM are:
+
+- "target_pch_out_db" means power equalization
+- "target_psd_out_mWperGHz" means PSD equalization
+
+Power offset per channel can be set thanks to -spectrum option in transmission-main-example.
+
+Each ROADM instance may have its own equalization choice. PSD is computed using channel baud rate for the bandwidth.
+
+.. code-block::
+
+    "Roadm":[{
+        "target_pch_out_db": -20,
+        **xor** "target_psd_out_mWperGHz": 3.125e-4, (eg -20dBm for 32 Gbauds)
+        "add_drop_osnr": 38,
+        "pmd": 0,
+        ...}]
+
+If target_pch_out or target_psd_out_mWperGHz is present in a ROADM, it overrides the general default for
+this ROADM equalization. Only one equalization choice can be present in a ROADM instance.
+
+ROADM equalization can also be set per degree. For example:
+
+.. code-block:: json
+
+    {
+      "uid": "roadm A",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "per_degree_pch_out_db": {
+          "edfa in roadm A to toto": -18
+        }
+      }
+    }
+
+
+means that target power is -20dBm for all degrees except "edfa in
+roadm A to toto" where it is -18dBm
+
+.. code-block:: json
+
+    {
+      "uid": "roadm A",
+      "type": "Roadm",
+      "params": {
+        "target_psd_out_mWperGHz": 2.717e-4,
+        "per_degree_psd_out_mWperGHz": {
+          "edfa in roadm A to toto": 4.3e-4
+        }
+      }
+    }
+
+means that target PSD is -2.717e-4 mW/GHz for all degrees except
+"edfa in roadm A to toto" where it is 4.3e-4 mW/GHz.
+
+Mixing is permited as long as no same degree are listed in the dict:
+
+.. code-block:: json
+
+        {
+          "uid": "roadm A",
+          "type": "Roadm",
+          "params": {
+            "target_pch_out_db": -20,
+            "per_degree_psd_out_mWperGHz": {
+              "edfa in roadm A to toto": 4.3e-4,
+            }
+          }
+        },
+
+means that roadm A uses constant power equalization on all its degrees except
+"edfa in roadm A to toto" where it is constant PSD.
