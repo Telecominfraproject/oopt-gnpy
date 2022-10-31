@@ -1,0 +1,410 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26cede1a_73b8ea29",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "nit: IMHO, a better summary would be something like \"allow explicit path or service for transmission-example\", or \"allow exact path/service specification for transmission-example\", etc.",
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8d70ccd_4896b4d3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "nit: GNPy will never see these quotes; that\u0027s just a way of instructing the shell how to parse one unstructured line into a list of arguments.",
+      "range": {
+        "startLine": 9,
+        "startChar": 34,
+        "endLine": 9,
+        "endChar": 61
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "648dee00_2121966d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "Instead of coming up with two ways of argument expansion, why not just use multiple argument, like this:\n\n $ gnpy-transmission-example --via London --via Frankfurt --via Berlin\n \nThat should be the equivalent of:\n $ gnpy-transmission-example --path \u0027London | Frankfurt | Berlin\u0027",
+      "range": {
+        "startLine": 9,
+        "startChar": 67,
+        "endLine": 9,
+        "endChar": 91
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43a65a7e_ea8343d5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "nit: please improve readability by \"ASCII bullet list\", or at least avoid non-capitalized sentences because these are hard to read, IMHO. Like this:\n\n```\nAdd to transmission-example...\n\n- the --path argument shall ...\n- the --route-id shall ...\n \nFor both...\n```",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 148
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e7ed851_5f12b93d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "I would prefer to simplify the code a bit here. The choice of the first `route_id` is, IMHO, really an arbitrary one. If the user has already taken all the labor to pre-provision a list of service requests in a file, it\u0027s (IMHO) reasonable to insist on providing the `req_id` as well.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 136
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb88a5f7_cd202553",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "Please also explain (in the commit message) the difference between this CLI entry point and the path-request-run.",
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ec68aa9_188260f7",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "please remove all debug `print()` statements (logging is fine)",
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09f6c68a_ffe2e34c",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "This comment could be removed if the variable had a more specific name. Let\u0027s call it, e.g., `all_roadms`, and it will make it obvious that it\u0027s indeed a dictionary of all the ROADMs in the network.",
+      "range": {
+        "startLine": 195,
+        "startChar": 8,
+        "endLine": 195,
+        "endChar": 73
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5391136_343c4dc2",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "same here -- perhaps call it something like `extra_nodes`?",
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71c9aed6_bac33a35",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "why is this a substring match? A path constraint named \"A\" will be satisfied by a ROADM named \"Amsterdam\".",
+      "range": {
+        "startLine": 202,
+        "startChar": 16,
+        "endLine": 202,
+        "endChar": 42
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6afc073c_9a835eb4",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "the substring match will be too eager and would very likely lead to extra nodes in the path requirements",
+      "range": {
+        "startLine": 207,
+        "startChar": 64,
+        "endLine": 207,
+        "endChar": 89
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d47d6b5f_71d41325",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "neat trick :). this would break for unidirectional links, but that\u0027s (by definition) impossible to encounter on any reasonable network.",
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e93a63b8_58f525a3",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "this uses a different pattern compared to the auto-fitting of source nodes; why is that needed here and not for the source node?",
+      "range": {
+        "startLine": 227,
+        "startChar": 0,
+        "endLine": 228,
+        "endChar": 59
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b98bf56_f2744e58",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "Please refactor this (and the other large `if`-block as well) into a separate function. Ideally, it should just return something which can be stashed into the resulting `params`, for example.",
+      "range": {
+        "startLine": 186,
+        "startChar": 0,
+        "endLine": 233,
+        "endChar": 47
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb042ac4_42c7e569",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "no need for logging and raising an exception at the same time; just `raise`",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 238,
+        "endChar": 42
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14e5668e_9143c4af",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "this will discard the exception after printing an error message, and continue the execution",
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cadaabad_b0c81bd9",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "nit: it\u0027s a bit more readable, IMHO, to use a slightly different pattern where all the \"error conditions\" are checked upfront, there\u0027s an \"early exit\" in case of an error, and the actual code is therefore not nested into too many layers of `if`-statements. Like this:\n```\nif not args.route_id:\n  raise ...\nif args.route_id not in all_ids:\n  raise ...\nroute_id \u003d args.route_id\n```",
+      "range": {
+        "startLine": 252,
+        "startChar": 0,
+        "endLine": 259,
+        "endChar": 50
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99a97d23_45d85c00",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "IMHO a comment like that doesn\u0027t add any information",
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b7c7ae6_9643647d",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "I really dislike what the existing code is doing to the list of transceivers, and that\u0027s why this new-code has to do this. Nothing to change in this patch of course, I just wanted to share my feelings.",
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ed45860_79ad9592",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-10-31T09:32:40Z",
+      "side": 1,
+      "message": "Please remove this comment, it only duplicates the code below without adding any information. In my experience, good code is often self-documenting. Comments are needed if something is more complex, and also to explain *why* the code is doing something (instead of *what*). Anytime the comment only explains *what* the code is doing, there\u0027s a chance that the comment is either redundant, or that the code should be improved. That can often be done by splitting overly complex statements into more lines, storing the intermediate results into properly named variables, etc.",
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
