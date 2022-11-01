@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50a9da28_91417b40",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 41
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-01T15:13:42Z",
+      "side": 1,
+      "message": "I think this is not an accurate description of what this patch is doing:\n\n1) Instead of (just) adding something, it also removes the `req_power`, and that part is not fully explained. I think that the other part of the commit message touches this, but there\u0027s a lot of what\u0027s going on which is not explained. Can you please explain that in much, much more detail?\n\n2) The information in added into the `Pref` class, not into the `SpectralInformation`",
+      "revId": "8df50613d6627a98414a63b3f880df084142dabb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "200affad_02be2236",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 41
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-01T15:13:42Z",
+      "side": 1,
+      "message": "Since the `req_power` is no longer present, this part of the docs doesn\u0027t reflect the current status anymore. Which is confusing for me, because suddenly the purpose of `ReferenceCarrier` is not that clear anymore...",
+      "range": {
+        "startLine": 357,
+        "startChar": 0,
+        "endLine": 359,
+        "endChar": 102
+      },
+      "revId": "8df50613d6627a98414a63b3f880df084142dabb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
