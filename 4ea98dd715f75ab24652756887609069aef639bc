@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "76bb25cd_fb77763d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-01T16:32:04Z",
+      "side": 1,
+      "message": "Yeah, I read https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/507044/comment/ec702729_30517a01/ before I wrote this comment.\n\nHowever, I think that we should not be changing the IO format in a non-backward-compatible way -- and especially not in a release that\u0027s a bit rushed-up. I think that the confusion of users suddenly getting different results (and potentially also changing all of our consumers, e.g., ONOS, even if they are all only experimental) is a strong-enough reason to not merge this -- even if the docs explain that. We can discuss this during a call if you prefer, but I am really against such a subtle change. I\u0027m all in favor of changing this in the YANG interface (and I\u0027ve created #449 for this). I think it\u0027s much, much better to introduce the inconsistency with a different meaning of `f_min` in the mixed-rate interface than to change behavior in such a way.",
+      "parentUuid": "115fb48d_b714c497",
+      "revId": "4ea98dd715f75ab24652756887609069aef639bc",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5f05b9f7_e6ca7ad7",
         "filename": "gnpy/core/utils.py",
         "patchSetId": 10

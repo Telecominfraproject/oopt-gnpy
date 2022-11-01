@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a748c04_ba55c3bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-01T16:32:04Z",
+      "side": 1,
+      "message": "I\u0027m rather strongly against this, see the continued discussion. I\u0027ll retract my CR-2 if the consensus on a call says otherwise, but today I\u0027m not comfortable tagging a release which changes behavior like this.\n\nApart from this major point, some of the numbers used throughout the examples don\u0027t match the usual 96-channel C-band, which should be changed if we decide to go this way.",
+      "revId": "3fb9de9e0d55d9ddde37d82aaf145ad30462c497",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13e02299_6f81ded9",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-01T16:32:04Z",
+      "side": 1,
+      "message": "AFAIU the usual 96-channel C-band has central frequencies between 191.35 and 196.1 THz, yielding 96 channels -\u003e let\u0027s use that, please.",
+      "range": {
+        "startLine": 344,
+        "startChar": 0,
+        "endLine": 345,
+        "endChar": 6
+      },
+      "revId": "3fb9de9e0d55d9ddde37d82aaf145ad30462c497",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b82841cd_fbf1a0be",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-01T16:32:04Z",
+      "side": 1,
+      "message": "96",
+      "range": {
+        "startLine": 360,
+        "startChar": 39,
+        "endLine": 360,
+        "endChar": 41
+      },
+      "revId": "3fb9de9e0d55d9ddde37d82aaf145ad30462c497",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "954ca286_790c6141",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-01T16:32:04Z",
+      "side": 1,
+      "message": "191.35",
+      "range": {
+        "startLine": 360,
+        "startChar": 23,
+        "endLine": 360,
+        "endChar": 28
+      },
+      "revId": "3fb9de9e0d55d9ddde37d82aaf145ad30462c497",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35f0b84f_3da83814",
+        "filename": "gnpy/example-data/eqpt_config.json",
+        "patchSetId": 16
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-01T16:32:04Z",
+      "side": 1,
+      "message": "this should be kept a 196.1, right? Also everywhere else.",
+      "range": {
+        "startLine": 246,
+        "startChar": 31,
+        "endLine": 246,
+        "endChar": 37
+      },
+      "revId": "3fb9de9e0d55d9ddde37d82aaf145ad30462c497",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
