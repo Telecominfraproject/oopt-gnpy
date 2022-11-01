@@ -65,6 +65,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ecbc238_1d6b98bb",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 35
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-01T12:56:32Z",
+      "side": 1,
+      "message": "awesome, thanks",
+      "parentUuid": "9afef03b_d425b514",
+      "range": {
+        "startLine": 395,
+        "startChar": 7,
+        "endLine": 395,
+        "endChar": 79
+      },
+      "revId": "6abafed22bdd2f53b682c4efc2c9417055687844",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94b970d0_0d7c443b",
@@ -149,6 +173,30 @@
       "side": 1,
       "message": "OK but without bitrate, since this is independant",
       "parentUuid": "89568439_bc31883b",
+      "range": {
+        "startLine": 406,
+        "startChar": 7,
+        "endLine": 406,
+        "endChar": 67
+      },
+      "revId": "6abafed22bdd2f53b682c4efc2c9417055687844",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8108148_ed7bc5dc",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 35
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-01T12:56:32Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1ca34579_258d35d2",
       "range": {
         "startLine": 406,
         "startChar": 7,

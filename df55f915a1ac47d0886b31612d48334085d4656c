@@ -150,6 +150,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87f234b8_61e966e1",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-01T12:56:32Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0c344e62_3b77ed9d",
+      "range": {
+        "startLine": 297,
+        "startChar": 14,
+        "endLine": 297,
+        "endChar": 23
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a684f718_52710b44",
@@ -389,6 +413,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ec2358b7_11fe1fdf",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-01T12:56:32Z",
+      "side": 1,
+      "message": "Yes, just calling that type a `float` will do the trick. Let\u0027s clean this up afterwards.",
+      "parentUuid": "9e3f0883_a76b69ae",
+      "range": {
+        "startLine": 306,
+        "startChar": 4,
+        "endLine": 309,
+        "endChar": 7
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7449db25_b85ee322",
         "filename": "gnpy/core/info.py",
         "patchSetId": 34
@@ -519,6 +567,30 @@
       "side": 1,
       "message": "OK I have figured out my mistake. I did not remember that create_arbitrary_spectral_information converts everything in array.  You are right list is enough",
       "parentUuid": "59482b80_95d1351e",
+      "range": {
+        "startLine": 314,
+        "startChar": 28,
+        "endLine": 314,
+        "endChar": 33
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70f90283_f56161c9",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-01T12:56:32Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6856d9bd_030ff185",
       "range": {
         "startLine": 314,
         "startChar": 28,
