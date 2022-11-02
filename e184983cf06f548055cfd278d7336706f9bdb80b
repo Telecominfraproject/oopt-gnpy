@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94cb0e45_abad57bd",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 55
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:26:06Z",
+      "side": 1,
+      "message": "since it computes an average, let\u0027s make that self-documenting by calling this `per_label_average`, please",
+      "range": {
+        "startLine": 232,
+        "startChar": 4,
+        "endLine": 232,
+        "endChar": 21
+      },
+      "revId": "e184983cf06f548055cfd278d7336706f9bdb80b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99ce7e83_d288d1cc",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 55
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:26:06Z",
+      "side": 1,
+      "message": "nit: extra leading space",
+      "range": {
+        "startLine": 233,
+        "startChar": 7,
+        "endLine": 233,
+        "endChar": 8
+      },
+      "revId": "e184983cf06f548055cfd278d7336706f9bdb80b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f2a7e51_362b2a1a",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 55
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:26:06Z",
+      "side": 1,
+      "message": "it would be awesome to add a bunch of expected outputs for auto-testing",
+      "revId": "e184983cf06f548055cfd278d7336706f9bdb80b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d57e80b6_5a2f1dbd",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 55
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:26:06Z",
+      "side": 1,
+      "message": "please add some basic docs, and an example invocation to the docstring",
+      "range": {
+        "startLine": 246,
+        "startChar": 0,
+        "endLine": 247,
+        "endChar": 7
+      },
+      "revId": "e184983cf06f548055cfd278d7336706f9bdb80b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
