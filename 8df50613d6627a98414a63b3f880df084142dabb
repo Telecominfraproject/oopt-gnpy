@@ -63,6 +63,30 @@
       },
       "revId": "8df50613d6627a98414a63b3f880df084142dabb",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b1a1560_4c7a6da5",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 41
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T10:33:56Z",
+      "side": 1,
+      "message": "\u003e the documentation is still correct\n\nAh, OK. I was aiming for the docs of this class to describe what this class is doing; that\u0027s why I asked for adding that example about power for this class. You\u0027re right that the docstring still makes sense for the \"general picture\", which is very useful indeed.\n\nCan you please extend this class\u0027 docstring in this commit (and also in all future ones which change/move/refactor things around) so that the documentation always describes the \"current way\"? I.e., it\u0027s useful that it mentions that the PSD is the same between 32/64GBaud channels, but please also mention where the power levels are being tracked.\n\n\u003e req_power is no more part of ref_carrier, because it was a duplicate in spectral_info\n\nPlease explain that in the commit message (and also see my other comment where I point out what I do not understand in the proposed commit message).",
+      "parentUuid": "df6ab6dd_9ef5f500",
+      "range": {
+        "startLine": 357,
+        "startChar": 0,
+        "endLine": 359,
+        "endChar": 102
+      },
+      "revId": "8df50613d6627a98414a63b3f880df084142dabb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
