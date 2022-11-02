@@ -1,0 +1,302 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80793560_bf90e729",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:20:50Z",
+      "side": 1,
+      "message": "nit: double \"of\"",
+      "range": {
+        "startLine": 11,
+        "startChar": 31,
+        "endLine": 11,
+        "endChar": 33
+      },
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c34ef966_e5db20d8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:20:50Z",
+      "side": 1,
+      "message": "because that bug in SI was not fixed (on my request), it\u0027s not the same definition",
+      "range": {
+        "startLine": 12,
+        "startChar": 41,
+        "endLine": 12,
+        "endChar": 66
+      },
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27c6464c_4d34a827",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:20:50Z",
+      "side": 1,
+      "message": "nit: let\u0027s call these `f_min` and `f_max` here as well because that\u0027s how they\u0027re called in the JSON",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 10
+      },
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f02eaf2_0860a43e",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:20:50Z",
+      "side": 1,
+      "message": "please add a docstring which explains what it\u0027s for",
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8755677_4c4a601a",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:20:50Z",
+      "side": 1,
+      "message": "please move the `deeopcopy` along that comment here; there\u0027s no need to check-and-fix it twice",
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3044242b_00e4bbc6",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:20:50Z",
+      "side": 1,
+      "message": "`f_min`, `f_max`",
+      "range": {
+        "startLine": 257,
+        "startChar": 5,
+        "endLine": 257,
+        "endChar": 15
+      },
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8d0bbea_2f264f2c",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:20:50Z",
+      "side": 1,
+      "message": "nit: extra space",
+      "range": {
+        "startLine": 257,
+        "startChar": 47,
+        "endLine": 257,
+        "endChar": 48
+      },
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64be7b56_946507d6",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:20:50Z",
+      "side": 1,
+      "message": "I would prefer to use realistic values here (C-band frequencies, and contemporary Baud rates)",
+      "range": {
+        "startLine": 263,
+        "startChar": 9,
+        "endLine": 263,
+        "endChar": 69
+      },
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7760502d_a4fe08c6",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:20:50Z",
+      "side": 1,
+      "message": "`f_min`, please",
+      "range": {
+        "startLine": 287,
+        "startChar": 18,
+        "endLine": 287,
+        "endChar": 22
+      },
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e728bf5f_e9ebea79",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:20:50Z",
+      "side": 1,
+      "message": "please use the \"early-raise\" pattern instead:\n```\nif error_condition:\n  raise xxx\ndo_something_useful()\n```\nit\u0027s IMHO more readable compared to:\n```\nif is_ok:\n  do_something_useful()\nelse:\n  raise xxx\n```\n...especially when the `do_something_useful` is a little bit more complex",
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c845aa7_9e5f2a90",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:20:50Z",
+      "side": 1,
+      "message": "I was confused about this because it refers to the check *above*, not below :). Anyway, I think it\u0027s better to put comments like this into error messages:\n```\nif ...:\n    raise SpectrumError(f\u0027Spectrum overlap at offset {index}: ...\u0027)\n```",
+      "range": {
+        "startLine": 303,
+        "startChar": 12,
+        "endLine": 303,
+        "endChar": 95
+      },
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6702609b_37e092e2",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:20:50Z",
+      "side": 1,
+      "message": "let\u0027s make this explicit, please, e.g.:\n```\nCarrier(foo\u003dpart.get(\u0027foo\u0027), bar\u003dpart.get(\u0027bar\u0027))\n```",
+      "range": {
+        "startLine": 309,
+        "startChar": 49,
+        "endLine": 309,
+        "endChar": 113
+      },
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc86e6af_48c93430",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:20:50Z",
+      "side": 1,
+      "message": "don\u0027t `print()`, please include that info in the exception string",
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "292fc8be_e45c96ea",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:20:50Z",
+      "side": 1,
+      "message": "nit: since this is *not* the exact same thing as the previous `SI` (even if the `f_min` and `f_max` semantics was changed, there\u0027s still more information in the eqpt_config\u0027s own `SI`, like `sys_margins` and such), let\u0027s call it somehow else, for example `spectrum`",
+      "range": {
+        "startLine": 324,
+        "startChar": 42,
+        "endLine": 324,
+        "endChar": 44
+      },
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}

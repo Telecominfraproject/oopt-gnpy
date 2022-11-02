@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05e87a43_3e3b543a",
+        "filename": "gnpy/core/equipment.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:20:50Z",
+      "side": 0,
+      "message": "unrelated change",
+      "revId": "cb85b8fe2b6ec1a5304414ab9da8f30a943f1602",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
