@@ -435,6 +435,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d30f9e3_66fe102f",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 34
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T09:44:25Z",
+      "side": 1,
+      "message": "let\u0027s track this as #450",
+      "parentUuid": "ec2358b7_11fe1fdf",
+      "range": {
+        "startLine": 306,
+        "startChar": 4,
+        "endLine": 309,
+        "endChar": 7
+      },
+      "revId": "df55f915a1ac47d0886b31612d48334085d4656c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7449db25_b85ee322",
