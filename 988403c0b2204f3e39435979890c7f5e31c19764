@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "224e125c_1b5ac7e0",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 58
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:34:07Z",
+      "side": 1,
+      "message": "- this is an array of labels (right?), so please call it `labels`\n- it\u0027s not a per-element label, it\u0027s a set of labels of all propagated channels, so it should probably be called something like `propagated_labels`\n- since it\u0027s not getting initialized via the constructor, the `__str__` method won\u0027t work unless `propagate()` has been called earlier; let\u0027s initialize that in the ctor to an empty list\n\nAlso for all the other element types, please.",
+      "revId": "988403c0b2204f3e39435979890c7f5e31c19764",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
