@@ -46,6 +46,30 @@
       },
       "revId": "b7cea61c4f466e57d005dc8a811e29094c2bf891",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4982b06_1c41dd21",
+        "filename": "gnpy/example-data/initial_spectrum1.json",
+        "patchSetId": 18
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:43:16Z",
+      "side": 1,
+      "message": "(I\u0027m coming late to the party, but since I requested undoing of this change because the semantics of `f_min` is different than in the original `SI`, I wanted to say so at this place as well.)",
+      "parentUuid": "833b7eae_e9868919",
+      "range": {
+        "startLine": 2,
+        "startChar": 7,
+        "endLine": 2,
+        "endChar": 23
+      },
+      "revId": "b7cea61c4f466e57d005dc8a811e29094c2bf891",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }

@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1abb174e_dca419b2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 62
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:43:16Z",
+      "side": 1,
+      "message": "I like this; a test for one-item thing is always useful for ensuring that corner cases work well",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 15
+      },
+      "revId": "f8dfe985bccb0e814fa8307750daf244e4d6964c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8621f73_548cb3a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 62
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:43:16Z",
+      "side": 1,
+      "message": "Please either move this to the automatic tests, or have it accessed by the automated tests. Otherwise we risk that the file will get out-of-sync from the actual code.\n\nAlso use a label so that it\u0027s exercising the newly added code paths.",
+      "revId": "f8dfe985bccb0e814fa8307750daf244e4d6964c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
