@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "099d8b11_3eead0c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 58
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-02T16:44:01Z",
+      "side": 1,
+      "message": "please squash this into the previous commit",
+      "revId": "5369202af743842c34ce84c8b59c35c9696fe3ac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
