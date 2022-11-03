@@ -1,0 +1,85 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76315b30_b29d7b56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 69
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:52:52Z",
+      "side": 1,
+      "message": "please squash this into the patch which adds the relevant functionality (ROADM equalization in this context)",
+      "revId": "a385f41ed020cd374b180a4e646eba4d82cb7bf2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0c6b633_56d28f09",
+        "filename": "tests/test_equalization.py",
+        "patchSetId": 69
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:52:52Z",
+      "side": 1,
+      "message": "This has a potential for errors -- once the input changes, the check will get (silently!) skipped. Instead, use the paramtrization for this; add a new parameter called, e.g., `expected_pch_out_dbm`, and then remove this `for`-loop, and instead request a specific ROADM directly and check its `ref_pch_out_dbm`.",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 47
+      },
+      "revId": "a385f41ed020cd374b180a4e646eba4d82cb7bf2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "458f6ea3_56e1c8c5",
+        "filename": "tests/test_equalization.py",
+        "patchSetId": 69
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:52:52Z",
+      "side": 1,
+      "message": "let\u0027s code this, then; this expression will show a meaningless error when the test no longer succeeds",
+      "range": {
+        "startLine": 224,
+        "startChar": 0,
+        "endLine": 226,
+        "endChar": 41
+      },
+      "revId": "a385f41ed020cd374b180a4e646eba4d82cb7bf2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "172863dd_55a11d54",
+        "filename": "tests/test_equalization.py",
+        "patchSetId": 69
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:52:52Z",
+      "side": 1,
+      "message": "\u003e linters-diff-ci: W293 blank line contains whitespace\n\nPlease fix.",
+      "parentUuid": "0406f28e_9f4fd288",
+      "revId": "a385f41ed020cd374b180a4e646eba4d82cb7bf2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
