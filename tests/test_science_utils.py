@@ -12,7 +12,7 @@ from numpy.testing import assert_allclose
 from numpy import array, genfromtxt
 import pytest
 
-from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information, Pref
+from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information, Pref, ReferenceCarrier
 from gnpy.core.elements import Fiber, RamanFiber
 from gnpy.core.parameters import SimParams
 from gnpy.tools.json_io import load_json
@@ -28,7 +28,8 @@ def test_fiber():
 
     # fix grid spectral information generation
     spectral_info_input = create_input_spectral_information(f_min=191.3e12, f_max=196.1e12, roll_off=0.15,
-                                                            baud_rate=32e9, power=1e-3, spacing=50e9, tx_osnr=40.0)
+                                                            baud_rate=32e9, power=1e-3, spacing=50e9, tx_osnr=40.0,
+                                                            ref_carrier=ReferenceCarrier(baud_rate=32e9))
     # propagation
     spectral_info_out = fiber(spectral_info_input)
 
@@ -67,7 +68,8 @@ def test_raman_fiber():
     """ Test the accuracy of propagating the RamanFiber."""
     # spectral information generation
     spectral_info_input = create_input_spectral_information(f_min=191.3e12, f_max=196.1e12, roll_off=0.15,
-                                                            baud_rate=32e9, power=1e-3, spacing=50e9, tx_osnr=40.0)
+                                                            baud_rate=32e9, power=1e-3, spacing=50e9, tx_osnr=40.0,
+                                                            ref_carrier=ReferenceCarrier(baud_rate=32e9))
     SimParams.set_params(load_json(TEST_DIR / 'data' / 'sim_params.json'))
     fiber = RamanFiber(**load_json(TEST_DIR / 'data' / 'test_science_utils_fiber_config.json'))
 
@@ -104,7 +106,8 @@ def test_fiber_lumped_losses_srs(set_sim_params):
     """ Test the accuracy of Fiber with lumped losses propagation."""
     # spectral information generation
     spectral_info_input = create_input_spectral_information(f_min=191.3e12, f_max=196.1e12, roll_off=0.15,
-                                                            baud_rate=32e9, power=1e-3, spacing=50e9, tx_osnr=40.0)
+                                                            baud_rate=32e9, power=1e-3, spacing=50e9, tx_osnr=40.0,
+                                                            ref_carrier=ReferenceCarrier(baud_rate=32e9))
 
     SimParams.set_params(load_json(TEST_DIR / 'data' / 'sim_params.json'))
     fiber = Fiber(**load_json(TEST_DIR / 'data' / 'test_lumped_losses_raman_fiber_config.json'))
