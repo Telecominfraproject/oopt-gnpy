@@ -70,6 +70,54 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43f26108_02c3c297",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-03T15:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c34ef966_e5db20d8",
+      "range": {
+        "startLine": 12,
+        "startChar": 41,
+        "endLine": 12,
+        "endChar": 66
+      },
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76df8bdf_5ea21761",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-03T15:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27c6464c_4d34a827",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 10
+      },
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f7e55ba_3d8e069b",
@@ -83,6 +131,24 @@
       "writtenOn": "2022-11-02T16:33:44Z",
       "side": 1,
       "message": "Also, an example invocation in the test suite would be nice; that way we can check whether the output format works well for human consumption.",
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27cd31fb_a457c22b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 61
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-03T15:44:04Z",
+      "side": 1,
+      "message": "there are some example in next commits",
+      "parentUuid": "8f7e55ba_3d8e069b",
       "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -104,6 +170,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "992045e0_154094e8",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-03T15:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f02eaf2_0860a43e",
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8755677_4c4a601a",
@@ -117,6 +201,24 @@
       "writtenOn": "2022-11-02T16:20:50Z",
       "side": 1,
       "message": "please move the `deeopcopy` along that comment here; there\u0027s no need to check-and-fix it twice",
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f698ae7a_b5e7d54c",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-03T15:44:04Z",
+      "side": 1,
+      "message": "this is a leftover from earlier patch when initial_spectrum contained powers and not delta powers. now this is not usefull anymore, I have removed the lines",
+      "parentUuid": "c8755677_4c4a601a",
       "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -167,6 +269,54 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "993f739e_86e1b48a",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-03T15:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8d0bbea_2f264f2c",
+      "range": {
+        "startLine": 257,
+        "startChar": 47,
+        "endLine": 257,
+        "endChar": 48
+      },
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f64c0ee_720b9929",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-03T15:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3044242b_00e4bbc6",
+      "range": {
+        "startLine": 257,
+        "startChar": 5,
+        "endLine": 257,
+        "endChar": 15
+      },
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "64be7b56_946507d6",
@@ -180,6 +330,30 @@
       "writtenOn": "2022-11-02T16:20:50Z",
       "side": 1,
       "message": "I would prefer to use realistic values here (C-band frequencies, and contemporary Baud rates)",
+      "range": {
+        "startLine": 263,
+        "startChar": 9,
+        "endLine": 263,
+        "endChar": 69
+      },
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ac27be0_b5091183",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-03T15:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64be7b56_946507d6",
       "range": {
         "startLine": 263,
         "startChar": 9,
@@ -213,6 +387,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5abd077d_d45836aa",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-03T15:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7760502d_a4fe08c6",
+      "range": {
+        "startLine": 287,
+        "startChar": 18,
+        "endLine": 287,
+        "endChar": 22
+      },
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e728bf5f_e9ebea79",
@@ -230,6 +428,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ff1c15e_596a789f",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-03T15:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e728bf5f_e9ebea79",
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c845aa7_9e5f2a90",
@@ -243,6 +459,30 @@
       "writtenOn": "2022-11-02T16:20:50Z",
       "side": 1,
       "message": "I was confused about this because it refers to the check *above*, not below :). Anyway, I think it\u0027s better to put comments like this into error messages:\n```\nif ...:\n    raise SpectrumError(f\u0027Spectrum overlap at offset {index}: ...\u0027)\n```",
+      "range": {
+        "startLine": 303,
+        "startChar": 12,
+        "endLine": 303,
+        "endChar": 95
+      },
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "189beeee_5bf989f5",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-03T15:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c845aa7_9e5f2a90",
       "range": {
         "startLine": 303,
         "startChar": 12,
@@ -276,6 +516,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbecf995_f51b5d0d",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-03T15:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6702609b_37e092e2",
+      "range": {
+        "startLine": 309,
+        "startChar": 49,
+        "endLine": 309,
+        "endChar": 113
+      },
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc86e6af_48c93430",
@@ -293,6 +557,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ed48f9e_c7e788ba",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-03T15:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc86e6af_48c93430",
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "292fc8be_e45c96ea",
@@ -306,6 +588,30 @@
       "writtenOn": "2022-11-02T16:20:50Z",
       "side": 1,
       "message": "nit: since this is *not* the exact same thing as the previous `SI` (even if the `f_min` and `f_max` semantics was changed, there\u0027s still more information in the eqpt_config\u0027s own `SI`, like `sys_margins` and such), let\u0027s call it somehow else, for example `spectrum`",
+      "range": {
+        "startLine": 324,
+        "startChar": 42,
+        "endLine": 324,
+        "endChar": 44
+      },
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5c78e09_d70b0a4e",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-03T15:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "292fc8be_e45c96ea",
       "range": {
         "startLine": 324,
         "startChar": 42,

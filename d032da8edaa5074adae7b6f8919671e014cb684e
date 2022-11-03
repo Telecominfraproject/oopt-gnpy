@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6f1bd3f1_b7d42d0b",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 59
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-03T15:44:04Z",
+      "side": 1,
+      "message": "printing will be done per label later on: label serves to group, so I need one, and I did not want to put an empty string",
+      "parentUuid": "4cf072d0_2036c8bb",
+      "range": {
+        "startLine": 315,
+        "startChar": 14,
+        "endLine": 315,
+        "endChar": 15
+      },
+      "revId": "d032da8edaa5074adae7b6f8919671e014cb684e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a544e368_b428156c",
         "filename": "gnpy/tools/cli_examples.py",
         "patchSetId": 59
@@ -70,6 +94,54 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "449022cd_040d57f2",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 59
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-03T15:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0ee4c93_49d7152a",
+      "range": {
+        "startLine": 123,
+        "startChar": 106,
+        "endLine": 123,
+        "endChar": 110
+      },
+      "revId": "d032da8edaa5074adae7b6f8919671e014cb684e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b9f92c1_fb86ad78",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 59
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-03T15:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a544e368_b428156c",
+      "range": {
+        "startLine": 123,
+        "startChar": 24,
+        "endLine": 123,
+        "endChar": 35
+      },
+      "revId": "d032da8edaa5074adae7b6f8919671e014cb684e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ee4f98b_1c482c0d",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-11-02T16:20:50Z",
       "side": 1,
       "message": "nit: please don\u0027t abbreviate like this, it impairs readability. Let\u0027s say something like `preempts the \"--power\" option`, etc.",
+      "range": {
+        "startLine": 246,
+        "startChar": 10,
+        "endLine": 246,
+        "endChar": 13
+      },
+      "revId": "d032da8edaa5074adae7b6f8919671e014cb684e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9030a130_11ce3596",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 59
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-03T15:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ee4f98b_1c482c0d",
       "range": {
         "startLine": 246,
         "startChar": 10,
@@ -107,6 +203,24 @@
       "side": 1,
       "message": "\u003e linters-diff-ci: W291 trailing whitespace\n\nPlease fix.",
       "parentUuid": "33752e81_efb9f5b3",
+      "revId": "d032da8edaa5074adae7b6f8919671e014cb684e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75b193ce_a87eb0c7",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 59
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-03T15:44:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a760b7d5_bba7a13b",
       "revId": "d032da8edaa5074adae7b6f8919671e014cb684e",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
