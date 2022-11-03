@@ -1,0 +1,440 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2867e013_18734456",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "it\u0027s `default_values`",
+      "range": {
+        "startLine": 12,
+        "startChar": 51,
+        "endLine": 12,
+        "endChar": 58
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa991800_09f0b3f4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "For the record I\u0027m not a fan of extending the legacy JSON format at all, but I of course understand the motivation and won\u0027t be blocking this.",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 47
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "347d762f_e422994a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "this is not relevant to this commit",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 42
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2452d0e_1313c620",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "nit: I\u0027m confused by the formatting; this looks like a list of something, but it\u0027s not a list (and it should not be a list, anyway). Remove the tab indent?",
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acd14a9e_da1030e2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "`--power`, and also everywhere else, please",
+      "range": {
+        "startLine": 127,
+        "startChar": 50,
+        "endLine": 127,
+        "endChar": 55
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90592cc6_27a458df",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "I\u0027m picking a random place for this comment, but in general it\u0027s much easier for me to read unabbreviated English comments. I would appreciate if you call this \"power\", etc.",
+      "range": {
+        "startLine": 179,
+        "startChar": 11,
+        "endLine": 179,
+        "endChar": 14
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9ca2198_61ad1262",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "This example is confusing to me because the `target_psd_out_mWperGHz` is not used in the expression at the end of the commit",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 233,
+        "endChar": 30
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5167e9d4_b5e28cc5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 61
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "To be honest, this was quite hard to read for me; the indirection between `RoadmParameters`, default values, etc, seemed rather complex. I\u0027ll continue with other patches in the series and also try to write this from scratch, hopefully in a more compact manner.",
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bc9e3f5_7ce370f2",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "It would help me understand the code better if this docstring said what this member variable is used for (and then maybe how it\u0027s computed, but that\u0027s actually better documented at the place where the actual computation takes place).",
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e90e9e3_d99335eb",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "why is this not checking the `self.target_pch_out_dbm`, and what\u0027s the relation between these two? I see both are initialized in the same way, but that shouldn\u0027t matter here, right?",
+      "range": {
+        "startLine": 235,
+        "startChar": 16,
+        "endLine": 235,
+        "endChar": 31
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f96e296_31a9009a",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "- If this is a \"reference baudrate\", let\u0027s call it `reference_baudrate` or at least `ref_baudrate`. If it\u0027s something else, document it, please. This applies to other methods as well.\n- The info should be already accessible via `spectral_info.ref_power.ref_carrier.baud_rate`. The code also only accesses `ref_br` when `spectral_info` is not `None`, so there\u0027s no required change of semantics.",
+      "range": {
+        "startLine": 269,
+        "startChar": 31,
+        "endLine": 269,
+        "endChar": 37
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b34a5f72_d1ab83f2",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "This returns a numpy array while the other paths return a number (right?), which confuses me a fair bit. I see that it\u0027s explicitly said to be the case later on when this function is called, but I don\u0027t understand why.",
+      "range": {
+        "startLine": 291,
+        "startChar": 19,
+        "endLine": 291,
+        "endChar": 24
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd9c9073_e7c86337",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "These three methods are just not readable; they check a similar thing, they have the same docstring, but they do something slightly different. This makes the patch hard to review. Can you please refactor this, double-check the docstrings and add example usage so that I can reason about the code?",
+      "range": {
+        "startLine": 269,
+        "startChar": 4,
+        "endLine": 294,
+        "endChar": 93
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf0191fb_51a0b31e",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "can you please rephrease this?",
+      "range": {
+        "startLine": 306,
+        "startChar": 10,
+        "endLine": 307,
+        "endChar": 91
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea84b260_82a2a5e5",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "On a quick glance this appears to duplicate `gnpy.core.elements.Roadm.get_target_power()`. See my comment for `set_roadm_output_targets`, and remove this function, please.",
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9aa08b9_18ef451e",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "These variables are already set to something from the constructor, but they are overridden here once again, now apparently based on the actual network topology. There\u0027s no need to do that; just leave them as-set-in-the-constructor, and instead let the `elements.Roadm.get_target_power_XXX` methods do the trick, falling back to the default if needed.\n\nI\u0027m OK with checking for invalid next-hop/degree names of course, but this pattern of code where something gets initialized once and then maybe-overwritten from a different module looks rather confusing to me.",
+      "range": {
+        "startLine": 363,
+        "startChar": 0,
+        "endLine": 364,
+        "endChar": 74
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "612639df_03199772",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "why not simply:\n```\nif \u0027target_pch_out_db\u0027 in kwargs and `target_psd_out_mWperGHz\u0027 in kwargs:\n  raise ParameterError(...)\n```",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 69
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d5deed4_36be6b1c",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "These are specific to the legacy JSON format, so please move them to that module.",
+      "range": {
+        "startLine": 317,
+        "startChar": 0,
+        "endLine": 350,
+        "endChar": 15
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d59c3c2a_bf9d3f01",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "So it looks to me that the constructor sets something to the default value(s), and this part of the code removes these defaults. That sounds complex; why is it done in this way?",
+      "range": {
+        "startLine": 473,
+        "startChar": 1,
+        "endLine": 475,
+        "endChar": 98
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad3230e8_9a0c5a07",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:00:08Z",
+      "side": 1,
+      "message": "This should have been part of 18610fb7a94bd37bc536e4d0cbfb43bc14161035; fixed via: https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/545640",
+      "range": {
+        "startLine": 256,
+        "startChar": 67,
+        "endLine": 256,
+        "endChar": 101
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
