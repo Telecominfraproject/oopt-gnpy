@@ -179,6 +179,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "74a9bd08_ec3da93e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 61
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T16:49:32Z",
+      "side": 1,
+      "message": "I\u0027m in favor of small commits, but I\u0027m not a fan of splitting them into an implementation in one commit, and usage/tests in another one. If they\u0027re together, we\u0027ll immediately see:\n\n- how it\u0027s intended to be used,\n- how the output looks like,\n- how it fits with the rest of the code,\n- how the UI looks like,\n- a coverage report from the CI which will immediately tell us what code paths are triggered\n\netc. Can you please squash this commit with the examples + tests?",
+      "parentUuid": "27cd31fb_a457c22b",
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8f02eaf2_0860a43e",
         "filename": "gnpy/core/info.py",
         "patchSetId": 61

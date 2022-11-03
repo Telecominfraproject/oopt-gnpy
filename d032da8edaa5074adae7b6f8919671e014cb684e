@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "74e30c59_99cbd103",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 59
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T16:49:32Z",
+      "side": 1,
+      "message": "Now that I know that `label` is used for this purpose, this makes sense. However, please also include the baud rate so that the output conforms with the commit message -- or feel free to call it something like `spectrum`, I just think that `0` is a bit weird in this context.",
+      "parentUuid": "6f1bd3f1_b7d42d0b",
+      "range": {
+        "startLine": 315,
+        "startChar": 14,
+        "endLine": 315,
+        "endChar": 15
+      },
+      "revId": "d032da8edaa5074adae7b6f8919671e014cb684e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a544e368_b428156c",
         "filename": "gnpy/tools/cli_examples.py",
         "patchSetId": 59
