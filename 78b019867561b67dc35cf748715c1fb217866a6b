@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa14c496_eb2638ca",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:14:51Z",
+      "side": 1,
+      "message": "in Python, a `raise foo` from within an exception handler results in an error messages like this:\n```\n\u003e\u003e\u003e e.Roadm(uid\u003d\u0027x\u0027, params\u003d{\u0027add_drop_osnr\u0027:40, \u0027pmd\u0027:0, \u0027pdl\u0027: 0, \u0027restrictions\u0027: None, \u0027target_pch_out_db\u0027: 1, \u0027target_psd_out_mWperGHz\u0027: 2})\nTraceback (most recent call last):\n  File \"/home/jkt/work/TIP/oopt-gnpy/gnpy/core/elements.py\", line 220, in __init__\n    super().__init__(*args, params\u003dRoadmParams(**params), **kwargs)\n  File \"/home/jkt/work/TIP/oopt-gnpy/gnpy/core/parameters.py\", line 96, in __init__\n    raise ParametersError(\u0027ROADM config contains more than one equalisation type.\u0027\ngnpy.core.exceptions.ParametersError: (\u0027ROADM config contains more than one equalisation type.Please choose only one\u0027, {\u0027add_drop_osnr\u0027: 40, \u0027pmd\u0027: 0, \u0027pdl\u0027: 0, \u0027restrictions\u0027: None, \u0027target_pch_out_db\u0027: 1, \u0027target_psd_out_mWperGHz\u0027: 2})\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"\u003cstdin\u003e\", line 1, in \u003cmodule\u003e\n  File \"/home/jkt/work/TIP/oopt-gnpy/gnpy/core/elements.py\", line 222, in __init__\n    raise ParametersError(\u0027Config error in \u0027, kwargs[\u0027uid\u0027], \u0027 .\u0027, e)\ngnpy.core.exceptions.ParametersError: (\u0027Config error in \u0027, \u0027x\u0027, \u0027 .\u0027, ParametersError(\u0027ROADM config contains more than one equalisation type.Please choose only one\u0027, {\u0027add_drop_osnr\u0027: 40, \u0027pmd\u0027: 0, \u0027pdl\u0027: 0, \u0027restrictions\u0027: None, \u0027target_pch_out_db\u0027: 1, \u0027target_psd_out_mWperGHz\u0027: 2}))\n```\nThere\u0027s another syntax, `raise e2 from e1`, which results in the following error message:\n```\n\u003e\u003e\u003e import gnpy.core.elements as e\n\u003e\u003e\u003e e.Roadm(uid\u003d\u0027x\u0027, params\u003d{\u0027add_drop_osnr\u0027:40, \u0027pmd\u0027:0, \u0027pdl\u0027: 0, \u0027restrictions\u0027: None, \u0027target_pch_out_db\u0027: 1, \u0027target_psd_out_mWperGHz\u0027: 2})\nTraceback (most recent call last):\n  File \"/home/jkt/work/TIP/oopt-gnpy/gnpy/core/elements.py\", line 220, in __init__\n    super().__init__(*args, params\u003dRoadmParams(**params), **kwargs)\n  File \"/home/jkt/work/TIP/oopt-gnpy/gnpy/core/parameters.py\", line 96, in __init__\n    raise ParametersError(\u0027ROADM config contains more than one equalisation type.\u0027\ngnpy.core.exceptions.ParametersError: (\u0027ROADM config contains more than one equalisation type.Please choose only one\u0027, {\u0027add_drop_osnr\u0027: 40, \u0027pmd\u0027: 0, \u0027pdl\u0027: 0, \u0027restrictions\u0027: None, \u0027target_pch_out_db\u0027: 1, \u0027target_psd_out_mWperGHz\u0027: 2})\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"\u003cstdin\u003e\", line 1, in \u003cmodule\u003e\n  File \"/home/jkt/work/TIP/oopt-gnpy/gnpy/core/elements.py\", line 222, in __init__\n    raise ParametersError(f\u0027Config error in {kwargs[\"uid\"]}: {e}\u0027) from e\ngnpy.core.exceptions.ParametersError: Config error in x: (\u0027ROADM config contains more than one equalisation type.Please choose only one\u0027, {\u0027add_drop_osnr\u0027: 40, \u0027pmd\u0027: 0, \u0027pdl\u0027: 0, \u0027restrictions\u0027: None, \u0027target_pch_out_db\u0027: 1, \u0027target_psd_out_mWperGHz\u0027: 2})\n```",
+      "range": {
+        "startLine": 222,
+        "startChar": 12,
+        "endLine": 222,
+        "endChar": 17
+      },
+      "revId": "78b019867561b67dc35cf748715c1fb217866a6b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef5c2c1a_2c428c31",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:14:51Z",
+      "side": 1,
+      "message": "use an f-string for this, not  sequence of args",
+      "range": {
+        "startLine": 222,
+        "startChar": 34,
+        "endLine": 222,
+        "endChar": 73
+      },
+      "revId": "78b019867561b67dc35cf748715c1fb217866a6b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdf76edb_e1f320d3",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-03T09:14:51Z",
+      "side": 1,
+      "message": "I think it\u0027s cleanest to squash the exception info together like this:\n```\nexcept ParametersError as e:\n    raise ParametersError(f\u0027Config error in {kwargs[\"uid\"]}: {e}\u0027) from e\n```",
+      "range": {
+        "startLine": 222,
+        "startChar": 34,
+        "endLine": 222,
+        "endChar": 76
+      },
+      "revId": "78b019867561b67dc35cf748715c1fb217866a6b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
