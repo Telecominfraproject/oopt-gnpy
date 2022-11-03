@@ -216,9 +216,16 @@ class Roadm(_Node):
         if not params:
             params = {}
         super().__init__(*args, params=RoadmParams(**params), **kwargs)
+
+        # Target output power for the reference carrier
         self.ref_pch_out_dbm = self.params.target_pch_out_db
+
         self.loss = 0  # auto-design interest
-        self.effective_loss = None
+
+        # Optical power of carriers are equalized by the ROADM, so that the experienced loss is not the same for
+        # different carriers. The ref_effective_loss records the loss for a reference carrier.
+        self.ref_effective_loss = None
+
         self.passive = True
         self.restrictions = self.params.restrictions
         self.per_degree_pch_out_dbm = self.params.per_degree_pch_out_db
@@ -241,11 +248,11 @@ class Roadm(_Node):
         return f'{type(self).__name__}(uid={self.uid!r}, loss={self.loss!r})'
 
     def __str__(self):
-        if self.effective_loss is None:
+        if self.ref_effective_loss is None:
             return f'{type(self).__name__} {self.uid}'
 
         return '\n'.join([f'{type(self).__name__} {self.uid}',
-                          f'  effective loss (dB):  {self.effective_loss:.2f}',
+                          f'  effective loss (dB):  {self.ref_effective_loss:.2f}',
                           f'  pch out (dBm):        {self.ref_pch_out_dbm:.2f}'])
 
     def propagate(self, spectral_info, degree):
@@ -259,16 +266,15 @@ class Roadm(_Node):
         # a ROADM doesn't amplify, it can only attenuate
         # TODO maybe add a minimum loss for the ROADM
         per_degree_pch = self.per_degree_pch_out_dbm.get(degree, self.ref_pch_out_dbm)
-        # Definition of ref_pch_out_dbm for the reference channel:
+
         # Depending on propagation upstream from this ROADM, the input power (p_spani) might be smaller than
         # the target power out configured for this ROADM degree's egress. Since ROADM does not amplify,
         # the power out of the ROADM for the ref channel is the min value between target power and input power.
         # (TODO add a minimum loss for the ROADM crossing)
         self.ref_pch_out_dbm = min(spectral_info.pref.p_spani, per_degree_pch)
-        # Definition of effective_loss:
-        # Optical power of carriers are equalized by the ROADM, so that the experienced loss is not the same for
-        # different carriers. effective_loss records the loss for a reference carrier.
-        self.effective_loss = spectral_info.pref.p_spani - self.ref_pch_out_dbm
+
+        self.ref_effective_loss = spectral_info.pref.p_spani - self.ref_pch_out_dbm
+
         input_power = spectral_info.signal + spectral_info.nli + spectral_info.ase
         target_power_per_channel = per_degree_pch + spectral_info.delta_pdb_per_channel
         # If target_power_per_channel has some channels power above input power, then the whole target is reduced.
