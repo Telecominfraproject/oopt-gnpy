@@ -151,6 +151,30 @@
       },
       "revId": "e184983cf06f548055cfd278d7336706f9bdb80b",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a6839b5_34939bd6",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 55
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T09:50:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d57e80b6_5a2f1dbd",
+      "range": {
+        "startLine": 246,
+        "startChar": 0,
+        "endLine": 247,
+        "endChar": 7
+      },
+      "revId": "e184983cf06f548055cfd278d7336706f9bdb80b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
