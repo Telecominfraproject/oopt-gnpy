@@ -306,6 +306,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dccb5e25_7d1673f1",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T18:50:12Z",
+      "side": 1,
+      "message": "self.target_xxx are targets set by user\n\nself.ref_pch_out_dbm is the one computed during propagation. They can be equal and before this change the role of target was also assumed by this variable.\nwith the introduction of different equalization targets, I preferred to clearly separate the role. so now self.ref_pch_out_dbm is no more initialized (None), and is only computed during propagation.",
+      "parentUuid": "2bc9e3f5_7ce370f2",
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7e90e9e3_d99335eb",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 61
@@ -317,6 +335,30 @@
       "writtenOn": "2022-11-03T09:00:08Z",
       "side": 1,
       "message": "why is this not checking the `self.target_pch_out_dbm`, and what\u0027s the relation between these two? I see both are initialized in the same way, but that shouldn\u0027t matter here, right?",
+      "range": {
+        "startLine": 235,
+        "startChar": 16,
+        "endLine": 235,
+        "endChar": 31
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1055b18c_749891e7",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T18:50:12Z",
+      "side": 1,
+      "message": "I have removed this ambiguity: now self.ref_pch_out_dbm is only for computed value during propagation and self.target_pch_out_dbm the user settings for target equalization",
+      "parentUuid": "7e90e9e3_d99335eb",
       "range": {
         "startLine": 235,
         "startChar": 16,
@@ -352,6 +394,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d9099edb_c45184e3",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T18:50:12Z",
+      "side": 1,
+      "message": "I used the same function for two cases: when there is a spectral_info, then I use spectral_info.ref_power.ref_carrier.baud_rate, and when it is for the reference channel, so no spectral_info.\nI have better separated the cases, and there is no more ambiguity",
+      "parentUuid": "3f96e296_31a9009a",
+      "range": {
+        "startLine": 269,
+        "startChar": 31,
+        "endLine": 269,
+        "endChar": 37
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b34a5f72_d1ab83f2",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 61
@@ -363,6 +429,30 @@
       "writtenOn": "2022-11-03T09:00:08Z",
       "side": 1,
       "message": "This returns a numpy array while the other paths return a number (right?), which confuses me a fair bit. I see that it\u0027s explicitly said to be the case later on when this function is called, but I don\u0027t understand why.",
+      "range": {
+        "startLine": 291,
+        "startChar": 19,
+        "endLine": 291,
+        "endChar": 24
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe6fbb7c_2efff9aa",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T18:50:12Z",
+      "side": 1,
+      "message": "this has been moved to the get_roadm_target_power function",
+      "parentUuid": "b34a5f72_d1ab83f2",
       "range": {
         "startLine": 291,
         "startChar": 19,
@@ -398,6 +488,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "713dd328_2b205c9f",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T18:50:12Z",
+      "side": 1,
+      "message": "I have refactored and I hope it is easier to read",
+      "parentUuid": "bd9c9073_e7c86337",
+      "range": {
+        "startLine": 269,
+        "startChar": 4,
+        "endLine": 294,
+        "endChar": 93
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cf0191fb_51a0b31e",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 61
@@ -409,6 +523,30 @@
       "writtenOn": "2022-11-03T09:00:08Z",
       "side": 1,
       "message": "can you please rephrease this?",
+      "range": {
+        "startLine": 306,
+        "startChar": 10,
+        "endLine": 307,
+        "endChar": 91
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b70c711_25ed8e72",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T18:50:12Z",
+      "side": 1,
+      "message": "The equalization type is now handled in the functions",
+      "parentUuid": "cf0191fb_51a0b31e",
       "range": {
         "startLine": 306,
         "startChar": 10,
@@ -450,6 +588,24 @@
       "side": 1,
       "message": "I can not rely on the element.Roadm.get_target() if the ROADM has not been properly initialized. and the constructor is called at a moment where ROADMs are not yet connected. So I can not know the degrees.\n\nSo I can only do this change if the set_roadm_output_targets is kept in the design phase",
       "parentUuid": "ea84b260_82a2a5e5",
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c335cb97_0a637979",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T18:50:12Z",
+      "side": 1,
+      "message": "OK I hav done as suggested",
+      "parentUuid": "7963434a_1c9a0fe1",
       "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -550,6 +706,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c7a37363_45f28872",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T18:50:12Z",
+      "side": 1,
+      "message": "I am adding more equalization types and I think then I would need to add the combinations of wrong case which might become difficult to read with if I have a,b,c,d different equalization types",
+      "parentUuid": "612639df_03199772",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 69
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2d5deed4_36be6b1c",
         "filename": "gnpy/core/utils.py",
         "patchSetId": 61
@@ -561,6 +741,30 @@
       "writtenOn": "2022-11-03T09:00:08Z",
       "side": 1,
       "message": "These are specific to the legacy JSON format, so please move them to that module.",
+      "range": {
+        "startLine": 317,
+        "startChar": 0,
+        "endLine": 350,
+        "endChar": 15
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea1156d1_130a15fd",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T18:50:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d5deed4_36be6b1c",
       "range": {
         "startLine": 317,
         "startChar": 0,
@@ -584,6 +788,30 @@
       "writtenOn": "2022-11-03T09:00:08Z",
       "side": 1,
       "message": "So it looks to me that the constructor sets something to the default value(s), and this part of the code removes these defaults. That sounds complex; why is it done in this way?",
+      "range": {
+        "startLine": 473,
+        "startChar": 1,
+        "endLine": 475,
+        "endChar": 98
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "931f6a3c_bf615c90",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T18:50:12Z",
+      "side": 1,
+      "message": "I need to refactor this, but did not find time yet",
+      "parentUuid": "d59c3c2a_bf9d3f01",
       "range": {
         "startLine": 473,
         "startChar": 1,
