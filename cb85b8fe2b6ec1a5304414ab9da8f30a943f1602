@@ -52,6 +52,24 @@
       "parentUuid": "44d60109_40b8070f",
       "revId": "cb85b8fe2b6ec1a5304414ab9da8f30a943f1602",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "233b9891_01ed594c",
+        "filename": "gnpy/core/equipment.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T09:48:40Z",
+      "side": 0,
+      "message": "nb_channels is still needed for request, but I agree with you, this is not the good place to initialize it. I have moved this in CLI.",
+      "parentUuid": "15ae9c10_48ad623a",
+      "revId": "cb85b8fe2b6ec1a5304414ab9da8f30a943f1602",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }

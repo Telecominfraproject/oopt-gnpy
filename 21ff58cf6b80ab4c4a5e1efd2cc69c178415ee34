@@ -197,6 +197,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1b82abe8_8b002ba1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 61
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T09:48:40Z",
+      "side": 1,
+      "message": "Then I need to squash the next 4, because, to show the results, I need the printing per label, otherwise, adding the tests and printing averaging all all carierrs does not make sense.\nIs this OK for you ?",
+      "parentUuid": "74a9bd08_ec3da93e",
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8f02eaf2_0860a43e",
         "filename": "gnpy/core/info.py",
         "patchSetId": 61
