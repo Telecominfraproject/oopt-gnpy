@@ -324,6 +324,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7963434a_1c9a0fe1",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T13:18:15Z",
+      "side": 1,
+      "message": "I can not rely on the element.Roadm.get_target() if the ROADM has not been properly initialized. and the constructor is called at a moment where ROADMs are not yet connected. So I can not know the degrees.\n\nSo I can only do this change if the set_roadm_output_targets is kept in the design phase",
+      "parentUuid": "ea84b260_82a2a5e5",
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c9aa08b9_18ef451e",
         "filename": "gnpy/core/network.py",
         "patchSetId": 61
@@ -335,6 +353,30 @@
       "writtenOn": "2022-11-03T09:00:08Z",
       "side": 1,
       "message": "These variables are already set to something from the constructor, but they are overridden here once again, now apparently based on the actual network topology. There\u0027s no need to do that; just leave them as-set-in-the-constructor, and instead let the `elements.Roadm.get_target_power_XXX` methods do the trick, falling back to the default if needed.\n\nI\u0027m OK with checking for invalid next-hop/degree names of course, but this pattern of code where something gets initialized once and then maybe-overwritten from a different module looks rather confusing to me.",
+      "range": {
+        "startLine": 363,
+        "startChar": 0,
+        "endLine": 364,
+        "endChar": 74
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad470ed5_05adb738",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T13:18:15Z",
+      "side": 1,
+      "message": "The issue is that I need the target powers at design phase and before propagation to properly design amplifiers gain in the set_egress_amplifier.\nthe computations done here were previously placed there.\n\nand I prefer to have them initialized at design before propagation, because of the future refactor: otherwise, I will not be able to get rid of p_spani.\n\nThen I can not initialize them with the constructor because in json_io there is no knowledge of the topology yet.\n\nbesides, if I remove this the degree will only be computed and saved to autodesign if there is a propagation in the roadm, which is not correct in my opinion.\n\nSo I don\u0027t know how to do differently.",
+      "parentUuid": "c9aa08b9_18ef451e",
       "range": {
         "startLine": 363,
         "startChar": 0,
@@ -427,6 +469,30 @@
       "writtenOn": "2022-11-03T09:00:08Z",
       "side": 1,
       "message": "This should have been part of 18610fb7a94bd37bc536e4d0cbfb43bc14161035; fixed via: https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/545640",
+      "range": {
+        "startLine": 256,
+        "startChar": 67,
+        "endLine": 256,
+        "endChar": 101
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f9fdf95_7fd7e3d5",
+        "filename": "tests/test_roadm_restrictions.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T13:18:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad3230e8_9a0c5a07",
       "range": {
         "startLine": 256,
         "startChar": 67,
