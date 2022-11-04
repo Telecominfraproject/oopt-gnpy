@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "aaff2850_74f30df4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T17:21:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2867e013_18734456",
+      "range": {
+        "startLine": 12,
+        "startChar": 51,
+        "endLine": 12,
+        "endChar": 58
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "fa991800_09f0b3f4",
         "filename": "/COMMIT_MSG",
         "patchSetId": 61
@@ -70,6 +94,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e5eed13_a2e83195",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T17:21:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "347d762f_e422994a",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 42
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2452d0e_1313c620",
@@ -87,6 +135,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5fae8d7_8997bc22",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T17:21:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2452d0e_1313c620",
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "acd14a9e_da1030e2",
@@ -100,6 +166,30 @@
       "writtenOn": "2022-11-03T09:00:08Z",
       "side": 1,
       "message": "`--power`, and also everywhere else, please",
+      "range": {
+        "startLine": 127,
+        "startChar": 50,
+        "endLine": 127,
+        "endChar": 55
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e3b28d8_ef6e1ce5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T17:21:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "acd14a9e_da1030e2",
       "range": {
         "startLine": 127,
         "startChar": 50,
@@ -146,6 +236,30 @@
       "writtenOn": "2022-11-03T09:00:08Z",
       "side": 1,
       "message": "This example is confusing to me because the `target_psd_out_mWperGHz` is not used in the expression at the end of the commit",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 233,
+        "endChar": 30
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8d39384_01e416d2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T17:21:39Z",
+      "side": 1,
+      "message": "I dont\u0027t understand the issue",
+      "parentUuid": "b9ca2198_61ad1262",
       "range": {
         "startLine": 208,
         "startChar": 0,
@@ -377,6 +491,30 @@
       "side": 1,
       "message": "The issue is that I need the target powers at design phase and before propagation to properly design amplifiers gain in the set_egress_amplifier.\nthe computations done here were previously placed there.\n\nand I prefer to have them initialized at design before propagation, because of the future refactor: otherwise, I will not be able to get rid of p_spani.\n\nThen I can not initialize them with the constructor because in json_io there is no knowledge of the topology yet.\n\nbesides, if I remove this the degree will only be computed and saved to autodesign if there is a propagation in the roadm, which is not correct in my opinion.\n\nSo I don\u0027t know how to do differently.",
       "parentUuid": "c9aa08b9_18ef451e",
+      "range": {
+        "startLine": 363,
+        "startChar": 0,
+        "endLine": 364,
+        "endChar": 74
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c130d1d7_23902fee",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T17:21:39Z",
+      "side": 1,
+      "message": "OK I found out :)",
+      "parentUuid": "ad470ed5_05adb738",
       "range": {
         "startLine": 363,
         "startChar": 0,
