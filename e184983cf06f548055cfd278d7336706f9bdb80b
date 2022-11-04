@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f934b06_87641117",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 55
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T09:49:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94cb0e45_abad57bd",
+      "range": {
+        "startLine": 232,
+        "startChar": 4,
+        "endLine": 232,
+        "endChar": 21
+      },
+      "revId": "e184983cf06f548055cfd278d7336706f9bdb80b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "99ce7e83_d288d1cc",
@@ -47,6 +71,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "73b24e07_584911e2",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 55
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T09:49:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99ce7e83_d288d1cc",
+      "range": {
+        "startLine": 233,
+        "startChar": 7,
+        "endLine": 233,
+        "endChar": 8
+      },
+      "revId": "e184983cf06f548055cfd278d7336706f9bdb80b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f2a7e51_362b2a1a",
@@ -60,6 +108,24 @@
       "writtenOn": "2022-11-02T16:26:06Z",
       "side": 1,
       "message": "it would be awesome to add a bunch of expected outputs for auto-testing",
+      "revId": "e184983cf06f548055cfd278d7336706f9bdb80b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81936a2a_7c7eae4e",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 55
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-04T09:49:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f2a7e51_362b2a1a",
       "revId": "e184983cf06f548055cfd278d7336706f9bdb80b",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
