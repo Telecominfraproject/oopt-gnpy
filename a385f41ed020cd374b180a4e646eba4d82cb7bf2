@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "53da852c_e39a33dd",
+        "filename": "tests/test_equalization.py",
+        "patchSetId": 69
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-05T09:07:20Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "b0c6b633_56d28f09",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 47
+      },
+      "revId": "a385f41ed020cd374b180a4e646eba4d82cb7bf2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "458f6ea3_56e1c8c5",
         "filename": "tests/test_equalization.py",
         "patchSetId": 69
@@ -54,6 +78,30 @@
       "writtenOn": "2022-11-03T09:52:52Z",
       "side": 1,
       "message": "let\u0027s code this, then; this expression will show a meaningless error when the test no longer succeeds",
+      "range": {
+        "startLine": 224,
+        "startChar": 0,
+        "endLine": 226,
+        "endChar": 41
+      },
+      "revId": "a385f41ed020cd374b180a4e646eba4d82cb7bf2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d97cd347_a8fad16d",
+        "filename": "tests/test_equalization.py",
+        "patchSetId": 69
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-05T09:07:20Z",
+      "side": 1,
+      "message": "I don\u0027t understand the comment:  that\u0027s axectly what is in this assert:\n(watt2dbm(signal) \u003e\u003d target) if signal is over target then target is applied\n\n(watt2dbm(signal) \u003c target) if target is strictly below then apply the signal\nfor example if signal \u003d [-20.0, -18.0, -22.0, -25.0, -16.0]\nand target ) [-20, -18.891, -16.989, -18.891, -20]\n\n(watt2dbm(signal) \u003e\u003d target) \u003d [True, True, False, False, True]\n\n(watt2dbm(signal) \u003c target) \u003d [False, False, True, True, False]\nso that the resulting sum\n(((watt2dbm(signal) \u003e\u003d target) * target + (watt2dbm(signal) \u003c target) * watt2dbm(signal)) \u003d [-20, -18.891, -22, -25, -20]\n\nso if the test goes wrong I can immediatly see which carrier is not correctly equalized",
+      "parentUuid": "458f6ea3_56e1c8c5",
       "range": {
         "startLine": 224,
         "startChar": 0,
