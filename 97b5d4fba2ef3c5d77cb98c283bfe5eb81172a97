@@ -824,6 +824,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dce3a153_428ba0a4",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-06T08:35:10Z",
+      "side": 1,
+      "message": "here is the reasoning:\n- extra_params contains default from equipment.\n- element instance might contain a different equalization choice\n- so the default can not be applied.\n\nInstead I could remove the equalization from equipment loading, and just find the equalization here.\nwould this be better ?",
+      "parentUuid": "931f6a3c_bf615c90",
+      "range": {
+        "startLine": 473,
+        "startChar": 1,
+        "endLine": 475,
+        "endChar": 98
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ad3230e8_9a0c5a07",
         "filename": "tests/test_roadm_restrictions.py",
         "patchSetId": 61
