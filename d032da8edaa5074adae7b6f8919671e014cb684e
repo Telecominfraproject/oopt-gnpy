@@ -192,6 +192,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "67e2176f_34d06a48",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 59
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-08T13:28:14Z",
+      "side": 1,
+      "message": "nit: Well, it\u0027s customary (at least on Unix) to have these \"long options\" always prefixed by `--`, like `--spectrum`. I see that this CLI entry point supports some single-minus options already, but can we turn these into `--spectrum`, please?",
+      "parentUuid": "7b9f92c1_fb86ad78",
+      "range": {
+        "startLine": 123,
+        "startChar": 24,
+        "endLine": 123,
+        "endChar": 35
+      },
+      "revId": "d032da8edaa5074adae7b6f8919671e014cb684e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1ee4f98b_1c482c0d",
         "filename": "gnpy/tools/cli_examples.py",
         "patchSetId": 59

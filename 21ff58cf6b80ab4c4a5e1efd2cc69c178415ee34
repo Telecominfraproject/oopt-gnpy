@@ -215,6 +215,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "370ec3b3_fe6ac867",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 61
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-08T13:28:14Z",
+      "side": 1,
+      "message": "yes please",
+      "parentUuid": "1b82abe8_8b002ba1",
+      "revId": "21ff58cf6b80ab4c4a5e1efd2cc69c178415ee34",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8f02eaf2_0860a43e",
         "filename": "gnpy/core/info.py",
         "patchSetId": 61

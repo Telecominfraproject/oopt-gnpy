@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b0f017a_7b3d9ae7",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 65
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-08T13:28:14Z",
+      "side": 1,
+      "message": "- since this is using an f-string specifier already, let\u0027s avoid a possible FP-related rounding surprise and specify the desired format directly:\n f\u0027{baud_rate * 1e-9 :.2f}\u0027\n- it might be nice to add an explicit `G` as a suffix since this is in GBaud",
+      "range": {
+        "startLine": 315,
+        "startChar": 15,
+        "endLine": 315,
+        "endChar": 43
+      },
+      "revId": "6fc94e0969695aab874e16e578e26c0b9d8f80cf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b269852_8e8b9fc9",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 65
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-08T13:28:14Z",
+      "side": 1,
+      "message": "(I thought I commented on this one before, but I cannot find my comment -- sorry if it\u0027s a dupe.)\n\nShouldn\u0027t this keep using the `ref_carrier.req_power`? If not, please explain why in the commit message.",
+      "range": {
+        "startLine": 340,
+        "startChar": 0,
+        "endLine": 341,
+        "endChar": 29
+      },
+      "revId": "6fc94e0969695aab874e16e578e26c0b9d8f80cf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b303567_19bf3197",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 65
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-08T13:28:14Z",
+      "side": 1,
+      "message": "There\u0027s no need to compute something which is just-the-actual-highest-possible frequency, and this can be set to `0`, right?",
+      "range": {
+        "startLine": 294,
+        "startChar": 29,
+        "endLine": 294,
+        "endChar": 83
+      },
+      "revId": "6fc94e0969695aab874e16e578e26c0b9d8f80cf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a38c1056_e4c9c62d",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 65
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-08T13:28:14Z",
+      "side": 1,
+      "message": "`f\u0027{part[\"baud_rate\"] * 1e-9 :.2f}\u0027` here as well",
+      "range": {
+        "startLine": 301,
+        "startChar": 38,
+        "endLine": 301,
+        "endChar": 74
+      },
+      "revId": "6fc94e0969695aab874e16e578e26c0b9d8f80cf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0023df2_fe17facd",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 65
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-08T13:28:14Z",
+      "side": 1,
+      "message": "avoid `round()`, use f-string precision",
+      "range": {
+        "startLine": 312,
+        "startChar": 18,
+        "endLine": 312,
+        "endChar": 60
+      },
+      "revId": "6fc94e0969695aab874e16e578e26c0b9d8f80cf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4298218_1fa264a1",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 65
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-08T13:28:14Z",
+      "side": 1,
+      "message": "avoid `round()`, use f-string precision",
+      "range": {
+        "startLine": 314,
+        "startChar": 18,
+        "endLine": 314,
+        "endChar": 78
+      },
+      "revId": "6fc94e0969695aab874e16e578e26c0b9d8f80cf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}

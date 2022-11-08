@@ -70,6 +70,24 @@
       "parentUuid": "15ae9c10_48ad623a",
       "revId": "cb85b8fe2b6ec1a5304414ab9da8f30a943f1602",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22c1b6e3_54eee84c",
+        "filename": "gnpy/core/equipment.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-08T13:28:14Z",
+      "side": 0,
+      "message": "I wonder if we can remove this altogether. Anyway, that\u0027s for another patch.",
+      "parentUuid": "233b9891_01ed594c",
+      "revId": "cb85b8fe2b6ec1a5304414ab9da8f30a943f1602",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
