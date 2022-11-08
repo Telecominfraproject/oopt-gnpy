@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "672101d8_6fcb6e2e",
+        "filename": "gnpy/core/utils.py",
+        "patchSetId": 55
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-08T13:31:56Z",
+      "side": 1,
+      "message": "actually the space is still there",
+      "parentUuid": "73b24e07_584911e2",
+      "range": {
+        "startLine": 233,
+        "startChar": 7,
+        "endLine": 233,
+        "endChar": 8
+      },
+      "revId": "e184983cf06f548055cfd278d7336706f9bdb80b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4f2a7e51_362b2a1a",
         "filename": "gnpy/core/utils.py",
         "patchSetId": 55
