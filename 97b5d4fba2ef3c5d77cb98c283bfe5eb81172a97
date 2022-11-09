@@ -848,6 +848,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3d0d6bd5_117242db",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-09T17:31:38Z",
+      "side": 1,
+      "message": "I have tried to change this as I proposed, but I think I cannot. here is the explanation:\n\n- I cannot remove the default equalization from the equipement loading, because I will need it afterwards for per degrees equalization checking\n- extra_params is a generic means to upload all equipment default values in elements, so I can not change extra_param behaviour without impacting all elements.\n- temp \u003d merge_amplifier_restrictions(temp, extra_params.__dict__)    is applied also on ROADMs so if default equalization is not removed at this point it will be added to the existing one in element.\n- I cannot remove the extra equalization after this point, because then I would not know if the roadm config contained 2 equalizations.\n\nSo I think this is the only way.\nHowever I refactored a bit so that i don\u0027t remove the equalization from the default, I just don\u0027t use it.",
+      "parentUuid": "dce3a153_428ba0a4",
+      "range": {
+        "startLine": 473,
+        "startChar": 1,
+        "endLine": 475,
+        "endChar": 98
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ad3230e8_9a0c5a07",
         "filename": "tests/test_roadm_restrictions.py",
         "patchSetId": 61
