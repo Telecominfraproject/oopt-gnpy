@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88d2cd3c_a9d2d32e",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 65
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-09T17:32:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b0f017a_7b3d9ae7",
+      "range": {
+        "startLine": 315,
+        "startChar": 15,
+        "endLine": 315,
+        "endChar": 43
+      },
+      "revId": "6fc94e0969695aab874e16e578e26c0b9d8f80cf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b269852_8e8b9fc9",
@@ -47,6 +71,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d9bb9bc_4f2c283a",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 65
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-09T17:32:16Z",
+      "side": 1,
+      "message": "I have removed req_power from ref_carrier, because this was already carried by p_span0 within Pref. So it was duplicated.\nBut I still need to record the power in p_span0.\nThe removing was explained in a previous commit https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/522051/42.",
+      "parentUuid": "7b269852_8e8b9fc9",
+      "range": {
+        "startLine": 340,
+        "startChar": 0,
+        "endLine": 341,
+        "endChar": 29
+      },
+      "revId": "6fc94e0969695aab874e16e578e26c0b9d8f80cf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b303567_19bf3197",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-11-08T13:28:14Z",
       "side": 1,
       "message": "There\u0027s no need to compute something which is just-the-actual-highest-possible frequency, and this can be set to `0`, right?",
+      "range": {
+        "startLine": 294,
+        "startChar": 29,
+        "endLine": 294,
+        "endChar": 83
+      },
+      "revId": "6fc94e0969695aab874e16e578e26c0b9d8f80cf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83f1e902_82478c40",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 65
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-09T17:32:16Z",
+      "side": 1,
+      "message": "OK",
+      "parentUuid": "9b303567_19bf3197",
       "range": {
         "startLine": 294,
         "startChar": 29,
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1f4d4d3d_674dd432",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 65
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-09T17:32:16Z",
+      "side": 1,
+      "message": "OK but I need to keep the index as there may be more than one partition with the same baud rate, and it does not make sense to group them (Andrea recommandation)",
+      "parentUuid": "a38c1056_e4c9c62d",
+      "range": {
+        "startLine": 301,
+        "startChar": 38,
+        "endLine": 301,
+        "endChar": 74
+      },
+      "revId": "6fc94e0969695aab874e16e578e26c0b9d8f80cf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e0023df2_fe17facd",
         "filename": "gnpy/tools/json_io.py",
         "patchSetId": 65
@@ -106,6 +202,30 @@
       "writtenOn": "2022-11-08T13:28:14Z",
       "side": 1,
       "message": "avoid `round()`, use f-string precision",
+      "range": {
+        "startLine": 312,
+        "startChar": 18,
+        "endLine": 312,
+        "endChar": 60
+      },
+      "revId": "6fc94e0969695aab874e16e578e26c0b9d8f80cf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b794040_9c5ad859",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 65
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-09T17:32:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0023df2_fe17facd",
       "range": {
         "startLine": 312,
         "startChar": 18,
@@ -129,6 +249,30 @@
       "writtenOn": "2022-11-08T13:28:14Z",
       "side": 1,
       "message": "avoid `round()`, use f-string precision",
+      "range": {
+        "startLine": 314,
+        "startChar": 18,
+        "endLine": 314,
+        "endChar": 78
+      },
+      "revId": "6fc94e0969695aab874e16e578e26c0b9d8f80cf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa01fe18_f73dba74",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 65
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-09T17:32:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4298218_1fa264a1",
       "range": {
         "startLine": 314,
         "startChar": 18,
