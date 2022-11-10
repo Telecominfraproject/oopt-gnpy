@@ -26,7 +26,7 @@ from gnpy.core.utils import lin2db
 from gnpy.core.info import create_input_spectral_information, carriers_to_spectral_information, ReferenceCarrier
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 import gnpy.core.ansi_escapes as ansi_escapes
-from gnpy.topology.spectrum_assignment import m_to_freq
+from gnpy.topology.utils import m_to_freq
 from copy import deepcopy
 from csv import writer
 from math import ceil
@@ -213,7 +213,7 @@ class ResultElement:
         def path_metric(pth, req):
             """ creates the metrics dictionary
             """
-            freq_slot = m_to_freq(req.N, req.M)
+            freq_slot = [None, None] if req.N is None or req.M is None else m_to_freq(req.N, req.M)
             return [
                 {
                     'metric-type': 'SNR-bandwidth',
