@@ -6,7 +6,7 @@
 from numpy import zeros, array
 from gnpy.core.elements import Transceiver, Edfa
 from gnpy.core.utils import automatic_fmax, lin2db, db2lin, merge_amplifier_restrictions
-from gnpy.core.info import create_input_spectral_information, Pref
+from gnpy.core.info import create_input_spectral_information, ReferenceCarrier
 from gnpy.core.network import build_network
 from gnpy.tools.json_io import load_network, load_equipment
 from pathlib import Path
@@ -73,20 +73,20 @@ def si(nch_and_spacing, bw):
     nb_channel, spacing = nch_and_spacing
     f_min = 191.3e12
     f_max = automatic_fmax(f_min, spacing, nb_channel)
-    return create_input_spectral_information(f_min, f_max, 0.15, bw, 1e-3, spacing)
+    return create_input_spectral_information(f_min=f_min, f_max=f_max, roll_off=0.15, baud_rate=bw, power=1e-3,
+                                             spacing=spacing, tx_osnr=40.0, ref_carrier=ReferenceCarrier(baud_rate=32e9))
 
 
 @pytest.mark.parametrize("gain, nf_expected", [(10, 15), (15, 10), (25, 5.8)])
 def test_variable_gain_nf(gain, nf_expected, setup_edfa_variable_gain, si):
     """=> unitary test for variable gain model Edfa._calc_nf() (and Edfa.interpol_params)"""
     edfa = setup_edfa_variable_gain
-    frequencies = array([c.frequency for c in si.carriers])
-    pin = array([c.power.signal + c.power.nli + c.power.ase for c in si.carriers])
-    pin = pin / db2lin(gain)
-    baud_rates = array([c.baud_rate for c in si.carriers])
+    si.signal /= db2lin(gain)
+    si.nli /= db2lin(gain)
+    si.ase /= db2lin(gain)
     edfa.operational.gain_target = gain
-    pref = Pref(0, -gain, lin2db(len(frequencies)))
-    edfa.interpol_params(frequencies, pin, baud_rates, pref)
+    si.pref = si.pref._replace(p_span0=0, p_spani=-gain)
+    edfa.interpol_params(si)
     result = edfa.nf
     assert pytest.approx(nf_expected, abs=0.01) == result[0]
 
@@ -95,23 +95,20 @@ def test_variable_gain_nf(gain, nf_expected, setup_edfa_variable_gain, si):
 def test_fixed_gain_nf(gain, nf_expected, setup_edfa_fixed_gain, si):
     """=> unitary test for fixed gain model Edfa._calc_nf() (and Edfa.interpol_params)"""
     edfa = setup_edfa_fixed_gain
-    frequencies = array([c.frequency for c in si.carriers])
-    pin = array([c.power.signal + c.power.nli + c.power.ase for c in si.carriers])
-    pin = pin / db2lin(gain)
-    baud_rates = array([c.baud_rate for c in si.carriers])
+    si.signal /= db2lin(gain)
+    si.nli /= db2lin(gain)
+    si.ase /= db2lin(gain)
     edfa.operational.gain_target = gain
-    pref = Pref(0, -gain, lin2db(len(frequencies)))
-    edfa.interpol_params(frequencies, pin, baud_rates, pref)
-
+    si.pref = si.pref._replace(p_span0=0, p_spani=-gain)
+    edfa.interpol_params(si)
     assert pytest.approx(nf_expected, abs=0.01) == edfa.nf[0]
 
 
 def test_si(si, nch_and_spacing):
     """basic total power check of the channel comb generation"""
     nb_channel = nch_and_spacing[0]
-    pin = array([c.power.signal + c.power.nli + c.power.ase for c in si.carriers])
-    p_tot = pin.sum()
-    expected_p_tot = si.carriers[0].power.signal * nb_channel
+    p_tot = sum(si.signal + si.ase + si.nli)
+    expected_p_tot = si.signal[0] * nb_channel
     assert pytest.approx(expected_p_tot, abs=0.01) == p_tot
 
 
@@ -122,14 +119,13 @@ def test_compare_nf_models(gain, setup_edfa_variable_gain, si):
      between gain_min and gain_flatmax some discrepancy is expected but target < 0.5dB
      => unitary test for Edfa._calc_nf (and Edfa.interpol_params)"""
     edfa = setup_edfa_variable_gain
-    frequencies = array([c.frequency for c in si.carriers])
-    pin = array([c.power.signal + c.power.nli + c.power.ase for c in si.carriers])
-    pin = pin / db2lin(gain)
-    baud_rates = array([c.baud_rate for c in si.carriers])
+    si.signal /= db2lin(gain)
+    si.nli /= db2lin(gain)
+    si.ase /= db2lin(gain)
     edfa.operational.gain_target = gain
     # edfa is variable gain type
-    pref = Pref(0, -gain, lin2db(len(frequencies)))
-    edfa.interpol_params(frequencies, pin, baud_rates, pref)
+    si.pref = si.pref._replace(p_span0=0, p_spani=-gain)
+    edfa.interpol_params(si)
     nf_model = edfa.nf[0]
 
     # change edfa type variety to a polynomial
@@ -155,7 +151,7 @@ def test_compare_nf_models(gain, setup_edfa_variable_gain, si):
     edfa = Edfa(**el_config)
 
     # edfa is variable gain type
-    edfa.interpol_params(frequencies, pin, baud_rates, pref)
+    edfa.interpol_params(si)
     nf_poly = edfa.nf[0]
     print(nf_poly, nf_model)
     assert pytest.approx(nf_model, abs=0.5) == nf_poly
@@ -183,21 +179,16 @@ def test_ase_noise(gain, si, setup_trx, bw):
     si = span(si)
     print(span)
 
-    frequencies = array([c.frequency for c in si.carriers])
-    pin = array([c.power.signal + c.power.nli + c.power.ase for c in si.carriers])
-    baud_rates = array([c.baud_rate for c in si.carriers])
-    pref = Pref(0, -gain, lin2db(len(frequencies)))
-    edfa.interpol_params(frequencies, pin, baud_rates, pref)
+    si.pref = si.pref._replace(p_span0=0, p_spani=-gain)
+    edfa.interpol_params(si)
     nf = edfa.nf
     print('nf', nf)
-    pin = lin2db(pin[0] * 1e3)
+    pin = lin2db((si.signal[0] + si.ase[0] + si.nli[0]) * 1e3)
     osnr_expected = pin - nf[0] + 58
 
     si = edfa(si)
     print(edfa)
-    pout = array([c.power.signal for c in si.carriers])
-    pase = array([c.power.ase for c in si.carriers])
-    osnr = lin2db(pout[0] / pase[0]) - lin2db(12.5e9 / bw)
+    osnr = lin2db(si.signal[0] / si.ase[0]) - lin2db(12.5e9 / bw)
     assert pytest.approx(osnr_expected, abs=0.01) == osnr
 
     trx = setup_trx

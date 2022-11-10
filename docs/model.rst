@@ -1,3 +1,5 @@
+.. _physical-model:
+
 Physical Model used in GNPy
 ===========================
 
@@ -143,4 +145,4 @@ Raman Scattering in order to give a proper estimation for all channels
 :cite:`cantono2018modeling`.  This will be the main upgrade required within the
 PSE framework.
 
-.. bibliography:: biblio.bib  
+.. bibliography::

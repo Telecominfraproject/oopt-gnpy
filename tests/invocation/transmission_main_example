@@ -8,12 +8,13 @@ Now propagating between Site_A and Site_B:
 
 Propagating with input power = [1;36;40m0.00 dBm[0m:
 Transceiver Site_A
+  GSNR (0.1nm, dB):          40.00
+  GSNR (signal bw, dB):      35.92
   OSNR ASE (0.1nm, dB):      40.00
   OSNR ASE (signal bw, dB):  35.92
-  SNR total (signal bw, dB): 35.92
-  SNR total (0.1nm, dB):     40.00
   CD (ps/nm):                0.00
   PMD (ps):                  0.00
+  PDL (dB):                  0.00
 Fiber          Span1
   type_variety:                SSMF
   length (km):                 80.00
@@ -21,7 +22,7 @@ Fiber          Span1
   total loss (dB):             17.00
   (includes conn loss (dB) in: 0.50 out: 0.50)
   (conn loss out includes EOL margin defined in eqpt_config.json)
-  pch out (dBm): -17.0
+  pch out (dBm): -17.00
 Edfa Edfa1
   type_variety:           std_low_gain
   effective gain(dB):     15.00
@@ -31,20 +32,21 @@ Edfa Edfa1
   pad att_in (dB):        0.00
   Power In (dBm):         1.81
   Power Out (dBm):        16.82
-  Delta_P (dB):           -2
-  target pch (dBm):       -2.0
-  effective pch (dBm):    -2.0
+  Delta_P (dB):           -2.00
+  target pch (dBm):       -2.00
+  effective pch (dBm):    -2.00
   output VOA (dB):        0.00
 Transceiver Site_B
+  GSNR (0.1nm, dB):          31.17
+  GSNR (signal bw, dB):      27.09
   OSNR ASE (0.1nm, dB):      33.30
   OSNR ASE (signal bw, dB):  29.21
-  SNR total (signal bw, dB): 27.09
-  SNR total (0.1nm, dB):     31.17
   CD (ps/nm):                1336.00
   PMD (ps):                  0.36
+  PDL (dB):                  0.00
 
 Transmission result for input power = 0.00 dBm:
-  Final SNR total (0.1 nm): [1;36;40m31.17 dB[0m
+  Final GSNR (0.1 nm): [1;36;40m31.17 dB[0m
 
 (No source node specified: picked Site_A)
 

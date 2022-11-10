@@ -1,0 +1,446 @@
+{
+  "elements": [
+    {
+      "uid": "Site_A",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": "Site A",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "nodeA",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -18,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        },
+        "per_degree_pch_out_db": {}
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "Zion",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "fiber1",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.0,
+        "con_out": 0.0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber7",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 1.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.0,
+        "con_out": 0.0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber8",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 60.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.0,
+        "con_out": 0.0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fused1",
+      "type": "Fused",
+      "params": {
+        "loss": 0.0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber2",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 1.0,
+        "loss_coef": 0.5,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.0,
+        "con_out": 0.0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "amp2",
+      "type": "Edfa",
+      "type_variety": "std_medium_gain",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "Zion",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "fiber3",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.0,
+        "con_out": 0.0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fused7",
+      "type": "Fused",
+      "params": {
+        "loss": 1.0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber6",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.0,
+        "con_out": 0.0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "nodeC",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -18,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        },
+        "per_degree_pch_out_db": {}
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "Zion",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "Site_C",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": "Site A",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "amp3",
+      "type": "Edfa",
+      "type_variety": "std_medium_gain",
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "Zion",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "fused4",
+      "type": "Fused",
+      "params": {
+        "loss": 1.0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber4",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.0,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.0,
+        "con_out": 0.0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "amp4",
+      "type": "Edfa",
+      "type_variety": "std_medium_gain",
+      "operational": {
+        "gain_target": 13.31,
+        "delta_p": 1.18,
+        "tilt_target": -0.81,
+        "out_voa": 2.0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "Zion",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "fused5",
+      "type": "Fused",
+      "params": {
+        "loss": 0.0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0,
+          "longitude": 0,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "nodeB",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -15,
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        },
+        "per_degree_pch_out_db": {}
+      },
+      "metadata": {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0,
+          "city": "Zion",
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "Site_B",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 2,
+          "longitude": 0,
+          "city": "Site B",
+          "region": ""
+        }
+      }
+    }
+  ],
+  "connections": [
+    {
+      "from_node": "Site_A",
+      "to_node": "nodeA"
+    },
+    {
+      "from_node": "nodeA",
+      "to_node": "Site_A"
+    },
+    {
+      "from_node": "nodeA",
+      "to_node": "fiber1"
+    },
+    {
+      "from_node": "fiber1",
+      "to_node": "fused1"
+    },
+    {
+      "from_node": "fused1",
+      "to_node": "fiber2"
+    },
+    {
+      "from_node": "fiber2",
+      "to_node": "amp2"
+    },
+    {
+      "from_node": "amp2",
+      "to_node": "fiber3"
+    },
+    {
+      "from_node": "fiber3",
+      "to_node": "nodeC"
+    },
+    {
+      "from_node": "nodeC",
+      "to_node": "Site_C"
+    },
+    {
+      "from_node": "Site_C",
+      "to_node": "nodeC"
+    },
+    {
+      "from_node": "nodeC",
+      "to_node": "amp3"
+    },
+    {
+      "from_node": "amp3",
+      "to_node": "fiber4"
+    },
+    {
+      "from_node": "fiber4",
+      "to_node": "amp4"
+    },
+    {
+      "from_node": "amp4",
+      "to_node": "fused5"
+    },
+    {
+      "from_node": "fused5",
+      "to_node": "nodeB"
+    },
+    {
+      "from_node": "nodeB",
+      "to_node": "fused7"
+    },
+    {
+      "from_node": "fused7",
+      "to_node": "fiber6"
+    },
+    {
+      "from_node": "fiber6",
+      "to_node": "nodeA"
+    },
+    {
+      "from_node": "Site_B",
+      "to_node": "nodeB"
+    },
+    {
+      "from_node": "nodeB",
+      "to_node": "Site_B"
+    },
+    {
+      "from_node": "nodeA",
+      "to_node": "fiber7"
+    },
+    {
+      "from_node": "fiber7",
+      "to_node": "fiber8"
+    },
+    {
+      "from_node": "fiber8",
+      "to_node": "nodeB"
+    }
+  ]
+}

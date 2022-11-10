@@ -5,11 +5,11 @@
 gnpy.tools.plots
 ================
 
-Graphs and plots usable form a CLI application
+Graphs and plots usable from a CLI application
 '''
 
 from matplotlib.pyplot import show, axis, figure, title, text
-from networkx import draw_networkx_nodes, draw_networkx_edges, draw_networkx_labels
+from networkx import draw_networkx
 from gnpy.core.elements import Transceiver
 
 
@@ -18,21 +18,10 @@ def _try_city(node):
 
 
 def plot_baseline(network):
-    edges = set(network.edges())
     pos = {n: (n.lng, n.lat) for n in network.nodes()}
     labels = {n: _try_city(n) for n in network.nodes() if isinstance(n, Transceiver)}
-    city_labels = set(labels.values())
-    for n in network.nodes():
-        if n.location.city and n.location.city not in city_labels:
-            labels[n] = n.location.city
-            city_labels.add(n.location.city)
-    label_pos = pos
-
-    fig = figure()
-    kwargs = {'figure': fig, 'pos': pos}
-    plot = draw_networkx_nodes(network, nodelist=network.nodes(), node_color='#ababab', **kwargs)
-    draw_networkx_edges(network, edgelist=edges, edge_color='#ababab', **kwargs)
-    draw_networkx_labels(network, labels=labels, font_size=14, **{**kwargs, 'pos': label_pos})
+    draw_networkx(network, pos=pos, node_size=50, node_color='#ababab', edge_color='#ababab',
+                  labels=labels, font_size=14)
     axis('off')
     show()
 
@@ -40,27 +29,21 @@ def plot_baseline(network):
 def plot_results(network, path, source, destination):
     path_edges = set(zip(path[:-1], path[1:]))
     edges = set(network.edges()) - path_edges
+    nodes = [n for n in network.nodes() if n not in path]
     pos = {n: (n.lng, n.lat) for n in network.nodes()}
-    nodes = {}
+    nodes_by_pos = {}
     for k, (x, y) in pos.items():
-        nodes.setdefault((round(x, 1), round(y, 1)), []).append(k)
+        nodes_by_pos.setdefault((round(x, 1), round(y, 1)), []).append(k)
 
     labels = {n: _try_city(n) for n in network.nodes() if isinstance(n, Transceiver)}
-    city_labels = set(labels.values())
-    for n in network.nodes():
-        if n.location.city and n.location.city not in city_labels:
-            labels[n] = n.location.city
-            city_labels.add(n.location.city)
-    label_pos = pos
 
     fig = figure()
-    kwargs = {'figure': fig, 'pos': pos}
-    all_nodes = [n for n in network.nodes() if n not in path]
-    plot = draw_networkx_nodes(network, nodelist=all_nodes, node_color='#ababab', node_size=50, **kwargs)
-    draw_networkx_nodes(network, nodelist=path, node_color='#ff0000', node_size=55, **kwargs)
-    draw_networkx_edges(network, edgelist=edges, edge_color='#ababab', **kwargs)
-    draw_networkx_edges(network, edgelist=path_edges, edge_color='#ff0000', **kwargs)
-    draw_networkx_labels(network, labels=labels, font_size=14, **{**kwargs, 'pos': label_pos})
+    draw_networkx(network, pos=pos, labels=labels, font_size=14,
+                  nodelist=nodes, node_color='#ababab', node_size=50,
+                  edgelist=edges, edge_color='#ababab')
+    draw_networkx(network, pos=pos, with_labels=False,
+                  nodelist=path, node_color='#ff0000', node_size=55,
+                  edgelist=path_edges, edge_color='#ff0000')
     title(f'Propagating from {_try_city(source)} to {_try_city(destination)}')
     axis('off')
 
@@ -70,7 +53,7 @@ def plot_results(network, path, source, destination):
                    bbox={'boxstyle': 'round', 'facecolor': 'wheat', 'alpha': 0.5})
 
     msgs = {(x, y): heading + '\n\n'.join(str(n) for n in ns if n in path)
-            for (x, y), ns in nodes.items()}
+            for (x, y), ns in nodes_by_pos.items()}
 
     def hover(event):
         if event.xdata is None or event.ydata is None:

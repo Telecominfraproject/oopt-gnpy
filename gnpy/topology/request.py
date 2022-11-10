@@ -20,10 +20,10 @@ from logging import getLogger
 from networkx import (dijkstra_path, NetworkXNoPath,
                       all_simple_paths, shortest_simple_paths)
 from networkx.utils import pairwise
-from numpy import mean
+from numpy import mean, argmin
 from gnpy.core.elements import Transceiver, Roadm
 from gnpy.core.utils import lin2db
-from gnpy.core.info import create_input_spectral_information
+from gnpy.core.info import create_input_spectral_information, carriers_to_spectral_information, ReferenceCarrier
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 import gnpy.core.ansi_escapes as ansi_escapes
 from gnpy.topology.spectrum_assignment import m_to_freq
@@ -33,12 +33,12 @@ from math import ceil
 
 LOGGER = getLogger(__name__)
 
-RequestParams = namedtuple('RequestParams', 'request_id source destination bidir trx_type' +
-                           ' trx_mode nodes_list loose_list spacing power nb_channel f_min' +
-                           ' f_max format baud_rate OSNR bit_rate roll_off tx_osnr' +
-                           ' min_spacing cost path_bandwidth')
-DisjunctionParams = namedtuple('DisjunctionParams', 'disjunction_id relaxable link' +
-                               '_diverse node_diverse disjunctions_req')
+RequestParams = namedtuple('RequestParams', 'request_id source destination bidir trx_type'
+                           ' trx_mode nodes_list loose_list spacing power nb_channel f_min'
+                           ' f_max format baud_rate OSNR penalties bit_rate'
+                           ' roll_off tx_osnr min_spacing cost path_bandwidth effective_freq_slot')
+DisjunctionParams = namedtuple('DisjunctionParams', 'disjunction_id relaxable link_diverse'
+                               ' node_diverse disjunctions_req')
 
 
 class PathRequest:
@@ -63,12 +63,17 @@ class PathRequest:
         self.f_max = params.f_max
         self.format = params.format
         self.OSNR = params.OSNR
+        self.penalties = params.penalties
         self.bit_rate = params.bit_rate
         self.roll_off = params.roll_off
         self.tx_osnr = params.tx_osnr
         self.min_spacing = params.min_spacing
         self.cost = params.cost
         self.path_bandwidth = params.path_bandwidth
+        if params.effective_freq_slot is not None:
+            self.N = params.effective_freq_slot['N']
+            self.M = params.effective_freq_slot['M']
+        self.initial_spectrum = None
 
     def __str__(self):
         return '\n\t'.join([f'{type(self).__name__} {self.request_id}',
@@ -76,7 +81,7 @@ class PathRequest:
                             f'destination:  {self.destination}'])
 
     def __repr__(self):
-        if self.baud_rate is not None:
+        if self.baud_rate is not None and self.bit_rate is not None:
             temp = self.baud_rate * 1e-9
             temp2 = self.bit_rate * 1e-9
         else:
@@ -130,7 +135,7 @@ BLOCKING_NOPATH = ['NO_PATH', 'NO_PATH_WITH_CONSTRAINT',
                    'NO_FEASIBLE_BAUDRATE_WITH_SPACING',
                    'NO_COMPUTED_SNR']
 BLOCKING_NOMODE = ['NO_FEASIBLE_MODE', 'MODE_NOT_FEASIBLE']
-BLOCKING_NOSPECTRUM = 'NO_SPECTRUM'
+BLOCKING_NOSPECTRUM = ['NO_SPECTRUM', 'NOT_ENOUGH_RESERVED_SPECTRUM']
 
 
 class ResultElement:
@@ -163,7 +168,11 @@ class ResultElement:
             }
             pro_list.append(temp)
             index += 1
-            if self.path_request.M > 0:
+            if not hasattr(self.path_request, 'blocking_reason'):
+                # M and N values should not be None at this point
+                if self.path_request.M is None or self.path_request.N is None:
+                    raise ServiceError('request {self.path_id} should have positive non null n and m values.')
+
                 temp = {
                     'path-route-object': {
                         'index': index,
@@ -175,12 +184,14 @@ class ResultElement:
                 }
                 pro_list.append(temp)
                 index += 1
-            elif self.path_request.M == 0 and hasattr(self.path_request, 'blocking_reason'):
-                # if the path is blocked due to spectrum, no label object is created, but
-                # the json response includes a detailed path for user infromation.
-                pass
             else:
-                raise ServiceError('request {self.path_id} should have positive path bandwidth value.')
+                # if the path is blocked, no label object is created, but
+                # the json response includes a detailed path for user information.
+                # M and N values should be None at this point
+                if self.path_request.M is not None or self.path_request.N is not None:
+                    raise ServiceError('request {self.path_id} should not have label M and N values at this point.')
+
+
             if isinstance(element, Transceiver):
                 temp = {
                     'path-route-object': {
@@ -354,20 +365,36 @@ def compute_constrained_path(network, req):
     return total_path
 
 
+def ref_carrier(equipment):
+    """Create a reference carier based SI information with the specified request's power:
+    req_power records the power in W that the user has defined for a given request
+    (which might be different from the one used for the design).
+    """
+    return ReferenceCarrier(baud_rate=equipment['SI']['default'].baud_rate)
+
+
 def propagate(path, req, equipment):
-    si = create_input_spectral_information(
-        req.f_min, req.f_max, req.roll_off, req.baud_rate,
-        req.power, req.spacing)
+    """ propagates signals in each element according to initial spectrum set by user
+    """
+    if req.initial_spectrum is not None:
+        si = carriers_to_spectral_information(initial_spectrum=req.initial_spectrum,
+                                              power=req.power, ref_carrier=ref_carrier(equipment))
+    else:
+        si = create_input_spectral_information(
+            f_min=req.f_min, f_max=req.f_max, roll_off=req.roll_off, baud_rate=req.baud_rate,
+            power=req.power, spacing=req.spacing, tx_osnr=req.tx_osnr, ref_carrier=ref_carrier(equipment))
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
             si = el(si, degree=path[i+1].uid)
         else:
             si = el(si)
-    path[0].update_snr(req.tx_osnr)
+    path[0].update_snr(si.tx_osnr)
+    path[0].calc_penalties(req.penalties)
     if any(isinstance(el, Roadm) for el in path):
-        path[-1].update_snr(req.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
+        path[-1].update_snr(si.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
     else:
-        path[-1].update_snr(req.tx_osnr)
+        path[-1].update_snr(si.tx_osnr)
+    path[-1].calc_penalties(req.penalties)
     return si
 
 
@@ -387,13 +414,18 @@ def propagate_and_optimize_mode(path, req, equipment):
                                 float(this_mode['min_spacing']) <= req.spacing]
             modes_to_explore = sorted(modes_to_explore,
                                       key=lambda x: x['bit_rate'], reverse=True)
-            # print(modes_to_explore)
             # step2: computes propagation for each baudrate: stop and select the first that passes
-            # TODO: the case of roll of is not included: for now use SI one
+            # TODO: the case of roll off is not included: for now use SI one
             # TODO: if the loop in mode optimization does not have a feasible path, then bugs
-            spc_info = create_input_spectral_information(req.f_min, req.f_max,
-                                                         equipment['SI']['default'].roll_off,
-                                                         this_br, req.power, req.spacing)
+            if req.initial_spectrum is not None:
+                # this case is not yet handled: spectrum can not be defined for the path-request-run function
+                # and this function is only called in this case. so coming here should not be considered yet.
+                msg = f'Request: {req.request_id} contains a unexpected initial_spectrum.'
+                raise ServiceError(msg)
+            spc_info = create_input_spectral_information(f_min=req.f_min, f_max=req.f_max,
+                                                         roll_off=equipment['SI']['default'].roll_off,
+                                                         baud_rate=this_br, power=req.power, spacing=req.spacing,
+                                                         tx_osnr=req.tx_osnr, ref_carrier=ref_carrier(equipment))
             for i, el in enumerate(path):
                 if isinstance(el, Roadm):
                     spc_info = el(spc_info, degree=path[i+1].uid)
@@ -402,11 +434,13 @@ def propagate_and_optimize_mode(path, req, equipment):
             for this_mode in modes_to_explore:
                 if path[-1].snr is not None:
                     path[0].update_snr(this_mode['tx_osnr'])
+                    path[0].calc_penalties(this_mode['penalties'])
                     if any(isinstance(el, Roadm) for el in path):
                         path[-1].update_snr(this_mode['tx_osnr'], equipment['Roadm']['default'].add_drop_osnr)
                     else:
                         path[-1].update_snr(this_mode['tx_osnr'])
-                    if round(min(path[-1].snr + lin2db(this_br / (12.5e9))), 2) \
+                    path[-1].calc_penalties(this_mode['penalties'])
+                    if round(min(path[-1].snr_01nm - path[-1].total_penalty), 2) \
                             > this_mode['OSNR'] + equipment['SI']['default'].sys_margins:
                         return path, this_mode
                     else:
@@ -414,7 +448,6 @@ def propagate_and_optimize_mode(path, req, equipment):
                 else:
                     req.blocking_reason = 'NO_COMPUTED_SNR'
                     return path, None
-
         # only get to this point if no baudrate/mode satisfies OSNR requirement
 
         # returns the last propagated path and mode
@@ -721,8 +754,8 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
         # in each loop, dpath is updated with a path for rq that satisfies
         # disjunction with each path in dpath
         # for example, assume set of requests in the vector (disjunction_list) is  {rq1,rq2, rq3}
-        # rq1  p1: abfhg
-        #      p2: aefhg
+        # rq1  p1: aefhg
+        #      p2: abfhg
         #      p3: abcg
         # rq2  p8: bf
         # rq3  p4: abcgh
@@ -739,6 +772,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
         #  after second loop:
         #  dpath = [ p3 p8 p6 ]
         #  since p1 and p4 are not disjoint
+        #        p1 and p6 are not disjoint
         #        p1 and p7 are not disjoint
         #        p3 and p4 are not disjoint
         #        p3 and p7 are not disjoint
@@ -762,7 +796,6 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
                         temp.append(temp2)
                         # print(f' coucou {elem1}: \t{temp}')
             dpath = temp
-        # print(dpath)
         candidates[dis.disjunction_id] = dpath
 
     # for i in disjunctions_list:
@@ -803,9 +836,9 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
                         if pth in cndt:
                             candidates[this_id].remove(cndt)
 
-#    for i in disjunctions_list:
-#        print(i.disjunction_id)
-#        print(f'\n{candidates[i.disjunction_id]}')
+    # for i in disjunctions_list:
+    #     print(i.disjunction_id)
+    #     print(f'\n{candidates[i.disjunction_id]}')
 
     # step 4 apply route constraints: remove candidate path that do not satisfy
     # the constraint only in  the case of disjounction: the simple path is processed in
@@ -813,33 +846,34 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
     # TODO: keep a version without the loose constraint
     for this_d in disjunctions_list:
         temp = []
+        alternatetemp = []
         for j, sol in enumerate(candidates[this_d.disjunction_id]):
             testispartok = True
+            testispartnokloose = True
             for pth in sol:
                 # print(f'test {allpaths[id(pth)].req.request_id}')
                 # print(f'length of route {len(allpaths[id(pth)].req.nodes_list)}')
                 if allpaths[id(pth)].req.nodes_list:
-                    # if pth does not containt the ordered list node, remove sol from the candidate
-                    # except if this was the last solution: then check if the constraint is loose
-                    # or not
+                    # if any pth from sol does not contain the ordered list node,
+                    # remove sol from the candidate, except if constraint was loose:
+                    # then keep sol as an alternate solution
                     if not ispart(allpaths[id(pth)].req.nodes_list, pth):
-                        # print(f'nb of solutions {len(temp)}')
-                        if j < len(candidates[this_d.disjunction_id]) - 1:
-                            msg = f'removing {sol}'
-                            LOGGER.info(msg)
-                            testispartok = False
-                            # break
-                        else:
-                            if 'LOOSE' in allpaths[id(pth)].req.loose_list:
-                                LOGGER.info(f'Could not apply route constraint' +
-                                            f'{allpaths[id(pth)].req.nodes_list} on request' +
-                                            f' {allpaths[id(pth)].req.request_id}')
-                            else:
-                                LOGGER.info(f'removing last solution from candidate paths\n{sol}')
-                                testispartok = False
+                        testispartok = False
+                        if 'STRICT' in allpaths[id(pth)].req.loose_list:
+                            LOGGER.info(f'removing solution from candidate paths\n{pth}')
+                            testispartnokloose = False
+                            break
             if testispartok:
                 temp.append(sol)
-        candidates[this_d.disjunction_id] = temp
+            elif testispartnokloose:
+                LOGGER.info(f'Adding solution as alternate solution not satisfying constraint\n{pth}')
+                alternatetemp.append(sol)
+        if temp:
+            candidates[this_d.disjunction_id] = temp
+        elif alternatetemp:
+            candidates[this_d.disjunction_id] = alternatetemp
+        else:
+            candidates[this_d.disjunction_id] = []
 
     # step 5 select the first combination that works
     pathreslist_disjoint = {}
@@ -990,7 +1024,9 @@ def compare_reqs(req1, req2, disjlist):
             req1.format == req2.format and \
             req1.OSNR == req2.OSNR and \
             req1.roll_off == req2.roll_off and \
-            same_disj:
+            same_disj and \
+            getattr(req1, 'N', None) is None and getattr(req2, 'N', None) is None and \
+            getattr(req1, 'M', None) is None and getattr(req2, 'M', None) is None:
         return True
     else:
         return False
@@ -1122,12 +1158,16 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 # means that at this point the mode was entered/forced by user and thus a
                 # baud_rate was defined
                 propagate(total_path, pathreq, equipment)
-                temp_snr01nm = round(mean(total_path[-1].snr+lin2db(pathreq.baud_rate/(12.5e9))), 2)
-                if temp_snr01nm < pathreq.OSNR + equipment['SI']['default'].sys_margins:
+                snr01nm_with_penalty = total_path[-1].snr_01nm - total_path[-1].total_penalty
+                min_ind = argmin(snr01nm_with_penalty)
+                if round(snr01nm_with_penalty[min_ind], 2) < pathreq.OSNR + equipment['SI']['default'].sys_margins:
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
-                          f' {pathreq.source} to {pathreq.destination} does not pass with' +\
-                          f' {pathreq.tsp_mode}\n\tcomputedSNR in 0.1nm = {temp_snr01nm} ' +\
-                          f'- required osnr {pathreq.OSNR} + {equipment["SI"]["default"].sys_margins} margin'
+                          f' {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}' +\
+                          f'\n\tcomputed SNR in 0.1nm = {round(total_path[-1].snr_01nm[min_ind], 2)}' +\
+                          f'\n\tCD penalty = {round(total_path[-1].penalties["chromatic_dispersion"][min_ind], 2)}' +\
+                          f'\n\tPMD penalty = {round(total_path[-1].penalties["pmd"][min_ind], 2)}' +\
+                          f'\n\trequired osnr = {pathreq.OSNR}' +\
+                          f'\n\tsystem margin = {equipment["SI"]["default"].sys_margins}'
                     print(msg)
                     LOGGER.warning(msg)
                     pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
@@ -1148,6 +1188,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                         pathreq.OSNR = mode['OSNR']
                         pathreq.tx_osnr = mode['tx_osnr']
                         pathreq.bit_rate = mode['bit_rate']
+                        pathreq.penalties = mode['penalties']
                     # other blocking reason should not appear at this point
                 except AttributeError:
                     pathreq.baud_rate = mode['baud_rate']
@@ -1156,30 +1197,33 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                     pathreq.OSNR = mode['OSNR']
                     pathreq.tx_osnr = mode['tx_osnr']
                     pathreq.bit_rate = mode['bit_rate']
+                    pathreq.penalties = mode['penalties']
 
             # reversed path is needed for correct spectrum assignment
             reversed_path = find_reversed_path(pathlist[i])
-            if pathreq.bidir:
-                # only propagate if bidir is true, but needs the reversed path anyway for
-                # correct spectrum assignment
+            if pathreq.bidir and pathreq.baud_rate is not None:
+                # Both directions requested, and a feasible mode was found
                 rev_p = deepcopy(reversed_path)
 
                 print(f'\n\tPropagating Z to A direction {pathreq.destination} to {pathreq.source}')
                 print(f'\tPath (roadsm) {[r.uid for r in rev_p if isinstance(r,Roadm)]}\n')
                 propagate(rev_p, pathreq, equipment)
                 propagated_reversed_path = rev_p
-                temp_snr01nm = round(mean(propagated_reversed_path[-1].snr +\
-                                          lin2db(pathreq.baud_rate/(12.5e9))), 2)
-                if temp_snr01nm < pathreq.OSNR + equipment['SI']['default'].sys_margins:
+                snr01nm_with_penalty = rev_p[-1].snr_01nm - rev_p[-1].total_penalty
+                min_ind = argmin(snr01nm_with_penalty)
+                if round(snr01nm_with_penalty[min_ind], 2) < pathreq.OSNR + equipment['SI']['default'].sys_margins:
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
-                          f' {pathreq.source} to {pathreq.destination} does not pass with' +\
-                          f' {pathreq.tsp_mode}\n' +\
-                          f'\tcomputedSNR in 0.1nm = {temp_snr01nm} -' \
-                          f' required osnr {pathreq.OSNR} + {equipment["SI"]["default"].sys_margins} margin'
+                          f' {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}' +\
+                          f'\n\tcomputed SNR in 0.1nm = {round(rev_p[-1].snr_01nm[min_ind], 2)}' +\
+                          f'\n\tCD penalty = {round(rev_p[-1].penalties["chromatic_dispersion"][min_ind], 2)}' +\
+                          f'\n\tPMD penalty = {round(rev_p[-1].penalties["pmd"][min_ind], 2)}' +\
+                          f'\n\trequired osnr = {pathreq.OSNR}' +\
+                          f'\n\tsystem margin = {equipment["SI"]["default"].sys_margins}'
                     print(msg)
                     LOGGER.warning(msg)
                     # TODO selection of mode should also be on reversed direction !!
-                    pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
+                    if not hasattr(pathreq, 'blocking_reason'):
+                        pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
             else:
                 propagated_reversed_path = []
         else:
@@ -1195,3 +1239,15 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         # print to have a nice output
         print('')
     return path_res_list, reversed_path_res_list, propagated_reversed_path_res_list
+
+
+def compute_spectrum_slot_vs_bandwidth(bandwidth, spacing, bit_rate, slot_width=0.0125e12):
+    """ Compute the number of required wavelengths and the M value (number of consumed slots)
+    Each wavelength consumes one `spacing`, and the result is rounded up to consume a natural number of slots.
+
+    >>> compute_spectrum_slot_vs_bandwidth(400e9, 50e9, 200e9)
+    (2, 8)
+    """
+    number_of_wavelengths = ceil(bandwidth / bit_rate)
+    total_number_of_slots = ceil(spacing / slot_width) * number_of_wavelengths
+    return number_of_wavelengths, total_number_of_slots

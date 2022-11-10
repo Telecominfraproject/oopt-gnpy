@@ -1,0 +1,349 @@
+{
+    "Edfa": [
+        {
+            "type_variety": "openroadm_ila_low_noise",
+            "type_def": "openroadm",
+            "gain_flatmax": 27,
+            "gain_min": 0,
+            "p_max": 22,
+            "nf_coef": [-8.104e-4, -6.221e-2, -5.889e-1, 37.62],
+            "pmd": 3e-12,
+            "pdl": 0.7,
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "openroadm_ila_standard",
+            "type_def": "openroadm",
+            "gain_flatmax": 27,
+            "gain_min": 0,
+            "p_max": 22,
+            "nf_coef": [-5.952e-4, -6.250e-2, -1.071, 28.99],
+            "pmd": 3e-12,
+            "pdl": 0.7,
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "openroadm_mw_mw_preamp",
+            "type_def": "openroadm_preamp",
+            "gain_flatmax": 27,
+            "gain_min": 0,
+            "p_max": 22,
+            "pmd": 0,
+            "pdl": 0,
+            "allowed_for_design": false
+        },
+        {
+            "type_variety": "openroadm_mw_mw_booster",
+            "type_def": "openroadm_booster",
+            "gain_flatmax": 32,
+            "gain_min": 0,
+            "p_max": 22,
+            "pmd": 0,
+            "pdl": 0,
+            "allowed_for_design": false
+        }
+    ],
+    "Fiber": [
+        {
+            "type_variety": "SSMF",
+            "dispersion": 1.67e-05,
+            "effective_area": 83e-12,
+            "pmd_coef": 1.265e-15
+        },
+        {
+            "type_variety": "NZDF",
+            "dispersion": 0.5e-05,
+            "effective_area": 72e-12,
+            "pmd_coef": 1.265e-15
+        },
+        {
+            "type_variety": "LOF",
+            "dispersion": 2.2e-05,
+            "effective_area": 125e-12,
+            "pmd_coef": 1.265e-15
+        }
+    ],
+    "RamanFiber": [
+        {
+            "type_variety": "SSMF",
+            "dispersion": 1.67e-05,
+            "effective_area": 83e-12,
+            "pmd_coef": 1.265e-15
+        }
+    ],
+    "Span": [
+        {
+            "power_mode": true,
+            "delta_power_range_db": [0, 0, 0],
+            "max_fiber_lineic_loss_for_raman": 0.25,
+            "target_extended_gain": 0,
+            "max_length": 135,
+            "length_units": "km",
+            "max_loss": 28,
+            "padding": 11,
+            "EOL": 0,
+            "con_in": 0,
+            "con_out": 0
+        }
+    ],
+    "Roadm": [
+        {
+            "target_pch_out_db": -20,
+            "add_drop_osnr": 30,
+            "pmd": 3e-12,
+            "pdl": 1.5,
+            "restrictions": {
+                "preamp_variety_list": ["openroadm_mw_mw_preamp"],
+                "booster_variety_list": ["openroadm_mw_mw_booster"]
+            }
+        }
+    ],
+    "SI": [
+        {
+            "f_min": 191.3e12,
+            "baud_rate": 31.57e9,
+            "f_max": 196.1e12,
+            "spacing": 50e9,
+            "power_dbm": 2,
+            "power_range_db": [0, 0, 1],
+            "roll_off": 0.15,
+            "tx_osnr": 35,
+            "sys_margins": 2
+        }
+    ],
+    "Transceiver": [
+        {
+            "type_variety": "OpenROADM MSA ver. 4.0",
+            "frequency": {
+                "min": 191.35e12,
+                "max": 196.1e12
+            },
+            "mode": [
+                {
+                    "format": "100 Gbit/s, 27.95 Gbaud, DP-QPSK",
+                    "baud_rate": 27.95e9,
+                    "OSNR": 17,
+                    "bit_rate": 100e9,
+                    "roll_off": null,
+                    "tx_osnr": 33,
+                    "penalties": [
+                        {
+                            "chromatic_dispersion": 4e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 18e3,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pmd": 10,
+                            "penalty_value": 0
+                        },
+                        {
+                            "pmd": 30,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 1,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 2,
+                            "penalty_value": 1
+                        },
+                        {
+                            "pdl": 4,
+                            "penalty_value": 2.5
+                        },
+                        {
+                            "pdl": 6,
+                            "penalty_value": 4
+                        }
+                    ],
+                    "min_spacing": 50e9,
+                    "cost": 1
+                },
+                {
+                    "format": "100 Gbit/s, 31.57 Gbaud, DP-QPSK",
+                    "baud_rate": 31.57e9,
+                    "OSNR": 12,
+                    "bit_rate": 100e9,
+                    "roll_off": 0.15,
+                    "tx_osnr": 35,
+                    "penalties": [
+                        {
+                            "chromatic_dispersion": -1e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 4e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 40e3,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pmd": 10,
+                            "penalty_value": 0
+                        },
+                        {
+                            "pmd": 30,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 1,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 2,
+                            "penalty_value": 1
+                        },
+                        {
+                            "pdl": 4,
+                            "penalty_value": 2.5
+                        },
+                        {
+                            "pdl": 6,
+                            "penalty_value": 4
+                        }
+                    ],
+                    "min_spacing": 50e9,
+                    "cost": 1
+                },
+                {
+                    "format": "200 Gbit/s, DP-QPSK",
+                    "baud_rate": 63.1e9,
+                    "OSNR": 17,
+                    "bit_rate": 200e9,
+                    "roll_off": 0.15,
+                    "tx_osnr": 36,
+                    "penalties": [
+                        {
+                            "chromatic_dispersion": -1e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 4e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 24e3,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pmd": 10,
+                            "penalty_value": 0
+                        },
+                        {
+                            "pmd": 25,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 1,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 2,
+                            "penalty_value": 1
+                        },
+                        {
+                            "pdl": 4,
+                            "penalty_value": 2.5
+                        }
+                    ],
+                    "min_spacing": 87.5e9,
+                    "cost": 1
+                },
+                {
+                    "format": "300 Gbit/s, DP-8QAM",
+                    "baud_rate": 63.1e9,
+                    "OSNR": 21,
+                    "bit_rate": 300e9,
+                    "roll_off": 0.15,
+                    "tx_osnr": 36,
+                    "penalties": [
+                        {
+                            "chromatic_dispersion": -1e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 4e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 18e3,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pmd": 10,
+                            "penalty_value": 0
+                        },
+                        {
+                            "pmd": 25,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 1,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 2,
+                            "penalty_value": 1
+                        },
+                        {
+                            "pdl": 4,
+                            "penalty_value": 2.5
+                        }
+                    ],
+                    "min_spacing": 87.5e9,
+                    "cost": 1
+                },
+                {
+                    "format": "400 Gbit/s, DP-16QAM",
+                    "baud_rate": 63.1e9,
+                    "OSNR": 24,
+                    "bit_rate": 400e9,
+                    "roll_off": 0.15,
+                    "tx_osnr": 36,
+                    "penalties": [
+                        {
+                            "chromatic_dispersion": -1e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 4e3,
+                            "penalty_value": 0
+                        },
+                        {
+                            "chromatic_dispersion": 12e3,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pmd": 10,
+                            "penalty_value": 0
+                        },
+                        {
+                            "pmd": 20,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 1,
+                            "penalty_value": 0.5
+                        },
+                        {
+                            "pdl": 2,
+                            "penalty_value": 1
+                        },
+                        {
+                            "pdl": 4,
+                            "penalty_value": 2.5
+                        }
+                    ],
+                    "min_spacing": 87.5e9,
+                    "cost": 1
+                }
+            ]
+        }
+    ]
+}

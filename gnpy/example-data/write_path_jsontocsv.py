@@ -18,9 +18,9 @@ from gnpy.tools.json_io import load_equipment
 from gnpy.topology.request import jsontocsv
 
 
-parser = ArgumentParser(description='A function that writes json path results in an excel sheet.')
-parser.add_argument('filename', nargs='?', type=Path)
-parser.add_argument('output_filename', nargs='?', type=Path)
+parser = ArgumentParser(description='Converting JSON path results into a CSV')
+parser.add_argument('filename', type=Path)
+parser.add_argument('output_filename', type=Path)
 parser.add_argument('eqpt_filename', nargs='?', type=Path, default=Path(__file__).parent / 'eqpt_config.json')
 
 if __name__ == '__main__':

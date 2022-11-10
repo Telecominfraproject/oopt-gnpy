@@ -9,9 +9,7 @@ Common code for CLI examples
 '''
 
 import argparse
-from json import dumps
 import logging
-import os.path
 import sys
 from math import ceil
 from numpy import linspace, mean
@@ -22,7 +20,6 @@ from gnpy.core.equipment import trx_mode_params
 import gnpy.core.exceptions as exceptions
 from gnpy.core.network import build_network
 from gnpy.core.parameters import SimParams
-from gnpy.core.science_utils import Simulation
 from gnpy.core.utils import db2lin, lin2db, automatic_nch
 from gnpy.topology.request import (ResultElement, jsontocsv, compute_path_dsjctn, requests_aggregation,
                                    BLOCKING_NOPATH, correct_json_route_list,
@@ -58,25 +55,26 @@ def load_common_data(equipment_filename, topology_filename, simulation_filename,
         if save_raw_network_filename is not None:
             save_network(network, save_raw_network_filename)
             print(f'{ansi_escapes.blue}Raw network (no optimizations) saved to {save_raw_network_filename}{ansi_escapes.reset}')
-        sim_params = SimParams(**load_json(simulation_filename)) if simulation_filename is not None else None
-        if not sim_params:
+        if not simulation_filename:
+            sim_params = {}
             if next((node for node in network if isinstance(node, RamanFiber)), None) is not None:
                 print(f'{ansi_escapes.red}Invocation error:{ansi_escapes.reset} '
                       f'RamanFiber requires passing simulation params via --sim-params')
                 sys.exit(1)
         else:
-            Simulation.set_params(sim_params)
+            sim_params = load_json(simulation_filename)
+        SimParams.set_params(sim_params)
     except exceptions.EquipmentConfigError as e:
         print(f'{ansi_escapes.red}Configuration error in the equipment library:{ansi_escapes.reset} {e}')
         sys.exit(1)
     except exceptions.NetworkTopologyError as e:
         print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
         sys.exit(1)
-    except exceptions.ConfigurationError as e:
-        print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
-        sys.exit(1)
     except exceptions.ParametersError as e:
         print(f'{ansi_escapes.red}Simulation parameters error:{ansi_escapes.reset} {e}')
+        sys.exit(1)
+    except exceptions.ConfigurationError as e:
+        print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
         sys.exit(1)
     except exceptions.ServiceError as e:
         print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {e}')
@@ -104,6 +102,9 @@ def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
                         help='Save the final network as a JSON file')
     parser.add_argument('--save-network-before-autodesign', type=Path, metavar=_help_fname_json,
                         help='Dump the network into a JSON file prior to autodesign')
+    parser.add_argument('--no-insert-edfas', action='store_true',
+                        help='Disable insertion of EDFAs after ROADMs and fibers '
+                             'as well as splitting of fibers by auto-design.')
 
 
 def transmission_main_example(args=None):
@@ -113,7 +114,7 @@ def transmission_main_example(args=None):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         )
     _add_common_options(parser, network_default=_examples_dir / 'edfa_example_network.json')
-    parser.add_argument('--show-channels', action='store_true', help='Show final per-channel OSNR summary')
+    parser.add_argument('--show-channels', action='store_true', help='Show final per-channel OSNR and GSNR summary')
     parser.add_argument('-pl', '--plot', action='store_true')
     parser.add_argument('-l', '--list-nodes', action='store_true', help='list all transceiver nodes')
     parser.add_argument('-po', '--power', default=0, help='channel ref power in dBm')
@@ -188,6 +189,7 @@ def transmission_main_example(args=None):
     params['loose_list'] = ['strict']
     params['format'] = ''
     params['path_bandwidth'] = 0
+    params['effective_freq_slot'] = None
     trx_params = trx_mode_params(equipment)
     if args.power:
         trx_params['power'] = db2lin(float(args.power)) * 1e-3
@@ -201,7 +203,7 @@ def transmission_main_example(args=None):
     pref_ch_db = lin2db(req.power * 1e3)  # reference channel power / span (SL=20dB)
     pref_total_db = pref_ch_db + lin2db(req.nb_channel)  # reference total power / span (SL=20dB)
     try:
-        build_network(network, equipment, pref_ch_db, pref_total_db)
+        build_network(network, equipment, pref_ch_db, pref_total_db, args.no_insert_edfas)
     except exceptions.NetworkTopologyError as e:
         print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
         sys.exit(1)
@@ -215,17 +217,16 @@ def transmission_main_example(args=None):
           f'and {destination.uid}')
     print(f'\nNow propagating between {source.uid} and {destination.uid}:')
 
-    try:
-        p_start, p_stop, p_step = equipment['SI']['default'].power_range_db
-        p_num = abs(int(round((p_stop - p_start) / p_step))) + 1 if p_step != 0 else 1
-        power_range = list(linspace(p_start, p_stop, p_num))
-    except TypeError:
-        print('invalid power range definition in eqpt_config, should be power_range_db: [lower, upper, step]')
-        power_range = [0]
-
-    if not power_mode:
+    power_range = [0]
+    if power_mode:
         # power cannot be changed in gain mode
-        power_range = [0]
+        try:
+            p_start, p_stop, p_step = equipment['SI']['default'].power_range_db
+            p_num = abs(int(round((p_stop - p_start) / p_step))) + 1 if p_step != 0 else 1
+            power_range = list(linspace(p_start, p_stop, p_num))
+        except TypeError:
+            print('invalid power range definition in eqpt_config, should be power_range_db: [lower, upper, step]')
+
     for dp_db in power_range:
         req.power = db2lin(pref_ch_db + dp_db) * 1e-3
         if power_mode:
@@ -240,7 +241,7 @@ def transmission_main_example(args=None):
                 print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f} dBm:')
             else:
                 print(f'\nTransmission results:')
-            print(f'  Final SNR total (0.1 nm): {ansi_escapes.cyan}{mean(destination.snr_01nm):.02f} dB{ansi_escapes.reset}')
+            print(f'  Final GSNR (0.1 nm): {ansi_escapes.cyan}{mean(destination.snr_01nm):.02f} dB{ansi_escapes.reset}')
         else:
             print(path[-1])
 
@@ -249,7 +250,7 @@ def transmission_main_example(args=None):
         print(f'{ansi_escapes.blue}Network (after autodesign) saved to {args.save_network}{ansi_escapes.reset}')
 
     if args.show_channels:
-        print('\nThe total SNR per channel at the end of the line is:')
+        print('\nThe GSNR per channel at the end of the line is:')
         print(
             '{:>5}{:>26}{:>26}{:>28}{:>28}{:>28}' .format(
                 'Ch. #',
@@ -257,15 +258,15 @@ def transmission_main_example(args=None):
                 'Channel power (dBm)',
                 'OSNR ASE (signal bw, dB)',
                 'SNR NLI (signal bw, dB)',
-                'SNR total (signal bw, dB)'))
+                'GSNR (signal bw, dB)'))
         for final_carrier, ch_osnr, ch_snr_nl, ch_snr in zip(
                 infos.carriers, path[-1].osnr_ase, path[-1].osnr_nli, path[-1].snr):
             ch_freq = final_carrier.frequency * 1e-12
             ch_power = lin2db(final_carrier.power.signal * 1e3)
             print(
-                '{:5}{:26.2f}{:26.2f}{:28.2f}{:28.2f}{:28.2f}' .format(
+                '{:5}{:26.5f}{:26.2f}{:28.2f}{:28.2f}{:28.2f}' .format(
                     final_carrier.channel_number, round(
-                        ch_freq, 2), round(
+                        ch_freq, 5), round(
                         ch_power, 2), round(
                         ch_osnr, 2), round(
                         ch_snr_nl, 2), round(
@@ -308,7 +309,6 @@ def path_requests_run(args=None):
     _setup_logging(args)
 
     _logger.info(f'Computing path requests {args.service_filename} into JSON format')
-    print(f'{ansi_escapes.blue}Computing path requests {os.path.relpath(args.service_filename)} into JSON format{ansi_escapes.reset}')
 
     (equipment, network) = load_common_data(args.equipment, args.topology, args.sim_params, args.save_network_before_autodesign)
 
@@ -320,7 +320,7 @@ def path_requests_run(args=None):
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
                                              equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     try:
-        build_network(network, equipment, p_db, p_total_db)
+        build_network(network, equipment, p_db, p_total_db, args.no_insert_edfas)
     except exceptions.NetworkTopologyError as e:
         print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
         sys.exit(1)
@@ -384,7 +384,7 @@ def path_requests_run(args=None):
     pth_assign_spectrum(pths, rqs, oms_list, reversed_pths)
 
     print(f'{ansi_escapes.blue}Result summary{ansi_escapes.reset}')
-    header = ['req id', '  demand', '  snr@bandwidth A-Z (Z-A)', '  snr@0.1nm A-Z (Z-A)',
+    header = ['req id', '  demand', ' GSNR@bandwidth A-Z (Z-A)', ' GSNR@0.1nm A-Z (Z-A)',
               '  Receiver minOSNR', '  mode', '  Gbit/s', '  nb of tsp pairs',
               'N,M or blocking reason']
     data = []
@@ -423,7 +423,7 @@ def path_requests_run(args=None):
         secondcol = ''.join(row[1].ljust(secondcol_width))
         remainingcols = ''.join(word.center(col_width, ' ') for word in row[2:])
         print(f'{firstcol} {secondcol} {remainingcols}')
-    print(f'{ansi_escapes.yellow}Result summary shows mean SNR and OSNR (average over all channels){ansi_escapes.reset}')
+    print(f'{ansi_escapes.yellow}Result summary shows mean GSNR and OSNR (average over all channels){ansi_escapes.reset}')
 
     if args.output:
         result = []

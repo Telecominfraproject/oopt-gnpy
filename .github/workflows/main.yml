@@ -1,0 +1,117 @@
+on:
+  push:
+  pull_request:
+    branches:
+      - master
+
+name: CI
+
+jobs:
+  build:
+    name: Tox test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: fedora-python/tox-github-action@v0.4
+        with:
+          tox_env: ${{ matrix.tox_env }}
+          dnf_install: ${{ matrix.dnf_install }}
+      - uses: codecov/codecov-action@29386c70ef20e286228c72b668a06fd0e8399192
+        if: ${{ endswith(matrix.tox_env, '-cover') }}
+        with:
+          files: ${{ github.workspace }}/cover/coverage.xml
+    strategy:
+      fail-fast: false
+      matrix:
+        tox_env:
+          - py38
+          - py39
+          - py310-cover
+        include:
+          - tox_env: docs
+            dnf_install: graphviz
+
+  pypi:
+    needs: build
+    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && github.repository_owner == 'Telecominfraproject' }}
+    name: PyPI packaging
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v2
+        name: Install Python
+        with:
+          python-version: '3.10'
+      - uses: casperdcl/deploy-pypi@bb869aafd89f657ceaafe9561d3b5584766c0f95
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          pip: wheel -w dist/ --no-deps .
+          upload: true
+
+  docker:
+    needs: build
+    if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v')) && github.repository_owner == 'Telecominfraproject' }}
+    name: Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: jktjkt
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Extract tag name
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        id: extract_pretty_git
+        run: echo ::set-output name=GIT_DESC::$(git describe --tags)
+      - name: Build and push a container
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        with:
+          context: .
+          push: true
+          tags: |
+            telecominfraproject/oopt-gnpy:${{ steps.extract_pretty_git.outputs.GIT_DESC }}
+            telecominfraproject/oopt-gnpy:master
+      - name: Extract tag name
+        if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
+        id: extract_tag_name
+        run: echo ::set-output name=GIT_DESC::${GITHUB_REF/refs\/tags\//}
+      - name: Build and push a container
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
+        with:
+          context: .
+          push: true
+          tags: |
+            telecominfraproject/oopt-gnpy:${{ steps.extract_tag_name.outputs.GIT_DESC }}
+            telecominfraproject/oopt-gnpy:latest
+
+  other-platforms:
+    name: Tests on other platforms
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python_version }}
+      - run: |
+          pip install -r tests/requirements.txt
+          pip install --editable .
+          pytest -vv
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-2019
+            python_version: "3.10"
+          - os: macos-12
+            python_version: "3.10"

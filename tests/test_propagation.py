@@ -6,7 +6,7 @@
 import pytest
 from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
 from gnpy.core.utils import db2lin
-from gnpy.core.info import create_input_spectral_information
+from gnpy.core.info import create_input_spectral_information, ReferenceCarrier
 from gnpy.core.network import build_network
 from gnpy.tools.json_io import load_network, load_equipment
 from pathlib import Path
@@ -45,7 +45,9 @@ def propagation(input_power, con_in, con_out, dest):
     p = input_power
     p = db2lin(p) * 1e-3
     spacing = 50e9  # THz
-    si = create_input_spectral_information(191.3e12, 191.3e12 + 79 * spacing, 0.15, 32e9, p, spacing)
+    si = create_input_spectral_information(f_min=191.3e12, f_max=191.3e12 + 79 * spacing, roll_off=0.15,
+                                           baud_rate=32e9, power=p, spacing=spacing, tx_osnr=None,
+                                           ref_carrier=ReferenceCarrier(baud_rate=32e9))
     source = next(transceivers[uid] for uid in transceivers if uid == 'trx A')
     sink = next(transceivers[uid] for uid in transceivers if uid == dest)
     path = dijkstra_path(network, source, sink)

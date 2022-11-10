@@ -225,6 +225,8 @@ def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
                 duplicate_links.append(l1)
     for l in duplicate_links:
         links.remove(l)
+        links_by_city[l.from_city].remove(l)
+        links_by_city[l.to_city].remove(l)
 
     unreferenced_nodes = [n for n in nodes_by_city if n not in links_by_city]
     if unreferenced_nodes:
@@ -423,10 +425,27 @@ def xls_to_json_data(input_filename, filter_region=[]):
               'params': {'length': round(x.west_distance, 3),
                          'length_units': x.distance_units,
                          'loss_coef': x.west_lineic,
-                         'con_in':x.west_con_in,
-                         'con_out':x.west_con_out}
-            } # missing ILA construction
-              for x in links] +
+                         'con_in': x.west_con_in,
+                         'con_out': x.west_con_out}
+              } for x in links] +
+            [{'uid': f'west edfa in {x.city}',
+              'metadata': {'location': {'city': x.city,
+                                        'region': x.region,
+                                        'latitude': x.latitude,
+                                        'longitude': x.longitude}},
+              'type': 'Edfa',
+              'operational': {'gain_target': None,
+                              'tilt_target': 0}
+              } for x in nodes_by_city.values() if x.node_type.lower() == 'ila' and x.city not in eqpts_by_city] +
+            [{'uid': f'east edfa in {x.city}',
+              'metadata': {'location': {'city': x.city,
+                                        'region': x.region,
+                                        'latitude': x.latitude,
+                                        'longitude': x.longitude}},
+              'type': 'Edfa',
+              'operational': {'gain_target': None,
+                              'tilt_target': 0}
+              } for x in nodes_by_city.values() if x.node_type.lower() == 'ila' and x.city not in eqpts_by_city] +
             [create_east_eqpt_element(e) for e in eqpts] +
             [create_west_eqpt_element(e) for e in eqpts],
         'connections':
@@ -675,8 +694,6 @@ def connect_eqpt(from_, in_, to_):
 
 def eqpt_in_city_to_city(in_city, to_city, direction='east'):
     rev_direction = 'west' if direction == 'east' else 'east'
-    amp_direction = f'{direction}_amp_type'
-    amp_rev_direction = f'{rev_direction}_amp_type'
     return_eqpt = ''
     if in_city in eqpts_by_city:
         for e in eqpts_by_city[in_city]:
@@ -686,8 +703,9 @@ def eqpt_in_city_to_city(in_city, to_city, direction='east'):
             elif nodes_by_city[in_city].node_type.lower() == 'ila':
                 if e.to_city != to_city:
                     direction = rev_direction
-                    amp_direction = amp_rev_direction
                 return_eqpt = f'{direction} edfa in {e.from_city} to {e.to_city}'
+    elif nodes_by_city[in_city].node_type.lower() == 'ila':
+        return_eqpt = f'{direction} edfa in {in_city}'
     if nodes_by_city[in_city].node_type.lower() == 'fused':
         return_eqpt = f'{direction} fused spans in {in_city}'
     return return_eqpt

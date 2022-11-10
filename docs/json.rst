@@ -1,3 +1,5 @@
+.. _legacy-json:
+
 JSON Input Files
 ================
 
@@ -7,13 +9,11 @@ Some data (such as network topology or the service requests) can be also passed 
 Equipment Library
 -----------------
 
-Design and transmission parameters are defined in a dedicated json file. By
-default, this information is read from `gnpy/example-data/eqpt_config.json
-<gnpy/example-data/eqpt_config.json>`_. This file defines the equipment libraries that
-can be customized (EDFAs, fibers, and transceivers).
+Design and transmission parameters are defined in a dedicated json file.
+By default, this information is read from `gnpy/example-data/eqpt_config.json <https://github.com/Telecominfraproject/oopt-gnpy/blob/master/gnpy/example-data/eqpt_config.json>`_.
+This file defines the equipment libraries that can be customized (EDFAs, fibers, and transceivers).
 
-It also defines the simulation parameters (spans, ROADMs, and the spectral
-information to transmit.)
+It also defines the simulation parameters (spans, ROADMs, and the spectral information to transmit.)
 
 EDFA
 ~~~~
@@ -21,9 +21,20 @@ EDFA
 The EDFA equipment library is a list of supported amplifiers. New amplifiers
 can be added and existing ones removed. Three different noise models are available:
 
-1. ``'type_def': 'variable_gain'`` is a simplified model simulating a 2-coil EDFA with internal, input and output VOAs. The NF vs gain response is calculated accordingly based on the input parameters: ``nf_min``, ``nf_max``, and ``gain_flatmax``. It is not a simple interpolation but a 2-stage NF calculation.
-2. ``'type_def': 'fixed_gain'`` is a fixed gain model.  `NF == Cte == nf0` if `gain_min < gain < gain_flatmax`
-3. ``'type_def': None`` is an advanced model. A detailed JSON configuration file is required (by default `gnpy/example-data/std_medium_gain_advanced_config.json <gnpy/example-data/std_medium_gain_advanced_config.json>`_). It uses a 3rd order polynomial where NF = f(gain), NF_ripple = f(frequency), gain_ripple = f(frequency), N-array dgt = f(frequency). Compared to the previous models, NF ripple and gain ripple are modelled.
+1. ``'type_def': 'variable_gain'`` is a simplified model simulating a 2-coil EDFA with internal, input and output VOAs.
+   The NF vs gain response is calculated accordingly based on the input parameters: ``nf_min``, ``nf_max``, and ``gain_flatmax``.
+   It is not a simple interpolation but a 2-stage NF calculation.
+2. ``'type_def': 'fixed_gain'`` is a fixed gain model.
+   `NF == Cte == nf0` if `gain_min < gain < gain_flatmax`
+3. ``'type_def': 'openroadm'`` models the incremental OSNR contribution as a function of input power.
+   It is suitable for inline amplifiers that conform to the OpenROADM specification.
+   The input parameters are coefficients of the :ref:`third-degree polynomial<ext-nf-model-polynomial-OSNR-OpenROADM>`.
+4. ``'type_def': 'openroadm_preamp'`` and ``openroadm_booster`` approximate the :ref:`preamp and booster within an OpenROADM network<ext-nf-model-noise-mask-OpenROADM>`.
+   No extra parameters specific to the NF model are accepted.
+5. ``'type_def': 'advanced_model'`` is an advanced model.
+   A detailed JSON configuration file is required (by default `gnpy/example-data/std_medium_gain_advanced_config.json <https://github.com/Telecominfraproject/oopt-gnpy/blob/master/gnpy/example-data/std_medium_gain_advanced_config.json>`_).
+   It uses a 3rd order polynomial where NF = f(gain), NF_ripple = f(frequency), gain_ripple = f(frequency), N-array dgt = f(frequency).
+   Compared to the previous models, NF ripple and gain ripple are modelled.
 
 For all amplifier models:
 
@@ -50,22 +61,69 @@ Fiber
 
 The fiber library currently describes SSMF and NZDF but additional fiber types can be entered by the user following the same model:
 
-+----------------------+-----------+-----------------------------------------+
-| field                | type      | description                             |
-+======================+===========+=========================================+
-| ``type_variety``     | (string)  | a unique name to ID the fiber in the    |
-|                      |           | JSON or Excel template topology input   |
-|                      |           | file                                    |
-+----------------------+-----------+-----------------------------------------+
-| ``dispersion``       | (number)  | (s.m-1.m-1)                             |
-+----------------------+-----------+-----------------------------------------+
-| ``dispersion_slope`` | (number)  | (s.m-1.m-1.m-1)                         |
-+----------------------+-----------+-----------------------------------------+
-| ``gamma``            | (number)  | 2pi.n2/(lambda*Aeff) (w-1.m-1)          |
-+----------------------+-----------+-----------------------------------------+
-| ``pmd_coef``         | (number)  | Polarization mode dispersion (PMD)      |
-|                      |           | coefficient. (s.sqrt(m)-1)              |
-+----------------------+-----------+-----------------------------------------+
++----------------------+-----------+------------------------------------------+
+| field                | type      | description                              |
++======================+===========+==========================================+
+| ``type_variety``     | (string)  | a unique name to ID the fiber in the     |
+|                      |           | JSON or Excel template topology input    |
+|                      |           | file                                     |
++----------------------+-----------+------------------------------------------+
+| ``dispersion``       | (number)  | In :math:`s \times m^{-1} \times m^{-1}`.|
++----------------------+-----------+------------------------------------------+
+| ``dispersion_slope`` | (number)  | In :math:`s \times m^{-1} \times m^{-1}  |
+|                      |           | \times m^{-1}`                           |
++----------------------+-----------+------------------------------------------+
+| ``effective_area``   | (number)  | Effective area of the fiber (not just    |
+|                      |           | the MFD circle). This is the             |
+|                      |           | :math:`A_{eff}`, see e.g., the           |
+|                      |           | `Corning whitepaper on MFD/EA`_.         |
+|                      |           | Specified in :math:`m^{2}`.              |
++----------------------+-----------+------------------------------------------+
+| ``gamma``            | (number)  | Coefficient :math:`\gamma = 2\pi\times   |
+|                      |           | n^2/(\lambda*A_{eff})`.                  |
+|                      |           | If not provided, this will be derived    |
+|                      |           | from the ``effective_area``              |
+|                      |           | :math:`A_{eff}`.                         |
+|                      |           | In :math:`w^{-1} \times m^{-1}`.         |
++----------------------+-----------+------------------------------------------+
+| ``pmd_coef``         | (number)  | Polarization mode dispersion (PMD)       |
+|                      |           | coefficient. In                          |
+|                      |           | :math:`s\times\sqrt{m}^{-1}`.            |
++----------------------+-----------+------------------------------------------+
+| ``lumped_losses``    | (array)   | Places along the fiber length with extra |
+|                      |           | losses. Specified as a loss in dB at     |
+|                      |           | each relevant position (in km):          |
+|                      |           | ``{"position": 10, "loss": 1.5}``)       |
++----------------------+-----------+------------------------------------------+
+
+.. _Corning whitepaper on MFD/EA: https://www.corning.com/microsites/coc/oem/documents/specialty-fiber/WP7071-Mode-Field-Diam-and-Eff-Area.pdf
+
+RamanFiber
+~~~~~~~~~~
+
+The RamanFiber can be used to simulate Raman amplification through dedicated Raman pumps. The Raman pumps must be listed
+in the key ``raman_pumps`` within the RamanFiber ``operational`` dictionary. The description of each Raman pump must
+contain the following:
+
++---------------------------+-----------+------------------------------------------------------------+
+| field                     | type      | description                                                |
++===========================+===========+============================================================+
+| ``power``                 | (number)  | Total pump power in :math:`W`                              |
+|                           |           | considering a depolarized pump                             |
++---------------------------+-----------+------------------------------------------------------------+
+| ``frequency``             | (number)  | Pump central frequency in :math:`Hz`                       |
++---------------------------+-----------+------------------------------------------------------------+
+| ``propagation_direction`` | (number)  | The pumps can propagate in the same or opposite direction  |
+|                           |           | with respect the signal. Valid choices are ``coprop`` and  |
+|                           |           | ``counterprop``, respectively                              |
++---------------------------+-----------+------------------------------------------------------------+
+
+Beside the list of Raman pumps, the RamanFiber ``operational`` dictionary must include the ``temperature`` that affects
+the amplified spontaneous emission noise generated by the Raman amplification.
+As the loss coefficient significantly varies outside the C-band, where the Raman pumps are usually placed,
+it is suggested to include an estimation of the loss coefficient for the Raman pump central frequencies within
+a dictionary-like definition of the ``RamanFiber.params.loss_coef``
+(e.g. ``loss_coef = {"value": [0.18, 0.18, 0.20, 0.20], "frequency": [191e12, 196e12, 200e12, 210e12]}``).
 
 Transceiver
 ~~~~~~~~~~~
@@ -82,7 +140,7 @@ used to determine the service list path feasibility when running the
 |                      |           | the JSON or Excel template topology     |
 |                      |           | input file                              |
 +----------------------+-----------+-----------------------------------------+
-| ``frequency``        | (number)  | Min/max as below.                       |
+| ``frequency``        | (number)  | Min/max central channel frequency.      |
 +----------------------+-----------+-----------------------------------------+
 | ``mode``             | (number)  | A list of modes supported by the        |
 |                      |           | transponder. New modes can be added at  |
@@ -155,24 +213,72 @@ Global parameters
 The following options are still defined in ``eqpt_config.json`` for legacy reasons, but
 they do not correspond to tangible network devices.
 
-Auto-design automatically creates EDFA amplifier network elements when they are
-missing, after a fiber, or between a ROADM and a fiber. This auto-design
-functionality can be manually and locally deactivated by introducing a ``Fused``
-network element after a ``Fiber`` or a ``Roadm`` that doesn't need amplification.
-The amplifier is chosen in the EDFA list of the equipment library based on
-gain, power, and NF criteria. Only the EDFA that are marked
-``'allowed_for_design': true`` are considered.
+Auto-design automatically creates EDFA amplifier network elements when they are missing, after a fiber, or between a ROADM and a fiber.
+This auto-design functionality can be manually and locally deactivated by introducing a ``Fused`` network element after a ``Fiber`` or a ``Roadm`` that doesn't need amplification.
+The amplifier is chosen in the EDFA list of the equipment library based on gain, power, and NF criteria.
+Only the EDFA that are marked ``'allowed_for_design': true`` are considered.
 
-For amplifiers defined in the topology JSON input but whose ``gain = 0``
-(placeholder), auto-design will set its gain automatically: see ``power_mode`` in
-the ``Spans`` library to find out how the gain is calculated.
+For amplifiers defined in the topology JSON input but whose ``gain = 0`` (placeholder), auto-design will set its gain automatically: see ``power_mode`` in the ``Spans`` library to find out how the gain is calculated.
+
+The file ``sim_params.json`` contains the tuning parameters used within both the ``gnpy.science_utils.RamanSolver`` and
+the ``gnpy.science_utils.NliSolver`` for the evaluation of the Raman profile and the NLI generation, respectively.
+
++---------------------------------------------+-----------+---------------------------------------------+
+| field                                       |   type    | description                                 |
++=============================================+===========+=============================================+
+| ``raman_params.flag``                       | (boolean) | Enable/Disable the Raman effect that        |
+|                                             |           | produces a power transfer from higher to    |
+|                                             |           | lower frequencies.                          |
+|                                             |           | In general, considering the Raman effect    |
+|                                             |           | provides more accurate results. It is       |
+|                                             |           | mandatory when Raman amplification is       |
+|                                             |           | included in the simulation                  |
++---------------------------------------------+-----------+---------------------------------------------+
+| ``raman_params.result_spatial_resolution``  | (number)  | Spatial resolution of the output            |
+|                                             |           | Raman profile along the entire fiber span.  |
+|                                             |           | This affects the accuracy and the           |
+|                                             |           | computational time of the NLI               |
+|                                             |           | calculation when the GGN method is used:    |
+|                                             |           | smaller the spatial resolution higher both  |
+|                                             |           | the accuracy and the computational time.    |
+|                                             |           | In C-band simulations, with input power per |
+|                                             |           | channel around 0 dBm, a suggested value of  |
+|                                             |           | spatial resolution is 10e3 m                |
++---------------------------------------------+-----------+---------------------------------------------+
+| ``raman_params.solver_spatial_resolution``  | (number)  | Spatial step for the iterative solution     |
+|                                             |           | of the first order differential equation    |
+|                                             |           | used to calculate the Raman profile         |
+|                                             |           | along the entire fiber span.                |
+|                                             |           | This affects the accuracy and the           |
+|                                             |           | computational time of the evaluated         |
+|                                             |           | Raman profile:                              |
+|                                             |           | smaller the spatial resolution higher both  |
+|                                             |           | the accuracy and the computational time.    |
+|                                             |           | In C-band simulations, with input power per |
+|                                             |           | channel around 0 dBm, a suggested value of  |
+|                                             |           | spatial resolution is 100 m                 |
++---------------------------------------------+-----------+---------------------------------------------+
+| ``nli_params.method``                       | (string)  | Model used for the NLI evaluation. Valid    |
+|                                             |           | choices are ``gn_model_analytic`` (see      |
+|                                             |           | eq. 120 from `arXiv:1209.0394               |
+|                                             |           | <https://arxiv.org/abs/1209.0394>`_) and    |
+|                                             |           | ``ggn_spectrally_separated`` (see eq. 21    |
+|                                             |           | from `arXiv:1710.02225                      |
+|                                             |           | <https://arxiv.org/abs/1710.02225>`_).      |
++---------------------------------------------+-----------+---------------------------------------------+
+| ``nli_params.computed_channels``            | (number)  | The channels on which the NLI is            |
+|                                             |           | explicitly evaluated.                       |
+|                                             |           | The NLI of the other channels is            |
+|                                             |           | interpolated using ``numpy.interp``.        |
+|                                             |           | In a C-band simulation with 96 channels in  |
+|                                             |           | a 50 GHz spacing fix-grid we recommend at   |
+|                                             |           | one computed channel every 20 channels.     |
++---------------------------------------------+-----------+---------------------------------------------+
 
 Span
 ~~~~
 
-Span configuration is not a list (which may change
-in later releases) and the user can only modify the value of existing
-parameters:
+Span configuration is not a list (which may change in later releases) and the user can only modify the value of existing parameters:
 
 +-------------------------------------+-----------+---------------------------------------------+
 | field                               | type      | description                                 |
@@ -298,16 +404,18 @@ parameters:
 SpectralInformation
 ~~~~~~~~~~~~~~~~~~~
 
-The user can only modify the value of existing parameters. It defines a spectrum of N
-identical carriers. While the code libraries allow for different carriers and
-power levels, the current user parametrization only allows one carrier type and
-one power/channel definition.
+The user can only modify the value of existing parameters.
+It defines a spectrum of N identical carriers.
+While the code libraries allow for different carriers and power levels, the current user parametrization only allows one carrier type and one power/channel definition.
 
 +----------------------+-----------+-------------------------------------------+
 | field                |   type    | description                               |
 +======================+===========+===========================================+
-| ``f_min``,           | (number)  | In Hz. Carrier min max excursion.         |
-| ``f_max``            |           |                                           |
+| ``f_min``,           | (number)  | In Hz. Define spectrum boundaries. Note   |
+| ``f_max``            |           | that due to backward compatibility, the   |
+|                      |           | first channel central frequency is placed |
+|                      |           | at :math:`f_{min} + spacing` and the last |
+|                      |           | one at :math:`f_{max}`.                   |
 +----------------------+-----------+-------------------------------------------+
 | ``baud_rate``        | (number)  | In Hz. Simulated baud rate.               |
 +----------------------+-----------+-------------------------------------------+

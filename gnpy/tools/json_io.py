@@ -18,20 +18,27 @@ from gnpy.core.equipment import trx_mode_params
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError, ServiceError
 from gnpy.core.science_utils import estimate_nf_model
 from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions
-from gnpy.topology.request import PathRequest, Disjunction
+from gnpy.topology.request import PathRequest, Disjunction, compute_spectrum_slot_vs_bandwidth
 from gnpy.tools.convert import xls_to_json_data
 from gnpy.tools.service_sheet import read_service_sheet
-import time
 
 
 _logger = getLogger(__name__)
 
 
-Model_vg = namedtuple('Model_vg', 'nf1 nf2 delta_p')
+Model_vg = namedtuple('Model_vg', 'nf1 nf2 delta_p orig_nf_min orig_nf_max')
 Model_fg = namedtuple('Model_fg', 'nf0')
-Model_openroadm = namedtuple('Model_openroadm', 'nf_coef')
+Model_openroadm_ila = namedtuple('Model_openroadm_ila', 'nf_coef')
 Model_hybrid = namedtuple('Model_hybrid', 'nf_ram gain_ram edfa_variety')
 Model_dual_stage = namedtuple('Model_dual_stage', 'preamp_variety booster_variety')
+
+
+class Model_openroadm_preamp:
+    pass
+
+
+class Model_openroadm_booster:
+    pass
 
 
 class _JsonThing:
@@ -44,7 +51,6 @@ class _JsonThing:
                       f'\n WARNING missing {k} attribute in eqpt_config.json[{name}]' +
                       f'\n default value is {k} = {v}' +
                       ansi_escapes.reset)
-                time.sleep(1)
 
 
 class SI(_JsonThing):
@@ -88,6 +94,7 @@ class Roadm(_JsonThing):
         'target_pch_out_db': -17,
         'add_drop_osnr': 100,
         'pmd': 0,
+        'pdl': 0,
         'restrictions': {
             'preamp_variety_list': [],
             'booster_variety_list': []
@@ -107,36 +114,45 @@ class Transceiver(_JsonThing):
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Transceiver')
+        for mode_params in self.mode:
+            penalties = mode_params.get('penalties')
+            mode_params['penalties'] = {}
+            if not penalties:
+                continue
+            for impairment in ('chromatic_dispersion', 'pmd', 'pdl'):
+                imp_penalties = [p for p in penalties if impairment in p]
+                if not imp_penalties:
+                    continue
+                if all(p[impairment] > 0 for p in imp_penalties):
+                    # make sure the list of penalty values include a proper lower boundary
+                    # (we assume 0 penalty for 0 impairment)
+                    imp_penalties.insert(0, {impairment: 0, 'penalty_value': 0})
+                # make sure the list of penalty values are sorted by impairment value
+                imp_penalties.sort(key=lambda i: i[impairment])
+                # rearrange as dict of lists instead of list of dicts
+                mode_params['penalties'][impairment] = {
+                    'up_to_boundary': [p[impairment] for p in imp_penalties],
+                    'penalty_value': [p['penalty_value'] for p in imp_penalties]
+                }
 
 
 class Fiber(_JsonThing):
     default_values = {
         'type_variety': '',
         'dispersion': None,
-        'gamma': 0,
+        'effective_area': None,
         'pmd_coef': 0
     }
 
     def __init__(self, **kwargs):
-        self.update_attr(self.default_values, kwargs, 'Fiber')
+        self.update_attr(self.default_values, kwargs, self.__class__.__name__)
+        for optional in ['gamma', 'raman_efficiency']:
+            if optional in kwargs:
+                setattr(self, optional, kwargs[optional])
 
 
-class RamanFiber(_JsonThing):
-    default_values = {
-        'type_variety': '',
-        'dispersion': None,
-        'gamma': 0,
-        'pmd_coef': 0,
-        'raman_efficiency': None
-    }
-
-    def __init__(self, **kwargs):
-        self.update_attr(self.default_values, kwargs, 'RamanFiber')
-        for param in ('cr', 'frequency_offset'):
-            if param not in self.raman_efficiency:
-                raise EquipmentConfigError(f'RamanFiber.raman_efficiency: missing "{param}" parameter')
-        if self.raman_efficiency['frequency_offset'] != sorted(self.raman_efficiency['frequency_offset']):
-            raise EquipmentConfigError(f'RamanFiber.raman_efficiency.frequency_offset is not sorted')
+class RamanFiber(Fiber):
+    pass
 
 
 class Amp(_JsonThing):
@@ -156,7 +172,9 @@ class Amp(_JsonThing):
         'gain_ripple': None,
         'out_voa_auto': False,
         'allowed_for_design': False,
-        'raman': False
+        'raman': False,
+        'pmd': 0,
+        'pdl': 0
     }
 
     def __init__(self, **kwargs):
@@ -196,13 +214,17 @@ class Amp(_JsonThing):
             except KeyError:
                 pass  # nf0 is not needed for variable gain amp
             nf1, nf2, delta_p = estimate_nf_model(type_variety, gain_min, gain_max, nf_min, nf_max)
-            nf_def = Model_vg(nf1, nf2, delta_p)
+            nf_def = Model_vg(nf1, nf2, delta_p, nf_min, nf_max)
         elif type_def == 'openroadm':
             try:
                 nf_coef = kwargs.pop('nf_coef')
             except KeyError:  # nf_coef is expected for openroadm amp
                 raise EquipmentConfigError(f'missing nf_coef input for amplifier: {type_variety} in equipment config')
-            nf_def = Model_openroadm(nf_coef)
+            nf_def = Model_openroadm_ila(nf_coef)
+        elif type_def == 'openroadm_preamp':
+            nf_def = Model_openroadm_preamp()
+        elif type_def == 'openroadm_booster':
+            nf_def = Model_openroadm_booster()
         elif type_def == 'dual_stage':
             try:  # nf_ram and gain_ram are expected for a hybrid amp
                 preamp_variety = kwargs.pop('preamp_variety')
@@ -267,7 +289,7 @@ def _check_fiber_vs_raman_fiber(equipment):
     if 'RamanFiber' not in equipment:
         return
     for fiber_type in set(equipment['Fiber'].keys()) & set(equipment['RamanFiber'].keys()):
-        for attr in ('dispersion', 'dispersion-slope', 'gamma', 'pmd-coefficient'):
+        for attr in ('dispersion', 'dispersion-slope', 'effective_area', 'gamma', 'pmd-coefficient'):
             fiber = equipment['Fiber'][fiber_type]
             raman = equipment['RamanFiber'][fiber_type]
             a = getattr(fiber, attr, None)
@@ -475,12 +497,12 @@ def requests_from_json(json_data, equipment):
                 params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
         except KeyError:
             params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
-        _check_one_request(params, f_max_from_si)
-
+        params['effective_freq_slot'] = req['path-constraints']['te-bandwidth'].get('effective-freq-slot', [None])[0]
         try:
             params['path_bandwidth'] = req['path-constraints']['te-bandwidth']['path_bandwidth']
         except KeyError:
             pass
+        _check_one_request(params, f_max_from_si)
         requests_list.append(PathRequest(**params))
     return requests_list
 
@@ -506,6 +528,22 @@ def _check_one_request(params, f_max_from_si):
             max recommanded nb of channels is {max_recommanded_nb_channels}.'''
             _logger.critical(msg)
             raise ServiceError(msg)
+    # Transponder mode already selected; will it fit to the requested bandwidth?
+    if params['trx_mode'] is not None and params['effective_freq_slot'] is not None \
+            and params['effective_freq_slot']['M'] is not None:
+        _, requested_m = compute_spectrum_slot_vs_bandwidth(params['path_bandwidth'],
+                                                            params['spacing'],
+                                                            params['bit_rate'])
+        # params['effective_freq_slot']['M'] value should be bigger than the computed requested_m (simple estimate)
+        # TODO: elaborate a more accurate estimate with nb_wl * tx_osnr + possibly guardbands in case of
+        # superchannel closed packing.
+
+        if requested_m > params['effective_freq_slot']['M']:
+            msg = f'requested M {params["effective_freq_slot"]["M"]} number of slots for request' +\
+                  f'{params["request_id"]} should be greater than {requested_m} to support request' +\
+                  f'{params["path_bandwidth"] * 1e-9} Gbit/s with {params["trx_type"]} {params["trx_mode"]}'
+            _logger.critical(msg)
+            raise ServiceError(msg)
 
 
 def disjunctions_from_json(json_data):
@@ -513,11 +551,7 @@ def disjunctions_from_json(json_data):
         of requested disjunctions for this set of requests
     """
     disjunctions_list = []
-    try:
-        temp_test = json_data['synchronization']
-    except KeyError:
-        temp_test = []
-    if temp_test:
+    if 'synchronization' in json_data:
         for snc in json_data['synchronization']:
             params = {}
             params['disjunction_id'] = snc['synchronization-id']
@@ -536,10 +570,9 @@ def convert_service_sheet(
         network,
         network_filename=None,
         output_filename='',
-        bidir=False,
-        filter_region=None):
+        bidir=False):
     if output_filename == '':
         output_filename = f'{str(input_filename)[0:len(str(input_filename))-len(str(input_filename.suffixes[0]))]}_services.json'
-    data = read_service_sheet(input_filename, eqpt, network, network_filename, bidir, filter_region)
+    data = read_service_sheet(input_filename, eqpt, network, network_filename, bidir)
     save_json(data, output_filename)
     return data

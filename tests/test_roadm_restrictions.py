@@ -12,12 +12,14 @@ checks that restrictions in roadms are correctly applied during autodesign
 
 from pathlib import Path
 import pytest
+from numpy.testing import assert_allclose
+
 from gnpy.core.utils import lin2db, automatic_nch
 from gnpy.core.elements import Fused, Roadm, Edfa
 from gnpy.core.network import build_network
 from gnpy.tools.json_io import network_from_json, load_equipment, load_json, Amp
 from gnpy.core.equipment import trx_mode_params
-from gnpy.topology.request import PathRequest, compute_constrained_path
+from gnpy.topology.request import PathRequest, compute_constrained_path, ref_carrier
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.utils import db2lin
 
@@ -207,8 +209,9 @@ def test_restrictions(restrictions, equipment):
                     raise AssertionError()
 
 
+@pytest.mark.parametrize('power_dbm', [0, +1, -2])
 @pytest.mark.parametrize('prev_node_type, effective_pch_out_db', [('edfa', -20.0), ('fused', -22.0)])
-def test_roadm_target_power(prev_node_type, effective_pch_out_db):
+def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
     ''' Check that egress power of roadm is equal to target power if input power is greater
     than target power else, that it is equal to input power. Use a simple two hops A-B-C topology
     for the test where the prev_node in ROADM B is either an amplifier or a fused, so that the target
@@ -225,51 +228,57 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db):
         prev_node['params'] = {'loss': 0}
     json_network['elements'].append(prev_node)
     network = network_from_json(json_network, equipment)
-    # Build the network once using the default power defined in SI in eqpt config
-    p_db = equipment['SI']['default'].power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
-                                             equipment['SI']['default'].f_max, 
-                                             equipment['SI']['default'].spacing))
+    p_total_db = power_dbm + lin2db(automatic_nch(equipment['SI']['default'].f_min,
+                                                  equipment['SI']['default'].f_max,
+                                                  equipment['SI']['default'].spacing))
 
-    build_network(network, equipment, p_db, p_total_db)
+    build_network(network, equipment, power_dbm, p_total_db)
 
-    params = {}
-    params['request_id'] = 0
-    params['trx_type'] = ''
-    params['trx_mode'] = ''
-    params['source'] = 'trx node A'
-    params['destination'] = 'trx node C'
-    params['bidir'] = False
-    params['nodes_list'] = ['trx node C']
-    params['loose_list'] = ['strict']
-    params['format'] = ''
-    params['path_bandwidth'] = 100e9
+    params = {'request_id': 0,
+              'trx_type': '',
+              'trx_mode': '',
+              'source': 'trx node A',
+              'destination': 'trx node C',
+              'bidir': False,
+              'nodes_list': ['trx node C'],
+              'loose_list': ['strict'],
+              'format': '',
+              'path_bandwidth': 100e9,
+              'effective_freq_slot': None,
+              }
     trx_params = trx_mode_params(equipment)
     params.update(trx_params)
     req = PathRequest(**params)
+    req.power = db2lin(power_dbm - 30)
     path = compute_constrained_path(network, req)
     si = create_input_spectral_information(
-        req.f_min, req.f_max, req.roll_off, req.baud_rate,
-        req.power, req.spacing)
+        f_min=req.f_min, f_max=req.f_max, roll_off=req.roll_off, baud_rate=req.baud_rate,
+        power=req.power, spacing=req.spacing, tx_osnr=req.tx_osnr, ref_carrier=ref_carrier(equipment))
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
-            carriers_power_in_roadm = min([c.power.signal + c.power.nli + c.power.ase for c in si.carriers])
-            si = el(si, degree=path[i+1].uid)
+            power_in_roadm = si.signal + si.ase + si.nli
+            si = el(si, degree=path[i + 1].uid)
+            power_out_roadm = si.signal + si.ase + si.nli
             if el.uid == 'roadm node B':
-                print('input', carriers_power_in_roadm)
-                assert el.effective_pch_out_db == effective_pch_out_db
-                for carrier in si.carriers:
-                    print(carrier.power.signal + carrier.power.nli + carrier.power.ase)
-                    power = carrier.power.signal + carrier.power.nli + carrier.power.ase
-                    if prev_node_type == 'edfa':
-                        # edfa prev_node sets input power to roadm to a high enough value:
-                        # Check that egress power of roadm is equal to target power
-                        assert power == pytest.approx(db2lin(effective_pch_out_db - 30), rel=1e-3)
-                    elif prev_node_type == 'fused':
-                        # fused prev_node does reamplfy power after fiber propagation, so input power
-                        # to roadm is low.
-                        # Check that egress power of roadm is equalized to the min carrier input power.
-                        assert power == pytest.approx(carriers_power_in_roadm, rel=1e-3)
+                # if previous was an EDFA, power level at ROADM input is enough for the ROADM to apply its
+                # target power (as specified in equipment ie -20 dBm)
+                # if it is a Fused, the input power to the ROADM is smaller than the target power, and the
+                # ROADM cannot apply this target. In this case, it is assumed that the ROADM has 0 dB loss
+                # so the output power will be the same as the input power, which for this particular case
+                # corresponds to -22dBm + power_dbm
+                # next step (for ROADM modelling) will be to apply a minimum loss for ROADMs !
+                if prev_node_type == 'edfa':
+                    # edfa prev_node sets input power to roadm to a high enough value:
+                    # check that target power is correctly set in the ROADM
+                    assert_allclose(el.ref_pch_out_dbm, effective_pch_out_db, rtol=1e-3)
+                    # Check that egress power of roadm is equal to target power
+                    assert_allclose(power_out_roadm, db2lin(effective_pch_out_db - 30), rtol=1e-3)
+                elif prev_node_type == 'fused':
+                    # fused prev_node does reamplfy power after fiber propagation, so input power
+                    # to roadm is low.
+                    # check that target power correctly reports power_dbm from previous propagation
+                    assert_allclose(el.ref_pch_out_dbm, effective_pch_out_db + power_dbm, rtol=1e-3)
+                    # Check that egress power of roadm is not equalized power out is the same as power in.
+                    assert_allclose(power_out_roadm, power_in_roadm, rtol=1e-3)
         else:
             si = el(si)
-

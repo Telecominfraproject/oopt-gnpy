@@ -20,12 +20,12 @@
         "temperature": 283,
         "raman_pumps": [
           {
-            "power": 200e-3,
+            "power": 224.403e-3,
             "frequency": 205e12,
             "propagation_direction": "counterprop"
           },
           {
-            "power": 206e-3,
+            "power": 231.135e-3,
             "frequency": 201e12,
             "propagation_direction": "counterprop"
           }
@@ -43,6 +43,21 @@
       "metadata": {
         "location": {
           "latitude": 1,
+          "longitude": 0,
+          "city": null,
+          "region": ""
+        }
+      }
+    },
+    {
+      "uid": "Fused1",
+      "type": "Fused",
+      "params": {
+        "loss": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 1.5,
           "longitude": 0,
           "city": null,
           "region": ""
@@ -88,6 +103,10 @@
     },
     {
       "from_node": "Span1",
+      "to_node": "Fused1"
+    },
+    {
+      "from_node": "Fused1",
       "to_node": "Edfa1"
     },
     {

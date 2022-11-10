@@ -12,12 +12,6 @@
           "technology": "flexi-grid",
           "trx_type": "Voyager_16QAM",
           "trx_mode": "16QAM",
-          "effective-freq-slot": [
-            {
-              "n": "null",
-              "m": "null"
-            }
-          ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": 80,
           "output-power": 0.001,
@@ -37,12 +31,6 @@
           "technology": "flexi-grid",
           "trx_type": "vendorA_trx-type1",
           "trx_mode": "PS_SP64_1",
-          "effective-freq-slot": [
-            {
-              "n": "null",
-              "m": "null"
-            }
-          ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": 80,
           "output-power": 0.001,
@@ -62,12 +50,6 @@
           "technology": "flexi-grid",
           "trx_type": "vendorA_trx-type1",
           "trx_mode": "PS_SP64_1",
-          "effective-freq-slot": [
-            {
-              "n": "null",
-              "m": "null"
-            }
-          ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": 80,
           "output-power": 0.001,
@@ -87,12 +69,6 @@
           "technology": "flexi-grid",
           "trx_type": "vendorA_trx-type1",
           "trx_mode": "PS_SP64_1",
-          "effective-freq-slot": [
-            {
-              "n": "null",
-              "m": "null"
-            }
-          ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": 80,
           "output-power": 0.001,
@@ -133,12 +109,6 @@
           "technology": "flexi-grid",
           "trx_type": "Voyager",
           "trx_mode": "mode 2 - fake",
-          "effective-freq-slot": [
-            {
-              "n": "null",
-              "m": "null"
-            }
-          ],
           "spacing": 75000000000.0,
           "max-nb-of-channel": 63,
           "output-power": 0.001,
@@ -158,12 +128,6 @@
           "technology": "flexi-grid",
           "trx_type": "Voyager",
           "trx_mode": "mode 2",
-          "effective-freq-slot": [
-            {
-              "n": "null",
-              "m": "null"
-            }
-          ],
           "spacing": 75000000000.0,
           "max-nb-of-channel": 63,
           "output-power": 0.001,
@@ -183,12 +147,6 @@
           "technology": "flexi-grid",
           "trx_type": "vendorA_trx-type1",
           "trx_mode": "PS_SP64_1",
-          "effective-freq-slot": [
-            {
-              "n": "null",
-              "m": "null"
-            }
-          ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": 80,
           "output-power": 0.001,
@@ -221,12 +179,6 @@
           "technology": "flexi-grid",
           "trx_type": "Voyager",
           "trx_mode": "mode 3",
-          "effective-freq-slot": [
-            {
-              "n": "null",
-              "m": "null"
-            }
-          ],
           "spacing": 62500000000.0,
           "max-nb-of-channel": 76,
           "output-power": 0.001,
@@ -259,12 +211,6 @@
           "technology": "flexi-grid",
           "trx_type": "vendorA_trx-type1",
           "trx_mode": "PS_SP64_1",
-          "effective-freq-slot": [
-            {
-              "n": "null",
-              "m": "null"
-            }
-          ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": 80,
           "output-power": 0.001,
@@ -284,12 +230,6 @@
           "technology": "flexi-grid",
           "trx_type": "vendorA_trx-type1",
           "trx_mode": "PS_SP64_1",
-          "effective-freq-slot": [
-            {
-              "n": "null",
-              "m": "null"
-            }
-          ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": 80,
           "output-power": 0.001,
@@ -330,12 +270,6 @@
           "technology": "flexi-grid",
           "trx_type": "Voyager_16QAM",
           "trx_mode": "16QAM",
-          "effective-freq-slot": [
-            {
-              "n": "null",
-              "m": "null"
-            }
-          ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": 80,
           "output-power": null,
@@ -355,12 +289,6 @@
           "technology": "flexi-grid",
           "trx_type": "Voyager",
           "trx_mode": "mode 1",
-          "effective-freq-slot": [
-            {
-              "n": "null",
-              "m": "null"
-            }
-          ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": null,
           "output-power": 0.001,
@@ -380,12 +308,6 @@
           "technology": "flexi-grid",
           "trx_type": "vendorA_trx-type1",
           "trx_mode": "PS_SP64_1",
-          "effective-freq-slot": [
-            {
-              "n": "null",
-              "m": "null"
-            }
-          ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": null,
           "output-power": null,
@@ -405,12 +327,6 @@
           "technology": "flexi-grid",
           "trx_type": "vendorA_trx-type1",
           "trx_mode": null,
-          "effective-freq-slot": [
-            {
-              "n": "null",
-              "m": "null"
-            }
-          ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": 80,
           "output-power": 0.001,
@@ -451,12 +367,6 @@
           "technology": "flexi-grid",
           "trx_type": "Voyager",
           "trx_mode": null,
-          "effective-freq-slot": [
-            {
-              "n": "null",
-              "m": "null"
-            }
-          ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": null,
           "output-power": 0.001,
@@ -476,12 +386,6 @@
           "technology": "flexi-grid",
           "trx_type": "Voyager",
           "trx_mode": null,
-          "effective-freq-slot": [
-            {
-              "n": "null",
-              "m": "null"
-            }
-          ],
           "spacing": 75000000000.0,
           "max-nb-of-channel": 63,
           "output-power": null,
@@ -501,12 +405,6 @@
           "technology": "flexi-grid",
           "trx_type": "Voyager",
           "trx_mode": null,
-          "effective-freq-slot": [
-            {
-              "n": "null",
-              "m": "null"
-            }
-          ],
           "spacing": 50000000000.0,
           "max-nb-of-channel": null,
           "output-power": null,
@@ -526,12 +424,6 @@
           "technology": "flexi-grid",
           "trx_type": "Voyager",
           "trx_mode": null,
-          "effective-freq-slot": [
-            {
-              "n": "null",
-              "m": "null"
-            }
-          ],
           "spacing": 75000000000.0,
           "max-nb-of-channel": null,
           "output-power": null,
@@ -551,12 +443,6 @@
           "technology": "flexi-grid",
           "trx_type": "Voyager",
           "trx_mode": null,
-          "effective-freq-slot": [
-            {
-              "n": "null",
-              "m": "null"
-            }
-          ],
           "spacing": 30000000000.0,
           "max-nb-of-channel": null,
           "output-power": null,

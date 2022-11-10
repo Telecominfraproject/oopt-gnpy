@@ -38,7 +38,7 @@ Using Python on your computer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    **Note**: `gnpy` supports Python 3 only. Python 2 is not supported.
-   `gnpy` requires Python ≥3.6
+   `gnpy` requires Python ≥3.8
 
    **Note**: the `gnpy` maintainers strongly recommend the use of Anaconda for
    managing dependencies.
@@ -84,7 +84,7 @@ exact version of Python you are using.
     $ which python                   # check which Python executable is used
     /path/to/anaconda/bin/python
     $ python -V                      # check your Python version
-    Python 3.6.5 :: Anaconda, Inc.
+    Python 3.8.0 :: Anaconda, Inc.
 
 .. _install-pip:
 

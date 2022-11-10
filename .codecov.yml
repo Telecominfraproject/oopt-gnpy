@@ -1,1 +1,9 @@
 comment: off
+coverage:
+  status:
+    project:
+      default:
+        threshold: 5%
+    patch:
+      default:
+        only_pulls: true

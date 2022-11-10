@@ -1,0 +1,6233 @@
+{
+  "elements": [
+    {
+      "uid": "trx_Stockholm",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 59.3294,
+          "longitude": 18.0686,
+          "city": "Stockholm",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "trx_Gothenburg",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 57.6717,
+          "longitude": 11.981,
+          "city": "Gothenburg",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "trx_Malmö",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 55.5932,
+          "longitude": 13.0214,
+          "city": "Malmö",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "trx_Uppsala",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 59.8498,
+          "longitude": 17.6389,
+          "city": "Uppsala",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "trx_Västerås",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 59.6173,
+          "longitude": 16.5422,
+          "city": "Västerås",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "trx_Örebro",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 59.2669,
+          "longitude": 15.1965,
+          "city": "Örebro",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "trx_Linköping",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 58.4094,
+          "longitude": 15.6257,
+          "city": "Linköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "trx_Helsingborg",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 56.0424,
+          "longitude": 12.721,
+          "city": "Helsingborg",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "trx_Jönköping",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 57.7713,
+          "longitude": 14.165,
+          "city": "Jönköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "trx_Umeå",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 63.8285,
+          "longitude": 20.2706,
+          "city": "Umeå",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "trx_Norrköping",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 58.5954,
+          "longitude": 16.1787,
+          "city": "Norrköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "trx_Karlstad",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 59.3671,
+          "longitude": 13.4999,
+          "city": "Karlstad",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "trx_Sundsvall",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 62.4001,
+          "longitude": 17.3167,
+          "city": "Sundsvall",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "trx_Gävle",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 60.667,
+          "longitude": 17.1666,
+          "city": "Gävle",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "trx_Borås",
+      "type": "Transceiver",
+      "metadata": {
+        "location": {
+          "latitude": 57.7304,
+          "longitude": 12.92,
+          "city": "Borås",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "roadm_Stockholm",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [
+            "openroadm_mw_mw_preamp"
+          ],
+          "booster_variety_list": [
+            "openroadm_mw_mw_booster"
+          ]
+        },
+        "per_degree_pch_out_db": {
+          "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Västerås)": -20,
+          "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Uppsala)": -20,
+          "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Norrköping)_(1/2)": -20
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.3294,
+          "longitude": 18.0686,
+          "city": "Stockholm",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "roadm_Gothenburg",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [
+            "openroadm_mw_mw_preamp"
+          ],
+          "booster_variety_list": [
+            "openroadm_mw_mw_booster"
+          ]
+        },
+        "per_degree_pch_out_db": {
+          "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg → Borås)": -20,
+          "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg → Helsingborg)_(1/3)": -20
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.6717,
+          "longitude": 11.981,
+          "city": "Gothenburg",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "roadm_Malmö",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [
+            "openroadm_mw_mw_preamp"
+          ],
+          "booster_variety_list": [
+            "openroadm_mw_mw_booster"
+          ]
+        },
+        "per_degree_pch_out_db": {
+          "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Helsingborg)": -20,
+          "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Jönköping)_(1/3)": -20,
+          "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Norrköping)_(1/5)": -20
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 55.5932,
+          "longitude": 13.0214,
+          "city": "Malmö",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "roadm_Uppsala",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [
+            "openroadm_mw_mw_preamp"
+          ],
+          "booster_variety_list": [
+            "openroadm_mw_mw_booster"
+          ]
+        },
+        "per_degree_pch_out_db": {
+          "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Västerås)": -20,
+          "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Gävle)": -20,
+          "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Stockholm)": -20
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.8498,
+          "longitude": 17.6389,
+          "city": "Uppsala",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "roadm_Västerås",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [
+            "openroadm_mw_mw_preamp"
+          ],
+          "booster_variety_list": [
+            "openroadm_mw_mw_booster"
+          ]
+        },
+        "per_degree_pch_out_db": {
+          "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Uppsala)": -20,
+          "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Örebro)": -20,
+          "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Stockholm)": -20
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.6173,
+          "longitude": 16.5422,
+          "city": "Västerås",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "roadm_Örebro",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [
+            "openroadm_mw_mw_preamp"
+          ],
+          "booster_variety_list": [
+            "openroadm_mw_mw_booster"
+          ]
+        },
+        "per_degree_pch_out_db": {
+          "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Norrköping)": -20,
+          "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Västerås)": -20,
+          "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Linköping)": -20,
+          "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Karlstad)": -20,
+          "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Gävle)_(1/3)": -20
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.2669,
+          "longitude": 15.1965,
+          "city": "Örebro",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "roadm_Linköping",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [
+            "openroadm_mw_mw_preamp"
+          ],
+          "booster_variety_list": [
+            "openroadm_mw_mw_booster"
+          ]
+        },
+        "per_degree_pch_out_db": {
+          "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Jönköping)": -20,
+          "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Örebro)": -20,
+          "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Norrköping)": -20
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.4094,
+          "longitude": 15.6257,
+          "city": "Linköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "roadm_Helsingborg",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [
+            "openroadm_mw_mw_preamp"
+          ],
+          "booster_variety_list": [
+            "openroadm_mw_mw_booster"
+          ]
+        },
+        "per_degree_pch_out_db": {
+          "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg → Malmö)": -20,
+          "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg → Gothenburg)_(1/3)": -20
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.0424,
+          "longitude": 12.721,
+          "city": "Helsingborg",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "roadm_Jönköping",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [
+            "openroadm_mw_mw_preamp"
+          ],
+          "booster_variety_list": [
+            "openroadm_mw_mw_booster"
+          ]
+        },
+        "per_degree_pch_out_db": {
+          "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Linköping)": -20,
+          "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Borås)": -20,
+          "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Malmö)_(1/3)": -20
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.7713,
+          "longitude": 14.165,
+          "city": "Jönköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "roadm_Umeå",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [
+            "openroadm_mw_mw_preamp"
+          ],
+          "booster_variety_list": [
+            "openroadm_mw_mw_booster"
+          ]
+        },
+        "per_degree_pch_out_db": {
+          "Edfa_booster_roadm_Umeå_to_fiber (Umeå → Gävle)_(1/5)": -20,
+          "Edfa_booster_roadm_Umeå_to_fiber (Umeå → Sundsvall)_(1/3)": -20
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 63.8285,
+          "longitude": 20.2706,
+          "city": "Umeå",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "roadm_Norrköping",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [
+            "openroadm_mw_mw_preamp"
+          ],
+          "booster_variety_list": [
+            "openroadm_mw_mw_booster"
+          ]
+        },
+        "per_degree_pch_out_db": {
+          "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Örebro)": -20,
+          "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Linköping)": -20,
+          "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Stockholm)_(1/2)": -20,
+          "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Malmö)_(1/5)": -20
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.5954,
+          "longitude": 16.1787,
+          "city": "Norrköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "roadm_Karlstad",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [
+            "openroadm_mw_mw_preamp"
+          ],
+          "booster_variety_list": [
+            "openroadm_mw_mw_booster"
+          ]
+        },
+        "per_degree_pch_out_db": {
+          "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Örebro)": -20,
+          "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Borås)_(1/3)": -20,
+          "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Sundsvall)_(1/5)": -20
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.3671,
+          "longitude": 13.4999,
+          "city": "Karlstad",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "roadm_Sundsvall",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [
+            "openroadm_mw_mw_preamp"
+          ],
+          "booster_variety_list": [
+            "openroadm_mw_mw_booster"
+          ]
+        },
+        "per_degree_pch_out_db": {
+          "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall → Umeå)_(1/3)": -20,
+          "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall → Karlstad)_(1/5)": -20
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 62.4001,
+          "longitude": 17.3167,
+          "city": "Sundsvall",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "roadm_Gävle",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [
+            "openroadm_mw_mw_preamp"
+          ],
+          "booster_variety_list": [
+            "openroadm_mw_mw_booster"
+          ]
+        },
+        "per_degree_pch_out_db": {
+          "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Uppsala)": -20,
+          "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Örebro)_(1/3)": -20,
+          "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Umeå)_(1/5)": -20
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.667,
+          "longitude": 17.1666,
+          "city": "Gävle",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "roadm_Borås",
+      "type": "Roadm",
+      "params": {
+        "target_pch_out_db": -20,
+        "restrictions": {
+          "preamp_variety_list": [
+            "openroadm_mw_mw_preamp"
+          ],
+          "booster_variety_list": [
+            "openroadm_mw_mw_booster"
+          ]
+        },
+        "per_degree_pch_out_db": {
+          "Edfa_booster_roadm_Borås_to_fiber (Borås → Jönköping)": -20,
+          "Edfa_booster_roadm_Borås_to_fiber (Borås → Gothenburg)": -20,
+          "Edfa_booster_roadm_Borås_to_fiber (Borås → Karlstad)_(1/3)": -20
+        }
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.7304,
+          "longitude": 12.92,
+          "city": "Borås",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Uppsala → Västerås)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.284499,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.73355,
+          "longitude": 17.09055,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Västerås → Uppsala)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 80.284499,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.73355,
+          "longitude": 17.09055,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Uppsala → Gävle)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 113.675362,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.2584,
+          "longitude": 17.402749999999997,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Gävle → Uppsala)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 113.675362,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.2584,
+          "longitude": 17.402749999999997,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Örebro → Norrköping)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 112.534046,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.93115,
+          "longitude": 15.6876,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Norrköping → Örebro)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 112.534046,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.93115,
+          "longitude": 15.6876,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Linköping → Jönköping)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 134.020651,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.09035,
+          "longitude": 14.89535,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Jönköping → Linköping)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 134.020651,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.09035,
+          "longitude": 14.89535,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Västerås → Örebro)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 102.898383,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.442099999999996,
+          "longitude": 15.86935,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Örebro → Västerås)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 102.898383,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.442099999999996,
+          "longitude": 15.86935,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Örebro → Linköping)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 118.417586,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.83815,
+          "longitude": 15.411100000000001,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Linköping → Örebro)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 118.417586,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.83815,
+          "longitude": 15.411100000000001,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Jönköping → Borås)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 89.123798,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.75085,
+          "longitude": 13.5425,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Borås → Jönköping)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 89.123798,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.75085,
+          "longitude": 13.5425,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Stockholm → Västerås)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 110.728591,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.473349999999996,
+          "longitude": 17.3054,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Västerås → Stockholm)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 110.728591,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.473349999999996,
+          "longitude": 17.3054,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Malmö → Helsingborg)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 64.128897,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 55.817800000000005,
+          "longitude": 12.8712,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Helsingborg → Malmö)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 64.128897,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 55.817800000000005,
+          "longitude": 12.8712,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Gothenburg → Borås)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 67.641221,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.70105,
+          "longitude": 12.4505,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Borås → Gothenburg)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 67.641221,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.70105,
+          "longitude": 12.4505,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Linköping → Norrköping)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 45.988528,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 1.8022944874279876,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.502399999999994,
+          "longitude": 15.9022,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Norrköping → Linköping)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 45.988528,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 1.8022944874279876,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.502399999999994,
+          "longitude": 15.9022,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Örebro → Karlstad)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 116.705721,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.317,
+          "longitude": 14.3482,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Karlstad → Örebro)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 116.705721,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.317,
+          "longitude": 14.3482,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Stockholm → Uppsala)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 75.421722,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.589600000000004,
+          "longitude": 17.853749999999998,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Uppsala → Stockholm)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 75.421722,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.589600000000004,
+          "longitude": 17.853749999999998,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Örebro → Gävle)_(1/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 76.351043,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.50025,
+          "longitude": 15.52485,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Örebro → Gävle)_(2/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 76.351043,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.96695,
+          "longitude": 16.18155,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Örebro → Gävle)_(3/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 76.351043,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.43365,
+          "longitude": 16.83825,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Gävle → Örebro)_(1/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 76.351043,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.43365,
+          "longitude": 16.83825,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Gävle → Örebro)_(2/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 76.351043,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.96695,
+          "longitude": 16.18155,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Gävle → Örebro)_(3/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 76.351043,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.50025,
+          "longitude": 15.52485,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Karlstad → Borås)_(1/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 74.162406,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.09431666666667,
+          "longitude": 13.40325,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Karlstad → Borås)_(2/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 74.162406,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.54875,
+          "longitude": 13.20995,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Karlstad → Borås)_(3/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 74.162406,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.00318333333334,
+          "longitude": 13.01665,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Borås → Karlstad)_(1/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 74.162406,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.00318333333334,
+          "longitude": 13.01665,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Borås → Karlstad)_(2/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 74.162406,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.54875,
+          "longitude": 13.20995,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Borås → Karlstad)_(3/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 74.162406,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.09431666666667,
+          "longitude": 13.40325,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Malmö → Jönköping)_(1/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 100.982119,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 55.95621666666667,
+          "longitude": 13.212,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Malmö → Jönköping)_(2/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 100.982119,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.682249999999996,
+          "longitude": 13.5932,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Malmö → Jönköping)_(3/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 100.982119,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.40828333333333,
+          "longitude": 13.9744,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Jönköping → Malmö)_(1/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 100.982119,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.40828333333333,
+          "longitude": 13.9744,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Jönköping → Malmö)_(2/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 100.982119,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.682249999999996,
+          "longitude": 13.5932,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Jönköping → Malmö)_(3/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 100.982119,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 55.95621666666667,
+          "longitude": 13.212,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Umeå → Gävle)_(1/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.979543,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 63.51235,
+          "longitude": 19.9602,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Umeå → Gävle)_(2/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.979543,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 62.88005,
+          "longitude": 19.3394,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Umeå → Gävle)_(3/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.979543,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 62.247749999999996,
+          "longitude": 18.718600000000002,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Umeå → Gävle)_(4/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.979543,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 61.61545,
+          "longitude": 18.0978,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Umeå → Gävle)_(5/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.979543,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.98315,
+          "longitude": 17.477,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Gävle → Umeå)_(1/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.979543,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.98315,
+          "longitude": 17.477,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Gävle → Umeå)_(2/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.979543,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 61.61545,
+          "longitude": 18.0978,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Gävle → Umeå)_(3/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.979543,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 62.247749999999996,
+          "longitude": 18.718600000000002,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Gävle → Umeå)_(4/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.979543,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 62.88005,
+          "longitude": 19.3394,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Gävle → Umeå)_(5/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.979543,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 63.51235,
+          "longitude": 19.9602,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Stockholm → Norrköping)_(1/2)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 81.625549,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.1459,
+          "longitude": 17.596125,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Stockholm → Norrköping)_(2/2)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 81.625549,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.7789,
+          "longitude": 16.651175,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Norrköping → Stockholm)_(1/2)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 81.625549,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.7789,
+          "longitude": 16.651175,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Norrköping → Stockholm)_(2/2)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 81.625549,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.1459,
+          "longitude": 17.596125,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Malmö → Norrköping)_(1/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.433145,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 55.893420000000006,
+          "longitude": 13.33713,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Malmö → Norrköping)_(2/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.433145,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.49386,
+          "longitude": 13.968589999999999,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Malmö → Norrköping)_(3/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.433145,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.094300000000004,
+          "longitude": 14.60005,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Malmö → Norrköping)_(4/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.433145,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.694739999999996,
+          "longitude": 15.23151,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Malmö → Norrköping)_(5/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.433145,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.29518,
+          "longitude": 15.862969999999999,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Norrköping → Malmö)_(1/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.433145,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.29518,
+          "longitude": 15.862969999999999,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Norrköping → Malmö)_(2/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.433145,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.694739999999996,
+          "longitude": 15.23151,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Norrköping → Malmö)_(3/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.433145,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.094300000000004,
+          "longitude": 14.60005,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Norrköping → Malmö)_(4/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.433145,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.49386,
+          "longitude": 13.968589999999999,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Norrköping → Malmö)_(5/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 92.433145,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 55.893420000000006,
+          "longitude": 13.33713,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Umeå → Sundsvall)_(1/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 87.233562,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 63.59043333333333,
+          "longitude": 19.778283333333334,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Umeå → Sundsvall)_(2/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 87.233562,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 63.1143,
+          "longitude": 18.79365,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Umeå → Sundsvall)_(3/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 87.233562,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 62.63816666666667,
+          "longitude": 17.80901666666667,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Sundsvall → Umeå)_(1/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 87.233562,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 62.63816666666667,
+          "longitude": 17.80901666666667,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Sundsvall → Umeå)_(2/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 87.233562,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 63.1143,
+          "longitude": 18.79365,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Sundsvall → Umeå)_(3/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 87.233562,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 63.59043333333333,
+          "longitude": 19.778283333333334,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Karlstad → Sundsvall)_(1/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 95.113423,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.6704,
+          "longitude": 13.88158,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Karlstad → Sundsvall)_(2/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 95.113423,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.277,
+          "longitude": 14.64494,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Karlstad → Sundsvall)_(3/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 95.113423,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.8836,
+          "longitude": 15.4083,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Karlstad → Sundsvall)_(4/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 95.113423,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 61.4902,
+          "longitude": 16.17166,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Karlstad → Sundsvall)_(5/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 95.113423,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 62.0968,
+          "longitude": 16.93502,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Sundsvall → Karlstad)_(1/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 95.113423,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 62.0968,
+          "longitude": 16.93502,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Sundsvall → Karlstad)_(2/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 95.113423,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 61.4902,
+          "longitude": 16.17166,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Sundsvall → Karlstad)_(3/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 95.113423,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.8836,
+          "longitude": 15.4083,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Sundsvall → Karlstad)_(4/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 95.113423,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.277,
+          "longitude": 14.64494,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Sundsvall → Karlstad)_(5/5)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 95.113423,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.6704,
+          "longitude": 13.88158,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Gothenburg → Helsingborg)_(1/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 74.785322,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.400150000000004,
+          "longitude": 12.104333333333333,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Gothenburg → Helsingborg)_(2/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 74.785322,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.85705,
+          "longitude": 12.350999999999999,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Gothenburg → Helsingborg)_(3/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 74.785322,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.31395,
+          "longitude": 12.597666666666667,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Helsingborg → Gothenburg)_(1/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 74.785322,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.31395,
+          "longitude": 12.597666666666667,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Helsingborg → Gothenburg)_(2/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 74.785322,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.85705,
+          "longitude": 12.350999999999999,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "fiber (Helsingborg → Gothenburg)_(3/3)",
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 74.785322,
+        "loss_coef": 0.2,
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0,
+        "con_out": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.400150000000004,
+          "longitude": 12.104333333333333,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Stockholm_from_fiber (Västerås → Stockholm)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 22.14571827636001,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.3294,
+          "longitude": 18.0686,
+          "city": "Stockholm",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Stockholm_from_fiber (Uppsala → Stockholm)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 15.084344321104716,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.3294,
+          "longitude": 18.0686,
+          "city": "Stockholm",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Stockholm_from_fiber (Norrköping → Stockholm)_(2/2)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 16.32510970243151,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.3294,
+          "longitude": 18.0686,
+          "city": "Stockholm",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Västerås)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.3294,
+          "longitude": 18.0686,
+          "city": "Stockholm",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Uppsala)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.3294,
+          "longitude": 18.0686,
+          "city": "Stockholm",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Norrköping)_(1/2)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.3294,
+          "longitude": 18.0686,
+          "city": "Stockholm",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Gothenburg_from_fiber (Borås → Gothenburg)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 13.52824427868528,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.6717,
+          "longitude": 11.981,
+          "city": "Gothenburg",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Gothenburg_from_fiber (Helsingborg → Gothenburg)_(3/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 14.957064409512439,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.6717,
+          "longitude": 11.981,
+          "city": "Gothenburg",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg → Borås)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.6717,
+          "longitude": 11.981,
+          "city": "Gothenburg",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg → Helsingborg)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.6717,
+          "longitude": 11.981,
+          "city": "Gothenburg",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Malmö_from_fiber (Helsingborg → Malmö)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 12.825779482284805,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 55.5932,
+          "longitude": 13.0214,
+          "city": "Malmö",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Malmö_from_fiber (Jönköping → Malmö)_(3/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 20.19642374844515,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 55.5932,
+          "longitude": 13.0214,
+          "city": "Malmö",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Malmö_from_fiber (Norrköping → Malmö)_(5/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 18.48662898094962,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 55.5932,
+          "longitude": 13.0214,
+          "city": "Malmö",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Helsingborg)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 55.5932,
+          "longitude": 13.0214,
+          "city": "Malmö",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Jönköping)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 55.5932,
+          "longitude": 13.0214,
+          "city": "Malmö",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Norrköping)_(1/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 55.5932,
+          "longitude": 13.0214,
+          "city": "Malmö",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Uppsala_from_fiber (Västerås → Uppsala)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 16.056899867865308,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.8498,
+          "longitude": 17.6389,
+          "city": "Uppsala",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Uppsala_from_fiber (Gävle → Uppsala)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 22.735072349503053,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.8498,
+          "longitude": 17.6389,
+          "city": "Uppsala",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Uppsala_from_fiber (Stockholm → Uppsala)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 15.084344321104716,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.8498,
+          "longitude": 17.6389,
+          "city": "Uppsala",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Västerås)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.8498,
+          "longitude": 17.6389,
+          "city": "Uppsala",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Gävle)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.8498,
+          "longitude": 17.6389,
+          "city": "Uppsala",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Stockholm)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.8498,
+          "longitude": 17.6389,
+          "city": "Uppsala",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Västerås_from_fiber (Uppsala → Västerås)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 16.056899867865308,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.6173,
+          "longitude": 16.5422,
+          "city": "Västerås",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Västerås_from_fiber (Örebro → Västerås)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 20.579676567041158,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.6173,
+          "longitude": 16.5422,
+          "city": "Västerås",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Västerås_from_fiber (Stockholm → Västerås)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 22.14571827636001,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.6173,
+          "longitude": 16.5422,
+          "city": "Västerås",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Uppsala)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.6173,
+          "longitude": 16.5422,
+          "city": "Västerås",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Örebro)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.6173,
+          "longitude": 16.5422,
+          "city": "Västerås",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Stockholm)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.6173,
+          "longitude": 16.5422,
+          "city": "Västerås",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Örebro_from_fiber (Norrköping → Örebro)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 22.50680921533397,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.2669,
+          "longitude": 15.1965,
+          "city": "Örebro",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Örebro_from_fiber (Västerås → Örebro)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 20.579676567041158,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.2669,
+          "longitude": 15.1965,
+          "city": "Örebro",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Örebro_from_fiber (Linköping → Örebro)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 23.683517284541193,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.2669,
+          "longitude": 15.1965,
+          "city": "Örebro",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Örebro_from_fiber (Karlstad → Örebro)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 23.341144127280806,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.2669,
+          "longitude": 15.1965,
+          "city": "Örebro",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Örebro_from_fiber (Gävle → Örebro)_(3/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 15.27020857544166,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.2669,
+          "longitude": 15.1965,
+          "city": "Örebro",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Norrköping)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.2669,
+          "longitude": 15.1965,
+          "city": "Örebro",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Västerås)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.2669,
+          "longitude": 15.1965,
+          "city": "Örebro",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Linköping)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.2669,
+          "longitude": 15.1965,
+          "city": "Örebro",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Karlstad)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.2669,
+          "longitude": 15.1965,
+          "city": "Örebro",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Gävle)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.2669,
+          "longitude": 15.1965,
+          "city": "Örebro",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Linköping_from_fiber (Jönköping → Linköping)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 26.804130102626107,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.4094,
+          "longitude": 15.6257,
+          "city": "Linköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Linköping_from_fiber (Örebro → Linköping)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 23.683517284541193,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.4094,
+          "longitude": 15.6257,
+          "city": "Linköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Linköping_from_fiber (Norrköping → Linköping)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 11.0,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.4094,
+          "longitude": 15.6257,
+          "city": "Linköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Jönköping)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.4094,
+          "longitude": 15.6257,
+          "city": "Linköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Örebro)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.4094,
+          "longitude": 15.6257,
+          "city": "Linköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Norrköping)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.4094,
+          "longitude": 15.6257,
+          "city": "Linköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Helsingborg_from_fiber (Malmö → Helsingborg)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 12.825779482284805,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.0424,
+          "longitude": 12.721,
+          "city": "Helsingborg",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Helsingborg_from_fiber (Gothenburg → Helsingborg)_(3/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 14.957064409512439,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.0424,
+          "longitude": 12.721,
+          "city": "Helsingborg",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg → Malmö)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.0424,
+          "longitude": 12.721,
+          "city": "Helsingborg",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg → Gothenburg)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.0424,
+          "longitude": 12.721,
+          "city": "Helsingborg",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Jönköping_from_fiber (Linköping → Jönköping)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 26.804130102626107,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.7713,
+          "longitude": 14.165,
+          "city": "Jönköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Jönköping_from_fiber (Borås → Jönköping)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 17.824759503404568,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.7713,
+          "longitude": 14.165,
+          "city": "Jönköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Jönköping_from_fiber (Malmö → Jönköping)_(3/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 20.19642374844515,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.7713,
+          "longitude": 14.165,
+          "city": "Jönköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Linköping)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.7713,
+          "longitude": 14.165,
+          "city": "Jönköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Borås)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.7713,
+          "longitude": 14.165,
+          "city": "Jönköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Malmö)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.7713,
+          "longitude": 14.165,
+          "city": "Jönköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Umeå_from_fiber (Gävle → Umeå)_(5/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 18.595908559329278,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 63.8285,
+          "longitude": 20.2706,
+          "city": "Umeå",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Umeå_from_fiber (Sundsvall → Umeå)_(3/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 17.446712365519858,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 63.8285,
+          "longitude": 20.2706,
+          "city": "Umeå",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Umeå_to_fiber (Umeå → Gävle)_(1/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 63.8285,
+          "longitude": 20.2706,
+          "city": "Umeå",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Umeå_to_fiber (Umeå → Sundsvall)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 63.8285,
+          "longitude": 20.2706,
+          "city": "Umeå",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Norrköping_from_fiber (Örebro → Norrköping)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 22.50680921533397,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.5954,
+          "longitude": 16.1787,
+          "city": "Norrköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Norrköping_from_fiber (Linköping → Norrköping)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 11.0,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.5954,
+          "longitude": 16.1787,
+          "city": "Norrköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Norrköping_from_fiber (Stockholm → Norrköping)_(2/2)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 16.32510970243151,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.5954,
+          "longitude": 16.1787,
+          "city": "Norrköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Norrköping_from_fiber (Malmö → Norrköping)_(5/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 18.48662898094962,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.5954,
+          "longitude": 16.1787,
+          "city": "Norrköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Örebro)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.5954,
+          "longitude": 16.1787,
+          "city": "Norrköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Linköping)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.5954,
+          "longitude": 16.1787,
+          "city": "Norrköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Stockholm)_(1/2)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.5954,
+          "longitude": 16.1787,
+          "city": "Norrköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Malmö)_(1/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.5954,
+          "longitude": 16.1787,
+          "city": "Norrköping",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Karlstad_from_fiber (Örebro → Karlstad)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 23.341144127280806,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.3671,
+          "longitude": 13.4999,
+          "city": "Karlstad",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Karlstad_from_fiber (Borås → Karlstad)_(3/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 14.8324812648028,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.3671,
+          "longitude": 13.4999,
+          "city": "Karlstad",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Karlstad_from_fiber (Sundsvall → Karlstad)_(5/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 19.022684550761266,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.3671,
+          "longitude": 13.4999,
+          "city": "Karlstad",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Örebro)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.3671,
+          "longitude": 13.4999,
+          "city": "Karlstad",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Borås)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.3671,
+          "longitude": 13.4999,
+          "city": "Karlstad",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Sundsvall)_(1/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.3671,
+          "longitude": 13.4999,
+          "city": "Karlstad",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Sundsvall_from_fiber (Umeå → Sundsvall)_(3/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 17.446712365519858,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 62.4001,
+          "longitude": 17.3167,
+          "city": "Sundsvall",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Sundsvall_from_fiber (Karlstad → Sundsvall)_(5/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 19.022684550761266,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 62.4001,
+          "longitude": 17.3167,
+          "city": "Sundsvall",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall → Umeå)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 62.4001,
+          "longitude": 17.3167,
+          "city": "Sundsvall",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall → Karlstad)_(1/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 62.4001,
+          "longitude": 17.3167,
+          "city": "Sundsvall",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Gävle_from_fiber (Uppsala → Gävle)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 22.735072349503053,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.667,
+          "longitude": 17.1666,
+          "city": "Gävle",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Gävle_from_fiber (Örebro → Gävle)_(3/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 15.27020857544166,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.667,
+          "longitude": 17.1666,
+          "city": "Gävle",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Gävle_from_fiber (Umeå → Gävle)_(5/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 18.595908559329278,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.667,
+          "longitude": 17.1666,
+          "city": "Gävle",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Uppsala)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.667,
+          "longitude": 17.1666,
+          "city": "Gävle",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Örebro)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.667,
+          "longitude": 17.1666,
+          "city": "Gävle",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Umeå)_(1/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.667,
+          "longitude": 17.1666,
+          "city": "Gävle",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Borås_from_fiber (Jönköping → Borås)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 17.824759503404568,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.7304,
+          "longitude": 12.92,
+          "city": "Borås",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Borås_from_fiber (Gothenburg → Borås)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 13.52824427868528,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.7304,
+          "longitude": 12.92,
+          "city": "Borås",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_preamp_roadm_Borås_from_fiber (Karlstad → Borås)_(3/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_preamp",
+      "operational": {
+        "gain_target": 14.8324812648028,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.7304,
+          "longitude": 12.92,
+          "city": "Borås",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Borås_to_fiber (Borås → Jönköping)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.7304,
+          "longitude": 12.92,
+          "city": "Borås",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Borås_to_fiber (Borås → Gothenburg)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.7304,
+          "longitude": 12.92,
+          "city": "Borås",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_booster_roadm_Borås_to_fiber (Borås → Karlstad)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_mw_mw_booster",
+      "operational": {
+        "gain_target": 22,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.7304,
+          "longitude": 12.92,
+          "city": "Borås",
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Örebro → Gävle)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 15.27020857544166,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.733599999999996,
+          "longitude": 15.853200000000001,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Örebro → Gävle)_(2/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 15.27020857544166,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.2003,
+          "longitude": 16.509900000000002,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Gävle → Örebro)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 15.27020857544166,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.2003,
+          "longitude": 16.509900000000002,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Gävle → Örebro)_(2/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 15.27020857544166,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.733599999999996,
+          "longitude": 15.853200000000001,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Karlstad → Borås)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 14.8324812648028,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.821533333333335,
+          "longitude": 13.3066,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Karlstad → Borås)_(2/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 14.8324812648028,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.27596666666667,
+          "longitude": 13.113299999999999,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Borås → Karlstad)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 14.8324812648028,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.27596666666667,
+          "longitude": 13.113299999999999,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Borås → Karlstad)_(2/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 14.8324812648028,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.821533333333335,
+          "longitude": 13.3066,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Malmö → Jönköping)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 20.19642374844515,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.31923333333333,
+          "longitude": 13.4026,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Malmö → Jönköping)_(2/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 20.19642374844515,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.04526666666666,
+          "longitude": 13.7838,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Jönköping → Malmö)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 20.19642374844515,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.04526666666666,
+          "longitude": 13.7838,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Jönköping → Malmö)_(2/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 20.19642374844515,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.31923333333333,
+          "longitude": 13.4026,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Umeå → Gävle)_(1/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 18.595908559329278,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 63.1962,
+          "longitude": 19.6498,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Umeå → Gävle)_(2/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 18.595908559329278,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 62.5639,
+          "longitude": 19.029000000000003,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Umeå → Gävle)_(3/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 18.595908559329278,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 61.9316,
+          "longitude": 18.4082,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Umeå → Gävle)_(4/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 18.595908559329278,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 61.2993,
+          "longitude": 17.787399999999998,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Gävle → Umeå)_(1/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 18.595908559329278,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 61.2993,
+          "longitude": 17.787399999999998,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Gävle → Umeå)_(2/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 18.595908559329278,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 61.9316,
+          "longitude": 18.4082,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Gävle → Umeå)_(3/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 18.595908559329278,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 62.5639,
+          "longitude": 19.029000000000003,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Gävle → Umeå)_(4/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 18.595908559329278,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 63.1962,
+          "longitude": 19.6498,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Stockholm → Norrköping)_(1/2)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 16.32510970243151,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.9624,
+          "longitude": 17.123649999999998,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Norrköping → Stockholm)_(1/2)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 16.32510970243151,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 58.9624,
+          "longitude": 17.123649999999998,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Malmö → Norrköping)_(1/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 18.48662898094962,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.19364,
+          "longitude": 13.65286,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Malmö → Norrköping)_(2/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 18.48662898094962,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.79408,
+          "longitude": 14.28432,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Malmö → Norrköping)_(3/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 18.48662898094962,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.39452,
+          "longitude": 14.91578,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Malmö → Norrköping)_(4/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 18.48662898094962,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.99496,
+          "longitude": 15.547239999999999,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Norrköping → Malmö)_(1/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 18.48662898094962,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.99496,
+          "longitude": 15.547239999999999,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Norrköping → Malmö)_(2/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 18.48662898094962,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.39452,
+          "longitude": 14.91578,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Norrköping → Malmö)_(3/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 18.48662898094962,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.79408,
+          "longitude": 14.28432,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Norrköping → Malmö)_(4/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 18.48662898094962,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.19364,
+          "longitude": 13.65286,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Umeå → Sundsvall)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 17.446712365519858,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 63.35236666666667,
+          "longitude": 19.285966666666667,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Umeå → Sundsvall)_(2/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 17.446712365519858,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 62.87623333333333,
+          "longitude": 18.301333333333332,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Sundsvall → Umeå)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 17.446712365519858,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 62.87623333333333,
+          "longitude": 18.301333333333332,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Sundsvall → Umeå)_(2/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 17.446712365519858,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 63.35236666666667,
+          "longitude": 19.285966666666667,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Karlstad → Sundsvall)_(1/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 19.022684550761266,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.9737,
+          "longitude": 14.263259999999999,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Karlstad → Sundsvall)_(2/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 19.022684550761266,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.5803,
+          "longitude": 15.026620000000001,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Karlstad → Sundsvall)_(3/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 19.022684550761266,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 61.1869,
+          "longitude": 15.78998,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Karlstad → Sundsvall)_(4/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 19.022684550761266,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 61.7935,
+          "longitude": 16.55334,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Sundsvall → Karlstad)_(1/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 19.022684550761266,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 61.7935,
+          "longitude": 16.55334,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Sundsvall → Karlstad)_(2/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 19.022684550761266,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 61.1869,
+          "longitude": 15.78998,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Sundsvall → Karlstad)_(3/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 19.022684550761266,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 60.5803,
+          "longitude": 15.026620000000001,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Sundsvall → Karlstad)_(4/5)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 19.022684550761266,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 59.9737,
+          "longitude": 14.263259999999999,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Gothenburg → Helsingborg)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 14.957064409512439,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.128600000000006,
+          "longitude": 12.227666666666666,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Gothenburg → Helsingborg)_(2/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 14.957064409512439,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.585499999999996,
+          "longitude": 12.474333333333334,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Helsingborg → Gothenburg)_(1/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 14.957064409512439,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 56.585499999999996,
+          "longitude": 12.474333333333334,
+          "city": null,
+          "region": null
+        }
+      }
+    },
+    {
+      "uid": "Edfa_fiber (Helsingborg → Gothenburg)_(2/3)",
+      "type": "Edfa",
+      "type_variety": "openroadm_ila_low_noise",
+      "operational": {
+        "gain_target": 14.957064409512439,
+        "delta_p": 0,
+        "tilt_target": 0,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 57.128600000000006,
+          "longitude": 12.227666666666666,
+          "city": null,
+          "region": null
+        }
+      }
+    }
+  ],
+  "connections": [
+    {
+      "from_node": "trx_Stockholm",
+      "to_node": "roadm_Stockholm"
+    },
+    {
+      "from_node": "trx_Gothenburg",
+      "to_node": "roadm_Gothenburg"
+    },
+    {
+      "from_node": "trx_Malmö",
+      "to_node": "roadm_Malmö"
+    },
+    {
+      "from_node": "trx_Uppsala",
+      "to_node": "roadm_Uppsala"
+    },
+    {
+      "from_node": "trx_Västerås",
+      "to_node": "roadm_Västerås"
+    },
+    {
+      "from_node": "trx_Örebro",
+      "to_node": "roadm_Örebro"
+    },
+    {
+      "from_node": "trx_Linköping",
+      "to_node": "roadm_Linköping"
+    },
+    {
+      "from_node": "trx_Helsingborg",
+      "to_node": "roadm_Helsingborg"
+    },
+    {
+      "from_node": "trx_Jönköping",
+      "to_node": "roadm_Jönköping"
+    },
+    {
+      "from_node": "trx_Umeå",
+      "to_node": "roadm_Umeå"
+    },
+    {
+      "from_node": "trx_Norrköping",
+      "to_node": "roadm_Norrköping"
+    },
+    {
+      "from_node": "trx_Karlstad",
+      "to_node": "roadm_Karlstad"
+    },
+    {
+      "from_node": "trx_Sundsvall",
+      "to_node": "roadm_Sundsvall"
+    },
+    {
+      "from_node": "trx_Gävle",
+      "to_node": "roadm_Gävle"
+    },
+    {
+      "from_node": "trx_Borås",
+      "to_node": "roadm_Borås"
+    },
+    {
+      "from_node": "roadm_Stockholm",
+      "to_node": "trx_Stockholm"
+    },
+    {
+      "from_node": "roadm_Stockholm",
+      "to_node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Västerås)"
+    },
+    {
+      "from_node": "roadm_Stockholm",
+      "to_node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Uppsala)"
+    },
+    {
+      "from_node": "roadm_Stockholm",
+      "to_node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Norrköping)_(1/2)"
+    },
+    {
+      "from_node": "roadm_Gothenburg",
+      "to_node": "trx_Gothenburg"
+    },
+    {
+      "from_node": "roadm_Gothenburg",
+      "to_node": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg → Borås)"
+    },
+    {
+      "from_node": "roadm_Gothenburg",
+      "to_node": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg → Helsingborg)_(1/3)"
+    },
+    {
+      "from_node": "roadm_Malmö",
+      "to_node": "trx_Malmö"
+    },
+    {
+      "from_node": "roadm_Malmö",
+      "to_node": "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Helsingborg)"
+    },
+    {
+      "from_node": "roadm_Malmö",
+      "to_node": "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Jönköping)_(1/3)"
+    },
+    {
+      "from_node": "roadm_Malmö",
+      "to_node": "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Norrköping)_(1/5)"
+    },
+    {
+      "from_node": "roadm_Uppsala",
+      "to_node": "trx_Uppsala"
+    },
+    {
+      "from_node": "roadm_Uppsala",
+      "to_node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Västerås)"
+    },
+    {
+      "from_node": "roadm_Uppsala",
+      "to_node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Gävle)"
+    },
+    {
+      "from_node": "roadm_Uppsala",
+      "to_node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Stockholm)"
+    },
+    {
+      "from_node": "roadm_Västerås",
+      "to_node": "trx_Västerås"
+    },
+    {
+      "from_node": "roadm_Västerås",
+      "to_node": "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Uppsala)"
+    },
+    {
+      "from_node": "roadm_Västerås",
+      "to_node": "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Örebro)"
+    },
+    {
+      "from_node": "roadm_Västerås",
+      "to_node": "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Stockholm)"
+    },
+    {
+      "from_node": "roadm_Örebro",
+      "to_node": "trx_Örebro"
+    },
+    {
+      "from_node": "roadm_Örebro",
+      "to_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Norrköping)"
+    },
+    {
+      "from_node": "roadm_Örebro",
+      "to_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Västerås)"
+    },
+    {
+      "from_node": "roadm_Örebro",
+      "to_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Linköping)"
+    },
+    {
+      "from_node": "roadm_Örebro",
+      "to_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Karlstad)"
+    },
+    {
+      "from_node": "roadm_Örebro",
+      "to_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Gävle)_(1/3)"
+    },
+    {
+      "from_node": "roadm_Linköping",
+      "to_node": "trx_Linköping"
+    },
+    {
+      "from_node": "roadm_Linköping",
+      "to_node": "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Jönköping)"
+    },
+    {
+      "from_node": "roadm_Linköping",
+      "to_node": "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Örebro)"
+    },
+    {
+      "from_node": "roadm_Linköping",
+      "to_node": "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Norrköping)"
+    },
+    {
+      "from_node": "roadm_Helsingborg",
+      "to_node": "trx_Helsingborg"
+    },
+    {
+      "from_node": "roadm_Helsingborg",
+      "to_node": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg → Malmö)"
+    },
+    {
+      "from_node": "roadm_Helsingborg",
+      "to_node": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg → Gothenburg)_(1/3)"
+    },
+    {
+      "from_node": "roadm_Jönköping",
+      "to_node": "trx_Jönköping"
+    },
+    {
+      "from_node": "roadm_Jönköping",
+      "to_node": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Linköping)"
+    },
+    {
+      "from_node": "roadm_Jönköping",
+      "to_node": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Borås)"
+    },
+    {
+      "from_node": "roadm_Jönköping",
+      "to_node": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Malmö)_(1/3)"
+    },
+    {
+      "from_node": "roadm_Umeå",
+      "to_node": "trx_Umeå"
+    },
+    {
+      "from_node": "roadm_Umeå",
+      "to_node": "Edfa_booster_roadm_Umeå_to_fiber (Umeå → Gävle)_(1/5)"
+    },
+    {
+      "from_node": "roadm_Umeå",
+      "to_node": "Edfa_booster_roadm_Umeå_to_fiber (Umeå → Sundsvall)_(1/3)"
+    },
+    {
+      "from_node": "roadm_Norrköping",
+      "to_node": "trx_Norrköping"
+    },
+    {
+      "from_node": "roadm_Norrköping",
+      "to_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Örebro)"
+    },
+    {
+      "from_node": "roadm_Norrköping",
+      "to_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Linköping)"
+    },
+    {
+      "from_node": "roadm_Norrköping",
+      "to_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Stockholm)_(1/2)"
+    },
+    {
+      "from_node": "roadm_Norrköping",
+      "to_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Malmö)_(1/5)"
+    },
+    {
+      "from_node": "roadm_Karlstad",
+      "to_node": "trx_Karlstad"
+    },
+    {
+      "from_node": "roadm_Karlstad",
+      "to_node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Örebro)"
+    },
+    {
+      "from_node": "roadm_Karlstad",
+      "to_node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Borås)_(1/3)"
+    },
+    {
+      "from_node": "roadm_Karlstad",
+      "to_node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Sundsvall)_(1/5)"
+    },
+    {
+      "from_node": "roadm_Sundsvall",
+      "to_node": "trx_Sundsvall"
+    },
+    {
+      "from_node": "roadm_Sundsvall",
+      "to_node": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall → Umeå)_(1/3)"
+    },
+    {
+      "from_node": "roadm_Sundsvall",
+      "to_node": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall → Karlstad)_(1/5)"
+    },
+    {
+      "from_node": "roadm_Gävle",
+      "to_node": "trx_Gävle"
+    },
+    {
+      "from_node": "roadm_Gävle",
+      "to_node": "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Uppsala)"
+    },
+    {
+      "from_node": "roadm_Gävle",
+      "to_node": "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Örebro)_(1/3)"
+    },
+    {
+      "from_node": "roadm_Gävle",
+      "to_node": "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Umeå)_(1/5)"
+    },
+    {
+      "from_node": "roadm_Borås",
+      "to_node": "trx_Borås"
+    },
+    {
+      "from_node": "roadm_Borås",
+      "to_node": "Edfa_booster_roadm_Borås_to_fiber (Borås → Jönköping)"
+    },
+    {
+      "from_node": "roadm_Borås",
+      "to_node": "Edfa_booster_roadm_Borås_to_fiber (Borås → Gothenburg)"
+    },
+    {
+      "from_node": "roadm_Borås",
+      "to_node": "Edfa_booster_roadm_Borås_to_fiber (Borås → Karlstad)_(1/3)"
+    },
+    {
+      "from_node": "fiber (Uppsala → Västerås)",
+      "to_node": "Edfa_preamp_roadm_Västerås_from_fiber (Uppsala → Västerås)"
+    },
+    {
+      "from_node": "fiber (Västerås → Uppsala)",
+      "to_node": "Edfa_preamp_roadm_Uppsala_from_fiber (Västerås → Uppsala)"
+    },
+    {
+      "from_node": "fiber (Uppsala → Gävle)",
+      "to_node": "Edfa_preamp_roadm_Gävle_from_fiber (Uppsala → Gävle)"
+    },
+    {
+      "from_node": "fiber (Gävle → Uppsala)",
+      "to_node": "Edfa_preamp_roadm_Uppsala_from_fiber (Gävle → Uppsala)"
+    },
+    {
+      "from_node": "fiber (Örebro → Norrköping)",
+      "to_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Örebro → Norrköping)"
+    },
+    {
+      "from_node": "fiber (Norrköping → Örebro)",
+      "to_node": "Edfa_preamp_roadm_Örebro_from_fiber (Norrköping → Örebro)"
+    },
+    {
+      "from_node": "fiber (Linköping → Jönköping)",
+      "to_node": "Edfa_preamp_roadm_Jönköping_from_fiber (Linköping → Jönköping)"
+    },
+    {
+      "from_node": "fiber (Jönköping → Linköping)",
+      "to_node": "Edfa_preamp_roadm_Linköping_from_fiber (Jönköping → Linköping)"
+    },
+    {
+      "from_node": "fiber (Västerås → Örebro)",
+      "to_node": "Edfa_preamp_roadm_Örebro_from_fiber (Västerås → Örebro)"
+    },
+    {
+      "from_node": "fiber (Örebro → Västerås)",
+      "to_node": "Edfa_preamp_roadm_Västerås_from_fiber (Örebro → Västerås)"
+    },
+    {
+      "from_node": "fiber (Örebro → Linköping)",
+      "to_node": "Edfa_preamp_roadm_Linköping_from_fiber (Örebro → Linköping)"
+    },
+    {
+      "from_node": "fiber (Linköping → Örebro)",
+      "to_node": "Edfa_preamp_roadm_Örebro_from_fiber (Linköping → Örebro)"
+    },
+    {
+      "from_node": "fiber (Jönköping → Borås)",
+      "to_node": "Edfa_preamp_roadm_Borås_from_fiber (Jönköping → Borås)"
+    },
+    {
+      "from_node": "fiber (Borås → Jönköping)",
+      "to_node": "Edfa_preamp_roadm_Jönköping_from_fiber (Borås → Jönköping)"
+    },
+    {
+      "from_node": "fiber (Stockholm → Västerås)",
+      "to_node": "Edfa_preamp_roadm_Västerås_from_fiber (Stockholm → Västerås)"
+    },
+    {
+      "from_node": "fiber (Västerås → Stockholm)",
+      "to_node": "Edfa_preamp_roadm_Stockholm_from_fiber (Västerås → Stockholm)"
+    },
+    {
+      "from_node": "fiber (Malmö → Helsingborg)",
+      "to_node": "Edfa_preamp_roadm_Helsingborg_from_fiber (Malmö → Helsingborg)"
+    },
+    {
+      "from_node": "fiber (Helsingborg → Malmö)",
+      "to_node": "Edfa_preamp_roadm_Malmö_from_fiber (Helsingborg → Malmö)"
+    },
+    {
+      "from_node": "fiber (Gothenburg → Borås)",
+      "to_node": "Edfa_preamp_roadm_Borås_from_fiber (Gothenburg → Borås)"
+    },
+    {
+      "from_node": "fiber (Borås → Gothenburg)",
+      "to_node": "Edfa_preamp_roadm_Gothenburg_from_fiber (Borås → Gothenburg)"
+    },
+    {
+      "from_node": "fiber (Linköping → Norrköping)",
+      "to_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Linköping → Norrköping)"
+    },
+    {
+      "from_node": "fiber (Norrköping → Linköping)",
+      "to_node": "Edfa_preamp_roadm_Linköping_from_fiber (Norrköping → Linköping)"
+    },
+    {
+      "from_node": "fiber (Örebro → Karlstad)",
+      "to_node": "Edfa_preamp_roadm_Karlstad_from_fiber (Örebro → Karlstad)"
+    },
+    {
+      "from_node": "fiber (Karlstad → Örebro)",
+      "to_node": "Edfa_preamp_roadm_Örebro_from_fiber (Karlstad → Örebro)"
+    },
+    {
+      "from_node": "fiber (Stockholm → Uppsala)",
+      "to_node": "Edfa_preamp_roadm_Uppsala_from_fiber (Stockholm → Uppsala)"
+    },
+    {
+      "from_node": "fiber (Uppsala → Stockholm)",
+      "to_node": "Edfa_preamp_roadm_Stockholm_from_fiber (Uppsala → Stockholm)"
+    },
+    {
+      "from_node": "fiber (Örebro → Gävle)_(1/3)",
+      "to_node": "Edfa_fiber (Örebro → Gävle)_(1/3)"
+    },
+    {
+      "from_node": "fiber (Örebro → Gävle)_(2/3)",
+      "to_node": "Edfa_fiber (Örebro → Gävle)_(2/3)"
+    },
+    {
+      "from_node": "fiber (Örebro → Gävle)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Gävle_from_fiber (Örebro → Gävle)_(3/3)"
+    },
+    {
+      "from_node": "fiber (Gävle → Örebro)_(1/3)",
+      "to_node": "Edfa_fiber (Gävle → Örebro)_(1/3)"
+    },
+    {
+      "from_node": "fiber (Gävle → Örebro)_(2/3)",
+      "to_node": "Edfa_fiber (Gävle → Örebro)_(2/3)"
+    },
+    {
+      "from_node": "fiber (Gävle → Örebro)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Örebro_from_fiber (Gävle → Örebro)_(3/3)"
+    },
+    {
+      "from_node": "fiber (Karlstad → Borås)_(1/3)",
+      "to_node": "Edfa_fiber (Karlstad → Borås)_(1/3)"
+    },
+    {
+      "from_node": "fiber (Karlstad → Borås)_(2/3)",
+      "to_node": "Edfa_fiber (Karlstad → Borås)_(2/3)"
+    },
+    {
+      "from_node": "fiber (Karlstad → Borås)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Borås_from_fiber (Karlstad → Borås)_(3/3)"
+    },
+    {
+      "from_node": "fiber (Borås → Karlstad)_(1/3)",
+      "to_node": "Edfa_fiber (Borås → Karlstad)_(1/3)"
+    },
+    {
+      "from_node": "fiber (Borås → Karlstad)_(2/3)",
+      "to_node": "Edfa_fiber (Borås → Karlstad)_(2/3)"
+    },
+    {
+      "from_node": "fiber (Borås → Karlstad)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Karlstad_from_fiber (Borås → Karlstad)_(3/3)"
+    },
+    {
+      "from_node": "fiber (Malmö → Jönköping)_(1/3)",
+      "to_node": "Edfa_fiber (Malmö → Jönköping)_(1/3)"
+    },
+    {
+      "from_node": "fiber (Malmö → Jönköping)_(2/3)",
+      "to_node": "Edfa_fiber (Malmö → Jönköping)_(2/3)"
+    },
+    {
+      "from_node": "fiber (Malmö → Jönköping)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Jönköping_from_fiber (Malmö → Jönköping)_(3/3)"
+    },
+    {
+      "from_node": "fiber (Jönköping → Malmö)_(1/3)",
+      "to_node": "Edfa_fiber (Jönköping → Malmö)_(1/3)"
+    },
+    {
+      "from_node": "fiber (Jönköping → Malmö)_(2/3)",
+      "to_node": "Edfa_fiber (Jönköping → Malmö)_(2/3)"
+    },
+    {
+      "from_node": "fiber (Jönköping → Malmö)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Malmö_from_fiber (Jönköping → Malmö)_(3/3)"
+    },
+    {
+      "from_node": "fiber (Umeå → Gävle)_(1/5)",
+      "to_node": "Edfa_fiber (Umeå → Gävle)_(1/5)"
+    },
+    {
+      "from_node": "fiber (Umeå → Gävle)_(2/5)",
+      "to_node": "Edfa_fiber (Umeå → Gävle)_(2/5)"
+    },
+    {
+      "from_node": "fiber (Umeå → Gävle)_(3/5)",
+      "to_node": "Edfa_fiber (Umeå → Gävle)_(3/5)"
+    },
+    {
+      "from_node": "fiber (Umeå → Gävle)_(4/5)",
+      "to_node": "Edfa_fiber (Umeå → Gävle)_(4/5)"
+    },
+    {
+      "from_node": "fiber (Umeå → Gävle)_(5/5)",
+      "to_node": "Edfa_preamp_roadm_Gävle_from_fiber (Umeå → Gävle)_(5/5)"
+    },
+    {
+      "from_node": "fiber (Gävle → Umeå)_(1/5)",
+      "to_node": "Edfa_fiber (Gävle → Umeå)_(1/5)"
+    },
+    {
+      "from_node": "fiber (Gävle → Umeå)_(2/5)",
+      "to_node": "Edfa_fiber (Gävle → Umeå)_(2/5)"
+    },
+    {
+      "from_node": "fiber (Gävle → Umeå)_(3/5)",
+      "to_node": "Edfa_fiber (Gävle → Umeå)_(3/5)"
+    },
+    {
+      "from_node": "fiber (Gävle → Umeå)_(4/5)",
+      "to_node": "Edfa_fiber (Gävle → Umeå)_(4/5)"
+    },
+    {
+      "from_node": "fiber (Gävle → Umeå)_(5/5)",
+      "to_node": "Edfa_preamp_roadm_Umeå_from_fiber (Gävle → Umeå)_(5/5)"
+    },
+    {
+      "from_node": "fiber (Stockholm → Norrköping)_(1/2)",
+      "to_node": "Edfa_fiber (Stockholm → Norrköping)_(1/2)"
+    },
+    {
+      "from_node": "fiber (Stockholm → Norrköping)_(2/2)",
+      "to_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Stockholm → Norrköping)_(2/2)"
+    },
+    {
+      "from_node": "fiber (Norrköping → Stockholm)_(1/2)",
+      "to_node": "Edfa_fiber (Norrköping → Stockholm)_(1/2)"
+    },
+    {
+      "from_node": "fiber (Norrköping → Stockholm)_(2/2)",
+      "to_node": "Edfa_preamp_roadm_Stockholm_from_fiber (Norrköping → Stockholm)_(2/2)"
+    },
+    {
+      "from_node": "fiber (Malmö → Norrköping)_(1/5)",
+      "to_node": "Edfa_fiber (Malmö → Norrköping)_(1/5)"
+    },
+    {
+      "from_node": "fiber (Malmö → Norrköping)_(2/5)",
+      "to_node": "Edfa_fiber (Malmö → Norrköping)_(2/5)"
+    },
+    {
+      "from_node": "fiber (Malmö → Norrköping)_(3/5)",
+      "to_node": "Edfa_fiber (Malmö → Norrköping)_(3/5)"
+    },
+    {
+      "from_node": "fiber (Malmö → Norrköping)_(4/5)",
+      "to_node": "Edfa_fiber (Malmö → Norrköping)_(4/5)"
+    },
+    {
+      "from_node": "fiber (Malmö → Norrköping)_(5/5)",
+      "to_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Malmö → Norrköping)_(5/5)"
+    },
+    {
+      "from_node": "fiber (Norrköping → Malmö)_(1/5)",
+      "to_node": "Edfa_fiber (Norrköping → Malmö)_(1/5)"
+    },
+    {
+      "from_node": "fiber (Norrköping → Malmö)_(2/5)",
+      "to_node": "Edfa_fiber (Norrköping → Malmö)_(2/5)"
+    },
+    {
+      "from_node": "fiber (Norrköping → Malmö)_(3/5)",
+      "to_node": "Edfa_fiber (Norrköping → Malmö)_(3/5)"
+    },
+    {
+      "from_node": "fiber (Norrköping → Malmö)_(4/5)",
+      "to_node": "Edfa_fiber (Norrköping → Malmö)_(4/5)"
+    },
+    {
+      "from_node": "fiber (Norrköping → Malmö)_(5/5)",
+      "to_node": "Edfa_preamp_roadm_Malmö_from_fiber (Norrköping → Malmö)_(5/5)"
+    },
+    {
+      "from_node": "fiber (Umeå → Sundsvall)_(1/3)",
+      "to_node": "Edfa_fiber (Umeå → Sundsvall)_(1/3)"
+    },
+    {
+      "from_node": "fiber (Umeå → Sundsvall)_(2/3)",
+      "to_node": "Edfa_fiber (Umeå → Sundsvall)_(2/3)"
+    },
+    {
+      "from_node": "fiber (Umeå → Sundsvall)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Sundsvall_from_fiber (Umeå → Sundsvall)_(3/3)"
+    },
+    {
+      "from_node": "fiber (Sundsvall → Umeå)_(1/3)",
+      "to_node": "Edfa_fiber (Sundsvall → Umeå)_(1/3)"
+    },
+    {
+      "from_node": "fiber (Sundsvall → Umeå)_(2/3)",
+      "to_node": "Edfa_fiber (Sundsvall → Umeå)_(2/3)"
+    },
+    {
+      "from_node": "fiber (Sundsvall → Umeå)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Umeå_from_fiber (Sundsvall → Umeå)_(3/3)"
+    },
+    {
+      "from_node": "fiber (Karlstad → Sundsvall)_(1/5)",
+      "to_node": "Edfa_fiber (Karlstad → Sundsvall)_(1/5)"
+    },
+    {
+      "from_node": "fiber (Karlstad → Sundsvall)_(2/5)",
+      "to_node": "Edfa_fiber (Karlstad → Sundsvall)_(2/5)"
+    },
+    {
+      "from_node": "fiber (Karlstad → Sundsvall)_(3/5)",
+      "to_node": "Edfa_fiber (Karlstad → Sundsvall)_(3/5)"
+    },
+    {
+      "from_node": "fiber (Karlstad → Sundsvall)_(4/5)",
+      "to_node": "Edfa_fiber (Karlstad → Sundsvall)_(4/5)"
+    },
+    {
+      "from_node": "fiber (Karlstad → Sundsvall)_(5/5)",
+      "to_node": "Edfa_preamp_roadm_Sundsvall_from_fiber (Karlstad → Sundsvall)_(5/5)"
+    },
+    {
+      "from_node": "fiber (Sundsvall → Karlstad)_(1/5)",
+      "to_node": "Edfa_fiber (Sundsvall → Karlstad)_(1/5)"
+    },
+    {
+      "from_node": "fiber (Sundsvall → Karlstad)_(2/5)",
+      "to_node": "Edfa_fiber (Sundsvall → Karlstad)_(2/5)"
+    },
+    {
+      "from_node": "fiber (Sundsvall → Karlstad)_(3/5)",
+      "to_node": "Edfa_fiber (Sundsvall → Karlstad)_(3/5)"
+    },
+    {
+      "from_node": "fiber (Sundsvall → Karlstad)_(4/5)",
+      "to_node": "Edfa_fiber (Sundsvall → Karlstad)_(4/5)"
+    },
+    {
+      "from_node": "fiber (Sundsvall → Karlstad)_(5/5)",
+      "to_node": "Edfa_preamp_roadm_Karlstad_from_fiber (Sundsvall → Karlstad)_(5/5)"
+    },
+    {
+      "from_node": "fiber (Gothenburg → Helsingborg)_(1/3)",
+      "to_node": "Edfa_fiber (Gothenburg → Helsingborg)_(1/3)"
+    },
+    {
+      "from_node": "fiber (Gothenburg → Helsingborg)_(2/3)",
+      "to_node": "Edfa_fiber (Gothenburg → Helsingborg)_(2/3)"
+    },
+    {
+      "from_node": "fiber (Gothenburg → Helsingborg)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Helsingborg_from_fiber (Gothenburg → Helsingborg)_(3/3)"
+    },
+    {
+      "from_node": "fiber (Helsingborg → Gothenburg)_(1/3)",
+      "to_node": "Edfa_fiber (Helsingborg → Gothenburg)_(1/3)"
+    },
+    {
+      "from_node": "fiber (Helsingborg → Gothenburg)_(2/3)",
+      "to_node": "Edfa_fiber (Helsingborg → Gothenburg)_(2/3)"
+    },
+    {
+      "from_node": "fiber (Helsingborg → Gothenburg)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Gothenburg_from_fiber (Helsingborg → Gothenburg)_(3/3)"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Stockholm_from_fiber (Västerås → Stockholm)",
+      "to_node": "roadm_Stockholm"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Stockholm_from_fiber (Uppsala → Stockholm)",
+      "to_node": "roadm_Stockholm"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Stockholm_from_fiber (Norrköping → Stockholm)_(2/2)",
+      "to_node": "roadm_Stockholm"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Västerås)",
+      "to_node": "fiber (Stockholm → Västerås)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Uppsala)",
+      "to_node": "fiber (Stockholm → Uppsala)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Norrköping)_(1/2)",
+      "to_node": "fiber (Stockholm → Norrköping)_(1/2)"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Gothenburg_from_fiber (Borås → Gothenburg)",
+      "to_node": "roadm_Gothenburg"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Gothenburg_from_fiber (Helsingborg → Gothenburg)_(3/3)",
+      "to_node": "roadm_Gothenburg"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg → Borås)",
+      "to_node": "fiber (Gothenburg → Borås)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg → Helsingborg)_(1/3)",
+      "to_node": "fiber (Gothenburg → Helsingborg)_(1/3)"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Malmö_from_fiber (Helsingborg → Malmö)",
+      "to_node": "roadm_Malmö"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Malmö_from_fiber (Jönköping → Malmö)_(3/3)",
+      "to_node": "roadm_Malmö"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Malmö_from_fiber (Norrköping → Malmö)_(5/5)",
+      "to_node": "roadm_Malmö"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Helsingborg)",
+      "to_node": "fiber (Malmö → Helsingborg)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Jönköping)_(1/3)",
+      "to_node": "fiber (Malmö → Jönköping)_(1/3)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Norrköping)_(1/5)",
+      "to_node": "fiber (Malmö → Norrköping)_(1/5)"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Uppsala_from_fiber (Västerås → Uppsala)",
+      "to_node": "roadm_Uppsala"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Uppsala_from_fiber (Gävle → Uppsala)",
+      "to_node": "roadm_Uppsala"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Uppsala_from_fiber (Stockholm → Uppsala)",
+      "to_node": "roadm_Uppsala"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Västerås)",
+      "to_node": "fiber (Uppsala → Västerås)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Gävle)",
+      "to_node": "fiber (Uppsala → Gävle)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Stockholm)",
+      "to_node": "fiber (Uppsala → Stockholm)"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Västerås_from_fiber (Uppsala → Västerås)",
+      "to_node": "roadm_Västerås"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Västerås_from_fiber (Örebro → Västerås)",
+      "to_node": "roadm_Västerås"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Västerås_from_fiber (Stockholm → Västerås)",
+      "to_node": "roadm_Västerås"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Uppsala)",
+      "to_node": "fiber (Västerås → Uppsala)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Örebro)",
+      "to_node": "fiber (Västerås → Örebro)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Stockholm)",
+      "to_node": "fiber (Västerås → Stockholm)"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Örebro_from_fiber (Norrköping → Örebro)",
+      "to_node": "roadm_Örebro"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Örebro_from_fiber (Västerås → Örebro)",
+      "to_node": "roadm_Örebro"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Örebro_from_fiber (Linköping → Örebro)",
+      "to_node": "roadm_Örebro"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Örebro_from_fiber (Karlstad → Örebro)",
+      "to_node": "roadm_Örebro"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Örebro_from_fiber (Gävle → Örebro)_(3/3)",
+      "to_node": "roadm_Örebro"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Norrköping)",
+      "to_node": "fiber (Örebro → Norrköping)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Västerås)",
+      "to_node": "fiber (Örebro → Västerås)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Linköping)",
+      "to_node": "fiber (Örebro → Linköping)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Karlstad)",
+      "to_node": "fiber (Örebro → Karlstad)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Gävle)_(1/3)",
+      "to_node": "fiber (Örebro → Gävle)_(1/3)"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Linköping_from_fiber (Jönköping → Linköping)",
+      "to_node": "roadm_Linköping"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Linköping_from_fiber (Örebro → Linköping)",
+      "to_node": "roadm_Linköping"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Linköping_from_fiber (Norrköping → Linköping)",
+      "to_node": "roadm_Linköping"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Jönköping)",
+      "to_node": "fiber (Linköping → Jönköping)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Örebro)",
+      "to_node": "fiber (Linköping → Örebro)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Norrköping)",
+      "to_node": "fiber (Linköping → Norrköping)"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Helsingborg_from_fiber (Malmö → Helsingborg)",
+      "to_node": "roadm_Helsingborg"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Helsingborg_from_fiber (Gothenburg → Helsingborg)_(3/3)",
+      "to_node": "roadm_Helsingborg"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg → Malmö)",
+      "to_node": "fiber (Helsingborg → Malmö)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg → Gothenburg)_(1/3)",
+      "to_node": "fiber (Helsingborg → Gothenburg)_(1/3)"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Jönköping_from_fiber (Linköping → Jönköping)",
+      "to_node": "roadm_Jönköping"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Jönköping_from_fiber (Borås → Jönköping)",
+      "to_node": "roadm_Jönköping"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Jönköping_from_fiber (Malmö → Jönköping)_(3/3)",
+      "to_node": "roadm_Jönköping"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Linköping)",
+      "to_node": "fiber (Jönköping → Linköping)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Borås)",
+      "to_node": "fiber (Jönköping → Borås)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Malmö)_(1/3)",
+      "to_node": "fiber (Jönköping → Malmö)_(1/3)"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Umeå_from_fiber (Gävle → Umeå)_(5/5)",
+      "to_node": "roadm_Umeå"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Umeå_from_fiber (Sundsvall → Umeå)_(3/3)",
+      "to_node": "roadm_Umeå"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Umeå_to_fiber (Umeå → Gävle)_(1/5)",
+      "to_node": "fiber (Umeå → Gävle)_(1/5)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Umeå_to_fiber (Umeå → Sundsvall)_(1/3)",
+      "to_node": "fiber (Umeå → Sundsvall)_(1/3)"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Örebro → Norrköping)",
+      "to_node": "roadm_Norrköping"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Linköping → Norrköping)",
+      "to_node": "roadm_Norrköping"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Stockholm → Norrköping)_(2/2)",
+      "to_node": "roadm_Norrköping"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Malmö → Norrköping)_(5/5)",
+      "to_node": "roadm_Norrköping"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Örebro)",
+      "to_node": "fiber (Norrköping → Örebro)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Linköping)",
+      "to_node": "fiber (Norrköping → Linköping)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Stockholm)_(1/2)",
+      "to_node": "fiber (Norrköping → Stockholm)_(1/2)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Malmö)_(1/5)",
+      "to_node": "fiber (Norrköping → Malmö)_(1/5)"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Karlstad_from_fiber (Örebro → Karlstad)",
+      "to_node": "roadm_Karlstad"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Karlstad_from_fiber (Borås → Karlstad)_(3/3)",
+      "to_node": "roadm_Karlstad"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Karlstad_from_fiber (Sundsvall → Karlstad)_(5/5)",
+      "to_node": "roadm_Karlstad"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Örebro)",
+      "to_node": "fiber (Karlstad → Örebro)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Borås)_(1/3)",
+      "to_node": "fiber (Karlstad → Borås)_(1/3)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Sundsvall)_(1/5)",
+      "to_node": "fiber (Karlstad → Sundsvall)_(1/5)"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Sundsvall_from_fiber (Umeå → Sundsvall)_(3/3)",
+      "to_node": "roadm_Sundsvall"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Sundsvall_from_fiber (Karlstad → Sundsvall)_(5/5)",
+      "to_node": "roadm_Sundsvall"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall → Umeå)_(1/3)",
+      "to_node": "fiber (Sundsvall → Umeå)_(1/3)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall → Karlstad)_(1/5)",
+      "to_node": "fiber (Sundsvall → Karlstad)_(1/5)"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Gävle_from_fiber (Uppsala → Gävle)",
+      "to_node": "roadm_Gävle"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Gävle_from_fiber (Örebro → Gävle)_(3/3)",
+      "to_node": "roadm_Gävle"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Gävle_from_fiber (Umeå → Gävle)_(5/5)",
+      "to_node": "roadm_Gävle"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Uppsala)",
+      "to_node": "fiber (Gävle → Uppsala)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Örebro)_(1/3)",
+      "to_node": "fiber (Gävle → Örebro)_(1/3)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Umeå)_(1/5)",
+      "to_node": "fiber (Gävle → Umeå)_(1/5)"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Borås_from_fiber (Jönköping → Borås)",
+      "to_node": "roadm_Borås"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Borås_from_fiber (Gothenburg → Borås)",
+      "to_node": "roadm_Borås"
+    },
+    {
+      "from_node": "Edfa_preamp_roadm_Borås_from_fiber (Karlstad → Borås)_(3/3)",
+      "to_node": "roadm_Borås"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Borås_to_fiber (Borås → Jönköping)",
+      "to_node": "fiber (Borås → Jönköping)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Borås_to_fiber (Borås → Gothenburg)",
+      "to_node": "fiber (Borås → Gothenburg)"
+    },
+    {
+      "from_node": "Edfa_booster_roadm_Borås_to_fiber (Borås → Karlstad)_(1/3)",
+      "to_node": "fiber (Borås → Karlstad)_(1/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Örebro → Gävle)_(1/3)",
+      "to_node": "fiber (Örebro → Gävle)_(2/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Örebro → Gävle)_(2/3)",
+      "to_node": "fiber (Örebro → Gävle)_(3/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Gävle → Örebro)_(1/3)",
+      "to_node": "fiber (Gävle → Örebro)_(2/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Gävle → Örebro)_(2/3)",
+      "to_node": "fiber (Gävle → Örebro)_(3/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Karlstad → Borås)_(1/3)",
+      "to_node": "fiber (Karlstad → Borås)_(2/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Karlstad → Borås)_(2/3)",
+      "to_node": "fiber (Karlstad → Borås)_(3/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Borås → Karlstad)_(1/3)",
+      "to_node": "fiber (Borås → Karlstad)_(2/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Borås → Karlstad)_(2/3)",
+      "to_node": "fiber (Borås → Karlstad)_(3/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Malmö → Jönköping)_(1/3)",
+      "to_node": "fiber (Malmö → Jönköping)_(2/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Malmö → Jönköping)_(2/3)",
+      "to_node": "fiber (Malmö → Jönköping)_(3/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Jönköping → Malmö)_(1/3)",
+      "to_node": "fiber (Jönköping → Malmö)_(2/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Jönköping → Malmö)_(2/3)",
+      "to_node": "fiber (Jönköping → Malmö)_(3/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Umeå → Gävle)_(1/5)",
+      "to_node": "fiber (Umeå → Gävle)_(2/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Umeå → Gävle)_(2/5)",
+      "to_node": "fiber (Umeå → Gävle)_(3/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Umeå → Gävle)_(3/5)",
+      "to_node": "fiber (Umeå → Gävle)_(4/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Umeå → Gävle)_(4/5)",
+      "to_node": "fiber (Umeå → Gävle)_(5/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Gävle → Umeå)_(1/5)",
+      "to_node": "fiber (Gävle → Umeå)_(2/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Gävle → Umeå)_(2/5)",
+      "to_node": "fiber (Gävle → Umeå)_(3/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Gävle → Umeå)_(3/5)",
+      "to_node": "fiber (Gävle → Umeå)_(4/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Gävle → Umeå)_(4/5)",
+      "to_node": "fiber (Gävle → Umeå)_(5/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Stockholm → Norrköping)_(1/2)",
+      "to_node": "fiber (Stockholm → Norrköping)_(2/2)"
+    },
+    {
+      "from_node": "Edfa_fiber (Norrköping → Stockholm)_(1/2)",
+      "to_node": "fiber (Norrköping → Stockholm)_(2/2)"
+    },
+    {
+      "from_node": "Edfa_fiber (Malmö → Norrköping)_(1/5)",
+      "to_node": "fiber (Malmö → Norrköping)_(2/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Malmö → Norrköping)_(2/5)",
+      "to_node": "fiber (Malmö → Norrköping)_(3/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Malmö → Norrköping)_(3/5)",
+      "to_node": "fiber (Malmö → Norrköping)_(4/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Malmö → Norrköping)_(4/5)",
+      "to_node": "fiber (Malmö → Norrköping)_(5/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Norrköping → Malmö)_(1/5)",
+      "to_node": "fiber (Norrköping → Malmö)_(2/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Norrköping → Malmö)_(2/5)",
+      "to_node": "fiber (Norrköping → Malmö)_(3/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Norrköping → Malmö)_(3/5)",
+      "to_node": "fiber (Norrköping → Malmö)_(4/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Norrköping → Malmö)_(4/5)",
+      "to_node": "fiber (Norrköping → Malmö)_(5/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Umeå → Sundsvall)_(1/3)",
+      "to_node": "fiber (Umeå → Sundsvall)_(2/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Umeå → Sundsvall)_(2/3)",
+      "to_node": "fiber (Umeå → Sundsvall)_(3/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Sundsvall → Umeå)_(1/3)",
+      "to_node": "fiber (Sundsvall → Umeå)_(2/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Sundsvall → Umeå)_(2/3)",
+      "to_node": "fiber (Sundsvall → Umeå)_(3/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Karlstad → Sundsvall)_(1/5)",
+      "to_node": "fiber (Karlstad → Sundsvall)_(2/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Karlstad → Sundsvall)_(2/5)",
+      "to_node": "fiber (Karlstad → Sundsvall)_(3/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Karlstad → Sundsvall)_(3/5)",
+      "to_node": "fiber (Karlstad → Sundsvall)_(4/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Karlstad → Sundsvall)_(4/5)",
+      "to_node": "fiber (Karlstad → Sundsvall)_(5/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Sundsvall → Karlstad)_(1/5)",
+      "to_node": "fiber (Sundsvall → Karlstad)_(2/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Sundsvall → Karlstad)_(2/5)",
+      "to_node": "fiber (Sundsvall → Karlstad)_(3/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Sundsvall → Karlstad)_(3/5)",
+      "to_node": "fiber (Sundsvall → Karlstad)_(4/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Sundsvall → Karlstad)_(4/5)",
+      "to_node": "fiber (Sundsvall → Karlstad)_(5/5)"
+    },
+    {
+      "from_node": "Edfa_fiber (Gothenburg → Helsingborg)_(1/3)",
+      "to_node": "fiber (Gothenburg → Helsingborg)_(2/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Gothenburg → Helsingborg)_(2/3)",
+      "to_node": "fiber (Gothenburg → Helsingborg)_(3/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Helsingborg → Gothenburg)_(1/3)",
+      "to_node": "fiber (Helsingborg → Gothenburg)_(2/3)"
+    },
+    {
+      "from_node": "Edfa_fiber (Helsingborg → Gothenburg)_(2/3)",
+      "to_node": "fiber (Helsingborg → Gothenburg)_(3/3)"
+    }
+  ]
+}

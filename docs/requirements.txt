@@ -1,0 +1,7 @@
+alabaster>=0.7.12,<1
+docutils>=0.17.1,<1
+myst-parser>=0.16.1,<1
+Pygments>=2.11.2,<3
+rstcheck
+Sphinx>=4.4.0,<5
+sphinxcontrib-bibtex>=2.4.1,<3

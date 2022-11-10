@@ -127,7 +127,7 @@ class Request_element(Element):
                     'technology': 'flexi-grid',
                     'trx_type': self.trx_type,
                     'trx_mode': self.mode,
-                    'effective-freq-slot': [{'N': 'null', 'M': 'null'}],
+                    'effective-freq-slot': [{'N': None, 'M': None}],
                     'spacing': self.spacing,
                     'max-nb-of-channel': self.nb_channel,
                     'output-power': self.power
@@ -178,12 +178,9 @@ def read_service_sheet(
         eqpt,
         network,
         network_filename=None,
-        bidir=False,
-        filter_region=None):
+        bidir=False):
     """ converts a service sheet into a json structure
     """
-    if filter_region is None:
-        filter_region = []
     if network_filename is None:
         network_filename = input_filename
     service = parse_excel(input_filename)

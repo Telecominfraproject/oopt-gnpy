@@ -21,7 +21,6 @@ import shutil
 from pandas import read_csv
 from xlrd import open_workbook
 import pytest
-from tests.compare import compare_networks, compare_services
 from copy import deepcopy
 from gnpy.core.utils import automatic_nch, lin2db
 from gnpy.core.network import build_network
@@ -56,15 +55,7 @@ def test_excel_json_generation(tmpdir, xls_input, expected_json_output):
     actual_json_output = xls_copy.with_suffix('.json')
     actual = load_json(actual_json_output)
     unlink(actual_json_output)
-    expected = load_json(expected_json_output)
-
-    results = compare_networks(expected, actual)
-    assert not results.elements.missing
-    assert not results.elements.extra
-    assert not results.elements.different
-    assert not results.connections.missing
-    assert not results.connections.extra
-    assert not results.connections.different
+    assert actual == load_json(expected_json_output)
 
 # assume xls entries
 # test that the build network gives correct results in gain mode
@@ -95,15 +86,7 @@ def test_auto_design_generation_fromxlsgainmode(tmpdir, xls_input, expected_json
     save_network(network, actual_json_output)
     actual = load_json(actual_json_output)
     unlink(actual_json_output)
-    expected = load_json(expected_json_output)
-
-    results = compare_networks(expected, actual)
-    assert not results.elements.missing
-    assert not results.elements.extra
-    assert not results.elements.different
-    assert not results.connections.missing
-    assert not results.connections.extra
-    assert not results.connections.different
+    assert actual == load_json(expected_json_output)
 
 # test that autodesign creates same file as an input file already autodesigned
 
@@ -134,15 +117,7 @@ def test_auto_design_generation_fromjson(tmpdir, json_input, power_mode):
     save_network(network, actual_json_output)
     actual = load_json(actual_json_output)
     unlink(actual_json_output)
-    expected = load_json(json_input)
-
-    results = compare_networks(expected, actual)
-    assert not results.elements.missing
-    assert not results.elements.extra
-    assert not results.elements.different
-    assert not results.connections.missing
-    assert not results.connections.extra
-    assert not results.connections.different
+    assert actual == load_json(json_input)
 
 # test services creation
 
@@ -162,15 +137,7 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
                                              equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
     build_network(network, equipment, p_db, p_total_db)
     from_xls = read_service_sheet(xls_input, equipment, network, network_filename=DATA_DIR / 'testTopology.xls')
-    expected = load_json(expected_json_output)
-
-    results = compare_services(expected, from_xls)
-    assert not results.requests.missing
-    assert not results.requests.extra
-    assert not results.requests.different
-    assert not results.synchronizations.missing
-    assert not results.synchronizations.extra
-    assert not results.synchronizations.different
+    assert from_xls == load_json(expected_json_output)
 
     # TODO verify that requested bandwidth is not zero !
 
@@ -243,35 +210,6 @@ def test_csv_response_generation(tmpdir, json_input):
         print(type(list(resp[column])[-1]))
 
 
-def compare_response(exp_resp, act_resp):
-    """ False if the keys are different in the nested dicts as well
-    """
-    print(exp_resp)
-    print(act_resp)
-    test = True
-    for key in act_resp.keys():
-        if key not in exp_resp.keys():
-            print(f'{key} is not expected')
-            return False
-        if isinstance(act_resp[key], dict):
-            test = compare_response(exp_resp[key], act_resp[key])
-    if test:
-        for key in exp_resp.keys():
-            if key not in act_resp.keys():
-                print(f'{key} is expected')
-                return False
-            if isinstance(exp_resp[key], dict):
-                test = compare_response(exp_resp[key], act_resp[key])
-
-    # at this point exp_resp and act_resp have the same keys. Check if their values are the same
-    for key in act_resp.keys():
-        if not isinstance(act_resp[key], dict):
-            if exp_resp[key] != act_resp[key]:
-                print(f'expected value :{exp_resp[key]}\n actual value: {act_resp[key]}')
-                return False
-    return test
-
-
 # test json answers creation
 @pytest.mark.parametrize('xls_input, expected_response_file', {
     DATA_DIR / 'testTopology.xls': DATA_DIR / 'testTopology_response.json',
@@ -304,11 +242,12 @@ def test_json_response_generation(xls_input, expected_response_file):
 
     result = []
     for i, pth in enumerate(propagatedpths):
-        # test ServiceError handling : when M is zero at this point, the
+        # test ServiceError handling : when M is None at this point, the
         # json result should not be created if there is no blocking reason
         if i == 1:
             my_rq = deepcopy(rqs[i])
-            my_rq.M = 0
+            my_rq.M = None
+            my_rq.N = None
             with pytest.raises(ServiceError):
                 ResultElement(my_rq, pth, reversed_propagatedpths[i]).json
 
@@ -327,7 +266,7 @@ def test_json_response_generation(xls_input, expected_response_file):
         if i == 2:
             # compare response must be False because z-a metric is missing
             # (request with bidir option to cover bidir case)
-            assert not compare_response(expected['response'][i], response)
+            assert expected['response'][i] != response
             print(f'response {response["response-id"]} should not match')
             expected['response'][2]['path-properties']['z-a-path-metric'] = [
                 {'metric-type': 'SNR-bandwidth', 'accumulative-value': 22.809999999999999},
@@ -338,8 +277,7 @@ def test_json_response_generation(xls_input, expected_response_file):
                 {'metric-type': 'path_bandwidth', 'accumulative-value': 60000000000.0}]
             # test should be OK now
         else:
-            assert compare_response(expected['response'][i], response)
-            print(f'response {response["response-id"]} is not correct')
+            assert expected['response'][i] == response
 
 # test the correspondance names dict in case of excel input
 # test that using the created json network still works with excel input
@@ -420,10 +358,12 @@ def test_excel_ila_constraints(source, destination, route_list, hoptype, expecte
         'cost': None,
         'roll_off': 0,
         'tx_osnr': 0,
+        'penalties': None,
         'min_spacing': None,
         'nb_channel': 0,
         'power': 0,
         'path_bandwidth': 0,
+        'effective_freq_slot': None
     }
     request = PathRequest(**params)
 

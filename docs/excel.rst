@@ -1,3 +1,5 @@
+.. _excel:
+
 Excel (XLS, XLSX) input files
 =============================
 
@@ -185,7 +187,8 @@ This generates a text file meshTopologyExampleV2_eqt_sheet.txt  whose content ca
 - *att_in* and *att_out* are not mandatory and are not used yet. They are the value of the attenuator at input and output of amplifier (in dB).
   If filled they must contain positive numbers.
 
-- *tilt* --TODO--
+- **tilt**, in dB, is not mandatory. It is the target gain tilt over the full amplfifier bandwidth and is defined with regard to wavelength, i.e. negative tilt means lower gain
+  for higher wavelengths (lower frequencies). If not filled, the default value is 0.
 
 - **delta_p**, in dBm,  is not mandatory. If filled it is used to set the output target power per channel at the output of the amplifier, if power_mode is True. The output power is then set to power_dbm + delta_power.
 
