@@ -335,7 +335,7 @@ def compute_constrained_path(network, req):
         msg = (f'{ansi_escapes.yellow}Request {req.request_id} could not find a path from'
                f' {source.uid} to node: {destination.uid} in network topology{ansi_escapes.reset}')
         LOGGER.critical(msg)
-        print(msg)
+        # print(msg)
         req.blocking_reason = 'NO_PATH'
         total_path = []
     except StopIteration:
@@ -344,23 +344,27 @@ def compute_constrained_path(network, req):
         # last node which is the transceiver)
         # if all nodes i n node_list are LOOSE constraint, skip the constraints and find
         # a path w/o constraints, else there is no possible path
-        print(f'{ansi_escapes.yellow}Request {req.request_id} could not find a path crossing '
-              f'{[el.uid for el in nodes_list[:-1]]} in network topology{ansi_escapes.reset}')
+        
+        # >>>>>>>
+        # @lynx-corenet: remove prints
+        # print(f'{ansi_escapes.yellow}Request {req.request_id} could not find a path crossing '
+        #       f'{[el.uid for el in nodes_list[:-1]]} in network topology{ansi_escapes.reset}')
 
         if 'STRICT' not in req.loose_list[:-1]:
             msg = (f'{ansi_escapes.yellow}Request {req.request_id} could not find a path with user_'
                    f'include node constraints{ansi_escapes.reset}')
             LOGGER.info(msg)
-            print(f'constraint ignored')
+            # print(f'constraint ignored')
             total_path = dijkstra_path(network, source, destination, weight='weight')
         else:
             # one STRICT makes the whole list STRICT
             msg = (f'{ansi_escapes.yellow}Request {req.request_id} could not find a path with user '
                    f'include node constraints.\nNo path computed{ansi_escapes.reset}')
             LOGGER.critical(msg)
-            print(msg)
+            # print(msg)
             req.blocking_reason = 'NO_PATH_WITH_CONSTRAINT'
             total_path = []
+        # >>>>>>>
 
     return total_path
 
@@ -451,16 +455,22 @@ def propagate_and_optimize_mode(path, req, equipment):
         # only get to this point if no baudrate/mode satisfies OSNR requirement
 
         # returns the last propagated path and mode
+        # >>>>>>>
+        # @lynx-corenet: remove print
         msg = f'\tWarning! Request {req.request_id}: no mode satisfies path SNR requirement.\n'
-        print(msg)
+        # print(msg)
         LOGGER.info(msg)
+        # >>>>>>>
         req.blocking_reason = 'NO_FEASIBLE_MODE'
         return path, last_explored_mode
     else:
         # no baudrate satisfying spacing
+        # >>>>>>>
+        # @lynx-corenet: remove print
         msg = f'\tWarning! Request {req.request_id}: no baudrate satisfies spacing requirement.\n'
-        print(msg)
+        # print(msg)
         LOGGER.info(msg)
+        # >>>>>>>
         req.blocking_reason = 'NO_FEASIBLE_BAUDRATE_WITH_SPACING'
         return [], None
 
@@ -889,11 +899,14 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
                     # remove duplicated candidates
                     candidates = remove_candidate(candidates, allpaths, allpaths[id(pth)].req, pth)
         else:
+            # >>>>>>
+            # @lynx-corenet: remove the print while error
             msg = f'No disjoint path found with added constraint for request_id "{dis.disjunction_id}"'
             LOGGER.critical(msg)
-            print(f'{msg}\nComputation stopped.')
+            # print(f'{msg}\nComputation stopped.')
             # TODO in this case: replay step 5  with the candidate without constraints
             raise DisjunctionError(msg)
+            # >>>>>>
 
     # for i in disjunctions_list:
     #     print(i.disjunction_id)
@@ -1097,10 +1110,15 @@ def correct_json_route_list(network, pathreqlist):
                     # if no matching can be found in the network just ignore this constraint
                     # if it is a loose constraint
                     # warns the user that this node is not part of the topology
+
+                    # >>>>>>>>
+                    # @lynx-corenet: remove the print here
                     msg = f'{ansi_escapes.yellow}invalid route node specified:\n\t\'{n_id}\',' +\
                         f' could not use it as constraint, skipped!{ansi_escapes.reset}'
-                    print(msg)
+                    # print(msg)
                     LOGGER.info(msg)
+                    # >>>>>>>>
+
                     pathreq.loose_list.pop(pathreq.nodes_list.index(n_id))
                     pathreq.nodes_list.remove(n_id)
                 else:
@@ -1132,15 +1150,18 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
     reversed_path_res_list = []
     propagated_reversed_path_res_list = []
 
+    # >>>>>>>>>
+    # @lynx-corenet: remove the prints in this function
+
     for i, pathreq in enumerate(pathreqlist):
 
         # use the power specified in requests but might be different from the one
         # specified for design the power is an optional parameter for requests
         # definition if optional, use the one defines in eqt_config.json
-        print(f'request {pathreq.request_id}')
-        print(f'Computing path from {pathreq.source} to {pathreq.destination}')
+        # print(f'request {pathreq.request_id}')
+        # print(f'Computing path from {pathreq.source} to {pathreq.destination}')
         # adding first node to be clearer on the output
-        print(f'with path constraint: {[pathreq.source] + pathreq.nodes_list}')
+        # print(f'with path constraint: {[pathreq.source] + pathreq.nodes_list}')
 
         # pathlist[i] contains the whole path information for request i
         # last element is a transciver and where the result of the propagation is
@@ -1150,7 +1171,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         # may use the same transponder for the performance simulation. This is why
         # we use deepcopy: to ensure that each propagation is recorded and not overwritten
         total_path = deepcopy(pathlist[i])
-        print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}')
+        # print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}')
         # for debug
         # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
         if total_path:
@@ -1168,7 +1189,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                           f'\n\tPMD penalty = {round(total_path[-1].penalties["pmd"][min_ind], 2)}' +\
                           f'\n\trequired osnr = {pathreq.OSNR}' +\
                           f'\n\tsystem margin = {equipment["SI"]["default"].sys_margins}'
-                    print(msg)
+                    # print(msg)
                     LOGGER.warning(msg)
                     pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
             else:
@@ -1205,8 +1226,8 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 # Both directions requested, and a feasible mode was found
                 rev_p = deepcopy(reversed_path)
 
-                print(f'\n\tPropagating Z to A direction {pathreq.destination} to {pathreq.source}')
-                print(f'\tPath (roadsm) {[r.uid for r in rev_p if isinstance(r,Roadm)]}\n')
+                # print(f'\n\tPropagating Z to A direction {pathreq.destination} to {pathreq.source}')
+                # print(f'\tPath (roadsm) {[r.uid for r in rev_p if isinstance(r,Roadm)]}\n')
                 propagate(rev_p, pathreq, equipment)
                 propagated_reversed_path = rev_p
                 snr01nm_with_penalty = rev_p[-1].snr_01nm - rev_p[-1].total_penalty
@@ -1219,7 +1240,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                           f'\n\tPMD penalty = {round(rev_p[-1].penalties["pmd"][min_ind], 2)}' +\
                           f'\n\trequired osnr = {pathreq.OSNR}' +\
                           f'\n\tsystem margin = {equipment["SI"]["default"].sys_margins}'
-                    print(msg)
+                    # print(msg)
                     LOGGER.warning(msg)
                     # TODO selection of mode should also be on reversed direction !!
                     if not hasattr(pathreq, 'blocking_reason'):
@@ -1228,7 +1249,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 propagated_reversed_path = []
         else:
             msg = 'Total path is empty. No propagation'
-            print(msg)
+            # print(msg)
             LOGGER.info(msg)
             reversed_path = []
             propagated_reversed_path = []
@@ -1237,7 +1258,9 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         reversed_path_res_list.append(reversed_path)
         propagated_reversed_path_res_list.append(propagated_reversed_path)
         # print to have a nice output
-        print('')
+        # print('')
+
+    # >>>>>>>>>
     return path_res_list, reversed_path_res_list, propagated_reversed_path_res_list
 
 
