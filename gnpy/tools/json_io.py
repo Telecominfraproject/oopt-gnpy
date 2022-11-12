@@ -47,11 +47,16 @@ class _JsonThing:
         for k, v in default_values.items():
             setattr(self, k, clean_kwargs.get(k, v))
             if k not in clean_kwargs and name != 'Amp':
-                print(ansi_escapes.red +
-                      f'\n WARNING missing {k} attribute in eqpt_config.json[{name}]' +
-                      f'\n default value is {k} = {v}' +
-                      ansi_escapes.reset)
 
+                # >>>>>>>>
+                # @lynx-corenet: throw error instead of printing
+                # print(ansi_escapes.red +
+                #       f'\n WARNING missing {k} attribute in eqpt_config.json[{name}]' +
+                #       f'\n default value is {k} = {v}' +
+                #       ansi_escapes.reset)
+
+                raise EquipmentConfigError(f'WARNING missing {k} attribute for {name} in the Equipment Library. Default value can be {k} = {v}')
+                # >>>>>>>>
 
 class SI(_JsonThing):
     default_values = {
