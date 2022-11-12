@@ -520,12 +520,15 @@ def _check_one_request(params, f_max_from_si):
     if params['baud_rate'] is not None:
         # implicitly means that a mode is defined with min_spacing
         if params['min_spacing'] > params['spacing']:
+            # >>>>>>>>>
+            # @lynx-corenet: comment out printing errors on console
             msg = f'Request {params["request_id"]} has spacing below transponder ' +\
                   f'{params["trx_type"]} {params["trx_mode"]} min spacing value ' +\
                   f'{params["min_spacing"]*1e-9}GHz.\nComputation stopped'
-            print(msg)
+            # print(msg)
             _logger.critical(msg)
             raise ServiceError(msg)
+            # >>>>>>>>>>
         if f_max > f_max_from_si:
             msg = f'''Requested channel number {params["nb_channel"]}, baud rate {params["baud_rate"]} GHz
             and requested spacing {params["spacing"]*1e-9}GHz is not consistent with frequency range
