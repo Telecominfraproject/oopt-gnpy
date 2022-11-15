@@ -95,6 +95,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4d8e232_929a991a",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 65
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-15T10:00:18Z",
+      "side": 1,
+      "message": "thanks",
+      "parentUuid": "4d9bb9bc_4f2c283a",
+      "range": {
+        "startLine": 340,
+        "startChar": 0,
+        "endLine": 341,
+        "endChar": 29
+      },
+      "revId": "6fc94e0969695aab874e16e578e26c0b9d8f80cf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b303567_19bf3197",
@@ -179,6 +203,30 @@
       "side": 1,
       "message": "OK but I need to keep the index as there may be more than one partition with the same baud rate, and it does not make sense to group them (Andrea recommandation)",
       "parentUuid": "a38c1056_e4c9c62d",
+      "range": {
+        "startLine": 301,
+        "startChar": 38,
+        "endLine": 301,
+        "endChar": 74
+      },
+      "revId": "6fc94e0969695aab874e16e578e26c0b9d8f80cf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a1a0c62_c90abb4a",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 65
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-15T10:00:18Z",
+      "side": 1,
+      "message": "agreed; I was just commenting on the highlighted part",
+      "parentUuid": "1f4d4d3d_674dd432",
       "range": {
         "startLine": 301,
         "startChar": 38,
