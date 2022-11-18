@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe4e448f_477ec5c7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 69
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-18T16:50:49Z",
+      "side": 1,
+      "message": "I was trying to understand why this is mW/GHz even though it works not on the channel width, but on baudrate. Why is it not called, e.g., `mWperGBaud`? I suspect that there\u0027s a industry standard for this that I don\u0027t know.",
+      "range": {
+        "startLine": 31,
+        "startChar": 16,
+        "endLine": 31,
+        "endChar": 24
+      },
+      "revId": "ddd4b7c2743fc7ba9012c124fc6e534c0da4c87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e668f0b_f26bff0e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 69
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-18T16:50:49Z",
+      "side": 1,
+      "message": "I tried to figure out how this is actually computed, but I failed horribly. Can you please explain how this works?",
+      "range": {
+        "startLine": 37,
+        "startChar": 35,
+        "endLine": 37,
+        "endChar": 70
+      },
+      "revId": "ddd4b7c2743fc7ba9012c124fc6e534c0da4c87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf5ae112_9924df53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 69
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-18T16:50:49Z",
+      "side": 1,
+      "message": "I\u0027m not done reading through this patch yet, but I wanted to share some minor comments that I have before the weekend.\n\nI plan to squash the relevant part of the docs to this commit and to rephrase the commit message a bit as well because doing that helps me reason about these changes. That said, please feel free to change stuff at will, I\u0027m fine with rebasing.",
+      "revId": "ddd4b7c2743fc7ba9012c124fc6e534c0da4c87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d3abb93_22138726",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 69
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-18T16:50:49Z",
+      "side": 1,
+      "message": "nit: `elif`, and then let\u0027s catch a possible programming error with an `else` which just `assert False`",
+      "range": {
+        "startLine": 246,
+        "startChar": 8,
+        "endLine": 246,
+        "endChar": 10
+      },
+      "revId": "ddd4b7c2743fc7ba9012c124fc6e534c0da4c87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}

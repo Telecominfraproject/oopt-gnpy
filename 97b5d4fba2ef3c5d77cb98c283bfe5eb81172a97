@@ -270,6 +270,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "305a34b6_f5fb4ea7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-11-18T16:50:49Z",
+      "side": 1,
+      "message": "The documentation talks about a PSD-based equalization in ROADMs. An example is provided, there\u0027s a ROADM with a PSD-based equalization with the target of 2.717e-4 mW/GHz. The the docs show a calculation which uses two constants, 32e9 and a 64e9, which are not explained. How are they related to the given PSD target? I see that the 2.717e-4 mW/GHz \"roughly corresponds\" to a 1dBm/50GHz (right?), but the readers have to do the math themselves in order to see this. This should be explained in a higher detail so that a layman (like me) can follow what\u0027s going on.",
+      "parentUuid": "b8d39384_01e416d2",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 233,
+        "endChar": 30
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5167e9d4_b5e28cc5",
