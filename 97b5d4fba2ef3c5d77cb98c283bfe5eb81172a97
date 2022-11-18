@@ -294,6 +294,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1b19380_a25c0a7c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-18T17:44:27Z",
+      "side": 1,
+      "message": "2.717e-4 mW/GHz means that a 32GBauds target power will be 0.0086944mW, that is ~ -20.6dBm, while for 64Gbauds, the target will be ~-17.59 dBm. (ie 3dB more, same ratio as the ratio of baud rates)\n This means that the ROADM allocates more power for larger baudrate, proportionnaly to the signal occupation which is assumed to be equal to the baudrate. \n\nis this clearer if I add that ?",
+      "parentUuid": "305a34b6_f5fb4ea7",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 233,
+        "endChar": 30
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5167e9d4_b5e28cc5",

@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f03bdc0c_627e6836",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 69
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-18T17:44:27Z",
+      "side": 1,
+      "message": "Power spectral density is defined in power per spectrum not power per baudrate. I am just assuming here that the spectrum considered for the PSD is exactly equal to the baudrate, as recommended by Polito in a coders call.",
+      "parentUuid": "fe4e448f_477ec5c7",
+      "range": {
+        "startLine": 31,
+        "startChar": 16,
+        "endLine": 31,
+        "endChar": 24
+      },
+      "revId": "ddd4b7c2743fc7ba9012c124fc6e534c0da4c87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7e668f0b_f26bff0e",
         "filename": "/COMMIT_MSG",
         "patchSetId": 69
@@ -37,6 +61,30 @@
       "writtenOn": "2022-11-18T16:50:49Z",
       "side": 1,
       "message": "I tried to figure out how this is actually computed, but I failed horribly. Can you please explain how this works?",
+      "range": {
+        "startLine": 37,
+        "startChar": 35,
+        "endLine": 37,
+        "endChar": 70
+      },
+      "revId": "ddd4b7c2743fc7ba9012c124fc6e534c0da4c87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5eb93196_a649687f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 69
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-18T17:44:27Z",
+      "side": 1,
+      "message": "-20dBm is 0.01 mW in linear, and 0.01/32 \u003d 0.0003125 mW/GHz",
+      "parentUuid": "7e668f0b_f26bff0e",
       "range": {
         "startLine": 37,
         "startChar": 35,
