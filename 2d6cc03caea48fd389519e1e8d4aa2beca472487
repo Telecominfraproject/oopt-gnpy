@@ -16,6 +16,24 @@
       "message": "\u003e Probably used from a previous intention to define an set of possible EDFA in each element instance and leave GNPy choose the best among this list. However the excel/json part of it ha never been implemented.\nNo need to speculate, the motivation was described in the commit message:\nhttps://github.com/Telecominfraproject/oopt-gnpy/commit/b37248077c247d16ac352eaa56508a8cb36ad8b0\nAnd how do you know it has never been implemented?",
       "revId": "2d6cc03caea48fd389519e1e8d4aa2beca472487",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2bacce6_fec8b11f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-11-19T06:19:21Z",
+      "side": 1,
+      "message": "Sorry, I did not dig into the commits and forgot that this was for this purpose. I did not find any test set or example, or explanation in the code, so I thought it was a leftover from Jean-Luc. I agree with you that this is a good use case. Would you have time to add some documentation on this ?\nIn the mean time I abandon this change.",
+      "parentUuid": "f3091c3a_47cf349e",
+      "revId": "2d6cc03caea48fd389519e1e8d4aa2beca472487",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
