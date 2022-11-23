@@ -162,6 +162,7 @@ class ResultElement:
                     'num-unnum-hop': {
                         'node-id': element.uid,
                         'link-tp-id': element.uid,
+                        'operational': element.to_response_element_json
                         # TODO change index in order to insert transponder attribute
                     }
                 }
