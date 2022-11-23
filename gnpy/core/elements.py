@@ -157,6 +157,43 @@ class Transceiver(_Node):
                 }
                 }
 
+    @property
+    def to_response_element_json(self):
+        if self.snr is None or self.osnr_ase is None:
+            return None
+
+        snr = round(mean(self.snr), 2)
+        osnr_ase = round(mean(self.osnr_ase), 2)
+        osnr_ase_01nm = round(mean(self.osnr_ase_01nm), 2)
+        snr_01nm = round(mean(self.snr_01nm), 2)
+        cd = mean(self.chromatic_dispersion)
+        pmd = mean(self.pmd)
+        pdl = mean(self.pdl)
+
+        result = [
+            { 'metric-type': 'GSNR (0.1nm)', 'metric-unit': 'dB', 'metric-value': snr_01nm},
+            { 'metric-type': 'GSNR (signal bandwidth)', 'metric-unit': 'dB', 'metric-value': snr},
+            { 'metric-type': 'OSNR ASE (0.1nm)', 'metric-unit': 'dB', 'metric-value': osnr_ase_01nm},
+            { 'metric-type': 'OSNR ASE (signal bandwidth)', 'metric-unit': 'dB', 'metric-value': osnr_ase},
+            { 'metric-type': 'Chromatic Dispersion (CD)', 'metric-unit': 'ps/nm', 'metric-value': cd},
+            { 'metric-type': 'Polarization Mode Dispersion (PMD)', 'metric-unit': 'ps', 'metric-value': pmd},
+            { 'metric-type': 'Polarization Dependent Loss (PDL)', 'metric-unit': 'dB', 'metric-value': pdl},
+        ]
+
+        cd_penalty = self.penalties.get('chromatic_dispersion')
+        if cd_penalty is not None:
+            result += {'metric-type': 'Chromatic Dispersion Penalty (CD)', 'metric-unit': 'dB', 'metric-value': mean(cd_penalty)}
+        
+        pmd_penalty = self.penalties.get('pmd')
+        if pmd_penalty is not None:
+            result += {'metric-type': 'Polarization Mode Dispersion Penalty (PMD)', 'metric-unit': 'dB', 'metric-value': mean(pmd_penalty)}
+        
+        pdl_penalty = self.penalties.get('pdl')
+        if pdl_penalty is not None:
+            result += {'metric-type': 'Polarization Dependent Loss Penalty (PDL)', 'metric-unit': 'dB', 'metric-value': mean(pdl_penalty)}
+
+        return result
+
     def __repr__(self):
         return (f'{type(self).__name__}('
                 f'uid={self.uid!r}, '
@@ -243,6 +280,16 @@ class Roadm(_Node):
                     'location': self.metadata['location']._asdict()
                 }
                 }
+
+    @property
+    def to_response_element_json(self):
+        if self.ref_effective_loss is None:
+            return None
+        
+        return [
+            { 'metric-type': 'Effective Loss', 'metric-unit': 'dB', 'metric-value': self.ref_effective_loss},
+            { 'metric-type': 'Power Out Per Channel', 'metric-unit': 'dBm', 'metric-value': self.ref_pch_out_dbm}
+        ]
 
     def __repr__(self):
         return f'{type(self).__name__}(uid={self.uid!r}, loss={self.loss!r})'
@@ -333,6 +380,12 @@ class Fused(_Node):
                 }
                 }
 
+    @property
+    def to_response_element_json(self):
+        return [
+            { 'metric-type': 'Loss', 'metric-unit': 'dB', 'metric-value': self.loss}
+        ]
+
     def __repr__(self):
         return f'{type(self).__name__}(uid={self.uid!r}, loss={self.loss!r})'
 
@@ -400,6 +453,21 @@ class Fiber(_Node):
                     'location': self.metadata['location']._asdict()
                 }
                 }
+    
+    @property
+    def to_response_element_json(self):
+        if self.pch_out_db is None:
+            return None
+
+        return [
+            { 'metric-type': 'Type Variety', 'metric-unit': None, 'metric-value': self.type_variety},
+            { 'metric-type': 'Length', 'metric-unit': 'km', 'metric-value': self.params.length*1e-3},
+            { 'metric-type': 'Padding Attenuator In', 'metric-unit': 'dB', 'metric-value': self.params.att_in},
+            { 'metric-type': 'Total Loss', 'metric-unit': 'dB', 'metric-value': self.loss},
+            { 'metric-type': 'Connection In', 'metric-unit': 'dB', 'metric-value': self.params.con_in},
+            { 'metric-type': 'Connection Out + EOL', 'metric-unit': 'dB', 'metric-value': self.params.con_out},
+            { 'metric-type': 'Power Out Per Channel', 'metric-unit': 'dBm', 'metric-value': self.pch_out_db}
+        ]
 
     def __repr__(self):
         return f'{type(self).__name__}(uid={self.uid!r}, ' \
@@ -550,6 +618,10 @@ class RamanFiber(Fiber):
     def to_json(self):
         return dict(super().to_json, operational=self.operational)
 
+    @property
+    def to_response_element_json(self):
+        return super().to_response_element_json
+
     def propagate(self, spectral_info: SpectralInformation):
         """Modifies the spectral information computing the attenuation, the non-linear interference generation,
         the CD and PMD accumulation.
@@ -623,6 +695,26 @@ class Edfa(_Node):
                     'location': self.metadata['location']._asdict()
                 }
                 }
+
+    @property
+    def to_response_element_json(self):
+        if self.pin_db is None or self.pout_db is None:
+            return None
+
+        nf = mean(self.nf)
+
+        return [
+            { 'metric-type': 'Type Variety', 'metric-unit': None, 'metric-value': self.params.type_variety},
+            { 'metric-type': 'Effective Gain', 'metric-unit': 'dB', 'metric-value': self.effective_gain},
+            { 'metric-type': 'Noise Figure', 'metric-unit': 'dB', 'metric-value': nf},
+            { 'metric-type': 'Padding Attenuator In', 'metric-unit': 'dB', 'metric-value': self.att_in},
+            { 'metric-type': 'Power In', 'metric-unit': 'dBm', 'metric-value': self.pin_db},
+            { 'metric-type': 'Power Out', 'metric-unit': 'dBm', 'metric-value': self.pout_db},
+            { 'metric-type': 'Delta_P', 'metric-unit': 'dB', 'metric-value': self.delta_p if self.delta_p is not None else None},
+            { 'metric-type': 'Target Power Per Channel', 'metric-unit': 'dBm', 'metric-value': self.target_pch_out_db if self.target_pch_out_db is not None else None},
+            { 'metric-type': 'Effective Power Per Channel', 'metric-unit': 'dBm', 'metric-value': self.effective_pch_out_db},
+            { 'metric-type': 'Output VOA', 'metric-unit': 'dB', 'metric-value': self.out_voa}
+        ]
 
     def __repr__(self):
         return (f'{type(self).__name__}(uid={self.uid!r}, '
