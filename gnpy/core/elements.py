@@ -437,7 +437,9 @@ class Fiber(_Node):
 
     @property
     def to_json(self):
-        return {'uid': self.uid,
+        # >>>>>>>>>
+        # @lynx-corenet: add lumped loss definitions in json output if present
+        result =  {'uid': self.uid,
                 'type': type(self).__name__,
                 'type_variety': self.type_variety,
                 'params': {
@@ -452,7 +454,13 @@ class Fiber(_Node):
                 'metadata': {
                     'location': self.metadata['location']._asdict()
                 }
-                }
+            }
+        
+        if self.params.lumped_losses:
+            result['params']['lumped_losses'] = self.params.lumped_losses
+        
+        return result
+        # >>>>>>>>>>
     
     @property
     def to_response_element_json(self):

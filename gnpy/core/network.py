@@ -463,6 +463,22 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
     if n_spans == 1:
         return
 
+    # >>>>>>>>>
+    # @lynx-corenet: add support for translated lumped loss positions in network autodesign
+    translated_lumped_losses = {}
+    if fiber.params.lumped_losses:
+        for n in range(n_spans):
+            translated_lumped_losses[n] = []
+
+        for lumped in fiber.params.lumped_losses:
+            for ns in range(n_spans):
+                # determine if position is in current span: in km, converted to m for computation
+                if lumped['position'] * 1e3 < ((ns+1)*new_length):
+                    # calculate the new reference position on this span: in km, converted to m, and back to km; for compatibility reasons
+                    translated_lumped_losses[ns].append({ 'position': ((lumped['position']* 1e3 - ( ((ns+1)*new_length) - new_length)) *1e-3), 'loss': lumped['loss'] })
+                    break
+                
+
     try:
         next_node = next(network.successors(fiber))
         prev_node = next(network.predecessors(fiber))
@@ -476,6 +492,12 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
     xpos = [prev_node.lng + (next_node.lng - prev_node.lng) * (n + 0.5) / n_spans for n in range(n_spans)]
     ypos = [prev_node.lat + (next_node.lat - prev_node.lat) * (n + 0.5) / n_spans for n in range(n_spans)]
     for span, lng, lat in zip(range(n_spans), xpos, ypos):
+        new_params = fiber.params.asdict()
+        # if lumped losses are present in the fiber being split
+        # then add the translated lumped loss positions in the new spans
+        if fiber.params.lumped_losses:
+            new_params['lumped_losses'] = translated_lumped_losses[span]
+
         new_span = elements.Fiber(uid=f'{fiber.uid}_({span+1}/{n_spans})',
                          type_variety=fiber.type_variety,
                          metadata={
@@ -486,7 +508,8 @@ def split_fiber(network, fiber, bounds, target_length, equipment):
                                   'region': fiber.loc.region,
                               }
                          },
-                         params=fiber.params.asdict())
+                         params=new_params)
+        # >>>>>>>>>
         if isinstance(prev_node, elements.Fiber):
             edgeweight = prev_node.params.length
         else:
