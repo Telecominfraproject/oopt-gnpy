@@ -404,9 +404,9 @@ Span configuration is not a list (which may change in later releases) and the us
 SpectralInformation
 ~~~~~~~~~~~~~~~~~~~
 
-The user can only modify the value of existing parameters.
-It defines a spectrum of N identical carriers.
-While the code libraries allow for different carriers and power levels, the current user parametrization only allows one carrier type and one power/channel definition.
+GNPy requires a description of all channels that are propagated through the network.
+Flexgrid channel partitioning is available since the 2.7 release via the extra ``--spectrum`` option.
+If flexgrid is not used, the propagated spectrum is set via the ``SpectralInformation`` construct which defines a spectrum of N identical carriers:
 
 +----------------------+-----------+-------------------------------------------+
 | field                |   type    | description                               |
@@ -448,3 +448,81 @@ While the code libraries allow for different carriers and power levels, the curr
 | ``sys_margins``      | (number)  | In dB. Added margin on min required       |
 |                      |           | transceiver OSNR.                         |
 +----------------------+-----------+-------------------------------------------+
+
+.. _flexgrid:
+
+Arbitrary channel spacing with flexgrid
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Flexgrid channels are defined via a list of spectrum "partitions" which are defined in an extra JSON file via the ``--spectrum`` option:
+
++----------------------+-----------+-------------------------------------------+
+| field                |   type    | description                               |
++======================+===========+===========================================+
+| ``f_min``,           | (number)  | In Hz. Mandatory.                         |
+| ``f_max``            |           | Define partition :math:`f_{min}` is       |
+|                      |           | the first carrier central frequency       |
+|                      |           | :math:`f_{max}` is the last one.          |
+|                      |           | :math:`f_{min}` -:math:`f_{max}`          |
+|                      |           | partitions must not overlap.              |
+|                      |           |                                           |
+|                      |           | Note that the meaning of ``f_min`` and    |
+|                      |           | ``f_max`` is different than the one in    |
+|                      |           | ``SpectralInformation``.                  |
++----------------------+-----------+-------------------------------------------+
+| ``baud_rate``        | (number)  | In Hz. Mandatory. Simulated baud rate.    |
++----------------------+-----------+-------------------------------------------+
+| ``slot_width``       | (number)  | In Hz. Carrier spectrum occupation.       |
+|                      |           | Carriers of this partition are spaced at  |
+|                      |           | ``slot_width`` offsets.                   |
++----------------------+-----------+-------------------------------------------+
+| ``roll_off``         | (number)  | Pure number between 0 and 1. Mandatory    |
+|                      |           | TX signal roll-off shape. Used by         |
+|                      |           | Raman-aware simulation code.              |
++----------------------+-----------+-------------------------------------------+
+| ``tx_osnr``          | (number)  | In dB. Optional. OSNR out from            |
+|                      |           | transponder. Default value is 40 dB.      |
++----------------------+-----------+-------------------------------------------+
+| ``delta_pdb``        | (number)  | In dB. Optional. Power offset compared to |
+|                      |           | the reference power used for design       |
+|                      |           | (SI block in equipment library) to be     |
+|                      |           | applied by ROADM to equalize the carriers |
+|                      |           | in this partition. Default value is 0 dB. |
++----------------------+-----------+-------------------------------------------+
+
+For example this example:
+
+.. code-block:: json
+
+ {
+   "SI":[
+     {
+       "f_min": 191.4e12,
+       "f_max":193.1e12,
+       "baud_rate": 32e9,
+       "slot_width": 50e9,
+       "roll_off": 0.15,
+       "tx_osnr": 40
+     },
+     {
+       "f_min": 193.1625e12,
+       "f_max":195e12,
+       "baud_rate": 64e9,
+       "delta_pdb": 3,
+       "slot_width": 75e9,
+       "roll_off": 0.15,
+       "tx_osnr": 40
+     }
+   ]
+ }
+
+...defines a spectrum split into two parts.
+Carriers with central frequencies ranging from 191.4 THz to 193.1 THz will have 32 GBaud rate and will be spaced by 50 Ghz.
+Carriers with central frequencies ranging from 193.1625 THz to 195 THz will have 64 GBaud rate and will be spaced by 75 GHz with 3 dB power offset.
+
+If the SI reference carrier is set to ``power_dbm`` = 0dBm, and the ROADM has ``target_pch_out_db`` set to -20 dBm, then all channels ranging from 191.4 THz to 193.1 THz will have their power equalized to -20 + O dBm (due to the O dB power offset).
+All channels ranging from 193.1625 THz to 195 THz will have their power equalized to -20 + 3 = -17 dBm (total power signal + noise).
+
+Note that first carrier of the second partition has center frequency 193.1625 THz (its spectrum occupation ranges from 193.125 THz to 193.2 THz).
+The last carrier of the second partition has center frequency 193.1 THz and spectrum occupation ranges from 193.075 THz to 193.125 THz.
+There is no overlap of the occupation and both share the same boundary.
