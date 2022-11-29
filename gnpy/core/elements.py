@@ -22,8 +22,7 @@ instance as a result.
 
 from numpy import abs, array, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, exp, asarray, full,\
     squeeze, zeros, append, flip, outer
-from scipy.constants import h, c
-from scipy.interpolate import interp1d
+from gnpy.core.constants import h, c
 from collections import namedtuple
 
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_average, pretty_summary_print, \
@@ -432,7 +431,7 @@ class Fiber(_Node):
         frequency = asarray(frequency)
         if self.params.loss_coef.size > 1:
             try:
-                loss_coef = interp1d(self.params.f_loss_ref, self.params.loss_coef)(frequency)
+                loss_coef = interp(frequency, self.params.f_loss_ref, self.params.loss_coef)
             except ValueError:
                 raise SpectrumError('The spectrum bandwidth exceeds the frequency interval used to define the fiber '
                                     f'loss coefficient in "{type(self).__name__} {self.uid}".'

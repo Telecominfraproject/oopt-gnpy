@@ -8,7 +8,7 @@ gnpy.core.parameters
 This module contains all parameters to configure standard network elements.
 """
 
-from scipy.constants import c, pi
+from gnpy.core.constants import c, pi
 from numpy import asarray, array
 
 from gnpy.core.utils import convert_length

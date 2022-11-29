@@ -9,8 +9,8 @@ This module contains utility functions that are used with gnpy.
 """
 
 from csv import writer
-from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and, mean
-from scipy import constants
+from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and, mean, apply_along_axis, interp
+import gnpy.core.constants as constants
 
 from gnpy.core.exceptions import ConfigurationError
 
@@ -208,8 +208,15 @@ def round2float(number, step):
     return number
 
 
-wavelength2freq = constants.lambda2nu
-freq2wavelength = constants.nu2lambda
+def wavelength2freq(value):
+    """ Converts wavelength units to frequency units.
+
+    >>> round(wavelength2freq(1566.723e-9) / 1e12, 2)
+    191.35
+    >>> round(wavelength2freq(1528.773e-9) / 1e12, 2)
+    196.1
+    """
+    return constants.c / value
 
 
 def freq2wavelength(value):
@@ -413,3 +420,10 @@ def convert_length(value, units):
         return value * 1e3
     else:
         raise ConfigurationError(f'Cannot convert length in "{units}" into meters')
+
+
+def interp_along_axis(x, xp, fp, axis=-1):
+    """Returns an N-D array interpolating (xp, fp), where xp is 1-D and fp is N-D,
+    along a specified axis and evaluated at x. 
+    """
+    return apply_along_axis(lambda a: interp(x, xp, a), axis, fp)

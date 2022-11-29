@@ -14,11 +14,10 @@ from numpy import interp, pi, zeros, shape, where, cos, array, append, ones, exp
     clip, abs, sum, concatenate, flip, outer, inner, transpose, max, format_float_scientific, diag, prod, argwhere, \
     unique, argsort, cumprod
 from logging import getLogger
-from scipy.constants import k, h
-from scipy.interpolate import interp1d
+from gnpy.core.constants import k, h
 from math import isclose
 
-from gnpy.core.utils import db2lin, lin2db
+from gnpy.core.utils import db2lin, lin2db, interp_along_axis
 from gnpy.core.exceptions import EquipmentConfigError
 from gnpy.core.parameters import SimParams
 from gnpy.core.info import SpectralInformation
@@ -168,8 +167,8 @@ class RamanSolver:
                 # Loss profile
                 loss_profile = power_profile / outer(spectral_info.signal, ones(z.size))
                 frequency = spectral_info.frequency
-            power_profile = interp1d(z, power_profile, axis=1)(z_final)
-            loss_profile = interp1d(z, loss_profile, axis=1)(z_final)
+            power_profile = interp_along_axis(z_final, z, power_profile, axis=1)
+            loss_profile = interp_along_axis(z_final, z, loss_profile, axis=1)
             stimulated_raman_scattering = StimulatedRamanScattering(power_profile, loss_profile, frequency, z_final)
         else:
             stimulated_raman_scattering = \
@@ -409,7 +408,7 @@ class NliSolver:
         """Computes the generalized psi function similarly to the one used in the GN model."""
         z = srs.z
         rho_norm = srs.rho * exp(outer(alpha/2, z))
-        rho_pump = interp1d(srs.frequency, rho_norm, axis=0)(pump_carrier.frequency)
+        rho_pump = interp_along_axis(pump_carrier.frequency, srs.frequency, rho_norm, axis=0)
 
         f1_array = array([pump_carrier.frequency - (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2),
                           pump_carrier.frequency + (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2)])
@@ -432,7 +431,7 @@ class NliSolver:
         """Computes the generalized psi function similarly to the one used in the GN model."""
         z = srs.z
         rho_norm = srs.rho * exp(outer(alpha / 2, z))
-        rho_pump = interp1d(srs.frequency, rho_norm, axis=0)(pump_carrier.frequency)
+        rho_pump = interp_along_axis(pump_carrier.frequency, srs.frequency, rho_norm, axis=0)
 
         f1_array = arange(pump_carrier.frequency - (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2),
                           pump_carrier.frequency + (pump_carrier.baud_rate * (1 + pump_carrier.roll_off) / 2),
