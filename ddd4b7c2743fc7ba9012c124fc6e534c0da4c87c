@@ -48,6 +48,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c764f77_24e9716a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 69
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-12-02T14:58:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f03bdc0c_627e6836",
+      "range": {
+        "startLine": 31,
+        "startChar": 16,
+        "endLine": 31,
+        "endChar": 24
+      },
+      "revId": "ddd4b7c2743fc7ba9012c124fc6e534c0da4c87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e668f0b_f26bff0e",
@@ -97,6 +121,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "4cc3f7c2_ea27544a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 69
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-12-02T14:58:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5eb93196_a649687f",
+      "range": {
+        "startLine": 37,
+        "startChar": 35,
+        "endLine": 37,
+        "endChar": 70
+      },
+      "revId": "ddd4b7c2743fc7ba9012c124fc6e534c0da4c87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "bf5ae112_9924df53",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 69
@@ -125,6 +173,30 @@
       "writtenOn": "2022-11-18T16:50:49Z",
       "side": 1,
       "message": "nit: `elif`, and then let\u0027s catch a possible programming error with an `else` which just `assert False`",
+      "range": {
+        "startLine": 246,
+        "startChar": 8,
+        "endLine": 246,
+        "endChar": 10
+      },
+      "revId": "ddd4b7c2743fc7ba9012c124fc6e534c0da4c87c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56fd12fd_5d15a001",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 69
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-12-02T14:58:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d3abb93_22138726",
       "range": {
         "startLine": 246,
         "startChar": 8,

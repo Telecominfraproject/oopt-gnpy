@@ -320,6 +320,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "531aad99_f6541990",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-12-02T14:58:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1b19380_a25c0a7c",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 233,
+        "endChar": 30
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "5167e9d4_b5e28cc5",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 61
@@ -370,6 +394,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a5b1140_6f17d3be",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-12-02T14:58:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dccb5e25_7d1673f1",
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e90e9e3_d99335eb",
@@ -407,6 +449,30 @@
       "side": 1,
       "message": "I have removed this ambiguity: now self.ref_pch_out_dbm is only for computed value during propagation and self.target_pch_out_dbm the user settings for target equalization",
       "parentUuid": "7e90e9e3_d99335eb",
+      "range": {
+        "startLine": 235,
+        "startChar": 16,
+        "endLine": 235,
+        "endChar": 31
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8105e3ee_6b2eb114",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-12-02T14:58:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1055b18c_749891e7",
       "range": {
         "startLine": 235,
         "startChar": 16,
@@ -464,6 +530,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1df061a3_07b69e41",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-12-02T14:58:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9099edb_c45184e3",
+      "range": {
+        "startLine": 269,
+        "startChar": 31,
+        "endLine": 269,
+        "endChar": 37
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b34a5f72_d1ab83f2",
@@ -501,6 +591,30 @@
       "side": 1,
       "message": "this has been moved to the get_roadm_target_power function",
       "parentUuid": "b34a5f72_d1ab83f2",
+      "range": {
+        "startLine": 291,
+        "startChar": 19,
+        "endLine": 291,
+        "endChar": 24
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65730fcd_c9c73d17",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-12-02T14:58:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe6fbb7c_2efff9aa",
       "range": {
         "startLine": 291,
         "startChar": 19,
@@ -558,6 +672,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96c7f1eb_c01e31f9",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-12-02T14:58:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "713dd328_2b205c9f",
+      "range": {
+        "startLine": 269,
+        "startChar": 4,
+        "endLine": 294,
+        "endChar": 93
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf0191fb_51a0b31e",
@@ -595,6 +733,30 @@
       "side": 1,
       "message": "The equalization type is now handled in the functions",
       "parentUuid": "cf0191fb_51a0b31e",
+      "range": {
+        "startLine": 306,
+        "startChar": 10,
+        "endLine": 307,
+        "endChar": 91
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdf22b1e_530245df",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-12-02T14:58:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b70c711_25ed8e72",
       "range": {
         "startLine": 306,
         "startChar": 10,
@@ -654,6 +816,24 @@
       "side": 1,
       "message": "OK I hav done as suggested",
       "parentUuid": "7963434a_1c9a0fe1",
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "703f6b14_7bbb0c82",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-12-02T14:58:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c335cb97_0a637979",
       "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -729,6 +909,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0fe5c97_131f66c1",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-12-02T14:58:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c130d1d7_23902fee",
+      "range": {
+        "startLine": 363,
+        "startChar": 0,
+        "endLine": 364,
+        "endChar": 74
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "612639df_03199772",
@@ -766,6 +970,30 @@
       "side": 1,
       "message": "I am adding more equalization types and I think then I would need to add the combinations of wrong case which might become difficult to read with if I have a,b,c,d different equalization types",
       "parentUuid": "612639df_03199772",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 69
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b2ebf83_88e3c7d6",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-12-02T14:58:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7a37363_45f28872",
       "range": {
         "startLine": 93,
         "startChar": 0,
@@ -908,6 +1136,30 @@
       "side": 1,
       "message": "I have tried to change this as I proposed, but I think I cannot. here is the explanation:\n\n- I cannot remove the default equalization from the equipement loading, because I will need it afterwards for per degrees equalization checking\n- extra_params is a generic means to upload all equipment default values in elements, so I can not change extra_param behaviour without impacting all elements.\n- temp \u003d merge_amplifier_restrictions(temp, extra_params.__dict__)    is applied also on ROADMs so if default equalization is not removed at this point it will be added to the existing one in element.\n- I cannot remove the extra equalization after this point, because then I would not know if the roadm config contained 2 equalizations.\n\nSo I think this is the only way.\nHowever I refactored a bit so that i don\u0027t remove the equalization from the default, I just don\u0027t use it.",
       "parentUuid": "dce3a153_428ba0a4",
+      "range": {
+        "startLine": 473,
+        "startChar": 1,
+        "endLine": 475,
+        "endChar": 98
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2276fd0e_1ddfc5d9",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 61
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-12-02T14:58:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d0d6bd5_117242db",
       "range": {
         "startLine": 473,
         "startChar": 1,
