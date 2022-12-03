@@ -733,6 +733,7 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": null,
+        "in_voa": 0,
         "out_voa": null
       }
     },
@@ -767,6 +768,7 @@
         "gain_target": null,
         "delta_p": null,
         "tilt_target": null,
+        "in_voa": 0,
         "out_voa": null
       }
     },
@@ -785,6 +787,7 @@
         "gain_target": null,
         "delta_p": null,
         "tilt_target": null,
+        "in_voa": 0,
         "out_voa": null
       }
     },
@@ -803,6 +806,7 @@
         "gain_target": null,
         "delta_p": null,
         "tilt_target": null,
+        "in_voa": 0,
         "out_voa": null
       }
     },
@@ -821,6 +825,7 @@
         "gain_target": null,
         "delta_p": null,
         "tilt_target": null,
+        "in_voa": 0,
         "out_voa": null
       }
     },
@@ -839,6 +844,7 @@
         "gain_target": null,
         "delta_p": null,
         "tilt_target": null,
+        "in_voa": 0,
         "out_voa": null
       }
     },
@@ -857,6 +863,7 @@
         "gain_target": null,
         "delta_p": null,
         "tilt_target": null,
+        "in_voa": 0,
         "out_voa": null
       }
     },
@@ -875,6 +882,7 @@
         "gain_target": null,
         "delta_p": null,
         "tilt_target": null,
+        "in_voa": 0,
         "out_voa": null
       }
     },
@@ -893,6 +901,7 @@
         "gain_target": null,
         "delta_p": null,
         "tilt_target": null,
+        "in_voa": 0,
         "out_voa": null
       }
     },
@@ -911,6 +920,7 @@
         "gain_target": null,
         "delta_p": null,
         "tilt_target": null,
+        "in_voa": 0,
         "out_voa": null
       }
     },
@@ -929,6 +939,7 @@
         "gain_target": null,
         "delta_p": null,
         "tilt_target": null,
+        "in_voa": 0,
         "out_voa": null
       }
     },
@@ -947,6 +958,7 @@
         "gain_target": null,
         "delta_p": null,
         "tilt_target": null,
+        "in_voa": 0,
         "out_voa": null
       }
     },
@@ -965,6 +977,7 @@
         "gain_target": null,
         "delta_p": null,
         "tilt_target": null,
+        "in_voa": 0,
         "out_voa": null
       }
     },
@@ -984,6 +997,7 @@
         "gain_target": 18.0,
         "delta_p": null,
         "tilt_target": null,
+        "in_voa": 0,
         "out_voa": null
       }
     },
@@ -1002,6 +1016,7 @@
         "gain_target": null,
         "delta_p": null,
         "tilt_target": null,
+        "in_voa": 0,
         "out_voa": null
       }
     },
@@ -1020,6 +1035,7 @@
         "gain_target": null,
         "delta_p": null,
         "tilt_target": null,
+        "in_voa": 0,
         "out_voa": null
       }
     },
@@ -1038,6 +1054,7 @@
         "gain_target": null,
         "delta_p": null,
         "tilt_target": null,
+        "in_voa": 0,
         "out_voa": null
       }
     }
