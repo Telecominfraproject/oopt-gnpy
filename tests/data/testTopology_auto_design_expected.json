@@ -1456,7 +1456,8 @@
         "gain_target": 19.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1475,7 +1476,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1494,7 +1496,8 @@
         "gain_target": 18.0,
         "delta_p": null,
         "tilt_target": -1.0,
-        "out_voa": 0.5
+        "out_voa": 0.5,
+        "in_voa": 0.5
       },
       "metadata": {
         "location": {
@@ -1513,7 +1516,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1532,7 +1536,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1551,7 +1556,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1570,7 +1576,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1589,7 +1596,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1608,7 +1616,8 @@
         "gain_target": 13.177288,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1627,7 +1636,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1646,7 +1656,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1665,7 +1676,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1684,7 +1696,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1703,7 +1716,8 @@
         "gain_target": 15.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1722,7 +1736,8 @@
         "gain_target": 11.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1741,7 +1756,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1760,7 +1776,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1779,7 +1796,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1798,7 +1816,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1817,7 +1836,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1851,7 +1871,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1870,7 +1891,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1889,7 +1911,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1908,7 +1931,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1927,7 +1951,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1946,7 +1971,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1965,7 +1991,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -1984,7 +2011,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2003,7 +2031,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2022,7 +2051,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2041,7 +2071,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2060,7 +2091,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2079,7 +2111,8 @@
         "gain_target": 18.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2098,7 +2131,8 @@
         "gain_target": 12.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2117,7 +2151,8 @@
         "gain_target": 16.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2136,7 +2171,8 @@
         "gain_target": 10.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2155,7 +2191,8 @@
         "gain_target": 28.5,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2174,7 +2211,8 @@
         "gain_target": 14.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2193,7 +2231,8 @@
         "gain_target": 10.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2212,7 +2251,8 @@
         "gain_target": 10.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2231,7 +2271,8 @@
         "gain_target": 13.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2250,7 +2291,8 @@
         "gain_target": 11.822712,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2269,7 +2311,8 @@
         "gain_target": 11.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2285,10 +2328,11 @@
       "type": "Edfa",
       "type_variety": "test_fixed_gain",
       "operational": {
-        "gain_target": 18.5,
+        "gain_target": 19.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2307,7 +2351,8 @@
         "gain_target": 13.822712,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2326,7 +2371,8 @@
         "gain_target": 15.177288,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2345,7 +2391,8 @@
         "gain_target": 10.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2364,7 +2411,8 @@
         "gain_target": 10.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2383,7 +2431,8 @@
         "gain_target": 10.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2402,7 +2451,8 @@
         "gain_target": 10.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2421,7 +2471,8 @@
         "gain_target": 14.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2440,7 +2491,8 @@
         "gain_target": 10.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2459,7 +2511,8 @@
         "gain_target": 10.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2478,7 +2531,8 @@
         "gain_target": 12.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2497,7 +2551,8 @@
         "gain_target": 22.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2516,7 +2571,8 @@
         "gain_target": 16.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2535,7 +2591,8 @@
         "gain_target": 12.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2554,7 +2611,8 @@
         "gain_target": 14.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2573,7 +2631,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2592,7 +2651,8 @@
         "gain_target": 16.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2611,7 +2671,8 @@
         "gain_target": 18.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2630,7 +2691,8 @@
         "gain_target": 18.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2649,7 +2711,8 @@
         "gain_target": 22.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2668,7 +2731,8 @@
         "gain_target": 20.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
@@ -2687,7 +2751,8 @@
         "gain_target": 22.0,
         "delta_p": null,
         "tilt_target": 0,
-        "out_voa": 0
+        "out_voa": 0,
+        "in_voa": 0
       },
       "metadata": {
         "location": {
