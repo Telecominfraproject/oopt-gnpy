@@ -13,13 +13,15 @@ Checks autodesign functions
 from pathlib import Path
 import pytest
 from numpy.testing import assert_allclose
+from numpy import mean
 
 from gnpy.core.exceptions import NetworkTopologyError, ConfigurationError
 from gnpy.core.network import span_loss, build_network, select_edfa, get_node_restrictions, \
     estimate_srs_power_deviation, add_missing_elements_in_network, get_next_node
 from gnpy.tools.json_io import load_equipment, load_network, network_from_json, load_json
-from gnpy.core.utils import lin2db, automatic_nch, merge_amplifier_restrictions
-from gnpy.core.elements import Fiber, Edfa, Roadm, Multiband_amplifier
+from gnpy.core.utils import lin2db, watt2dbm, automatic_nch, merge_amplifier_restrictions
+from gnpy.core.info import create_input_spectral_information
+from gnpy.core.elements import Fiber, Edfa, Roadm, Multiband_amplifier, Transceiver
 from gnpy.core.parameters import SimParams, EdfaParams, MultiBandParams
 
 
@@ -78,6 +80,249 @@ def test_span_loss_unconnected(node):
     x = next(x for x in network.nodes() if x.uid == node)
     with pytest.raises(NetworkTopologyError):
         span_loss(network, x, equipment)
+
+
+def in_voa_json_data(gain, delta_p, in_voa, out_voa):
+    """json_data for test network with in_voa
+    """
+    return {
+        "elements": [{
+            "uid": "Tx",
+            "type": "Transceiver",
+        }, {
+            "uid": "Span0",
+            "type": "Fiber",
+            "type_variety": "SSMF",
+            "params": {
+                "length": 100,
+                "loss_coef": 0.2,
+                "length_units": "km"}
+        }, {
+            "uid": "Edfa1",
+            "type": "Edfa",
+            "type_variety": "test",
+            "operational": {
+                "delta_p": delta_p,
+                "gain_target": gain,
+                "tilt_target": 0,
+                "out_voa": out_voa,
+                "in_voa": in_voa}
+        }, {
+            "uid": "Span1",
+            "type": "Fiber",
+            "type_variety": "SSMF",
+            "params": {
+                "length": 80,
+                "loss_coef": 0.2,
+                "length_units": "km"}
+        }, {
+            "uid": "Edfa2",
+            "type": "Edfa",
+            "type_variety": "test",
+            "operational": {
+                "delta_p": -1,
+                "gain_target": 17,
+                "tilt_target": 0,
+                "out_voa": 2,
+                "in_voa": 1}
+        }, {
+            "uid": "Span2",
+            "type": "Fiber",
+            "type_variety": "SSMF",
+            "params": {
+                "length": 100,
+                "loss_coef": 0.2,
+                "length_units": "km"}
+        }, {
+            "uid": "Rx",
+            "type": "Transceiver",
+        }],
+        "connections": [{
+            "from_node": "Tx",
+            "to_node": "Span0"
+        }, {
+            "from_node": "Span0",
+            "to_node": "Edfa1"
+        }, {
+            "from_node": "Edfa1",
+            "to_node": "Span1"
+        }, {
+            "from_node": "Span1",
+            "to_node": "Edfa2"
+        }, {
+            "from_node": "Edfa2",
+            "to_node": "Span2"
+        }, {
+            "from_node": "Span2",
+            "to_node": "Rx"
+        }]
+    }
+
+
+@pytest.mark.parametrize('out_voa', [None, 0, 1, 2])
+@pytest.mark.parametrize('in_voa', [None, 0, 1, 2])
+def test_invoa(in_voa, out_voa):
+    """Check that in_voa is correctly loaded and applied"""
+    gain = 20
+    delta_p = 0
+    json_data = in_voa_json_data(gain, delta_p, in_voa, out_voa)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
+    network = network_from_json(json_data, equipment)
+    # Build the network
+    p_db = 0
+    p_total_db = p_db + lin2db(96)
+    build_network(network, equipment, p_db, p_total_db)
+    [edfa1, edfa2] = [n for n in network.nodes() if isinstance(n, Edfa)]
+    [span0, span1, span2] = [n for n in network.nodes() if isinstance(n, Fiber)]
+    [tx, rx] = [n for n in network.nodes() if isinstance(n, Transceiver)]
+
+    si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12,
+                                           roll_off=0.15, baud_rate=32e9,
+                                           spacing=50e9, tx_osnr=None, tx_power=1e-3)
+    si = span0(si)
+    assert_allclose(si.signal, 1e-5, atol=1e-10)
+    si = edfa1(si)
+    # in case voa are set to None, build network is supposed to change them to 0
+    if in_voa is None:
+        in_voa = 0
+    if out_voa is None:
+        out_voa = 0
+    assert edfa1.in_voa == in_voa
+    # power_mode is true so gain is computed to obtain delta_p
+    # input power in amp after in_voa is -20 - in_voa
+    # so in order to get 0dBm out of amp (before out_voa), gain must be delta_p + 20 + in_voa
+    assert edfa1.effective_gain == delta_p + 20 + in_voa
+    assert_allclose(watt2dbm(si.signal), delta_p - out_voa, atol=1e-5)
+    si = span1(si)
+    assert_allclose(watt2dbm(si.signal), delta_p - out_voa - 16, atol=1e-10)
+    si = edfa2(si)
+    assert edfa2.in_voa == 1
+    assert edfa2.effective_gain == edfa2.delta_p + 16 + out_voa + edfa2.in_voa
+    assert_allclose(watt2dbm(si.signal), edfa2.delta_p - edfa2.out_voa, atol=1e-5)
+
+
+@pytest.mark.parametrize('out_voa', [0, 1, 2])
+@pytest.mark.parametrize('in_voa', [0, 1, 2])
+def test_invoa_gainmode(in_voa, out_voa):
+    """Check that in_voa is correctly loaded and applied also with power_mode = False"""
+    gain = 20
+    delta_p = 0
+    json_data = in_voa_json_data(gain, delta_p, in_voa, out_voa)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
+    equipment['Span']['default'].power_mode = False
+    network = network_from_json(json_data, equipment)
+    # Build the network
+    p_db = 0
+    p_total_db = p_db + lin2db(96)
+    build_network(network, equipment, p_db, p_total_db)
+    [edfa1, edfa2] = [n for n in network.nodes() if isinstance(n, Edfa)]
+    [span0, span1, span2] = [n for n in network.nodes() if isinstance(n, Fiber)]
+    [tx, rx] = [n for n in network.nodes() if isinstance(n, Transceiver)]
+
+    si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12,
+                                           roll_off=0.15, baud_rate=32e9,
+                                           spacing=50e9, tx_osnr=None, tx_power=1e-3)
+    si = span0(si)
+    assert_allclose(si.signal, 1e-5, atol=1e-10)
+    si = edfa1(si)
+    # power_mode is false so gain is applied
+    assert edfa1.effective_gain == gain
+    assert_allclose(watt2dbm(si.signal), -20 - in_voa + gain - out_voa, atol=1e-5)
+    si = span1(si)
+    assert_allclose(watt2dbm(si.signal), -20 - in_voa + gain - out_voa - 16, atol=1e-10)
+    si = edfa2(si)
+    assert edfa2.effective_gain == 17
+    assert_allclose(watt2dbm(si.signal),
+                    -20 - in_voa + gain - out_voa   # first span
+                    - 16 - edfa2.in_voa + edfa2.effective_gain - edfa2.out_voa, atol=1e-5)
+
+
+def test_too_small_gain():
+    """Check that padding attenuation integrate in_voa in its computation
+    In this scenario target power leads to gain smaller than min gain (15dB in this example)
+    Then amplifier adds attenuation at the input to ensure gain is 15 (with nf max = 10) .
+    this test ensures that if user already define in_voa, this value is accounted to compute
+    attenuation
+    """
+    gain = 20
+    delta_p = -17
+    in_voa = 2
+    out_voa = 3
+    json_data = in_voa_json_data(gain, delta_p, in_voa, out_voa)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
+    network = network_from_json(json_data, equipment)
+    # Build the network
+    p_db = 0
+    p_total_db = p_db + lin2db(96)
+    build_network(network, equipment, p_db, p_total_db)
+    [edfa1, edfa2] = [n for n in network.nodes() if isinstance(n, Edfa)]
+    [span0, span1, span2] = [n for n in network.nodes() if isinstance(n, Fiber)]
+    [tx, rx] = [n for n in network.nodes() if isinstance(n, Transceiver)]
+    si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12,
+                                           roll_off=0.15, baud_rate=32e9,
+                                           spacing=50e9, tx_osnr=None, tx_power=1e-3)
+    si = span0(si)
+    si = edfa1(si)
+    # padd att_in is added to ensure that the amp gain is 15 (min value)
+    # min output power is power_in - in_voa + gain min. if min output power is greater than
+    # target power delta_p, then padd attenuation is added
+    # assert that power_in - in_voa + gain min - delta_p == pad attenuation
+    assert 15 - 20 - in_voa - delta_p == edfa1.att_in
+    # assert effective gain is amp gain - pad att in + in voa
+    assert edfa1.effective_gain == 15 - edfa1.att_in
+    assert_allclose(edfa1.nf, 10 + edfa1.att_in, atol=1e-10)
+
+
+def test_invoa_nf():
+    """for a given gain assert that if loss is set before amp (in_voa) generated ASE is increased
+    by in_voa value, because power level in amp is reduced by in_voa
+    """
+    # Build the network with loss set at the output
+    json_data = in_voa_json_data(gain=25, delta_p=None, in_voa=0, out_voa=5)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
+    equipment['Span']['default'].power_mode = False
+    network = network_from_json(json_data, equipment)
+    p_db = 0
+    p_total_db = p_db + lin2db(50)
+    build_network(network, equipment, p_db, p_total_db)
+    [edfa1, edfa2] = [n for n in network.nodes() if isinstance(n, Edfa)]
+    [span0, span1, span2] = [n for n in network.nodes() if isinstance(n, Fiber)]
+    [tx, rx] = [n for n in network.nodes() if isinstance(n, Transceiver)]
+    # with out_voa, with pmax = 21 dBm, can only apply max gain if total power in is below
+    # -4 dBm. this is the case with pch = 0.8 mW and 47 channels at fiber input
+    si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12,
+                                           roll_off=0.15, baud_rate=32e9,
+                                           spacing=100e9, tx_osnr=None, tx_power=0.0008)
+    si = span0(si)
+    si = edfa1(si)
+    nf_after = edfa1.nf
+    ase_after = watt2dbm(si.ase)
+
+    # Build the same network with loss set at the input
+    json_data = in_voa_json_data(gain=25, delta_p=None, in_voa=5, out_voa=0)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
+    equipment['Span']['default'].power_mode = False
+    network = network_from_json(json_data, equipment)
+    # Build the network
+    p_db = 0
+    p_total_db = p_db + lin2db(50)
+    build_network(network, equipment, p_db, p_total_db)
+    [edfa1, edfa2] = [n for n in network.nodes() if isinstance(n, Edfa)]
+    [span0, span1, span2] = [n for n in network.nodes() if isinstance(n, Fiber)]
+    [tx, rx] = [n for n in network.nodes() if isinstance(n, Transceiver)]
+
+    si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12,
+                                           roll_off=0.15, baud_rate=32e9,
+                                           spacing=100e9, tx_osnr=None, tx_power=1e-3)
+    si = span0(si)
+    si = edfa1(si)
+    nf_before = edfa1.nf
+    ase_before = watt2dbm(si.ase)
+
+    # check that working point of amp is exactly the same: same gain => same nf
+    assert mean(nf_before) == mean(nf_after)
+    # check that generated ASE is exactly 5 dB more when loss is set in in_voa
+    assert_allclose(ase_before, ase_after + 5, atol=1e-10)
 
 
 @pytest.mark.parametrize('typ, expected_loss',

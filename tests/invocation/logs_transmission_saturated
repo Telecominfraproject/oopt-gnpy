@@ -27,7 +27,7 @@ WARNING  gnpy.core.network:network.py
 WARNING  gnpy.core.network:network.py 
 	WARNING: effective gain in Node east edfa in Lannion_CAS to Morlaix
 	is above user specified amplifier std_low_gain
-	max flat gain: 16dB ; required gain: 21.18dB. Please check amplifier type.
+	max flat gain: 16dB ; required gain: 21.68dB. Please check amplifier type.
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Brest_KLA to Morlaix
