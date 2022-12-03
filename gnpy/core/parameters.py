@@ -621,6 +621,7 @@ class EdfaOperational:
         'gain_target': None,
         'delta_p': None,
         'out_voa': None,
+        'in_voa': 0,
         'tilt_target': None
     }
 

@@ -631,6 +631,8 @@ def set_amplifier_voa(amp: elements.Edfa, power_target: float, power_mode: bool)
         else:
             voa = 0  # no output voa optimization in gain mode
         amp.out_voa = voa
+    if amp.in_voa is None:
+        amp.in_voa = 0
 
 
 def get_oms_edge_list(oms_ingress_node: Union[elements.Roadm, elements.Transceiver], network: DiGraph) \
@@ -746,15 +748,16 @@ def compute_gain_power_and_tilt_target(node: elements.Edfa, prev_node: ELEMENT_T
     """
     node_loss = span_loss(network, prev_node, equipment)
     voa = node.out_voa if node.out_voa else 0
+    in_voa = node.in_voa if node.in_voa else 0
     if node.operational.delta_p is None:
         dp = target_power(network, next_node, equipment, deviation_db) + voa
     else:
         dp = node.operational.delta_p
     if node.effective_gain is None or power_mode:
-        gain_target = node_loss + deviation_db + dp - prev_dp + prev_voa
+        gain_target = node_loss + deviation_db + dp - prev_dp + prev_voa + in_voa
     else:  # gain mode with effective_gain
         gain_target = node.effective_gain
-        dp = prev_dp - (node_loss + deviation_db) - prev_voa + gain_target
+        dp = prev_dp - (node_loss + deviation_db) - prev_voa + gain_target - in_voa
 
     if node.operational.tilt_target is None:
         _tilt_target = -tilt_target

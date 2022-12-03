@@ -46,7 +46,8 @@
           "gain_target": 15.0,
           "delta_p": -2,
           "tilt_target": 0,
-          "out_voa": 0.0
+          "out_voa": 0.0,
+          "in_voa": 0
         },
         "metadata": {
           "location": {
