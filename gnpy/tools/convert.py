@@ -226,7 +226,8 @@ class Eqpt:
         'east_amp_gain': None,
         'east_amp_dp': None,
         'east_tilt_vs_wavelength': None,
-        'east_att_out': None
+        'east_att_out': None,
+        'east_att_in': 0
     }
 
 
@@ -589,13 +590,15 @@ def create_east_eqpt_element(node: Node, nodes_by_city: Dict[str, Node]) -> dict
         eqpt['operational'] = {'gain_target': node.east_amp_gain,
                                'delta_p':     node.east_amp_dp,   # noqa: E241
                                'tilt_target': node.east_tilt_vs_wavelength,
-                               'out_voa':     node.east_att_out}  # noqa: E241
+                               'out_voa':     node.east_att_out,  # noqa: E241
+                               'in_voa':      node.east_att_in}   # noqa: E241
     elif node.east_amp_type.lower() == '':
         eqpt['type'] = 'Edfa'
         eqpt['operational'] = {'gain_target': node.east_amp_gain,
                                'delta_p':     node.east_amp_dp,   # noqa: E241
                                'tilt_target': node.east_tilt_vs_wavelength,
-                               'out_voa':     node.east_att_out}  # noqa: E241
+                               'out_voa':     node.east_att_out,  # noqa: E241
+                               'in_voa':      node.east_att_in}   # noqa: E241
     elif node.east_amp_type.lower() == 'fused':
         # fused edfa variety is a hack to indicate that there should not be
         # booster amplifier out the roadm.
@@ -629,12 +632,14 @@ def create_west_eqpt_element(node: Node, nodes_by_city: Dict[str, Node]) -> dict
         eqpt['operational'] = {'gain_target': node.west_amp_gain,
                                'delta_p':     node.west_amp_dp,    # noqa: E241
                                'tilt_target': node.west_tilt_vs_wavelength,
-                               'out_voa':     node.west_att_out}   # noqa: E241
+                               'out_voa':     node.west_att_out,   # noqa: E241
+                               'in_voa':      node.west_att_in}    # noqa: E241
     elif node.west_amp_type.lower() == '':
         eqpt['operational'] = {'gain_target': node.west_amp_gain,
                                'delta_p':     node.west_amp_dp,    # noqa: E241
                                'tilt_target': node.west_tilt_vs_wavelength,
-                               'out_voa':     node.west_att_out}   # noqa: E241
+                               'out_voa':     node.west_att_out,   # noqa: E241
+                               'in_voa':      node.west_att_in}    # noqa: E241
     elif node.west_amp_type.lower() == 'fused':
         eqpt['type'] = 'Fused'
         eqpt['params'] = {'loss': 0}
@@ -937,14 +942,16 @@ def parse_excel(input_filename: Path) -> Tuple[List[Node], List[Link], List[Eqpt
             'amp gain': 'east_amp_gain',
             'delta p': 'east_amp_dp',
             'tilt': 'east_tilt_vs_wavelength',
-            'att_out': 'east_att_out'
+            'att_out': 'east_att_out',
+            'att_in': 'east_att_in'
         },
         'west': {
             'amp type': 'west_amp_type',
             'amp gain': 'west_amp_gain',
             'delta p': 'west_amp_dp',
             'tilt': 'west_tilt_vs_wavelength',
-            'att_out': 'west_att_out'
+            'att_out': 'west_att_out',
+            'att_in': 'west_att_in'
         }
     }
     roadm_headers = {'Node A': 'from_node',
