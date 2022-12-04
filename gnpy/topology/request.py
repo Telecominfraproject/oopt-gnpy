@@ -215,60 +215,63 @@ class ResultElement:
             """ creates the metrics dictionary
             """
             freq_slot = [None, None] if req.N is None or req.M is None else m_to_freq(req.N, req.M)
-            return [
-                {
-                    'metric-type': 'SNR-bandwidth',
-                    'accumulative-value': round(mean(pth[-1].snr), 2)
-                },
-                {
-                    'metric-type': 'SNR-0.1nm',
-                    'accumulative-value': round(mean(pth[-1].snr + lin2db(req.baud_rate / 12.5e9)), 2)
-                },
-                {
-                    'metric-type': 'OSNR-bandwidth',
-                    'accumulative-value': round(mean(pth[-1].osnr_ase), 2)
-                },
-                {
-                    'metric-type': 'OSNR-0.1nm',
-                    'accumulative-value': round(mean(pth[-1].osnr_ase_01nm), 2)
-                },
-                {
-                    'metric-type': 'Transponder',
-                    'name': req.tsp,
-                    'mode': req.tsp_mode
-                },
-                {
-                    'metric-type': 'reference_power',
-                    'accumulative-value': req.power
-                },
-                {
-                    'metric-type': 'path_bandwidth',
-                    'accumulative-value': req.path_bandwidth
-                },
-                {
-                    'metric-type': 'num-of-channels',
-                    'accumulative-value': ceil(req.path_bandwidth / req.bit_rate)
-                },
-                {
-                    'metric-type': 'path-channel-spacing',
-                    'accumulative-value': req.spacing
-                },
-                {
-                    'metric-type': 'bit-rate',
-                    'accumulative-value': req.bit_rate
-                },
-                {
-                    'metric-type': 'freq-spectrum',
-                    'freq-start': freq_slot[0],
-                    'freq-end': freq_slot[1]
-                }
-            ]
+            return {
+                'trx': {'type': 'Transceiver', 'variety': req.tsp, 'mode': req.tsp_mode},
+                'spectrum': { 'type': 'Frequency Spectrum', 'start': freq_slot[0], 'end': freq_slot[1], 'units': 'Hz'},
+                'metrics': [
+                    {
+                        'metric-type': 'SNR Bandwidth',
+                        'metric-unit': 'dB',
+                        'metric-value': round(mean(pth[-1].snr), 2)
+                    },
+                    {
+                        'metric-type': 'SNR 0.1nm',
+                        'metric-unit': 'dB',
+                        'metric-value': round(mean(pth[-1].snr + lin2db(req.baud_rate / 12.5e9)), 2)
+                    },
+                    {
+                        'metric-type': 'OSNR Bandwidth',
+                        'metric-unit': 'dB',
+                        'metric-value': round(mean(pth[-1].osnr_ase), 2)
+                    },
+                    {
+                        'metric-type': 'OSNR 0.1nm',
+                        'metric-unit': 'dB',
+                        'metric-value': round(mean(pth[-1].osnr_ase_01nm), 2)
+                    },
+                    {
+                        'metric-type': 'Output Power',
+                        'metric-unit': 'Watts',
+                        'metric-value': req.power
+                    },
+                    {
+                        'metric-type': 'Path Bandwidth',
+                        'metric-unit': 'bits/s',
+                        'accumulative-value': req.path_bandwidth
+                    },
+                    {
+                        'metric-type': 'Number of Channels',
+                        'metric-unit': None,
+                        'accumulative-value': ceil(req.path_bandwidth / req.bit_rate)
+                    },
+                    {
+                        'metric-type': 'Channel Spacing',
+                        'metric-unit': 'Hz',
+                        'accumulative-value': req.spacing
+                    },
+                    {
+                        'metric-type': 'Bit Rate',
+                        'metric-unit': 'bits/s',
+                        'accumulative-value': req.bit_rate
+                    }
+                ]
+            }
         if self.path_request.bidir:
             path_properties = {
                 'path-metric': path_metric(self.computed_path, self.path_request),
                 'z-a-path-metric': path_metric(self.reversed_computed_path, self.path_request),
                 'path-route-objects': self.detailed_path_json(self.computed_path),
-                'reverse_path_route_objects': self.detailed_path_json(self.reversed_computed_path)
+                'reverse-path-route-objects': self.detailed_path_json(self.reversed_computed_path)
             }
         else:
             path_properties = {
