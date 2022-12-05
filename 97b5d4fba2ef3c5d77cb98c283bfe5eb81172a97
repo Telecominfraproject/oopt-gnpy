@@ -344,6 +344,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "dc290f38_f80ccecc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 61
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2022-12-05T12:51:45Z",
+      "side": 1,
+      "message": "thanks; I\u0027ve incorporate that to the commit message",
+      "parentUuid": "e1b19380_a25c0a7c",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 233,
+        "endChar": 30
+      },
+      "revId": "97b5d4fba2ef3c5d77cb98c283bfe5eb81172a97",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "5167e9d4_b5e28cc5",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 61
