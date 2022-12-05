@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc8656e0_62a32c0b",
+        "filename": "docs/json.rst",
+        "patchSetId": 16
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-12-05T15:43:40Z",
+      "side": 1,
+      "message": "I would rather use mixed types of channels instead of flexgrid, because we use flexgrid (rigourously, the possibility to use spacing based on a 6.25GHz grid) since the beginning of the project. What was not possible was to mix the baud rates or slot width, or powers",
+      "range": {
+        "startLine": 416,
+        "startChar": 3,
+        "endLine": 416,
+        "endChar": 11
+      },
+      "revId": "6461d64c8cebf007d963fec0d925b0ae4f8deed9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18584f08_192a79f0",
+        "filename": "docs/json.rst",
+        "patchSetId": 16
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-12-05T15:43:40Z",
+      "side": 1,
+      "message": "same comment",
+      "revId": "6461d64c8cebf007d963fec0d925b0ae4f8deed9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd959611_29f062ab",
+        "filename": "docs/json.rst",
+        "patchSetId": 16
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-12-05T15:43:40Z",
+      "side": 1,
+      "message": "Mixed type of channels ?",
+      "revId": "6461d64c8cebf007d963fec0d925b0ae4f8deed9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
