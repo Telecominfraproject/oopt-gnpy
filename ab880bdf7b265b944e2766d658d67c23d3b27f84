@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44b129a1_6036f12c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 72
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2022-12-05T15:53:42Z",
+      "side": 1,
+      "message": "What is the meaning of MC ? if you mean media channel, this is not correct, Media channel represent the spectrum \"tunnel\"  in ITU-T, not the signal. here we manipulate OTSi. I would rather call this carrier which is inline with most standards and avoid ITU T jargon",
+      "revId": "ab880bdf7b265b944e2766d658d67c23d3b27f84",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
