@@ -83,7 +83,6 @@ class Span(_JsonThing):
         'target_extended_gain': 2.5,
         'max_length': 150,
         'length_units': 'km',
-        'max_loss': None,
         'padding': 10,
         'EOL': 0,
         'con_in': 0,
