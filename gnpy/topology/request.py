@@ -241,12 +241,12 @@ class ResultElement:
                     },
                     {
                         'metric-type': 'Output Power',
-                        'metric-unit': 'Watts',
+                        'metric-unit': 'Watt',
                         'metric-value': req.power
                     },
                     {
                         'metric-type': 'Path Bandwidth',
-                        'metric-unit': 'bits/s',
+                        'metric-unit': 'bit/s',
                         'accumulative-value': req.path_bandwidth
                     },
                     {
@@ -261,7 +261,7 @@ class ResultElement:
                     },
                     {
                         'metric-type': 'Bit Rate',
-                        'metric-unit': 'bits/s',
+                        'metric-unit': 'bit/s',
                         'accumulative-value': req.bit_rate
                     }
                 ]
