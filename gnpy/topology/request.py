@@ -247,22 +247,22 @@ class ResultElement:
                     {
                         'metric-type': 'Path Bandwidth',
                         'metric-unit': 'bit/s',
-                        'accumulative-value': req.path_bandwidth
+                        'metric-value': req.path_bandwidth
                     },
                     {
                         'metric-type': 'Number of Channels',
                         'metric-unit': None,
-                        'accumulative-value': ceil(req.path_bandwidth / req.bit_rate)
+                        'metric-value': ceil(req.path_bandwidth / req.bit_rate)
                     },
                     {
                         'metric-type': 'Channel Spacing',
                         'metric-unit': 'Hz',
-                        'accumulative-value': req.spacing
+                        'metric-value': req.spacing
                     },
                     {
                         'metric-type': 'Bit Rate',
                         'metric-unit': 'bit/s',
-                        'accumulative-value': req.bit_rate
+                        'metric-value': req.bit_rate
                     }
                 ]
             }
