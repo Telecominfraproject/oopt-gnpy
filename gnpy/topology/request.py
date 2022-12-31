@@ -216,7 +216,7 @@ class ResultElement:
             """
             freq_slot = [None, None] if req.N is None or req.M is None else m_to_freq(req.N, req.M)
             return {
-                'trx': {'type': 'Transceiver', 'variety': req.tsp, 'mode': req.tsp_mode},
+                'transceiver': {'type': 'Transceiver', 'variety': req.tsp, 'mode': req.tsp_mode},
                 'spectrum': { 'type': 'Frequency Spectrum', 'start': freq_slot[0], 'end': freq_slot[1], 'units': 'Hz'},
                 'metrics': [
                     {
