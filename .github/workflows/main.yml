@@ -11,14 +11,14 @@ jobs:
     name: Tox test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - uses: fedora-python/tox-github-action@v0.4
         with:
           tox_env: ${{ matrix.tox_env }}
           dnf_install: ${{ matrix.dnf_install }}
-      - uses: codecov/codecov-action@29386c70ef20e286228c72b668a06fd0e8399192
+      - uses: codecov/codecov-action@v3.1.1
         if: ${{ endswith(matrix.tox_env, '-cover') }}
         with:
           files: ${{ github.workspace }}/cover/coverage.xml
@@ -39,10 +39,10 @@ jobs:
     name: PyPI packaging
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         name: Install Python
         with:
           python-version: '3.10'
@@ -63,7 +63,7 @@ jobs:
         with:
           username: jktjkt
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Extract tag name
@@ -97,10 +97,10 @@ jobs:
     name: Tests on other platforms
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python_version }}
       - run: |
