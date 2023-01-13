@@ -474,6 +474,7 @@ class Fiber(_Node):
             { 'metric-type': 'Total Loss', 'metric-unit': 'dB', 'metric-value': self.loss},
             { 'metric-type': 'Connection In', 'metric-unit': 'dB', 'metric-value': self.params.con_in},
             { 'metric-type': 'Connection Out + EOL', 'metric-unit': 'dB', 'metric-value': self.params.con_out},
+            { 'metric-type': 'Lumped Losses', 'metric-unit': 'dB', 'metric-value': int(sum(array([lumped['loss'] for lumped in self.params.lumped_losses])))},
             { 'metric-type': 'Power Out Per Channel', 'metric-unit': 'dBm', 'metric-value': self.pch_out_db}
         ]
 
