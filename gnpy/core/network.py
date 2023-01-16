@@ -151,7 +151,7 @@ def target_power(network, node, equipment):  # get_fiber_dp
 
     SPAN_LOSS_REF = 20
     POWER_SLOPE = 0.3
-    dp_range = list(equipment['Span']['default'].delta_power_range_db)
+    dp_range = list(equipment['Span']['default'].delta_power_range_db) if equipment['Span']['default'].delta_power_range_db else list([0,0,0])
     node_loss = span_loss(network, node)
 
     try:
