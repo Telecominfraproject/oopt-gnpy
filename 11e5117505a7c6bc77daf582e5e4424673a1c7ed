@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18924db3_a673258f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-01-17T23:49:21Z",
+      "side": 1,
+      "message": "Esther, this fixes https://github.com/Telecominfraproject/oopt-gnpy/actions/runs/3943511200 (see https://github.com/Telecominfraproject/oopt-gnpy/pull/458 and its test run results). Is the precision OK-ish?",
+      "revId": "11e5117505a7c6bc77daf582e5e4424673a1c7ed",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
