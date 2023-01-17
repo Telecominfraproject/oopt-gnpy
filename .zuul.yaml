@@ -2,9 +2,15 @@
 - project:
     check:
       jobs:
-        - tox-py38
-        - tox-py39
-        - tox-py310-cover
+        - tox-py38:
+          vars:
+            ensure_tox_version: '<4'
+        - tox-py39:
+          vars:
+            ensure_tox_version: '<4'
+        - tox-py310-cover:
+          vars:
+            ensure_tox_version: '<4'
         - tox-docs-f35
         - coverage-diff:
             voting: false
@@ -16,7 +22,9 @@
               coverage_job_name_current: tox-py310-cover
         - tox-linters-diff-n-report:
             voting: false
-        - tox-py310-cover-previous
+        - tox-py310-cover-previous:
+          vars:
+            ensure_tox_version: '<4'
     tag:
       jobs:
         - oopt-release-python:
