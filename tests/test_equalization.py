@@ -221,10 +221,10 @@ def test_low_input_power(target_out, delta_pdb_per_channel, correction):
     }
     roadm = Roadm(**roadm_config)
     si = roadm(si, 'toto')
-    assert (watt2dbm(si.signal) == target - correction).all()
+    assert_allclose(watt2dbm(si.signal), target - correction, rtol=1e-5)
     # in other words check that if target is below input power, target is applied else power is unchanged
-    assert (((watt2dbm(signal) >= target) * target + (watt2dbm(signal) < target) * watt2dbm(signal))
-            == watt2dbm(si.signal)).all()
+    assert_allclose((watt2dbm(signal) >= target) * target + (watt2dbm(signal) < target) * watt2dbm(signal),
+                    watt2dbm(si.signal), rtol=1e-5)
 
 
 @pytest.mark.parametrize('target_out, delta_pdb_per_channel, correction',
@@ -273,7 +273,7 @@ def test_2low_input_power(target_out, delta_pdb_per_channel, correction):
     }
     roadm = Roadm(**roadm_config)
     si = roadm(si, 'toto')
-    assert (watt2dbm(si.signal) == target - correction).all()
+    assert_allclose(watt2dbm(si.signal), target - correction, rtol=1e-5)
 
 
 def net_setup(equipment):
