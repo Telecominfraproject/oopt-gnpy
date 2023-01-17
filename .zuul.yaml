@@ -8,7 +8,10 @@
         - tox-py39:
             vars:
               ensure_tox_version: '<4'
-        - tox-py310-cover:
+        - tox-py310:
+            vars:
+              ensure_tox_version: '<4'
+        - tox-py311-cover:
             vars:
               ensure_tox_version: '<4'
         - tox-docs-f35:
@@ -17,8 +20,8 @@
         - coverage-diff:
             voting: false
             dependencies:
-              - tox-py310-cover-previous
-              - tox-py310-cover
+              - tox-py311-cover-previous
+              - tox-py311-cover
             vars:
               coverage_job_name_previous: tox-py310-cover-previous
               coverage_job_name_current: tox-py310-cover
@@ -26,7 +29,7 @@
             voting: false
             vars:
               ensure_tox_version: '<4'
-        - tox-py310-cover-previous:
+        - tox-py311-cover-previous:
             vars:
               ensure_tox_version: '<4'
     tag:
