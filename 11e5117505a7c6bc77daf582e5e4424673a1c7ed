@@ -16,6 +16,23 @@
       "message": "Esther, this fixes https://github.com/Telecominfraproject/oopt-gnpy/actions/runs/3943511200 (see https://github.com/Telecominfraproject/oopt-gnpy/pull/458 and its test run results). Is the precision OK-ish?",
       "revId": "11e5117505a7c6bc77daf582e5e4424673a1c7ed",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be39018c_2ce34ab1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2023-01-18T07:25:59Z",
+      "side": 1,
+      "message": "So you finally had the same issue as me... I also could not reproduce this locally",
+      "revId": "11e5117505a7c6bc77daf582e5e4424673a1c7ed",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
