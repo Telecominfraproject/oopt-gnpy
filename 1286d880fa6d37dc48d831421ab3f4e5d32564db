@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b5e0c04_8094e696",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-01-18T11:58:12Z",
+      "side": 1,
+      "message": "that variable is not renamed in this patch, is it? (the params/operational indirection makes this a bit messy to follow I\u0027m afraid, so I might be wrong)",
+      "range": {
+        "startLine": 313,
+        "startChar": 36,
+        "endLine": 313,
+        "endChar": 61
+      },
+      "revId": "1286d880fa6d37dc48d831421ab3f4e5d32564db",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
