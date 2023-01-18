@@ -8,6 +8,27 @@
         - tox-py39:
             vars:
               ensure_tox_version: '<4'
+        - tox-py310-cover:
+            vars:
+              ensure_tox_version: '<4'
+        - tox-docs-f36:
+            vars:
+              ensure_tox_version: '<4'
+        - coverage-diff:
+            voting: false
+            dependencies:
+              - tox-py310-cover-previous
+              - tox-py310-cover
+            vars:
+              coverage_job_name_previous: tox-py310-cover-previous
+              coverage_job_name_current: tox-py310-cover
+        - tox-linters-diff-n-report:
+            voting: false
+            vars:
+              ensure_tox_version: '<4'
+        - tox-py310-cover-previous:
+            vars:
+              ensure_tox_version: '<4'
     tag:
       jobs:
         - oopt-release-python:
