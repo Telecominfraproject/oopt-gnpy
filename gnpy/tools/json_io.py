@@ -558,12 +558,12 @@ def requests_from_json(json_data, equipment):
     for req in json_data['path-request']:
         # init all params from request
         params = {}
-        params['request_id'] = req['request-id']
+        params['request_id'] = f'{req["request-id"]}'
         params['source'] = req['source']
         params['bidir'] = req['bidirectional']
         params['destination'] = req['destination']
         params['trx_type'] = req['path-constraints']['te-bandwidth']['trx_type']
-        params['trx_mode'] = req['path-constraints']['te-bandwidth']['trx_mode']
+        params['trx_mode'] = req['path-constraints']['te-bandwidth'].get('trx_mode', None)
         params['format'] = params['trx_mode']
         params['spacing'] = req['path-constraints']['te-bandwidth']['spacing']
         try:
