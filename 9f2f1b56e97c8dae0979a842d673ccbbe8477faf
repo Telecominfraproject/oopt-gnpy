@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6528dd0d_ebf079e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-01-19T11:11:22Z",
+      "side": 1,
+      "message": "Can you please squash this into the previous commit (https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/545520) ? A trivial rebase is not possible, I hit some merge conflicts which I\u0027d prefer you as the original author to resolve",
+      "revId": "9f2f1b56e97c8dae0979a842d673ccbbe8477faf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
