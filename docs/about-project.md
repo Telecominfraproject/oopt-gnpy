@@ -12,7 +12,7 @@ We encourage all interested people outside the TIP to [join the project](https:/
 
 `gnpy` is looking for additional contributors, especially those with experience planning and maintaining large-scale, real-world mesh optical networks.
 
-To get involved, please contact [Jan Kundrát](mailto:jan.kundrat@telecominfraproject.com) or [Gert Grammel](mailto:ggrammel@juniper.net).
+To get involved, please contact [Jan Kundrát](mailto:jkt@jankundrat.com) or [Gert Grammel](mailto:ggrammel@juniper.net).
 
 `gnpy` contributions are currently limited to members of [TIP](http://telecominfraproject.com).
 Membership is free and open to all.

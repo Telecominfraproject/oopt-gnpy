@@ -10,7 +10,7 @@ fully-functional programs.
 
     **Note**: *If you are a network operator or involved in route planning and
     optimization for your organization, please contact project maintainer Jan
-    Kundrát <jan.kundrat@telecominfraproject.com>. gnpy is looking for users with
+    Kundrát <jkt@jankundrat.com>. gnpy is looking for users with
     specific, delineated use cases to drive requirements for future
     development.*
 
