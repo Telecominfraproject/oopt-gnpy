@@ -18,6 +18,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "67a5af4f_9651852a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2023-01-30T17:12:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e537f36b_dd601d1c",
+      "revId": "9eab0e4fba68772547ab98365492c32fc25ce7db",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8555ae84_425b1ada",
@@ -35,6 +53,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8b5cff4_434763ff",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2023-01-30T17:12:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8555ae84_425b1ada",
+      "revId": "9eab0e4fba68772547ab98365492c32fc25ce7db",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "303fbee9_b586c996",
@@ -48,6 +84,30 @@
       "writtenOn": "2023-01-19T11:19:14Z",
       "side": 1,
       "message": "this needs updating to the other equalization option",
+      "range": {
+        "startLine": 367,
+        "startChar": 0,
+        "endLine": 376,
+        "endChar": 102
+      },
+      "revId": "9eab0e4fba68772547ab98365492c32fc25ce7db",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "267d9109_154d3567",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2023-01-30T17:12:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "303fbee9_b586c996",
       "range": {
         "startLine": 367,
         "startChar": 0,
@@ -81,6 +141,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a2554d5_0f644cb8",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2023-01-30T17:12:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e27b857c_0cdab5cb",
+      "range": {
+        "startLine": 355,
+        "startChar": 41,
+        "endLine": 356,
+        "endChar": 75
+      },
+      "revId": "9eab0e4fba68772547ab98365492c32fc25ce7db",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fb574c0_e4b96512",
@@ -94,6 +178,30 @@
       "writtenOn": "2023-01-19T11:19:14Z",
       "side": 1,
       "message": "this is very similar to json_io\u0027s code; can we get by doing it just once?",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 85
+      },
+      "revId": "9eab0e4fba68772547ab98365492c32fc25ce7db",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75837550_a112c1fa",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2023-01-30T17:12:38Z",
+      "side": 1,
+      "message": "I am not sure for this one: isn\u0027t it better to keep separate json_io things from core things ? for example the new json format may not use anymore the same json representation or names for the equalization, but the element should not be impacted. Like a safe lock chamber\n\n  json input       --json_io---\u003e roadm_json_thing\n  roadm_json_thing --params ---\u003e core.element.Roadm",
+      "parentUuid": "3fb574c0_e4b96512",
       "range": {
         "startLine": 91,
         "startChar": 0,
