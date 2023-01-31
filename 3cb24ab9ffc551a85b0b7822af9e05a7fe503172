@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bbe797b_f4b71dc1",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2023-01-31T10:25:05Z",
+      "side": 1,
+      "message": "my be not 100% pythonesque",
+      "revId": "3cb24ab9ffc551a85b0b7822af9e05a7fe503172",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
