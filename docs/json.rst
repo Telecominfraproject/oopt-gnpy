@@ -552,7 +552,7 @@ For example this example:
 Carriers with central frequencies ranging from 191.4 THz to 193.1 THz will have 32 GBaud rate and will be spaced by 50 Ghz.
 Carriers with central frequencies ranging from 193.1625 THz to 195 THz will have 64 GBaud rate and will be spaced by 75 GHz with 3 dB power offset.
 
-If the SI reference carrier is set to ``power_dbm`` = 0dBm, and the ROADM has ``target_pch_out_db`` set to -20 dBm, then all channels ranging from 191.4 THz to 193.1 THz will have their power equalized to -20 + O dBm (due to the O dB power offset).
+If the SI reference carrier is set to ``power_dbm`` = 0dBm, and the ROADM has ``target_pch_out_db`` set to -20 dBm, then all channels ranging from 191.4 THz to 193.1 THz will have their power equalized to -20 + 0 dBm (due to the 0 dB power offset).
 All channels ranging from 193.1625 THz to 195 THz will have their power equalized to -20 + 3 = -17 dBm (total power signal + noise).
 
 Note that first carrier of the second partition has center frequency 193.1625 THz (its spectrum occupation ranges from 193.125 THz to 193.2 THz).
