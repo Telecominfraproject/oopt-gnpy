@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ab59272_117942cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-02-07T10:00:31Z",
+      "side": 1,
+      "message": "Funny -- I use a font which very clearly distinguishes between \u0027O\u0027 and \u00270\u0027, I even copy-pasted that sentence around, and yet I still haven\u0027t caught it :).",
+      "revId": "521d27ffacbd698261d6279649ddbb9b741efe68",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
