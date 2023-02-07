@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80ba8ca9_3d995c45",
+        "filename": "tests/test_equalization.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-02-07T10:01:06Z",
+      "side": 0,
+      "message": "for others reading this patch: this old name is apparently just a fluke, it was already a power level even prior to this patch",
+      "range": {
+        "startLine": 385,
+        "startChar": 33,
+        "endLine": 385,
+        "endChar": 54
+      },
+      "revId": "e9e8956caf917bf949d8f382a1e4a2301ee52bcb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}

@@ -214,6 +214,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "20817e94_81264ec9",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-02-07T10:01:06Z",
+      "side": 1,
+      "message": "we agreed to address this in a follow-up commit",
+      "parentUuid": "75837550_a112c1fa",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 85
+      },
+      "revId": "9eab0e4fba68772547ab98365492c32fc25ce7db",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "8d763dc0_f82c3d2c",
         "filename": "gnpy/tools/json_io.py",
         "patchSetId": 13
