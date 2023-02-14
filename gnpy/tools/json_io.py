@@ -105,19 +105,19 @@ class Roadm(_JsonThing):
 
     def __init__(self, **kwargs):
         # If equalization is not defined in equipment, then raise an error.
-        # else use the one defined in equipment. Only one type of equalization
-        # must be defined: power (target_pch_out_db) or PSD (target_psd_out_mWperGHz)
-        equalisation_type = ['target_pch_out_db', 'target_psd_out_mWperGHz']
-        temp = [k in kwargs for k in equalisation_type]
-        if sum(temp) > 1:
+        # Only one type of equalization must be defined.
+        allowed_equalisations = ['target_pch_out_db', 'target_psd_out_mWperGHz', 'target_out_mWperSlotWidth']
+        requested_eq_mask = [eq in kwargs for eq in allowed_equalisations]
+        if sum(requested_eq_mask) > 1:
             raise EquipmentConfigError('Only one equalization type should be set in ROADM, found: '
-                                       + ', '.join(temp))
-        for key in equalisation_type:
+                                       + ', '.join(eq for eq in allowed_equalisations if eq in kwargs))
+        if not any(requested_eq_mask):
+            raise EquipmentConfigError('No equalization type set in ROADM')
+
+        for key in allowed_equalisations:
             if key in kwargs:
                 setattr(self, key, kwargs[key])
                 break
-        if not any(temp):
-            raise EquipmentConfigError('At least one default equalization type should be set in ROADM')
         self.update_attr(self.default_values, kwargs, 'Roadm')
 
 
@@ -486,7 +486,7 @@ def network_from_json(json_data, equipment):
                 # if more than one equalization was defined in element config, then raise an error
                 extra_params = merge_equalization(temp, extra_params)
                 if not extra_params:
-                    raise ConfigurationError(f'ROADM {el_config["uid"]} has incorrect configuration, check the equalization settings')
+                    raise ConfigurationError(f'ROADM {el_config["uid"]}: invalid equalization settings')
             temp = merge_amplifier_restrictions(temp, extra_params)
             el_config['params'] = temp
             el_config['type_variety'] = variety
@@ -700,9 +700,10 @@ def merge_equalization(params, extra_params):
     """params contains ROADM element config and extra_params default values from equipment library.
     If equalization is not defined in ROADM element use the one defined in equipment library.
     Only one type of equalization must be defined: power (target_pch_out_db) or PSD (target_psd_out_mWperGHz)
+    or PSW (target_out_mWperSlotWidth)
     params and extra_params are dict
     """
-    equalization_types = ['target_pch_out_db', 'target_psd_out_mWperGHz']
+    equalization_types = ['target_pch_out_db', 'target_psd_out_mWperGHz', 'target_out_mWperSlotWidth']
     roadm_equalizations = find_equalisation(params, equalization_types)
     if sum(roadm_equalizations.values()) > 1:
         # if ROADM config contains more than one equalization type then this is an error

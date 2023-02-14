@@ -21,17 +21,19 @@ instance as a result.
 """
 
 from numpy import abs, array, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, exp, asarray, full,\
-    squeeze, zeros, append, flip, outer, minimum
+    squeeze, zeros, append, flip, outer, ndarray
 from scipy.constants import h, c
 from scipy.interpolate import interp1d
 from collections import namedtuple
+from typing import Union
+
 
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_average, pretty_summary_print, \
-    watt2dbm, psd2powerdbm, power_dbm_to_psd_mw_ghz
+    watt2dbm, psd2powerdbm
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational
 from gnpy.core.science_utils import NliSolver, RamanSolver
-from gnpy.core.info import SpectralInformation
-from gnpy.core.exceptions import NetworkTopologyError, SpectrumError
+from gnpy.core.info import SpectralInformation, ReferenceCarrier
+from gnpy.core.exceptions import NetworkTopologyError, SpectrumError, ParametersError
 
 
 class Location(namedtuple('Location', 'latitude longitude city region')):
@@ -217,7 +219,10 @@ class Roadm(_Node):
     def __init__(self, *args, params=None, **kwargs):
         if not params:
             params = {}
-        super().__init__(*args, params=RoadmParams(**params), **kwargs)
+        try:
+            super().__init__(*args, params=RoadmParams(**params), **kwargs)
+        except ParametersError as e:
+            raise ParametersError(f'Config error in {kwargs["uid"]}: {e}') from e
 
         # Target output power for the reference carrier, can only be computed on the fly, because it depends
         # on the path, since it depends on the equalization definition on the degree.
@@ -235,9 +240,10 @@ class Roadm(_Node):
         # target for equalization for the ROADM only one must be not None
         self.target_pch_out_dbm = self.params.target_pch_out_db
         self.target_psd_out_mWperGHz = self.params.target_psd_out_mWperGHz
-        # per degree equalization that overrides the ROADM equalization if not None
+        self.target_out_mWperSlotWidth = self.params.target_out_mWperSlotWidth
         self.per_degree_pch_out_dbm = self.params.per_degree_pch_out_db
         self.per_degree_pch_psd = self.params.per_degree_pch_psd
+        self.per_degree_pch_psw = self.params.per_degree_pch_psw
 
     @property
     def to_json(self):
@@ -245,6 +251,8 @@ class Roadm(_Node):
             equalisation, value = 'target_pch_out_db', self.target_pch_out_dbm
         elif self.target_psd_out_mWperGHz is not None:
             equalisation, value = 'target_psd_out_mWperGHz', self.target_psd_out_mWperGHz
+        elif self.target_out_mWperSlotWidth is not None:
+            equalisation, value = 'target_out_mWperSlotWidth', self.target_out_mWperSlotWidth
         else:
             assert False, 'There must be one default equalization defined in ROADM'
         to_json = {
@@ -263,6 +271,8 @@ class Roadm(_Node):
             to_json['params']['per_degree_pch_out_db'] = self.per_degree_pch_out_dbm
         if self.per_degree_pch_psd:
             to_json['params']['per_degree_psd_out_mWperGHz'] = self.per_degree_pch_psd
+        if self.per_degree_pch_psw:
+            to_json['params']['per_degree_psd_out_mWperSlotWidth'] = self.per_degree_pch_psw
         return to_json
 
     def __repr__(self):
@@ -278,7 +288,8 @@ class Roadm(_Node):
                           f'  reference pch out (dBm): {self.ref_pch_out_dbm:.2f}',
                           f'  actual pch out (dBm):    {total_pch}'])
 
-    def get_roadm_target_power(self, reference_baudrate=None, spectral_info=None):
+    def get_roadm_target_power(self, ref_carrier: ReferenceCarrier = None,
+                               spectral_info: SpectralInformation = None) -> Union[int, float, ndarray]:
         """Computes the power in dBm for a reference carrier or for a spectral information.
         power is computed based on equalization target.
         if spectral_info baud_rate is baud_rate = [32e9, 42e9, 64e9, 42e9, 32e9], and
@@ -294,22 +305,28 @@ class Roadm(_Node):
                 return full(len(spectral_info.channel_number), self.target_pch_out_dbm)
             if self.target_psd_out_mWperGHz is not None:
                 return psd2powerdbm(self.target_psd_out_mWperGHz, spectral_info.baud_rate)
+            if self.target_out_mWperSlotWidth is not None:
+                return psd2powerdbm(self.target_out_mWperSlotWidth, spectral_info.slot_width)
         else:
             if self.target_pch_out_dbm is not None:
                 return self.target_pch_out_dbm
             if self.target_psd_out_mWperGHz is not None:
-                return psd2powerdbm(self.target_psd_out_mWperGHz, reference_baudrate)
+                return psd2powerdbm(self.target_psd_out_mWperGHz, ref_carrier.baud_rate)
+            if self.target_out_mWperSlotWidth is not None:
+                return psd2powerdbm(self.target_out_mWperSlotWidth, ref_carrier.slot_width)
         return None
 
-    def get_per_degree_ref_power(self, degree, reference_baudrate):
+    def get_per_degree_ref_power(self, degree, ref_carrier):
         """Get the target power in dBm out of ROADM degree for the reference bandwidth
         If no equalization is defined on this degree use the ROADM level one.
         """
         if degree in self.per_degree_pch_out_dbm:
             return self.per_degree_pch_out_dbm[degree]
         elif degree in self.per_degree_pch_psd:
-            return psd2powerdbm(self.per_degree_pch_psd[degree], reference_baudrate)
-        return self.get_roadm_target_power(reference_baudrate=reference_baudrate)
+            return psd2powerdbm(self.per_degree_pch_psd[degree], ref_carrier.baud_rate)
+        elif degree in self.per_degree_pch_psw:
+            return psd2powerdbm(self.per_degree_pch_psw[degree], ref_carrier.slot_width)
+        return self.get_roadm_target_power(ref_carrier)
 
     def get_per_degree_power(self, degree, spectral_info):
         """Get the target power in dBm out of ROADM degree for the spectral information
@@ -332,7 +349,7 @@ class Roadm(_Node):
         # TODO maybe add a minimum loss for the ROADM
 
         # find the target power for the reference carrier
-        ref_per_degree_pch = self.get_per_degree_ref_power(degree, spectral_info.pref.ref_carrier.baud_rate)
+        ref_per_degree_pch = self.get_per_degree_ref_power(degree, spectral_info.pref.ref_carrier)
         # find the target powers for each signal carrier
         per_degree_pch = self.get_per_degree_power(degree, spectral_info=spectral_info)
 

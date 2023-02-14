@@ -371,8 +371,15 @@ class ReferenceCarrier:
     experienced by p_span_i in Roadm element.
 
     Baud rate is required to find the target power in constant PSD: power = PSD_target * baud_rate.
-    For example, if target PSD is 3.125e4mW/GHz and reference carrier type a 32 GBaud channel then 
+    For example, if target PSD is 3.125e4mW/GHz and reference carrier type a 32 GBaud channel then
     output power should be -20 dBm and for a 64 GBaud channel power target would need 3 dB more: -17 dBm.
+
+    Slot width is required to find the target power in constant PSW (constant power per slot width equalization):
+    power = PSW_target * slot_width.
+    For example, if target PSW is 2e4mW/GHz and reference carrier type a 32 GBaud channel in a 50GHz slot width then
+    output power should be -20 dBm and for a 64 GBaud channel  in a 75 GHz slot width, power target would be -18.24 dBm.
+
     Other attributes (like slot_width or roll-off) may be added there for future equalization purpose.
     """
     baud_rate: float
+    slot_width: float

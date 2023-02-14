@@ -345,7 +345,8 @@ def ref_carrier(equipment):
     req_power records the power in W that the user has defined for a given request
     (which might be different from the one used for the design).
     """
-    return ReferenceCarrier(baud_rate=equipment['SI']['default'].baud_rate)
+    return ReferenceCarrier(baud_rate=equipment['SI']['default'].baud_rate,
+                            slot_width=equipment['SI']['default'].spacing)
 
 
 def propagate(path, req, equipment):

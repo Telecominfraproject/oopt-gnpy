@@ -176,36 +176,36 @@ ROADM
 
 The user can only modify the value of existing parameters:
 
-+-----------------------------+-----------+----------------------------------------------------+
-| field                       |   type    | description                                        |
-+=============================+===========+====================================================+
-| ``target_pch_out_db``       | (number)  | Default :ref:`equalization strategy<equalization>` |
-| or                          |           | for this ROADM type.                               |
-| ``target_psd_out_mWperGHz`` |           |                                                    |
-| (mutually exclusive)        |           | Auto-design sets the ROADM egress channel          |
-|                             |           | power. This reflects typical control loop          |
-|                             |           | algorithms that adjust ROADM losses to             |
-|                             |           | equalize channels (e.g., coming from               |
-|                             |           | different ingress direction or add ports).         |
-|                             |           |                                                    |
-|                             |           | These values are used as defaults when no          |
-|                             |           | overrides are set per each ``Roadm``               |
-|                             |           | element in the network topology.                   |
-+-----------------------------+-----------+----------------------------------------------------+
-| ``add_drop_osnr``           | (number)  | OSNR contribution from the add/drop ports          |
-+-----------------------------+-----------+----------------------------------------------------+
-| ``pmd``                     | (number)  | Polarization mode dispersion (PMD). (s)            |
-+-----------------------------+-----------+----------------------------------------------------+
-| ``restrictions``            | (dict of  | If non-empty, keys ``preamp_variety_list``         |
-|                             |  strings) | and ``booster_variety_list`` represent             |
-|                             |           | list of ``type_variety`` amplifiers which          |
-|                             |           | are allowed for auto-design within ROADM's         |
-|                             |           | line degrees.                                      |
-|                             |           |                                                    |
-|                             |           | If no booster should be placed on a degree,        |
-|                             |           | insert a ``Fused`` node on the degree              |
-|                             |           | output.                                            |
-+-----------------------------+-----------+----------------------------------------------------+
++-------------------------------+-----------+----------------------------------------------------+
+| field                         |   type    | description                                        |
++===============================+===========+====================================================+
+| ``target_pch_out_db``         | (number)  | Default :ref:`equalization strategy<equalization>` |
+| or                            |           | for this ROADM type.                               |
+| ``target_psd_out_mWperGHz``   |           |                                                    |
+| or                            |           | Auto-design sets the ROADM egress channel          |
+| ``target_out_mWperSlotWidth`` |           | power. This reflects typical control loop          |
+| (mutually exclusive)          |           | algorithms that adjust ROADM losses to             |
+|                               |           | equalize channels (e.g., coming from               |
+|                               |           | different ingress direction or add ports).         |
+|                               |           |                                                    |
+|                               |           | These values are used as defaults when no          |
+|                               |           | overrides are set per each ``Roadm``               |
+|                               |           | element in the network topology.                   |
++-------------------------------+-----------+----------------------------------------------------+
+| ``add_drop_osnr``             | (number)  | OSNR contribution from the add/drop ports          |
++-------------------------------+-----------+----------------------------------------------------+
+| ``pmd``                       | (number)  | Polarization mode dispersion (PMD). (s)            |
++-------------------------------+-----------+----------------------------------------------------+
+| ``restrictions``              | (dict of  | If non-empty, keys ``preamp_variety_list``         |
+|                               |  strings) | and ``booster_variety_list`` represent             |
+|                               |           | list of ``type_variety`` amplifiers which          |
+|                               |           | are allowed for auto-design within ROADM's         |
+|                               |           | line degrees.                                      |
+|                               |           |                                                    |
+|                               |           | If no booster should be placed on a degree,        |
+|                               |           | insert a ``Fused`` node on the degree              |
+|                               |           | output.                                            |
++-------------------------------+-----------+----------------------------------------------------+
 
 Global parameters
 -----------------
@@ -564,6 +564,57 @@ There is no overlap of the occupation and both share the same boundary.
 Equalization choices
 ~~~~~~~~~~~~~~~~~~~~
 
-ROADMs typically equalize the optical power across multiple channels using one of the available equalization strategies — either targeting a specific output power, or a specific power spectral density (PSD).
-Both of these strategies can be adjusted by a per-channel offset.
+ROADMs typically equalize the optical power across multiple channels using one of the available equalization strategies — either targeting a specific output power, or a specific power spectral density (PSD), or a spectfic power spectral density using slot_width as spectrum width reference (PSW).
+All of these strategies can be adjusted by a per-channel power offset.
 The equalization strategy can be defined globally per a ROADM model, or per each ROADM instance in the topology, and within a ROADM also on a per-degree basis.
+
+Let's consider some example for the equalization. Suppose that the types of signal to be propagated are the following:
+
+.. code-block:: json
+
+   {
+        "baud_rate": 32e9,
+        "f_min":191.3e12,
+        "f_max":192.3e12,
+        "spacing": 50e9,
+        "label": 1
+    },
+    {
+        "baud_rate": 64e9,
+        "f_min":193.3e12,
+        "f_max":194.3e12,
+        "spacing": 75e9,
+        "label": 2
+    }
+
+
+with the PSD equalization in a ROADM:
+
+.. code-block:: json
+
+    {
+      "uid": "roadm A",
+      "type": "Roadm",
+      "params": {
+        "target_psd_out_mWperGHz": 3.125e-4,
+      }
+    },
+
+
+This means that power out of the ROADM will be computed as 3.125e-4 * 32 = 0.01 mW ie -20 dBm for label 1 types of carriers
+and 3.125e4 * 64 = 0.02 mW ie -16.99 dBm for label2 channels. So a ratio of ~ 3 dB between target powers for these carriers.
+
+With the PSW equalization:
+
+.. code-block:: json
+
+    {
+      "uid": "roadm A",
+      "type": "Roadm",
+      "params": {
+        "target_out_mWperSlotWidth": 2.0e-4,
+      }
+    },
+
+the power out of the ROADM will be computed as 2.0e-4 * 50 = 0.01 mW ie -20 dBm for label 1 types of carriers
+and 2.0e4 * 75 = 0.015 mW ie -18.24 dBm for label2 channels. So a ratio of ~ 1.76 dB between target powers for these carriers.
