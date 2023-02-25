@@ -1122,13 +1122,12 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 snr01nm_with_penalty = total_path[-1].snr_01nm - total_path[-1].total_penalty
                 min_ind = argmin(snr01nm_with_penalty)
                 if round(snr01nm_with_penalty[min_ind], 2) < pathreq.OSNR + equipment['SI']['default'].sys_margins:
-                    msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
-                          f' {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}' +\
-                          f'\n\tcomputed SNR in 0.1nm = {round(total_path[-1].snr_01nm[min_ind], 2)}' +\
-                          f'\n\tCD penalty = {round(total_path[-1].penalties["chromatic_dispersion"][min_ind], 2)}' +\
-                          f'\n\tPMD penalty = {round(total_path[-1].penalties["pmd"][min_ind], 2)}' +\
-                          f'\n\trequired osnr = {pathreq.OSNR}' +\
-                          f'\n\tsystem margin = {equipment["SI"]["default"].sys_margins}'
+                    msg = f'\tWarning! Request {pathreq.request_id} computed path from' \
+                          + f' {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}' \
+                          + f'\n\tcomputed SNR in 0.1nm = {round(total_path[-1].snr_01nm[min_ind], 2)}'
+                    msg = _penalty_msg(total_path, msg, min_ind) \
+                        + f'\n\trequired osnr = {pathreq.OSNR}' \
+                        + f'\n\tsystem margin = {equipment["SI"]["default"].sys_margins}'
                     print(msg)
                     LOGGER.warning(msg)
                     pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
@@ -1173,13 +1172,12 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
                 snr01nm_with_penalty = rev_p[-1].snr_01nm - rev_p[-1].total_penalty
                 min_ind = argmin(snr01nm_with_penalty)
                 if round(snr01nm_with_penalty[min_ind], 2) < pathreq.OSNR + equipment['SI']['default'].sys_margins:
-                    msg = f'\tWarning! Request {pathreq.request_id} computed path from' +\
-                          f' {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}' +\
-                          f'\n\tcomputed SNR in 0.1nm = {round(rev_p[-1].snr_01nm[min_ind], 2)}' +\
-                          f'\n\tCD penalty = {round(rev_p[-1].penalties["chromatic_dispersion"][min_ind], 2)}' +\
-                          f'\n\tPMD penalty = {round(rev_p[-1].penalties["pmd"][min_ind], 2)}' +\
-                          f'\n\trequired osnr = {pathreq.OSNR}' +\
-                          f'\n\tsystem margin = {equipment["SI"]["default"].sys_margins}'
+                    msg = f'\tWarning! Request {pathreq.request_id} computed path from' \
+                          + f' {pathreq.destination} to {pathreq.source} does not pass with {pathreq.tsp_mode}' \
+                          + f'\n\tcomputed SNR in 0.1nm = {round(rev_p[-1].snr_01nm[min_ind], 2)}'
+                    msg = _penalty_msg(rev_p, msg, min_ind) \
+                        + f'\n\trequired osnr = {pathreq.OSNR}' \
+                        + f'\n\tsystem margin = {equipment["SI"]["default"].sys_margins}'
                     print(msg)
                     LOGGER.warning(msg)
                     # TODO selection of mode should also be on reversed direction !!
@@ -1213,3 +1211,19 @@ def compute_spectrum_slot_vs_bandwidth(bandwidth, spacing, bit_rate, slot_width=
     number_of_wavelengths = ceil(bandwidth / bit_rate)
     total_number_of_slots = ceil(spacing / slot_width) * number_of_wavelengths
     return number_of_wavelengths, total_number_of_slots
+
+
+def _penalty_msg(total_path, msg, min_ind):
+    """formatting helper for reporting unfeasible paths
+
+    The penalty info are optional, so this checks that penalty exists before creating a message."""
+    penalty_dict = {
+        'pdl': 'PDL',
+        'chromatic_dispersion': 'CD',
+        'pmd': 'PMD'}
+    for key, pretty in penalty_dict.items():
+        if key in total_path[-1].penalties:
+            msg += f'\n\t{pretty} penalty = {round(total_path[-1].penalties[key][min_ind], 2)}'
+        else:
+            msg += f'\n\t{pretty} penalty not evaluated'
+    return msg
