@@ -22,6 +22,30 @@
       },
       "revId": "0d302328ee9fae13ff2ec45c2d25222a5fae3979",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39bbd104_7e0a98f2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1020929
+      },
+      "writtenOn": "2023-03-03T16:19:30Z",
+      "side": 1,
+      "message": "Ack. Thank you for the tips and link to the article.",
+      "parentUuid": "e67f9d63_ac4f0405",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 103
+      },
+      "revId": "0d302328ee9fae13ff2ec45c2d25222a5fae3979",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
