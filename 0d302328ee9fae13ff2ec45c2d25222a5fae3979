@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e67f9d63_ac4f0405",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-03-03T16:13:10Z",
+      "side": 1,
+      "message": "one more nit: git prefers manual wrapping of commit messages at ~72 characters, https://cbea.ms/git-commit/#wrap-72\n\nThis is different from the markdown usage we have in our docs where we indeed use one line per sentence so that the diffs make sense.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 103
+      },
+      "revId": "0d302328ee9fae13ff2ec45c2d25222a5fae3979",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
