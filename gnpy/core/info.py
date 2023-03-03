@@ -259,16 +259,16 @@ class SpectralInformation(object):
         return self
 
 
-def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, int, float],
-                                          signal: Union[int, float, ndarray, Iterable],
-                                          baud_rate: Union[int, float, ndarray, Iterable],
-                                          tx_osnr: Union[int, float, ndarray, Iterable],
-                                          delta_pdb_per_channel: Union[int, float, ndarray, Iterable] = 0.,
-                                          slot_width: Union[int, float, ndarray, Iterable] = None,
-                                          roll_off: Union[int, float, ndarray, Iterable] = 0.,
-                                          chromatic_dispersion: Union[int, float, ndarray, Iterable] = 0.,
-                                          pmd: Union[int, float, ndarray, Iterable] = 0.,
-                                          pdl: Union[int, float, ndarray, Iterable] = 0.,
+def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, float],
+                                          signal: Union[float, ndarray, Iterable],
+                                          baud_rate: Union[float, ndarray, Iterable],
+                                          tx_osnr: Union[float, ndarray, Iterable],
+                                          delta_pdb_per_channel: Union[float, ndarray, Iterable] = 0.,
+                                          slot_width: Union[float, ndarray, Iterable] = None,
+                                          roll_off: Union[float, ndarray, Iterable] = 0.,
+                                          chromatic_dispersion: Union[float, ndarray, Iterable] = 0.,
+                                          pmd: Union[float, ndarray, Iterable] = 0.,
+                                          pdl: Union[float, ndarray, Iterable] = 0.,
                                           ref_power: Pref = None,
                                           label: Union[str, ndarray, Iterable] = None):
     """This is just a wrapper around the SpectralInformation.__init__() that simplifies the creation of
@@ -321,7 +321,7 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, 
                                                  label=label)
 
 
-def carriers_to_spectral_information(initial_spectrum: dict[Union[int, float], Carrier], power: float,
+def carriers_to_spectral_information(initial_spectrum: dict[float, Carrier], power: float,
                                      ref_carrier: ReferenceCarrier) -> SpectralInformation:
     """Initial spectrum is a dict with key = carrier frequency, and value a Carrier object.
     :param initial_spectrum: indexed by frequency in Hz, with power offset (delta_pdb), baudrate, slot width,

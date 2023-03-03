@@ -289,7 +289,7 @@ class Roadm(_Node):
                           f'  actual pch out (dBm):    {total_pch}'])
 
     def get_roadm_target_power(self, ref_carrier: ReferenceCarrier = None,
-                               spectral_info: SpectralInformation = None) -> Union[int, float, ndarray]:
+                               spectral_info: SpectralInformation = None) -> Union[float, ndarray]:
         """Computes the power in dBm for a reference carrier or for a spectral information.
         power is computed based on equalization target.
         if spectral_info baud_rate is baud_rate = [32e9, 42e9, 64e9, 42e9, 32e9], and
