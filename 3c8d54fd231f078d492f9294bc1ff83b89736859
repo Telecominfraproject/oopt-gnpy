@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6dcf964_0279c3b2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1020929
+      },
+      "writtenOn": "2023-03-03T16:04:17Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d39763cf_e756cc36",
+      "range": {
+        "startLine": 2,
+        "startChar": 24,
+        "endLine": 2,
+        "endChar": 67
+      },
+      "revId": "3c8d54fd231f078d492f9294bc1ff83b89736859",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a980d546_c174032a",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-03-03T15:50:26Z",
       "side": 1,
       "message": "some slight nitpicking so that the commits better fit the style of this project:\n\n- Let\u0027s not prefix the commits with the name of the author; that info is available from other metadata in git.\n- Please follow this set of recommendations for commit messages, https://cbea.ms/git-commit/ , in particular use a very brief one-line summary, and then add more details if needed. A good example for this change would be:\n```\nsimplify type annotations\n \nPEP 484 says that `float` also implicitly allows `int`, so there\u0027s\nno need to use `Union[int | float]`.\n\nFixes: #450\nChange-Id: Ib1aeda4c13ffabd47719c1e0886e9ebcf21a64e0\n```\n\nIf you have troubles addressing these, just give me a shout and I can fix them easily.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 88
+      },
+      "revId": "3c8d54fd231f078d492f9294bc1ff83b89736859",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56fffe44_3ff17a2c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1020929
+      },
+      "writtenOn": "2023-03-03T16:04:17Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a980d546_c174032a",
       "range": {
         "startLine": 7,
         "startChar": 0,
