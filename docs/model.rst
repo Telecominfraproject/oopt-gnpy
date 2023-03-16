@@ -126,9 +126,9 @@ that can be easily evaluated extending the FWM theory from a set of discrete
 tones - the standard FWM theory introduced back in the 90s by Inoue
 :cite:`Innoue-FWM`- to a continuity of tones, possibly spectrally shaped.
 Signals propagating in the fiber are not equivalent to Gaussian noise, but
-thanks to the absence of in-line compensation for choromatic dispersion, the
+thanks to the absence of in-line compensation for chromatic dispersion, the
 become so, over short distances.  So, the Gaussian noise model with incoherent
-accumulation of NLI has estensively proved to be a quick yet accurate and
+accumulation of NLI has extensively proved to be a quick yet accurate and
 conservative tool to estimate propagation impairments of fiber propagation.
 Note that the GN-model has not been derived with the aim of an *exact*
 performance estimation, but to pursue a conservative performance prediction.
