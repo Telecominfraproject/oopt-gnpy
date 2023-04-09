@@ -330,7 +330,6 @@ def compute_constrained_path(network, req):
             print(msg)
             req.blocking_reason = 'NO_PATH_WITH_CONSTRAINT'
             total_path = []
-
     return total_path
 
 
@@ -1098,10 +1097,12 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         # use the power specified in requests but might be different from the one
         # specified for design the power is an optional parameter for requests
         # definition if optional, use the one defines in eqt_config.json
-        print(f'request {pathreq.request_id}')
-        print(f'Computing path from {pathreq.source} to {pathreq.destination}')
-        # adding first node to be clearer on the output
-        print(f'with path constraint: {[pathreq.source] + pathreq.nodes_list}')
+        msg = f'request {pathreq.request_id}\n' \
+              + f'Computing path from {pathreq.source} to {pathreq.destination}\n' \
+              + f'with path constraint: {[pathreq.source] + pathreq.nodes_list}'
+        print(msg)
+        LOGGER.info(msg)
+        # # adding first node to be clearer on the output
 
         # pathlist[i] contains the whole path information for request i
         # last element is a transciver and where the result of the propagation is
@@ -1111,7 +1112,9 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         # may use the same transponder for the performance simulation. This is why
         # we use deepcopy: to ensure that each propagation is recorded and not overwritten
         total_path = deepcopy(pathlist[i])
-        print(f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}')
+        msg = f'Computed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}'
+        print(msg)
+        LOGGER.info(msg)
         # for debug
         # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
         if total_path:
@@ -1165,9 +1168,10 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
             if pathreq.bidir and pathreq.baud_rate is not None:
                 # Both directions requested, and a feasible mode was found
                 rev_p = deepcopy(reversed_path)
-
-                print(f'\n\tPropagating Z to A direction {pathreq.destination} to {pathreq.source}')
-                print(f'\tPath (roadsm) {[r.uid for r in rev_p if isinstance(r,Roadm)]}\n')
+                msg = f'\n\tPropagating Z to A direction {pathreq.destination} to {pathreq.source}\n' \
+                      + f'\tPath (roadsm) {[r.uid for r in rev_p if isinstance(r,Roadm)]}\n'
+                print(msg)
+                LOGGER.info(msg)
                 propagate(rev_p, pathreq, equipment)
                 propagated_reversed_path = rev_p
                 snr01nm_with_penalty = rev_p[-1].snr_01nm - rev_p[-1].total_penalty
@@ -1199,6 +1203,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         propagated_reversed_path_res_list.append(propagated_reversed_path)
         # print to have a nice output
         print('')
+        LOGGER.info('')
     return path_res_list, reversed_path_res_list, propagated_reversed_path_res_list
 
 
