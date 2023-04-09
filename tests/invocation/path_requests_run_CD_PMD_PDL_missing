@@ -18,18 +18,6 @@
 ]
 [1;34;40mComputing all paths with constraints[0m
 [1;34;40mPropagating on selected path[0m
-request 0
-Computing path from trx Abilene to trx Albany
-with path constraint: ['trx Abilene', 'trx Albany']
-Computed path (roadms):['roadm Abilene', 'roadm Dallas', 'roadm Little_Rock', 'roadm Memphis', 'roadm Nashville', 'roadm Louisville', 'roadm Cincinnati', 'roadm Columbus', 'roadm Cleveland', 'roadm Buffalo', 'roadm Rochester', 'roadm Syracuse', 'roadm Albany']
-	Warning! Request 0 computed path from trx Abilene to trx Albany does not pass with mode 3
-	computed SNR in 0.1nm = 14.46
-	PDL penalty not evaluated
-	CD penalty not evaluated
-	PMD penalty not evaluated
-	required osnr = 18
-	system margin = 2
-
 [1;34;40mResult summary[0m
 req id   demand                       GSNR@bandwidth A-Z (Z-A)   GSNR@0.1nm A-Z (Z-A)        Receiver minOSNR               mode                    Gbit/s              nb of tsp pairs      N,M or blocking reason 
 0       trx Abilene to trx Albany :             9.04                    14.51                      -                      mode 3                   100.0                      -                MODE_NOT_FEASIBLE    

@@ -26,7 +26,7 @@ from scipy.constants import h, c
 from scipy.interpolate import interp1d
 from collections import namedtuple
 from typing import Union
-
+from logging import getLogger
 
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_average, pretty_summary_print, \
     watt2dbm, psd2powerdbm
@@ -34,6 +34,9 @@ from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpPara
 from gnpy.core.science_utils import NliSolver, RamanSolver
 from gnpy.core.info import SpectralInformation, ReferenceCarrier
 from gnpy.core.exceptions import NetworkTopologyError, SpectrumError, ParametersError
+
+
+_logger = getLogger(__name__)
 
 
 class Location(namedtuple('Location', 'latitude longitude city region')):
@@ -232,7 +235,8 @@ class Roadm(_Node):
         try:
             super().__init__(*args, params=RoadmParams(**params), **kwargs)
         except ParametersError as e:
-            raise ParametersError(f'Config error in {kwargs["uid"]}: {e}') from e
+            msg = f'Config error in {kwargs["uid"]}: {e}'
+            raise ParametersError(msg) from e
 
         # Target output power for the reference carrier, can only be computed on the fly, because it depends
         # on the path, since it depends on the equalization definition on the degree.
@@ -461,7 +465,11 @@ class Fiber(_Node):
     def __init__(self, *args, params=None, **kwargs):
         if not params:
             params = {}
-        super().__init__(*args, params=FiberParams(**params), **kwargs)
+        try:
+            super().__init__(*args, params=FiberParams(**params), **kwargs)
+        except ParametersError as e:
+            msg = f'Config error in {kwargs["uid"]}: {e}'
+            raise ParametersError(msg) from e
         self.pch_out_db = None
         self.passive = True
         self.propagated_labels = [""]

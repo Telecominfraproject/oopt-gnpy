@@ -21,16 +21,20 @@ the "east" information so that it is possible to input undirected data.
 """
 
 from xlrd import open_workbook
+from logging import getLogger
 from argparse import ArgumentParser
 from collections import namedtuple, Counter, defaultdict
 from itertools import chain
 from json import dumps
 from pathlib import Path
 from copy import copy
-from gnpy.core import ansi_escapes
+
 from gnpy.core.utils import silent_remove
 from gnpy.core.exceptions import NetworkTopologyError
 from gnpy.core.elements import Edfa, Fused, Fiber
+
+
+_logger = getLogger(__name__)
 
 
 def all_rows(sh, start=0):
@@ -183,18 +187,18 @@ def parse_headers(my_sheet, input_headers_dict, headers, start_line, slice_in):
             slice_out = read_slice(my_sheet, start_line + iteration, slice_in, h0)
             iteration += 1
         if slice_out == (-1, -1):
+            msg = f'missing header {h0}'
             if h0 in ('east', 'Node A', 'Node Z', 'City'):
-                print(f'{ansi_escapes.red}CRITICAL{ansi_escapes.reset}: missing _{h0}_ header: EXECUTION ENDS')
-                raise NetworkTopologyError(f'Missing _{h0}_ header')
+                raise NetworkTopologyError(msg)
             else:
-                print(f'missing header {h0}')
+                _logger.warning(msg)
         elif not isinstance(input_headers_dict[h0], dict):
             headers[slice_out[0]] = input_headers_dict[h0]
         else:
             headers = parse_headers(my_sheet, input_headers_dict[h0], headers, start_line + 1, slice_out)
     if headers == {}:
-        print(f'{ansi_escapes.red}CRITICAL ERROR{ansi_escapes.reset}: could not find any header to read _ ABORT')
-        raise NetworkTopologyError('Could not find any header to read')
+        msg = 'CRITICAL ERROR: could not find any header to read _ ABORT'
+        raise NetworkTopologyError(msg)
     return headers
 
 
@@ -219,7 +223,7 @@ def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
     for l1 in links:
         for l2 in links:
             if l1 is not l2 and l1 == l2 and l2 not in duplicate_links:
-                print(f'\nWARNING\n \
+                _logger.warning(f'\nWARNING\n \
                     link {l1.from_city}-{l1.to_city} is duplicate \
                     \nthe 1st duplicate link will be removed but you should check Links sheet input')
                 duplicate_links.append(l1)
@@ -230,29 +234,29 @@ def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
 
     unreferenced_nodes = [n for n in nodes_by_city if n not in links_by_city]
     if unreferenced_nodes:
-        raise NetworkTopologyError(f'{ansi_escapes.red}XLS error:{ansi_escapes.reset} The following nodes are not '
-                                   f'referenced from the {ansi_escapes.cyan}Links{ansi_escapes.reset} sheet. '
-                                   f'If unused, remove them from the {ansi_escapes.cyan}Nodes{ansi_escapes.reset} '
-                                   f'sheet:\n'
-                                   + _format_items(unreferenced_nodes))
+        msg = 'XLS error: The following nodes are not ' \
+              + 'referenced from the Links sheet. ' \
+              + 'If unused, remove them from the Nodes sheet:\n' \
+              + _format_items(unreferenced_nodes)
+        raise NetworkTopologyError(msg)
     # no need to check "Links" for invalid nodes because that's already in parse_excel()
     wrong_eqpt_from = [n for n in eqpts_by_city if n not in nodes_by_city]
     wrong_eqpt_to = [n.to_city for destinations in eqpts_by_city.values()
                      for n in destinations if n.to_city not in nodes_by_city]
     wrong_eqpt = wrong_eqpt_from + wrong_eqpt_to
     if wrong_eqpt:
-        raise NetworkTopologyError(f'{ansi_escapes.red}XLS error:{ansi_escapes.reset} '
-                                   f'The {ansi_escapes.cyan}Eqpt{ansi_escapes.reset} sheet refers to nodes that '
-                                   f'are not defined in the {ansi_escapes.cyan}Nodes{ansi_escapes.reset} sheet:\n'
-                                   + _format_items(wrong_eqpt))
+        msg = 'XLS error: ' \
+              + 'The Eqpt sheet refers to nodes that ' \
+              + 'are not defined in the Nodes sheet:\n'\
+              + _format_items(wrong_eqpt)
+        raise NetworkTopologyError(msg)
 
     for city, link in links_by_city.items():
         if nodes_by_city[city].node_type.lower() == 'ila' and len(link) != 2:
             # wrong input: ILA sites can only be Degree 2
             # => correct to make it a ROADM and remove entry in links_by_city
-            # TODO: put in log rather than print
-            print(f'invalid node type ({nodes_by_city[city].node_type})\
-                  specified in {city}, replaced by ROADM')
+            _logger.warning(f'invalid node type ({nodes_by_city[city].node_type}) '
+                            + f'specified in {city}, replaced by ROADM')
             nodes_by_city[city].node_type = 'ROADM'
             for n in nodes:
                 if n.city == city:
@@ -642,17 +646,19 @@ def parse_excel(input_filename):
     # sanity check
     all_cities = Counter(n.city for n in nodes)
     if len(all_cities) != len(nodes):
-        raise ValueError(f'Duplicate city: {all_cities}')
+        msg = f'Duplicate city: {all_cities}'
+        raise NetworkTopologyError(msg)
     bad_links = []
     for lnk in links:
         if lnk.from_city not in all_cities or lnk.to_city not in all_cities:
             bad_links.append([lnk.from_city, lnk.to_city])
 
     if bad_links:
-        raise NetworkTopologyError(f'{ansi_escapes.red}XLS error:{ansi_escapes.reset} '
-                                   f'The {ansi_escapes.cyan}Links{ansi_escapes.reset} sheet references nodes that '
-                                   f'are not defined in the {ansi_escapes.cyan}Nodes{ansi_escapes.reset} sheet:\n'
-                                   + _format_items(f'{item[0]} -> {item[1]}' for item in bad_links))
+        msg = 'XLS error: ' \
+              + 'The Links sheet references nodes that ' \
+              + 'are not defined in the Nodes sheet:\n' \
+              + _format_items(f'{item[0]} -> {item[1]}' for item in bad_links)
+        raise NetworkTopologyError(msg)
 
     return nodes, links, eqpts, roadms
 

@@ -85,7 +85,7 @@ def load_common_data(equipment_filename, topology_filename, simulation_filename,
 
 
 def _setup_logging(args):
-    logging.basicConfig(level={2: logging.DEBUG, 1: logging.INFO, 0: logging.CRITICAL}.get(args.verbose, logging.DEBUG))
+    logging.basicConfig(level={2: logging.DEBUG, 1: logging.INFO, 0: logging.WARNING}.get(args.verbose, logging.DEBUG))
 
 
 def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
@@ -323,7 +323,7 @@ def path_requests_run(args=None):
     args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
 
-    _logger.info(f'Computing path requests {args.service_filename} into JSON format')
+    _logger.info(f'Computing path requests {args.service_filename.name} into JSON format')
 
     (equipment, network) = load_common_data(args.equipment, args.topology, args.sim_params, args.save_network_before_autodesign)
 
