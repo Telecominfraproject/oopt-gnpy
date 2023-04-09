@@ -106,41 +106,6 @@
 ]
 [1;34;40mComputing all paths with constraints[0m
 [1;34;40mPropagating on selected path[0m
-request 0
-Computing path from trx Lorient_KMA to trx Vannes_KBE
-with path constraint: ['trx Lorient_KMA', 'trx Vannes_KBE']
-Computed path (roadms):['roadm Lorient_KMA', 'roadm Vannes_KBE']
-
-request 1
-Computing path from trx Brest_KLA to trx Vannes_KBE
-with path constraint: ['trx Brest_KLA', 'roadm Brest_KLA', 'roadm Lannion_CAS', 'roadm Lorient_KMA', 'roadm Vannes_KBE', 'trx Vannes_KBE']
-Computed path (roadms):['roadm Brest_KLA', 'roadm Lannion_CAS', 'roadm Lorient_KMA', 'roadm Vannes_KBE']
-
-request 3
-Computing path from trx Lannion_CAS to trx Rennes_STA
-with path constraint: ['trx Lannion_CAS', 'trx Rennes_STA']
-Computed path (roadms):['roadm Lannion_CAS', 'roadm Rennes_STA']
-
-request 4
-Computing path from trx Rennes_STA to trx Lannion_CAS
-with path constraint: ['trx Rennes_STA', 'trx Lannion_CAS']
-Computed path (roadms):['roadm Rennes_STA', 'roadm Vannes_KBE', 'roadm Lorient_KMA', 'roadm Lannion_CAS']
-
-request 5
-Computing path from trx Rennes_STA to trx Lannion_CAS
-with path constraint: ['trx Rennes_STA', 'trx Lannion_CAS']
-Computed path (roadms):['roadm Rennes_STA', 'roadm Lannion_CAS']
-
-request 7 | 6
-Computing path from trx Lannion_CAS to trx Lorient_KMA
-with path constraint: ['trx Lannion_CAS', 'trx Lorient_KMA']
-Computed path (roadms):['roadm Lannion_CAS', 'roadm Lorient_KMA']
-
-request 7b
-Computing path from trx Lannion_CAS to trx Lorient_KMA
-with path constraint: ['trx Lannion_CAS', 'trx Lorient_KMA']
-Computed path (roadms):['roadm Lannion_CAS', 'roadm Lorient_KMA']
-
 [1;34;40mResult summary[0m
 req id   demand                                GSNR@bandwidth A-Z (Z-A)   GSNR@0.1nm A-Z (Z-A)        Receiver minOSNR               mode                    Gbit/s              nb of tsp pairs      N,M or blocking reason 
 0       trx Lorient_KMA to trx Vannes_KBE :             24.83                    28.92                      14                     mode 1                   100.0                      1                     (-284,4)        

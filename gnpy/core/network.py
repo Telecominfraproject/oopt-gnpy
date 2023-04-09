@@ -9,11 +9,15 @@ Working with networks which consist of network elements
 """
 
 from operator import attrgetter
-from gnpy.core import ansi_escapes, elements
+from gnpy.core import elements
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.utils import round2float, convert_length
 from gnpy.core.info import ReferenceCarrier
 from collections import namedtuple
+from logging import getLogger
+
+
+logger = getLogger(__name__)
 
 
 def edfa_nf(gain_target, variety_type, equipment):
@@ -104,10 +108,9 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
                     please increase span fiber padding')
         else:
             # TODO: convert to logging
-            print(
-                f'{ansi_escapes.red}WARNING:{ansi_escapes.reset} target gain in node {uid} is below all available amplifiers min gain: \
-                  amplifier input padding will be assumed, consider increase span fiber padding instead'
-            )
+            logger.warning(f'\n\tWARNING: target gain in node {uid} is below all available amplifiers min gain: '
+                           + '\n\tamplifier input padding will be assumed, consider increase span fiber padding '
+                           + 'instead.\n')
             acceptable_gain_min_list = edfa_list
 
     # filter on gain+power limitation:
@@ -129,12 +132,9 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
     # check what are the gain and power limitations of this amp
     power_reduction = round(min(selected_edfa.power, 0), 2)
     if power_reduction < -0.5:
-        print(
-            f'{ansi_escapes.red}WARNING:{ansi_escapes.reset} target gain and power in node {uid}\n \
-    is beyond all available amplifiers capabilities and/or extended_gain_range:\n\
-    a power reduction of {power_reduction} is applied\n'
-        )
-
+        logger.warning(f'\n\tWARNING: target gain and power in node {uid}\n'
+                       + '\tis beyond all available amplifiers capabilities and/or extended_gain_range:\n'
+                       + f'\ta power reduction of {power_reduction} is applied\n')
     return selected_edfa.variety, power_reduction
 
 
@@ -305,21 +305,21 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
                 else:
                     if node.params.raman and not raman_allowed:
                         if isinstance(prev_node, elements.Fiber):
-                            print(f'{ansi_escapes.red}WARNING{ansi_escapes.reset}: raman is used in node {node.uid}\n '
-                                  'but fiber lineic loss is above threshold\n')
+                            logger.warning(f'\n\tWARNING: raman is used in node {node.uid}\n '
+                                           + '\tbut fiber lineic loss is above threshold\n')
                         else:
-                            print(f'{ansi_escapes.red}WARNING{ansi_escapes.reset}: raman is used in node {node.uid}\n '
-                                  'but previous node is not a fiber\n')
+                            logger.critical(f'\n\tWARNING: raman is used in node {node.uid}\n '
+                                            + '\tbut previous node is not a fiber\n')
                     # if variety is imposed by user, and if the gain_target (computed or imposed) is also above
                     # variety max gain + extended range, then warn that gain > max_gain + extended range
                     if gain_target - equipment['Edfa'][node.params.type_variety].gain_flatmax - \
                             equipment['Span']['default'].target_extended_gain > 1e-2:
                         # 1e-2 to allow a small margin according to round2float min step
-                        print(f'{ansi_escapes.red}WARNING{ansi_escapes.reset}: '
-                              f'WARNING: effective gain in Node {node.uid} is above user '
-                              f'specified amplifier {node.params.type_variety}\n'
-                              f'max flat gain: {equipment["Edfa"][node.params.type_variety].gain_flatmax}dB ; '
-                              f'required gain: {gain_target}dB. Please check amplifier type.')
+                        logger.warning(f'\n\tWARNING: effective gain in Node {node.uid}\n'
+                                       + f'\tis above user specified amplifier {node.params.type_variety}\n'
+                                       + '\tmax flat gain: '
+                                       + f'{equipment["Edfa"][node.params.type_variety].gain_flatmax}dB ; '
+                                       + f'required gain: {gain_target}dB. Please check amplifier type.\n')
 
                 node.delta_p = dp if power_mode else None
                 node.effective_gain = gain_target
