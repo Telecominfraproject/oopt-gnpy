@@ -18,7 +18,6 @@ from copy import deepcopy
 from gnpy.core.utils import db2lin
 from gnpy.core.exceptions import ServiceError
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fiber
-import gnpy.core.ansi_escapes as ansi_escapes
 from gnpy.tools.convert import corresp_names, corresp_next_node
 
 SERVICES_COLUMN = 12
@@ -68,24 +67,21 @@ class Request_element(Element):
                 if [mode for mode in equipment['Transceiver'][Request.trx_type].mode if mode['format'] == Requestmode]:
                     self.mode = Requestmode
                 else:
-                    msg = f'Request Id: {self.request_id} - could not find tsp : \'{Request.trx_type}\' with mode: \'{Requestmode}\' in eqpt library \nComputation stopped.'
-                    # print(msg)
-                    logger.critical(msg)
+                    msg = f'Request Id: {self.request_id} - could not find tsp : \'{Request.trx_type}\' ' \
+                        + f'with mode: \'{Requestmode}\' in eqpt library \nComputation stopped.'
                     raise ServiceError(msg)
             else:
                 Requestmode = None
                 self.mode = Request.mode
         except KeyError:
-            msg = f'Request Id: {self.request_id} - could not find tsp : \'{Request.trx_type}\' with mode: \'{Request.mode}\' in eqpt library \nComputation stopped.'
-            # print(msg)
-            logger.critical(msg)
+            msg = f'Request Id: {self.request_id} - could not find tsp : \'{Request.trx_type}\' ' \
+                + f'with mode: \'{Request.mode}\' in eqpt library \nComputation stopped.'
             raise ServiceError(msg)
         # excel input are in GHz and dBm
         if Request.spacing is not None:
             self.spacing = Request.spacing * 1e9
         else:
             msg = f'Request {self.request_id} missing spacing: spacing is mandatory.\ncomputation stopped'
-            logger.critical(msg)
             raise ServiceError(msg)
         if Request.power is not None:
             self.power = db2lin(Request.power) * 1e-3
@@ -225,7 +221,7 @@ def parse_excel(input_filename):
 def parse_service_sheet(service_sheet):
     """ reads each column according to authorized fieldnames. order is not important.
     """
-    logger.info(f'Validating headers on {service_sheet.name!r}')
+    logger.debug(f'Validating headers on {service_sheet.name!r}')
     # add a test on field to enable the '' field case that arises when columns on the
     # right hand side are used as comments or drawing in the excel sheet
     header = [x.value.strip() for x in service_sheet.row(4)[0:SERVICES_COLUMN]
@@ -245,7 +241,6 @@ def parse_service_sheet(service_sheet):
         service_fieldnames = [authorized_fieldnames[e] for e in header]
     except KeyError:
         msg = f'Malformed header on Service sheet: {header} field not in {authorized_fieldnames}'
-        logger.critical(msg)
         raise ValueError(msg)
     for row in all_rows(service_sheet, start=5):
         yield Request(**parse_row(row[0:SERVICES_COLUMN], service_fieldnames))
@@ -273,15 +268,13 @@ def correct_xls_route_list(network_filename, network, pathreqlist):
     for pathreq in pathreqlist:
         # first check that source and dest are transceivers
         if pathreq.source not in transponders:
-            msg = f'{ansi_escapes.red}Request: {pathreq.request_id}: could not find' +\
-                f' transponder source : {pathreq.source}.{ansi_escapes.reset}'
-            logger.critical(msg)
+            msg = f'Request: {pathreq.request_id}: could not find' +\
+                f' transponder source : {pathreq.source}.'
             raise ServiceError(msg)
 
         if pathreq.destination not in transponders:
-            msg = f'{ansi_escapes.red}Request: {pathreq.request_id}: could not find' +\
-                f' transponder destination: {pathreq.destination}.{ansi_escapes.reset}'
-            logger.critical(msg)
+            msg = f'Request: {pathreq.request_id}: could not find' +\
+                f' transponder destination: {pathreq.destination}.'
             raise ServiceError(msg)
         # silently pop source and dest nodes from the list if they were added by the user as first
         # and last elem in the constraints respectively. Other positions must lead to an error
@@ -333,17 +326,16 @@ def correct_xls_route_list(network_filename, network, pathreqlist):
                             # too much ambiguity, 'b' is an ila, its name can be:
                             # Edfa0_fiber (a → b)-xx if next node is c or
                             # Edfa0_fiber (c → b)-xx if next node is a
-                            msg = f'{ansi_escapes.yellow}Invalid route node specified:' +\
-                                f'\n\t\'{n_id}\', replaced with \'{new_n}\'{ansi_escapes.reset}'
-                            logger.info(msg)
+                            msg = f'Request {pathreq.request_id}: Invalid route node specified:' \
+                                + f'\n\t\'{n_id}\', replaced with \'{new_n}\''
+                            logger.warning(msg)
                             pathreq.nodes_list[pathreq.nodes_list.index(n_id)] = new_n
                     except StopIteration:
                         # shall not come in this case, unless requested direction does not exist
-                        msg = f'{ansi_escapes.yellow}Invalid route specified {n_id}: could' +\
-                            f' not decide on direction, skipped!.\nPlease add a valid' +\
-                            f' direction in constraints (next neighbour node){ansi_escapes.reset}'
-                        print(msg)
-                        logger.info(msg)
+                        msg = f'Request {pathreq.request_id}: Invalid route specified {n_id}: could' \
+                            + ' not decide on direction, skipped!.\nPlease add a valid' \
+                            + ' direction in constraints (next neighbour node)'
+                        logger.warning(msg)
                         pathreq.loose_list.pop(pathreq.nodes_list.index(n_id))
                         pathreq.nodes_list.remove(n_id)
                 else:
@@ -351,28 +343,24 @@ def correct_xls_route_list(network_filename, network, pathreqlist):
                         # if no matching can be found in the network just ignore this constraint
                         # if it is a loose constraint
                         # warns the user that this node is not part of the topology
-                        msg = f'{ansi_escapes.yellow}Invalid node specified:\n\t\'{n_id}\'' +\
-                            f', could not use it as constraint, skipped!{ansi_escapes.reset}'
-                        print(msg)
-                        logger.info(msg)
+                        msg = f'Request {pathreq.request_id}: Invalid node specified:\n\t\'{n_id}\'' \
+                            + ', could not use it as constraint, skipped!'
+                        logger.warning(msg)
                         pathreq.loose_list.pop(pathreq.nodes_list.index(n_id))
                         pathreq.nodes_list.remove(n_id)
                     else:
-                        msg = f'{ansi_escapes.red}Could not find node:\n\t\'{n_id}\' in network' +\
-                            f' topology. Strict constraint can not be applied.{ansi_escapes.reset}'
-                        logger.critical(msg)
+                        msg = f'Request {pathreq.request_id}: Could not find node:\n\t\'{n_id}\' in network' \
+                            + ' topology. Strict constraint can not be applied.'
                         raise ServiceError(msg)
             else:
                 if temp.loose_list[i] == 'LOOSE':
-                    print(f'{ansi_escapes.yellow}Invalid route node specified:\n\t\'{n_id}\'' +
-                          f' type is not supported as constraint with xls network input,' +
-                          f' skipped!{ansi_escapes.reset}')
+                    logger.warning(f'Request {pathreq.request_id}: Invalid route node specified:\n\t\'{n_id}\''
+                                   + ' type is not supported as constraint with xls network input, skipped!')
                     pathreq.loose_list.pop(pathreq.nodes_list.index(n_id))
                     pathreq.nodes_list.remove(n_id)
                 else:
-                    msg = f'{ansi_escapes.red}Invalid route node specified \n\t\'{n_id}\'' +\
-                        f' type is not supported as constraint with xls network input,' +\
-                        f', Strict constraint can not be applied.{ansi_escapes.reset}'
-                    logger.critical(msg)
+                    msg = f'Invalid route node specified \n\t\'{n_id}\'' \
+                        + ' type is not supported as constraint with xls network input,' \
+                        + ', Strict constraint can not be applied.'
                     raise ServiceError(msg)
     return pathreqlist
