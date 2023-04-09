@@ -50,10 +50,12 @@ class _JsonThing:
         for k, v in default_values.items():
             setattr(self, k, clean_kwargs.get(k, v))
             if k not in clean_kwargs and name != 'Amp':
-                print(ansi_escapes.red +
-                      f'\n WARNING missing {k} attribute in eqpt_config.json[{name}]' +
-                      f'\n default value is {k} = {v}' +
-                      ansi_escapes.reset)
+                msg = ansi_escapes.red \
+                    + f'\n WARNING missing {k} attribute in eqpt_config.json[{name}]' \
+                    + f'\n default value is {k} = {v}' \
+                    + ansi_escapes.reset
+                print(msg)
+                _logger.info(msg)
 
 
 class SI(_JsonThing):
@@ -109,11 +111,14 @@ class Roadm(_JsonThing):
         allowed_equalisations = ['target_pch_out_db', 'target_psd_out_mWperGHz', 'target_out_mWperSlotWidth']
         requested_eq_mask = [eq in kwargs for eq in allowed_equalisations]
         if sum(requested_eq_mask) > 1:
-            raise EquipmentConfigError('Only one equalization type should be set in ROADM, found: '
-                                       + ', '.join(eq for eq in allowed_equalisations if eq in kwargs))
+            msg = 'Only one equalization type should be set in ROADM, found: ' \
+                  + ', '.join(eq for eq in allowed_equalisations if eq in kwargs)
+            _logger.critical(msg)
+            raise EquipmentConfigError(msg)
         if not any(requested_eq_mask):
-            raise EquipmentConfigError('No equalization type set in ROADM')
-
+            msg = 'No equalization type set in ROADM'
+            _logger.critical(msg)
+            raise EquipmentConfigError(msg)
         for key in allowed_equalisations:
             if key in kwargs:
                 setattr(self, key, kwargs[key])
@@ -209,7 +214,9 @@ class Amp(_JsonThing):
             try:
                 nf0 = kwargs.pop('nf0')
             except KeyError:  # nf0 is expected for a fixed gain amp
-                raise EquipmentConfigError(f'missing nf0 value input for amplifier: {type_variety} in equipment config')
+                msg = f'missing nf0 value input for amplifier: {type_variety} in equipment config'
+                _logger.critical(msg)
+                raise EquipmentConfigError(msg)
             for k in ('nf_min', 'nf_max'):
                 try:
                     del kwargs[k]
@@ -224,7 +231,9 @@ class Amp(_JsonThing):
                 nf_min = kwargs.pop('nf_min')
                 nf_max = kwargs.pop('nf_max')
             except KeyError:
-                raise EquipmentConfigError(f'missing nf_min or nf_max value input for amplifier: {type_variety} in equipment config')
+                msg = f'missing nf_min or nf_max value input for amplifier: {type_variety} in equipment config'
+                _logger.critical(msg)
+                raise EquipmentConfigError(msg)
             try:  # remove all remaining nf inputs
                 del kwargs['nf0']
             except KeyError:
@@ -246,7 +255,9 @@ class Amp(_JsonThing):
                 preamp_variety = kwargs.pop('preamp_variety')
                 booster_variety = kwargs.pop('booster_variety')
             except KeyError:
-                raise EquipmentConfigError(f'missing preamp/booster variety input for amplifier: {type_variety} in equipment config')
+                msg = f'missing preamp/booster variety input for amplifier: {type_variety} in equipment config'
+                _logger.critical(msg)
+                raise EquipmentConfigError(msg)
             dual_stage_def = Model_dual_stage(preamp_variety, booster_variety)
         else:
             raise EquipmentConfigError(f'Edfa type_def {type_def} does not exist')
@@ -484,13 +495,17 @@ def network_from_json(json_data, equipment):
                 # if more than one equalization was defined in element config, then raise an error
                 extra_params = merge_equalization(temp, extra_params)
                 if not extra_params:
-                    raise ConfigurationError(f'ROADM {el_config["uid"]}: invalid equalization settings')
+                    msg = f'ROADM {el_config["uid"]}: invalid equalization settings'
+                    _logger.critical(msg)
+                    raise ConfigurationError(msg)
             temp = merge_amplifier_restrictions(temp, extra_params)
             el_config['params'] = temp
             el_config['type_variety'] = variety
         elif (typ in ['Fiber', 'RamanFiber']) or (typ == 'Edfa' and variety not in ['default', '']):
-            raise ConfigurationError(f'The {typ} of variety type {variety} was not recognized:'
-                                     '\nplease check it is properly defined in the eqpt_config json file')
+            msg = f'The {typ} of variety type {variety} was not recognized: please check it is properly defined ' \
+                  + 'in the eqpt_config json file'
+            _logger.critical(msg)
+            raise ConfigurationError(msg)
         el = cls(**el_config)
         g.add_node(el)
 
@@ -505,7 +520,9 @@ def network_from_json(json_data, equipment):
                 edge_length = 0.01
             g.add_edge(nodes[from_node], nodes[to_node], weight=edge_length)
         except KeyError:
-            raise NetworkTopologyError(f'can not find {from_node} or {to_node} defined in {cx}')
+            msg = f'can not find {from_node} or {to_node} defined in {cx}'
+            _logger.critical(msg)
+            raise NetworkTopologyError(msg)
 
     return g
 
@@ -560,6 +577,10 @@ def requests_from_json(json_data, equipment):
         params['bidir'] = req['bidirectional']
         params['destination'] = req['destination']
         params['trx_type'] = req['path-constraints']['te-bandwidth']['trx_type']
+        if params['trx_type'] is None:
+            msg = f'Request {req["request-id"]} has no transceiver type defined.'
+            _logger.critical(msg)
+            raise ServiceError(msg)
         params['trx_mode'] = req['path-constraints']['te-bandwidth'].get('trx_mode', None)
         params['format'] = params['trx_mode']
         params['spacing'] = req['path-constraints']['te-bandwidth']['spacing']
@@ -572,7 +593,12 @@ def requests_from_json(json_data, equipment):
         # recover trx physical param (baudrate, ...) from type and mode
         # in trx_mode_params optical power is read from equipment['SI']['default'] and
         # nb_channel is computed based on min max frequency and spacing
-        trx_params = trx_mode_params(equipment, params['trx_type'], params['trx_mode'], True)
+        try:
+            trx_params = trx_mode_params(equipment, params['trx_type'], params['trx_mode'], True)
+        except EquipmentConfigError as e:
+            msg = f'Equipment Config error in {req["request-id"]}: {e}'
+            _logger.critical(msg)
+            raise EquipmentConfigError(msg) from e
         params.update(trx_params)
         # print(trx_params['min_spacing'])
         # optical power might be set differently in the request. if it is indicated then the
@@ -609,7 +635,7 @@ def _check_one_request(params, f_max_from_si):
     """Checks that the requested parameters are consistant (spacing vs nb channel vs transponder mode...)"""
     f_min = params['f_min']
     f_max = params['f_max']
-    max_recommanded_nb_channels = automatic_nch(f_min, f_max, params['spacing'])
+    max_recommanded_nb_channels = automatic_nch(f_min, f_max_from_si, params['spacing'])
     if params['baud_rate'] is not None:
         # implicitly means that a mode is defined with min_spacing
         if params['min_spacing'] > params['spacing']:
@@ -620,10 +646,10 @@ def _check_one_request(params, f_max_from_si):
             _logger.critical(msg)
             raise ServiceError(msg)
         if f_max > f_max_from_si:
-            msg = f'''Requested channel number {params["nb_channel"]}, baud rate {params["baud_rate"]} GHz
-            and requested spacing {params["spacing"]*1e-9}GHz is not consistent with frequency range
-            {f_min*1e-12} THz, {f_max*1e-12} THz, min recommanded spacing {params["min_spacing"]*1e-9}GHz.
-            max recommanded nb of channels is {max_recommanded_nb_channels}.'''
+            msg = f'Requested channel number {params["nb_channel"]}, baud rate {params["baud_rate"] * 1e-9} GHz' \
+                  + f' and requested spacing {params["spacing"]*1e-9}GHz is not consistent with frequency range' \
+                  + f' {f_min*1e-12} THz, {f_max_from_si*1e-12} THz.' \
+                  + f' Max recommanded nb of channels is {max_recommanded_nb_channels}.'
             _logger.critical(msg)
             raise ServiceError(msg)
     # Transponder mode already selected; will it fit to the requested bandwidth?
@@ -635,10 +661,9 @@ def _check_one_request(params, f_max_from_si):
         # params['effective_freq_slot']['M'] value should be bigger than the computed requested_m (simple estimate)
         # TODO: elaborate a more accurate estimate with nb_wl * tx_osnr + possibly guardbands in case of
         # superchannel closed packing.
-
         if requested_m > params['effective_freq_slot']['M']:
-            msg = f'requested M {params["effective_freq_slot"]["M"]} number of slots for request' +\
-                  f'{params["request_id"]} should be greater than {requested_m} to support request' +\
+            msg = f'Requested M {params["effective_freq_slot"]["M"]} number of slots for request ' +\
+                  f'{params["request_id"]} should be greater than {requested_m} to support request ' +\
                   f'{params["path_bandwidth"] * 1e-9} Gbit/s with {params["trx_type"]} {params["trx_mode"]}'
             _logger.critical(msg)
             raise ServiceError(msg)
