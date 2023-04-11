@@ -549,8 +549,8 @@ def load_requests(filename, eqpt, bidir, network, network_filename):
         try:
             return convert_service_sheet(filename, eqpt, network, network_filename=network_filename, bidir=bidir)
         except ServiceError as this_e:
-            print(f'Service error: {this_e}')
-            exit(1)
+            msg = f'Service error: {this_e}'
+            raise ServiceError(msg)
     else:
         return load_json(filename)
 
