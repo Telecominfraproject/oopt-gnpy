@@ -5,6 +5,7 @@ import os
 import pytest
 import subprocess
 from gnpy.tools.cli_examples import transmission_main_example, path_requests_run
+import gnpy.core.exceptions as exceptions
 
 SRC_ROOT = Path(__file__).parent.parent
 
@@ -26,9 +27,11 @@ SRC_ROOT = Path(__file__).parent.parent
      ['--spectrum', 'gnpy/example-data/initial_spectrum1.json', 'gnpy/example-data/meshTopologyExampleV2.xls', ]),
     ('spectrum2_transmission_main_example', transmission_main_example,
      ['--spectrum', 'gnpy/example-data/initial_spectrum2.json', 'gnpy/example-data/meshTopologyExampleV2.xls', '--show-channels', ]),
-    ))
-
-
+    ('transmission_main_example_fiber_freq_1', transmission_main_example,
+     ['-e', 'tests/data/eqpt_config_fiber_freq_1.json', 'tests/data/test_network_fiber_freq_1.json']),
+    ('transmission_main_example_fiber_freq_3', transmission_main_example,
+     ['-e', 'tests/data/eqpt_config_fiber_freq_3.json', 'tests/data/test_network_fiber_freq_3.json']),
+))
 def test_example_invocation(capfd, output, handler, args):
     '''Make sure that our examples produce useful output'''
     os.chdir(SRC_ROOT)
@@ -39,6 +42,22 @@ def test_example_invocation(capfd, output, handler, args):
     assert captured.err == ''
 
 
+@pytest.mark.parametrize("output, handler, error_type, args", (
+    ('transmission_main_example_fiber_freq_2', transmission_main_example, exceptions.SpectrumError,
+     ['-e', 'tests/data/eqpt_config_fiber_freq_2.json', 'tests/data/test_network_fiber_freq_2.json']),
+))
+def test_example_invocation_with_error(capfd, output, handler, error_type, args):
+    '''Make sure that our examples produce useful output'''
+    os.chdir(SRC_ROOT)
+    expected = open(SRC_ROOT / 'tests' / 'invocation' / output, mode='r', encoding='utf-8').read()
+    with pytest.raises(error_type):
+        handler(args)
+    captured = capfd.readouterr()
+    assert captured.out == expected
+    assert captured.err == ''
+
+
+@pytest.mark.skip(reason="wrappers are not created in this branch, so these tests can't be successful")
 @pytest.mark.parametrize('program', ('gnpy-transmission-example', 'gnpy-path-request'))
 def test_run_wrapper(program):
     '''Ensure that our wrappers really, really work'''

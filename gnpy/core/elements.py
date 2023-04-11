@@ -514,10 +514,24 @@ class Fiber(_Node):
                           f'  actual pch out (dBm):        {total_pch}'])
 
     def loss_coef_func(self, frequency):
+        """
+        Returns the loss coefficient (of a fibre) which can be uniform,
+        or made frequency-dependent defined via a dictionnary-model per instance
+        in the topology-file, or via a list-model ('LUT') in the equipment-file.
+
+        If a list-model is declared, then the legacy 'loss_coef' scalar is used to
+        offset the provided LUT-model for the given 'loss_coef_offset_frequency' such
+        that at the 'loss_coef_offset_frequency' the offset model values the 'loss_coef' scalar;
+        in case the 'loss_coef' scalar is not defined then no offset is applied.
+
+        In case a dictionary-model as well as a list-model are declared, then the legacy
+        dictionary-based model has priority.
+        """
         frequency = asarray(frequency)
         if self.params.loss_coef.size > 1:
             try:
-                loss_coef = interp1d(self.params.f_loss_ref, self.params.loss_coef)(frequency)
+                loss_coef_model = interp1d(self.params.f_loss_ref, self.params.loss_coef)
+                loss_coef = loss_coef_model(frequency)
             except ValueError:
                 raise SpectrumError('The spectrum bandwidth exceeds the frequency interval used to define the fiber '
                                     f'loss coefficient in "{type(self).__name__} {self.uid}".'
@@ -525,6 +539,25 @@ class Fiber(_Node):
                                     f'{round(frequency[-1]*1e-12,2)}'
                                     f'\nLoss coefficient f_min-f_max: {round(self.params.f_loss_ref[0]*1e-12,2)}-'
                                     f'{round(self.params.f_loss_ref[-1]*1e-12,2)}')
+
+            # offset the loss_coef LUT-model with the static loss coef (if non null)
+            # estimate the offset of the LUT-model at the loss coef offset frequency
+            if self.params.loss_coef_static:
+                if frequency.size == 1:
+                    model = loss_coef
+                else:
+                    try:
+                        model = loss_coef_model(self.params.loss_coef_offset_frequency)
+                    except ValueError:
+                        raise SpectrumError(f'The "loss_coef_offset_frequency" is out of the frequency interval '
+                                            f'used to define the {type(self).__name__} {self.uid}\n'
+                                            f'"loss_coef_offset_frequency":'
+                                            f' {round(self.params.loss_coef_offset_frequency*1e-12,2)} THz'
+                                            f'\nLoss coefficient f_min-f_max: '
+                                            f'{round(self.params.f_loss_ref[0]*1e-12,2)}'
+                                            f'-{round(self.params.f_loss_ref[-1]*1e-12,2)} THz')
+                offset = self.params.loss_coef_static - model
+                loss_coef += offset
         else:
             loss_coef = full(frequency.size, self.params.loss_coef)
         return squeeze(loss_coef)
