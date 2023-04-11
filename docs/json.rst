@@ -98,6 +98,97 @@ The fiber library currently describes SSMF and NZDF but additional fiber types c
 
 .. _Corning whitepaper on MFD/EA: https://www.corning.com/microsites/coc/oem/documents/specialty-fiber/WP7071-Mode-Field-Diam-and-Eff-Area.pdf
 
+The fiber model can further be extended to take into account the frequency dependency of the loss coefficient:
+
+1. The legacy way is to proceed as it is described for the ``RamanFiber``
+namely by using a dictionary-like definition of the ``Fiber.params.loss_coef``
+(e.g. ``loss_coef = {"value": [0.18, 0.18, 0.20, 0.20], "frequency": [191e12, 196e12, 200e12, 210e12]}``).
+Practically, as this dictionary-like definition is invoked in the topology-file, 
+the model definition has to be replicated for each fiber instance requiring such a model.
+
+
+2. An alternative way is to declare the frequency dependency of the loss coefficient at the ``equipment``-file level.
+Such a fiber model can then be invoked at the ``topology``-file level by simply specifying the ``type_variety``.
+Hence it is no longer required to copy the model definition per fiber instance.
+
+Additionally, for each instance using such a model, a custom ``loss_coef`` scalar is declared in the topology-file,
+which allows to scale the model such that at the ``loss_coef_offset_frequency`` the offset model values the ``loss_coef`` scalar.
+
+As the ``loss_coef`` scalar is declared in the ``topology``-file similarly to the legacy way,
+applying different loss coefficient models (or none), is eased, and done straightforwardly via the ``type_variety``.
+
+
+In order to overcome data transmission issues in APIs such as PostMan when using non ordered data models,
+this alternate model is declared using a list of frequency-value pairs, as shown in below Table:
+
++--------------------------------+----------+---------------------------------+
+| field                          | type     | description                     |
++================================+==========+=================================+
+| ``loss_coef_lut``              | (list)   | frequency-value pairs:          |
+|                                |          | frequency in Hz, value in dB/km |
++--------------------------------+----------+---------------------------------+
+| ``loss_coef_offset_frequency`` | (number) | frequency in Hz                 |
++--------------------------------+----------+---------------------------------+
+
+In case both models are combined, the legacy has priority over the alternate one.
+
+How to use the alternate frequency dependent loss coefficient model:
+
+1. Declare for instance a "SSMF_freq"-model in the equipment-file:
+
+.. code-block:: json
+
+  {
+    "type_variety": "SSMF_freq",
+    "dispersion": 1.67e-05,
+    "effective_area": 83e-12,
+    "pmd_coef": 1.265e-15,
+    "loss_coef_lut":
+      [
+      {"freq": 185.49234135667396e12, "value": 0.19496268656716417},
+      {"freq": 186.05251641137855e12, "value": 0.1921641791044776},
+      {"freq": 188.01312910284463e12, "value": 0.18656716417910446},
+      {"freq": 189.99124726477024e12, "value": 0.18470149253731344},
+      {"freq": 191.0765864332604e12, "value": 0.18423507462686567},
+      {"freq": 192.00437636761487e12, "value": 0.18470149253731344},
+      {"freq": 194.01750547045953e12, "value": 0.18703358208955223},
+      {"freq": 195.99562363238513e12, "value": 0.19123134328358207},
+      {"freq": 198.00875273522976e12, "value": 0.19636194029850745},
+      {"freq": 200.0218818380744e12, "value": 0.20242537313432835},
+      {"freq": 201.96498905908095e12, "value": 0.20942164179104478}
+      ],
+    "loss_coef_offset_frequency": 191.3e12
+  }
+
+
+The above data were taken from [damico2022scalable, JLT, June 2022, DOI: 10.1109/JLT.2022.3162134]
+(http://doi.org/10.1109/JLT.2022.3162134), Figure 2.
+
+2. Invoke the ``SSMF_freq``-model in the ``topology``-file:
+
+.. code-block:: json
+
+  {
+      "uid": "Span1",
+      "type": "Fiber",
+      "type_variety": "SSMF_freq",
+      "params": {
+          "loss_coef": 0.25,
+          "length": 80,
+          "length_units": "km"
+          },
+      "metadata": {
+          "location": {
+              "region": "",
+              "latitude": 1,
+              "longitude": 0
+          }
+  }
+
+For the instance ``Span1`` of the above example, the ``SSMF_freq``-model 
+will be scaled by the ``loss_coef``-scalar to value 0.25dB/km at the ``loss_coef_offset_frequency``.
+
+
 RamanFiber
 ~~~~~~~~~~
 
