@@ -905,7 +905,7 @@ class Fiber(_Node):
         }
         if isinstance(self.params.loss_coef, ndarray):
             params["loss_coef_per_frequency"] = [
-                {"frequency": frequency, "loss_coef_value": round(loss * 1e3, 6)}
+                {"frequency": frequency, "loss_coef_value": round(loss * 1e3, 16)}
                 for frequency, loss in zip(self.params.f_loss_ref, self.params.loss_coef)]
         else:
             params["loss_coef"] = round(self.params.loss_coef * 1e3, 6)
@@ -974,9 +974,9 @@ class Fiber(_Node):
             raise SpectrumError('The spectrum bandwidth exceeds the frequency interval used to define the fiber '
                                 f'{name} in "{type(self).__name__} {self.uid}".'
                                 f'\nSpectrum f_min-f_max: {round(start * 1e-12, 2)}-'
-                                f'{round(stop * 1e-12, 2)}'
+                                f'{round(stop * 1e-12, 2)} THz'
                                 f'\n{name} f_min-f_max: {round(ref_frequency[0] * 1e-12, 2)}-'
-                                f'{round(ref_frequency[-1] * 1e-12, 2)}')
+                                f'{round(ref_frequency[-1] * 1e-12, 2)} THz')
 
     def loss_coef_func(self, frequency):
         """
@@ -1703,7 +1703,6 @@ class Edfa(_Node):
             raise ValueError(f'Amp {self.uid} Defined propagation band does not match amplifiers band.')
         self.propagate(spectral_info)
         return spectral_info
-
 
 
 class Multiband_amplifier(_Node):

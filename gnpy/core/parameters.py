@@ -16,6 +16,7 @@ from collections import namedtuple
 from copy import deepcopy
 from dataclasses import dataclass
 from scipy.constants import c, pi
+from scipy.interpolate import interp1d
 from numpy import asarray, array, exp, sqrt, log, outer, ones, squeeze, append, flip, linspace, full
 
 from gnpy.core.utils import convert_length
@@ -349,11 +350,27 @@ class FiberParams(Parameters):
             # Polarization Mode Dispersion
             self._pmd_coef = kwargs['pmd_coef']  # s/sqrt(m)
             self._pmd_coef_defined = kwargs.get('pmd_coef_defined', kwargs['pmd_coef'] is True)
-
             # Loss Coefficient
+            self._loss_coef_offset_frequency = kwargs.get('loss_coef_offset_frequency', None)
+            self._loss_coef_static = None
+            # legacy frequency dependent loss coefficient model from topology-file
             if isinstance(kwargs['loss_coef'], dict):
                 self._loss_coef = asarray(kwargs['loss_coef']['value']) * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = asarray(kwargs['loss_coef']['frequency'])  # Hz
+            # alternate frequency dependent loss coefficient model from equipment-file
+            # self._loss_coef_static is used for scaling the model
+            elif ('loss_coef_lut' in kwargs) and not isinstance(kwargs['loss_coef'], dict):
+                self._loss_coef_static = asarray(kwargs['loss_coef']) * 1e-3  # lineic loss dB/m
+                _lut = asarray([[k['frequency'], k['loss_coef_value']] for k in kwargs['loss_coef_lut']])
+                _loss_coef = _lut[:, 1] * 1e-3  # lineic loss dB/m
+                self._f_loss_ref = _lut[:, 0]  # Hz
+                # offset the loss_coef LUT-model with the static loss coef (if non null)
+                # estimate the offset of the LUT-model at the loss coef offset frequency
+                if self._loss_coef_static:
+                    temp = interp1d(self.f_loss_ref, _loss_coef)(asarray([self._loss_coef_offset_frequency]))
+                    offset = self._loss_coef_static - temp
+                    self._loss_coef = _loss_coef + offset
+            # legacy frequency independent loss coefficient model
             else:
                 self._loss_coef = asarray(kwargs['loss_coef']) * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = asarray(self._ref_frequency)  # Hz

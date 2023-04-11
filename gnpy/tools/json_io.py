@@ -210,8 +210,9 @@ class Fiber(_JsonThing):
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, self.__class__.__name__)
-        if 'gamma' in kwargs:
-            setattr(self, 'gamma', kwargs['gamma'])
+        for optional in ['gamma', 'raman_efficiency', 'loss_coef_lut', 'loss_coef_offset_frequency']:
+            if optional in kwargs:
+                setattr(self, optional, kwargs[optional])
         if 'raman_efficiency' in kwargs:
             raman_coefficient = kwargs['raman_efficiency']
             cr = raman_coefficient.pop('cr')

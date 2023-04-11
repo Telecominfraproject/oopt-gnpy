@@ -1,0 +1,306 @@
+{
+  "gnpy-eqpt-config:equipment": {
+    "Edfa": [
+      {
+        "type_variety": "CienaDB_medium_gain",
+        "type_def": "advanced_model",
+        "gain_flatmax": "25.0",
+        "gain_min": "15.0",
+        "p_max": "21.0",
+        "advanced_config_from_json": "std_medium_gain_advanced_config.json",
+        "out_voa_auto": false,
+        "allowed_for_design": true
+      },
+      {
+        "type_variety": "std_medium_gain",
+        "type_def": "variable_gain",
+        "gain_flatmax": "26.0",
+        "gain_min": "15.0",
+        "p_max": "21.0",
+        "nf_min": "6.0",
+        "nf_max": "10.0",
+        "out_voa_auto": false,
+        "allowed_for_design": true
+      },
+      {
+        "type_variety": "std_low_gain",
+        "type_def": "variable_gain",
+        "gain_flatmax": "16.0",
+        "gain_min": "8.0",
+        "p_max": "21.0",
+        "nf_min": "7.0",
+        "nf_max": "11.0",
+        "out_voa_auto": false,
+        "allowed_for_design": true
+      },
+      {
+        "type_variety": "test",
+        "type_def": "variable_gain",
+        "gain_flatmax": "25.0",
+        "gain_min": "15.0",
+        "p_max": "21.0",
+        "nf_min": "5.8",
+        "nf_max": "10.0",
+        "out_voa_auto": false,
+        "allowed_for_design": true
+      },
+      {
+        "type_variety": "test_fixed_gain",
+        "type_def": "fixed_gain",
+        "gain_flatmax": "21.0",
+        "gain_min": "20.0",
+        "p_max": "21.0",
+        "nf0": "5.0",
+        "allowed_for_design": true
+      },
+      {
+        "type_variety": "std_booster",
+        "type_def": "fixed_gain",
+        "gain_flatmax": "21.0",
+        "gain_min": "20.0",
+        "p_max": "21.0",
+        "nf0": "5.0",
+        "allowed_for_design": false
+      }
+    ],
+    "Fiber": [
+      {
+        "type_variety": "SSMF",
+        "dispersion": "0.0000167",
+        "effective_area": "0.000000000083",
+        "pmd_coef": "0.000000000000001265"
+      },
+      {
+        "type_variety": "SSMF_freq",
+        "dispersion": "0.0000167",
+        "effective_area": "0.000000000083",
+        "pmd_coef": "0.000000000000001265",
+        "loss_coef_lut": [
+          {
+            "frequency": "185492341356674.0",
+            "loss_coef_value": "0.1949626865671642"
+          },
+          {
+            "frequency": "186052516411378.6",
+            "loss_coef_value": "0.1921641791044776"
+          },
+          {
+            "frequency": "188013129102844.6",
+            "loss_coef_value": "0.1865671641791045"
+          },
+          {
+            "frequency": "189991247264770.2",
+            "loss_coef_value": "0.1847014925373134"
+          },
+          {
+            "frequency": "191076586433260.4",
+            "loss_coef_value": "0.1842350746268657"
+          },
+          {
+            "frequency": "192004376367614.9",
+            "loss_coef_value": "0.1847014925373134"
+          },
+          {
+            "frequency": "194017505470459.5",
+            "loss_coef_value": "0.1870335820895522"
+          },
+          {
+            "frequency": "195995623632385.1",
+            "loss_coef_value": "0.1912313432835821"
+          },
+          {
+            "frequency": "198008752735229.8",
+            "loss_coef_value": "0.1963619402985075"
+          },
+          {
+            "frequency": "200021881838074.4",
+            "loss_coef_value": "0.2024253731343283"
+          },
+          {
+            "frequency": "201964989059080.9",
+            "loss_coef_value": "0.2094216417910448"
+          }
+        ],
+        "loss_coef_offset_frequency": "191300000000000.0"
+      }
+    ],
+    "Span": [
+      {
+        "power_mode": true,
+        "max_fiber_lineic_loss_for_raman": "0.25",
+        "target_extended_gain": "2.5",
+        "max_length": "150.0",
+        "length_units": "km",
+        "max_loss": "28.0",
+        "padding": "10.0",
+        "EOL": "0.0",
+        "con_in": "0.0",
+        "con_out": "0.0",
+        "delta_power_range_dict_db": {
+          "min_value": "0.0",
+          "max_value": "0.0",
+          "step": "0.5"
+        },
+        "span_loss_ref": "20.0",
+        "power_slope": "0.3",
+        "voa_margin": "1.0",
+        "voa_step": "0.5"
+      }
+    ],
+    "Roadm": [
+      {
+        "type_variety": "default",
+        "target_pch_out_db": "-20.0",
+        "add_drop_osnr": "38.0",
+        "pmd": "0.0",
+        "pdl": "0.0"
+      }
+    ],
+    "SI": [
+      {
+        "f_min": "191300000000000.0",
+        "f_max": "196100000000000.0",
+        "baud_rate": "32000000000.0",
+        "spacing": "50000000000.0",
+        "power_dbm": "0.0",
+        "roll_off": "0.15",
+        "tx_osnr": "100.0",
+        "sys_margins": "0.0",
+        "power_range_dict_db": {
+          "min_value": "0.0",
+          "max_value": "0.0",
+          "step": "0.5"
+        }
+      }
+    ],
+    "Transceiver": [
+      {
+        "type_variety": "vendorA_trx-type1",
+        "frequency": {
+          "min": "191350000000000.0",
+          "max": "196100000000000.0"
+        },
+        "mode": [
+          {
+            "format": "PS_SP64_1",
+            "baud_rate": "32000000000.0",
+            "OSNR": "11.0",
+            "bit_rate": "100000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "100.0",
+            "min_spacing": "50000000000.0",
+            "cost": "1.0"
+          },
+          {
+            "format": "PS_SP64_2",
+            "baud_rate": "64000000000.0",
+            "OSNR": "15.0",
+            "bit_rate": "200000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "100.0",
+            "min_spacing": "75000000000.0",
+            "cost": "1.0"
+          },
+          {
+            "format": "mode 1",
+            "baud_rate": "32000000000.0",
+            "OSNR": "11.0",
+            "bit_rate": "100000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "100.0",
+            "min_spacing": "50000000000.0",
+            "cost": "1.0"
+          },
+          {
+            "format": "mode 2",
+            "baud_rate": "64000000000.0",
+            "OSNR": "15.0",
+            "bit_rate": "200000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "100.0",
+            "min_spacing": "75000000000.0",
+            "cost": "1.0"
+          }
+        ]
+      },
+      {
+        "type_variety": "Voyager_16QAM",
+        "frequency": {
+          "min": "191350000000000.0",
+          "max": "196100000000000.0"
+        },
+        "mode": [
+          {
+            "format": "16QAM",
+            "baud_rate": "32000000000.0",
+            "OSNR": "19.0",
+            "bit_rate": "200000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "100.0",
+            "min_spacing": "50000000000.0",
+            "cost": "1.0"
+          }
+        ]
+      },
+      {
+        "type_variety": "Voyager",
+        "frequency": {
+          "min": "191350000000000.0",
+          "max": "196100000000000.0"
+        },
+        "mode": [
+          {
+            "format": "mode 1",
+            "baud_rate": "32000000000.0",
+            "OSNR": "12.0",
+            "bit_rate": "100000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "45.0",
+            "min_spacing": "50000000000.0",
+            "cost": "1.0"
+          },
+          {
+            "format": "mode 3",
+            "baud_rate": "44000000000.0",
+            "OSNR": "18.0",
+            "bit_rate": "300000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "45.0",
+            "min_spacing": "62500000000.0",
+            "cost": "1.0"
+          },
+          {
+            "format": "mode 2",
+            "baud_rate": "66000000000.0",
+            "OSNR": "21.0",
+            "bit_rate": "400000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "45.0",
+            "min_spacing": "75000000000.0",
+            "cost": "1.0"
+          },
+          {
+            "format": "mode 2 - fake",
+            "baud_rate": "66000000000.0",
+            "OSNR": "21.0",
+            "bit_rate": "400000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "45.0",
+            "min_spacing": "75000000000.0",
+            "cost": "1.0"
+          },
+          {
+            "format": "mode 4",
+            "baud_rate": "66000000000.0",
+            "OSNR": "16.0",
+            "bit_rate": "200000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "45.0",
+            "min_spacing": "75000000000.0",
+            "cost": "1.0"
+          }
+        ]
+      }
+    ]
+  }
+}

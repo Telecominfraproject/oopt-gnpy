@@ -59,7 +59,11 @@ SRC_ROOT = Path(__file__).parent.parent
     ('transmission_main_example__path_only', None, transmission_main_example,
      ['tests/data/testTopology.xls', '-e', 'tests/data/eqpt_config.json', '--path', '''lorient, rennes, brest''']),
     ('transmission_main_example__service_routeid', None, transmission_main_example,
-     ['tests/data/testTopology.xls', '-e', 'tests/data/eqpt_config.json', '--service', 'tests/data/testService.xls', '--route_id', '1'])
+     ['tests/data/testTopology.xls', '-e', 'tests/data/eqpt_config.json', '--service', 'tests/data/testService.xls', '--route_id', '1']),
+    ('transmission_main_example_fiber_freq_eqpt_model', None, transmission_main_example,
+     ['-e', 'tests/data/fiber_slope/eqpt_config_fiber_freq.json', 'tests/data/fiber_slope/test_network_fiber_freq_eqpt_model.json']),
+    ('transmission_main_example_fiber_freq_legacy_and_alternate_models', None, transmission_main_example,
+     ['-e', 'tests/data/fiber_slope/eqpt_config_fiber_freq.json', 'tests/data/fiber_slope/test_network_fiber_freq_legacy_and_alternate_models.json'])
 ))
 def test_example_invocation(capfd, caplog, output, log, handler, args):
     """Make sure that our examples produce useful output"""

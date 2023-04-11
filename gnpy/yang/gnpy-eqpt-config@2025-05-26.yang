@@ -436,10 +436,10 @@ module gnpy-eqpt-config {
           A_eff parameter of this type_variety.";
       }
     list loss_coef_lut {
-      key "freq";
+      key "frequency";
       description
         "List of loss_coefficient per frequency for this type_variety.";
-      leaf freq {
+      leaf frequency {
         type decimal64 {
           fraction-digits 2;
           range "1000000000000 .. 1000000000000000";
@@ -456,6 +456,18 @@ module gnpy-eqpt-config {
         units "db/km";
         description
           "Loss coefficient value for this frequency.";
+      }
+    }
+    leaf loss_coef_offset_frequency {
+      type decimal64 {
+        fraction-digits 2;
+        range "1000000000000 .. 1000000000000000";
+      }
+      units "Hz";
+      description
+        "Frequency to scale the loss coeff values model such that at the ``loss_coef_offset_frequency`` the offset model values the ``loss_coef`` scalar";
+      must "(. >= ../loss_coef_lut/frequency) and (. <= ../loss_coef_lut/frequency)" {
+        error-message "loss_coef_offset_frequency must be between the minimum and maximum frequencies defined in loss_coef_lut";
       }
     }
     choice ref_freq_or_wl {

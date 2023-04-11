@@ -15,6 +15,7 @@ import pytest
 from pathlib import Path
 from networkx import dijkstra_path
 from numpy import mean, sqrt, ones
+from numpy.testing import assert_allclose
 import re
 
 from gnpy.core.exceptions import SpectrumError
@@ -30,6 +31,8 @@ DATA_DIR = TEST_DIR / 'data'
 network_file_name = DATA_DIR / 'LinkforTest.json'
 eqpt_library_name = DATA_DIR / 'eqpt_config.json'
 EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": load_json(DATA_DIR / "std_medium_gain_advanced_config.json")}
+FIBER_SLOPE_NETWORK = DATA_DIR / 'fiber_slope' / 'test_network_fiber_freq_legacy_and_alternate_models.json'
+FIBER_SLOPE_EQPT = DATA_DIR / 'fiber_slope' / 'eqpt_config_fiber_freq.json'
 
 
 @pytest.fixture(params=[(96, 0.05e12), (60, 0.075e12), (45, 0.1e12), (2, 0.1e12)],
@@ -187,8 +190,8 @@ def wrong_element_propagate():
             "connections": []
         },
         "expected_msg": 'The spectrum bandwidth exceeds the frequency interval used to define the fiber Chromatic '
-                        + 'Dispersion in "Fiber Elem".\nSpectrum f_min-f_max: 191.35-196.1\nChromatic Dispersion '
-                        + 'f_min-f_max: 185.49-189.99'
+                        + 'Dispersion in "Fiber Elem".\nSpectrum f_min-f_max: 191.35-196.1 THz\nChromatic Dispersion '
+                        + 'f_min-f_max: 185.49-189.99 THz'
     })
     return data
 
@@ -206,6 +209,75 @@ def test_json_element(error, json_data, expected_msg):
                                            baud_rate=32e9, tx_power=1.0e-3, spacing=50.0e9, tx_osnr=45)
     with pytest.raises(error, match=re.escape(expected_msg)):
         _ = elem(si)
+
+
+def test_fiber_slope():
+    """Check that loss is as expected when there is a fiber slope definition with eqpt
+    """
+    equipment = load_equipment(FIBER_SLOPE_EQPT, EXTRA_CONFIGS)
+    # change loss_coef_lut and offset frequency compared to original library to ease the test
+    equipment['Fiber']['SSMF_freq'].loss_coef_lut = [
+        {
+            "frequency": 185500000000000.0,
+            "loss_coef_value": 0.1949626865671642
+        },
+        {
+            "frequency": 186050000000000.0,
+            "loss_coef_value": 0.1921641791044776
+        },
+        {
+            "frequency": 188000000000000.0,
+            "loss_coef_value": 0.1865671641791045
+        },
+        {
+            "frequency": 190000000000000.0,
+            "loss_coef_value": 0.1847014925373134
+        },
+        {
+            "frequency": 191000000000000.0,
+            "loss_coef_value": 0.1842350746268657
+        },
+        {
+            "frequency": 192000000000000.0,
+            "loss_coef_value": 0.1847014925373134
+        },
+        {
+            "frequency": 194000000000000.0,
+            "loss_coef_value": 0.1870335820895522
+        },
+        {
+            "frequency": 196000000000000.0,
+            "loss_coef_value": 0.1912313432835821
+        },
+        {
+            "frequency": 198000000000000.0,
+            "loss_coef_value": 0.1963619402985075
+        },
+        {
+            "frequency": 200000000000000.0,
+            "loss_coef_value": 0.2024253731343283
+        }]
+    equipment['Fiber']['SSMF_freq'].loss_coef_offset_frequency = 192000000000000.0
+    network = load_network(FIBER_SLOPE_NETWORK, equipment)
+    # build all the missing pieces in span element
+    build_network(network, equipment, pathrequest(0, 20))
+    fiber = next(e for e in network.nodes() if e.uid == 'Span1')
+    si = create_input_spectral_information(f_min=191.25e12, f_max=196.05e12, roll_off=0.15,
+                                           baud_rate=32e9, tx_power=1.0e-3, spacing=50.0e9, tx_osnr=45)
+    si = fiber(si)
+    # find the loss of the exact offset frequency and verify it matches with the scalar loss definition 0.025
+    assert_allclose(si.pch[14], dbm2watt(-0.25 * 80), atol=1e-9)
+    assert_allclose(si.frequency[-2], 196.0e12, atol=1e-9)
+    # find the loss coef of another frequency also defined in the lut and compute the expected loss
+    assert_allclose(si.pch[-2], dbm2watt(-(0.1912313432835821 - 0.1847014925373134 + 0.25) * 80.0), atol=1e-9)
+    # check that to_json respects the same nb of digits for frequency and loss_coeff_value
+    assert f'{fiber.to_json["params"]["loss_coef_per_frequency"][0]["loss_coef_value"]}' == '0.2602611940298508'
+    # check the legacy definition on span2
+    si = create_input_spectral_information(f_min=191.25e12, f_max=196.05e12, roll_off=0.15,
+                                           baud_rate=32e9, tx_power=1.0e-3, spacing=50.0e9, tx_osnr=45)
+    fiber = next(e for e in network.nodes() if e.uid == 'Span2')
+    si = fiber(si)
+    assert_allclose(si.pch, dbm2watt(-0.29 * 80), atol=1e-9)
 
 
 if __name__ == '__main__':
