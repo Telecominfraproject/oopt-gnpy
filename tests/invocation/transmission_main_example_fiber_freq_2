@@ -1,0 +1,9 @@
+There are 96 channels propagating
+Power mode is set to True
+=> it can be modified in eqpt_config.json - Span
+
+There are 2 fiber spans over 160 km between Site_A and Site_B
+
+Now propagating between Site_A and Site_B:
+
+Propagating with input power = [1;36;40m0.00 dBm[0m:

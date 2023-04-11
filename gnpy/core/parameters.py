@@ -177,9 +177,20 @@ class FiberParams(Parameters):
             default_raman_efficiency = {'cr': CR_NORM / self._effective_area, 'frequency_offset': FREQ_OFFSET}
             self._raman_efficiency = kwargs.get('raman_efficiency', default_raman_efficiency)
             self._pmd_coef = kwargs['pmd_coef']  # s/sqrt(m)
+            if 'loss_coef_offset_frequency' in kwargs:
+                self._loss_coef_offset_frequency = kwargs['loss_coef_offset_frequency']
+            else:
+                self._loss_coef_offset_frequency = None
+            self._loss_coef_static = None
             if type(kwargs['loss_coef']) == dict:
                 self._loss_coef = asarray(kwargs['loss_coef']['value']) * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = asarray(kwargs['loss_coef']['frequency'])  # Hz
+            elif ('loss_coef_lut' in kwargs) and (type(kwargs['loss_coef']) != dict):
+                if 'loss_coef' in kwargs:
+                    self._loss_coef_static = asarray(kwargs['loss_coef']) * 1e-3  # lineic loss dB/m
+                _lut = asarray([[k['freq'], k['value']] for k in kwargs['loss_coef_lut']])
+                self._loss_coef = _lut[:, 1] * 1e-3  # lineic loss dB/m
+                self._f_loss_ref = _lut[:, 0]  # Hz
             else:
                 self._loss_coef = asarray(kwargs['loss_coef']) * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = asarray(self._ref_frequency)  # Hz
@@ -255,6 +266,14 @@ class FiberParams(Parameters):
     @property
     def beta3(self):
         return self._beta3
+
+    @property
+    def loss_coef_static(self):
+        return self._loss_coef_static
+
+    @property
+    def loss_coef_offset_frequency(self):
+        return self._loss_coef_offset_frequency
 
     @property
     def loss_coef(self):
