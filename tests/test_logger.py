@@ -10,7 +10,8 @@ import pytest
 
 from gnpy.core.exceptions import ConfigurationError, ServiceError, EquipmentConfigError, ParametersError, \
     NetworkTopologyError
-from gnpy.tools.json_io import SI, Roadm, Amp, load_equipment, requests_from_json, network_from_json
+from gnpy.tools.json_io import SI, Roadm, Amp, load_equipment, requests_from_json, network_from_json, \
+    load_network, load_requests
 from gnpy.tools.convert import xls_to_json_data
 
 TEST_DIR = Path(__file__).parent
@@ -83,6 +84,22 @@ def test_wrong_equipment(caplog, error, equipment, json_data, expected_msg):
     """
     with pytest.raises(EquipmentConfigError, match=expected_msg):
         _ = equipment(**json_data)
+
+
+@pytest.mark.parametrize('xls_service_filename, xls_topo_filename, expected_msg',
+                         [('wrong_service.xlsx', 'testTopology.xls',
+                           "Service error: Request Id: 0 - could not find tsp : 'Voyager' with mode: 'Mode 10' "
+                           + "in eqpt library \nComputation stopped."),
+                          ('wrong_service_type.xlsx', 'testTopology.xls',
+                           "Service error: Request Id: 0 - could not find tsp : 'Galileo' with mode: 'mode 1' "
+                           + "in eqpt library \nComputation stopped.")])
+def test_wrong_xls_service(xls_service_filename, xls_topo_filename, expected_msg):
+    """
+    """
+    equipment = load_equipment(EQPT_FILENAME)
+    network = load_network(DATA_DIR / xls_topo_filename, equipment)
+    with pytest.raises(ServiceError, match=expected_msg):
+        _ = load_requests(DATA_DIR / xls_service_filename, equipment, False, network, DATA_DIR / xls_topo_filename)
 
 
 def wrong_amp():
@@ -381,7 +398,13 @@ def test_json_network(error, json_data, expected_msg):
      (DATA_DIR / 'wrong_topo_link_header.xlsx', 'missing header Node Z'),
      (DATA_DIR / 'wrong_topo_eqpt.xlsx', 'XLS error: The Eqpt sheet refers to nodes that are not defined in the '
                                          + 'Nodes sheet:\n - toto'),
-     (DATA_DIR / 'wrong_topo_duplicate_node.xlsx', 'Duplicate city: Counter({\'ALB\': 2, \'CHA_3\': 1})')])
+     (DATA_DIR / 'wrong_topo_duplicate_node.xlsx', 'Duplicate city: Counter({\'ALB\': 2, \'CHA_3\': 1})'),
+     (DATA_DIR / 'wrong_topo_duplicate_eqpt.xlsx', 'XLS error: Duplicate lines in Eqpt sheet: - ALB -> CHA_3'),
+     (DATA_DIR / 'wrong_topo_bad_eqpt.xlsx', 'XLS error: The Eqpt sheet references links that are not defined '
+                                             + 'in the Links sheet:\n - toto -> CHA_3'),
+     (DATA_DIR / 'wrong_duplicate_link_reverse.xlsx', 'XLS error: links  - (\'ila\', \'siteb\') are duplicate'),
+     (DATA_DIR / 'wrong_duplicate_eqpt_ila_reverse.xlsx', 'XLS error: Duplicate ILA eqpt definition in Eqpt sheet:'
+                                                          + ' - ila')])
 def test_wrong_xlsx(input_filename, expected_msg):
     """Check that error and logs are correctly working
     """
