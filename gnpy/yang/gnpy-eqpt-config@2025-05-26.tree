@@ -51,9 +51,9 @@ module: gnpy-eqpt-config
      |  +--rw gamma?                  decimal64
      |  +--rw pmd_coef?               decimal64
      |  +--rw effective_area?         decimal64
-     |  +--rw loss_coef_lut* [freq]
-     |  |  +--rw freq               decimal64
-     |  |  +--rw loss_coef_value?   decimal64
+     |  +--rw loss_coef_ripple* [frequency]
+     |  |  +--rw frequency                 decimal64
+     |  |  +--rw loss_coef_ripple_value?   decimal64
      |  +--rw (ref_freq_or_wl)?
      |     +--:(frequency)
      |     |  +--rw ref_frequency?    decimal64
@@ -65,9 +65,9 @@ module: gnpy-eqpt-config
      |  +--rw gamma?                  decimal64
      |  +--rw pmd_coef?               decimal64
      |  +--rw effective_area?         decimal64
-     |  +--rw loss_coef_lut* [freq]
-     |  |  +--rw freq               decimal64
-     |  |  +--rw loss_coef_value?   decimal64
+     |  +--rw loss_coef_ripple* [frequency]
+     |  |  +--rw frequency                 decimal64
+     |  |  +--rw loss_coef_ripple_value?   decimal64
      |  +--rw (ref_freq_or_wl)?
      |  |  +--:(frequency)
      |  |  |  +--rw ref_frequency?    decimal64
@@ -253,9 +253,9 @@ module: gnpy-eqpt-config
        |  +--rw gamma?                  decimal64
        |  +--rw pmd_coef?               decimal64
        |  +--rw effective_area?         decimal64
-       |  +--rw loss_coef_lut* [freq]
-       |  |  +--rw freq               decimal64
-       |  |  +--rw loss_coef_value?   decimal64
+       |  +--rw loss_coef_ripple* [frequency]
+       |  |  +--rw frequency                 decimal64
+       |  |  +--rw loss_coef_ripple_value?   decimal64
        |  +--rw (ref_freq_or_wl)?
        |     +--:(frequency)
        |     |  +--rw ref_frequency?    decimal64
@@ -267,9 +267,9 @@ module: gnpy-eqpt-config
        |  +--rw gamma?                  decimal64
        |  +--rw pmd_coef?               decimal64
        |  +--rw effective_area?         decimal64
-       |  +--rw loss_coef_lut* [freq]
-       |  |  +--rw freq               decimal64
-       |  |  +--rw loss_coef_value?   decimal64
+       |  +--rw loss_coef_ripple* [frequency]
+       |  |  +--rw frequency                 decimal64
+       |  |  +--rw loss_coef_ripple_value?   decimal64
        |  +--rw (ref_freq_or_wl)?
        |  |  +--:(frequency)
        |  |  |  +--rw ref_frequency?    decimal64
@@ -453,9 +453,9 @@ module: gnpy-eqpt-config
        |  +--rw gamma?                  decimal64
        |  +--rw pmd_coef?               decimal64
        |  +--rw effective_area?         decimal64
-       |  +--rw loss_coef_lut* [freq]
-       |  |  +--rw freq               decimal64
-       |  |  +--rw loss_coef_value?   decimal64
+       |  +--rw loss_coef_ripple* [frequency]
+       |  |  +--rw frequency                 decimal64
+       |  |  +--rw loss_coef_ripple_value?   decimal64
        |  +--rw (ref_freq_or_wl)?
        |     +--:(frequency)
        |     |  +--rw ref_frequency?    decimal64
@@ -467,9 +467,9 @@ module: gnpy-eqpt-config
        |  +--rw gamma?                  decimal64
        |  +--rw pmd_coef?               decimal64
        |  +--rw effective_area?         decimal64
-       |  +--rw loss_coef_lut* [freq]
-       |  |  +--rw freq               decimal64
-       |  |  +--rw loss_coef_value?   decimal64
+       |  +--rw loss_coef_ripple* [frequency]
+       |  |  +--rw frequency                 decimal64
+       |  |  +--rw loss_coef_ripple_value?   decimal64
        |  +--rw (ref_freq_or_wl)?
        |  |  +--:(frequency)
        |  |  |  +--rw ref_frequency?    decimal64

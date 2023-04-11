@@ -435,11 +435,11 @@ module gnpy-eqpt-config {
           "Effective area of the fiber (not just the MFD circle). This is the
           A_eff parameter of this type_variety.";
       }
-    list loss_coef_lut {
-      key "freq";
+    list loss_coef_ripple {
+      key "frequency";
       description
-        "List of loss_coefficient per frequency for this type_variety.";
-      leaf freq {
+        "List of loss_coefficient ripple per frequency for this type_variety.";
+      leaf frequency {
         type decimal64 {
           fraction-digits 2;
           range "1000000000000 .. 1000000000000000";
@@ -448,14 +448,14 @@ module gnpy-eqpt-config {
         description
           "Frequency";
       }
-      leaf loss_coef_value {
+      leaf loss_coef_ripple_value {
         type decimal64 {
           fraction-digits 16;
-          range "0 .. 100";
+          range "-1 .. 1";
         }
         units "db/km";
         description
-          "Loss coefficient value for this frequency.";
+          "Loss coefficient ripple value for this frequency.";
       }
     }
     choice ref_freq_or_wl {

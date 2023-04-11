@@ -137,10 +137,20 @@ The fiber library currently describes SSMF and NZDF but additional fiber types c
 |                              |                 | coefficient. In                                |
 |                              |                 | :math:`s\times\sqrt{m}^{-1}`.                  |
 +------------------------------+-----------------+------------------------------------------------+
+| ``ref_frequency``            | (number)        | Reference frequency in Hz (unique for all      |
+|                              |                 | parameters: beta2, beta3, gamma,               |
+|                              |                 | effective_area). Default is ``c`` / 1550.0e-9  |
++------------------------------+-----------------+------------------------------------------------+
+| ``ref_wavelength``           | (number)        | Reference wavelength in m.(unique for all      |
+|                              |                 | parameters: beta2, beta3, gamma,               |
+|                              |                 | effective_area). Default is 1550.0e-9          |
+|                              |                 | Only one of ref_frequency or                   |
+|                              |                 | ref_wavelength can be defined.                 |
++------------------------------+-----------------+------------------------------------------------+
 | ``lumped_losses``            | (array)         | Places along the fiber length with extra       |
 |                              |                 | losses. Specified as a loss in dB at           |
 |                              |                 | each relevant position (in km):                |
-|                              |                 | ``{"position": 10, "loss": 1.5}``)             |
+|                              |                 | ``{"position": 10, "loss": 1.5}``              |
 +------------------------------+-----------------+------------------------------------------------+
 | ``raman_coefficient``        | (dict)          | The fundamental parameter that describes       |
 |                              |                 | the regulation of the power transfer           |
@@ -162,6 +172,95 @@ The fiber library currently describes SSMF and NZDF but additional fiber types c
 +------------------------------+-----------------+------------------------------------------------+
 
 .. _Corning whitepaper on MFD/EA: https://www.corning.com/microsites/coc/oem/documents/specialty-fiber/WP7071-Mode-Field-Diam-and-Eff-Area.pdf
+
+The fiber model can further be extended to take into account the frequency dependency of the loss coefficient:
+
+1. The legacy way is to proceed as it is described for the ``RamanFiber``
+namely by using a dictionary-like definition of the ``Fiber.params.loss_coef``
+(e.g. ``loss_coef = {"value": [0.18, 0.18, 0.20, 0.20], "frequency": [191e12, 196e12, 200e12, 210e12]}``).
+Practically, as this dictionary-like definition is invoked in the topology-file,
+the model definition has to be replicated for each fiber instance requiring such a model.
+
+
+2. An alternative way is to declare the frequency dependency of the loss coefficient at the ``equipment``-file level.
+Such a fiber model can then be invoked at the ``topology``-file level by simply specifying the ``type_variety``.
+Hence it is no longer required to copy the model definition per fiber instance.
+
+Additionally, for each instance using such a model, a custom ``loss_coef`` scalar is declared in the topology-file,
+which allows to scale the model such that at the ``ref_frequency`` the offset model values the ``loss_coef`` scalar.
+
+As the ``loss_coef`` scalar is declared in the ``topology``-file similarly to the legacy way,
+applying different loss coefficient models (or none), is eased, and done straightforwardly via the ``type_variety``.
+
+
+In order to overcome data transmission issues in APIs such as PostMan when using non ordered data models,
+this alternate loss_coef_riple table is declared using a list of frequency-loss_coef_ripple_value pairs, as shown in below Table:
+
++--------------------------------+----------+---------------------------------------------------+
+| field                          | type     | description                                       |
++================================+==========+===================================================+
+|  ``loss_coef_ripple``          | (list)   | frequency-loss_coef_ripple_value pairs:           |
+|                                |          | frequency in Hz, loss_coef_ripple_value in dB/km  |
++--------------------------------+----------+---------------------------------------------------+
+
+In case both models are combined, the definition in the fiber element instance has priority over the definition in the equipment
+library for this type_variety of fiber.
+
+How to use the alternate frequency dependent loss coefficient model:
+
+1. Declare for instance a "SSMF_freq"-model in the equipment-file:
+
+.. code-block:: json
+
+  {
+    "type_variety": "SSMF_freq",
+    "dispersion": "0.0000167",
+    "effective_area": "0.000000000083",
+    "pmd_coef": "0.000000000000001265",
+    "loss_coef_ripple":
+      "loss_coef_ripple": [
+          {"frequency": "185492341356674.0", "loss_coef_ripple_value": "0.0086276629224582"},
+          {"frequency": "186052516411378.6", "loss_coef_ripple_value": "0.0058291554597716"},
+          {"frequency": "188013129102844.6", "loss_coef_ripple_value": "0.0002321405343985"},
+          {"frequency": "189991247264770.2", "loss_coef_ripple_value": "-0.0016335311073926"},
+          {"frequency": "191076586433260.4", "loss_coef_ripple_value": "-0.0020999490178403"},
+          {"frequency": "192004376367614.9", "loss_coef_ripple_value": "-0.0016335311073926"},
+          {"frequency": "194017505470459.5", "loss_coef_ripple_value": "0.0006985584448462"},
+          {"frequency": "195995623632385.1", "loss_coef_ripple_value": "0.0048963196388761"},
+          {"frequency": "198008752735229.8", "loss_coef_ripple_value": "0.0100269166538015"},
+          {"frequency": "200021881838074.4", "loss_coef_ripple_value": "0.0160903494896223"},
+          {"frequency": "201964989059080.9", "loss_coef_ripple_value": "0.0230866181463388"}
+        ]
+  }
+
+
+The above data were taken from [damico2022scalable, JLT, June 2022, DOI: 10.1109/JLT.2022.3162134]
+(http://doi.org/10.1109/JLT.2022.3162134), Figure 2.
+
+2. Invoke the ``SSMF_freq``-model in the ``topology``-file:
+
+.. code-block:: json
+
+  {
+      "uid": "Span1",
+      "type": "Fiber",
+      "type_variety": "SSMF_freq",
+      "params": {
+          "loss_coef": 0.25,
+          "length": 80,
+          "length_units": "km"
+          },
+      "metadata": {
+          "location": {
+              "region": "",
+              "latitude": 1,
+              "longitude": 0
+          }
+  }
+
+For the instance ``Span1`` of the above example, the ``SSMF_freq``-model
+will be scaled by the ``loss_coef``-scalar to value 0.25dB/km at the reference_frequency.
+
 
 RamanFiber
 ~~~~~~~~~~

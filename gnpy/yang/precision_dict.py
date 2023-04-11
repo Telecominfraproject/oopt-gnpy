@@ -15,7 +15,7 @@ PRECISION_DICT = {
     "pmd_coef": 18,
     "frequency": 1,
     "freq": 2, "ref_frequency": 1, "ref_wavelength": 12,
-    "g0": 14, "loss_coef_value": 16, "position": 6, "reference_frequency": 1,
+    "g0": 14, "loss_coef_value": 16, "loss_coef_ripple_value": 16, "position": 6, "reference_frequency": 1,
     "att_in": 2,
     "con_in": 2,
     "con_out": 2,
