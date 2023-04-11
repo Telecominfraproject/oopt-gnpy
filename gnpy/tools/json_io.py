@@ -210,8 +210,9 @@ class Fiber(_JsonThing):
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, self.__class__.__name__)
-        if 'gamma' in kwargs:
-            setattr(self, 'gamma', kwargs['gamma'])
+        for optional in ['gamma', 'raman_efficiency', 'loss_coef_ripple']:
+            if optional in kwargs:
+                setattr(self, optional, kwargs[optional])
         if 'raman_efficiency' in kwargs:
             raman_coefficient = kwargs['raman_efficiency']
             cr = raman_coefficient.pop('cr')
@@ -738,6 +739,15 @@ def network_from_json(json_data: dict, equipment: dict) -> DiGraph:
                 if not extra_params:
                     msg = f'ROADM {el_config["uid"]}: invalid equalization settings'
                     raise ConfigurationError(msg)
+            if typ in ['Fiber', 'RamanFiber']:
+                # create the loss_coef vs frequency if a ripple is defined in the equipment library
+                if ('loss_coef_ripple' in extra_params) and not isinstance(temp['loss_coef'], dict):
+                    _loss_coef_static = temp['loss_coef']
+                    temp['loss_coef'] = {}
+                    temp['loss_coef']['value'] = [k['loss_coef_ripple_value'] + _loss_coef_static
+                                                  for k in extra_params['loss_coef_ripple']]
+                    temp['loss_coef']['frequency'] = [k['frequency'] + _loss_coef_static
+                                                      for k in extra_params['loss_coef_ripple']]
             # use temp pmd_coef if it exists else use the default one from library and keep this knowledge in
             # pmd_coef_defined
             use_pmd_coef(temp, extra_params)
