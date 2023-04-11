@@ -387,7 +387,13 @@ def test_json_network(caplog, error, json_data, expected_msg):
      (DATA_DIR / 'wrong_topo_link_header.xlsx', 'missing header Node Z'),
      (DATA_DIR / 'wrong_topo_eqpt.xlsx', 'XLS error: The Eqpt sheet refers to nodes that are not defined in the '
                                          + 'Nodes sheet:\n - toto'),
-     (DATA_DIR / 'wrong_topo_duplicate_node.xlsx', 'Duplicate city: Counter({\'ALB\': 2, \'CHA_3\': 1})')])
+     (DATA_DIR / 'wrong_topo_duplicate_node.xlsx', 'Duplicate city: Counter({\'ALB\': 2, \'CHA_3\': 1})'),
+     (DATA_DIR / 'wrong_topo_duplicate_eqpt.xlsx', 'XLS error: Duplicate lines in Eqpt sheet: - ALB -> CHA_3'),
+     (DATA_DIR / 'wrong_topo_bad_eqpt.xlsx', 'XLS error: The Eqpt sheet references links that are not defined '
+                                             + 'in the Links sheet:\n - toto -> CHA_3'),
+     (DATA_DIR / 'wrong_duplicate_link_reverse.xlsx', 'XLS error: links  - (\'ila\', \'siteb\') are duplicate'),
+     (DATA_DIR / 'wrong_duplicate_eqpt_ila_reverse.xlsx', 'XLS error: Duplicate ILA eqpt definition in Eqpt sheet:'
+                                                          + ' - ila')])
 def test_wrong_xlsx(caplog, input_filename, expected_msg):
     """Check that error and logs are correctly working
     """
