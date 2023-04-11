@@ -227,15 +227,12 @@ def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
     for l1 in links:
         for l2 in links:
             if l1 is not l2 and l1 == l2 and l2 not in duplicate_links:
-                print(f'\nWARNING\n \
-                    link {l1.from_city}-{l1.to_city} is duplicate \
-                    \nthe 1st duplicate link will be removed but you should check Links sheet input')
                 duplicate_links.append(l1)
-    for l in duplicate_links:
-        links.remove(l)
-        links_by_city[l.from_city].remove(l)
-        links_by_city[l.to_city].remove(l)
-
+    if duplicate_links:
+        msg = f'{ansi_escapes.red}XLS error:{ansi_escapes.reset} ' \
+              + f'links {_format_items([(d.from_city, d.to_city) for d in duplicate_links])} are duplicate'
+        _logger.critical(msg)
+        raise NetworkTopologyError(msg)
     unreferenced_nodes = [n for n in nodes_by_city if n not in links_by_city]
     if unreferenced_nodes:
         msg = f'{ansi_escapes.red}XLS error:{ansi_escapes.reset} The following nodes are not ' \
@@ -254,6 +251,46 @@ def sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city):
               + f'The {ansi_escapes.cyan}Eqpt{ansi_escapes.reset} sheet refers to nodes that ' \
               + f'are not defined in the {ansi_escapes.cyan}Nodes{ansi_escapes.reset} sheet:\n'\
               + _format_items(wrong_eqpt)
+        _logger.critical(msg)
+        raise NetworkTopologyError(msg)
+    # Now check links that are not listed in Links sheet, and duplicates
+    bad_eqpt = []
+    possible_links = [f'{e.from_city}|{e.to_city}' for e in links] + [f'{e.to_city}|{e.from_city}' for e in links]
+    possible_eqpt = []
+    duplicate_eqpt = []
+    duplicate_ila = []
+    for city, eqpts in eqpts_by_city.items():
+        for eqpt in eqpts:
+            # Check that each node_A-node_Z exists in links
+            nodea_nodez = f'{eqpt.from_city}|{eqpt.to_city}'
+            nodez_nodea = f'{eqpt.to_city}|{eqpt.from_city}'
+            if nodea_nodez not in possible_links \
+                    or nodez_nodea not in possible_links:
+                bad_eqpt.append([eqpt.from_city, eqpt.to_city])
+            else:
+                # Check that there are no duplicate lines in the Eqpt sheet
+                if nodea_nodez in possible_eqpt:
+                    duplicate_eqpt.append([eqpt.from_city, eqpt.to_city])
+                else:
+                    possible_eqpt.append(nodea_nodez)
+            # check that there are no two lines defining an ILA with different directions
+        if nodes_by_city[city].node_type == 'ILA' and len(eqpts) > 1:
+            duplicate_ila.append(city)
+    if bad_eqpt:
+        msg = f'{ansi_escapes.red}XLS error:{ansi_escapes.reset} ' \
+              + f'The {ansi_escapes.cyan}Eqpt{ansi_escapes.reset} sheet references links that ' \
+              + f'are not defined in the {ansi_escapes.cyan}Links{ansi_escapes.reset} sheet:\n' \
+              + _format_items(f'{item[0]} -> {item[1]}' for item in bad_eqpt)
+        _logger.critical(msg)
+        raise NetworkTopologyError(msg)
+    if duplicate_eqpt:
+        msg = f'{ansi_escapes.red}XLS error:{ansi_escapes.reset} Duplicate lines in Eqpt sheet:' \
+              + _format_items(f'{item[0]} -> {item[1]}' for item in duplicate_eqpt)
+        _logger.critical(msg)
+        raise NetworkTopologyError(msg)
+    if duplicate_ila:
+        msg = f'{ansi_escapes.red}XLS error:{ansi_escapes.reset} Duplicate ILA eqpt definition in Eqpt sheet:' \
+              + _format_items(duplicate_ila)
         _logger.critical(msg)
         raise NetworkTopologyError(msg)
 
