@@ -26,9 +26,11 @@ SRC_ROOT = Path(__file__).parent.parent
      ['--spectrum', 'gnpy/example-data/initial_spectrum1.json', 'gnpy/example-data/meshTopologyExampleV2.xls', ]),
     ('spectrum2_transmission_main_example', transmission_main_example,
      ['--spectrum', 'gnpy/example-data/initial_spectrum2.json', 'gnpy/example-data/meshTopologyExampleV2.xls', '--show-channels', ]),
-    ))
-
-
+    ('transmission_main_example_fiber_freq_eqpt_model', transmission_main_example,
+     ['-e', 'tests/data/eqpt_config_fiber_freq_1.json', 'tests/data/test_network_fiber_freq_1.json']),
+    ('transmission_main_example_fiber_freq_legacy_and_alternate_models', transmission_main_example,
+     ['-e', 'tests/data/eqpt_config_fiber_freq_1.json', 'tests/data/test_network_fiber_freq_3.json']),
+))
 def test_example_invocation(capfd, output, handler, args):
     """Make sure that our examples produce useful output"""
     os.chdir(SRC_ROOT)

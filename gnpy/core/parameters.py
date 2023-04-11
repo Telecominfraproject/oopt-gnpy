@@ -170,9 +170,20 @@ class FiberParams(Parameters):
             default_raman_efficiency = {'cr': CR_NORM / self._effective_area, 'frequency_offset': FREQ_OFFSET}
             self._raman_efficiency = kwargs.get('raman_efficiency', default_raman_efficiency)
             self._pmd_coef = kwargs['pmd_coef']  # s/sqrt(m)
+            self._loss_coef_offset_frequency = kwargs.get('loss_coef_offset_frequency', None)
+            self._loss_coef_static = None
+            # legacy frequency dependent loss coefficient model from topology-file
             if isinstance(kwargs['loss_coef'], dict):
                 self._loss_coef = asarray(kwargs['loss_coef']['value']) * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = asarray(kwargs['loss_coef']['frequency'])  # Hz
+            # alternate frequency dependent loss coefficient model from equipment-file
+            # self._loss_coef_static is used for scaling the model
+            elif ('loss_coef_lut' in kwargs) and not isinstance(kwargs['loss_coef'], dict):
+                self._loss_coef_static = asarray(kwargs['loss_coef']) * 1e-3  # lineic loss dB/m
+                _lut = asarray([[k['freq'], k['value']] for k in kwargs['loss_coef_lut']])
+                self._loss_coef = _lut[:, 1] * 1e-3  # lineic loss dB/m
+                self._f_loss_ref = _lut[:, 0]  # Hz
+            # legacy frequency independent loss coefficient model
             else:
                 self._loss_coef = asarray(kwargs['loss_coef']) * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = asarray(self._ref_frequency)  # Hz
@@ -248,6 +259,14 @@ class FiberParams(Parameters):
     @property
     def beta3(self):
         return self._beta3
+
+    @property
+    def loss_coef_static(self):
+        return self._loss_coef_static
+
+    @property
+    def loss_coef_offset_frequency(self):
+        return self._loss_coef_offset_frequency
 
     @property
     def loss_coef(self):
