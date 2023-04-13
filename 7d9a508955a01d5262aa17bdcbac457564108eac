@@ -16,6 +16,23 @@
       "message": "Thanks!\n\n(I\u0027ve prodded the CI provider about its outage, please expect some delay in merging.)",
       "revId": "7d9a508955a01d5262aa17bdcbac457564108eac",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1a034b7_32ef4d72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-04-13T20:25:55Z",
+      "side": 1,
+      "message": "recheck",
+      "revId": "7d9a508955a01d5262aa17bdcbac457564108eac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
