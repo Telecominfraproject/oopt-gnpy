@@ -336,6 +336,8 @@ class Roadm(_Node):
             return self.per_degree_pch_out_dbm[degree]
         elif degree in self.per_degree_pch_psd:
             return psd2powerdbm(self.per_degree_pch_psd[degree], spectral_info.baud_rate)
+        elif degree in self.per_degree_pch_psw:
+            return psd2powerdbm(self.per_degree_pch_psw[degree], spectral_info.slot_width)
         return self.get_roadm_target_power(spectral_info=spectral_info)
 
     def propagate(self, spectral_info, degree):
