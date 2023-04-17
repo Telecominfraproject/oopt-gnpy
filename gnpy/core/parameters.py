@@ -64,7 +64,7 @@ class SimParams(Parameters):
     _shared_dict = {'nli_params': NLIParams(), 'raman_params': RamanParams()}
 
     def __init__(self):
-        if type(self) == SimParams:
+        if isinstance(self, SimParams):
             raise NotImplementedError('Instances of SimParams cannot be generated')
 
     @classmethod
@@ -177,7 +177,7 @@ class FiberParams(Parameters):
             default_raman_efficiency = {'cr': CR_NORM / self._effective_area, 'frequency_offset': FREQ_OFFSET}
             self._raman_efficiency = kwargs.get('raman_efficiency', default_raman_efficiency)
             self._pmd_coef = kwargs['pmd_coef']  # s/sqrt(m)
-            if type(kwargs['loss_coef']) == dict:
+            if isinstance(kwargs['loss_coef'], dict):
                 self._loss_coef = asarray(kwargs['loss_coef']['value']) * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = asarray(kwargs['loss_coef']['frequency'])  # Hz
             else:
