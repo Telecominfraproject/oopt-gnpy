@@ -35,7 +35,8 @@ class PumpParams(Parameters):
 
 class RamanParams(Parameters):
     def __init__(self, flag=False, result_spatial_resolution=10e3, solver_spatial_resolution=50):
-        """ Simulation parameters used within the Raman Solver
+        """Simulation parameters used within the Raman Solver
+
         :params flag: boolean for enabling/disable the evaluation of the Raman power profile in frequency and position
         :params result_spatial_resolution: spatial resolution of the evaluated Raman power profile
         :params solver_spatial_resolution: spatial step for the iterative solution of the first order ode
@@ -48,7 +49,8 @@ class RamanParams(Parameters):
 class NLIParams(Parameters):
     def __init__(self, method='gn_model_analytic', dispersion_tolerance=1, phase_shift_tolerance=0.1,
                  computed_channels=None):
-        """ Simulation parameters used within the Nli Solver
+        """Simulation parameters used within the Nli Solver
+
         :params method: formula for NLI calculation
         :params dispersion_tolerance: tuning parameter for ggn model solution
         :params phase_shift_tolerance: tuning parameter for ggn model solution

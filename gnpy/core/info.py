@@ -29,21 +29,23 @@ class Power(namedtuple('Power', 'signal nli ase')):
 
 class Channel(namedtuple('Channel',
                          'channel_number frequency baud_rate slot_width roll_off power chromatic_dispersion pmd pdl')):
-    """ Class containing the parameters of a WDM signal.
-        :param channel_number: channel number in the WDM grid
-        :param frequency: central frequency of the signal (Hz)
-        :param baud_rate: the symbol rate of the signal (Baud)
-        :param slot_width: the slot width (Hz)
-        :param roll_off: the roll off of the signal. It is a pure number between 0 and 1
-        :param power (gnpy.core.info.Power): power of signal, ASE noise and NLI (W)
-        :param chromatic_dispersion: chromatic dispersion (s/m)
-        :param pmd: polarization mode dispersion (s)
-        :param pdl: polarization dependent loss (dB)
+    """Class containing the parameters of a WDM signal.
+
+    :param channel_number: channel number in the WDM grid
+    :param frequency: central frequency of the signal (Hz)
+    :param baud_rate: the symbol rate of the signal (Baud)
+    :param slot_width: the slot width (Hz)
+    :param roll_off: the roll off of the signal. It is a pure number between 0 and 1
+    :param power (gnpy.core.info.Power): power of signal, ASE noise and NLI (W)
+    :param chromatic_dispersion: chromatic dispersion (s/m)
+    :param pmd: polarization mode dispersion (s)
+    :param pdl: polarization dependent loss (dB)
     """
 
 
 class Pref(namedtuple('Pref', 'p_span0, p_spani, ref_carrier')):
     """noiseless reference power in dBm:
+
     p_span0: inital target carrier power for a reference channel defined by user
     p_spani: carrier power after element i for a reference channel defined by user
     ref_carrier records the baud rate of the reference channel
@@ -51,7 +53,8 @@ class Pref(namedtuple('Pref', 'p_span0, p_spani, ref_carrier')):
 
 
 class SpectralInformation(object):
-    """ Class containing the parameters of the entire WDM comb.
+    """Class containing the parameters of the entire WDM comb.
+
     delta_pdb_per_channel: (per frequency) per channel delta power in dbm for the actual mix of channels"""
 
     def __init__(self, frequency: array, baud_rate: array, slot_width: array, signal: array, nli: array, ase: array,
@@ -305,7 +308,7 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, fl
 
 
 def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing, tx_osnr, ref_carrier=None):
-    """ Creates a fixed slot width spectral information with flat power.
+    """Creates a fixed slot width spectral information with flat power.
     all arguments are scalar values"""
     number_of_channels = automatic_nch(f_min, f_max, spacing)
     frequency = [(f_min + spacing * i) for i in range(1, number_of_channels + 1)]

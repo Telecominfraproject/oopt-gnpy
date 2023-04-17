@@ -41,8 +41,7 @@ DisjunctionParams = namedtuple('DisjunctionParams', 'disjunction_id relaxable li
 
 
 class PathRequest:
-    """ the class that contains all attributes related to a request
-    """
+    """the class that contains all attributes related to a request"""
 
     def __init__(self, *args, **params):
         params = RequestParams(**params)
@@ -104,8 +103,7 @@ class PathRequest:
 
 
 class Disjunction:
-    """ the class that contains all attributes related to disjunction constraints
-    """
+    """the class that contains all attributes related to disjunction constraints"""
 
     def __init__(self, *args, **params):
         params = DisjunctionParams(**params)
@@ -150,8 +148,7 @@ class ResultElement:
 
     @property
     def detailed_path_json(self):
-        """ a function that builds path object for normal and blocking cases
-        """
+        """a function that builds path object for normal and blocking cases"""
         index = 0
         pro_list = []
         for element in self.computed_path:
@@ -207,11 +204,9 @@ class ResultElement:
 
     @property
     def path_properties(self):
-        """ a function that returns the path properties (metrics, crossed elements) into a dict
-        """
+        """a function that returns the path properties (metrics, crossed elements) into a dict"""
         def path_metric(pth, req):
-            """ creates the metrics dictionary
-            """
+            """creates the metrics dictionary"""
             return [
                 {
                     'metric-type': 'SNR-bandwidth',
@@ -253,8 +248,7 @@ class ResultElement:
 
     @property
     def pathresult(self):
-        """ create the result dictionnary (response for a request)
-        """
+        """create the result dictionnary (response for a request)"""
         try:
             if self.path_request.blocking_reason in BLOCKING_NOPATH:
                 response = {
@@ -350,8 +344,7 @@ def ref_carrier(equipment):
 
 
 def propagate(path, req, equipment):
-    """ propagates signals in each element according to initial spectrum set by user
-    """
+    """propagates signals in each element according to initial spectrum set by user"""
     if req.initial_spectrum is not None:
         si = carriers_to_spectral_information(initial_spectrum=req.initial_spectrum,
                                               power=req.power, ref_carrier=ref_carrier(equipment))
@@ -442,8 +435,7 @@ def propagate_and_optimize_mode(path, req, equipment):
 
 
 def jsontopath_metric(path_metric):
-    """ a functions that reads resulting metric  from json string
-    """
+    """a functions that reads resulting metric  from json string"""
     output_snr = next(e['accumulative-value']
                       for e in path_metric if e['metric-type'] == 'SNR-0.1nm')
     output_snrbandwidth = next(e['accumulative-value']
@@ -461,9 +453,7 @@ def jsontopath_metric(path_metric):
 
 
 def jsontoparams(my_p, tsp, mode, equipment):
-    """ a function that derives optical params from transponder type and mode
-        supports the no mode case
-    """
+    """a function that derives optical params from transponder type and mode supports the no mode case"""
     temp = []
     for elem in my_p['path-properties']['path-route-objects']:
         if 'num-unnum-hop' in elem['path-route-object']:
@@ -498,10 +488,10 @@ def jsontoparams(my_p, tsp, mode, equipment):
 
 
 def jsontocsv(json_data, equipment, fileout):
-    """ reads json path result file in accordance with:
-        Yang model for requesting Path Computation
-        draft-ietf-teas-yang-path-computation-01.txt.
-        and write results in an CSV file
+    """reads json path result file in accordance with:
+    Yang model for requesting Path Computation
+    draft-ietf-teas-yang-path-computation-01.txt.
+    and write results in an CSV file
     """
     mywriter = writer(fileout)
     mywriter.writerow(('response-id', 'source', 'destination', 'path_bandwidth', 'Pass?',
@@ -887,8 +877,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
 
 
 def isdisjoint(pth1, pth2):
-    """ returns 0 if disjoint
-    """
+    """returns 0 if disjoint"""
     edge1 = list(pairwise(pth1))
     edge2 = list(pairwise(pth2))
     for edge in edge1:
@@ -898,9 +887,9 @@ def isdisjoint(pth1, pth2):
 
 
 def find_reversed_path(pth):
-    """ select of intermediate roadms and find the path between them
-        note that this function may not give an exact result in case of multiple
-        links between two adjacent nodes.
+    """select of intermediate roadms and find the path between them
+    note that this function may not give an exact result in case of multiple
+    links between two adjacent nodes.
     """
     # TODO add some indication on elements to indicate from which other they
     # are the reversed direction. This is partly done with oms indication
@@ -933,9 +922,7 @@ def find_reversed_path(pth):
 
 
 def ispart(ptha, pthb):
-    """ the functions takes two paths a and b and retrns True
-        if all a elements are part of b and in the same order
-    """
+    """the functions takes two paths a and b and retrns True if all a elements are part of b and in the same order"""
     j = 0
     for elem in ptha:
         if elem in pthb:
@@ -949,8 +936,7 @@ def ispart(ptha, pthb):
 
 
 def remove_candidate(candidates, allpaths, rqst, pth):
-    """ filter duplicate candidates
-    """
+    """filter duplicate candidates"""
     # print(f'coucou {rqst.request_id}')
     for key, candidate in candidates.items():
         temp = candidate.copy()
@@ -965,8 +951,7 @@ def remove_candidate(candidates, allpaths, rqst, pth):
 
 
 def compare_reqs(req1, req2, disjlist):
-    """ compare two requests: returns True or False
-    """
+    """compare two requests: returns True or False"""
     dis1 = [d for d in disjlist if req1.request_id in d.disjunctions_req]
     dis2 = [d for d in disjlist if req2.request_id in d.disjunctions_req]
     same_disj = False
@@ -1008,8 +993,8 @@ def compare_reqs(req1, req2, disjlist):
 
 
 def requests_aggregation(pathreqlist, disjlist):
-    """ this function aggregates requests so that if several requests
-        exist between same source and destination and with same transponder type
+    """this function aggregates requests so that if several requests
+    exist between same source and destination and with same transponder type
     """
     # todo maybe add conditions on mode ??, spacing ...
     # currently if undefined takes the default values
@@ -1037,9 +1022,10 @@ def requests_aggregation(pathreqlist, disjlist):
 
 
 def correct_json_route_list(network, pathreqlist):
-    """ all names in list should be exact name in the network, and there is no ambiguity
-        This function only checks that list is correct, warns user if the name is incorrect and
-        suppresses the constraint it it is loose or raises an error if it is strict
+    """all names in list should be exact name in the network, and there is no ambiguity
+
+    This function only checks that list is correct, warns user if the name is incorrect and
+    suppresses the constraint it it is loose or raises an error if it is strict
     """
     all_uid = [n.uid for n in network.nodes()]
     transponders = [n.uid for n in network.nodes() if isinstance(n, Transceiver)]
@@ -1088,8 +1074,7 @@ def correct_json_route_list(network, pathreqlist):
 
 
 def deduplicate_disjunctions(disjn):
-    """ clean disjunctions to remove possible repetition
-    """
+    """clean disjunctions to remove possible repetition"""
     local_disjn = disjn.copy()
     for elem in local_disjn:
         for dis_elem in local_disjn:
@@ -1100,8 +1085,9 @@ def deduplicate_disjunctions(disjn):
 
 
 def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
-    """ use a list but a dictionnary might be helpful to find path based on request_id
-        TODO change all these req, dsjct, res lists into dict !
+    """use a list but a dictionnary might be helpful to find path based on request_id
+
+    TODO change all these req, dsjct, res lists into dict !
     """
     path_res_list = []
     reversed_path_res_list = []
@@ -1217,7 +1203,8 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
 
 
 def compute_spectrum_slot_vs_bandwidth(bandwidth, spacing, bit_rate, slot_width=0.0125e12):
-    """ Compute the number of required wavelengths and the M value (number of consumed slots)
+    """Compute the number of required wavelengths and the M value (number of consumed slots)
+
     Each wavelength consumes one `spacing`, and the result is rounded up to consume a natural number of slots.
 
     >>> compute_spectrum_slot_vs_bandwidth(400e9, 50e9, 200e9)

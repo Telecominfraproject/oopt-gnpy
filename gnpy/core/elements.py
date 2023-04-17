@@ -42,11 +42,11 @@ class Location(namedtuple('Location', 'latitude longitude city region')):
 
 
 class _Node:
-    '''Convenience class for providing common functionality of all network elements
+    """Convenience class for providing common functionality of all network elements
 
     This class is just an internal implementation detail; do **not** assume that all network elements
     inherit from :class:`_Node`.
-    '''
+    """
     def __init__(self, uid, name=None, params=None, metadata=None, operational=None, type_variety=None):
         if name is None:
             name = uid
@@ -92,7 +92,7 @@ class Transceiver(_Node):
         self.propagated_labels = [""]
 
     def _calc_cd(self, spectral_info):
-        """ Updates the Transceiver property with the CD of the received channels. CD in ps/nm.
+        """Updates the Transceiver property with the CD of the received channels. CD in ps/nm.
         """
         self.chromatic_dispersion = spectral_info.chromatic_dispersion * 1e3
 

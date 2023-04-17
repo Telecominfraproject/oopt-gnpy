@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-'''
+"""
 gnpy.tools.plots
 ================
 
 Graphs and plots usable from a CLI application
-'''
+"""
 
 from matplotlib.pyplot import show, axis, figure, title, text
 from networkx import draw_networkx

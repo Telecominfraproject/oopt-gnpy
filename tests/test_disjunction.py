@@ -4,12 +4,12 @@
 # License: BSD 3-Clause Licence
 # Copyright (c) 2018, Telecom Infra Project
 
-'''
+"""
 @author: esther.lerouzic
 checks that computed paths are disjoint as specified in the json service file
 that computed paths do not loop
 that include node constraints are correctly taken into account
-'''
+"""
 
 from pathlib import Path
 import pytest
@@ -31,8 +31,7 @@ EQPT_LIBRARY_NAME = Path(__file__).parent.parent / 'tests/data/eqpt_config.json'
 
 @pytest.fixture()
 def serv(test_setup):
-    ''' common setup for service list
-    '''
+    """common setup for service list"""
     network, equipment = test_setup
     data = load_requests(SERVICE_FILE_NAME, equipment, bidir=False, network=network, network_filename=NETWORK_FILE_NAME)
     rqs = requests_from_json(data, equipment)
@@ -43,8 +42,7 @@ def serv(test_setup):
 
 @pytest.fixture()
 def test_setup():
-    ''' common setup for tests: builds network, equipment and oms only once
-    '''
+    """common setup for tests: builds network, equipment and oms only once"""
     equipment = load_equipment(EQPT_LIBRARY_NAME)
     network = load_network(NETWORK_FILE_NAME, equipment)
     # Build the network once using the default power defined in SI in eqpt config
@@ -61,9 +59,10 @@ def test_setup():
 
 
 def test_disjunction(serv):
-    ''' service_file contains sevaral combination of disjunction constraint. The test checks
-        that computed paths with disjunction constraint are effectively disjoint
-    '''
+    """service_file contains sevaral combination of disjunction constraint
+
+    The test checks that computed paths with disjunction constraint are effectively disjoint.
+    """
     network, equipment, rqs, dsjn = serv
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
     print(dsjn)
@@ -86,8 +85,7 @@ def test_disjunction(serv):
 
 
 def test_does_not_loop_back(serv):
-    ''' check that computed paths do not loop back ie each element appears only once
-    '''
+    """check that computed paths do not loop back ie each element appears only once"""
     network, equipment, rqs, dsjn = serv
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
     test = True
@@ -108,8 +106,7 @@ def test_does_not_loop_back(serv):
 
 
 def create_rq(equipment, srce, dest, bdir, node_list, loose_list, rqid='test_request'):
-    ''' create the usual request list according to parameters
-    '''
+    """create the usual request list according to parameters"""
     requests_list = []
     params = {
         'request_id': rqid,
@@ -151,19 +148,20 @@ def create_rq(equipment, srce, dest, bdir, node_list, loose_list, rqid='test_req
     ['trx a', 'trx h', 'pass', 'found_path', ['trx h'], ['STRICT']],
     ['trx a', 'trx h', 'pass', 'found_path', ['roadm a'], ['STRICT']]])
 def test_include_constraints(test_setup, srce, dest, result, pth, node_list, loose_list):
-    ''' check that all combinations of constraints are correctly handled:
-        - STRICT/LOOSE
-        - correct names/incorrect names -> pass/fail
-        - possible include/impossible include
-        if incorrect name -> fail
-        else:
-                                      constraint    |one or more STRICT | all LOOSE
-            ----------------------------------------------------------------------------------
-            >1 path from s to d | can be applied    | found_path        | found_path
-                                | cannot be applied | no_path           | found_path
-            ----------------------------------------------------------------------------------
-            0                   |                   |          computation stops
-    '''
+    """check that all combinations of constraints are correctly handled:
+
+    - STRICT/LOOSE
+    - correct names/incorrect names -> pass/fail
+    - possible include/impossible include
+    if incorrect name -> fail
+    else:
+                                  constraint    |one or more STRICT | all LOOSE
+        ----------------------------------------------------------------------------------
+        >1 path from s to d | can be applied    | found_path        | found_path
+                            | cannot be applied | no_path           | found_path
+        ----------------------------------------------------------------------------------
+        0                   |                   |          computation stops
+    """
     network, equipment = test_setup
     dsjn = []
     bdir = False
@@ -201,7 +199,7 @@ def test_include_constraints(test_setup, srce, dest, result, pth, node_list, loo
       ['roadm c', 'roadm f'],
       ['roadm a', 'roadm b', 'roadm f', 'roadm h']]]])
 def test_create_disjunction(test_setup, dis1, dis2, node_list1, loose_list1, result, expected_paths):
-    """ verifies that the expected result is obtained for a set of particular constraints:
+    """verifies that the expected result is obtained for a set of particular constraints:
     in particular, verifies that:
     - multiple disjunction constraints are correcly handled
     - in case a loose constraint can not be met, the first alternate candidate is selected

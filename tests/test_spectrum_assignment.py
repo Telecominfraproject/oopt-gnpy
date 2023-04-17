@@ -45,8 +45,7 @@ def equipment():
 
 @pytest.fixture()
 def setup(equipment):
-    """ common setup for tests: builds network, equipment and oms only once
-    """
+    """common setup for tests: builds network, equipment and oms only once"""
     network = load_network(NETWORK_FILENAME, equipment)
     spectrum = equipment['SI']['default']
     p_db = spectrum.power_dbm
@@ -57,9 +56,9 @@ def setup(equipment):
 
 
 def test_oms(setup):
-    """ tests that the OMS is between two ROADMs, that there is no ROADM or transceivers in the OMS
-        except end points, checks that the id of OMS is present in the element and that the element
-        OMS id is consistant
+    """tests that the OMS is between two ROADMs, that there is no ROADM or transceivers in the OMS
+    except end points, checks that the id of OMS is present in the element and that the element
+    OMS id is consistant
     """
     network, oms_list = setup
     for oms in oms_list:
@@ -150,8 +149,7 @@ def test_aligned(nmin, nmax, setup):
 @pytest.mark.parametrize('nval1', [0, 15, 24])
 @pytest.mark.parametrize('nval2', [8, 12])
 def test_assign_and_sum(nval1, nval2, setup):
-    """ checks that bitmap sum gives correct result
-    """
+    """checks that bitmap sum gives correct result"""
     network, oms_list = setup
     guardband = grid
     mval = 4  # slot in 12.5GHz
@@ -198,8 +196,7 @@ def test_assign_and_sum(nval1, nval2, setup):
 
 
 def test_bitmap_assignment(setup):
-    """ test that a bitmap can be assigned
-    """
+    """test that a bitmap can be assigned"""
     network, oms_list = setup
     random_oms = oms_list[2]
     random_oms.assign_spectrum(13, 7)
@@ -216,8 +213,7 @@ def test_bitmap_assignment(setup):
 
 @pytest.fixture()
 def services(equipment):
-    """ common setup for service list: builds service only once
-    """
+    """common setup for service list: builds service only once"""
     with open(SERVICE_FILENAME, encoding='utf-8') as my_f:
         services = json.loads(my_f.read())
     return services
@@ -225,15 +221,13 @@ def services(equipment):
 
 @pytest.fixture()
 def requests(equipment, services):
-    """ common setup for requests, builds requests list only once
-    """
+    """common setup for requests, builds requests list only once"""
     requests = requests_from_json(services, equipment)
     return requests
 
 
 def test_spectrum_assignment_on_path(equipment, setup, requests):
-    """ test assignment functions on path and network
-    """
+    """test assignment functions on path and network"""
     network, oms_list = setup
     req = [deepcopy(requests[1])]
     paths = compute_path_dsjctn(network, equipment, req, [])
@@ -270,8 +264,7 @@ def test_spectrum_assignment_on_path(equipment, setup, requests):
 
 @pytest.fixture()
 def request_set():
-    """ creates default request dict
-    """
+    """creates default request dict"""
     return {
         'request_id': '0',
         'source': 'trx a',
@@ -299,8 +292,7 @@ def request_set():
 
 
 def test_freq_slot_exist(setup, equipment, request_set):
-    """ test that assignment works even if effective_freq_slot is not populated
-    """
+    """test that assignment works even if effective_freq_slot is not populated"""
     network, oms_list = setup
     params = request_set
     params['effective_freq_slot'] = None
@@ -312,8 +304,7 @@ def test_freq_slot_exist(setup, equipment, request_set):
 
 
 def test_inconsistant_freq_slot(setup, equipment, request_set):
-    """ test that an inconsistant M correctly raises an error
-    """
+    """test that an inconsistant M correctly raises an error"""
     network, oms_list = setup
     params = request_set
     # minimum required nb of slots is 32 (800Gbit/100Gbit/s channels each occupying 50GHz ie 4 slots)
@@ -346,8 +337,7 @@ def test_inconsistant_freq_slot(setup, equipment, request_set):
     (-60, 20, None, None, 'NOT_ENOUGH_RESERVED_SPECTRUM')
     ])
 def test_n_m_requests(setup, equipment, n, m, final_n, final_m, blocking_reason, request_set):
-    """ test that various N and M values for a request end up with the correct path assgnment
-    """
+    """test that various N and M values for a request end up with the correct path assgnment"""
     network, oms_list = setup
     # add an occupation on one of the span of the expected path OMS list on both directions
     # as defined by its offsets within the OMS list: [17, 20, 13, 22] and reversed path [19, 16, 21, 26]
@@ -372,9 +362,7 @@ def test_n_m_requests(setup, equipment, n, m, final_n, final_m, blocking_reason,
 
 
 def test_reversed_direction(equipment, setup, requests, services):
-    """ checks that if spectrum is selected on one direction it is also selected on reversed
-        direction
-    """
+    """checks that if spectrum is selected on one direction it is also selected on reversed direction"""
     network, oms_list = setup
     dsjn = disjunctions_from_json(services)
     dsjn = deduplicate_disjunctions(dsjn)

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-'''
+"""
 gnpy.core.equipment
 ===================
 
 This module contains functionality for specifying equipment.
-'''
+"""
 
 from gnpy.core.utils import automatic_nch, db2lin
 from gnpy.core.exceptions import EquipmentConfigError

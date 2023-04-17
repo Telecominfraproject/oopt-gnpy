@@ -3,16 +3,17 @@
 # @Author: Esther Le Rouzic
 # @Date:   2018-06-15
 
-""" Adding tests to check the parser non regression
-    convention of naming of test files:
-    - ..._expected.json for the reference output
-    tests:
-    - generation of topology json
-    - reading of Eqpt sheet w and W/ power mode
-    - consistency of autodesign
-    - generation of service list based on service sheet
-    - writing of results in csv
-    - writing of results in json (same keys)
+"""Adding tests to check the parser non regression
+
+convention of naming of test files:
+- ..._expected.json for the reference output
+tests:
+- generation of topology json
+- reading of Eqpt sheet w and W/ power mode
+- consistency of autodesign
+- generation of service list based on service sheet
+- writing of results in csv
+- writing of results in json (same keys)
 """
 
 from pathlib import Path
@@ -46,8 +47,7 @@ equipment = load_equipment(eqpt_filename)
 
 }.items())
 def test_excel_json_generation(tmpdir, xls_input, expected_json_output):
-    """ tests generation of topology json
-    """
+    """tests generation of topology json"""
     xls_copy = Path(tmpdir) / xls_input.name
     shutil.copyfile(xls_input, xls_copy)
     convert_file(xls_copy)
@@ -68,9 +68,7 @@ def test_excel_json_generation(tmpdir, xls_input, expected_json_output):
                           DATA_DIR / 'testTopology_auto_design_expected.json',
                           }.items())
 def test_auto_design_generation_fromxlsgainmode(tmpdir, xls_input, expected_json_output):
-    """ tests generation of topology json
-        test that the build network gives correct results in gain mode
-    """
+    """tests generation of topology json and that the build network gives correct results in gain mode"""
     equipment = load_equipment(eqpt_filename)
     network = load_network(xls_input, equipment)
     # in order to test the Eqpt sheet and load gain target,
@@ -100,8 +98,7 @@ def test_auto_design_generation_fromxlsgainmode(tmpdir, xls_input, expected_json
                           True
                           }.items())
 def test_auto_design_generation_fromjson(tmpdir, json_input, power_mode):
-    """test that autodesign creates same file as an input file already autodesigned
-    """
+    """test that autodesign creates same file as an input file already autodesigned"""
     equipment = load_equipment(eqpt_filename)
     network = load_network(json_input, equipment)
     # in order to test the Eqpt sheet and load gain target,
@@ -127,8 +124,7 @@ def test_auto_design_generation_fromjson(tmpdir, json_input, power_mode):
     DATA_DIR / 'testService.xls': DATA_DIR / 'testService_services_expected.json'
 }.items())
 def test_excel_service_json_generation(xls_input, expected_json_output):
-    """ test services creation
-    """
+    """test services creation"""
     equipment = load_equipment(eqpt_filename)
     network = load_network(DATA_DIR / 'testTopology.xls', equipment)
     # Build the network once using the default power defined in SI in eqpt config
@@ -148,9 +144,7 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
     (DATA_DIR / 'testTopology_response.json', )
 )
 def test_csv_response_generation(tmpdir, json_input):
-    """ tests if generated csv is consistant with expected generation
-        same columns (order not important)
-    """
+    """tests if generated csv is consistant with expected generation same columns (order not important)"""
     json_data = load_json(json_input)
     equipment = load_equipment(eqpt_filename)
     csv_filename = Path(tmpdir / json_input.name).with_suffix('.csv')
@@ -215,8 +209,7 @@ def test_csv_response_generation(tmpdir, json_input):
     DATA_DIR / 'testTopology.xls': DATA_DIR / 'testTopology_response.json',
 }.items())
 def test_json_response_generation(xls_input, expected_response_file):
-    """ tests if json response is correctly generated for all combinations of requests
-    """
+    """tests if json response is correctly generated for all combinations of requests"""
 
     equipment = load_equipment(eqpt_filename)
     network = load_network(xls_input, equipment)
@@ -323,8 +316,7 @@ def test_json_response_generation(xls_input, expected_response_file):
     ('trx Brest_KLA', 'trx Rennes_STA', 'Brest_KLA | trx Lannion_CAS', 'STRICT', 'Fail')
 ])
 def test_excel_ila_constraints(source, destination, route_list, hoptype, expected_correction):
-    """ add different kind of constraints to test all correct_route cases
-    """
+    """add different kind of constraints to test all correct_route cases"""
     service_xls_input = DATA_DIR / 'testTopology.xls'
     network_json_input = DATA_DIR / 'testTopology_auto_design_expected.json'
     equipment = load_equipment(eqpt_filename)
@@ -376,8 +368,7 @@ def test_excel_ila_constraints(source, destination, route_list, hoptype, expecte
 
 
 def setup_per_degree(case):
-    """ common setup for degree: returns the dict network for different cases
-    """
+    """common setup for degree: returns the dict network for different cases"""
     json_network = load_json(DATA_DIR / 'testTopology_expected.json')
     json_network_auto = load_json(DATA_DIR / 'testTopology_auto_design_expected.json')
     if case == 'no':
@@ -401,8 +392,7 @@ def setup_per_degree(case):
 
 @pytest.mark.parametrize('case', ['no', 'all', 'Lannion_CAS and all', 'Lannion_CAS and one'])
 def test_target_pch_out_db_global(case):
-    """ check that per degree attributes are correctly created with global values if none are given
-    """
+    """check that per degree attributes are correctly created with global values if none are given"""
     json_network = setup_per_degree(case)
     per_degree = {}
     for elem in json_network['elements']:
@@ -442,14 +432,12 @@ def test_target_pch_out_db_global(case):
 
 
 def all_rows(sh, start=0):
-    """ reads excel sheet row per row
-    """
+    """reads excel sheet row per row"""
     return (sh.row(x) for x in range(start, sh.nrows))
 
 
 class Amp:
-    """ Node element contains uid, list of connected nodes and eqpt type
-    """
+    """Node element contains uid, list of connected nodes and eqpt type"""
 
     def __init__(self, uid, to_node, eqpt=None, west=None):
         self.uid = uid
@@ -459,7 +447,7 @@ class Amp:
 
 
 def test_eqpt_creation(tmpdir):
-    """ tests that convert correctly creates equipment according to equipment sheet
+    """tests that convert correctly creates equipment according to equipment sheet
     including all cominations in testTopologyconvert.xls: if a line exists the amplifier
     should be created even if no values are provided.
     """
