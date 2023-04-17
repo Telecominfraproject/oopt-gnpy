@@ -1,0 +1,222 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a46101a_cdcaa11e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-04-17T20:32:50Z",
+      "side": 1,
+      "message": "The commit message should explain why the patch is needed, and how that new feature/bugfix/whatever is implemented. From the provided description it is not clear to me what the use case is, or why the existing code is not enough. The existing code already supports specifying the loss as a function of frequency, after all. Can you please explain that in more detail in the commit message? Ideally, the commit message alone should be enough to get an idea of what the patch is doing, why it is needed, and what gotchas were encountered during the implementation (if any).",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 89
+      },
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "423815b4_2a1d2f59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-04-17T20:32:50Z",
+      "side": 1,
+      "message": "Please also add user-facing documentation (thanks for the comments in the code, but this needs changes below `docs/` as well).",
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5df2bc7_287150e4",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-04-17T20:32:50Z",
+      "side": 1,
+      "message": "nit: spelling, just \"dictionary\"",
+      "range": {
+        "startLine": 519,
+        "startChar": 50,
+        "endLine": 519,
+        "endChar": 61
+      },
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7c553d2_f7a13510",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-04-17T20:32:50Z",
+      "side": 1,
+      "message": "From this description alone, it is not clear to me what the difference between a \"list mode\" and a \"dictionary model\" is. Is it determined based on whether the data are provided in the equipment config, or in the topology file?\n\nAfter reading the test files, it seems that the difference is that it\u0027s either:\n\n [\n  {\"freq\": 193e12, \"value\": 0.123},\n  {\"freq\": 195e12, \"value\": 0.456},\n ]\n\nor:\n\n {\"value\": [0.123, 0.456], \"frequency\": [193e12, 195e12]}\n\nIs that right?\n \nTo be honest, I don\u0027t see a use case for supporting both of these formats. The proper fix for making the JSON format easier to use (or \"better documented\" or \"less surprising\" if you will) is a switch to the YANG-based description. I would prefer not to improve the existing one.",
+      "range": {
+        "startLine": 518,
+        "startChar": 0,
+        "endLine": 520,
+        "endChar": 80
+      },
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe9e10ed_a83f79c7",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-04-17T20:32:50Z",
+      "side": 1,
+      "message": "it\u0027s simpler this way:\n self._loss_coef_offset_frequency \u003d kwargs.get(\u0027loss_coef_offset_frequency\u0027, None)",
+      "range": {
+        "startLine": 180,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 55
+      },
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c99fc601_22a5a0d4",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-04-17T20:32:50Z",
+      "side": 1,
+      "message": "Use isinstance() so that inheritance works. (The existing code definitely needs a cleanup, sorry about that.)",
+      "range": {
+        "startLine": 188,
+        "startChar": 49,
+        "endLine": 188,
+        "endChar": 84
+      },
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c976b72_e4ba8557",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-04-17T20:32:50Z",
+      "side": 1,
+      "message": "Can you please clarify the purpose of loss_coef_static? When I see a definition like this one:\n \n      \"loss_coef_lut\": [\n        {\n          \"freq\": 185492341356673.97,\n          \"value\": 0.19496268656716417\n        },\n        {\n          \"freq\": 186052516411378.56,\n          \"value\": 0.1921641791044776\n        },\n        {\n          \"freq\": 188013129102844.62,\n          \"value\": 0.18656716417910446\n        },\n        {\n          \"freq\": 189991247264770.25,\n          \"value\": 0.18470149253731344\n        },\n        {\n          \"freq\": 191076586433260.4,\n          \"value\": 0.18423507462686567\n        },\n        {\n          \"freq\": 192004376367614.88,\n          \"value\": 0.18470149253731344\n        },\n        {\n          \"freq\": 194017505470459.53,\n          \"value\": 0.18703358208955223\n        },\n        {\n          \"freq\": 195995623632385.12,\n          \"value\": 0.19123134328358207\n        },\n        {\n          \"freq\": 198008752735229.75,\n          \"value\": 0.19636194029850745\n        },\n        {\n          \"freq\": 200021881838074.4,\n          \"value\": 0.20242537313432835\n        },\n        {\n          \"freq\": 201964989059080.94,\n          \"value\": 0.20942164179104478\n        }\n      ],\n      \"loss_coef_offset_frequency\": 191300000000000\n\n...then my first impression is that the `loss_coef_offset_frequency` duplicates the data given via `loss_coef_lut`. Can you please clarify this?",
+      "range": {
+        "startLine": 188,
+        "startChar": 0,
+        "endLine": 193,
+        "endChar": 51
+      },
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50a77a06_f2c3fc32",
+        "filename": "tests/data/eqpt_config_fiber_freq.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-04-17T20:32:50Z",
+      "side": 1,
+      "message": "Instead of creating four new files which are very similar to the existing test default, I would prefer to programmatically build a JSON test input based on the existing data, applying the necessary modifications on top of that one. That way, we won\u0027t have to:\n\n- update multiple files when we introduce some new values,\n- keep track of what exactly was modified and why\n\nIf the tests require a physical file on disk, consider creating whatever is necessary via a test-wide fixture somewhere in a writable temporary location.\n\nLooking at the actual files, `eqpt_config_fiber_freq.json`, `eqpt_config_fiber_freq_1.json` and `eqpt_config_fiber_freq_3.json` are equivalent.",
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae83e81f_a84f3635",
+        "filename": "tests/test_invocation.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-04-17T20:32:50Z",
+      "side": 1,
+      "message": "If this is needed, please move that code to another patch along with a description that explains the motivation for this change.",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 29
+      },
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46256e6f_829b2948",
+        "filename": "tests/test_invocation.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-04-17T20:32:50Z",
+      "side": 1,
+      "message": "Why does this patch remove an existing test? Ensuring that the installed scripts work is still desirable.",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 103
+      },
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
