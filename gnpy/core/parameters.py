@@ -63,19 +63,10 @@ class NLIParams(Parameters):
 class SimParams(Parameters):
     _shared_dict = {'nli_params': NLIParams(), 'raman_params': RamanParams()}
 
-    def __init__(self):
-        if isinstance(self, SimParams):
-            raise NotImplementedError('Instances of SimParams cannot be generated')
-
     @classmethod
     def set_params(cls, sim_params):
         cls._shared_dict['nli_params'] = NLIParams(**sim_params.get('nli_params', {}))
         cls._shared_dict['raman_params'] = RamanParams(**sim_params.get('raman_params', {}))
-
-    @classmethod
-    def get(cls):
-        self = cls.__new__(cls)
-        return self
 
     @property
     def nli_params(self):

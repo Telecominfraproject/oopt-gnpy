@@ -24,7 +24,7 @@ from gnpy.core.parameters import SimParams
 from gnpy.core.info import SpectralInformation
 
 logger = getLogger(__name__)
-sim_params = SimParams.get()
+sim_params = SimParams()
 
 def raised_cosine_comb(f, *carriers):
     """ Returns an array storing the PSD of a WDM comb of raised cosine shaped

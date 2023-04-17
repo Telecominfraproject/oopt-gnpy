@@ -13,9 +13,9 @@ from gnpy.core.parameters import SimParams
 def test_sim_parameters():
     sim_params = {'nli_params': {}, 'raman_params': {}}
     SimParams.set_params(sim_params)
-    s1 = SimParams.get()
+    s1 = SimParams()
     assert s1.nli_params.method == 'gn_model_analytic'
-    s2 = SimParams.get()
+    s2 = SimParams()
     assert not s1.raman_params.flag
     sim_params['raman_params']['flag'] = True
     SimParams.set_params(sim_params)
