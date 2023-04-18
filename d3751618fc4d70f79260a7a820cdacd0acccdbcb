@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c03d698d_ab30a5c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-04-18T00:46:22Z",
+      "side": 1,
+      "message": "recheck\n\nI like replacing `print()` statements with the logger. I don\u0027t think it\u0027s necessary to `print()` *and* log at the same time, though. Can you remove these print statements, please?\n\nAlso, I wonder if it\u0027s really needed to log these exceptions as they are raised. What do you plan to use that for? If it\u0027s about API access or a nice error messages, then it seems to me that installing a \"generic\" exception handler around the entry point is more elegant.",
+      "revId": "d3751618fc4d70f79260a7a820cdacd0acccdbcb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
