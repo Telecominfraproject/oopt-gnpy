@@ -33,6 +33,23 @@
       "message": "Looks good to me, but I prefer that Andrea also approves",
       "revId": "2a07eec9664fbcec75699bc78c2affd201a99bff",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e73aa08_877ea413",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2023-04-18T20:49:24Z",
+      "side": 1,
+      "message": "The reason why I blocked the __init__ function is to avoid different initialization for different instances. In this perspective, I do agree that the message of error raised calling the __init__ method is not precise.\nNevertheless, the purpose was not to avoid different instances, blocking the __new__ method, but preventing instances with different values.\n\nAnyway, in my opinion, using the get instead of the __init__ suggests the users that they are not creating new parameters, but that the parameters are retrieved from somewhere else where they are define. \n\nLong story short, I am not sure if this change will just facilitate the user, or it will suggest that they can change the parameters with no effects on other instances, as a new instance is created with the constructor.\n\nBut for sure I think I have a biased opinion on this, so if you think this change would facilitate the user I think we should do it.\n\n",
+      "revId": "2a07eec9664fbcec75699bc78c2affd201a99bff",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
