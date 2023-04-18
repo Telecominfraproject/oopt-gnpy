@@ -299,8 +299,7 @@ def test_2low_input_power(target_out, delta_pdb_per_channel, correction):
 
 
 def net_setup(equipment):
-    """ common setup for tests: builds network, equipment and oms only once
-    """
+    """common setup for tests: builds network, equipment and oms only once"""
     network = load_network(NETWORK_FILENAME, equipment)
     spectrum = equipment['SI']['default']
     p_db = spectrum.power_dbm
@@ -310,8 +309,7 @@ def net_setup(equipment):
 
 
 def create_voyager_req(equipment, source, dest, bidir, nodes_list, loose_list, mode, spacing, power_dbm):
-    """ create the usual request list according to parameters
-    """
+    """create the usual request list according to parameters"""
     params = {'request_id': 'test_request',
               'source': source,
               'bidir': bidir,
@@ -336,8 +334,7 @@ def create_voyager_req(equipment, source, dest, bidir, nodes_list, loose_list, m
 @pytest.mark.parametrize('power_dbm', [0, 1, -2, None])
 @pytest.mark.parametrize('mode, slot_width', (['mode 1', 50e9], ['mode 2', 75e9]))
 def test_initial_spectrum(mode, slot_width, power_dbm):
-    """ checks that propagation using the user defined spectrum identical to SI, gives same result as SI
-    """
+    """checks that propagation using the user defined spectrum identical to SI, gives same result as SI"""
     # first propagate without any req.initial_spectrum attribute
     equipment = load_equipment(EQPT_FILENAME)
     req = create_voyager_req(equipment, 'trx Brest_KLA', 'trx Vannes_KBE', False, ['trx Vannes_KBE'], ['STRICT'],
@@ -373,7 +370,7 @@ def test_initial_spectrum(mode, slot_width, power_dbm):
 
 
 def test_initial_spectrum_not_identical():
-    """ checks that user defined spectrum overrides spectrum defined in SI
+    """checks that user defined spectrum overrides spectrum defined in SI
     """
     # first propagate without any req.initial_spectrum attribute
     equipment = load_equipment(EQPT_FILENAME)
@@ -408,7 +405,7 @@ def test_initial_spectrum_not_identical():
     ('target_psd_out_mWperGHz', power_dbm_to_psd_mw_ghz(-20, 32e9))])
 @pytest.mark.parametrize('power_dbm', [0, 2, -0.5])
 def test_target_psd_or_psw(power_dbm, equalization, target_value):
-    """ checks that if target_out_mWperSlotWidth or target_psd_out_mWperGHz is defined, it is used as equalization
+    """checks that if target_out_mWperSlotWidth or target_psd_out_mWperGHz is defined, it is used as equalization
     and it gives same result if computed target is the same
     """
     equipment = load_equipment(EQPT_FILENAME)
@@ -438,8 +435,7 @@ def test_target_psd_or_psw(power_dbm, equalization, target_value):
 
 
 def ref_network():
-    """ Create a network instance with a instance of propagated path
-    """
+    """Create a network instance with a instance of propagated path"""
     equipment = load_equipment(EQPT_FILENAME)
     network = net_setup(equipment)
     req0 = create_voyager_req(equipment, 'trx Brest_KLA', 'trx Vannes_KBE', False, ['trx Vannes_KBE'], ['STRICT'],
@@ -451,7 +447,8 @@ def ref_network():
 
 @pytest.mark.parametrize('deltap', [0, +1.2, -0.5])
 def test_target_psd_out_mwperghz_deltap(deltap):
-    """ checks that if target_psd_out_mWperGHz is defined, delta_p of amps is correctly updated
+    """checks that if target_psd_out_mWperGHz is defined, delta_p of amps is correctly updated
+
     Power over 1.2dBm saturate amp with this test: TODO add a test on this saturation
     """
     equipment = load_equipment(EQPT_FILENAME)

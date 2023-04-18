@@ -35,7 +35,8 @@ class PumpParams(Parameters):
 
 class RamanParams(Parameters):
     def __init__(self, flag=False, result_spatial_resolution=10e3, solver_spatial_resolution=50):
-        """ Simulation parameters used within the Raman Solver
+        """Simulation parameters used within the Raman Solver
+
         :params flag: boolean for enabling/disable the evaluation of the Raman power profile in frequency and position
         :params result_spatial_resolution: spatial resolution of the evaluated Raman power profile
         :params solver_spatial_resolution: spatial step for the iterative solution of the first order ode
@@ -48,7 +49,8 @@ class RamanParams(Parameters):
 class NLIParams(Parameters):
     def __init__(self, method='gn_model_analytic', dispersion_tolerance=1, phase_shift_tolerance=0.1,
                  computed_channels=None):
-        """ Simulation parameters used within the Nli Solver
+        """Simulation parameters used within the Nli Solver
+
         :params method: formula for NLI calculation
         :params dispersion_tolerance: tuning parameter for ggn model solution
         :params phase_shift_tolerance: tuning parameter for ggn model solution
@@ -63,19 +65,10 @@ class NLIParams(Parameters):
 class SimParams(Parameters):
     _shared_dict = {'nli_params': NLIParams(), 'raman_params': RamanParams()}
 
-    def __init__(self):
-        if type(self) == SimParams:
-            raise NotImplementedError('Instances of SimParams cannot be generated')
-
     @classmethod
     def set_params(cls, sim_params):
         cls._shared_dict['nli_params'] = NLIParams(**sim_params.get('nli_params', {}))
         cls._shared_dict['raman_params'] = RamanParams(**sim_params.get('raman_params', {}))
-
-    @classmethod
-    def get(cls):
-        self = cls.__new__(cls)
-        return self
 
     @property
     def nli_params(self):
@@ -177,7 +170,7 @@ class FiberParams(Parameters):
             default_raman_efficiency = {'cr': CR_NORM / self._effective_area, 'frequency_offset': FREQ_OFFSET}
             self._raman_efficiency = kwargs.get('raman_efficiency', default_raman_efficiency)
             self._pmd_coef = kwargs['pmd_coef']  # s/sqrt(m)
-            if type(kwargs['loss_coef']) == dict:
+            if isinstance(kwargs['loss_coef'], dict):
                 self._loss_coef = asarray(kwargs['loss_coef']['value']) * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = asarray(kwargs['loss_coef']['frequency'])  # Hz
             else:

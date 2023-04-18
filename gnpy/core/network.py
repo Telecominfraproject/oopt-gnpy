@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-'''
+"""
 gnpy.core.network
 =================
 
 Working with networks which consist of network elements
-'''
+"""
 
 from operator import attrgetter
 from gnpy.core import ansi_escapes, elements
@@ -235,8 +235,7 @@ def set_amplifier_voa(amp, power_target, power_mode):
 
 
 def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_db):
-    """ this node can be a transceiver or a ROADM (same function called in both cases)
-    """
+    """this node can be a transceiver or a ROADM (same function called in both cases)"""
     power_mode = equipment['Span']['default'].power_mode
     ref_carrier = ReferenceCarrier(baud_rate=equipment['SI']['default'].baud_rate,
                                    slot_width=equipment['SI']['default'].spacing)

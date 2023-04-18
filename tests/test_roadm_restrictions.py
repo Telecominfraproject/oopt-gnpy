@@ -31,10 +31,10 @@ NETWORK_FILE_NAME = TEST_DIR / 'data/testTopology_expected.json'
 # mark node_uid amps as fused for testing purpose
 @pytest.mark.parametrize("node_uid", ['east edfa in Lannion_CAS to Stbrieuc'])
 def test_no_amp_feature(node_uid):
-    ''' Check that booster is not placed on a roadm if fused is specified
-        test_parser covers partly this behaviour. This test should guaranty that the
-        feature is preserved even if convert is changed
-    '''
+    """Check that booster is not placed on a roadm if fused is specified
+    test_parser covers partly this behaviour. This test should guaranty that the
+    feature is preserved even if convert is changed
+    """
     equipment = load_equipment(EQPT_LIBRARY_NAME)
     json_network = load_json(NETWORK_FILE_NAME)
 
@@ -145,9 +145,9 @@ def equipment():
         'booster_variety_list':[]
     }])
 def test_restrictions(restrictions, equipment):
-    ''' test that restriction is correctly applied if provided in eqpt_config and if no Edfa type
+    """test that restriction is correctly applied if provided in eqpt_config and if no Edfa type
     were provided in the network json
-    '''
+    """
     # add restrictions
     equipment['Roadm']['default'].restrictions = restrictions
     # build network
@@ -212,11 +212,11 @@ def test_restrictions(restrictions, equipment):
 @pytest.mark.parametrize('power_dbm', [0, +1, -2])
 @pytest.mark.parametrize('prev_node_type, effective_pch_out_db', [('edfa', -20.0), ('fused', -22.0)])
 def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
-    ''' Check that egress power of roadm is equal to target power if input power is greater
+    """Check that egress power of roadm is equal to target power if input power is greater
     than target power else, that it is equal to input power. Use a simple two hops A-B-C topology
     for the test where the prev_node in ROADM B is either an amplifier or a fused, so that the target
     power can not be met in this last case.
-    '''
+    """
     equipment = load_equipment(EQPT_LIBRARY_NAME)
     json_network = load_json(TEST_DIR / 'data/twohops_roadm_power_test.json')
     prev_node = next(n for n in json_network['elements'] if n['uid'] == 'west edfa in node B to ila2')

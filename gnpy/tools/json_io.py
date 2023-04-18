@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-'''
+"""
 gnpy.tools.json_io
 ==================
 
 Loading and saving data from JSON files in GNPy's internal data format
-'''
+"""
 
 from networkx import DiGraph
 from logging import getLogger
@@ -368,9 +368,7 @@ def _update_dual_stage(equipment):
 
 
 def _roadm_restrictions_sanity_check(equipment):
-    """ verifies that booster and preamp restrictions specified in roadm equipment are listed
-    in the edfa.
-    """
+    """verifies that booster and preamp restrictions specified in roadm equipment are listed in the edfa."""
     restrictions = equipment['Roadm']['default'].restrictions['booster_variety_list'] + \
         equipment['Roadm']['default'].restrictions['preamp_variety_list']
     for amp_name in restrictions:
@@ -440,11 +438,11 @@ def load_network(filename, equipment):
 
 
 def save_network(network: DiGraph, filename: str):
-    '''Dump the network into a JSON file
+    """Dump the network into a JSON file
 
     :param network: network to work on
     :param filename: file to write to
-    '''
+    """
     save_json(network_to_json(network), filename)
 
 
@@ -538,8 +536,7 @@ def save_json(obj, filename):
 
 
 def load_requests(filename, eqpt, bidir, network, network_filename):
-    """ loads the requests from a json or an excel file into a data string
-    """
+    """loads the requests from a json or an excel file into a data string"""
     if filename.suffix.lower() in ('.xls', '.xlsx'):
         _logger.info('Automatically converting requests from XLS to JSON')
         try:
@@ -648,8 +645,8 @@ def _check_one_request(params, f_max_from_si):
 
 
 def disjunctions_from_json(json_data):
-    """ reads the disjunction requests from the json dict and create the list
-        of requested disjunctions for this set of requests
+    """reads the disjunction requests from the json dict and create the list
+    of requested disjunctions for this set of requests
     """
     disjunctions_list = []
     if 'synchronization' in json_data:

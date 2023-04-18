@@ -30,7 +30,7 @@ SRC_ROOT = Path(__file__).parent.parent
 
 
 def test_example_invocation(capfd, output, handler, args):
-    '''Make sure that our examples produce useful output'''
+    """Make sure that our examples produce useful output"""
     os.chdir(SRC_ROOT)
     expected = open(SRC_ROOT / 'tests' / 'invocation' / output, mode='r', encoding='utf-8').read()
     handler(args)
@@ -41,7 +41,7 @@ def test_example_invocation(capfd, output, handler, args):
 
 @pytest.mark.parametrize('program', ('gnpy-transmission-example', 'gnpy-path-request'))
 def test_run_wrapper(program):
-    '''Ensure that our wrappers really, really work'''
+    """Ensure that our wrappers really, really work"""
     proc = subprocess.run((program, '--help'), stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                           check=True, universal_newlines=True)
     assert proc.stderr == ''

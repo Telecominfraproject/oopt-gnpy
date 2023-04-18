@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-'''
+"""
 gnpy.tools.cli_examples
 =======================
 
 Common code for CLI examples
-'''
+"""
 
 import argparse
 import logging
@@ -48,7 +48,7 @@ def show_example_data_dir():
 
 
 def load_common_data(equipment_filename, topology_filename, simulation_filename, save_raw_network_filename):
-    '''Load common configuration from JSON files'''
+    """Load common configuration from JSON files"""
 
     try:
         equipment = load_equipment(equipment_filename)

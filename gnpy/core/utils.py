@@ -213,7 +213,7 @@ freq2wavelength = constants.nu2lambda
 
 
 def freq2wavelength(value):
-    """ Converts frequency units to wavelength units.
+    """Converts frequency units to wavelength units.
 
     >>> round(freq2wavelength(191.35e12) * 1e9, 3)
     1566.723
@@ -247,8 +247,7 @@ def per_label_average(values, labels):
 
 
 def pretty_summary_print(summary):
-    """Build a prettty string that shows the summary dict values per label with 2 digits
-    """
+    """Build a prettty string that shows the summary dict values per label with 2 digits"""
     if len(summary) == 1:
         return f'{list(summary.values())[0]:.2f}'
     text = ', '.join([f'{label}: {value:.2f}' for label, value in summary.items()])
@@ -256,7 +255,7 @@ def pretty_summary_print(summary):
 
 
 def deltawl2deltaf(delta_wl, wavelength):
-    """ deltawl2deltaf(delta_wl, wavelength):
+    """deltawl2deltaf(delta_wl, wavelength):
     delta_wl is BW in wavelength units
     wavelength is the center wl
     units for delta_wl and wavelength must be same
@@ -274,9 +273,9 @@ def deltawl2deltaf(delta_wl, wavelength):
 
 
 def deltaf2deltawl(delta_f, frequency):
-    """ deltawl2deltaf(delta_f, frequency):
-        converts delta frequency to delta wavelength
-        units for delta_wl and wavelength must be same
+    """convert delta frequency to delta wavelength
+
+    Units for delta_wl and wavelength must be same.
 
     :param delta_f: delta frequency in same units as frequency
     :param frequency: frequency BW is relevant for
@@ -291,8 +290,7 @@ def deltaf2deltawl(delta_f, frequency):
 
 
 def rrc(ffs, baud_rate, alpha):
-    """ rrc(ffs, baud_rate, alpha): computes the root-raised cosine filter
-    function.
+    """compute the root-raised cosine filter function
 
     :param ffs: A numpy array of frequencies
     :param baud_rate: The Baud Rate of the System
@@ -318,7 +316,7 @@ def rrc(ffs, baud_rate, alpha):
 
 
 def merge_amplifier_restrictions(dict1, dict2):
-    """Updates contents of dicts recursively
+    """Update contents of dicts recursively
 
     >>> d1 = {'params': {'restrictions': {'preamp_variety_list': [], 'booster_variety_list': []}}}
     >>> d2 = {'params': {'target_pch_out_db': -20}}

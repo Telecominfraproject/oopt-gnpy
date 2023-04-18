@@ -115,7 +115,7 @@ def test_si(si, nch_and_spacing):
 
 @pytest.mark.parametrize("gain", [17, 19, 21, 23])
 def test_compare_nf_models(gain, setup_edfa_variable_gain, si):
-    """ compare the 2 amplifier models (polynomial and estimated from nf_min and max)
+    """compare the 2 amplifier models (polynomial and estimated from nf_min and max)
      => nf_model vs nf_poly_fit for intermediate gain values:
      between gain_min and gain_flatmax some discrepancy is expected but target < 0.5dB
      => unitary test for Edfa._calc_nf (and Edfa.interpol_params)"""
