@@ -16,6 +16,41 @@
       "message": "recheck\n\nI like replacing `print()` statements with the logger. I don\u0027t think it\u0027s necessary to `print()` *and* log at the same time, though. Can you remove these print statements, please?\n\nAlso, I wonder if it\u0027s really needed to log these exceptions as they are raised. What do you plan to use that for? If it\u0027s about API access or a nice error messages, then it seems to me that installing a \"generic\" exception handler around the entry point is more elegant.",
       "revId": "d3751618fc4d70f79260a7a820cdacd0acccdbcb",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "841daeed_e8d66fb5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2023-04-19T12:07:13Z",
+      "side": 1,
+      "message": "\u003e recheck\n\u003e \n\u003e I like replacing `print()` statements with the logger. I don\u0027t think it\u0027s necessary to `print()` *and* log at the same time, though. Can you remove these print statements, please?\n\u003e \n\nMy initial plan was not to change user experience: removing prints will not give the exact same outputs and -vv does add many logs which were mute before... Thats why I left the prints. I can remove them though if you still think they are not needed\n\n\u003e Also, I wonder if it\u0027s really needed to log these exceptions as they are raised. What do you plan to use that for? If it\u0027s about API access or a nice error messages, then it seems to me that installing a \"generic\" exception handler around the entry point is more elegant.\n\nyes it was for the API. I have the plan to provide the user with the log file to help debugging input data. Adding the log of the error in the file might help. what do you have in mind with the generic exception handler ?",
+      "parentUuid": "c03d698d_ab30a5c2",
+      "revId": "d3751618fc4d70f79260a7a820cdacd0acccdbcb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21387425_0427ca21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2023-04-19T12:07:13Z",
+      "side": 1,
+      "message": "thanks for the review!",
+      "revId": "d3751618fc4d70f79260a7a820cdacd0acccdbcb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
