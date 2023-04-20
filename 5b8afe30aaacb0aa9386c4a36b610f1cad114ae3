@@ -24,6 +24,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fadfde19_cf7bc958",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-20T15:36:41Z",
+      "side": 1,
+      "message": "This patch adds a frequency-dependent fiber model declared as a list in the equipment-file.\n\nThis fiber model is defined in the equipment-file, and can then be invoked at \nthe topology-file level by simply specifying the \u0027type_variety\u0027.\nHence it is no longer required to copy the model definition per fiber instance in the topology-file.\n\nOnce instantiated in the topology-file, the model can be customized as follows:\nthe legacy \u0027loss_coef\u0027-scalar is used to scale the instantiated fiber model\nfor the given \u0027loss_coef_offset_frequency\u0027 such that at the \u0027loss_coef_offset_frequency\u0027\nthe model values the \u0027loss_coef\u0027-scalar.\n\nAs the \u0027loss_coef\u0027-scalar is declared in the \u0027topology\u0027-file similarly to the legacy way,\napplying different loss coefficient models (or none), is eased, \nand done straightforwardly via the \u0027type_variety\u0027.",
+      "parentUuid": "1a46101a_cdcaa11e",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 89
+      },
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "423815b4_2a1d2f59",
@@ -41,6 +65,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be690102_b46da827",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-20T15:36:41Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "423815b4_2a1d2f59",
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5df2bc7_287150e4",
@@ -54,6 +96,30 @@
       "writtenOn": "2023-04-17T20:32:50Z",
       "side": 1,
       "message": "nit: spelling, just \"dictionary\"",
+      "range": {
+        "startLine": 519,
+        "startChar": 50,
+        "endLine": 519,
+        "endChar": 61
+      },
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ddc5d13_acc2cd94",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-20T15:36:41Z",
+      "side": 1,
+      "message": "Corrected.",
+      "parentUuid": "f5df2bc7_287150e4",
       "range": {
         "startLine": 519,
         "startChar": 50,
@@ -87,6 +153,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9a8951b_89ff5b66",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-20T15:36:41Z",
+      "side": 1,
+      "message": "Indeed my choice of words (\"dict\" and \"list\" modes) could have been clearer.\n\nIndeed you are right about the difference.\n\nThe new format choice of using a list, was done under guidance of Esther Le Rouzic.\nMotivation: the legacy format is not ordered, and thus when APIs such as PostMan are used, there can be data losses \u0026 inconsistencies (with the legacy format, because of lacking an index the value#k can happen to be mapped to frequency#m).\nThe benefit of the new format is that pairs of (frequency,value) are transmitted; shall the transmitting sequence of those pairs be disturbed, there shall be no risk when \"un-serializing\" them.",
+      "parentUuid": "f7c553d2_f7a13510",
+      "range": {
+        "startLine": 518,
+        "startChar": 0,
+        "endLine": 520,
+        "endChar": 80
+      },
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe9e10ed_a83f79c7",
@@ -100,6 +190,30 @@
       "writtenOn": "2023-04-17T20:32:50Z",
       "side": 1,
       "message": "it\u0027s simpler this way:\n self._loss_coef_offset_frequency \u003d kwargs.get(\u0027loss_coef_offset_frequency\u0027, None)",
+      "range": {
+        "startLine": 180,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 55
+      },
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c55dd2a_9e053f23",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-20T15:36:41Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fe9e10ed_a83f79c7",
       "range": {
         "startLine": 180,
         "startChar": 0,
@@ -133,6 +247,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b80df992_561f4135",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-20T15:36:41Z",
+      "side": 1,
+      "message": "Thank you.\n\nI could also cleanup the code.",
+      "parentUuid": "c99fc601_22a5a0d4",
+      "range": {
+        "startLine": 188,
+        "startChar": 49,
+        "endLine": 188,
+        "endChar": 84
+      },
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c976b72_e4ba8557",
@@ -146,6 +284,30 @@
       "writtenOn": "2023-04-17T20:32:50Z",
       "side": 1,
       "message": "Can you please clarify the purpose of loss_coef_static? When I see a definition like this one:\n \n      \"loss_coef_lut\": [\n        {\n          \"freq\": 185492341356673.97,\n          \"value\": 0.19496268656716417\n        },\n        {\n          \"freq\": 186052516411378.56,\n          \"value\": 0.1921641791044776\n        },\n        {\n          \"freq\": 188013129102844.62,\n          \"value\": 0.18656716417910446\n        },\n        {\n          \"freq\": 189991247264770.25,\n          \"value\": 0.18470149253731344\n        },\n        {\n          \"freq\": 191076586433260.4,\n          \"value\": 0.18423507462686567\n        },\n        {\n          \"freq\": 192004376367614.88,\n          \"value\": 0.18470149253731344\n        },\n        {\n          \"freq\": 194017505470459.53,\n          \"value\": 0.18703358208955223\n        },\n        {\n          \"freq\": 195995623632385.12,\n          \"value\": 0.19123134328358207\n        },\n        {\n          \"freq\": 198008752735229.75,\n          \"value\": 0.19636194029850745\n        },\n        {\n          \"freq\": 200021881838074.4,\n          \"value\": 0.20242537313432835\n        },\n        {\n          \"freq\": 201964989059080.94,\n          \"value\": 0.20942164179104478\n        }\n      ],\n      \"loss_coef_offset_frequency\": 191300000000000\n\n...then my first impression is that the `loss_coef_offset_frequency` duplicates the data given via `loss_coef_lut`. Can you please clarify this?",
+      "range": {
+        "startLine": 188,
+        "startChar": 0,
+        "endLine": 193,
+        "endChar": 51
+      },
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9996b71a_5cf4c63a",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-20T15:36:41Z",
+      "side": 1,
+      "message": "The role of loss_coef_static is to be an internal variable (not user-facing) used for computing the required offset between the model, and a custom value at the \u0027loss_coef_offset_frequency\u0027.\n\n\u0027loss_coef_offset_frequency\u0027 does not duplicates the data given via loss_coef_lut.\nIndeed loss_coef_lut contains the pairs of (frequency, value) of the model, while \u0027loss_coef_offset_frequency\u0027 is the frequency used for offsetting the model to a custom value at instance-level.",
+      "parentUuid": "4c976b72_e4ba8557",
       "range": {
         "startLine": 188,
         "startChar": 0,
@@ -173,6 +335,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1bbc194_f65f753c",
+        "filename": "tests/data/eqpt_config_fiber_freq.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-20T15:36:41Z",
+      "side": 1,
+      "message": "Thank your for spotting my mistakes.\n\nI corrected them accordingly.",
+      "parentUuid": "50a77a06_f2c3fc32",
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ae83e81f_a84f3635",
@@ -196,6 +376,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8f67ad6_d022f55f",
+        "filename": "tests/test_invocation.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-20T15:36:41Z",
+      "side": 1,
+      "message": "I removed this test, and will submit it in a subsequent relevant patch.\n\nYet I can already state, that the benefit of this test is to test expected Exceptions ie. errors.",
+      "parentUuid": "ae83e81f_a84f3635",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 29
+      },
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46256e6f_829b2948",
@@ -209,6 +413,30 @@
       "writtenOn": "2023-04-17T20:32:50Z",
       "side": 1,
       "message": "Why does this patch remove an existing test? Ensuring that the installed scripts work is still desirable.",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 103
+      },
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b36e3666_2950d41f",
+        "filename": "tests/test_invocation.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-20T15:36:41Z",
+      "side": 1,
+      "message": "Thank you for spotting an error of mine. \n\nThe error was corrected accordingly.",
+      "parentUuid": "46256e6f_829b2948",
       "range": {
         "startLine": 60,
         "startChar": 0,
