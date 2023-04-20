@@ -130,6 +130,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8a58622_3720d656",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-20T15:47:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ddc5d13_acc2cd94",
+      "range": {
+        "startLine": 519,
+        "startChar": 50,
+        "endLine": 519,
+        "endChar": 61
+      },
+      "revId": "5b8afe30aaacb0aa9386c4a36b610f1cad114ae3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7c553d2_f7a13510",
