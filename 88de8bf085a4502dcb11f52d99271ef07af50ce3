@@ -18,6 +18,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e7d43cd_89257fe5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-24T13:28:41Z",
+      "side": 1,
+      "message": "Thank your for the suggestion.",
+      "parentUuid": "26cede1a_73b8ea29",
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8d70ccd_4896b4d3",
@@ -64,6 +82,54 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "621beae7_15f9c73e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-24T13:28:41Z",
+      "side": 1,
+      "message": "Indeed this multiple argument is a good idea too, yet it is more verbose as it requires 5 characters each time.\n\nYet I like the \u0027via\u0027-label as it is less confusing than \u0027path\u0027 wrt \u0027path-request\u0027 for instance.",
+      "parentUuid": "648dee00_2121966d",
+      "range": {
+        "startLine": 9,
+        "startChar": 67,
+        "endLine": 9,
+        "endChar": 91
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b916249_a0af7aee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-24T13:28:41Z",
+      "side": 1,
+      "message": "Indeed, thank you.",
+      "parentUuid": "c8d70ccd_4896b4d3",
+      "range": {
+        "startLine": 9,
+        "startChar": 34,
+        "endLine": 9,
+        "endChar": 61
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "43a65a7e_ea8343d5",
@@ -77,6 +143,30 @@
       "writtenOn": "2022-10-31T09:32:40Z",
       "side": 1,
       "message": "nit: please improve readability by \"ASCII bullet list\", or at least avoid non-capitalized sentences because these are hard to read, IMHO. Like this:\n\n```\nAdd to transmission-example...\n\n- the --path argument shall ...\n- the --route-id shall ...\n \nFor both...\n```",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 148
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57249f6b_65a8b452",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-24T13:28:41Z",
+      "side": 1,
+      "message": "Thank you for the suggestion.",
+      "parentUuid": "43a65a7e_ea8343d5",
       "range": {
         "startLine": 9,
         "startChar": 0,
@@ -110,6 +200,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6464ce50_de027f6e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-24T13:28:41Z",
+      "side": 1,
+      "message": "Thank your for your suggestion.\nCorrected accordingly.",
+      "parentUuid": "8e7ed851_5f12b93d",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 136
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb88a5f7_cd202553",
@@ -127,6 +241,41 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "883d7a8e_d2d65745",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-24T13:28:41Z",
+      "side": 1,
+      "message": "I developed this commit specifically for addressing \"very\" meshed networks when using `gnpy-transmission-example`.\n\nAlso I needed to see the GSNR over the spectrum which is only provided by \n`gnpy-transmission-example` but not by `path-request-run`.\n\nHence completing `gnpy-transmission-example` to compute and display GSNRs for specific user-provided paths, with a minimal syntax for a shell usage was my goal.",
+      "parentUuid": "eb88a5f7_cd202553",
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "760e5390_e650ea37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-24T13:28:41Z",
+      "side": 1,
+      "message": "Thank you for your detailed review. \nPlease find below/enclosed my comments.",
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ec68aa9_188260f7",
@@ -140,6 +289,24 @@
       "writtenOn": "2022-10-31T09:32:40Z",
       "side": 1,
       "message": "please remove all debug `print()` statements (logging is fine)",
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85dba75a_13469475",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-24T13:28:41Z",
+      "side": 1,
+      "message": "I thought is as a feedback for the user.\nYet without it shall be fine too.",
+      "parentUuid": "0ec68aa9_188260f7",
       "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -167,6 +334,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57c2bdf8_e64ace1e",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-24T13:28:41Z",
+      "side": 1,
+      "message": "Thank you for this suggestion.",
+      "parentUuid": "09f6c68a_ffe2e34c",
+      "range": {
+        "startLine": 195,
+        "startChar": 8,
+        "endLine": 195,
+        "endChar": 73
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5391136_343c4dc2",
@@ -180,6 +371,24 @@
       "writtenOn": "2022-10-31T09:32:40Z",
       "side": 1,
       "message": "same here -- perhaps call it something like `extra_nodes`?",
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a4520b6_40176200",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-24T13:28:41Z",
+      "side": 1,
+      "message": "Changed `path_neg` to `path_check`.\nRemoved above comment as suggested in #195.",
+      "parentUuid": "f5391136_343c4dc2",
       "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -207,6 +416,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20087c6f_c6e088fe",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-24T13:28:41Z",
+      "side": 1,
+      "message": "The substring match allows more laziness for the user.\n\nWhen I am trying many different routes in a meshed network, I want to type it quickly: `A` which is faster than `amster` is faster than `Amsterdam` which is faster than \u0027Roadm Amsterdam\u0027 \nwhich is faster than the full UID (which can be pretty complex) etc.\n\nIdeally, I would like to enjoy auto completion from `argparse`, see the `argcomplete` library.",
+      "parentUuid": "71c9aed6_bac33a35",
+      "range": {
+        "startLine": 202,
+        "startChar": 16,
+        "endLine": 202,
+        "endChar": 42
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6afc073c_9a835eb4",
@@ -220,6 +453,30 @@
       "writtenOn": "2022-10-31T09:32:40Z",
       "side": 1,
       "message": "the substring match will be too eager and would very likely lead to extra nodes in the path requirements",
+      "range": {
+        "startLine": 207,
+        "startChar": 64,
+        "endLine": 207,
+        "endChar": 89
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ee40e2d_e6f8fff0",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-24T13:28:41Z",
+      "side": 1,
+      "message": "I would comment similar as for #202.",
+      "parentUuid": "6afc073c_9a835eb4",
       "range": {
         "startLine": 207,
         "startChar": 64,
@@ -270,6 +527,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd073ee1_0eebec75",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-24T13:28:41Z",
+      "side": 1,
+      "message": "Thank you for your comment.\n\nA part from the raised `Exception` for a missing source `trx`, the auto-fitting logics are similar, even if a `list` is used for the source, while a \u0027dict\u0027 for the destination.\n\nRefactored the similar auto-fittings into a separate function, and harmonized the data-type \u0026 the raising of an `Exception`.",
+      "parentUuid": "e93a63b8_58f525a3",
+      "range": {
+        "startLine": 227,
+        "startChar": 0,
+        "endLine": 228,
+        "endChar": 59
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b98bf56_f2744e58",
@@ -283,6 +564,30 @@
       "writtenOn": "2022-10-31T09:32:40Z",
       "side": 1,
       "message": "Please refactor this (and the other large `if`-block as well) into a separate function. Ideally, it should just return something which can be stashed into the resulting `params`, for example.",
+      "range": {
+        "startLine": 186,
+        "startChar": 0,
+        "endLine": 233,
+        "endChar": 47
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7db0b448_7fa02872",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-24T13:28:41Z",
+      "side": 1,
+      "message": "Refactored into a separate function.",
+      "parentUuid": "9b98bf56_f2744e58",
       "range": {
         "startLine": 186,
         "startChar": 0,
@@ -316,6 +621,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f6d3679_6d6004b4",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-24T13:28:41Z",
+      "side": 1,
+      "message": "Thank you for this suggestion.\n\nCorrected accordingly.",
+      "parentUuid": "fb042ac4_42c7e569",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 238,
+        "endChar": 42
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14e5668e_9143c4af",
@@ -329,6 +658,24 @@
       "writtenOn": "2022-10-31T09:32:40Z",
       "side": 1,
       "message": "this will discard the exception after printing an error message, and continue the execution",
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4ca62f9_240da7b6",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-24T13:28:41Z",
+      "side": 1,
+      "message": "Indeed.\nReplaced by a proper Exception.",
+      "parentUuid": "14e5668e_9143c4af",
       "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -356,6 +703,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90ac1538_f5570434",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-24T13:28:41Z",
+      "side": 1,
+      "message": "Thank you for this suggestion.\n\nCorrected accordingly, and moved checks even more upfront into the arguments definition of the `argparser`, by using the argument `required`",
+      "parentUuid": "cadaabad_b0c81bd9",
+      "range": {
+        "startLine": 252,
+        "startChar": 0,
+        "endLine": 259,
+        "endChar": 50
+      },
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "99a97d23_45d85c00",
@@ -369,6 +740,24 @@
       "writtenOn": "2022-10-31T09:32:40Z",
       "side": 1,
       "message": "IMHO a comment like that doesn\u0027t add any information",
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47454677_7736d868",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-24T13:28:41Z",
+      "side": 1,
+      "message": "Thank you for this suggestion.\n\nCorrected accordingly.",
+      "parentUuid": "99a97d23_45d85c00",
       "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -403,6 +792,24 @@
       "writtenOn": "2022-10-31T09:32:40Z",
       "side": 1,
       "message": "Please remove this comment, it only duplicates the code below without adding any information. In my experience, good code is often self-documenting. Comments are needed if something is more complex, and also to explain *why* the code is doing something (instead of *what*). Anytime the comment only explains *what* the code is doing, there\u0027s a chance that the comment is either redundant, or that the code should be improved. That can often be done by splitting overly complex statements into more lines, storing the intermediate results into properly named variables, etc.",
+      "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a70285d1_80e715bb",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1020511
+      },
+      "writtenOn": "2023-04-24T13:28:41Z",
+      "side": 1,
+      "message": "Thank you for this recall.\n\nCorrected accordingly.",
+      "parentUuid": "7ed45860_79ad9592",
       "revId": "88de8bf085a4502dcb11f52d99271ef07af50ce3",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
