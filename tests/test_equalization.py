@@ -96,7 +96,7 @@ def test_equalization_combination_degree(delta_pdb_per_channel, degree, equaliza
         'metadata': {'location': {'latitude': 0, 'longitude': 0, 'city': None, 'region': None}}
     }
     assert roadm.to_json == to_json_before_propagation
-    si = roadm(si, degree)
+    si = roadm(si, degree, None)
     assert roadm.ref_pch_out_dbm == pytest.approx(expected_pch_out_dbm, rel=1e-4)
     assert_allclose(expected_si, roadm.get_per_degree_power(degree, spectral_info=si), rtol=1e-3)
 
@@ -242,7 +242,7 @@ def test_low_input_power(target_out, delta_pdb_per_channel, correction):
         }
     }
     roadm = Roadm(**roadm_config)
-    si = roadm(si, 'toto')
+    si = roadm(si, 'toto', 'tata')
     assert_allclose(watt2dbm(si.signal), target - correction, rtol=1e-5)
     # in other words check that if target is below input power, target is applied else power is unchanged
     assert_allclose((watt2dbm(signal) >= target) * target + (watt2dbm(signal) < target) * watt2dbm(signal),
@@ -294,7 +294,7 @@ def test_2low_input_power(target_out, delta_pdb_per_channel, correction):
         }
     }
     roadm = Roadm(**roadm_config)
-    si = roadm(si, 'toto')
+    si = roadm(si, 'toto', 'tata')
     assert_allclose(watt2dbm(si.signal), target - correction, rtol=1e-5)
 
 
@@ -535,7 +535,7 @@ def test_equalization(case, deltap, target, mode, slot_width, equalization):
         spacing=req.spacing, tx_osnr=req.tx_osnr, ref_carrier=ref)
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
-            si = el(si, degree=path[i + 1].uid)
+            si = el(si, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
             if case in ['SI', 'nodes', 'degrees']:
                 if equalization == 'target_psd_out_mWperGHz':
                     assert_allclose(power_dbm_to_psd_mw_ghz(watt2dbm(si.signal + si.ase + si.nli), si.baud_rate),

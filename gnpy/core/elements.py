@@ -340,7 +340,7 @@ class Roadm(_Node):
             return psd2powerdbm(self.per_degree_pch_psw[degree], spectral_info.slot_width)
         return self.get_roadm_target_power(spectral_info=spectral_info)
 
-    def propagate(self, spectral_info, degree):
+    def propagate(self, spectral_info, degree, from_degree):
         """Equalization targets are read from topology file if defined and completed with default
         definition of the library.
         If the input power is lower than the target one, use the input power instead because
@@ -401,8 +401,8 @@ class Roadm(_Node):
         """
         spectral_info.pref = spectral_info.pref._replace(p_spani=self.ref_pch_out_dbm)
 
-    def __call__(self, spectral_info, degree):
-        self.propagate(spectral_info, degree=degree)
+    def __call__(self, spectral_info, degree, from_degree):
+        self.propagate(spectral_info, degree=degree, from_degree=from_degree)
         self.update_pref(spectral_info)
         return spectral_info
 
