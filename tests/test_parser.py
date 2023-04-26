@@ -25,7 +25,7 @@ import pytest
 from copy import deepcopy
 from gnpy.core.utils import automatic_nch, lin2db
 from gnpy.core.network import build_network, add_missing_elements_in_network
-from gnpy.core.exceptions import ServiceError
+from gnpy.core.exceptions import ServiceError, ConfigurationError
 from gnpy.topology.request import (jsontocsv, requests_aggregation, compute_path_dsjctn, deduplicate_disjunctions,
                                    compute_path_with_disjunction, ResultElement, PathRequest)
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
@@ -565,3 +565,52 @@ def test_service_json_constraint_order():
     rqs = requests_from_json(data, equipment)
     assert rqs[0].nodes_list == ['roadm Brest_KLA', 'roadm Lannion_CAS', 'roadm Lorient_KMA', 'roadm Vannes_KBE']
     assert rqs[0].loose_list == ['STRICT', 'LOOSE', 'STRICT', 'STRICT']
+
+
+@pytest.mark.parametrize('type_variety, target_pch_out_db, correct_variety', [(None, -20, True),
+                                                                              ('example_test', -18, True),
+                                                                              ('example', None, False)])
+def test_roadm_type_variety(type_variety, target_pch_out_db, correct_variety):
+    """Checks that if element has no variety, the default one is applied, and if it has one
+    that the type_variety is correctly applied
+    """
+    json_data = {
+        "elements": [{
+            "uid": "roadm Oakland",
+            "type": "Roadm",
+        }],
+        "connections": []
+    }
+    expected_roadm = {
+        "uid": "roadm Oakland",
+        "type": "Roadm",
+        "params": {
+            "restrictions": {
+                "preamp_variety_list": [],
+                "booster_variety_list": []
+            }
+        },
+        'metadata': {
+            'location': {
+                'city': None,
+                'latitude': 0,
+                'longitude': 0,
+                'region': None
+            }
+        }
+    }
+    if type_variety:
+        json_data['elements'][0]['type_variety'] = type_variety
+        expected_roadm['type_variety'] = type_variety
+    else:
+        # Do not add type variety in json_data to test that it creates a 'default' type_variety
+        expected_roadm['type_variety'] = 'default'
+    expected_roadm['params']['target_pch_out_db'] = target_pch_out_db
+    equipment = load_equipment(eqpt_filename)
+    if correct_variety:
+        network = network_from_json(json_data, equipment)
+        roadm = [n for n in network.nodes()][0]
+        assert roadm.to_json == expected_roadm
+    else:
+        with pytest.raises(ConfigurationError):
+            network = network_from_json(json_data, equipment)
