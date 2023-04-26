@@ -17,6 +17,7 @@ Transceiver Site_A
   PDL (dB):                  0.00
   Latency (ms):              0.00
 Roadm roadm Site A
+  type_variety:            default
   effective loss (dB):     20.00
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
@@ -144,6 +145,7 @@ Edfa Edfa5
   actual pch out (dBm):   0.06
   output VOA (dB):        0.00
 Roadm roadm Site C
+  type_variety:            default
   effective loss (dB):     20.00
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
@@ -271,6 +273,7 @@ Edfa Edfa10
   actual pch out (dBm):   0.06
   output VOA (dB):        0.00
 Roadm roadm Site D
+  type_variety:            default
   effective loss (dB):     20.00
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
@@ -332,6 +335,7 @@ Edfa Edfa12
   actual pch out (dBm):   0.03
   output VOA (dB):        0.00
 Roadm roadm Site E
+  type_variety:            default
   effective loss (dB):     20.00
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
@@ -415,6 +419,7 @@ Edfa Edfa15
   actual pch out (dBm):   0.04
   output VOA (dB):        0.00
 Roadm roadm Site B
+  type_variety:            default
   effective loss (dB):     20.00
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00

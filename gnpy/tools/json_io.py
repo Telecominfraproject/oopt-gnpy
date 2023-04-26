@@ -95,6 +95,7 @@ class Span(_JsonThing):
 
 class Roadm(_JsonThing):
     default_values = {
+        'type_variety': 'default',
         'add_drop_osnr': 100,
         'pmd': 0,
         'pdl': 0,
@@ -389,11 +390,13 @@ def _update_dual_stage(equipment):
 
 def _roadm_restrictions_sanity_check(equipment):
     """verifies that booster and preamp restrictions specified in roadm equipment are listed in the edfa."""
-    restrictions = equipment['Roadm']['default'].restrictions['booster_variety_list'] + \
-        equipment['Roadm']['default'].restrictions['preamp_variety_list']
-    for amp_name in restrictions:
-        if amp_name not in equipment['Edfa']:
-            raise EquipmentConfigError(f'ROADM restriction {amp_name} does not refer to a defined EDFA name')
+    for roadm_type, roadm_eqpt in equipment['Roadm'].items():
+        restrictions = roadm_eqpt.restrictions['booster_variety_list'] + \
+            roadm_eqpt.restrictions['preamp_variety_list']
+        for amp_name in restrictions:
+            if amp_name not in equipment['Edfa']:
+                raise EquipmentConfigError(f'ROADM {roadm_type} restriction {amp_name} does not refer to a '
+                                           + 'defined EDFA name')
 
 
 def _check_fiber_vs_raman_fiber(equipment):
@@ -509,7 +512,7 @@ def network_from_json(json_data, equipment):
             temp = merge_amplifier_restrictions(temp, extra_params)
             el_config['params'] = temp
             el_config['type_variety'] = variety
-        elif (typ in ['Fiber', 'RamanFiber']):
+        elif (typ in ['Fiber', 'RamanFiber', 'Roadm']):
             raise ConfigurationError(f'The {typ} of variety type {variety} was not recognized:'
                                      '\nplease check it is properly defined in the eqpt_config json file')
         elif typ == 'Edfa':
