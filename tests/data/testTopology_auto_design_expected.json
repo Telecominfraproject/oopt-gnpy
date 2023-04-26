@@ -159,6 +159,7 @@
     {
       "uid": "roadm Lannion_CAS",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -183,6 +184,7 @@
     {
       "uid": "roadm Lorient_KMA",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -207,6 +209,7 @@
     {
       "uid": "roadm Vannes_KBE",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -230,6 +233,7 @@
     {
       "uid": "roadm Rennes_STA",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -253,6 +257,7 @@
     {
       "uid": "roadm Brest_KLA",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -276,6 +281,7 @@
     {
       "uid": "roadm a",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -301,6 +307,7 @@
     {
       "uid": "roadm b",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -326,6 +333,7 @@
     {
       "uid": "roadm c",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -350,6 +358,7 @@
     {
       "uid": "roadm d",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -373,6 +382,7 @@
     {
       "uid": "roadm e",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -396,6 +406,7 @@
     {
       "uid": "roadm f",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -420,6 +431,7 @@
     {
       "uid": "roadm g",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -443,6 +455,7 @@
     {
       "uid": "roadm h",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {

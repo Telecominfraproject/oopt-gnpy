@@ -19,11 +19,12 @@ from gnpy.core.utils import lin2db, automatic_nch
 from gnpy.core.elements import Fused, Roadm, Edfa, Transceiver, EdfaOperational, EdfaParams, Fiber
 from gnpy.core.parameters import FiberParams, RoadmParams, FusedParams
 from gnpy.core.network import build_network, design_network
-from gnpy.tools.json_io import network_from_json, load_equipment, load_json, Amp
+from gnpy.tools.json_io import network_from_json, load_equipment, load_json, Amp, _equipment_from_json
 from gnpy.core.equipment import trx_mode_params
 from gnpy.topology.request import PathRequest, compute_constrained_path, propagate
 from gnpy.core.info import create_input_spectral_information, Carrier
 from gnpy.core.utils import db2lin, dbm2watt
+from gnpy.core.exceptions import ConfigurationError
 
 
 TEST_DIR = Path(__file__).parent
@@ -527,3 +528,24 @@ def test_compare_design_propagation_settings(power_dbm, req_power, amp_with_delt
                                             getattr(getattr(element_copy, key), subkey), rtol=1e-12)
                         else:
                             assert getattr(getattr(element, key), subkey) == getattr(getattr(element_copy, key), subkey)
+
+
+@pytest.mark.parametrize("restrictions, fail", [
+    ({'preamp_variety_list': [], 'booster_variety_list':[]}, False),
+    ({'preamp_variety_list': ['std_medium_gain', 'std_low_gain'], 'booster_variety_list':['std_medium_gain']}, False),
+    # the two next amp type_variety do not exist
+    ({'preamp_variety_list': [], 'booster_variety_list':['booster_medium_gain']}, True),
+    ({'preamp_variety_list': ['std_medium_gain', 'preamp_high_gain'], 'booster_variety_list':[]}, True)])
+def test_wrong_restrictions(restrictions, fail):
+    """Check that sanity_check correctly raises an error when restriction is incorrect and that library
+    correctly includes restrictions.
+    """
+    json_data = load_json(EQPT_LIBRARY_NAME)
+    # define wrong restriction
+    json_data['Roadm'][0]['restrictions'] = restrictions
+    if fail:
+        with pytest.raises(ConfigurationError):
+            _ = _equipment_from_json(json_data, EQPT_LIBRARY_NAME)
+    else:
+        equipment = _equipment_from_json(json_data, EQPT_LIBRARY_NAME)
+        assert equipment['Roadm']['example_test'].restrictions == restrictions
