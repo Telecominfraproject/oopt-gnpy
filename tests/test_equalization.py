@@ -53,6 +53,7 @@ def test_equalization_combination_degree(delta_pdb_per_channel, degree, equaliza
 
     roadm_config = {
         "uid": "roadm Lannion_CAS",
+        "type_variety": "default",
         "params": {
             "per_degree_pch_out_db": {
                 "east edfa in Lannion_CAS to Corlay": -16
@@ -84,6 +85,7 @@ def test_equalization_combination_degree(delta_pdb_per_channel, degree, equaliza
     to_json_before_propagation = {
         'uid': 'roadm Lannion_CAS',
         'type': 'Roadm',
+        "type_variety": "default",
         'params': {
             equalization_type: target,
             'restrictions': {'preamp_variety_list': [], 'booster_variety_list': []},

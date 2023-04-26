@@ -1,3 +1,6 @@
+[1;31;40m
+ WARNING missing type_variety attribute in eqpt_config.json[Roadm]
+ default value is type_variety = default[0m
 There are 96 channels propagating
 Power mode is set to True
 => it can be modified in eqpt_config.json - Span
@@ -16,6 +19,7 @@ Transceiver trx_Stockholm
   PMD (ps):                  0.00
   PDL (dB):                  0.00
 Roadm roadm_Stockholm
+  type_variety:            default
   effective loss (dB):     22.00
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
@@ -80,6 +84,7 @@ Edfa Edfa_preamp_roadm_Norrköping_from_fiber (Stockholm → Norrköping)_(2/2)
   actual pch out (dBm):   2.04
   output VOA (dB):        0.00
 Roadm roadm_Norrköping
+  type_variety:            default
   effective loss (dB):     22.00
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
@@ -121,6 +126,7 @@ Edfa Edfa_preamp_roadm_Linköping_from_fiber (Norrköping → Linköping)
   actual pch out (dBm):   2.01
   output VOA (dB):        0.00
 Roadm roadm_Linköping
+  type_variety:            default
   effective loss (dB):     22.00
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
@@ -162,6 +168,7 @@ Edfa Edfa_preamp_roadm_Jönköping_from_fiber (Linköping → Jönköping)
   actual pch out (dBm):   2.04
   output VOA (dB):        0.00
 Roadm roadm_Jönköping
+  type_variety:            default
   effective loss (dB):     22.00
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
@@ -203,6 +210,7 @@ Edfa Edfa_preamp_roadm_Borås_from_fiber (Jönköping → Borås)
   actual pch out (dBm):   2.02
   output VOA (dB):        0.00
 Roadm roadm_Borås
+  type_variety:            default
   effective loss (dB):     22.00
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
@@ -244,6 +252,7 @@ Edfa Edfa_preamp_roadm_Gothenburg_from_fiber (Borås → Gothenburg)
   actual pch out (dBm):   2.02
   output VOA (dB):        0.00
 Roadm roadm_Gothenburg
+  type_variety:            default
   effective loss (dB):     22.00
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00

@@ -159,6 +159,7 @@
     {
       "uid": "roadm Lannion_CAS",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -183,6 +184,7 @@
     {
       "uid": "roadm Lorient_KMA",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -207,6 +209,7 @@
     {
       "uid": "roadm Vannes_KBE",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -230,6 +233,7 @@
     {
       "uid": "roadm Rennes_STA",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -240,7 +244,6 @@
           "east edfa in Rennes_STA to Stbrieuc": -20,
           "east edfa in Rennes_STA to Ploermel": -20
         }
-
       },
       "metadata": {
         "location": {
@@ -254,6 +257,7 @@
     {
       "uid": "roadm Brest_KLA",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -277,6 +281,7 @@
     {
       "uid": "roadm a",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -302,6 +307,7 @@
     {
       "uid": "roadm b",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -310,7 +316,7 @@
           ],
           "booster_variety_list": []
         },
-        "per_degree_pch_out_db":{
+        "per_degree_pch_out_db": {
           "east edfa in b to a": -20,
           "east edfa in b to f": -20
         }
@@ -327,13 +333,14 @@
     {
       "uid": "roadm c",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
           "preamp_variety_list": [],
           "booster_variety_list": []
         },
-        "per_degree_pch_out_db":{
+        "per_degree_pch_out_db": {
           "east edfa in c to a": -20,
           "east edfa in c to d": -20,
           "east edfa in c to f": -20
@@ -351,6 +358,7 @@
     {
       "uid": "roadm d",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -374,6 +382,7 @@
     {
       "uid": "roadm e",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -397,6 +406,7 @@
     {
       "uid": "roadm f",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -421,6 +431,7 @@
     {
       "uid": "roadm g",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -430,7 +441,7 @@
         "per_degree_pch_out_db": {
           "east edfa in g to e": -20,
           "east edfa in g to h": -20
-         }
+        }
       },
       "metadata": {
         "location": {
@@ -444,6 +455,7 @@
     {
       "uid": "roadm h",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {

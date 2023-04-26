@@ -63,6 +63,7 @@
     {
       "uid": "roadm Lannion_CAS",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -18.6,
         "restrictions": {
@@ -71,8 +72,8 @@
         },
         "per_degree_pch_out_db": {
           "east edfa in Lannion_CAS to Corlay": -18.6,
-          "east edfa in Lannion_CAS to Morlaix": -23.0,
-          "east edfa in Lannion_CAS to Stbrieuc": -20
+          "east edfa in Lannion_CAS to Stbrieuc": -18.6,
+          "east edfa in Lannion_CAS to Morlaix": -18.6
         }
       },
       "metadata": {
@@ -87,6 +88,7 @@
     {
       "uid": "roadm Lorient_KMA",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -94,8 +96,8 @@
           "booster_variety_list": []
         },
         "per_degree_pch_out_db": {
-          "east edfa in Lorient_KMA to Vannes_KBE": -12.0,
           "east edfa in Lorient_KMA to Loudeac": -20,
+          "east edfa in Lorient_KMA to Vannes_KBE": -20,
           "Edfa0_roadm Lorient_KMA": -20
         }
       },
@@ -111,6 +113,7 @@
     {
       "uid": "roadm Vannes_KBE",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -118,7 +121,7 @@
           "booster_variety_list": []
         },
         "per_degree_pch_out_db": {
-          "east edfa in Vannes_KBE to Lorient_KMA": -10.0,
+          "east edfa in Vannes_KBE to Lorient_KMA": -20,
           "Edfa0_roadm Vannes_KBE": -20
         }
       },
@@ -134,6 +137,7 @@
     {
       "uid": "roadm Rennes_STA",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -141,7 +145,7 @@
           "booster_variety_list": []
         },
         "per_degree_pch_out_db": {
-          "east edfa in Rennes_STA to Stbrieuc": -20.0,
+          "east edfa in Rennes_STA to Stbrieuc": -20,
           "Edfa0_roadm Rennes_STA": -20
         }
       },
@@ -157,6 +161,7 @@
     {
       "uid": "roadm Brest_KLA",
       "type": "Roadm",
+      "type_variety": "default",
       "params": {
         "target_pch_out_db": -20,
         "restrictions": {
@@ -810,7 +815,7 @@
       "type": "Edfa",
       "type_variety": "test_fixed_gain",
       "operational": {
-        "gain_target": 20,
+        "gain_target": 18.6,
         "delta_p": 0,
         "tilt_target": 0,
         "out_voa": 0
@@ -848,7 +853,7 @@
       "type": "Edfa",
       "type_variety": "test_fixed_gain",
       "operational": {
-        "gain_target": 23.0,
+        "gain_target": 18.6,
         "delta_p": 0,
         "tilt_target": 0,
         "out_voa": 0
@@ -886,7 +891,7 @@
       "type": "Edfa",
       "type_variety": "std_low_gain",
       "operational": {
-        "gain_target": 10.0,
+        "gain_target": 20,
         "delta_p": 0,
         "tilt_target": 0,
         "out_voa": 0
@@ -905,7 +910,7 @@
       "type": "Edfa",
       "type_variety": "test_fixed_gain",
       "operational": {
-        "gain_target": 20.0,
+        "gain_target": 20,
         "delta_p": 0,
         "tilt_target": 0,
         "out_voa": 0
@@ -1057,7 +1062,7 @@
       "type": "Edfa",
       "type_variety": "std_low_gain",
       "operational": {
-        "gain_target": 14.0,
+        "gain_target": 22.0,
         "delta_p": 0,
         "tilt_target": 0,
         "out_voa": 0

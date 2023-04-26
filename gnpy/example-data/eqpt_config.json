@@ -218,6 +218,7 @@
             }
       ],
       "Roadm":[{
+            "type_variety": "default",
             "target_pch_out_db": -20,
             "add_drop_osnr": 38,
             "pmd": 0,

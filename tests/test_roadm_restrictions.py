@@ -17,11 +17,13 @@ from numpy.testing import assert_allclose
 from gnpy.core.utils import lin2db, automatic_nch
 from gnpy.core.elements import Fused, Roadm, Edfa
 from gnpy.core.network import build_network
-from gnpy.tools.json_io import network_from_json, load_equipment, load_json, Amp
+from gnpy.tools.json_io import network_from_json, load_equipment, load_json, Amp, _equipment_from_json
 from gnpy.core.equipment import trx_mode_params
 from gnpy.topology.request import PathRequest, compute_constrained_path, ref_carrier
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.utils import db2lin
+from gnpy.core.exceptions import ConfigurationError
+
 
 TEST_DIR = Path(__file__).parent
 EQPT_LIBRARY_NAME = TEST_DIR / 'data/eqpt_config.json'
@@ -283,3 +285,23 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
                     assert_allclose(power_out_roadm, power_in_roadm, rtol=1e-3)
         else:
             si = el(si)
+
+
+@pytest.mark.parametrize("restrictions, fail", [
+    ({'preamp_variety_list': [], 'booster_variety_list':[]}, False),
+    ({'preamp_variety_list': ['std_medium_gain', 'std_low_gain'], 'booster_variety_list':['std_medium_gain']}, False),
+    ({'preamp_variety_list': [], 'booster_variety_list':['booster_medium_gain']}, True),
+    ({'preamp_variety_list': ['std_medium_gain', 'preamp_high_gain'], 'booster_variety_list':[]}, True)])
+def test_wrong_restrictions(restrictions, fail):
+    """Check that sanity_check correctly raises an error when restriction is incorrect and that library
+    correctly includes restrictions.
+    """
+    json_data = load_json(EQPT_LIBRARY_NAME)
+    # define wrong restriction
+    json_data['Roadm'][0]['restrictions'] = restrictions
+    if fail:
+        with pytest.raises(ConfigurationError):
+            _ = _equipment_from_json(json_data, EQPT_LIBRARY_NAME)
+    else:
+        equipment = _equipment_from_json(json_data, EQPT_LIBRARY_NAME)
+        assert equipment['Roadm']['example_test'].restrictions == restrictions

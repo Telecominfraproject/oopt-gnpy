@@ -258,6 +258,7 @@ class Roadm(_Node):
         to_json = {
             'uid': self.uid,
             'type': type(self).__name__,
+            'type_variety': self.type_variety,
             'params': {
                 equalisation: value,
                 'restrictions': self.restrictions,
@@ -284,6 +285,7 @@ class Roadm(_Node):
 
         total_pch = pretty_summary_print(per_label_average(self.pch_out_dbm, self.propagated_labels))
         return '\n'.join([f'{type(self).__name__} {self.uid}',
+                          f'  type_variety:            {self.type_variety}',
                           f'  effective loss (dB):     {self.ref_effective_loss:.2f}',
                           f'  reference pch out (dBm): {self.ref_pch_out_dbm:.2f}',
                           f'  actual pch out (dBm):    {total_pch}'])
