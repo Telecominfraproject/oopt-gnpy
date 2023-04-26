@@ -1,4 +1,7 @@
 INFO     gnpy.tools.cli_examples:cli_examples.py Computing path requests meshTopologyExampleV2.xls into JSON format
+WARNING  gnpy.tools.json_io:json_io.py 
+ WARNING missing type_variety attribute in eqpt_config.json[Roadm]
+ default value is type_variety = default
 INFO     gnpy.tools.json_io:json_io.py Automatically converting requests from XLS to JSON
 INFO     gnpy.topology.request:request.py 
 	request 0
