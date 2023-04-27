@@ -113,8 +113,68 @@ class RoadmParams(Parameters):
             self.pmd = kwargs['pmd']
             self.pdl = kwargs['pdl']
             self.restrictions = kwargs['restrictions']
+            self.roadm_path_impairments = self.get_roadm_path_impairments(kwargs['roadm-path-impairments'])
         except KeyError as e:
             raise ParametersError(f'ROADM configurations must include {e}. Configuration: {kwargs}')
+        self.per_degree_impairments = kwargs.get('per_degree_impairments', [])
+
+    def get_roadm_path_impairments(self, path_impairments_list):
+        """Get the ROADM list of profiles for impairments definition
+
+        transform the ietf model into gnpy internal model: add a path-type in the attributes
+        """
+        if not path_impairments_list:
+            return {}
+        authorized_path_types = {
+            'roadm-express-path': 'express',
+            'roadm-add-path': 'add',
+            'roadm-drop-path': 'drop',
+        }
+        roadm_path_impairments = {}
+        for path_impairment in path_impairments_list:
+            index = path_impairment['roadm-path-impairments-id']
+            path_type = next(key for key in path_impairment if key in authorized_path_types.keys())
+            impairment_dict = dict({'path-type': authorized_path_types[path_type]}, **path_impairment[path_type])
+            roadm_path_impairments[index] = RoadmImpairment(impairment_dict)
+        return roadm_path_impairments
+
+
+class RoadmPath:
+    def __init__(self, from_degree, to_degree, path_type, impairment_id=None, impairment=None):
+        """Records roadm internal paths, types and impairment
+
+        path_type must be in "express", "add", "drop"
+        impairment_id must be one of the id detailed in equipement
+        """
+        self.from_degree = from_degree
+        self.to_degree = to_degree
+        self.path_type = path_type
+        self.impairment_id = impairment_id
+        self.impairment = impairment
+
+
+class RoadmImpairment:
+    """Generic definition of impairments for express, add and drop"""
+    def __init__(self, params):
+        """Records roadm internal paths and types"""
+        self.path_type = params.get('path-type')
+        self.pmd = params.get('roadm-pmd')
+        self.cd = params.get('roadm-cd')
+        self.pdl = params.get('roadm-pdl')
+        self.inband_crosstalk = params.get('roadm-inband-crosstalk')
+        self.maxloss = params.get('roadm-maxloss', 0)
+        if params.get('frequency-range') is not None:
+            self.fmin = params.get('frequency-range')['lower-frequency']
+            self.fmax = params.get('frequency-range')['upper-frequency']
+        else:
+            self.fmin, self.fmax = None, None
+        self.osnr = params.get('roadm-osnr', None)
+        self.pmax = params.get('roadm-pmax', None)
+        self.nf = params.get('roadm-noise-figure', None)
+        self.minloss = params.get('minloss', None)
+        self.typloss = params.get('typloss', None)
+        self.pmin = params.get('pmin', None)
+        self.ptyp = params.get('ptyp', None)
 
 
 class FusedParams(Parameters):
