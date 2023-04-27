@@ -30,9 +30,10 @@ from logging import getLogger
 
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_average, pretty_summary_print, \
     watt2dbm, psd2powerdbm
-from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational
+from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational, \
+    RoadmPath, RoadmImpairment
 from gnpy.core.science_utils import NliSolver, RamanSolver
-from gnpy.core.info import SpectralInformation, ReferenceCarrier
+from gnpy.core.info import SpectralInformation
 from gnpy.core.exceptions import NetworkTopologyError, SpectrumError, ParametersError
 
 
@@ -260,6 +261,17 @@ class Roadm(_Node):
         self.per_degree_pch_psw = self.params.per_degree_pch_psw
         self.ref_pch_in_dbm = {}
         self.ref_carrier = None
+        # Define the nature of from-to internal connection: express-path, drop-path, add-path
+        # roadm_paths contains a list of RoadmPath object for each path crossing the ROADM
+        self.roadm_paths = []
+        # roadm_path_impairments contains a dictionnary of impairments profiles corresponding to type_variety
+        # first listed add, drop an express constitute the default
+        self.roadm_path_impairments = self.params.roadm_path_impairments
+        # per degree definitions, in case some degrees have particular deviations with respect to default.
+        self.per_degree_impairments = [{"from_degree": i["from_degree"],
+                                        "to_degree": i["to_degree"],
+                                        "impairment_id": i["impairment_id"]}
+                                       for i in self.params.per_degree_impairments]
 
     @property
     def to_json(self):
@@ -290,6 +302,9 @@ class Roadm(_Node):
             to_json['params']['per_degree_psd_out_mWperGHz'] = self.per_degree_pch_psd
         if self.per_degree_pch_psw:
             to_json['params']['per_degree_psd_out_mWperSlotWidth'] = self.per_degree_pch_psw
+        if self.per_degree_impairments:
+            to_json['per_degree_impairments'] = self.per_degree_impairments
+
         return to_json
 
     def __repr__(self):
@@ -405,10 +420,68 @@ class Roadm(_Node):
         delta_power = watt2dbm(input_power) - new_target
 
         spectral_info.apply_attenuation_db(delta_power)
-        spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
-        spectral_info.pdl = sqrt(spectral_info.pdl ** 2 + self.params.pdl ** 2)
+        spectral_info.pmd = sqrt(spectral_info.pmd ** 2
+                                 + self.get_roadm_path(from_degree=from_degree, to_degree=degree).impairment.pmd ** 2)
+        spectral_info.pdl = sqrt(spectral_info.pdl ** 2
+                                 + self.get_roadm_path(from_degree=from_degree, to_degree=degree).impairment.pdl ** 2)
         self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
         self.propagated_labels = spectral_info.label
+
+    def set_roadm_paths(self, from_degree, to_degree, path_type, impairment_id=None):
+        """set internal path type: express, drop or add with corresponding impairment
+
+        If no impairment id is defined, then use the first profile that matches the path_type in the
+        profile dictionnary.
+        """
+        # initialize impairment with params.pmd, params.cd
+        # if more detailed parameters are available for the Roadm, the use them instead
+        roadm_global_impairment = {'roadm-pmd': self.params.pmd,
+                                   'roadm-pdl': self.params.pdl}
+        if path_type in ['add', 'drop']:
+            # without detailed imparments, we assume that add OSNR contribution is the same as drop contribution
+            # add_drop_osnr_db = - 10log10(1/add_osnr + 1/drop_osnr) with add_osnr = drop_osnr
+            # = add_osnr_db + 10log10(2)
+            roadm_global_impairment['roadm-osnr'] = self.params.add_drop_osnr + lin2db(2)
+        impairment = RoadmImpairment(roadm_global_impairment)
+
+        if impairment_id is None:
+            # get the first item in the type variety that matches the path_type
+            for path_impairment_id, path_impairment in self.roadm_path_impairments.items():
+                if path_impairment.path_type == path_type:
+                    impairment = path_impairment
+                    impairment_id = path_impairment_id
+                    break
+            # at this point, path_type is not part of roadm_path_impairment, impairment and impairment_id are None
+        else:
+            if impairment_id in self.roadm_path_impairments:
+                impairment = self.roadm_path_impairments[impairment_id]
+            else:
+                msg = f'ROADM {self.uid}: impairment profile id {impairment_id} is not defined in library'
+                raise NetworkTopologyError(msg)
+        # print(from_degree, to_degree, path_type)
+        self.roadm_paths.append(RoadmPath(from_degree=from_degree, to_degree=to_degree, path_type=path_type,
+                                          impairment_id=impairment_id, impairment=impairment))
+
+    def get_roadm_path(self, from_degree, to_degree):
+        """Get internal path type impairment"""
+        for roadm_path in self.roadm_paths:
+            if roadm_path.from_degree == from_degree and roadm_path.to_degree == to_degree:
+                return roadm_path
+        msg = f'Could not find from_degree-to_degree {from_degree}-{to_degree} path in ROADM {self.uid}'
+        raise NetworkTopologyError(msg)
+
+    def get_per_degree_impairment_id(self, from_degree, to_degree):
+        """returns the id of the impairment if the degrees are in the per_degree tab"""
+        for impairment in self.per_degree_impairments:
+            if impairment["from_degree"] == from_degree and impairment["to_degree"] == to_degree:
+                return impairment["impairment_id"]
+        return None
+
+    def get_path_type_per_id(self, impairment_id):
+        """returns the path_type of the impairment if the is is defined"""
+        if impairment_id in self.roadm_path_impairments.keys():
+            return self.roadm_path_impairments[impairment_id].path_type
+        return None
 
     def __call__(self, spectral_info, degree, from_degree):
         self.propagate(spectral_info, degree=degree, from_degree=from_degree)
