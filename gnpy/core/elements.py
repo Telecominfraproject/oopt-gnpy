@@ -374,13 +374,14 @@ class Roadm(_Node):
     def propagate(self, spectral_info, degree, from_degree):
         """Equalization targets are read from topology file if defined and completed with default
         definition of the library.
-        If the input power is lower than the target one, use the input power instead because
-        a ROADM doesn't amplify, it can only attenuate.
-        There is no difference for add or express : the same target is applied. For the moment
-        propagates operates with spectral info carriers all having the same source or destination.
+        If the input power is lower than the target one, use the input power minus the ROADM loss
+        if is exists, because a ROADM doesn't amplify, it can only attenuate.
+        There is no difference for add or express : the same target is applied.
+        For the moment propagate operates with spectral info carriers all having the same source or destination.
         """
-        # TODO maybe add a minimum loss for the ROADM
-
+        # apply min ROADM loss if it exists
+        roadm_maxloss_db = self.get_roadm_path(from_degree, degree).impairment.maxloss
+        spectral_info.apply_attenuation_db(roadm_maxloss_db)
         # find the target power for the reference carrier
         ref_per_degree_pch = self.get_per_degree_ref_power(degree)
         # find the target powers for each signal carrier
@@ -391,7 +392,7 @@ class Roadm(_Node):
         # the target power out configured for this ROADM degree's egress. Since ROADM does not amplify,
         # the power out of the ROADM for the ref channel is the min value between target power and input power.
         # (TODO add a minimum loss for the ROADM crossing)
-        self.ref_pch_out_dbm = min(self.ref_pch_in_dbm[from_degree], ref_per_degree_pch)
+        self.ref_pch_out_dbm = min(self.ref_pch_in_dbm[from_degree] - roadm_maxloss_db, ref_per_degree_pch)
         # Definition of effective_loss:
         # Optical power of carriers are equalized by the ROADM, so that the experienced loss is not the same for
         # different carriers. effective_loss records the loss for the reference carrier.
