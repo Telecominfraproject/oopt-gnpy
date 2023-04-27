@@ -90,7 +90,8 @@
             "restrictions": {
                             "preamp_variety_list":[],
                             "booster_variety_list":[]
-                            }
+                            },
+            "roadm-path-impairments": []
             }, {
             "type_variety": "default",
             "target_pch_out_db": -20,
@@ -100,7 +101,8 @@
             "restrictions": {
                             "preamp_variety_list":[],
                             "booster_variety_list":[]
-                            }
+                            },
+            "roadm-path-impairments": []
             }],
       "SI":[{
             "f_min": 191.3e12,

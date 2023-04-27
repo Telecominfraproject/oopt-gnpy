@@ -107,7 +107,8 @@
             "restrictions": {
                 "preamp_variety_list": ["openroadm_mw_mw_preamp_worstcase_ver5"],
                 "booster_variety_list": ["openroadm_mw_mw_booster"]
-            }
+            },
+            "roadm-path-impairments": []
         }
     ],
     "SI": [

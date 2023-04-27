@@ -353,6 +353,26 @@ def set_roadm_per_degree_targets(roadm, network):
                 raise ConfigurationError(roadm.uid, 'needs an equalization target')
 
 
+def set_roadm_internal_paths(roadm, network):
+    """Set ROADM path types (express, add, drop)
+
+    Uses implicit guess if no information is set in ROADM
+    """
+    next_oms = [n.uid for n in network.successors(roadm) if not isinstance(n, elements.Transceiver)]
+    previous_oms = [n.uid for n in network.predecessors(roadm) if not isinstance(n, elements.Transceiver)]
+    drop_port = [n.uid for n in network.successors(roadm) if isinstance(n, elements.Transceiver)]
+    add_port = [n.uid for n in network.predecessors(roadm) if isinstance(n, elements.Transceiver)]
+
+    for from_degree in previous_oms:
+        for to_degree in next_oms:
+            roadm.set_roadm_paths(from_degree=from_degree, to_degree=to_degree, path_type='express')
+        for drop in drop_port:
+            roadm.set_roadm_paths(from_degree=from_degree, to_degree=drop, path_type='drop')
+    for to_degree in next_oms:
+        for add in add_port:
+            roadm.set_roadm_paths(from_degree=add, to_degree=to_degree, path_type='add')
+
+
 def add_roadm_booster(network, roadm):
     next_nodes = [n for n in network.successors(roadm)
                   if not (isinstance(n, elements.Transceiver) or isinstance(n, elements.Fused) or isinstance(n, elements.Edfa))]
@@ -565,6 +585,7 @@ def build_network(network, equipment, pref_ch_db, pref_total_db, no_insert_edfas
     for roadm in roadms:
         set_roadm_per_degree_targets(roadm, network)
         set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db)
+        set_roadm_internal_paths(roadm, network)
 
     trx = [t for t in network.nodes() if isinstance(t, elements.Transceiver)]
     for t in trx:
