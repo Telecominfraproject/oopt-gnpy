@@ -69,10 +69,12 @@ def test_equalization_combination_degree(delta_pdb_per_channel, degree, equaliza
             "restrictions": {
                 "preamp_variety_list": [],
                 "booster_variety_list": []
-            }
+            },
+            "roadm-path-impairments": []
         }
     }
     roadm = Roadm(**roadm_config)
+    roadm.set_roadm_paths(from_degree='tata', to_degree=degree, path_type='express')
     roadm.ref_pch_in_dbm['tata'] = 0
     roadm.ref_carrier = ReferenceCarrier(baud_rate=32e9, slot_width=50e9)
     frequency = 191e12 + array([0, 50e9, 150e9, 225e9, 275e9])
@@ -231,7 +233,8 @@ def test_low_input_power(target_out, delta_pdb_per_channel, correction):
             "restrictions": {
                 "preamp_variety_list": [],
                 "booster_variety_list": []
-            }
+            },
+            "roadm-path-impairments": []
         },
         "metadata": {
             "location": {
@@ -243,6 +246,7 @@ def test_low_input_power(target_out, delta_pdb_per_channel, correction):
         }
     }
     roadm = Roadm(**roadm_config)
+    roadm.set_roadm_paths(from_degree='tata', to_degree='toto', path_type='express')
     roadm.ref_pch_in_dbm['tata'] = 0
     roadm.ref_carrier = ReferenceCarrier(baud_rate=32e9, slot_width=50e9)
     si = roadm(si, degree='toto', from_degree='tata')
@@ -283,7 +287,8 @@ def test_2low_input_power(target_out, delta_pdb_per_channel, correction):
             "restrictions": {
                 "preamp_variety_list": [],
                 "booster_variety_list": []
-            }
+            },
+            "roadm-path-impairments": []
         },
         "metadata": {
             "location": {
@@ -295,6 +300,7 @@ def test_2low_input_power(target_out, delta_pdb_per_channel, correction):
         }
     }
     roadm = Roadm(**roadm_config)
+    roadm.set_roadm_paths(from_degree='tata', to_degree='toto', path_type='express')
     roadm.ref_pch_in_dbm['tata'] = 0
     roadm.ref_carrier = ReferenceCarrier(baud_rate=32e9, slot_width=50e9)
     si = roadm(si, degree='toto', from_degree='tata')

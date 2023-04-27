@@ -23,8 +23,8 @@ from gnpy.tools.json_io import network_from_json, load_equipment, load_json, Amp
 from gnpy.core.equipment import trx_mode_params
 from gnpy.topology.request import PathRequest, compute_constrained_path, propagate
 from gnpy.core.info import create_input_spectral_information, Carrier
-from gnpy.core.utils import db2lin, dbm2watt
-from gnpy.core.exceptions import ConfigurationError
+from gnpy.core.utils import db2lin, dbm2watt, merge_amplifier_restrictions
+from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 
 
 TEST_DIR = Path(__file__).parent
@@ -549,3 +549,141 @@ def test_wrong_restrictions(restrictions, fail):
     else:
         equipment = _equipment_from_json(json_data, EQPT_LIBRARY_NAME)
         assert equipment['Roadm']['example_test'].restrictions == restrictions
+
+
+@pytest.mark.parametrize('roadm, from_degree, to_degree, expected_impairment_id, expected_type', [
+    ('roadm Lannion_CAS', 'trx Lannion_CAS', 'east edfa in Lannion_CAS to Corlay', 1, 'add'),
+    ('roadm Lannion_CAS', 'west edfa in Lannion_CAS to Stbrieuc', 'east edfa in Lannion_CAS to Corlay', 0, 'express'),
+    ('roadm Lannion_CAS', 'west edfa in Lannion_CAS to Stbrieuc', 'trx Lannion_CAS', 2, 'drop'),
+    ('roadm h', 'west edfa in h to g', 'trx h', None, 'drop')
+])
+def test_roadm_impairments(roadm, from_degree, to_degree, expected_impairment_id, expected_type):
+    """Check that impairment id and types are correct
+    """
+    json_data = load_json(NETWORK_FILE_NAME)
+    for el in json_data['elements']:
+        if el['uid'] == 'roadm Lannion_CAS':
+            el['type_variety'] = 'example_detailed_impairments'
+    equipment = load_equipment(EQPT_LIBRARY_NAME)
+    network = network_from_json(json_data, equipment)
+    build_network(network, equipment, 0.0, 20.0)
+    roadm = next(n for n in network.nodes() if n.uid == roadm)
+    assert roadm.get_roadm_path(from_degree, to_degree).path_type == expected_type
+    assert roadm.get_roadm_path(from_degree, to_degree).impairment_id == expected_impairment_id
+
+
+@pytest.mark.parametrize('type_variety, from_degree, to_degree, impairment_id, expected_type', [
+    (None, 'trx Lannion_CAS', 'east edfa in Lannion_CAS to Corlay', 1, 'add'),
+    ('default', 'trx Lannion_CAS', 'east edfa in Lannion_CAS to Corlay', 3, 'add'),
+    (None, 'west edfa in Lannion_CAS to Stbrieuc', 'east edfa in Lannion_CAS to Corlay', None, 'express')
+])
+def test_roadm_per_degree_impairments(type_variety, from_degree, to_degree, impairment_id, expected_type):
+    """Check that impairment type is correct also if per degree impairment is defined
+    """
+    json_data = load_json(EQPT_LIBRARY_NAME)
+    assert 'type_variety' not in json_data['Roadm'][2]
+    json_data['Roadm'][2]['roadm-path-impairments'] = [
+        {
+            "roadm-path-impairments-id": 1,
+            "roadm-add-path": {
+                "roadm-osnr": 41,
+            }
+        }, {
+            "roadm-path-impairments-id": 3,
+            "roadm-add-path": {
+                "roadm-inband-crosstalk": 0,
+                "roadm-osnr": 20,
+                "roadm-noise-figure": 23
+            }
+        }]
+    equipment = _equipment_from_json(json_data, EQPT_LIBRARY_NAME)
+    assert equipment['Roadm']['default'].type_variety == 'default'
+
+    json_data = load_json(NETWORK_FILE_NAME)
+    for el in json_data['elements']:
+        if el['uid'] == 'roadm Lannion_CAS' and type_variety is not None:
+            el['type_variety'] = type_variety
+            el['params'] = {
+                "per_degree_impairments": [
+                    {
+                        "from_degree": from_degree,
+                        "to_degree": to_degree,
+                        "impairment_id": impairment_id
+                    }]
+            }
+    network = network_from_json(json_data, equipment)
+    build_network(network, equipment, 0.0, 20.0)
+    roadm = next(n for n in network.nodes() if n.uid == 'roadm Lannion_CAS')
+    assert roadm.get_roadm_path(from_degree, to_degree).path_type == expected_type
+    assert roadm.get_roadm_path(from_degree, to_degree).impairment_id == impairment_id
+
+
+@pytest.mark.parametrize('from_degree, to_degree, impairment_id, error, message', [
+    ('trx Lannion_CAS', 'east edfa in Lannion_CAS to Corlay', 2, NetworkTopologyError,
+     'Roadm roadm Lannion_CAS path_type is defined as drop but it should be add'),  # wrong path_type
+    ('trx Lannion_CAS', 'east edfa toto', 1, ConfigurationError,
+     'Roadm roadm Lannion_CAS has wrong from-to degree uid trx Lannion_CAS - east edfa toto'),  # wrong degree
+    ('trx Lannion_CAS', 'east edfa in Lannion_CAS to Corlay', 11, NetworkTopologyError,
+     'ROADM roadm Lannion_CAS: impairment profile id 11 is not defined in library')  # wrong impairment_id
+])
+def test_wrong_roadm_per_degree_impairments(from_degree, to_degree, impairment_id, error, message):
+    """Check that wrong per degree definitions are correctly catched
+    """
+    equipment = load_equipment(EQPT_LIBRARY_NAME)
+    json_data = load_json(NETWORK_FILE_NAME)
+    for el in json_data['elements']:
+        if el['uid'] == 'roadm Lannion_CAS':
+            el['type_variety'] = 'example_detailed_impairments'
+            el['params'] = {
+                "per_degree_impairments": [
+                    {
+                        "from_degree": from_degree,
+                        "to_degree": to_degree,
+                        "impairment_id": impairment_id
+                    }]
+            }
+    network = network_from_json(json_data, equipment)
+    with pytest.raises(error, match=message):
+        build_network(network, equipment, 0.0, 20.0)
+
+
+@pytest.mark.parametrize('path_type, type_variety, expected_pmd, expected_pdl, expected_osnr', [
+    ('express', 'default', 5.0e-12, 0.5, None),  # roadm instance parameters pre-empts library
+    ('express', 'example_test', 5.0e-12, 0.5, None),
+    ('express', 'example_detailed_impairments', 0, 0, None),  # detailed parameters pre-empts global instance ones
+    ('add', 'default', 5.0e-12, 0.5, None),
+    ('add', 'example_test', 5.0e-12, 0.5, None),
+    ('add', 'example_detailed_impairments', 0, 0, 41)])
+def test_impairment_initialization(path_type, type_variety, expected_pmd, expected_pdl, expected_osnr):
+    """Check that impairments are correctly initialized, with this order:
+    - use equipment roadm impairments if no impairment are set in the ROADM instance
+    - use roadm global impairment if roadm global impairment are set
+    - use roadm detailed impairment for the corresponding path_type if roadm type_variety has detailed impairments
+    - use roadm per degree impairment if they are defined
+    """
+    equipment = load_equipment(EQPT_LIBRARY_NAME)
+    extra_params = equipment['Roadm'][type_variety].__dict__
+    roadm_config = {
+        "uid": "roadm Lannion_CAS",
+        "params": {
+            "add_drop_osnr": 38,
+            "pmd": 5.0e-12,
+            "pdl": 0.5
+        }
+    }
+    if type_variety != 'default':
+        roadm_config["type_variety"] = type_variety
+    roadm_config['params'] = merge_amplifier_restrictions(roadm_config['params'], extra_params)
+    roadm = Roadm(**roadm_config)
+    roadm.set_roadm_paths(from_degree='tata', to_degree='toto', path_type=path_type)
+    assert roadm.get_roadm_path(from_degree='tata', to_degree='toto').path_type == path_type
+    assert roadm.get_roadm_path(from_degree='tata', to_degree='toto').impairment.pmd == expected_pmd
+    assert roadm.get_roadm_path(from_degree='tata', to_degree='toto').impairment.pdl == expected_pdl
+    if path_type == 'add':
+        # we assume for simplicity that add contribution is the same as drop contribution
+        # add_drop_osnr_db = 10log10(1/add_osnr + 1/drop_osnr)
+        if type_variety in ['default', 'example_test']:
+            assert roadm.get_roadm_path(from_degree='tata',
+                                        to_degree='toto').impairment.osnr == roadm.params.add_drop_osnr + lin2db(2)
+        else:
+            assert roadm.get_roadm_path(from_degree='tata', to_degree='toto').impairment.osnr == expected_osnr
