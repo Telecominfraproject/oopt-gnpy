@@ -530,6 +530,62 @@ def set_fiber_input_power(network, fiber, equipment, pref_ch_db):
         fiber.ref_pch_in_dbm = pref_ch_db - loss
 
 
+def set_roadm_internal_paths(roadm, network):
+    """Set ROADM path types (express, add, drop)
+
+    Uses implicit guess if no information is set in ROADM
+    """
+    next_oms = [n.uid for n in network.successors(roadm) if not isinstance(n, elements.Transceiver)]
+    previous_oms = [n.uid for n in network.predecessors(roadm) if not isinstance(n, elements.Transceiver)]
+    drop_port = [n.uid for n in network.successors(roadm) if isinstance(n, elements.Transceiver)]
+    add_port = [n.uid for n in network.predecessors(roadm) if isinstance(n, elements.Transceiver)]
+
+    default_express = 'express'
+    default_add = 'add'
+    default_drop = 'drop'
+    # take user defined element impairment id if it exists
+    correct_from_degrees = []
+    correct_add = []
+    correct_to_degrees = []
+    correct_drop = []
+    for from_degree in previous_oms:
+        correct_from_degrees.append(from_degree)
+        for to_degree in next_oms:
+            correct_to_degrees.append(to_degree)
+            impairment_id = roadm.get_per_degree_impairment_id(from_degree, to_degree)
+            roadm.set_roadm_paths(from_degree=from_degree, to_degree=to_degree, path_type=default_express,
+                                  impairment_id=impairment_id)
+        for drop in drop_port:
+            correct_drop.append(drop)
+            impairment_id = roadm.get_per_degree_impairment_id(from_degree, drop)
+            path_type = roadm.get_path_type_per_id(impairment_id)
+            # a degree connected to a transceiver MUST be add or drop
+            # but a degree connected  to something else could be an express, add or drop
+            # (for example case of external shelves)
+            if path_type and path_type != 'drop':
+                msg = f'Roadm {roadm.uid} path_type is defined as {path_type} but it should be drop'
+                raise NetworkTopologyError(msg)
+            roadm.set_roadm_paths(from_degree=from_degree, to_degree=drop, path_type=default_drop,
+                                  impairment_id=impairment_id)
+    for to_degree in next_oms:
+        for add in add_port:
+            correct_add.append(add)
+            impairment_id = roadm.get_per_degree_impairment_id(add, to_degree)
+            path_type = roadm.get_path_type_per_id(impairment_id)
+            if path_type and path_type != 'add':
+                msg = f'Roadm {roadm.uid} path_type is defined as {path_type} but it should be add'
+                raise NetworkTopologyError(msg)
+            roadm.set_roadm_paths(from_degree=add, to_degree=to_degree, path_type=default_add,
+                                  impairment_id=impairment_id)
+    # sanity check: raise an error if per_degree from or to degrees are not in the correct list
+    # raise an error if user defined path_type is not consistent with inferred path_type:
+    for item in roadm.per_degree_impairments.values():
+        if item['from_degree'] not in correct_from_degrees + correct_add or \
+                item['to_degree'] not in correct_to_degrees + correct_drop:
+            msg = f'Roadm {roadm.uid} has wrong from-to degree uid {item["from_degree"]} - {item["to_degree"]}'
+            raise NetworkTopologyError(msg)
+
+
 def add_roadm_booster(network, roadm):
     next_nodes = [n for n in network.successors(roadm)
                   if not (isinstance(n, elements.Transceiver) or isinstance(n, elements.Fused)
@@ -777,6 +833,7 @@ def build_network(network, equipment, pref_ch_db, pref_total_db, set_connector_l
         set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db, verbose)
     for roadm in roadms:
         set_roadm_input_powers(network, roadm, equipment, pref_ch_db)
+        set_roadm_internal_paths(roadm, network)
     for fiber in [f for f in network.nodes() if isinstance(f, (elements.Fiber, elements.RamanFiber))]:
         set_fiber_input_power(network, fiber, equipment, pref_ch_db)
 
