@@ -217,7 +217,70 @@
             "restrictions": {
                 "preamp_variety_list": [],
                 "booster_variety_list": []
-            }
+            },
+            "roadm-path-impairments": []
+        }, {
+            "type_variety": "detailed_impairments",
+            "target_pch_out_db": -20,
+            "add_drop_osnr": 38,
+            "pmd": 0,
+            "pdl": 0,
+            "restrictions": {
+                "preamp_variety_list":[],
+                "booster_variety_list":[]
+            },
+            "roadm-path-impairments": [
+                {
+                    "roadm-path-impairments-id": 0,
+                    "roadm-express-path": {
+                        "frequency-range": {
+                            "lower-frequency": 191.3e12,
+                            "upper-frequency": 196.1e12
+                            },
+                        "roadm-pmd": 0,
+                        "roadm-cd": 0,
+                        "roadm-pdl": 0,
+                        "roadm-inband-crosstalk": 0,
+                        "roadm-maxloss": 16.5
+                        }
+                }, {
+                    "roadm-path-impairments-id": 1,
+                    "roadm-add-path": {
+                        "frequency-range": {
+                            "lower-frequency": 191.3e12,
+                            "upper-frequency": 196.1e12
+                        },
+                        "roadm-pmd": 0,
+                        "roadm-cd": 0,
+                        "roadm-pdl": 0,
+                        "roadm-inband-crosstalk": 0,
+                        "roadm-maxloss": 11.5,
+                        "roadm-pmax": 2.5,
+                        "roadm-osnr": 41,
+                        "roadm-noise-figure": 23
+                    }
+                }, {
+                    "roadm-path-impairments-id": 2,
+                    "roadm-drop-path": {
+                        "frequency-range": {
+                            "lower-frequency": 191.3e12,
+                            "upper-frequency": 196.1e12
+                            },
+                        "roadm-pmd": 0,
+                        "roadm-cd": 0,
+                        "roadm-pdl": 0,
+                        "roadm-inband-crosstalk": 0,
+                        "roadm-maxloss": 11.5,
+                        "roadm-minloss": 7.5,
+                        "roadm-typloss": 10,
+                        "roadm-pmin": -13.5,
+                        "roadm-pmax": -9.5,
+                        "roadm-ptyp": -12,
+                        "roadm-osnr": 41,
+                        "roadm-noise-figure": 15
+                    }
+                }
+            ]
         }
     ],
     "SI": [{

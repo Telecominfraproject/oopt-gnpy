@@ -1,6 +1,9 @@
 WARNING  gnpy.tools.json_io:json_io.py 
  WARNING missing type_variety attribute in eqpt_config.json[Roadm]
  default value is type_variety = default
+WARNING  gnpy.tools.json_io:json_io.py 
+ WARNING missing roadm-path-impairments attribute in eqpt_config.json[Roadm]
+ default value is roadm-path-impairments = []
 INFO     gnpy.tools.cli_examples:cli_examples.py source = 'lannion'
 INFO     gnpy.tools.cli_examples:cli_examples.py destination = 'lorient'
 WARNING  gnpy.core.network:network.py 
