@@ -211,9 +211,11 @@ def test_restrictions(restrictions, equipment):
                     raise AssertionError()
 
 
+@pytest.mark.parametrize('roadm_type_variety, roadm_b_maxloss', [('default', 0),
+                                                                 ('example_detailed_impairments', 16.5)])
 @pytest.mark.parametrize('power_dbm', [0, +1, -2])
 @pytest.mark.parametrize('prev_node_type, effective_pch_out_db', [('edfa', -20.0), ('fused', -22.0)])
-def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
+def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm, roadm_type_variety, roadm_b_maxloss):
     """Check that egress power of roadm is equal to target power if input power is greater
     than target power else, that it is equal to input power. Use a simple two hops A-B-C topology
     for the test where the prev_node in ROADM B is either an amplifier or a fused, so that the target
@@ -223,6 +225,8 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
     json_network = load_json(TEST_DIR / 'data/twohops_roadm_power_test.json')
     prev_node = next(n for n in json_network['elements'] if n['uid'] == 'west edfa in node B to ila2')
     json_network['elements'].remove(prev_node)
+    roadm_b = next(element for element in json_network['elements'] if element['uid'] == 'roadm node B')
+    roadm_b['type_variety'] = roadm_type_variety
     if prev_node_type == 'edfa':
         prev_node = {'uid': 'west edfa in node B to ila2', 'type': 'Edfa'}
     elif prev_node_type == 'fused':
@@ -266,10 +270,9 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
                 # if previous was an EDFA, power level at ROADM input is enough for the ROADM to apply its
                 # target power (as specified in equipment ie -20 dBm)
                 # if it is a Fused, the input power to the ROADM is smaller than the target power, and the
-                # ROADM cannot apply this target. In this case, it is assumed that the ROADM has 0 dB loss
-                # so the output power will be the same as the input power, which for this particular case
-                # corresponds to -22dBm + power_dbm
-                # next step (for ROADM modelling) will be to apply a minimum loss for ROADMs !
+                # ROADM cannot apply this target. If the ROADM has 0 dB loss the output power will be the same
+                # as the input power, which for this particular case corresponds to -22dBm + power_dbm.
+                # If ROADM has a minimum losss, then output power will be -22dBm + power_dbm - ROADM loss. !
                 if prev_node_type == 'edfa':
                     # edfa prev_node sets input power to roadm to a high enough value:
                     # check that target power is correctly set in the ROADM
@@ -280,9 +283,10 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm):
                     # fused prev_node does reamplfy power after fiber propagation, so input power
                     # to roadm is low.
                     # check that target power correctly reports power_dbm from previous propagation
-                    assert_allclose(el.ref_pch_out_dbm, effective_pch_out_db + power_dbm, rtol=1e-3)
-                    # Check that egress power of roadm is not equalized power out is the same as power in.
-                    assert_allclose(power_out_roadm, power_in_roadm, rtol=1e-3)
+                    assert_allclose(el.ref_pch_out_dbm, effective_pch_out_db + power_dbm - roadm_b_maxloss, rtol=1e-3)
+                    # Check that egress power of roadm is not equalized:
+                    # power out is the same as power in minus the ROADM loss.
+                    assert_allclose(power_out_roadm, power_in_roadm / db2lin(roadm_b_maxloss), rtol=1e-3)
         else:
             si = el(si)
 
