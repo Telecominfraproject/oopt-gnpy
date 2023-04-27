@@ -97,8 +97,38 @@ class RoadmParams(Parameters):
             self.pmd = kwargs['pmd']
             self.pdl = kwargs['pdl']
             self.restrictions = kwargs['restrictions']
+            self.roadm_path_impairments = kwargs['roadm-path-impairments']
         except KeyError as e:
             raise ParametersError(f'ROADM configurations must include {e}. Configuration: {kwargs}')
+
+
+class RoadmPath:
+    def __init__(self, from_degree, to_degree, path_type, impairment=None):
+        """Records roadm internal paths and types"""
+        self.from_degree = from_degree
+        self.to_degree = to_degree
+        self.path_type = path_type
+        self.impairment = impairment
+
+
+class RoadmImpairment:
+    """Generic definition of impairments for express, add and drop"""
+    def __init__(self, params):
+        """Records roadm internal paths and types"""
+        self.pmd = params.get('roadm-pmd')
+        self.cd = params.get('roadm-cd')
+        self.pdl = params.get('roadm-pdl')
+        self.inband_crosstalk = params.get('roadm-inband-crosstalk')
+        self.maxloss = params.get('roadm-maxloss')
+        self.fmin = params.get('frequency-range')['lower-frequency']
+        self.fmax = params.get('frequency-range')['upper-frequency']
+        self.osnr = params.get('roadm-osnr', None)
+        self.pmax = params.get('roadm-pmax', None)
+        self.nf = params.get('roadm-noise-figure', None)
+        self.minloss = params.get('minloss', None)
+        self.typloss = params.get('typloss', None)
+        self.pmin = params.get('pmin', None)
+        self.ptyp = params.get('ptyp', None)
 
 
 class FusedParams(Parameters):

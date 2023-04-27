@@ -27,10 +27,10 @@ from scipy.interpolate import interp1d
 from collections import namedtuple
 from typing import Union
 
-
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_average, pretty_summary_print, \
-    watt2dbm, psd2powerdbm
-from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational
+     watt2dbm, psd2powerdbm
+from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational, \
+    RoadmImpairment, RoadmPath
 from gnpy.core.science_utils import NliSolver, RamanSolver
 from gnpy.core.info import SpectralInformation, ReferenceCarrier
 from gnpy.core.exceptions import NetworkTopologyError, SpectrumError, ParametersError
@@ -244,6 +244,8 @@ class Roadm(_Node):
         self.per_degree_pch_out_dbm = self.params.per_degree_pch_out_db
         self.per_degree_pch_psd = self.params.per_degree_pch_psd
         self.per_degree_pch_psw = self.params.per_degree_pch_psw
+        # Define the nature of from-to internal connection: express-path, drop-path, add-path
+        self.roadm_paths = []
 
     @property
     def to_json(self):
@@ -402,6 +404,31 @@ class Roadm(_Node):
         while p_span0 is not changed.
         """
         spectral_info.pref = spectral_info.pref._replace(p_spani=self.ref_pch_out_dbm)
+
+    def set_roadm_paths(self, from_degree, to_degree, path_type):
+        """set internal path type: express, drop or add"""
+        self.roadm_paths.append(RoadmPath(from_degree=from_degree, to_degree=to_degree, path_type=path_type,
+                                          impairment=self.get_path_type_impairment(path_type)))
+
+    def get_roadm_path(self, from_degree, to_degree):
+        """Get internal path type: express, drop or add"""
+        for roadm_path in self.roadm_paths:
+            if roadm_path.from_degree == from_degree and roadm_path.to_degree == to_degree:
+                return roadm_path
+        msg = f'Could not find from_degree {from_degree} or to_degree {to_degree} degrees in ROADM {self.uid}'
+        _logger.critical(msg)
+        raise NetworkTopologyError(msg)
+
+    def get_roadm_path_type(self, from_degree, to_degree):
+        """Get internal path type: express, drop or add"""
+        return self.get_roadm_path(from_degree, to_degree).path_type
+
+    def get_path_type_impairment(self, path_type):
+        for impairment in self.params.roadm_path_impairments:
+            key = f'roadm-{path_type}-path'
+            if key in impairment:
+                return RoadmImpairment(impairment[key])
+        return None
 
     def __call__(self, spectral_info, degree, from_degree):
         self.propagate(spectral_info, degree=degree, from_degree=from_degree)

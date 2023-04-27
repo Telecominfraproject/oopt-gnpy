@@ -101,7 +101,8 @@ class Roadm(_JsonThing):
         'restrictions': {
             'preamp_variety_list': [],
             'booster_variety_list': []
-        }
+        },
+        'roadm-path-impairments': []
     }
 
     def __init__(self, **kwargs):
