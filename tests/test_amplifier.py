@@ -74,8 +74,8 @@ def si(nch_and_spacing, bw):
     nb_channel, spacing = nch_and_spacing
     f_min = 191.3e12
     f_max = automatic_fmax(f_min, spacing, nb_channel)
-    return create_input_spectral_information(f_min=f_min, f_max=f_max, roll_off=0.15, baud_rate=bw, power=1e-3,
-                                             spacing=spacing, tx_osnr=40.0)
+    return create_input_spectral_information(f_min=f_min, f_max=f_max, roll_off=0.15, baud_rate=bw,
+                                             spacing=spacing, tx_osnr=40.0, tx_power=1e-3)
 
 
 @pytest.mark.parametrize("gain, nf_expected", [(10, 15), (15, 10), (25, 5.8)])
@@ -232,8 +232,8 @@ def test_amp_behaviour(tilt_target, delta_p):
     fiber.params.con_in = 0
     fiber.params.con_out = 0
     fiber.ref_pch_in_dbm = 0.0
-    si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12, roll_off=0.15, baud_rate=64e9, power=0.001,
-                                           spacing=75e9, tx_osnr=None)
+    si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12, roll_off=0.15, baud_rate=64e9,
+                                           spacing=75e9, tx_osnr=None, tx_power=1e-3)
     si = fiber(si)
     total_sig_powerin = sum(si.signal)
     sig_in = lin2db(si.signal)
@@ -320,7 +320,7 @@ def test_amp_saturation(delta_pdb_per_channel, base_power, delta_p):
     si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
                                                signal=signal, baud_rate=baud_rate, roll_off=0.15,
                                                delta_pdb_per_channel=delta_pdb_per_channel,
-                                               tx_osnr=None)
+                                               tx_osnr=None, tx_power=None)
     total_sig_powerin = sum(si.signal)
     sig_in = lin2db(si.signal)
     si = edfa(si)

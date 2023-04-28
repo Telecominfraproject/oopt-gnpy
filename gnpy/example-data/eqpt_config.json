@@ -290,6 +290,7 @@
             "spacing": 50e9,
             "power_dbm": 0,
             "power_range_db": [0, 0, 1],
+            "tx_power_dbm": 0,
             "roll_off": 0.15,
             "tx_osnr": 40,
             "sys_margins": 2

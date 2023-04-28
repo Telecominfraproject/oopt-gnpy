@@ -17,12 +17,14 @@ from copy import deepcopy
 from gnpy.core.utils import lin2db, automatic_nch, dbm2watt, power_dbm_to_psd_mw_ghz, watt2dbm, psd2powerdbm
 from gnpy.core.network import build_network
 from gnpy.core.elements import Roadm
-from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information, ReferenceCarrier
+from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information, ReferenceCarrier, \
+    carriers_to_spectral_information
 from gnpy.core.equipment import trx_mode_params
 from gnpy.core.exceptions import ConfigurationError
 from gnpy.tools.json_io import network_from_json, load_equipment, load_network, _spectrum_from_json, load_json, \
     Transceiver, requests_from_json
 from gnpy.topology.request import PathRequest, compute_constrained_path, propagate, propagate_and_optimize_mode
+from gnpy.topology.spectrum_assignment import build_oms_list
 
 
 TEST_DIR = Path(__file__).parent
@@ -330,10 +332,11 @@ def create_voyager_req(equipment, source, dest, bidir, nodes_list, loose_list, m
               'nodes_list': nodes_list,
               'loose_list': loose_list,
               'path_bandwidth': 100.0e9,
-              'effective_freq_slot': None}
+              'effective_freq_slot': None,
+              'power': 1e-3,
+              'tx_power': 1e-3}
     trx_params = trx_mode_params(equipment, params['trx_type'], params['trx_mode'], True)
     params.update(trx_params)
-    params['power'] = dbm2watt(power_dbm) if power_dbm else dbm2watt(equipment['SI']['default'].power_dbm)
     f_min = params['f_min']
     f_max_from_si = params['f_max']
     params['nb_channel'] = automatic_nch(f_min, f_max_from_si, params['spacing'])
@@ -368,9 +371,9 @@ def test_initial_spectrum(mode, slot_width, power_dbm):
     assert_array_equal(infos_expected.frequency, infos_actual.frequency)
     assert_array_equal(infos_expected.baud_rate, infos_actual.baud_rate)
     assert_array_equal(infos_expected.slot_width, infos_actual.slot_width)
-    assert_array_equal(infos_expected.signal, infos_actual.signal)
-    assert_array_equal(infos_expected.nli, infos_actual.nli)
-    assert_array_equal(infos_expected.ase, infos_actual.ase)
+    assert_allclose(infos_expected.signal, infos_actual.signal, rtol=1e-10)
+    assert_allclose(infos_expected.nli, infos_actual.nli, rtol=1e-10)
+    assert_allclose(infos_expected.ase, infos_actual.ase, rtol=1e-10)
     assert_array_equal(infos_expected.roll_off, infos_actual.roll_off)
     assert_array_equal(infos_expected.chromatic_dispersion, infos_actual.chromatic_dispersion)
     assert_array_equal(infos_expected.pmd, infos_actual.pmd)
@@ -539,8 +542,8 @@ def test_equalization(case, deltap, target, mode, slot_width, equalization):
             assert getattr(roadm, equalization) == target_psd
     path = compute_constrained_path(network, req)
     si = create_input_spectral_information(
-        f_min=req.f_min, f_max=req.f_max, roll_off=req.roll_off, baud_rate=req.baud_rate, power=req.power,
-        spacing=req.spacing, tx_osnr=req.tx_osnr)
+        f_min=req.f_min, f_max=req.f_max, roll_off=req.roll_off, baud_rate=req.baud_rate,
+        spacing=req.spacing, tx_osnr=req.tx_osnr, tx_power=req.power)
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
             si = el(si, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
@@ -583,9 +586,9 @@ def test_power_option(req_power):
     infos_actual = propagate(path2, req, equipment)
     assert_array_equal(infos_expected.baud_rate, infos_actual.baud_rate)
     assert_array_equal(infos_expected.slot_width, infos_actual.slot_width)
-    assert_array_equal(infos_expected.signal, infos_actual.signal)
-    assert_array_equal(infos_expected.nli, infos_actual.nli)
-    assert_array_equal(infos_expected.ase, infos_actual.ase)
+    assert_allclose(infos_expected.signal, infos_actual.signal, rtol=1e-10)
+    assert_allclose(infos_expected.nli, infos_actual.nli, rtol=1e-10)
+    assert_allclose(infos_expected.ase, infos_actual.ase, rtol=1e-10)
     assert_array_equal(infos_expected.roll_off, infos_actual.roll_off)
     assert_array_equal(infos_expected.chromatic_dispersion, infos_actual.chromatic_dispersion)
     assert_array_equal(infos_expected.pmd, infos_actual.pmd)
@@ -841,3 +844,103 @@ def test_power_offset_automatic_mode_selection(slot_width, value, equalization,
     _, mode = propagate_and_optimize_mode(path, free_req, equipment)
     assert mode['format'] == expected_mode
     assert_allclose(path_expected[-1].snr_01nm, path[-1].snr_01nm, rtol=1e-5)
+
+
+@pytest.mark.parametrize('tx_power_dbm', [-10, -8, 0, 10])
+def test_tx_power(tx_power_dbm):
+    """If carrier add power is below equalization target + ROADM add max loss, then equalizatio
+    can not be applied.
+    """
+    json_data = load_json(NETWORK_FILENAME)
+    for el in json_data['elements']:
+        if el['uid'] == 'roadm Lannion_CAS':
+            el['type_variety'] = 'example_detailed_impairments'
+    equipment = load_equipment(EQPT_FILENAME)
+    network = network_from_json(json_data, equipment)
+    default_spectrum = equipment['SI']['default']
+    p_db = default_spectrum.power_dbm
+    p_total_db = p_db + lin2db(automatic_nch(default_spectrum.f_min, default_spectrum.f_max, default_spectrum.spacing))
+    build_network(network, equipment, p_db, p_total_db)
+    build_oms_list(network, equipment)
+    expected_roadm_lannion = {
+        "uid": "roadm Lannion_CAS",
+        "type": "Roadm",
+        "type_variety": "example_detailed_impairments",
+        "params": {
+            "restrictions": {
+                "preamp_variety_list": [],
+                "booster_variety_list": []
+            },
+           'per_degree_pch_out_db': {'east edfa in Lannion_CAS to Corlay': -20,
+                                     'east edfa in Lannion_CAS to Morlaix': -20,
+                                     'east edfa in Lannion_CAS to Stbrieuc': -20},
+            "target_pch_out_db": -20
+        },
+        'metadata': {
+            'location': {
+                'city': 'Lannion_CAS',
+                'latitude': 2.0,
+                'longitude': 0.0,
+                'region': 'RLD'
+            }
+        }
+    }
+    roadm = next(n for n in network.nodes() if n.uid == 'roadm Lannion_CAS')
+    assert roadm.to_json == expected_roadm_lannion
+    spectrum = _spectrum_from_json([
+        {
+            "f_min": 191.35e12,
+            "f_max": 191.35e12,
+            "baud_rate": 32e9,
+            "slot_width": 50e9,
+            "power_dbm": 0,
+            "roll_off": 0.15,
+            "tx_osnr": 40
+        },
+        {
+            "f_min": 193.15e12,
+            "f_max": 193.15e12,
+            "baud_rate": 32e9,
+            "slot_width": 50e9,
+            "power_dbm": 0,
+            "roll_off": 0.15,
+            "tx_osnr": 40,
+            "tx_power_dbm": tx_power_dbm
+        },
+        {
+            "f_min": 193.2e12,
+            "f_max": 193.2e12,
+            "baud_rate": 32e9,
+            "slot_width": 50e9,
+            "power_dbm": 0,
+            "roll_off": 0.15,
+            "tx_osnr": 40}])
+    power = 1.0e-3
+    si = carriers_to_spectral_information(initial_spectrum=spectrum,
+                                          power=power)
+    si = roadm(si, "east edfa in Lannion_CAS to Corlay", "trx Lannion_CAS")
+    # Checks that if tx_power on add port is below min required power, its equalization target can not be met
+    add_max_loss = next(e for e in getattr(equipment['Roadm']['example_detailed_impairments'], 'roadm-path-impairments')
+                        if 'roadm-add-path' in e)['roadm-add-path']['roadm-maxloss']
+    min_required_add_power = -20 + add_max_loss
+    power_reduction = max(0, min_required_add_power - tx_power_dbm)
+    assert_allclose(si.signal, dbm2watt(array([-20, -20 - power_reduction, -20])), rtol=1e-5)
+    path = ['trx Lannion_CAS',
+            'roadm Lannion_CAS',
+            'east edfa in Lannion_CAS to Stbrieuc',
+            'fiber (Lannion_CAS → Stbrieuc)-F056',
+            'east edfa in Stbrieuc to Rennes_STA',
+            'fiber (Stbrieuc → Rennes_STA)-F057',
+            'west edfa in Rennes_STA to Stbrieuc',
+            'roadm Rennes_STA',
+            'trx Rennes_STA']
+
+    si = carriers_to_spectral_information(initial_spectrum=spectrum,
+                                          power=power)
+    for i, uid in enumerate(path):
+        node = next(n for n in network.nodes() if n.uid == uid)
+        if isinstance(node, Roadm):
+            si = node(si, path[i + 1], path[i - 1])
+        else:
+            si = node(si)
+    assert_allclose(watt2dbm(si.signal + si.ase + si.nli), array([-20, -20, -20]), rtol=1e-5)
