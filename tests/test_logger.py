@@ -34,7 +34,7 @@ def test_jsonthing(caplog):
         "sys_margins": 2
     }
     _ = SI(**json_data)
-    expected_msg = 'WARNING missing f_min attribute in eqpt_config.json[SI]\n ' \
+    expected_msg = 'WARNING missing f_min attribute in eqpt_config.json[SI]\n\t' \
                    + 'default value is f_min = 191350000000000.0'
     assert expected_msg in caplog.text
 

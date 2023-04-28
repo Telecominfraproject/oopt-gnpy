@@ -9,7 +9,7 @@ This module contains utility functions that are used with gnpy.
 """
 
 from csv import writer
-from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and, mean
+from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and, mean, array
 from scipy import constants
 from copy import deepcopy
 
@@ -452,3 +452,20 @@ def restore_order(elements, order):
     [3, 2, 7]
     """
     return [elements[i[0]] for i in sorted(enumerate(order), key=lambda x:x[1]) if elements[i[0]] is not None]
+
+
+def calculate_absolute_min_or_zero(x: array) -> array:
+    """Calculates the element-wise absolute minimum between the x and zero.
+
+    Parameters:
+    x (array): The first input array.
+
+    Returns:
+    array: The element-wise absolute minimum between x and zero.
+
+    Example:
+    >>> x = array([-1, 2, -3])
+    >>> calculate_absolute_min_or_zero(x)
+    array([1., 0., 3.])
+    """
+    return (abs(x) - x) / 2
