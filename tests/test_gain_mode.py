@@ -53,7 +53,8 @@ def create_rq(equipment, srce, dest, bdir, nd_list, ls_list, mode, power_dbm):
         'effective_freq_slot': None,
         'path_bandwidth': 100000000000.0,
         'spacing': 50e9 if mode == 'mode 1' else 75e9,
-        'power': dbm2watt(power_dbm)
+        'power': dbm2watt(power_dbm),
+        'tx_power': dbm2watt(power_dbm)
     }
     trx_params = trx_mode_params(equipment, params['trx_type'], params['trx_mode'], True)
     params.update(trx_params)

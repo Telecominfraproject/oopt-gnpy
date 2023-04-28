@@ -1,10 +1,12 @@
 INFO     gnpy.tools.cli_examples:cli_examples.py Computing path requests CORONET_services.json into JSON format
 WARNING  gnpy.tools.json_io:json_io.py 
- WARNING missing type_variety attribute in eqpt_config.json[Roadm]
- default value is type_variety = default
+	WARNING missing type_variety attribute in eqpt_config.json[Roadm]
+	default value is type_variety = default
+
 WARNING  gnpy.tools.json_io:json_io.py 
- WARNING missing roadm-path-impairments attribute in eqpt_config.json[Roadm]
- default value is roadm-path-impairments = []
+	WARNING missing roadm-path-impairments attribute in eqpt_config.json[Roadm]
+	default value is roadm-path-impairments = []
+
 INFO     gnpy.topology.request:request.py 
 	request 0
 	Computing path from trx Abilene to trx Albany
