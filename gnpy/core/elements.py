@@ -29,7 +29,7 @@ from typing import Union
 from logging import getLogger
 
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_average, pretty_summary_print, \
-    watt2dbm, psd2powerdbm
+    watt2dbm, psd2powerdbm, calculate_absolute_min_or_zero
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational, \
     RoadmPath, RoadmImpairment
 from gnpy.core.science_utils import NliSolver, RamanSolver
@@ -95,6 +95,7 @@ class Transceiver(_Node):
         self.penalties = {}
         self.total_penalty = 0
         self.propagated_labels = [""]
+        self.tx_power = None
 
     def _calc_cd(self, spectral_info):
         """Updates the Transceiver property with the CD of the received channels. CD in ps/nm.
@@ -194,6 +195,7 @@ class Transceiver(_Node):
         osnr_ase = per_label_average(self.osnr_ase, self.propagated_labels)
         osnr_ase_01nm = per_label_average(self.osnr_ase_01nm, self.propagated_labels)
         snr_01nm = per_label_average(self.snr_01nm, self.propagated_labels)
+        tx_power_dbm = per_label_average(watt2dbm(self.tx_power), self.propagated_labels)
         cd = mean(self.chromatic_dispersion)
         pmd = mean(self.pmd)
         pdl = mean(self.pdl)
@@ -207,7 +209,8 @@ class Transceiver(_Node):
                             f'  CD (ps/nm):                {cd:.2f}',
                             f'  PMD (ps):                  {pmd:.2f}',
                             f'  PDL (dB):                  {pdl:.2f}',
-                            f'  Latency (ms):              {latency:.2f}'])
+                            f'  Latency (ms):              {latency:.2f}',
+                            f'  Actual pch out (dBm):      {pretty_summary_print(tx_power_dbm)}'])
 
         cd_penalty = self.penalties.get('chromatic_dispersion')
         if cd_penalty is not None:
@@ -222,6 +225,7 @@ class Transceiver(_Node):
         return result
 
     def __call__(self, spectral_info):
+        self.tx_power = spectral_info.tx_power
         self._calc_snr(spectral_info)
         self._calc_cd(spectral_info)
         self._calc_pmd(spectral_info)
@@ -244,6 +248,8 @@ class Roadm(_Node):
         # on the path, since it depends on the equalization definition on the degree.
         self.ref_pch_out_dbm = None
         self.loss = 0  # auto-design interest
+        self.loss_pch_db = None
+
         # Optical power of carriers are equalized by the ROADM, so that the experienced loss is not the same for
         # different carriers. The ref_effective_loss records the loss for a reference carrier.
         self.ref_effective_loss = None
@@ -315,11 +321,13 @@ class Roadm(_Node):
             return f'{type(self).__name__} {self.uid}'
 
         total_pch = pretty_summary_print(per_label_average(self.pch_out_dbm, self.propagated_labels))
+        total_loss = pretty_summary_print(per_label_average(self.loss_pch_db, self.propagated_labels))
         return '\n'.join([f'{type(self).__name__} {self.uid}',
-                          f'  type_variety:            {self.type_variety}',
-                          f'  effective loss (dB):     {self.ref_effective_loss:.2f}',
-                          f'  reference pch out (dBm): {self.ref_pch_out_dbm:.2f}',
-                          f'  actual pch out (dBm):    {total_pch}'])
+                          f'  Type_variety:            {self.type_variety}',
+                          f'  Reference loss (dB):     {self.ref_effective_loss:.2f}',
+                          f'  Actual loss (dB):        {total_loss}',
+                          f'  Reference pch out (dBm): {self.ref_pch_out_dbm:.2f}',
+                          f'  Actual pch out (dBm):    {total_pch}'])
 
     def get_roadm_target_power(self, spectral_info: SpectralInformation = None) -> Union[float, ndarray]:
         """Computes the power in dBm for a reference carrier or for a spectral information.
@@ -380,9 +388,13 @@ class Roadm(_Node):
         There is no difference for add or express : the same target is applied.
         For the moment propagate operates with spectral info carriers all having the same source or destination.
         """
+        # record input powers to compute the actual loss at the end of the process
+        input_power_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
         # apply min ROADM loss if it exists
         roadm_maxloss_db = self.get_roadm_path(from_degree, degree).impairment.maxloss
         spectral_info.apply_attenuation_db(roadm_maxloss_db)
+        # records the total power after applying minimum loss
+        net_input_power_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
         # find the target power for the reference carrier
         ref_per_degree_pch = self.get_per_degree_ref_power(degree)
         # find the target powers for each signal carrier
@@ -392,15 +404,19 @@ class Roadm(_Node):
         # Depending on propagation upstream from this ROADM, the input power might be smaller than
         # the target power out configured for this ROADM degree's egress. Since ROADM does not amplify,
         # the power out of the ROADM for the ref channel is the min value between target power and input power.
-        # (TODO add a minimum loss for the ROADM crossing)
-        self.ref_pch_out_dbm = min(self.ref_pch_in_dbm[from_degree] - roadm_maxloss_db, ref_per_degree_pch)
+        ref_pch_in_dbm = self.ref_pch_in_dbm[from_degree]
+        # Calculate the output power for the reference channel (only for visualization)
+        self.ref_pch_out_dbm = min(ref_pch_in_dbm - roadm_maxloss_db, ref_per_degree_pch)
+
         # Definition of effective_loss:
         # Optical power of carriers are equalized by the ROADM, so that the experienced loss is not the same for
         # different carriers. effective_loss records the loss for the reference carrier.
-        self.ref_effective_loss = self.ref_pch_in_dbm[from_degree] - self.ref_pch_out_dbm
-        input_power = spectral_info.signal + spectral_info.nli + spectral_info.ase
+        # Calculate the effective loss for the reference channel
+        self.ref_effective_loss = ref_pch_in_dbm - self.ref_pch_out_dbm
+
+        # Calculate the target power per channel according to the equalization policy
         target_power_per_channel = per_degree_pch + spectral_info.delta_pdb_per_channel
-        # Computation of the per channel target power according to equalization policy
+        # Computation of the correction according to equalization policy
         # If target_power_per_channel has some channels power above input power, then the whole target is reduced.
         # For example, if user specifies delta_pdb_per_channel:
         # freq1: 1dB, freq2: 3dB, freq3: -3dB, and target is -20dBm out of the ROADM,
@@ -415,17 +431,25 @@ class Roadm(_Node):
         # that had the min power.
         # This change corresponds to a discussion held during coders call. Please look at this document for
         # a reference: https://telecominfraproject.atlassian.net/wiki/spaces/OOPT/pages/669679645/PSE+Meeting+Minutes
-        correction = (abs(watt2dbm(input_power) - target_power_per_channel)
-                      - (watt2dbm(input_power) - target_power_per_channel)) / 2
+        correction = calculate_absolute_min_or_zero(net_input_power_dbm - target_power_per_channel)
         new_target = target_power_per_channel - correction
-        delta_power = watt2dbm(input_power) - new_target
+        delta_power = net_input_power_dbm - new_target
 
         spectral_info.apply_attenuation_db(delta_power)
-        spectral_info.pmd = sqrt(spectral_info.pmd ** 2
-                                 + self.get_roadm_path(from_degree=from_degree, to_degree=degree).impairment.pmd ** 2)
-        spectral_info.pdl = sqrt(spectral_info.pdl ** 2
-                                 + self.get_roadm_path(from_degree=from_degree, to_degree=degree).impairment.pdl ** 2)
+
+        # Update the PMD information
+        pmd_impairment = self.get_roadm_path(from_degree=from_degree, to_degree=degree).impairment.pmd
+        spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + pmd_impairment ** 2)
+
+        # Update the PMD information
+        pdl_impairment = self.get_roadm_path(from_degree=from_degree, to_degree=degree).impairment.pdl
+        spectral_info.pdl = sqrt(spectral_info.pdl ** 2 + pdl_impairment ** 2)
+
+        # Update the per channel power with the result of propagation
         self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+
+        # Update the loss per channel and the labels
+        self.loss_pch_db = input_power_dbm - self.pch_out_dbm
         self.propagated_labels = spectral_info.label
 
     def set_roadm_paths(self, from_degree, to_degree, path_type, impairment_id=None):

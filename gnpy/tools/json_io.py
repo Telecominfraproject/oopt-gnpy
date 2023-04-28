@@ -51,9 +51,10 @@ class _JsonThing:
         clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
         for k, v in default_values.items():
             setattr(self, k, clean_kwargs.get(k, v))
-            if k not in clean_kwargs and name != 'Amp':
-                msg = f'\n WARNING missing {k} attribute in eqpt_config.json[{name}]' \
-                    + f'\n default value is {k} = {v}'
+            if k not in clean_kwargs and name != 'Amp' and v is not None:
+                # do not show this warning if the default value is None
+                msg = f'\n\tWARNING missing {k} attribute in eqpt_config.json[{name}]' \
+                    + f'\n\tdefault value is {k} = {v}\n'
                 _logger.warning(msg)
 
 
@@ -67,7 +68,8 @@ class SI(_JsonThing):
         "power_range_db": [0, 0, 0.5],
         "roll_off": 0.15,
         "tx_osnr": 45,
-        "sys_margins": 0
+        "sys_margins": 0,
+        "tx_power_dbm": None  # optional value in SI
     }
 
     def __init__(self, **kwargs):
@@ -268,7 +270,7 @@ def _spectrum_from_json(json_data):
     label should be different for each partition
     >>> json_data = {'spectrum': \
         [{'f_min': 193.2e12, 'f_max': 193.4e12, 'slot_width': 50e9, 'baud_rate': 32e9, 'roll_off': 0.15, \
-            'delta_pdb': 1, 'tx_osnr': 45},\
+            'delta_pdb': 1, 'tx_osnr': 45, 'tx_power_dbm': -7},\
         {'f_min': 193.4625e12, 'f_max': 193.9875e12, 'slot_width': 75e9, 'baud_rate': 64e9, 'roll_off': 0.15},\
         {'f_min': 194.075e12, 'f_max': 194.075e12, 'slot_width': 100e9, 'baud_rate': 90e9, 'roll_off': 0.15},\
         {'f_min': 194.2e12, 'f_max': 194.35e12, 'slot_width': 50e9, 'baud_rate': 32e9, 'roll_off': 0.15}]}
@@ -276,24 +278,24 @@ def _spectrum_from_json(json_data):
     >>> for k, v in spectrum.items():
     ...     print(f'{k}: {v}')
     ...
-    193200000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, label='0-32.00G')
-    193250000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, label='0-32.00G')
-    193300000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, label='0-32.00G')
-    193350000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, label='0-32.00G')
-    193400000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, label='0-32.00G')
-    193462500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, label='1-64.00G')
-    193537500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, label='1-64.00G')
-    193612500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, label='1-64.00G')
-    193687500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, label='1-64.00G')
-    193762500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, label='1-64.00G')
-    193837500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, label='1-64.00G')
-    193912500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, label='1-64.00G')
-    193987500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, label='1-64.00G')
-    194075000000000.0: Carrier(delta_pdb=0, baud_rate=90000000000.0, slot_width=100000000000.0, roll_off=0.15, tx_osnr=40, label='2-90.00G')
-    194200000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, label='3-32.00G')
-    194250000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, label='3-32.00G')
-    194300000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, label='3-32.00G')
-    194350000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, label='3-32.00G')
+    193200000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, tx_power=0.00019952623149688798, label='0-32.00G')
+    193250000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, tx_power=0.00019952623149688798, label='0-32.00G')
+    193300000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, tx_power=0.00019952623149688798, label='0-32.00G')
+    193350000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, tx_power=0.00019952623149688798, label='0-32.00G')
+    193400000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, tx_power=0.00019952623149688798, label='0-32.00G')
+    193462500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='1-64.00G')
+    193537500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='1-64.00G')
+    193612500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='1-64.00G')
+    193687500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='1-64.00G')
+    193762500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='1-64.00G')
+    193837500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='1-64.00G')
+    193912500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='1-64.00G')
+    193987500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='1-64.00G')
+    194075000000000.0: Carrier(delta_pdb=0, baud_rate=90000000000.0, slot_width=100000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='2-90.00G')
+    194200000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='3-32.00G')
+    194250000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='3-32.00G')
+    194300000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='3-32.00G')
+    194350000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='3-32.00G')
     """
     spectrum = {}
     json_data = sorted(json_data, key=lambda x: x['f_min'])
@@ -309,6 +311,9 @@ def _spectrum_from_json(json_data):
         # default tx_osnr is set to 40 dB
         if 'tx_osnr' not in part:
             part['tx_osnr'] = 40
+        # default tx_power_dbm is set to 0 dBn
+        if 'tx_power_dbm' not in part:
+            part['tx_power_dbm'] = 0
         # starting freq is exactly f_min to be consistent with utils.automatic_nch
         # first partition min occupation is f_min - slot_width / 2 (central_frequency is f_min)
         # supposes that carriers are centered on frequency
@@ -327,7 +332,8 @@ def _spectrum_from_json(json_data):
                                    part['slot_width']):
             spectrum[current_freq] = Carrier(delta_pdb=part['delta_pdb'], baud_rate=part['baud_rate'],
                                              slot_width=part['slot_width'], roll_off=part['roll_off'],
-                                             tx_osnr=part['tx_osnr'], label=part['label'])
+                                             tx_osnr=part['tx_osnr'], tx_power=dbm2watt(part['tx_power_dbm']),
+                                             label=part['label'])
         previous_part_max_freq = current_freq + part['slot_width'] / 2
     return spectrum
 
@@ -410,6 +416,9 @@ def _equipment_from_json(json_data, filename):
             elif key == 'Roadm':
                 equipment[key][subkey] = Roadm(**entry)
             elif key == 'SI':
+                # use power_dbm value for tx_power_dbm if the key is not in 'SI'
+                # if 'tx_power_dbm' not in entry.keys():
+                #     entry['tx_power_dbm'] = entry['power_dbm']
                 equipment[key][subkey] = SI(**entry)
             elif key == 'Transceiver':
                 equipment[key][subkey] = Transceiver(**entry)
@@ -576,7 +585,6 @@ def requests_from_json(json_data, equipment):
         params['nodes_list'] = [n['num-unnum-hop']['node-id'] for n in nd_list]
         params['loose_list'] = [n['num-unnum-hop']['hop-type'] for n in nd_list]
         # recover trx physical param (baudrate, ...) from type and mode
-        # in trx_mode_params optical power is read from equipment['SI']['default'] and
         # nb_channel is computed based on min max frequency and spacing
         try:
             trx_params = trx_mode_params(equipment, params['trx_type'], params['trx_mode'], True)
@@ -608,6 +616,14 @@ def requests_from_json(json_data, equipment):
             params['path_bandwidth'] = req['path-constraints']['te-bandwidth']['path_bandwidth']
         except KeyError:
             pass
+        params['tx_power'] = req['path-constraints']['te-bandwidth'].get('tx_power')
+        default_tx_power_dbm = equipment['SI']['default'].tx_power_dbm
+        if params['tx_power'] is None:
+            # use request's input power in span instead
+            params['tx_power'] = params['power']
+            if default_tx_power_dbm is not None:
+                # use default tx power
+                params['tx_power'] = dbm2watt(default_tx_power_dbm)
         _check_one_request(params, f_max_from_si)
         requests_list.append(PathRequest(**params))
     return requests_list

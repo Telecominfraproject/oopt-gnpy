@@ -16,6 +16,7 @@ Transceiver trx Rennes_STA
   PMD (ps):                  0.57
   PDL (dB):                  0.00
   Latency (ms):              0.98
+  Actual pch out (dBm):      3.00
 
 Propagating with input power = [1;36;40m-2.50 dBm[0m:
 Transceiver trx Rennes_STA
@@ -27,6 +28,7 @@ Transceiver trx Rennes_STA
   PMD (ps):                  0.57
   PDL (dB):                  0.00
   Latency (ms):              0.98
+  Actual pch out (dBm):      3.00
 
 Propagating with input power = [1;36;40m-2.00 dBm[0m:
 Transceiver trx Rennes_STA
@@ -38,6 +40,7 @@ Transceiver trx Rennes_STA
   PMD (ps):                  0.57
   PDL (dB):                  0.00
   Latency (ms):              0.98
+  Actual pch out (dBm):      3.00
 
 Propagating with input power = [1;36;40m-1.50 dBm[0m:
 Transceiver trx Rennes_STA
@@ -49,6 +52,7 @@ Transceiver trx Rennes_STA
   PMD (ps):                  0.57
   PDL (dB):                  0.00
   Latency (ms):              0.98
+  Actual pch out (dBm):      3.00
 
 Propagating with input power = [1;36;40m-1.00 dBm[0m:
 Transceiver trx Rennes_STA
@@ -60,6 +64,7 @@ Transceiver trx Rennes_STA
   PMD (ps):                  0.57
   PDL (dB):                  0.00
   Latency (ms):              0.98
+  Actual pch out (dBm):      3.00
 
 Propagating with input power = [1;36;40m-0.50 dBm[0m:
 Transceiver trx Rennes_STA
@@ -71,6 +76,7 @@ Transceiver trx Rennes_STA
   PMD (ps):                  0.57
   PDL (dB):                  0.00
   Latency (ms):              0.98
+  Actual pch out (dBm):      3.00
 
 Propagating with input power = [1;36;40m-0.00 dBm[0m:
 Transceiver trx Rennes_STA
@@ -82,6 +88,7 @@ Transceiver trx Rennes_STA
   PMD (ps):                  0.57
   PDL (dB):                  0.00
   Latency (ms):              0.98
+  Actual pch out (dBm):      3.00
 
 Propagating with input power = [1;36;40m0.50 dBm[0m:
 Transceiver trx Rennes_STA
@@ -93,6 +100,7 @@ Transceiver trx Rennes_STA
   PMD (ps):                  0.57
   PDL (dB):                  0.00
   Latency (ms):              0.98
+  Actual pch out (dBm):      3.00
 
 Propagating with input power = [1;36;40m1.00 dBm[0m:
 Transceiver trx Rennes_STA
@@ -104,6 +112,7 @@ Transceiver trx Rennes_STA
   PMD (ps):                  0.57
   PDL (dB):                  0.00
   Latency (ms):              0.98
+  Actual pch out (dBm):      3.00
 
 Propagating with input power = [1;36;40m1.50 dBm[0m:
 Transceiver trx Rennes_STA
@@ -115,6 +124,7 @@ Transceiver trx Rennes_STA
   PMD (ps):                  0.57
   PDL (dB):                  0.00
   Latency (ms):              0.98
+  Actual pch out (dBm):      3.00
 
 Propagating with input power = [1;36;40m2.00 dBm[0m:
 Transceiver trx Rennes_STA
@@ -126,6 +136,7 @@ Transceiver trx Rennes_STA
   PMD (ps):                  0.57
   PDL (dB):                  0.00
   Latency (ms):              0.98
+  Actual pch out (dBm):      3.00
 
 Propagating with input power = [1;36;40m2.50 dBm[0m:
 Transceiver trx Rennes_STA
@@ -137,6 +148,7 @@ Transceiver trx Rennes_STA
   PMD (ps):                  0.57
   PDL (dB):                  0.00
   Latency (ms):              0.98
+  Actual pch out (dBm):      3.00
 
 Propagating with input power = [1;36;40m3.00 dBm[0m:
 Transceiver trx Rennes_STA
@@ -148,6 +160,7 @@ Transceiver trx Rennes_STA
   PMD (ps):                  0.57
   PDL (dB):                  0.00
   Latency (ms):              0.98
+  Actual pch out (dBm):      3.00
 
 (Invalid source node 'brest' replaced with trx Brest_KLA)
 
