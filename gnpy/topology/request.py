@@ -36,7 +36,7 @@ RequestParams = namedtuple('RequestParams', 'request_id source destination bidir
                            ' trx_mode nodes_list loose_list spacing power nb_channel f_min'
                            ' f_max format baud_rate OSNR penalties bit_rate'
                            ' roll_off tx_osnr min_spacing cost path_bandwidth effective_freq_slot'
-                           ' equalization_offset_db')
+                           ' equalization_offset_db, tx_power')
 DisjunctionParams = namedtuple('DisjunctionParams', 'disjunction_id relaxable link_diverse'
                                ' node_diverse disjunctions_req')
 
@@ -65,6 +65,7 @@ class PathRequest:
         self.bit_rate = params.bit_rate
         self.roll_off = params.roll_off
         self.tx_osnr = params.tx_osnr
+        self.tx_power = params.tx_power
         self.min_spacing = params.min_spacing
         self.cost = params.cost
         self.path_bandwidth = params.path_bandwidth
@@ -95,7 +96,8 @@ class PathRequest:
                             f'baud_rate:\t{temp} Gbaud',
                             f'bit_rate:\t{temp2} Gb/s',
                             f'spacing:\t{self.spacing * 1e-9} GHz',
-                            f'power:  \t{round(lin2db(self.power)+30, 2)} dBm',
+                            f'power:  \t{round(lin2db(self.power) + 30, 2)} dBm',
+                            f'tx_power_dbm:  \t{round(lin2db(self.tx_power) + 30, 2)} dBm',
                             f'nb channels: \t{self.nb_channel}',
                             f'path_bandwidth: \t{round(self.path_bandwidth * 1e-9, 2)} Gbit/s',
                             f'nodes-list:\t{self.nodes_list}',
@@ -337,7 +339,7 @@ def propagate(path, req, equipment):
     else:
         si = create_input_spectral_information(
             f_min=req.f_min, f_max=req.f_max, roll_off=req.roll_off, baud_rate=req.baud_rate,
-            power=req.power, spacing=req.spacing, tx_osnr=req.tx_osnr, delta_pdb=req.offset_db)
+            spacing=req.spacing, tx_osnr=req.tx_osnr, tx_power=req.tx_power, delta_pdb=req.offset_db)
     roadm_osnr = []
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
@@ -380,8 +382,9 @@ def propagate_and_optimize_mode(path, req, equipment):
                 raise ServiceError(msg)
             spc_info = create_input_spectral_information(f_min=req.f_min, f_max=req.f_max,
                                                          roll_off=equipment['SI']['default'].roll_off,
-                                                         baud_rate=this_br, power=req.power, spacing=req.spacing,
-                                                         delta_pdb=this_offset, tx_osnr=req.tx_osnr)
+                                                         baud_rate=this_br, spacing=req.spacing,
+                                                         delta_pdb=this_offset, tx_osnr=req.tx_osnr,
+                                                         tx_power=req.tx_power)
             roadm_osnr = []
             for i, el in enumerate(path):
                 if isinstance(el, Roadm):

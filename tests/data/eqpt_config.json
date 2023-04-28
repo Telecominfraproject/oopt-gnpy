@@ -170,9 +170,9 @@
             "roll_off": 0.15,
             "tx_osnr": 100,
             "sys_margins": 0
-        }
-    ],
-    "Transceiver": [{
+            }],
+      "Transceiver":[
+            {
             "type_variety": "vendorA_trx-type1",
             "frequency": {
                 "min": 191.35e12,

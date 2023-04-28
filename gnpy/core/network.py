@@ -217,8 +217,8 @@ def estimate_raman_gain(node, equipment):
         # in order to take into account gain generated in RamanFiber, propagate in the RamanFiber with
         # SI reference channel.
         spectral_info_input = create_input_spectral_information(f_min=f_min, f_max=f_max, roll_off=roll_off,
-                                                                baud_rate=baud_rate, power=power, spacing=spacing,
-                                                                tx_osnr=tx_osnr)
+                                                                baud_rate=baud_rate, spacing=spacing,
+                                                                tx_osnr=tx_osnr, tx_power=power)
         n_copy = deepcopy(node)
         # need to set ref_pch_in_dbm in order to correctly run propagate of the element, because this
         # setting has not yet been done by autodesign
@@ -294,9 +294,11 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
         prev_node = this_node
         node = oms
         if isinstance(this_node, elements.Transceiver):
-            # for the time being use the same power for the target of roadms and for transceivers
-            # TODO: This should be changed when introducing a power parameter dedicated to transceivers
-            this_node_out_power = pref_ch_db
+            # todo change pref to a ref channel
+            if equipment['SI']['default'].tx_power_dbm is not None:
+                this_node_out_power = equipment['SI']['default'].tx_power_dbm
+            else:
+                this_node_out_power = pref_ch_db
         if isinstance(this_node, elements.Roadm):
             # get target power out from ROADM for the reference carrier based on equalization settings
             this_node_out_power = this_node.get_per_degree_ref_power(degree=node.uid)
