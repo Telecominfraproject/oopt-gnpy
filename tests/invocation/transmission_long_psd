@@ -17,11 +17,13 @@ Transceiver Site_A
   PMD (ps):                  0.00
   PDL (dB):                  0.00
   Latency (ms):              0.00
+  Actual pch out (dBm):      mode_1: 0.00, mode_2: 0.00
 Roadm roadm Site A
-  type_variety:            default
-  effective loss (dB):     20.00
-  reference pch out (dBm): -20.00
-  actual pch out (dBm):    mode_1: -20.00, mode_2: -16.99
+  Type_variety:            default
+  Reference loss (dB):     20.00
+  Actual loss (dB):        mode_1: 20.00, mode_2: 16.99
+  Reference pch out (dBm): -20.00
+  Actual pch out (dBm):    mode_1: -20.00, mode_2: -16.99
 Edfa booster A
   type_variety:           std_medium_gain
   effective gain(dB):     20.00
@@ -146,10 +148,11 @@ Edfa Edfa5
   actual pch out (dBm):   mode_1: 0.06, mode_2: 3.07
   output VOA (dB):        0.00
 Roadm roadm Site C
-  type_variety:            default
-  effective loss (dB):     20.00
-  reference pch out (dBm): -20.00
-  actual pch out (dBm):    mode_1: -20.00, mode_2: -16.99
+  Type_variety:            default
+  Reference loss (dB):     20.00
+  Actual loss (dB):        mode_1: 20.06, mode_2: 20.06
+  Reference pch out (dBm): -20.00
+  Actual pch out (dBm):    mode_1: -20.00, mode_2: -16.99
 Edfa booster C
   type_variety:           std_medium_gain
   effective gain(dB):     20.00
@@ -274,10 +277,11 @@ Edfa Edfa10
   actual pch out (dBm):   mode_1: 0.06, mode_2: 3.07
   output VOA (dB):        0.00
 Roadm roadm Site D
-  type_variety:            default
-  effective loss (dB):     20.00
-  reference pch out (dBm): -20.00
-  actual pch out (dBm):    mode_1: -20.00, mode_2: -16.99
+  Type_variety:            default
+  Reference loss (dB):     20.00
+  Actual loss (dB):        mode_1: 20.06, mode_2: 20.06
+  Reference pch out (dBm): -20.00
+  Actual pch out (dBm):    mode_1: -20.00, mode_2: -16.99
 Edfa booster D
   type_variety:           std_medium_gain
   effective gain(dB):     20.00
@@ -336,10 +340,11 @@ Edfa Edfa12
   actual pch out (dBm):   mode_1: 0.03, mode_2: 3.04
   output VOA (dB):        0.00
 Roadm roadm Site E
-  type_variety:            default
-  effective loss (dB):     20.00
-  reference pch out (dBm): -20.00
-  actual pch out (dBm):    mode_1: -20.00, mode_2: -16.99
+  Type_variety:            default
+  Reference loss (dB):     20.00
+  Actual loss (dB):        mode_1: 20.03, mode_2: 20.03
+  Reference pch out (dBm): -20.00
+  Actual pch out (dBm):    mode_1: -20.00, mode_2: -16.99
 Edfa booster E
   type_variety:           std_medium_gain
   effective gain(dB):     20.00
@@ -420,10 +425,11 @@ Edfa Edfa15
   actual pch out (dBm):   mode_1: 0.04, mode_2: 3.05
   output VOA (dB):        0.00
 Roadm roadm Site B
-  type_variety:            default
-  effective loss (dB):     20.00
-  reference pch out (dBm): -20.00
-  actual pch out (dBm):    mode_1: -20.00, mode_2: -16.99
+  Type_variety:            default
+  Reference loss (dB):     20.00
+  Actual loss (dB):        mode_1: 20.04, mode_2: 20.04
+  Reference pch out (dBm): -20.00
+  Actual pch out (dBm):    mode_1: -20.00, mode_2: -16.99
 Transceiver Site_B
   GSNR (0.1nm, dB):          mode_1: 17.91, mode_2: 20.37
   GSNR (signal bw, dB):      mode_1: 13.83, mode_2: 13.28
@@ -433,6 +439,7 @@ Transceiver Site_B
   PMD (ps):                  1.39
   PDL (dB):                  0.00
   Latency (ms):              5.88
+  Actual pch out (dBm):      mode_1: 0.00, mode_2: 0.00
 
 Transmission result for input power = 0.00 dBm:
   Final GSNR (0.1 nm): [1;36;40m18.94 dB[0m

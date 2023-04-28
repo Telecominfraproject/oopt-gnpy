@@ -61,7 +61,7 @@ def test_trx_mode_params(trx_type, trx_mode, error_message, no_error, expected_r
         'penalties': {},
         'roll_off': 0.15,
         'spacing': 50000000000.0,
-        'tx_osnr': 100
+        'tx_osnr': 100,
     }
     possible_results["mode 2"] = {
         'format': 'mode 2',
