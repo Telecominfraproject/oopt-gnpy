@@ -255,7 +255,8 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm, roa
               'path_bandwidth': 100e9,
               'effective_freq_slot': None,
               'nb_channel': nb_channel,
-              'power': dbm2watt(power_dbm)
+              'power': dbm2watt(power_dbm),
+              'tx_power': dbm2watt(power_dbm)
               }
     trx_params = trx_mode_params(equipment)
     params.update(trx_params)
@@ -264,7 +265,7 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm, roa
     path = compute_constrained_path(network, req)
     si = create_input_spectral_information(
         f_min=req.f_min, f_max=req.f_max, roll_off=req.roll_off, baud_rate=req.baud_rate,
-        power=req.power, spacing=req.spacing, tx_osnr=req.tx_osnr)
+        spacing=req.spacing, tx_osnr=req.tx_osnr, tx_power=req.tx_power)
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
             power_in_roadm = si.signal + si.ase + si.nli
@@ -311,7 +312,8 @@ def create_per_oms_request(network, eqpt, req_power):
         'path_bandwidth': 100e9,
         'effective_freq_slot': None,
         'nb_channel': nb_channel,
-        'power': dbm2watt(req_power)
+        'power': dbm2watt(req_power),
+        'tx_power': dbm2watt(req_power)
     }
     trx_params = trx_mode_params(eqpt)
     params.update(trx_params)
@@ -339,6 +341,7 @@ def create_per_oms_request(network, eqpt, req_power):
             carrier['label'] = ""
             carrier['slot_width'] = req.spacing
             carrier['delta_pdb'] = 0
+            carrier['tx_power'] = 1e-3
             req.initial_spectrum = {(req.f_min + req.spacing * f): Carrier(**carrier)
                                     for f in range(1, req.nb_channel + 1)}
             req_list.append(req)
@@ -353,6 +356,7 @@ def create_per_oms_request(network, eqpt, req_power):
     carrier['label'] = ""
     carrier['slot_width'] = req.spacing
     carrier['delta_pdb'] = 0
+    carrier['tx_power'] = 1e-3
     req.initial_spectrum = {(req.f_min + req.spacing * f): Carrier(**carrier) for f in range(1, req.nb_channel + 1)}
     req_list.append(req)
     return req_list

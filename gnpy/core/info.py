@@ -52,7 +52,7 @@ class SpectralInformation(object):
 
     def __init__(self, frequency: array, baud_rate: array, slot_width: array, signal: array, nli: array, ase: array,
                  roll_off: array, chromatic_dispersion: array, pmd: array, pdl: array, latency: array,
-                 delta_pdb_per_channel: array, tx_osnr: array, label: array):
+                 delta_pdb_per_channel: array, tx_osnr: array, tx_power: array, label: array):
         indices = argsort(frequency)
         self._frequency = frequency[indices]
         self._df = outer(ones(frequency.shape), frequency) - outer(frequency, ones(frequency.shape))
@@ -80,6 +80,7 @@ class SpectralInformation(object):
         self._latency = latency[indices]
         self._delta_pdb_per_channel = delta_pdb_per_channel[indices]
         self._tx_osnr = tx_osnr[indices]
+        self._tx_power = tx_power[indices]
         self._label = label[indices]
 
     @property
@@ -189,6 +190,14 @@ class SpectralInformation(object):
         self._tx_osnr = tx_osnr
 
     @property
+    def tx_power(self):
+        return self._tx_power
+
+    @tx_power.setter
+    def tx_power(self, tx_power):
+        self._tx_power = tx_power
+
+    @property
     def channel_number(self):
         return self._channel_number
 
@@ -232,6 +241,7 @@ class SpectralInformation(object):
                                        delta_pdb_per_channel=append(self.delta_pdb_per_channel,
                                                                     other.delta_pdb_per_channel),
                                        tx_osnr=append(self.tx_osnr, other.tx_osnr),
+                                       tx_power=append(self.tx_power, other.tx_power),
                                        label=append(self.label, other.label))
         except SpectrumError:
             raise SpectrumError('Spectra cannot be summed: channels overlapping.')
@@ -251,6 +261,7 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, fl
                                           signal: Union[float, ndarray, Iterable],
                                           baud_rate: Union[float, ndarray, Iterable],
                                           tx_osnr: Union[float, ndarray, Iterable],
+                                          tx_power: Union[float, ndarray, Iterable] = None,
                                           delta_pdb_per_channel: Union[float, ndarray, Iterable] = 0.,
                                           slot_width: Union[float, ndarray, Iterable] = None,
                                           roll_off: Union[float, ndarray, Iterable] = 0.,
@@ -277,6 +288,7 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, fl
         ase = zeros(number_of_channels)
         delta_pdb_per_channel = full(number_of_channels, delta_pdb_per_channel)
         tx_osnr = full(number_of_channels, tx_osnr)
+        tx_power = full(number_of_channels, tx_power)
         label = full(number_of_channels, label)
         return SpectralInformation(frequency=frequency, slot_width=slot_width,
                                    signal=signal, nli=nli, ase=ase,
@@ -284,7 +296,7 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, fl
                                    chromatic_dispersion=chromatic_dispersion,
                                    pmd=pmd, pdl=pdl, latency=latency,
                                    delta_pdb_per_channel=delta_pdb_per_channel,
-                                   tx_osnr=tx_osnr, label=label)
+                                   tx_osnr=tx_osnr, tx_power=tx_power, label=label)
     except ValueError as e:
         if 'could not broadcast' in str(e):
             raise SpectrumError('Dimension mismatch in input fields.')
@@ -292,45 +304,47 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, fl
             raise
 
 
-def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, power, spacing, tx_osnr, delta_pdb=0):
+def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, spacing, tx_osnr, tx_power,
+                                      delta_pdb=0):
     """Creates a fixed slot width spectral information with flat power.
     all arguments are scalar values"""
     number_of_channels = automatic_nch(f_min, f_max, spacing)
     frequency = [(f_min + spacing * i) for i in range(1, number_of_channels + 1)]
     delta_pdb_per_channel = delta_pdb * ones(number_of_channels)
     label = [f'{baud_rate * 1e-9 :.2f}G' for i in range(number_of_channels)]
-    return create_arbitrary_spectral_information(frequency, slot_width=spacing, signal=power, baud_rate=baud_rate,
+    return create_arbitrary_spectral_information(frequency, slot_width=spacing, signal=tx_power, baud_rate=baud_rate,
                                                  roll_off=roll_off, delta_pdb_per_channel=delta_pdb_per_channel,
-                                                 tx_osnr=tx_osnr, label=label)
+                                                 tx_osnr=tx_osnr, tx_power=tx_power, label=label)
 
 
 def carriers_to_spectral_information(initial_spectrum: dict[float, Carrier],
                                      power: float) -> SpectralInformation:
     """Initial spectrum is a dict with key = carrier frequency, and value a Carrier object.
     :param initial_spectrum: indexed by frequency in Hz, with power offset (delta_pdb), baudrate, slot width,
-    tx_osnr and roll off.
+    tx_osnr, tx_power and roll off.
     :param power: power of the request
     """
     frequency = list(initial_spectrum.keys())
-    signal = [power * db2lin(c.delta_pdb) for c in initial_spectrum.values()]
+    signal = [c.tx_power for c in initial_spectrum.values()]
     roll_off = [c.roll_off for c in initial_spectrum.values()]
     baud_rate = [c.baud_rate for c in initial_spectrum.values()]
     delta_pdb_per_channel = [c.delta_pdb for c in initial_spectrum.values()]
     slot_width = [c.slot_width for c in initial_spectrum.values()]
     tx_osnr = [c.tx_osnr for c in initial_spectrum.values()]
+    tx_power = [c.tx_power for c in initial_spectrum.values()]
     label = [c.label for c in initial_spectrum.values()]
     p_span0 = watt2dbm(power)
     return create_arbitrary_spectral_information(frequency=frequency, signal=signal, baud_rate=baud_rate,
                                                  slot_width=slot_width, roll_off=roll_off,
                                                  delta_pdb_per_channel=delta_pdb_per_channel, tx_osnr=tx_osnr,
-                                                 label=label)
+                                                 tx_power=tx_power, label=label)
 
 
 @dataclass
 class Carrier:
     """One channel in the initial mixed-type spectrum definition, each type being defined by
     its delta_pdb (power offset with respect to reference power), baud rate, slot_width, roll_off
-    and tx_osnr. delta_pdb offset is applied to target power out of Roadm.
+    tx_power, and tx_osnr. delta_pdb offset is applied to target power out of Roadm.
     Label is used to group carriers which belong to the same partition when printing results.
     """
     delta_pdb: float
@@ -338,6 +352,7 @@ class Carrier:
     slot_width: float
     roll_off: float
     tx_osnr: float
+    tx_power: float
     label: str
 
 

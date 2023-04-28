@@ -288,6 +288,7 @@ def request_set():
         'cost': 1,
         'roll_off': 0.15,
         'tx_osnr': 38,
+        'tx_power': 0.001,
         'penalties': {},
         'min_spacing': 37.5e9,
         'nb_channel': None,
