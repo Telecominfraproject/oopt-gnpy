@@ -119,8 +119,9 @@ def create_rq(equipment, srce, dest, bdir, node_list, loose_list, rqid='test_req
         'nodes_list': node_list,
         'loose_list': loose_list,
         'path_bandwidth': 100.0e9,
-        'power': 1.0,
-        'effective_freq_slot': None,
+        'power': 1.0e-3,
+        'tx_power': 1.0e-3,
+        'effective_freq_slot': None
     }
     params['format'] = params['trx_mode']
     trx_params = trx_mode_params(equipment, params['trx_type'], params['trx_mode'], True)
@@ -258,7 +259,8 @@ def request_set():
         'f_min': 191.1e12,
         'f_max': 196.3e12,
         'nb_channel': None,
-        'power': 0.001,
+        'power': 1e-3,
+        'tx_power': 1e-3,
         'path_bandwidth': 200e9}
 
 

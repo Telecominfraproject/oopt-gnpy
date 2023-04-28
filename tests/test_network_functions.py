@@ -228,6 +228,7 @@ def test_design_non_amplified_link(elem1, elem2, expected_gain, expected_delta_p
     equipment = load_equipment(EQPT_FILENAME)
     equipment['Span']['default'].power_mode = power_mode
     equipment['SI']['default'].power_dbm = p_db
+    equipment['SI']['default'].tx_power_dbm = p_db
     network = network_from_json(json_data, equipment)
     edfa = next(a for a in network.nodes() if a.uid == 'edfa')
     edfa.params.out_voa_auto = True

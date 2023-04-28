@@ -52,7 +52,8 @@ def propagation(input_power, con_in, con_out, dest):
     p = db2lin(p) * 1e-3
     spacing = 50e9  # THz
     si = create_input_spectral_information(f_min=191.3e12, f_max=191.3e12 + 79 * spacing, roll_off=0.15,
-                                           baud_rate=32e9, power=p, spacing=spacing, tx_osnr=None)
+                                           baud_rate=32e9, spacing=spacing, tx_osnr=None,
+                                           tx_power=p)
     source = next(transceivers[uid] for uid in transceivers if uid == 'trx A')
     sink = next(transceivers[uid] for uid in transceivers if uid == dest)
     path = dijkstra_path(network, source, sink)
@@ -181,7 +182,7 @@ def test_json_element(error, json_data, expected_msg):
     network = network_from_json(json_data, equipment)
     elem = next(e for e in network.nodes() if e.uid == 'Elem')
     si = create_input_spectral_information(f_min=191.3e12, f_max=196.1e12, roll_off=0.15,
-                                           baud_rate=32e9, power=1.0e-3, spacing=50.0e9, tx_osnr=45)
+                                           baud_rate=32e9, tx_power=1.0e-3, spacing=50.0e9, tx_osnr=45)
     with pytest.raises(error, match=re.escape(expected_msg)):
         _ = elem(si)
 
