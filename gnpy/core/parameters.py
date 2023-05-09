@@ -9,7 +9,7 @@ This module contains all parameters to configure standard network elements.
 """
 
 from scipy.constants import c, pi
-from numpy import asarray, array
+from numpy import asarray, array, linspace, full
 
 from gnpy.core.utils import convert_length
 from gnpy.core.exceptions import ParametersError
@@ -274,20 +274,91 @@ class FiberParams(Parameters):
 
 class EdfaParams:
     def __init__(self, **params):
-        self.update_params(params)
-        if params == {}:
-            self.type_variety = ''
-            self.type_def = ''
-            # self.gain_flatmax = 0
-            # self.gain_min = 0
-            # self.p_max = 0
-            # self.nf_model = None
-            # self.nf_fit_coeff = None
-            # self.nf_ripple = None
-            # self.dgt = None
-            # self.gain_ripple = None
-            # self.out_voa_auto = False
-            # self.allowed_for_design = None
+        try:
+            self.type_variety = params['type_variety']
+            self.type_def = params['type_def']
+
+            # Bandwidth
+            self.f_min = params['f_min']
+            self.f_max = params['f_max']
+            self.bandwidth = self.f_max - self.f_min
+            self.f_cent = (self.f_max + self.f_min)/2
+            self.f_ripple_ref = params['f_ripple_ref']
+
+            # Gain
+            self.gain_flatmax = params['gain_flatmax']
+            self.gain_min = params['gain_min']
+
+            gain_ripple = params['gain_ripple']
+            if gain_ripple == 0:
+                self.gain_ripple = asarray([0, 0])
+                self.f_ripple_ref = asarray([self.f_min, self.f_max])
+            else:
+                self.gain_ripple = asarray(gain_ripple)
+                if self.f_ripple_ref is not None:
+                    if (self.f_ripple_ref[0] != self.f_min) or (self.f_ripple_ref[-1] != self.f_max):
+                        raise ParametersError("The reference ripple frequency maximum and minimum have to coincide with the"
+                                              "EDFA frequency maximum and minimum.")
+                    elif self.gain_ripple.size != self.f_ripple_ref.size:
+                        raise ParametersError("The reference ripple frequency and the gain ripple must have the same size.")
+                else:
+                    self.f_ripple_ref = linspace(self.f_min, self.f_max, self.gain_ripple.size)
+
+            tilt_ripple = params['tilt_ripple']
+
+            if tilt_ripple == 0:
+                self.tilt_ripple = full(self.gain_ripple.size, 0)
+            else:
+                self.tilt_ripple = asarray(tilt_ripple)
+                if self.tilt_ripple.size != self.gain_ripple.size:
+                    raise ParametersError("The tilt ripple and the gain ripple must have the same size.")
+
+            # Power
+            self.p_max = params['p_max']
+
+            # Noise Figure
+            self.nf_model = params['nf_model']
+            self.nf_min = params['nf_min']
+            self.nf_max = params['nf_max']
+            self.nf_coef = params['nf_coef']
+            self.nf0 = params['nf0']
+            self.nf_fit_coeff = params['nf_fit_coeff']
+            self.nf_ripple = params['nf_ripple']
+
+            # VOA
+            self.out_voa_auto = params['out_voa_auto']
+
+            # Dual Stage
+            self.dual_stage_model = params['dual_stage_model']
+            if self.dual_stage_model is not None:
+                # Preamp
+                self.preamp_variety = params['preamp_variety']
+                self.preamp_type_def = params['preamp_type_def']
+                self.preamp_nf_model = params['preamp_nf_model']
+                self.preamp_nf_fit_coeff = params['preamp_nf_fit_coeff']
+                self.preamp_gain_min = params['preamp_gain_min']
+                self.preamp_gain_flatmax = params['preamp_gain_flatmax']
+
+                # Booster
+                self.booster_variety = params['booster_variety']
+                self.booster_type_def = params['booster_type_def']
+                self.booster_nf_model = params['booster_nf_model']
+                self.booster_nf_fit_coeff = params['booster_nf_fit_coeff']
+                self.booster_gain_min = params['booster_gain_min']
+                self.booster_gain_flatmax = params['booster_gain_flatmax']
+
+            # Others
+            self.pmd = params['pmd']
+            self.pdl = params['pdl']
+            self.raman = params['raman']
+            self.dgt = params['dgt']
+            self.advance_configurations_from_json = params['advance_configurations_from_json']
+
+            # Design
+            self.allowed_for_design = params['allowed_for_design']
+
+        except KeyError as e:
+            raise ParametersError(f'Edfa configurations json must include {e}. Configuration: {params}')
 
     def update_params(self, kwargs):
         for k, v in kwargs.items():
