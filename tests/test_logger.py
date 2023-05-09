@@ -342,8 +342,8 @@ def wrong_element():
             }],
             "connections": []
         },
-        "expected_msg": "The Edfa of variety type not_valid_variety was not recognized: "
-                        + "please check it is properly defined in the eqpt_config json file"
+        "expected_msg": "The Edfa of variety type not_valid_variety was not recognized:"
+                        + "\nplease check it is properly defined in the eqpt_config json file"
     })
     data.append({
         "error": ParametersError,
