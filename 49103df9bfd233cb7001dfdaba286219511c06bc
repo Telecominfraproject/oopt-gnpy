@@ -16,6 +16,23 @@
       "message": "recheck",
       "revId": "49103df9bfd233cb7001dfdaba286219511c06bc",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b31422b_7e7291e1",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1229,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-05-09T08:17:03Z",
+      "side": 1,
+      "message": "I\u0027ve changed this to `_penalty_msg` because it\u0027s really just an internal helper. Also tweaked the docstring.",
+      "revId": "49103df9bfd233cb7001dfdaba286219511c06bc",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
