@@ -182,15 +182,24 @@ class Amp(_JsonThing):
         'p_max': None,
         'nf_model': None,
         'dual_stage_model': None,
+        'preamp_variety': None,
+        'booster_variety': None,
+        'nf_min': None,
+        'nf_max': None,
+        'nf_coef': None,
+        'nf0': None,
         'nf_fit_coeff': None,
-        'nf_ripple': None,
+        'nf_ripple': 0,
         'dgt': None,
-        'gain_ripple': None,
+        'gain_ripple': 0,
+        'tilt_ripple': 0,
+        'f_ripple_ref': None,
         'out_voa_auto': False,
         'allowed_for_design': False,
         'raman': False,
         'pmd': 0,
-        'pdl': 0
+        'pdl': 0,
+        'advance_configurations_from_json': None
     }
 
     def __init__(self, **kwargs):
@@ -488,8 +497,14 @@ def network_from_json(json_data, equipment):
             temp = merge_amplifier_restrictions(temp, extra_params)
             el_config['params'] = temp
             el_config['type_variety'] = variety
-        elif (typ in ['Fiber', 'RamanFiber']) or (typ == 'Edfa' and variety not in ['default', '']):
+        elif (typ in ['Fiber', 'RamanFiber']):
             raise ConfigurationError(f'The {typ} of variety type {variety} was not recognized:'
+                                     '\nplease check it is properly defined in the eqpt_config json file')
+        elif typ == 'Edfa':
+            if variety in ['default', '']:
+                el_config['params'] = Amp.default_values
+            else:
+                raise ConfigurationError(f'The Edfa of variety type {variety} was not recognized:'
                                      '\nplease check it is properly defined in the eqpt_config json file')
         el = cls(**el_config)
         g.add_node(el)
