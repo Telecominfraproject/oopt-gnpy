@@ -7,9 +7,10 @@ gnpy.core.parameters
 
 This module contains all parameters to configure standard network elements.
 """
+from collections import namedtuple
 
 from scipy.constants import c, pi
-from numpy import asarray, array
+from numpy import asarray, array, exp, sqrt, log, outer, ones, squeeze, append, flip
 
 from gnpy.core.utils import convert_length
 from gnpy.core.exceptions import ParametersError
@@ -106,26 +107,50 @@ class FusedParams(Parameters):
         self.loss = kwargs['loss'] if 'loss' in kwargs else 1
 
 
-# SSMF Raman coefficient profile normalized with respect to the effective area (Cr * A_eff)
-CR_NORM = array([
-    0., 7.802e-16, 2.4236e-15, 4.0504e-15, 5.6606e-15, 6.8973e-15, 7.802e-15, 8.4162e-15, 8.8727e-15, 9.2877e-15,
-    1.01011e-14, 1.05244e-14, 1.13295e-14, 1.2367e-14, 1.3695e-14, 1.5023e-14, 1.64091e-14, 1.81936e-14, 2.04927e-14,
-    2.28167e-14, 2.48917e-14, 2.66098e-14, 2.82615e-14, 2.98136e-14, 3.1042e-14, 3.17558e-14, 3.18803e-14, 3.17558e-14,
-    3.15566e-14, 3.11748e-14, 2.94567e-14, 3.14985e-14, 2.8552e-14, 2.43439e-14, 1.67992e-14, 9.6114e-15, 7.02180e-15,
-    5.9262e-15, 5.6938e-15, 7.055e-15, 7.4119e-15, 7.4783e-15, 6.7645e-15, 5.5361e-15, 3.6271e-15, 2.7224e-15,
-    2.4568e-15, 2.1995e-15, 2.1331e-15, 2.3323e-15, 2.5564e-15, 3.0461e-15, 4.8555e-15, 5.5029e-15, 5.2788e-15,
-    4.565e-15, 3.3698e-15, 2.2991e-15, 2.0086e-15, 1.5521e-15, 1.328e-15, 1.162e-15, 9.379e-16, 8.715e-16, 8.134e-16,
-    8.134e-16, 9.379e-16, 1.3612e-15, 1.6185e-15, 1.9754e-15, 1.8758e-15, 1.6849e-15, 1.2284e-15, 9.047e-16, 8.134e-16,
-    8.715e-16, 9.711e-16, 1.0375e-15, 1.0043e-15, 9.047e-16, 8.134e-16, 6.806e-16, 5.478e-16, 3.901e-16, 2.241e-16,
-    1.577e-16, 9.96e-17, 3.32e-17, 1.66e-17, 8.3e-18])
+DEFAULT_RAMAN_COEFFICIENT = {
+    # SSMF Raman coefficient profile normalized with respect to the effective area overlap (g0 * A_eff(f_probe, f_pump))
+    'g0': array(
+        [0.00000000e+00, 1.12351610e-05, 3.47838074e-05, 5.79356636e-05, 8.06921680e-05, 9.79845709e-05, 1.10454361e-04,
+         1.18735302e-04, 1.24736889e-04, 1.30110053e-04, 1.41001273e-04, 1.46383247e-04, 1.57011792e-04, 1.70765865e-04,
+         1.88408911e-04, 2.05914127e-04, 2.24074028e-04, 2.47508283e-04, 2.77729174e-04, 3.08044243e-04, 3.34764439e-04,
+         3.56481704e-04, 3.77127256e-04, 3.96269124e-04, 4.10955175e-04, 4.18718761e-04, 4.19511263e-04, 4.17025384e-04,
+         4.13565369e-04, 4.07726048e-04, 3.83671291e-04, 4.08564283e-04, 3.69571936e-04, 3.14442090e-04, 2.16074535e-04,
+         1.23097823e-04, 8.95457457e-05, 7.52470400e-05, 7.19806145e-05, 8.87961158e-05, 9.30812065e-05, 9.37058268e-05,
+         8.45719619e-05, 6.90585286e-05, 4.50407159e-05, 3.36521245e-05, 3.02292475e-05, 2.69376939e-05, 2.60020897e-05,
+         2.82958958e-05, 3.08667558e-05, 3.66024657e-05, 5.80610307e-05, 6.54797937e-05, 6.25022715e-05, 5.37806442e-05,
+         3.94996621e-05, 2.68120644e-05, 2.33038554e-05, 1.79140757e-05, 1.52472424e-05, 1.32707565e-05, 1.06541760e-05,
+         9.84649374e-06, 9.13999627e-06, 9.08971012e-06, 1.04227525e-05, 1.50419271e-05, 1.77838232e-05, 2.15810815e-05,
+         2.03744008e-05, 1.81939341e-05, 1.31862121e-05, 9.65352116e-06, 8.62698322e-06, 9.18688016e-06, 1.01737784e-05,
+         1.08017817e-05, 1.03903588e-05, 9.30040333e-06, 8.30809173e-06, 6.90650401e-06, 5.52238029e-06, 3.90648708e-06,
+         2.22908227e-06, 1.55796177e-06, 9.77218716e-07, 3.23477236e-07, 1.60602454e-07, 7.97306386e-08]
+    ),  # [m/W]
 
-# Note the non-uniform spacing of this range; this is required for properly capturing the Raman peak shape.
-FREQ_OFFSET = array([
-    0., 0.5, 1., 1.5, 2., 2.5, 3., 3.5, 4., 4.5, 5., 5.5, 6., 6.5, 7., 7.5, 8., 8.5, 9., 9.5, 10., 10.5, 11., 11.5, 12.,
-    12.5, 12.75, 13., 13.25, 13.5, 14., 14.5, 14.75, 15., 15.5, 16., 16.5, 17., 17.5, 18., 18.25, 18.5, 18.75, 19.,
-    19.5, 20., 20.5, 21., 21.5, 22., 22.5, 23., 23.5, 24., 24.5, 25., 25.5, 26., 26.5, 27., 27.5, 28., 28.5, 29., 29.5,
-    30., 30.5, 31., 31.5, 32., 32.5, 33., 33.5, 34., 34.5, 35., 35.5, 36., 36.5, 37., 37.5, 38., 38.5, 39., 39.5, 40.,
-    40.5, 41., 41.5, 42.]) * 1e12
+    # Note the non-uniform spacing of this range; this is required for properly capturing the Raman peak shape.
+    'frequency_offset': array([
+        0., 0.5, 1., 1.5, 2., 2.5, 3., 3.5, 4., 4.5, 5., 5.5, 6., 6.5, 7., 7.5, 8., 8.5, 9., 9.5, 10., 10.5, 11., 11.5,
+        12.,
+        12.5, 12.75, 13., 13.25, 13.5, 14., 14.5, 14.75, 15., 15.5, 16., 16.5, 17., 17.5, 18., 18.25, 18.5, 18.75, 19.,
+        19.5, 20., 20.5, 21., 21.5, 22., 22.5, 23., 23.5, 24., 24.5, 25., 25.5, 26., 26.5, 27., 27.5, 28., 28.5, 29.,
+        29.5,
+        30., 30.5, 31., 31.5, 32., 32.5, 33., 33.5, 34., 34.5, 35., 35.5, 36., 36.5, 37., 37.5, 38., 38.5, 39., 39.5,
+        40.,
+        40.5, 41., 41.5, 42.]
+    ) * 1e12,  # [Hz]
+
+    # Raman profile reference frequency
+    'reference_frequency': 206184634112792  # [Hz] (1454 nm)}
+}
+
+
+class RamanGainCoefficient(namedtuple('RamanGainCoefficient', 'normalized_gamma_raman frequency_offset')):
+    """ Raman Gain Coefficient Parameters
+
+        Based on:
+            Andrea D’Amico, Bruno Correia, Elliot London, Emanuele Virgillito, Giacomo Borraccini, Antonio Napoli,
+            and Vittorio Curri, "Scalable and Disaggregated GGN Approximation Applied to a C+L+S Optical Network,"
+            J. Lightwave Technol. 40, 3499-3511 (2022)
+            Section III.D
+    """
 
 
 class FiberParams(Parameters):
@@ -139,6 +164,8 @@ class FiberParams(Parameters):
             # with default values from eqpt_config.json[Spans]
             self._con_in = kwargs.get('con_in')
             self._con_out = kwargs.get('con_out')
+
+            # Reference frequency (unique for all parameters: beta2, beta3, gamma, effective_area)
             if 'ref_wavelength' in kwargs:
                 self._ref_wavelength = kwargs['ref_wavelength']
                 self._ref_frequency = c / self._ref_wavelength
@@ -148,6 +175,8 @@ class FiberParams(Parameters):
             else:
                 self._ref_wavelength = 1550e-9  # conventional central C band wavelength [m]
                 self._ref_frequency = c / self._ref_wavelength
+
+            # Chromatic Dispersion
             self._dispersion = kwargs['dispersion']  # s/m/m
             self._dispersion_slope = \
                 kwargs.get('dispersion_slope', -2 * self._dispersion / self.ref_wavelength)  # s/m/m/m
@@ -157,10 +186,13 @@ class FiberParams(Parameters):
             # (accessed on 25 March 2018) (2005).
             self._beta3 = ((self.dispersion_slope - (4*pi*c/self.ref_wavelength**3) * self.beta2) /
                            (2*pi*c/self.ref_wavelength**2)**2)
+
+            # Effective Area and Nonlinear Coefficient
             self._effective_area = kwargs.get('effective_area')  # m^2
             self._n1 = 1.468
+            self._core_radius = 4.2e-6  # m
             n2 = 2.6e-20  # m^2/W
-            if self._effective_area:
+            if self._effective_area is not None:
                 self._gamma = kwargs.get('gamma', 2 * pi * n2 / (self.ref_wavelength * self._effective_area))  # 1/W/m
             elif 'gamma' in kwargs:
                 self._gamma = kwargs['gamma']  # 1/W/m
@@ -168,16 +200,37 @@ class FiberParams(Parameters):
             else:
                 self._gamma = 0  # 1/W/m
                 self._effective_area = 83e-12  # m^2
-            default_raman_efficiency = {'cr': CR_NORM / self._effective_area, 'frequency_offset': FREQ_OFFSET}
-            self._raman_efficiency = kwargs.get('raman_efficiency', default_raman_efficiency)
+            self._contrast = 0.5 * (c / (2 * pi * self.ref_frequency * self._core_radius * self._n1) * exp(
+                pi * self._core_radius ** 2 / self._effective_area)) ** 2
+
+            # Raman Gain Coefficient
+            raman_coefficient = kwargs.get('raman_coefficient', DEFAULT_RAMAN_COEFFICIENT)
+            self._g0 = asarray(raman_coefficient['g0'])
+            raman_reference_frequency = raman_coefficient['reference_frequency']
+            frequency_offset = asarray(raman_coefficient['frequency_offset'])
+            stokes_wave = raman_reference_frequency - frequency_offset
+            gamma_raman = self._g0 * self.effective_area_overlap(stokes_wave, raman_reference_frequency)
+            normalized_gamma_raman = gamma_raman / raman_reference_frequency  # 1 / m / W / Hz
+            self._raman_reference_frequency = raman_reference_frequency
+
+            # Raman gain coefficient array of the frequency offset constructed such that positive frequency values
+            # represent a positive power transfer from higher frequency and vice versa
+            frequency_offset = append(-flip(frequency_offset[1:]), frequency_offset)
+            normalized_gamma_raman = append(- flip(normalized_gamma_raman[1:]), normalized_gamma_raman)
+            self._raman_coefficient = RamanGainCoefficient(normalized_gamma_raman, frequency_offset)
+
+            # Polarization Mode Dispersion
             self._pmd_coef = kwargs['pmd_coef']  # s/sqrt(m)
+
+            # Loss Coefficient
             if isinstance(kwargs['loss_coef'], dict):
                 self._loss_coef = asarray(kwargs['loss_coef']['value']) * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = asarray(kwargs['loss_coef']['frequency'])  # Hz
             else:
                 self._loss_coef = asarray(kwargs['loss_coef']) * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = asarray(self._ref_frequency)  # Hz
-            self._lumped_losses = kwargs['lumped_losses'] if 'lumped_losses' in kwargs else []
+            # Lumped Losses
+            self._lumped_losses = kwargs['lumped_losses'] if 'lumped_losses' in kwargs else array([])
             self._latency = self._length / (c / self._n1)  # s
         except KeyError as e:
             raise ParametersError(f'Fiber configurations json must include {e}. Configuration: {kwargs}')
@@ -231,6 +284,17 @@ class FiberParams(Parameters):
     def gamma(self):
         return self._gamma
 
+    def effective_area_scaling(self, frequency):
+        V = 2 * pi * frequency / c * self._core_radius * self._n1 * sqrt(2 * self._contrast)
+        w = self._core_radius / sqrt(log(V))
+        return asarray(pi * w ** 2)
+
+    def effective_area_overlap(self, frequency_stokes_wave, frequency_pump):
+        effective_area_stokes_wave = self.effective_area_scaling(frequency_stokes_wave)
+        effective_area_pump = self.effective_area_scaling(frequency_pump)
+        return squeeze(outer(effective_area_stokes_wave, ones(effective_area_pump.size)) + outer(
+            ones(effective_area_stokes_wave.size), effective_area_pump)) / 2
+
     @property
     def pmd_coef(self):
         return self._pmd_coef
@@ -260,8 +324,8 @@ class FiberParams(Parameters):
         return self._f_loss_ref
 
     @property
-    def raman_efficiency(self):
-        return self._raman_efficiency
+    def raman_coefficient(self):
+        return self._raman_coefficient
 
     @property
     def latency(self):
@@ -271,10 +335,16 @@ class FiberParams(Parameters):
         dictionary = super().asdict()
         dictionary['loss_coef'] = self.loss_coef * 1e3
         dictionary['length_units'] = 'm'
-        if not self.lumped_losses:
+        if len(self.lumped_losses) == 0:
             dictionary.pop('lumped_losses')
-        if not self.raman_efficiency:
-            dictionary.pop('raman_efficiency')
+        if not self.raman_coefficient:
+            dictionary.pop('raman_coefficient')
+        else:
+            raman_frequency_offset = \
+                self.raman_coefficient.frequency_offset[self.raman_coefficient.frequency_offset >= 0]
+            dictionary['raman_coefficient'] = {'g0': self._g0.tolist(),
+                                               'frequency_offset': raman_frequency_offset.tolist(),
+                                               'reference_frequency': self._raman_reference_frequency}
         return dictionary
 
 

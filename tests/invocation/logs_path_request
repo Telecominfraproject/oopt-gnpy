@@ -1,5 +1,5 @@
 INFO     gnpy.tools.cli_examples:cli_examples.py:326 Computing path requests meshTopologyExampleV2.xls into JSON format
-INFO     gnpy.tools.json_io:json_io.py:548 Automatically converting requests from XLS to JSON
+INFO     gnpy.tools.json_io:json_io.py:554 Automatically converting requests from XLS to JSON
 INFO     gnpy.topology.request:request.py:1104 
 	request 0
 	Computing path from trx Lorient_KMA to trx Vannes_KBE
