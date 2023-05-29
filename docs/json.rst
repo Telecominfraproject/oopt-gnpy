@@ -95,6 +95,24 @@ The fiber library currently describes SSMF and NZDF but additional fiber types c
 |                      |           | each relevant position (in km):          |
 |                      |           | ``{"position": 10, "loss": 1.5}``)       |
 +----------------------+-----------+------------------------------------------+
+| ``raman_coefficient``| (dict)    | The fundamental parameter that describes |
+|                      |           | the regulation of the power transfer     |
+|                      |           | between channels during fiber propagation|
+|                      |           | is the Raman gain coefficient (see       |
+|                      |           | :cite:`DAmicoJLT2022` for further        |
+|                      |           | details); :math:`f_{ref}` represents the |
+|                      |           | pump reference frequency used for the    |
+|                      |           | Raman gain coefficient profile           |
+|                      |           | measurement ("reference_frequency"),     |
+|                      |           | :math:`\Delta f` is the frequency shift  |
+|                      |           | between the pump and the specific Stokes |
+|                      |           | wave, the Raman gain coefficient         |
+|                      |           | in terms of optical power                |
+|                      |           | :math:`g_0`, expressed in                |
+|                      |           | :math:`1/(m\;W)`.                        |
+|                      |           | Default values measured for a SSMF are   |
+|                      |           | considered when not specified.           |
++----------------------+-----------+------------------------------------------+
 
 .. _Corning whitepaper on MFD/EA: https://www.corning.com/microsites/coc/oem/documents/specialty-fiber/WP7071-Mode-Field-Diam-and-Eff-Area.pdf
 

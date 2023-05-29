@@ -21,6 +21,7 @@ from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, Netwo
 from gnpy.core.science_utils import estimate_nf_model
 from gnpy.core.info import Carrier
 from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions
+from gnpy.core.parameters import DEFAULT_RAMAN_COEFFICIENT
 from gnpy.topology.request import PathRequest, Disjunction, compute_spectrum_slot_vs_bandwidth
 from gnpy.tools.convert import xls_to_json_data
 from gnpy.tools.service_sheet import read_service_sheet
@@ -162,9 +163,14 @@ class Fiber(_JsonThing):
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, self.__class__.__name__)
-        for optional in ['gamma', 'raman_efficiency']:
-            if optional in kwargs:
-                setattr(self, optional, kwargs[optional])
+        if 'gamma' in kwargs:
+            setattr(self, 'gamma', kwargs['gamma'])
+        if 'raman_efficiency' in kwargs:
+            raman_coefficient = kwargs['raman_efficiency']
+            cr = raman_coefficient.pop('cr')
+            raman_coefficient['g0'] = cr
+            raman_coefficient['reference_frequency'] = DEFAULT_RAMAN_COEFFICIENT['reference_frequency']
+            setattr(self, 'raman_coefficient', raman_coefficient)
 
 
 class RamanFiber(Fiber):
