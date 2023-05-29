@@ -455,17 +455,6 @@ class Fiber(_Node):
         self.pch_out_db = None
         self.passive = True
         self.propagated_labels = [""]
-        # Raman efficiency matrix function of the delta frequency constructed such that each row is related to a
-        # fixed frequency: positive elements represent a gain (from higher frequency) and negative elements represent
-        # a loss (to lower frequency)
-        if self.params.raman_efficiency:
-            frequency_offset = self.params.raman_efficiency['frequency_offset']
-            frequency_offset = append(-flip(frequency_offset[1:]), frequency_offset)
-            cr = self.params.raman_efficiency['cr']
-            cr = append(- flip(cr[1:]), cr)
-            self._cr_function = lambda frequency: interp(frequency, frequency_offset, cr)
-        else:
-            self._cr_function = lambda frequency: zeros(squeeze(frequency).shape)
 
         # Lumped losses
         z_lumped_losses = array([lumped['position'] for lumped in self.params.lumped_losses])  # km
@@ -548,15 +537,17 @@ class Fiber(_Node):
         return self.loss_coef_func(frequency) / (10 * log10(exp(1)))
 
     def cr(self, frequency):
-        """Returns the raman efficiency matrix including the vibrational loss
+        """Returns the raman gain coefficient matrix including the vibrational loss
 
         :param frequency: the frequency at which cr is computed [Hz]
-        :return: cr: raman efficiency matrix [1 / (W m)]
+        :return: cr: raman gain coefficient matrix [1 / (W m)]
         """
         df = outer(ones(frequency.shape), frequency) - outer(frequency, ones(frequency.shape))
-        cr = self._cr_function(df)
+        effective_area_overlap = self.params.effective_area_overlap(frequency, frequency)
+        cr = interp(df, self.params.raman_coefficient.frequency_offset,
+                    self.params.raman_coefficient.normalized_gamma_raman) * frequency / effective_area_overlap
         vibrational_loss = outer(frequency, ones(frequency.shape)) / outer(ones(frequency.shape), frequency)
-        return cr * (cr >= 0) + cr * (cr < 0) * vibrational_loss  # Raman efficiency [1/(W m)]
+        return cr * (cr >= 0) + cr * (cr < 0) * vibrational_loss  # [1/(W m)]
 
     def chromatic_dispersion(self, freq=None):
         """Returns accumulated chromatic dispersion (CD).
