@@ -26,6 +26,7 @@ from gnpy.core.info import SpectralInformation
 logger = getLogger(__name__)
 sim_params = SimParams()
 
+
 def raised_cosine_comb(f, *carriers):
     """Returns an array storing the PSD of a WDM comb of raised cosine shaped
     channels at the input frequencies defined in array f
@@ -190,13 +191,13 @@ class RamanSolver:
 
         # calculate ase power
         ase = zeros(spectral_info.number_of_channels)
+        cr = fiber.cr(srs.frequency)[:spectral_info.number_of_channels, spectral_info.number_of_channels:]
         for i, pump in enumerate(fiber.raman_pumps):
             pump_power = srs.power_profile[spectral_info.number_of_channels + i, :]
             df = pump.frequency - frequency
             eta = - 1 / (1 - exp(h * df / (k * fiber.temperature)))
-            cr = fiber._cr_function(df)
             integral = trapz(pump_power / channels_loss, z, axis=1)
-            ase += 2 * h * baud_rate * frequency * (1 + eta) * cr * (df > 0) * integral  # 2 factor for double pol
+            ase += 2 * h * baud_rate * frequency * (1 + eta) * cr[:, i] * (df > 0) * integral  # 2 factor for double pol
         return ase
 
     @staticmethod
