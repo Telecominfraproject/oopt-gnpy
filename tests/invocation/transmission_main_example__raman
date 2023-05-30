@@ -42,8 +42,8 @@ Edfa Edfa1
   actual pch out (dBm):   -2.26
   output VOA (dB):        0.00
 Transceiver Site_B
-  GSNR (0.1nm, dB):          31.40
-  GSNR (signal bw, dB):      27.32
+  GSNR (0.1nm, dB):          31.42
+  GSNR (signal bw, dB):      27.34
   OSNR ASE (0.1nm, dB):      34.21
   OSNR ASE (signal bw, dB):  30.13
   CD (ps/nm):                1336.00
@@ -52,7 +52,7 @@ Transceiver Site_B
   Latency (ms):              0.39
 
 Transmission result for input power = 0.00 dBm:
-  Final GSNR (0.1 nm): [1;36;40m31.40 dB[0m
+  Final GSNR (0.1 nm): [1;36;40m31.42 dB[0m
 
 The GSNR per channel at the end of the line is:
 Ch. #   Channel frequency (THz)       Channel power (dBm)    OSNR ASE (signal bw, dB)     SNR NLI (signal bw, dB)        GSNR (signal bw, dB)
