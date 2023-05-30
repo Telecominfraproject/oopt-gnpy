@@ -10,9 +10,9 @@ Solver definitions to calculate the Raman effect and the nonlinear interference 
 The solvers take as input instances of the spectral information, the fiber and the simulation parameters
 """
 
-from numpy import interp, pi, zeros, shape, where, cos, array, append, ones, exp, arange, sqrt, trapz, arcsinh, \
-    clip, abs, sum, concatenate, flip, outer, inner, transpose, max, format_float_scientific, diag, sort, unique, \
-    argsort, cumprod
+from numpy import interp, pi, zeros, cos, array, append, ones, exp, arange, sqrt, trapz, arcsinh, clip, abs, sum, \
+    concatenate, flip, outer, inner, transpose, max, format_float_scientific, diag, sort, unique, argsort, cumprod, \
+    polyfit
 from logging import getLogger
 from scipy.constants import k, h
 from scipy.interpolate import interp1d
@@ -333,13 +333,14 @@ class NliSolver:
         """
         # Spectral Features
         nch = spectral_info.number_of_channels
+        frequency = spectral_info.frequency
         baud_rate = spectral_info.baud_rate
         delta_frequency = spectral_info.df
 
         # Physical fiber parameters
-        alpha = fiber.alpha(spectral_info.frequency)
-        beta2 = fiber.params.beta2
-        gamma = fiber.params.gamma
+        alpha = fiber.alpha(frequency)
+        beta2 = fiber.beta2(frequency)
+        gamma = outer(fiber.gamma(frequency), ones(nch))
         length = fiber.params.length
 
         identity = diag(ones(nch))
@@ -360,7 +361,10 @@ class NliSolver:
     def _psi(df, baud_rate, beta2, effective_length, asymptotic_length):
         """Calculates eq. 123 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__"""
         cut_baud_rate = outer(baud_rate, ones(baud_rate.size))
+        cut_beta = outer(beta2, ones(baud_rate.size))
         pump_baud_rate = baud_rate
+        pump_beta = outer(ones(baud_rate.size), beta2)
+        beta2 = (cut_beta + pump_beta) / 2
         right_extreme = df + pump_baud_rate / 2
         left_extreme = df - pump_baud_rate / 2
         psi = (arcsinh(pi ** 2 * asymptotic_length * abs(beta2) * cut_baud_rate * right_extreme) -
@@ -383,10 +387,8 @@ class NliSolver:
 
         # Physical fiber parameters
         alpha = fiber.alpha(frequency)
-        beta2 = fiber.params.beta2
-        beta3 = fiber.params.beta3
-        f_ref_beta = fiber.params.ref_frequency
-        gamma = fiber.params.gamma
+        beta2 = fiber.beta2(frequency)
+        gamma = outer(fiber.gamma(frequency[cut_indices]), ones(nch))
 
         identity = diag(ones(nch))
         weight = spm_weight * identity + xpm_weight * (ones([nch, nch]) - identity)
@@ -404,38 +406,43 @@ class NliSolver:
             cut_baud_rate = baud_rate[cut_index]
             cut_roll_off = roll_off[cut_index]
             cut_number = cut_index + 1
+            cut_beta2 = beta2[cut_index]
+            cut_base_frequency = frequency - cut_frequency
+            cut_beta_coefficients = polyfit(cut_base_frequency, beta2, 2)
+            cut_beta3 = cut_beta_coefficients[1] / (2 * pi)
 
             for pump_index in range(nch):
                 pump_frequency = frequency[pump_index]
                 pump_baud_rate = baud_rate[pump_index]
                 pump_roll_off = roll_off[pump_index]
                 pump_number = pump_index + 1
-
                 pump_alpha = alpha[pump_index]
-
                 dn = abs(pump_number - cut_number)
                 delta_f = abs(cut_frequency - pump_frequency)
                 k_tol = dispersion_tolerance * abs(alpha[pump_index])
                 phi_tol = phase_shift_tolerance / delta_z
-                f_cut_resolution = min(k_tol, phi_tol) / abs(beta2) / (4 * pi ** 2 * (1 + dn) * max_slot_width)
-                f_pump_resolution = min(k_tol, phi_tol) / abs(beta2) / (4 * pi ** 2 * max_slot_width)
+                f_cut_resolution = min(k_tol, phi_tol) / abs(cut_beta2) / (4 * pi ** 2 * (1 + dn) * max_slot_width)
+                f_pump_resolution = min(k_tol, phi_tol) / abs(cut_beta2) / (4 * pi ** 2 * max_slot_width)
                 if cut_index == pump_index:  # SPM
                     psi_cut_central_frequency[i, pump_index] = \
                         NliSolver._generalized_psi(cut_frequency, cut_frequency, cut_baud_rate, cut_roll_off,
                                                    pump_frequency, pump_baud_rate, pump_roll_off, f_cut_resolution,
-                                                   f_pump_resolution, srs, pump_alpha, beta2, beta3, f_ref_beta)
+                                                   f_pump_resolution, srs, pump_alpha, cut_beta2, cut_beta3,
+                                                   cut_frequency)
                 else:  # XPM
-                    frequency_offset_threshold = NliSolver._frequency_offset_threshold(beta2, pump_baud_rate)
+                    frequency_offset_threshold = NliSolver._frequency_offset_threshold(cut_beta2, pump_baud_rate)
                     if abs(delta_f) <= frequency_offset_threshold:
                         psi_cut_central_frequency[i, pump_index] = \
                             NliSolver._generalized_psi(cut_frequency, cut_frequency, cut_baud_rate, cut_roll_off,
                                                        pump_frequency, pump_baud_rate, pump_roll_off, f_cut_resolution,
-                                                       f_pump_resolution, srs, pump_alpha, beta2, beta3, f_ref_beta)
+                                                       f_pump_resolution, srs, pump_alpha, cut_beta2, cut_beta3,
+                                                       cut_frequency)
                     else:
                         psi_cut_central_frequency[i, pump_index] = \
                             NliSolver._fast_generalized_psi(cut_frequency, cut_frequency, cut_baud_rate, cut_roll_off,
                                                             pump_frequency, pump_baud_rate, pump_roll_off,
-                                                            f_cut_resolution, srs, pump_alpha, beta2, beta3, f_ref_beta)
+                                                            f_cut_resolution, srs, pump_alpha, cut_beta2, cut_beta3,
+                                                            cut_frequency)
 
         cut_baud_rate = outer(baud_rate[cut_indices], ones(nch))
         pump_baud_rate = outer(ones(cut_indices.size), baud_rate)

@@ -11,6 +11,7 @@ from collections import namedtuple
 
 from scipy.constants import c, pi
 from numpy import asarray, array, exp, sqrt, log, outer, ones, squeeze, append, flip
+from scipy.interpolate import interp1d
 
 from gnpy.core.utils import convert_length
 from gnpy.core.exceptions import ParametersError
@@ -177,30 +178,37 @@ class FiberParams(Parameters):
                 self._ref_frequency = c / self._ref_wavelength
 
             # Chromatic Dispersion
-            self._dispersion = kwargs['dispersion']  # s/m/m
-            self._dispersion_slope = \
-                kwargs.get('dispersion_slope', -2 * self._dispersion / self.ref_wavelength)  # s/m/m/m
-            self._beta2 = -(self.ref_wavelength ** 2) * self.dispersion / (2 * pi * c)  # 1/(m * Hz^2)
-            # Eq. (3.23) in  Abramczyk, Halina. "Dispersion phenomena in optical fibers." Virtual European University
-            # on Lasers. Available online: http://mitr.p.lodz.pl/evu/lectures/Abramczyk3.pdf
-            # (accessed on 25 March 2018) (2005).
-            self._beta3 = ((self.dispersion_slope - (4*pi*c/self.ref_wavelength**3) * self.beta2) /
-                           (2*pi*c/self.ref_wavelength**2)**2)
+            if 'dispersion' in kwargs:
+                # Frequency-dependent dispersion
+                if type(kwargs['dispersion']) == dict:
+                    self._dispersion = asarray(kwargs['dispersion']['value'])
+                    self._f_dispersion_ref = asarray(kwargs['dispersion']['frequency'])  # Hz
+                    self._dispersion_slope = None
+                # Single value dispersion
+                else:
+                    self._dispersion = asarray(kwargs['dispersion'])  # s/m/m
+                    self._dispersion_slope = kwargs.get('dispersion_slope')  # s/m/m/m
+                    self._f_dispersion_ref = asarray(self._ref_frequency)  # Hz
+            else:
+                self._dispersion = asarray(1.67e-05)  # s/m/m
+                self._dispersion_slope = None
+                self._f_dispersion_ref = asarray(self.ref_frequency)
 
             # Effective Area and Nonlinear Coefficient
             self._effective_area = kwargs.get('effective_area')  # m^2
             self._n1 = 1.468
             self._core_radius = 4.2e-6  # m
-            n2 = 2.6e-20  # m^2/W
+            self._n2 = 2.6e-20  # m^2/W
             if self._effective_area is not None:
-                self._gamma = kwargs.get('gamma', 2 * pi * n2 / (self.ref_wavelength * self._effective_area))  # 1/W/m
+                default_gamma = 2 * pi * self._n2 / (self._ref_wavelength * self._effective_area)
+                self._gamma = kwargs.get('gamma', default_gamma)  # 1/W/m
             elif 'gamma' in kwargs:
                 self._gamma = kwargs['gamma']  # 1/W/m
-                self._effective_area = 2 * pi * n2 / (self.ref_wavelength * self._gamma)  # m^2
+                self._effective_area = 2 * pi * self._n2 / (self._ref_wavelength * self._gamma)  # m^2
             else:
-                self._gamma = 0  # 1/W/m
                 self._effective_area = 83e-12  # m^2
-            self._contrast = 0.5 * (c / (2 * pi * self.ref_frequency * self._core_radius * self._n1) * exp(
+                self._gamma = 2 * pi * self._n2 / (self._ref_wavelength * self._effective_area)  # 1/W/m
+            self._contrast = 0.5 * (c / (2 * pi * self._ref_frequency * self._core_radius * self._n1) * exp(
                 pi * self._core_radius ** 2 / self._effective_area)) ** 2
 
             # Raman Gain Coefficient
@@ -277,6 +285,10 @@ class FiberParams(Parameters):
         return self._dispersion
 
     @property
+    def f_dispersion_ref(self):
+        return self._f_dispersion_ref
+
+    @property
     def dispersion_slope(self):
         return self._dispersion_slope
 
@@ -295,6 +307,9 @@ class FiberParams(Parameters):
         return squeeze(outer(effective_area_stokes_wave, ones(effective_area_pump.size)) + outer(
             ones(effective_area_stokes_wave.size), effective_area_pump)) / 2
 
+    def gamma_scaling(self, frequency):
+        return asarray(2 * pi * self._n2 * frequency / (c * self.effective_area_scaling(frequency)))
+
     @property
     def pmd_coef(self):
         return self._pmd_coef
@@ -306,14 +321,6 @@ class FiberParams(Parameters):
     @property
     def ref_frequency(self):
         return self._ref_frequency
-
-    @property
-    def beta2(self):
-        return self._beta2
-
-    @property
-    def beta3(self):
-        return self._beta3
 
     @property
     def loss_coef(self):
