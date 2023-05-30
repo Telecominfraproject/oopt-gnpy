@@ -182,7 +182,7 @@ Edfa Edfa6
   noise figure (dB):      9.00
   (including att_in)
   pad att_in (dB):        4.00
-  Power In (dBm):         3.83
+  Power In (dBm):         3.84
   Power Out (dBm):        19.84
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
@@ -437,8 +437,8 @@ Roadm roadm Site B
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
 Transceiver Site_B
-  GSNR (0.1nm, dB):          17.85
-  GSNR (signal bw, dB):      13.77
+  GSNR (0.1nm, dB):          17.84
+  GSNR (signal bw, dB):      13.76
   OSNR ASE (0.1nm, dB):      19.70
   OSNR ASE (signal bw, dB):  15.62
   CD (ps/nm):                20040.00
@@ -446,7 +446,7 @@ Transceiver Site_B
   PDL (dB):                  0.00
 
 Transmission result for input power = 0.00 dBm:
-  Final GSNR (0.1 nm): [1;36;40m17.85 dB[0m
+  Final GSNR (0.1 nm): [1;36;40m17.84 dB[0m
 
 (No source node specified: picked Site_A)
 

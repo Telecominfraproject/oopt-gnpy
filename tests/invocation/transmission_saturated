@@ -319,7 +319,7 @@ Roadm roadm Lorient_KMA
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
 Transceiver trx Lorient_KMA
-  GSNR (0.1nm, dB):          23.94
+  GSNR (0.1nm, dB):          23.93
   GSNR (signal bw, dB):      19.85
   OSNR ASE (0.1nm, dB):      24.29
   OSNR ASE (signal bw, dB):  20.20
@@ -328,7 +328,7 @@ Transceiver trx Lorient_KMA
   PDL (dB):                  0.00
 
 Transmission result for input power = 3.00 dBm:
-  Final GSNR (0.1 nm): [1;36;40m23.94 dB[0m
+  Final GSNR (0.1 nm): [1;36;40m23.93 dB[0m
 
 (Invalid source node 'lannion' replaced with trx Lannion_CAS)
 

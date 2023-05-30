@@ -332,13 +332,14 @@ class NliSolver:
         """
         # Spectral Features
         nch = spectral_info.number_of_channels
+        frequency = spectral_info.frequency
         baud_rate = spectral_info.baud_rate
         delta_frequency = spectral_info.df
 
         # Physical fiber parameters
-        alpha = fiber.alpha(spectral_info.frequency)
+        alpha = fiber.alpha(frequency)
         beta2 = fiber.params.beta2
-        gamma = fiber.params.gamma
+        gamma = outer(fiber.gamma(frequency), ones(nch))
         length = fiber.params.length
 
         identity = diag(ones(nch))
@@ -385,7 +386,7 @@ class NliSolver:
         beta2 = fiber.params.beta2
         beta3 = fiber.params.beta3
         f_ref_beta = fiber.params.ref_frequency
-        gamma = fiber.params.gamma
+        gamma = outer(fiber.gamma(frequency[cut_indices]), ones(nch))
 
         identity = diag(ones(nch))
         weight = spm_weight * identity + xpm_weight * (ones([nch, nch]) - identity)

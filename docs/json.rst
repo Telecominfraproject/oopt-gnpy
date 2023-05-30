@@ -85,6 +85,10 @@ The fiber library currently describes SSMF and NZDF but additional fiber types c
 |                      |           | from the ``effective_area``              |
 |                      |           | :math:`A_{eff}`.                         |
 |                      |           | In :math:`w^{-1} \times m^{-1}`.         |
+|                      |           | This quantity is evaluated at the        |
+|                      |           | reference frequency and it is scaled     |
+|                      |           | along frequency accordingly to the       |
+|                      |           | effective area scaling.                  |
 +----------------------+-----------+------------------------------------------+
 | ``pmd_coef``         | (number)  | Polarization mode dispersion (PMD)       |
 |                      |           | coefficient. In                          |

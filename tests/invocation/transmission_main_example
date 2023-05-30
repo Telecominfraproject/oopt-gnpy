@@ -39,8 +39,8 @@ Edfa Edfa1
   actual pch out (dBm):   -1.99
   output VOA (dB):        0.00
 Transceiver Site_B
-  GSNR (0.1nm, dB):          31.17
-  GSNR (signal bw, dB):      27.09
+  GSNR (0.1nm, dB):          31.18
+  GSNR (signal bw, dB):      27.10
   OSNR ASE (0.1nm, dB):      33.30
   OSNR ASE (signal bw, dB):  29.21
   CD (ps/nm):                1336.00
@@ -48,7 +48,7 @@ Transceiver Site_B
   PDL (dB):                  0.00
 
 Transmission result for input power = 0.00 dBm:
-  Final GSNR (0.1 nm): [1;36;40m31.17 dB[0m
+  Final GSNR (0.1 nm): [1;36;40m31.18 dB[0m
 
 (No source node specified: picked Site_A)
 
