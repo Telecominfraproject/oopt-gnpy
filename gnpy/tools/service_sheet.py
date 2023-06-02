@@ -280,10 +280,8 @@ def correct_xls_route_list(network_filename, network, pathreqlist):
         # and last elem in the constraints respectively. Other positions must lead to an error
         # caught later on
         if pathreq.nodes_list and pathreq.source == pathreq.nodes_list[0]:
-            pathreq.loose_list.pop(0)
             pathreq.nodes_list.pop(0)
         if pathreq.nodes_list and pathreq.destination == pathreq.nodes_list[-1]:
-            pathreq.loose_list.pop(-1)
             pathreq.nodes_list.pop(-1)
         # Then process user defined constraints with respect to automatic namings
         temp = deepcopy(pathreq)
@@ -309,54 +307,50 @@ def correct_xls_route_list(network_filename, network, pathreqlist):
                         nodes_suggestion = corresp_ila[n_id]
                     else:
                         nodes_suggestion = []
-                if nodes_suggestion:
-                    try:
-                        if len(nodes_suggestion) > 1:
-                            # if there is more than one suggestion, we need to choose the direction
-                            # we rely on the next node provided by the user for this purpose
-                            new_n = next(n for n in nodes_suggestion
-                                         if n in next_node.keys() and next_node[n]
-                                         in temp.nodes_list[i:] + [pathreq.destination] and
-                                         next_node[n] not in temp.nodes_list[:i])
-                        else:
-                            new_n = nodes_suggestion[0]
-                        if new_n != n_id:
-                            # warns the user when the correct name is used only in verbose mode,
-                            # eg 'a' is a roadm and correct name is 'roadm a' or when there was
-                            # too much ambiguity, 'b' is an ila, its name can be:
-                            # Edfa0_fiber (a → b)-xx if next node is c or
-                            # Edfa0_fiber (c → b)-xx if next node is a
-                            msg = f'Request {pathreq.request_id}: Invalid route node specified:' \
-                                + f'\n\t\'{n_id}\', replaced with \'{new_n}\''
-                            logger.warning(msg)
-                            pathreq.nodes_list[pathreq.nodes_list.index(n_id)] = new_n
-                    except StopIteration:
-                        # shall not come in this case, unless requested direction does not exist
-                        msg = f'Request {pathreq.request_id}: Invalid route specified {n_id}: could' \
-                            + ' not decide on direction, skipped!.\nPlease add a valid' \
-                            + ' direction in constraints (next neighbour node)'
-                        logger.warning(msg)
-                        pathreq.loose_list.pop(pathreq.nodes_list.index(n_id))
-                        pathreq.nodes_list.remove(n_id)
-                else:
-                    if temp.loose_list[i] == 'LOOSE':
-                        # if no matching can be found in the network just ignore this constraint
-                        # if it is a loose constraint
-                        # warns the user that this node is not part of the topology
-                        msg = f'Request {pathreq.request_id}: Invalid node specified:\n\t\'{n_id}\'' \
-                            + ', could not use it as constraint, skipped!'
-                        logger.warning(msg)
-                        pathreq.loose_list.pop(pathreq.nodes_list.index(n_id))
-                        pathreq.nodes_list.remove(n_id)
+                try:
+                    if len(nodes_suggestion) > 1:
+                        # if there is more than one suggestion, we need to choose the direction
+                        # we rely on the next node provided by the user for this purpose
+                        new_n = next(n for n in nodes_suggestion
+                                        if n in next_node.keys() and next_node[n]
+                                        in temp.nodes_list[i:] + [pathreq.destination] and
+                                        next_node[n] not in temp.nodes_list[:i])
+                    elif len(nodes_suggestion) == 1:
+                        new_n = nodes_suggestion[0]
                     else:
-                        msg = f'Request {pathreq.request_id}: Could not find node:\n\t\'{n_id}\' in network' \
+                        if temp.loose == 'LOOSE':
+                            # if no matching can be found in the network just ignore this constraint
+                            # if it is a loose constraint
+                            # warns the user that this node is not part of the topology
+                            msg = f'{pathreq.request_id}: Invalid node specified:\n\t\'{n_id}\', ' \
+                                    + 'could not use it as constraint, skipped!'
+                            logger.warning(msg)
+                            pathreq.nodes_list.remove(n_id)
+                            continue
+                        msg = f'{pathreq.request_id}: Could not find node:\n\t\'{n_id}\' in network' \
                             + ' topology. Strict constraint can not be applied.'
+                        logger.critical(msg)
                         raise ServiceError(msg)
+                    if new_n != n_id:
+                        # warns the user when the correct name is used only in verbose mode,
+                        # eg 'a' is a roadm and correct name is 'roadm a' or when there was
+                        # too much ambiguity, 'b' is an ila, its name can be:
+                        # "east edfa in b to c", or "west edfa in b to a" if next node is c or
+                        # "west edfa in b to c", or "east edfa in b to a" if next node is a
+                        msg = f'Request {pathreq.request_id}: Invalid route node specified:' \
+                            + f'\n\t\'{n_id}\', replaced with \'{new_n}\''
+                        pathreq.nodes_list[pathreq.nodes_list.index(n_id)] = new_n
+                except StopIteration:
+                    # shall not come in this case, unless requested direction does not exist
+                    msg = f'Request {pathreq.request_id}: Invalid route specified {n_id}: could' \
+                        + ' not decide on direction, skipped!.\nPlease add a valid' \
+                        + ' direction in constraints (next neighbour node)'
+                    pathreq.nodes_list.remove(n_id)
             else:
-                if temp.loose_list[i] == 'LOOSE':
-                    logger.warning(f'Request {pathreq.request_id}: Invalid route node specified:\n\t\'{n_id}\''
-                                   + ' type is not supported as constraint with xls network input, skipped!')
-                    pathreq.loose_list.pop(pathreq.nodes_list.index(n_id))
+                if temp.loose == 'LOOSE':
+                    logger.warning('Invalid route node specified:\n\t\'%s\''
+                                   + ' type is not supported as constraint with xls network input,'
+                                   + ' skipped!', n_id)
                     pathreq.nodes_list.remove(n_id)
                 else:
                     msg = f'Invalid route node specified \n\t\'{n_id}\'' \

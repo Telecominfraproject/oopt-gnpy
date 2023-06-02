@@ -575,24 +575,41 @@ def corresp_names(input_filename, network):
                 corresp_ila[my_e.from_city] = [name]
     # complete with potential autodesign names: amplifiers
     for my_l in links:
-        name = f'Edfa0_fiber ({my_l.to_city} \u2192 {my_l.from_city})-{my_l.west_cable}'
-        if name in ila:
-            if my_l.from_city in corresp_ila.keys():
-                # "east edfa in Stbrieuc to Rennes_STA"  is equivalent name as
-                # "Edfa0_fiber (Lannion_CAS → Stbrieuc)-F056"
-                # "west edfa in Stbrieuc to Rennes_STA"  is equivalent name as
-                # "Edfa0_fiber (Rennes_STA → Stbrieuc)-F057"
-                # does not filter names: all types (except boosters) are created.
-                # in case fibers are splitted the name here is a prefix
-                corresp_ila[my_l.from_city].append(name)
-            else:
-                corresp_ila[my_l.from_city] = [name]
-        name = f'Edfa0_fiber ({my_l.from_city} \u2192 {my_l.to_city})-{my_l.east_cable}'
-        if name in ila:
-            if my_l.to_city in corresp_ila.keys():
-                corresp_ila[my_l.to_city].append(name)
-            else:
-                corresp_ila[my_l.to_city] = [name]
+        # create names whatever the type and filter them out
+        names = [f'Edfa_preamp_roadm {my_l.from_city}_from_fiber ({my_l.to_city} \u2192 {my_l.from_city})-{my_l.west_cable}',
+                 f'Edfa_booster_roadm {my_l.from_city}_to_fiber ({my_l.from_city} \u2192 {my_l.to_city})-{my_l.east_cable}']
+        for name in names:
+            if name in ila:
+                if my_l.from_city in corresp_ila.keys():
+                    # "east edfa in Stbrieuc to Rennes_STA"  is equivalent name as
+                    # "Edfa_booster_roadm Stbrieuc_to_fiber (Lannion_CAS → Stbrieuc)-F056"
+                    # "west edfa in Stbrieuc to Rennes_STA"  is equivalent name as
+                    # "Edfa_preamp_roadm Stbrieuc_to_fiber (Rennes_STA → Stbrieuc)-F057"
+                    # in case fibers are splitted the name here is a prefix
+                    corresp_ila[my_l.from_city].append(name)
+                else:
+                    corresp_ila[my_l.from_city] = [name]
+        names = [f'Edfa_preamp_roadm {my_l.to_city}_from_fiber ({my_l.from_city} \u2192 {my_l.to_city})-{my_l.east_cable}',
+                 f'Edfa_booster_roadm {my_l.to_city}_to_fiber ({my_l.to_city} \u2192 {my_l.from_city})-{my_l.west_cable}']
+        for name in names:
+            if name in ila:
+                if my_l.to_city in corresp_ila.keys():
+                    corresp_ila[my_l.to_city].append(name)
+                else:
+                    corresp_ila[my_l.to_city] = [name]
+
+    for node in nodes:
+        names = [f'east edfa in {node.city}', f'west edfa in {node.city}']
+        for name in names:
+            if name in ila:
+                if node.city in corresp_ila.keys():
+                    # "east edfa in Stbrieuc to Rennes_STA" (created with Eqpt) is equivalent name as
+                    # "east edfa in Stbrieuc" or "west edfa in Stbrieuc" (created with Links sheet)
+                    # depending on link node order
+                    corresp_ila[node.city].append(name)
+                else:
+                    corresp_ila[node.city] = [name]
+
     # merge fused with ila:
     for key, val in corresp_fused.items():
         if key in corresp_ila.keys():
@@ -781,16 +798,19 @@ def corresp_next_node(network, corresp_ila, corresp_roadm):
         user ILA name Stbrieuc covers the two direction. convert.py creates 2 different ILA
         with possible names (depending on the direction and if the eqpt was defined in eqpt
         sheet)
+        for an ILA and if it is defined in eqpt:
         - east edfa in Stbrieuc to Rennes_STA
         - west edfa in Stbrieuc to Rennes_STA
-        - Edfa0_fiber (Lannion_CAS → Stbrieuc)-F056
-        - Edfa0_fiber (Rennes_STA → Stbrieuc)-F057
+        for an ILA and if it is not defined in eqpt:
+        - east edfa in Stbrieuc
+        - west edfa in Stbrieuc
+        for a roadm
+        "Edfa_preamp_roadm node1_from_fiber (siteE → node1)-CABLES#19"
+        "Edfa_booster_roadm node1_to_fiber (node1 → siteE)-CABLES#19"
         next_nodes finds the user defined name of next node to be able to map the path constraints
         - east edfa in Stbrieuc to Rennes_STA      next node = Rennes_STA
         - west edfa in Stbrieuc to Rennes_STA      next node Lannion_CAS
 
-        Edfa0_fiber (Lannion_CAS → Stbrieuc)-F056 and Edfa0_fiber (Rennes_STA → Stbrieuc)-F057
-        do not exist
         the function supports fiber splitting, fused nodes and shall only be called if
         excel format is used for both network and service
     """
@@ -801,8 +821,8 @@ def corresp_next_node(network, corresp_ila, corresp_roadm):
         for ila_elem in ila_list:
             # find the node with ila_elem string _in_ the node uid. 'in' is used instead of
             # '==' to find composed nodes due to fiber splitting in autodesign.
-            # eg if elem_ila is 'Edfa0_fiber (Lannion_CAS → Stbrieuc)-F056',
-            # node uid 'Edfa0_fiber (Lannion_CAS → Stbrieuc)-F056_(1/2)' is possible
+            # eg if elem_ila is 'east edfa in Stbrieuc to Rennes_STA',
+            # node uid 'east edfa in Stbrieuc to Rennes_STA-_(1/2)' is possible
             correct_ila_name = next(n.uid for n in network.nodes() if ila_elem in n.uid)
             temp.remove(ila_elem)
             temp.append(correct_ila_name)

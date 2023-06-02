@@ -32,7 +32,7 @@ from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectru
 from gnpy.tools.convert import convert_file
 from gnpy.tools.json_io import (load_json, load_network, save_network, load_equipment, requests_from_json,
                                 disjunctions_from_json, network_to_json, network_from_json)
-from gnpy.tools.service_sheet import read_service_sheet, correct_xls_route_list
+from gnpy.tools.service_sheet import read_service_sheet, correct_xls_route_list, Request_element, Request
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
@@ -284,44 +284,43 @@ def test_json_response_generation(xls_input, expected_response_file):
 
 
 @pytest.mark.parametrize('source, destination, route_list, hoptype, expected_correction', [
-    ('trx Brest_KLA', 'trx Vannes_KBE',
+    ('Brest_KLA', 'Vannes_KBE',
         'roadm Brest_KLA | roadm Lannion_CAS | roadm Lorient_KMA | roadm Vannes_KBE',
-        'STRICT',
+        'no',
         ['roadm Brest_KLA', 'roadm Lannion_CAS', 'roadm Lorient_KMA', 'roadm Vannes_KBE']),
-    ('trx Brest_KLA', 'trx Vannes_KBE',
+    ('Brest_KLA', 'Vannes_KBE',
         'trx Brest_KLA | roadm Lannion_CAS | roadm Lorient_KMA | roadm Vannes_KBE',
-        'STRICT',
+        'No',
         ['roadm Lannion_CAS', 'roadm Lorient_KMA', 'roadm Vannes_KBE']),
-    ('trx Lannion_CAS', 'trx Rennes_STA', 'trx Rennes_STA', 'LOOSE', []),
-    ('trx Lannion_CAS', 'trx Lorient_KMA', 'toto', 'LOOSE', []),
-    ('trx Lannion_CAS', 'trx Lorient_KMA', 'toto', 'STRICT', 'Fail'),
-    ('trx Lannion_CAS', 'trx Lorient_KMA', 'Corlay | Loudeac | Lorient_KMA', 'LOOSE',
+    ('Lannion_CAS', 'Rennes_STA', 'trx Rennes_STA', 'yes', []),
+    ('Lannion_CAS', 'Lorient_KMA', 'toto', 'yes', []),
+    ('Lannion_CAS', 'Lorient_KMA', 'toto', 'no', 'Fail'),
+    ('Lannion_CAS', 'Lorient_KMA', 'Corlay | Loudeac | Lorient_KMA', 'yes',
         ['west fused spans in Corlay', 'west fused spans in Loudeac', 'roadm Lorient_KMA']),
-    ('trx Lannion_CAS', 'trx Lorient_KMA', 'Ploermel | Vannes_KBE', 'LOOSE',
+    ('Lannion_CAS', 'Lorient_KMA', 'Ploermel | Vannes_KBE', 'yes',
         ['east edfa in Ploermel to Vannes_KBE', 'roadm Vannes_KBE']),
-    ('trx Rennes_STA', 'trx Brest_KLA', 'Vannes_KBE | Quimper | Brest_KLA', 'LOOSE',
+    ('Rennes_STA', 'Brest_KLA', 'Vannes_KBE | Quimper | Brest_KLA', 'yes',
         ['roadm Vannes_KBE', 'west edfa in Quimper to Lorient_KMA', 'roadm Brest_KLA']),
-    ('trx Brest_KLA', 'trx Rennes_STA', 'Brest_KLA | Quimper | Lorient_KMA', 'LOOSE',
+    ('Brest_KLA', 'Rennes_STA', 'Brest_KLA | Quimper | Lorient_KMA', 'yes',
         ['roadm Brest_KLA', 'east edfa in Quimper to Lorient_KMA', 'roadm Lorient_KMA']),
-    ('Brest_KLA', 'trx Rennes_STA', '', 'LOOSE', 'Fail'),
-    ('trx Brest_KLA', 'Rennes_STA', '', 'LOOSE', 'Fail'),
-    ('Brest_KLA', 'Rennes_STA', '', 'LOOSE', 'Fail'),
-    ('Brest_KLA', 'trx Rennes_STA', '', 'STRICT', 'Fail'),
-    ('trx Brest_KLA', 'trx Rennes_STA', 'trx Rennes_STA', 'STRICT', []),
-    ('trx Brest_KLA', 'trx Rennes_STA', None, '', []),
-    ('trx Brest_KLA', 'trx Rennes_STA', 'Brest_KLA | Quimper | Ploermel', 'LOOSE',
+    ('Brest_KLA', 'trx Rennes_STA', '', 'yes', 'Fail'),
+    ('trx Brest_KLA', 'Rennes_STA', '', 'yes', 'Fail'),
+    ('trx Brest_KLA', 'trx Rennes_STA', '', 'yes', 'Fail'),
+    ('Brest_KLA', 'trx Rennes_STA', '', 'no', 'Fail'),
+    ('Brest_KLA', 'Rennes_STA', 'trx Rennes_STA', 'no', []),
+    ('Brest_KLA', 'Rennes_STA', None, '', []),
+    ('Brest_KLA', 'Rennes_STA', 'Brest_KLA | Quimper | Ploermel', 'yes',
         ['roadm Brest_KLA']),
-    ('trx Brest_KLA', 'trx Rennes_STA', 'Brest_KLA | Quimper | Ploermel', 'STRICT',
+    ('Brest_KLA', 'Rennes_STA', 'Brest_KLA | Quimper | Ploermel', 'no',
         ['roadm Brest_KLA']),
-    ('trx Brest_KLA', 'trx Rennes_STA', 'Brest_KLA | trx Quimper', 'LOOSE', ['roadm Brest_KLA']),
-    ('trx Brest_KLA', 'trx Rennes_STA', 'Brest_KLA | trx Lannion_CAS', 'LOOSE', ['roadm Brest_KLA']),
-    ('trx Brest_KLA', 'trx Rennes_STA', 'Brest_KLA | trx Lannion_CAS', 'STRICT', 'Fail')
+    ('Brest_KLA', 'Rennes_STA', 'Brest_KLA | trx Quimper', 'yes', ['roadm Brest_KLA']),
+    ('Brest_KLA', 'Rennes_STA', 'Brest_KLA | trx Lannion_CAS', 'yes', ['roadm Brest_KLA']),
+    ('Brest_KLA', 'Rennes_STA', 'Brest_KLA | trx Lannion_CAS', 'no', 'Fail')
 ])
 def test_excel_ila_constraints(source, destination, route_list, hoptype, expected_correction):
     """add different kind of constraints to test all correct_route cases"""
     service_xls_input = DATA_DIR / 'testTopology.xls'
     network_json_input = DATA_DIR / 'testTopology_auto_design_expected.json'
-    equipment = load_equipment(eqpt_filename)
     network = load_network(network_json_input, equipment)
     # increase length of one span to trigger automatic fiber splitting included by autodesign
     # so that the test also covers this case
@@ -331,37 +330,20 @@ def test_excel_ila_constraints(source, destination, route_list, hoptype, expecte
     p_db = default_si.power_dbm
     p_total_db = p_db + lin2db(automatic_nch(default_si.f_min, default_si.f_max, default_si.spacing))
     build_network(network, equipment, p_db, p_total_db)
-    # create params for a request based on input
-    nodes_list = route_list.split(' | ') if route_list is not None else []
+    # create params for a xls request based on input (note that this not the same type as PathRequest)
     params = {
         'request_id': '0',
         'source': source,
-        'bidir': False,
         'destination': destination,
-        'trx_type': '',
-        'trx_mode': '',
-        'format': '',
-        'spacing': '',
-        'nodes_list': nodes_list,
-        'loose_list': [hoptype for node in nodes_list] if route_list is not None else '',
-        'f_min': 0,
-        'f_max': 0,
-        'baud_rate': 0,
-        'OSNR': None,
-        'bit_rate': None,
-        'cost': None,
-        'roll_off': 0,
-        'tx_osnr': 0,
-        'tx_power': 0,
-        'penalties': None,
-        'min_spacing': None,
+        'trx_type': 'Voyager',
+        'spacing': 50,
+        'nodes_list': route_list,
+        'is_loose': hoptype,
         'nb_channel': 0,
         'power': 0,
         'path_bandwidth': 0,
-        'effective_freq_slot': None,
-        'equalization_offset_db': 0
     }
-    request = PathRequest(**params)
+    request = Request_element(Request(**params), equipment, False)
 
     if expected_correction != 'Fail':
         [request] = correct_xls_route_list(service_xls_input, network, [request])
