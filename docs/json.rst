@@ -61,62 +61,70 @@ Fiber
 
 The fiber library currently describes SSMF and NZDF but additional fiber types can be entered by the user following the same model:
 
-+----------------------+-----------+------------------------------------------+
-| field                | type      | description                              |
-+======================+===========+==========================================+
-| ``type_variety``     | (string)  | a unique name to ID the fiber in the     |
-|                      |           | JSON or Excel template topology input    |
-|                      |           | file                                     |
-+----------------------+-----------+------------------------------------------+
-| ``dispersion``       | (number)  | In :math:`s \times m^{-1} \times m^{-1}`.|
-+----------------------+-----------+------------------------------------------+
-| ``dispersion_slope`` | (number)  | In :math:`s \times m^{-1} \times m^{-1}  |
-|                      |           | \times m^{-1}`                           |
-+----------------------+-----------+------------------------------------------+
-| ``effective_area``   | (number)  | Effective area of the fiber (not just    |
-|                      |           | the MFD circle). This is the             |
-|                      |           | :math:`A_{eff}`, see e.g., the           |
-|                      |           | `Corning whitepaper on MFD/EA`_.         |
-|                      |           | Specified in :math:`m^{2}`.              |
-+----------------------+-----------+------------------------------------------+
-| ``gamma``            | (number)  | Coefficient :math:`\gamma = 2\pi\times   |
-|                      |           | n^2/(\lambda*A_{eff})`.                  |
-|                      |           | If not provided, this will be derived    |
-|                      |           | from the ``effective_area``              |
-|                      |           | :math:`A_{eff}`.                         |
-|                      |           | In :math:`w^{-1} \times m^{-1}`.         |
-|                      |           | This quantity is evaluated at the        |
-|                      |           | reference frequency and it is scaled     |
-|                      |           | along frequency accordingly to the       |
-|                      |           | effective area scaling.                  |
-+----------------------+-----------+------------------------------------------+
-| ``pmd_coef``         | (number)  | Polarization mode dispersion (PMD)       |
-|                      |           | coefficient. In                          |
-|                      |           | :math:`s\times\sqrt{m}^{-1}`.            |
-+----------------------+-----------+------------------------------------------+
-| ``lumped_losses``    | (array)   | Places along the fiber length with extra |
-|                      |           | losses. Specified as a loss in dB at     |
-|                      |           | each relevant position (in km):          |
-|                      |           | ``{"position": 10, "loss": 1.5}``)       |
-+----------------------+-----------+------------------------------------------+
-| ``raman_coefficient``| (dict)    | The fundamental parameter that describes |
-|                      |           | the regulation of the power transfer     |
-|                      |           | between channels during fiber propagation|
-|                      |           | is the Raman gain coefficient (see       |
-|                      |           | :cite:`DAmicoJLT2022` for further        |
-|                      |           | details); :math:`f_{ref}` represents the |
-|                      |           | pump reference frequency used for the    |
-|                      |           | Raman gain coefficient profile           |
-|                      |           | measurement ("reference_frequency"),     |
-|                      |           | :math:`\Delta f` is the frequency shift  |
-|                      |           | between the pump and the specific Stokes |
-|                      |           | wave, the Raman gain coefficient         |
-|                      |           | in terms of optical power                |
-|                      |           | :math:`g_0`, expressed in                |
-|                      |           | :math:`1/(m\;W)`.                        |
-|                      |           | Default values measured for a SSMF are   |
-|                      |           | considered when not specified.           |
-+----------------------+-----------+------------------------------------------+
++----------------------+-----------------+------------------------------------------------+
+| field                | type            | description                                    |
++======================+=================+================================================+
+| ``type_variety``     | (string)        | a unique name to ID the fiber in the           |
+|                      |                 | JSON or Excel template topology input          |
+|                      |                 | file                                           |
++----------------------+-----------------+------------------------------------------------+
+| ``dispersion``       | (number/dict)   | In :math:`s \times m^{-1} \times m^{-1}`.      |
+|                      |                 | It may be a single value evaluated at the      |
+|                      |                 | fiber reference frequency or a dictionary      |
+|                      |                 | containing the dispersion value,               |
+|                      |                 | reference frequency and slop:                  |
+|                      |                 | ``{"value": [], "frequency": [], "slope: []}`` |
++----------------------+-----------------+------------------------------------------------+
+| ``dispersion_slope`` | (number/list)   | In :math:`s \times m^{-1} \times m^{-1}        |
+|                      |                 | \times m^{-1}`. It may be a single value       |
+|                      |                 | evaluated at the reference frequency or a list |
+|                      |                 | with the same dimension of the dispersion      |
+|                      |                 | value.                                         |
++----------------------+-----------------+------------------------------------------------+
+| ``effective_area``   | (number)        | Effective area of the fiber (not just          |
+|                      |                 | the MFD circle). This is the                   |
+|                      |                 | :math:`A_{eff}`, see e.g., the                 |
+|                      |                 | `Corning whitepaper on MFD/EA`_.               |
+|                      |                 | Specified in :math:`m^{2}`.                    |
++----------------------+-----------------+------------------------------------------------+
+| ``gamma``            | (number)        | Coefficient :math:`\gamma = 2\pi\times         |
+|                      |                 | n^2/(\lambda*A_{eff})`.                        |
+|                      |                 | If not provided, this will be derived          |
+|                      |                 | from the ``effective_area``                    |
+|                      |                 | :math:`A_{eff}`.                               |
+|                      |                 | In :math:`w^{-1} \times m^{-1}`.               |
+|                      |                 | This quantity is evaluated at the              |
+|                      |                 | reference frequency and it is scaled           |
+|                      |                 | along frequency accordingly to the             |
+|                      |                 | effective area scaling.                        |
++----------------------+-----------------+------------------------------------------------+
+| ``pmd_coef``         | (number)        | Polarization mode dispersion (PMD)             |
+|                      |                 | coefficient. In                                |
+|                      |                 | :math:`s\times\sqrt{m}^{-1}`.                  |
++----------------------+-----------------+------------------------------------------------+
+| ``lumped_losses``    | (array)         | Places along the fiber length with extra       |
+|                      |                 | losses. Specified as a loss in dB at           |
+|                      |                 | each relevant position (in km):                |
+|                      |                 | ``{"position": 10, "loss": 1.5}``)             |
++----------------------+-----------------+------------------------------------------------+
+| ``raman_coefficient``| (dict)          | The fundamental parameter that describes       |
+|                      |                 | the regulation of the power transfer           |
+|                      |                 | between channels during fiber propagation      |
+|                      |                 | is the Raman gain coefficient (see             |
+|                      |                 | :cite:`DAmicoJLT2022` for further              |
+|                      |                 | details); :math:`f_{ref}` represents the       |
+|                      |                 | pump reference frequency used for the          |
+|                      |                 | Raman gain coefficient profile                 |
+|                      |                 | measurement ("reference_frequency"),           |
+|                      |                 | :math:`\Delta f` is the frequency shift        |
+|                      |                 | between the pump and the specific Stokes       |
+|                      |                 | wave, the Raman gain coefficient               |
+|                      |                 | in terms of optical power                      |
+|                      |                 | :math:`g_0`, expressed in                      |
+|                      |                 | :math:`1/(m\;W)`.                              |
+|                      |                 | Default values measured for a SSMF are         |
+|                      |                 | considered when not specified.                 |
++----------------------+-----------------+------------------------------------------------+
 
 .. _Corning whitepaper on MFD/EA: https://www.corning.com/microsites/coc/oem/documents/specialty-fiber/WP7071-Mode-Field-Diam-and-Eff-Area.pdf
 
