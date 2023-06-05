@@ -514,22 +514,26 @@ class Fiber(_Node):
                           f'  reference pch out (dBm):     {self.pch_out_db:.2f}',
                           f'  actual pch out (dBm):        {total_pch}'])
 
+    def interpolate_parameter_over_spectrum(self, parameter, ref_frequency, spectrum_frequency, name):
+        try:
+            interpolation = interp1d(ref_frequency, parameter)(spectrum_frequency)
+            return interpolation
+        except ValueError:
+            raise SpectrumError('The spectrum bandwidth exceeds the frequency interval used to define the fiber '
+                                f'{name} in "{type(self).__name__} {self.uid}".'
+                                f'\nSpectrum f_min-f_max: {round(spectrum_frequency[0] * 1e-12, 2)}-'
+                                f'{round(spectrum_frequency[-1] * 1e-12, 2)}'
+                                f'\n{name} f_min-f_max: {round(ref_frequency[0] * 1e-12, 2)}-'
+                                f'{round(ref_frequency[-1] * 1e-12, 2)}')
+
     def loss_coef_func(self, frequency):
         frequency = asarray(frequency)
         if self.params.loss_coef.size > 1:
-            try:
-                loss_coef = interp1d(self.params.f_loss_ref, self.params.loss_coef)(frequency)
-            except ValueError:
-                raise SpectrumError('The spectrum bandwidth exceeds the frequency interval used to define the fiber '
-                                    f'loss coefficient in "{type(self).__name__} {self.uid}".'
-                                    f'\nSpectrum f_min-f_max: {round(frequency[0]*1e-12,2)}-'
-                                    f'{round(frequency[-1]*1e-12,2)}'
-                                    f'\nLoss coefficient f_min-f_max: {round(self.params.f_loss_ref[0]*1e-12,2)}-'
-                                    f'{round(self.params.f_loss_ref[-1]*1e-12,2)}')
+            loss_coef = self.interpolate_parameter_over_spectrum(self.params.loss_coef, self.params.f_loss_ref,
+                                                                 frequency, 'Loss Coefficient')
         else:
             loss_coef = full(frequency.size, self.params.loss_coef)
         return squeeze(loss_coef)
-
 
     @property
     def loss(self):
@@ -545,6 +549,49 @@ class Fiber(_Node):
         :return: alpha: power attenuation coefficient for f in frequency [Neper/m]
         """
         return self.loss_coef_func(frequency) / (10 * log10(exp(1)))
+
+    def beta2(self, frequency=None):
+        """Returns the beta2 chromatic dispersion coefficient as the second order term of the beta function
+        expanded as a Taylor series evaluated at the given frequency
+
+        :param frequency: the frequency at which alpha is computed [Hz]
+        :return: beta2: beta2 chromatic dispersion coefficient for f in frequency # 1/(m * Hz^2)
+        """
+        frequency = asarray(self.params.ref_frequency if frequency is None else frequency)
+        if self.params.dispersion.size > 1:
+            dispersion = self.interpolate_parameter_over_spectrum(self.params.dispersion, self.params.f_dispersion_ref,
+                                                                  frequency, 'Chromatic Dispersion')
+        else:
+            if self.params.dispersion_slope is None:
+                dispersion = (frequency / self.params.f_dispersion_ref) ** 2 * self.params.dispersion
+            else:
+                wavelength = c / frequency
+                dispersion = self.params.dispersion + self.params.dispersion_slope * \
+                             (wavelength - c / self.params.f_dispersion_ref)
+        beta2 = -((c / frequency) ** 2 * dispersion) / (2 * pi * c)
+        return beta2
+
+    def beta3(self, frequency=None):
+        """Returns the beta3 chromatic dispersion coefficient as the third order term of the beta function
+        expanded as a Taylor series evaluated at the given frequency
+
+        :param frequency: the frequency at which alpha is computed [Hz]
+        :return: beta3: beta3 chromatic dispersion coefficient for f in frequency # 1/(m * Hz^3)
+        """
+        frequency = asarray(self.params.ref_frequency if frequency is None else frequency)
+        if self.params.dispersion.size > 1:
+            beta3 = polyfit(self.params.f_dispersion_ref - self.params.ref_frequency,
+                            self.beta2(self.params.f_dispersion_ref), 2)[1] / (2*pi)
+            beta3 = full(frequency.size, beta3)
+        else:
+            if self.params.dispersion_slope is None:
+                beta3 = zeros(frequency.size)
+            else:
+                dispersion_slope = self.params.dispersion_slope
+                beta2 = self.beta2(frequency)
+                beta3 = (dispersion_slope - (4 * pi * frequency ** 3 / c ** 2) * beta2) / (
+                            2 * pi * frequency ** 2 / c) ** 2
+        return beta3
 
     def gamma(self, frequency=None):
         """Returns the nonlinear interference coefficient such that
@@ -576,8 +623,8 @@ class Fiber(_Node):
         :return: chromatic dispersion: the accumulated dispersion [s/m]
         """
         freq = self.params.ref_frequency if freq is None else freq
-        beta2 = self.params.beta2
-        beta3 = self.params.beta3
+        beta2 = self.beta2(freq)
+        beta3 = self.beta3(freq)
         ref_f = self.params.ref_frequency
         length = self.params.length
         beta = beta2 + 2 * pi * beta3 * (freq - ref_f)
