@@ -10,7 +10,8 @@ This module contains all parameters to configure standard network elements.
 from collections import namedtuple
 
 from scipy.constants import c, pi
-from numpy import asarray, array, exp, sqrt, log, outer, ones, squeeze, append, flip
+from numpy import asarray, array, exp, sqrt, log, outer, ones, squeeze, append, flip, full
+from scipy.interpolate import interp1d
 
 from gnpy.core.utils import convert_length
 from gnpy.core.exceptions import ParametersError
@@ -180,15 +181,37 @@ class FiberParams(Parameters):
                 self._ref_frequency = c / self._ref_wavelength
 
             # Chromatic Dispersion
-            self._dispersion = kwargs['dispersion']  # s/m/m
-            self._dispersion_slope = \
-                kwargs.get('dispersion_slope', -2 * self._dispersion / self.ref_wavelength)  # s/m/m/m
-            self._beta2 = -(self.ref_wavelength ** 2) * self.dispersion / (2 * pi * c)  # 1/(m * Hz^2)
-            # Eq. (3.23) in  Abramczyk, Halina. "Dispersion phenomena in optical fibers." Virtual European University
-            # on Lasers. Available online: http://mitr.p.lodz.pl/evu/lectures/Abramczyk3.pdf
-            # (accessed on 25 March 2018) (2005).
-            self._beta3 = ((self.dispersion_slope - (4*pi*c/self.ref_wavelength**3) * self.beta2) /
-                           (2*pi*c/self.ref_wavelength**2)**2)
+            if 'dispersion' in kwargs:
+                # Frequency-dependent dispersion
+                if type(kwargs['dispersion']) == dict:
+                    self._dispersion = asarray(kwargs['dispersion']['value'])
+                    self._f_dispersion_ref = asarray(kwargs['dispersion']['frequency'])  # Hz
+                    if 'slope' in kwargs['dispersion']:
+                        self._dispersion_slope = asarray(kwargs['dispersion']['slope'])  # s/m/m/m
+                    elif 'dispersion_slope' in kwargs:
+                        self._dispersion_slope = asarray(kwargs['dispersion_slope'])
+                    else:
+                        w_disperion_ref = flip(c / self._f_dispersion_ref)
+                        w_dispesrion = flip(self._dispersion)
+                        derivative = (w_dispesrion[1:] - w_dispesrion[:-1]) / (w_disperion_ref[1:] -
+                                                                               w_disperion_ref[:-1])
+                        averaged_derivative = (derivative[1:] + derivative[:-1]) / 2
+                        self._dispersion_slope = flip(append(derivative[0],
+                                                             append(averaged_derivative, derivative[-1])))
+
+                    if self._dispersion_slope.size != self._f_dispersion_ref.size:
+                        raise ParametersError(
+                            'When the dispersion is defined along the frequency, the dispersion slope '
+                            'must be defined for each dispersion reference frequency or just omitted.')
+                # Single value dispersion
+                else:
+                    self._dispersion = asarray(kwargs['dispersion'])  # s/m/m
+                    self._dispersion_slope = kwargs.get('dispersion_slope')  # s/m/m/m
+                    self._f_dispersion_ref = asarray(self._ref_frequency)  # Hz
+            else:
+                self._dispersion = asarray(1.67e-05)  # s/m/m
+                self._dispersion_slope = None
+                self._f_dispersion_ref = asarray(self.ref_frequency)
 
             # Effective Area and Nonlinear Coefficient
             self._effective_area = kwargs.get('effective_area')  # m^2
@@ -294,8 +317,22 @@ class FiberParams(Parameters):
         return self._dispersion
 
     @property
+    def f_dispersion_ref(self):
+        return self._f_dispersion_ref
+
+    @property
     def dispersion_slope(self):
         return self._dispersion_slope
+
+    def dispersion_scaling(self, frequency):
+        if self.dispersion.size > 1:
+            dispersion = interp1d(self.f_dispersion_ref, self.dispersion)(frequency)
+        elif self.dispersion_slope is not None:
+            wavelength = c / frequency
+            dispersion = self.dispersion + self.dispersion_slope * (wavelength - c / self.f_dispersion_ref)
+        else:
+            dispersion = (frequency / self.f_dispersion_ref) ** 2 * self.dispersion
+        return dispersion
 
     @property
     def gamma(self):
@@ -326,14 +363,6 @@ class FiberParams(Parameters):
     @property
     def ref_frequency(self):
         return self._ref_frequency
-
-    @property
-    def beta2(self):
-        return self._beta2
-
-    @property
-    def beta3(self):
-        return self._beta3
 
     @property
     def loss_coef(self):
