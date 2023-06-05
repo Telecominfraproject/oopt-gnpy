@@ -339,7 +339,7 @@ class NliSolver:
 
         # Physical fiber parameters
         alpha = fiber.alpha(frequency)
-        beta2 = fiber.params.beta2
+        beta2 = fiber.beta2(frequency)
         gamma = outer(fiber.gamma(frequency), ones(nch))
         length = fiber.params.length
 
@@ -361,7 +361,10 @@ class NliSolver:
     def _psi(df, baud_rate, beta2, effective_length, asymptotic_length):
         """Calculates eq. 123 from `arXiv:1209.0394 <https://arxiv.org/abs/1209.0394>`__"""
         cut_baud_rate = outer(baud_rate, ones(baud_rate.size))
+        cut_beta = outer(beta2, ones(baud_rate.size))
         pump_baud_rate = baud_rate
+        pump_beta = outer(ones(baud_rate.size), beta2)
+        beta2 = (cut_beta + pump_beta) / 2
         right_extreme = df + pump_baud_rate / 2
         left_extreme = df - pump_baud_rate / 2
         psi = (arcsinh(pi ** 2 * asymptotic_length * abs(beta2) * cut_baud_rate * right_extreme) -
@@ -384,8 +387,8 @@ class NliSolver:
 
         # Physical fiber parameters
         alpha = fiber.alpha(frequency)
-        beta2 = fiber.params.beta2
-        beta3 = fiber.params.beta3
+        beta2 = fiber.beta2()
+        beta3 = fiber.beta3()
         f_ref_beta = fiber.params.ref_frequency
         gamma = outer(fiber.gamma(frequency[cut_indices]), ones(nch))
 
