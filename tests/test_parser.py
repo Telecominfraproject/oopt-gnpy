@@ -274,14 +274,6 @@ def test_json_response_generation(xls_input, expected_response_file):
         else:
             assert expected['response'][i] == response
 
-# test the correspondance names dict in case of excel input
-# test that using the created json network still works with excel input
-# test all configurations of names: trx names, roadm, fused, ila and fiber
-# as well as splitted case
-
-# initial network is based on the couple testTopology.xls/ testTopology_auto_design_expected.json
-# with added constraints to cover more test cases
-
 
 @pytest.mark.parametrize('source, destination, route_list, hoptype, expected_correction', [
     ('Brest_KLA', 'Vannes_KBE',
@@ -351,6 +343,55 @@ def test_excel_ila_constraints(source, destination, route_list, hoptype, expecte
     else:
         with pytest.raises(ServiceError):
             [request] = correct_xls_route_list(service_xls_input, network, [request])
+
+
+@pytest.mark.parametrize('route_list, hoptype, expected_amp_route', [
+    ('node1 | siteE | node2', 'no',
+     ['roadm node1', 'west edfa in siteE', 'roadm node2']),
+    ('node2 | siteE | node1', 'no',
+     ['roadm node2', 'east edfa in siteE', 'roadm node1']),
+    ('node1 | siteF | node2', 'no',
+     ['roadm node1', 'west edfa in siteF', 'roadm node2']),
+    ('node1 | siteA | siteB', 'yes',
+     ['roadm node1', 'west edfa in siteA']),
+    ('node1 | siteA | siteB | node2', 'yes',
+     ['roadm node1', 'west edfa in siteA', 'west edfa in siteB', 'roadm node2']),
+    ('node1 | siteC | node2', 'yes',
+     ['roadm node1', 'east edfa in siteC', 'roadm node2']),
+    ('node1 | siteD | node2', 'no',
+     ['roadm node1', 'west edfa in siteD to node1', 'roadm node2']),
+    ('roadm node1 | Edfa_booster_roadm node1_to_fiber (node1 → siteE)-CABLES#19 | west edfa in siteE | node2',
+     'no',
+     ['roadm node1', 'Edfa_booster_roadm node1_to_fiber (node1 → siteE)-CABLES#19',
+      'west edfa in siteE', 'roadm node2'])])
+def test_excel_ila_constraints2(route_list, hoptype, expected_amp_route):
+    """Check different cases for ILA constraints definition
+    """
+    network_xls_input = DATA_DIR / 'ila_constraint.xlsx'
+    network = load_network(network_xls_input, equipment)
+    add_missing_elements_in_network(network, equipment)
+    default_si = equipment['SI']['default']
+    p_db = default_si.power_dbm
+    p_total_db = p_db + lin2db(automatic_nch(default_si.f_min, default_si.f_max, default_si.spacing))
+    build_network(network, equipment, p_db, p_total_db)
+    # create params for a request based on input
+
+    params = {
+        'request_id': '0',
+        'source': 'node1',
+        'destination': 'node2',
+        'trx_type': 'Voyager',
+        'mode': None,
+        'spacing': 50,
+        'nodes_list': route_list,
+        'is_loose': hoptype,
+        'nb_channel': 80,
+        'power': 0,
+        'path_bandwidth': 100,
+    }
+    request = Request_element(Request(**params), equipment, False)
+    [request] = correct_xls_route_list(network_xls_input, network, [request])
+    assert request.nodes_list == expected_amp_route
 
 
 def setup_per_degree(case):
