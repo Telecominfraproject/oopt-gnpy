@@ -520,7 +520,6 @@ class Fiber(_Node):
             loss_coef = full(frequency.size, self.params.loss_coef)
         return squeeze(loss_coef)
 
-
     @property
     def loss(self):
         """total loss including padding att_in: useful for polymorphism with roadm loss"""
@@ -535,6 +534,40 @@ class Fiber(_Node):
         :return: alpha: power attenuation coefficient for f in frequency [Neper/m]
         """
         return self.loss_coef_func(frequency) / (10 * log10(exp(1)))
+
+    def beta2(self, frequency=None):
+        """Returns the beta2 chromatic dispersion coefficient as the second order term of the beta function
+        expanded as a Taylor series evaluated at the given frequency
+
+        :param frequency: the frequency at which alpha is computed [Hz]
+        :return: beta2: beta2 chromatic dispersion coefficient for f in frequency # 1/(m * Hz^2)
+        """
+        frequency = self.params.ref_frequency if frequency is None else frequency
+        dispersion = self.params.dispersion_scaling(frequency)
+        beta2 = -((c / frequency) ** 2 * dispersion) / (2 * pi * c)
+        return beta2
+
+    def beta3(self, frequency=None):
+        """Returns the beta3 chromatic dispersion coefficient as the third order term of the beta function
+        expanded as a Taylor series evaluated at the given frequency
+
+        :param frequency: the frequency at which alpha is computed [Hz]
+        :return: beta3: beta3 chromatic dispersion coefficient for f in frequency # 1/(m * Hz^3)
+        """
+        # Eq. (3.23) in  Abramczyk, Halina. "Dispersion phenomena in optical fibers." Virtual European
+        # University on Lasers. Available online: http://mitr.p.lodz.pl/evu/lectures/Abramczyk3.pdf
+        # (accessed on 01 June 2023) (2005).
+        frequency = self.params.ref_frequency if frequency is None else array(frequency)
+        if self.params.dispersion_slope is not None:
+            if self.params.dispersion_slope.size > 1:
+                dispersion_slope = interp1d(self.params._f_dispersion_ref, self.params.dispersion_slope)(frequency)
+            else:
+                dispersion_slope = self.params._f_dispersion_ref
+            beta2 = self.beta2(frequency)
+            beta3 = (dispersion_slope - (4 * pi * frequency ** 3 / c ** 2) * beta2) / (2 * pi * frequency ** 2 / c) ** 2
+        else:
+            beta3 = zeros(frequency.size)
+        return beta3
 
     def gamma(self, frequency=None):
         """Returns the nonlinear interference coefficient such that
@@ -566,8 +599,8 @@ class Fiber(_Node):
         :return: chromatic dispersion: the accumulated dispersion [s/m]
         """
         freq = self.params.ref_frequency if freq is None else freq
-        beta2 = self.params.beta2
-        beta3 = self.params.beta3
+        beta2 = self.beta2(freq)
+        beta3 = self.beta3(freq)
         ref_f = self.params.ref_frequency
         length = self.params.length
         beta = beta2 + 2 * pi * beta3 * (freq - ref_f)
