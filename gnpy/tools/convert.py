@@ -543,79 +543,57 @@ def corresp_names(input_filename, network):
     corresp_roadm = {x.city: [f'roadm {x.city}'] for x in nodes
                      if x.node_type.lower() == 'roadm'}
     corresp_fused = {x.city: [f'west fused spans in {x.city}', f'east fused spans in {x.city}']
-                     for x in nodes if x.node_type.lower() == 'fused' and
-                     f'west fused spans in {x.city}' in fused and
-                     f'east fused spans in {x.city}' in fused}
-
+                     for x in nodes if x.node_type.lower() == 'fused'
+                     and f'west fused spans in {x.city}' in fused
+                     and f'east fused spans in {x.city}' in fused}
+    corresp_ila = defaultdict(list)
     # add the special cases when an ila is changed into a fused
     for my_e in eqpts:
         name = f'east edfa in {my_e.from_city} to {my_e.to_city}'
         if my_e.east_amp_type.lower() == 'fused' and name in fused:
-            if my_e.from_city in corresp_fused.keys():
-                corresp_fused[my_e.from_city].append(name)
-            else:
-                corresp_fused[my_e.from_city] = [name]
+            corresp_fused.get(my_e.from_city, []).append(name)
         name = f'west edfa in {my_e.from_city} to {my_e.to_city}'
         if my_e.west_amp_type.lower() == 'fused' and name in fused:
-            if my_e.from_city in corresp_fused.keys():
-                corresp_fused[my_e.from_city].append(name)
-            else:
-                corresp_fused[my_e.from_city] = [name]
+            corresp_fused.get(my_e.from_city, []).append(name)
     # build corresp ila based on eqpt sheet
     # start with east direction
-    corresp_ila = {e.from_city: [f'east edfa in {e.from_city} to {e.to_city}']
-                   for e in eqpts if f'east edfa in {e.from_city} to {e.to_city}' in ila}
-    # west direction, append name or create a new item in dict
     for my_e in eqpts:
-        name = f'west edfa in {my_e.from_city} to {my_e.to_city}'
-        if name in ila:
-            if my_e.from_city in corresp_ila.keys():
+        for name in [f'east edfa in {my_e.from_city} to {my_e.to_city}',
+                     f'west edfa in {my_e.from_city} to {my_e.to_city}']:
+            if name in ila:
                 corresp_ila[my_e.from_city].append(name)
-            else:
-                corresp_ila[my_e.from_city] = [name]
     # complete with potential autodesign names: amplifiers
     for my_l in links:
         # create names whatever the type and filter them out
+        # from-to direction
         names = [f'Edfa_preamp_roadm {my_l.from_city}_from_fiber ({my_l.to_city} \u2192 {my_l.from_city})-{my_l.west_cable}',
                  f'Edfa_booster_roadm {my_l.from_city}_to_fiber ({my_l.from_city} \u2192 {my_l.to_city})-{my_l.east_cable}']
         for name in names:
             if name in ila:
-                if my_l.from_city in corresp_ila.keys():
-                    # "east edfa in Stbrieuc to Rennes_STA"  is equivalent name as
-                    # "Edfa_booster_roadm Stbrieuc_to_fiber (Lannion_CAS → Stbrieuc)-F056"
-                    # "west edfa in Stbrieuc to Rennes_STA"  is equivalent name as
-                    # "Edfa_preamp_roadm Stbrieuc_to_fiber (Rennes_STA → Stbrieuc)-F057"
-                    # in case fibers are splitted the name here is a prefix
-                    corresp_ila[my_l.from_city].append(name)
-                else:
-                    corresp_ila[my_l.from_city] = [name]
+                # "east edfa in Stbrieuc to Rennes_STA"  is equivalent name as
+                # "Edfa_booster_roadm Stbrieuc_to_fiber (Lannion_CAS → Stbrieuc)-F056"
+                # "west edfa in Stbrieuc to Rennes_STA"  is equivalent name as
+                # "Edfa_preamp_roadm Stbrieuc_to_fiber (Rennes_STA → Stbrieuc)-F057"
+                # in case fibers are splitted the name here is a
+                corresp_ila[my_l.from_city].append(name)
+        # to-from direction
         names = [f'Edfa_preamp_roadm {my_l.to_city}_from_fiber ({my_l.from_city} \u2192 {my_l.to_city})-{my_l.east_cable}',
                  f'Edfa_booster_roadm {my_l.to_city}_to_fiber ({my_l.to_city} \u2192 {my_l.from_city})-{my_l.west_cable}']
         for name in names:
             if name in ila:
-                if my_l.to_city in corresp_ila.keys():
-                    corresp_ila[my_l.to_city].append(name)
-                else:
-                    corresp_ila[my_l.to_city] = [name]
-
+                corresp_ila[my_l.to_city].append(name)
     for node in nodes:
         names = [f'east edfa in {node.city}', f'west edfa in {node.city}']
         for name in names:
             if name in ila:
-                if node.city in corresp_ila.keys():
-                    # "east edfa in Stbrieuc to Rennes_STA" (created with Eqpt) is equivalent name as
-                    # "east edfa in Stbrieuc" or "west edfa in Stbrieuc" (created with Links sheet)
-                    # depending on link node order
-                    corresp_ila[node.city].append(name)
-                else:
-                    corresp_ila[node.city] = [name]
+                # "east edfa in Stbrieuc to Rennes_STA" (created with Eqpt) is equivalent name as
+                # "east edfa in Stbrieuc" or "west edfa in Stbrieuc" (created with Links sheet)
+                # depending on link node order
+                corresp_ila[node.city].append(name)
 
     # merge fused with ila:
     for key, val in corresp_fused.items():
-        if key in corresp_ila.keys():
-            corresp_ila[key].extend(val)
-        else:
-            corresp_ila[key] = val
+        corresp_ila[key].extend(val)
         # no need of roadm booster
     return corresp_roadm, corresp_fused, corresp_ila
 
