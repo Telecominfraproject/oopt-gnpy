@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55f91255_e2e2cc6b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-06-20T08:58:08Z",
+      "side": 1,
+      "message": "Can you provide (as a comment here on Gerrit) some example data on how to use this new feature? In particular, I\u0027m looking for a valid range of these new numeric values and their \"customary units\" (i.e., not the SI base units, but something like ps/nm which is often used for CD).\n\nIt would also be nice to have a test which triggers this new functionality.",
+      "revId": "221498c4985c413e41d04f299081b8fbd5fe0c2d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
