@@ -9,10 +9,11 @@ are tested.
 from pathlib import Path
 from pandas import read_csv
 from numpy.testing import assert_allclose
-from numpy import array, genfromtxt
+from numpy import array
 import pytest
 
-from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information, Pref, ReferenceCarrier
+from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information, Pref, \
+    ReferenceCarrier
 from gnpy.core.elements import Fiber, RamanFiber
 from gnpy.core.parameters import SimParams
 from gnpy.tools.json_io import load_json
@@ -118,18 +119,18 @@ def test_fiber_lumped_losses_srs(set_sim_params):
     stimulated_raman_scattering = RamanSolver.calculate_stimulated_raman_scattering(
         spectral_info_input, fiber)
     power_profile = stimulated_raman_scattering.power_profile
-    expected_power_profile = genfromtxt(TEST_DIR / 'data' / 'test_lumped_losses_fiber_no_pumps.csv', delimiter=',')
+    expected_power_profile = read_csv(TEST_DIR / 'data' / 'test_lumped_losses_fiber_no_pumps.csv', header=None)
     assert_allclose(power_profile, expected_power_profile, rtol=1e-3)
 
     # with Raman pumps
-    expected_power_profile = genfromtxt(TEST_DIR / 'data' / 'test_lumped_losses_raman_fiber.csv', delimiter=',')
+    expected_power_profile = read_csv(TEST_DIR / 'data' / 'test_lumped_losses_raman_fiber.csv', header=None)
     stimulated_raman_scattering = RamanSolver.calculate_stimulated_raman_scattering(
         spectral_info_input, raman_fiber)
     power_profile = stimulated_raman_scattering.power_profile
     assert_allclose(power_profile, expected_power_profile, rtol=1e-3)
 
     # without Stimulated Raman Scattering
-    expected_power_profile = genfromtxt(TEST_DIR / 'data' / 'test_lumped_losses_fiber_no_raman.csv', delimiter=',')
+    expected_power_profile = read_csv(TEST_DIR / 'data' / 'test_lumped_losses_fiber_no_raman.csv', header=None)
     stimulated_raman_scattering = RamanSolver.calculate_attenuation_profile(spectral_info_input, fiber)
     power_profile = stimulated_raman_scattering.power_profile
     assert_allclose(power_profile, expected_power_profile, rtol=1e-3)
