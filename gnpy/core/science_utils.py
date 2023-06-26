@@ -11,8 +11,8 @@ The solvers take as input instances of the spectral information, the fiber and t
 """
 
 from numpy import interp, pi, zeros, shape, where, cos, array, append, ones, exp, arange, sqrt, trapz, arcsinh, \
-    clip, abs, sum, concatenate, flip, outer, inner, transpose, max, format_float_scientific, diag, prod, argwhere, \
-    unique, argsort, cumprod
+    clip, abs, sum, concatenate, flip, outer, inner, transpose, max, format_float_scientific, diag, sort, unique, \
+    argsort, cumprod
 from logging import getLogger
 from scipy.constants import k, h
 from scipy.interpolate import interp1d
@@ -110,6 +110,7 @@ class RamanSolver:
             z_step = sim_params.raman_params.solver_spatial_resolution
             z = append(arange(0, fiber.params.length, z_step), fiber.params.length)
             z_final = append(arange(0, fiber.params.length, z_resolution), fiber.params.length)
+            z_final = sort(unique(concatenate((fiber.z_lumped_losses, z_final))))
 
             # Lumped losses array definition
             z, lumped_losses = RamanSolver._create_lumped_losses(z, fiber.lumped_losses, fiber.z_lumped_losses)
