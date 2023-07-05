@@ -16,6 +16,24 @@
       "message": "Thanks! Now that I am using GNPy with an API based on ODL yangtools, I think that on the io part (not the core of the program only the json interface), we should avoid using the same attribute name for two data types (its either a decimal or a dict), + that instead of dict of list, it should be a list of dict. here is the reason: the api may order the lists differently unless you specify it is ordered by user. but if you order by user, then it can not be state data and you can not have duplicates in the list (RFC 7950 allows the duplicate Values in the non-config data.). So list may end up with different number of values.\nMy preference would rather leave the interface for dispersion as it is:\n  \"dispersion\": (number)\nand add a new parameter:\n  \"dispersion_per_frequency\": [{\"value\": (number) , \"slope\": (number) (optional), \"frequency\": (number)}] \nSince Jan is more expert than me on yang part, @Jan what is you opinion on that ?",
       "revId": "50458d3af3e3babd8ce64348060d7fdff3de5f54",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c83ecc2_e15f2135",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2023-07-05T14:00:23Z",
+      "side": 1,
+      "message": "Fine with me, I will introduce this new variable as we discussed in the PSE call a couple of weeks ago. Just on question, is this true also for the \"loss_coeff\"?",
+      "parentUuid": "ad933937_23480929",
+      "revId": "50458d3af3e3babd8ce64348060d7fdff3de5f54",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
