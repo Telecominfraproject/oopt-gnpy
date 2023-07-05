@@ -52,6 +52,24 @@
       "parentUuid": "7c83ecc2_e15f2135",
       "revId": "50458d3af3e3babd8ce64348060d7fdff3de5f54",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcdb16d6_46fbea8f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2023-07-05T14:11:14Z",
+      "side": 1,
+      "message": "Sure, I will wait for Jan feedback.",
+      "parentUuid": "b3815ac7_357229d7",
+      "revId": "50458d3af3e3babd8ce64348060d7fdff3de5f54",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
