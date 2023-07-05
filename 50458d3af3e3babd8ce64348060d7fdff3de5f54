@@ -34,6 +34,24 @@
       "parentUuid": "ad933937_23480929",
       "revId": "50458d3af3e3babd8ce64348060d7fdff3de5f54",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3815ac7_357229d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2023-07-05T14:03:13Z",
+      "side": 1,
+      "message": "Yes, the same for loss_coeff. Before doing the change, would you mind waiting for Jan\u0027s feedback ? I would prefer that he is also OK with my suggestion.",
+      "parentUuid": "7c83ecc2_e15f2135",
+      "revId": "50458d3af3e3babd8ce64348060d7fdff3de5f54",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
