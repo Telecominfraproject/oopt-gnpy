@@ -536,7 +536,7 @@ class Fiber(_Node):
     def loss(self):
         """total loss including padding att_in: useful for polymorphism with roadm loss"""
         return self.loss_coef_func(self.params.ref_frequency) * self.params.length + \
-            self.params.con_in + self.params.con_out + self.params.att_in
+            self.params.con_in + self.params.con_out + self.params.att_in + sum(lin2db(1 / self.lumped_losses))
 
     def alpha(self, frequency):
         """Returns the linear exponent attenuation coefficient such that
