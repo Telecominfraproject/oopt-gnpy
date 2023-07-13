@@ -1776,7 +1776,7 @@ class Multiband_amplifier(_Node):
                 'amplifiers': [{
                     'type_variety': amp.params.type_variety,
                     'operational': {
-                        'gain_target': round(amp.effective_gain, 6),
+                        'gain_target': round(amp.effective_gain, 6) if amp.effective_gain else None,
                         'delta_p': amp.delta_p,
                         'tilt_target': amp.tilt_target,
                         'out_voa': amp.out_voa
