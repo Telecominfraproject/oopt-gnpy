@@ -33,6 +33,29 @@
       "message": "recheck",
       "revId": "eb2363a3d483b0ece84cb5dbd4574ce56f8ba068",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5673251a_61fbcb30",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-07-14T13:30:57Z",
+      "side": 1,
+      "message": "Is this a correct formula? Given the following lumped losses:\n```\n[\n  {\u0027position\u0027: 1, \u0027loss\u0027: 0.1},\n  {\u0027position\u0027: 2, \u0027loss\u0027: 0.3},\n  {\u0027position\u0027: 10, \u0027loss\u0027: 0.5}\n]\n```\nthen:\n```\n\u003e\u003e\u003e self.lumped_losses \u003d db2lin(- lumped_losses_power)\n\u003e\u003e\u003e self.lumped_losses\narray([0.97723722, 0.9332543 , 0.89125094])\n\u003e\u003e\u003e sum(lin2db(1 / self.lumped_losses))\n0.8999999999999995\n```\nI think that the correct value is this one, though:\n```\n\u003e\u003e\u003e 1/prod(db2lin(lumped_losses_power))\n0.8128305161640995\n\u003e\u003e\u003e 1/(1.02329299 * 1.07151931 * 1.12201845)\n0.8128305174796187\n```",
+      "range": {
+        "startLine": 539,
+        "startChar": 76,
+        "endLine": 539,
+        "endChar": 111
+      },
+      "revId": "eb2363a3d483b0ece84cb5dbd4574ce56f8ba068",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
