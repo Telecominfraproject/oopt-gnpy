@@ -56,6 +56,30 @@
       },
       "revId": "eb2363a3d483b0ece84cb5dbd4574ce56f8ba068",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce04961d_782d129d",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2023-07-17T08:31:10Z",
+      "side": 1,
+      "message": "It is almost the same formula (dBs translate prod in sum), but the second result is in linear, if you convert it in dB and change the sign (as the loss in fiber is defined as a positive quantity in dB) you will obtain the same result as mine, except for a negligible numerical error:\n\n\u003e\u003e\u003e 1/prod(db2lin(lumped_losses_power))\n0.8128305161640995\n\n\u003e\u003e\u003e -lin2db(1/prod(db2lin(lumped_losses_power)))\n0.8999999999999986",
+      "parentUuid": "5673251a_61fbcb30",
+      "range": {
+        "startLine": 539,
+        "startChar": 76,
+        "endLine": 539,
+        "endChar": 111
+      },
+      "revId": "eb2363a3d483b0ece84cb5dbd4574ce56f8ba068",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
