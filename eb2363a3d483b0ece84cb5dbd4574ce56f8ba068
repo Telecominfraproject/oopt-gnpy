@@ -80,6 +80,30 @@
       },
       "revId": "eb2363a3d483b0ece84cb5dbd4574ce56f8ba068",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f7b7ac3_ee2a4183",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-07-17T12:05:04Z",
+      "side": 1,
+      "message": "Ah, right, my value was linear while the other one was in dB, and the fact that they were \"close to each other\" was pure coincidence just for these values. Thanks for checking this and clarifying that to me.",
+      "parentUuid": "ce04961d_782d129d",
+      "range": {
+        "startLine": 539,
+        "startChar": 76,
+        "endLine": 539,
+        "endChar": 111
+      },
+      "revId": "eb2363a3d483b0ece84cb5dbd4574ce56f8ba068",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
