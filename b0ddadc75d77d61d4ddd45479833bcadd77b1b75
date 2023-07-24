@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8bfbcc6_b7804d7c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-07-24T15:17:30Z",
+      "side": 1,
+      "message": "I shortened this one so that it fits with the usual git best practices",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 91
+      },
+      "revId": "b0ddadc75d77d61d4ddd45479833bcadd77b1b75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cf2010a_12c01214",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-07-24T15:17:30Z",
+      "side": 1,
+      "message": "...and wrapped this one for the same reason :).",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 227
+      },
+      "revId": "b0ddadc75d77d61d4ddd45479833bcadd77b1b75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43a85ac1_4dc83419",
+        "filename": "tests/test_science_utils.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-07-24T15:17:30Z",
+      "side": 1,
+      "message": "I\u0027ve split this into an extra commit because it is an unrelated change.",
+      "revId": "b0ddadc75d77d61d4ddd45479833bcadd77b1b75",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
