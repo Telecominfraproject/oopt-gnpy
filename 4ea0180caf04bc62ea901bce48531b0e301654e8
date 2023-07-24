@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9f98f22_ad6b2595",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-07-24T15:18:37Z",
+      "side": 1,
+      "message": "(just something I refactored into a separate patch from Andrea\u0027s https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/556088/2)",
+      "revId": "4ea0180caf04bc62ea901bce48531b0e301654e8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
