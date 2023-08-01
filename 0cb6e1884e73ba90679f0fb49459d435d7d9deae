@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab161e3c_024b923c",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 29
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-08-01T04:08:47Z",
+      "side": 1,
+      "message": "The allowed range or units (0 .. 0.1 ps × nm⁻² × km⁻¹) for **dispersion slope** look wrong to me. With the default fiber type from today\u0027s equipment library, `FiberParams` return about -21.55:\n```\n\u003e\u003e\u003e gnpy.core.parameters.FiberParams(length\u003d1000, length_units\u003d\u0027m\u0027, dispersion\u003d1.67e-5, pmd_coef\u003d83e-12, loss_coef\u003d0).dispersion_slope\n-21.548387096774192\n```\n\n@Andrea, can you please check this?",
+      "range": {
+        "startLine": 519,
+        "startChar": 0,
+        "endLine": 545,
+        "endChar": 5
+      },
+      "revId": "0cb6e1884e73ba90679f0fb49459d435d7d9deae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
