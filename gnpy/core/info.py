@@ -27,8 +27,9 @@ class Power(namedtuple('Power', 'signal nli ase')):
     """carriers power in W"""
 
 
-class Channel(namedtuple('Channel',
-                         'channel_number frequency baud_rate slot_width roll_off power chromatic_dispersion pmd pdl')):
+class Channel(
+    namedtuple('Channel',
+               'channel_number frequency baud_rate slot_width roll_off power chromatic_dispersion pmd pdl latency')):
     """Class containing the parameters of a WDM signal.
 
     :param channel_number: channel number in the WDM grid
@@ -40,6 +41,7 @@ class Channel(namedtuple('Channel',
     :param chromatic_dispersion: chromatic dispersion (s/m)
     :param pmd: polarization mode dispersion (s)
     :param pdl: polarization dependent loss (dB)
+    :param latency: propagation latency (s)
     """
 
 
@@ -58,8 +60,8 @@ class SpectralInformation(object):
     delta_pdb_per_channel: (per frequency) per channel delta power in dbm for the actual mix of channels"""
 
     def __init__(self, frequency: array, baud_rate: array, slot_width: array, signal: array, nli: array, ase: array,
-                 roll_off: array, chromatic_dispersion: array, pmd: array, pdl: array, delta_pdb_per_channel: array,
-                 tx_osnr: array, ref_power: Pref, label: array):
+                 roll_off: array, chromatic_dispersion: array, pmd: array, pdl: array, latency: array,
+                 delta_pdb_per_channel: array, tx_osnr: array, ref_power: Pref, label: array):
         indices = argsort(frequency)
         self._frequency = frequency[indices]
         self._df = outer(ones(frequency.shape), frequency) - outer(frequency, ones(frequency.shape))
@@ -84,6 +86,7 @@ class SpectralInformation(object):
         self._chromatic_dispersion = chromatic_dispersion[indices]
         self._pmd = pmd[indices]
         self._pdl = pdl[indices]
+        self._latency = latency[indices]
         self._delta_pdb_per_channel = delta_pdb_per_channel[indices]
         self._tx_osnr = tx_osnr[indices]
         self._pref = ref_power
@@ -181,6 +184,14 @@ class SpectralInformation(object):
         self._pdl = pdl
 
     @property
+    def latency(self):
+        return self._latency
+
+    @latency.setter
+    def latency(self, latency):
+        self._latency = latency
+
+    @property
     def delta_pdb_per_channel(self):
         return self._delta_pdb_per_channel
 
@@ -203,7 +214,7 @@ class SpectralInformation(object):
     @property
     def carriers(self):
         entries = zip(self.channel_number, self.frequency, self.baud_rate, self.slot_width,
-                      self.roll_off, self.powers, self.chromatic_dispersion, self.pmd, self.pdl)
+                      self.roll_off, self.powers, self.chromatic_dispersion, self.pmd, self.pdl, self.latency)
         return [Channel(*entry) for entry in entries]
 
     def apply_attenuation_lin(self, attenuation_lin):
@@ -242,6 +253,7 @@ class SpectralInformation(object):
                                                                    other.chromatic_dispersion),
                                        pmd=append(self.pmd, other.pmd),
                                        pdl=append(self.pdl, other.pdl),
+                                       latency=append(self.latency, other.latency),
                                        delta_pdb_per_channel=append(self.delta_pdb_per_channel,
                                                                     other.delta_pdb_per_channel),
                                        tx_osnr=append(self.tx_osnr, other.tx_osnr),
@@ -255,6 +267,7 @@ class SpectralInformation(object):
         self.chromatic_dispersion = array([c.chromatic_dispersion for c in carriers])
         self.pmd = array([c.pmd for c in carriers])
         self.pdl = array([c.pdl for c in carriers])
+        self.latency = array([c.latency for c in carriers])
         self.signal = array([c.power.signal for c in carriers])
         self.nli = array([c.power.nli for c in carriers])
         self.ase = array([c.power.ase for c in carriers])
@@ -272,6 +285,7 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, fl
                                           chromatic_dispersion: Union[float, ndarray, Iterable] = 0.,
                                           pmd: Union[float, ndarray, Iterable] = 0.,
                                           pdl: Union[float, ndarray, Iterable] = 0.,
+                                          latency: Union[float, ndarray, Iterable] = 0.,
                                           ref_power: Pref = None,
                                           label: Union[str, ndarray, Iterable] = None):
     """This is just a wrapper around the SpectralInformation.__init__() that simplifies the creation of
@@ -287,6 +301,7 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, fl
         chromatic_dispersion = full(number_of_channels, chromatic_dispersion)
         pmd = full(number_of_channels, pmd)
         pdl = full(number_of_channels, pdl)
+        latency = full(number_of_channels, latency)
         nli = zeros(number_of_channels)
         ase = zeros(number_of_channels)
         delta_pdb_per_channel = full(number_of_channels, delta_pdb_per_channel)
@@ -296,7 +311,7 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, fl
                                    signal=signal, nli=nli, ase=ase,
                                    baud_rate=baud_rate, roll_off=roll_off,
                                    chromatic_dispersion=chromatic_dispersion,
-                                   pmd=pmd, pdl=pdl,
+                                   pmd=pmd, pdl=pdl, latency=latency,
                                    delta_pdb_per_channel=delta_pdb_per_channel,
                                    tx_osnr=tx_osnr,
                                    ref_power=ref_power, label=label)

@@ -158,6 +158,7 @@ class FiberParams(Parameters):
             self._beta3 = ((self.dispersion_slope - (4*pi*c/self.ref_wavelength**3) * self.beta2) /
                            (2*pi*c/self.ref_wavelength**2)**2)
             self._effective_area = kwargs.get('effective_area')  # m^2
+            self._n1 = 1.468
             n2 = 2.6e-20  # m^2/W
             if self._effective_area:
                 self._gamma = kwargs.get('gamma', 2 * pi * n2 / (self.ref_wavelength * self._effective_area))  # 1/W/m
@@ -177,6 +178,7 @@ class FiberParams(Parameters):
                 self._loss_coef = asarray(kwargs['loss_coef']) * 1e-3  # lineic loss dB/m
                 self._f_loss_ref = asarray(self._ref_frequency)  # Hz
             self._lumped_losses = kwargs['lumped_losses'] if 'lumped_losses' in kwargs else []
+            self._latency = self._length / (c / self._n1)  # s
         except KeyError as e:
             raise ParametersError(f'Fiber configurations json must include {e}. Configuration: {kwargs}')
 
@@ -260,6 +262,10 @@ class FiberParams(Parameters):
     @property
     def raman_efficiency(self):
         return self._raman_efficiency
+
+    @property
+    def latency(self):
+        return self._latency
 
     def asdict(self):
         dictionary = super().asdict()

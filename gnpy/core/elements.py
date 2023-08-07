@@ -87,6 +87,7 @@ class Transceiver(_Node):
         self.chromatic_dispersion = None
         self.pmd = None
         self.pdl = None
+        self.latency = None
         self.penalties = {}
         self.total_penalty = 0
         self.propagated_labels = [""]
@@ -105,6 +106,11 @@ class Transceiver(_Node):
         """Updates the Transceiver property with the PDL of the received channels. PDL in dB.
         """
         self.pdl = spectral_info.pdl
+
+    def _calc_latency(self, spectral_info):
+        """Updates the Transceiver property with the latency of the received channels. Latency in ms.
+        """
+        self.latency = spectral_info.latency * 1e3
 
     def _calc_penalty(self, impairment_value, boundary_list):
         return interp(impairment_value, boundary_list['up_to_boundary'], boundary_list['penalty_value'],
@@ -172,6 +178,7 @@ class Transceiver(_Node):
                 f'chromatic_dispersion={self.chromatic_dispersion!r}, '
                 f'pmd={self.pmd!r}, '
                 f'pdl={self.pdl!r}, '
+                f'latency={self.latency!r}, '
                 f'penalties={self.penalties!r})')
 
     def __str__(self):
@@ -185,6 +192,7 @@ class Transceiver(_Node):
         cd = mean(self.chromatic_dispersion)
         pmd = mean(self.pmd)
         pdl = mean(self.pdl)
+        latency = mean(self.latency)
 
         result = '\n'.join([f'{type(self).__name__} {self.uid}',
                             f'  GSNR (0.1nm, dB):          {pretty_summary_print(snr_01nm)}',
@@ -193,7 +201,8 @@ class Transceiver(_Node):
                             f'  OSNR ASE (signal bw, dB):  {pretty_summary_print(osnr_ase)}',
                             f'  CD (ps/nm):                {cd:.2f}',
                             f'  PMD (ps):                  {pmd:.2f}',
-                            f'  PDL (dB):                  {pdl:.2f}'])
+                            f'  PDL (dB):                  {pdl:.2f}',
+                            f'  Latency (ms):              {latency:.2f}'])
 
         cd_penalty = self.penalties.get('chromatic_dispersion')
         if cd_penalty is not None:
@@ -212,6 +221,7 @@ class Transceiver(_Node):
         self._calc_cd(spectral_info)
         self._calc_pmd(spectral_info)
         self._calc_pdl(spectral_info)
+        self._calc_latency(spectral_info)
         return spectral_info
 
 
@@ -596,6 +606,9 @@ class Fiber(_Node):
         spectral_info.chromatic_dispersion += self.chromatic_dispersion(spectral_info.frequency)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.pmd ** 2)
 
+        # latency
+        spectral_info.latency += self.params.latency
+
         # apply the attenuation due to the fiber losses
         attenuation_fiber = stimulated_raman_scattering.loss_profile[:, -1]
         spectral_info.apply_attenuation_lin(attenuation_fiber)
@@ -668,6 +681,9 @@ class RamanFiber(Fiber):
         # chromatic dispersion and pmd variations
         spectral_info.chromatic_dispersion += self.chromatic_dispersion(spectral_info.frequency)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.pmd ** 2)
+
+        # latency
+        spectral_info.latency += self.params.latency
 
         # apply the attenuation due to the fiber losses
         attenuation_fiber = stimulated_raman_scattering.loss_profile[:spectral_info.number_of_channels, -1]
