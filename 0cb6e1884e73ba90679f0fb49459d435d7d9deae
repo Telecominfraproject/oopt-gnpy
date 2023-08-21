@@ -1,6 +1,91 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2e731e9_98984a98",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 29
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2023-08-21T15:49:26Z",
+      "side": 1,
+      "message": "Hello, thanks for the update! here are some comments mainly for the type ranges",
+      "revId": "0cb6e1884e73ba90679f0fb49459d435d7d9deae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bf52c7d_6d22d59c",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 29
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2023-08-21T15:49:26Z",
+      "side": 1,
+      "message": "carrier frequency should go beyond C band at least L (186 -190 THz).\nI have seen this definition: O, E, S, C, L, U\nand this ranges from 238 Thz down to 184.5 THz\nSo my guess is that we allow this range for the type",
+      "revId": "0cb6e1884e73ba90679f0fb49459d435d7d9deae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ff8fa93_7b90c935",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 29
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2023-08-21T15:49:26Z",
+      "side": 1,
+      "message": "two years ago that would have been my guess, but now, I think that wthere may be larger occupation in the next years. can we set it to 1000.0 GHz ?",
+      "revId": "0cb6e1884e73ba90679f0fb49459d435d7d9deae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dad04e17_ba32f46e",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 29
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2023-08-21T15:49:26Z",
+      "side": 1,
+      "message": "130 is not enough. say 1000 ?",
+      "revId": "0cb6e1884e73ba90679f0fb49459d435d7d9deae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff372f8f_4dcf8ac6",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 29
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2023-08-21T15:49:26Z",
+      "side": 1,
+      "message": "50000 is not enough in my opinion. remove the range ?",
+      "revId": "0cb6e1884e73ba90679f0fb49459d435d7d9deae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab161e3c_024b923c",
