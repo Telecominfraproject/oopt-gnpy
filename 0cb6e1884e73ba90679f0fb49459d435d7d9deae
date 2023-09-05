@@ -35,6 +35,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91c4276e_8ce05fd3",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 29
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-09-05T12:44:23Z",
+      "side": 1,
+      "message": "OK, we agreed to use 184-198 THz, thanks",
+      "parentUuid": "5bf52c7d_6d22d59c",
+      "revId": "0cb6e1884e73ba90679f0fb49459d435d7d9deae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ff8fa93_7b90c935",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-08-21T15:49:26Z",
       "side": 1,
       "message": "two years ago that would have been my guess, but now, I think that wthere may be larger occupation in the next years. can we set it to 1000.0 GHz ?",
+      "revId": "0cb6e1884e73ba90679f0fb49459d435d7d9deae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67db3f03_5f416db0",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 29
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-09-05T12:44:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ff8fa93_7b90c935",
       "revId": "0cb6e1884e73ba90679f0fb49459d435d7d9deae",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -69,6 +105,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4163280c_1ab5029e",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 29
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-09-05T12:44:23Z",
+      "side": 1,
+      "message": "We went over this during the call and there is no concern about bringing this threshold higher. In theory, the GN model should go better as the Baud rate is increased, so we can bring this even to the \"untested\" 1 TBaud.",
+      "parentUuid": "dad04e17_ba32f46e",
+      "revId": "0cb6e1884e73ba90679f0fb49459d435d7d9deae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff372f8f_4dcf8ac6",
@@ -82,6 +136,24 @@
       "writtenOn": "2023-08-21T15:49:26Z",
       "side": 1,
       "message": "50000 is not enough in my opinion. remove the range ?",
+      "revId": "0cb6e1884e73ba90679f0fb49459d435d7d9deae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4f9bd52_190a3e78",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 29
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-09-05T12:44:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff372f8f_4dcf8ac6",
       "revId": "0cb6e1884e73ba90679f0fb49459d435d7d9deae",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -105,6 +177,87 @@
         "endLine": 545,
         "endChar": 5
       },
+      "revId": "0cb6e1884e73ba90679f0fb49459d435d7d9deae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "547099cb_065b27fd",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 29
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-09-05T12:44:23Z",
+      "side": 1,
+      "message": "@Andrea, what is the reasonable range for the dispersion slope?",
+      "parentUuid": "ab161e3c_024b923c",
+      "range": {
+        "startLine": 519,
+        "startChar": 0,
+        "endLine": 545,
+        "endChar": 5
+      },
+      "revId": "0cb6e1884e73ba90679f0fb49459d435d7d9deae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdf76eae_d1c05f2b",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 29
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-09-05T12:44:23Z",
+      "side": 1,
+      "message": "I cross-checked this with various vendor docs (because I wasn\u0027t able to find a definitive answer in G.694.1, 10/2020). The lower edge was correct, but the upper one is apparently at 196.125 THz for the usual 96channels, 50GHz.",
+      "range": {
+        "startLine": 643,
+        "startChar": 0,
+        "endLine": 653,
+        "endChar": 4
+      },
+      "revId": "0cb6e1884e73ba90679f0fb49459d435d7d9deae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c56b9332_e735f800",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 29
+      },
+      "lineNbr": 689,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-09-05T12:44:23Z",
+      "side": 1,
+      "message": "As per Gert\u0027s request I changed this to be `default 50.0`.",
+      "revId": "0cb6e1884e73ba90679f0fb49459d435d7d9deae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "214c047a_e495d107",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 29
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-09-05T12:44:23Z",
+      "side": 1,
+      "message": "This was changed to `0..20` in the typedef itself.",
       "revId": "0cb6e1884e73ba90679f0fb49459d435d7d9deae",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
