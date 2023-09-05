@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aec71d9c_36f031ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-09-05T12:47:57Z",
+      "side": 1,
+      "message": "- support saving as well (to have the piece of mind)\n- port the conversion and provide that as an entry point to the user\n- add the CLI option to activate this so that it\u0027s visible to the end user",
+      "revId": "dbe2e6132b7d044b99c44895e5ea1741436d8d0d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7adf331_d1fe48e9",
+        "filename": "gnpy/yang/io.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-09-05T12:47:57Z",
+      "side": 1,
+      "message": "this needs to be ported",
+      "range": {
+        "startLine": 37,
+        "startChar": 8,
+        "endLine": 37,
+        "endChar": 27
+      },
+      "revId": "dbe2e6132b7d044b99c44895e5ea1741436d8d0d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9e6bf4a_1cc087fc",
+        "filename": "gnpy/yang/io.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-09-05T12:47:57Z",
+      "side": 1,
+      "message": "Pass the hard limits here",
+      "range": {
+        "startLine": 131,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 24
+      },
+      "revId": "dbe2e6132b7d044b99c44895e5ea1741436d8d0d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cacb1b1_8aa93658",
+        "filename": "gnpy/yang/io.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-09-05T12:47:57Z",
+      "side": 1,
+      "message": "Transform the penalty matrix and pass it in the faux-legacy-JSON format",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 134,
+        "endChar": 31
+      },
+      "revId": "dbe2e6132b7d044b99c44895e5ea1741436d8d0d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
