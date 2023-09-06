@@ -14,6 +14,7 @@ checks that empty info on mode, power, nbchannel in service file are supported
 
 """
 
+from logging import INFO
 from pathlib import Path
 from logging import INFO
 from numpy.testing import assert_allclose
@@ -22,10 +23,10 @@ import pytest
 from gnpy.core.network import build_network
 from gnpy.core.utils import automatic_nch, lin2db, watt2dbm, dbm2watt
 from gnpy.core.elements import Roadm
-from gnpy.topology.request import compute_path_dsjctn, propagate, propagate_and_optimize_mode, correct_json_route_list
+from gnpy.topology.request import compute_path_dsjctn, propagate, propagate_and_optimize_mode, \
+    correct_json_route_list, PathRequest
 from gnpy.tools.json_io import load_network, load_equipment, requests_from_json, load_requests, load_json, \
     _equipment_from_json
-from gnpy.topology.request import PathRequest
 
 
 data_dir = Path(__file__).parent.parent / 'tests/data'
@@ -211,6 +212,9 @@ def test_propagate_and_optimize_mode(caplog):
     assert round(min(path[-1].snr_01nm), 2) == 22.22
     assert mode['format'] == 'mode 1'
     assert rqs[1].blocking_reason == 'NO_FEASIBLE_MODE'
-    expected_mesg = '\tWarning! Request 1: no mode satisfies path SNR requirement.'
+    expected_mesg = '\tWarning! Request 1 computed path from trx Brest_KLA to trx Vannes_KBE: no mode satisfies ' \
+                    + 'path SNR requirement. Best propagated mode mode 1\n\tlowest_SNR-0.1nm = 22.42' \
+                    + '\n\trequired_OSNR@0.1nm = 12\n\tsystem_margins = 0\n\tPDL_penalty = Infinity' \
+                    + '\n\tCD_penalty = 0.0\n\tPMD_penalty = 0.0'
     # Last log records mustcontain the message about the las explored mode
     assert expected_mesg in caplog.records[-1].message

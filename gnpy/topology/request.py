@@ -29,14 +29,14 @@ from networkx.utils import pairwise
 from numpy import mean, argmin
 
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Multiband_amplifier
-from gnpy.core.utils import lin2db, unique_ordered, find_common_range
+from gnpy.core.utils import lin2db, unique_ordered, find_common_range, watt2dbm
 from gnpy.core.info import create_input_spectral_information, carriers_to_spectral_information, \
     demuxed_spectral_information, muxed_spectral_information, SpectralInformation
 from gnpy.core import network as network_module
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 from copy import deepcopy
 from csv import writer
-from math import ceil
+from math import ceil, isinf
 
 
 LOGGER = getLogger(__name__)
@@ -229,7 +229,7 @@ class ResultElement:
                 },
                 {
                     'metric-type': 'SNR-0.1nm',
-                    'accumulative-value': round(mean(pth[-1].snr + lin2db(req.baud_rate / 12.5e9)), 2)
+                    'accumulative-value': round(mean(pth[-1].snr_01nm), 2)
                 },
                 {
                     'metric-type': 'OSNR-bandwidth',
@@ -240,14 +240,29 @@ class ResultElement:
                     'accumulative-value': round(mean(pth[-1].osnr_ase_01nm), 2)
                 },
                 {
+                    'metric-type': 'lowest_SNR-0.1nm',
+                    'accumulative-value': round(min(pth[-1].snr_01nm), 2)
+                },
+                {
+                    'metric-type': 'PDL_penalty',
+                    'accumulative-value': get_penalty_from_receiver(pth[-1], 'pdl')
+                },
+                {
+                    'metric-type': 'CD_penalty',
+                    'accumulative-value': get_penalty_from_receiver(pth[-1], 'chromatic_dispersion')
+                },
+                {
+                    'metric-type': 'PMD_penalty',
+                    'accumulative-value': get_penalty_from_receiver(pth[-1], 'pmd')
+                },
+                {
                     'metric-type': 'reference_power',
                     'accumulative-value': req.power
                 },
                 {
                     'metric-type': 'path_bandwidth',
                     'accumulative-value': req.path_bandwidth
-                }
-            ]
+                }]
         if self.path_request.bidir:
             path_properties = {
                 'path-metric': path_metric(self.computed_path, self.path_request),
@@ -448,8 +463,13 @@ def propagate_and_optimize_mode(path, req, equipment):
         # only get to this point if no baudrate/mode satisfies OSNR requirement
 
         # returns the last propagated path and mode
-        msg = f'\tWarning! Request {req.request_id}: no mode satisfies path SNR requirement.\n'
-        LOGGER.warning(msg)
+        snr01nm_with_penalty = path[-1].snr_01nm - path[-1].total_penalty
+        min_ind = argmin(snr01nm_with_penalty)
+        msg = f'\tWarning! Request {req.request_id} computed path from' \
+            + f' {req.source} to {req.destination}: no mode satisfies path SNR requirement.' \
+            + f' Best propagated mode {last_explored_mode["format"]}'
+        msg = penalty_msg(path[-1], msg, min_ind, last_explored_mode["OSNR"], equipment["SI"]["default"].sys_margins)
+        LOGGER.info(msg)
         req.blocking_reason = 'NO_FEASIBLE_MODE'
         return path, last_explored_mode
     else:
@@ -460,26 +480,34 @@ def propagate_and_optimize_mode(path, req, equipment):
         return [], None
 
 
+def read_property(path_metric, metric):
+    """Reads property if it  exists
+    """
+    try:
+        return next(e['accumulative-value'] for e in path_metric if e['metric-type'] == metric)
+    except StopIteration:
+        return ''
+
+
 def jsontopath_metric(path_metric):
-    """a functions that reads resulting metric  from json string"""
-    output_snr = next(e['accumulative-value']
-                      for e in path_metric if e['metric-type'] == 'SNR-0.1nm')
-    output_snrbandwidth = next(e['accumulative-value']
-                               for e in path_metric if e['metric-type'] == 'SNR-bandwidth')
-    output_osnr = next(e['accumulative-value']
-                       for e in path_metric if e['metric-type'] == 'OSNR-0.1nm')
-    # ouput osnr@bandwidth is not used
-    # output_osnrbandwidth = next(e['accumulative-value']
-    #     for e in path_metric if e['metric-type'] == 'OSNR-bandwidth')
-    power = next(e['accumulative-value']
-                 for e in path_metric if e['metric-type'] == 'reference_power')
-    path_bandwidth = next(e['accumulative-value']
-                          for e in path_metric if e['metric-type'] == 'path_bandwidth')
-    return output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth
+    """ a functions that reads resulting metric  from json string
+    """
+    output_snr = read_property(path_metric, 'SNR-0.1nm')
+    output_snrbandwidth = read_property(path_metric, 'SNR-bandwidth')
+    output_osnr = read_property(path_metric, 'OSNR-0.1nm')
+    power = read_property(path_metric, 'reference_power')
+    path_bandwidth = read_property(path_metric, 'path_bandwidth')
+    output_snr_min = read_property(path_metric, 'lowest_SNR-0.1nm')
+    pdl = read_property(path_metric, 'PDL_penalty')
+    cd = read_property(path_metric, 'CD_penalty')
+    pmd = read_property(path_metric, 'PMD_penalty')
+    return output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth, output_snr_min, pdl, cd, pmd
 
 
 def jsontoparams(my_p, tsp, mode, equipment):
-    """a function that derives optical params from transponder type and mode supports the no mode case"""
+    """ a function that derives optical params from transponder type and mode
+        supports the no-mode case
+    """
     temp = []
     for elem in my_p['path-properties']['path-route-objects']:
         if 'num-unnum-hop' in elem['path-route-object']:
@@ -506,11 +534,11 @@ def jsontoparams(my_p, tsp, mode, equipment):
                  for m in equipment['Transceiver'][tsp].mode if m['format'] == mode)
     else:
         [minosnr, baud_rate, bit_rate, cost] = ['', '', '', '']
-    output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth = \
+    output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth, output_snr_min, pdl, cd, pmd = \
         jsontopath_metric(my_p['path-properties']['path-metric'])
 
     return pth, minosnr, baud_rate, bit_rate, cost, output_snr, \
-        output_snrbandwidth, output_osnr, power, path_bandwidth, sptrm
+        output_snrbandwidth, output_osnr, power, path_bandwidth, sptrm, output_snr_min, pdl, cd, pmd
 
 
 def jsontocsv(json_data, equipment, fileout):
@@ -521,10 +549,14 @@ def jsontocsv(json_data, equipment, fileout):
     """
     mywriter = writer(fileout)
     mywriter.writerow(('response-id', 'source', 'destination', 'path_bandwidth', 'Pass?',
-                       'nb of tsp pairs', 'total cost', 'transponder-type', 'transponder-mode',
-                       'OSNR-0.1nm', 'SNR-0.1nm', 'SNR-bandwidth', 'baud rate (Gbaud)',
-                       'input power (dBm)', 'path', 'spectrum (N,M)', 'reversed path OSNR-0.1nm',
-                       'reversed path SNR-0.1nm', 'reversed path SNR-bandwidth'))
+                       'nb of tsp pairs', 'total cost', 'transponder-type', 'transponder-mode', 'bit rate',
+                       'OSNR-0.1nm (average)', 'SNR-0.1nm (average)', 'SNR-bandwidth (average)',
+                       'SNR-0.1nm (min)', 'PDL_penalty', 'CD_penalty', 'PMD_penalty',
+                       'min required OSNR (inc. margin)', 'baud rate (Gbaud)',
+                       'input power (dBm)', 'path', 'spectrum (N,M)', 'reversed path OSNR-0.1nm (average)',
+                       'reversed path SNR-0.1nm (average)', 'reversed path SNR-bandwidth (average)',
+                       'reversed path SNR-0.1nm (min)', 'reversed path PDL_penalty', 'reversed path CD_penalty',
+                       'reversed path PMD_penalty',))
 
     for pth_el in json_data['response']:
         path_id = pth_el['response-id']
@@ -539,15 +571,25 @@ def jsontocsv(json_data, equipment, fileout):
                 isok = pth_el['no-path']['no-path']
                 tsp = ''
                 mode = ''
+                bitr = ''
                 rosnr = ''
                 rsnr = ''
                 rsnrb = ''
+                rsnr_min = ''
+                pdl = ''
+                cd = ''
+                pmd = ''
+                minosnr_inc_margin = ''
                 brate = ''
                 pwr = ''
                 pth = ''
                 revosnr = ''
                 revsnr = ''
                 revsnrb = ''
+                revsnr_min = ''
+                revpdl = ''
+                revcd = ''
+                revpmd = ''
             else:
                 # the objects are listed with this order:
                 # - id of hop
@@ -565,17 +607,19 @@ def jsontocsv(json_data, equipment, fileout):
                 if pth_el['no-path']['no-path'] in BLOCKING_NOMODE or \
                         pth_el['no-path']['no-path'] in BLOCKING_NOSPECTRUM:
                     pth, minosnr, baud_rate, bit_rate, cost, output_snr, output_snrbandwidth, \
-                        output_osnr, power, path_bandwidth, sptrm = \
+                        output_osnr, power, path_bandwidth, sptrm, rsnr_min, pdl, cd, pmd = \
                         jsontoparams(pth_el['no-path'], tsp, mode, equipment)
+                    minosnr_inc_margin = minosnr + equipment['SI']['default'].sys_margins
                     pthbdbw = ''
                     rosnr = round(output_osnr, 2)
                     rsnr = round(output_snr, 2)
                     rsnrb = round(output_snrbandwidth, 2)
                     brate = round(baud_rate * 1e-9, 2)
-                    pwr = round(lin2db(power) + 30, 2)
+                    pwr = round(watt2dbm(power), 2)
+                    bitr = round(bit_rate * 1e-9, 2)
                     if 'z-a-path-metric' in pth_el['no-path']['path-properties'].keys():
-                        output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth = \
-                            jsontopath_metric(pth_el['no-path']['path-properties']['z-a-path-metric'])
+                        output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth, revsnr_min, revpdl, \
+                            revcd, revpmd = jsontopath_metric(pth_el['no-path']['path-properties']['z-a-path-metric'])
                         revosnr = round(output_osnr, 2)
                         revsnr = round(output_snr, 2)
                         revsnrb = round(output_snrbandwidth, 2)
@@ -583,6 +627,10 @@ def jsontocsv(json_data, equipment, fileout):
                         revosnr = ''
                         revsnr = ''
                         revsnrb = ''
+                        revsnr_min = ''
+                        revpdl = ''
+                        revcd = ''
+                        revpmd = ''
         else:
             # when label will be assigned destination will be with index -3, and transponder with index 2
             source = pth_el['path-properties']['path-route-objects'][0]['path-route-object']['num-unnum-hop']['node-id']
@@ -596,21 +644,23 @@ def jsontocsv(json_data, equipment, fileout):
             # on tsp (type) and mode (format).
             # loading equipment already tests the existence of tsp type and mode:
             pth, minosnr, baud_rate, bit_rate, cost, output_snr, output_snrbandwidth, \
-                output_osnr, power, path_bandwidth, sptrm = \
+                output_osnr, power, path_bandwidth, sptrm, rsnr_min, pdl, cd, pmd = \
                 jsontoparams(pth_el, tsp, mode, equipment)
             # this part only works if the request has a blocking_reason atribute, ie if it could not be satisfied
             isok = output_snr >= minosnr
+            minosnr_inc_margin = minosnr + equipment['SI']['default'].sys_margins
             nb_tsp = ceil(path_bandwidth / bit_rate)
             pthbdbw = round(path_bandwidth * 1e-9, 2)
             rosnr = round(output_osnr, 2)
             rsnr = round(output_snr, 2)
             rsnrb = round(output_snrbandwidth, 2)
             brate = round(baud_rate * 1e-9, 2)
-            pwr = round(lin2db(power) + 30, 2)
+            pwr = round(watt2dbm(power), 2)
+            bitr = round(bit_rate * 1e-9, 2)
             total_cost = nb_tsp * cost
             if 'z-a-path-metric' in pth_el['path-properties'].keys():
-                output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth = \
-                    jsontopath_metric(pth_el['path-properties']['z-a-path-metric'])
+                output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth, \
+                    revsnr_min, revpdl, revcd, revpmd = jsontopath_metric(pth_el['path-properties']['z-a-path-metric'])
                 revosnr = round(output_osnr, 2)
                 revsnr = round(output_snr, 2)
                 revsnrb = round(output_snrbandwidth, 2)
@@ -618,6 +668,10 @@ def jsontocsv(json_data, equipment, fileout):
                 revosnr = ''
                 revsnr = ''
                 revsnrb = ''
+                revsnr_min = ''
+                revpdl = ''
+                revcd = ''
+                revpmd = ''
         mywriter.writerow((path_id,
                            source,
                            destination,
@@ -627,16 +681,26 @@ def jsontocsv(json_data, equipment, fileout):
                            total_cost,
                            tsp,
                            mode,
+                           bitr,
                            rosnr,
                            rsnr,
                            rsnrb,
+                           rsnr_min,
+                           pdl,
+                           cd,
+                           pmd,
+                           minosnr_inc_margin,
                            brate,
                            pwr,
                            pth,
                            sptrm,
                            revosnr,
                            revsnr,
-                           revsnrb
+                           revsnrb,
+                           revsnr_min,
+                           revpdl,
+                           revcd,
+                           revpmd,
                            ))
 
 
@@ -1161,11 +1225,9 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                 min_ind = argmin(snr01nm_with_penalty)
                 if round(snr01nm_with_penalty[min_ind], 2) < pathreq.OSNR + equipment['SI']['default'].sys_margins:
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' \
-                          + f' {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}' \
-                          + f'\n\tcomputed SNR in 0.1nm = {round(total_path[-1].snr_01nm[min_ind], 2)}'
-                    msg = _penalty_msg(total_path, msg, min_ind) \
-                        + f'\n\trequired osnr = {pathreq.OSNR}' \
-                        + f'\n\tsystem margin = {equipment["SI"]["default"].sys_margins}'
+                          + f' {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}'
+                    msg = penalty_msg(total_path[-1], msg, min_ind, pathreq.OSNR,
+                                      equipment["SI"]["default"].sys_margins)
                     LOGGER.warning(msg)
                     pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
             else:
@@ -1212,11 +1274,8 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                 min_ind = argmin(snr01nm_with_penalty)
                 if round(snr01nm_with_penalty[min_ind], 2) < pathreq.OSNR + equipment['SI']['default'].sys_margins:
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' \
-                          + f' {pathreq.destination} to {pathreq.source} does not pass with {pathreq.tsp_mode}' \
-                          + f'\n\tcomputed SNR in 0.1nm = {round(rev_p[-1].snr_01nm[min_ind], 2)}'
-                    msg = _penalty_msg(rev_p, msg, min_ind) \
-                        + f'\n\trequired osnr = {pathreq.OSNR}' \
-                        + f'\n\tsystem margin = {equipment["SI"]["default"].sys_margins}'
+                          + f' {pathreq.destination} to {pathreq.source} does not pass with {pathreq.tsp_mode}'
+                    msg = penalty_msg(rev_p[-1], msg, min_ind, pathreq.OSNR, equipment["SI"]["default"].sys_margins)
                     LOGGER.warning(msg)
                     # TODO selection of mode should also be on reversed direction !!
                     if not hasattr(pathreq, 'blocking_reason'):
@@ -1310,3 +1369,38 @@ def find_elements_common_range(el_list: list, equipment: dict) -> List[dict]:
     amp_bands = [n.params.bands for n in el_list if isinstance(n, (Edfa, Multiband_amplifier))]
     return find_common_range(amp_bands, equipment['SI']['default'].f_min, equipment['SI']['default'].f_max,
                              equipment['SI']['default'].spacing)
+
+
+def penalty_msg(receiver, msg, min_ind, required_osnr, system_margins):
+    """Returns a message that contains complementary reasons for blocking
+    Reason can be that lowest GSNR is below threshold, or that accumulated impairment adds a lot of penalty
+    This message is intended to help identifying causes of blocking
+    """
+    penalty_dict = {
+        'pdl': 'PDL_penalty',
+        'chromatic_dispersion': 'CD_penalty',
+        'pmd': 'PMD_penalty'
+    }
+    complement = {
+        'lowest_SNR-0.1nm': round(receiver.snr_01nm[min_ind], 2),
+        'required_OSNR@0.1nm': required_osnr,
+        'system_margins': system_margins
+    }
+    for penalty, name in penalty_dict.items():
+        complement[name] = get_penalty_from_receiver(receiver, penalty)
+
+    for penalty, value in complement.items():
+        msg += f'\n\t{penalty} = {value}'
+    return msg
+
+
+def get_penalty_from_receiver(receiver, impairment):
+    """Read penalty if impairment is in the list
+    """
+    if impairment in receiver.penalties:
+        penalty_value = round(mean(receiver.penalties[impairment]), 2)
+        if isinf(penalty_value):
+            return "Infinity"
+        return penalty_value
+    else:
+        return 'not evaluated'
