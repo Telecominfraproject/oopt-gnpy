@@ -181,7 +181,8 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
 
 
 @pytest.mark.parametrize('json_input',
-    (DATA_DIR / 'testTopology_response.json', )
+    (DATA_DIR / 'testTopology_response.json', 
+     DATA_DIR / 'testTopology_response_with_more_cases.json')
 )
 def test_csv_response_generation(tmpdir, json_input):
     """tests if generated csv is consistant with expected generation same columns (order not important)"""
@@ -192,31 +193,6 @@ def test_csv_response_generation(tmpdir, json_input):
         jsontocsv(json_data, equipment, fcsv)
 
     expected_csv_filename = json_input.parent / (json_input.stem + '_expected.csv')
-
-    # expected header
-    # csv_header = \
-    # [
-    #  'response-id',
-    #  'source',
-    #  'destination',
-    #  'path_bandwidth',
-    #  'Pass?',
-    #  'nb of tsp pairs',
-    #  'total cost',
-    #  'transponder-type',
-    #  'transponder-mode',
-    #  'OSNR-0.1nm',
-    #  'SNR-0.1nm',
-    #  'SNR-bandwidth',
-    #  'baud rate (Gbaud)',
-    #  'input power (dBm)',
-    #  'path',
-    #  'spectrum (N,M)',
-    #  'reversed path OSNR-0.1nm',
-    #  'reversed path SNR-0.1nm',
-    #  'reversed path SNR-bandwidth'
-    # ]
-
     resp = read_csv(csv_filename)
     print(resp)
     unlink(csv_filename)
@@ -246,7 +222,7 @@ def test_csv_response_generation(tmpdir, json_input):
 
 # test json answers creation
 @pytest.mark.parametrize('xls_input, expected_response_file', {
-    DATA_DIR / 'testTopology.xls': DATA_DIR / 'testTopology_response.json',
+    DATA_DIR / 'testTopology.xls': DATA_DIR / 'testTopology_response_expected.json',
 }.items())
 def test_json_response_generation(xls_input, expected_response_file):
     """tests if json response is correctly generated for all combinations of requests"""
@@ -302,12 +278,17 @@ def test_json_response_generation(xls_input, expected_response_file):
             assert expected['response'][i] != response
             print(f'response {response["response-id"]} should not match')
             expected['response'][2]['path-properties']['z-a-path-metric'] = [
-                {'metric-type': 'SNR-bandwidth', 'accumulative-value': 22.809999999999999},
-                {'metric-type': 'SNR-0.1nm', 'accumulative-value': 26.890000000000001},
+                {'metric-type': 'SNR-bandwidth', 'accumulative-value': 22.81},
+                {'metric-type': 'SNR-0.1nm', 'accumulative-value': 26.9},
                 {'metric-type': 'OSNR-bandwidth', 'accumulative-value': 26.239999999999998},
                 {'metric-type': 'OSNR-0.1nm', 'accumulative-value': 30.32},
+                {'metric-type': 'lowest_SNR-0.1nm', 'accumulative-value': 26.74},
+                {'metric-type': 'PDL_penalty', 'accumulative-value': 'not evaluated'},
+                {'metric-type': 'CD_penalty', 'accumulative-value': 'not evaluated'},
+                {'metric-type': 'PMD_penalty', 'accumulative-value': 'not evaluated'},
                 {'metric-type': 'reference_power', 'accumulative-value': 0.0012589254117941673},
                 {'metric-type': 'path_bandwidth', 'accumulative-value': 60000000000.0}]
+            assert expected['response'][2] == response
             # test should be OK now
         else:
             assert expected['response'][i] == response
