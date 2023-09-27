@@ -181,7 +181,7 @@ def wrong_requests():
             }]
         },
         'expected_msg': 'Equipment Config error in imposed_mode: '
-                        + 'Could not find transponder "test_offset" with mode "mode 3" in equipment library'
+                        + 'Could not find transponder "test_offset" in equipment library'
     })
     data.append({
         'error': ServiceError,
