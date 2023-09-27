@@ -193,8 +193,9 @@ def transmission_main_example(args=None):
     params['path_bandwidth'] = 0
     params['effective_freq_slot'] = None
     trx_params = trx_mode_params(equipment)
+    trx_params['power'] = dbm2watt(equipment['SI']['default'].power_dbm)
     if args.power:
-        trx_params['power'] = db2lin(float(args.power)) * 1e-3
+        trx_params['power'] = dbm2watt(float(args.power))
     params.update(trx_params)
     initial_spectrum = None
     params['nb_channel'] = automatic_nch(trx_params['f_min'], trx_params['f_max'], trx_params['spacing'])
@@ -370,7 +371,8 @@ def path_requests_run(args=None):
         'path_bandwidth': 0,
         'effective_freq_slot': None,
         'nb_channel': automatic_nch(equipment['SI']['default'].f_min, equipment['SI']['default'].f_max,
-                                    equipment['SI']['default'].spacing)
+                                    equipment['SI']['default'].spacing),
+        'power': dbm2watt(equipment['SI']['default'].power_dbm)
     }
     trx_params = trx_mode_params(equipment)
     params.update(trx_params)

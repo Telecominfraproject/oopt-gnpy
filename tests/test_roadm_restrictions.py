@@ -254,7 +254,8 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm, roa
               'format': '',
               'path_bandwidth': 100e9,
               'effective_freq_slot': None,
-              'nb_channel': nb_channel
+              'nb_channel': nb_channel,
+              'power': dbm2watt(power_dbm)
               }
     trx_params = trx_mode_params(equipment)
     params.update(trx_params)
@@ -309,7 +310,8 @@ def create_per_oms_request(network, eqpt, req_power):
         'format': '',
         'path_bandwidth': 100e9,
         'effective_freq_slot': None,
-        'nb_channel': nb_channel
+        'nb_channel': nb_channel,
+        'power': dbm2watt(req_power)
     }
     trx_params = trx_mode_params(eqpt)
     params.update(trx_params)

@@ -258,7 +258,7 @@ def request_set():
         'f_min': 191.1e12,
         'f_max': 196.3e12,
         'nb_channel': None,
-        'power': 0,
+        'power': 0.001,
         'path_bandwidth': 200e9}
 
 
