@@ -20,7 +20,7 @@ from gnpy.core.equipment import trx_mode_params
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError, ServiceError
 from gnpy.core.science_utils import estimate_nf_model
 from gnpy.core.info import Carrier
-from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions
+from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions, dbm2watt
 from gnpy.core.parameters import DEFAULT_RAMAN_COEFFICIENT, EdfaParams
 from gnpy.topology.request import PathRequest, Disjunction, compute_spectrum_slot_vs_bandwidth
 from gnpy.topology.spectrum_assignment import mvalue_to_slots
@@ -584,13 +584,11 @@ def requests_from_json(json_data, equipment):
             msg = f'Equipment Config error in {req["request-id"]}: {e}'
             raise EquipmentConfigError(msg) from e
         params.update(trx_params)
-        # optical power might be set differently in the request. if it is indicated then the
-        # params['power'] is updated
-        try:
-            if req['path-constraints']['te-bandwidth']['output-power']:
-                params['power'] = req['path-constraints']['te-bandwidth']['output-power']
-        except KeyError:
-            pass
+        params['power'] = req['path-constraints']['te-bandwidth'].get('output-power')
+        # params must not be None, but user can set to None: catch this case
+        if params['power'] is None:
+            params['power'] = dbm2watt(equipment['SI']['default'].power_dbm)
+
         # same process for nb-channel
         f_min = params['f_min']
         f_max_from_si = params['f_max']
