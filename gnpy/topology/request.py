@@ -52,6 +52,18 @@ RequestParams = namedtuple('RequestParams', 'request_id source destination bidir
 DisjunctionParams = namedtuple('DisjunctionParams', 'disjunction_id relaxable link_diverse'
                                ' node_diverse disjunctions_req')
 
+# string definitions for the import/export of values from json and printings
+PDL_PENALTY_STRING = 'PDL_penalty'
+PMD_PENALTY_STRING = 'PMD_penalty'
+CD_PENALTY_STRING = 'CD_penalty'
+LOWER_SNR_STRING = 'lowest_SNR-0.1nm'
+SNR_BW_STRING = 'SNR-bandwidth'
+SNR_01NM_STRING = 'SNR-0.1nm'
+OSNR_BW_STRING = 'OSNR-bandwidth'
+OSNR_01NM_STRING = 'OSNR-0.1nm'
+REF_POWER_STRING = 'reference_power'
+PATH_BW_STRING = 'path_bandwidth'
+
 
 class PathRequest:
     """the class that contains all attributes related to a request"""
@@ -224,43 +236,43 @@ class ResultElement:
             """creates the metrics dictionary"""
             return [
                 {
-                    'metric-type': 'SNR-bandwidth',
+                    'metric-type': SNR_BW_STRING,
                     'accumulative-value': round(mean(pth[-1].snr), 2)
                 },
                 {
-                    'metric-type': 'SNR-0.1nm',
+                    'metric-type': SNR_01NM_STRING,
                     'accumulative-value': round(mean(pth[-1].snr_01nm), 2)
                 },
                 {
-                    'metric-type': 'OSNR-bandwidth',
+                    'metric-type': OSNR_BW_STRING,
                     'accumulative-value': round(mean(pth[-1].osnr_ase), 2)
                 },
                 {
-                    'metric-type': 'OSNR-0.1nm',
+                    'metric-type': OSNR_01NM_STRING,
                     'accumulative-value': round(mean(pth[-1].osnr_ase_01nm), 2)
                 },
                 {
-                    'metric-type': 'lowest_SNR-0.1nm',
+                    'metric-type': LOWER_SNR_STRING,
                     'accumulative-value': round(min(pth[-1].snr_01nm), 2)
                 },
                 {
-                    'metric-type': 'PDL_penalty',
+                    'metric-type': PDL_PENALTY_STRING,
                     'accumulative-value': get_penalty_from_receiver(pth[-1], 'pdl')
                 },
                 {
-                    'metric-type': 'CD_penalty',
+                    'metric-type': CD_PENALTY_STRING,
                     'accumulative-value': get_penalty_from_receiver(pth[-1], 'chromatic_dispersion')
                 },
                 {
-                    'metric-type': 'PMD_penalty',
+                    'metric-type': PMD_PENALTY_STRING,
                     'accumulative-value': get_penalty_from_receiver(pth[-1], 'pmd')
                 },
                 {
-                    'metric-type': 'reference_power',
+                    'metric-type': REF_POWER_STRING,
                     'accumulative-value': req.power
                 },
                 {
-                    'metric-type': 'path_bandwidth',
+                    'metric-type': PATH_BW_STRING,
                     'accumulative-value': req.path_bandwidth
                 }]
         if self.path_request.bidir:
@@ -492,15 +504,15 @@ def read_property(path_metric, metric):
 def jsontopath_metric(path_metric):
     """ a functions that reads resulting metric  from json string
     """
-    output_snr = read_property(path_metric, 'SNR-0.1nm')
-    output_snrbandwidth = read_property(path_metric, 'SNR-bandwidth')
-    output_osnr = read_property(path_metric, 'OSNR-0.1nm')
-    power = read_property(path_metric, 'reference_power')
-    path_bandwidth = read_property(path_metric, 'path_bandwidth')
-    output_snr_min = read_property(path_metric, 'lowest_SNR-0.1nm')
-    pdl = read_property(path_metric, 'PDL_penalty')
-    cd = read_property(path_metric, 'CD_penalty')
-    pmd = read_property(path_metric, 'PMD_penalty')
+    output_snr = read_property(path_metric, SNR_01NM_STRING)
+    output_snrbandwidth = read_property(path_metric, SNR_BW_STRING)
+    output_osnr = read_property(path_metric, OSNR_01NM_STRING)
+    power = read_property(path_metric, REF_POWER_STRING)
+    path_bandwidth = read_property(path_metric, PATH_BW_STRING)
+    output_snr_min = read_property(path_metric, LOWER_SNR_STRING)
+    pdl = read_property(path_metric, PDL_PENALTY_STRING)
+    cd = read_property(path_metric, CD_PENALTY_STRING)
+    pmd = read_property(path_metric, PMD_PENALTY_STRING)
     return output_snr, output_snrbandwidth, output_osnr, power, path_bandwidth, output_snr_min, pdl, cd, pmd
 
 
@@ -1377,12 +1389,12 @@ def penalty_msg(receiver, msg, min_ind, required_osnr, system_margins):
     This message is intended to help identifying causes of blocking
     """
     penalty_dict = {
-        'pdl': 'PDL_penalty',
-        'chromatic_dispersion': 'CD_penalty',
-        'pmd': 'PMD_penalty'
+        'pdl': PDL_PENALTY_STRING,
+        'chromatic_dispersion': CD_PENALTY_STRING,
+        'pmd': PMD_PENALTY_STRING
     }
     complement = {
-        'lowest_SNR-0.1nm': round(receiver.snr_01nm[min_ind], 2),
+        LOWER_SNR_STRING: round(receiver.snr_01nm[min_ind], 2),
         'required_OSNR@0.1nm': required_osnr,
         'system_margins': system_margins
     }
