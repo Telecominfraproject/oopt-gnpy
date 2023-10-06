@@ -86,7 +86,7 @@ Roadm roadm Lorient_KMA
   actual pch out (dBm):    -20.00
 Transceiver trx Lorient_KMA
   GSNR (0.1nm, dB):          23.61
-  GSNR (signal bw, dB):      19.52
+  GSNR (signal bw, dB):      19.53
   OSNR ASE (0.1nm, dB):      23.89
   OSNR ASE (signal bw, dB):  19.81
   CD (ps/nm):                2171.00
