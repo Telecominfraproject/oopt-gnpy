@@ -191,16 +191,17 @@ class FiberParams(Parameters):
             self._effective_area = kwargs.get('effective_area')  # m^2
             self._n1 = 1.468
             self._core_radius = 4.2e-6  # m
-            n2 = 2.6e-20  # m^2/W
+            self._n2 = 2.6e-20  # m^2/W
             if self._effective_area is not None:
-                self._gamma = kwargs.get('gamma', 2 * pi * n2 / (self.ref_wavelength * self._effective_area))  # 1/W/m
+                default_gamma = 2 * pi * self._n2 / (self._ref_wavelength * self._effective_area)
+                self._gamma = kwargs.get('gamma', default_gamma)  # 1/W/m
             elif 'gamma' in kwargs:
                 self._gamma = kwargs['gamma']  # 1/W/m
-                self._effective_area = 2 * pi * n2 / (self.ref_wavelength * self._gamma)  # m^2
+                self._effective_area = 2 * pi * self._n2 / (self._ref_wavelength * self._gamma)  # m^2
             else:
-                self._gamma = 0  # 1/W/m
                 self._effective_area = 83e-12  # m^2
-            self._contrast = 0.5 * (c / (2 * pi * self.ref_frequency * self._core_radius * self._n1) * exp(
+                self._gamma = 2 * pi * self._n2 / (self._ref_wavelength * self._effective_area)  # 1/W/m
+            self._contrast = 0.5 * (c / (2 * pi * self._ref_frequency * self._core_radius * self._n1) * exp(
                 pi * self._core_radius ** 2 / self._effective_area)) ** 2
 
             # Raman Gain Coefficient
@@ -294,6 +295,9 @@ class FiberParams(Parameters):
         effective_area_pump = self.effective_area_scaling(frequency_pump)
         return squeeze(outer(effective_area_stokes_wave, ones(effective_area_pump.size)) + outer(
             ones(effective_area_stokes_wave.size), effective_area_pump)) / 2
+
+    def gamma_scaling(self, frequency):
+        return asarray(2 * pi * self._n2 * frequency / (c * self.effective_area_scaling(frequency)))
 
     @property
     def pmd_coef(self):

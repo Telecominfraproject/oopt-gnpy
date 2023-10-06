@@ -546,6 +546,16 @@ class Fiber(_Node):
         """
         return self.loss_coef_func(frequency) / (10 * log10(exp(1)))
 
+    def gamma(self, frequency=None):
+        """Returns the nonlinear interference coefficient such that
+        :math: `gamma(f) = 2 pi f n_2 c^{-1} A_{eff}^{-1}`
+
+        :param frequency: the frequency at which gamma is computed [Hz]
+        :return: gamma: nonlinear interference coefficient for f in frequency [1/(W m)]
+        """
+        frequency = self.params.ref_frequency if frequency is None else frequency
+        return self.params.gamma_scaling(frequency)
+
     def cr(self, frequency):
         """Returns the raman gain coefficient matrix including the vibrational loss
 
