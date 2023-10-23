@@ -24,7 +24,7 @@ from networkx.utils import pairwise
 from numpy import mean, argmin
 
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Multiband_amplifier
-from gnpy.core.utils import lin2db, find_common_range
+from gnpy.core.utils import lin2db, unique_ordered, find_common_range
 from gnpy.core.info import create_input_spectral_information, carriers_to_spectral_information, \
     demuxed_spectral_information, muxed_spectral_information, SpectralInformation
 from gnpy.core import network as network_module
@@ -301,7 +301,9 @@ def compute_constrained_path(network, req):
     nodes_list = []
     for node in req.nodes_list[:-1]:
         nodes_list.append(next(el for el in network if el.uid == node))
-
+    total_path = explicit_path(nodes_list, source, destination, network)
+    if total_path is not None:
+        return total_path
     try:
         path_generator = shortest_simple_paths(network, source, destination, weight='weight')
         total_path = next(path for path in path_generator if ispart(nodes_list, path))
@@ -1251,6 +1253,44 @@ def _penalty_msg(total_path, msg, min_ind):
         else:
             msg += f'\n\t{pretty} penalty not evaluated'
     return msg
+
+
+def is_adjacent(oms1, oms2):
+    """ oms1's egress ROADM is oms2's ingress ROADM
+    """
+    return oms1.el_list[-1] == oms2.el_list[0]
+
+
+def explicit_path(node_list, source, destination, network):
+    """ if list of nodes leads to adjacent oms, then means that the path is explicit, and no need to compute
+    the function returns the explicit path (including source and destination ROADMs)
+    """
+    path_oms = []
+    for elem in node_list:
+        if hasattr(elem, 'oms'):
+            path_oms.append(elem.oms)
+    if not path_oms:
+        return None
+    path_oms = unique_ordered(path_oms)
+    try:
+        next_node = next(network.successors(source))
+        source_roadm = next_node if isinstance(next_node, Roadm) else source
+        previous_node = next(network.predecessors(destination))
+        destination_roadm = previous_node if isinstance(previous_node, Roadm) else destination
+        if not (path_oms[0].el_list[0] == source_roadm and path_oms[-1].el_list[-1] == destination_roadm):
+            return None
+    except StopIteration:
+        return None
+
+    oms0 = path_oms[0]
+    path = [source] + oms0.el_list
+    for oms in path_oms[1:]:
+        if not is_adjacent(oms0, oms):
+            return None
+        oms0 = oms
+        path.extend(oms.el_list)
+    path.append(destination)
+    return unique_ordered(path)
 
 
 def find_elements_common_range(el_list: list, equipment: dict) -> List[dict]:

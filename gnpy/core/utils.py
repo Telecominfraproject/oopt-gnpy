@@ -444,6 +444,16 @@ def restore_order(elements, order):
     return [elements[i[0]] for i in sorted(enumerate(order), key=lambda x:x[1]) if elements[i[0]] is not None]
 
 
+def unique_ordered(elements):
+    """
+    """
+    unique_elements = []
+    for element in elements:
+        if element not in unique_elements:
+            unique_elements.append(element)
+    return unique_elements
+
+
 def calculate_absolute_min_or_zero(x: array) -> array:
     """Calculates the element-wise absolute minimum between the x and zero.
 
