@@ -29,8 +29,10 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
             trx_params = {**mode_params}
             # sanity check: spacing baudrate must be smaller than min spacing
             if trx_params['baud_rate'] > trx_params['min_spacing']:
-                raise EquipmentConfigError(f'Inconsistency in equipment library:\n Transpoder "{trx_type_variety}" mode "{trx_params["format"]}" ' +
-                                           f'has baud rate {trx_params["baud_rate"]*1e-9} GHz greater than min_spacing {trx_params["min_spacing"]*1e-9}.')
+                raise EquipmentConfigError(f'Inconsistency in equipment library:\n Transponder "{trx_type_variety}"'
+                                           + f' mode "{trx_params["format"]}" has baud rate'
+                                           + f' {trx_params["baud_rate"] * 1e-9:.3f} GHz greater than min_spacing'
+                                           + f' {trx_params["min_spacing"] * 1e-9:.3f}.')
         else:
             mode_params = {"format": "undetermined",
                            "baud_rate": None,
