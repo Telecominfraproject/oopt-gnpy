@@ -16,6 +16,24 @@
       "message": "my be not 100% pythonesque",
       "revId": "3cb24ab9ffc551a85b0b7822af9e05a7fe503172",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6143618f_f6ffa331",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2023-11-02T11:35:29Z",
+      "side": 1,
+      "message": "It\u0027s more common to just let the exceptions propagate through all the layers. Then, at the outmost one, in this case somewhere here in the CLI entry point, add a try/except block which simply wraps the code block that calls these GNPy functions. Let it catch any known exception types for which you want to provide this nice error reporting, and add the print in there.",
+      "parentUuid": "4bbe797b_f4b71dc1",
+      "revId": "3cb24ab9ffc551a85b0b7822af9e05a7fe503172",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
