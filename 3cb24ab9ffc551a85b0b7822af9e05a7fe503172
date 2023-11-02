@@ -34,6 +34,24 @@
       "parentUuid": "4bbe797b_f4b71dc1",
       "revId": "3cb24ab9ffc551a85b0b7822af9e05a7fe503172",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24fe9ba9_68f5d880",
+        "filename": "gnpy/tools/cli_examples.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2023-11-02T16:55:56Z",
+      "side": 1,
+      "message": "Thanks! I have removed this function",
+      "parentUuid": "6143618f_f6ffa331",
+      "revId": "3cb24ab9ffc551a85b0b7822af9e05a7fe503172",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
