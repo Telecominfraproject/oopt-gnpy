@@ -123,3 +123,25 @@ jobs:
             python_version: "3.11"
           - os: macos-13
             python_version: "3.12"
+
+  paywalled-platforms:
+    name: Tests on paywalled platforms
+    if: github.repository_owner == 'Telecominfraproject'
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python_version }}
+      - run: |
+          pip install -r tests/requirements.txt
+          pip install --editable .
+          pytest -vv
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-13-xlarge # Apple M1 CPU
+            python_version: "3.12"
