@@ -29,7 +29,8 @@ jobs:
           - py38
           - py39
           - py310
-          - py311-cover
+          - py311
+          - py312-cover
         include:
           - tox_env: docs
             dnf_install: graphviz
@@ -46,7 +47,7 @@ jobs:
       - uses: actions/setup-python@v4
         name: Install Python
         with:
-          python-version: '3.11'
+          python-version: '3.12'
       - uses: casperdcl/deploy-pypi@bb869aafd89f657ceaafe9561d3b5584766c0f95
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
@@ -116,5 +117,9 @@ jobs:
             python_version: "3.10"
           - os: windows-2022
             python_version: "3.11"
+          - os: windows-2022
+            python_version: "3.12"
           - os: macos-12
             python_version: "3.11"
+          - os: macos-13
+            python_version: "3.12"
