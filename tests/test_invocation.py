@@ -2,7 +2,7 @@
 
 from pathlib import Path
 import os
-from logging import INFO
+from logging import INFO, Formatter
 import pytest
 import subprocess
 from gnpy.tools.cli_examples import transmission_main_example, path_requests_run
@@ -34,6 +34,9 @@ def test_example_invocation(capfd, caplog, output, log, handler, args):
     """Make sure that our examples produce useful output"""
     os.chdir(SRC_ROOT)
     expected = open(SRC_ROOT / 'tests' / 'invocation' / output, mode='r', encoding='utf-8').read()
+    formatter = Formatter('%(levelname)-9s%(name)s:%(filename)s %(message)s')
+    caplog.handler.setFormatter(formatter)
+    # keep INFO level to at least test those logs once
     caplog.set_level(INFO)
     handler(args)
     captured = capfd.readouterr()
