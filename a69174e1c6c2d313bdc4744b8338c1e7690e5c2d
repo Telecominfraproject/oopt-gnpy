@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03ec676c_451ebdd1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 39
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2023-11-20T15:46:30Z",
+      "side": 1,
+      "message": "Issue with EOL margin: counted many times.",
+      "revId": "a69174e1c6c2d313bdc4744b8338c1e7690e5c2d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
