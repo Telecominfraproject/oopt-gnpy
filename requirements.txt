@@ -1,6 +1,11 @@
-matplotlib>=3.5.1,<4
-networkx>=2.6,<3
-numpy>=1.22.0,<2
-pbr>=5.7.0,<6
-scipy>=1.7.3,<2
+# matplotlib 3.8 removed support for Python 3.8
+matplotlib>=3.7.3,<4
+# networkx 3.2 removed support for Python 3.8
+networkx>=3.1,<4
+# numpy 1.25 removed support for Python 3.8
+numpy>=1.24.4,<2
+pbr>=6.0.0,<7
+# scipy 1.11 removed support for Python 3.8
+scipy>=1.10.1,<2
+# xlrd 2.x removed support for .xlsx, it's only .xls now
 xlrd>=1.2.0,<2
