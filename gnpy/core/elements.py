@@ -156,7 +156,8 @@ class Transceiver(_Node):
         # use raw_values so that the added SNR penalties are not cumulated
         snr_added = 0
         for s in args:
-            snr_added += db2lin(-s)
+            if s is not None:
+                snr_added += db2lin(-s)
         snr_added = -lin2db(snr_added)
         self.osnr_ase = snr_sum(self.raw_osnr_ase, self.baud_rate, snr_added)
         self.snr = snr_sum(self.raw_snr, self.baud_rate, snr_added)
