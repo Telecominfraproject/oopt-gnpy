@@ -338,17 +338,17 @@ def propagate(path, req, equipment):
         si = create_input_spectral_information(
             f_min=req.f_min, f_max=req.f_max, roll_off=req.roll_off, baud_rate=req.baud_rate,
             power=req.power, spacing=req.spacing, tx_osnr=req.tx_osnr, delta_pdb=req.offset_db)
+    roadm_osnr = []
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
             si = el(si, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
+            roadm_osnr.append(el.get_roadm_path(from_degree=path[i - 1].uid, to_degree=path[i + 1].uid).impairment.osnr)
         else:
             si = el(si)
     path[0].update_snr(si.tx_osnr)
     path[0].calc_penalties(req.penalties)
-    if any(isinstance(el, Roadm) for el in path):
-        path[-1].update_snr(si.tx_osnr, equipment['Roadm']['default'].add_drop_osnr)
-    else:
-        path[-1].update_snr(si.tx_osnr)
+    roadm_osnr.append(si.tx_osnr)
+    path[-1].update_snr(*roadm_osnr)
     path[-1].calc_penalties(req.penalties)
     return si
 
@@ -382,19 +382,21 @@ def propagate_and_optimize_mode(path, req, equipment):
                                                          roll_off=equipment['SI']['default'].roll_off,
                                                          baud_rate=this_br, power=req.power, spacing=req.spacing,
                                                          delta_pdb=this_offset, tx_osnr=req.tx_osnr)
+            roadm_osnr = []
             for i, el in enumerate(path):
                 if isinstance(el, Roadm):
                     spc_info = el(spc_info, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
+                    roadm_osnr.append(el.get_roadm_path(from_degree=path[i - 1].uid, to_degree=path[i + 1].uid).impairment.osnr)
                 else:
                     spc_info = el(spc_info)
             for this_mode in modes_to_explore:
                 if path[-1].snr is not None:
                     path[0].update_snr(this_mode['tx_osnr'])
                     path[0].calc_penalties(this_mode['penalties'])
-                    if any(isinstance(el, Roadm) for el in path):
-                        path[-1].update_snr(this_mode['tx_osnr'], equipment['Roadm']['default'].add_drop_osnr)
-                    else:
-                        path[-1].update_snr(this_mode['tx_osnr'])
+                    roadm_osnr.append(this_mode['tx_osnr'])
+                    path[-1].update_snr(*roadm_osnr)
+                    # remove the tx_osnr from roadm_osnr list for the next iteration
+                    del roadm_osnr[-1]
                     path[-1].calc_penalties(this_mode['penalties'])
                     if round(min(path[-1].snr_01nm - path[-1].total_penalty), 2) \
                             > this_mode['OSNR'] + equipment['SI']['default'].sys_margins:
