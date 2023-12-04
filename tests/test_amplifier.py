@@ -3,12 +3,12 @@
 # @Author: Jean-Luc Auge
 # @Date:   2018-02-02 14:06:55
 
-from numpy import zeros
+from numpy import zeros, array
 from numpy.testing import assert_allclose
 from gnpy.core.elements import Transceiver, Edfa, Fiber
 from gnpy.core.utils import automatic_fmax, lin2db, db2lin, merge_amplifier_restrictions, dbm2watt, watt2dbm
-from gnpy.core.info import create_input_spectral_information, ReferenceCarrier
-from gnpy.core.network import build_network
+from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information
+from gnpy.core.network import build_network, set_amplifier_voa
 from gnpy.tools.json_io import load_network, load_equipment, network_from_json
 from pathlib import Path
 import pytest
@@ -75,8 +75,7 @@ def si(nch_and_spacing, bw):
     f_min = 191.3e12
     f_max = automatic_fmax(f_min, spacing, nb_channel)
     return create_input_spectral_information(f_min=f_min, f_max=f_max, roll_off=0.15, baud_rate=bw, power=1e-3,
-                                             spacing=spacing, tx_osnr=40.0,
-                                             ref_carrier=ReferenceCarrier(baud_rate=32e9, slot_width=50e9))
+                                             spacing=spacing, tx_osnr=40.0)
 
 
 @pytest.mark.parametrize("gain, nf_expected", [(10, 15), (15, 10), (25, 5.8)])
@@ -87,7 +86,7 @@ def test_variable_gain_nf(gain, nf_expected, setup_edfa_variable_gain, si):
     si.nli /= db2lin(gain)
     si.ase /= db2lin(gain)
     edfa.operational.gain_target = gain
-    si.pref = si.pref._replace(p_span0=0, p_spani=-gain)
+    edfa.effective_gain = gain
     edfa.interpol_params(si)
     result = edfa.nf
     assert pytest.approx(nf_expected, abs=0.01) == result[0]
@@ -101,7 +100,7 @@ def test_fixed_gain_nf(gain, nf_expected, setup_edfa_fixed_gain, si):
     si.nli /= db2lin(gain)
     si.ase /= db2lin(gain)
     edfa.operational.gain_target = gain
-    si.pref = si.pref._replace(p_span0=0, p_spani=-gain)
+    edfa.effective_gain = gain
     edfa.interpol_params(si)
     assert pytest.approx(nf_expected, abs=0.01) == edfa.nf[0]
 
@@ -125,8 +124,8 @@ def test_compare_nf_models(gain, setup_edfa_variable_gain, si):
     si.nli /= db2lin(gain)
     si.ase /= db2lin(gain)
     edfa.operational.gain_target = gain
+    edfa.effective_gain = gain
     # edfa is variable gain type
-    si.pref = si.pref._replace(p_span0=0, p_spani=-gain)
     edfa.interpol_params(si)
     nf_model = edfa.nf[0]
 
@@ -181,7 +180,6 @@ def test_ase_noise(gain, si, setup_trx, bw):
     si = span(si)
     print(span)
 
-    si.pref = si.pref._replace(p_span0=0, p_spani=-gain)
     edfa.interpol_params(si)
     nf = edfa.nf
     print('nf', nf)
@@ -211,7 +209,7 @@ def test_amp_behaviour(tilt_target, delta_p):
             "type_variety": "test",
             "operational": {
                 "delta_p": delta_p,
-                "gain_target": 20,
+                "gain_target": 20 + delta_p if delta_p else 20,
                 "tilt_target": tilt_target,
                 "out_voa": 0
             }
@@ -233,6 +231,7 @@ def test_amp_behaviour(tilt_target, delta_p):
     fiber = [n for n in network.nodes() if isinstance(n, Fiber)][0]
     fiber.params.con_in = 0
     fiber.params.con_out = 0
+    fiber.ref_pch_in_dbm = 0.0
     si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12, roll_off=0.15, baud_rate=64e9, power=0.001,
                                            spacing=75e9, tx_osnr=None)
     si = fiber(si)
@@ -284,3 +283,85 @@ def test_amp_behaviour(tilt_target, delta_p):
 
         print(sig_out)
         assert_allclose(sig_out, expected_sig_out, rtol=1e-9)
+
+
+@pytest.mark.parametrize('delta_p', [0, None, 20])
+@pytest.mark.parametrize('base_power', [0, 20])
+@pytest.mark.parametrize('delta_pdb_per_channel',
+                         [[0, 1, 3, 0.5, -2],
+                          [0, 0, 0, 0, 0],
+                          [-2, -2, -2, -2, -2],
+                          [0, 2, -2, -5, 4],
+                          [0, 1, 3, 0.5, -2], ])
+def test_amp_saturation(delta_pdb_per_channel, base_power, delta_p):
+    """Check that amp correctly applies saturation
+    """
+    json_data = {
+        "elements": [{
+            "uid": "Edfa1",
+            "type": "Edfa",
+            "type_variety": "test",
+            "operational": {
+                "delta_p": delta_p,
+                "gain_target": 20,
+                "tilt_target": 0,
+                "out_voa": 0
+            }
+        }],
+        "connections": []
+    }
+    equipment = load_equipment(eqpt_library)
+    network = network_from_json(json_data, equipment)
+    edfa = [n for n in network.nodes()][0]
+    frequency = 193e12 + array([0, 50e9, 150e9, 225e9, 275e9])
+    slot_width = array([37.5e9, 50e9, 75e9, 50e9, 37.5e9])
+    baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
+    signal = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]) + array(delta_pdb_per_channel) + base_power)
+    si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
+                                               signal=signal, baud_rate=baud_rate, roll_off=0.15,
+                                               delta_pdb_per_channel=delta_pdb_per_channel,
+                                               tx_osnr=None)
+    total_sig_powerin = sum(si.signal)
+    sig_in = lin2db(si.signal)
+    si = edfa(si)
+    sig_out = lin2db(si.signal)
+    total_sig_powerout = sum(si.signal)
+    gain = lin2db(total_sig_powerout / total_sig_powerin)
+    assert watt2dbm(sum(si.signal + si.nli + si.ase)) <= 21.02
+    assert pytest.approx(edfa.effective_gain, 1e-13) == gain
+    assert_allclose(sig_in + gain, sig_out, rtol=1e-13)
+
+
+def test_set_out_voa():
+    """Check that out_voa is correctly set if out_voa_auto is true
+    gain is maximized to obtain better NF:
+    if optimum input power in next span is -3 + pref_ch_db then total power at optimum is 19 -3 = 16dBm.
+    since amp has 21 dBm p_max, power out of amp can be set to 21dBm increasing out_voa by 5 to keep
+    same input power in the fiber. Since the optimisation contains a hard coded margin of 1 to account for
+    possible degradation on max power, the expected voa value is 4, and delta_p and gain are corrected
+    accordingly.
+    """
+    json_data = {
+        "elements": [{
+            "uid": "Edfa1",
+            "type": "Edfa",
+            "type_variety": "test",
+            "operational": {
+                "delta_p": -3,
+                "gain_target": 20,
+                "tilt_target": 0
+            }
+        }],
+        "connections": []
+    }
+    equipment = load_equipment(eqpt_library)
+    network = network_from_json(json_data, equipment)
+    amp = [n for n in network.nodes()][0]
+    print(amp.out_voa)
+    power_target = 19 + amp.delta_p
+    power_mode = True
+    amp.params.out_voa_auto = True
+    set_amplifier_voa(amp, power_target, power_mode)
+    assert amp.out_voa == 4.0
+    assert amp.effective_gain == 20.0 + 4.0
+    assert amp.delta_p == -3.0 + 4.0

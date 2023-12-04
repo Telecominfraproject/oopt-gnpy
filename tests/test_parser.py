@@ -24,7 +24,7 @@ from xlrd import open_workbook
 import pytest
 from copy import deepcopy
 from gnpy.core.utils import automatic_nch, lin2db
-from gnpy.core.network import build_network
+from gnpy.core.network import build_network, add_missing_elements_in_network
 from gnpy.core.exceptions import ServiceError
 from gnpy.topology.request import (jsontocsv, requests_aggregation, compute_path_dsjctn, deduplicate_disjunctions,
                                    compute_path_with_disjunction, ResultElement, PathRequest)
@@ -71,6 +71,7 @@ def test_auto_design_generation_fromxlsgainmode(tmpdir, xls_input, expected_json
     """tests generation of topology json and that the build network gives correct results in gain mode"""
     equipment = load_equipment(eqpt_filename)
     network = load_network(xls_input, equipment)
+    add_missing_elements_in_network(network, equipment)
     # in order to test the Eqpt sheet and load gain target,
     # change the power-mode to False (to be in gain mode)
     equipment['Span']['default'].power_mode = False
@@ -109,6 +110,7 @@ def test_auto_design_generation_fromjson(tmpdir, json_input, power_mode):
     p_db = equipment['SI']['default'].power_dbm
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
                                              equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    add_missing_elements_in_network(network, equipment)
     build_network(network, equipment, p_db, p_total_db)
     actual_json_output = tmpdir / json_input.with_name(json_input.stem + '_auto_design').with_suffix('.json').name
     save_network(network, actual_json_output)

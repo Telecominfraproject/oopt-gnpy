@@ -258,6 +258,8 @@ class Roadm(_Node):
         self.per_degree_pch_out_dbm = self.params.per_degree_pch_out_db
         self.per_degree_pch_psd = self.params.per_degree_pch_psd
         self.per_degree_pch_psw = self.params.per_degree_pch_psw
+        self.ref_pch_in_dbm = {}
+        self.ref_carrier = None
 
     @property
     def to_json(self):
@@ -302,8 +304,7 @@ class Roadm(_Node):
                           f'  reference pch out (dBm): {self.ref_pch_out_dbm:.2f}',
                           f'  actual pch out (dBm):    {total_pch}'])
 
-    def get_roadm_target_power(self, ref_carrier: ReferenceCarrier = None,
-                               spectral_info: SpectralInformation = None) -> Union[float, ndarray]:
+    def get_roadm_target_power(self, spectral_info: SpectralInformation = None) -> Union[float, ndarray]:
         """Computes the power in dBm for a reference carrier or for a spectral information.
         power is computed based on equalization target.
         if spectral_info baud_rate is baud_rate = [32e9, 42e9, 64e9, 42e9, 32e9], and
@@ -325,22 +326,22 @@ class Roadm(_Node):
             if self.target_pch_out_dbm is not None:
                 return self.target_pch_out_dbm
             if self.target_psd_out_mWperGHz is not None:
-                return psd2powerdbm(self.target_psd_out_mWperGHz, ref_carrier.baud_rate)
+                return psd2powerdbm(self.target_psd_out_mWperGHz, self.ref_carrier.baud_rate)
             if self.target_out_mWperSlotWidth is not None:
-                return psd2powerdbm(self.target_out_mWperSlotWidth, ref_carrier.slot_width)
+                return psd2powerdbm(self.target_out_mWperSlotWidth, self.ref_carrier.slot_width)
         return None
 
-    def get_per_degree_ref_power(self, degree, ref_carrier):
+    def get_per_degree_ref_power(self, degree):
         """Get the target power in dBm out of ROADM degree for the reference bandwidth
         If no equalization is defined on this degree use the ROADM level one.
         """
         if degree in self.per_degree_pch_out_dbm:
             return self.per_degree_pch_out_dbm[degree]
         elif degree in self.per_degree_pch_psd:
-            return psd2powerdbm(self.per_degree_pch_psd[degree], ref_carrier.baud_rate)
+            return psd2powerdbm(self.per_degree_pch_psd[degree], self.ref_carrier.baud_rate)
         elif degree in self.per_degree_pch_psw:
-            return psd2powerdbm(self.per_degree_pch_psw[degree], ref_carrier.slot_width)
-        return self.get_roadm_target_power(ref_carrier)
+            return psd2powerdbm(self.per_degree_pch_psw[degree], self.ref_carrier.slot_width)
+        return self.get_roadm_target_power()
 
     def get_per_degree_power(self, degree, spectral_info):
         """Get the target power in dBm out of ROADM degree for the spectral information
@@ -354,7 +355,7 @@ class Roadm(_Node):
             return psd2powerdbm(self.per_degree_pch_psw[degree], spectral_info.slot_width)
         return self.get_roadm_target_power(spectral_info=spectral_info)
 
-    def propagate(self, spectral_info, degree):
+    def propagate(self, spectral_info, degree, from_degree):
         """Equalization targets are read from topology file if defined and completed with default
         definition of the library.
         If the input power is lower than the target one, use the input power instead because
@@ -365,20 +366,20 @@ class Roadm(_Node):
         # TODO maybe add a minimum loss for the ROADM
 
         # find the target power for the reference carrier
-        ref_per_degree_pch = self.get_per_degree_ref_power(degree, spectral_info.pref.ref_carrier)
+        ref_per_degree_pch = self.get_per_degree_ref_power(degree)
         # find the target powers for each signal carrier
         per_degree_pch = self.get_per_degree_power(degree, spectral_info=spectral_info)
 
         # Definition of ref_pch_out_dbm for the reference channel:
-        # Depending on propagation upstream from this ROADM, the input power (p_spani) might be smaller than
+        # Depending on propagation upstream from this ROADM, the input power might be smaller than
         # the target power out configured for this ROADM degree's egress. Since ROADM does not amplify,
         # the power out of the ROADM for the ref channel is the min value between target power and input power.
         # (TODO add a minimum loss for the ROADM crossing)
-        self.ref_pch_out_dbm = min(spectral_info.pref.p_spani, ref_per_degree_pch)
+        self.ref_pch_out_dbm = min(self.ref_pch_in_dbm[from_degree], ref_per_degree_pch)
         # Definition of effective_loss:
         # Optical power of carriers are equalized by the ROADM, so that the experienced loss is not the same for
         # different carriers. effective_loss records the loss for the reference carrier.
-        self.ref_effective_loss = spectral_info.pref.p_spani - self.ref_pch_out_dbm
+        self.ref_effective_loss = self.ref_pch_in_dbm[from_degree] - self.ref_pch_out_dbm
         input_power = spectral_info.signal + spectral_info.nli + spectral_info.ase
         target_power_per_channel = per_degree_pch + spectral_info.delta_pdb_per_channel
         # Computation of the per channel target power according to equalization policy
@@ -407,17 +408,8 @@ class Roadm(_Node):
         self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
         self.propagated_labels = spectral_info.label
 
-    def update_pref(self, spectral_info):
-        """Update Reference power
-
-        This modifies the spectral info in-place. Only the `pref` is updated with new p_spani,
-        while p_span0 is not changed.
-        """
-        spectral_info.pref = spectral_info.pref._replace(p_spani=self.ref_pch_out_dbm)
-
-    def __call__(self, spectral_info, degree):
-        self.propagate(spectral_info, degree=degree)
-        self.update_pref(spectral_info)
+    def __call__(self, spectral_info, degree, from_degree):
+        self.propagate(spectral_info, degree=degree, from_degree=from_degree)
         return spectral_info
 
 
@@ -451,13 +443,8 @@ class Fused(_Node):
     def propagate(self, spectral_info):
         spectral_info.apply_attenuation_db(self.loss)
 
-    def update_pref(self, spectral_info):
-        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
-                                                         p_spani=spectral_info.pref.p_spani - self.loss)
-
     def __call__(self, spectral_info):
         self.propagate(spectral_info)
-        self.update_pref(spectral_info)
         return spectral_info
 
 
@@ -482,6 +469,7 @@ class Fiber(_Node):
                                        f"({1e-3 * self.params.length} km), boundaries excluded.")
         self.lumped_losses = db2lin(- lumped_losses_power)  # [linear units]
         self.z_lumped_losses = array(z_lumped_losses) * 1e3  # [m]
+        self.ref_pch_in_dbm = None
 
     @property
     def to_json(self):
@@ -675,21 +663,16 @@ class Fiber(_Node):
         self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
         self.propagated_labels = spectral_info.label
 
-    def update_pref(self, spectral_info):
-        # in case of Raman, the resulting loss of the fiber is not equivalent to self.loss
-        # because of Raman gain. In order to correctly update pref, we need the resulting loss:
-        # power_out - power_in. We use the total signal power (sum on all channels) to compute
-        # this loss, because pref is a noiseless reference.
-        loss = round(lin2db(self._psig_in / sum(spectral_info.signal)), 2)
-        self.pch_out_db = spectral_info.pref.p_spani - loss
-        spectral_info.pref = spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
-                                                         p_spani=self.pch_out_db)
-
     def __call__(self, spectral_info):
         # _psig_in records the total signal power of the spectral information before propagation.
         self._psig_in = sum(spectral_info.signal)
         self.propagate(spectral_info)
-        self.update_pref(spectral_info)
+        # In case of Raman, the resulting loss of the fiber is not equivalent to self.loss
+        # because of Raman gain. The resulting loss is:
+        # power_out - power_in. We use the total signal power (sum on all channels) to compute
+        # this loss.
+        loss = round(lin2db(self._psig_in / sum(spectral_info.signal)), 2)
+        self.pch_out_db = self.ref_pch_in_dbm - loss
         return spectral_info
 
 
@@ -771,12 +754,19 @@ class Edfa(_Node):
         self.pin_db = None
         self.nch = None
         self.pout_db = None
-        self.target_pch_out_db = None
+        self.target_pch_out_dbm = None
         self.effective_pch_out_db = None
         self.passive = False
         self.att_in = None
         self.effective_gain = self.operational.gain_target
-        self.delta_p = self.operational.delta_p  # delta P with Pref (power swwep) in power mode
+        # self.operational.delta_p is defined by user for reference channel
+        # self.delta_p is set with self.operational.delta_p, but it may be changed during design:
+        # - if operational.delta_p is None, self.delta_p is computed at design phase
+        # - if operational.delta_p can not be applied because of saturation, self.delta_p is recomputed
+        # - if power_mode is False, then it is set to None
+        self.delta_p = self.operational.delta_p
+        # self._delta_p contains computed delta_p during design even if power_mode is False
+        self._delta_p = None
         self.tilt_target = self.operational.tilt_target
         self.out_voa = self.operational.out_voa
         self.propagated_labels = [""]
@@ -823,9 +813,10 @@ class Edfa(_Node):
                           f'  pad att_in (dB):        {self.att_in:.2f}',
                           f'  Power In (dBm):         {self.pin_db:.2f}',
                           f'  Power Out (dBm):        {self.pout_db:.2f}',
-                          f'  Delta_P (dB):           ' + (f'{self.delta_p:.2f}' if self.delta_p is not None else 'None'),
-                          f'  target pch (dBm):       ' + (f'{self.target_pch_out_db:.2f}' if self.target_pch_out_db is not None else 'None'),
-                          f'  effective pch (dBm):    {self.effective_pch_out_db:.2f}',
+                          '  Delta_P (dB):           ' + (f'{self.delta_p:.2f}'
+                                                          if self.delta_p is not None else 'None'),
+                          '  target pch (dBm):       ' + (f'{self.target_pch_out_dbm:.2f}'
+                                                          if self.target_pch_out_dbm is not None else 'None'),
                           f'  actual pch out (dBm):   {total_pch}',
                           f'  output VOA (dB):        {self.out_voa:.2f}'])
 
@@ -853,20 +844,12 @@ class Edfa(_Node):
         # For now, with homogeneous spectrum, we can calculate it as the difference between neighbouring channels.
         self.slot_width = self.channel_freq[1] - self.channel_freq[0]
 
-        """in power mode: delta_p is defined and can be used to calculate the power target
-        This power target is used calculate the amplifier gain"""
-        pref = spectral_info.pref
-        if self.delta_p is not None:
-            self.target_pch_out_db = round(self.delta_p + pref.p_span0, 2)
-            self.effective_gain = self.target_pch_out_db - pref.p_spani
-
         """check power saturation and correct effective gain & power accordingly:"""
         # Compute the saturation accounting for actual power at the input of the amp
         self.effective_gain = min(
             self.effective_gain,
             self.params.p_max - self.pin_db
         )
-        self.effective_pch_out_db = round(pref.p_spani + self.effective_gain, 2)
 
         """check power saturation and correct target_gain accordingly:"""
         self.nf = self._calc_nf()
@@ -1102,12 +1085,6 @@ class Edfa(_Node):
         self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
         self.propagated_labels = spectral_info.label
 
-    def update_pref(self, spectral_info):
-        spectral_info.pref = \
-            spectral_info.pref._replace(p_span0=spectral_info.pref.p_span0,
-                                        p_spani=spectral_info.pref.p_spani + self.effective_gain - self.out_voa)
-
     def __call__(self, spectral_info):
         self.propagate(spectral_info)
-        self.update_pref(spectral_info)
         return spectral_info

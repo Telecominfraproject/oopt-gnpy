@@ -23,7 +23,8 @@ from networkx.utils import pairwise
 from numpy import mean, argmin
 from gnpy.core.elements import Transceiver, Roadm
 from gnpy.core.utils import lin2db
-from gnpy.core.info import create_input_spectral_information, carriers_to_spectral_information, ReferenceCarrier
+from gnpy.core.info import create_input_spectral_information, carriers_to_spectral_information
+from gnpy.core import network as network_module
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 from copy import deepcopy
 from csv import writer
@@ -329,28 +330,17 @@ def compute_constrained_path(network, req):
     return total_path
 
 
-def ref_carrier(equipment):
-    """Create a reference carier based SI information with the specified request's power:
-    req_power records the power in W that the user has defined for a given request
-    (which might be different from the one used for the design).
-    """
-    return ReferenceCarrier(baud_rate=equipment['SI']['default'].baud_rate,
-                            slot_width=equipment['SI']['default'].spacing)
-
-
 def propagate(path, req, equipment):
     """propagates signals in each element according to initial spectrum set by user"""
     if req.initial_spectrum is not None:
-        si = carriers_to_spectral_information(initial_spectrum=req.initial_spectrum,
-                                              power=req.power, ref_carrier=ref_carrier(equipment))
+        si = carriers_to_spectral_information(initial_spectrum=req.initial_spectrum, power=req.power)
     else:
         si = create_input_spectral_information(
             f_min=req.f_min, f_max=req.f_max, roll_off=req.roll_off, baud_rate=req.baud_rate,
-            power=req.power, spacing=req.spacing, tx_osnr=req.tx_osnr, delta_pdb=req.offset_db,
-            ref_carrier=ref_carrier(equipment))
+            power=req.power, spacing=req.spacing, tx_osnr=req.tx_osnr, delta_pdb=req.offset_db)
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
-            si = el(si, degree=path[i+1].uid)
+            si = el(si, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
         else:
             si = el(si)
     path[0].update_snr(si.tx_osnr)
@@ -391,11 +381,10 @@ def propagate_and_optimize_mode(path, req, equipment):
             spc_info = create_input_spectral_information(f_min=req.f_min, f_max=req.f_max,
                                                          roll_off=equipment['SI']['default'].roll_off,
                                                          baud_rate=this_br, power=req.power, spacing=req.spacing,
-                                                         delta_pdb=this_offset,
-                                                         tx_osnr=req.tx_osnr, ref_carrier=ref_carrier(equipment))
+                                                         delta_pdb=this_offset, tx_osnr=req.tx_osnr)
             for i, el in enumerate(path):
                 if isinstance(el, Roadm):
-                    spc_info = el(spc_info, degree=path[i+1].uid)
+                    spc_info = el(spc_info, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
                 else:
                     spc_info = el(spc_info)
             for this_mode in modes_to_explore:
@@ -1102,6 +1091,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         # elements to simulate performance, several demands having the same destination
         # may use the same transponder for the performance simulation. This is why
         # we use deepcopy: to ensure that each propagation is recorded and not overwritten
+        network_module.design_network(pathreq, network, equipment, set_connector_losses=False, verbose=False)
         total_path = deepcopy(pathlist[i])
         msg = msg + f'\n\tComputed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}'
         LOGGER.info(msg)
