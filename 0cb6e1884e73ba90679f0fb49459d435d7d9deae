@@ -205,6 +205,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "47229727_5e43e21f",
+        "filename": "gnpy/yang/tip/tip-photonic-equipment.yang",
+        "patchSetId": 29
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2023-12-06T12:30:03Z",
+      "side": 1,
+      "message": "Here is what I found: ITU specifies max range values for Smax (slope of D in ps/nm^2/km)\nG654 : Smax \u003d 0.07\nG655 : Smax depending on D : 0.045 to 0.085\nG653 : Smax \u003d 0.085\nG652 : Smax \u003d 0.092\n\nSo my suggestion is to use a range say 0.01 to 0.1 that encompass the Smax of standards.",
+      "parentUuid": "547099cb_065b27fd",
+      "range": {
+        "startLine": 519,
+        "startChar": 0,
+        "endLine": 545,
+        "endChar": 5
+      },
+      "revId": "0cb6e1884e73ba90679f0fb49459d435d7d9deae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "bdf76eae_d1c05f2b",
