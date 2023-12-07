@@ -10,7 +10,7 @@ from gnpy.core.exceptions import NetworkTopologyError
 from gnpy.core.network import span_loss, build_network
 from gnpy.tools.json_io import load_equipment, load_network, network_from_json
 from gnpy.core.utils import lin2db, automatic_nch
-from gnpy.core.elements import Fiber
+from gnpy.core.elements import Fiber, Edfa
 
 
 TEST_DIR = Path(__file__).parent
@@ -170,3 +170,73 @@ def test_eol(typ, expected_loss):
     fibers = [f for f in network.nodes() if isinstance(f, Fiber)]
     for i in range(2):
         assert fibers[i].loss == expected_loss[i]
+
+
+@pytest.mark.parametrize('p_db, power_mode, elem1, elem2, expected_gain, expected_delta_p, expected_voa', [
+    (-17, True, 'edfa', 'fiber', 15.0, 15, 15.0),
+    (-17, True, 'fiber', 'edfa', 15.0, 5.0, 5.0),
+    (-17, False, 'edfa', 'fiber', 0.0, None, 0.0),
+    (-17, False, 'fiber', 'edfa', 10.0, None, 0.0),
+    (10, True, 'edfa', 'fiber', -9.0, -9.0, 0.0),
+    (10, True, 'fiber', 'edfa', 1.0, -9.0, 0.0),
+    (10, False, 'edfa', 'fiber', -9.0, None, 0.0),
+    (10, False, 'fiber', 'edfa', 1.0, None, 0.0)])
+def test_design_non_amplified_link(elem1, elem2, expected_gain, expected_delta_p, expected_voa, power_mode, p_db):
+    """Check that the delta_p, gain computed on an amplified link that starts from a transceiver are correct
+    """
+    json_data = {
+        "elements": [
+            {
+                "uid": "trx SITE1",
+                "type": "Transceiver"
+            },
+            {
+                "uid": "trx SITE2",
+                "type": "Transceiver"
+            },
+            {
+                "uid": "edfa",
+                "type": "Edfa",
+                "type_variety": "std_low_gain"
+            },
+            {
+                "uid": "fiber",
+                "type": "Fiber",
+                "type_variety": "SSMF",
+                "params": {
+                    "length": 50.0,
+                    "loss_coef": 0.2,
+                    "length_units": "km"
+                }
+            }
+        ],
+        "connections": [
+            {
+                "from_node": "trx SITE1",
+                "to_node": elem1
+            },
+            {
+                "from_node": elem1,
+                "to_node": elem2
+            },
+            {
+                "from_node": elem2,
+                "to_node": "trx SITE2"
+            }
+        ]
+    }
+    equipment = load_equipment(EQPT_FILENAME)
+    equipment['Span']['default'].power_mode = power_mode
+    equipment['SI']['default'].power_dbm = p_db
+    network = network_from_json(json_data, equipment)
+    edfa = next(a for a in network.nodes() if a.uid == 'edfa')
+    edfa.params.out_voa_auto = True
+    p_total_db = p_db + 20.0
+
+    build_network(network, equipment, p_db, p_total_db)
+    amps = [a for a in network.nodes() if isinstance(a, Edfa)]
+    for amp in amps:
+        assert amp.out_voa == expected_voa
+        assert amp.delta_p == expected_delta_p
+        # max power of std_low_gain is 21 dBm
+        assert amp.effective_gain == expected_gain

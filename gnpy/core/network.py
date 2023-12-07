@@ -295,7 +295,9 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
         prev_node = this_node
         node = oms
         if isinstance(this_node, elements.Transceiver):
-            this_node_out_power = 0.0     # default value if this_node is a transceiver
+            # for the time being use the same power for the target of roadms and for transceivers
+            # TODO: This should be changed when introducing a power parameter dedicated to transceivers
+            this_node_out_power = pref_ch_db
         if isinstance(this_node, elements.Roadm):
             # get target power out from ROADM for the reference carrier based on equalization settings
             this_node_out_power = this_node.get_per_degree_ref_power(degree=node.uid)
