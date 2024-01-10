@@ -438,11 +438,10 @@ def determine_slot_numbers(test_oms, requested_n, required_m, per_channel_m):
 
 def select_candidate(candidates, policy):
     """selects a candidate among all available spectrum"""
-    if policy == 'first_fit':
-        if candidates:
-            return candidates[0]
-        else:
-            return (None, None, None)
+    if policy == 'first_fit' and candidates:
+        return candidates[0]
+    elif not candidates:
+        return (None, None, None)
     else:
         raise ServiceError('Only first_fit spectrum assignment policy is implemented.')
 
