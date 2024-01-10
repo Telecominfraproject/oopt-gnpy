@@ -18,9 +18,9 @@ from collections import namedtuple
 from collections.abc import Iterable
 from typing import Union, List, Optional
 from dataclasses import dataclass
-from numpy import argsort, mean, array, append, ones, ceil, any, zeros, outer, full, ndarray, asarray
+from numpy import argsort, array, append, ones, ceil, any, zeros, outer, full, ndarray, asarray
 
-from gnpy.core.utils import automatic_nch, db2lin, watt2dbm
+from gnpy.core.utils import automatic_nch, db2lin
 from gnpy.core.exceptions import SpectrumError
 
 DEFAULT_SLOT_WIDTH_STEP = 12.5e9  # Hz
