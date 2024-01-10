@@ -213,8 +213,8 @@ def prev_node_generator(network: DiGraph, node: ELEMENT_TYPES) -> Iterator[Union
         if isinstance(node, elements.Transceiver):
             return
         raise NetworkTopologyError(f'Node {node.uid} is not properly connected, please check network topology')
-    if ((isinstance(prev_node, elements.Fused) and isinstance(node, _fiber_fused_types)) or
-            (isinstance(prev_node, _fiber_fused_types) and isinstance(node, elements.Fused))):
+    if ((isinstance(prev_node, elements.Fused) and isinstance(node, _fiber_fused_types))
+            or (isinstance(prev_node, _fiber_fused_types) and isinstance(node, elements.Fused))):
         yield prev_node
         yield from prev_node_generator(network, prev_node)
 
@@ -1919,15 +1919,18 @@ def split_fiber(network, fiber, bounds, target_length):
     xpos = [prev_node.lng + (next_node.lng - prev_node.lng) * (n + 0.5) / n_spans for n in range(n_spans)]
     ypos = [prev_node.lat + (next_node.lat - prev_node.lat) * (n + 0.5) / n_spans for n in range(n_spans)]
     for span, lng, lat in zip(range(n_spans), xpos, ypos):
-        new_span = elements.Fiber(uid=f'{fiber.uid}_({span + 1}/{n_spans})',
-                                  type_variety=fiber.type_variety,
-                                  metadata={'location': {
-                                            'latitude': lat,
-                                            'longitude': lng,
-                                            'city': fiber.loc.city,
-                                            'region': fiber.loc.region, }
-                                            },
-                                  params=fiber.params.asdict())
+        new_span = elements.Fiber(
+            uid=f'{fiber.uid}_({span+1}/{n_spans})',
+            type_variety=fiber.type_variety,
+            metadata={
+                'location': {
+                    'latitude': lat,
+                    'longitude': lng,
+                    'city': fiber.loc.city,
+                    'region': fiber.loc.region,
+                }
+            },
+            params=fiber.params.asdict())
         if isinstance(prev_node, elements.Fiber):
             edgeweight = prev_node.params.length
         else:

@@ -1188,11 +1188,11 @@ def fiber_dest_from_source(city_name: str, links_by_city: DefaultDict[str, List[
     """
     destinations = []
     links_from_city = links_by_city[city_name]
-    for l in links_from_city:
-        if l.from_city == city_name:
-            destinations.append(l.to_city)
+    for link in links_from_city:
+        if link.from_city == city_name:
+            destinations.append(link.to_city)
         else:
-            destinations.append(l.from_city)
+            destinations.append(link.from_city)
     return destinations
 
 
@@ -1210,7 +1210,7 @@ def fiber_link(from_city: str, to_city: str, links_by_city: DefaultDict[str, Lis
     """
     source_dest = (from_city, to_city)
     links = links_by_city[from_city]
-    link = next(l for l in links if l.from_city in source_dest and l.to_city in source_dest)
+    link = next(li for li in links if li.from_city in source_dest and li.to_city in source_dest)
     if link.from_city == from_city:
         fiber = f'fiber ({link.from_city} \u2192 {link.to_city})-{link.east_cable}'
     else:

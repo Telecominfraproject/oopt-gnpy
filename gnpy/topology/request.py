@@ -214,7 +214,6 @@ class ResultElement:
                 if self.path_request.M is not None or self.path_request.N is not None:
                     raise ServiceError('request {self.path_id} should not have label M and N values at this point.')
 
-
             if isinstance(element, Transceiver):
                 temp = {
                     'path-route-object': {
