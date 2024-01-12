@@ -917,7 +917,10 @@ class Edfa(_Node):
         if operational is None:
             operational = {}
         self.variety_list = kwargs.pop('variety_list', None)
-        super().__init__(*args, params=EdfaParams(**params), operational=EdfaOperational(**operational), **kwargs)
+        try:
+            super().__init__(*args, params=EdfaParams(**params), operational=EdfaOperational(**operational), **kwargs)
+        except ParametersError as e:
+            raise ParametersError(f'{kwargs["uid"]}: {e}') from e
         self.interpol_dgt = None  # interpolated dynamic gain tilt defined per frequency on amp band
         self.interpol_gain_ripple = None  # gain ripple
         self.interpol_nf_ripple = None  # nf_ripple
@@ -1317,7 +1320,7 @@ class Multiband_amplifier(_Node):
         try:
             super().__init__(params=MultiBandParams(**params), **kwargs)
         except ParametersError as e:
-            raise ParametersError(f'{kwargs["uid"]}: {e}')
+            raise ParametersError(f'{kwargs["uid"]}: {e}') from e
         self.amplifiers = {}
         if 'type_variety' in kwargs:
             kwargs.pop('type_variety')

@@ -16,6 +16,7 @@ from gnpy.tools.convert import xls_to_json_data
 
 TEST_DIR = Path(__file__).parent
 EQPT_FILENAME = TEST_DIR / 'data/eqpt_config.json'
+MULTIBAND_EQPT_FILENAME = TEST_DIR / 'data/eqpt_config_multiband.json'
 DATA_DIR = TEST_DIR / 'data'
 
 
@@ -420,3 +421,167 @@ def test_log_wrong_xlsx(caplog, input_filename, expected_msg):
     """
     _ = xls_to_json_data(input_filename)
     assert expected_msg in caplog.text
+
+
+def wrong_configs():
+    wrong_config = [[{
+        "uid": "Edfa1",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain_multiband",
+        "operational": {
+            "gain_target": 21,
+            "delta_p": 3.0,
+            "out_voa": 3.0,
+            "in_voa": 0.0,
+            "tilt_target": 0.0,
+            "f_min": 186.2,
+            "f_max": 190.2
+        }},
+        ParametersError]
+    ]
+    wrong_config.append([{
+        "uid": "[83/WR-2-4-SIG=>930/WRT-1-2-SIG]-PhysicalConn/2056",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+            "dispersion_per_frequency": {
+                "frequency": [
+                    185.49234135667396e12,
+                    186.05251641137855e12,
+                    188.01312910284463e12,
+                    189.99124726477024e12],
+                "value": [
+                    1.60e-05,
+                    1.67e-05,
+                    1.7e-05,
+                    1.8e-05]
+            },
+            "loss_coef": 2.85,
+            "length_units": "km",
+            "att_in": 0.0,
+            "con_in": 0.0,
+            "con_out": 0.0
+        }},
+        ParametersError
+    ])
+    wrong_config.append([{
+        "uid": "east edfa in Lannion_CAS to Stbrieuc",
+        "metadata": {
+            "location": {
+                "city": "Lannion_CAS",
+                "region": "RLD",
+                "latitude": 2.0,
+                "longitude": 0.0
+            }
+        },
+        "type": "Multiband_amplifier",
+        "type_variety": "std_low_gain_multiband",
+        "amplifiers": [{
+            "type_variety": "std_low_gain",
+            "operational": {
+                "gain_target": 20.0,
+                "delta_p": 0,
+                "tilt_target": 0,
+                "out_voa": 0
+            }
+        }, {
+            "type_variety": "std_low_gain_L_ter",
+            "operational": {
+                "gain_target": 20.0,
+                "delta_p": 1,
+                "tilt_target": 0,
+                "out_voa": 1
+            }
+        }]},
+        ConfigurationError])
+    wrong_config.append([{
+        "uid": "east edfa in Lannion_CAS to Stbrieuc",
+        "metadata": {
+            "location": {
+                "city": "Lannion_CAS",
+                "region": "RLD",
+                "latitude": 2.0,
+                "longitude": 0.0
+            }
+        },
+        "type": "Edfa",
+        "type_variety": "std_low_gain_multiband",
+        "amplifiers": [{
+            "type_variety": "std_low_gain",
+            "operational": {
+                "gain_target": 20.0,
+                "delta_p": 0,
+                "tilt_target": 0,
+                "out_voa": 0
+            }
+        }, {
+            "type_variety": "std_low_gain_L",
+            "operational": {
+                "gain_target": 20.0,
+                "delta_p": 1,
+                "tilt_target": 0,
+                "out_voa": 1
+            }
+        }]},
+        ParametersError])
+    wrong_config.append([{
+        "uid": "east edfa in Lannion_CAS to Stbrieuc",
+        "metadata": {
+            "location": {
+                "city": "Lannion_CAS",
+                "region": "RLD",
+                "latitude": 2.0,
+                "longitude": 0.0
+            }
+        },
+        "type": "Multiband_amplifier",
+        "type_variety": "std_low_gain_multiband",
+        "amplifiers": [{
+            "type_variety": "std_low_gain",
+            "operational": {
+                "gain_target": 20.0,
+                "delta_p": 0,
+                "tilt_target": 0,
+                "out_voa": 0
+            }
+        }, {
+            "type_variety": "std_low_gain_L",
+            "operational": {
+                "gain_target": 20.0,
+                "delta_p": 1,
+                "tilt_target": 0,
+                "out_voa": 1
+            }
+        }, {
+            "type_variety": "std_low_gain",
+            "operational": {
+                "gain_target": 20.0,
+                "delta_p": 1,
+                "tilt_target": 0,
+                "out_voa": 1
+            }
+        }]},
+        ParametersError])
+    return wrong_config
+
+
+@pytest.mark.parametrize('el_config, error_type', wrong_configs())
+def test_wrong_multiband(el_config, error_type):
+
+    equipment = load_equipment(MULTIBAND_EQPT_FILENAME)
+    fused_config = {
+        "uid": "[83/WR-2-4-SIG=>930/WRT-1-2-SIG]-Tl/9300",
+        "type": "Fused",
+        "params": {
+            "loss": 20
+        }
+    }
+    json_data = {
+        "elements": [
+            el_config,
+            fused_config
+        ],
+        "connections": []
+    }
+    with pytest.raises(error_type):
+        _ = network_from_json(json_data, equipment)
