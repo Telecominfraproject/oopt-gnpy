@@ -14,12 +14,17 @@ checks that empty info on mode, power, nbchannel in service file are supported
 """
 
 from pathlib import Path
+from logging import INFO
+from numpy.testing import assert_allclose
 import pytest
+
 from gnpy.core.network import build_network
-from gnpy.core.utils import automatic_nch, lin2db
+from gnpy.core.utils import automatic_nch, lin2db,watt2dbm
 from gnpy.core.elements import Roadm
 from gnpy.topology.request import compute_path_dsjctn, propagate, propagate_and_optimize_mode, correct_json_route_list
-from gnpy.tools.json_io import load_network, load_equipment, requests_from_json, load_requests
+from gnpy.tools.json_io import load_network, load_equipment, requests_from_json, load_requests, load_json, \
+    _equipment_from_json
+
 
 network_file_name = Path(__file__).parent.parent / 'tests/data/testTopology_expected.json'
 service_file_name = Path(__file__).parent.parent / 'tests/data/testTopology_testservices.json'
@@ -30,7 +35,9 @@ eqpt_library_name = Path(__file__).parent.parent / 'tests/data/eqpt_config.json'
 @pytest.mark.parametrize("net", [network_file_name])
 @pytest.mark.parametrize("eqpt", [eqpt_library_name])
 @pytest.mark.parametrize("serv", [service_file_name])
-@pytest.mark.parametrize("expected_mode", [['16QAM', 'PS_SP64_1', 'PS_SP64_1', 'PS_SP64_1', 'mode 2 - fake', 'mode 2', 'PS_SP64_1', 'mode 3', 'PS_SP64_1', 'PS_SP64_1', '16QAM', 'mode 1', 'PS_SP64_1', 'PS_SP64_1', 'mode 1', 'mode 2', 'mode 1', 'mode 2', 'nok']])
+@pytest.mark.parametrize("expected_mode", [['16QAM', 'PS_SP64_1', 'PS_SP64_1', 'PS_SP64_1', 'mode 2 - fake', 'mode 2',
+                                            'PS_SP64_1', 'mode 3', 'PS_SP64_1', 'PS_SP64_1', '16QAM', 'mode 1',
+                                            'PS_SP64_1', 'PS_SP64_1', 'mode 1', 'mode 2', 'mode 1', 'mode 2', 'nok']])
 def test_automaticmodefeature(net, eqpt, serv, expected_mode):
     equipment = load_equipment(eqpt)
     network = load_network(net, equipment)
@@ -83,3 +90,89 @@ def test_automaticmodefeature(net, eqpt, serv, expected_mode):
                 path_res_list.append('nok')
     print(path_res_list)
     assert path_res_list == expected_mode
+
+
+def test_propagate_and_optimize_mode(caplog):
+    """Checks that the automatic mode returns the last explored mode
+
+    Mode are explored with descending baud_rate order and descending bitrate, so the last explored mode must be mode 1
+    Mode 1 GSNR is OK but pdl penalty are not OK due to high ROADM PDL. so the last explored mode is not OK
+    Then the propagate_and_optimize_mode must return mode 1 and the blocking reason must be 'NO_FEASIBLE_MODE'
+    """
+    caplog.set_level(INFO)
+    json_data = load_json(eqpt_library_name)
+    voyager = next(e for e in json_data['Transceiver'] if e['type_variety'] == 'Voyager')
+    # expected path min GSNR is 22.11
+    # Change Voyager modes so that:
+    # - highest baud rate has min OSNR > path GSNR
+    # - lower baudrate with highest bitrate has min OSNR > path GSNR
+    # - lower baudrate with lower bitrate has has min OSNR < path GSNR but PDL penalty is infinite
+    voyager['mode'] = [
+        {
+            "format": "mode 1",
+            "baud_rate": 32e9,
+            "OSNR": 12,
+            "bit_rate": 100e9,
+            "roll_off": 0.15,
+            "tx_osnr": 45,
+            "min_spacing": 50e9,
+            "penalties": [
+                {
+                    "chromatic_dispersion": 4e3,
+                    "penalty_value": 0
+                }, {
+                    "chromatic_dispersion": 40e3,
+                    "penalty_value": 0
+                }, {
+                    "pdl": 0.5,
+                    "penalty_value": 1
+                }, {
+                    "pmd": 30,
+                    "penalty_value": 0
+                }],
+            "cost": 1
+        },
+        {
+            "format": "mode 3",
+            "baud_rate": 32e9,
+            "OSNR": 30,
+            "bit_rate": 300e9,
+            "roll_off": 0.15,
+            "tx_osnr": 45,
+            "min_spacing": 50e9,
+            "cost": 1
+        },
+        {
+            "format": "mode 2",
+            "baud_rate": 66e9,
+            "OSNR": 25,
+            "bit_rate": 400e9,
+            "roll_off": 0.15,
+            "tx_osnr": 45,
+            "min_spacing": 75e9,
+            "cost": 1
+        }]
+    # change default ROADM PDL so that crossing 2 ROADMs leasd to inifinte penalty for mode 1
+    eqpt_roadm = next(r for r in json_data['Roadm'] if 'type_variety' not in r)
+    eqpt_roadm['pdl'] = 0.5
+    equipment = _equipment_from_json(json_data, eqpt_library_name)
+    network = load_network(network_file_name, equipment)
+    data = load_requests(filename=Path(__file__).parent.parent / 'tests/data/testTopology_services_expected.json',
+                         eqpt=eqpt_library_name, bidir=False, network=network, network_filename=network_file_name)
+    # remove the mode from request, change it to larger spacing
+    data['path-request'][1]['path-constraints']['te-bandwidth']['trx_mode'] = None
+    data['path-request'][1]['path-constraints']['te-bandwidth']['spacing'] = 75e9
+    assert_allclose(watt2dbm(data['path-request'][1]['path-constraints']['te-bandwidth']['output-power']), 1, rtol=1e-9)
+    # use the request power for design, or there will be inconsistencies with the gain
+    build_network(network, equipment, 1, 21)
+
+    rqs = requests_from_json(data, equipment)
+    rqs = correct_json_route_list(network, rqs)
+    [path] = compute_path_dsjctn(network, equipment, [rqs[1]], [])
+    total_path, mode = propagate_and_optimize_mode(path, rqs[1], equipment)
+    assert round(min(path[-1].snr_01nm), 2) == 22.22
+    assert mode['format'] == 'mode 1'
+    assert rqs[1].blocking_reason == 'NO_FEASIBLE_MODE'
+    expected_mesg = '\tWarning! Request 1: no mode satisfies path SNR requirement.'
+    # Last log records mustcontain the message about the las explored mode
+    assert expected_mesg in caplog.records[-1].message
