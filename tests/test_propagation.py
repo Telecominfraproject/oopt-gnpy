@@ -4,14 +4,19 @@
 # @Date:   2018-02-02 14:06:55
 
 import pytest
+
+from pathlib import Path
+from networkx import dijkstra_path
+from numpy import mean, sqrt, ones
+import re
+
+from gnpy.core.exceptions import SpectrumError
 from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
 from gnpy.core.utils import db2lin
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.network import build_network
-from gnpy.tools.json_io import load_network, load_equipment
-from pathlib import Path
-from networkx import dijkstra_path
-from numpy import mean, sqrt, ones
+from gnpy.tools.json_io import load_network, load_equipment, network_from_json
+
 
 network_file_name = Path(__file__).parent.parent / 'tests/LinkforTest.json'
 eqpt_library_name = Path(__file__).parent.parent / 'tests/data/eqpt_config.json'
@@ -123,6 +128,62 @@ def test_dgd(dgd_test, dest):
         expected_pmd += el.params.pmd**2 if isinstance(el, Roadm) else 0
     expected_pmd = sqrt(expected_pmd) * ones(num_ch) * 1e12
     assert pmd == pytest.approx(expected_pmd)
+
+
+def wrong_element_propagate():
+    """
+    """
+    data = []
+    data.append({
+        "error": SpectrumError,
+        "json_data": {
+            "elements": [{
+                "uid": "Elem",
+                "type": "Fiber",
+                "type_variety": "SSMF",
+                "params": {
+                    "dispersion_per_frequency": {
+                        "frequency": [
+                            185.49234135667396e12,
+                            186.05251641137855e12,
+                            188.01312910284463e12,
+                            189.99124726477024e12],
+                        "value": [
+                            1.60e-05,
+                            1.67e-05,
+                            1.7e-05,
+                            1.8e-05]
+                    },
+                    "length": 1.02,
+                    "loss_coef": 2.85,
+                    "length_units": "km",
+                    "att_in": 0.0,
+                    "con_in": 0.0,
+                    "con_out": 0.0
+                }
+            }],
+            "connections": []
+        },
+        "expected_msg": 'The spectrum bandwidth exceeds the frequency interval used to define the fiber Chromatic '
+                        + 'Dispersion in "Fiber Elem".\nSpectrum f_min-f_max: 191.35-196.1\nChromatic Dispersion '
+                        + 'f_min-f_max: 185.49-189.99'
+    })
+    return data
+
+
+@pytest.mark.parametrize('error, json_data, expected_msg',
+                         [(e['error'], e['json_data'], e['expected_msg']) for e in wrong_element_propagate()])
+def test_json_element(error, json_data, expected_msg):
+    """
+    Check that a missing key is correctly raisong the logger
+    """
+    equipment = load_equipment(eqpt_library_name)
+    network = network_from_json(json_data, equipment)
+    elem = next(e for e in network.nodes() if e.uid == 'Elem')
+    si = create_input_spectral_information(f_min=191.3e12, f_max=196.1e12, roll_off=0.15,
+                                           baud_rate=32e9, power=1.0e-3, spacing=50.0e9, tx_osnr=45)
+    with pytest.raises(error, match=re.escape(expected_msg)):
+        _ = elem(si)
 
 
 if __name__ == '__main__':
