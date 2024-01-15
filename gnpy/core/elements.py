@@ -515,10 +515,17 @@ class Fiber(_Node):
             interpolation = interp1d(ref_frequency, parameter)(spectrum_frequency)
             return interpolation
         except ValueError:
+            try:
+                start = spectrum_frequency[0]
+                stop = spectrum_frequency[-1]
+            except IndexError:
+                # when frequency is a 0-dimensionnal array
+                start = spectrum_frequency
+                stop = spectrum_frequency
             raise SpectrumError('The spectrum bandwidth exceeds the frequency interval used to define the fiber '
                                 f'{name} in "{type(self).__name__} {self.uid}".'
-                                f'\nSpectrum f_min-f_max: {round(spectrum_frequency[0] * 1e-12, 2)}-'
-                                f'{round(spectrum_frequency[-1] * 1e-12, 2)}'
+                                f'\nSpectrum f_min-f_max: {round(start * 1e-12, 2)}-'
+                                f'{round(stop * 1e-12, 2)}'
                                 f'\n{name} f_min-f_max: {round(ref_frequency[0] * 1e-12, 2)}-'
                                 f'{round(ref_frequency[-1] * 1e-12, 2)}')
 

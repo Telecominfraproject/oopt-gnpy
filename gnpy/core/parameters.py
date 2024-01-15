@@ -179,8 +179,8 @@ class FiberParams(Parameters):
             # Chromatic Dispersion
             if 'dispersion_per_frequency' in kwargs:
                 # Frequency-dependent dispersion
-                self._dispersion = asarray(kwargs['dispersion']['value'])  # s/m/m
-                self._f_dispersion_ref = asarray(kwargs['dispersion']['frequency'])  # Hz
+                self._dispersion = asarray(kwargs['dispersion_per_frequency']['value'])  # s/m/m
+                self._f_dispersion_ref = asarray(kwargs['dispersion_per_frequency']['frequency'])  # Hz
                 self._dispersion_slope = None
             elif 'dispersion' in kwargs:
                 # Single value dispersion
