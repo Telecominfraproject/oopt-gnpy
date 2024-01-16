@@ -4,6 +4,120 @@ WARNING  gnpy.tools.json_io:json_io.py
 	default value is type_variety = default
 
 INFO     gnpy.tools.json_io:json_io.py Automatically converting requests from XLS to JSON
+INFO     gnpy.tools.worker_utils:worker_utils.py List of disjunctions:
+[Disjunction 3
+	relaxable:    false
+	link-diverse: True
+	node-diverse: True
+	request-id-numbers: ['3', '1']
+, Disjunction 4
+	relaxable:    false
+	link-diverse: True
+	node-diverse: True
+	request-id-numbers: ['4', '5']
+]
+INFO     gnpy.tools.worker_utils:worker_utils.py Aggregating similar requests
+INFO     gnpy.tools.worker_utils:worker_utils.py The following services have been requested:
+[PathRequest 0
+	source: 	trx Lorient_KMA
+	destination:	trx Vannes_KBE
+	trx type:	Voyager
+	trx mode:	None
+	baud_rate:	None Gbaud
+	bit_rate:	None Gb/s
+	spacing:	50.0 GHz
+	power:  	1.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	80
+	path_bandwidth: 	100.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 1
+	source: 	trx Brest_KLA
+	destination:	trx Vannes_KBE
+	trx type:	Voyager
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	50.0 GHz
+	power:  	1.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	95
+	path_bandwidth: 	200.0 Gbit/s
+	nodes-list:	['roadm Brest_KLA', 'roadm Lannion_CAS', 'roadm Lorient_KMA', 'roadm Vannes_KBE']
+	loose-list:	['LOOSE', 'LOOSE', 'LOOSE', 'LOOSE']
+, PathRequest 3
+	source: 	trx Lannion_CAS
+	destination:	trx Rennes_STA
+	trx type:	vendorA_trx-type1
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	50.0 GHz
+	power:  	0.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	95
+	path_bandwidth: 	60.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 4
+	source: 	trx Rennes_STA
+	destination:	trx Lannion_CAS
+	trx type:	vendorA_trx-type1
+	trx mode:	None
+	baud_rate:	None Gbaud
+	bit_rate:	None Gb/s
+	spacing:	75.0 GHz
+	power:  	3.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	63
+	path_bandwidth: 	150.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 5
+	source: 	trx Rennes_STA
+	destination:	trx Lannion_CAS
+	trx type:	vendorA_trx-type1
+	trx mode:	mode 2
+	baud_rate:	66.0 Gbaud
+	bit_rate:	200.0 Gb/s
+	spacing:	75.0 GHz
+	power:  	3.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	63
+	path_bandwidth: 	20.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 7 | 6
+	source: 	trx Lannion_CAS
+	destination:	trx Lorient_KMA
+	trx type:	Voyager
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	50.0 GHz
+	power:  	0.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	76
+	path_bandwidth: 	700.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 7b
+	source: 	trx Lannion_CAS
+	destination:	trx Lorient_KMA
+	trx type:	Voyager
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	75.0 GHz
+	power:  	0.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	50
+	path_bandwidth: 	400.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+]
+INFO     gnpy.tools.worker_utils:worker_utils.py Propagating on selected path
 INFO     gnpy.topology.request:request.py 
 	request 0
 	Computing path from trx Lorient_KMA to trx Vannes_KBE
