@@ -1,12 +1,18 @@
-There are 95 channels propagating
 Power mode is set to True
 => it can be modified in eqpt_config.json - Span
 
 There are 4 fiber spans over 200 km between trx Brest_KLA and trx Rennes_STA
 
 Now propagating between trx Brest_KLA and trx Rennes_STA:
+Reference used for design: (Input optical power reference in span = 3.00dBm,
+                            spacing = 50.00GHz
+                            nb_channels = 95)
 
-Propagating with input power = [1;36;40m-3.00 dBm[0m:
+Channels propagating: (Input optical power deviation in span = 0.00dB,
+                       spacing = 50.00GHz,
+                       transceiver output power = 3.00dBm,
+                       nb_channels = 95)
+Input optical power reference in span = [1;36;40m-3.00 dBm[0m:
 Transceiver trx Rennes_STA
   GSNR (0.1nm, dB):          23.73
   GSNR (signal bw, dB):      19.65
@@ -17,8 +23,7 @@ Transceiver trx Rennes_STA
   PDL (dB):                  0.00
   Latency (ms):              0.98
   Actual pch out (dBm):      3.00
-
-Propagating with input power = [1;36;40m-2.50 dBm[0m:
+Input optical power reference in span = [1;36;40m-2.50 dBm[0m:
 Transceiver trx Rennes_STA
   GSNR (0.1nm, dB):          24.01
   GSNR (signal bw, dB):      19.93
@@ -29,8 +34,7 @@ Transceiver trx Rennes_STA
   PDL (dB):                  0.00
   Latency (ms):              0.98
   Actual pch out (dBm):      3.00
-
-Propagating with input power = [1;36;40m-2.00 dBm[0m:
+Input optical power reference in span = [1;36;40m-2.00 dBm[0m:
 Transceiver trx Rennes_STA
   GSNR (0.1nm, dB):          24.25
   GSNR (signal bw, dB):      20.17
@@ -41,8 +45,7 @@ Transceiver trx Rennes_STA
   PDL (dB):                  0.00
   Latency (ms):              0.98
   Actual pch out (dBm):      3.00
-
-Propagating with input power = [1;36;40m-1.50 dBm[0m:
+Input optical power reference in span = [1;36;40m-1.50 dBm[0m:
 Transceiver trx Rennes_STA
   GSNR (0.1nm, dB):          24.44
   GSNR (signal bw, dB):      20.36
@@ -53,8 +56,7 @@ Transceiver trx Rennes_STA
   PDL (dB):                  0.00
   Latency (ms):              0.98
   Actual pch out (dBm):      3.00
-
-Propagating with input power = [1;36;40m-1.00 dBm[0m:
+Input optical power reference in span = [1;36;40m-1.00 dBm[0m:
 Transceiver trx Rennes_STA
   GSNR (0.1nm, dB):          24.57
   GSNR (signal bw, dB):      20.49
@@ -65,8 +67,7 @@ Transceiver trx Rennes_STA
   PDL (dB):                  0.00
   Latency (ms):              0.98
   Actual pch out (dBm):      3.00
-
-Propagating with input power = [1;36;40m-0.50 dBm[0m:
+Input optical power reference in span = [1;36;40m-0.50 dBm[0m:
 Transceiver trx Rennes_STA
   GSNR (0.1nm, dB):          24.63
   GSNR (signal bw, dB):      20.55
@@ -77,8 +78,7 @@ Transceiver trx Rennes_STA
   PDL (dB):                  0.00
   Latency (ms):              0.98
   Actual pch out (dBm):      3.00
-
-Propagating with input power = [1;36;40m-0.00 dBm[0m:
+Input optical power reference in span = [1;36;40m-0.00 dBm[0m:
 Transceiver trx Rennes_STA
   GSNR (0.1nm, dB):          24.60
   GSNR (signal bw, dB):      20.52
@@ -89,8 +89,7 @@ Transceiver trx Rennes_STA
   PDL (dB):                  0.00
   Latency (ms):              0.98
   Actual pch out (dBm):      3.00
-
-Propagating with input power = [1;36;40m0.50 dBm[0m:
+Input optical power reference in span = [1;36;40m0.50 dBm[0m:
 Transceiver trx Rennes_STA
   GSNR (0.1nm, dB):          24.42
   GSNR (signal bw, dB):      20.34
@@ -101,8 +100,7 @@ Transceiver trx Rennes_STA
   PDL (dB):                  0.00
   Latency (ms):              0.98
   Actual pch out (dBm):      3.00
-
-Propagating with input power = [1;36;40m1.00 dBm[0m:
+Input optical power reference in span = [1;36;40m1.00 dBm[0m:
 Transceiver trx Rennes_STA
   GSNR (0.1nm, dB):          24.16
   GSNR (signal bw, dB):      20.08
@@ -113,8 +111,7 @@ Transceiver trx Rennes_STA
   PDL (dB):                  0.00
   Latency (ms):              0.98
   Actual pch out (dBm):      3.00
-
-Propagating with input power = [1;36;40m1.50 dBm[0m:
+Input optical power reference in span = [1;36;40m1.50 dBm[0m:
 Transceiver trx Rennes_STA
   GSNR (0.1nm, dB):          24.02
   GSNR (signal bw, dB):      19.93
@@ -125,8 +122,7 @@ Transceiver trx Rennes_STA
   PDL (dB):                  0.00
   Latency (ms):              0.98
   Actual pch out (dBm):      3.00
-
-Propagating with input power = [1;36;40m2.00 dBm[0m:
+Input optical power reference in span = [1;36;40m2.00 dBm[0m:
 Transceiver trx Rennes_STA
   GSNR (0.1nm, dB):          24.02
   GSNR (signal bw, dB):      19.93
@@ -137,8 +133,7 @@ Transceiver trx Rennes_STA
   PDL (dB):                  0.00
   Latency (ms):              0.98
   Actual pch out (dBm):      3.00
-
-Propagating with input power = [1;36;40m2.50 dBm[0m:
+Input optical power reference in span = [1;36;40m2.50 dBm[0m:
 Transceiver trx Rennes_STA
   GSNR (0.1nm, dB):          24.02
   GSNR (signal bw, dB):      19.93
@@ -149,8 +144,7 @@ Transceiver trx Rennes_STA
   PDL (dB):                  0.00
   Latency (ms):              0.98
   Actual pch out (dBm):      3.00
-
-Propagating with input power = [1;36;40m3.00 dBm[0m:
+Input optical power reference in span = [1;36;40m3.00 dBm[0m:
 Transceiver trx Rennes_STA
   GSNR (0.1nm, dB):          24.02
   GSNR (signal bw, dB):      19.93

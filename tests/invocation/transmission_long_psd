@@ -1,13 +1,19 @@
 User input for spectrum used for propagation instead of SI
-There are 60 channels propagating
 Power mode is set to True
 => it can be modified in eqpt_config.json - Span
 
 There are 15 fiber spans over 1200 km between Site_A and Site_B
 
 Now propagating between Site_A and Site_B:
+Reference used for design: (Input optical power reference in span = 0.00dBm,
+                            spacing = 50.00GHz
+                            nb_channels = 95)
 
-Propagating with input power = [1;36;40m0.00 dBm[0m:
+Channels propagating: (Input optical power deviation in span = mode_1: 0.00, mode_2: 0.00dB,
+                       spacing = mode_1: 50.00, mode_2: 75.00GHz,
+                       transceiver output power = mode_1: 0.00, mode_2: 0.00dBm,
+                       nb_channels = 60)
+Input optical power reference in span = [1;36;40m0.00 dBm[0m:
 Transceiver Site_A
   GSNR (0.1nm, dB):          mode_1: 40.00, mode_2: 40.00
   GSNR (signal bw, dB):      mode_1: 35.92, mode_2: 32.91
@@ -441,7 +447,7 @@ Transceiver Site_B
   Latency (ms):              5.88
   Actual pch out (dBm):      mode_1: 0.00, mode_2: 0.00
 
-Transmission result for input power = 0.00 dBm:
+Transmission result for input optical power reference in span = 0.00 dBm:
   Final GSNR (0.1 nm): [1;36;40m18.94 dB[0m
 
 (No source node specified: picked Site_A)
