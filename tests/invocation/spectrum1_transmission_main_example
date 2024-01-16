@@ -1,13 +1,19 @@
 User input for spectrum used for propagation instead of SI
-There are 76 channels propagating
 Power mode is set to True
 => it can be modified in eqpt_config.json - Span
 
 There are 3 fiber spans over 130 km between trx Lannion_CAS and trx Lorient_KMA
 
 Now propagating between trx Lannion_CAS and trx Lorient_KMA:
+Reference used for design: (Input optical power reference in span = 0.00dBm,
+                            spacing = 50.00GHz
+                            nb_channels = 76)
 
-Propagating with input power = [1;36;40m0.00 dBm[0m:
+Channels propagating: (Input optical power deviation in span = 0.00dB,
+                       spacing = 50.00GHz,
+                       transceiver output power = 0.00dBm,
+                       nb_channels = 76)
+Input optical power reference in span = [1;36;40m0.00 dBm[0m:
 Transceiver trx Lannion_CAS
   GSNR (0.1nm, dB):          40.00
   GSNR (signal bw, dB):      35.92
@@ -98,7 +104,7 @@ Transceiver trx Lorient_KMA
   Latency (ms):              0.64
   Actual pch out (dBm):      0.00
 
-Transmission result for input power = 0.00 dBm:
+Transmission result for input optical power reference in span = 0.00 dBm:
   Final GSNR (0.1 nm): [1;36;40m23.61 dB[0m
 
 (No source node specified: picked trx Lannion_CAS)

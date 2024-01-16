@@ -1,12 +1,18 @@
-There are 96 channels propagating
 Power mode is set to True
 => it can be modified in eqpt_config.json - Span
 
 There are 6 fiber spans over 500 km between trx_Stockholm and trx_Gothenburg
 
 Now propagating between trx_Stockholm and trx_Gothenburg:
+Reference used for design: (Input optical power reference in span = 2.00dBm,
+                            spacing = 50.00GHz
+                            nb_channels = 96)
 
-Propagating with input power = [1;36;40m2.00 dBm[0m:
+Channels propagating: (Input optical power deviation in span = 0.00dB,
+                       spacing = 50.00GHz,
+                       transceiver output power = 2.00dBm,
+                       nb_channels = 96)
+Input optical power reference in span = [1;36;40m2.00 dBm[0m:
 Transceiver trx_Stockholm
   GSNR (0.1nm, dB):          35.00
   GSNR (signal bw, dB):      30.98
@@ -261,7 +267,7 @@ Transceiver trx_Gothenburg
   Latency (ms):              2.45
   Actual pch out (dBm):      2.00
 
-Transmission result for input power = 2.00 dBm:
+Transmission result for input optical power reference in span = 2.00 dBm:
   Final GSNR (0.1 nm): [1;36;40m18.89 dB[0m
 
 (No source node specified: picked trx_Stockholm)
