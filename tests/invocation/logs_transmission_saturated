@@ -2,8 +2,8 @@ WARNING  gnpy.tools.json_io:json_io.py
 	WARNING missing type_variety attribute in eqpt_config.json[Roadm]
 	default value is type_variety = default
 
-INFO     gnpy.tools.cli_examples:cli_examples.py source = 'lannion'
-INFO     gnpy.tools.cli_examples:cli_examples.py destination = 'lorient'
+INFO     gnpy.tools.cli_examples:cli_examples.py source = 'trx Lannion_CAS'
+INFO     gnpy.tools.cli_examples:cli_examples.py destination = 'trx Lorient_KMA'
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Lorient_KMA to Loudeac
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
@@ -309,3 +309,10 @@ WARNING  gnpy.core.network:network.py
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
 	a power reduction of -1.82 is applied
 
+INFO     gnpy.tools.worker_utils:worker_utils.py Power mode is set to True=> it can be modified in eqpt_config.json - Span
+INFO     gnpy.tools.worker_utils:worker_utils.py Now propagating between trx Lannion_CAS and trx Lorient_KMA
+INFO     gnpy.tools.worker_utils:worker_utils.py 
+Channels propagating: (Input optical power deviation in span = 0.00dB,
+                       spacing = 50.00GHz,
+                       transceiver output power = 3.00dBm,
+                       nb_channels = 96)

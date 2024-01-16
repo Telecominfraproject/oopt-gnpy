@@ -12,24 +12,21 @@ import argparse
 import logging
 import sys
 from math import ceil
-from numpy import linspace, mean
+from numpy import mean
 from pathlib import Path
+from copy import deepcopy
 
 import gnpy.core.ansi_escapes as ansi_escapes
-from gnpy.core.elements import Transceiver, Fiber, RamanFiber
-from gnpy.core.equipment import trx_mode_params
+from gnpy.core.elements import Transceiver, Fiber, RamanFiber, Roadm
 import gnpy.core.exceptions as exceptions
-from gnpy.core.network import add_missing_elements_in_network, design_network
 from gnpy.core.parameters import SimParams
-from gnpy.core.utils import db2lin, lin2db, automatic_nch, watt2dbm, dbm2watt
-from gnpy.topology.request import (ResultElement, jsontocsv, compute_path_dsjctn, requests_aggregation,
-                                   BLOCKING_NOPATH, correct_json_route_list,
-                                   deduplicate_disjunctions, compute_path_with_disjunction,
-                                   PathRequest, compute_constrained_path, propagate)
-from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
+from gnpy.core.utils import lin2db, pretty_summary_print, per_label_average, watt2dbm
+from gnpy.topology.request import (ResultElement, jsontocsv, BLOCKING_NOPATH)
 from gnpy.tools.json_io import (load_equipment, load_network, load_json, load_requests, save_network,
-                                requests_from_json, disjunctions_from_json, save_json, load_initial_spectrum)
+                                requests_from_json, save_json, load_initial_spectrum)
 from gnpy.tools.plots import plot_baseline, plot_results
+from gnpy.tools.worker_utils import designed_network, transmission_simulation, planning
+
 
 _logger = logging.getLogger(__name__)
 _examples_dir = Path(__file__).parent.parent / 'example-data'
@@ -144,19 +141,17 @@ def transmission_main_example(args=None):
         sys.exit()
 
     # First try to find exact match if source/destination provided
+    source = None
     if args.source:
         source = transceivers.pop(args.source, None)
         valid_source = True if source else False
-    else:
-        source = None
-        _logger.info('No source node specified: picking random transceiver')
 
+    destination = None
+    nodes_list = []
+    loose_list = []
     if args.destination:
         destination = transceivers.pop(args.destination, None)
         valid_destination = True if destination else False
-    else:
-        destination = None
-        _logger.info('No destination node specified: picking random transceiver')
 
     # If no exact match try to find partial match
     if args.source and not source:
@@ -173,107 +168,72 @@ def transmission_main_example(args=None):
     if not source:
         source = list(transceivers.values())[0]
         del transceivers[source.uid]
+        _logger.info('No source node specified: picking random transceiver')
 
     if not destination:
         destination = list(transceivers.values())[0]
+        nodes_list = [destination.uid]
+        loose_list = ['STRICT']
+        _logger.info('No destination node specified: picking random transceiver')
 
-    _logger.info(f'source = {args.source!r}')
-    _logger.info(f'destination = {args.destination!r}')
+    _logger.info(f'source = {source.uid!r}')
+    _logger.info(f'destination = {destination.uid!r}')
 
-    params = {}
-    params['request_id'] = 0
-    params['trx_type'] = ''
-    params['trx_mode'] = ''
-    params['source'] = source.uid
-    params['destination'] = destination.uid
-    params['bidir'] = False
-    params['nodes_list'] = [destination.uid]
-    params['loose_list'] = ['strict']
-    params['format'] = ''
-    params['path_bandwidth'] = 0
-    params['effective_freq_slot'] = None
-    trx_params = trx_mode_params(equipment)
-    trx_params['power'] = dbm2watt(equipment['SI']['default'].power_dbm)
-    trx_params['tx_power'] = dbm2watt(equipment['SI']['default'].power_dbm)
-    if args.power:
-        trx_params['power'] = dbm2watt(float(args.power))
-        trx_params['tx_power'] = dbm2watt(float(args.power))
-    params.update(trx_params)
     initial_spectrum = None
-    params['nb_channel'] = automatic_nch(trx_params['f_min'], trx_params['f_max'], trx_params['spacing'])
-    # use ref_req to hold reference channel used for design and req for the propagation
-    # and req to hold channels to be propagated
-    # apply power sweep on the design and on the channels
-    ref_req = PathRequest(**params)
-    pref_ch_db = watt2dbm(ref_req.power)
     if args.spectrum:
         # use the spectrum defined by user for the propagation.
         # the nb of channel for design remains the one of the reference channel
         initial_spectrum = load_initial_spectrum(args.spectrum)
-        params['nb_channel'] = len(initial_spectrum)
         print('User input for spectrum used for propagation instead of SI')
-    req = PathRequest(**params)
-    p_ch_db = watt2dbm(req.power)
-    req.initial_spectrum = initial_spectrum
-    print(f'There are {req.nb_channel} channels propagating')
     power_mode = equipment['Span']['default'].power_mode
     print('\n'.join([f'Power mode is set to {power_mode}',
                      '=> it can be modified in eqpt_config.json - Span']))
-    if not args.no_insert_edfas:
-        try:
-            add_missing_elements_in_network(network, equipment)
-        except exceptions.NetworkTopologyError as e:
-            print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
-            sys.exit(1)
-        except exceptions.ConfigurationError as e:
-            print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
-            sys.exit(1)
 
-    path = compute_constrained_path(network, req)
-    spans = [s.params.length for s in path if isinstance(s, RamanFiber) or isinstance(s, Fiber)]
-    power_range = [0]
-    if power_mode:
-        # power cannot be changed in gain mode
-        try:
-            p_start, p_stop, p_step = equipment['SI']['default'].power_range_db
-            p_num = abs(int(round((p_stop - p_start) / p_step))) + 1 if p_step != 0 else 1
-            power_range = list(linspace(p_start, p_stop, p_num))
-        except TypeError:
-            print('invalid power range definition in eqpt_config, should be power_range_db: [lower, upper, step]')
-    # initial network is designed using req.power. that is that any missing information (amp gain or delta_p) is filled
-    # using this req.power, previous to any sweep requested later on.
+    # Simulate !
     try:
-        design_network(ref_req, network, equipment, set_connector_losses=True, verbose=True)
+        network, req, ref_req = designed_network(equipment, network, source.uid, destination.uid,
+                                                 nodes_list=nodes_list, loose_list=loose_list,
+                                                 args_power=args.power,
+                                                 initial_spectrum=initial_spectrum,
+                                                 no_insert_edfas=args.no_insert_edfas)
+        path, propagations_for_path, powers_dbm, infos = transmission_simulation(equipment, network, req, ref_req)
     except exceptions.NetworkTopologyError as e:
         print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
         sys.exit(1)
     except exceptions.ConfigurationError as e:
         print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
         sys.exit(1)
-
+    except exceptions.ServiceError as e:
+        print(f'Service error: {e}')
+        sys.exit(1)
+    except ValueError:
+        sys.exit(1)
+    # print or export results
+    spans = [s.params.length for s in path if isinstance(s, RamanFiber) or isinstance(s, Fiber)]
     print(f'\nThere are {len(spans)} fiber spans over {sum(spans)/1000:.0f} km between {source.uid} '
           f'and {destination.uid}')
     print(f'\nNow propagating between {source.uid} and {destination.uid}:')
-    for dp_db in power_range:
-        ref_req.power = dbm2watt(pref_ch_db + dp_db)
-        req.power = dbm2watt(p_ch_db + dp_db)
-        design_network(ref_req, network, equipment, set_connector_losses=False, verbose=False)
-        # if initial spectrum did not contain any power, now we need to use this one.
-        # note the initial power defines a differential wrt req.power so that if req.power is set to 2mW (3dBm)
-        # and initial spectrum was set to 0, this sets a initial per channel delta power to -3dB, so that
-        # whatever the equalization, -3 dB is applied on all channels (ie initial power in initial spectrum pre-empts
-        # "--power" option)
+    print(f'Reference used for design: (Input optical power reference in span = {watt2dbm(ref_req.power):.2f}dBm,\n'
+          + f'                            spacing = {ref_req.spacing * 1e-9:.2f}GHz\n'
+          + f'                            nb_channels = {ref_req.nb_channel})')
+    print('\nChannels propagating: (Input optical power deviation in span = '
+          + f'{pretty_summary_print(per_label_average(infos.delta_pdb_per_channel, infos.label))}dB,\n'
+          + '                       spacing = '
+          + f'{pretty_summary_print(per_label_average(infos.slot_width * 1e-9, infos.label))}GHz,\n'
+          + '                       transceiver output power = '
+          + f'{pretty_summary_print(per_label_average(watt2dbm(infos.tx_power), infos.label))}dBm,\n'
+          + f'                       nb_channels = {infos.number_of_channels})')
+    for path, power_dbm in zip(propagations_for_path, powers_dbm):
         if power_mode:
-            print(f'\nPropagating with input power = {ansi_escapes.cyan}{watt2dbm(req.power):.2f} '
+            print(f'Input optical power reference in span = {ansi_escapes.cyan}{power_dbm:.2f} '
                   + f'dBm{ansi_escapes.reset}:')
         else:
-            print(f'\nPropagating in {ansi_escapes.cyan}gain mode{ansi_escapes.reset}: power cannot be set manually')
-        infos = propagate(path, req, equipment)
-        if len(power_range) == 1:
+            print('\nPropagating in gain mode: power cannot be set manually')
+        if len(powers_dbm) == 1:
             for elem in path:
                 print(elem)
             if power_mode:
-                print(f'\nTransmission result for input power = {lin2db(req.power*1e3):.2f} dBm:')
+                print(f'\nTransmission result for input optical power reference in span = {power_dbm:.2f} dBm:')
             else:
                 print(f'\nTransmission results:')
             print(f'  Final GSNR (0.1 nm): {ansi_escapes.cyan}{mean(destination.snr_01nm):.02f} dB{ansi_escapes.reset}')
@@ -345,105 +305,41 @@ def path_requests_run(args=None):
 
     _logger.info(f'Computing path requests {args.service_filename.name} into JSON format')
 
-    (equipment, network) = load_common_data(args.equipment, args.topology, args.sim_params, args.save_network_before_autodesign)
+    (equipment, network) = \
+        load_common_data(args.equipment, args.topology, args.sim_params, args.save_network_before_autodesign)
 
     # Build the network once using the default power defined in SI in eqpt config
     # TODO power density: db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
     # spacing, f_min and f_max
-    if not args.no_insert_edfas:
-        try:
-            add_missing_elements_in_network(network, equipment)
-        except exceptions.NetworkTopologyError as e:
-            print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
-            sys.exit(1)
-        except exceptions.ConfigurationError as e:
-            print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
-            sys.exit(1)
+    if args.save_network is not None:
+        save_network(network, args.save_network)
+        print(f'Network (after autodesign) saved to {args.save_network}')
 
-    params = {
-        'request_id': 'reference',
-        'trx_type': '',
-        'trx_mode': '',
-        'source': None,
-        'destination': None,
-        'bidir': False,
-        'nodes_list': [],
-        'loose_list': [],
-        'format': '',
-        'path_bandwidth': 0,
-        'effective_freq_slot': None,
-        'nb_channel': automatic_nch(equipment['SI']['default'].f_min, equipment['SI']['default'].f_max,
-                                    equipment['SI']['default'].spacing),
-        'power': dbm2watt(equipment['SI']['default'].power_dbm),
-        'tx_power': dbm2watt(equipment['SI']['default'].power_dbm)
-    }
-    trx_params = trx_mode_params(equipment)
-    params.update(trx_params)
-    reference_channel = PathRequest(**params)
     try:
-        design_network(reference_channel, network, equipment, verbose=True)
+        network, _, _ = designed_network(equipment, network, no_insert_edfas=args.no_insert_edfas)
+        data = load_requests(args.service_filename, equipment, bidir=args.bidir,
+                             network=network, network_filename=args.topology)
+        _data = requests_from_json(data, equipment)
+        oms_list, propagatedpths, reversed_propagatedpths, rqs, dsjn, result = \
+            planning(network, equipment, data)
     except exceptions.NetworkTopologyError as e:
         print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
         sys.exit(1)
     except exceptions.ConfigurationError as e:
         print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
         sys.exit(1)
-
-    if args.save_network is not None:
-        save_network(network, args.save_network)
-        print(f'{ansi_escapes.blue}Network (after autodesign) saved to {args.save_network}{ansi_escapes.reset}')
-    oms_list = build_oms_list(network, equipment)
-
-    try:
-        data = load_requests(args.service_filename, equipment, bidir=args.bidir,
-                             network=network, network_filename=args.topology)
-        rqs = requests_from_json(data, equipment)
-    except exceptions.ServiceError as e:
-        print(f'{ansi_escapes.red}Service error:{ansi_escapes.reset} {e}')
-        sys.exit(1)
-    # check that request ids are unique. Non unique ids, may
-    # mess the computation: better to stop the computation
-    all_ids = [r.request_id for r in rqs]
-    if len(all_ids) != len(set(all_ids)):
-        for item in list(set(all_ids)):
-            all_ids.remove(item)
-        msg = f'Requests id {all_ids} are not unique'
-        _logger.critical(msg)
-        sys.exit()
-    rqs = correct_json_route_list(network, rqs)
-
-    # pths = compute_path(network, equipment, rqs)
-    dsjn = disjunctions_from_json(data)
-
-    print(f'{ansi_escapes.blue}List of disjunctions{ansi_escapes.reset}')
-    print(dsjn)
-    # need to warn or correct in case of wrong disjunction form
-    # disjunction must not be repeated with same or different ids
-    dsjn = deduplicate_disjunctions(dsjn)
-
-    # Aggregate demands with same exact constraints
-    print(f'{ansi_escapes.blue}Aggregating similar requests{ansi_escapes.reset}')
-
-    rqs, dsjn = requests_aggregation(rqs, dsjn)
-    # TODO export novel set of aggregated demands in a json file
-
-    print(f'{ansi_escapes.blue}The following services have been requested:{ansi_escapes.reset}')
-    print(rqs)
-
-    print(f'{ansi_escapes.blue}Computing all paths with constraints{ansi_escapes.reset}')
-    try:
-        pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
     except exceptions.DisjunctionError as this_e:
         print(f'{ansi_escapes.red}Disjunction error:{ansi_escapes.reset} {this_e}')
         sys.exit(1)
-
-    print(f'{ansi_escapes.blue}Propagating on selected path{ansi_escapes.reset}')
-    propagatedpths, reversed_pths, reversed_propagatedpths = compute_path_with_disjunction(network, equipment, rqs, pths)
-    # Note that deepcopy used in compute_path_with_disjunction returns
-    # a list of nodes which are not belonging to network (they are copies of the node objects).
-    # so there can not be propagation on these nodes.
-
-    pth_assign_spectrum(pths, rqs, oms_list, reversed_pths)
+    except exceptions.ServiceError as e:
+        print(f'Service error: {e}')
+        sys.exit(1)
+    except ValueError:
+        sys.exit(1)
+    print(f'{ansi_escapes.blue}List of disjunctions{ansi_escapes.reset}')
+    print(dsjn)
+    print(f'{ansi_escapes.blue}The following services have been requested:{ansi_escapes.reset}')
+    print(_data)
 
     print(f'{ansi_escapes.blue}Result summary{ansi_escapes.reset}')
     header = ['req id', '  demand', ' GSNR@bandwidth A-Z (Z-A)', ' GSNR@0.1nm A-Z (Z-A)',
