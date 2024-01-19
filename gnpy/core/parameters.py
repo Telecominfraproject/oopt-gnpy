@@ -355,6 +355,38 @@ class FiberParams(Parameters):
 
 
 class EdfaParams:
+    default_values = {
+        'f_min': 191.3e12,
+        'f_max': 196.1e12,
+        'multi_band': None,
+        'bands': [],
+        'type_variety': '',
+        'type_def': '',
+        'gain_flatmax': None,
+        'gain_min': None,
+        'p_max': None,
+        'nf_model': None,
+        'dual_stage_model': None,
+        'preamp_variety': None,
+        'booster_variety': None,
+        'nf_min': None,
+        'nf_max': None,
+        'nf_coef': None,
+        'nf0': None,
+        'nf_fit_coeff': None,
+        'nf_ripple': 0,
+        'dgt': None,
+        'gain_ripple': 0,
+        'tilt_ripple': 0,
+        'f_ripple_ref': None,
+        'out_voa_auto': False,
+        'allowed_for_design': False,
+        'raman': False,
+        'pmd': 0,
+        'pdl': 0,
+        'advance_configurations_from_json': None
+    }
+
     def __init__(self, **params):
         try:
             self.type_variety = params['type_variety']
