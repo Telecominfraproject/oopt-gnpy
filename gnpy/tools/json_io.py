@@ -21,7 +21,7 @@ from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, Netwo
 from gnpy.core.science_utils import estimate_nf_model
 from gnpy.core.info import Carrier
 from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions
-from gnpy.core.parameters import DEFAULT_RAMAN_COEFFICIENT
+from gnpy.core.parameters import DEFAULT_RAMAN_COEFFICIENT, EdfaParams
 from gnpy.topology.request import PathRequest, Disjunction, compute_spectrum_slot_vs_bandwidth
 from gnpy.topology.spectrum_assignment import mvalue_to_slots
 from gnpy.tools.convert import xls_to_json_data
@@ -180,35 +180,7 @@ class RamanFiber(Fiber):
 
 
 class Amp(_JsonThing):
-    default_values = {
-        'f_min': 191.35e12,
-        'f_max': 196.1e12,
-        'type_variety': '',
-        'type_def': '',
-        'gain_flatmax': None,
-        'gain_min': None,
-        'p_max': None,
-        'nf_model': None,
-        'dual_stage_model': None,
-        'preamp_variety': None,
-        'booster_variety': None,
-        'nf_min': None,
-        'nf_max': None,
-        'nf_coef': None,
-        'nf0': None,
-        'nf_fit_coeff': None,
-        'nf_ripple': 0,
-        'dgt': None,
-        'gain_ripple': 0,
-        'tilt_ripple': 0,
-        'f_ripple_ref': None,
-        'out_voa_auto': False,
-        'allowed_for_design': False,
-        'raman': False,
-        'pmd': 0,
-        'pdl': 0,
-        'advance_configurations_from_json': None
-    }
+    default_values = EdfaParams.default_values
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Amp')
