@@ -17,8 +17,7 @@ from gnpy.core import elements
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.utils import round2float, convert_length, psd2powerdbm, lin2db, watt2dbm, dbm2watt
 from gnpy.core.info import ReferenceCarrier, create_input_spectral_information
-from gnpy.tools import json_io
-from gnpy.core.parameters import SimParams
+from gnpy.core.parameters import SimParams, EdfaParams
 from gnpy.core.science_utils import RamanSolver
 
 
@@ -540,7 +539,7 @@ def add_roadm_booster(network, roadm):
         network.remove_edge(roadm, next_node)
         amp = elements.Edfa(
             uid=f'Edfa_booster_{roadm.uid}_to_{next_node.uid}',
-            params=json_io.Amp.default_values,
+            params=EdfaParams.default_values,
             metadata={
                 'location': {
                     'latitude': roadm.lat,
@@ -566,7 +565,7 @@ def add_roadm_preamp(network, roadm):
         network.remove_edge(prev_node, roadm)
         amp = elements.Edfa(
             uid=f'Edfa_preamp_{roadm.uid}_from_{prev_node.uid}',
-            params=json_io.Amp.default_values,
+            params=EdfaParams.default_values,
             metadata={
                 'location': {
                     'latitude': roadm.lat,
@@ -595,7 +594,7 @@ def add_inline_amplifier(network, fiber):
         network.remove_edge(fiber, next_node)
         amp = elements.Edfa(
             uid=f'Edfa_{fiber.uid}',
-            params=json_io.Amp.default_values,
+            params=EdfaParams.default_values,
             metadata={
                 'location': {
                     'latitude': (fiber.lat + next_node.lat) / 2,
