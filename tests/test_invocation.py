@@ -25,6 +25,7 @@ SRC_ROOT = Path(__file__).parent.parent
     ('transmission_saturated', 'logs_transmission_saturated', transmission_main_example,
      ['tests/data/testTopology_expected.json', 'lannion', 'lorient', '-e', 'tests/data/eqpt_config.json', '--pow', '3']),
     ('path_requests_run', 'logs_path_request', path_requests_run, ['--redesign-per-request', '-v']),
+    ('path_requests_run', None, path_requests_run, ['-sa', 'first_fit', '--redesign-per-request']),
     ('transmission_main_example__raman', None, transmission_main_example,
      ['gnpy/example-data/raman_edfa_example_network.json', '--sim', 'gnpy/example-data/sim_params.json', '--show-channels', ]),
     ('openroadm-v4-Stockholm-Gothenburg', None, transmission_main_example,

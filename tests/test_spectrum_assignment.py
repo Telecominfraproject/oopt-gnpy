@@ -363,58 +363,63 @@ def test_inconsistant_freq_slot(setup, equipment, request_set):
     assert rqs[0].blocking_reason == 'NOT_ENOUGH_RESERVED_SPECTRUM'
 
 
-@pytest.mark.parametrize('req_n, req_m, final_n, final_m, blocking_reason, raises_error', [
+@pytest.mark.parametrize('req_n, req_m, final_n, final_m, user_policy, blocking_reason, raises_error', [
     # regular requests that should be correctly assigned:
-    ([-100], [32], [-100], [32], None, False),
-    ([150], [50], [150], [50], None, False),
+    ([-100], [32], [-100], [32], 'first_fit', None, False),
+    ([150], [50], [150], [50], 'first_fit', None, False),
     # if n is None, there should be an assignment (enough spectrum cases)
     # and the center frequency should be set on the lower part of the spectrum based on m value if it exists
     # or based on 32
-    ([None], [32], [-256], [32], None, False),
-    ([None], [40], [-248], [40], None, False),
-    ([-100], [None], [-100], [32], None, False),
-    ([None], [None], [-256], [32], None, False),
+    ([None], [32], [-256], [32], 'first_fit', None, False),
+    ([None], [40], [-248], [40], 'first_fit', None, False),
+    ([-100], [None], [-100], [32], 'first_fit', None, False),
+    ([None], [None], [-256], [32], 'first_fit', None, False),
+    ([None], [32], [449], [32], 'last_fit', None, False),
+    ([-100], [None], [-100], [32], 'last_fit', None, False),
+    ([None], [None], [449], [32], 'last_fit', None, False),
     # -280 and 60 center indexes should result in unfeasible spectrum, either out of band or
     # overlapping with occupied spectrum. The requested spectrum is not available
-    ([None], [300], None, None, 'NO_SPECTRUM', False),
-    ([-280], [None], None, None, 'NO_SPECTRUM', False),
-    ([-60], [40], None, None, 'NO_SPECTRUM', False),
+    ([None], [300], None, None, 'first_fit', 'NO_SPECTRUM', False),
+    ([-280], [None], None, None, 'first_fit', 'NO_SPECTRUM', False),
+    ([-60], [40], None, None, 'first_fit', 'NO_SPECTRUM', False),
     # raises service error: M value too small
-    ([-60], [3], None, None, 'NOT_ENOUGH_RESERVED_SPECTRUM', True),
+    ([-60], [3], None, None, 'first_fit', 'NOT_ENOUGH_RESERVED_SPECTRUM', True),
     # 20 is smaller than min 32 required nb of slots so should also be blocked
-    ([-60], [20], None, None, 'NOT_ENOUGH_RESERVED_SPECTRUM', False),
+    ([-60], [20], None, None, 'first_fit', 'NOT_ENOUGH_RESERVED_SPECTRUM', False),
     # multiple assignments
-    ([-100, -164], [16, 16], [-100, -164], [16, 16], None, False),
-    ([-100, -164], [32, 32], [-100, -164], [32, 32], None, False),
-    ([-100, -164], [None, None], [-164], [32], None, False),
-    ([None, None], [16, 16], [-272, -240], [16, 16], None, False),
-    ([None, None, None], [16, 16, None], [-272, -240], [16, 16], None, False),
-    ([None, None], [None, None], [-256], [32], None, False),
-    ([-272, None], [16, 16], [-272, -240], [16, 16], None, False),
-    ([-272, 100], [None, 16], [-272, 100], [16, 16], None, False),
+    ([-100, -164], [16, 16], [-100, -164], [16, 16], 'first_fit', None, False),
+    ([-100, -164], [32, 32], [-100, -164], [32, 32], 'first_fit', None, False),
+    ([-100, -164], [None, None], [-164], [32], 'first_fit', None, False),
+    ([None, None], [16, 16], [-272, -240], [16, 16], 'first_fit', None, False),
+    ([None, None, None], [16, 16, None], [-272, -240], [16, 16], 'first_fit', None, False),
+    ([None, None], [None, None], [-256], [32], 'first_fit', None, False),
+    ([-272, None], [16, 16], [-272, -240], [16, 16], 'first_fit', None, False),
+    ([-272, 100], [None, 16], [-272, 100], [16, 16], 'first_fit', None, False),
+    ([None, None], [16, 16], [465, 433], [16, 16], 'last_fit', None, False),
     # first assign defined Ms whatever the N (but order them), and then uses imposed N. Fill in with the max
     # available nb of slots (centered on N).
-    ([-88, -100, -116, None], [8, None, 12, None], [-88, -100, -116, -280], [8, 4, 12, 8], None, False),
+    ([-88, -100, -116, None], [8, None, 12, None], [-88, -100, -116, -280], [8, 4, 12, 8], 'first_fit', None, False),
     # If no M is defined, uses th Ns to fill in with the max possible nb of slots (with respecte to request,
     # here it is 32 slots)
-    ([-88, -106, -116, None], [None, None, None, None], [-116], [32], None, False),
+    ([-88, -106, -116, None], [None, None, None, None], [-116], [32], 'first_fit', None, False),
     # if one defined N, M is not applicable then blocks the spectrum (even f other slots are OK)
     # only 2 slots remains between  -104 (-100 - 4) and -108 (-112 + 4). So (-106, None) is not feasible, because min
     # required M is 4 for Voyager, Mode 1
-    ([-100, -106, -112], [4, None, 4], None, None, 'NO_SPECTRUM', False),
+    ([-100, -106, -112], [4, None, 4], None, None, 'first_fit', 'NO_SPECTRUM', False),
     # required nb of channels is 8 with 4 slots each. Next two spectrum are not providing enough spectrum
     # raises service error: not enough nb of channels
-    ([-88, -100, -116], [4, 4, 4], None, None, 'NOT_ENOUGH_RESERVED_SPECTRUM', True),
-    ([-88, -100, -116], [4, None, 4], None, None, 'NO_SPECTRUM', False),
-    # only 4 slots remains between -96 (-88 -8) and -104 (-116 + 12), and centered on -100, so N = -101 is not
+    ([-88, -100, -116], [4, 4, 4], None, None, 'first_fit', 'NOT_ENOUGH_RESERVED_SPECTRUM', True),
+    ([-88, -100, -116], [4, None, 4], None, None, 'first_fit', 'NO_SPECTRUM', False),
+    # only 4 slots remains between  -96 (-88 -8) and -104 (-116 + 12), and centered on -100, so N = -101 is not
     # feasible whatever the M.
-    ([-88, -101, -116, None], [8, 4, 12, None], None, None, 'NO_SPECTRUM', False),
-    ([-88, -101, -116, -250], [4, 4, 12, 12], None, None, 'NO_SPECTRUM', False),
-    ([-88, -101, -116, None], [8, None, 12, None], None, None, 'NO_SPECTRUM', False),
+    ([-88, -101, -116, None], [8, 4, 12, None], None,  None, 'first_fit', 'NO_SPECTRUM', False),
+    ([-88, -101, -116, -250], [4, 4, 12, 12], None,  None, 'first_fit', 'NO_SPECTRUM', False),
+    ([-88, -101, -116, None], [8, None, 12, None], None, None, 'first_fit', 'NO_SPECTRUM', False),
     # raises service error: slots overlap
-    ([-88, -81, -116, -136], [8, 8, 12, 8], None, None, 'NO_SPECTRUM', True),
-])
-def test_n_m_requests(setup, equipment, req_n, req_m, final_n, final_m, blocking_reason, raises_error, request_set):
+    ([-88, -81, -116, -136], [8, 8, 12, 8], None, None, 'first_fit', 'NO_SPECTRUM', True),
+    ])
+def test_n_m_requests(setup, equipment, req_n, req_m, final_n, final_m, user_policy, blocking_reason,
+                      raises_error, request_set):
     """test that various N and M values for a request end up with the correct path assignment"""
     network, oms_list = setup
     # add an occupation on one of the span of the expected path OMS list on both directions
@@ -435,7 +440,7 @@ def test_n_m_requests(setup, equipment, req_n, req_m, final_n, final_m, blocking
     path_oms = list(set([e.oms_id for e in paths[0] if not isinstance(e, (Transceiver, Roadm))]))
     assert path_oms == expected_path
     # function to be tested:
-    pth_assign_spectrum(paths, rqs, oms_list, [find_reversed_path(paths[0])])
+    pth_assign_spectrum(paths, rqs, oms_list, [find_reversed_path(paths[0])], user_policy)
     # check that spectrum is correctly assigned
     assert rqs[0].N == final_n
     assert rqs[0].M == final_m

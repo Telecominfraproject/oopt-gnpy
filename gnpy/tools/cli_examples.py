@@ -368,9 +368,17 @@ def path_requests_run(args=None):
                         help='Store satisifed requests into a JSON or CSV file')
     parser.add_argument('--redesign-per-request', action='store_true', help='Redesign the network at each request'
                         + ' computation using the request as the reference channel')
+    parser.add_argument('-sa', '--spectrum_policy', help='spectrum assignment policy (first_fit only for now)')
 
     args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
+
+    user_policy = args.spectrum_policy
+    if args.spectrum_policy and args.spectrum_policy not in ['first_fit']:
+        print(f'Unsupported spectrum policy: {args.spectrum_policy}')
+        sys.exit(1)
+    elif args.spectrum_policy is None:
+        user_policy = "first_fit"
 
     _logger.info(f'Computing path requests {args.service_filename.name} into JSON format')
 
@@ -386,7 +394,7 @@ def path_requests_run(args=None):
                              network=network, network_filename=args.topology)
         _data = requests_from_json(data, equipment)
         _, propagatedpths, reversed_propagatedpths, rqs, dsjn, result = \
-            planning(network, equipment, data, redesign=args.redesign_per_request)
+            planning(network, equipment, data, redesign=args.redesign_per_request, user_policy=user_policy)
     except exceptions.NetworkTopologyError as e:
         print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
         sys.exit(1)

@@ -145,8 +145,8 @@ def check_request_path_ids(rqs: List[PathRequest]):
         raise ValueError(msg)
 
 
-def planning(network: DiGraph, equipment: dict, data: dict, redesign: bool = False) \
-        -> Tuple[List[OMS], list, list, List[PathRequest], List[Disjunction], List[ResultElement]]:
+def planning(network: DiGraph, equipment: dict, data: dict, redesign: bool = False, user_policy: str = "first_fit") \
+        -> Tuple[List[OMS], List, List, List[PathRequest], List[Disjunction], List[ResultElement]]:
     """Run planning
     data contain the service dict from json
     redesign True means that network is redesign using each request as reference channel
@@ -177,7 +177,8 @@ def planning(network: DiGraph, equipment: dict, data: dict, redesign: bool = Fal
     # so there can not be propagation on these nodes.
 
     # Allowed user_policy are first_fit and 2partition
-    pth_assign_spectrum(pths, rqs, oms_list, reversed_pths)
+    pth_assign_spectrum(pths, rqs, oms_list, reversed_pths,
+                        policy=user_policy)
     for i, rq in enumerate(rqs):
         if hasattr(rq, 'OSNR') and rq.OSNR:
             rq.osnr_with_sys_margin = rq.OSNR + equipment["SI"]["default"].sys_margins

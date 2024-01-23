@@ -1,0 +1,10 @@
+Result summary
+req id   demand                                GSNR@bandwidth A-Z (Z-A) GSNR@0.1nm A-Z (Z-A)  Receiver minOSNR       mode          Gbit/s     nb of tsp pairsN,M or blocking reason
+0       trx Lorient_KMA to trx Vannes_KBE :        24.78          28.87            14           mode 1         100.0            1         ([-284],[4]) 
+1       trx Brest_KLA to trx Vannes_KBE :          17.59          21.67            14           mode 1         200.0            2         ([-272],[8]) 
+3       trx Lannion_CAS to trx Rennes_STA :        22.19          26.28            13           mode 1          60.0            1         ([-284],[4]) 
+4       trx Rennes_STA to trx Lannion_CAS :        14.91          22.14            17           mode 2         150.0            1         ([475],[6])  
+5       trx Rennes_STA to trx Lannion_CAS :        21.37           28.6            17           mode 2          20.0            1         ([475],[6])  
+7 | 6   trx Lannion_CAS to trx Lorient_KMA :       19.52          23.61            14           mode 1         700.0            7        ([-236],[28]) 
+7b      trx Lannion_CAS to trx Lorient_KMA :       19.61          23.69            14           mode 1         400.0            4         ([445],[24]) 
+Result summary shows mean GSNR and OSNR (average over all channels)
