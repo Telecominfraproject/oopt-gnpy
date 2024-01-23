@@ -391,7 +391,7 @@ def aggregate_oms_bitmap(path_oms, oms_list):
     return aggregate_oms
 
 
-def spectrum_selection(test_oms, requested_m, requested_n=None):
+def spectrum_selection(test_oms, requested_m, requested_n=None, policy='first_fit'):
     """Collects spectrum availability and call the select_candidate function"""
     freq_index = test_oms.spectrum_bitmap.freq_index
     freq_index_min = test_oms.spectrum_bitmap.freq_index_min
@@ -406,7 +406,7 @@ def spectrum_selection(test_oms, requested_m, requested_n=None):
                       and freq_index[i] >= freq_index_min
                       and freq_index[i + 2 * requested_m - 1] <= freq_index_max]
 
-        candidate = select_candidate(candidates, policy='first_fit')
+        candidate = select_candidate(candidates, policy=policy)
     else:
         i = test_oms.spectrum_bitmap.geti(requested_n)
         if (freq_availability[i - requested_m:i + requested_m] == [1] * (2 * requested_m)
@@ -440,6 +440,8 @@ def select_candidate(candidates, policy):
     """selects a candidate among all available spectrum"""
     if policy == 'first_fit' and candidates:
         return candidates[0]
+    if policy == 'last_fit' and candidates:
+        return candidates[-1]
     elif not candidates:
         return (None, None, None)
     else:
@@ -477,7 +479,7 @@ def compute_n_m(required_m, rq, path_oms, oms_list, per_channel_m, policy='first
                 break
         elif m is not None and n is None:
             # find a candidate n
-            n, _, _ = spectrum_selection(test_oms, m, None)
+            n, _, _ = spectrum_selection(test_oms, m, None, policy=policy)
             if n is None:
                 # if no n is feasible for the m, block the request
                 break
@@ -489,11 +491,10 @@ def compute_n_m(required_m, rq, path_oms, oms_list, per_channel_m, policy='first
         else:
             # if n and m are not defined, try to find a single  assignment to fits the remaining slots to serve
             # (first fit strategy)
-            n, _, _ = spectrum_selection(test_oms, remaining_slots_to_serve, None)
+            n, _, _ = spectrum_selection(test_oms, remaining_slots_to_serve, None, policy=policy)
             if n is None or remaining_slots_to_serve == 0:
                 break
-            else:
-                m = remaining_slots_to_serve
+            m = remaining_slots_to_serve
         selected_m.append(m)
         selected_n.append(n)
         test_oms.assign_spectrum(n, m)
@@ -506,7 +507,7 @@ def compute_n_m(required_m, rq, path_oms, oms_list, per_channel_m, policy='first
     return selected_n, selected_m, remaining_slots_to_serve
 
 
-def pth_assign_spectrum(pths, rqs, oms_list, rpths):
+def pth_assign_spectrum(pths, rqs, oms_list, rpths, policy='first_fit'):
     """basic first fit assignment
 
     if reversed path are provided, means that occupation is bidir
@@ -540,9 +541,10 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths):
             # Use the req.M even if nb_wl and required_m are smaller.
             # first fit strategy: assign as many lambda as possible in the None remaining N, M values
             selected_n, selected_m, remaining_slots_to_serve = \
-                compute_n_m(required_m, rq, path_oms, oms_list, per_channel_m)
-            # if there are some remaining_slots_to_serve, this means that provided rq.M and rq.N values were
-            # not possible. Then do not go though spectrum assignment process and blocks the demand
+                compute_n_m(required_m, rq, path_oms, oms_list, per_channel_m, policy=policy)
+            # if there are some remaining_slots_to_serve, this means that provided rq.M and rq.N values
+            # were not possible.
+            # Then do not go though spectrum assignment process and blocks the demand
             if remaining_slots_to_serve > 0:
                 rq.N = None
                 rq.M = None
