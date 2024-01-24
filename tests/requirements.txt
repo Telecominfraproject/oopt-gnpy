@@ -1,7 +1,0 @@
-build>=1.0.3,<2
-pytest>=7.4.3,<8
-# pandas 2.1 removed support for Python 3.8
-pandas>=2.0.3,<3
-
-# flake v6 killed the --diff option
-flake8>=5.0.4,<6

@@ -106,8 +106,7 @@ jobs:
         with:
           python-version: ${{ matrix.python_version }}
       - run: |
-          pip install -r tests/requirements.txt
-          pip install --editable .
+          pip install --editable .[tests]
           pytest -vv
     strategy:
       fail-fast: false
@@ -136,8 +135,7 @@ jobs:
         with:
           python-version: ${{ matrix.python_version }}
       - run: |
-          pip install -r tests/requirements.txt
-          pip install --editable .
+          pip install --editable .[tests]
           pytest -vv
     strategy:
       fail-fast: false
