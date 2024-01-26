@@ -27,6 +27,7 @@ from scipy.interpolate import interp1d
 from collections import namedtuple
 from typing import Union
 from logging import getLogger
+import warnings
 
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_average, pretty_summary_print, \
     watt2dbm, psd2powerdbm, calculate_absolute_min_or_zero
@@ -239,7 +240,11 @@ class Roadm(_Node):
         if not params:
             params = {}
         try:
-            super().__init__(*args, params=RoadmParams(**params), **kwargs)
+            with warnings.catch_warnings(record=True) as caught_warnings:
+                super().__init__(*args, params=RoadmParams(**params), **kwargs)
+                if caught_warnings:
+                    msg = f'In ROADM {kwargs["uid"]}: {caught_warnings[0].message}'
+                    _logger.warning(msg)
         except ParametersError as e:
             msg = f'Config error in {kwargs["uid"]}: {e}'
             raise ParametersError(msg) from e
