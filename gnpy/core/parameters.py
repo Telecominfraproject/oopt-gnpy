@@ -10,6 +10,7 @@ This module contains all parameters to configure standard network elements.
 from collections import namedtuple
 
 from scipy.constants import c, pi
+from logging import getLogger
 from numpy import asarray, array, exp, sqrt, log, outer, ones, squeeze, append, flip, linspace, full
 
 from gnpy.core.utils import convert_length
