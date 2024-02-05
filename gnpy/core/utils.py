@@ -12,7 +12,7 @@ from csv import writer
 from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and, mean, array
 from scipy import constants
 from copy import deepcopy
-from typing import List
+from typing import List, Union
 
 from gnpy.core.exceptions import ConfigurationError
 
@@ -525,3 +525,26 @@ def find_common_range(amp_bands: List[List[dict]], default_band_f_min: float, de
                         for first in common_range for second in bands
                         if max(first['f_min'], second['f_min']) < min(first['f_max'], second['f_max'])]
     return sorted(common_range, key=lambda x: x['f_min'])
+
+
+def transform_data(data: str) -> Union[List[int], None]:
+    """Transforms a float into an list of one integer or a string separated by "|" into a list of integers.
+
+    Args:
+        data (float or str): The data to transform.
+
+    Returns:
+        list of int: The transformed data as a list of integers.
+
+    Examples:
+        >>> transform_data(5.0)
+        [5]
+
+        >>> transform_data('1 | 2 | 3')
+        [1, 2, 3]
+    """
+    if isinstance(data, float):
+        return [int(data)]
+    if isinstance(data, str):
+        return [int(x) for x in data.split(' | ')]
+    return None

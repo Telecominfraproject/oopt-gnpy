@@ -29,7 +29,7 @@ from json import dumps
 from pathlib import Path
 from copy import copy
 
-from gnpy.core.utils import silent_remove
+from gnpy.core.utils import silent_remove, transform_data
 from gnpy.core.exceptions import NetworkTopologyError
 from gnpy.core.elements import Edfa, Fused, Fiber
 
@@ -140,7 +140,10 @@ class Roadm(object):
 
     default_values = {'from_node': '',
                       'to_node': '',
-                      'target_pch_out_db': None
+                      'target_pch_out_db': None,
+                      'type_variety': None,
+                      'from_degrees': None,
+                      'impairment_ids': None
                       }
 
 
@@ -322,6 +325,22 @@ def create_roadm_element(node, roadms_by_city):
             to_node = f'east edfa in {node.city} to {elem.to_node}'
             if elem.target_pch_out_db is not None:
                 roadm['params']['per_degree_pch_out_db'][to_node] = elem.target_pch_out_db
+            if elem.from_degrees is not None and elem.impairment_ids is not None:
+                # only set per degree impairment if there is an entry (reduce verbose)
+                if roadm['params'].get('per_degree_impairments') is None:
+                    roadm['params']['per_degree_impairments'] = []
+                fromdegrees = elem.from_degrees.split(' | ')
+                impairment_ids = transform_data(elem.impairment_ids)
+                if len(fromdegrees) != len(impairment_ids):
+                    msg = f'Roadm {node.city} per degree impairment id do not match with from degree definition'
+                    raise NetworkTopologyError(msg)
+                for from_degree, impairment_id in zip(fromdegrees, impairment_ids):
+                    from_node = f'west edfa in {node.city} to {from_degree}'
+                    roadm['params']['per_degree_impairments'].append({'from_degree': from_node,
+                                                                      'to_degree': to_node,
+                                                                      'impairment_id': impairment_id})
+            if elem.type_variety is not None:
+                roadm['type_variety'] = elem.type_variety
     roadm['metadata'] = {'location': {'city':      node.city,
                                       'region':    node.region,
                                       'latitude':  node.latitude,
@@ -640,7 +659,10 @@ def parse_excel(input_filename):
     }
     roadm_headers = {'Node A': 'from_node',
                      'Node Z': 'to_node',
-                     'per degree target power (dBm)': 'target_pch_out_db'
+                     'per degree target power (dBm)': 'target_pch_out_db',
+                     'type_variety': 'type_variety',
+                     'from degrees': 'from_degrees',
+                     'from degree to degree impairment id': 'impairment_ids'
                      }
 
     with open_workbook(input_filename) as wb:
@@ -855,7 +877,7 @@ LINKS_LINE = 3
 EQPTS_LINE = 3
 EQPTS_COLUMN = 14
 ROADMS_LINE = 3
-ROADMS_COLUMN = 3
+ROADMS_COLUMN = 6
 
 
 def _do_convert():
