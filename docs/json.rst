@@ -180,25 +180,60 @@ used to determine the service list path feasibility when running the
 
 The modes are defined as follows:
 
-+----------------------+-----------+-----------------------------------------+
-| field                | type      | description                             |
-+======================+===========+=========================================+
-| ``format``           | (string)  | a unique name to ID the mode            |
-+----------------------+-----------+-----------------------------------------+
-| ``baud_rate``        | (number)  | in Hz                                   |
-+----------------------+-----------+-----------------------------------------+
-| ``OSNR``             | (number)  | min required OSNR in 0.1nm (dB)         |
-+----------------------+-----------+-----------------------------------------+
-| ``bit_rate``         | (number)  | in bit/s                                |
-+----------------------+-----------+-----------------------------------------+
-| ``roll_off``         | (number)  | Pure number between 0 and 1. TX signal  |
-|                      |           | roll-off shape. Used by Raman-aware     |
-|                      |           | simulation code.                        |
-+----------------------+-----------+-----------------------------------------+
-| ``tx_osnr``          | (number)  | In dB. OSNR out from transponder.       |
-+----------------------+-----------+-----------------------------------------+
-| ``cost``             | (number)  | Arbitrary unit                          |
-+----------------------+-----------+-----------------------------------------+
++----------------------------+-----------+-----------------------------------------+
+| field                      | type      | description                             |
++============================+===========+=========================================+
+| ``format``                 | (string)  | a unique name to ID the mode            |
++----------------------------+-----------+-----------------------------------------+
+| ``baud_rate``              | (number)  | in Hz                                   |
++----------------------------+-----------+-----------------------------------------+
+| ``OSNR``                   | (number)  | min required OSNR in 0.1nm (dB)         |
++----------------------------+-----------+-----------------------------------------+
+| ``bit_rate``               | (number)  | in bit/s                                |
++----------------------------+-----------+-----------------------------------------+
+| ``roll_off``               | (number)  | Pure number between 0 and 1. TX signal  |
+|                            |           | roll-off shape. Used by Raman-aware     |
+|                            |           | simulation code.                        |
++----------------------------+-----------+-----------------------------------------+
+| ``tx_osnr``                | (number)  | In dB. OSNR out from transponder.       |
++----------------------------+-----------+-----------------------------------------+
+| ``equalization_offset_db`` | (number)  | In dB. Deviation from the per channel   |
+|                            |           | equalization target in ROADM for this   |
+|                            |           | type of transceiver.                    |
++----------------------------+-----------+-----------------------------------------+
+| ``penalties``              | (list)    | list of impairments as described in     |
+|                            |           | impairment table.                       |
++----------------------------+-----------+-----------------------------------------+
+| ``cost``                   | (number)  | Arbitrary unit                          |
++----------------------------+-----------+-----------------------------------------+
+
+Penalties are linearly interpolated between given points and set to 'inf' outside interval.
+The accumulated penalties are substracted to the path GSNR before comparing with the min required OSNR.
+The penalties per impairment type are defined as a list of dict (impairment type - penalty values) as follows:
+
++-----------------------------+-----------+-----------------------------------------------+
+| field                       | type      | description                                   |
++=============================+===========+===============================================+
+| ``chromatic_dispersion`` or | (number)  | In ps/nm/. Value of chromatic dispersion.     |
+| ``pdl`` or                  |           | In dB. Value of polarization dependant loss.  |
+| ``pmd``                     | (string)  | In ps. Value of polarization mode dispersion. |
++-----------------------------+-----------+-----------------------------------------------+
+| ``penalty_value``           | (number)  | in dB. Penalty on the transceiver min OSNR    |
+|                             |           | corresponding to the impairment level         |
++-----------------------------+-----------+-----------------------------------------------+
+
+for example:
+
+.. code-block:: json
+
+    "penalties": [{
+            "chromatic_dispersion": 360000,
+            "penalty_value": 0.5
+        }, {
+            "pmd": 110,
+            "penalty_value": 0.5
+        }
+    ]
 
 ROADM
 ~~~~~
@@ -441,6 +476,11 @@ SpectralInformation
 ~~~~~~~~~~~~~~~~~~~
 
 GNPy requires a description of all channels that are propagated through the network.
+
+This block defines a reference channel (target input power in spans, nb of channels) which is used to design the network or correct the settings.
+It may be updated with different options --power.
+It also defines the channels to be propagated for the gnpy-transmission-example script unless a different definition is provided with ``--spectrum`` option.
+
 Flexgrid channel partitioning is available since the 2.7 release via the extra ``--spectrum`` option.
 In the simplest case, homogeneous channel allocation can be defined via the ``SpectralInformation`` construct which defines a spectrum of N identical carriers:
 
@@ -463,7 +503,8 @@ In the simplest case, homogeneous channel allocation can be defined via the ``Sp
 +----------------------+-----------+-------------------------------------------+
 | ``tx_osnr``          | (number)  | In dB. OSNR out from transponder.         |
 +----------------------+-----------+-------------------------------------------+
-| ``power_dbm``        | (number)  | Reference channel power, in dBm.          |
+| ``power_dbm``        | (number)  | In dBm. Target input power in spans to    |
+|                      |           | be considered for the design              |
 |                      |           | In gain mode                              |
 |                      |           | (see spans/power_mode = false), if no     |
 |                      |           | gain is set in an amplifier, auto-design  |
