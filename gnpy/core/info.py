@@ -333,7 +333,6 @@ def carriers_to_spectral_information(initial_spectrum: dict[float, Carrier],
     tx_osnr = [c.tx_osnr for c in initial_spectrum.values()]
     tx_power = [c.tx_power for c in initial_spectrum.values()]
     label = [c.label for c in initial_spectrum.values()]
-    p_span0 = watt2dbm(power)
     return create_arbitrary_spectral_information(frequency=frequency, signal=signal, baud_rate=baud_rate,
                                                  slot_width=slot_width, roll_off=roll_off,
                                                  delta_pdb_per_channel=delta_pdb_per_channel, tx_osnr=tx_osnr,
@@ -362,7 +361,7 @@ class ReferenceCarrier:
     constant power spectral density (PSD) equalization is set. Reference channel is the type that has been defined
     in SI block and used for the initial design of the network.
     Computing the power out of ROADM for the reference channel is required to correctly compute the loss
-    experienced by p_span_i in Roadm element.
+    experienced by reference channel in Roadm element.
 
     Baud rate is required to find the target power in constant PSD: power = PSD_target * baud_rate.
     For example, if target PSD is 3.125e4mW/GHz and reference carrier type a 32 GBaud channel then
@@ -373,7 +372,7 @@ class ReferenceCarrier:
     For example, if target PSW is 2e4mW/GHz and reference carrier type a 32 GBaud channel in a 50GHz slot width then
     output power should be -20 dBm and for a 64 GBaud channel  in a 75 GHz slot width, power target would be -18.24 dBm.
 
-    Other attributes (like slot_width or roll-off) may be added there for future equalization purpose.
+    Other attributes (like roll-off) may be added there for future equalization purpose.
     """
     baud_rate: float
     slot_width: float
