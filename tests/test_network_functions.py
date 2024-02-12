@@ -6,12 +6,15 @@
 
 from pathlib import Path
 import pytest
+from numpy.testing import assert_allclose
+
 from gnpy.core.exceptions import NetworkTopologyError
-from gnpy.core.network import span_loss, build_network, select_edfa, get_node_restrictions
-from gnpy.tools.json_io import load_equipment, load_network, network_from_json
+from gnpy.core.network import span_loss, build_network, select_edfa, get_node_restrictions, \
+    estimate_srs_power_deviation
+from gnpy.tools.json_io import load_equipment, load_network, network_from_json, load_json
 from gnpy.core.utils import lin2db, automatic_nch, merge_amplifier_restrictions
 from gnpy.core.elements import Fiber, Edfa, Roadm, Multiband_amplifier
-from gnpy.core.parameters import EdfaParams, MultiBandParams
+from gnpy.core.parameters import SimParams, EdfaParams, MultiBandParams
 
 
 TEST_DIR = Path(__file__).parent
@@ -542,3 +545,72 @@ def test_get_node_restrictions(cls, defaultparams, variety_list, booster_list, b
     next_node = Fiber(**fiber_config)
     restrictions = get_node_restrictions(node, prev_node, next_node, equipment, band)
     assert restrictions == expected_restrictions
+
+
+@pytest.mark.usefixtures('set_sim_params')
+@pytest.mark.parametrize('case, site_type, band, expected_gain, expected_tilt, expected_variety, sim_params', [
+    ('design', 'Multiband_amplifier', 'LBAND', 10.0, 0.0, 'std_medium_gain_multiband', False),
+    ('no_design', 'Multiband_amplifier', 'LBAND', 10.0, 0.0, 'std_low_gain_multiband_bis', False),
+    ('type_variety', 'Multiband_amplifier', 'LBAND', 10.0, 0.0, 'std_medium_gain_multiband', False),
+    ('design', 'Multiband_amplifier', 'LBAND', 9.344985, 0.0, 'std_medium_gain_multiband', True),
+    ('no_design', 'Multiband_amplifier', 'LBAND', 9.344985, -0.94256, 'std_low_gain_multiband_bis', True),
+    ('no_design', 'Multiband_amplifier', 'CBAND', 10.980212, -1.60348, 'std_low_gain_multiband_bis', True),
+    ('no_design', 'Fused', 'LBAND', 21.0, 0.0, 'std_medium_gain_multiband', False),
+    ('no_design', 'Fused', 'LBAND', 20.344985, -0.82184, 'std_medium_gain_multiband', True),
+    ('no_design', 'Fused', 'CBAND', 21.773072, -1.40300, 'std_medium_gain_multiband', True),
+    ('design', 'Fused', 'CBAND', 21.214048, 0.0, 'std_medium_gain_multiband', True),
+    ('design', 'Multiband_amplifier', 'CBAND', 11.044233, 0.0, 'std_medium_gain_multiband', True)])
+def test_multiband(case, site_type, band, expected_gain, expected_tilt, expected_variety, sim_params):
+    """Check:
+    - if amplifiers are defined in multiband they are used for design,
+    - if no design is defined,
+        - if type variety is defined: use it for determining bands
+        - if no type_variety autodesign is as expected, design uses OMS defined set of bands
+    EOL is added only once on spans. One span can be one fiber or several fused fibers
+    EOL is then added on the first fiber only.
+    """
+    json_data = network_base(case, site_type)
+    equipment = load_equipment(EQPT_MULTBAND_FILENAME)
+    network = network_from_json(json_data, equipment)
+    p_db = equipment['SI']['default'].power_dbm
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
+                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+
+    if sim_params:
+        SimParams.set_params(load_json(TEST_DIR / 'data' / 'sim_params.json'))
+    build_network(network, equipment, p_db, p_total_db)
+    amp2 = next(n for n in network.nodes() if n.uid == 'east edfa in ILA2')
+    # restore simParams
+    save_sim_params = {"raman_params": SimParams._shared_dict['raman_params'].to_json(),
+                       "nli_params": SimParams._shared_dict['nli_params'].to_json()}
+    SimParams.set_params(save_sim_params)
+    print(amp2.to_json)
+    assert_allclose(amp2.amplifiers[band].effective_gain, expected_gain, atol=1e-5)
+    assert_allclose(amp2.amplifiers[band].tilt_target, expected_tilt, atol=1e-5)
+    assert amp2.type_variety == expected_variety
+
+
+def test_tilt_fused():
+    """check that computed tilt is the same for one span 100km as 2 spans 30 +70 km
+    """
+    design_bands = {'CBAND': {'f_min': 191.3e12, 'f_max': 196.0e12},
+                    'LBAND': {'f_min': 187.0e12, 'f_max': 190.0e12}}
+    save_sim_params = {"raman_params": SimParams._shared_dict['raman_params'].to_json(),
+                       "nli_params": SimParams._shared_dict['nli_params'].to_json()}
+    SimParams.set_params(load_json(TEST_DIR / 'data' / 'sim_params.json'))
+    input_powers = {'CBAND': 0.001, 'LBAND': 0.001}
+    json_data = network_base("design", "Multiband_amplifier", length=100)
+    equipment = load_equipment(EQPT_MULTBAND_FILENAME)
+    network = network_from_json(json_data, equipment)
+    node = next(n for n in network.nodes() if n.uid == 'fiber (SITE1 → ILA1)')
+    tilt_db, tilt_target = estimate_srs_power_deviation(network, node, equipment, design_bands, input_powers)
+    json_data = network_base("design", "Fused", length=50)
+    equipment = load_equipment(EQPT_MULTBAND_FILENAME)
+    network = network_from_json(json_data, equipment)
+    node = next(n for n in network.nodes() if n.uid == 'fiber (ILA1 → ILA2)')
+    fused_tilt_db, fused_tilt_target = \
+        estimate_srs_power_deviation(network, node, equipment, design_bands, input_powers)
+    # restore simParams
+    SimParams.set_params(save_sim_params)
+    assert fused_tilt_db == tilt_db
+    assert fused_tilt_target == tilt_target

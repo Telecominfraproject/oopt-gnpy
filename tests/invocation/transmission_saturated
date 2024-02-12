@@ -33,6 +33,7 @@ Edfa east edfa in Lannion_CAS to Corlay
   type_variety:           test
   effective gain(dB):     21.18
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      6.13
   (including att_in)
   pad att_in (dB):        0.00
@@ -77,6 +78,7 @@ Edfa west edfa in Lorient_KMA to Loudeac
   type_variety:           std_medium_gain
   effective gain(dB):     27.99
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      5.98
   (including att_in)
   pad att_in (dB):        0.00

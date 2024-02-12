@@ -913,19 +913,22 @@ class Edfa(_Node):
 
     @property
     def to_json(self):
-        return {'uid': self.uid,
-                'type': type(self).__name__,
-                'type_variety': self.params.type_variety,
-                'operational': {
-                    'gain_target': round(self.effective_gain, 6) if self.effective_gain else None,
-                    'delta_p': self.delta_p,
-                    'tilt_target': self.tilt_target,  # defined per lambda on the amp band
-                    'out_voa': self.out_voa
-                },
-                'metadata': {
-                    'location': self.metadata['location']._asdict()
-                }
-                }
+        _to_json = {
+            'uid': self.uid,
+            'type': type(self).__name__,
+            'type_variety': self.params.type_variety,
+            'operational': {
+                'gain_target': round(self.effective_gain, 6) if self.effective_gain else None,
+                'delta_p': self.delta_p,
+                'tilt_target': round(self.tilt_target, 5) if self.tilt_target is not None else None,
+                # defined per lambda on the amp band
+                'out_voa': self.out_voa
+            },
+            'metadata': {
+                'location': self.metadata['location']._asdict()
+            }
+        }
+        return _to_json
 
     def __repr__(self):
         return (f'{type(self).__name__}(uid={self.uid!r}, '
@@ -947,7 +950,8 @@ class Edfa(_Node):
         return '\n'.join([f'{type(self).__name__} {self.uid}',
                           f'  type_variety:           {self.params.type_variety}',
                           f'  effective gain(dB):     {self.effective_gain:.2f}',
-                          f'  (before att_in and before output VOA)',
+                          '  (before att_in and before output VOA)',
+                          f'  tilt-target(dB)         {self.tilt_target:.2f}',
                           f'  noise figure (dB):      {nf:.2f}',
                           f'  (including att_in)',
                           f'  pad att_in (dB):        {self.att_in:.2f}',

@@ -72,7 +72,8 @@ def test_equalization_combination_degree(delta_pdb_per_channel, degree, equaliza
                 "preamp_variety_list": [],
                 "booster_variety_list": []
             },
-            "roadm-path-impairments": []
+            "roadm-path-impairments": [],
+            "design_bands": None
         }
     }
     roadm = Roadm(**roadm_config)
@@ -124,7 +125,8 @@ def test_wrong_element_config(equalization_type):
             "restrictions": {
                 "preamp_variety_list": [],
                 "booster_variety_list": []
-            }
+            },
+            "design_bands": None
         },
         "metadata": {
             "location": {
@@ -236,7 +238,8 @@ def test_low_input_power(target_out, delta_pdb_per_channel, correction):
                 "preamp_variety_list": [],
                 "booster_variety_list": []
             },
-            "roadm-path-impairments": []
+            "roadm-path-impairments": [],
+            "design_bands": None
         },
         "metadata": {
             "location": {
@@ -290,7 +293,8 @@ def test_2low_input_power(target_out, delta_pdb_per_channel, correction):
                 "preamp_variety_list": [],
                 "booster_variety_list": []
             },
-            "roadm-path-impairments": []
+            "roadm-path-impairments": [],
+            "design_bands": None
         },
         "metadata": {
             "location": {

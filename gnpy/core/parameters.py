@@ -604,7 +604,7 @@ class EdfaOperational:
         'gain_target': None,
         'delta_p': None,
         'out_voa': None,
-        'tilt_target': 0
+        'tilt_target': None
     }
 
     def __init__(self, **operational):

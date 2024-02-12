@@ -35,6 +35,7 @@ Multiband_amplifier east edfa in Site_A to Site_B
   type_variety:           std_medium_gain_C    type_variety:           std_medium_gain_L  
   effective gain(dB):     20.90                effective gain(dB):     22.19              
   (before att_in and before output VOA)        (before att_in and before output VOA)      
+  tilt-target(dB)         0.00                 tilt-target(dB)         0.00               
   noise figure (dB):      6.38                 noise figure (dB):      6.19               
   (including att_in)                           (including att_in)                         
   pad att_in (dB):        0.00                 pad att_in (dB):        0.00               
@@ -58,6 +59,7 @@ Multiband_amplifier east edfa in Site_B to Site_C
   type_variety:           std_medium_gain_C    type_variety:           std_medium_gain_L  
   effective gain(dB):     18.00                effective gain(dB):     18.00              
   (before att_in and before output VOA)        (before att_in and before output VOA)      
+  tilt-target(dB)         0.00                 tilt-target(dB)         0.00               
   noise figure (dB):      7.38                 noise figure (dB):      7.38               
   (including att_in)                           (including att_in)                         
   pad att_in (dB):        0.00                 pad att_in (dB):        0.00               
@@ -81,6 +83,7 @@ Multiband_amplifier east edfa in Site_C to Site_D
   type_variety:           std_medium_gain_C    type_variety:           std_medium_gain_L  
   effective gain(dB):     19.80                effective gain(dB):     19.80              
   (before att_in and before output VOA)        (before att_in and before output VOA)      
+  tilt-target(dB)         0.00                 tilt-target(dB)         0.00               
   noise figure (dB):      6.63                 noise figure (dB):      6.63               
   (including att_in)                           (including att_in)                         
   pad att_in (dB):        0.00                 pad att_in (dB):        0.00               
@@ -104,6 +107,7 @@ Multiband_amplifier west edfa in Site_D to Site_C
   type_variety:           std_medium_gain_C    type_variety:           std_medium_gain_L  
   effective gain(dB):     21.70                effective gain(dB):     21.70              
   (before att_in and before output VOA)        (before att_in and before output VOA)      
+  tilt-target(dB)         0.00                 tilt-target(dB)         0.00               
   noise figure (dB):      6.25                 noise figure (dB):      6.25               
   (including att_in)                           (including att_in)                         
   pad att_in (dB):        0.00                 pad att_in (dB):        0.00               
