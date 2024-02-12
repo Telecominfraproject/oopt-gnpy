@@ -36,6 +36,7 @@ Edfa Edfa1
   type_variety:           std_low_gain
   effective gain(dB):     15.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      6.62
   (including att_in)
   pad att_in (dB):        0.00

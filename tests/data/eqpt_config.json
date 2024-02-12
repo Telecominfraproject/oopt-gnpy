@@ -162,6 +162,7 @@
         }
     ],
     "SI": [{
+            "type_variety": "default",
             "f_min": 191.3e12,
             "f_max": 196.1e12,
             "baud_rate": 32e9,
@@ -171,7 +172,7 @@
             "roll_off": 0.15,
             "tx_osnr": 100,
             "sys_margins": 0
-            }],
+        }],
       "Transceiver":[
             {
             "type_variety": "vendorA_trx-type1",

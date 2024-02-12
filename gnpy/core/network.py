@@ -12,12 +12,13 @@ from operator import attrgetter
 from collections import namedtuple
 from functools import reduce
 from logging import getLogger
-from typing import Tuple, List, Optional, Union
+from typing import Tuple, List, Optional, Union, Dict
 from networkx import DiGraph
+from numpy import allclose
 import warnings
 
 from gnpy.core import elements
-from gnpy.core.equipment import find_type_varieties
+from gnpy.core.equipment import find_type_variety, find_type_varieties
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.utils import round2float, convert_length, psd2powerdbm, lin2db, watt2dbm, dbm2watt, automatic_nch, \
     find_common_range
@@ -137,7 +138,7 @@ def select_edfa(raman_allowed: bool, gain_target: float, power_target: float, ed
     return selected_edfa.variety, power_reduction
 
 
-def target_power(network, node, equipment):  # get_fiber_dp
+def target_power(network, node, equipment, deviation_db):  # get_fiber_dp
     """Computes target power using J. -L. Auge, V. Curri and E. Le Rouzic,
     Open Design for Multi-Vendor Optical Networks, OFC 2019.
     equation 4
@@ -148,7 +149,8 @@ def target_power(network, node, equipment):  # get_fiber_dp
     SPAN_LOSS_REF = 20
     POWER_SLOPE = 0.3
     dp_range = list(equipment['Span']['default'].delta_power_range_db)
-    node_loss = span_loss(network, node, equipment)
+    node_loss = span_loss(network, node, equipment) + deviation_db
+
     try:
         dp = round2float((node_loss - SPAN_LOSS_REF) * POWER_SLOPE, dp_range[2])
         dp = max(dp_range[0], dp)
@@ -264,6 +266,154 @@ def span_loss(network, node, equipment, input_power=None):
     return loss - gain
 
 
+def estimate_srs_power_deviation(network: DiGraph, last_node, equipment: dict, design_bands: dict, input_powers: dict) \
+        -> List[dict]:
+    """Estimate tilt of power accross the design bands.
+    If Raman flag is on (sim-params), then estimate the bands center frequency power and the
+    power tilt within each band.
+    Uses stimulated_raman_scattering loss_profile. This may be time consuming.
+
+    Args:
+        network: The network object.
+        last_node: The last node (Fiber or RamanFiber) of the considered span. The span may be made of
+        a succession of fiber and fused elements
+        equipment: The equipment parameters dictionary.
+        design_bands: The dictionary of design bands.
+        input_powers: The dictionary of input powers in the fiber span for each design band.
+
+    Returns:
+        A list of dictionnary containing the power at band centers and the tilt within each band.
+    """
+    # Get reference channel parameters
+    roll_off = equipment['SI']['default'].roll_off
+    baud_rate = equipment['SI']['default'].baud_rate
+    spacing = equipment['SI']['default'].spacing
+    tx_osnr = equipment['SI']['default'].tx_osnr
+
+    # Create input spectral information for the first design band
+    band_name0 = list(design_bands.keys())[0]
+    band0 = design_bands[band_name0]
+    spectral_information = \
+        create_input_spectral_information(f_min=band0['f_min'], f_max=band0['f_max'], roll_off=roll_off,
+                                          baud_rate=baud_rate, spacing=spacing,
+                                          tx_osnr=tx_osnr, tx_power=input_powers[band_name0])
+
+    # Create input spectral information for the remaining design bands
+    for band_name, band in list(design_bands.items())[1:]:
+        spectral_information = spectral_information + \
+            create_input_spectral_information(f_min=band['f_min'], f_max=band['f_max'], roll_off=roll_off,
+                                              baud_rate=baud_rate, spacing=spacing,
+                                              tx_osnr=tx_osnr, tx_power=input_powers[band_name])
+
+    # collect preceding nodes Fiber and Fused
+    prev_nodes = [n for n in prev_node_generator(network, last_node)]
+    prev_nodes.append(last_node)
+
+    for elem in prev_nodes:
+        # compute SRS tilt
+        if isinstance(elem, elements.Fiber):
+            # computes the power profile and resulting srs_power_deviation after each fiber span
+            srs = RamanSolver.calculate_stimulated_raman_scattering(spectral_information, fiber=elem)
+            # records per band
+            srs_power_deviation = []
+            center_frequency_powers = []
+            for band_name, band in design_bands.items():
+                # find center frequency power
+                center_frequency = (band['f_max'] + band['f_min']) / 2
+                center_frequency_index = abs(srs.frequency - center_frequency).argmin()
+                center_frequency_power = srs.power_profile[center_frequency_index][-1]
+                center_frequency_powers.append(center_frequency_power / input_powers[band_name])
+                index_f_min = abs(srs.frequency - band['f_min']).argmin()
+                index_f_max = abs(srs.frequency - band['f_max']).argmin()
+                srs_power_deviation.append({'center_frequency_power': center_frequency_power / input_powers[band_name],
+                                            'in_band_power_deviation_db': watt2dbm(srs.power_profile[index_f_min][-1])
+                                            - watt2dbm(srs.power_profile[index_f_max][-1])})
+            # apply the attenuation due to the fiber losses
+            # apply attenuation for possible next fiber in the list
+            # (computes the srs_power_deviation for the whole list)
+            attenuation_fiber = srs.loss_profile[:spectral_information.number_of_channels, -1]
+            spectral_information.apply_attenuation_lin(attenuation_fiber)
+        elif isinstance(elem, elements.Fused):
+            spectral_information.apply_attenuation_db(elem.loss)
+        else:
+            # to be removed when patch is finished
+            raise ValueError('unexpected type. supported types for srs_power_deviation estimation are Fiber and Fused')
+    return srs_power_deviation
+
+
+def compute_band_power_deviation_and_tilt(srs_power_deviation, design_bands: dict, ratio: float = 0.8):
+    """Compute the power difference between bands (at center frequency) and the power tilt within each
+    band.
+
+    Args:
+        srs_power_deviation: The list of dictionnary containing the power at band centers and the tilt within each band.
+        ratio: the ratio applied to compute the band tilt
+    Returns:
+        A tupple of dict containing the relative power deviation with respect to max value, per band in dB and the tilt
+        target to apply for each band.
+    """
+    # if there is no SRS computed, there is no tilt, and the result should be zero for tilt estimation
+    # else, let's use the power difference between bands (due to SRS) to estimate the tilt between bands,
+    # and apply these values with a ratio to the next amplifier gain target, to compensate for this difference.
+    deviation_db = {}
+    tilt_target = {}
+    max_center_frequency_powers = max([e['center_frequency_power'] for e in srs_power_deviation])
+    for band_name, tilt_elem in zip(design_bands.keys(), srs_power_deviation):
+        deviation_db[band_name] = watt2dbm(ratio * max_center_frequency_powers) \
+                                  - watt2dbm(tilt_elem['center_frequency_power'])
+        tilt_target[band_name] = tilt_elem['in_band_power_deviation_db']
+    if allclose([t['in_band_power_deviation_db'] for t in srs_power_deviation], 0, atol=1e-9):
+        for band_name in design_bands.keys():
+            deviation_db[band_name] = 0.0
+            tilt_target[band_name] = 0.0
+    return deviation_db, tilt_target
+
+
+def compute_tilt_using_previous_and_next_spans(prev_node, next_node, design_bands: List[str],
+        input_powers: Dict[str, float], equipment: dict, network: DiGraph, prev_weight: float = 1.0,
+        next_weight: float = 0) -> Tuple[Dict[str, float], Dict[str, float]]:
+    """Compute the power deviation per band and the tilt target based on previous and next spans.
+
+    This function estimates the power deviation between center frequencies due to previous span and
+    the tilt within each band using the previous and next fiber spans with a weight (default ony uses
+    previous span contribution).
+
+    Args:
+        prev_node: The previous node in the network.
+        next_node: The next node in the network.
+        design_bands (List[str]): A list of design bands for which the tilt is computed.
+        input_powers (Dict[str, float]): A dictionary of input powers for each design band.
+        equipment (dict): Equipment specifications.
+        network (DiGraph): The network graph.
+        prev_weight (float): Weight for the previous tilt in the target calculation (default is 1.0).
+        next_weight (float): Weight for the next tilt in the target calculation (default is 0.0).
+
+    Returns:
+        Tuple[Dict[str, float], Dict[str, float]]:
+            - A dictionary containing the tilt estimation for each design band.
+            - A dictionary containing the tilt target for each design band.
+    """
+    tilt_estimation = {band: 0 for band in design_bands}
+    prev_tilt_target = {band: 0 for band in design_bands}
+    next_tilt_target = {band: 0 for band in design_bands}
+    if isinstance(prev_node, (elements.Fiber)):
+        # get the estimated tilt on previous span
+        srs_power_deviation = estimate_srs_power_deviation(network, prev_node, equipment, design_bands=design_bands,
+                                                           input_powers=input_powers)
+        tilt_estimation, prev_tilt_target = compute_band_power_deviation_and_tilt(srs_power_deviation,
+                                                                                  design_bands=design_bands, ratio=0.86)
+    if isinstance(next_node, (elements.Fiber)):
+        # get estimated tilt on next span
+        # use the same input powers (approximation!) since current amp dp and voa have not yet been computed
+        srs_power_deviation = estimate_srs_power_deviation(network, find_last_node(network, next_node), equipment,
+                                                           design_bands=design_bands, input_powers=input_powers)
+        _, next_tilt_target = compute_band_power_deviation_and_tilt(srs_power_deviation, design_bands=design_bands,
+                                                                    ratio=0.86)
+    tilt_target = {band_name: prev_weight * prev_t + next_weight * next_tilt_target[band_name]
+                   for band_name, prev_t in prev_tilt_target.items()}
+    return tilt_estimation, tilt_target
+
+
 def find_first_node(network, node):
     """Fused node interest:
     returns the 1st node at the origin of a succession of fused nodes
@@ -340,8 +490,8 @@ def check_oms_single_type(oms_edges: List[Tuple]) -> List[str]:
     return list(types)
 
 
-def compute_gain_power_target(node: elements.Edfa, prev_node, next_node, power_mode: bool, prev_voa: float, prev_dp: float,
-                              pref_total_db: float, network: DiGraph, equipment: dict) \
+def compute_gain_power_and_tilt_target(node: elements.Edfa, prev_node, next_node, power_mode: bool, prev_voa: float, prev_dp: float,
+                                       pref_total_db: float, network: DiGraph, equipment: dict, deviation_db: float, tilt_target: float) \
         -> Tuple[float, float, float, float, float]:
     """Computes the gain and power targets for a given EDFA node.
 
@@ -355,6 +505,8 @@ def compute_gain_power_target(node: elements.Edfa, prev_node, next_node, power_m
         pref_total_db (float): The reference total power in dB.
         network (DiGraph): The network.
         equipment (dict): A dictionary containing equipment specifications.
+        deviation_db (float): Power deviation due to band tilt during propagation before crossing this node.
+        tilt_target (float) : Tilt target to be configured on this amp for its amplification band.
 
     Returns:
         Tuple[float, float, float, float, float]: A tuple containing:
@@ -367,18 +519,22 @@ def compute_gain_power_target(node: elements.Edfa, prev_node, next_node, power_m
     node_loss = span_loss(network, prev_node, equipment)
     voa = node.out_voa if node.out_voa else 0
     if node.operational.delta_p is None:
-        dp = target_power(network, next_node, equipment) + voa
+        dp = target_power(network, next_node, equipment, deviation_db) + voa
     else:
         dp = node.operational.delta_p
     if node.effective_gain is None or power_mode:
-        gain_target = node_loss + dp - prev_dp + prev_voa
+        gain_target = node_loss + deviation_db + dp - prev_dp + prev_voa
     else:  # gain mode with effective_gain
         gain_target = node.effective_gain
-        dp = prev_dp - node_loss - prev_voa + gain_target
+        dp = prev_dp - (node_loss + deviation_db) - prev_voa + gain_target
 
+    if node.operational.tilt_target is None:
+        _tilt_target = -tilt_target
+    else:
+        _tilt_target = node.operational.tilt_target
     power_target = pref_total_db + dp
 
-    return gain_target, power_target, dp, voa, node_loss
+    return gain_target, power_target, _tilt_target, dp, voa, node_loss
 
 
 def filter_edfa_list_based_on_targets(edfa_eqpt: dict, power_target: float, gain_target: float,
@@ -472,8 +628,8 @@ def filter_edfa_list_based_on_targets(edfa_eqpt: dict, power_target: float, gain
 
 def preselect_multiband_amps(_amplifiers: dict, prev_node, next_node, power_mode: bool, prev_voa: dict, prev_dp: dict,
                              pref_total_db: float, network: DiGraph, equipment: dict, restrictions: List,
-                             _design_bands: dict):
-    """Preselect multiband amplifiers that are eligible with respect to power and gain target
+                             _design_bands: dict, deviation_db: dict, tilt_target: dict):
+    """Preselect multiband amplifiers that are eligible with respect to power, gain and tilt target
     on all the bands.
 
     At this point, the restrictions list already includes constraint related to variety_list,
@@ -493,6 +649,8 @@ def preselect_multiband_amps(_amplifiers: dict, prev_node, next_node, power_mode
         equipment: The equipment.
         restrictions (list of equipment name): The restrictions.
         _design_bands (dict): The design bands.
+        deviation_db (dict): The tilt power per band.
+        tilt_target (dict): The tilt target in each band.
 
     Returns:
         list: A list of preselected multiband amplifiers that are eligible for all the bands.
@@ -508,12 +666,12 @@ def preselect_multiband_amps(_amplifiers: dict, prev_node, next_node, power_mode
                      for m in _selected_type_varieties for t in equipment['Edfa'][m].multi_band
                      if equipment['Edfa'][t].f_min <= _design_bands[band]['f_min']
                      and equipment['Edfa'][t].f_max >= _design_bands[band]['f_max']}
-        # get the target gain and power based on previous propagation
-        gain_target, power_target, _, _, _ = \
-            compute_gain_power_target(amp, prev_node, next_node, power_mode, prev_voa[band], prev_dp[band],
-                                      pref_total_db, network, equipment)
+        # get the target gain, power and tilt based on previous propagation
+        gain_target, power_target, _tilt_target, _, _, _ = \
+            compute_gain_power_and_tilt_target(amp, prev_node, next_node, power_mode, prev_voa[band], prev_dp[band],
+                                               pref_total_db, network, equipment, deviation_db[band], tilt_target[band])
         _selection = [a.variety
-                      for a in filter_edfa_list_based_on_targets(edfa_eqpt, power_target, gain_target, None,
+                      for a in filter_edfa_list_based_on_targets(edfa_eqpt, power_target, gain_target, _tilt_target,
                                                                  target_extended_gain)]
         listes = find_type_varieties(_selection, equipment)
         _selected_type_varieties = []
@@ -525,8 +683,9 @@ def preselect_multiband_amps(_amplifiers: dict, prev_node, next_node, power_mode
 
 
 def set_one_amplifier(node: elements.Edfa, prev_node, next_node, power_mode: bool, prev_voa: float, prev_dp: float,
-                      pref_ch_db: float, pref_total_db: float, network: DiGraph, restrictions: List[str],
-                      equipment: dict, verbose: bool) -> Tuple[float, float]:
+                      pref_ch_db: float, pref_total_db: float, network: DiGraph,  restrictions: List[str],
+                      equipment: dict, verbose: bool, deviation_db: float = 0.0, tilt_target: float = 0.0) \
+        -> Tuple[float, float]:
     """Set the EDFA amplifier configuration based on power targets:
 
     This function adjusts the amplifier settings according to the specified parameters and
@@ -550,9 +709,9 @@ def set_one_amplifier(node: elements.Edfa, prev_node, next_node, power_mode: boo
     Returns:
         tuple[float, float]: The updated delta power and variable optical attenuator values.
     """
-    gain_target, power_target, dp, voa, node_loss = \
-        compute_gain_power_target(node, prev_node, next_node, power_mode, prev_voa, prev_dp,
-                                  pref_total_db, network, equipment)
+    gain_target, power_target, _tilt_target, dp, voa, node_loss = \
+        compute_gain_power_and_tilt_target(node, prev_node, next_node, power_mode, prev_voa, prev_dp,
+                                           pref_total_db, network, equipment, deviation_db, tilt_target)
     if isinstance(prev_node, elements.Fiber):
         max_fiber_lineic_loss_for_raman = \
             equipment['Span']['default'].max_fiber_lineic_loss_for_raman * 1e-3  # dB/m
@@ -604,6 +763,7 @@ def set_one_amplifier(node: elements.Edfa, prev_node, next_node, power_mode: boo
 
     node.delta_p = dp if power_mode else None
     node.effective_gain = gain_target
+    node.tilt_target = _tilt_target
     # if voa is not set, then set it and possibly optimize it with gain and update delta_p and
     # effective_gain values
     set_amplifier_voa(node, power_target, power_mode)
@@ -730,7 +890,12 @@ def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elem
             voa[band_name] = 0
 
         for node, next_node in oms_nodes:
-            # go through all nodes in the OMS (loop until next Roadm instance)
+            # go through all nodes in the OMS
+            input_powers = {band_name: dbm2watt(pref_ch_db + prev_dp[band_name] - prev_voa[band_name])
+                            for band_name in _design_bands}
+            deviation_db, tilt_target = \
+                compute_tilt_using_previous_and_next_spans(prev_node, next_node, _design_bands, input_powers,
+                                                           equipment, network)
             if isinstance(node, elements.Edfa):
                 band_name, _ = next((n, b) for n, b in _design_bands.items())
                 restrictions = get_node_restrictions(node, prev_node, next_node, equipment, _design_bands)
@@ -755,7 +920,8 @@ def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elem
                     restrictions_edfa = \
                         preselect_multiband_amps(node.amplifiers, prev_node, next_node, power_mode,
                                                  prev_voa, prev_dp, pref_total_db,
-                                                 network, equipment, restrictions_multi, _design_bands)
+                                                 network, equipment, restrictions_multi, _design_bands,
+                                                 deviation_db=deviation_db, tilt_target=tilt_target)
                 for band_name, amp in node.amplifiers.items():
                     _restrictions = [n for n in restrictions_edfa
                                      if equipment['Edfa'][n].f_min <= _design_bands[band_name]['f_min']
@@ -763,7 +929,16 @@ def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elem
                     dp[band_name], voa[band_name] = \
                         set_one_amplifier(amp, prev_node, next_node, power_mode,
                                           prev_voa[band_name], prev_dp[band_name],
-                                          pref_ch_db, pref_total_db, network, _restrictions, equipment, verbose)
+                                          pref_ch_db, pref_total_db, network, _restrictions, equipment, verbose,
+                                          deviation_db=deviation_db[band_name], tilt_target=tilt_target[band_name])
+                amps_type_varieties = [a.type_variety for a in node.amplifiers.values()]
+                try:
+                    node.type_variety = find_type_variety(amps_type_varieties, equipment)
+                except ConfigurationError as e:
+                    # should never come here... only for debugging
+                    msg = f'In {node.uid}: {e}'
+                    raise ConfigurationError(msg)
+
             prev_dp.update(**dp)
             prev_voa.update(**voa)
             prev_node = node

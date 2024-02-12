@@ -34,6 +34,7 @@ Edfa booster A
   type_variety:           std_medium_gain
   effective gain(dB):     20.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      6.58
   (including att_in)
   pad att_in (dB):        0.00
@@ -56,6 +57,7 @@ Edfa Edfa1
   type_variety:           test
   effective gain(dB):     16.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      8.86
   (including att_in)
   pad att_in (dB):        0.00
@@ -78,6 +80,7 @@ Edfa Edfa2
   type_variety:           test_fixed_gain
   effective gain(dB):     16.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      9.00
   (including att_in)
   pad att_in (dB):        4.00
@@ -100,6 +103,7 @@ Edfa Edfa3
   type_variety:           test
   effective gain(dB):     16.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      8.86
   (including att_in)
   pad att_in (dB):        0.00
@@ -122,6 +126,7 @@ Edfa Edfa4
   type_variety:           test_fixed_gain
   effective gain(dB):     16.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      9.00
   (including att_in)
   pad att_in (dB):        4.00
@@ -144,6 +149,7 @@ Edfa Edfa5
   type_variety:           test
   effective gain(dB):     16.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      8.86
   (including att_in)
   pad att_in (dB):        0.00
@@ -163,6 +169,7 @@ Edfa booster C
   type_variety:           std_medium_gain
   effective gain(dB):     20.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      6.58
   (including att_in)
   pad att_in (dB):        0.00
@@ -185,6 +192,7 @@ Edfa Edfa6
   type_variety:           test_fixed_gain
   effective gain(dB):     16.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      9.00
   (including att_in)
   pad att_in (dB):        4.00
@@ -207,6 +215,7 @@ Edfa Edfa7
   type_variety:           test
   effective gain(dB):     16.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      8.86
   (including att_in)
   pad att_in (dB):        0.00
@@ -229,6 +238,7 @@ Edfa Edfa8
   type_variety:           test_fixed_gain
   effective gain(dB):     16.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      9.00
   (including att_in)
   pad att_in (dB):        4.00
@@ -251,6 +261,7 @@ Edfa Edfa9
   type_variety:           test
   effective gain(dB):     16.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      8.86
   (including att_in)
   pad att_in (dB):        0.00
@@ -273,6 +284,7 @@ Edfa Edfa10
   type_variety:           test_fixed_gain
   effective gain(dB):     16.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      9.00
   (including att_in)
   pad att_in (dB):        4.00
@@ -292,6 +304,7 @@ Edfa booster D
   type_variety:           std_medium_gain
   effective gain(dB):     20.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      6.58
   (including att_in)
   pad att_in (dB):        0.00
@@ -314,6 +327,7 @@ Edfa Edfa11
   type_variety:           test
   effective gain(dB):     16.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      8.86
   (including att_in)
   pad att_in (dB):        0.00
@@ -336,6 +350,7 @@ Edfa Edfa12
   type_variety:           test_fixed_gain
   effective gain(dB):     16.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      9.00
   (including att_in)
   pad att_in (dB):        4.00
@@ -355,6 +370,7 @@ Edfa booster E
   type_variety:           std_medium_gain
   effective gain(dB):     20.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      6.58
   (including att_in)
   pad att_in (dB):        0.00
@@ -377,6 +393,7 @@ Edfa Edfa13
   type_variety:           test
   effective gain(dB):     16.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      8.86
   (including att_in)
   pad att_in (dB):        0.00
@@ -399,6 +416,7 @@ Edfa Edfa14
   type_variety:           test_fixed_gain
   effective gain(dB):     16.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      9.00
   (including att_in)
   pad att_in (dB):        4.00
@@ -421,6 +439,7 @@ Edfa Edfa15
   type_variety:           test
   effective gain(dB):     16.00
   (before att_in and before output VOA)
+  tilt-target(dB)         0.00
   noise figure (dB):      8.86
   (including att_in)
   pad att_in (dB):        0.00
