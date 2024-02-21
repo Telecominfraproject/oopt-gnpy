@@ -51,7 +51,7 @@ class _JsonThing:
         clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
         for k, v in default_values.items():
             setattr(self, k, clean_kwargs.get(k, v))
-            if k not in clean_kwargs and name != 'Amp' and v is not None:
+            if k not in clean_kwargs and name != 'Amp' and v is not None and v != []:
                 # do not show this warning if the default value is None
                 msg = f'\n\tWARNING missing {k} attribute in eqpt_config.json[{name}]' \
                     + f'\n\tdefault value is {k} = {v}\n'
