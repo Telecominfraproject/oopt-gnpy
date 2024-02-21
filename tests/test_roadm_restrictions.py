@@ -595,16 +595,16 @@ def test_roadm_per_degree_impairments(type_variety, from_degree, to_degree, impa
     json_data['Roadm'][2]['roadm-path-impairments'] = [
         {
             "roadm-path-impairments-id": 1,
-            "roadm-add-path": {
+            "roadm-add-path": [{
                 "roadm-osnr": 41,
-            }
+            }]
         }, {
             "roadm-path-impairments-id": 3,
-            "roadm-add-path": {
+            "roadm-add-path": [{
                 "roadm-inband-crosstalk": 0,
                 "roadm-osnr": 20,
                 "roadm-noise-figure": 23
-            }
+            }]
         }]
     equipment = _equipment_from_json(json_data, EQPT_LIBRARY_NAME)
     assert equipment['Roadm']['default'].type_variety == 'default'
