@@ -119,7 +119,7 @@ class RoadmParams(Parameters):
         for path_impairment in path_impairments_list:
             index = path_impairment['roadm-path-impairments-id']
             path_type = next(key for key in path_impairment if key in authorized_path_types.keys())
-            impairment_dict = dict({'path-type': authorized_path_types[path_type]}, **path_impairment[path_type])
+            impairment_dict = dict({'path-type': authorized_path_types[path_type]}, **path_impairment[path_type][0])
             roadm_path_impairments[index] = RoadmImpairment(impairment_dict)
         return roadm_path_impairments
 
