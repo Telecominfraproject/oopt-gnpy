@@ -921,7 +921,7 @@ def test_tx_power(tx_power_dbm):
     si = roadm(si, "east edfa in Lannion_CAS to Corlay", "trx Lannion_CAS")
     # Checks that if tx_power on add port is below min required power, its equalization target can not be met
     add_max_loss = next(e for e in getattr(equipment['Roadm']['example_detailed_impairments'], 'roadm-path-impairments')
-                        if 'roadm-add-path' in e)['roadm-add-path']['roadm-maxloss']
+                        if 'roadm-add-path' in e)['roadm-add-path'][0]['roadm-maxloss']
     min_required_add_power = -20 + add_max_loss
     power_reduction = max(0, min_required_add_power - tx_power_dbm)
     assert_allclose(si.signal, dbm2watt(array([-20, -20 - power_reduction, -20])), rtol=1e-5)
