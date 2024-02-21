@@ -232,7 +232,7 @@
             "roadm-path-impairments": [
                 {
                     "roadm-path-impairments-id": 0,
-                    "roadm-express-path": {
+                    "roadm-express-path": [{
                         "frequency-range": {
                             "lower-frequency": 191.3e12,
                             "upper-frequency": 196.1e12
@@ -242,10 +242,10 @@
                         "roadm-pdl": 0,
                         "roadm-inband-crosstalk": 0,
                         "roadm-maxloss": 16.5
-                        }
+                        }]
                 }, {
                     "roadm-path-impairments-id": 1,
-                    "roadm-add-path": {
+                    "roadm-add-path": [{
                         "frequency-range": {
                             "lower-frequency": 191.3e12,
                             "upper-frequency": 196.1e12
@@ -258,10 +258,10 @@
                         "roadm-pmax": 2.5,
                         "roadm-osnr": 41,
                         "roadm-noise-figure": 23
-                    }
+                    }]
                 }, {
                     "roadm-path-impairments-id": 2,
-                    "roadm-drop-path": {
+                    "roadm-drop-path": [{
                         "frequency-range": {
                             "lower-frequency": 191.3e12,
                             "upper-frequency": 196.1e12
@@ -278,7 +278,7 @@
                         "roadm-ptyp": -12,
                         "roadm-osnr": 41,
                         "roadm-noise-figure": 15
-                    }
+                    }]
                 }
             ]
         }
