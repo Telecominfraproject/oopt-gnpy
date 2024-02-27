@@ -54,7 +54,7 @@ class RamanParams(Parameters):
 
 class NLIParams(Parameters):
     def __init__(self, method='gn_model_analytic', dispersion_tolerance=1, phase_shift_tolerance=0.1,
-                 computed_channels=None):
+                 computed_channels=None, computed_number_of_channels=None):
         """Simulation parameters used within the Nli Solver
 
         :params method: formula for NLI calculation
@@ -66,6 +66,7 @@ class NLIParams(Parameters):
         self.dispersion_tolerance = dispersion_tolerance
         self.phase_shift_tolerance = phase_shift_tolerance
         self.computed_channels = computed_channels
+        self.computed_number_of_channels = computed_number_of_channels
 
     def to_json(self):
         return {"method": self.method,

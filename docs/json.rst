@@ -333,8 +333,26 @@ See ``delta_power_range_db`` for more explaination.
 |                                             |           | from `arXiv:1710.02225                      |
 |                                             |           | <https://arxiv.org/abs/1710.02225>`_).      |
 +---------------------------------------------+-----------+---------------------------------------------+
-| ``nli_params.computed_channels``            | (number)  | The channels on which the NLI is            |
-|                                             |           | explicitly evaluated.                       |
+| ``nli_params.computed_channels``            | (list     | Optional. The exact channel indices         |
+|                                             | of        | (starting from 1) on which the NLI is       |
+|                                             | numbers)  | explicitly evaluated.                       |
+|                                             |           | The NLI of the other channels is            |
+|                                             |           | interpolated using ``numpy.interp``.        |
+|                                             |           | In a C-band simulation with 96 channels in  |
+|                                             |           | a 50 GHz spacing fix-grid we recommend at   |
+|                                             |           | one computed channel every 20 channels.     |
+|                                             |           | If this option is present, the next option  |
+|                                             |           | "computed_number_of_channels" is ignored.   |
+|                                             |           | If none of the options are present, the NLI |
+|                                             |           | is computed for all channels (no            |
+|                                             |           | interpolation)                              |
++---------------------------------------------+-----------+---------------------------------------------+
+| ``nli_params.computed_number_of_channels``  | (number)  | Optional. The number of channels on which   |
+|                                             |           | the NLI is explicitly evaluated.            |
+|                                             |           | The channels are                            |
+|                                             |           | evenly selected between the first and the   |
+|                                             |           | last carrier of the current propagated      |
+|                                             |           | spectrum.                                   |
 |                                             |           | The NLI of the other channels is            |
 |                                             |           | interpolated using ``numpy.interp``.        |
 |                                             |           | In a C-band simulation with 96 channels in  |
