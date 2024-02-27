@@ -304,7 +304,9 @@ class NliSolver:
             nli = sum(nli_matrix, 1)
         elif 'ggn_spectrally_separated' in sim_params.nli_params.method:
             if sim_params.nli_params.computed_channels is not None:
-                cut_indices = array(sim_params.nli_params.computed_channels) - 1
+                _temp = ((array(sim_params.nli_params.computed_channels) < len(spectral_info.channel_number)) * sim_params.nli_params.computed_channels)
+                _temp = [e for e in _temp if e > 0 ]
+                cut_indices = array(_temp) - 1
             else:
                 cut_indices = array(spectral_info.channel_number) - 1
 
