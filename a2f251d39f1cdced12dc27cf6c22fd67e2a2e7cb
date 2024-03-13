@@ -16,6 +16,24 @@
       "message": "Can you please explain the reasoning behind the change here, in a similar way like you described that during the call? That way, we can follow the chain of thought in future as well.",
       "revId": "a2f251d39f1cdced12dc27cf6c22fd67e2a2e7cb",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "274ecf0b_bc723727",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-03-13T17:54:24Z",
+      "side": 1,
+      "message": "I am using the --sim-params option with the gnpy-path-request case on network instance that have OMS with different bandwidth and services with different spacings. so sometimes I have 75 channels, sometimes 96, sometimes 88, sometines, 40 depending on the transceiver type and the selected path. if I define the \"computed_channels\": [1, 18, 37, 56, 75, 96], then simulation will crash because some services do not have this nb of carriers to be simulated (full load case), if I use the smallest nb   \"computed_channels\": [1, 18, 37], then I do not simulate properly for the service with larger amount of channels.\nSo my idea was to define a vector with the largest case: and filter out the channels that are above the nb of carriers for the propagated spectrum.\nBut when I do that, I change the accuracy: for some service I compute with 3 channels, and for others with 6, in this example. I understood from today discussion that it would be better to keep the same amount of channels (let\u0027s say 6) and compute the channel index acccordingly: for example use [1, 9, 17, 24, 32, 40] for the 40 channel case and  [1, 20, 39, 58, 77, 96] to have the same accuracy.\nThe new proposal is the use a new parameter: let\u0027s call it computed_number_of_channels \u003d Int\nand use a formula like computed_channels \u003d [round(i * (nb_carriers -1)/(computed_number_of_channels -1) for i in range(0,computed_number_of_channels)]\n\u003e\u003e\u003e nb_carriers \u003d 40\n\u003e\u003e\u003e [round(i * (nb_carriers -1)/(computed_number_of_channels -1)) for i in range(0,computed_number_of_channels)]\n[0, 8, 16, 23, 31, 39]\n\u003e\u003e\u003e nb_carriers \u003d 96\n\u003e\u003e\u003e [round(i * (nb_carriers -1)/(computed_number_of_channels -1)) for i in range(0,computed_number_of_channels)]\n[0, 19, 38, 57, 76, 95]",
+      "parentUuid": "0888da15_3e7e920a",
+      "revId": "a2f251d39f1cdced12dc27cf6c22fd67e2a2e7cb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
