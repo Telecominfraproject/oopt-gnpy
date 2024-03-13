@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0888da15_3e7e920a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2024-03-13T16:12:08Z",
+      "side": 1,
+      "message": "Can you please explain the reasoning behind the change here, in a similar way like you described that during the call? That way, we can follow the chain of thought in future as well.",
+      "revId": "a2f251d39f1cdced12dc27cf6c22fd67e2a2e7cb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
