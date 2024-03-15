@@ -59,7 +59,7 @@ Further Instructions for Use
 Simulations are driven by a set of `JSON <docs/json.rst>`__ or `XLS <docs/excel.rst>`__ files.
 
 The ``gnpy-transmission-example`` script propagates a spectrum of channels at 32 Gbaud, 50 GHz spacing and 0 dBm/channel. 
-Launch power can be overridden by using the ``--power`` argument.
+Launch power in fiber spans can be overridden by using the ``--power`` argument.
 Spectrum information is not yet parametrized but can be modified directly in the ``eqpt_config.json`` (via the ``SpectralInformation`` -SI- structure) to accommodate any baud rate or spacing.
 The number of channel is computed based on ``spacing`` and ``f_min``, ``f_max`` values.
 
