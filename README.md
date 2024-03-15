@@ -23,7 +23,7 @@ Read our [documentation](https://gnpy.readthedocs.io/), learn from the demos, an
 
 This example demonstrates how GNPy can be used to check the expected SNR at the end of the line by varying the channel input power:
 
-![Running a simple simulation example](https://telecominfraproject.github.io/oopt-gnpy/docs/images/transmission_main_example.svg)
+![Running a simple simulation example](docs/images/gnpy-transmission-example.svg)
 
 GNPy can do much more, including acting as a Path Computation Engine, tracking bandwidth requests, or advising the SDN controller about a best possible path through a large DWDM network.
 Learn more about this [in the documentation](https://gnpy.readthedocs.io/), or give it a [try online at `gnpy.app`](https://gnpy.app/):
