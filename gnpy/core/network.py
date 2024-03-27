@@ -19,6 +19,7 @@ from gnpy.core.utils import round2float, convert_length, psd2powerdbm, lin2db, w
 from gnpy.core.info import ReferenceCarrier, create_input_spectral_information
 from gnpy.tools import json_io
 from gnpy.core.parameters import SimParams
+from gnpy.core.science_utils import RamanSolver
 
 
 logger = getLogger(__name__)
@@ -141,7 +142,6 @@ def target_power(network, node, equipment):  # get_fiber_dp
     POWER_SLOPE = 0.3
     dp_range = list(equipment['Span']['default'].delta_power_range_db)
     node_loss = span_loss(network, node, equipment)
-
     try:
         dp = round2float((node_loss - SPAN_LOSS_REF) * POWER_SLOPE, dp_range[2])
         dp = max(dp_range[0], dp)
@@ -187,63 +187,74 @@ def next_node_generator(network, node):
         yield from next_node_generator(network, next_node)
 
 
-def estimate_raman_gain(node, equipment):
+def estimate_raman_gain(node, equipment, power_dbm):
     """If node is RamanFiber, then estimate the possible Raman gain if any
-    for this purpose propagate a fake signal in a copy.
-    to be accurate the nb of channel should be the same as in SI, but this increases computation time
+    for this purpose computes stimulated_raman_scattering loss_profile. This may be time consuming.
     """
-    f_min = equipment['SI']['default'].f_min
-    f_max = equipment['SI']['default'].f_max
-    roll_off = equipment['SI']['default'].roll_off
-    baud_rate = equipment['SI']['default'].baud_rate
-    power_dbm = equipment['SI']['default'].power_dbm
-    power = dbm2watt(equipment['SI']['default'].power_dbm)
-    spacing = equipment['SI']['default'].spacing
-    tx_osnr = equipment['SI']['default'].tx_osnr
-
-    sim_params = {
-        "raman_params": {
-            "flag": True,
-            "result_spatial_resolution": 10e3,
-            "solver_spatial_resolution": 50
-        },
-        "nli_params": {
-            "method": "ggn_spectrally_separated",
-            "dispersion_tolerance": 1,
-            "phase_shift_tolerance": 0.1,
-            "computed_channels": [1, 18, 37, 56, 75]
-        }
-    }
     if isinstance(node, elements.RamanFiber):
+        if hasattr(node, "estimated_gain"):
+            return node.estimated_gain
+        f_min = equipment['SI']['default'].f_min
+        f_max = equipment['SI']['default'].f_max
+        roll_off = equipment['SI']['default'].roll_off
+        baud_rate = equipment['SI']['default'].baud_rate
+        power = dbm2watt(power_dbm)
+        spacing = equipment['SI']['default'].spacing
+        tx_osnr = equipment['SI']['default'].tx_osnr
+
+        # reduce the nb of channels to speed up
+        spacing = spacing * 3
+        power = power * 3
+
+        sim_params = {
+            "raman_params": {
+                "flag": True,
+                "result_spatial_resolution": 50e3,
+                "solver_spatial_resolution": 100
+            }
+        }
+
         # in order to take into account gain generated in RamanFiber, propagate in the RamanFiber with
-        # SI reference channel.
-        spectral_info_input = create_input_spectral_information(f_min=f_min, f_max=f_max, roll_off=roll_off,
-                                                                baud_rate=baud_rate, power=power, spacing=spacing,
-                                                                tx_osnr=tx_osnr)
-        n_copy = deepcopy(node)
-        # need to set ref_pch_in_dbm in order to correctly run propagate of the element, because this
-        # setting has not yet been done by autodesign
-        n_copy.ref_pch_in_dbm = power_dbm
+        if hasattr(node, "estimated_gain"):
+            # do not compute twice to save on time
+            return node.estimated_gain
+        spectral_info = create_input_spectral_information(f_min=f_min, f_max=f_max, roll_off=roll_off,
+                                                          baud_rate=baud_rate, power=power, spacing=spacing,
+                                                          tx_osnr=tx_osnr)
+        pin = watt2dbm(sum(spectral_info.signal))
+        attenuation_in_db = node.params.con_in + node.params.att_in
+        spectral_info.apply_attenuation_db(attenuation_in_db)
+        save_sim_params = {"raman_params": SimParams._shared_dict['raman_params'].to_json(),
+                           "nli_params": SimParams._shared_dict['nli_params'].to_json()}
         SimParams.set_params(sim_params)
-        pin = watt2dbm(sum(spectral_info_input.signal))
-        spectral_info_out = n_copy(spectral_info_input)
-        pout = watt2dbm(sum(spectral_info_out.signal))
-        estimated_gain = pout - pin + node.loss
+        stimulated_raman_scattering = RamanSolver.calculate_stimulated_raman_scattering(spectral_info, node)
+        attenuation_fiber = stimulated_raman_scattering.loss_profile[:spectral_info.number_of_channels, -1]
+        spectral_info.apply_attenuation_lin(attenuation_fiber)
+        attenuation_out_db = node.params.con_out
+        spectral_info.apply_attenuation_db(attenuation_out_db)
+        pout = watt2dbm(sum(spectral_info.signal))
+        estimated_loss = pin - pout
+        estimated_gain = node.loss - estimated_loss
+        node.estimated_gain = estimated_gain
+        SimParams.set_params(save_sim_params)
         return round(estimated_gain, 2)
     else:
         return 0.0
 
 
-def span_loss(network, node, equipment):
-    """Total loss of a span (Fiber and Fused nodes) which contains the given node"""
+def span_loss(network, node, equipment, input_power=None):
+    """Total loss of a span (Fiber and Fused nodes) which contains the given node
+    Do not recompute, if it was already computed: records it in design_span_loss"""
+    if hasattr(node, "design_span_loss"):
+        return node.design_span_loss
     loss = node.loss if node.passive else 0
     loss += sum(n.loss for n in prev_node_generator(network, node))
     loss += sum(n.loss for n in next_node_generator(network, node))
     # add the possible Raman gain
-    gain = estimate_raman_gain(node, equipment)
-    gain += sum(estimate_raman_gain(n, equipment) for n in prev_node_generator(network, node))
-    gain += sum(estimate_raman_gain(n, equipment) for n in next_node_generator(network, node))
-
+    gain = estimate_raman_gain(node, equipment, input_power)
+    gain += sum(estimate_raman_gain(n, equipment, input_power) for n in prev_node_generator(network, node))
+    gain += sum(estimate_raman_gain(n, equipment, input_power) for n in next_node_generator(network, node))
+    node.design_span_loss = loss - gain
     return loss - gain
 
 
@@ -399,7 +410,8 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
                     node.target_pch_out_dbm = round(node.delta_p + pref_ch_db, 2)
                 elif node.delta_p is None:
                     node.target_pch_out_dbm = None
-
+            elif isinstance(node, elements.RamanFiber):
+                _ = span_loss(network, node, equipment, input_power=pref_ch_db + dp)
             prev_dp = dp
             prev_voa = voa
             prev_node = node
@@ -701,6 +713,9 @@ def add_fiber_padding(network, fibers, padding, equipment):
         next_node = get_next_node(fiber, network)
         if isinstance(next_node, elements.Fused):
             continue
+        # do not pad if this is a Raman Fiber
+        if isinstance(fiber, elements.RamanFiber):
+            continue
         this_span_loss = span_loss(network, fiber, equipment)
         if this_span_loss < padding:
             # add a padding att_in at the input of the 1st fiber:
@@ -710,6 +725,7 @@ def add_fiber_padding(network, fibers, padding, equipment):
             # just after a roadm: need to check that first_fiber is really a fiber
             if isinstance(first_fiber, elements.Fiber):
                 first_fiber.params.att_in = first_fiber.params.att_in + padding - this_span_loss
+                first_fiber.design_span_loss += first_fiber.params.att_in
 
 
 def add_missing_elements_in_network(network, equipment):

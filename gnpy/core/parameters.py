@@ -46,6 +46,11 @@ class RamanParams(Parameters):
         self.result_spatial_resolution = result_spatial_resolution  # [m]
         self.solver_spatial_resolution = solver_spatial_resolution  # [m]
 
+    def to_json(self):
+        return {"flag": self.flag,
+                "result_spatial_resolution": self.result_spatial_resolution,
+                "solver_spatial_resolution": self.solver_spatial_resolution}
+
 
 class NLIParams(Parameters):
     def __init__(self, method='gn_model_analytic', dispersion_tolerance=1, phase_shift_tolerance=0.1,
@@ -61,6 +66,12 @@ class NLIParams(Parameters):
         self.dispersion_tolerance = dispersion_tolerance
         self.phase_shift_tolerance = phase_shift_tolerance
         self.computed_channels = computed_channels
+
+    def to_json(self):
+        return {"method": self.method,
+                "dispersion_tolerance": self.dispersion_tolerance,
+                "phase_shift_tolerance": self.phase_shift_tolerance,
+                "computed_channels": self.computed_channels}
 
 
 class SimParams(Parameters):
