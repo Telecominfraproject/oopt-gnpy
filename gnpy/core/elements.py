@@ -242,7 +242,6 @@ class Roadm(_Node):
         # on the path, since it depends on the equalization definition on the degree.
         self.ref_pch_out_dbm = None
         self.loss = 0  # auto-design interest
-
         # Optical power of carriers are equalized by the ROADM, so that the experienced loss is not the same for
         # different carriers. The ref_effective_loss records the loss for a reference carrier.
         self.ref_effective_loss = None
@@ -707,11 +706,16 @@ class RamanFiber(Fiber):
     def to_json(self):
         return dict(super().to_json, operational=self.operational)
 
+    def __str__(self):
+        return super().__str__() + f'\n  reference gain (dB):         {round(self.estimated_gain, 2)}' \
+            + f'\n  actual gain (dB):            {round(self.actual_raman_gain, 2)}'
+
     def propagate(self, spectral_info: SpectralInformation):
         """Modifies the spectral information computing the attenuation, the non-linear interference generation,
         the CD and PMD accumulation.
         """
         # apply the attenuation due to the input connector loss
+        pin = watt2dbm(sum(spectral_info.signal))
         attenuation_in_db = self.params.con_in + self.params.att_in
         spectral_info.apply_attenuation_db(attenuation_in_db)
 
@@ -741,6 +745,8 @@ class RamanFiber(Fiber):
         spectral_info.apply_attenuation_db(attenuation_out_db)
         self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
         self.propagated_labels = spectral_info.label
+        pout = watt2dbm(sum(spectral_info.signal))
+        self.actual_raman_gain = self.loss + pout - pin
 
 
 class Edfa(_Node):
