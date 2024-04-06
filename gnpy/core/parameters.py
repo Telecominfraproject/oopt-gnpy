@@ -108,7 +108,7 @@ class FusedParams(Parameters):
 
 
 DEFAULT_RAMAN_COEFFICIENT = {
-    # SSMF Raman coefficient profile normalized with respect to the effective area overlap (g0 * A_eff(f_probe, f_pump))
+    # SSMF Raman coefficient profile
     'g0': array(
         [0.00000000e+00, 1.12351610e-05, 3.47838074e-05, 5.79356636e-05, 8.06921680e-05, 9.79845709e-05, 1.10454361e-04,
          1.18735302e-04, 1.24736889e-04, 1.30110053e-04, 1.41001273e-04, 1.46383247e-04, 1.57011792e-04, 1.70765865e-04,
@@ -123,22 +123,21 @@ DEFAULT_RAMAN_COEFFICIENT = {
          2.03744008e-05, 1.81939341e-05, 1.31862121e-05, 9.65352116e-06, 8.62698322e-06, 9.18688016e-06, 1.01737784e-05,
          1.08017817e-05, 1.03903588e-05, 9.30040333e-06, 8.30809173e-06, 6.90650401e-06, 5.52238029e-06, 3.90648708e-06,
          2.22908227e-06, 1.55796177e-06, 9.77218716e-07, 3.23477236e-07, 1.60602454e-07, 7.97306386e-08]
-    ),  # [m/W]
+    ),  # [1 / (W m)]
 
     # Note the non-uniform spacing of this range; this is required for properly capturing the Raman peak shape.
     'frequency_offset': array([
         0., 0.5, 1., 1.5, 2., 2.5, 3., 3.5, 4., 4.5, 5., 5.5, 6., 6.5, 7., 7.5, 8., 8.5, 9., 9.5, 10., 10.5, 11., 11.5,
-        12.,
-        12.5, 12.75, 13., 13.25, 13.5, 14., 14.5, 14.75, 15., 15.5, 16., 16.5, 17., 17.5, 18., 18.25, 18.5, 18.75, 19.,
-        19.5, 20., 20.5, 21., 21.5, 22., 22.5, 23., 23.5, 24., 24.5, 25., 25.5, 26., 26.5, 27., 27.5, 28., 28.5, 29.,
-        29.5,
-        30., 30.5, 31., 31.5, 32., 32.5, 33., 33.5, 34., 34.5, 35., 35.5, 36., 36.5, 37., 37.5, 38., 38.5, 39., 39.5,
-        40.,
-        40.5, 41., 41.5, 42.]
-    ) * 1e12,  # [Hz]
+        12., 12.5, 12.75, 13., 13.25, 13.5, 14., 14.5, 14.75, 15., 15.5, 16., 16.5, 17., 17.5, 18., 18.25, 18.5, 18.75,
+        19., 19.5, 20., 20.5, 21., 21.5, 22., 22.5, 23., 23.5, 24., 24.5, 25., 25.5, 26., 26.5, 27., 27.5, 28., 28.5,
+        29., 29.5, 30., 30.5, 31., 31.5, 32., 32.5, 33., 33.5, 34., 34.5, 35., 35.5, 36., 36.5, 37., 37.5, 38., 38.5,
+        39., 39.5, 40., 40.5, 41., 41.5, 42.]) * 1e12,  # [Hz]
 
     # Raman profile reference frequency
-    'reference_frequency': 206184634112792  # [Hz] (1454 nm)}
+    'reference_frequency': 206.184634112792e12,  # [Hz] (1454 nm)
+
+    # Raman profile reference effective area
+    'reference_effective_area': 75.74659443542413e-12  # [m^2] (@1454 nm)
 }
 
 
@@ -211,7 +210,16 @@ class FiberParams(Parameters):
                 pi * self._core_radius ** 2 / self._effective_area)) ** 2
 
             # Raman Gain Coefficient
-            raman_coefficient = kwargs.get('raman_coefficient', DEFAULT_RAMAN_COEFFICIENT)
+            raman_coefficient = kwargs.get('raman_coefficient')
+            if raman_coefficient is None:
+                gamma_raman = DEFAULT_RAMAN_COEFFICIENT['g0'] * DEFAULT_RAMAN_COEFFICIENT['reference_effective_area']
+                g0 = gamma_raman / self.effective_area_scaling(DEFAULT_RAMAN_COEFFICIENT['reference_frequency'])
+                raman_coefficient = {
+                    'g0': g0,
+                    'frequency_offset': DEFAULT_RAMAN_COEFFICIENT['frequency_offset'],
+                    'reference_frequency': DEFAULT_RAMAN_COEFFICIENT['reference_frequency']
+                }
+
             self._g0 = asarray(raman_coefficient['g0'])
             raman_reference_frequency = raman_coefficient['reference_frequency']
             frequency_offset = asarray(raman_coefficient['frequency_offset'])
