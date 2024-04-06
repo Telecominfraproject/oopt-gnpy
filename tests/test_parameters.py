@@ -40,17 +40,18 @@ def test_fiber_parameters():
     fiber_dict_cr.update(Fiber(**fiber_dict_cr).__dict__)
     fiber_params_cr = FiberParams(**fiber_dict_cr)
 
-    raman_coefficient_explicit_g0 = fiber_params_explicit_g0.raman_coefficient
-    raman_coefficient_explicit_g0 =\
-        raman_coefficient_explicit_g0.normalized_gamma_raman * fiber_params_explicit_g0._raman_reference_frequency
+    norm_gamma_raman_explicit_g0 = fiber_params_explicit_g0.raman_coefficient.normalized_gamma_raman
+    norm_gamma_raman_default_g0 = fiber_params_default_g0.raman_coefficient.normalized_gamma_raman
 
-    raman_coefficient_default_g0 = fiber_params_default_g0.raman_coefficient
-    raman_coefficient_default_g0 = \
-        raman_coefficient_default_g0.normalized_gamma_raman * fiber_params_default_g0._raman_reference_frequency
+    norm_gamma_raman_cr = fiber_params_cr.raman_coefficient.normalized_gamma_raman
 
-    raman_coefficient_cr = fiber_params_cr.raman_coefficient
-    raman_coefficient_cr = \
-        raman_coefficient_cr.normalized_gamma_raman * fiber_params_cr._raman_reference_frequency
+    assert_allclose(norm_gamma_raman_explicit_g0, norm_gamma_raman_default_g0, rtol=1e-10)
+    assert_allclose(norm_gamma_raman_explicit_g0, norm_gamma_raman_cr, rtol=1e-10)
 
-    assert_allclose(raman_coefficient_explicit_g0, raman_coefficient_default_g0, rtol=1e-10)
-    assert_allclose(raman_coefficient_explicit_g0, raman_coefficient_cr, rtol=1e-10)
+    # Change Effective Area
+    fiber_dict_default_g0['effective_area'] = 100e-12
+    no_ssmf_fiber_params = FiberParams(**fiber_dict_default_g0)
+
+    norm_gamma_raman_default_g0_no_ssmf = no_ssmf_fiber_params.raman_coefficient.normalized_gamma_raman
+
+    assert_allclose(norm_gamma_raman_explicit_g0, norm_gamma_raman_default_g0_no_ssmf, rtol=1e-10)

@@ -108,7 +108,33 @@ class FusedParams(Parameters):
 
 
 DEFAULT_RAMAN_COEFFICIENT = {
-    # SSMF Raman coefficient profile normalized with respect to the effective area overlap (g0 * A_eff(f_probe, f_pump))
+    # SSMF Raman coefficient profile in terms of mode intensity (g0 * A_ff_overlap)
+    'gamma_raman': array(
+        [0.0, 8.524419934705497e-16, 2.643567866245371e-15, 4.410548410941305e-15, 6.153422961291078e-15,
+         7.484924703044943e-15, 8.452060808349209e-15, 9.101549322698156e-15, 9.57837595158966e-15,
+         1.0008642675474562e-14, 1.0865773569905647e-14, 1.1300776305865833e-14, 1.2143238647099625e-14,
+         1.3231065750676068e-14, 1.4624900971525384e-14, 1.6013330554840492e-14, 1.7458119359310242e-14,
+         1.9320241330434762e-14, 2.1720395392873534e-14, 2.4137337406734775e-14, 2.628163218460466e-14,
+         2.8041019963285974e-14, 2.9723155447089933e-14, 3.129353531005888e-14, 3.251796163324624e-14,
+         3.3198839487612773e-14, 3.329527690685666e-14, 3.313155691238456e-14, 3.289013852154548e-14,
+         3.2458917188506916e-14, 3.060684277937575e-14, 3.2660349473783173e-14, 2.957419109657689e-14,
+         2.518894321396672e-14, 1.734560485857344e-14, 9.902860761605233e-15, 7.219176385099358e-15,
+         6.079565990401311e-15, 5.828373065963427e-15, 7.20580801091692e-15, 7.561924351387493e-15,
+         7.621152352332206e-15, 6.8859886780643254e-15, 5.629181047471162e-15, 3.679727598966185e-15,
+         2.7555869742500355e-15, 2.4810133942597675e-15, 2.2160080532403624e-15, 2.1440626024765557e-15,
+         2.33873070799544e-15, 2.557317929858713e-15, 3.039839048226572e-15, 4.8337165515610065e-15,
+         5.4647431818257436e-15, 5.229187813711269e-15, 4.510768525811313e-15, 3.3213473130607794e-15,
+         2.2602577027996455e-15, 1.969576495866441e-15, 1.5179853954188527e-15, 1.2953988551200156e-15,
+         1.1304672156251838e-15, 9.10004390675213e-16, 8.432919922183503e-16, 7.849224069008326e-16,
+         7.827568196032024e-16, 9.000514440646232e-16, 1.3025926460013665e-15, 1.5444108938497558e-15,
+         1.8795594063060786e-15, 1.7796130169921014e-15, 1.5938159865046653e-15, 1.1585522355108287e-15,
+         8.507044444633358e-16, 7.625404663756823e-16, 8.14510750925789e-16, 9.047944693473188e-16,
+         9.636431901702084e-16, 9.298633899602105e-16, 8.349739503637023e-16, 7.482901278066085e-16,
+         6.240794767134268e-16, 5.00652535687506e-16, 3.553373263685851e-16, 2.0344217706119682e-16,
+         1.4267522642294203e-16, 8.980016576743517e-17, 2.9829068181832594e-17, 1.4861959129014824e-17,
+         7.404482113326137e-18]
+    ),  # m/W
+    # SSMF Raman coefficient profile
     'g0': array(
         [0.00000000e+00, 1.12351610e-05, 3.47838074e-05, 5.79356636e-05, 8.06921680e-05, 9.79845709e-05, 1.10454361e-04,
          1.18735302e-04, 1.24736889e-04, 1.30110053e-04, 1.41001273e-04, 1.46383247e-04, 1.57011792e-04, 1.70765865e-04,
@@ -123,22 +149,21 @@ DEFAULT_RAMAN_COEFFICIENT = {
          2.03744008e-05, 1.81939341e-05, 1.31862121e-05, 9.65352116e-06, 8.62698322e-06, 9.18688016e-06, 1.01737784e-05,
          1.08017817e-05, 1.03903588e-05, 9.30040333e-06, 8.30809173e-06, 6.90650401e-06, 5.52238029e-06, 3.90648708e-06,
          2.22908227e-06, 1.55796177e-06, 9.77218716e-07, 3.23477236e-07, 1.60602454e-07, 7.97306386e-08]
-    ),  # [m/W]
+    ),  # [1 / (W m)]
 
     # Note the non-uniform spacing of this range; this is required for properly capturing the Raman peak shape.
     'frequency_offset': array([
         0., 0.5, 1., 1.5, 2., 2.5, 3., 3.5, 4., 4.5, 5., 5.5, 6., 6.5, 7., 7.5, 8., 8.5, 9., 9.5, 10., 10.5, 11., 11.5,
-        12.,
-        12.5, 12.75, 13., 13.25, 13.5, 14., 14.5, 14.75, 15., 15.5, 16., 16.5, 17., 17.5, 18., 18.25, 18.5, 18.75, 19.,
-        19.5, 20., 20.5, 21., 21.5, 22., 22.5, 23., 23.5, 24., 24.5, 25., 25.5, 26., 26.5, 27., 27.5, 28., 28.5, 29.,
-        29.5,
-        30., 30.5, 31., 31.5, 32., 32.5, 33., 33.5, 34., 34.5, 35., 35.5, 36., 36.5, 37., 37.5, 38., 38.5, 39., 39.5,
-        40.,
-        40.5, 41., 41.5, 42.]
-    ) * 1e12,  # [Hz]
+        12., 12.5, 12.75, 13., 13.25, 13.5, 14., 14.5, 14.75, 15., 15.5, 16., 16.5, 17., 17.5, 18., 18.25, 18.5, 18.75,
+        19., 19.5, 20., 20.5, 21., 21.5, 22., 22.5, 23., 23.5, 24., 24.5, 25., 25.5, 26., 26.5, 27., 27.5, 28., 28.5,
+        29., 29.5, 30., 30.5, 31., 31.5, 32., 32.5, 33., 33.5, 34., 34.5, 35., 35.5, 36., 36.5, 37., 37.5, 38., 38.5,
+        39., 39.5, 40., 40.5, 41., 41.5, 42.]) * 1e12,  # [Hz]
 
     # Raman profile reference frequency
-    'reference_frequency': 206184634112792  # [Hz] (1454 nm)}
+    'reference_frequency': 206.184634112792e12,  # [Hz] (1454 nm)
+
+    # Raman profile reference effective area
+    'reference_effective_area': 75.74659443542413e-12  # [m^2] (@1454 nm)
 }
 
 
@@ -211,14 +236,21 @@ class FiberParams(Parameters):
                 pi * self._core_radius ** 2 / self._effective_area)) ** 2
 
             # Raman Gain Coefficient
-            raman_coefficient = kwargs.get('raman_coefficient', DEFAULT_RAMAN_COEFFICIENT)
-            self._g0 = asarray(raman_coefficient['g0'])
-            raman_reference_frequency = raman_coefficient['reference_frequency']
-            frequency_offset = asarray(raman_coefficient['frequency_offset'])
-            stokes_wave = raman_reference_frequency - frequency_offset
-            gamma_raman = self._g0 * self.effective_area_overlap(stokes_wave, raman_reference_frequency)
-            normalized_gamma_raman = gamma_raman / raman_reference_frequency  # 1 / m / W / Hz
-            self._raman_reference_frequency = raman_reference_frequency
+            raman_coefficient = kwargs.get('raman_coefficient')
+            if raman_coefficient is None:
+                self._raman_reference_frequency = DEFAULT_RAMAN_COEFFICIENT['reference_frequency']
+                frequency_offset = asarray(DEFAULT_RAMAN_COEFFICIENT['frequency_offset'])
+                gamma_raman = asarray(DEFAULT_RAMAN_COEFFICIENT['gamma_raman'])
+                stokes_wave = self._raman_reference_frequency - frequency_offset
+                normalized_gamma_raman = gamma_raman / self._raman_reference_frequency  # 1 / m / W / Hz
+                self._g0 = gamma_raman / self.effective_area_overlap(stokes_wave, self._raman_reference_frequency)
+            else:
+                self._raman_reference_frequency = raman_coefficient['reference_frequency']
+                frequency_offset = asarray(raman_coefficient['frequency_offset'])
+                stokes_wave = self._raman_reference_frequency - frequency_offset
+                self._g0 = asarray(raman_coefficient['g0'])
+                gamma_raman = self._g0 * self.effective_area_overlap(stokes_wave, self._raman_reference_frequency)
+                normalized_gamma_raman = gamma_raman / self._raman_reference_frequency  # 1 / m / W / Hz
 
             # Raman gain coefficient array of the frequency offset constructed such that positive frequency values
             # represent a positive power transfer from higher frequency and vice versa
