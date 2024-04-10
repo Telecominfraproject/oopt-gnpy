@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c44ce19_7bb2b524",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-04-10T07:36:42Z",
+      "side": 1,
+      "message": "looks good to me,\nI don\u0027t want to delay this one. Would you agree adding a test covering this behaviour ?",
+      "revId": "4c7f9d065d7433aa5a2feaca72964e4986e629bf",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
