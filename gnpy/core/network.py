@@ -247,8 +247,7 @@ def estimate_raman_gain(node, equipment, power_dbm):
         node.estimated_gain = estimated_gain
         SimParams.set_params(save_sim_params)
         return round(estimated_gain, 2)
-    else:
-        return 0.0
+    return 0.0
 
 
 def span_loss(network, node, equipment, input_power=None):
