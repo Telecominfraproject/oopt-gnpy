@@ -213,17 +213,6 @@ wavelength2freq = constants.lambda2nu
 freq2wavelength = constants.nu2lambda
 
 
-def freq2wavelength(value):
-    """Converts frequency units to wavelength units.
-
-    >>> round(freq2wavelength(191.35e12) * 1e9, 3)
-    1566.723
-    >>> round(freq2wavelength(196.1e12) * 1e9, 3)
-    1528.773
-    """
-    return constants.c / value
-
-
 def snr_sum(snr, bw, snr_added, bw_added=12.5e9):
     snr_added = snr_added - lin2db(bw / bw_added)
     snr = -lin2db(db2lin(-snr) + db2lin(-snr_added))
