@@ -312,11 +312,6 @@ def path_requests_run(args=None):
         load_common_data(args.equipment, args.topology, args.sim_params, args.save_network_before_autodesign)
 
     # Build the network once using the default power defined in SI in eqpt config
-    # TODO power density: db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
-    # spacing, f_min and f_max
-    if args.save_network is not None:
-        save_network(network, args.save_network)
-        print(f'Network (after autodesign) saved to {args.save_network}')
 
     try:
         network, _, _ = designed_network(equipment, network, no_insert_edfas=args.no_insert_edfas)
@@ -343,6 +338,10 @@ def path_requests_run(args=None):
     print(dsjn)
     print(f'{ansi_escapes.blue}The following services have been requested:{ansi_escapes.reset}')
     print(_data)
+
+    if args.save_network is not None:
+        save_network(network, args.save_network)
+        print(f'Network (after autodesign) saved to {args.save_network}')
 
     print(f'{ansi_escapes.blue}Result summary{ansi_escapes.reset}')
     header = ['req id', '  demand', ' GSNR@bandwidth A-Z (Z-A)', ' GSNR@0.1nm A-Z (Z-A)',
