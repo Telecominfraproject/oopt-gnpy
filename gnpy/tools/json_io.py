@@ -264,14 +264,6 @@ class Amp(_JsonThing):
                       'nf_model': nf_def, 'dual_stage_model': dual_stage_def, 'multi_band': amplifiers})
 
 
-def _automatic_spacing(baud_rate):
-    """return the min possible channel spacing for a given baud rate"""
-    # TODO : this should parametrized in a cfg file
-    # list of possible tuples [(max_baud_rate, spacing_for_this_baud_rate)]
-    spacing_list = [(33e9, 37.5e9), (38e9, 50e9), (50e9, 62.5e9), (67e9, 75e9), (92e9, 100e9)]
-    return min((s[1] for s in spacing_list if s[0] > baud_rate), default=baud_rate * 1.2)
-
-
 def _spectrum_from_json(json_data):
     """JSON_data is a list of spectrum partitions each with
     {f_min, f_max, baud_rate, roll_off, delta_pdb, slot_width, tx_osnr, label}
