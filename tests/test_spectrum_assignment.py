@@ -15,12 +15,13 @@ from copy import deepcopy
 import json
 from math import ceil
 import pytest
+
 from gnpy.core.network import build_network
 from gnpy.core.utils import automatic_nch, dbm2watt
 from gnpy.core.elements import Roadm, Transceiver
 from gnpy.core.exceptions import ServiceError, SpectrumError
 from gnpy.topology.request import compute_path_dsjctn, find_reversed_path, deduplicate_disjunctions, PathRequest
-from gnpy.topology.spectrum_assignment import (build_oms_list, align_grids, nvalue_to_frequency,
+from gnpy.topology.spectrum_assignment import (BitmapValue, build_oms_list, align_grids, nvalue_to_frequency,
                                                bitmap_sum, Bitmap, spectrum_selection, pth_assign_spectrum,
                                                build_path_oms_id_list, aggregate_oms_bitmap)
 from gnpy.tools.json_io import (load_equipment, load_network, requests_from_json, disjunctions_from_json,
@@ -33,7 +34,7 @@ NETWORK_FILENAME = DATA_DIR / 'testTopology_auto_design_expected.json'
 SERVICE_FILENAME = DATA_DIR / 'testTopology_services_expected.json'
 EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": load_json(DATA_DIR / "std_medium_gain_advanced_config.json")}
 
-grid = 0.00625e12   
+grid = 0.00625e12
 slot = 0.0125e12
 guardband = 25.0e9
 cband_freq_min = 191.3e12
@@ -214,7 +215,7 @@ def test_assign_and_sum(nval1, nval2, setup):
         with pytest.raises(SpectrumError):
             oms1.assign_spectrum(nval1, mval)
         for elem in oms1.spectrum_bitmap.bitmap:
-            assert elem == 1
+            assert elem == BitmapValue.FREE
     else:
         oms2.assign_spectrum(nval2, mval)
         print(oms2.spectrum_bitmap.bitmap)
