@@ -23,7 +23,7 @@ from gnpy.core.equipment import trx_mode_params
 from gnpy.core.network import add_missing_elements_in_network, design_network
 from gnpy.core import exceptions
 from gnpy.core.info import SpectralInformation
-from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum, OMS
+from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum, OMS, FIRST_FIT
 from gnpy.topology.request import correct_json_route_list, deduplicate_disjunctions, requests_aggregation, \
     compute_path_dsjctn, compute_path_with_disjunction, ResultElement, PathRequest, Disjunction, \
     compute_constrained_path, propagate
@@ -145,7 +145,7 @@ def check_request_path_ids(rqs: List[PathRequest]):
         raise ValueError(msg)
 
 
-def planning(network: DiGraph, equipment: dict, data: dict, redesign: bool = False, user_policy: str = "first_fit") \
+def planning(network: DiGraph, equipment: dict, data: dict, redesign: bool = False, user_policy: str = FIRST_FIT) \
         -> Tuple[List[OMS], List, List, List[PathRequest], List[Disjunction], List[ResultElement]]:
     """Run planning
     data contain the service dict from json

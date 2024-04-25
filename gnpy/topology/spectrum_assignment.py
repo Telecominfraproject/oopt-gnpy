@@ -20,6 +20,8 @@ element/oms correspondace
 
 from collections import namedtuple
 from logging import getLogger
+from typing import List
+from enum import Enum
 
 from gnpy.core.elements import Roadm, Transceiver, Edfa, Multiband_amplifier
 from gnpy.core.exceptions import ServiceError, SpectrumError
@@ -27,13 +29,33 @@ from gnpy.core.utils import order_slots, restore_order
 from gnpy.topology.request import compute_spectrum_slot_vs_bandwidth, find_elements_common_range
 
 LOGGER = getLogger(__name__)
-GUARDBAND = 25e9
+DEFAULT_GUARDBAND = 0.025e12
+DEFAULT_GRID = 0.00625e12
+FIRST_FIT = 'first_fit'
+LAST_FIT = 'last_fit'
+
+
+class BitmapValue(Enum):
+    """Bitmap allowed values
+    """
+    UNUSABLE = 'u'
+    OCCUPIED = 0
+    FREE = 1
+
+    def __str__(self):
+        if self.value == self.OCCUPIED:
+            return '0'
+        if self.value == self.FREE:
+            return '1'
+        if self.value == self.UNUSABLE:
+            return 'u'
+        return ''
 
 
 class Bitmap:
     """records the spectrum occupation"""
 
-    def __init__(self, f_min, f_max, grid, guardband=GUARDBAND, bitmap=None):
+    def __init__(self, f_min, f_max, grid, guardband=DEFAULT_GUARDBAND, bitmap=None):
         # n is the min index including guardband. Guardband is required to be sure
         # that a channel can be assigned  with center frequency fmin (means that its
         # slot occupation goes below freq_index_min
@@ -46,7 +68,7 @@ class Bitmap:
         self.freq_index = list(range(n_min, n_max + 1))
         self.guardband = guardband
         if bitmap is None:
-            self.bitmap = [1] * (n_max - n_min + 1)
+            self.bitmap = [BitmapValue.FREE] * (n_max - n_min + 1)
         elif len(bitmap) == len(self.freq_index):
             self.bitmap = bitmap
         else:
@@ -105,7 +127,7 @@ class OMS:
         self.el_id_list.append(elem.uid)
         self.el_list.append(elem)
 
-    def update_spectrum(self, f_min, f_max, guardband=GUARDBAND, existing_spectrum=None, grid=0.00625e12):
+    def update_spectrum(self, f_min, f_max, guardband=DEFAULT_GUARDBAND, existing_spectrum=None, grid=DEFAULT_GRID):
         """Frequencies expressed in Hz.
         Add 150 GHz margin to enable a center channel on f_min
         Use ITU-T G694.1 Flexible DWDM grid definition
@@ -138,7 +160,8 @@ class OMS:
             raise SpectrumError(f'N {nvalue}, M {mvalue} over the N spectrum bitmap bounds')
         if startn <= self.spectrum_bitmap.n_min:
             raise SpectrumError(f'N {nvalue}, M {mvalue} below the N spectrum bitmap bounds')
-        self.spectrum_bitmap.bitmap[self.spectrum_bitmap.geti(startn):self.spectrum_bitmap.geti(stopn) + 1] = [0] * (stopn - startn + 1)
+        self.spectrum_bitmap.bitmap[self.spectrum_bitmap.geti(startn):self.spectrum_bitmap.geti(stopn) + 1] = \
+            [BitmapValue.OCCUPIED] * (stopn - startn + 1)
 
     def add_service(self, service_id, nb_wl):
         """record service and mark spectrum as occupied"""
@@ -146,7 +169,7 @@ class OMS:
         self.nb_channels += nb_wl
 
 
-def frequency_to_n(freq, grid=0.00625e12):
+def frequency_to_n(freq, grid=DEFAULT_GRID):
     """converts frequency into the n value (ITU grid)
 
     reference to Recommendation G.694.1 (02/12), Figure I.3
@@ -161,7 +184,7 @@ def frequency_to_n(freq, grid=0.00625e12):
     return (int)((freq - 193.1e12) / grid)
 
 
-def nvalue_to_frequency(nvalue, grid=0.00625e12):
+def nvalue_to_frequency(nvalue, grid=DEFAULT_GRID):
     """converts n value into a frequency
 
     reference to Recommendation G.694.1 (02/12), Table 1
@@ -201,7 +224,7 @@ def slots_to_m(startn, stopn):
     return nvalue, mvalue
 
 
-def m_to_freq(nvalue, mvalue, grid=0.00625e12):
+def m_to_freq(nvalue, mvalue, grid=DEFAULT_GRID):
     """converts m into frequency range
 
     spectrum(13,7) is (193137500000000.0, 193225000000000.0)
@@ -227,9 +250,9 @@ def align_grids(oms_list):
     n_max = max([o.spectrum_bitmap.n_max for o in oms_list])
     for this_o in oms_list:
         if (this_o.spectrum_bitmap.n_min - n_min) > 0:
-            this_o.spectrum_bitmap.insert_left([0] * (this_o.spectrum_bitmap.n_min - n_min))
+            this_o.spectrum_bitmap.insert_left([BitmapValue.OCCUPIED] * (this_o.spectrum_bitmap.n_min - n_min))
         if (n_max - this_o.spectrum_bitmap.n_max) > 0:
-            this_o.spectrum_bitmap.insert_right([0] * (n_max - this_o.spectrum_bitmap.n_max))
+            this_o.spectrum_bitmap.insert_right([BitmapValue.OCCUPIED] * (n_max - this_o.spectrum_bitmap.n_max))
     return oms_list
 
 
@@ -242,11 +265,18 @@ def find_network_freq_range(network, equipment):
     return min(min_frequencies), max(max_frequencies)
 
 
-def create_oms_bitmap(oms, equipment, f_min, f_max, guardband, grid):
-    """Find the highest low freq from oms amps and lowest high freq among oms amps to determine
-    the possible bitmap window.
-    f_min and f_max represent the useable spectrum (not the useable center frequencies)
-    ie n smaller than frequency_to_n(min_freq, grid) are not useable
+def create_oms_bitmap(oms: OMS, equipment: dict, f_min: float, f_max: float,
+                      grid: float) -> List[BitmapValue]:
+    """Create the bitmap window corresponding to the common frequency range on the OMS.
+    f_min is the min central frequency but if the channel is 50GHz witdth it occupies 4 slots around this
+    central frequency. We took the convention that central frequency is relative index 0
+    -4 -3 -2 -1  0  1  2  3
+    ___________ ^__________
+    so that the channel occupies index(f_min) - 4 to index(f_min) + 3 on the occupation bitmap
+
+    :param oms: oms  object containing the list of elements with their own spectral occupation
+    :param equipment: equipment library
+    :param f_min, f_max: central frequency range in Hz
     """
     n_min = frequency_to_n(f_min, grid)
     n_max = frequency_to_n(f_max, grid) - 1
@@ -254,16 +284,18 @@ def create_oms_bitmap(oms, equipment, f_min, f_max, guardband, grid):
     band0 = common_range[0]
     band0_n_min = frequency_to_n(band0['f_min'], grid)
     band0_n_max = frequency_to_n(band0['f_max'], grid)
-    bitmap = [0] * (band0_n_min - n_min) + [1] * (band0_n_max - band0_n_min + 1)
+    bitmap = [BitmapValue.UNUSABLE] * (band0_n_min - n_min) + [BitmapValue.FREE] * (band0_n_max - band0_n_min + 1)
     i = 1
     while i < len(common_range):
         band = common_range[i]
         band_n_min = frequency_to_n(band['f_min'], grid)
         band_n_max = frequency_to_n(band['f_max'], grid)
-        bitmap = bitmap + [0] * (band_n_min - band0_n_max - 1) + [1] * (band_n_max - band_n_min + 1)
+        bitmap = bitmap \
+            + [BitmapValue.UNUSABLE] * (band_n_min - band0_n_max - 1) \
+            + [BitmapValue.FREE] * (band_n_max - band_n_min + 1)
         band0_n_max = band_n_max
         i += 1
-    bitmap = bitmap + [0] * (n_max - band0_n_max)
+    bitmap = bitmap + [BitmapValue.UNUSABLE] * (n_max - band0_n_max)
     return bitmap
 
 
@@ -320,9 +352,8 @@ def build_oms_list(network, equipment):
                     nd_out.oms_list = []
                     nd_out.oms_list.append(oms_id)
 
-                bitmap = create_oms_bitmap(oms, equipment, f_min=f_min, f_max=f_max, guardband=GUARDBAND,
-                                           grid=0.00625e12)
-                oms.update_spectrum(f_min, f_max, guardband=GUARDBAND, grid=0.00625e12, existing_spectrum=bitmap)
+                bitmap = create_oms_bitmap(oms, equipment, f_min=f_min, f_max=f_max, grid=DEFAULT_GRID)
+                oms.update_spectrum(f_min, f_max, guardband=DEFAULT_GUARDBAND, grid=DEFAULT_GRID, existing_spectrum=bitmap)
                 # oms.assign_spectrum(13,7) gives back (193137500000000.0, 193225000000000.0)
                 # as in the example in the standard
                 # oms.assign_spectrum(13,7)
@@ -351,14 +382,14 @@ def reversed_oms(oms_list):
             oms.reversed_oms = None
 
 
-def bitmap_sum(band1, band2):
+def bitmap_sum(band1: List[BitmapValue], band2: List[BitmapValue]) -> List[BitmapValue]:
     """mark occupied bitmap by 0 if the slot is occupied in band1 or in band2"""
     res = []
-    for i, elem in enumerate(band1):
-        if band2[i] * elem == 0:
-            res.append(0)
+    for bit1, bit2 in zip(band1, band2):
+        if bit1 in [BitmapValue.UNUSABLE, BitmapValue.OCCUPIED] or bit2 in [BitmapValue.UNUSABLE, BitmapValue.OCCUPIED]:
+            res.append(BitmapValue.OCCUPIED)
         else:
-            res.append(1)
+            res.append(BitmapValue.FREE)
     return res
 
 
@@ -386,12 +417,12 @@ def aggregate_oms_bitmap(path_oms, oms_list):
     freq_min = nvalue_to_frequency(spectrum.n_min)
     freq_max = nvalue_to_frequency(spectrum.n_max)
     aggregate_oms = OMS(**params)
-    aggregate_oms.update_spectrum(freq_min, freq_max, grid=0.00625e12, guardband=spectrum.guardband,
+    aggregate_oms.update_spectrum(freq_min, freq_max, grid=DEFAULT_GRID, guardband=spectrum.guardband,
                                   existing_spectrum=bitmap)
     return aggregate_oms
 
 
-def spectrum_selection(test_oms, requested_m, requested_n=None, policy='first_fit'):
+def spectrum_selection(test_oms, requested_m, requested_n=None, policy=FIRST_FIT):
     """Collects spectrum availability and call the select_candidate function"""
     freq_index = test_oms.spectrum_bitmap.freq_index
     freq_index_min = test_oms.spectrum_bitmap.freq_index_min
@@ -402,14 +433,14 @@ def spectrum_selection(test_oms, requested_m, requested_n=None, policy='first_fi
         # avoid slots reserved on the edge 0.15e-12 on both sides -> 24
         candidates = [(freq_index[i] + requested_m, freq_index[i], freq_index[i] + 2 * requested_m - 1)
                       for i in range(len(freq_availability))
-                      if freq_availability[i:i + 2 * requested_m] == [1] * (2 * requested_m)
+                      if freq_availability[i:i + 2 * requested_m] == [BitmapValue.FREE] * (2 * requested_m)
                       and freq_index[i] >= freq_index_min
                       and freq_index[i + 2 * requested_m - 1] <= freq_index_max]
 
         candidate = select_candidate(candidates, policy=policy)
     else:
         i = test_oms.spectrum_bitmap.geti(requested_n)
-        if (freq_availability[i - requested_m:i + requested_m] == [1] * (2 * requested_m)
+        if (freq_availability[i - requested_m:i + requested_m] == [BitmapValue.FREE] * (2 * requested_m)
                 and freq_index[i - requested_m] >= freq_index_min
                 and freq_index[i + requested_m - 1] <= freq_index_max):
             # candidate is the triplet center_n, startn and stopn
@@ -428,7 +459,7 @@ def determine_slot_numbers(test_oms, requested_n, required_m, per_channel_m):
     freq_availability = bitmap.bitmap
     center_i = bitmap.geti(requested_n)
     i = per_channel_m
-    while (freq_availability[center_i - i:center_i + i] == [1] * (2 * i)
+    while (freq_availability[center_i - i:center_i + i] == [BitmapValue.FREE] * (2 * i)
            and freq_index[center_i - i] >= freq_index_min
            and freq_index[center_i + i - 1] <= freq_index_max
            and i <= required_m):
@@ -438,9 +469,9 @@ def determine_slot_numbers(test_oms, requested_n, required_m, per_channel_m):
 
 def select_candidate(candidates, policy):
     """selects a candidate among all available spectrum"""
-    if policy == 'first_fit' and candidates:
+    if policy == FIRST_FIT and candidates:
         return candidates[0]
-    if policy == 'last_fit' and candidates:
+    if policy == LAST_FIT and candidates:
         return candidates[-1]
     elif not candidates:
         return (None, None, None)
@@ -448,7 +479,7 @@ def select_candidate(candidates, policy):
         raise ServiceError('Only first_fit spectrum assignment policy is implemented.')
 
 
-def compute_n_m(required_m, rq, path_oms, oms_list, per_channel_m, policy='first_fit'):
+def compute_n_m(required_m, rq, path_oms, oms_list, per_channel_m, policy=FIRST_FIT):
     """ based on requested path_bandwidth fill in M=None values with uint values, using per_channel_m
     and center frequency, with first fit strategy. The function checks the available spectrum but check
     consistencies among M values of the request, but not with other requests.
@@ -507,7 +538,7 @@ def compute_n_m(required_m, rq, path_oms, oms_list, per_channel_m, policy='first
     return selected_n, selected_m, remaining_slots_to_serve
 
 
-def pth_assign_spectrum(pths, rqs, oms_list, rpths, policy='first_fit'):
+def pth_assign_spectrum(pths, rqs, oms_list, rpths, policy=FIRST_FIT):
     """basic first fit assignment
 
     if reversed path are provided, means that occupation is bidir
