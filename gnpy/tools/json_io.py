@@ -692,24 +692,27 @@ def requests_from_json(json_data: dict, equipment: dict) -> List[PathRequest]:
 
     for req in json_data['path-request']:
         # init all params from request
-        params = {}
-        params['request_id'] = f'{req["request-id"]}'
-        params['source'] = req['source']
-        params['bidir'] = req['bidirectional']
-        params['destination'] = req['destination']
-        params['trx_type'] = req['path-constraints']['te-bandwidth']['trx_type']
-        if params['trx_type'] is None:
+        trx_type = req['path-constraints']['te-bandwidth']['trx_type']
+        trx_mode = req['path-constraints']['te-bandwidth'].get('trx_mode', None)
+        if trx_type is None:
             msg = f'Request {req["request-id"]} has no transceiver type defined.'
             raise ServiceError(msg)
-        params['trx_mode'] = req['path-constraints']['te-bandwidth'].get('trx_mode', None)
-        params['format'] = params['trx_mode']
-        params['spacing'] = req['path-constraints']['te-bandwidth']['spacing']
         try:
             nd_list = sorted(req['explicit-route-objects']['route-object-include-exclude'], key=lambda x: x['index'])
         except KeyError:
             nd_list = []
-        params['nodes_list'] = [n['num-unnum-hop']['node-id'] for n in nd_list]
-        params['loose_list'] = [n['num-unnum-hop']['hop-type'] for n in nd_list]
+        params = {
+            'request_id': f'{req["request-id"]}',
+            'source': req['source'],
+            'destination': req['destination'],
+            'bidir': req['bidirectional'],
+            'trx_type': trx_type,
+            'trx_mode': trx_mode,
+            'format': trx_mode,
+            'spacing': req['path-constraints']['te-bandwidth']['spacing'],
+            'nodes_list': [n['num-unnum-hop']['node-id'] for n in nd_list],
+            'loose_list': [n['num-unnum-hop']['hop-type'] for n in nd_list]
+        }
         # recover trx physical param (baudrate, ...) from type and mode
         # nb_channel is computed based on min max frequency and spacing
         try:
