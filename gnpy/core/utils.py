@@ -13,6 +13,7 @@ gnpy.core.utils
 This module contains utility functions that are used with gnpy.
 """
 
+from copy import deepcopy
 from csv import writer
 from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and, mean, array
 from scipy import constants
@@ -58,10 +59,10 @@ def write_csv(obj, filename):
             # main header
             w.writerow([data_key])
             # sub headers:
-            headers = [_ for _ in data_list[0].keys()]
+            headers = list(data_list[0].keys())
             w.writerow(headers)
             for data_dict in data_list:
-                w.writerow([_ for _ in data_dict.values()])
+                w.writerow(list(data_dict.values()))
 
 
 def arrange_frequencies(length, start, stop):
@@ -220,6 +221,8 @@ freq2wavelength = constants.nu2lambda
 
 
 def snr_sum(snr, bw, snr_added, bw_added=12.5e9):
+    """Adding snr contributions
+    """
     snr_added = snr_added - lin2db(bw / bw_added)
     snr = -lin2db(db2lin(-snr) + db2lin(-snr_added))
     return snr
@@ -432,10 +435,9 @@ def convert_length(value, units):
     """
     if units == 'm':
         return value * 1e0
-    elif units == 'km':
+    if units == 'km':
         return value * 1e3
-    else:
-        raise ConfigurationError(f'Cannot convert length in "{units}" into meters')
+    raise ConfigurationError(f'Cannot convert length in "{units}" into meters')
 
 
 def replace_none(dictionary):
