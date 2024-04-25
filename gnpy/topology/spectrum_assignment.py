@@ -20,13 +20,14 @@ element/oms correspondace
 
 from collections import namedtuple
 from logging import getLogger
-from typing import List
+from typing import List, Union, Optional, Tuple
 from enum import Enum
+from networkx import DiGraph
 
-from gnpy.core.elements import Roadm, Transceiver, Edfa, Multiband_amplifier
+from gnpy.core.elements import Roadm, Transceiver, Edfa, Multiband_amplifier, Fiber, RamanFiber, Fused
 from gnpy.core.exceptions import ServiceError, SpectrumError
 from gnpy.core.utils import order_slots, restore_order
-from gnpy.topology.request import compute_spectrum_slot_vs_bandwidth, find_elements_common_range
+from gnpy.topology.request import compute_spectrum_slot_vs_bandwidth, find_elements_common_range, PathRequest
 
 LOGGER = getLogger(__name__)
 DEFAULT_GUARDBAND = 0.025e12
@@ -105,7 +106,7 @@ class OMS:
     records the crossed elements and the occupied spectrum
     """
 
-    def __init__(self, *args, **params):
+    def __init__(self, **params):
         params = OMSParams(**params)
         self.oms_id = params.oms_id
         self.el_id_list = params.el_id_list
@@ -122,14 +123,16 @@ class OMS:
         return '\n\t'.join([f'{type(self).__name__} {self.oms_id}',
                             f'{self.el_id_list[0]} - {self.el_id_list[-1]}', '\n'])
 
-    def add_element(self, elem):
+    def add_element(self, elem: Union[Roadm, Transceiver, Edfa, Multiband_amplifier,
+                                      Fiber, RamanFiber, Fused]):
         """records oms elements"""
         self.el_id_list.append(elem.uid)
         self.el_list.append(elem)
 
-    def update_spectrum(self, f_min, f_max, guardband=DEFAULT_GUARDBAND, existing_spectrum=None, grid=DEFAULT_GRID):
-        """Frequencies expressed in Hz.
-        Add 150 GHz margin to enable a center channel on f_min
+    def update_spectrum(self, f_min: float, f_max: float, guardband=DEFAULT_GUARDBAND,
+                        existing_spectrum: Optional[List[Union[int, str]]] = None, grid: float = DEFAULT_GRID):
+        """Updates spectrum with an existing bitmap. Frequencies expressed in Hz.
+
         Use ITU-T G694.1 Flexible DWDM grid definition
         For the flexible DWDM grid, the allowed frequency slots have a nominal central frequency (in THz) defined by:
         193.1 + n × 0.00625 where n is a positive or negative integer including 0
@@ -143,7 +146,7 @@ class OMS:
         self.spectrum_bitmap = Bitmap(f_min=f_min, f_max=f_max, grid=grid, guardband=guardband,
                                       bitmap=existing_spectrum)
 
-    def assign_spectrum(self, nvalue, mvalue):
+    def assign_spectrum(self, nvalue: int, mvalue: int):
         """change oms spectrum to mark spectrum assigned"""
         if not isinstance(nvalue, int):
             raise SpectrumError(f'N must be a signed integer, got {nvalue}')
@@ -163,13 +166,13 @@ class OMS:
         self.spectrum_bitmap.bitmap[self.spectrum_bitmap.geti(startn):self.spectrum_bitmap.geti(stopn) + 1] = \
             [BitmapValue.OCCUPIED] * (stopn - startn + 1)
 
-    def add_service(self, service_id, nb_wl):
+    def add_service(self, service_id: str, nb_wl: int):
         """record service and mark spectrum as occupied"""
         self.service_list.append(service_id)
         self.nb_channels += nb_wl
 
 
-def frequency_to_n(freq, grid=DEFAULT_GRID):
+def frequency_to_n(freq: float, grid: float = DEFAULT_GRID) -> int:
     """converts frequency into the n value (ITU grid)
 
     reference to Recommendation G.694.1 (02/12), Figure I.3
@@ -184,7 +187,7 @@ def frequency_to_n(freq, grid=DEFAULT_GRID):
     return (int)((freq - 193.1e12) / grid)
 
 
-def nvalue_to_frequency(nvalue, grid=DEFAULT_GRID):
+def nvalue_to_frequency(nvalue: int, grid: float = DEFAULT_GRID) -> float:
     """converts n value into a frequency
 
     reference to Recommendation G.694.1 (02/12), Table 1
@@ -199,14 +202,14 @@ def nvalue_to_frequency(nvalue, grid=DEFAULT_GRID):
     return 193.1e12 + nvalue * grid
 
 
-def mvalue_to_slots(nvalue, mvalue):
+def mvalue_to_slots(nvalue: int, mvalue: int) -> Tuple[int, int]:
     """convert center n an m into start and stop n"""
     startn = nvalue - mvalue
     stopn = nvalue + mvalue - 1
     return startn, stopn
 
 
-def slots_to_m(startn, stopn):
+def slots_to_m(startn: int, stopn: int) -> Tuple[int, int]:
     """converts the start and stop n values to the center n and m value
 
     reference to Recommendation G.694.1 (02/12), Figure I.3
@@ -224,7 +227,7 @@ def slots_to_m(startn, stopn):
     return nvalue, mvalue
 
 
-def m_to_freq(nvalue, mvalue, grid=DEFAULT_GRID):
+def m_to_freq(nvalue: int, mvalue: int, grid: float = DEFAULT_GRID) -> Tuple[float, float]:
     """converts m into frequency range
 
     spectrum(13,7) is (193137500000000.0, 193225000000000.0)
@@ -244,10 +247,10 @@ def m_to_freq(nvalue, mvalue, grid=DEFAULT_GRID):
     return fstart, fstop
 
 
-def align_grids(oms_list):
-    """Used to apply same grid to all oms : same starting n, stop n and slot size. Out of grid slots are set to 0."""
-    n_min = min([o.spectrum_bitmap.n_min for o in oms_list])
-    n_max = max([o.spectrum_bitmap.n_max for o in oms_list])
+def align_grids(oms_list: List[OMS]) -> List[OMS]:
+    """Used to apply same grid to all oms : same starting n, stop n and slot size.Out of grid slots are set to 0."""
+    n_min = min(o.spectrum_bitmap.n_min for o in oms_list)
+    n_max = max(o.spectrum_bitmap.n_max for o in oms_list)
     for this_o in oms_list:
         if (this_o.spectrum_bitmap.n_min - n_min) > 0:
             this_o.spectrum_bitmap.insert_left([BitmapValue.OCCUPIED] * (this_o.spectrum_bitmap.n_min - n_min))
@@ -256,7 +259,7 @@ def align_grids(oms_list):
     return oms_list
 
 
-def find_network_freq_range(network):
+def find_network_freq_range(network: DiGraph) -> Tuple[float, float]:
     """Find the lowest freq from amps and highest freq among all amps to determine the resulting bitmap
     """
     amp_bands = [band for n in network.nodes() if isinstance(n, (Edfa, Multiband_amplifier)) for band in n.params.bands]
@@ -299,7 +302,7 @@ def create_oms_bitmap(oms: OMS, equipment: dict, f_min: float, f_max: float,
     return bitmap
 
 
-def build_oms_list(network, equipment):
+def build_oms_list(network: DiGraph, equipment: dict) -> List[OMS]:
     """initialization of OMS list in the network
 
     an oms is build reading all intermediate nodes between two adjacent ROADMs
@@ -315,7 +318,7 @@ def build_oms_list(network, equipment):
                    [n for n in network.nodes() if isinstance(n, Transceiver)
                     and not isinstance(next(network.successors(n)), Roadm)]
     # determine the size of the bitmap common to all the omses: find min and max frequencies of all amps
-    # in the network. These gives the band not the center frequency. Thhen we use a reference channel
+    # in the network. These gives the band not the center frequency. Then we use a reference channel
     # slot width (50GHz) to set the f_min, f_max
     f_min, f_max = find_network_freq_range(network)
     for node in oms_vertices:
@@ -366,7 +369,7 @@ def build_oms_list(network, equipment):
     return oms_list
 
 
-def reversed_oms(oms_list):
+def reversed_oms(oms_list: List[OMS]):
     """identifies reversed OMS
 
     only applicable for non parallel OMS
@@ -394,7 +397,10 @@ def bitmap_sum(band1: List[BitmapValue], band2: List[BitmapValue]) -> List[Bitma
     return res
 
 
-def build_path_oms_id_list(pth):
+def build_path_oms_id_list(pth: List[Union[Roadm, Transceiver, Edfa, Multiband_amplifier, Fiber,
+                                     RamanFiber, Fused]]) -> List[int]:
+    """Returns the list of oms_id composing the path pth
+    """
     path_oms = []
     for elem in pth:
         if not isinstance(elem, Roadm) and not isinstance(elem, Transceiver):
@@ -404,7 +410,11 @@ def build_path_oms_id_list(pth):
     return list(set(path_oms))
 
 
-def aggregate_oms_bitmap(path_oms, oms_list):
+def aggregate_oms_bitmap(path_oms: List[int], oms_list: List[OMS]) -> OMS:
+    """Returns an OMS class with spectral occupation union of all oms spectral occupation in the path
+
+    this is usefull to find an and to and free set of slots on the path
+    """
     spectrum = oms_list[path_oms[0]].spectrum_bitmap
     bitmap = spectrum.bitmap
     # assuming all oms have same freq indices
@@ -423,7 +433,8 @@ def aggregate_oms_bitmap(path_oms, oms_list):
     return aggregate_oms
 
 
-def spectrum_selection(test_oms, requested_m, requested_n=None, policy=FIRST_FIT):
+def spectrum_selection(test_oms: OMS, requested_m: int, requested_n: Optional[int] = None,
+                       policy: str = FIRST_FIT) -> Union[Tuple[int, int, int], Tuple[None, None, None]]:
     """Collects spectrum availability and call the select_candidate function"""
     freq_index = test_oms.spectrum_bitmap.freq_index
     freq_index_min = test_oms.spectrum_bitmap.freq_index_min
@@ -451,7 +462,7 @@ def spectrum_selection(test_oms, requested_m, requested_n=None, policy=FIRST_FIT
     return candidate
 
 
-def determine_slot_numbers(test_oms, requested_n, required_m, per_channel_m):
+def determine_slot_numbers(test_oms: OMS, requested_n: int, required_m: int, per_channel_m: int) -> int:
     """determines max availability around requested_n. requested_n should not be None"""
     bitmap = test_oms.spectrum_bitmap
     freq_index = bitmap.freq_index
@@ -468,19 +479,19 @@ def determine_slot_numbers(test_oms, requested_n, required_m, per_channel_m):
     return i - per_channel_m
 
 
-def select_candidate(candidates, policy):
+def select_candidate(candidates: List[Tuple[int, int, int]], policy: str) -> Tuple[int, int, int]:
     """selects a candidate among all available spectrum"""
     if policy == FIRST_FIT and candidates:
         return candidates[0]
     if policy == LAST_FIT and candidates:
         return candidates[-1]
-    elif not candidates:
+    if not candidates:
         return (None, None, None)
-    else:
-        raise ServiceError('Only first_fit spectrum assignment policy is implemented.')
+    raise ServiceError('Only first_fit and last_fit spectrum assignment policy are implemented.')
 
 
-def compute_n_m(required_m, rq, path_oms, oms_list, per_channel_m, policy=FIRST_FIT):
+def compute_n_m(required_m: int, rq: PathRequest, path_oms: List[int], oms_list: List[OMS], per_channel_m: int,
+                policy: str = FIRST_FIT) -> Tuple[list, list, int]:
     """ based on requested path_bandwidth fill in M=None values with uint values, using per_channel_m
     and center frequency, with first fit strategy. The function checks the available spectrum but check
     consistencies among M values of the request, but not with other requests.
@@ -539,7 +550,10 @@ def compute_n_m(required_m, rq, path_oms, oms_list, per_channel_m, policy=FIRST_
     return selected_n, selected_m, remaining_slots_to_serve
 
 
-def pth_assign_spectrum(pths, rqs, oms_list, rpths, policy=FIRST_FIT):
+def pth_assign_spectrum(pths: List[Union[Roadm, Transceiver, Edfa, Multiband_amplifier, Fiber, RamanFiber, Fused]],
+                        rqs: List[PathRequest], oms_list: List[OMS],
+                        rpths: List[Union[Roadm, Transceiver, Edfa, Multiband_amplifier, Fiber, RamanFiber, Fused]],
+                        policy=FIRST_FIT):
     """basic first fit assignment
 
     if reversed path are provided, means that occupation is bidir
@@ -551,8 +565,7 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths, policy=FIRST_FIT):
         else:
             # computes the number of channels required for path_bandwidth and the min required nb of slots
             # for one channel (corresponds to the spacing)
-            nb_wl, required_m = compute_spectrum_slot_vs_bandwidth(rq.path_bandwidth,
-                                                                   rq.spacing, rq.bit_rate)
+            nb_wl, required_m = compute_spectrum_slot_vs_bandwidth(rq.path_bandwidth, rq.spacing, rq.bit_rate)
             _, per_channel_m = compute_spectrum_slot_vs_bandwidth(rq.bit_rate,
                                                                   rq.spacing, rq.bit_rate)
             # find oms ids that are concerned both by pth and rpth
@@ -561,7 +574,7 @@ def pth_assign_spectrum(pths, rqs, oms_list, rpths, policy=FIRST_FIT):
                 # if all M are well defined: Consistency check that the requested M are enough to carry the nb_wl:
                 # check that the integer number of per_channel_m carried in each M value is enough to carry nb_wl.
                 # if not, blocks the demand
-                nb_channels_of_request = sum([m // per_channel_m for m in rq.M])
+                nb_channels_of_request = sum(m // per_channel_m for m in rq.M)
                 # TODO: elaborate a more accurate estimate with nb_wl * min_spacing + possibly guardbands in case of
                 # superchannel closed packing.
                 if nb_wl > nb_channels_of_request:
