@@ -8,13 +8,15 @@ gnpy.tools.json_io
 Loading and saving data from JSON files in GNPy's internal data format
 """
 
-from networkx import DiGraph
 from logging import getLogger
 from pathlib import Path
 import json
 from collections import namedtuple
-from numpy import arange
 from copy import deepcopy
+from typing import Union, Dict, List
+from networkx import DiGraph
+from numpy import arange
+
 
 from gnpy.core import elements
 from gnpy.core.equipment import trx_mode_params, find_type_variety
@@ -40,15 +42,21 @@ Model_dual_stage = namedtuple('Model_dual_stage', 'preamp_variety booster_variet
 
 
 class Model_openroadm_preamp:
-    pass
+    """class to hold nf model specific to OpenROADM preamp
+    """
 
 
 class Model_openroadm_booster:
-    pass
+    """class to hold nf model specific to OpenROADM booster
+    """
 
 
 class _JsonThing:
+    """Base class for json equipment
+    """
     def update_attr(self, default_values, kwargs, name):
+        """Build the attributes based on kwargs dict
+        """
         clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
         for k, v in default_values.items():
             setattr(self, k, clean_kwargs.get(k, v))
@@ -60,6 +68,8 @@ class _JsonThing:
 
 
 class SI(_JsonThing):
+    """Spectrum Information
+    """
     default_values = {
         "f_min": 191.35e12,
         "f_max": 196.1e12,
@@ -78,6 +88,8 @@ class SI(_JsonThing):
 
 
 class Span(_JsonThing):
+    """Span simulations definition
+    """
     default_values = {
         'power_mode': True,
         'delta_power_range_db': None,
@@ -97,6 +109,8 @@ class Span(_JsonThing):
 
 
 class Roadm(_JsonThing):
+    """List of ROADM and their specs
+    """
     default_values = {
         'type_variety': 'default',
         'add_drop_osnr': 100,
@@ -129,6 +143,8 @@ class Roadm(_JsonThing):
 
 
 class Transceiver(_JsonThing):
+    """List of transceivers and their modes
+    """
     default_values = {
         'type_variety': None,
         'frequency': None,
@@ -161,6 +177,8 @@ class Transceiver(_JsonThing):
 
 
 class Fiber(_JsonThing):
+    """Fiber default settings
+    """
     default_values = {
         'type_variety': '',
         'dispersion': None,
@@ -181,10 +199,13 @@ class Fiber(_JsonThing):
 
 
 class RamanFiber(Fiber):
-    pass
+    """Raman Fiber default settings
+    """
 
 
 class Amp(_JsonThing):
+    """List of amplifiers with their specs
+    """
     default_values = EdfaParams.default_values
 
     def __init__(self, **kwargs):
@@ -192,6 +213,8 @@ class Amp(_JsonThing):
 
     @classmethod
     def from_json(cls, filename, **kwargs):
+        """
+        """
         config = Path(filename).parent / 'default_edfa_config.json'
         # default_edfa_config.json assumes a DGT profile independantly from fmin/fmax, that's a generic profile
         type_variety = kwargs['type_variety']
@@ -203,9 +226,9 @@ class Amp(_JsonThing):
         if type_def == 'fixed_gain':
             try:
                 nf0 = kwargs.pop('nf0')
-            except KeyError:  # nf0 is expected for a fixed gain amp
+            except KeyError as exc:  # nf0 is expected for a fixed gain amp
                 msg = f'missing nf0 value input for amplifier: {type_variety} in equipment config'
-                raise EquipmentConfigError(msg)
+                raise EquipmentConfigError(msg) from exc
             for k in ('nf_min', 'nf_max'):
                 try:
                     del kwargs[k]
@@ -219,9 +242,9 @@ class Amp(_JsonThing):
             try:  # nf_min and nf_max are expected for a variable gain amp
                 nf_min = kwargs.pop('nf_min')
                 nf_max = kwargs.pop('nf_max')
-            except KeyError:
+            except KeyError as exc:
                 msg = f'missing nf_min or nf_max value input for amplifier: {type_variety} in equipment config'
-                raise EquipmentConfigError(msg)
+                raise EquipmentConfigError(msg) from exc
             try:  # remove all remaining nf inputs
                 del kwargs['nf0']
             except KeyError:
@@ -231,8 +254,8 @@ class Amp(_JsonThing):
         elif type_def == 'openroadm':
             try:
                 nf_coef = kwargs.pop('nf_coef')
-            except KeyError:  # nf_coef is expected for openroadm amp
-                raise EquipmentConfigError(f'missing nf_coef input for amplifier: {type_variety} in equipment config')
+            except KeyError as exc:  # nf_coef is expected for openroadm amp
+                raise EquipmentConfigError(f'missing nf_coef input for amplifier: {type_variety} in equipment config') from exc
             nf_def = Model_openroadm_ila(nf_coef)
         elif type_def == 'openroadm_preamp':
             nf_def = Model_openroadm_preamp()
@@ -242,9 +265,9 @@ class Amp(_JsonThing):
             try:  # nf_ram and gain_ram are expected for a hybrid amp
                 preamp_variety = kwargs.pop('preamp_variety')
                 booster_variety = kwargs.pop('booster_variety')
-            except KeyError:
+            except KeyError as exc:
                 raise EquipmentConfigError(f'missing preamp/booster variety input for amplifier: {type_variety}'
-                                           + ' in equipment config')
+                                           + ' in equipment config') from exc
             dual_stage_def = Model_dual_stage(preamp_variety, booster_variety)
         elif type_def == 'multi_band':
             amplifiers = kwargs['amplifiers']
@@ -264,7 +287,7 @@ class Amp(_JsonThing):
                       'nf_model': nf_def, 'dual_stage_model': dual_stage_def, 'multi_band': amplifiers})
 
 
-def _spectrum_from_json(json_data):
+def _spectrum_from_json(json_data: dict):
     """JSON_data is a list of spectrum partitions each with
     {f_min, f_max, baud_rate, roll_off, delta_pdb, slot_width, tx_osnr, label}
     Creates the per freq Carrier's dict.
@@ -306,17 +329,13 @@ def _spectrum_from_json(json_data):
     previous_part_max_freq = 0.0
     for index, part in enumerate(json_data):
         # default delta_pdb is 0 dB
-        if 'delta_pdb' not in part:
-            part['delta_pdb'] = 0
+        part.setdefault('delta_pdb', 0)
         # add a label to the partition for the printings
-        if 'label' not in part:
-            part['label'] = f'{index}-{part["baud_rate"] * 1e-9 :.2f}G'
+        part.setdefault('label', f'{index}-{part["baud_rate"] * 1e-9:.2f}G')
         # default tx_osnr is set to 40 dB
-        if 'tx_osnr' not in part:
-            part['tx_osnr'] = 40
+        part.setdefault('tx_osnr', 40)
         # default tx_power_dbm is set to 0 dBn
-        if 'tx_power_dbm' not in part:
-            part['tx_power_dbm'] = 0
+        part.setdefault('tx_power_dbm', 0)
         # starting freq is exactly f_min to be consistent with utils.automatic_nch
         # first partition min occupation is f_min - slot_width / 2 (central_frequency is f_min)
         # supposes that carriers are centered on frequency
@@ -324,12 +343,13 @@ def _spectrum_from_json(json_data):
             # check that previous part last channel does not overlap on next part first channel
             # max center of the part should be below part['f_max'] and aligned on the slot_width
             msg = 'Not a valid initial spectrum definition:\nprevious spectrum last carrier max occupation ' +\
-                f'{previous_part_max_freq * 1e-12 :.5f}GHz ' +\
+                f'{previous_part_max_freq * 1e-12:.5f}GHz ' +\
                 'overlaps on next spectrum first carrier occupation ' +\
-                f'{(part["f_min"] - part["slot_width"] / 2) * 1e-12 :.5f}GHz'
+                f'{(part["f_min"] - part["slot_width"] / 2) * 1e-12:.5f}GHz'
             raise ValueError(msg)
 
         max_range = ((part['f_max'] - part['f_min']) // part['slot_width'] + 1) * part['slot_width']
+        previous_part_max_freq = None
         for current_freq in arange(part['f_min'],
                                    part['f_min'] + max_range,
                                    part['slot_width']):
@@ -341,17 +361,26 @@ def _spectrum_from_json(json_data):
     return spectrum
 
 
-def load_equipment(filename):
+def load_equipment(filename: Path) -> dict:
+    """Load equipment, returns equipment dict
+    """
     json_data = load_json(filename)
     return _equipment_from_json(json_data, filename)
 
 
-def load_initial_spectrum(filename):
+def load_initial_spectrum(filename: Path) -> dict:
+    """Load spectrum to propagate, returns spectrum dict
+    """
     json_data = load_json(filename)
     return _spectrum_from_json(json_data['spectrum'])
 
 
-def _update_dual_stage(equipment):
+def _update_dual_stage(equipment: dict) -> dict:
+    """Update attributes of all dual stage amps with the preamp and booster attributes
+    (defined in the equipment dictionary)
+
+    Returns the updated equiment dictionary
+    """
     edfa_dict = equipment['Edfa']
     for edfa in edfa_dict.values():
         if edfa.type_def == 'dual_stage':
@@ -395,7 +424,7 @@ def _update_band(equipment: dict) -> dict:
     return equipment
 
 
-def _roadm_restrictions_sanity_check(equipment):
+def _roadm_restrictions_sanity_check(equipment: dict):
     """verifies that booster and preamp restrictions specified in roadm equipment are listed in the edfa."""
     for roadm_type, roadm_eqpt in equipment['Roadm'].items():
         restrictions = roadm_eqpt.restrictions['booster_variety_list'] + \
@@ -406,7 +435,7 @@ def _roadm_restrictions_sanity_check(equipment):
                                            + 'defined EDFA name')
 
 
-def _check_fiber_vs_raman_fiber(equipment):
+def _check_fiber_vs_raman_fiber(equipment: dict):
     """Ensure that Fiber and RamanFiber with the same name define common properties equally"""
     if 'RamanFiber' not in equipment:
         return
@@ -421,7 +450,7 @@ def _check_fiber_vs_raman_fiber(equipment):
                                            f'disagrees for "{attr}": {a} != {b}')
 
 
-def _equipment_from_json(json_data, filename):
+def _equipment_from_json(json_data: dict, filename: Path) -> dict:
     """build global dictionnary eqpt_library that stores all eqpt characteristics:
     edfa type type_variety, fiber type_variety
     from the eqpt_config.json (filename parameter)
@@ -466,7 +495,12 @@ def _equipment_from_json(json_data, filename):
     return equipment
 
 
-def load_network(filename, equipment):
+def load_network(filename: Path, equipment: dict) -> DiGraph:
+    """load network json or excel
+
+    :param filename: input file to read from
+    :param equipment: equipment library
+    """
     if filename.suffix.lower() in ('.xls', '.xlsx'):
         json_data = xls_to_json_data(filename)
     elif filename.suffix.lower() == '.json':
@@ -490,21 +524,22 @@ def _cls_for(equipment_type):
         return elements.Edfa
     if equipment_type == 'Fused':
         return elements.Fused
-    elif equipment_type == 'Roadm':
+    if equipment_type == 'Roadm':
         return elements.Roadm
-    elif equipment_type == 'Transceiver':
+    if equipment_type == 'Transceiver':
         return elements.Transceiver
-    elif equipment_type == 'Fiber':
+    if equipment_type == 'Fiber':
         return elements.Fiber
-    elif equipment_type == 'RamanFiber':
+    if equipment_type == 'RamanFiber':
         return elements.RamanFiber
-    elif equipment_type == 'Multiband_amplifier':
+    if equipment_type == 'Multiband_amplifier':
         return elements.Multiband_amplifier
-    else:
-        raise ConfigurationError(f'Unknown network equipment "{equipment_type}"')
+    raise ConfigurationError(f'Unknown network equipment "{equipment_type}"')
 
 
-def network_from_json(json_data, equipment):
+def network_from_json(json_data: dict, equipment: dict) -> DiGraph:
+    """create digraph based on json input dict and using equipment library to fill in the gaps
+    """
     # NOTE|dutc: we could use the following, but it would tie our data format
     #            too closely to the graph library
     # from networkx import node_link_graph
@@ -600,14 +635,16 @@ def network_from_json(json_data, equipment):
             else:
                 edge_length = 0.01
             g.add_edge(nodes[from_node], nodes[to_node], weight=edge_length)
-        except KeyError:
+        except KeyError as exc:
             msg = f'can not find {from_node} or {to_node} defined in {cx}'
-            raise NetworkTopologyError(msg)
+            raise NetworkTopologyError(msg) from exc
 
     return g
 
 
-def network_to_json(network):
+def network_to_json(network: DiGraph) -> dict:
+    """Export network graph as a json dict
+    """
     data = {
         'elements': [n.to_json for n in network]
     }
@@ -621,30 +658,35 @@ def network_to_json(network):
     return data
 
 
-def load_json(filename):
+def load_json(filename: Path) -> dict:
+    """load json data, convert from the yang to the legacy
+    supports both legacy ang yang formatted inputs based on yang models
+    """
     with open(filename, 'r', encoding='utf-8') as f:
         data = json.load(f)
     return data
 
 
-def save_json(obj, filename):
+def save_json(obj: Dict, filename: Path):
+    """Save in json format. Use yang formatted data for Topo and Services
+    """
     with open(filename, 'w', encoding='utf-8') as f:
         json.dump(obj, f, indent=2, ensure_ascii=False)
 
 
-def load_requests(filename, eqpt, bidir, network, network_filename):
+def load_requests(filename: Path, eqpt: dict, bidir: bool, network: DiGraph, network_filename: str) -> dict:
     """loads the requests from a json or an excel file into a data string"""
     if filename.suffix.lower() in ('.xls', '.xlsx'):
         _logger.info('Automatically converting requests from XLS to JSON')
         try:
             return convert_service_sheet(filename, eqpt, network, network_filename=network_filename, bidir=bidir)
         except ServiceError as this_e:
-            raise ServiceError(f'Service error: {this_e}')
+            raise ServiceError(f'Service error: {this_e}') from this_e
     else:
         return load_json(filename)
 
 
-def requests_from_json(json_data, equipment):
+def requests_from_json(json_data: dict, equipment: dict) -> List[PathRequest]:
     """Extract list of requests from data parsed from JSON"""
     requests_list = []
 
@@ -713,7 +755,7 @@ def requests_from_json(json_data, equipment):
     return requests_list
 
 
-def _check_one_request(params, f_max_from_si):
+def _check_one_request(params: dict, f_max_from_si: float):
     """Checks that the requested parameters are consistant (spacing vs nb channel vs transponder mode...)"""
     f_min = params['f_min']
     f_max = params['f_max']
@@ -723,19 +765,19 @@ def _check_one_request(params, f_max_from_si):
         if params['min_spacing'] > params['spacing']:
             msg = f'Request {params["request_id"]} has spacing below transponder ' +\
                   f'{params["trx_type"]} {params["trx_mode"]} min spacing value ' +\
-                  f'{params["min_spacing"]*1e-9}GHz.\nComputation stopped'
+                  f'{params["min_spacing"] * 1e-9}GHz.\nComputation stopped'
             raise ServiceError(msg)
         if f_max > f_max_from_si:
             msg = f'Requested channel number {params["nb_channel"]}, baud rate {params["baud_rate"] * 1e-9} GHz' \
-                  + f' and requested spacing {params["spacing"]*1e-9}GHz is not consistent with frequency range' \
-                  + f' {f_min*1e-12} THz, {f_max_from_si*1e-12} THz.' \
+                  + f' and requested spacing {params["spacing"] * 1e-9}GHz is not consistent with frequency range' \
+                  + f' {f_min * 1e-12} THz, {f_max_from_si * 1e-12} THz.' \
                   + f' Max recommanded nb of channels is {max_recommanded_nb_channels}.'
             raise ServiceError(msg)
     # Transponder mode already selected; will it fit to the requested bandwidth?
     if params['trx_mode'] is not None and params['effective_freq_slot'] is not None:
-        required_nb_of_channels, requested_m = compute_spectrum_slot_vs_bandwidth(params['path_bandwidth'],
-                                                                                  params['spacing'],
-                                                                                  params['bit_rate'])
+        required_nb_of_channels, _ = compute_spectrum_slot_vs_bandwidth(params['path_bandwidth'],
+                                                                        params['spacing'],
+                                                                        params['bit_rate'])
         _, per_channel_m = compute_spectrum_slot_vs_bandwidth(params['bit_rate'],
                                                               params['spacing'],
                                                               params['bit_rate'])
@@ -774,7 +816,7 @@ def _check_one_request(params, f_max_from_si):
                 i += 1
 
 
-def disjunctions_from_json(json_data):
+def disjunctions_from_json(json_data: dict) -> List[Disjunction]:
     """reads the disjunction requests from the json dict and create the list
     of requested disjunctions for this set of requests
     """
@@ -793,20 +835,30 @@ def disjunctions_from_json(json_data):
 
 
 def convert_service_sheet(
-        input_filename,
-        eqpt,
-        network,
-        network_filename=None,
-        output_filename='',
-        bidir=False):
+        input_filename: Path,
+        eqpt: dict,
+        network: DiGraph,
+        network_filename: Union[Path, None] = None,
+        output_filename: str = '',
+        bidir: bool = False):
+    """Converts xls into json format services
+
+    :param input_filename: xls(x) file containing the service sheet
+    :param eqpt: equipment library
+    :param network: network for which these services apply (required for xls inputs to correct names)
+    :param network_filename: optional network file name that was used for network creation
+                             (required for xls inputs to correct names)
+    :param output_filename: name of the file where converted data are savec
+    :param bidir: set all services bidir attribute with this bool
+    """
     if output_filename == '':
-        output_filename = f'{str(input_filename)[0:len(str(input_filename))-len(str(input_filename.suffixes[0]))]}_services.json'
+        output_filename = f'{str(input_filename)[0:len(str(input_filename)) - len(str(input_filename.suffixes[0]))]}_services.json'
     data = read_service_sheet(input_filename, eqpt, network, network_filename, bidir)
     save_json(data, output_filename)
     return data
 
 
-def find_equalisation(params, equalization_types):
+def find_equalisation(params: Dict, equalization_types: List[str]):
     """Find the equalization(s) defined in params. params can be a dict or a Roadm object.
 
     >>> roadm = {'add_drop_osnr': 100, 'pmd': 1, 'pdl': 0.5,
@@ -823,7 +875,7 @@ def find_equalisation(params, equalization_types):
     return equalization
 
 
-def merge_equalization(params, extra_params):
+def merge_equalization(params: dict, extra_params: dict) -> Union[dict, None]:
     """params contains ROADM element config and extra_params default values from equipment library.
     If equalization is not defined in ROADM element use the one defined in equipment library.
     Only one type of equalization must be defined: power (target_pch_out_db) or PSD (target_psd_out_mWperGHz)
