@@ -11,105 +11,150 @@ Yang model for requesting path computation.
 See: draft-ietf-teas-yang-path-computation-01.txt
 """
 
-from xlrd import open_workbook, XL_CELL_EMPTY
 from collections import namedtuple
 from logging import getLogger
 from copy import deepcopy
+from pathlib import Path
+from typing import Dict, List
+from networkx import DiGraph
+from xlrd import open_workbook, XL_CELL_EMPTY
+
 from gnpy.core.utils import db2lin
 from gnpy.core.exceptions import ServiceError
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Fiber
-from gnpy.tools.convert import corresp_names, corresp_next_node
+from gnpy.tools.convert import corresp_names, corresp_next_node, all_rows
 
 SERVICES_COLUMN = 12
-
-
-def all_rows(sheet, start=0):
-    return (sheet.row(x) for x in range(start, sheet.nrows))
 
 
 logger = getLogger(__name__)
 
 
-class Request(namedtuple('Request', 'request_id source destination trx_type mode \
-    spacing power nb_channel disjoint_from nodes_list is_loose path_bandwidth')):
-    def __new__(cls, request_id, source, destination, trx_type,  mode=None, spacing=None, power=None, nb_channel=None, disjoint_from='',  nodes_list=None, is_loose='', path_bandwidth=None):
-        return super().__new__(cls, request_id, source, destination, trx_type, mode, spacing, power, nb_channel, disjoint_from,  nodes_list, is_loose, path_bandwidth)
+class Request(namedtuple('request_param', 'request_id source destination trx_type mode \
+        spacing power nb_channel disjoint_from nodes_list is_loose path_bandwidth')):
+    """DATA class for a request.
+
+    :params request_id (int): The unique identifier for the request.
+    :params source (str): The source node for the communication.
+    :params destination (str): The destination node for the communication.
+    :params trx_type (str): The type of transmission for the communication.
+    :params mode (str, optional): The mode of transmission. Defaults to None.
+    :params spacing (float, optional): The spacing between channels. Defaults to None.
+    :params power (float, optional): The power level for the communication. Defaults to None.
+    :params nb_channel (int, optional): The number of channels required for the communication. Defaults to None.
+    :params disjoint_from (str, optional): The node to be disjoint from. Defaults to ''.
+    :params nodes_list (list, optional): The list of nodes involved in the communication. Defaults to None.
+    :params is_loose (str, optional): Indicates if the communication is loose. Defaults to ''.
+    :params path_bandwidth (float, optional): The bandwidth required for the communication. Defaults to None.
+    """
+    def __new__(cls, request_id, source, destination, trx_type, mode=None, spacing=None, power=None, nb_channel=None,
+                disjoint_from='', nodes_list=None, is_loose='', path_bandwidth=None):
+        return super().__new__(cls, request_id, source, destination, trx_type, mode, spacing, power, nb_channel,
+                               disjoint_from, nodes_list, is_loose, path_bandwidth)
 
 
 class Element:
+    """
+    """
+    def __init__(self, uid):
+        self.uid = uid
+
     def __eq__(self, other):
-        return type(self) == type(other) and self.uid == other.uid
+        return isinstance(other, type(self)) and self.uid == other.ui
 
     def __hash__(self):
         return hash((type(self), self.uid))
 
 
 class Request_element(Element):
-    def __init__(self, Request, equipment, bidir):
+    """Class that generate the request in the json format
+
+    :params request_param (Request): The request object containing the information for the element.
+    :params equipment (dict): The equipment configuration for the communication.
+    :params bidir (bool): Indicates if the communication is bidirectional.
+
+    Attributes:
+        request_id (str): The unique identifier for the request.
+        source (str): The source node for the communication.
+        destination (str): The destination node for the communication.
+        srctpid (str): The source TP ID for the communication.
+        dsttpid (str): The destination TP ID for the communication.
+        bidir (bool): Indicates if the communication is bidirectional.
+        trx_type (str): The type of transmission for the communication.
+        mode (str): The mode of transmission for the communication.
+        spacing (float): The spacing between channels for the communication.
+        power (float): The power level for the communication.
+        nb_channel (int): The number of channels required for the communication.
+        disjoint_from (list): The list of nodes to be disjoint from.
+        nodes_list (list): The list of nodes involved in the communication.
+        loose (str): Indicates if the communication is loose or strict.
+        path_bandwidth (float): The bandwidth required for the communication.
+    """
+    def __init__(self, request_param: Request, equipment: Dict, bidir: bool):
+        """
+        """
+        super().__init__(uid=request_param.request_id)
         # request_id is str
         # excel has automatic number formatting that adds .0 on integer values
         # the next lines recover the pure int value, assuming this .0 is unwanted
-        self.request_id = correct_xlrd_int_to_str_reading(Request.request_id)
-        self.source = f'trx {Request.source}'
-        self.destination = f'trx {Request.destination}'
+        self.request_id = correct_xlrd_int_to_str_reading(request_param.request_id)
+        self.source = f'trx {request_param.source}'
+        self.destination = f'trx {request_param.destination}'
         # TODO: the automatic naming generated by excel parser requires that source and dest name
         # be a string starting with 'trx' : this is manually added here.
-        self.srctpid = f'trx {Request.source}'
-        self.dsttpid = f'trx {Request.destination}'
+        self.srctpid = f'trx {request_param.source}'
+        self.dsttpid = f'trx {request_param.destination}'
         self.bidir = bidir
         # test that trx_type belongs to eqpt_config.json
         # if not replace it with a default
         try:
-            if equipment['Transceiver'][Request.trx_type]:
-                self.trx_type = correct_xlrd_int_to_str_reading(Request.trx_type)
-            if Request.mode is not None:
-                Requestmode = correct_xlrd_int_to_str_reading(Request.mode)
-                if [mode for mode in equipment['Transceiver'][Request.trx_type].mode if mode['format'] == Requestmode]:
-                    self.mode = Requestmode
+            if equipment['Transceiver'][request_param.trx_type]:
+                self.trx_type = correct_xlrd_int_to_str_reading(request_param.trx_type)
+            if request_param.mode is not None:
+                request_mode = correct_xlrd_int_to_str_reading(request_param.mode)
+                if [mode for mode in equipment['Transceiver'][request_param.trx_type].mode
+                        if mode['format'] == request_mode]:
+                    self.mode = request_mode
                 else:
-                    msg = f'Request Id: {self.request_id} - could not find tsp : \'{Request.trx_type}\' ' \
-                        + f'with mode: \'{Requestmode}\' in eqpt library \nComputation stopped.'
+                    msg = f'Request Id: {self.request_id} - could not find tsp : \'{request_param.trx_type}\' ' \
+                          + f'with mode: \'{request_mode}\' in eqpt library \nComputation stopped.'
                     raise ServiceError(msg)
             else:
-                Requestmode = None
-                self.mode = Request.mode
-        except KeyError:
-            msg = f'Request Id: {self.request_id} - could not find tsp : \'{Request.trx_type}\' ' \
-                + f'with mode: \'{Request.mode}\' in eqpt library \nComputation stopped.'
-            raise ServiceError(msg)
+                request_mode = None
+                self.mode = request_param.mode
+        except KeyError as e:
+            msg = f'Request Id: {self.request_id} - could not find tsp : \'{request_param.trx_type}\' with mode: ' \
+                  + f'\'{request_param.mode}\' in eqpt library \nComputation stopped.'
+            raise ServiceError(msg) from e
         # excel input are in GHz and dBm
-        if Request.spacing is not None:
-            self.spacing = Request.spacing * 1e9
+        if request_param.spacing is not None:
+            self.spacing = request_param.spacing * 1e9
         else:
             msg = f'Request {self.request_id} missing spacing: spacing is mandatory.\ncomputation stopped'
             raise ServiceError(msg)
-        if Request.power is not None:
-            self.power = db2lin(Request.power) * 1e-3
-        else:
-            self.power = None
-        if Request.nb_channel is not None:
-            self.nb_channel = int(Request.nb_channel)
-        else:
-            self.nb_channel = None
+        self.power = None
+        if request_param.power is not None:
+            self.power = db2lin(request_param.power) * 1e-3
+        self.nb_channel = None
+        if request_param.nb_channel is not None:
+            self.nb_channel = int(request_param.nb_channel)
 
-        value = correct_xlrd_int_to_str_reading(Request.disjoint_from)
+        value = correct_xlrd_int_to_str_reading(request_param.disjoint_from)
         self.disjoint_from = [n for n in value.split(' | ') if value]
         self.nodes_list = []
-        if Request.nodes_list:
-            self.nodes_list = Request.nodes_list.split(' | ')
+        if request_param.nodes_list:
+            self.nodes_list = request_param.nodes_list.split(' | ')
         self.loose = 'LOOSE'
-        if Request.is_loose.lower() == 'no':
+        if request_param.is_loose.lower() == 'no':
             self.loose = 'STRICT'
-        self.path_bandwidth = None
-        if Request.path_bandwidth is not None:
-            self.path_bandwidth = Request.path_bandwidth * 1e9
-        else:
-            self.path_bandwidth = 0
-
-    uid = property(lambda self: repr(self))
+        self.path_bandwidth = 0
+        if request_param.path_bandwidth is not None:
+            self.path_bandwidth = request_param.path_bandwidth * 1e9
 
     @property
     def pathrequest(self):
+        """Creates json dictionnary for the request
+        """
         # Default assumption for bidir is False
         req_dictionnary = {
             'request-id': self.request_id,
@@ -152,29 +197,32 @@ class Request_element(Element):
 
     @property
     def pathsync(self):
+        """Creates json dictionnary for disjunction list (synchronization vector)
+        """
         if self.disjoint_from:
             return {'synchronization-id': self.request_id,
                     'svec': {
                         'relaxable': 'false',
                         'disjointness': 'node link',
-                        'request-id-number': [self.request_id] + [n for n in self.disjoint_from]
+                        'request-id-number': [self.request_id] + list(self.disjoint_from)
                     }
                     }
-        else:
-            return None
+        return None
         # TO-DO: avoid multiple entries with same synchronisation vectors
 
     @property
     def json(self):
+        """Returns the json dictionnary for requests and for synchronisation vector
+        """
         return self.pathrequest, self.pathsync
 
 
 def read_service_sheet(
-        input_filename,
-        eqpt,
-        network,
-        network_filename=None,
-        bidir=False):
+        input_filename: Path,
+        eqpt: Dict,
+        network: DiGraph,
+        network_filename: Path = None,
+        bidir: bool = False) -> Dict:
     """ converts a service sheet into a json structure
     """
     if network_filename is None:
@@ -184,19 +232,16 @@ def read_service_sheet(
     req = correct_xls_route_list(network_filename, network, req)
     # if there is no sync vector , do not write any synchronization
     synchro = [n.json[1] for n in req if n.json[1] is not None]
+    data = {'path-request': [n.json[0] for n in req]}
     if synchro:
-        data = {
-            'path-request': [n.json[0] for n in req],
-            'synchronization': synchro
-        }
-    else:
-        data = {
-            'path-request': [n.json[0] for n in req]
-        }
+        data['synchronization'] = synchro
     return data
 
 
 def correct_xlrd_int_to_str_reading(v):
+    """Utils: ensure that int values in id are read as strings containing the int and
+    do not use the automatic float conversion from xlrd
+    """
     if not isinstance(v, str):
         value = str(int(v))
         if value.endswith('.0'):
@@ -206,22 +251,27 @@ def correct_xlrd_int_to_str_reading(v):
     return value
 
 
-def parse_row(row, fieldnames):
+def parse_row(row: List, fieldnames: List[str]) -> Dict:
+    """Reads each values in a row and creates a dict using field names
+    """
     return {f: r.value for f, r in zip(fieldnames, row[0:SERVICES_COLUMN])
             if r.ctype != XL_CELL_EMPTY}
 
 
-def parse_excel(input_filename):
+def parse_excel(input_filename: Path) -> List[Request]:
+    """Opens xls_file and reads 'Service' sheet
+    Returns the list of services data in Request class
+    """
     with open_workbook(input_filename) as wb:
         service_sheet = wb.sheet_by_name('Service')
         services = list(parse_service_sheet(service_sheet))
     return services
 
 
-def parse_service_sheet(service_sheet):
+def parse_service_sheet(service_sheet) -> Request:
     """ reads each column according to authorized fieldnames. order is not important.
     """
-    logger.debug(f'Validating headers on {service_sheet.name!r}')
+    logger.debug('Validating headers on %r', service_sheet.name)
     # add a test on field to enable the '' field case that arises when columns on the
     # right hand side are used as comments or drawing in the excel sheet
     header = [x.value.strip() for x in service_sheet.row(4)[0:SERVICES_COLUMN]
@@ -239,14 +289,14 @@ def parse_service_sheet(service_sheet):
         'routing: is loose?': 'is_loose', 'path bandwidth': 'path_bandwidth'}
     try:
         service_fieldnames = [authorized_fieldnames[e] for e in header]
-    except KeyError:
+    except KeyError as e:
         msg = f'Malformed header on Service sheet: {header} field not in {authorized_fieldnames}'
-        raise ValueError(msg)
+        raise ValueError(msg) from e
     for row in all_rows(service_sheet, start=5):
         yield Request(**parse_row(row[0:SERVICES_COLUMN], service_fieldnames))
 
 
-def check_end_points(pathreq, network):
+def check_end_points(pathreq: Request_element, network: DiGraph):
     """Raise error if end point is not correct
     """
     transponders = [n.uid for n in network.nodes() if isinstance(n, Transceiver)]
@@ -270,21 +320,21 @@ def find_node_sugestion(n_id, corresp_roadm, corresp_fused, corresp_ila, network
     # check that n_id is in the node list, if not find a correspondance name
     if n_id in roadmtype + edfatype:
         return [n_id]
-    else:
-        # checks first roadm, fused, and ila in this order, because ila automatic name
-        # contain roadm names. If it is a fused node, next ila names might be correct
-        # suggestions, especially if following fibers were splitted and ila names
-        # created with the name of the fused node
-        if n_id in corresp_roadm.keys():
-            return corresp_roadm[n_id]
-        if n_id in corresp_fused.keys():
-            return corresp_fused[n_id] + corresp_ila[n_id]
-        if n_id in corresp_ila.keys():
-            return corresp_ila[n_id]
-        return []
+    # checks first roadm, fused, and ila in this order, because ila automatic name
+    # contains roadm names. If it is a fused node, next ila names might be correct
+    # suggestions, especially if following fibers were splitted and ila names
+    # created with the name of the fused node
+    if n_id in corresp_roadm.keys():
+        return corresp_roadm[n_id]
+    if n_id in corresp_fused.keys():
+        return corresp_fused[n_id] + corresp_ila[n_id]
+    if n_id in corresp_ila.keys():
+        return corresp_ila[n_id]
+    return []
 
 
-def correct_xls_route_list(network_filename, network, pathreqlist):
+def correct_xls_route_list(network_filename: Path, network: DiGraph,
+                           pathreqlist: List[Request_element]) -> List[Request_element]:
     """ prepares the format of route list of nodes to be consistant with nodes names:
         remove wrong names, find correct names for ila, roadm and fused if the entry was
         xls.
@@ -324,7 +374,7 @@ def correct_xls_route_list(network_filename, network, pathreqlist):
                         # if there is more than one suggestion, we need to choose the direction
                         # we rely on the next node provided by the user for this purpose
                         new_n = next(n for n in nodes_suggestion
-                                     if n in next_node.keys()
+                                     if n in next_node
                                      and next_node[n] in temp.nodes_list[i:] + [pathreq.destination]
                                      and next_node[n] not in temp.nodes_list[:i])
                     elif len(nodes_suggestion) == 1:
@@ -340,11 +390,9 @@ def correct_xls_route_list(network_filename, network, pathreqlist):
                             logger.info(msg)
                             pathreq.nodes_list.remove(n_id)
                             continue
-                        else:
-                            msg = f'{pathreq.request_id}: Could not find node:\n\t\'{n_id}\' in network' \
-                                + ' topology. Strict constraint can not be applied.'
-                            logger.critical(msg)
-                            raise ServiceError(msg)
+                        msg = f'{pathreq.request_id}: Could not find node:\n\t\'{n_id}\' in network' \
+                            + ' topology. Strict constraint can not be applied.'
+                        raise ServiceError(msg)
                     if new_n != n_id:
                         # warns the user when the correct name is used only in verbose mode,
                         # eg 'a' is a roadm and correct name is 'roadm a' or when there was
@@ -365,9 +413,8 @@ def correct_xls_route_list(network_filename, network, pathreqlist):
             else:
                 if temp.loose == 'LOOSE':
                     msg = f'{pathreq.request_id}: Invalid route node specified:\n\t\'{n_id}\'' \
-                          + ' type is not supported as constraint with xls network input,' \
-                          + ' skipped!'
-                    logger.info(msg)
+                        + ' type is not supported as constraint with xls network input, skipped!'
+                    logger.warning(msg)
                     pathreq.nodes_list.remove(n_id)
                 else:
                     msg = f'{pathreq.request_id}: Invalid route node specified \n\t\'{n_id}\'' \
