@@ -757,7 +757,7 @@ class Edfa(_Node):
             operational = {}
         self.variety_list = kwargs.pop('variety_list', None)
         super().__init__(*args, params=EdfaParams(**params), operational=EdfaOperational(**operational), **kwargs)
-        self.interpol_dgt = None  # interpolated dynamic gain tilt
+        self.interpol_dgt = None  # interpolated dynamic gain tilt defined per frequency on amp band
         self.interpol_gain_ripple = None  # gain ripple
         self.interpol_nf_ripple = None  # nf_ripple
         self.channel_freq = None  # SI channel frequencies
@@ -780,7 +780,7 @@ class Edfa(_Node):
         self.delta_p = self.operational.delta_p
         # self._delta_p contains computed delta_p during design even if power_mode is False
         self._delta_p = None
-        self.tilt_target = self.operational.tilt_target
+        self.tilt_target = self.operational.tilt_target  # defined per lambda on the amp band
         self.out_voa = self.operational.out_voa
         self.propagated_labels = [""]
 
@@ -792,7 +792,7 @@ class Edfa(_Node):
                 'operational': {
                     'gain_target': round(self.effective_gain, 6) if self.effective_gain else None,
                     'delta_p': self.delta_p,
-                    'tilt_target': self.tilt_target,
+                    'tilt_target': self.tilt_target,  # defined per lambda on the amp band
                     'out_voa': self.out_voa
                 },
                 'metadata': {
@@ -1022,7 +1022,7 @@ class Edfa(_Node):
         p = polyfit(self.channel_freq, self.interpol_dgt, 1)
         dgt_slope = p[0]
 
-        # Calculate the target slope
+        # Calculate the target slope defined per frequency on the amp band
         targ_slope = -self.tilt_target / (self.params.f_max - self.params.f_min)
 
         # first estimate of DGT scaling
