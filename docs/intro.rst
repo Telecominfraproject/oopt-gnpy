@@ -14,26 +14,27 @@ fully-functional programs.
     specific, delineated use cases to drive requirements for future
     development.*
 
-This example demonstrates how GNPy can be used to check the expected SNR at the end of the line by varying the channel input power:
+This example demonstrates how GNPy can be used to check the expected SNR at the end of the line by varying the channel input power,
+or to run a planning script to check SNR of several services:
 
-.. image:: https://telecominfraproject.github.io/oopt-gnpy/docs/images/transmission_main_example.svg
+.. image:: images/gnpy-transmission-example.svg
    :width: 100%
    :align: left
    :alt: Running a simple simulation example
 
-By default, this script operates on a single span network defined in
-`gnpy/example-data/edfa_example_network.json <gnpy/example-data/edfa_example_network.json>`_
+By default, the gnpy-transmission-example script operates on a single span network defined in
+`gnpy/example-data/edfa_example_network.json <../gnpy/example-data/edfa_example_network.json>`_
 
 You can specify a different network at the command line as follows. For
 example, to use the CORONET Global network defined in
-`gnpy/example-data/CORONET_Global_Topology.json <gnpy/example-data/CORONET_Global_Topology.json>`_:
+`gnpy/example-data/CORONET_Global_Topology.json <../gnpy/example-data/CORONET_Global_Topology.json>`_:
 
 .. code-block:: shell-session
 
     $ gnpy-transmission-example $(gnpy-example-data)/CORONET_Global_Topology.json
 
 It is also possible to use an Excel file input (for example
-`gnpy/example-data/CORONET_Global_Topology.xls <gnpy/example-data/CORONET_Global_Topology.xls>`_).
+`gnpy/example-data/CORONET_Global_Topology.xls <../gnpy/example-data/CORONET_Global_Topology.xls>`_).
 The Excel file will be processed into a JSON file with the same prefix.
 Further details about the Excel data structure are available `in the documentation <docs/excel.rst>`__.
 
@@ -56,7 +57,7 @@ interference noise.
 Further Instructions for Use
 ----------------------------
 
-Simulations are driven by a set of `JSON <docs/json.rst>`__ or `XLS <docs/excel.rst>`__ files.
+Simulations are driven by a set of `JSON <json.rst>`__ or `XLS <excel.rst>`__ files.
 
 The ``gnpy-transmission-example`` script propagates a spectrum of channels at 32 Gbaud, 50 GHz spacing and 0 dBm/channel. 
 Launch power in fiber spans can be overridden by using the ``--power`` argument.
@@ -72,7 +73,7 @@ An experimental support for Raman amplification is available:
        --sim $(gnpy-example-data)/sim_params.json --show-channels
 
 Configuration of Raman pumps (their frequencies, power and pumping direction) is done via the `RamanFiber element in the network topology <gnpy/example-data/raman_edfa_example_network.json>`_.
-General numeric parameters for simulation control are provided in the `gnpy/example-data/sim_params.json <gnpy/example-data/sim_params.json>`_.
+General numeric parameters for simulation control are provided in the `gnpy/example-data/sim_params.json <../gnpy/example-data/sim_params.json>`_.
 
 Use ``gnpy-path-request`` to request several paths at once:
 
@@ -82,7 +83,7 @@ Use ``gnpy-path-request`` to request several paths at once:
      $ gnpy-path-request -o output_file.json \
        meshTopologyExampleV2.xls meshTopologyExampleV2_services.json
 
-This program operates on a network topology (`JSON <docs/json.rst>`__ or `Excel <docs/excel.rst>`__ format), processing the list of service requests (JSON or XLS again).
+This program operates on a network topology (`JSON <json.rst>`__ or `Excel <excel.rst>`__ format), processing the list of service requests (JSON or XLS again).
 The service requests and reply formats are based on the `draft-ietf-teas-yang-path-computation-01 <https://tools.ietf.org/html/draft-ietf-teas-yang-path-computation-01>`__ with custom extensions (e.g., for transponder modes).
 An example of the JSON input is provided in file `service-template.json`, while results are shown in `path_result_template.json`.
 
