@@ -119,38 +119,32 @@ A *mode* usually refers to a particular performance point that is defined by a c
 
 The following data are required for each mode:
 
-``bit-rate``
-  Data bit rate, in :math:`\text{Gbits}\times s^{-1}`.
-``baud-rate``
-  Symbol modulation rate, in :math:`\text{Gbaud}`.
-``required-osnr``
-  Minimal allowed OSNR for the receiver.
+``bit_rate``
+  Data bit rate, in :math:`\text{bits}\times s^{-1}`.
+``baud_rate``
+  Symbol modulation rate, in :math:`\text{baud}`.
+``OSNR``
+  Minimal required OSNR for the receiver. In :math:`\text{dB}`
 ``tx-osnr``
-  Initial OSNR at the transmitter's output.
-``grid-spacing``
+  Initial OSNR at the transmitter's output. In :math:`\text{dB}`
+``min-spacing``
   Minimal grid spacing, i.e., an effective channel spectral bandwidth.
   In :math:`\text{Hz}`.
-``tx-roll-off``
+``roll-off``
   Roll-off parameter (:math:`\beta`) of the TX pulse shaping filter.
   This assumes a raised-cosine filter.
 ``rx-power-min`` and ``rx-power-max``
-  The allowed range of power at the receiver.
+  (work in progress) The allowed range of power at the receiver.
   In :math:`\text{dBm}`.
-``cd-max``
-  Maximal allowed Chromatic Dispersion (CD).
-  In :math:`\text{ps}/\text{nm}`.
-``pmd-max``
-  Maximal allowed Polarization Mode Dispersion (PMD).
-  In :math:`\text{ps}`.
-``cd-penalty``
-  *Work-in-progress.*
-  Describes the increase of the requires GSNR as the :abbr:`CD (Chromatic Dispersion)` deteriorates.
-``dgd-penalty``
-  *Work-in-progress.*
-  Describes the increase of the requires GSNR as the :abbr:`DGD (Differential Group Delay)` deteriorates.
-``pmd-penalty``
-  *Work-in-progress.*
-  Describes the increase of the requires GSNR as the :abbr:`PMD (Polarization Mode Dispersion)` deteriorates.
+``penalties``
+  Impairments such as Chromatic Dispersion (CD), Polarization Mode Dispersion (PMD), and Polarization Dispersion Loss (PDL)
+  result in penalties at the receiver. The receiver's ability to handle these impairments can be defined for each mode as
+  a list of {impairment: in defined units, 'penalty_value' in dB} (see `transceiver section here <json.rst#_transceiver>`).
+  Maximum allowed CD, maximum allowed PMD, and maximum allowed PDL should be listed there with corresponding penalties.
+  Impairments experienced during propagation are linearly interpolated between given points to obtain the corresponding penalty.
+  The accumulated penalties are subtracted from the path GSNR before comparing with the minimum required OSNR.
+  Impairments: PMD in :math:`\text{ps}`, CD in :math:`\text{ps/nm}`, PDL in :math:`\text{dB}`, penalty_value in :math:`\text{dB}`
+
 
 GNPy does not directly track the FEC performance, so the type of chosen FEC is likely indicated in the *name* of the selected transponder mode alone.
 
@@ -168,6 +162,7 @@ The set of parameters for each ROADM model therefore includes:
   Per-channel target TX power towards the egress amplifier.
   Within GNPy, a ROADM is expected to attenuate any signal that enters the ROADM node to this level.
   This can be overridden on a per-link in the network topology.
+  Targets can be set using power or power spectral density (see `roadm section here <json.rst#__roadm>`)
 ``pmd``
   Polarization mode dispersion (PMD) penalty of the express path.
   In :math:`\text{ps}`.
