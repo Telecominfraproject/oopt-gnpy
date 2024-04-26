@@ -14,14 +14,15 @@ fully-functional programs.
     specific, delineated use cases to drive requirements for future
     development.*
 
-This example demonstrates how GNPy can be used to check the expected SNR at the end of the line by varying the channel input power:
+This example demonstrates how GNPy can be used to check the expected SNR at the end of the line by varying the channel input power,
+or to run a planning script to check SNR of several services:
 
-.. image:: https://telecominfraproject.github.io/oopt-gnpy/docs/images/transmission_main_example.svg
+.. image:: docs/images/gnpy-transmission-example.svg
    :width: 100%
    :align: left
    :alt: Running a simple simulation example
 
-By default, this script operates on a single span network defined in
+By default, the gnpy-transmission-example script operates on a single span network defined in
 `gnpy/example-data/edfa_example_network.json <gnpy/example-data/edfa_example_network.json>`_
 
 You can specify a different network at the command line as follows. For
