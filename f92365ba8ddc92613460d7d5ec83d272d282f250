@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3282999_e9fc50b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-15T18:00:53Z",
+      "side": 1,
+      "message": "The entire set of patches seems really good. I made the review first reading all the code, then I analyzed the tests one by one plotting the data, focusing on the equalization tests. I do not have any meaning suggestions for other possible tests. \n\nProbably, a weak point is the documentation. Basically, what I did to understand how the code works is to run the tests in debug mode and connecting the dots to figure out the behavior of parameters and functions. This process should be compensated by the documentation.",
+      "revId": "f92365ba8ddc92613460d7d5ec83d272d282f250",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
