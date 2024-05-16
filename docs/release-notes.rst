@@ -61,8 +61,30 @@ instead of
 **change in display**: only warnings are displayed ; information are disabled and needs the -v (verbose)
 option to be displayed on standard output.
 
-**frequency scaling**: Chromatic dispersion, effective area, Raman Gain coefficient,
-and nonlinear coefficient can now be defined with a scaling along frequency.
+**frequency scaling**: A more accurate description of fiber parameters is implemented, including frequency scaling of
+chromatic dispersion, effective area, Raman gain coefficient, and nonlinear coefficient.
+
+In particular:
+
+1. Chromatic dispersion can be defined with ``'dispersion'`` and ``'dispersion_slope'``, as in previous versions, or
+with ``'dispersion_per_frequency'``; the latter must be defined as a dictionary with two keys, ``'value'`` and
+``'frequency'`` and it has higher priority than the entries ``'dispersion'`` and ``'dispersion_slope'``.
+Essential change: In previous versions, when it was not provided the ``'dispersion_slope'`` was calculated in an
+involute manner to get a vanishing beta3 , and this was a mere artifact for NLI evaluation purposes (namely to evaluate
+beta2 and beta3, not for total dispersion accumulation). Now, the evaluation of beta2 and beta3 is performed explicitly
+in the element.py module.
+
+2. The effective area is provided as a scalar value evaluated at the Fiber reference frequency and properly scaled
+considering the Fiber refractive indices n1 and n2, and the core radius. These quantities are assumed to be fixed and
+are hard coded in the parameters.py module. Essential change: The effective area is always scaled along the frequency.
+
+3. The Raman gain coefficient is properly scaled considering the overlapping of fiber effective area values scaled at
+the interacting frequencies. Essential change: In previous version the Raman gain coefficient depends only on
+the frequency offset.
+
+4. The nonlinear coefficient ``'gamma'`` is properly scaled considering the refractive index n2 and the scaling
+effective area.  Essential change: As the effective area, the nonlinear coefficient is always scaled along the
+frequency.
 
 **power offset**: Power equalization now enables defining a power offset in transceiver library to represent
 the deviation from the general equalisation strategy defined in ROADMs.
