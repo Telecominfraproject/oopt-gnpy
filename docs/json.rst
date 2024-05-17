@@ -247,6 +247,10 @@ The user can only modify the value of existing parameters:
 +-------------------------------+-----------+----------------------------------------------------+
 | field                         |   type    | description                                        |
 +===============================+===========+====================================================+
+| ``type_variety``              | (string)  | Optional. Default: ``default``                     |
+|                               |           | A unique name to ID the ROADM variety in the JSON  |
+|                               |           | template topology input file.                      |
++-------------------------------+-----------+----------------------------------------------------+
 | ``target_pch_out_db``         | (number)  | Default :ref:`equalization strategy<equalization>` |
 | or                            |           | for this ROADM type.                               |
 | ``target_psd_out_mWperGHz``   |           |                                                    |
@@ -274,6 +278,184 @@ The user can only modify the value of existing parameters:
 |                               |           | insert a ``Fused`` node on the degree              |
 |                               |           | output.                                            |
 +-------------------------------+-----------+----------------------------------------------------+
+| ``roadm-path-impairments``    | (list of  | Optional. List of ROADM path category impairments. |
+|                               | dict)     |                                                    |
++-------------------------------+-----------+----------------------------------------------------+
+
+In addition to these general impairment, the user may define detailed set of impairments for add,
+drop and express path within the the ROADM. The impairment description is inspired from the `IETF
+CCAMP optical impairment topology <https://github.com/ietf-ccamp-wg/draft-ietf-ccamp-optical-impairment-topology-yang>`_
+(details here: `ROADM attributes IETF <https://github.com/ietf-ccamp-wg/draft-ietf-ccamp-optical-impairment-topology-yang/files/4262135/ROADM.attributes_IETF_v8draft.pptx>`_).
+
+the ``roadm-path-impairments`` list allows the definition of impairments list per internal path category
+(add, drop or express). several add-path drop-path or expresss-path can be defined. They are indexed and the impairments defined per band.
+
+each item should contain:
+
++--------------------------------+-----------+----------------------------------------------------+
+| field                          |   type    | description                                        |
++================================+===========+====================================================+
+| ``roadm-path-impairments-id``  | (number)  | A unique number to ID the impairments.             |
++--------------------------------+-----------+----------------------------------------------------+
+| ``roadm-express-path``         | (list)    | List of the impairments defined per frequency      |
+| or                             |           | range. The impairments are detailed in the         |
+| ``roadm-add-path``             |           | following table.                                   |
+| or                             |           |                                                    |
+| ``roadm-drop-path``            |           |                                                    |
+| (mutually exclusive)           |           |                                                    |
++--------------------------------+-----------+----------------------------------------------------+
+
+Here are the parameters for each path category and the implementation status:
+
++----------------------------+-----------+-----------------------------------------------------------+-------------+-------------+---------------------+
+| field                      | Type      | Description                                               | Drop path   | Add path    | Express (thru) path |
++============================+===========+===========================================================+=============+=============+=====================+
+| ``frequency-range``        | (list)    | List containing ``lower-frequency`` and                   |             |             |                     |
+|                            |           | ``upper-frequency`` in Hz                                 |             |             |                     |
++----------------------------+-----------+-----------------------------------------------------------+-------------+-------------+---------------------+
+| ``roadm-maxloss``          | (number)  | In dB. Default: 0 dB. Maximum expected path loss on this  | Implemented | Implemented | Implemented         |
+|                            |           | roadm-path assuming no additional path loss is added =    |             |             |                     |
+|                            |           | minimum loss applied to channels when crossing the ROADM  |             |             |                     |
+|                            |           | (worst case expected loss due to the ROADM).              |             |             |                     |
++----------------------------+-----------+-----------------------------------------------------------+-------------+-------------+---------------------+
+| ``roadm-minloss``          |           | The net loss from the ROADM input, to the  output of the  | Not yet     | N.A.        | N.A.                |
+|                            |           | drop block (best case expected loss).                     | implemented |             |                     |
++----------------------------+-----------+-----------------------------------------------------------+-------------+-------------+---------------------+
+| ``roadm-typloss``          |           | The net loss from the ROADM input, to the output of the   | Not yet     | N.A.        | N.A.                |
+|                            |           | drop block (typical).                                     | implemented |             |                     |
++----------------------------+-----------+-----------------------------------------------------------+-------------+-------------+---------------------+
+| ``roadm-pmin``             |           | Min per carrier power levels expected at the output of    | Not yet     | N.A.        | N.A.                |
+|                            |           | the drop block.                                           | implemented |             |                     |
++----------------------------+-----------+-----------------------------------------------------------+-------------+-------------+---------------------+
+| ``roadm-pmax``             |           | (Add) Maximum (per carrier) power level permitted at the  | Not yet     | Not yet     | N.A.                |
+|                            |           | add block input ports.                                    | implemented | implemented |                     |
+|                            |           |                                                           |             |             |                     |
+|                            |           | (Drop) Best case per carrier power levels expected at     |             |             |                     |
+|                            |           | the output of the drop block.                             |             |             |                     |
++----------------------------+-----------+-----------------------------------------------------------+-------------+-------------+---------------------+
+| ``roadm-ptyp``             |           | Typical case per carrier power levels expected at the     | Not yet     | N.A.        | N.A.                |
+|                            |           | output of the drop block.                                 | implemented |             |                     |
++----------------------------+-----------+-----------------------------------------------------------+-------------+-------------+---------------------+
+| ``roadm-noise-figure``     |           | If the add (drop) path contains an amplifier, this is     | Not yet     | Not yet     | N.A.                |
+|                            |           | the noise figure of that amplifier inferred to the        | Implemented | Implemented |                     |
+|                            |           | add (drop) port.                                          |             |             |                     |
++----------------------------+-----------+-----------------------------------------------------------+-------------+-------------+---------------------+
+| ``roadm-osnr``             | (number)  | (Add) Optical Signal-to-Noise Ratio (OSNR).               | implemented | Implemented | N.A.                |
+|                            |           | If the add path contains the ability to adjust the        |             |             |                     |
+|                            |           | carrier power levels into an add path amplifier           |             |             |                     |
+|                            |           | (if present) to a target value,                           |             |             |                     |
+|                            |           | this reflects the OSNR contribution of the                |             |             |                     |
+|                            |           | add amplifier assuming this target value is obtained.     |             |             |                     |
+|                            |           |                                                           |             |             |                     |
+|                            |           | (Drop) Expected OSNR contribution of the drop path        |             |             |                     |
+|                            |           | amplifier(if present)                                     |             |             |                     |
+|                            |           | for the case of additional drop path loss                 |             |             |                     |
+|                            |           | (before this amplifier)                                   |             |             |                     |
+|                            |           | in order to hit a target power level (per carrier).       |             |             |                     |
++----------------------------+-----------+-----------------------------------------------------------+-------------+-------------+---------------------+
+| ``roadm-pmd``              | (number)  | PMD contribution of this roadm path.                      | Implemented | Implemented | Implemented         |
++----------------------------+-----------+-----------------------------------------------------------+-------------+-------------+---------------------+
+| ``roadm-cd``               |           |                                                           | Not yet     | Not yet     | Not yet             |
+|                            |           |                                                           | Implemented | Implemented | Implemented         |
++----------------------------+-----------+-----------------------------------------------------------+-------------+-------------+---------------------+
+| ``roadm-pdl``              | (number)  | PMD contribution of this roadm path.                      | Implemented | Implemented | Implemented         |
++----------------------------+-----------+-----------------------------------------------------------+-------------+-------------+---------------------+
+| ``roadm-inband-crosstalk`` |           |                                                           | Not yet     | Not yet     | Not yet             |
+|                            |           |                                                           | Implemented | Implemented | Implemented         |
++----------------------------+-----------+-----------------------------------------------------------+-------------+-------------+---------------------+
+
+Here is a ROADM example with two add-path possible impairments:
+
+.. code-block:: json
+
+    "roadm-path-impairments": [
+      {
+          "roadm-path-impairments-id": 0,
+          "roadm-express-path": [{
+              "frequency-range": {
+                  "lower-frequency": 191.3e12,
+                  "upper-frequency": 196.1e12
+                  },
+              "roadm-maxloss": 16.5
+              }]
+      }, {
+          "roadm-path-impairments-id": 1,
+          "roadm-add-path": [{
+              "frequency-range": {
+                  "lower-frequency": 191.3e12,
+                  "upper-frequency": 196.1e12
+              },
+              "roadm-maxloss": 11.5,
+              "roadm-osnr": 41
+          }]
+      }, {
+          "roadm-path-impairments-id": 2,
+          "roadm-drop-path": [{
+              "frequency-range": {
+                  "lower-frequency": 191.3e12,
+                  "upper-frequency": 196.1e12
+                  },
+              "roadm-pmd": 0,
+              "roadm-cd": 0,
+              "roadm-pdl": 0,
+              "roadm-maxloss": 11.5,
+              "roadm-osnr": 41
+          }]
+      }, {
+          "roadm-path-impairments-id": 3,
+          "roadm-add-path": [{
+              "frequency-range": {
+                  "lower-frequency": 191.3e12,
+                  "upper-frequency": 196.1e12
+              },
+              "roadm-pmd": 0,
+              "roadm-cd": 0,
+              "roadm-pdl": 0,
+              "roadm-maxloss": 11.5,
+              "roadm-osnr": 20
+          }]
+      }]
+
+On this example, this means that express channel will have at least 16.5dB loss when crossing this ROADM express path with this impairment id.
+
+roadm-path-impairments is optional. If present, its values are considered instead of the ROADM general parameters.
+For example if add-path specifies 0.5 dB PDL and general PDL parameter states 1dB, then 0.5dB is applied for
+this roadm-path only.
+If present in add and/or drop path, roadm-osnr replaces the portion of add-drop-osnr defined for the whole ROADM,
+assuming that add and drop contribution aggregated in add-drop-osnr are identical:
+
+.. math::
+
+  add\_drop\_osnr = - 10log10(1/add_{osnr} + 1/drop_{osnr})
+
+  add_{osnr} = drop_{osnr} = add_{osnr} + 10log10(2)
+
+User can specify the roadm type_variety in json topology ROADM instance. If no variety is defined ``default`` ID is used.
+User can defined the impairment type for each raodm-path using the degrees ingress/egress immediate neighbour elements and
+the roadm-path-impairment-id defined in the library for this type-variety.
+Here is an example:
+
+.. code-block:: json
+
+    {
+      "uid": "roadm SITE1",
+      "type": "Roadm",
+      "type_variety": "detailed_impairments",
+	    "params": {
+		    "per_degree_impairments": [
+		    {
+			    "from_degree": "trx SITE1",
+		      "to_degree": "east edfa in SITE1 to ILA1",
+			    "impairment_id": 1
+		    }]
+	    }
+    }
+
+It is not permitted to use a roadm-path-impairment-id for the wrong roadm path type (add impairment only for add path).
+If nothing is stated for impairments on roadm-paths, the program identifies the paths implicitely and assign the first
+impairment_id that matches the type: if a transceiver is present on one degree then it is an add/drop degree.
+
+On the previous example, all «implicit» express roadm-path are assigned roadm-path-impairment-id = 0
 
 Global parameters
 -----------------
@@ -554,6 +736,9 @@ In the simplest case, homogeneous channel allocation can be defined via the ``Sp
 +----------------------+-----------+-------------------------------------------+
 | ``tx_osnr``          | (number)  | In dB. OSNR out from transponder.         |
 +----------------------+-----------+-------------------------------------------+
+| ``tx_power_dbm``     | (number)  | In dBm. Power out from transceiver.       |
+|                      |           | Optional. Default = power_dbm             |
++----------------------+-----------+-------------------------------------------+
 | ``power_dbm``        | (number)  | In dBm. Target input power in spans to    |
 |                      |           | be considered for the design              |
 |                      |           | In gain mode                              |
@@ -635,6 +820,9 @@ In this approach, each partition is internally homogeneous, but different partit
 +----------------------+-----------+-------------------------------------------+
 | ``tx_osnr``          | (number)  | In dB. Optional. OSNR out from            |
 |                      |           | transponder. Default value is 40 dB.      |
++----------------------+-----------+-------------------------------------------+
+| ``tx_power_dbm``     | (number)  | In dBm. Power out from transceiver.       |
+|                      |           | Optional. Default value = 0 dBm           |
 +----------------------+-----------+-------------------------------------------+
 | ``delta_pdb``        | (number)  | In dB. Optional. Power offset compared to |
 |                      |           | the reference power used for design       |
