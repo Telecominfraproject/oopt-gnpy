@@ -154,6 +154,8 @@ it is suggested to include an estimation of the loss coefficient for the Raman p
 a dictionary-like definition of the ``RamanFiber.params.loss_coef``
 (e.g. ``loss_coef = {"value": [0.18, 0.18, 0.20, 0.20], "frequency": [191e12, 196e12, 200e12, 210e12]}``).
 
+.. _transceiver:
+
 Transceiver
 ~~~~~~~~~~~
 
@@ -234,6 +236,8 @@ for example:
             "penalty_value": 0.5
         }
     ]
+
+.. _roadm:
 
 ROADM
 ~~~~~
