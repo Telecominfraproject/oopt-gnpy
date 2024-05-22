@@ -710,6 +710,8 @@ then the computation of delta_p during design for each power of this power sweep
 
 so the user defined delta_p is applied as much as possible.
 
+.. _spectral_info:
+
 SpectralInformation
 ~~~~~~~~~~~~~~~~~~~
 
@@ -932,3 +934,467 @@ With the PSW equalization:
 
 the power out of the ROADM will be computed as 2.0e-4 * 50 = 0.01 mW ie -20 dBm for label 1 types of carriers
 and 2.0e4 * 75 = 0.015 mW ie -18.24 dBm for label2 channels. So a ratio of ~ 1.76 dB between target powers for these carriers.
+
+
+.. _topology:
+
+Topology
+--------
+
+Topology file contains a list of elements and a list of connections between the elements to form a graph.
+
+Elements can be:
+
+- Fiber
+- RamanFiber
+- Edfa
+- Fused
+- Roadm
+- Transceiver
+
+
+Common attributes
+~~~~~~~~~~~~~~~~~
+
+All elements contain the followind attributes:
+
+- **"uid"**: mandatory, element unique identifier.
+- **"type"**: mandatory, element type among possible types (Fiber, RamanFiber, Edfa, Fused, Roadm, Transceiver).
+- **"metadata"**: optional data including goelocation.
+
+
+Fiber attributes/ RamanFiber attributes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
++----------------------+-----------+--------------------------------------------------+
+| field                |   type    | description                                      |
++======================+===========+==================================================+
+| ``type_variety``     | (string)  | optional, value must be listed in the            |
+|                      |           | library to be a valid type. Default type         |
+|                      |           | is SSMF.                                         |
++----------------------+-----------+--------------------------------------------------+
+| ``params``           | (dict of  | see table below.                                 |
+|                      | numbers)  |                                                  |
++----------------------+-----------+--------------------------------------------------+
+
+
++----------------------+-----------+--------------------------------------------------+
+| params fields        |   type    | description                                      |
++======================+===========+==================================================+
+| ``length``           | (number)  | optional, length in ``length_units``, default    |
+|                      |           | length is 80 km.                                 |
++----------------------+-----------+--------------------------------------------------+
+| ``length_units``     | (string)  | Length unit of measurement. Default is "km".     |
++----------------------+-----------+--------------------------------------------------+
+| ``loss_coef``        | (number   | In dB/km. Optional, loss coefficient. Default    |
+|                      | or dict)  | is 0.2 dB/km. Slope of the loss can be defined   |
+|                      |           | using a dict of frequency values such as         |
+|                      |           | ``{"value": [0.18, 0.18, 0.20, 0.20],            |
+|                      |           | "frequency": [191e12, 196e12, 200e12, 210e12]}`` |
++----------------------+-----------+--------------------------------------------------+
+| ``att_in``           | (number)  | In dB. Optional, attenuation at fiber input, for |
+|                      |           | padding purpose. Default is 0 dB.                |
++----------------------+-----------+--------------------------------------------------+
+| ``con_in``           | (number)  | In dB. Optional, input connector loss. Default   |
+|                      |           | is using value defined in library ``Span``       |
+|                      |           | section.                                         |
++----------------------+-----------+--------------------------------------------------+
+| ``con_out``          | (number)  | In dB. Optional, output connector loss. Default  |
+|                      |           | is using value defined in library ``Span``       |
+|                      |           | section.                                         |
++----------------------+-----------+--------------------------------------------------+
+
+.. code-block:: json
+
+    {
+        "uid": "fiber (A1->A2)",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params":
+        {
+              "length": 120.0,
+              "loss_coef": 0.2,
+              "length_units": "km",
+              "att_in": 0,
+              "con_in": 0,
+              "con_out": 0
+        }
+    }
+
+The RamanFiber can be used to simulate Raman amplification through dedicated Raman pumps. The Raman pumps must be listed
+in the key ``raman_pumps`` within the RamanFiber ``operational`` dictionary. The description of each Raman pump must
+contain the following:
+
++---------------------------+-----------+------------------------------------------------------------+
+| operational fields        | type      | description                                                |
++===========================+===========+============================================================+
+| ``power``                 | (number)  | Total pump power in :math:`W`                              |
+|                           |           | considering a depolarized pump                             |
++---------------------------+-----------+------------------------------------------------------------+
+| ``frequency``             | (number)  | Pump central frequency in :math:`Hz`                       |
++---------------------------+-----------+------------------------------------------------------------+
+| ``propagation_direction`` | (string)  | The pumps can propagate in the same or opposite direction  |
+|                           |           | with respect the signal. Valid choices are ``coprop`` and  |
+|                           |           | ``counterprop``, respectively                              |
++---------------------------+-----------+------------------------------------------------------------+
+
+Beside the list of Raman pumps, the RamanFiber ``operational`` dictionary must include the ``temperature`` that affects
+the amplified spontaneous emission noise generated by the Raman amplification.
+As the loss coefficient significantly varies outside the C-band, where the Raman pumps are usually placed,
+it is suggested to include an estimation of the loss coefficient for the Raman pump central frequencies within
+a dictionary-like definition of the ``RamanFiber.params.loss_coef``
+(e.g. ``loss_coef = {"value": [0.18, 0.18, 0.20, 0.20], "frequency": [191e12, 196e12, 200e12, 210e12]}``).
+
+.. code-block:: json
+
+    {
+      "uid": "Span1",
+      "type": "RamanFiber",
+      "type_variety": "SSMF",
+      "operational": {
+        "temperature": 283,
+        "raman_pumps": [
+          {
+            "power": 224.403e-3,
+            "frequency": 205e12,
+            "propagation_direction": "counterprop"
+          },
+          {
+            "power": 231.135e-3,
+            "frequency": 201e12,
+            "propagation_direction": "counterprop"
+          }
+        ]
+      },
+      "params": {
+        "type_variety": "SSMF",
+        "length": 80.0,
+        "loss_coef": {
+          "value": [0.18, 0.18, 0.20, 0.20],
+          "frequency": [191e12, 196e12, 200e12, 210e12]
+        },
+        "length_units": "km",
+        "att_in": 0,
+        "con_in": 0.5,
+        "con_out": 0.5
+      },
+      "metadata": {
+        "location": {
+          "latitude": 1,
+          "longitude": 0,
+          "city": null,
+          "region": ""
+        }
+      }
+    }
+
+Edfa attributes
+~~~~~~~~~~~~~~~
+
+The user can specify the amplifier configurations, which are applied depending on general simulation setup:
+- if the user has specified ``power_mode`` as True in Span section, delta_p is applied and gain_target is ignored and recomputed.
+- if the user has specified ``power_mode`` as False in Span section, gain_target is applied and delta_p is ignored.
+If the user has specified unfeasible targets with respect to the type_variety, targets might be changed accordingly.
+For example, if gain_target leads to a power value above the maximum output power of the amplifier, the gain is saturated to
+the maximum achievable total power.
+
+The exact layout used by simulation can be retrieved thanks to --save-network option.
+
++----------------------+-----------+--------------------------------------------------+
+| field                |   type    | description                                      |
++======================+===========+==================================================+
+| ``type_variety``     | (string)  | Optional, value must be listed in the library    |
+|                      |           | to be a valid type. If not defined, autodesign   |
+|                      |           | will pick one in the library among the           |
+|                      |           | ``allowed_for_design``. Autodesign selection is  |
+|                      |           | based J. -L. Auge, V. Curri and E. Le Rouzic,    |
+|                      |           | Open Design for Multi-Vendor Optical Networks    |
+|                      |           | , OFC 2019. equation 4                           |
++----------------------+-----------+--------------------------------------------------+
+| ``operational``      | (dict of  | Optional, configuration settings of the          |
+|                      | numbers)  | amplifier. See table below                       |
++----------------------+-----------+--------------------------------------------------+
+
++----------------------+-----------+-------------------------------------------------------------+
+| operational field    |   type    | description                                                 |
++======================+===========+=============================================================+
+| ``gain_target``      | (number)  | In dB. Optional Gain target between in_voa and out_voa.     |
+|                      |           |                                                             |
++----------------------+-----------+-------------------------------------------------------------+
+| ``delta_p``          | (number)  | In dB. Optional Power offset at the outpout of the          |
+|                      |           | amplifier and before out_voa compared to reference channel  |
+|                      |           | power defined in SI block of library.                       |
++----------------------+-----------+-------------------------------------------------------------+
+| ``out_voa``          | (number)  | In dB. Optional, output variable optical attenuator loss.   |
++----------------------+-----------+-------------------------------------------------------------+
+| ``in_voa``           | (number)  | In dB. Optional, input variable optical attenuator loss.    |
++----------------------+-----------+-------------------------------------------------------------+
+| ``tilt_target``      | (number)  | In dB. Optional, tilt target on the whole wavelength range  |
+|                      |           | of the amplifier.                                           |
++----------------------+-----------+-------------------------------------------------------------+
+
+.. code-block:: json
+
+    {
+      "uid": "Edfa1",
+      "type": "Edfa",
+      "type_variety": "std_low_gain",
+      "operational": {
+        "gain_target": 15.0,
+        "delta_p": -2,
+        "tilt_target": -1,
+        "out_voa": 0
+      },
+      "metadata": {
+        "location": {
+          "latitude": 2,
+          "longitude": 0,
+          "city": null,
+          "region": ""
+        }
+      }
+    }
+
+Roadm
+~~~~~
+
++----------------------------------------+-----------+----------------------------------------------------+
+| field                                  |   type    | description                                        |
++========================================+===========+====================================================+
+| ``type_variety``                       | (string)  | Optional. If no variety is defined, ``default``    |
+|                                        |           | ID is used.                                        |
+|                                        |           | A unique name must be used to ID the ROADM         |
+|                                        |           | variety in the JSON library file.                  |
++----------------------------------------+-----------+----------------------------------------------------+
+| ``target_pch_out_db``                  | (number)  | :ref:`Equalization strategy<equalization>`         |
+| or                                     |           | for this ROADM. Optional: if not defined, the      |
+| ``target_psd_out_mWperGHz``            |           | one defined in library for this type_variety is    |
+| or                                     |           | used.                                              |
+| ``target_out_mWperSlotWidth``          |           |                                                    |
+| (mutually exclusive)                   |           |                                                    |
++----------------------------------------+-----------+----------------------------------------------------+
+| ``restrictions``                       | (dict of  | Optional. If defined, it overrides restriction     |
+|                                        |  strings) | defined in library for this roadm type_variety.    |
++----------------------------------------+-----------+----------------------------------------------------+
+| ``per_degree_pch_out_db``              | (dict of  | Optional. If defined, it overrides ROADM's general |
+| or                                     |  string,  | target power/psd for this degree. Dictionary with  |
+| ``per_degree_psd_out_mWperGHz``        |  number)  | key = degree name (uid of the immediate adjacent   |
+| or                                     |           | element) and value = target power/psd value.       |
+| ``per_degree_psd_out_mWperSlotWidth``  |           |                                                    |
++----------------------------------------+-----------+----------------------------------------------------+
+| ``per_degree_impairments``             | (list of  | Optional. Impairments id for roadm-path. If        |
+|                                        |  dict)    | defined, it overrides the general values defined   |
+|                                        |           | by type_variety.                                   |
++----------------------------------------+-----------+----------------------------------------------------+
+
+Definition example:
+
+.. code-block:: json
+
+    {
+      "uid": "roadm SITE1",
+      "type": "Roadm",
+      "type_variety": "detailed_impairments",
+	    "params": {
+		  "per_degree_impairments": [
+		    {
+			    "from_degree": "trx SITE1",
+		      "to_degree": "east edfa in SITE1 to ILA1",
+			    "impairment_id": 1
+		    }],
+          "per_degree_pch_out_db": {
+            "east edfa in SITE1 to ILA1": -13.5
+          }
+	    }
+    }
+
+In this example, all «implicit» express roadm-path are assigned as roadm-path-impairment-id = 0, and the target power is
+set according to the value defined in the library except for the direction heading to "east edfa in SITE1 to ILA1", where
+constant power equalization is used to reach -13.5 dBm target power.
+
+Fused
+~~~~~
+
+The user can define concentrated losses thanks to Fused element. This can be useful for example to materialize connector with its loss between two fiber spans.
+``params`` and ``loss`` are optional, loss of the concentrated loss is in dB. Default value is 0 dB.
+A fused element connected to the egress of a ROADM will disable the automatic booster/preamp selection.
+
+Fused ``params`` only contains a ``loss`` value in dB.
+
+.. code-block:: json
+
+      "params": {
+        "loss": 2
+      }
+
+
+Transceiver
+~~~~~~~~~~~
+
+Transceiver elements represent the logical function that generates a spectrum. This must be specified to start and stop propagation. However, the characteristics of the spectrum are defined elsewhere, so Transceiver elements do not contain any attribute.
+Information on transceivers' type, modes and frequency must be listed in :ref:`service file<service>` or :ref:`spectrum file<mixed-rate>`. Without any definition, default :ref:`SI<spectral_info>` values of the library are propagated.
+
+.. _service:
+
+Service JSON file
+-----------------
+
+Service file lists all requests and their possible constraints. This is derived from draft-ietf-teas-yang-path-computation-01.txt:
+gnpy-path-request computes performance of each request independantly from each other, considering full load (based on the request settings),
+but computes spectrum occupation based on the list of request, so that the requests should not define overlapping spectrum.
+Lack of spectrum leads to blocking, but performance estimation is still returned for information.
+
+
++-----------------------+-------------------+----------------------------------------------------------------+
+| field                 |   type            | description                                                    |
++=======================+===================+================================================================+
+| ``path-request``      | (list of          | list of requests.                                              |
+|                       |  request)         |                                                                |
++-----------------------+-------------------+----------------------------------------------------------------+
+| ``synchronization``   | (list of          | Optional. List of synchronization vector. One synchronization  |
+|                       | synchronization)  | vector contains the disjunction constraints.                   |
++-----------------------+-------------------+----------------------------------------------------------------+
+
+- **"path-request"** list of requests made of:
+
++-----------------------+------------+----------------------------------------------------------------+
+| field                 |   type     | description                                                    |
++=======================+============+================================================================+
+| ``request-id``        | (number)   | Mandatory. Unique id of request. The same id is referenced in  |
+|                       |            | response with ``response-id``.                                 |
++-----------------------+------------+----------------------------------------------------------------+
+| ``source``            | (string)   | Mandatory. Source of traffic. It must be one of the UID of     |
+|                       |            | transceivers listed in the topology.                           |
++-----------------------+------------+----------------------------------------------------------------+
+| ``src-tp-id``         | (string)   | Mandatory. It must be equal to ``source``.                     |
++-----------------------+------------+----------------------------------------------------------------+
+| ``destination``       | (string)   | Mandatory. Destination of traffic. It must be one of the UID   |
+|                       |            | of transceivers listed in the topology.                        |
++-----------------------+------------+----------------------------------------------------------------+
+| ``dst-tp-id``         | (string)   | Mandatory. It must be equal to ``destination``.                |
++-----------------------+------------+----------------------------------------------------------------+
+| ``bidirectional``     | (boolean)  | Mandatory. Boolean indicating if the propagation should be     |
+|                       |            | checked on source-destination only (false) or on               |
+|                       |            | destination-source (true).                                     |
++-----------------------+------------+----------------------------------------------------------------+
+| ``path-constraints``  | (dict)     | Mandatory. It contains the list of constraints including type  |
+|                       |            | of transceiver, mode and nodes to be included in the path.     |
++-----------------------+------------+----------------------------------------------------------------+
+
+``path-constraints`` contains ``te-bandwidth`` with the following attributes:
+
++-----------------------------------+------------+----------------------------------------------------------------+
+| field                             |   type     | description                                                    |
++===================================+============+================================================================+
+| ``technology``                    | (string)   | Mandatory. Only one possible value ``flex-grid``.              |
++-----------------------------------+------------+----------------------------------------------------------------+
+| ``trx_type``                      | (string)   | Mandatory. Type of the transceiver selected for this request.  |
+|                                   |            | It must be listed in the library transceivers list.            |
++-----------------------------------+------------+----------------------------------------------------------------+
+| ``trx_mode``                      | (string)   | Optional. Mode selected for this path. It must be listed       |
+|                                   |            | within the library transceiver's modes. If not defined,        |
+|                                   |            | the gnpy-path-request script automatically selects the mode    |
+|                                   |            | that has performance above minimum required threshold          |
+|                                   |            | including margins and penalties for all channels (full load)   |
+|                                   |            | and 1) fit in the spacing, 2) has the largest baudrate,        |
+|                                   |            | 3) has the largest bitrate.                                    |
++-----------------------------------+------------+----------------------------------------------------------------+
+| ``spacing``                       | (number)   | Mandatory. In :math:`Hz`. Spacing is used for full spectral    |
+|                                   |            | load feasibility evaluation.                                   |
++-----------------------------------+------------+----------------------------------------------------------------+
+| ``path_bandwidth``                | (number)   | Mandatory. In :math:`bit/s`. Required capacity on this         |
+|                                   |            | service. It is used to determine the needed number of channels |
+|                                   |            | and spectrum occupation.                                       |
++-----------------------------------+------------+----------------------------------------------------------------+
+| ``max-nb-of-channel``             | (number)   | Optional. Number of channels to take into account for the full |
+|                                   |            | load computation. Default value is computed based on f_min     |
+|                                   |            | and f_max of transceiver frequency range and min_spacing of    |
+|                                   |            | mode (once selected).                                          |
++-----------------------------------+------------+----------------------------------------------------------------+
+| ``output-power``                  | (number)   | Optional. In :math:`W`. Target power to be considered at the   |
+|                                   |            | fiber span input. Default value uses power defined in  SI in   |
+|                                   |            | the library converted in Watt:                                 |
+|                                   |            | :math:`10^(power\_dbm/10)`.                                    |
+|                                   |            |                                                                |
+|                                   |            | Current script gnpy-path-request redesign the network on each  |
+|                                   |            | new request, using this power together with                    |
+|                                   |            | ``max-nb-of-channel`` to compute target gains or power in      |
+|                                   |            | amplifiers. This parameter can therefore be useful to test     |
+|                                   |            | different designs with the same script.                        |
+|                                   |            |                                                                |
+|                                   |            | In order to keep the same design for different requests,       |
+|                                   |            | ``max-nb-of-channel` and ``output-power`` of each request      |
+|                                   |            | should be kept identical.                                      |
++-----------------------------------+------------+----------------------------------------------------------------+
+| ``tx_power``                      | (number)   | Optional. In :math:`W`.  Optical output power emitted by the   |
+|                                   |            | transceiver. Default value is output-power.                    |
++-----------------------------------+------------+----------------------------------------------------------------+
+| ``effective-freq-slot``           | (list)     | Optional. List of N, M values defining the requested spectral  |
+|                                   |            | occupation for this service. N, M use ITU-T G694.1 Flexible    |
+|                                   |            | DWDM grid definition.                                          |
+|                                   |            | For the flexible DWDM grid, the allowed frequency slots have a |
+|                                   |            | nominal central frequency (in :math:`THz`) defined by:         |
+|                                   |            | 193.1 + N × 0.00625 where N is a positive or negative integer  |
+|                                   |            | including 0                                                    |
+|                                   |            | and 0.00625 is the nominal central frequency granularity in    |
+|                                   |            | :math:`THz` and a slot width defined by:                       |
+|                                   |            | 12.5 × M where M is a positive integer and 12.5 is the slot    |
+|                                   |            | width granularity in :math:`GHz`.                              |
+|                                   |            | Any combination of frequency slots is allowed as long as       |
+|                                   |            | there is no overlap between two frequency slots.               |
+|                                   |            | Requested spectrum should be consistent with mode min_spacing  |
+|                                   |            | and path_bandwidth: 1) each slot inside the list must be       |
+|                                   |            | large enough to fit one carrier with min_spacing width,        |
+|                                   |            | 2) total number of channels should be large enough to support  |
+|                                   |            | the requested path_bandwidth.                                  |
+|                                   |            | Note that gnpy-path-request script uses full spectral load and |
+|                                   |            | not this spectrum constraint to compute performance. Thus, the |
+|                                   |            | specific mix of channels resulting from the list of requests   |
+|                                   |            | is not considered to compute performances.                     |
++-----------------------------------+------------+----------------------------------------------------------------+
+| ``route-object-include-exclude``  | (list)     | Optional. Indexed List of routing include/exclude constraints  |
+|                                   |            | to compute the path between source and destination.            |
++-----------------------------------+------------+----------------------------------------------------------------+
+
+``route-object-include-exclude`` attributes:
+
++-----------------------------------+------------+----------------------------------------------------------------+
+| field                             |   type     | description                                                    |
++===================================+============+================================================================+
+| ``explicit-route-usage``          | (string)   | Mandatory. Only one value is supported: ``route-include-ero``  |
++-----------------------------------+------------+----------------------------------------------------------------+
+| ``index``                         | (number)   | Mandatory. Index of the element to be included.                |
++-----------------------------------+------------+----------------------------------------------------------------+
+| ``nodes_id``                      | (string)   | Mandatory. UID of the node to include in the path.             |
+|                                   |            | It must be listed in the list of elements in topology file.    |
++-----------------------------------+------------+----------------------------------------------------------------+
+| ``hop-type``                      | (string)   | Mandatory. One among these two values: ``LOOSE`` or            |
+|                                   |            | ``STRICT``.  If LOOSE, constraint may be ignored at            |
+|                                   |            | computation time if no solution is found that satisfies the    |
+|                                   |            | constraint. If STRICT, constraint MUST be satisfied, else the  |
+|                                   |            | computation is stopped and no solution is returned.            |
++-----------------------------------+------------+----------------------------------------------------------------+
+
+- **"synchronization"**:
+
++-----------------------------------+------------+----------------------------------------------------------------+
+| field                             |   type     | description                                                    |
++===================================+============+================================================================+
+| ``"relaxable``                    | (boolean)  | Mandatory. Only false is supported.                            |
++-----------------------------------+------------+----------------------------------------------------------------+
+| ``disjointness``                  | (string)   | Mandatory. Only ``node link`` is supported.                    |
++-----------------------------------+------------+----------------------------------------------------------------+
+| ``request-id-number``             | (list)     | Mandatory. List of ``request-id`` whose path should be         |
+|                                   |            | disjointed.                                                    |
++-----------------------------------+------------+----------------------------------------------------------------+
+
+.. code-block:: json
+
+    "synchronization-id": "3",
+      "svec": {
+        "relaxable": false,
+        "disjointness": "node link",
+        "request-id-number": [
+          "3",
+          "1"
+        ]
