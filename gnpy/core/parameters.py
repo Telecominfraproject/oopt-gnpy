@@ -61,6 +61,8 @@ class NLIParams(Parameters):
         :params dispersion_tolerance: tuning parameter for ggn model solution
         :params phase_shift_tolerance: tuning parameter for ggn model solution
         :params computed_channels: the NLI is evaluated for these channels and extrapolated for the others
+        :params computed_number_of_channels: the NLI is evaluated for this nb of channels equally distributed
+        in the spectrum and extrapolated for the others
         """
         self.method = method.lower()
         self.dispersion_tolerance = dispersion_tolerance
@@ -72,7 +74,8 @@ class NLIParams(Parameters):
         return {"method": self.method,
                 "dispersion_tolerance": self.dispersion_tolerance,
                 "phase_shift_tolerance": self.phase_shift_tolerance,
-                "computed_channels": self.computed_channels}
+                "computed_channels": self.computed_channels,
+                "computed_number_of_channels": self.computed_number_of_channels}
 
 
 class SimParams(Parameters):

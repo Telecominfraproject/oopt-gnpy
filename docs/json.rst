@@ -337,6 +337,12 @@ See ``delta_power_range_db`` for more explaination.
 |                                             |           | from `arXiv:1710.02225                      |
 |                                             |           | <https://arxiv.org/abs/1710.02225>`_).      |
 +---------------------------------------------+-----------+---------------------------------------------+
+| ``dispersion_tolerance``                    | (number)  | Optional. In ? Tuning parameter for ggn     |
+|                                             |           | model solution. Default value: 1            |
++---------------------------------------------+-----------+---------------------------------------------+
+| ``phase_shift_tolerance``                   | (number)  | Optional. In ? Tuning parameter for ggn     |
+|                                             |           | model solution. Defaut value: 0.1           |
++---------------------------------------------+-----------+---------------------------------------------+
 | ``nli_params.computed_channels``            | (list     | Optional. The exact channel indices         |
 |                                             | of        | (starting from 1) on which the NLI is       |
 |                                             | numbers)  | explicitly evaluated.                       |
