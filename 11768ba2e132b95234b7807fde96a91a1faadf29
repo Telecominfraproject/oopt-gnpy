@@ -1,0 +1,803 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e00c739d_15e7a8f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "Similarly to the previous patch, there are some suggestions for improvements and typo fixes.",
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83c9e640_72ab8edf",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 956,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n- **\"uid\"**: mandatory, element unique identifier.\n```",
+      "range": {
+        "startLine": 956,
+        "startChar": 39,
+        "endLine": 956,
+        "endChar": 49
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "184ed0b4_bc2f2bc4",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 958,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n- **\"metadata\"**: optional data including goelocation.\n```",
+      "range": {
+        "startLine": 958,
+        "startChar": 0,
+        "endLine": 958,
+        "endChar": 53
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84b7f3b2_48a05fd3",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 979,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``length``           | (number)  | optional, length in ``length_units``, default      |\n```",
+      "range": {
+        "startLine": 979,
+        "startChar": 57,
+        "endLine": 979,
+        "endChar": 71
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "032da897_1bb04df8",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 982,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``length_units``     | (string) | Length unit of measurement. Default is \"km\".                                             |\n```",
+      "range": {
+        "startLine": 982,
+        "startChar": 2,
+        "endLine": 982,
+        "endChar": 41
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "659741ca_cdb44aaf",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1094,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\nThe user can specify the amplifier configurations, which are applied depending on general simulation setup:\n- if the user has specified ``power_mode`` as True in Span section, delta_p is applied and gain_target is ignored and recomputed.\n- if the user has specified ``power_mode`` as False in Span section, gain_target is applied and delta_p is ignored.\nIf the user has specified unfeasible targets with respect to the type_variety, targets might be changed accordingly. For example, if gain_target leads to a power value above the maximum output power of the amplifier, the gain is saturated to\nthe maximum achievable total power.\n```",
+      "range": {
+        "startLine": 1089,
+        "startChar": 0,
+        "endLine": 1094,
+        "endChar": 35
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1487a1b_0ad3959f",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1162,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``type_variety``                       | (string)  | Optional. If no variety is defined, ``default``     |\n|                                        |           | ID is used.                                        |\n|                                        |           | A unique name must be used to ID the ROADM variety in the JSON  |\n|                                        |           | library file.                                      |\n```",
+      "range": {
+        "startLine": 1159,
+        "startChar": 0,
+        "endLine": 1162,
+        "endChar": 70
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfbcb99c_66bd41a1",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1166,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| or                                     |           | for this ROADM. Optional: if not defined, the  |\n| ``target_psd_out_mWperGHz``            |           | one defined in library for this type_variety is used.      |\n```",
+      "range": {
+        "startLine": 1165,
+        "startChar": 81,
+        "endLine": 1166,
+        "endChar": 100
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b627057_c05d6d8d",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1172,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``restrictions``                       | (dict of  | Optional. If defined, it overrides restriction         |\n|                                        |  strings) | defined in library for this roadm type_variety.    |\n```",
+      "range": {
+        "startLine": 1171,
+        "startChar": 77,
+        "endLine": 1172,
+        "endChar": 102
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "681d87a1_b9cf1c1f",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1175,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| or                                     |  string,  | target power/psd for this degree. Dictionary with |\n```",
+      "range": {
+        "startLine": 1175,
+        "startChar": 89,
+        "endLine": 1175,
+        "endChar": 101
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a33747e3_5138051c",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1175,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``per_degree_pch_out_db``              | (dict of) | Optional. If defined, it overrides ROADM\u0027s general     |\n| or                                     |  string,  | target power/psd for this degree. Dictionnary with |\n```",
+      "range": {
+        "startLine": 1174,
+        "startChar": 77,
+        "endLine": 1175,
+        "endChar": 88
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b81691bb_ee1d598d",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1182,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``per_degree_impairments``             | (list of  | Optional. Impairments id for roadm-path. If        |\n|                                        | dict)     | defined, it overrides the general values defined    |\n|                                        |           | by type_variety.                                   |\n```",
+      "range": {
+        "startLine": 1180,
+        "startChar": 96,
+        "endLine": 1182,
+        "endChar": 107
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1b48eba_ff860f83",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1185,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\nDefinition example:\n```",
+      "range": {
+        "startLine": 1185,
+        "startChar": 0,
+        "endLine": 1185,
+        "endChar": 19
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcbb86f2_89c7ff01",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1208,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\nIn this example, all «implicit» express roadm-path are assigned as roadm-path-impairment-id \u003d 0, and the target power is set according to the value defined in the library except for the direction heading to \"east edfa in SITE1 to ILA1\", where constant power equalization is used to reach -13.5 dBm target power.\n```",
+      "range": {
+        "startLine": 1206,
+        "startChar": 0,
+        "endLine": 1208,
+        "endChar": 76
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69e0fb0c_502dd9d2",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1215,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\nThe user can define concentrated losses thanks to Fused element. This can be useful for example to materialize connector with its loss between two fiber spans.\nparams and loss are optional, loss of the concentrated loss is in dB. Default value is 0 dB.\nA fused element connected to the egress of a ROADM will disable the automatic booster/preamp selection.\n```",
+      "range": {
+        "startLine": 1213,
+        "startChar": 0,
+        "endLine": 1215,
+        "endChar": 103
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23e780b0_a15065e2",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1232,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\nTransceiver elements represent the logical function that generates a spectrum. This must be specified to start and stop propagation. However, the characteristics of the spectrum are defined elsewhere, so Transceiver elements do not contain any attribute.\nInformation on transceivers\u0027 type, modes and frequency must be listed in :ref:`service file\u003cservice\u003e` or :ref:`spectrum file\u003cmixed-rate\u003e`. Without any definition, default :ref:`SI\u003cspectral_info\u003e` values of the library are propagated.\n```",
+      "range": {
+        "startLine": 1229,
+        "startChar": 0,
+        "endLine": 1232,
+        "endChar": 70
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "740b79f9_7d2440c6",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1264,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``source``            | (string)   | Mandatory. Source of traffic. It must be one of the UID of        |\n```",
+      "range": {
+        "startLine": 1264,
+        "startChar": 69,
+        "endLine": 1264,
+        "endChar": 94
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be8f6639_04c23c14",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1267,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``src-tp-id``         | (string)   | Mandatory. It must be equal to ``source``.                            |\n```",
+      "range": {
+        "startLine": 1267,
+        "startChar": 50,
+        "endLine": 1267,
+        "endChar": 74
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9647fffd_c1915894",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1269,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``destination``       | (string)   | Mandatory. Destination of traffic. It must be one of the UID of   |\n```",
+      "range": {
+        "startLine": 1269,
+        "startChar": 74,
+        "endLine": 1269,
+        "endChar": 99
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7af6eb22_339b4d90",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1272,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``dst-tp-id``         | (string)   | Mandatory. It must be equal to ``destination``.                       |\n```",
+      "range": {
+        "startLine": 1272,
+        "startChar": 50,
+        "endLine": 1272,
+        "endChar": 80
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f63713d_3ff7b079",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1276,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``bidirectional``     | (boolean)  | Mandatory. Boolean indicating if the propagation should be    |\n|                       |            | checked on source-destination only (false) or on          |\n|                       |            | destination-source (true).                                     |\n```",
+      "range": {
+        "startLine": 1274,
+        "startChar": 39,
+        "endLine": 1276,
+        "endChar": 66
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d480dd42_4e6ddbcd",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1279,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``path-constraints``  | (dict)     | Mandatory. It contains the list of constraints including type of  |\n|                       |            | transceiver, mode and nodes to be included in the path.        |\n```",
+      "range": {
+        "startLine": 1278,
+        "startChar": 50,
+        "endLine": 1279,
+        "endChar": 94
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff9d1745_6ea4603a",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1298,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``trx_mode``                      | (string)   | Optional. Mode selected for this path. It must be listed within    |\n|                                   |            | the library transceiver\u0027s mode. If not defined, the     |\n|                                   |            | gnpy-path-request script automatically selects the mode that   |\n|                                   |            | has performance above minimum required threshold including     |\n|                                   |            | margins and penalties for all channels (full load) and         |\n|                                   |            | 1) fit in the spacing, 2) has the largest baudrate,            |\n|                                   |            | 3) has the largest bitrate.                                    |\n```",
+      "range": {
+        "startLine": 1292,
+        "startChar": 51,
+        "endLine": 1298,
+        "endChar": 78
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "454cedfa_68b60e42",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1301,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``spacing``                       | (number)   | Mandatory. In :math:`Hz`. Spacing in use for full spectral load        |\n|                                   |            | feasibility evaluation.                                 |\n```",
+      "range": {
+        "startLine": 1300,
+        "startChar": 51,
+        "endLine": 1301,
+        "endChar": 82
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06743088_f31dd34c",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1305,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n|                                   |            | service. It is used to determine the needed number of channels     |\n|                                   |            | and spectrum occupation.                                   |\n```",
+      "range": {
+        "startLine": 1304,
+        "startChar": 60,
+        "endLine": 1305,
+        "endChar": 79
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff9c7ff5_60802a5b",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1310,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``max-nb-of-channel``             | (number)   | Optional. Number of channels to take into account for the full      |\n|                                   |            | load computation. Default value is computed based on f_min     |\n|                                   |            | and f_max of transceiver frequency range and min_spacing of    |\n|                                   |            | mode (once selected).                                          |\n```",
+      "range": {
+        "startLine": 1307,
+        "startChar": 61,
+        "endLine": 1310,
+        "endChar": 72
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1db8758_2b830a54",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1321,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n|                                   |            | amplifiers. This parameter can therefore be useful to test         |\n|                                   |            | different designs with the same script.                         |\n```",
+      "range": {
+        "startLine": 1320,
+        "startChar": 63,
+        "endLine": 1321,
+        "endChar": 89
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc6d4285_cb2a8035",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1324,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n|                                   |            | ``max-nb-of-channel` and ``output-power`` should be identical.  |\n```",
+      "range": {
+        "startLine": 1324,
+        "startChar": 100,
+        "endLine": 1324,
+        "endChar": 112
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0340afc_4bbc7d25",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1327,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``tx_power``                      | (number)   | Optional. In :math:`W`. Optical output power emitted by the transceiver.            |\n|                                   |            | Default value is output-power.                                 |\n```",
+      "range": {
+        "startLine": 1326,
+        "startChar": 75,
+        "endLine": 1327,
+        "endChar": 82
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffd477a8_b7f4c1cf",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1341,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n|                                   |            | Any combination of frequency slots is allowed as long as no    |\n|                                   |            | there is no overlap between two frequency slots.                                   |\n```",
+      "range": {
+        "startLine": 1340,
+        "startChar": 51,
+        "endLine": 1341,
+        "endChar": 80
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5326a54b_d32bb6fc",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1350,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n|                                   |            | Requested spectrum should be consistent with mode min_spacing  |\n|                                   |            | and path_bandwidth: 1) each slot inside the list must be       |\n|                                   |            | large enough to fit one carrier with min_spacing width,        |\n|                                   |            | 2) total number of channels should be large enough to support  |\n|                                   |            | the requested path_bandwidth.                                  |\n|                                   |            | Note that gnpy-path-request script uses full spectral load and not this |\n|                                   |            | spectrum constraint to compute performance. Thus, the specific |\n|                                   |            | mix of channels resulting from the list of requests is not     |\n|                                   |            | considered to compute performances.                            |\n```",
+      "range": {
+        "startLine": 1342,
+        "startChar": 51,
+        "endLine": 1350,
+        "endChar": 87
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8121742_dd80727f",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1353,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``route-object-include-exclude``  | (list)     | Optional. Indexed List of routing include/exclude constraints to       |\n|                                   |            | compute the path between source and destination.               |\n```",
+      "range": {
+        "startLine": 1352,
+        "startChar": 61,
+        "endLine": 1353,
+        "endChar": 99
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbfadf9c_742fd4bb",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1361,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``explicit-route-usage``          | (string)   | Mandatory. Only one value is supported: ``route-include-ero``    |\n```\n\nJust to confirm: is route-include-ero correct?",
+      "range": {
+        "startLine": 1361,
+        "startChar": 62,
+        "endLine": 1361,
+        "endChar": 86
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c73985a_38f2ce19",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1380,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``\"relaxable``                    | (boolean)  | Mandatory. Only false is supported.                             |\n```",
+      "range": {
+        "startLine": 1380,
+        "startChar": 62,
+        "endLine": 1380,
+        "endChar": 86
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab8563ce_c2766892",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 1382,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-05-30T16:26:27Z",
+      "side": 1,
+      "message": "```suggestion\n| ``disjointness``                  | (string)   | Mandatory. Only ``node link`` is supported.                     |\n```",
+      "range": {
+        "startLine": 1382,
+        "startChar": 62,
+        "endLine": 1382,
+        "endChar": 94
+      },
+      "revId": "11768ba2e132b95234b7807fde96a91a1faadf29",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
