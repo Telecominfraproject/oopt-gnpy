@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2981c3dc_cbfe80aa",
+        "filename": "docs/json.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2024-05-31T07:47:51Z",
+      "side": 1,
+      "message": "I do not understand the ‘In ?’ part.",
+      "revId": "87f27dc88649ee933a08748f08973ee531a1d0c1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9e1130a_0bda8926",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2024-05-31T07:47:51Z",
+      "side": 1,
+      "message": "Please do not abbreviate “number” as “nb”.",
+      "revId": "87f27dc88649ee933a08748f08973ee531a1d0c1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41be263d_a60e2d26",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2024-05-31T07:47:51Z",
+      "side": 1,
+      "message": "this should be a separate commit, and it needs a better explanation than just “fix”. Please explain in the commit message what was broken and how.",
+      "revId": "87f27dc88649ee933a08748f08973ee531a1d0c1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
