@@ -18,6 +18,23 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c3381c9_b5c15735",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-05-31T06:55:39Z",
+      "side": 1,
+      "message": "Thanks! I will implement your suggestions. only one is not applicable I think: see my proposal",
+      "revId": "62dc7ed101f5c3b025c1f77692effb161c83380e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e1210c36_0cf3dc9b",
@@ -204,6 +221,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "753f7919_cd5b543a",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-05-31T06:55:39Z",
+      "side": 1,
+      "message": "In fact I wanted to state:\nwhen add_{osnr} \u003d drop_{osnr}, add\\_drop\\_osnr \u003d add_{osnr} - 10log10(2) and\nadd_{osnr} \u003d drop_{osnr} \u003d add\\_drop\\_osnr + 10log10(2)",
+      "parentUuid": "d848356b_295f64e0",
+      "range": {
+        "startLine": 431,
+        "startChar": 2,
+        "endLine": 431,
+        "endChar": 10
+      },
+      "revId": "62dc7ed101f5c3b025c1f77692effb161c83380e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c0ba7752_b319e299",
         "filename": "docs/json.rst",
         "patchSetId": 2
@@ -330,6 +371,30 @@
       "writtenOn": "2024-05-30T16:24:20Z",
       "side": 1,
       "message": "```suggestion\nTransceiver output power can be set independently defining the span input power. It can be set:\n```",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 72
+      },
+      "revId": "62dc7ed101f5c3b025c1f77692effb161c83380e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e12c1495_8bdb4678",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-05-31T06:55:39Z",
+      "side": 1,
+      "message": "thanks for the review, however your suggestion changes the meaning: in fact I wanted to state that power_dbm sets the input span power, and before this patch it was also defining the output power of transceiver. with this change, I introduce tx_power_dbm, which can define the transceiver output power independantly from the span input power. So that now it is possible to have -10dBm out of a transceiver and 0dBm at input span. \n\nWould this sentence be clearer?\n\"The transceiver output power, which was previously set using the same parameter as the input span power (power_dbm), can now be set using a different parameter. It can be set as:\"",
+      "parentUuid": "28844587_657e24b2",
       "range": {
         "startLine": 12,
         "startChar": 0,
