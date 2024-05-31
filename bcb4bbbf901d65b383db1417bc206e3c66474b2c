@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "557a1d1b_0a60f056",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2024-05-31T07:53:32Z",
+      "side": 1,
+      "message": "end of line: “to properly compute”",
+      "revId": "bcb4bbbf901d65b383db1417bc206e3c66474b2c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
