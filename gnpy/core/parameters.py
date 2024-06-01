@@ -74,7 +74,8 @@ class NLIParams(Parameters):
         return {"method": self.method,
                 "dispersion_tolerance": self.dispersion_tolerance,
                 "phase_shift_tolerance": self.phase_shift_tolerance,
-                "computed_channels": self.computed_channels}
+                "computed_channels": self.computed_channels,
+                "computed_number_of_channels": self.computed_number_of_channels}
 
 
 class SimParams(Parameters):
