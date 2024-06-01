@@ -1,3 +1,6 @@
+WARNING  gnpy.tools.json_io:json_io.py 
+ WARNING missing type_variety attribute in eqpt_config.json[Roadm]
+ default value is type_variety = default
 INFO     gnpy.tools.cli_examples:cli_examples.py source = 'brest'
 INFO     gnpy.tools.cli_examples:cli_examples.py destination = 'rennes'
 WARNING  gnpy.core.network:network.py 

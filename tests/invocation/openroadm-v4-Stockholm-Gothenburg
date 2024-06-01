@@ -17,6 +17,7 @@ Transceiver trx_Stockholm
   PDL (dB):                  0.00
   Latency (ms):              0.00
 Roadm roadm_Stockholm
+  type_variety:            default
   effective loss (dB):     22.00
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
@@ -78,6 +79,7 @@ Edfa Edfa_preamp_roadm_Norrköping_from_fiber (Stockholm → Norrköping)_(2/2)
   actual pch out (dBm):   2.03
   output VOA (dB):        0.00
 Roadm roadm_Norrköping
+  type_variety:            default
   effective loss (dB):     22.00
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
@@ -117,6 +119,7 @@ Edfa Edfa_preamp_roadm_Linköping_from_fiber (Norrköping → Linköping)
   actual pch out (dBm):   2.01
   output VOA (dB):        0.00
 Roadm roadm_Linköping
+  type_variety:            default
   effective loss (dB):     22.00
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
@@ -156,6 +159,7 @@ Edfa Edfa_preamp_roadm_Jönköping_from_fiber (Linköping → Jönköping)
   actual pch out (dBm):   2.05
   output VOA (dB):        0.00
 Roadm roadm_Jönköping
+  type_variety:            default
   effective loss (dB):     22.00
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
@@ -195,6 +199,7 @@ Edfa Edfa_preamp_roadm_Borås_from_fiber (Jönköping → Borås)
   actual pch out (dBm):   2.02
   output VOA (dB):        0.00
 Roadm roadm_Borås
+  type_variety:            default
   effective loss (dB):     22.00
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
@@ -234,6 +239,7 @@ Edfa Edfa_preamp_roadm_Gothenburg_from_fiber (Borås → Gothenburg)
   actual pch out (dBm):   2.02
   output VOA (dB):        0.00
 Roadm roadm_Gothenburg
+  type_variety:            default
   effective loss (dB):     22.00
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
