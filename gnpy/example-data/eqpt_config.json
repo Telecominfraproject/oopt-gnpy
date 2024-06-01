@@ -208,6 +208,16 @@
                 "preamp_variety_list": [],
                 "booster_variety_list": []
             }
+        }, {
+            "type_variety": "roadm_type_1",
+            "target_pch_out_db": -18,
+            "add_drop_osnr": 35,
+            "pmd": 0,
+            "pdl": 0,
+            "restrictions": {
+                "preamp_variety_list": [],
+                "booster_variety_list": []
+            }
         }
     ],
     "SI": [{
