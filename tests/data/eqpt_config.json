@@ -78,6 +78,16 @@
         }
     ],
     "Roadm": [{
+            "type_variety": "example_test",
+            "target_pch_out_db": -18,
+            "add_drop_osnr": 35,
+            "pmd": 1e-12,
+            "pdl": 0.5,
+            "restrictions": {
+                "preamp_variety_list": [],
+                "booster_variety_list": []
+            }
+        }, {
             "target_pch_out_db": -20,
             "add_drop_osnr": 38,
             "pmd": 0,

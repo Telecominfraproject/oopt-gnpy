@@ -18,6 +18,7 @@ Transceiver trx Lannion_CAS
   PDL (dB):                  0.00
   Latency (ms):              0.00
 Roadm roadm Lannion_CAS
+  type_variety:            default
   effective loss (dB):     20.00
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
@@ -79,6 +80,7 @@ Edfa west edfa in Lorient_KMA to Loudeac
   actual pch out (dBm):   1.05
   output VOA (dB):        0.00
 Roadm roadm Lorient_KMA
+  type_variety:            default
   effective loss (dB):     21.00
   reference pch out (dBm): -20.00
   actual pch out (dBm):    -20.00
