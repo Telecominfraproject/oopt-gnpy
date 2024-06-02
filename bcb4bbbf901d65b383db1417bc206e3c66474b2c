@@ -16,6 +16,24 @@
       "message": "end of line: “to properly compute”",
       "revId": "bcb4bbbf901d65b383db1417bc206e3c66474b2c",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b452cfa_40a33ae3",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:27:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "557a1d1b_0a60f056",
+      "revId": "bcb4bbbf901d65b383db1417bc206e3c66474b2c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }

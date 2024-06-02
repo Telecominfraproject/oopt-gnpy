@@ -16,6 +16,24 @@
       "message": "this belongs to a different commit",
       "revId": "87f27dc88649ee933a08748f08973ee531a1d0c1",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd15b01a_3ebb5527",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:27:20Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "f6f1aa82_6c5de54f",
+      "revId": "87f27dc88649ee933a08748f08973ee531a1d0c1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
