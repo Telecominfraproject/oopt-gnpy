@@ -5,6 +5,51 @@ Release change log
 
 Each release introduces some changes and new features.
 
+v2.9
+----
+
+The revision introduces a major refactor that separates design and propagation. Most of these changes have no impact
+on the user experience, except the following ones:
+
+**Network design - amplifiers**: amplifier saturation is checked during design in all cases, even if type_variety is
+set; amplifier gain is no more computed on the fly but only at design phase.
+
+Before, the design did not consider amplifier power saturation during design if amplifier type_variety was stated.
+With this revision, the saturation is always applied:
+If design is made for a per channel power that leads to saturation, the target are properly reduced and the design
+is freezed. So that when a new simulation is performed on the same network for lower levels of power per channel
+the same gain target is applied. Before these were recomputed, changing the gain targets, so the simulation was
+not considering the exact same working points for amplifiers in case of saturation.
+
+Note that this case (working with saturation settings) is not recommended.
+
+The gain of amplifiers was estimated on the fly also in case of RamanFiber preceding elements. The refactor now
+requires that an estimation of Raman gain of the RamanFiber is done during design to properly compute a gain target.
+The Raman gain is estimated at design for every RamanFiber span and also during propagation instead of being only
+estimated at propagation stage for those Raman Fiber spans concerned with the transmission. The auto-design is more
+accurate for unpropagated spans, but this results in an increase overall computation time.
+This will be improved in the future.
+
+**Network design - ROADMs**: ROADM target power settings are verified during design.
+
+Design checks that expected power coming from every directions ingress from a ROADM are consistent with output power
+targets. The checks only considers the adjacent previous hop. If the expected power at the input of this ROADM is
+lower than the target power on the out-degree of the ROADM, a warning is displayed, and user is asked to review the
+input network to avoid this situation. This does not change the design or propagation behaviour.
+
+**Propagation**: amplifier gain target is no more recomputed during propagation. It is now possible to freeze
+the design and propagate without automatic changes.
+
+In previous release, gain was recomputed during propagation based on an hypothetical reference noiseless channel
+propagation. It was not possible to «freeze» the autodesign, and propagate without recomputing the gain target
+of amplifiers.
+With this new release, the design is freezed, so that it is possible to compare performances on same basis.
+
+**Display**: "effective pch (dbm)" is removed. Display contains the target pch which is the target power per channel
+in dBm, computed based on reference channel used for design and the amplifier delta_p in dB (and before out VOA
+contribution). Note that "actual pch out (dBm)" is the actual propagated total power per channel averaged per spectrum
+band definition at the output of the amplifier element, including noises and out VOA contribution.
+
 v2.8
 ----
 
