@@ -500,6 +500,29 @@ Span configuration is not a list (which may change in later releases) and the us
         }
     }
 
+Power sweep functionality is triggered when setting "power_range_db" in SI in the library. This defines a
+list of reference powers on which a new design is performed and propagation is triggered
+(only gnpy-transmission-example script).
+
+for example, with the following settings:
+
+  - ``power_dbm`` = 0 dBm
+  - max power of the amplifier = 20 dBm,
+  - user defined ``delta_p`` set by user = 3 dB
+  - 80 channels, so :math:`pch_{max}` = 20 - 10log10(80) = 0.96 dBm
+  - ``delta_power_range_db`` = [-3, 0, 3]
+  - power_sweep -> power range [-3, 0] dBm
+
+then the computation of delta_p during design for each power of this power sweep is:
+
+  - with :math:`p_{ref}` = 0 dBm, computed_delta_p = min(:math:`pch_{max}`, :math:`p_{ref}` + ``delta_p``) - :math:`p_{ref}` = 0.96 ;
+    - user defined ``delta_p`` = 3 dB **can not** be applied because of saturation,
+  - with :math:`p_{ref}` = -3 dBm (power sweep) computed_delta_p = min(:math:`pch_{max}`, :math:`p_{ref}` + ``delta_p``) - :math:`p_{ref}` =
+    min(0.96, -3.0 + 3.0) - (-3.0) = 3.0 ;
+    - user defined ``delta_p`` = 3 dB **can** be applied.
+
+so the user defined delta_p is applied as much as possible.
+
 SpectralInformation
 ~~~~~~~~~~~~~~~~~~~
 
