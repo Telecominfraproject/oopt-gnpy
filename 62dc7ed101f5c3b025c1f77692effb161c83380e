@@ -58,6 +58,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "905903a2_9a9ab150",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:23:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1210c36_0cf3dc9b",
+      "range": {
+        "startLine": 290,
+        "startChar": 0,
+        "endLine": 293,
+        "endChar": 25
+      },
+      "revId": "62dc7ed101f5c3b025c1f77692effb161c83380e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9ac1744b_04921147",
@@ -71,6 +95,30 @@
       "writtenOn": "2024-05-30T16:24:20Z",
       "side": 1,
       "message": "```suggestion\n|                            |           | ``upper-frequency`` in Hz.                                 |             |             |                     |\n```",
+      "range": {
+        "startLine": 314,
+        "startChar": 63,
+        "endLine": 314,
+        "endChar": 68
+      },
+      "revId": "62dc7ed101f5c3b025c1f77692effb161c83380e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a1673d8_d5065b5d",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:23:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ac1744b_04921147",
       "range": {
         "startLine": 314,
         "startChar": 63,
@@ -104,6 +152,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "110873b2_703580bd",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:23:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d8cc83e_0e079d01",
+      "range": {
+        "startLine": 327,
+        "startChar": 43,
+        "endLine": 328,
+        "endChar": 58
+      },
+      "revId": "62dc7ed101f5c3b025c1f77692effb161c83380e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed886752_5a776830",
@@ -117,6 +189,30 @@
       "writtenOn": "2024-05-30T16:24:20Z",
       "side": 1,
       "message": "```suggestion\n| ``roadm-pmd``              | (number)  | PMD contribution of the specific roadm path.                      | Implemented | Implemented | Implemented         |\n```",
+      "range": {
+        "startLine": 356,
+        "startChar": 43,
+        "endLine": 356,
+        "endChar": 79
+      },
+      "revId": "62dc7ed101f5c3b025c1f77692effb161c83380e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd9881f3_69051f4e",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:23:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed886752_5a776830",
       "range": {
         "startLine": 356,
         "startChar": 43,
@@ -150,6 +246,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef73c61e_d276b332",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:23:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35f8780c_e978559a",
+      "range": {
+        "startLine": 361,
+        "startChar": 43,
+        "endLine": 361,
+        "endChar": 79
+      },
+      "revId": "62dc7ed101f5c3b025c1f77692effb161c83380e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13148c92_dcf3a785",
@@ -173,6 +293,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1897547f_94f79637",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:23:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13148c92_dcf3a785",
+      "range": {
+        "startLine": 419,
+        "startChar": 0,
+        "endLine": 419,
+        "endChar": 142
+      },
+      "revId": "62dc7ed101f5c3b025c1f77692effb161c83380e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4ea51cd_04e250f3",
@@ -186,6 +330,30 @@
       "writtenOn": "2024-05-30T16:24:20Z",
       "side": 1,
       "message": "```suggestion\nFor example, if add-path specifies 0.5 dB PDL and the general PDL parameter states 1.0 dB, then 0.5 dB is applied for this roadm-path only.\n```",
+      "range": {
+        "startLine": 422,
+        "startChar": 0,
+        "endLine": 423,
+        "endChar": 21
+      },
+      "revId": "62dc7ed101f5c3b025c1f77692effb161c83380e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8a207b7_9f6017ac",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:23:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4ea51cd_04e250f3",
       "range": {
         "startLine": 422,
         "startChar": 0,
@@ -243,6 +411,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad22cdf3_7f45d814",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:23:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "753f7919_cd5b543a",
+      "range": {
+        "startLine": 431,
+        "startChar": 2,
+        "endLine": 431,
+        "endChar": 10
+      },
+      "revId": "62dc7ed101f5c3b025c1f77692effb161c83380e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0ba7752_b319e299",
@@ -256,6 +448,30 @@
       "writtenOn": "2024-05-30T16:24:20Z",
       "side": 1,
       "message": "```suggestion\nThe user can specify the roadm type_variety in the json topology ROADM instance. If no variety is defined, ``default`` ID is used.\n```",
+      "range": {
+        "startLine": 433,
+        "startChar": 0,
+        "endLine": 433,
+        "endChar": 72
+      },
+      "revId": "62dc7ed101f5c3b025c1f77692effb161c83380e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "700a90a1_69aa9d1b",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:23:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0ba7752_b319e299",
       "range": {
         "startLine": 433,
         "startChar": 0,
@@ -289,6 +505,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ce7c61d_f2759dc3",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:23:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67c7272a_8b63b9f0",
+      "range": {
+        "startLine": 434,
+        "startChar": 0,
+        "endLine": 435,
+        "endChar": 74
+      },
+      "revId": "62dc7ed101f5c3b025c1f77692effb161c83380e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e2c6a66_5656ceff",
@@ -302,6 +542,30 @@
       "writtenOn": "2024-05-30T16:24:20Z",
       "side": 1,
       "message": "```suggestion\nIf nothing is stated for impairments on roadm-paths, the program identifies the paths implicitly and assigns the first impairment_id that matches the type: if a transceiver is present on one degree, then it is an add/drop degree.\n```",
+      "range": {
+        "startLine": 455,
+        "startChar": 0,
+        "endLine": 456,
+        "endChar": 109
+      },
+      "revId": "62dc7ed101f5c3b025c1f77692effb161c83380e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7199304d_59933044",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:23:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e2c6a66_5656ceff",
       "range": {
         "startLine": 455,
         "startChar": 0,
@@ -335,6 +599,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5035b71_4d22267c",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 740,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:23:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "609072ea_dd666d3a",
+      "range": {
+        "startLine": 739,
+        "startChar": 0,
+        "endLine": 740,
+        "endChar": 66
+      },
+      "revId": "62dc7ed101f5c3b025c1f77692effb161c83380e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9865e2a5_5379c6ca",
@@ -348,6 +636,30 @@
       "writtenOn": "2024-05-30T16:24:20Z",
       "side": 1,
       "message": "```suggestion\n| ``tx_power_dbm``     | (number)  | In dBm. Optional. Power out from transceiver.       |\n|                      |           |  Default value is 0 dBm.           |\n```",
+      "range": {
+        "startLine": 824,
+        "startChar": 37,
+        "endLine": 825,
+        "endChar": 68
+      },
+      "revId": "62dc7ed101f5c3b025c1f77692effb161c83380e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "500d866f_ae86b90c",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:23:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9865e2a5_5379c6ca",
       "range": {
         "startLine": 824,
         "startChar": 37,
@@ -395,6 +707,30 @@
       "side": 1,
       "message": "thanks for the review, however your suggestion changes the meaning: in fact I wanted to state that power_dbm sets the input span power, and before this patch it was also defining the output power of transceiver. with this change, I introduce tx_power_dbm, which can define the transceiver output power independantly from the span input power. So that now it is possible to have -10dBm out of a transceiver and 0dBm at input span. \n\nWould this sentence be clearer?\n\"The transceiver output power, which was previously set using the same parameter as the input span power (power_dbm), can now be set using a different parameter. It can be set as:\"",
       "parentUuid": "28844587_657e24b2",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 72
+      },
+      "revId": "62dc7ed101f5c3b025c1f77692effb161c83380e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84bf0181_b64bbb54",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:23:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e12c1495_8bdb4678",
       "range": {
         "startLine": 12,
         "startChar": 0,
