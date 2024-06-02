@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1cd288a_164d4d46",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:22:27Z",
+      "side": 1,
+      "message": "thanks, done in two new commits: 44040c4d0600691552e715a48e5b8ebb7e985d20 and fbb2f2c587d4bcd30421884ad28b0a2083ecc808",
+      "revId": "87f27dc88649ee933a08748f08973ee531a1d0c1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2981c3dc_cbfe80aa",
@@ -14,6 +31,42 @@
       "writtenOn": "2024-05-31T07:47:51Z",
       "side": 1,
       "message": "I do not understand the ‘In ?’ part.",
+      "revId": "87f27dc88649ee933a08748f08973ee531a1d0c1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3738bc9_0f10b11f",
+        "filename": "docs/json.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:22:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2981c3dc_cbfe80aa",
+      "revId": "87f27dc88649ee933a08748f08973ee531a1d0c1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "206b7e05_b67862a1",
+        "filename": "docs/json.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:22:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2981c3dc_cbfe80aa",
       "revId": "87f27dc88649ee933a08748f08973ee531a1d0c1",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
@@ -35,6 +88,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "630a9ab6_36771448",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:22:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9e1130a_0bda8926",
+      "revId": "87f27dc88649ee933a08748f08973ee531a1d0c1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41be263d_a60e2d26",
@@ -48,6 +119,24 @@
       "writtenOn": "2024-05-31T07:47:51Z",
       "side": 1,
       "message": "this should be a separate commit, and it needs a better explanation than just “fix”. Please explain in the commit message what was broken and how.",
+      "revId": "87f27dc88649ee933a08748f08973ee531a1d0c1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84d2420d_ecb0ab88",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-06-02T17:22:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41be263d_a60e2d26",
       "revId": "87f27dc88649ee933a08748f08973ee531a1d0c1",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
