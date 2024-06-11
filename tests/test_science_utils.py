@@ -63,7 +63,7 @@ def test_fiber():
     assert_allclose(p_nli, expected_results['nli'], rtol=1e-3)
 
     # propagation with Raman
-    SimParams.set_params({'raman_params': {'flag': True, 'solver_spatial_resolution': 1}})
+    SimParams.set_params({'raman_params': {'flag': True}})
     spectral_info_out = fiber(spectral_info_input)
 
     p_signal = spectral_info_out.signal
@@ -82,6 +82,7 @@ def test_raman_fiber():
                                                             baud_rate=32e9, spacing=50e9, tx_osnr=40.0,
                                                             tx_power=1e-3)
     SimParams.set_params(load_json(TEST_DIR / 'data' / 'sim_params.json'))
+    SimParams().raman_params.solver_spatial_resolution = 5
     fiber = RamanFiber(**load_json(TEST_DIR / 'data' / 'test_science_utils_fiber_config.json'))
     fiber.ref_pch_in_dbm = 0.0
     # propagation
@@ -120,18 +121,19 @@ def test_fiber_lumped_losses_srs(set_sim_params):
                                                             baud_rate=32e9, spacing=50e9, tx_osnr=40.0,
                                                             tx_power=1e-3)
 
-    SimParams.set_params(load_json(TEST_DIR / 'data' / 'sim_params.json'))
     fiber = Fiber(**load_json(TEST_DIR / 'data' / 'test_lumped_losses_raman_fiber_config.json'))
     raman_fiber = RamanFiber(**load_json(TEST_DIR / 'data' / 'test_lumped_losses_raman_fiber_config.json'))
 
     # propagation
     # without Raman pumps
+    SimParams.set_params({'raman_params': {'flag': True, 'order': 2}})
     stimulated_raman_scattering = RamanSolver.calculate_stimulated_raman_scattering(spectral_info_input, fiber)
     power_profile = stimulated_raman_scattering.power_profile
     expected_power_profile = read_csv(TEST_DIR / 'data' / 'test_lumped_losses_fiber_no_pumps.csv').values
     assert_allclose(power_profile, expected_power_profile, rtol=1e-3)
 
     # with Raman pumps
+    SimParams.set_params({'raman_params': {'flag': True, 'order': 1, 'solver_spatial_resolution': 5}})
     stimulated_raman_scattering = RamanSolver.calculate_stimulated_raman_scattering(spectral_info_input, raman_fiber)
     power_profile = stimulated_raman_scattering.power_profile
     expected_power_profile = read_csv(TEST_DIR / 'data' / 'test_lumped_losses_raman_fiber.csv').values

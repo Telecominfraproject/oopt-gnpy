@@ -492,6 +492,19 @@ See ``delta_power_range_db`` for more explaination.
 |                                             |           | mandatory when Raman amplification is       |
 |                                             |           | included in the simulation                  |
 +---------------------------------------------+-----------+---------------------------------------------+
+| ``raman_params.method``                     | (string)  | Model used for Raman evaluation. Valid      |
+|                                             |           | choices are ``perturbative`` (see           |
+|                                             |           | `arXiv:2304.11756                           |
+|                                             |           | <https://arxiv.org/abs/2304.11756>`_) and   |
+|                                             |           | ``numerical``, the GNPy legacy first order  |
+|                                             |           | derivative numerical solution.              |
++---------------------------------------------+-----------+---------------------------------------------+
+|``raman_params.order``                       |           | Order of the perturbative expansion.        |
+|                                             |           | For C- and C+L-band transmission scenarios  |
+|                                             |           | the second order provides high accuracy     |
+|                                             |           | considering common values of fiber input    |
+|                                             |           | power. (Default is 2)                       |
++---------------------------------------------+-----------+---------------------------------------------+
 | ``raman_params.result_spatial_resolution``  | (number)  | Spatial resolution of the output            |
 |                                             |           | Raman profile along the entire fiber span.  |
 |                                             |           | This affects the accuracy and the           |
@@ -503,11 +516,18 @@ See ``delta_power_range_db`` for more explaination.
 |                                             |           | channel around 0 dBm, a suggested value of  |
 |                                             |           | spatial resolution is 10e3 m                |
 +---------------------------------------------+-----------+---------------------------------------------+
-| ``raman_params.solver_spatial_resolution``  | (number)  | Spatial step for the iterative solution     |
-|                                             |           | of the first order differential equation    |
-|                                             |           | used to calculate the Raman profile         |
-|                                             |           | along the entire fiber span.                |
-|                                             |           | This affects the accuracy and the           |
+| ``raman_params.solver_spatial_resolution``  | (number)  | When using the ``perturbative`` method,     |
+|                                             |           | the step for the spatial integration does   |
+|                                             |           | not affect the first order. Therefore, a    |
+|                                             |           | large step can be used when no              |
+|                                             |           | counter-propagating Raman amplification is  |
+|                                             |           | present; a suggested value is 10e3 m.       |
+|                                             |           | In presence of counter-propagating Raman    |
+|                                             |           | amplification or when using the             |
+|                                             |           | ``numerical`` method the following remains  |
+|                                             |           | valid.                                      |
+|                                             |           | The spatial step for the iterative solution |
+|                                             |           | affects the accuracy and the                |
 |                                             |           | computational time of the evaluated         |
 |                                             |           | Raman profile:                              |
 |                                             |           | smaller the spatial resolution higher both  |
