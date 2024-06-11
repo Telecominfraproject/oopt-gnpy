@@ -15,11 +15,12 @@ from numpy import interp, pi, zeros, cos, array, append, ones, exp, arange, sqrt
     polyfit, log, reshape, swapaxes, full, nan
 from logging import getLogger
 from scipy.constants import k, h
+from scipy.integrate import cumtrapz
 from scipy.interpolate import interp1d
-from math import isclose
+from math import isclose, factorial
 
 from gnpy.core.utils import db2lin, lin2db
-from gnpy.core.exceptions import EquipmentConfigError
+from gnpy.core.exceptions import EquipmentConfigError, ParametersError
 from gnpy.core.parameters import SimParams
 from gnpy.core.info import SpectralInformation
 
@@ -136,15 +137,17 @@ class RamanSolver:
                     co_cr = fiber.cr(co_frequency)
                     co_alpha = fiber.alpha(co_frequency)
                     co_power_profile = \
-                        RamanSolver.first_order_derivative_solution(co_power, co_alpha, co_cr, z, lumped_losses)
+                        RamanSolver.calculate_unidirectional_stimulated_raman_scattering(co_power, co_alpha, co_cr, z,
+                                                                                         lumped_losses)
                 # Counter-propagating profile initialization
                 cnt_power_profile = zeros([cnt_frequency.size, z.size])
                 if cnt_frequency.size:
                     cnt_cr = fiber.cr(cnt_frequency)
                     cnt_alpha = fiber.alpha(cnt_frequency)
-                    cnt_power_profile = \
-                        flip(RamanSolver.first_order_derivative_solution(cnt_power, cnt_alpha, cnt_cr,
-                                                                         z[-1] - flip(z), flip(lumped_losses)), axis=1)
+                    cnt_power_profile = flip(
+                        RamanSolver.calculate_unidirectional_stimulated_raman_scattering(cnt_power, cnt_alpha, cnt_cr,
+                                                                                         z[-1] - flip(z),
+                                                                                         flip(lumped_losses)), axis=1)
                 # Co-propagating and Counter-propagating Profile Computation
                 if co_frequency.size and cnt_frequency.size:
                     co_power_profile, cnt_power_profile = \
@@ -163,8 +166,9 @@ class RamanSolver:
                 alpha = fiber.alpha(spectral_info.frequency)
                 cr = fiber.cr(spectral_info.frequency)
                 # Power profile
-                power_profile = \
-                    RamanSolver.first_order_derivative_solution(spectral_info.signal, alpha, cr, z, lumped_losses)
+                power_profile = (
+                    RamanSolver.calculate_unidirectional_stimulated_raman_scattering(spectral_info.signal, alpha, cr, z,
+                                                                                     lumped_losses))
                 # Loss profile
                 loss_profile = power_profile / outer(spectral_info.signal, ones(z.size))
                 frequency = spectral_info.frequency
@@ -200,8 +204,8 @@ class RamanSolver:
         return ase
 
     @staticmethod
-    def first_order_derivative_solution(power_in, alpha, cr, z, lumped_losses):
-        """Solves the Raman first order derivative equation
+    def calculate_unidirectional_stimulated_raman_scattering(power_in, alpha, cr, z, lumped_losses):
+        """Solves the Raman equation
 
         :param power_in: launch power array
         :param alpha: loss coefficient array
@@ -210,18 +214,58 @@ class RamanSolver:
         :param lumped_losses: concentrated losses array along the fiber span
         :return: power profile matrix
         """
-        dz = z[1:] - z[:-1]
-        power = outer(power_in, ones(z.size))
-        for i in range(1, z.size):
-            power[:, i] = \
-                power[:, i - 1] * (1 + (- alpha + sum(cr * power[:, i - 1], 1)) * dz[i - 1]) * lumped_losses[i - 1]
+        if sim_params.raman_params.method == 'perturbative':
+            if sim_params.raman_params.order > 4:
+                raise ValueError(f'Order {sim_params.raman_params.order} not implemented in Raman Solver.')
+            z_lumped_losses = append(z[lumped_losses != 1], z[-1])
+            llumped_losses = append(1, lumped_losses[lumped_losses != 1])
+            power = outer(power_in, ones(z.size))
+            last_position = 0
+            z_indices = arange(0, z.size)
+
+            for z_lumped_loss, lumped_loss in zip(z_lumped_losses, llumped_losses):
+                if last_position < z[-1]:
+                    interval = z_indices[(z >= last_position) * (z <= z_lumped_loss) == 1]
+                    z_interval = z[interval] - last_position
+                    last_position = z[interval][-1]
+                    p0 = power_in * lumped_loss
+                    power_interval = outer(p0, ones(z_interval.size))
+                    alphaz = outer(alpha, z_interval)
+                    expz = exp(- alphaz)
+                    eff_length = 1 / outer(alpha, ones(z_interval.size)) * (1 - expz)
+                    crpz = transpose(ones([z_interval.size, cr.shape[0], cr.shape[1]]) * cr * p0, (1, 2, 0))
+                    exponent = - alphaz
+                    if sim_params.raman_params.order >= 1:
+                        gamma1 = sum(crpz * eff_length, 1)
+                        exponent += gamma1
+                    if sim_params.raman_params.order >= 2:
+                        gamma2 = sum(crpz * cumtrapz(expz * gamma1, z_interval, axis=1, initial=0), 1)
+                        exponent += gamma2
+                    if sim_params.raman_params.order >= 3:
+                        gamma3 = sum(crpz * cumtrapz(expz * (gamma2 + 1/2 * gamma1**2), z_interval,
+                                                     axis=1, initial=0), 1)
+                        exponent += gamma3
+                    if sim_params.raman_params.order >= 4:
+                        gamma4 = sum(crpz * cumtrapz(expz * (gamma3 + gamma1 * gamma2 + 1/factorial(3) * gamma1**3),
+                                                     z_interval, axis=1, initial=0), 1)
+                        exponent += gamma4
+                    power_interval *= exp(exponent)
+                    power[:, interval[1:]] = power_interval[:, 1:]
+                    power_in = power_interval[:, -1]
+        elif sim_params.raman_params.method == 'numerical':
+            dz = z[1:] - z[:-1]
+            power = outer(power_in, ones(z.size))
+            for i in range(1, z.size):
+                power[:, i] = (power[:, i - 1] * (1 + (- alpha + sum(cr * power[:, i - 1], 1)) * dz[i - 1]) *
+                               lumped_losses[i - 1])
+        else:
+            raise ValueError(f'Method {sim_params.raman_params.method} not implemented in Raman Solver.')
         return power
 
     @staticmethod
     def iterative_algorithm(co_initial_guess_power, cnt_initial_guess_power, co_frequency, cnt_frequency, z, fiber,
                             lumped_losses):
-        """Solves the Raman first order derivative equation in case of both co- and counter-propagating
-        frequencies
+        """Solves the Raman equation in case of both co- and counter-propagating frequencies
 
         :param co_initial_guess_power: co-propagationg Raman first order derivative equation solution
         :param cnt_initial_guess_power: counter-propagationg Raman first order derivative equation solution
