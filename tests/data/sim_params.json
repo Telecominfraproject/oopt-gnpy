@@ -2,7 +2,7 @@
   "raman_params": {
     "flag": true,
     "result_spatial_resolution": 10e3,
-    "solver_spatial_resolution": 5
+    "solver_spatial_resolution": 10e3
   },
   "nli_params": {
     "method": "ggn_spectrally_separated",
