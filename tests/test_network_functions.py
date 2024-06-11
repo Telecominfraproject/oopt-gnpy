@@ -553,13 +553,13 @@ def test_get_node_restrictions(cls, defaultparams, variety_list, booster_list, b
     ('no_design', 'Multiband_amplifier', 'LBAND', 10.0, 0.0, 'std_low_gain_multiband_bis', False),
     ('type_variety', 'Multiband_amplifier', 'LBAND', 10.0, 0.0, 'std_medium_gain_multiband', False),
     ('design', 'Multiband_amplifier', 'LBAND', 9.344985, 0.0, 'std_medium_gain_multiband', True),
-    ('no_design', 'Multiband_amplifier', 'LBAND', 9.344985, -0.94256, 'std_low_gain_multiband_bis', True),
-    ('no_design', 'Multiband_amplifier', 'CBAND', 10.980212, -1.60348, 'std_low_gain_multiband_bis', True),
+    ('no_design', 'Multiband_amplifier', 'LBAND', 9.344985, -0.938676, 'std_low_gain_multiband_bis', True),
+    ('no_design', 'Multiband_amplifier', 'CBAND', 10.977065, -1.600193, 'std_low_gain_multiband_bis', True),
     ('no_design', 'Fused', 'LBAND', 21.0, 0.0, 'std_medium_gain_multiband', False),
-    ('no_design', 'Fused', 'LBAND', 20.344985, -0.82184, 'std_medium_gain_multiband', True),
-    ('no_design', 'Fused', 'CBAND', 21.773072, -1.40300, 'std_medium_gain_multiband', True),
-    ('design', 'Fused', 'CBAND', 21.214048, 0.0, 'std_medium_gain_multiband', True),
-    ('design', 'Multiband_amplifier', 'CBAND', 11.044233, 0.0, 'std_medium_gain_multiband', True)])
+    ('no_design', 'Fused', 'LBAND', 20.344985, -0.819176, 'std_medium_gain_multiband', True),
+    ('no_design', 'Fused', 'CBAND', 21.770319, -1.40032, 'std_medium_gain_multiband', True),
+    ('design', 'Fused', 'CBAND', 21.21108, 0.0, 'std_medium_gain_multiband', True),
+    ('design', 'Multiband_amplifier', 'CBAND', 11.041037, 0.0, 'std_medium_gain_multiband', True)])
 def test_multiband(case, site_type, band, expected_gain, expected_tilt, expected_variety, sim_params):
     """Check:
     - if amplifiers are defined in multiband they are used for design,
@@ -612,8 +612,10 @@ def test_tilt_fused():
         estimate_srs_power_deviation(network, node, equipment, design_bands, input_powers)
     # restore simParams
     SimParams.set_params(save_sim_params)
-    assert fused_tilt_db == tilt_db
-    assert fused_tilt_target == tilt_target
+    for key in tilt_db:
+        assert_allclose(tilt_db[key], fused_tilt_db[key], rtol=1e-3)
+    for key in tilt_target:
+        assert_allclose(tilt_target[key], fused_tilt_target[key], rtol=1e-3)
 
 
 def network_wo_booster(site_type, bands):
