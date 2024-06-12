@@ -23,6 +23,7 @@ from gnpy.core.science_utils import RamanSolver
 TEST_DIR = Path(__file__).parent
 
 
+@pytest.mark.usefixtures('set_sim_params')
 def test_fiber():
     """Test the accuracy of propagating the Fiber."""
     fiber = Fiber(**load_json(TEST_DIR / 'data' / 'test_science_utils_fiber_config.json'))
@@ -51,14 +52,24 @@ def test_fiber():
                                                                 signal=signal, baud_rate=baud_rate, roll_off=0.15,
                                                                 delta_pdb_per_channel=delta_pdb_per_channel,
                                                                 tx_osnr=40.0, tx_power=1e-3)
-
-    # propagation
+    # propagation without Raman
     spectral_info_out = fiber(spectral_info_input)
 
     p_signal = spectral_info_out.signal
     p_nli = spectral_info_out.nli
 
     expected_results = read_csv(TEST_DIR / 'data' / 'test_fiber_flex_expected_results.csv')
+    assert_allclose(p_signal, expected_results['signal'], rtol=1e-3)
+    assert_allclose(p_nli, expected_results['nli'], rtol=1e-3)
+
+    # propagation with Raman
+    SimParams.set_params({'raman_params': {'flag': True, 'solver_spatial_resolution': 1}})
+    spectral_info_out = fiber(spectral_info_input)
+
+    p_signal = spectral_info_out.signal
+    p_nli = spectral_info_out.nli
+
+    expected_results = read_csv(TEST_DIR / 'data' / 'test_fiber_flex_expected_with_raman_results.csv')
     assert_allclose(p_signal, expected_results['signal'], rtol=1e-3)
     assert_allclose(p_nli, expected_results['nli'], rtol=1e-3)
 
@@ -115,17 +126,15 @@ def test_fiber_lumped_losses_srs(set_sim_params):
 
     # propagation
     # without Raman pumps
-    stimulated_raman_scattering = RamanSolver.calculate_stimulated_raman_scattering(
-        spectral_info_input, fiber)
+    stimulated_raman_scattering = RamanSolver.calculate_stimulated_raman_scattering(spectral_info_input, fiber)
     power_profile = stimulated_raman_scattering.power_profile
-    expected_power_profile = read_csv(TEST_DIR / 'data' / 'test_lumped_losses_fiber_no_pumps.csv', header=None)
+    expected_power_profile = read_csv(TEST_DIR / 'data' / 'test_lumped_losses_fiber_no_pumps.csv').values
     assert_allclose(power_profile, expected_power_profile, rtol=1e-3)
 
     # with Raman pumps
-    expected_power_profile = read_csv(TEST_DIR / 'data' / 'test_lumped_losses_raman_fiber.csv', header=None)
-    stimulated_raman_scattering = RamanSolver.calculate_stimulated_raman_scattering(
-        spectral_info_input, raman_fiber)
+    stimulated_raman_scattering = RamanSolver.calculate_stimulated_raman_scattering(spectral_info_input, raman_fiber)
     power_profile = stimulated_raman_scattering.power_profile
+    expected_power_profile = read_csv(TEST_DIR / 'data' / 'test_lumped_losses_raman_fiber.csv').values
     assert_allclose(power_profile, expected_power_profile, rtol=1e-3)
 
     # without Stimulated Raman Scattering
