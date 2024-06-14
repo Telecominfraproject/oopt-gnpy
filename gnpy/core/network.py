@@ -11,11 +11,13 @@ Working with networks which consist of network elements
 from operator import attrgetter
 from collections import namedtuple
 from logging import getLogger
-from typing import Tuple, List, Optional
+from typing import Tuple, List, Optional, Union
+from networkx import DiGraph
 
 from gnpy.core import elements
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
-from gnpy.core.utils import round2float, convert_length, psd2powerdbm, lin2db, watt2dbm, dbm2watt
+from gnpy.core.utils import round2float, convert_length, psd2powerdbm, lin2db, watt2dbm, dbm2watt, automatic_nch, \
+    find_common_range
 from gnpy.core.info import ReferenceCarrier, create_input_spectral_information
 from gnpy.core.parameters import SimParams, EdfaParams
 from gnpy.core.science_utils import RamanSolver
@@ -354,6 +356,48 @@ def set_amplifier_voa(amp, power_target, power_mode):
         amp.out_voa = voa
 
 
+def get_oms_edge_list(oms_ingress_node: Union[elements.Roadm, elements.Transceiver], network: DiGraph) \
+        -> List[Tuple]:
+    """get the list of OMS edges (node, neighbour next node) starting from its ingress down to its egress
+    oms_ingress_node can be a ROADM or a Transceiver
+    """
+    oms_edges = []
+    node = oms_ingress_node
+    visited_nodes = []
+    # collect the OMS element list (ROADM to ROADM, or Transceiver to ROADM)
+    while not (isinstance(node, elements.Roadm) or isinstance(node, elements.Transceiver)):
+        next_node = get_next_node(node, network)
+        visited_nodes.append(node.uid)
+        if next_node.uid in visited_nodes:
+            raise NetworkTopologyError(f'Loop detected for {type(node).__name__} {node.uid}, '
+                                       + 'please check network topology')
+        oms_edges.append((node, next_node))
+        node = next_node
+
+    return oms_edges
+
+
+def check_oms_single_type(oms_edges: List[Tuple]) -> list[str]:
+    """Verifies that the OMS only contains all single band amplifiers or all multi band amplifiers
+    No mixed OMS are permitted for the time being.
+    returns the amplifiers'type of the OMS
+    """
+    oms_types = {}
+    for node, _ in oms_edges:
+        if isinstance(node, elements.Edfa):
+            oms_types[node.uid] = 'Edfa'
+        elif isinstance(node, elements.Multiband_amplifier):
+            oms_types[node.uid] = 'Multiband_amplifier'
+    # checks that the element in the OMS are consistant (no multi-band mixed with single band)
+    types = set(list(oms_types.values()))
+    if len(types) > 1:
+        msg = 'type_variety Multiband ("Multiband_amplifier") and single band ("Edfa") cannot be mixed;\n' \
+            + f'Multiband amps: {[e for e in oms_types.keys() if oms_types[e] == "Multiband_amplifier"]}\n' \
+            + f'single band amps: {[e for e in oms_types.keys() if oms_types[e] == "Edfa"]}'
+        raise NetworkTopologyError(msg)
+    return list(types)
+
+
 def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_db, verbose):
     """This node can be a transceiver or a ROADM (same function called in both cases).
     go through each link staring from this_node until next Roadm or Transceiver and
@@ -542,6 +586,80 @@ def set_roadm_per_degree_targets(roadm, network):
                 roadm.per_degree_pch_psw[node.uid] = roadm.params.target_out_mWperSlotWidth
             else:
                 raise ConfigurationError(roadm.uid, 'needs an equalization target')
+
+
+def set_per_degree_design_band(node: Union[elements.Roadm, elements.Transceiver], network: DiGraph, equipment: dict):
+    """Configures the design bands for each degree of a node based on network and equipment constraints.
+    This function determines the design bands for each degree of a node (either a ROADM or a Transceiver)
+    based on the existing amplifier types and spectral information (SI) constraints. It uses a default
+    design band derived from the SI or ROADM bands if no specific bands are defined by the user.
+    node.params.x contains the values initially defined by user (with x in design_bands,
+    per_degree_design_bands). node.x contains the autodesign values.
+
+    Parameters:
+        node (Node): The node for which design bands are being set.
+        network (Network): The network containing the node and its connections.
+        equipment (dict): A dictionary containing equipment data, including spectral information.
+
+    Raises:
+        NetworkTopologyError: If there is an inconsistency in band definitions or unsupported configurations.
+
+    Notes:
+        - The function prioritizes user-defined bands in `node.params` if available.
+        - It checks for consistency between default bands and amplifier types.
+        - Mixed single-band and multi-band configurations are not supported and will raise an error.
+        - The function ensures that all bands are ordered by their minimum frequency.
+    """
+    next_oms = (n for n in network.successors(node))
+    if len(node.design_bands) == 0:
+        node.design_bands = [{'f_min': si.f_min, 'f_max': si.f_max} for si in equipment['SI'].values()]
+
+    default_is_single_band = len(node.design_bands) == 1
+    for next_node in next_oms:
+        # get all the elements from the OMS and retrieve their amps types and bands
+        oms_edges = get_oms_edge_list(next_node, network)
+        amps_type = check_oms_single_type(oms_edges)
+        oms_is_single_band = "Edfa" in amps_type if len(amps_type) == 1 else None
+        # oms_is_single_band can be True (single band OMS), False (Multiband OMS) or None (undefined: waiting for
+        # autodesign).
+        el_list = [n for n, _ in oms_edges]
+        amp_bands = [n.params.bands for n in el_list if isinstance(n, (elements.Edfa, elements.Multiband_amplifier))
+                     and n.params.bands]
+        # Use node.design_bands constraints if they are consistent with the amps type
+        if oms_is_single_band == default_is_single_band:
+            amp_bands.append(node.design_bands)
+
+        common_range = find_common_range(amp_bands, None, None)
+        # node.per_degree_design_bands has already been populated with node.params.per_degree_design_bands loaded
+        # from the json.
+        # let's complete the dict with the design band of degrees for which there was no definition
+        if next_node.uid not in node.per_degree_design_bands:
+            if common_range:
+                # if degree design band was not defined, then use the common_range computed with the oms amplifiers
+                # already defined
+                node.per_degree_design_bands[next_node.uid] = common_range
+            elif oms_is_single_band is None or (oms_is_single_band == default_is_single_band):
+                # else if no amps are defined (no bands) then use default ROADM bands
+                # use default ROADM bands only if this is consistent with the oms amps type
+                node.per_degree_design_bands[next_node.uid] = node.design_bands
+            else:
+                # unsupported case: single band OMS with default multiband design band
+                raise NetworkTopologyError(f"in {node.uid} degree {next_node.uid}: inconsistent design multiband/"
+                                           + " single band definition on a single band/ multiband OMS")
+        if next_node.uid in node.params.per_degree_design_bands:
+            # order bands per min frequency in params.per_degree_design_bands for those degree that are defined there
+            node.params.per_degree_design_bands[next_node.uid] = \
+                sorted(node.params.per_degree_design_bands[next_node.uid], key=lambda x: x['f_min'])
+        # order the bands per min frequency in .per_degree_design_bands (all degrees must exist there)
+        node.per_degree_design_bands[next_node.uid] = \
+            sorted(node.per_degree_design_bands[next_node.uid], key=lambda x: x['f_min'])
+    # check node.params.per_degree_design_bands keys
+    if node.params.per_degree_design_bands:
+        next_oms_uid = [n.uid for n in network.successors(node)]
+        for degree in node.params.per_degree_design_bands.keys():
+            if degree not in next_oms_uid:
+                raise NetworkTopologyError(f"in {node.uid} degree {degree} does not match any degree"
+                                           + f"{list(node.per_degree_design_bands.keys())}")
 
 
 def set_roadm_input_powers(network, roadm, equipment, pref_ch_db):
@@ -935,6 +1053,9 @@ def build_network(network, equipment, pref_ch_db, pref_total_db, set_connector_l
     for roadm in roadms:
         set_roadm_ref_carrier(roadm, equipment)
         set_roadm_per_degree_targets(roadm, network)
+        set_per_degree_design_band(roadm, network, equipment)
+    for transceiver in transceivers:
+        set_per_degree_design_band(transceiver, network, equipment)
     # then set amplifiers gain, delta_p and out_voa on each OMS
     for roadm in roadms + transceivers:
         set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db, verbose)
@@ -950,6 +1071,9 @@ def design_network(reference_channel, network, equipment, set_connector_losses=T
     print all warnings or not
     """
     pref_ch_db = watt2dbm(reference_channel.power)  # reference channel power
-    pref_total_db = pref_ch_db + lin2db(reference_channel.nb_channel)  # reference total power
+    # reference total power (limited to C band till C+L autodesign is not solved)
+    designed_nb_channel = min(reference_channel.nb_channel,
+                              automatic_nch(191.0e12, 196.2e12, reference_channel.spacing))
+    pref_total_db = pref_ch_db + lin2db(designed_nb_channel)
     build_network(network, equipment, pref_ch_db, pref_total_db, set_connector_losses=set_connector_losses,
                   verbose=verbose)
