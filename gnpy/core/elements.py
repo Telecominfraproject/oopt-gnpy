@@ -20,8 +20,9 @@ unique identifier and a printable name, and provide the :py:meth:`__call__` meth
 instance as a result.
 """
 
+from copy import deepcopy
 from numpy import abs, array, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, exp, asarray, full,\
-    squeeze, zeros, append, flip, outer, ndarray
+    squeeze, zeros, outer, ndarray
 from scipy.constants import h, c
 from scipy.interpolate import interp1d
 from collections import namedtuple
@@ -32,7 +33,7 @@ import warnings
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_average, pretty_summary_print, \
     watt2dbm, psd2powerdbm, calculate_absolute_min_or_zero, nice_column_str
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational, \
-    MultiBandParams, RoadmPath, RoadmImpairment, find_band_name, FrequencyBand
+    MultiBandParams, RoadmPath, RoadmImpairment, TransceiverParams, find_band_name, FrequencyBand
 from gnpy.core.science_utils import NliSolver, RamanSolver
 from gnpy.core.info import SpectralInformation, muxed_spectral_information, demuxed_spectral_information
 from gnpy.core.exceptions import NetworkTopologyError, SpectrumError, ParametersError
@@ -81,8 +82,20 @@ class _Node:
 
 
 class Transceiver(_Node):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, *args, params=None, **kwargs):
+        if not params:
+            params = {}
+        try:
+            with warnings.catch_warnings(record=True) as caught_warnings:
+                super().__init__(*args, params=TransceiverParams(**params), **kwargs)
+                if caught_warnings:
+                    msg = f'In Transceiver {kwargs["uid"]}: {caught_warnings[0].message}'
+                    _logger.warning(msg)
+        except ParametersError as e:
+            msg = f'Config error in {kwargs["uid"]}: {e}'
+            _logger.critical(msg)
+            raise ParametersError(msg) from e
+
         self.osnr_ase_01nm = None
         self.osnr_ase = None
         self.osnr_nli = None
@@ -97,6 +110,8 @@ class Transceiver(_Node):
         self.total_penalty = 0
         self.propagated_labels = [""]
         self.tx_power = None
+        self.design_bands = self.params.design_bands
+        self.per_degree_design_bands = self.params.per_degree_design_bands
 
     def _calc_cd(self, spectral_info):
         """Updates the Transceiver property with the CD of the received channels. CD in ps/nm.
@@ -283,6 +298,8 @@ class Roadm(_Node):
                                                                                 "to_degree": i["to_degree"],
                                                                                 "impairment_id": i["impairment_id"]}
                                        for i in self.params.per_degree_impairments}
+        self.design_bands = deepcopy(self.params.design_bands)
+        self.per_degree_design_bands = deepcopy(self.params.per_degree_design_bands)
 
     @property
     def to_json(self):
@@ -316,6 +333,11 @@ class Roadm(_Node):
         if self.per_degree_impairments:
             to_json['per_degree_impairments'] = list(self.per_degree_impairments.values())
 
+        if self.params.design_bands is not None:
+            if len(self.params.design_bands) > 1:
+                to_json['params']['design_bands'] = self.params.design_bands
+        if self.params.per_degree_design_bands:
+            to_json['params']['per_degree_design_bands'] = self.params.per_degree_design_bands
         return to_json
 
     def __repr__(self):

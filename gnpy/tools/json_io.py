@@ -466,6 +466,11 @@ def _equipment_from_json(json_data, filename):
     equipment = _update_dual_stage(equipment)
     equipment = _update_band(equipment)
     _roadm_restrictions_sanity_check(equipment)
+    possible_SI = list(equipment['SI'].keys())
+    if 'default' not in possible_SI:
+        # Use "default" key in the equipment, using the first listed keys
+        equipment['SI']['default'] = equipment['SI'][possible_SI[0]]
+        del equipment['SI'][possible_SI[0]]
     return equipment
 
 
@@ -516,6 +521,8 @@ def network_from_json(json_data, equipment):
         typ = el_config.pop('type')
         variety = el_config.pop('type_variety', 'default')
         cls = _cls_for(typ)
+        if typ == 'Transceiver':
+            temp = el_config.setdefault('params', {})
         if typ == 'Multiband_amplifier':
             if variety in ['default', '']:
                 extra_params = None

@@ -118,6 +118,8 @@ class RoadmParams(Parameters):
         except KeyError as e:
             raise ParametersError(f'ROADM configurations must include {e}. Configuration: {kwargs}')
         self.per_degree_impairments = kwargs.get('per_degree_impairments', [])
+        self.design_bands = kwargs.get('design_bands', [])
+        self.per_degree_design_bands = kwargs.get('per_degree_design_bands', {})
 
     def get_roadm_path_impairments(self, path_impairments_list):
         """Get the ROADM list of profiles for impairments definition
@@ -641,6 +643,12 @@ class MultiBandParams:
                 setattr(self, k, clean_kwargs.get(k, deepcopy(v)))
             else:
                 setattr(self, k, clean_kwargs.get(k, v))
+
+
+class TransceiverParams:
+    def __init__(self, **params):
+        self.design_bands = params.get('design_bands', [])
+        self.per_degree_design_bands = params.get('per_degree_design_bands', {})
 
 
 @dataclass
