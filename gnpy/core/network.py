@@ -398,6 +398,47 @@ def check_oms_single_type(oms_edges: List[Tuple]) -> List[str]:
     return list(types)
 
 
+def compute_gain_power_target(node: elements.Edfa, prev_node, next_node, power_mode: bool, prev_voa: float, prev_dp: float,
+                              pref_total_db: float, network: DiGraph, equipment: dict) \
+        -> Tuple[float, float, float, float, float]:
+    """Computes the gain and power targets for a given EDFA node.
+
+    Args:
+        node (elements.Edfa): The current EDFA node.
+        prev_node (elements)): Previous node in the network.
+        next_node (elements): Next node in the network.
+        power_mode (bool): Indicates if the computation is in power mode.
+        prev_voa (float): The previous amplifier variable optical attenuation.
+        prev_dp (float): The previous amplifier delta power.
+        pref_total_db (float): The reference total power in dB.
+        network (DiGraph): The network.
+        equipment (dict): A dictionary containing equipment specifications.
+
+    Returns:
+        Tuple[float, float, float, float, float]: A tuple containing:
+            - gain_target (float): The computed gain target.
+            - power_target (float): The computed power target.
+            - dp (float): The computed delta power.
+            - voa (float): The output variable optical attenuation.
+            - node_loss (float): The span loss previous from this amp.
+    """
+    node_loss = span_loss(network, prev_node, equipment)
+    voa = node.out_voa if node.out_voa else 0
+    if node.operational.delta_p is None:
+        dp = target_power(network, next_node, equipment) + voa
+    else:
+        dp = node.operational.delta_p
+    if node.effective_gain is None or power_mode:
+        gain_target = node_loss + dp - prev_dp + prev_voa
+    else:  # gain mode with effective_gain
+        gain_target = node.effective_gain
+        dp = prev_dp - node_loss - prev_voa + gain_target
+
+    power_target = pref_total_db + dp
+
+    return gain_target, power_target, dp, voa, node_loss
+
+
 def set_one_amplifier(node: elements.Edfa, prev_node, next_node, power_mode: bool, prev_voa: float, prev_dp: float,
                       pref_ch_db: float, pref_total_db: float, network: DiGraph, equipment: dict, verbose: bool) \
         -> Tuple[float, float]:
@@ -423,20 +464,9 @@ def set_one_amplifier(node: elements.Edfa, prev_node, next_node, power_mode: boo
     Returns:
         tuple[float, float]: The updated delta power and variable optical attenuator values.
     """
-    node_loss = span_loss(network, prev_node, equipment)
-    voa = node.out_voa if node.out_voa else 0
-    if node.operational.delta_p is None:
-        dp = target_power(network, next_node, equipment) + voa
-    else:
-        dp = node.operational.delta_p
-    if node.effective_gain is None or power_mode:
-        gain_target = node_loss + dp - prev_dp + prev_voa
-    else:  # gain mode with effective_gain
-        gain_target = node.effective_gain
-        dp = prev_dp - node_loss - prev_voa + gain_target
-
-    power_target = pref_total_db + dp
-
+    gain_target, power_target, dp, voa, node_loss = \
+        compute_gain_power_target(node, prev_node, next_node, power_mode, prev_voa, prev_dp,
+                                  pref_total_db, network, equipment)
     if isinstance(prev_node, elements.Fiber):
         max_fiber_lineic_loss_for_raman = \
             equipment['Span']['default'].max_fiber_lineic_loss_for_raman * 1e-3  # dB/m
