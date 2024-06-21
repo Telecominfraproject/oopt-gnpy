@@ -19,7 +19,7 @@ from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.utils import round2float, convert_length, psd2powerdbm, lin2db, watt2dbm, dbm2watt, automatic_nch, \
     find_common_range
 from gnpy.core.info import ReferenceCarrier, create_input_spectral_information
-from gnpy.core.parameters import SimParams, EdfaParams
+from gnpy.core.parameters import SimParams, EdfaParams, find_band_name, FrequencyBand
 from gnpy.core.science_utils import RamanSolver
 
 
@@ -569,43 +569,53 @@ def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elem
     power_mode = equipment['Span']['default'].power_mode
     next_oms = (n for n in network.successors(this_node) if not isinstance(n, elements.Transceiver))
     for oms in next_oms:
+        _design_bands = {find_band_name(FrequencyBand(f_min=e["f_min"], f_max=e["f_max"])): e
+                         for e in this_node.per_degree_design_bands[oms.uid]}
+        oms_nodes = get_oms_edge_list(oms, network)
         # go through all the OMS departing from the ROADM
         prev_node = this_node
         node = oms
-        if isinstance(this_node, elements.Transceiver):
-            # todo change pref to a ref channel
-            if equipment['SI']['default'].tx_power_dbm is not None:
-                this_node_out_power = equipment['SI']['default'].tx_power_dbm
-            else:
-                this_node_out_power = pref_ch_db
-        if isinstance(this_node, elements.Roadm):
-            # get target power out from ROADM for the reference carrier based on equalization settings
-            this_node_out_power = this_node.get_per_degree_ref_power(degree=node.uid)
-        # use the target power on this degree
-        prev_dp = this_node_out_power - pref_ch_db
-        dp = prev_dp
-        prev_voa = 0
-        voa = 0
-        visited_nodes = []
-        while not (isinstance(node, elements.Roadm) or isinstance(node, elements.Transceiver)):
+        # initialize dp and prev_dp with roadm out target or transceiver power. Use design bands.
+        dp = {}
+        prev_dp = {}
+        voa = {}
+        prev_voa = {}
+        for band_name, band in _design_bands.items():
+            if isinstance(this_node, elements.Transceiver):
+                # todo change pref to a ref channel
+                if equipment['SI']['default'].tx_power_dbm is not None:
+                    this_node_out_power = equipment['SI']['default'].tx_power_dbm
+                else:
+                    this_node_out_power = pref_ch_db
+            if isinstance(this_node, elements.Roadm):
+                # get target power out from ROADM for the reference carrier based on equalization settings
+                this_node_out_power = this_node.get_per_degree_ref_power(degree=node.uid)
+            # use the target power on this degree
+            prev_dp[band_name] = this_node_out_power - pref_ch_db
+            dp[band_name] = prev_dp[band_name]
+            prev_voa[band_name] = 0
+            voa[band_name] = 0
+
+        for node, next_node in oms_nodes:
             # go through all nodes in the OMS (loop until next Roadm instance)
-            next_node = get_next_node(node, network)
-            visited_nodes.append(node)
-            if next_node in visited_nodes:
-                raise NetworkTopologyError(f'Loop detected for {type(node).__name__} {node.uid}, '
-                                           + 'please check network topology')
             if isinstance(node, elements.Edfa):
-                dp, voa = set_one_amplifier(node, prev_node, next_node, power_mode, prev_voa, prev_dp,
-                                            pref_ch_db, pref_total_db, network, equipment, verbose)
+                band_name, _ = next((n, b) for n, b in _design_bands.items())
+                dp[band_name], voa[band_name] = set_one_amplifier(node, prev_node, next_node, power_mode,
+                                                                  prev_voa[band_name], prev_dp[band_name],
+                                                                  pref_ch_db, pref_total_db,
+                                                                  network, equipment, verbose)
             elif isinstance(node, elements.RamanFiber):
                 # this is to record the expected gain in Raman fiber in its .estimated_gain attribute.
-                _ = span_loss(network, node, equipment, input_power=pref_ch_db + dp)
-            if isinstance(node, elements.Multiband_amplifier):
-                for amp in node.amplifiers.values():
-                    dp, voa = set_one_amplifier(amp, prev_node, next_node, power_mode, prev_voa, prev_dp,
-                                                pref_ch_db, pref_total_db, network, equipment, verbose)
-            prev_dp = dp
-            prev_voa = voa
+                band_name, _ = next((n, b) for n, b in _design_bands.items())
+                _ = span_loss(network, node, equipment, input_power=pref_ch_db + dp[band_name])
+            elif isinstance(node, elements.Multiband_amplifier):
+                for band_name, amp in node.amplifiers.items():
+                    dp[band_name], voa[band_name] = \
+                        set_one_amplifier(amp, prev_node, next_node, power_mode,
+                                          prev_voa[band_name], prev_dp[band_name],
+                                          pref_ch_db, pref_total_db, network, equipment, verbose)
+            prev_dp.update(**dp)
+            prev_voa.update(**voa)
             prev_node = node
             node = next_node
 
