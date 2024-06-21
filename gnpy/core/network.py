@@ -398,12 +398,143 @@ def check_oms_single_type(oms_edges: List[Tuple]) -> List[str]:
     return list(types)
 
 
-def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_db, verbose):
+def set_one_amplifier(node: elements.Edfa, prev_node, next_node, power_mode: bool, prev_voa: float, prev_dp: float,
+                      pref_ch_db: float, pref_total_db: float, network: DiGraph, equipment: dict, verbose: bool) \
+        -> Tuple[float, float]:
+    """Set the EDFA amplifier configuration based on power targets:
+
+    This function adjusts the amplifier settings according to the specified parameters and
+    ensures compliance with power and gain targets. It handles both cases where the
+    amplifier type is specified or needs to be selected based on restrictions.
+
+    Args:
+        node (elements.Edfa): The EDFA amplifier node to configure.
+        prev_node (elements.Node): The previous node in the network.
+        next_node (elements.Node): The next node in the network.
+        power_mode (bool): Indicates if the amplifier is in power mode.
+        prev_voa (float): The previous amplifier variable optical attenuator value.
+        prev_dp (float): The previous amplifier delta power.
+        pref_ch_db (float): reference per channel power in dB.
+        pref_total_db (float): reference total power in dB.
+        network (DiGraph): The network graph.
+        equipment (dict): Equipment library.
+        verbose (bool): Flag for verbose logging.
+
+    Returns:
+        tuple[float, float]: The updated delta power and variable optical attenuator values.
+    """
+    node_loss = span_loss(network, prev_node, equipment)
+    voa = node.out_voa if node.out_voa else 0
+    if node.operational.delta_p is None:
+        dp = target_power(network, next_node, equipment) + voa
+    else:
+        dp = node.operational.delta_p
+    if node.effective_gain is None or power_mode:
+        gain_target = node_loss + dp - prev_dp + prev_voa
+    else:  # gain mode with effective_gain
+        gain_target = node.effective_gain
+        dp = prev_dp - node_loss - prev_voa + gain_target
+
+    power_target = pref_total_db + dp
+
+    if isinstance(prev_node, elements.Fiber):
+        max_fiber_lineic_loss_for_raman = \
+            equipment['Span']['default'].max_fiber_lineic_loss_for_raman * 1e-3  # dB/m
+        raman_allowed = (prev_node.params.loss_coef < max_fiber_lineic_loss_for_raman).all()
+    else:
+        raman_allowed = False
+
+    if node.params.type_variety == '':
+        if node.variety_list and isinstance(node.variety_list, list):
+            restrictions = node.variety_list
+        elif isinstance(prev_node, elements.Roadm) and prev_node.restrictions['booster_variety_list']:
+            # implementation of restrictions on roadm boosters
+            restrictions = prev_node.restrictions['booster_variety_list']
+        elif isinstance(next_node, elements.Roadm) and next_node.restrictions['preamp_variety_list']:
+            # implementation of restrictions on roadm preamp
+            restrictions = next_node.restrictions['preamp_variety_list']
+        else:
+            restrictions = None
+        edfa_eqpt = {n: a for n, a in equipment['Edfa'].items() if a.type_def != 'multi_band'}
+        edfa_variety, power_reduction = \
+            select_edfa(raman_allowed, gain_target, power_target, edfa_eqpt,
+                        node.uid,
+                        target_extended_gain=equipment['Span']['default'].target_extended_gain,
+                        restrictions=restrictions, verbose=verbose)
+        extra_params = equipment['Edfa'][edfa_variety]
+        node.params.update_params(extra_params.__dict__)
+        dp += power_reduction
+        gain_target += power_reduction
+    else:
+        # Check power saturation also in this case
+        p_max = equipment['Edfa'][node.params.type_variety].p_max
+        if power_mode:
+            power_reduction = min(0, p_max - (pref_total_db + dp))
+        else:
+            pout = pref_total_db + prev_dp - node_loss - prev_voa + gain_target
+            power_reduction = min(0, p_max - pout)
+        dp += power_reduction
+        gain_target += power_reduction
+        if node.params.raman and not raman_allowed:
+            if isinstance(prev_node, elements.Fiber) and verbose:
+                logger.warning(f'\n\tWARNING: raman is used in node {node.uid}\n '
+                               + '\tbut fiber lineic loss is above threshold\n')
+            else:
+                logger.warning(f'\n\tWARNING: raman is used in node {node.uid}\n '
+                               + '\tbut previous node is not a fiber\n')
+        # if variety is imposed by user, and if the gain_target (computed or imposed) is also above
+        # variety max gain + extended range, then warn that gain > max_gain + extended range
+        if gain_target - equipment['Edfa'][node.params.type_variety].gain_flatmax - \
+                equipment['Span']['default'].target_extended_gain > 1e-2 and verbose:
+            # 1e-2 to allow a small margin according to round2float min step
+            logger.warning(f'\n\tWARNING: effective gain in Node {node.uid}\n'
+                           + f'\tis above user specified amplifier {node.params.type_variety}\n'
+                           + '\tmax flat gain: '
+                           + f'{equipment["Edfa"][node.params.type_variety].gain_flatmax}dB ; '
+                           + f'required gain: {round(gain_target, 2)}dB. Please check amplifier type.\n')
+
+    node.delta_p = dp if power_mode else None
+    node.effective_gain = gain_target
+    # if voa is not set, then set it and possibly optimize it with gain and update delta_p and
+    # effective_gain values
+    set_amplifier_voa(node, power_target, power_mode)
+    # set_amplifier_voa may change delta_p in power_mode
+    node._delta_p = node.delta_p if power_mode else dp
+
+    # target_pch_out_dbm records target power for design: If user defines one, then this is displayed,
+    # else display the one computed during design
+    if node.delta_p is not None and node.operational.delta_p is not None:
+        # use the user defined target
+        node.target_pch_out_dbm = round(node.operational.delta_p + pref_ch_db, 2)
+    elif node.delta_p is not None:
+        # use the design target if no target were set
+        node.target_pch_out_dbm = round(node.delta_p + pref_ch_db, 2)
+    elif node.delta_p is None:
+        node.target_pch_out_dbm = None
+    return dp, voa
+
+
+def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elements.Transceiver], equipment: dict,
+                         pref_ch_db: float, pref_total_db: float, verbose: bool):
     """This node can be a transceiver or a ROADM (same function called in both cases).
-    go through each link staring from this_node until next Roadm or Transceiver and
-    set gain and delta_p according to configurations set by user.
+
+    Go through each link starting from this_node until next Roadm or Transceiver and
+    set the amplifiers (Edfa and multiband) according to configurations set by user.
+    Computes the gain for Raman finers and records it as the gain for reference design.
     power_mode = True, set amplifiers delta_p and effective_gain
-    power_mode = False, set amplifiers effective_gain and ignore delta_p config: set it to None
+    power_mode = False, set amplifiers effective_gain and ignore delta_p config: set it to None.
+    records the computed dp in an internal variable for autodesign purpose.
+
+    Args:
+        network (DiGraph): The network graph containing nodes and links.
+        this_node (Union[elements.Roadm, elements.Transceiver]): The starting node for OMS link configuration.
+        equipment (dict): Equipment specifications.
+        pref_ch_db (float): Reference channel power in dB.
+        pref_total_db (float): Reference total power in dB.
+        verbose (bool): Flag for verbose logging.
+
+    Raises:
+        NetworkTopologyError: If a loop is detected in the network topology.
     """
     power_mode = equipment['Span']['default'].power_mode
     next_oms = (n for n in network.successors(this_node) if not isinstance(n, elements.Transceiver))
@@ -434,125 +565,15 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
                 raise NetworkTopologyError(f'Loop detected for {type(node).__name__} {node.uid}, '
                                            + 'please check network topology')
             if isinstance(node, elements.Edfa):
-                node_loss = span_loss(network, prev_node, equipment)
-                voa = node.out_voa if node.out_voa else 0
-                if node.operational.delta_p is None:
-                    dp = target_power(network, next_node, equipment) + voa
-                else:
-                    dp = node.operational.delta_p
-                if node.effective_gain is None or power_mode:
-                    gain_target = node_loss + dp - prev_dp + prev_voa
-                else:  # gain mode with effective_gain
-                    gain_target = node.effective_gain
-                    dp = prev_dp - node_loss - prev_voa + gain_target
-
-                power_target = pref_total_db + dp
-
-                if isinstance(prev_node, elements.Fiber):
-                    max_fiber_lineic_loss_for_raman = \
-                        equipment['Span']['default'].max_fiber_lineic_loss_for_raman * 1e-3  # dB/m
-                    raman_allowed = (prev_node.params.loss_coef < max_fiber_lineic_loss_for_raman).all()
-                else:
-                    raman_allowed = False
-
-                if node.params.type_variety == '':
-                    if node.variety_list and isinstance(node.variety_list, list):
-                        restrictions = node.variety_list
-                    elif isinstance(prev_node, elements.Roadm) and prev_node.restrictions['booster_variety_list']:
-                        # implementation of restrictions on roadm boosters
-                        restrictions = prev_node.restrictions['booster_variety_list']
-                    elif isinstance(next_node, elements.Roadm) and next_node.restrictions['preamp_variety_list']:
-                        # implementation of restrictions on roadm preamp
-                        restrictions = next_node.restrictions['preamp_variety_list']
-                    else:
-                        restrictions = None
-                    edfa_eqpt = {n: a for n, a in equipment['Edfa'].items() if a.type_def != 'multi_band'}
-                    edfa_variety, power_reduction = \
-                        select_edfa(raman_allowed, gain_target, power_target, edfa_eqpt,
-                                    node.uid,
-                                    target_extended_gain=equipment['Span']['default'].target_extended_gain,
-                                    restrictions=restrictions, verbose=verbose)
-                    extra_params = equipment['Edfa'][edfa_variety]
-                    node.params.update_params(extra_params.__dict__)
-                    dp += power_reduction
-                    gain_target += power_reduction
-                else:
-                    # Check power saturation also in this case
-                    p_max = equipment['Edfa'][node.params.type_variety].p_max
-                    if power_mode:
-                        power_reduction = min(0, p_max - (pref_total_db + dp))
-                    else:
-                        pout = pref_total_db + prev_dp - node_loss - prev_voa + gain_target
-                        power_reduction = min(0, p_max - pout)
-                    dp += power_reduction
-                    gain_target += power_reduction
-                    if node.params.raman and not raman_allowed:
-                        if isinstance(prev_node, elements.Fiber):
-                            logger.warning(f'\n\tWARNING: raman is used in node {node.uid}\n '
-                                           + '\tbut fiber lineic loss is above threshold\n')
-                        else:
-                            logger.critical(f'\n\tWARNING: raman is used in node {node.uid}\n '
-                                            + '\tbut previous node is not a fiber\n')
-                    # if variety is imposed by user, and if the gain_target (computed or imposed) is also above
-                    # variety max gain + extended range, then warn that gain > max_gain + extended range
-                    if gain_target - equipment['Edfa'][node.params.type_variety].gain_flatmax - \
-                            equipment['Span']['default'].target_extended_gain > 1e-2 and verbose:
-                        # 1e-2 to allow a small margin according to round2float min step
-                        logger.warning(f'\n\tWARNING: effective gain in Node {node.uid}\n'
-                                       + f'\tis above user specified amplifier {node.params.type_variety}\n'
-                                       + '\tmax flat gain: '
-                                       + f'{equipment["Edfa"][node.params.type_variety].gain_flatmax}dB ; '
-                                       + f'required gain: {round(gain_target, 2)}dB. Please check amplifier type.\n')
-
-                node.delta_p = dp if power_mode else None
-                node.effective_gain = gain_target
-                # if voa is not set, then set it and possibly optimize it with gain and update delta_p and
-                # effective_gain values
-                set_amplifier_voa(node, power_target, power_mode)
-                # set_amplifier_voa may change delta_p in power_mode
-                node._delta_p = node.delta_p if power_mode else dp
-
-                # target_pch_out_dbm records target power for design: If user defines one, then this is displayed,
-                # else display the one computed during design
-                if node.delta_p is not None and node.operational.delta_p is not None:
-                    # use the user defined target
-                    node.target_pch_out_dbm = round(node.operational.delta_p + pref_ch_db, 2)
-                elif node.delta_p is not None:
-                    # use the design target if no target were set
-                    node.target_pch_out_dbm = round(node.delta_p + pref_ch_db, 2)
-                elif node.delta_p is None:
-                    node.target_pch_out_dbm = None
+                dp, voa = set_one_amplifier(node, prev_node, next_node, power_mode, prev_voa, prev_dp,
+                                            pref_ch_db, pref_total_db, network, equipment, verbose)
             elif isinstance(node, elements.RamanFiber):
+                # this is to record the expected gain in Raman fiber in its .estimated_gain attribute.
                 _ = span_loss(network, node, equipment, input_power=pref_ch_db + dp)
             if isinstance(node, elements.Multiband_amplifier):
                 for amp in node.amplifiers.values():
-                    node_loss = span_loss(network, prev_node, equipment)
-                    voa = amp.out_voa if amp.out_voa else 0
-                    if amp.delta_p is None:
-                        dp = target_power(network, next_node, equipment) + voa
-                    else:
-                        dp = amp.delta_p
-                    if amp.effective_gain is None or power_mode:
-                        gain_target = node_loss + dp - prev_dp + prev_voa
-                    else:  # gain mode with effective_gain
-                        gain_target = amp.effective_gain
-                        dp = prev_dp - node_loss - prev_voa + gain_target
-
-                    power_target = pref_total_db + dp
-                    amp.delta_p = dp if power_mode else None
-                    amp.effective_gain = gain_target
-                    set_amplifier_voa(amp, power_target, power_mode)
-                    amp._delta_p = amp.delta_p if power_mode else dp
-                    # target_pch_out_dbm records target power for design: If user defines one, then this is displayed,
-                    # else display the one computed during design
-                    if amp.delta_p is not None and amp.operational.delta_p is not None:
-                        # use the user defined target
-                        amp.target_pch_out_dbm = round(amp.operational.delta_p + pref_ch_db, 2)
-                    elif amp.delta_p is not None:
-                        # use the design target if no target were set
-                        amp.target_pch_out_dbm = round(amp.delta_p + pref_ch_db, 2)
-                    elif amp.delta_p is None:
-                        amp.target_pch_out_dbm = None
+                    dp, voa = set_one_amplifier(amp, prev_node, next_node, power_mode, prev_voa, prev_dp,
+                                                pref_ch_db, pref_total_db, network, equipment, verbose)
             prev_dp = dp
             prev_voa = voa
             prev_node = node
