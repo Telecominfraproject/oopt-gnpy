@@ -7,10 +7,11 @@
 from pathlib import Path
 import pytest
 from gnpy.core.exceptions import NetworkTopologyError
-from gnpy.core.network import span_loss, build_network, select_edfa
+from gnpy.core.network import span_loss, build_network, select_edfa, get_node_restrictions
 from gnpy.tools.json_io import load_equipment, load_network, network_from_json
-from gnpy.core.utils import lin2db, automatic_nch
-from gnpy.core.elements import Fiber, Edfa
+from gnpy.core.utils import lin2db, automatic_nch, merge_amplifier_restrictions
+from gnpy.core.elements import Fiber, Edfa, Roadm, Multiband_amplifier
+from gnpy.core.parameters import EdfaParams, MultiBandParams
 
 
 TEST_DIR = Path(__file__).parent
@@ -421,7 +422,10 @@ def network_base(case, site_type, length=50.0, amplifier_type='Multiband_amplifi
      [{'f_min': 191.3e12, 'f_max': 196.1e12}], [{'f_min': 191.3e12, 'f_max': 196.1e12}]),
     ('design', 'Fused', 'Multiband_amplifier',
      [{'f_min': 191.3e12, 'f_max': 196.1e12}],
-     [{'f_min': 186.55e12, 'f_max': 190.05e12}, {'f_min': 191.25e12, 'f_max': 196.15e12}])])
+     [{'f_min': 186.55e12, 'f_max': 190.05e12}, {'f_min': 191.25e12, 'f_max': 196.15e12}]),
+    ('no_design', 'Fused', 'Multiband_amplifier',
+     [{'f_min': 191.3e12, 'f_max': 196.1e12}],
+     [{'f_min': 187.0e12, 'f_max': 190.0e12}, {'f_min': 191.3e12, 'f_max': 196.0e12}])])
 def test_design_band(case, site_type, amplifier_type, expected_design_bands, expected_per_degree_design_bands):
     """Check design_band is the one defined:
     - in SI if nothing is defined,
@@ -461,3 +465,80 @@ def test_select_edfa(caplog, raman_allowed, gain_target, power_target, target_ex
     assert selection == expected_selection
     if warning:
         assert warning in caplog.text
+
+
+@pytest.mark.parametrize('cls, defaultparams, variety_list, booster_list, band, expected_restrictions', [
+    (Edfa, EdfaParams, [], [],
+     {'LBAND': {'f_min': 187.0e12, 'f_max': 190.0e12}},
+     ['std_medium_gain_L', 'std_low_gain_L_ter', 'std_low_gain_L']),
+    (Edfa, EdfaParams, [], [],
+     {'CBAND': {'f_min': 191.3e12, 'f_max': 196.0e12}},
+     ['CienaDB_medium_gain', 'std_medium_gain', 'std_low_gain', 'std_low_gain_bis', 'test', 'test_fixed_gain']),
+    (Edfa, EdfaParams, ['std_medium_gain', 'std_high_gain'], [],
+     {'CBAND': {'f_min': 191.3e12, 'f_max': 196.0e12}},
+     ['std_medium_gain']),   # name in variety list does not exist in library
+    (Edfa, EdfaParams, ['std_medium_gain', 'std_high_gain'], [],
+     {'LBAND': {'f_min': 187.0e12, 'f_max': 190.0e12}},
+     []),   # restrictions inconsistency with bands
+    (Edfa, EdfaParams, ['std_medium_gain', 'std_high_gain'], ['std_booster'],
+     {'CBAND': {'f_min': 191.3e12, 'f_max': 196.0e12}},
+     ['std_medium_gain']),  # variety list takes precedence over booster constraint
+    (Edfa, EdfaParams, [], ['std_booster'],
+     {'CBAND': {'f_min': 191.3e12, 'f_max': 196.0e12}},
+     ['std_booster']),
+    (Multiband_amplifier, MultiBandParams, [], [],
+     {'CBAND': {'f_min': 191.3e12, 'f_max': 196.0e12}, 'LBAND': {'f_min': 187.0e12, 'f_max': 190.0e12}},
+     ['std_medium_gain_multiband', 'std_low_gain_multiband_bis']),
+    (Multiband_amplifier, MultiBandParams, [], ['std_booster_multiband', 'std_booster'],
+     {'CBAND': {'f_min': 191.3e12, 'f_max': 196.0e12}, 'LBAND': {'f_min': 187.0e12, 'f_max': 190.0e12}},
+     ['std_booster_multiband'])
+])
+def test_get_node_restrictions(cls, defaultparams, variety_list, booster_list, band, expected_restrictions):
+    """Check that all combinations of restrictions are correctly captured
+    """
+    equipment = load_equipment(EQPT_MULTBAND_FILENAME)
+    edfa_config = {"uid": "Edfa1"}
+    if cls == Multiband_amplifier:
+        edfa_config['amplifiers'] = {}
+    edfa_config['params'] = defaultparams.default_values
+    edfa_config['variety_list'] = variety_list
+    node = cls(**edfa_config)
+    roadm_config = {
+        "uid": "roadm Brest_KLA",
+        "params": {
+            "per_degree_pch_out_db": {},
+            "target_pch_out_dbm": -18,
+            "add_drop_osnr": 38,
+            "pmd": 0,
+            "pdl": 0,
+            "restrictions": {
+                "preamp_variety_list": [],
+                "booster_variety_list": booster_list
+            },
+            "roadm-path-impairments": []
+        },
+        "metadata": {
+            "location": {
+                "city": "Brest_KLA",
+                "region": "RLD",
+                "latitude": 4.0,
+                "longitude": 0.0
+            }
+        }
+    }
+    prev_node = Roadm(**roadm_config)
+    fiber_config = {
+        "uid": "fiber (SITE1 → ILA1)",
+        "type_variety": "SSMF",
+        "params": {
+            "length": 100.0,
+            "loss_coef": 0.2,
+            "length_units": "km"
+        }
+    }
+    extra_params = equipment['Fiber']['SSMF'].__dict__
+
+    fiber_config['params'] = merge_amplifier_restrictions(fiber_config['params'], extra_params)
+    next_node = Fiber(**fiber_config)
+    restrictions = get_node_restrictions(node, prev_node, next_node, equipment, band)
+    assert restrictions == expected_restrictions
