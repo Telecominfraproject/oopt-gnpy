@@ -12,7 +12,7 @@ The solvers take as input instances of the spectral information, the fiber and t
 
 from numpy import interp, pi, zeros, cos, array, append, ones, exp, arange, sqrt, trapz, arcsinh, clip, abs, sum, \
     concatenate, flip, outer, inner, transpose, max, format_float_scientific, diag, sort, unique, argsort, cumprod, \
-    polyfit
+    polyfit, log, reshape, swapaxes, full, nan
 from logging import getLogger
 from scipy.constants import k, h
 from scipy.interpolate import interp1d
@@ -276,6 +276,7 @@ class NliSolver:
     List of implemented methods:
     'gn_model_analytic': eq. 120 from arXiv:1209.0394
     'ggn_spectrally_separated': eq. 21 from arXiv: 1710.02225
+    'ggn_approx': eq. 24-25 https://ieeexplore.ieee.org/document/9741324
     """
 
     SPM_WEIGHT = (16.0 / 27.0)
@@ -321,6 +322,24 @@ class NliSolver:
             cut_baud_rate = outer(spectral_info.baud_rate[cut_indices], ones(spectral_info.number_of_channels))
 
             g_nli = eta * cut_power * pump_power**2 / cut_baud_rate
+            g_nli = sum(g_nli, 1)
+            g_nli = interp(spectral_info.frequency, cut_frequency, g_nli)
+            nli = spectral_info.baud_rate * g_nli  # Local white noise
+        elif 'ggn_approx' in sim_params.nli_params.method:
+            if sim_params.nli_params.computed_channels is not None:
+                cut_indices = array(sim_params.nli_params.computed_channels) - 1
+            else:
+                cut_indices = array(spectral_info.channel_number) - 1
+
+            eta = NliSolver._ggn_approx(cut_indices, spectral_info, fiber, srs)
+
+            # Interpolation over the channels not indicated as computed channels in simulation parameters
+            cut_power = outer(spectral_info.signal[cut_indices], ones(spectral_info.number_of_channels))
+            cut_frequency = spectral_info.frequency[cut_indices]
+            pump_power = outer(ones(cut_indices.size), spectral_info.signal)
+            cut_baud_rate = outer(spectral_info.baud_rate[cut_indices], ones(spectral_info.number_of_channels))
+
+            g_nli = eta * cut_power * pump_power ** 2 / cut_baud_rate
             g_nli = sum(g_nli, 1)
             g_nli = interp(spectral_info.frequency, cut_frequency, g_nli)
             nli = spectral_info.baud_rate * g_nli  # Local white noise
@@ -431,7 +450,7 @@ class NliSolver:
                     psi_cut_central_frequency[i, pump_index] = \
                         NliSolver._generalized_psi(cut_frequency, cut_frequency, cut_baud_rate, cut_roll_off,
                                                    pump_frequency, pump_baud_rate, pump_roll_off, f_cut_resolution,
-                                                   f_pump_resolution, srs, pump_alpha, cut_beta2, cut_beta3,
+                                                   f_pump_resolution, srs, pump_alpha, cut_beta2, 0,
                                                    cut_frequency)
                 else:  # XPM
                     frequency_offset_threshold = NliSolver._frequency_offset_threshold(cut_beta2, pump_baud_rate)
@@ -439,13 +458,13 @@ class NliSolver:
                         psi_cut_central_frequency[i, pump_index] = \
                             NliSolver._generalized_psi(cut_frequency, cut_frequency, cut_baud_rate, cut_roll_off,
                                                        pump_frequency, pump_baud_rate, pump_roll_off, f_cut_resolution,
-                                                       f_pump_resolution, srs, pump_alpha, cut_beta2, cut_beta3,
+                                                       f_pump_resolution, srs, pump_alpha, cut_beta2, 0,
                                                        cut_frequency)
                     else:
                         psi_cut_central_frequency[i, pump_index] = \
                             NliSolver._fast_generalized_psi(cut_frequency, cut_frequency, cut_baud_rate, cut_roll_off,
                                                             pump_frequency, pump_baud_rate, pump_roll_off,
-                                                            f_cut_resolution, srs, pump_alpha, cut_beta2, cut_beta3,
+                                                            f_cut_resolution, srs, pump_alpha, cut_beta2, 0,
                                                             cut_frequency)
 
         cut_baud_rate = outer(baud_rate[cut_indices], ones(nch))
@@ -525,6 +544,89 @@ class NliSolver:
         beta2 = abs(beta2)
         freq_offset_th = ((k_ref * delta_f_ref) * rs_ref * beta2_ref) / (beta2 * symbol_rate)
         return freq_offset_th
+
+    @staticmethod
+    def _ggn_approx(cut_indices, spectral_info: SpectralInformation, fiber, srs, spm_weight=SPM_WEIGHT,
+                    xpm_weight=XPM_WEIGHT):
+        """Computes the nonlinear interference power evaluated at the fiber input.
+        The method uses eq. 24-25 of https://ieeexplore.ieee.org/document/9741324
+        """
+        # Spectral Features
+        nch = spectral_info.number_of_channels
+        frequency = spectral_info.frequency
+        baud_rate = spectral_info.baud_rate
+        slot_width = spectral_info.slot_width
+        roll_off = spectral_info.roll_off
+        df = spectral_info.df + diag(full(nch, nan))
+
+        # Physical fiber parameters
+        alpha = fiber.alpha(frequency)
+        beta2 = fiber.beta2(frequency)
+        gamma = outer(fiber.gamma(frequency[cut_indices]), ones(nch))
+
+        identity = diag(ones(nch))
+        weight = spm_weight * identity + xpm_weight * (ones([nch, nch]) - identity)
+        weight = weight[cut_indices, :]
+
+        dispersion_tolerance = sim_params.nli_params.dispersion_tolerance
+        phase_shift_tolerance = sim_params.nli_params.phase_shift_tolerance
+        max_slot_width = max(slot_width)
+        max_beta2 = max(abs(beta2))
+        delta_z = sim_params.raman_params.result_spatial_resolution
+
+        # Approximation psi
+        loss_profile = srs.loss_profile[:nch]
+        z = srs.z
+        psi = NliSolver._approx_psi(df=df, frequency=frequency, beta2=beta2, baud_rate=baud_rate,
+                                    loss_profile=loss_profile, z=z)
+
+        # GGN for SPM
+        for cut_index in cut_indices:
+            dn = 0
+            cut_frequency = frequency[cut_index]
+            cut_baud_rate = baud_rate[cut_index]
+            cut_roll_off = roll_off[cut_index]
+            cut_beta2 = beta2[cut_index]
+            cut_alpha = alpha[cut_index]
+            k_tol = dispersion_tolerance * abs(cut_alpha)
+            phi_tol = phase_shift_tolerance / delta_z
+            f_cut_resolution = min(k_tol, phi_tol) / abs(max_beta2) / (4 * pi ** 2 * (1 + dn) * max_slot_width)
+            f_pump_resolution = min(k_tol, phi_tol) / abs(max_beta2) / (4 * pi ** 2 * max_slot_width)
+            psi[cut_index, cut_index] = NliSolver._generalized_psi(cut_frequency, cut_frequency, cut_baud_rate,
+                                                                   cut_roll_off, cut_frequency, cut_baud_rate,
+                                                                   cut_roll_off, f_cut_resolution, f_pump_resolution,
+                                                                   srs, cut_alpha, cut_beta2, 0, cut_frequency)
+        psi = psi[cut_indices, :]
+        cut_baud_rate = outer(baud_rate[cut_indices], ones(nch))
+        pump_baud_rate = outer(ones(cut_indices.size), baud_rate)
+
+        eta_cut_central_frequency = \
+            gamma ** 2 * weight * psi / (cut_baud_rate * pump_baud_rate ** 2)
+        eta = cut_baud_rate * eta_cut_central_frequency  # Local white noise
+
+        return eta
+
+    @staticmethod
+    def _approx_psi(df, frequency, baud_rate, beta2, loss_profile, z):
+        """Computes the approximated psi function similarly to the one used in the GN model.
+        The method uses eq. 25 of https://ieeexplore.ieee.org/document/9741324"""
+        pump_baud_rate = outer(ones(frequency.size), baud_rate)
+        cut_beta = outer(beta2, ones(frequency.size))
+        pump_beta = outer(ones(frequency.size), beta2)
+        delta_z = abs(z[:-1] - z[1:])
+
+        loss_lin = log(loss_profile)
+        pump_alpha = (loss_lin[:, 1:] - loss_lin[:, :-1]) / delta_z
+        leff = abs((loss_profile[:, 1:] - loss_profile[:, :-1]) / sqrt(abs(pump_alpha))) * pump_alpha / abs(pump_alpha)
+        leff = reshape(outer(leff, ones(z.size - 1)), newshape=[leff.shape[0], leff.shape[1], leff.shape[1]])
+        leff2 = leff * swapaxes(leff, 2, 1)
+        leff2 = sum(leff2, axis=(1, 2))
+        z_int = outer(ones(frequency.size), leff2)
+
+        delta_beta = (cut_beta + pump_beta) / 2
+        psi = z_int * pump_baud_rate / (4 * pi * abs(delta_beta * df))
+        return psi
+
 
 
 def estimate_nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
