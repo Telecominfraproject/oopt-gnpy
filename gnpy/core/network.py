@@ -440,8 +440,8 @@ def compute_gain_power_target(node: elements.Edfa, prev_node, next_node, power_m
 
 
 def set_one_amplifier(node: elements.Edfa, prev_node, next_node, power_mode: bool, prev_voa: float, prev_dp: float,
-                      pref_ch_db: float, pref_total_db: float, network: DiGraph, equipment: dict, verbose: bool) \
-        -> Tuple[float, float]:
+                      pref_ch_db: float, pref_total_db: float, network: DiGraph, restrictions: List[str],
+                      equipment: dict, verbose: bool) -> Tuple[float, float]:
     """Set the EDFA amplifier configuration based on power targets:
 
     This function adjusts the amplifier settings according to the specified parameters and
@@ -458,6 +458,7 @@ def set_one_amplifier(node: elements.Edfa, prev_node, next_node, power_mode: boo
         pref_ch_db (float): reference per channel power in dB.
         pref_total_db (float): reference total power in dB.
         network (DiGraph): The network graph.
+        restrictions: (List[str]): The list of amplifiers authorized for this configuration.
         equipment (dict): Equipment library.
         verbose (bool): Flag for verbose logging.
 
@@ -475,16 +476,6 @@ def set_one_amplifier(node: elements.Edfa, prev_node, next_node, power_mode: boo
         raman_allowed = False
 
     if node.params.type_variety == '':
-        if node.variety_list and isinstance(node.variety_list, list):
-            restrictions = node.variety_list
-        elif isinstance(prev_node, elements.Roadm) and prev_node.restrictions['booster_variety_list']:
-            # implementation of restrictions on roadm boosters
-            restrictions = prev_node.restrictions['booster_variety_list']
-        elif isinstance(next_node, elements.Roadm) and next_node.restrictions['preamp_variety_list']:
-            # implementation of restrictions on roadm preamp
-            restrictions = next_node.restrictions['preamp_variety_list']
-        else:
-            restrictions = None
         edfa_eqpt = {n: a for n, a in equipment['Edfa'].items() if a.type_def != 'multi_band'}
         edfa_variety, power_reduction = \
             select_edfa(raman_allowed, gain_target, power_target, edfa_eqpt,
@@ -493,6 +484,7 @@ def set_one_amplifier(node: elements.Edfa, prev_node, next_node, power_mode: boo
                         restrictions=restrictions, verbose=verbose)
         extra_params = equipment['Edfa'][edfa_variety]
         node.params.update_params(extra_params.__dict__)
+        node.type_variety = node.params.type_variety
         dp += power_reduction
         gain_target += power_reduction
     else:
@@ -542,6 +534,60 @@ def set_one_amplifier(node: elements.Edfa, prev_node, next_node, power_mode: boo
     elif node.delta_p is None:
         node.target_pch_out_dbm = None
     return dp, voa
+
+
+def get_node_restrictions(node: Union[elements.Edfa, elements.Multiband_amplifier], prev_node,
+                          next_node, equipment: dict, _design_bands: dict) -> List:
+    """Returns a list of eligible amplifiers that comply with restrictions and design bands.
+
+    If the node is a multiband amplifier, only multiband amplifiers will be considered.
+
+    Args:
+        node (Union[elements.Edfa, elements.Multiband_amplifier]): The current amplifier node.
+        prev_node: The previous node in the network.
+        next_node: The next node in the network.
+        equipment (Dict): A dictionary containing equipment specifications.
+        _design_bands (Dict): A dictionary of design bands with frequency limits.
+
+    Returns:
+        List[str]: A list of eligible amplifier types that meet the specified restrictions.
+    """
+    if node.params.type_variety != '' and node.params.type_variety:
+        # type_variety takes precedence over any other restrictions
+        return [node.params.type_variety]
+    restrictions = []
+    if node.variety_list and isinstance(node.variety_list, list):
+        restrictions = node.variety_list
+    elif isinstance(prev_node, elements.Roadm) and prev_node.restrictions['booster_variety_list']:
+        # implementation of restrictions on roadm boosters
+        restrictions = prev_node.restrictions['booster_variety_list']
+    elif isinstance(next_node, elements.Roadm) and next_node.restrictions['preamp_variety_list']:
+        # implementation of restrictions on roadm preamp
+        restrictions = next_node.restrictions['preamp_variety_list']
+    if isinstance(node, elements.Multiband_amplifier):
+        # Only keep multiband amps that are eligible for all the bands
+        # use the subset of EDFA library that are multiband, fits the design band and are either imposed
+        # in restriction list or allowed for design
+        multiband_eqpt = [n for n, a in equipment['Edfa'].items()
+                          if a.type_def == 'multi_band'
+                          and (n in restrictions or (not restrictions and a.allowed_for_design))]
+        # collect the individual amps part of the multiband amps that match the bands
+        edfa_eqpt = [t for m in multiband_eqpt
+                     for t in equipment['Edfa'][m].multi_band
+                     for band in _design_bands.values()
+                     if equipment['Edfa'][t].f_min <= band['f_min']
+                     and equipment['Edfa'][t].f_max >= band['f_max']]
+        # then filter all multi band amps whose amps group belong to the previous list
+        multiband_eqpt = [m for m in multiband_eqpt if all(t in edfa_eqpt for t in equipment['Edfa'][m].multi_band)]
+        # and returns the list of type_variety of multiband amps built with this single band amps
+        return multiband_eqpt
+    if isinstance(node, elements.Edfa):
+        band = next(b for b in _design_bands.values())
+        # preselect amps which are either part of restrictions or allowed for design, and compliant to the band.
+        edfa_eqpt = [n for n, a in equipment['Edfa'].items()
+                     if (a.type_def != 'multi_band' and a.f_min <= band['f_min'] and a.f_max >= band['f_max'])
+                     and (n in restrictions or (not restrictions and a.allowed_for_design))]
+        return edfa_eqpt
 
 
 def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elements.Transceiver], equipment: dict,
@@ -600,20 +646,31 @@ def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elem
             # go through all nodes in the OMS (loop until next Roadm instance)
             if isinstance(node, elements.Edfa):
                 band_name, _ = next((n, b) for n, b in _design_bands.items())
+                restrictions = get_node_restrictions(node, prev_node, next_node, equipment, _design_bands)
                 dp[band_name], voa[band_name] = set_one_amplifier(node, prev_node, next_node, power_mode,
                                                                   prev_voa[band_name], prev_dp[band_name],
                                                                   pref_ch_db, pref_total_db,
-                                                                  network, equipment, verbose)
+                                                                  network, restrictions, equipment, verbose)
             elif isinstance(node, elements.RamanFiber):
                 # this is to record the expected gain in Raman fiber in its .estimated_gain attribute.
                 band_name, _ = next((n, b) for n, b in _design_bands.items())
                 _ = span_loss(network, node, equipment, input_power=pref_ch_db + dp[band_name])
             elif isinstance(node, elements.Multiband_amplifier):
+                if len(node.amplifiers) == 0:
+                    # creates one amp per design band.
+                    for band_name, band in _design_bands.items():
+                        node.amplifiers[band_name] = elements.Edfa(params=EdfaParams.default_values, uid=node.uid)
+                # only select amplifiers which match the design bands
+                restrictions_multi = get_node_restrictions(node, prev_node, next_node, equipment, _design_bands)
+                restrictions_edfa = [e for m in restrictions_multi for e in equipment['Edfa'][m].multi_band]
                 for band_name, amp in node.amplifiers.items():
+                    _restrictions = [n for n in restrictions_edfa
+                                     if equipment['Edfa'][n].f_min <= _design_bands[band_name]['f_min']
+                                     and equipment['Edfa'][n].f_max >= _design_bands[band_name]['f_max']]
                     dp[band_name], voa[band_name] = \
                         set_one_amplifier(amp, prev_node, next_node, power_mode,
                                           prev_voa[band_name], prev_dp[band_name],
-                                          pref_ch_db, pref_total_db, network, equipment, verbose)
+                                          pref_ch_db, pref_total_db, network, _restrictions, equipment, verbose)
             prev_dp.update(**dp)
             prev_voa.update(**voa)
             prev_node = node
