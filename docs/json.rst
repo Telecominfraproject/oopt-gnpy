@@ -523,6 +523,10 @@ See ``delta_power_range_db`` for more explaination.
 |                                             |           | ``ggn_spectrally_separated`` (see eq. 21    |
 |                                             |           | from `arXiv:1710.02225                      |
 |                                             |           | <https://arxiv.org/abs/1710.02225>`_).      |
+|                                             |           | ``ggn_approx`` (see eq. 24-25               |
+|                                             |           | from `jlt:9741324                           |
+|                                             |           | <https://eeexplore.ieee.org/document/       |
+|                                             |           | 9741324>`_).                                |
 +---------------------------------------------+-----------+---------------------------------------------+
 | ``dispersion_tolerance``                    | (number)  | Optional. Pure number. Tuning parameter for |
 |                                             |           | ggn model solution. Default value is 1.     |

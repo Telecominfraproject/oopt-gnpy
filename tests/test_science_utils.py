@@ -10,6 +10,7 @@ from pathlib import Path
 from pandas import read_csv
 from numpy.testing import assert_allclose
 from numpy import array
+from copy import deepcopy
 import pytest
 
 from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information
@@ -132,3 +133,26 @@ def test_fiber_lumped_losses_srs(set_sim_params):
     stimulated_raman_scattering = RamanSolver.calculate_attenuation_profile(spectral_info_input, fiber)
     power_profile = stimulated_raman_scattering.power_profile
     assert_allclose(power_profile, expected_power_profile, rtol=1e-3)
+
+
+@pytest.mark.usefixtures('set_sim_params')
+def test_nli_solver():
+    """Test the accuracy of NLI solver."""
+    fiber = Fiber(**load_json(TEST_DIR / 'data' / 'test_science_utils_fiber_config.json'))
+    fiber.ref_pch_in_dbm = 0.0
+    # fix grid spectral information generation
+    spectral_info_input = create_input_spectral_information(f_min=191.3e12, f_max=196.1e12, roll_off=0.15,
+                                                            baud_rate=32e9, spacing=50e9, tx_osnr=40.0,
+                                                            tx_power=1e-3)
+
+    SimParams.set_params(load_json(TEST_DIR / 'data' / 'sim_params.json'))
+    sim_params = SimParams()
+
+    spectral_info_output = fiber(deepcopy(spectral_info_input))
+
+    sim_params.nli_params.method = 'ggn_approx'
+    sim_params.raman_params.result_spatial_resolution = 10e3
+    spectral_info_output_approx = fiber(deepcopy(spectral_info_input))
+
+    assert_allclose(spectral_info_output.nli, spectral_info_output_approx.nli, rtol=1e-1)
+
