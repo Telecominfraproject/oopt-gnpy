@@ -10,12 +10,14 @@ Working with networks which consist of network elements
 
 from operator import attrgetter
 from collections import namedtuple
+from functools import reduce
 from logging import getLogger
 from typing import Tuple, List, Optional, Union
 from networkx import DiGraph
 import warnings
 
 from gnpy.core import elements
+from gnpy.core.equipment import find_type_varieties
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.utils import round2float, convert_length, psd2powerdbm, lin2db, watt2dbm, dbm2watt, automatic_nch, \
     find_common_range
@@ -468,6 +470,60 @@ def filter_edfa_list_based_on_targets(edfa_eqpt: dict, power_target: float, gain
     return acceptable_power_list
 
 
+def preselect_multiband_amps(_amplifiers: dict, prev_node, next_node, power_mode: bool, prev_voa: dict, prev_dp: dict,
+                             pref_total_db: float, network: DiGraph, equipment: dict, restrictions: List,
+                             _design_bands: dict):
+    """Preselect multiband amplifiers that are eligible with respect to power and gain target
+    on all the bands.
+
+    At this point, the restrictions list already includes constraint related to variety_list,
+    allowed_for_design, and compliance to design band. so the function only concentrates on
+    these targets.
+
+    Args:
+        _amplifiers (dict): A dictionary containing the amplifiers of the multiband amplifier.
+        prev_node (element): The previous node.
+        next_node (element): The next node.
+        power_mode: The power mode.
+        prev_voa (dict): A dictionary containing the previous amplifier out VOA settings per band.
+        prev_dp (dict): A dictionary containing the previous amplifier delta_p settings per band.
+        pref_ch_db: The reference power per channel in dB.
+        pref_total_db: The total power used for design in dB.
+        network (digraph): The network.
+        equipment: The equipment.
+        restrictions (list of equipment name): The restrictions.
+        _design_bands (dict): The design bands.
+
+    Returns:
+        list: A list of preselected multiband amplifiers that are eligible for all the bands.
+    """
+    # Initialize the list for the loop
+    target_extended_gain = equipment['Span']['default'].target_extended_gain
+    _selected_type_varieties = [n for n in restrictions]
+    for band, amp in _amplifiers.items():
+        # In the loop, keep only the set of amps that match the constraints on all the bands
+        # Use the subset of EDFA library that are multiband and fits the restriction
+        # filter those amps that match this amp band and that are within the selection made during the loop
+        edfa_eqpt = {t: equipment['Edfa'][t]
+                     for m in _selected_type_varieties for t in equipment['Edfa'][m].multi_band
+                     if equipment['Edfa'][t].f_min <= _design_bands[band]['f_min']
+                     and equipment['Edfa'][t].f_max >= _design_bands[band]['f_max']}
+        # get the target gain and power based on previous propagation
+        gain_target, power_target, _, _, _ = \
+            compute_gain_power_target(amp, prev_node, next_node, power_mode, prev_voa[band], prev_dp[band],
+                                      pref_total_db, network, equipment)
+        _selection = [a.variety
+                      for a in filter_edfa_list_based_on_targets(edfa_eqpt, power_target, gain_target, None,
+                                                                 target_extended_gain)]
+        listes = find_type_varieties(_selection, equipment)
+        _selected_type_varieties = []
+        if listes:
+            # get the union of the lists
+            _selected_type_varieties = list(reduce(lambda x, y: set(x) | set(y), listes))
+
+    return [t for m in _selected_type_varieties for t in equipment['Edfa'][m].multi_band]
+
+
 def set_one_amplifier(node: elements.Edfa, prev_node, next_node, power_mode: bool, prev_voa: float, prev_dp: float,
                       pref_ch_db: float, pref_total_db: float, network: DiGraph, restrictions: List[str],
                       equipment: dict, verbose: bool) -> Tuple[float, float]:
@@ -691,9 +747,15 @@ def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elem
                     # creates one amp per design band.
                     for band_name, band in _design_bands.items():
                         node.amplifiers[band_name] = elements.Edfa(params=EdfaParams.default_values, uid=node.uid)
-                # only select amplifiers which match the design bands
-                restrictions_multi = get_node_restrictions(node, prev_node, next_node, equipment, _design_bands)
-                restrictions_edfa = [e for m in restrictions_multi for e in equipment['Edfa'][m].multi_band]
+                if node.params.type_variety:
+                    restrictions_edfa = equipment['Edfa'][node.type_variety].multi_band
+                else:
+                    # only select amplifiers which match the design bands
+                    restrictions_multi = get_node_restrictions(node, prev_node, next_node, equipment, _design_bands)
+                    restrictions_edfa = \
+                        preselect_multiband_amps(node.amplifiers, prev_node, next_node, power_mode,
+                                                 prev_voa, prev_dp, pref_total_db,
+                                                 network, equipment, restrictions_multi, _design_bands)
                 for band_name, amp in node.amplifiers.items():
                     _restrictions = [n for n in restrictions_edfa
                                      if equipment['Edfa'][n].f_min <= _design_bands[band_name]['f_min']
