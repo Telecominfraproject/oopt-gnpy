@@ -7,7 +7,7 @@
 from pathlib import Path
 import pytest
 from gnpy.core.exceptions import NetworkTopologyError
-from gnpy.core.network import span_loss, build_network
+from gnpy.core.network import span_loss, build_network, select_edfa
 from gnpy.tools.json_io import load_equipment, load_network, network_from_json
 from gnpy.core.utils import lin2db, automatic_nch
 from gnpy.core.elements import Fiber, Edfa
@@ -443,3 +443,21 @@ def test_design_band(case, site_type, amplifier_type, expected_design_bands, exp
     roadm1 = next(n for n in network.nodes() if n.uid == 'roadm SITE1')
     assert roadm1.design_bands == expected_design_bands
     assert roadm1.per_degree_design_bands['east edfa in SITE1 to ILA1'] == expected_per_degree_design_bands
+
+
+@pytest.mark.parametrize('raman_allowed, gain_target, power_target, target_extended_gain, warning, expected_selection', [
+    (False, 20, 20, 3, False, ('test_fixed_gain', 0)),
+    (False, 20, 25, 3, False, ('test_fixed_gain', -4)),
+    (False, 10, 15, 3, False, ('std_low_gain_bis', 0)),
+    (False, 5, 15, 3, "is below all available amplifiers min gain", ('std_low_gain_bis', 0)),
+    (False, 30, 15, 3, "is beyond all available amplifiers capabilities", ('std_medium_gain', -1)),
+])
+def test_select_edfa(caplog, raman_allowed, gain_target, power_target, target_extended_gain, warning, expected_selection):
+    """
+    """
+    equipment = load_equipment(EQPT_MULTBAND_FILENAME)
+    edfa_eqpt = {n: a for n, a in equipment['Edfa'].items() if a.type_def != 'multi_band'}
+    selection = select_edfa(raman_allowed, gain_target, power_target, edfa_eqpt, "toto", target_extended_gain, verbose=True)
+    assert selection == expected_selection
+    if warning:
+        assert warning in caplog.text
