@@ -13,6 +13,7 @@ from collections import namedtuple
 from logging import getLogger
 from typing import Tuple, List, Optional, Union
 from networkx import DiGraph
+import warnings
 
 from gnpy.core import elements
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
@@ -60,14 +61,14 @@ def edfa_nf(gain_target: float, amp_params) -> float:
 
 
 def select_edfa(raman_allowed: bool, gain_target: float, power_target: float, edfa_eqpt: dict, uid: str,
-                target_extended_gain: float, restrictions: Optional[List[str]] = None, verbose: Optional[bool] = True) \
-                -> Tuple[str, float]:
+                target_extended_gain: float, verbose: Optional[bool] = True) -> Tuple[str, float]:
     """Selects an amplifier within a library based on specified parameters.
 
     This function implements an amplifier selection algorithm that considers
-    various constraints, including gain and power targets, as well as
-    restrictions on amplifier types. It can also handle Raman amplifiers
-    if allowed.
+    various constraints, including gain and power targets.
+    It can also handle Raman amplifiers if allowed.
+    edfa_eqpt dict has already filtered out the amplifiers that do not match any other restrictions
+    such as ROADM booster or preamp restrictions or frequency constraints.
 
     Parameters:
     -----------
@@ -84,8 +85,6 @@ def select_edfa(raman_allowed: bool, gain_target: float, power_target: float, ed
         A unique identifier for the node where the amplifier will be used.
     target_extended_gain : float
         The extended gain target derived from configuration settings.
-    restrictions : Optional[List[str]], default=None
-        A list of amplifier names that are restricted from selection.
     verbose : Optional[bool], default=True
         If True, enables verbose logging of warnings and information.
 
@@ -112,77 +111,18 @@ def select_edfa(raman_allowed: bool, gain_target: float, power_target: float, ed
     -------
     Jean-Luc Augé
     """
-    Edfa_list = namedtuple('Edfa_list', 'variety power gain_min nf')
-
-    # for roadm restriction only: create a dict including not allowed for design amps
-    # because main use case is to have specific radm amp which are not allowed for ILA
-    # with the auto design
-    edfa_dict = {name: amp for (name, amp) in edfa_eqpt.items()
-                 if restrictions is None or name in restrictions}
-
-    pin = power_target - gain_target
-
-    # create 2 list of available amplifiers with relevant attributes for their selection
-
-    # edfa list with:
-    # extended gain min allowance of 3dB: could be parametrized, but a bit complex
-    # extended gain max allowance target_extended_gain is coming from eqpt_config.json
-    # power attribut include power AND gain limitations
-    edfa_list = [Edfa_list(
-        variety=edfa_variety,
-        power=min(pin + edfa.gain_flatmax + target_extended_gain, edfa.p_max) - power_target,
-        gain_min=gain_target + 3 - edfa.gain_min,
-        nf=edfa_nf(gain_target, edfa_eqpt[edfa_variety]))
-        for edfa_variety, edfa in edfa_dict.items()
-        if ((edfa.allowed_for_design or restrictions is not None) and not edfa.raman)]
-
-    # consider a Raman list because of different gain_min requirement:
-    # do not allow extended gain min for Raman
-    raman_list = [Edfa_list(
-        variety=edfa_variety,
-        power=min(pin + edfa.gain_flatmax + target_extended_gain, edfa.p_max) - power_target,
-        gain_min=gain_target - edfa.gain_min,
-        nf=edfa_nf(gain_target, edfa_eqpt[edfa_variety]))
-        for edfa_variety, edfa in edfa_dict.items()
-        if (edfa.allowed_for_design and edfa.raman)] \
-        if raman_allowed else []
-
-    # merge raman and edfa lists
-    amp_list = edfa_list + raman_list
-
-    # filter on min gain limitation:
-    acceptable_gain_min_list = [x for x in amp_list if x.gain_min > 0]
-
-    if len(acceptable_gain_min_list) < 1:
-        # do not take this empty list into account for the rest of the code
-        # but issue a warning to the user and do not consider Raman
-        # Raman below min gain should not be allowed because i is meant to be a design requirement
-        # and raman padding at the amplifier input is impossible!
-
-        if len(edfa_list) < 1:
-            raise ConfigurationError(f'auto_design could not find any amplifier \
-                    to satisfy min gain requirement in node {uid} \
-                    please increase span fiber padding')
-        else:
-            if verbose:
-                logger.warning(f'\n\tWARNING: target gain in node {uid} is below all available amplifiers min gain: '
-                               + '\n\tamplifier input padding will be assumed, consider increase span fiber padding '
-                               + 'instead.\n')
-            acceptable_gain_min_list = edfa_list
-
-    # filter on gain+power limitation:
-    # this list checks both the gain and the power requirement
-    # because of the way .power is calculated in the list
-    acceptable_power_list = [x for x in acceptable_gain_min_list if x.power > 0]
-    if len(acceptable_power_list) < 1:
-        # no amplifier satisfies the required power, so pick the highest power(s):
-        power_max = max(acceptable_gain_min_list, key=attrgetter('power')).power
-        # check and pick if other amplifiers may have a similar gain/power
-        # allow a 0.3dB power range
-        # this allows to chose an amplifier with a better NF subsequentely
-        acceptable_power_list = [x for x in acceptable_gain_min_list
-                                 if x.power - power_max > -0.3]
-
+    try:
+        tilt_target = 0
+        with warnings.catch_warnings(record=True) as caught_warnings:
+            acceptable_power_list = \
+                filter_edfa_list_based_on_targets(edfa_eqpt, power_target, gain_target,
+                                                  tilt_target, target_extended_gain,
+                                                  raman_allowed, verbose)
+            if caught_warnings:
+                msg = f'In node {uid}: {caught_warnings[0].message}'
+                logger.warning(msg)
+    except ConfigurationError as e:
+        raise ConfigurationError(f'in node {uid}, {e}')
     # gain and power requirements are resolved,
     #       =>chose the amp with the best NF among the acceptable ones:
     selected_edfa = min(acceptable_power_list, key=attrgetter('nf'))  # filter on NF
@@ -439,6 +379,95 @@ def compute_gain_power_target(node: elements.Edfa, prev_node, next_node, power_m
     return gain_target, power_target, dp, voa, node_loss
 
 
+def filter_edfa_list_based_on_targets(edfa_eqpt: dict, power_target: float, gain_target: float,
+                                      tilt_target: float, target_extended_gain: float,
+                                      raman_allowed: bool = True, verbose: bool = False):
+    """Filter the amplifiers based on power, gain, and tilt targets.
+
+    Args:
+    edfa_eqpt (dict): A dictionary containing the amplifiers equipment.
+    power_target (float): The target power.
+    gain_target (float): The target gain.
+    tilt_target (float): The target tilt.
+    target_extended_gain (float): The extended gain target.
+    raman_allowed (bool): include or not raman amplifier in the selection
+    verbose (bool): Flag for verbose logging.
+
+    Returns:
+    list: A list of amplifiers that satisfy the power, gain, and tilt targets.
+    """
+    Edfa_list = namedtuple('Edfa_list', 'variety power gain_min nf f_min f_max')
+    edfa_dict = {name: amp for (name, amp) in edfa_eqpt.items()}
+
+    pin = power_target - gain_target
+
+    # create 2 list of available amplifiers with relevant attributes for their selection
+
+    # edfa list with:
+    # extended gain min allowance of 3dB: could be parametrized, but a bit complex
+    # extended gain max allowance target_extended_gain is coming from eqpt_config.json
+    # power attribut include power AND gain limitations
+    edfa_list = [Edfa_list(
+        variety=edfa_variety,
+        power=min(pin + edfa.gain_flatmax + target_extended_gain, edfa.p_max) - power_target,
+        gain_min=gain_target + 3 - edfa.gain_min,
+        nf=edfa_nf(gain_target, edfa_eqpt[edfa_variety]),
+        f_min=edfa.f_min,
+        f_max=edfa.f_max)
+        for edfa_variety, edfa in edfa_dict.items()
+        if not edfa.raman]
+
+    # consider a Raman list because of different gain_min requirement:
+    # do not allow extended gain min for Raman
+    raman_list = [Edfa_list(
+        variety=edfa_variety,
+        power=min(pin + edfa.gain_flatmax + target_extended_gain, edfa.p_max) - power_target,
+        gain_min=gain_target - edfa.gain_min,
+        nf=edfa_nf(gain_target, edfa_eqpt[edfa_variety]),
+        f_min=edfa.f_min,
+        f_max=edfa.f_max)
+        for edfa_variety, edfa in edfa_dict.items()
+        if (edfa.allowed_for_design and edfa.raman)] \
+        if raman_allowed else []
+
+    # merge raman and edfa lists
+    amp_list = edfa_list + raman_list
+
+    # Filter on min gain limitation:
+    acceptable_gain_min_list = [x for x in amp_list if x.gain_min > 0]
+
+    if len(acceptable_gain_min_list) < 1:
+        # do not take this empty list into account for the rest of the code
+        # but issue a warning to the user and do not consider Raman
+        # Raman below min gain should not be allowed because i is meant to be a design requirement
+        # and raman padding at the amplifier input is impossible!
+
+        if len(edfa_list) < 1:
+            raise ConfigurationError('auto_design could not find any amplifier \
+                    to satisfy min gain requirement \
+                    please increase span fiber padding')
+        else:
+            if verbose:
+                logger.warning('\n\tWARNING: target gain is below all available amplifiers min gain: '
+                               + '\n\tamplifier input padding will be assumed, consider increase span fiber padding '
+                               + 'instead.\n')
+            acceptable_gain_min_list = edfa_list
+
+    # filter on gain+power limitation:
+    # this list checks both the gain and the power requirement
+    # because of the way .power is calculated in the list
+    acceptable_power_list = [x for x in acceptable_gain_min_list if x.power > 0]
+    if len(acceptable_power_list) < 1:
+        # No amplifier satisfies the required power, so pick the highest power(s):
+        power_max = max(acceptable_gain_min_list, key=attrgetter('power')).power
+        # Check and pick if other amplifiers may have a similar gain/power
+        # Allow a 0.3dB power range
+        # This allows to chose an amplifier with a better NF subsequentely
+        acceptable_power_list = [x for x in acceptable_gain_min_list
+                                 if x.power - power_max > -0.3]
+    return acceptable_power_list
+
+
 def set_one_amplifier(node: elements.Edfa, prev_node, next_node, power_mode: bool, prev_voa: float, prev_dp: float,
                       pref_ch_db: float, pref_total_db: float, network: DiGraph, restrictions: List[str],
                       equipment: dict, verbose: bool) -> Tuple[float, float]:
@@ -477,11 +506,13 @@ def set_one_amplifier(node: elements.Edfa, prev_node, next_node, power_mode: boo
 
     if node.params.type_variety == '':
         edfa_eqpt = {n: a for n, a in equipment['Edfa'].items() if a.type_def != 'multi_band'}
+        if restrictions:
+            edfa_eqpt = {n: a for n, a in edfa_eqpt.items() if n in restrictions}
         edfa_variety, power_reduction = \
             select_edfa(raman_allowed, gain_target, power_target, edfa_eqpt,
                         node.uid,
                         target_extended_gain=equipment['Span']['default'].target_extended_gain,
-                        restrictions=restrictions, verbose=verbose)
+                        verbose=verbose)
         extra_params = equipment['Edfa'][edfa_variety]
         node.params.update_params(extra_params.__dict__)
         node.type_variety = node.params.type_variety
