@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d99b78d_86856f45",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-07-02T14:46:15Z",
+      "side": 1,
+      "message": "Everything good by my side. The overall pytest runs fairly quick. I obtained this time on my PC:  597 passed in 101.61s (0:01:41).",
+      "revId": "4621fced3c7844ea808023408d406c0f5dd2b76a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
