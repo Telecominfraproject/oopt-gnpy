@@ -8,9 +8,9 @@ from pathlib import Path
 import pytest
 from numpy.testing import assert_allclose
 
-from gnpy.core.exceptions import NetworkTopologyError
+from gnpy.core.exceptions import NetworkTopologyError, ConfigurationError
 from gnpy.core.network import span_loss, build_network, select_edfa, get_node_restrictions, \
-    estimate_srs_power_deviation
+    estimate_srs_power_deviation, add_missing_elements_in_network, get_next_node
 from gnpy.tools.json_io import load_equipment, load_network, network_from_json, load_json
 from gnpy.core.utils import lin2db, automatic_nch, merge_amplifier_restrictions
 from gnpy.core.elements import Fiber, Edfa, Roadm, Multiband_amplifier
@@ -614,3 +614,136 @@ def test_tilt_fused():
     SimParams.set_params(save_sim_params)
     assert fused_tilt_db == tilt_db
     assert fused_tilt_target == tilt_target
+
+
+def network_wo_booster(site_type, bands):
+    return {
+        'elements': [
+            {
+                'uid': 'trx SITE1',
+                'type': 'Transceiver'
+            },
+            {
+                'uid': 'trx SITE2',
+                'type': 'Transceiver'
+            },
+            {
+                'uid': 'roadm SITE1',
+                'params': {
+                    'design_bands': bands
+                },
+                'type': 'Roadm'
+            },
+            {
+                'uid': 'roadm SITE2',
+                'type': 'Roadm'
+            },
+            {
+                'uid': 'fiber (SITE1 → ILA1)',
+                'type': 'Fiber',
+                'type_variety': 'SSMF',
+                'params': {
+                    'length': 50.0,
+                    'loss_coef': 0.2,
+                    'length_units': 'km'
+                }
+            },
+            {
+                'uid': 'fiber (ILA1 → ILA2)',
+                'type': 'Fiber',
+                'type_variety': 'SSMF',
+                'params': {
+                    'length': 50.0,
+                    'loss_coef': 0.2,
+                    'length_units': 'km'
+                }
+            },
+            {
+                'uid': 'fiber (ILA2 → SITE2)',
+                'type': 'Fiber',
+                'type_variety': 'SSMF',
+                'params': {
+                    'length': 50.0,
+                    'loss_coef': 0.2,
+                    'length_units': 'km'
+                }
+            },
+            {
+                'uid': 'east edfa or fused in ILA1',
+                'type': site_type
+            }
+        ],
+        'connections': [
+            {
+                'from_node': 'trx SITE1',
+                'to_node': 'roadm SITE1'
+            },
+            {
+                'from_node': 'roadm SITE1',
+                'to_node': 'fiber (SITE1 → ILA1)'
+            },
+            {
+                'from_node': 'fiber (SITE1 → ILA1)',
+                'to_node': 'east edfa or fused in ILA1'
+            },
+            {
+                'from_node': 'east edfa or fused in ILA1',
+                'to_node': 'fiber (ILA1 → ILA2)'
+            },
+            {
+                'from_node': 'fiber (ILA1 → ILA2)',
+                'to_node': 'fiber (ILA2 → SITE2)'
+            },
+            {
+                'from_node': 'fiber (ILA2 → SITE2)',
+                'to_node': 'roadm SITE2'
+            },
+            {
+                'from_node': 'roadm SITE2',
+                'to_node': 'trx SITE2'
+            }
+        ]
+    }
+
+
+@pytest.mark.parametrize('site_type, expected_type, bands, expected_bands', [
+    ('Multiband_amplifier', Multiband_amplifier,
+     [{'f_min': 187.0e12, 'f_max': 190.0e12}, {'f_min': 191.3e12, 'f_max': 196.0e12}],
+     [{'f_min': 187.0e12, 'f_max': 190.0e12}, {'f_min': 191.3e12, 'f_max': 196.0e12}]),
+    ('Edfa', Edfa,
+     [{'f_min': 191.4e12, 'f_max': 196.1e12}],
+     [{'f_min': 191.4e12, 'f_max': 196.1e12}]),
+    ('Edfa', Edfa,
+     [{'f_min': 191.2e12, 'f_max': 196.0e12}],
+     []),
+    ('Fused', Multiband_amplifier,
+     [{'f_min': 187.0e12, 'f_max': 190.0e12}, {'f_min': 191.3e12, 'f_max': 196.0e12}],
+     [{'f_min': 187.0e12, 'f_max': 190.0e12}, {'f_min': 191.3e12, 'f_max': 196.0e12}]),
+    ('Fused', Edfa,
+     [{'f_min': 191.3e12, 'f_max': 196.0e12}],
+     [{'f_min': 191.3e12, 'f_max': 196.0e12}])])
+def test_insert_amp(site_type, expected_type, bands, expected_bands):
+    """Check:
+    - if amplifiers are defined in multiband they are used for design,
+    - if no design is defined,
+        - if type variety is defined: use it for determining bands
+        - if no type_variety autodesign is as expected, design uses OMS defined set of bands
+    EOL is added only once on spans. One span can be one fiber or several fused fibers
+    EOL is then added on the first fiber only.
+    """
+    json_data = network_wo_booster(site_type, bands)
+    equipment = load_equipment(EQPT_MULTBAND_FILENAME)
+    network = network_from_json(json_data, equipment)
+    p_db = equipment['SI']['default'].power_dbm
+    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
+                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    add_missing_elements_in_network(network, equipment)
+    if not expected_bands:
+        with pytest.raises(ConfigurationError):
+            build_network(network, equipment, p_db, p_total_db)
+    else:
+        build_network(network, equipment, p_db, p_total_db)
+        roadm1 = next(n for n in network.nodes() if n.uid == 'roadm SITE1')
+        amp1 = get_next_node(roadm1, network)
+        assert isinstance(amp1, expected_type)
+        assert roadm1.per_degree_design_bands['Edfa_booster_roadm SITE1_to_fiber (SITE1 → ILA1)'] == expected_bands

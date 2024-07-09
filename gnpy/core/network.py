@@ -23,7 +23,7 @@ from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.utils import round2float, convert_length, psd2powerdbm, lin2db, watt2dbm, dbm2watt, automatic_nch, \
     find_common_range
 from gnpy.core.info import ReferenceCarrier, create_input_spectral_information
-from gnpy.core.parameters import SimParams, EdfaParams, find_band_name, FrequencyBand
+from gnpy.core.parameters import SimParams, EdfaParams, find_band_name, FrequencyBand, MultiBandParams
 from gnpy.core.science_utils import RamanSolver
 
 
@@ -469,6 +469,26 @@ def get_oms_edge_list(oms_ingress_node: Union[elements.Roadm, elements.Transceiv
     return oms_edges
 
 
+def get_oms_edge_list_from_egress(oms_egress_node, network: DiGraph) -> List[Tuple]:
+    """get the list of OMS edges (node, neighbour next node) starting from its ingress down to its egress
+    oms_ingress_node can be a ROADM or a Transceiver
+    """
+    oms_edges = []
+    node = oms_egress_node
+    visited_nodes = []
+    # collect the OMS element list (ROADM to ROADM, or Transceiver to ROADM)
+    while not (isinstance(node, elements.Roadm) or isinstance(node, elements.Transceiver)):
+        previous_node = get_previous_node(node, network)
+        visited_nodes.append(node.uid)
+        if previous_node.uid in visited_nodes:
+            raise NetworkTopologyError(f'Loop detected for {type(node).__name__} {node.uid}, '
+                                       + 'please check network topology')
+        oms_edges.append((node, previous_node))
+        node = previous_node
+
+    return oms_edges
+
+
 def check_oms_single_type(oms_edges: List[Tuple]) -> List[str]:
     """Verifies that the OMS only contains all single band amplifiers or all multi band amplifiers
     No mixed OMS are permitted for the time being.
@@ -899,6 +919,10 @@ def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elem
             if isinstance(node, elements.Edfa):
                 band_name, _ = next((n, b) for n, b in _design_bands.items())
                 restrictions = get_node_restrictions(node, prev_node, next_node, equipment, _design_bands)
+                if not restrictions:
+                    raise ConfigurationError(f'{node.uid}: Auto_design could not find any amplifier in equipment '
+                                             + f'library matching the design bands{_design_bands} '
+                                             + 'and the restrictions (roadm or amplifier restictions)')
                 dp[band_name], voa[band_name] = set_one_amplifier(node, prev_node, next_node, power_mode,
                                                                   prev_voa[band_name], prev_dp[band_name],
                                                                   pref_ch_db, pref_total_db,
@@ -1203,21 +1227,39 @@ def add_roadm_booster(network, roadm):
     # no amplification for fused spans or TRX
     for next_node in next_nodes:
         network.remove_edge(roadm, next_node)
-        amp = elements.Edfa(
-            uid=f'Edfa_booster_{roadm.uid}_to_{next_node.uid}',
-            params=EdfaParams.default_values,
-            metadata={
-                'location': {
-                    'latitude': roadm.lat,
-                    'longitude': roadm.lng,
-                    'city': roadm.loc.city,
-                    'region': roadm.loc.region,
-                }
-            },
-            operational={
-                'gain_target': None,
-                'tilt_target': 0,
-            })
+        oms_edges = get_oms_edge_list(next_node, network)
+        amps_type = check_oms_single_type(oms_edges)
+        if 'Multiband_amplifier' in amps_type or ('Edfa' not in amps_type and len(roadm.design_bands) > 1):
+            amp = elements.Multiband_amplifier(
+                uid=f'Edfa_booster_{roadm.uid}_to_{next_node.uid}',
+                params=MultiBandParams.default_values,
+                metadata={
+                    'location': {
+                        'latitude': roadm.lat,
+                        'longitude': roadm.lng,
+                        'city': roadm.loc.city,
+                        'region': roadm.loc.region,
+                    }
+                },
+                amplifiers=[])
+        else:
+            # if 'Edfa' or no amplifier type is set in the OMS, then assumes single band
+            amp = elements.Edfa(
+                uid=f'Edfa_booster_{roadm.uid}_to_{next_node.uid}',
+                params=EdfaParams.default_values,
+                metadata={
+                    'location': {
+                        'latitude': roadm.lat,
+                        'longitude': roadm.lng,
+                        'city': roadm.loc.city,
+                        'region': roadm.loc.region,
+                    }
+                },
+                operational={
+                    'gain_target': None,
+                    'tilt_target': 0,
+                })
+
         network.add_node(amp)
         network.add_edge(roadm, amp, weight=0.01)
         network.add_edge(amp, next_node, weight=0.01)
@@ -1230,21 +1272,37 @@ def add_roadm_preamp(network, roadm):
     # no amplification for fused spans or TRX
     for prev_node in prev_nodes:
         network.remove_edge(prev_node, roadm)
-        amp = elements.Edfa(
-            uid=f'Edfa_preamp_{roadm.uid}_from_{prev_node.uid}',
-            params=EdfaParams.default_values,
-            metadata={
-                'location': {
-                    'latitude': roadm.lat,
-                    'longitude': roadm.lng,
-                    'city': roadm.loc.city,
-                    'region': roadm.loc.region,
-                }
-            },
-            operational={
-                'gain_target': None,
-                'tilt_target': 0,
-            })
+        oms_edges = get_oms_edge_list_from_egress(prev_node, network)
+        amps_type = check_oms_single_type(oms_edges)
+        if 'Multiband_amplifier' in amps_type:
+            amp = elements.Multiband_amplifier(
+                uid=f'Edfa_preamp_{roadm.uid}_from_{prev_node.uid}',
+                params=MultiBandParams.default_values,
+                metadata={
+                    'location': {
+                        'latitude': roadm.lat,
+                        'longitude': roadm.lng,
+                        'city': roadm.loc.city,
+                        'region': roadm.loc.region,
+                    }
+                },
+                amplifiers=[])
+        else:
+            amp = elements.Edfa(
+                uid=f'Edfa_preamp_{roadm.uid}_from_{prev_node.uid}',
+                params=EdfaParams.default_values,
+                metadata={
+                    'location': {
+                        'latitude': roadm.lat,
+                        'longitude': roadm.lng,
+                        'city': roadm.loc.city,
+                        'region': roadm.loc.region,
+                    }
+                },
+                operational={
+                    'gain_target': None,
+                    'tilt_target': 0,
+                })
         network.add_node(amp)
         if isinstance(prev_node, elements.Fiber):
             edgeweight = prev_node.params.length
@@ -1259,21 +1317,37 @@ def add_inline_amplifier(network, fiber):
     if isinstance(next_node, elements.Fiber) or isinstance(next_node, elements.RamanFiber):
         # no amplification for fused spans or TRX
         network.remove_edge(fiber, next_node)
-        amp = elements.Edfa(
-            uid=f'Edfa_{fiber.uid}',
-            params=EdfaParams.default_values,
-            metadata={
-                'location': {
-                    'latitude': (fiber.lat + next_node.lat) / 2,
-                    'longitude': (fiber.lng + next_node.lng) / 2,
-                    'city': fiber.loc.city,
-                    'region': fiber.loc.region,
-                }
-            },
-            operational={
-                'gain_target': None,
-                'tilt_target': 0,
-            })
+        oms_edges = get_oms_edge_list(next_node, network)
+        amps_type = check_oms_single_type(oms_edges)
+        if 'Multiband_amplifier' in amps_type:
+            amp = elements.Multiband_amplifier(
+                uid=f'Edfa_{fiber.uid}',
+                params=MultiBandParams.default_values,
+                metadata={
+                    'location': {
+                        'latitude': (fiber.lat + next_node.lat) / 2,
+                        'longitude': (fiber.lng + next_node.lng) / 2,
+                        'city': fiber.loc.city,
+                        'region': fiber.loc.region,
+                    }
+                },
+                amplifiers=[])
+        else:
+            amp = elements.Edfa(
+                uid=f'Edfa_{fiber.uid}',
+                params=EdfaParams.default_values,
+                metadata={
+                    'location': {
+                        'latitude': (fiber.lat + next_node.lat) / 2,
+                        'longitude': (fiber.lng + next_node.lng) / 2,
+                        'city': fiber.loc.city,
+                        'region': fiber.loc.region,
+                    }
+                },
+                operational={
+                    'gain_target': None,
+                    'tilt_target': 0,
+                })
         network.add_node(amp)
         network.add_edge(fiber, amp, weight=fiber.params.length)
         network.add_edge(amp, next_node, weight=0.01)
@@ -1308,6 +1382,17 @@ def get_next_node(node, network):
     try:
         next_node = next(network.successors(node))
         return next_node
+    except StopIteration:
+        raise NetworkTopologyError(
+            f'{type(node).__name__} {node.uid} is not properly connected, please check network topology')
+
+
+def get_previous_node(node, network):
+    """get previous node else raise the appropriate error
+    """
+    try:
+        previous_node = next(network.predecessors(node))
+        return previous_node
     except StopIteration:
         raise NetworkTopologyError(
             f'{type(node).__name__} {node.uid} is not properly connected, please check network topology')
