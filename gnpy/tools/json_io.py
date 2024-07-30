@@ -249,7 +249,7 @@ class Amp(_JsonThing):
 
         json_data = load_json(config)
 
-        return cls(**{**kwargs, **json_data,
+        return cls(**{**json_data, **kwargs,
                       'nf_model': nf_def, 'dual_stage_model': dual_stage_def})
 
 
