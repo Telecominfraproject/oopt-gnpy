@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8784f045_09297418",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-08-21T16:03:40Z",
+      "side": 1,
+      "message": "Thanks a lot for finding the bug!\nThis definitely needs correction. However I think that we may need a bit more insight on the solution to avoid the type of crash you observed (mixing DGT, Gain or NF ripples with different length), which this proposal might not be sufficient to solve in general.\nWe discussed this during todays coder\u0027s call and the result is that we go first for EDFA restructuring that is pending from Andrea with possible harmonization of default vector definition in parameters.py instead as files and then go for this bug correction, with possibly more checks on vector size, or others checks when loading the user data.\nThis is of course complementary to the Yang modelling effort.\n\nas a side comment, in general commit titles should start with a verb and be very concise (less than 50 Char) see this link for the recommendations! https://github.com/Telecominfraproject/oopt-gnpy/wiki/Onboarding-Guide#code-review--pull-request-practices)",
+      "revId": "f7580d09c52ea394958fa32f18c9dcd3926f879a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
