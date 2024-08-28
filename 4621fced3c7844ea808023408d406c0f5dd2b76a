@@ -33,6 +33,24 @@
       "message": "Could you please explain a bit what is this feature doing ?",
       "revId": "4621fced3c7844ea808023408d406c0f5dd2b76a",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b13f47b_2b59f472",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-08-28T08:02:23Z",
+      "side": 1,
+      "message": "unresolved",
+      "parentUuid": "bde1efaf_a956e4f9",
+      "revId": "4621fced3c7844ea808023408d406c0f5dd2b76a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
