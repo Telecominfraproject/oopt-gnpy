@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62ed89f1_b02e5462",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-08-28T08:02:34Z",
+      "side": 1,
+      "message": "Could you please add a bit more details on how to use this new feature ? what has to be changed in the sim-params, what are the recommended values ? this could also be inserted in the documentation.",
+      "revId": "c3202d5f8301c557fa5b1edfdef2014e098be29e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f39b6bd2_26e160f7",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-08-28T08:02:34Z",
+      "side": 1,
+      "message": "could you please add the case of nli_params.computed_number_of_channels is not None ?",
+      "range": {
+        "startLine": 329,
+        "startChar": 12,
+        "endLine": 332,
+        "endChar": 69
+      },
+      "revId": "c3202d5f8301c557fa5b1edfdef2014e098be29e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
