@@ -1,0 +1,479 @@
+{
+    "Edfa": [
+        {
+            "type_variety": "std_high_gain",
+            "type_def": "variable_gain",
+            "gain_flatmax": 35,
+            "gain_min": 25,
+            "p_max": 21,
+            "nf_min": 5.5,
+            "nf_max": 7,
+            "out_voa_auto": false,
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "std_medium_gain",
+            "type_def": "variable_gain",
+            "gain_flatmax": 26,
+            "gain_min": 15,
+            "p_max": 23,
+            "nf_min": 6,
+            "nf_max": 10,
+            "out_voa_auto": false,
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "std_low_gain",
+            "type_def": "variable_gain",
+            "gain_flatmax": 16,
+            "gain_min": 8,
+            "p_max": 23,
+            "nf_min": 6.5,
+            "nf_max": 11,
+            "out_voa_auto": false,
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "high_power",
+            "type_def": "variable_gain",
+            "gain_flatmax": 16,
+            "gain_min": 8,
+            "p_max": 25,
+            "nf_min": 9,
+            "nf_max": 15,
+            "out_voa_auto": false,
+            "allowed_for_design": false
+        },
+        {
+            "type_variety": "std_fixed_gain",
+            "type_def": "fixed_gain",
+            "gain_flatmax": 21,
+            "gain_min": 20,
+            "p_max": 21,
+            "nf0": 5.5,
+            "allowed_for_design": false
+        },
+        {
+            "type_variety": "4pumps_raman",
+            "type_def": "fixed_gain",
+            "gain_flatmax": 12,
+            "gain_min": 12,
+            "p_max": 21,
+            "nf0": -1,
+            "allowed_for_design": false
+        },
+        {
+            "type_variety": "hybrid_4pumps_lowgain",
+            "type_def": "dual_stage",
+            "raman": true,
+            "gain_min": 25,
+            "preamp_variety": "4pumps_raman",
+            "booster_variety": "std_low_gain",
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "hybrid_4pumps_mediumgain",
+            "type_def": "dual_stage",
+            "raman": true,
+            "gain_min": 25,
+            "preamp_variety": "4pumps_raman",
+            "booster_variety": "std_medium_gain",
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "medium+low_gain",
+            "type_def": "dual_stage",
+            "gain_min": 25,
+            "preamp_variety": "std_medium_gain",
+            "booster_variety": "std_low_gain",
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "medium+high_power",
+            "type_def": "dual_stage",
+            "gain_min": 25,
+            "preamp_variety": "std_medium_gain",
+            "booster_variety": "high_power",
+            "allowed_for_design": false
+        },
+        {
+            "type_variety": "std_medium_gain_C",
+            "f_min": 191.225e12,
+            "f_max": 196.125e12,
+            "type_def": "variable_gain",
+            "gain_flatmax": 26,
+            "gain_min": 15,
+            "p_max": 21,
+            "nf_min": 6,
+            "nf_max": 10,
+            "out_voa_auto": false,
+            "allowed_for_design": false
+        },
+        {
+            "type_variety": "std_medium_gain_L",
+            "f_min": 186.5e12,
+            "f_max": 190.1e12,
+            "type_def": "variable_gain",
+            "gain_flatmax": 26,
+            "gain_min": 15,
+            "p_max": 21,
+            "nf_min": 6,
+            "nf_max": 10,
+            "out_voa_auto": false,
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "std_low_gain",
+            "f_min": 191.25e12,
+            "f_max": 196.15e12,
+            "type_def": "variable_gain",
+            "gain_flatmax": 16,
+            "gain_min": 8,
+            "p_max": 21,
+            "nf_min": 7,
+            "nf_max": 11,
+            "out_voa_auto": false,
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "std_low_gain_reduced_band",
+            "f_min": 192.25e12,
+            "f_max": 196.15e12,
+            "type_def": "variable_gain",
+            "gain_flatmax": 16,
+            "gain_min": 8,
+            "p_max": 21,
+            "nf_min": 7,
+            "nf_max": 11,
+            "out_voa_auto": false,
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "std_low_gain_bis",
+            "f_min": 191.25e12,
+            "f_max": 196.15e12,
+            "type_def": "variable_gain",
+            "gain_flatmax": 16,
+            "gain_min": 8,
+            "p_max": 21,
+            "nf_min": 6,
+            "nf_max": 10,
+            "out_voa_auto": false,
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "std_low_gain_L_ter",
+            "f_min": 186.55e12,
+            "f_max": 190.05e12,
+            "type_def": "variable_gain",
+            "gain_flatmax": 16,
+            "gain_min": 8,
+            "p_max": 16,
+            "nf_min": 7,
+            "nf_max": 11,
+            "out_voa_auto": false,
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "std_low_gain_L",
+            "f_min": 186.55e12,
+            "f_max": 190.05e12,
+            "type_def": "variable_gain",
+            "gain_flatmax": 16,
+            "gain_min": 8,
+            "p_max": 21,
+            "nf_min": 7,
+            "nf_max": 11,
+            "out_voa_auto": false,
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "std_low_gain_L_reduced_band",
+            "f_min": 187.3e12,
+            "f_max": 190.05e12,
+            "type_def": "variable_gain",
+            "gain_flatmax": 16,
+            "gain_min": 8,
+            "p_max": 21,
+            "nf_min": 7,
+            "nf_max": 11,
+            "out_voa_auto": false,
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "test",
+            "type_def": "variable_gain",
+            "gain_flatmax": 25,
+            "gain_min": 15,
+            "p_max": 21,
+            "nf_min": 5.8,
+            "nf_max": 10,
+            "out_voa_auto": false,
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "test_fixed_gain",
+            "type_def": "fixed_gain",
+            "gain_flatmax": 21,
+            "gain_min": 20,
+            "p_max": 21,
+            "nf0": 5,
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "std_booster",
+            "type_def": "fixed_gain",
+            "gain_flatmax": 21,
+            "gain_min": 20,
+            "p_max": 21,
+            "nf0": 5,
+            "allowed_for_design": false
+        },
+        {
+            "type_variety": "std_booster_L",
+            "f_min": 186.55e12,
+            "f_max": 190.05e12,
+            "type_def": "fixed_gain",
+            "gain_flatmax": 21,
+            "gain_min": 20,
+            "p_max": 21,
+            "nf0": 5,
+            "allowed_for_design": false
+        },
+        {
+            "type_variety": "std_booster_multiband",
+            "type_def": "multi_band",
+            "amplifiers": [
+                "std_booster",
+                "std_booster_L"
+            ],
+            "allowed_for_design": false
+        },
+        {
+            "type_variety": "std_medium_gain_multiband",
+            "type_def": "multi_band",
+            "amplifiers": [
+                "std_medium_gain_C",
+                "std_medium_gain_L"
+            ],
+            "allowed_for_design": false
+        },
+        {
+            "type_variety": "std_low_gain_multiband",
+            "type_def": "multi_band",
+            "amplifiers": [
+                "std_low_gain",
+                "std_low_gain_L"
+            ],
+            "allowed_for_design": false
+        },
+        {
+            "type_variety": "std_low_gain_multiband_ter",
+            "type_def": "multi_band",
+            "amplifiers": [
+                "std_low_gain",
+                "std_low_gain_L_ter"
+            ],
+            "allowed_for_design": false
+        },
+        {
+            "type_variety": "std_low_gain_multiband_bis",
+            "type_def": "multi_band",
+            "amplifiers": [
+                "std_low_gain_bis",
+                "std_low_gain_L"
+            ],
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "std_low_gain_multiband_reduced",
+            "type_def": "multi_band",
+            "amplifiers": [
+                "std_low_gain_reduced",
+                "std_low_gain_L"
+            ],
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "std_low_gain_multiband_reduced",
+            "type_def": "multi_band",
+            "amplifiers": [
+                "std_low_gain_bis",
+                "std_low_gain_L_reduced_band"
+            ],
+            "allowed_for_design": true
+        }
+    ],
+    "Fiber": [
+        {
+            "type_variety": "SSMF",
+            "dispersion": 1.67e-05,
+            "effective_area": 83e-12,
+            "pmd_coef": 1.265e-15
+        },
+        {
+            "type_variety": "NZDF",
+            "dispersion": 0.5e-05,
+            "effective_area": 72e-12,
+            "pmd_coef": 1.265e-15
+        },
+        {
+            "type_variety": "LOF",
+            "dispersion": 2.2e-05,
+            "effective_area": 125e-12,
+            "pmd_coef": 1.265e-15
+        }
+    ],
+    "RamanFiber": [
+        {
+            "type_variety": "SSMF",
+            "dispersion": 1.67e-05,
+            "effective_area": 83e-12,
+            "pmd_coef": 1.265e-15
+        }
+    ],
+    "Span": [
+        {
+            "power_mode": true,
+            "delta_power_range_db": [
+                -2,
+                3,
+                0.5
+            ],
+            "max_fiber_lineic_loss_for_raman": 0.25,
+            "target_extended_gain": 2.5,
+            "max_length": 150,
+            "length_units": "km",
+            "max_loss": 28,
+            "padding": 10,
+            "EOL": 0,
+            "con_in": 0,
+            "con_out": 0
+        }
+    ],
+    "Roadm": [
+        {
+            "target_pch_out_db": -20,
+            "add_drop_osnr": 38,
+            "pmd": 0,
+            "pdl": 0,
+            "restrictions": {
+                "preamp_variety_list": [],
+                "booster_variety_list": []
+            }
+        }
+    ],
+    "SI": [
+        {
+            "f_min": 191.3e12,
+            "baud_rate": 32e9,
+            "f_max": 195.1e12,
+            "spacing": 50e9,
+            "power_dbm": 0,
+            "power_range_db": [
+                0,
+                0,
+                1
+            ],
+            "roll_off": 0.15,
+            "tx_osnr": 40,
+            "sys_margins": 2
+        },
+        {
+            "type_variety": "lband",
+            "f_min": 186.3e12,
+            "baud_rate": 32e9,
+            "f_max": 190.1e12,
+            "spacing": 50e9,
+            "power_dbm": 0,
+            "power_range_db": [
+                0,
+                0,
+                1
+            ],
+            "roll_off": 0.15,
+            "tx_osnr": 40,
+            "sys_margins": 2
+        }
+    ],
+    "Transceiver": [
+        {
+            "type_variety": "vendorA_trx-type1",
+            "frequency": {
+                "min": 191.35e12,
+                "max": 196.1e12
+            },
+            "mode": [
+                {
+                    "format": "mode 1",
+                    "baud_rate": 32e9,
+                    "OSNR": 11,
+                    "bit_rate": 100e9,
+                    "roll_off": 0.15,
+                    "tx_osnr": 40,
+                    "min_spacing": 37.5e9,
+                    "cost": 1
+                },
+                {
+                    "format": "mode 2",
+                    "baud_rate": 66e9,
+                    "OSNR": 15,
+                    "bit_rate": 200e9,
+                    "roll_off": 0.15,
+                    "tx_osnr": 40,
+                    "min_spacing": 75e9,
+                    "cost": 1
+                }
+            ]
+        },
+        {
+            "type_variety": "Voyager",
+            "frequency": {
+                "min": 191.35e12,
+                "max": 196.1e12
+            },
+            "mode": [
+                {
+                    "format": "mode 1",
+                    "baud_rate": 32e9,
+                    "OSNR": 12,
+                    "bit_rate": 100e9,
+                    "roll_off": 0.15,
+                    "tx_osnr": 40,
+                    "min_spacing": 37.5e9,
+                    "cost": 1
+                },
+                {
+                    "format": "mode 3",
+                    "baud_rate": 44e9,
+                    "OSNR": 18,
+                    "bit_rate": 300e9,
+                    "roll_off": 0.15,
+                    "tx_osnr": 40,
+                    "min_spacing": 62.5e9,
+                    "cost": 1
+                },
+                {
+                    "format": "mode 2",
+                    "baud_rate": 66e9,
+                    "OSNR": 21,
+                    "bit_rate": 400e9,
+                    "roll_off": 0.15,
+                    "tx_osnr": 40,
+                    "min_spacing": 75e9,
+                    "cost": 1
+                },
+                {
+                    "format": "mode 4",
+                    "baud_rate": 66e9,
+                    "OSNR": 16,
+                    "bit_rate": 200e9,
+                    "roll_off": 0.15,
+                    "tx_osnr": 40,
+                    "min_spacing": 75e9,
+                    "cost": 1
+                }
+            ]
+        }
+    ]
+}

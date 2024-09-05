@@ -36,7 +36,10 @@ SRC_ROOT = Path(__file__).parent.parent
     ('transmission_long_psd', None, transmission_main_example,
      ['-e', 'tests/data/eqpt_config_psd.json', 'tests/data/test_long_network.json', '--spectrum', 'gnpy/example-data/initial_spectrum2.json', ]),
     ('transmission_long_psw', None, transmission_main_example,
-     ['-e', 'tests/data/eqpt_config_psw.json', 'tests/data/test_long_network.json', '--spectrum', 'gnpy/example-data/initial_spectrum2.json', ])
+     ['-e', 'tests/data/eqpt_config_psw.json', 'tests/data/test_long_network.json', '--spectrum', 'gnpy/example-data/initial_spectrum2.json', ]),
+    ('multiband_transmission', None, transmission_main_example,
+     ['gnpy/example-data/multiband_example_network.json', 'Site_A', 'Site_D', '-e', 'gnpy/example-data/eqpt_config_multiband.json',
+      '--spectrum', 'gnpy/example-data/multiband_spectrum.json', '--show-channels'])
 ))
 def test_example_invocation(capfd, caplog, output, log, handler, args):
     """Make sure that our examples produce useful output"""

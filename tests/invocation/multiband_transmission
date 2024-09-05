@@ -1,0 +1,290 @@
+User input for spectrum used for propagation instead of SI
+Power mode is set to True
+=> it can be modified in eqpt_config.json - Span
+
+There are 3 fiber spans over 240 km between trx Site_A and trx Site_D
+
+Now propagating between trx Site_A and trx Site_D:
+Reference used for design: (Input optical power reference in span = 0.00dBm,
+                            spacing = 50.00GHz
+                            nb_channels = 76)
+
+Channels propagating: (Input optical power deviation in span = cband: 0.00, lband: 0.00dB,
+                       spacing = cband: 50.00, lband: 50.00GHz,
+                       transceiver output power = cband: 0.00, lband: 0.00dBm,
+                       nb_channels = 149)
+Input optical power reference in span = [1;36;40m0.00 dBm[0m:
+Transceiver trx Site_A
+  GSNR (0.1nm, dB):          cband: 40.00, lband: 40.00
+  GSNR (signal bw, dB):      cband: 35.92, lband: 35.92
+  OSNR ASE (0.1nm, dB):      cband: 40.00, lband: 40.00
+  OSNR ASE (signal bw, dB):  cband: 35.92, lband: 35.92
+  CD (ps/nm):                0.00
+  PMD (ps):                  0.00
+  PDL (dB):                  0.00
+  Latency (ms):              0.00
+  Actual pch out (dBm):      cband: 0.00, lband: 0.00
+Roadm roadm Site_A
+  Type_variety:            default
+  Reference loss (dB):     20.00
+  Actual loss (dB):        cband: 20.00, lband: 20.00
+  Reference pch out (dBm): -20.00
+  Actual pch out (dBm):    cband: -20.00, lband: -20.00
+Multiband_amplifier east edfa in Site_A to Site_B
+  type_variety:           std_medium_gain_multiband
+  type_variety:           std_medium_gain_C    type_variety:           std_medium_gain_L  
+  effective gain(dB):     20.90                effective gain(dB):     22.19              
+  (before att_in and before output VOA)        (before att_in and before output VOA)      
+  noise figure (dB):      6.38                 noise figure (dB):      6.19               
+  (including att_in)                           (including att_in)                         
+  pad att_in (dB):        0.00                 pad att_in (dB):        0.00               
+  Power In (dBm):         -1.08                Power In (dBm):         -1.49              
+  Power Out (dBm):        19.83                Power Out (dBm):        20.71              
+  Delta_P (dB):           0.90                 Delta_P (dB):           2.19               
+  target pch (dBm):       0.90                 target pch (dBm):       3.00               
+  actual pch out (dBm):   -2.09                actual pch out (dBm):   -0.80              
+  output VOA (dB):        3.00                 output VOA (dB):        3.00               
+Fiber          fiber (Site_A → Site_B)-
+  type_variety:                SSMF
+  length (km):                 75.00
+  pad att_in (dB):             0.00
+  total loss (dB):             15.00
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  reference pch out (dBm):     -17.10
+  actual pch out (dBm):        cband: -17.09, lband: -15.80
+Multiband_amplifier east edfa in Site_B to Site_C
+  type_variety:           std_medium_gain_multiband
+  type_variety:           std_medium_gain_C    type_variety:           std_medium_gain_L  
+  effective gain(dB):     18.00                effective gain(dB):     18.00              
+  (before att_in and before output VOA)        (before att_in and before output VOA)      
+  noise figure (dB):      7.38                 noise figure (dB):      7.38               
+  (including att_in)                           (including att_in)                         
+  pad att_in (dB):        0.00                 pad att_in (dB):        0.00               
+  Power In (dBm):         1.83                 Power In (dBm):         2.71               
+  Power Out (dBm):        19.84                Power Out (dBm):        20.72              
+  Delta_P (dB):           0.90                 Delta_P (dB):           2.19               
+  target pch (dBm):       0.90                 target pch (dBm):       3.00               
+  actual pch out (dBm):   -2.09                actual pch out (dBm):   -0.79              
+  output VOA (dB):        3.00                 output VOA (dB):        3.00               
+Fiber          fiber (Site_B → Site_C)-
+  type_variety:                SSMF
+  length (km):                 80.00
+  pad att_in (dB):             0.00
+  total loss (dB):             16.80
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  reference pch out (dBm):     -18.90
+  actual pch out (dBm):        cband: -18.88, lband: -17.59
+Multiband_amplifier east edfa in Site_C to Site_D
+  type_variety:           std_medium_gain_multiband
+  type_variety:           std_medium_gain_C    type_variety:           std_medium_gain_L  
+  effective gain(dB):     19.80                effective gain(dB):     19.80              
+  (before att_in and before output VOA)        (before att_in and before output VOA)      
+  noise figure (dB):      6.63                 noise figure (dB):      6.63               
+  (including att_in)                           (including att_in)                         
+  pad att_in (dB):        0.00                 pad att_in (dB):        0.00               
+  Power In (dBm):         0.04                 Power In (dBm):         0.92               
+  Power Out (dBm):        19.84                Power Out (dBm):        20.72              
+  Delta_P (dB):           0.90                 Delta_P (dB):           2.19               
+  target pch (dBm):       0.90                 target pch (dBm):       3.00               
+  actual pch out (dBm):   -2.08                actual pch out (dBm):   -0.79              
+  output VOA (dB):        3.00                 output VOA (dB):        3.00               
+Fiber          fiber (Site_C → Site_D)-
+  type_variety:                SSMF
+  length (km):                 85.00
+  pad att_in (dB):             0.00
+  total loss (dB):             18.70
+  (includes conn loss (dB) in: 0.00 out: 0.00)
+  (conn loss out includes EOL margin defined in eqpt_config.json)
+  reference pch out (dBm):     -20.80
+  actual pch out (dBm):        cband: -20.78, lband: -19.49
+Multiband_amplifier west edfa in Site_D to Site_C
+  type_variety:           std_medium_gain_multiband
+  type_variety:           std_medium_gain_C    type_variety:           std_medium_gain_L  
+  effective gain(dB):     21.70                effective gain(dB):     21.70              
+  (before att_in and before output VOA)        (before att_in and before output VOA)      
+  noise figure (dB):      6.25                 noise figure (dB):      6.25               
+  (including att_in)                           (including att_in)                         
+  pad att_in (dB):        0.00                 pad att_in (dB):        0.00               
+  Power In (dBm):         -1.85                Power In (dBm):         -0.97              
+  Power Out (dBm):        19.85                Power Out (dBm):        20.73              
+  Delta_P (dB):           0.90                 Delta_P (dB):           2.19               
+  target pch (dBm):       0.90                 target pch (dBm):       3.00               
+  actual pch out (dBm):   -2.07                actual pch out (dBm):   -0.78              
+  output VOA (dB):        3.00                 output VOA (dB):        3.00               
+Roadm roadm Site_D
+  Type_variety:            default
+  Reference loss (dB):     17.90
+  Actual loss (dB):        cband: 17.93, lband: 19.22
+  Reference pch out (dBm): -20.00
+  Actual pch out (dBm):    cband: -20.00, lband: -20.00
+Transceiver trx Site_D
+  GSNR (0.1nm, dB):          cband: 24.89, lband: 25.36
+  GSNR (signal bw, dB):      cband: 20.80, lband: 21.28
+  OSNR ASE (0.1nm, dB):      cband: 25.55, lband: 26.51
+  OSNR ASE (signal bw, dB):  cband: 21.47, lband: 22.43
+  CD (ps/nm):                4008.00
+  PMD (ps):                  0.62
+  PDL (dB):                  0.00
+  Latency (ms):              1.18
+  Actual pch out (dBm):      cband: 0.00, lband: 0.00
+
+Transmission result for input optical power reference in span = 0.00 dBm:
+  Final GSNR (0.1 nm): [1;36;40m25.11 dB[0m
+
+The GSNR per channel at the end of the line is:
+Ch. #   Channel frequency (THz)       Channel power (dBm)    OSNR ASE (signal bw, dB)     SNR NLI (signal bw, dB)        GSNR (signal bw, dB)
+    1                 186.55000                    -20.03                       22.46                       29.10                       21.61
+    2                 186.60000                    -20.03                       22.46                       28.59                       21.51
+    3                 186.65000                    -20.03                       22.46                       28.36                       21.47
+    4                 186.70000                    -20.03                       22.46                       28.22                       21.44
+    5                 186.75000                    -20.03                       22.46                       28.12                       21.41
+    6                 186.80000                    -20.03                       22.46                       28.04                       21.40
+    7                 186.85000                    -20.03                       22.46                       27.98                       21.38
+    8                 186.90000                    -20.03                       22.45                       27.92                       21.37
+    9                 186.95000                    -20.03                       22.45                       27.88                       21.36
+   10                 187.00000                    -20.03                       22.45                       27.84                       21.35
+   11                 187.05000                    -20.03                       22.45                       27.80                       21.34
+   12                 187.10000                    -20.03                       22.45                       27.77                       21.33
+   13                 187.15000                    -20.03                       22.45                       27.74                       21.32
+   14                 187.20000                    -20.03                       22.45                       27.71                       21.32
+   15                 187.25000                    -20.03                       22.45                       27.69                       21.31
+   16                 187.30000                    -20.03                       22.45                       27.67                       21.31
+   17                 187.35000                    -20.03                       22.45                       27.65                       21.30
+   18                 187.40000                    -20.03                       22.44                       27.63                       21.29
+   19                 187.45000                    -20.03                       22.44                       27.61                       21.29
+   20                 187.50000                    -20.03                       22.44                       27.60                       21.29
+   21                 187.55000                    -20.03                       22.44                       27.58                       21.28
+   22                 187.60000                    -20.03                       22.44                       27.57                       21.28
+   23                 187.65000                    -20.03                       22.44                       27.55                       21.27
+   24                 187.70000                    -20.03                       22.44                       27.54                       21.27
+   25                 187.75000                    -20.03                       22.44                       27.53                       21.27
+   26                 187.80000                    -20.03                       22.44                       27.52                       21.26
+   27                 187.85000                    -20.03                       22.44                       27.51                       21.26
+   28                 187.90000                    -20.03                       22.43                       27.50                       21.26
+   29                 187.95000                    -20.03                       22.43                       27.49                       21.25
+   30                 188.00000                    -20.03                       22.43                       27.48                       21.25
+   31                 188.05000                    -20.03                       22.43                       27.47                       21.25
+   32                 188.10000                    -20.03                       22.43                       27.47                       21.25
+   33                 188.15000                    -20.03                       22.43                       27.46                       21.24
+   34                 188.20000                    -20.03                       22.43                       27.45                       21.24
+   35                 188.25000                    -20.03                       22.43                       27.45                       21.24
+   36                 188.30000                    -20.03                       22.43                       27.44                       21.24
+   37                 188.35000                    -20.03                       22.43                       27.44                       21.23
+   38                 188.40000                    -20.03                       22.42                       27.43                       21.23
+   39                 188.45000                    -20.03                       22.42                       27.43                       21.23
+   40                 188.50000                    -20.03                       22.42                       27.43                       21.23
+   41                 188.55000                    -20.03                       22.42                       27.42                       21.23
+   42                 188.60000                    -20.03                       22.42                       27.42                       21.23
+   43                 188.65000                    -20.03                       22.42                       27.42                       21.23
+   44                 188.70000                    -20.03                       22.42                       27.42                       21.22
+   45                 188.75000                    -20.03                       22.42                       27.42                       21.22
+   46                 188.80000                    -20.03                       22.42                       27.42                       21.22
+   47                 188.85000                    -20.03                       22.41                       27.42                       21.22
+   48                 188.90000                    -20.03                       22.41                       27.42                       21.22
+   49                 188.95000                    -20.03                       22.41                       27.42                       21.22
+   50                 189.00000                    -20.03                       22.41                       27.43                       21.22
+   51                 189.05000                    -20.03                       22.41                       27.43                       21.22
+   52                 189.10000                    -20.03                       22.41                       27.44                       21.22
+   53                 189.15000                    -20.03                       22.41                       27.44                       21.22
+   54                 189.20000                    -20.03                       22.41                       27.45                       21.22
+   55                 189.25000                    -20.03                       22.41                       27.46                       21.23
+   56                 189.30000                    -20.03                       22.41                       27.46                       21.23
+   57                 189.35000                    -20.03                       22.40                       27.47                       21.23
+   58                 189.40000                    -20.03                       22.40                       27.49                       21.23
+   59                 189.45000                    -20.03                       22.40                       27.50                       21.23
+   60                 189.50000                    -20.03                       22.40                       27.51                       21.24
+   61                 189.55000                    -20.03                       22.40                       27.53                       21.24
+   62                 189.60000                    -20.03                       22.40                       27.55                       21.24
+   63                 189.65000                    -20.03                       22.40                       27.58                       21.25
+   64                 189.70000                    -20.03                       22.40                       27.60                       21.25
+   65                 189.75000                    -20.03                       22.40                       27.63                       21.26
+   66                 189.80000                    -20.03                       22.40                       27.67                       21.27
+   67                 189.85000                    -20.03                       22.39                       27.72                       21.28
+   68                 189.90000                    -20.03                       22.39                       27.78                       21.29
+   69                 189.95000                    -20.03                       22.39                       27.86                       21.31
+   70                 190.00000                    -20.03                       22.39                       27.97                       21.33
+   71                 190.05000                    -20.03                       22.39                       28.21                       21.38
+   72                 191.25000                    -20.03                       21.51                       28.66                       20.74
+   73                 191.30000                    -20.03                       21.51                       28.96                       20.79
+   74                 191.35000                    -20.03                       21.51                       29.16                       20.82
+   75                 191.40000                    -20.03                       21.50                       29.32                       20.84
+   76                 191.45000                    -20.03                       21.50                       29.51                       20.87
+   77                 191.50000                    -20.03                       21.50                       29.75                       20.90
+   78                 191.55000                    -20.03                       21.50                       30.22                       20.95
+   79                 191.60000                    -20.03                       21.50                       30.96                       21.03
+   80                 191.65000                    -20.03                       21.50                       30.46                       20.98
+   81                 191.70000                    -20.03                       21.50                       30.23                       20.95
+   82                 191.75000                    -20.03                       21.50                       30.08                       20.93
+   83                 191.80000                    -20.03                       21.50                       29.97                       20.92
+   84                 191.85000                    -20.03                       21.50                       29.88                       20.91
+   85                 191.90000                    -20.03                       21.49                       29.81                       20.90
+   86                 191.95000                    -20.03                       21.49                       29.75                       20.89
+   87                 192.00000                    -20.03                       21.49                       29.70                       20.88
+   88                 192.05000                    -20.03                       21.49                       29.65                       20.87
+   89                 192.10000                    -20.03                       21.49                       29.61                       20.87
+   90                 192.15000                    -20.03                       21.49                       29.57                       20.86
+   91                 192.20000                    -20.03                       21.49                       29.54                       20.86
+   92                 192.25000                    -20.03                       21.49                       29.50                       20.85
+   93                 192.30000                    -20.03                       21.49                       29.47                       20.85
+   94                 192.35000                    -20.03                       21.49                       29.44                       20.84
+   95                 192.40000                    -20.03                       21.48                       29.42                       20.84
+   96                 192.45000                    -20.03                       21.48                       29.39                       20.83
+   97                 192.50000                    -20.03                       21.48                       29.37                       20.83
+   98                 192.55000                    -20.03                       21.48                       29.35                       20.82
+   99                 192.60000                    -20.03                       21.48                       29.33                       20.82
+  100                 192.65000                    -20.03                       21.48                       29.31                       20.82
+  101                 192.70000                    -20.03                       21.48                       29.29                       20.81
+  102                 192.75000                    -20.03                       21.48                       29.27                       20.81
+  103                 192.80000                    -20.03                       21.48                       29.25                       20.81
+  104                 192.85000                    -20.03                       21.47                       29.23                       20.80
+  105                 192.90000                    -20.03                       21.47                       29.22                       20.80
+  106                 192.95000                    -20.03                       21.47                       29.20                       20.80
+  107                 193.00000                    -20.03                       21.47                       29.18                       20.79
+  108                 193.05000                    -20.03                       21.47                       29.17                       20.79
+  109                 193.10000                    -20.03                       21.47                       29.16                       20.79
+  110                 193.15000                    -20.03                       21.47                       29.14                       20.78
+  111                 193.20000                    -20.03                       21.47                       29.13                       20.78
+  112                 193.25000                    -20.03                       21.47                       29.12                       20.78
+  113                 193.30000                    -20.03                       21.47                       29.10                       20.78
+  114                 193.35000                    -20.03                       21.46                       29.09                       20.77
+  115                 193.40000                    -20.03                       21.46                       29.08                       20.77
+  116                 193.45000                    -20.03                       21.46                       29.07                       20.77
+  117                 193.50000                    -20.03                       21.46                       29.06                       20.77
+  118                 193.55000                    -20.03                       21.46                       29.05                       20.76
+  119                 193.60000                    -20.03                       21.46                       29.04                       20.76
+  120                 193.65000                    -20.03                       21.46                       29.03                       20.76
+  121                 193.70000                    -20.03                       21.46                       29.02                       20.76
+  122                 193.75000                    -20.03                       21.46                       29.01                       20.75
+  123                 193.80000                    -20.03                       21.46                       29.00                       20.75
+  124                 193.85000                    -20.03                       21.45                       28.99                       20.75
+  125                 193.90000                    -20.03                       21.45                       28.99                       20.75
+  126                 193.95000                    -20.03                       21.45                       28.98                       20.75
+  127                 194.00000                    -20.03                       21.45                       28.97                       20.74
+  128                 194.05000                    -20.03                       21.45                       28.97                       20.74
+  129                 194.10000                    -20.03                       21.45                       28.96                       20.74
+  130                 194.15000                    -20.03                       21.45                       28.96                       20.74
+  131                 194.20000                    -20.03                       21.45                       28.96                       20.74
+  132                 194.25000                    -20.03                       21.45                       28.95                       20.74
+  133                 194.30000                    -20.03                       21.45                       28.95                       20.74
+  134                 194.35000                    -20.03                       21.44                       28.95                       20.73
+  135                 194.40000                    -20.03                       21.44                       28.95                       20.73
+  136                 194.45000                    -20.03                       21.44                       28.95                       20.73
+  137                 194.50000                    -20.03                       21.44                       28.96                       20.73
+  138                 194.55000                    -20.03                       21.44                       28.96                       20.73
+  139                 194.60000                    -20.03                       21.44                       28.97                       20.73
+  140                 194.65000                    -20.03                       21.44                       28.98                       20.73
+  141                 194.70000                    -20.03                       21.44                       28.99                       20.74
+  142                 194.75000                    -20.03                       21.44                       29.01                       20.74
+  143                 194.80000                    -20.03                       21.44                       29.04                       20.74
+  144                 194.85000                    -20.03                       21.43                       29.07                       20.74
+  145                 194.90000                    -20.03                       21.43                       29.12                       20.75
+  146                 194.95000                    -20.03                       21.43                       29.18                       20.76
+  147                 195.00000                    -20.03                       21.43                       29.28                       20.77
+  148                 195.05000                    -20.03                       21.43                       29.44                       20.79
+  149                 195.10000                    -20.03                       21.43                       29.84                       20.84
+
+(Invalid source node 'Site_A' replaced with trx Site_A)
+
+(Invalid destination node 'Site_D' replaced with trx Site_D)
