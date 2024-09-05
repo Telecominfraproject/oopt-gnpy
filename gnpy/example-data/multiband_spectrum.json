@@ -1,0 +1,24 @@
+{
+    "spectrum": [
+        {
+            "f_min": 191.25e12,
+            "baud_rate": 32e9,
+            "f_max": 195.1e12,
+            "slot_width": 50e9,
+            "delta_pdb": 0,
+            "roll_off": 0.15,
+            "tx_osnr": 40,
+            "label": "cband"
+        },
+        {
+            "f_min": 186.3e12,
+            "baud_rate": 32e9,
+            "f_max": 190.1e12,
+            "slot_width": 50e9,
+            "delta_pdb": 0,
+            "roll_off": 0.15,
+            "tx_osnr": 40,
+            "label": "lband"
+        }
+    ]
+}
