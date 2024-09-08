@@ -1071,7 +1071,7 @@ def deduplicate_disjunctions(disjn):
     return local_disjn
 
 
-def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
+def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, redesign=False):
     """use a list but a dictionnary might be helpful to find path based on request_id
 
     TODO change all these req, dsjct, res lists into dict !
@@ -1080,6 +1080,10 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
     reversed_path_res_list = []
     propagated_reversed_path_res_list = []
 
+    total_nb_requests = len(pathreqlist)
+    if redesign:
+        LOGGER.warning('Redesign the network for each request channel, '
+                       + 'using the request channel as the reference channel for the design.')
     for i, pathreq in enumerate(pathreqlist):
 
         # use the power specified in requests but might be different from the one
@@ -1097,7 +1101,16 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist):
         # elements to simulate performance, several demands having the same destination
         # may use the same transponder for the performance simulation. This is why
         # we use deepcopy: to ensure that each propagation is recorded and not overwritten
-        network_module.design_network(pathreq, network, equipment, set_connector_losses=False, verbose=False)
+        # reversed path is needed for correct spectrum assignment
+        if redesign:
+            # this is the legacy case where network was automatically redesigned using the
+            # request channel as reference (nb and power used for amplifiers total power out)
+            reversed_path = []
+            if pathlist[i]:
+                reversed_path = find_reversed_path(pathlist[i])
+            network_nodes_for_redesign = pathlist[i] + reversed_path
+            network_module.design_network(pathreq, network.subgraph(network_nodes_for_redesign), equipment,
+                                          set_connector_losses=False, verbose=False)
         total_path = deepcopy(pathlist[i])
         msg = msg + f'\n\tComputed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}'
         LOGGER.info(msg)

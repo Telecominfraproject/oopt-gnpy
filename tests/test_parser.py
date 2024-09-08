@@ -232,7 +232,7 @@ def test_json_response_generation(xls_input, expected_response_file):
     rqs, dsjn = requests_aggregation(rqs, dsjn)
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
     propagatedpths, reversed_pths, reversed_propagatedpths = \
-        compute_path_with_disjunction(network, equipment, rqs, pths)
+        compute_path_with_disjunction(network, equipment, rqs, pths, redesign=True)
     pth_assign_spectrum(pths, rqs, oms_list, reversed_pths)
 
     result = []

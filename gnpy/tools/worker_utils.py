@@ -140,10 +140,13 @@ def check_request_path_ids(rqs: list[PathRequest]):
         raise ValueError(msg)
 
 
-def planning(network: DiGraph, equipment: dict, data: dict) \
+def planning(network: DiGraph, equipment: dict, data: dict, redesign: bool = False) \
         -> tuple[list[OMS], list, list, list[PathRequest], list[Disjunction], list[ResultElement]]:
     """Run planning
     data contain the service dict from json
+    redesign True means that network is redesign using each request as reference channel
+    when False it means that the design is made once and successive propagation use the settings
+    computed with this design.
     """
     oms_list = build_oms_list(network, equipment)
     rqs = requests_from_json(data, equipment)
@@ -163,7 +166,7 @@ def planning(network: DiGraph, equipment: dict, data: dict) \
     pths = compute_path_dsjctn(network, equipment, rqs, dsjn)
     logger.info('Propagating on selected path')
     propagatedpths, reversed_pths, reversed_propagatedpths = \
-        compute_path_with_disjunction(network, equipment, rqs, pths)
+        compute_path_with_disjunction(network, equipment, rqs, pths, redesign=redesign)
     # Note that deepcopy used in compute_path_with_disjunction returns
     # a list of nodes which are not belonging to network (they are copies of the node objects).
     # so there can not be propagation on these nodes.

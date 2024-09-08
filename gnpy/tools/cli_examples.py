@@ -299,6 +299,9 @@ def path_requests_run(args=None):
                         help='considers that all demands are bidir')
     parser.add_argument('-o', '--output', type=Path, metavar=_help_fname_json_csv,
                         help='Store satisifed requests into a JSON or CSV file')
+    parser.add_argument('--redesign-per-request', action='store_true', help='Redesign the network at each request'
+                        + ' computation using the request as the reference channel')
+
 
     args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
@@ -321,7 +324,7 @@ def path_requests_run(args=None):
                              network=network, network_filename=args.topology)
         _data = requests_from_json(data, equipment)
         oms_list, propagatedpths, reversed_propagatedpths, rqs, dsjn, result = \
-            planning(network, equipment, data)
+            planning(network, equipment, data, redesign=args.redesign_per_request)
     except exceptions.NetworkTopologyError as e:
         print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
         sys.exit(1)
