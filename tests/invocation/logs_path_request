@@ -118,6 +118,7 @@ INFO     gnpy.tools.worker_utils:worker_utils.py The following services have bee
 	loose-list:	[]
 ]
 INFO     gnpy.tools.worker_utils:worker_utils.py Propagating on selected path
+WARNING  gnpy.topology.request:request.py Redesign the network for each request channel, using the request channel as the reference channel for the design.
 INFO     gnpy.topology.request:request.py 
 	request 0
 	Computing path from trx Lorient_KMA to trx Vannes_KBE
