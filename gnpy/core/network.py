@@ -8,10 +8,10 @@ gnpy.core.network
 Working with networks which consist of network elements
 """
 
-from copy import deepcopy
 from operator import attrgetter
 from collections import namedtuple
 from logging import getLogger
+from typing import Tuple, List, Optional
 
 from gnpy.core import elements
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
@@ -24,8 +24,25 @@ from gnpy.core.science_utils import RamanSolver
 logger = getLogger(__name__)
 
 
-def edfa_nf(gain_target, variety_type, equipment):
-    amp_params = equipment['Edfa'][variety_type]
+def edfa_nf(gain_target: float, amp_params) -> float:
+    """Calculates the noise figure (NF) of an EDFA (Erbium-Doped Fiber Amplifier)
+    based on the specified gain target and amplifier parameters.
+
+    This function creates an EDFA instance with the given parameters and
+    computes its noise figure using the internal calculation method.
+
+    Parameters:
+    ----------
+    gain_target : float
+        The target gain for which the noise figure is to be calculated.
+    amp_params : object
+        An object containing the amplifier parameters.
+
+    Returns:
+    -------
+    float
+        The calculated noise figure (NF) of the EDFA in dB.
+    """
     amp = elements.Edfa(
         uid='calc_NF',
         params=amp_params.__dict__,
@@ -40,17 +57,65 @@ def edfa_nf(gain_target, variety_type, equipment):
     return amp._calc_nf(True)
 
 
-def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restrictions=None, verbose=True):
-    """amplifer selection algorithm
-    @Orange Jean-Luc Augé
+def select_edfa(raman_allowed: bool, gain_target: float, power_target: float, edfa_eqpt: dict, uid: str,
+                target_extended_gain: float, restrictions: Optional[List[str]] = None, verbose: Optional[bool] = True) \
+                -> Tuple[str, float]:
+    """Selects an amplifier within a library based on specified parameters.
+
+    This function implements an amplifier selection algorithm that considers
+    various constraints, including gain and power targets, as well as
+    restrictions on amplifier types. It can also handle Raman amplifiers
+    if allowed.
+
+    Parameters:
+    ----------
+    raman_allowed : bool
+        Indicates whether Raman amplifiers are permitted in the selection.
+    gain_target : float
+        The target gain that the selected amplifier should achieve.
+    power_target : float
+        The target power level for the amplifier.
+    edfa_eqpt : dict
+        A dictionary containing available EDFA equipment, where keys are
+        amplifier names and values are amplifier objects.
+    uid : str
+        A unique identifier for the node where the amplifier will be used.
+    target_extended_gain : float
+        The extended gain target derived from configuration settings.
+    restrictions : Optional[List[str]], default=None
+        A list of amplifier names that are restricted from selection.
+    verbose : Optional[bool], default=True
+        If True, enables verbose logging of warnings and information.
+
+    Returns:
+    -------
+    Tuple[str, float]
+        A tuple containing the selected amplifier's variety and the power
+        reduction applied (if any).
+
+    Raises:
+    ------
+    ConfigurationError
+        If no amplifiers meet the minimum gain requirement for the specified
+        node.
+
+    Notes:
+    -----
+    - The function considers both gain and power limitations when selecting
+      an amplifier.
+    - If no suitable amplifier is found or if the target gain exceeds the
+      capabilities of available amplifiers, a warning is logged.
+
+    Author:
+    -------
+    Jean-Luc Augé
     """
     Edfa_list = namedtuple('Edfa_list', 'variety power gain_min nf')
-    TARGET_EXTENDED_GAIN = equipment['Span']['default'].target_extended_gain
 
     # for roadm restriction only: create a dict including not allowed for design amps
     # because main use case is to have specific radm amp which are not allowed for ILA
     # with the auto design
-    edfa_dict = {name: amp for (name, amp) in equipment['Edfa'].items()
+    edfa_dict = {name: amp for (name, amp) in edfa_eqpt.items()
                  if restrictions is None or name in restrictions}
 
     pin = power_target - gain_target
@@ -59,13 +124,13 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
 
     # edfa list with:
     # extended gain min allowance of 3dB: could be parametrized, but a bit complex
-    # extended gain max allowance TARGET_EXTENDED_GAIN is coming from eqpt_config.json
+    # extended gain max allowance target_extended_gain is coming from eqpt_config.json
     # power attribut include power AND gain limitations
     edfa_list = [Edfa_list(
         variety=edfa_variety,
-        power=min(pin + edfa.gain_flatmax + TARGET_EXTENDED_GAIN, edfa.p_max) - power_target,
+        power=min(pin + edfa.gain_flatmax + target_extended_gain, edfa.p_max) - power_target,
         gain_min=gain_target + 3 - edfa.gain_min,
-        nf=edfa_nf(gain_target, edfa_variety, equipment))
+        nf=edfa_nf(gain_target, edfa_eqpt[edfa_variety]))
         for edfa_variety, edfa in edfa_dict.items()
         if ((edfa.allowed_for_design or restrictions is not None) and not edfa.raman)]
 
@@ -73,9 +138,9 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
     # do not allow extended gain min for Raman
     raman_list = [Edfa_list(
         variety=edfa_variety,
-        power=min(pin + edfa.gain_flatmax + TARGET_EXTENDED_GAIN, edfa.p_max) - power_target,
+        power=min(pin + edfa.gain_flatmax + target_extended_gain, edfa.p_max) - power_target,
         gain_min=gain_target - edfa.gain_min,
-        nf=edfa_nf(gain_target, edfa_variety, equipment))
+        nf=edfa_nf(gain_target, edfa_eqpt[edfa_variety]))
         for edfa_variety, edfa in edfa_dict.items()
         if (edfa.allowed_for_design and edfa.raman)] \
         if raman_allowed else []
@@ -97,7 +162,6 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
                     to satisfy min gain requirement in node {uid} \
                     please increase span fiber padding')
         else:
-            # TODO: convert to logging
             if verbose:
                 logger.warning(f'\n\tWARNING: target gain in node {uid} is below all available amplifiers min gain: '
                                + '\n\tamplifier input padding will be assumed, consider increase span fiber padding '
@@ -121,7 +185,7 @@ def select_edfa(raman_allowed, gain_target, power_target, equipment, uid, restri
     #       =>chose the amp with the best NF among the acceptable ones:
     selected_edfa = min(acceptable_power_list, key=attrgetter('nf'))  # filter on NF
     # check what are the gain and power limitations of this amp
-    power_reduction = min(selected_edfa.power, 0)
+    power_reduction = min(selected_edfa.power, 0.0)
     if power_reduction < -0.5 and verbose:
         logger.warning(f'\n\tWARNING: target gain and power in node {uid}\n'
                        + '\tis beyond all available amplifiers capabilities and/or extended_gain_range:\n'
@@ -358,8 +422,12 @@ def set_egress_amplifier(network, this_node, equipment, pref_ch_db, pref_total_d
                         restrictions = next_node.restrictions['preamp_variety_list']
                     else:
                         restrictions = None
-                    edfa_variety, power_reduction = select_edfa(raman_allowed, gain_target, power_target, equipment,
-                                                                node.uid, restrictions, verbose)
+                    edfa_eqpt = {n: a for n, a in equipment['Edfa'].items()}
+                    edfa_variety, power_reduction = \
+                        select_edfa(raman_allowed, gain_target, power_target, edfa_eqpt,
+                                    node.uid,
+                                    target_extended_gain=equipment['Span']['default'].target_extended_gain,
+                                    restrictions=restrictions, verbose=verbose)
                     extra_params = equipment['Edfa'][edfa_variety]
                     node.params.update_params(extra_params.__dict__)
                     dp += power_reduction
@@ -590,8 +658,7 @@ def set_roadm_internal_paths(roadm, network):
 
 def add_roadm_booster(network, roadm):
     next_nodes = [n for n in network.successors(roadm)
-                  if not (isinstance(n, elements.Transceiver) or isinstance(n, elements.Fused)
-                  or isinstance(n, elements.Edfa))]
+                  if not isinstance(n, (elements.Transceiver, elements.Fused, elements.Edfa))]
     # no amplification for fused spans or TRX
     for next_node in next_nodes:
         network.remove_edge(roadm, next_node)
@@ -617,7 +684,7 @@ def add_roadm_booster(network, roadm):
 
 def add_roadm_preamp(network, roadm):
     prev_nodes = [n for n in network.predecessors(roadm)
-                  if not (isinstance(n, elements.Transceiver) or isinstance(n, elements.Fused) or isinstance(n, elements.Edfa))]
+                  if not isinstance(n, (elements.Transceiver, elements.Fused, elements.Edfa))]
     # no amplification for fused spans or TRX
     for prev_node in prev_nodes:
         network.remove_edge(prev_node, roadm)
