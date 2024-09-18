@@ -596,11 +596,19 @@ def test_roadm_per_degree_impairments(type_variety, from_degree, to_degree, impa
         {
             "roadm-path-impairments-id": 1,
             "roadm-add-path": [{
+                "frequency-range": {
+                    "lower-frequency": 191.3e12,
+                    "upper-frequency": 196.1e12
+                },
                 "roadm-osnr": 41,
             }]
         }, {
             "roadm-path-impairments-id": 3,
             "roadm-add-path": [{
+                "frequency-range": {
+                    "lower-frequency": 191.3e12,
+                    "upper-frequency": 196.1e12
+                },
                 "roadm-inband-crosstalk": 0,
                 "roadm-osnr": 20,
                 "roadm-noise-figure": 23
@@ -657,14 +665,15 @@ def test_wrong_roadm_per_degree_impairments(from_degree, to_degree, impairment_i
         build_network(network, equipment, 0.0, 20.0)
 
 
-@pytest.mark.parametrize('path_type, type_variety, expected_pmd, expected_pdl, expected_osnr', [
-    ('express', 'default', 5.0e-12, 0.5, None),  # roadm instance parameters pre-empts library
-    ('express', 'example_test', 5.0e-12, 0.5, None),
-    ('express', 'example_detailed_impairments', 0, 0, None),  # detailed parameters pre-empts global instance ones
-    ('add', 'default', 5.0e-12, 0.5, None),
-    ('add', 'example_test', 5.0e-12, 0.5, None),
-    ('add', 'example_detailed_impairments', 0, 0, 41)])
-def test_impairment_initialization(path_type, type_variety, expected_pmd, expected_pdl, expected_osnr):
+@pytest.mark.parametrize('path_type, type_variety, expected_pmd, expected_pdl, expected_osnr, freq', [
+    ('express', 'default', 5.0e-12, 0.5, None, [191.3e12]),  # roadm instance parameters pre-empts library
+    ('express', 'example_test', 5.0e-12, 0.5, None, [191.3e12]),
+    ('express', 'example_detailed_impairments', 0, 0, None, [191.3e12]),  # detailed parameters pre-empts global ones
+    ('add', 'default', 5.0e-12, 0.5, None, [191.3e12]),
+    ('add', 'example_test', 5.0e-12, 0.5, None, [191.3e12]),
+    ('add', 'example_detailed_impairments', 0, 0, 41, [191.3e12]),
+    ('add', 'example_detailed_impairments', [0, 0], [0.5, 0], [35, 41], [188.5e12, 191.3e12])])
+def test_impairment_initialization(path_type, type_variety, expected_pmd, expected_pdl, expected_osnr, freq):
     """Check that impairments are correctly initialized, with this order:
     - use equipment roadm impairments if no impairment are set in the ROADM instance
     - use roadm global impairment if roadm global impairment are set
@@ -687,13 +696,16 @@ def test_impairment_initialization(path_type, type_variety, expected_pmd, expect
     roadm = Roadm(**roadm_config)
     roadm.set_roadm_paths(from_degree='tata', to_degree='toto', path_type=path_type)
     assert roadm.get_roadm_path(from_degree='tata', to_degree='toto').path_type == path_type
-    assert roadm.get_roadm_path(from_degree='tata', to_degree='toto').impairment.pmd == expected_pmd
-    assert roadm.get_roadm_path(from_degree='tata', to_degree='toto').impairment.pdl == expected_pdl
+    assert_allclose(roadm.get_impairment('roadm-pmd', freq, from_degree='tata', degree='toto'),
+                    expected_pmd, rtol=1e-12)
+    assert_allclose(roadm.get_impairment('roadm-pdl', freq, from_degree='tata', degree='toto'),
+                    expected_pdl, rtol=1e-12)
     if path_type == 'add':
         # we assume for simplicity that add contribution is the same as drop contribution
         # add_drop_osnr_db = 10log10(1/add_osnr + 1/drop_osnr)
         if type_variety in ['default', 'example_test']:
-            assert roadm.get_roadm_path(from_degree='tata',
-                                        to_degree='toto').impairment.osnr == roadm.params.add_drop_osnr + lin2db(2)
+            assert_allclose(roadm.get_impairment('roadm-osnr', freq, from_degree='tata', degree='toto'),
+                            roadm.params.add_drop_osnr + lin2db(2), rtol=1e-12)
         else:
-            assert roadm.get_roadm_path(from_degree='tata', to_degree='toto').impairment.osnr == expected_osnr
+            assert_allclose(roadm.get_impairment('roadm-osnr', freq, from_degree='tata', degree='toto'),
+                            expected_osnr, rtol=1e-12)

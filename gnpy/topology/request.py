@@ -367,7 +367,8 @@ def propagate(path, req, equipment):
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
             si = el(si, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
-            roadm_osnr.append(el.get_roadm_path(from_degree=path[i - 1].uid, to_degree=path[i + 1].uid).impairment.osnr)
+            roadm_osnr.append(el.get_impairment('roadm-osnr', si.frequency,
+                                                from_degree=path[i - 1].uid, degree=path[i + 1].uid))
         else:
             si = el(si)
     path[0].update_snr(si.tx_osnr)
@@ -413,7 +414,8 @@ def propagate_and_optimize_mode(path, req, equipment):
             for i, el in enumerate(path):
                 if isinstance(el, Roadm):
                     spc_info = el(spc_info, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
-                    roadm_osnr.append(el.get_roadm_path(from_degree=path[i - 1].uid, to_degree=path[i + 1].uid).impairment.osnr)
+                    roadm_osnr.append(el.get_impairment('roadm-osnr', spc_info.frequency,
+                                                        from_degree=path[i - 1].uid, degree=path[i + 1].uid))
                 else:
                     spc_info = el(spc_info)
             for this_mode in modes_to_explore:
