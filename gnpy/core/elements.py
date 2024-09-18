@@ -418,7 +418,7 @@ class Roadm(_Node):
         # record input powers to compute the actual loss at the end of the process
         input_power_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
         # apply min ROADM loss if it exists
-        roadm_maxloss_db = self.get_roadm_path(from_degree, degree).impairment.maxloss
+        roadm_maxloss_db = self.get_impairment('roadm-maxloss', spectral_info.frequency, from_degree, degree)
         spectral_info.apply_attenuation_db(roadm_maxloss_db)
         # records the total power after applying minimum loss
         net_input_power_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
@@ -433,7 +433,7 @@ class Roadm(_Node):
         # the power out of the ROADM for the ref channel is the min value between target power and input power.
         ref_pch_in_dbm = self.ref_pch_in_dbm[from_degree]
         # Calculate the output power for the reference channel (only for visualization)
-        self.ref_pch_out_dbm = min(ref_pch_in_dbm - roadm_maxloss_db, ref_per_degree_pch)
+        self.ref_pch_out_dbm = min(ref_pch_in_dbm - max(roadm_maxloss_db), ref_per_degree_pch)
 
         # Definition of effective_loss:
         # Optical power of carriers are equalized by the ROADM, so that the experienced loss is not the same for
@@ -465,11 +465,11 @@ class Roadm(_Node):
         spectral_info.apply_attenuation_db(delta_power)
 
         # Update the PMD information
-        pmd_impairment = self.get_roadm_path(from_degree=from_degree, to_degree=degree).impairment.pmd
+        pmd_impairment = self.get_impairment('roadm-pmd', spectral_info.frequency, from_degree, degree)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + pmd_impairment ** 2)
 
         # Update the PMD information
-        pdl_impairment = self.get_roadm_path(from_degree=from_degree, to_degree=degree).impairment.pdl
+        pdl_impairment = self.get_impairment('roadm-pdl', spectral_info.frequency, from_degree, degree)
         spectral_info.pdl = sqrt(spectral_info.pdl ** 2 + pdl_impairment ** 2)
 
         # Update the per channel power with the result of propagation
@@ -487,13 +487,19 @@ class Roadm(_Node):
         """
         # initialize impairment with params.pmd, params.cd
         # if more detailed parameters are available for the Roadm, the use them instead
-        roadm_global_impairment = {'roadm-pmd': self.params.pmd,
-                                   'roadm-pdl': self.params.pdl}
+        roadm_global_impairment = {
+            'impairment': [{
+                'roadm-pmd': self.params.pmd,
+                'roadm-pdl': self.params.pdl,
+                'frequency-range': {
+                    'lower-frequency': None,
+                    'upper-frequency': None
+                }}]}
         if path_type in ['add', 'drop']:
             # without detailed imparments, we assume that add OSNR contribution is the same as drop contribution
             # add_drop_osnr_db = - 10log10(1/add_osnr + 1/drop_osnr) with add_osnr = drop_osnr
             # = add_osnr_db + 10log10(2)
-            roadm_global_impairment['roadm-osnr'] = self.params.add_drop_osnr + lin2db(2)
+            roadm_global_impairment['impairment'][0]['roadm-osnr'] = self.params.add_drop_osnr + lin2db(2)
         impairment = RoadmImpairment(roadm_global_impairment)
 
         if impairment_id is None:
@@ -533,6 +539,34 @@ class Roadm(_Node):
         if impairment_id in self.roadm_path_impairments.keys():
             return self.roadm_path_impairments[impairment_id].path_type
         return None
+
+    def get_impairment(self, impairment: str, frequency_array: array, from_degree: str, degree: str) \
+            -> array:
+        """
+        Retrieves the specified impairment values for the given frequency array.
+
+        Parameters:
+            impairment (str): The type of impairment to retrieve (roadm-pmd, roamd-maxloss...).
+            frequency_array (array): The frequencies at which to check for impairments.
+            from_degree (str): The ingress degree for the roadm internal path.
+            degree (str): The egress degree for the roadm internal path.
+
+        Returns:
+            array: An array of impairment values for the specified frequencies.
+        """
+        result = []
+        impairment_per_band = self.get_roadm_path(from_degree, degree).impairment.impairments
+        for frequency in frequency_array:
+            for item in impairment_per_band:
+                f_min = item['frequency-range']['lower-frequency']
+                f_max = item['frequency-range']['upper-frequency']
+                if (f_min is None or f_min <= frequency <= f_max):
+                    item[impairment] = item.get(impairment, RoadmImpairment.default_values[impairment])
+                    if item[impairment] is not None:
+                        result.append(item[impairment])
+                        break  # Stop searching after the first match for this frequency
+        if result:
+            return array(result)
 
     def __call__(self, spectral_info, degree, from_degree):
         self.propagate(spectral_info, degree=degree, from_degree=from_degree)

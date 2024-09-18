@@ -137,7 +137,7 @@ class RoadmParams(Parameters):
         for path_impairment in path_impairments_list:
             index = path_impairment['roadm-path-impairments-id']
             path_type = next(key for key in path_impairment if key in authorized_path_types.keys())
-            impairment_dict = dict({'path-type': authorized_path_types[path_type]}, **path_impairment[path_type][0])
+            impairment_dict = {'path-type': authorized_path_types[path_type], 'impairment': path_impairment[path_type]}
             roadm_path_impairments[index] = RoadmImpairment(impairment_dict)
         return roadm_path_impairments
 
@@ -158,26 +158,24 @@ class RoadmPath:
 
 class RoadmImpairment:
     """Generic definition of impairments for express, add and drop"""
+    default_values = {
+        'roadm-pmd': None,
+        'roadm-cd': None,
+        'roadm-pdl': None,
+        'roadm-inband-crosstalk': None,
+        'roadm-maxloss': 0,
+        'roadm-osnr': None,
+        'roadm-pmax': None,
+        'roadm-noise-figure': None,
+        'minloss': None,
+        'typloss': None,
+        'pmin': None,
+        'ptyp': None
+    }
+
     def __init__(self, params):
-        """Records roadm internal paths and types"""
         self.path_type = params.get('path-type')
-        self.pmd = params.get('roadm-pmd')
-        self.cd = params.get('roadm-cd')
-        self.pdl = params.get('roadm-pdl')
-        self.inband_crosstalk = params.get('roadm-inband-crosstalk')
-        self.maxloss = params.get('roadm-maxloss', 0)
-        if params.get('frequency-range') is not None:
-            self.fmin = params.get('frequency-range')['lower-frequency']
-            self.fmax = params.get('frequency-range')['upper-frequency']
-        else:
-            self.fmin, self.fmax = None, None
-        self.osnr = params.get('roadm-osnr', None)
-        self.pmax = params.get('roadm-pmax', None)
-        self.nf = params.get('roadm-noise-figure', None)
-        self.minloss = params.get('minloss', None)
-        self.typloss = params.get('typloss', None)
-        self.pmin = params.get('pmin', None)
-        self.ptyp = params.get('ptyp', None)
+        self.impairments = params['impairment']
 
 
 class FusedParams(Parameters):

@@ -128,6 +128,19 @@
                         "roadm-pmax": 2.5,
                         "roadm-osnr": 41,
                         "roadm-noise-figure": 23
+                    }, {
+                        "frequency-range": {
+                            "lower-frequency": 186.3e12,
+                            "upper-frequency": 190.1e12
+                        },
+                        "roadm-pmd": 0,
+                        "roadm-cd": 0,
+                        "roadm-pdl": 0.5,
+                        "roadm-inband-crosstalk": 0,
+                        "roadm-maxloss": 5,
+                        "roadm-pmax": 0,
+                        "roadm-osnr": 35,
+                        "roadm-noise-figure": 6
                     }]
                 }, {
                     "roadm-path-impairments-id": 2,
