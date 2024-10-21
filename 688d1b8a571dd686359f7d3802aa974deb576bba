@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b86791c_88c0889e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-10-21T13:34:48Z",
+      "side": 1,
+      "message": "Could you please have a look to the documentation for the multiband ?",
+      "revId": "688d1b8a571dd686359f7d3802aa974deb576bba",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
