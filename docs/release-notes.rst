@@ -6,6 +6,182 @@ Release change log
 Each release introduces some changes and new features.
 
 (prepare text for next release)
+
+v2.11
+-----
+
+**New feature**
+
+A new type_def for amplifiers has been introduced: multi_band. This allows the definition of a
+multiband amplifier composed of several amplifiers per band (a typical application is C+L). The
+release also includes autodesign for links (Optical Multiplex Section, OMS) composed of
+multi_band amplifiers. The multi_band autodesign includes basic tilt and tilt_target computation
+when the Raman flag is enabled with the --sim-params option. The spectrum is demultiplexed before
+propagation into the amplifier and multiplexed in the output fiber at the amplifier output.
+
+In the library:
+
+    .. code-block:: json
+
+        {
+            "type_variety": "std_medium_gain_C",
+            "f_min": 191.225e12,
+            "f_max": 196.125e12,
+            "type_def": "variable_gain",
+            "gain_flatmax": 26,
+            "gain_min": 15,
+            "p_max": 21,
+            "nf_min": 6,
+            "nf_max": 10,
+            "out_voa_auto": false,
+            "allowed_for_design": false
+        },
+        {
+            "type_variety": "std_medium_gain_L",
+            "f_min": 186.5e12,
+            "f_max": 190.1e12,
+            "type_def": "variable_gain",
+            "gain_flatmax": 26,
+            "gain_min": 15,
+            "p_max": 21,
+            "nf_min": 6,
+            "nf_max": 10,
+            "out_voa_auto": false,
+            "allowed_for_design": true
+        },
+        {
+            "type_variety": "std_medium_gain_multiband",
+            "type_def": "multi_band",
+            "amplifiers": [
+                "std_medium_gain_C",
+                "std_medium_gain_L"
+            ],
+            "allowed_for_design": false
+        },
+
+In the network topology:
+
+    .. code-block:: json
+
+      {
+          "uid": "east edfa in Site_A to Site_B",
+          "type": "Multiband_amplifier",
+          "type_variety": "std_medium_gain_multiband",
+          "amplifiers": [{
+                  "type_variety": "std_medium_gain_C",
+                  "operational": {
+                      "gain_target": 22.55,
+                      "delta_p": 0.9,
+                      "out_voa": 3.0,
+                      "tilt_target": 0.0
+                  }
+              }, {
+                  "type_variety": "std_medium_gain_L",
+                  "operational": {
+                      "gain_target": 21,
+                      "delta_p": 3.0,
+                      "out_voa": 3.0,
+                      "tilt_target": 0.0
+                  }
+              }
+          ]
+      }
+
+**Network design**
+
+Users can optionally define design target per OMS (single or multi_band), with specific frequency ranges.
+Default design bands are defined in the SI.
+
+    .. code-block:: json
+
+      {
+          "uid": "roadm Site_A",
+          "type": "Roadm",
+          "params": {
+              "target_pch_out_db": -20,
+              "design_bands": [{"f_min": 191.3e12, "f_max": 195.1e12}]
+          }
+      }
+
+It is possible to define a set of bands in SI block instead of a unique Spectrum Information.
+In this case type_variety must be use.
+Each set defines a reference channel used for design functions and autodesign.
+
+The default design settings has been modifiedfor path-request-run script.
+Now, design is performed once for the reference channel defined in the SI block of the eqpt_config,
+and requests are propagated based on this design.
+The --redesign-per-request option can be used to restore previous behaviour
+(design using request channel types).
+
+The autodesign function has been updated to insert multiband booster, preamp or inline amplifiers based on the OMS
+nature. If nothing is stated, then it uses Edfas.
+
+**Propagation**
+
+Only carriers within amplifier bandwidth are propagated, enhancing system consistency. This stricter verification
+of the spectrum to be propagated and the amplifiers' bandwidth may lead to changes in the total number of channels
+compared to previous releases. It is possible to adjust the range by adjusting ``f_min`` and ``f_max`` in the
+amplifier library.
+
+``f_min`` and ``f_max`` represent amplification bandwidth (the entire channel must fit within this range).
+In the example below, a signal center frequency of 190.05THz with a 50GHz width cannot fit within the amplifier band.
+Note that this has a different meaning in the SI or Transceiver blocks, where ``f_min`` and ``f_max`` refers to the
+minimum / maximum values of the carrier center frequency.
+
+    .. code-block:: json
+
+      {
+          "type_variety": "std_booster_L",
+          "f_min": 186.55e12,
+          "f_max": 190.05e12,
+          "type_def": "fixed_gain",
+          "gain_flatmax": 21,
+          "gain_min": 20,
+          "p_max": 21,
+          "nf0": 5,
+          "allowed_for_design": false
+      }
+
+
+**Display**
+
+The CLI output for the transmission_main_example now displays the channels used for design and simulation,
+as well as the tilt target of amplifiers.
+
+  .. code-block:: text
+
+    Reference used for design: (Input optical power reference in span = 0.00dBm,
+                                spacing = 50.00GHz
+                                nb_channels = 76)
+
+    Channels propagating: (Input optical power deviation in span = 0.00dB,
+                          spacing = 50.00GHz,
+                          transceiver output power = 0.00dBm,
+                          nb_channels = 76)
+
+The CLI output displays the settings of each amplifier:
+
+  .. code-block:: text
+
+    Multiband_amplifier east edfa in Site_A to Site_B
+      type_variety:           std_medium_gain_multiband
+      type_variety:           std_medium_gain_C    type_variety:           std_medium_gain_L  
+      effective gain(dB):     20.90                effective gain(dB):     22.19              
+      (before att_in and before output VOA)        (before att_in and before output VOA)      
+      tilt-target(dB)         0.00                 tilt-target(dB)         0.00               
+      noise figure (dB):      6.38                 noise figure (dB):      6.19               
+      (including att_in)                           (including att_in)                         
+      pad att_in (dB):        0.00                 pad att_in (dB):        0.00               
+      Power In (dBm):         -1.08                Power In (dBm):         -1.49              
+      Power Out (dBm):        19.83                Power Out (dBm):        20.71              
+      Delta_P (dB):           0.90                 Delta_P (dB):           2.19               
+      target pch (dBm):       0.90                 target pch (dBm):       3.00               
+      actual pch out (dBm):   -2.09                actual pch out (dBm):   -0.80              
+      output VOA (dB):        3.00                 output VOA (dB):        3.00               
+
+v2.10
+-----
+
 ROADM impairments can be defined per degree and roadm-path type (add, drop or express).
 Minimum loss when crossing a ROADM is no more 0 dB. It can be set per ROADM degree with roadm-path-impairments.
 
@@ -225,15 +401,15 @@ involute manner to get a vanishing beta3 , and this was a mere artifact for NLI 
 beta2 and beta3, not for total dispersion accumulation). Now, the evaluation of beta2 and beta3 is performed explicitly
 in the element.py module.
 
-2. The effective area is provided as a scalar value evaluated at the Fiber reference frequency and properly scaled
+1. The effective area is provided as a scalar value evaluated at the Fiber reference frequency and properly scaled
 considering the Fiber refractive indices n1 and n2, and the core radius. These quantities are assumed to be fixed and
 are hard coded in the parameters.py module. Essential change: The effective area is always scaled along the frequency.
 
-3. The Raman gain coefficient is properly scaled considering the overlapping of fiber effective area values scaled at
+2. The Raman gain coefficient is properly scaled considering the overlapping of fiber effective area values scaled at
 the interacting frequencies. Essential change: In previous version the Raman gain coefficient depends only on
 the frequency offset.
 
-4. The nonlinear coefficient ``'gamma'`` is properly scaled considering the refractive index n2 and the scaling
+3. The nonlinear coefficient ``'gamma'`` is properly scaled considering the refractive index n2 and the scaling
 effective area.  Essential change: As the effective area, the nonlinear coefficient is always scaled along the
 frequency.
 
