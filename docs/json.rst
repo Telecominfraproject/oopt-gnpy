@@ -19,7 +19,7 @@ EDFA
 ~~~~
 
 The EDFA equipment library is a list of supported amplifiers. New amplifiers
-can be added and existing ones removed. Three different noise models are available:
+can be added and existing ones removed. Various noise models are available.
 
 1. ``'type_def': 'variable_gain'`` is a simplified model simulating a 2-coil EDFA with internal, input and output VOAs.
    The NF vs gain response is calculated accordingly based on the input parameters: ``nf_min``, ``nf_max``, and ``gain_flatmax``.
@@ -35,8 +35,12 @@ can be added and existing ones removed. Three different noise models are availab
    A detailed JSON configuration file is required (by default `gnpy/example-data/std_medium_gain_advanced_config.json <https://github.com/Telecominfraproject/oopt-gnpy/blob/master/gnpy/example-data/std_medium_gain_advanced_config.json>`_).
    It uses a 3rd order polynomial where NF = f(gain), NF_ripple = f(frequency), gain_ripple = f(frequency), N-array dgt = f(frequency).
    Compared to the previous models, NF ripple and gain ripple are modelled.
+6. ``'type_def': 'multi_band'`` defines an amplifier type composed of several amplifiers that amplify different spectrum bands.
+   The ``amplifiers`` list contains the list of single band amplifier type varieties that are allowed to compose such a multi
+   band amplifiers. It is possible to list several options for a same spectrum band. Only one can be sectlected
+   for the actual :ref:`Multiband_amplifier<multiband_amps>` element.
 
-For all amplifier models:
+For all single band amplifier models:
 
 +------------------------+-----------+-----------------------------------------+
 | field                  |   type    | description                             |
@@ -49,6 +53,30 @@ For all amplifier models:
 |                        |           | VOA is present and will be used to push |
 |                        |           | amplifier gain to its maximum, within   |
 |                        |           | EOL power margins.                      |
++------------------------+-----------+-----------------------------------------+
+| ``allowed_for_design`` | (boolean) | If false, the amplifier will not be     |
+|                        |           | picked by auto-design but it can still  |
+|                        |           | be used as a manual input (from JSON or |
+|                        |           | Excel template topology files.)         |
++------------------------+-----------+-----------------------------------------+
+| ``f_min``              | (number)  | Optional. In :math:`Hz`. Minimum and    |
+| and ``f_max``          |           | maximum frequency range for the         |
+|                        |           | amplifier. Signal must fit entirely     |
+|                        |           | within this range (center frequency and |
+|                        |           | spectrum width).                        |
+|                        |           | Default is 191.275e-12 Hz and           |
+|                        |           | 196.125e-12 (tunable in                 |
+|                        |           | default_edfa_config.json)               |
++------------------------+-----------+-----------------------------------------+
+
+
+For multi_band amplifier models:
+
++------------------------+-----------+-----------------------------------------+
+| field                  |   type    | description                             |
++========================+===========+=========================================+
+| ``type_variety``       | (string)  | A unique name to ID the amplifier in the|
+|                        |           | JSON template topology input file.      |
 +------------------------+-----------+-----------------------------------------+
 | ``allowed_for_design`` | (boolean) | If false, the amplifier will not be     |
 |                        |           | picked by auto-design but it can still  |
@@ -447,14 +475,14 @@ Here is an example:
       "uid": "roadm SITE1",
       "type": "Roadm",
       "type_variety": "detailed_impairments",
-	    "params": {
-		    "per_degree_impairments": [
-		    {
-			    "from_degree": "trx SITE1",
-		      "to_degree": "east edfa in SITE1 to ILA1",
-			    "impairment_id": 1
-		    }]
-	    }
+      "params": {
+        "per_degree_impairments": [
+        {
+          "from_degree": "trx SITE1",
+          "to_degree": "east edfa in SITE1 to ILA1",
+          "impairment_id": 1
+        }]
+      }
     }
 
 It is not permitted to use a roadm-path-impairment-id for the wrong roadm path type (add impairment only for add path).
@@ -727,6 +755,10 @@ In the simplest case, homogeneous channel allocation can be defined via the ``Sp
 +----------------------+-----------+-------------------------------------------+
 | field                |   type    | description                               |
 +======================+===========+===========================================+
+| ``type_variety``     | (string)  | Optional. Default: ``default``            |
+|                      |           | A unique name to ID the band for          |
+|                      |           | propagation or design.                    |
++----------------------+-----------+-------------------------------------------+
 | ``f_min``,           | (number)  | In Hz. Define spectrum boundaries. Note   |
 | ``f_max``            |           | that due to backward compatibility, the   |
 |                      |           | first channel central frequency is placed |
@@ -793,6 +825,13 @@ In the simplest case, homogeneous channel allocation can be defined via the ``Sp
 |                      |           | transceiver OSNR.                         |
 +----------------------+-----------+-------------------------------------------+
 
+It is possible to define a set of bands in the SI block. In this case, type_variety must be use.
+Each set defines a reference channel used for design functions and autodesign processes.
+
+If no spectrum is defined (--spectrum, or services) that the same channel type is
+used for the simulation
+
+
 .. _mixed-rate:
 
 Arbitrary channel definition
@@ -843,7 +882,7 @@ For example this example:
 .. code-block:: json
 
  {
-   "SI":[
+   "spectrum":[
      {
        "f_min": 191.4e12,
        "f_max":193.1e12,
@@ -854,7 +893,7 @@ For example this example:
      },
      {
        "f_min": 193.1625e12,
-       "f_max":195e12,
+       "f_max": 195e12,
        "baud_rate": 64e9,
        "delta_pdb": 3,
        "slot_width": 75e9,
@@ -1100,6 +1139,8 @@ the maximum achievable total power.
 
 The exact layout used by simulation can be retrieved thanks to --save-network option.
 
+.. _operational_field:
+
 +----------------------+-----------+--------------------------------------------------+
 | field                |   type    | description                                      |
 +======================+===========+==================================================+
@@ -1155,6 +1196,63 @@ The exact layout used by simulation can be retrieved thanks to --save-network op
       }
     }
 
+.. _multiband_amps:
+
+Multiband_amplifier attributes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
++----------------------+-----------+--------------------------------------------------+
+| field                |   type    | description                                      |
++======================+===========+==================================================+
+| ``type``             | (string)  | Mandatory: ``Multiband_amplifier``               |
++----------------------+-----------+--------------------------------------------------+
+| ``type_variety``     | (string)  | Optional, value must be listed in the library    |
+|                      |           | to be a valid type. If not defined, autodesign   |
+|                      |           | will pick one in the library among the           |
+|                      |           | ``allowed_for_design``.                          |
++----------------------+-----------+--------------------------------------------------+
+| ``amplifiers``       | (list of  | Optional, configuration settings of the          |
+|                      |  dict)    | amplifiers composing the multiband amplifier.    |
+|                      |           | Single band amplifier can be set with the        |
+|                      |           | parameters of tables:                            |
+|                      |           | :ref:`operational_field<operational_field>`:     |
++----------------------+-----------+--------------------------------------------------+
+
+Example of Multiband_amplifier element setting:
+
+    .. code-block:: json
+
+      {
+          "uid": "east edfa in Site_A to Site_B",
+          "type": "Multiband_amplifier",
+          "type_variety": "std_medium_gain_multiband",
+          "amplifiers": [{
+                  "type_variety": "std_medium_gain_C",
+                  "operational": {
+                      "gain_target": 22.55,
+                      "delta_p": 0.9,
+                      "out_voa": 3.0,
+                      "tilt_target": 0.0
+                  }
+              }, {
+                  "type_variety": "std_medium_gain_L",
+                  "operational": {
+                      "gain_target": 21,
+                      "delta_p": 3.0,
+                      "out_voa": 3.0,
+                      "tilt_target": 0.0
+                  }
+              }
+          ]
+      }
+
+The frequency band of the element is the concatenation of the individual amplifier's band composing
+the Multiband_amplifier element. Only carriers within these bands are propagated through the Multiband_amplifier
+element. If user defines a spectrum larger than these bands, carriers not matching the bands willbe filterred out.
+User can define amplifiers
+bandwidth in the library . f_min and f_max represent amplifier band (the entire channel must fit within).
+Individual amplifier type_vaiety must be part of the allowed ``amplifiers`` list defined in the library. 
+
 Roadm
 ~~~~~
 
@@ -1186,31 +1284,69 @@ Roadm
 |                                        |  dict)    | defined, it overrides the general values defined   |
 |                                        |           | by type_variety.                                   |
 +----------------------------------------+-----------+----------------------------------------------------+
+| ``design_bands``                       | (list of  | Optional. List of bands expressed as dictionnary,  |
+|                                        |  dict)    | e.g. {"f_min": 191.3e12, "f_max": 195.1e12}        |
+|                                        |           | To be considered for autodesign on all degrees of  |
+|                                        |           | the ROADM, if nothing is defined on the degrees.   |
++----------------------------------------+-----------+----------------------------------------------------+
+| ``per_degree_design_bands``            | (dict of  | Optional. If defined, it overrides ROADM's general |
+|                                        |  string,  | design_bands, on the degree identified with the    |
+|                                        |  list of  | key string. Value is a list of bands defined by    |
+|                                        |  dict)    | their frequency bounds ``f_min`` and ``f_max``     |
+|                                        |           | expressed in THz.                                  |
++----------------------------------------+-----------+----------------------------------------------------+
+
 
 Definition example:
 
-.. code-block:: json
+  .. code-block:: json
 
     {
       "uid": "roadm SITE1",
       "type": "Roadm",
       "type_variety": "detailed_impairments",
-	    "params": {
-		  "per_degree_impairments": [
-		    {
-			    "from_degree": "trx SITE1",
-		      "to_degree": "east edfa in SITE1 to ILA1",
-			    "impairment_id": 1
-		    }],
-          "per_degree_pch_out_db": {
+      "params": {
+        "per_degree_impairments": [
+          {
+            "from_degree": "trx SITE1",
+            "to_degree": "east edfa in SITE1 to ILA1",
+            "impairment_id": 1
+          }],
+        "per_degree_pch_out_db": {
             "east edfa in SITE1 to ILA1": -13.5
-          }
-	    }
+        }
+      }
     }
 
 In this example, all «implicit» express roadm-path are assigned as roadm-path-impairment-id = 0, and the target power is
 set according to the value defined in the library except for the direction heading to "east edfa in SITE1 to ILA1", where
 constant power equalization is used to reach -13.5 dBm target power.
+
+  .. code-block:: json
+
+    {
+      "uid": "roadm SITE1",
+      "type": "Roadm",
+      "params": {
+        "per_degree_design_bands": {
+          "east edfa in SITE1 to ILA1": [
+            {"f_min": 191.3e12, "f_max": 196.0e12},
+            {"f_min": 187.0e12, "f_max": 190.0e12}
+          ]
+        }
+      }
+    }
+
+In this example the OMS starting from east edfa in SITE1 to ILA1 is defined as a multiband OMS. This means that
+If there is no setting in all or some of the amplifiers in the OMS, the autodesign function will select
+amplifiers among those which have ``multi_band`` amplifiers ``type_def``. 
+
+Default ``design_bands`` is inferred from the :ref:`SI<spectral_info>` block.
+
+Note that ``design_bands`` and amplifiers' ``type_variety`` must be consistent:
+
+  - it is not possible to mix single band and multi band amplifiers on the same OMS ;
+  - amplifiers' frequency range must encompass ``design_bands``.
 
 Fused
 ~~~~~
@@ -1221,7 +1357,7 @@ A fused element connected to the egress of a ROADM will disable the automatic bo
 
 Fused ``params`` only contains a ``loss`` value in dB.
 
-.. code-block:: json
+  .. code-block:: json
 
       "params": {
         "loss": 2
