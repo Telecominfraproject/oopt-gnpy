@@ -368,7 +368,7 @@ def compute_band_power_deviation_and_tilt(srs_power_deviation, design_bands: dic
     return deviation_db, tilt_target
 
 
-def compute_tilt_using_previous_and_next_spans(prev_node, next_node, design_bands: List[str],
+def compute_tilt_using_previous_and_next_spans(prev_node, next_node, design_bands: Dict[str, float],
         input_powers: Dict[str, float], equipment: dict, network: DiGraph, prev_weight: float = 1.0,
         next_weight: float = 0) -> Tuple[Dict[str, float], Dict[str, float]]:
     """Compute the power deviation per band and the tilt target based on previous and next spans.

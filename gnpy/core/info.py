@@ -11,7 +11,7 @@ This module contains classes for modelling :class:`SpectralInformation`.
 from __future__ import annotations
 from collections import namedtuple
 from collections.abc import Iterable
-from typing import Union, List
+from typing import Union, List, Optional
 from dataclasses import dataclass
 from numpy import argsort, mean, array, append, ones, ceil, any, zeros, outer, full, ndarray, asarray
 
@@ -325,7 +325,7 @@ def is_in_band(frequency: float, band: dict) -> bool:
     return False
 
 
-def demuxed_spectral_information(input_si: SpectralInformation, band: dict) -> SpectralInformation:
+def demuxed_spectral_information(input_si: SpectralInformation, band: dict) -> Optional[SpectralInformation]:
     """extract a si based on band
     """
     filtered_indices = [i for i, f in enumerate(input_si.frequency)
