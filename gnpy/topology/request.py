@@ -1178,6 +1178,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                         pathreq.tx_osnr = mode['tx_osnr']
                         pathreq.bit_rate = mode['bit_rate']
                         pathreq.penalties = mode['penalties']
+                        pathreq.offset_db = mode['equalization_offset_db']
                     # other blocking reason should not appear at this point
                 except AttributeError:
                     pathreq.baud_rate = mode['baud_rate']
@@ -1187,6 +1188,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                     pathreq.tx_osnr = mode['tx_osnr']
                     pathreq.bit_rate = mode['bit_rate']
                     pathreq.penalties = mode['penalties']
+                    pathreq.offset_db = mode['equalization_offset_db']
 
             # reversed path is needed for correct spectrum assignment
             reversed_path = find_reversed_path(pathlist[i])
