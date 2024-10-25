@@ -666,7 +666,7 @@
       "type": "Edfa",
       "operational": {
         "gain_target": null,
-        "tilt_target": 0
+        "tilt_target": null
       }
     },
     {
@@ -682,7 +682,7 @@
       "type": "Edfa",
       "operational": {
         "gain_target": null,
-        "tilt_target": 0
+        "tilt_target": null
       }
     },
     {
@@ -698,7 +698,7 @@
       "type": "Edfa",
       "operational": {
         "gain_target": null,
-        "tilt_target": 0
+        "tilt_target": null
       }
     },
     {
@@ -714,7 +714,7 @@
       "type": "Edfa",
       "operational": {
         "gain_target": null,
-        "tilt_target": 0
+        "tilt_target": null
       }
     },
     {
@@ -732,7 +732,7 @@
       "operational": {
         "gain_target": 20.0,
         "delta_p": null,
-        "tilt_target": 0,
+        "tilt_target": null,
         "out_voa": null
       }
     },
@@ -766,7 +766,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": 0,
+        "tilt_target": null,
         "out_voa": null
       }
     },
@@ -784,7 +784,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": 0,
+        "tilt_target": null,
         "out_voa": null
       }
     },
@@ -802,7 +802,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": 0,
+        "tilt_target": null,
         "out_voa": null
       }
     },
@@ -820,7 +820,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": 0,
+        "tilt_target": null,
         "out_voa": null
       }
     },
@@ -838,7 +838,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": 0,
+        "tilt_target": null,
         "out_voa": null
       }
     },
@@ -856,7 +856,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": 0,
+        "tilt_target": null,
         "out_voa": null
       }
     },
@@ -874,7 +874,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": 0,
+        "tilt_target": null,
         "out_voa": null
       }
     },
@@ -892,7 +892,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": 0,
+        "tilt_target": null,
         "out_voa": null
       }
     },
@@ -910,7 +910,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": 0,
+        "tilt_target": null,
         "out_voa": null
       }
     },
@@ -928,7 +928,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": 0,
+        "tilt_target": null,
         "out_voa": null
       }
     },
@@ -946,7 +946,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": 0,
+        "tilt_target": null,
         "out_voa": null
       }
     },
@@ -964,7 +964,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": 0,
+        "tilt_target": null,
         "out_voa": null
       }
     },
@@ -983,7 +983,7 @@
       "operational": {
         "gain_target": 18.0,
         "delta_p": null,
-        "tilt_target": 0,
+        "tilt_target": null,
         "out_voa": null
       }
     },
@@ -1001,7 +1001,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": 0,
+        "tilt_target": null,
         "out_voa": null
       }
     },
@@ -1019,7 +1019,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": 0,
+        "tilt_target": null,
         "out_voa": null
       }
     },
@@ -1037,7 +1037,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": 0,
+        "tilt_target": null,
         "out_voa": null
       }
     }

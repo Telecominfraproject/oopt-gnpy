@@ -130,7 +130,7 @@ class Eqpt:
         'east_amp_type': '',
         'east_amp_gain': None,
         'east_amp_dp': None,
-        'east_tilt_vs_wavelength': 0,
+        'east_tilt_vs_wavelength': None,
         'east_att_out': None
     }
 
@@ -518,7 +518,7 @@ def xls_to_json_data(input_filename: Path, filter_region: List[str] = None) -> D
                                         'longitude': x.longitude}},
               'type': 'Edfa',
               'operational': {'gain_target': None,
-                              'tilt_target': 0}
+                              'tilt_target': None}
               } for x in nodes_by_city.values() if x.node_type.lower() == 'ila' and x.city not in eqpts_by_city] +
             [{'uid': f'east edfa in {x.city}',
               'metadata': {'location': {'city': x.city,
@@ -527,7 +527,7 @@ def xls_to_json_data(input_filename: Path, filter_region: List[str] = None) -> D
                                         'longitude': x.longitude}},
               'type': 'Edfa',
               'operational': {'gain_target': None,
-                              'tilt_target': 0}
+                              'tilt_target': None}
               } for x in nodes_by_city.values() if x.node_type.lower() == 'ila' and x.city not in eqpts_by_city]
             + [create_east_eqpt_element(e, nodes_by_city) for e in eqpts]
             + [create_west_eqpt_element(e, nodes_by_city) for e in eqpts],

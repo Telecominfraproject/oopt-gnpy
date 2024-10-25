@@ -988,7 +988,8 @@ class Edfa(_Node):
                           f'  type_variety:           {self.params.type_variety}',
                           f'  effective gain(dB):     {self.effective_gain:.2f}',
                           '  (before att_in and before output VOA)',
-                          f'  tilt-target(dB)         {self.tilt_target:.2f}',
+                          f'  tilt-target(dB)         {self.tilt_target if self.tilt_target else 0:.2f}',
+                          # avoids -0.00 value for tilt_target
                           f'  noise figure (dB):      {nf:.2f}',
                           f'  (including att_in)',
                           f'  pad att_in (dB):        {self.att_in:.2f}',
