@@ -118,7 +118,7 @@ def select_edfa(raman_allowed: bool, gain_target: float, power_target: float, ed
         tilt_target = 0
         with warnings.catch_warnings(record=True) as caught_warnings:
             acceptable_power_list = \
-                filter_edfa_list_based_on_targets(edfa_eqpt, power_target, gain_target,
+                filter_edfa_list_based_on_targets(uid, edfa_eqpt, power_target, gain_target,
                                                   tilt_target, target_extended_gain,
                                                   raman_allowed, verbose)
             if caught_warnings:
@@ -556,7 +556,7 @@ def compute_gain_power_and_tilt_target(node: elements.Edfa, prev_node, next_node
     return gain_target, power_target, _tilt_target, dp, voa, node_loss
 
 
-def filter_edfa_list_based_on_targets(edfa_eqpt: dict, power_target: float, gain_target: float,
+def filter_edfa_list_based_on_targets(uid: str, edfa_eqpt: dict, power_target: float, gain_target: float,
                                       tilt_target: float, target_extended_gain: float,
                                       raman_allowed: bool = True, verbose: bool = False):
     """Filter the amplifiers based on power, gain, and tilt targets.
@@ -625,7 +625,7 @@ def filter_edfa_list_based_on_targets(edfa_eqpt: dict, power_target: float, gain
                     please increase span fiber padding')
         else:
             if verbose:
-                logger.warning('\n\tWARNING: target gain is below all available amplifiers min gain: '
+                logger.warning(f'\n\tWARNING: target gain in node {uid} is below all available amplifiers min gain: '
                                + '\n\tamplifier input padding will be assumed, consider increase span fiber padding '
                                + 'instead.\n')
             acceptable_gain_min_list = edfa_list
@@ -645,7 +645,7 @@ def filter_edfa_list_based_on_targets(edfa_eqpt: dict, power_target: float, gain
     return acceptable_power_list
 
 
-def preselect_multiband_amps(_amplifiers: dict, prev_node, next_node, power_mode: bool, prev_voa: dict, prev_dp: dict,
+def preselect_multiband_amps(uid: str, _amplifiers: dict, prev_node, next_node, power_mode: bool, prev_voa: dict, prev_dp: dict,
                              pref_total_db: float, network: DiGraph, equipment: dict, restrictions: List,
                              _design_bands: dict, deviation_db: dict, tilt_target: dict):
     """Preselect multiband amplifiers that are eligible with respect to power, gain and tilt target
@@ -690,7 +690,7 @@ def preselect_multiband_amps(_amplifiers: dict, prev_node, next_node, power_mode
             compute_gain_power_and_tilt_target(amp, prev_node, next_node, power_mode, prev_voa[band], prev_dp[band],
                                                pref_total_db, network, equipment, deviation_db[band], tilt_target[band])
         _selection = [a.variety
-                      for a in filter_edfa_list_based_on_targets(edfa_eqpt, power_target, gain_target, _tilt_target,
+                      for a in filter_edfa_list_based_on_targets(uid, edfa_eqpt, power_target, gain_target, _tilt_target,
                                                                  target_extended_gain)]
         listes = find_type_varieties(_selection, equipment)
         _selected_type_varieties = []
@@ -946,7 +946,7 @@ def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elem
                     # only select amplifiers which match the design bands
                     restrictions_multi = get_node_restrictions(node, prev_node, next_node, equipment, _design_bands)
                     restrictions_edfa = \
-                        preselect_multiband_amps(node.amplifiers, prev_node, next_node, power_mode,
+                        preselect_multiband_amps(node.uid, node.amplifiers, prev_node, next_node, power_mode,
                                                  prev_voa, prev_dp, pref_total_db,
                                                  network, equipment, restrictions_multi, _design_bands,
                                                  deviation_db=deviation_db, tilt_target=tilt_target)
