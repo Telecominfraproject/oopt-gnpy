@@ -580,7 +580,7 @@ def network_from_json(json_data: dict, equipment: dict) -> DiGraph:
                 except ConfigurationError as e:
                     msg = f'Node {el_config["uid"]}: {e}'
                     raise ConfigurationError(msg)
-                if variety is not None and variety != multiband_type_variety:
+                if variety is not None and variety not in multiband_type_variety:
                     raise ConfigurationError(f'In node {el_config["uid"]}: multiband amplifier type_variety is not '
                                              + 'consistent with its amps type varieties.')
             if not amps and extra_params is not None:

@@ -85,7 +85,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
     return trx_params
 
 
-def find_type_variety(amps: List[str], equipment: dict) -> str:
+def find_type_variety(amps: List[str], equipment: dict) -> List[str]:
     """Returns the multiband type_variety associated with a list of single band type_varieties
     Args:
     amps (List[str]): A list of single band type_varieties.
@@ -106,7 +106,7 @@ def find_type_variety(amps: List[str], equipment: dict) -> str:
     if not _found_type:
         msg = f'{amps} amps do not belong to the same amp type {listes}'
         raise ConfigurationError(msg)
-    return _found_type[0]
+    return _found_type
 
 
 def find_type_varieties(amps: List[str], equipment: dict) -> List[List[str]]:
