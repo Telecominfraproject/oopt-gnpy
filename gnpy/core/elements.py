@@ -1356,7 +1356,7 @@ class Edfa(_Node):
             'type': type(self).__name__,
             'type_variety': self.params.type_variety,
             'operational': {
-                'gain_target': round(self.effective_gain, 6) if self.effective_gain else None,
+                'gain_target': round(self.effective_gain, 6) if self.effective_gain is not None else None,
                 'delta_p': self.delta_p,
                 'tilt_target': round(tilt_target, 5) if tilt_target is not None else None,
                 # defined per lambda on the amp band
