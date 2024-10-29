@@ -1772,9 +1772,9 @@ class Multiband_amplifier(_Node):
         """
         return {'uid': self.uid,
                 'type': type(self).__name__,
-                'type_variety': self.type_variety,
+                'type_variety': self.params.type_variety,
                 'amplifiers': [{
-                    'type_variety': amp.type_variety,
+                    'type_variety': amp.params.type_variety,
                     'operational': {
                         'gain_target': round(amp.effective_gain, 6),
                         'delta_p': amp.delta_p,
