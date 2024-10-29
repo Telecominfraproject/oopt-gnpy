@@ -1267,8 +1267,12 @@ def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elem
                                           network, _restrictions, equipment, verbose,
                                           deviation_db=deviation_db[band_name], tilt_target=tilt_target[band_name])
                 amps_type_varieties = [a.type_variety for a in node.amplifiers.values()]
+                amps_bands = [a.params.bands[0] for a in node.amplifiers.values()]
                 try:
                     node.type_variety = find_type_variety(amps_type_varieties, equipment)[0]
+                    # overwrite type_variety and bands to be consistent with selected type_variety
+                    node.params.type_variety = node.type_variety
+                    node.params.bands = amps_bands
                 except ConfigurationError as e:
                     # should never come here... only for debugging
                     msg = f'In {node.uid}: {e}'
