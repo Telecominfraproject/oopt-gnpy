@@ -41,7 +41,7 @@ from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpPara
     MultiBandParams, RoadmPath, RoadmImpairment, TransceiverParams, find_band_name, FrequencyBand
 from gnpy.core.science_utils import NliSolver, RamanSolver
 from gnpy.core.info import SpectralInformation, muxed_spectral_information, demuxed_spectral_information
-from gnpy.core.exceptions import NetworkTopologyError, SpectrumError, ParametersError
+from gnpy.core.exceptions import NetworkTopologyError, SpectrumError, ParametersError, EquipmentConfigError
 
 
 _logger = getLogger(__name__)
@@ -1198,8 +1198,10 @@ class RamanFiber(Fiber):
         return dict(super().to_json, operational=self.operational)
 
     def __str__(self):
-        return super().__str__() + f'\n  reference gain (dB):         {round(self.estimated_gain, 2)}' \
-            + f'\n  actual gain (dB):            {round(self.actual_raman_gain, 2)}'
+        if hasattr(self, "estimated_gain"):
+            return super().__str__() + f'\n  reference gain (dB):         {round(self.estimated_gain, 2)}' \
+                + f'\n  actual gain (dB):            {round(self.actual_raman_gain, 2)}'
+        return super().__str__() + f'\n  actual gain (dB):            {round(self.actual_raman_gain, 2)}'
 
     def propagate(self, spectral_info: SpectralInformation):
         """Modifies the spectral information computing the attenuation, the non-linear interference generation,
@@ -1476,6 +1478,8 @@ class Edfa(_Node):
             nf_avg = float('-inf')
         elif type_def == 'advanced_model':
             nf_avg = polyval(nf_fit_coeff, -dg)
+        else:
+            raise EquipmentConfigError('Unknow type_def', type_def, 'in amplifier', self.uid)
         return nf_avg + pad, pad
 
     def _calc_nf(self, avg=False):

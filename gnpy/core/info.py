@@ -18,7 +18,8 @@ from collections import namedtuple
 from collections.abc import Iterable
 from typing import Union, List, Optional
 from dataclasses import dataclass
-from numpy import argsort, array, append, ones, ceil, any, zeros, outer, full, ndarray, asarray
+from numpy import argsort, array, append, ones, ceil, any, zeros, outer, full, ndarray, \
+    asarray
 
 from gnpy.core.utils import automatic_nch, db2lin
 from gnpy.core.exceptions import SpectrumError
@@ -305,8 +306,7 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, fl
     except ValueError as e:
         if 'could not broadcast' in str(e):
             raise SpectrumError('Dimension mismatch in input fields.')
-        else:
-            raise
+        raise e
 
 
 def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, spacing, tx_osnr, tx_power,
@@ -366,10 +366,9 @@ def muxed_spectral_information(input_si_list: List[SpectralInformation]) -> Spec
     if input_si_list and len(input_si_list) > 1:
         si = input_si_list[0] + muxed_spectral_information(input_si_list[1:])
         return si
-    elif input_si_list and len(input_si_list) == 1:
+    if input_si_list and len(input_si_list) == 1:
         return input_si_list[0]
-    else:
-        raise ValueError('liste vide')
+    raise ValueError('liste vide')
 
 
 def carriers_to_spectral_information(initial_spectrum: dict[float, Carrier],
