@@ -17,10 +17,10 @@ from operator import attrgetter
 from collections import namedtuple
 from functools import reduce
 from logging import getLogger
+import warnings
 from typing import Tuple, List, Optional, Union, Dict, Iterator
 from networkx import DiGraph
 from numpy import allclose
-import warnings
 
 from gnpy.core import elements
 from gnpy.core.equipment import find_type_variety, find_type_varieties
