@@ -124,7 +124,7 @@ def select_edfa(raman_allowed: bool, gain_target: float, power_target: float, ed
                 msg = f'In node {uid}: {caught_warnings[0].message}'
                 logger.warning(msg)
     except ConfigurationError as e:
-        raise ConfigurationError(f'in node {uid}, {e}')
+        raise ConfigurationError(f'in node {uid}, {e}') from e
     # gain and power requirements are resolved,
     #       =>chose the amp with the best NF among the acceptable ones:
     selected_edfa = min(acceptable_power_list, key=attrgetter('nf'))  # filter on NF
@@ -176,9 +176,9 @@ def target_power(network: DiGraph, node: PASSIVE_ELEMENT_TYPES,
                          * equipment['Span']['default'].power_slope, dp_range[2])
         dp = max(dp_range[0], dp)
         dp = min(dp_range[1], dp)
-    except IndexError:
+    except IndexError as exc:
         raise ConfigurationError('invalid delta_power_range_db definition in eqpt_config[Span]'
-                                 'delta_power_range_db: [lower_bound, upper_bound, step]')
+                                 'delta_power_range_db: [lower_bound, upper_bound, step]') from exc
 
     return dp
 
@@ -209,10 +209,11 @@ def prev_node_generator(network: DiGraph, node: ELEMENT_TYPES) -> Iterator[Union
     """
     try:
         prev_node = next(network.predecessors(node))
-    except StopIteration:
+    except StopIteration as exc:
         if isinstance(node, elements.Transceiver):
             return
-        raise NetworkTopologyError(f'Node {node.uid} is not properly connected, please check network topology')
+        raise NetworkTopologyError(f'Node {node.uid} is not properly connected, please check network topology') \
+            from exc
     if ((isinstance(prev_node, elements.Fused) and isinstance(node, _fiber_fused_types))
             or (isinstance(prev_node, _fiber_fused_types) and isinstance(node, elements.Fused))):
         yield prev_node
@@ -420,7 +421,7 @@ def estimate_srs_power_deviation(network: DiGraph, last_node, equipment: Dict, d
                                               tx_osnr=tx_osnr, tx_power=input_powers[band_name])
 
     # collect preceding nodes Fiber and Fused
-    prev_nodes = [n for n in prev_node_generator(network, last_node)]
+    prev_nodes = list(prev_node_generator(network, last_node))
     prev_nodes.append(last_node)
 
     for elem in prev_nodes:
@@ -645,7 +646,7 @@ def get_oms_edge_list(oms_ingress_node: Union[elements.Roadm, elements.Transceiv
     node = oms_ingress_node
     visited_nodes = []
     # collect the OMS element list (ROADM to ROADM, or Transceiver to ROADM)
-    while not (isinstance(node, elements.Roadm) or isinstance(node, elements.Transceiver)):
+    while not isinstance(node, (elements.Roadm, elements.Transceiver)):
         next_node = get_next_node(node, network)
         visited_nodes.append(node.uid)
         if next_node.uid in visited_nodes:
@@ -665,7 +666,7 @@ def get_oms_edge_list_from_egress(oms_egress_node, network: DiGraph) -> List[Tup
     node = oms_egress_node
     visited_nodes = []
     # collect the OMS element list (ROADM to ROADM, or Transceiver to ROADM)
-    while not (isinstance(node, elements.Roadm) or isinstance(node, elements.Transceiver)):
+    while not isinstance(node, (elements.Roadm, elements.Transceiver)):
         previous_node = get_previous_node(node, network)
         visited_nodes.append(node.uid)
         if previous_node.uid in visited_nodes:
@@ -692,8 +693,8 @@ def check_oms_single_type(oms_edges: List[Tuple]) -> List[str]:
     types = set(list(oms_types.values()))
     if len(types) > 1:
         msg = 'type_variety Multiband ("Multiband_amplifier") and single band ("Edfa") cannot be mixed;\n' \
-            + f'Multiband amps: {[e for e in oms_types.keys() if oms_types[e] == "Multiband_amplifier"]}\n' \
-            + f'single band amps: {[e for e in oms_types.keys() if oms_types[e] == "Edfa"]}'
+            + f'Multiband amps: {[e for e, oms_type in oms_types.items() if oms_type == "Multiband_amplifier"]}\n' \
+            + f'single band amps: {[e for e, oms_type in oms_types.items() if oms_type == "Edfa"]}'
         raise NetworkTopologyError(msg)
     return list(types)
 
@@ -928,7 +929,7 @@ def preselect_multiband_amps(uid: str, _amplifiers: dict, prev_node: ELEMENT_TYP
     """
     # Initialize the list for the loop
     target_extended_gain = equipment['Span']['default'].target_extended_gain
-    _selected_type_varieties = [n for n in restrictions]
+    _selected_type_varieties = list(restrictions)
     for band, amp in _amplifiers.items():
         # In the loop, keep only the set of amps that match the constraints on all the bands
         # Use the subset of EDFA library that are multiband and fits the restriction

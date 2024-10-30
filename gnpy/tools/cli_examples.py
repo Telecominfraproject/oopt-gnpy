@@ -203,11 +203,13 @@ def transmission_main_example(args: Union[List[str], None] = None):
 
     # First try to find exact match if source/destination provided
     source = None
+    valid_source = None
     if args.source:
         source = transceivers.pop(args.source, None)
         valid_source = bool(source)
 
     destination = None
+    valid_destination = None
     nodes_list = []
     loose_list = []
     if args.destination:
