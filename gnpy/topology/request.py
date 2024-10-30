@@ -20,12 +20,12 @@ and feasibility
 See: draft-ietf-teas-yang-path-computation-01.txt
 """
 
-from collections import namedtuple, OrderedDict
+from collections import OrderedDict
 from typing import List
 from logging import getLogger
 from copy import deepcopy
-from csv import writer
-from math import ceil
+from csv import DictWriter
+from math import ceil, isinf
 from networkx import (dijkstra_path, NetworkXNoPath,
                       all_simple_paths, shortest_simple_paths)
 from networkx.utils import pairwise
@@ -37,9 +37,6 @@ from gnpy.core.info import create_input_spectral_information, carriers_to_spectr
     demuxed_spectral_information, muxed_spectral_information, SpectralInformation
 from gnpy.core import network as network_module
 from gnpy.core.exceptions import ServiceError, DisjunctionError
-from copy import deepcopy
-from csv import DictWriter
-from math import ceil, isinf
 from gnpy.topology.topology_parameters import RequestParams, DisjunctionParams
 
 
