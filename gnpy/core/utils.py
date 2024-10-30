@@ -14,11 +14,10 @@ This module contains utility functions that are used with gnpy.
 """
 
 from copy import deepcopy
+from typing import List, Union, Dict
 from csv import writer
 from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and, mean, array
 from scipy import constants
-from copy import deepcopy
-from typing import List, Union, Dict
 
 from gnpy.core.exceptions import ConfigurationError
 

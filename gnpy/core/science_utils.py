@@ -15,16 +15,16 @@ Solver definitions to calculate the Raman effect and the nonlinear interference 
 The solvers take as input instances of the spectral information, the fiber and the simulation parameters
 """
 
+from logging import getLogger
+from math import isclose, factorial
 from numpy import interp, pi, zeros, cos, array, append, ones, exp, arange, sqrt, trapz, arcsinh, clip, abs, sum, \
     concatenate, flip, outer, inner, transpose, max, format_float_scientific, diag, sort, unique, argsort, cumprod, \
     polyfit, log, reshape, swapaxes, full, nan, cumsum
-from logging import getLogger
 from scipy.constants import k, h
 from scipy.interpolate import interp1d
-from math import isclose, factorial
 
 from gnpy.core.utils import db2lin, lin2db
-from gnpy.core.exceptions import EquipmentConfigError, ParametersError
+from gnpy.core.exceptions import EquipmentConfigError
 from gnpy.core.parameters import SimParams
 from gnpy.core.info import SpectralInformation
 

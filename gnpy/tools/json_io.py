@@ -22,7 +22,6 @@ from typing import Union, Dict, List, Tuple, Optional
 from networkx import DiGraph
 from numpy import arange
 
-
 from gnpy.core import elements
 from gnpy.core.equipment import trx_mode_params, find_type_variety
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError, ServiceError
