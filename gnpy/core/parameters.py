@@ -635,8 +635,8 @@ class EdfaOperational:
 
     def __repr__(self):
         return (f'{type(self).__name__}('
-                f'gain_target={self.gain_target!r}, '
-                f'tilt_target={self.tilt_target!r})')
+                f'gain_target={self.gain_target!r}, '  # pylint: disable=E1101
+                f'tilt_target={self.tilt_target!r})')  # pylint: disable=E1101
 
 
 DEFAULT_EDFA_CONFIG = {

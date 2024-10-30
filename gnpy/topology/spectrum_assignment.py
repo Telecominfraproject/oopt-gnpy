@@ -72,7 +72,7 @@ class Bitmap:
         elif len(bitmap) == len(self.freq_index):
             self.bitmap = bitmap
         else:
-            raise SpectrumError(f'bitmap is not consistant with f_min{f_min} - n: {n_min} and f_max{f_max}- n :{n_max}')
+            raise SpectrumError(f'bitmap is not consistant with f_min{f_min} - n: {n_min} and f_max{f_max} - n:{n_max}')
 
     def getn(self, i):
         """converts the n (itu grid) into a local index"""
@@ -256,7 +256,7 @@ def align_grids(oms_list):
     return oms_list
 
 
-def find_network_freq_range(network, equipment):
+def find_network_freq_range(network):
     """Find the lowest freq from amps and highest freq among all amps to determine the resulting bitmap
     """
     amp_bands = [band for n in network.nodes() if isinstance(n, (Edfa, Multiband_amplifier)) for band in n.params.bands]
@@ -317,7 +317,7 @@ def build_oms_list(network, equipment):
     # determine the size of the bitmap common to all the omses: find min and max frequencies of all amps
     # in the network. These gives the band not the center frequency. Thhen we use a reference channel
     # slot width (50GHz) to set the f_min, f_max
-    f_min, f_max = find_network_freq_range(network, equipment)
+    f_min, f_max = find_network_freq_range(network)
     for node in oms_vertices:
         for edge in network.edges([node]):
             if not isinstance(edge[1], Transceiver):
@@ -353,7 +353,8 @@ def build_oms_list(network, equipment):
                     nd_out.oms_list.append(oms_id)
 
                 bitmap = create_oms_bitmap(oms, equipment, f_min=f_min, f_max=f_max, grid=DEFAULT_GRID)
-                oms.update_spectrum(f_min, f_max, guardband=DEFAULT_GUARDBAND, grid=DEFAULT_GRID, existing_spectrum=bitmap)
+                oms.update_spectrum(f_min, f_max, guardband=DEFAULT_GUARDBAND, grid=DEFAULT_GRID,
+                                    existing_spectrum=bitmap)
                 # oms.assign_spectrum(13,7) gives back (193137500000000.0, 193225000000000.0)
                 # as in the example in the standard
                 # oms.assign_spectrum(13,7)
