@@ -12,10 +12,9 @@ The solvers take as input instances of the spectral information, the fiber and t
 
 from numpy import interp, pi, zeros, cos, array, append, ones, exp, arange, sqrt, trapz, arcsinh, clip, abs, sum, \
     concatenate, flip, outer, inner, transpose, max, format_float_scientific, diag, sort, unique, argsort, cumprod, \
-    polyfit, log, reshape, swapaxes, full, nan
+    polyfit, log, reshape, swapaxes, full, nan, cumsum
 from logging import getLogger
 from scipy.constants import k, h
-from scipy.integrate import cumtrapz
 from scipy.interpolate import interp1d
 from math import isclose, factorial
 
@@ -227,6 +226,7 @@ class RamanSolver:
                 if last_position < z[-1]:
                     interval = z_indices[(z >= last_position) * (z <= z_lumped_loss) == 1]
                     z_interval = z[interval] - last_position
+                    dz = z_interval[1:] - z_interval[:-1]
                     last_position = z[interval][-1]
                     p0 = power_in * lumped_loss
                     power_interval = outer(p0, ones(z_interval.size))
@@ -239,15 +239,22 @@ class RamanSolver:
                         gamma1 = sum(crpz * eff_length, 1)
                         exponent += gamma1
                     if sim_params.raman_params.order >= 2:
-                        gamma2 = sum(crpz * cumtrapz(expz * gamma1, z_interval, axis=1, initial=0), 1)
+                        z_integrand = expz * gamma1
+                        z_integral = cumsum((z_integrand[:, :-1] + z_integrand[:, 1:]) / 2 * dz, 1)
+                        gamma2 = zeros(gamma1.shape)
+                        gamma2[:, 1:] = sum(crpz[:, :, 1:] * z_integral, 1)
                         exponent += gamma2
                     if sim_params.raman_params.order >= 3:
-                        gamma3 = sum(crpz * cumtrapz(expz * (gamma2 + 1/2 * gamma1**2), z_interval,
-                                                     axis=1, initial=0), 1)
+                        z_integrand = expz * (gamma2 + 1/2 * gamma1**2)
+                        z_integral = cumsum((z_integrand[:, :-1] + z_integrand[:, 1:]) / 2 * dz, 1)
+                        gamma3 = zeros(gamma1.shape)
+                        gamma3[:, 1:] = sum(crpz[:, :, 1:] * z_integral, 1)
                         exponent += gamma3
                     if sim_params.raman_params.order >= 4:
-                        gamma4 = sum(crpz * cumtrapz(expz * (gamma3 + gamma1 * gamma2 + 1/factorial(3) * gamma1**3),
-                                                     z_interval, axis=1, initial=0), 1)
+                        z_integrand = expz * (gamma3 + gamma1 * gamma2 + 1/factorial(3) * gamma1**3)
+                        z_integral = cumsum((z_integrand[:, :-1] + z_integrand[:, 1:]) / 2 * dz, 1)
+                        gamma4 = zeros(gamma1.shape)
+                        gamma4[:, 1:] = sum(crpz[:, :, 1:] * z_integral, 1)
                         exponent += gamma4
                     power_interval *= exp(exponent)
                     power[:, interval[1:]] = power_interval[:, 1:]
