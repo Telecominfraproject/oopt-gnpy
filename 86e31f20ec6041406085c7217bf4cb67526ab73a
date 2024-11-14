@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "922dc535_7ada17ed",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2024-11-14T10:43:49Z",
+      "side": 1,
+      "message": "Could you please adjust the commit message so that it explains why this change is made?",
+      "revId": "86e31f20ec6041406085c7217bf4cb67526ab73a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
