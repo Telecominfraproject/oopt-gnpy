@@ -41,6 +41,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc8a5e28_54c8ed07",
+        "filename": "docs/json.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-11-21T08:38:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5923f72_4e8be24e",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 127
+      },
+      "revId": "4857e1a9885b5403cc83e71d2e3667bc604582dd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c3695cde_2c0d367e",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-10-31T16:04:30Z",
       "side": 1,
       "message": "```suggestion\n   The ``amplifiers`` list contains the list of single-band amplifier type varieties that can compose such multiband amplifiers. Several options can be listed for the same spectrum band. Only one can be selected for the actual :ref:`Multiband_amplifier\u003cmultiband_amps\u003e` element.\n```",
+      "range": {
+        "startLine": 39,
+        "startChar": 3,
+        "endLine": 41,
+        "endChar": 69
+      },
+      "revId": "4857e1a9885b5403cc83e71d2e3667bc604582dd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56a0b459_ffebbd2f",
+        "filename": "docs/json.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-11-21T08:38:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3695cde_2c0d367e",
       "range": {
         "startLine": 39,
         "startChar": 3,
@@ -87,6 +135,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aed34ee0_2a68ba6a",
+        "filename": "docs/json.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 832,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-11-21T08:38:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c48cddf3_2ecb3440",
+      "range": {
+        "startLine": 828,
+        "startChar": 0,
+        "endLine": 832,
+        "endChar": 29
+      },
+      "revId": "4857e1a9885b5403cc83e71d2e3667bc604582dd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "098a967f_6fc77304",
@@ -100,6 +172,30 @@
       "writtenOn": "2024-10-31T16:04:30Z",
       "side": 1,
       "message": "```suggestion\nThe frequency band of the element is the concatenation of the bands of each individual amplifier contained in the Multiband_amplifier element. Only carriers within these bands are propagated through the Multiband_amplifier element. If the user defines a spectrum larger than these bands, carriers that do not match the bands will be filtered out. The user can define the bandwidth of the amplifiers in the library. f_min and f_max represent the bandwidth of the amplifier (the entire channel must fit). The individual amplifier type_variety must be part of the allowed ``amplifiers`` list defined in the library.\n```",
+      "range": {
+        "startLine": 1249,
+        "startChar": 0,
+        "endLine": 1254,
+        "endChar": 105
+      },
+      "revId": "4857e1a9885b5403cc83e71d2e3667bc604582dd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c2f120d_2ca25cab",
+        "filename": "docs/json.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 1254,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-11-21T08:38:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "098a967f_6fc77304",
       "range": {
         "startLine": 1249,
         "startChar": 0,
@@ -133,6 +229,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0599e3a8_1e12c878",
+        "filename": "docs/json.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 1349,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-11-21T08:38:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "82050559_7c4740a5",
+      "range": {
+        "startLine": 1339,
+        "startChar": 0,
+        "endLine": 1349,
+        "endChar": 64
+      },
+      "revId": "4857e1a9885b5403cc83e71d2e3667bc604582dd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "edce326b_c0d130d1",
@@ -146,6 +266,30 @@
       "writtenOn": "2024-10-31T16:04:30Z",
       "side": 1,
       "message": "```suggestion\nA new type_def for amplifiers has been introduced: multi_band. This allows the definition of a multiband amplifier site composed of several amplifiers per band (a typical application is C+L transmission). The release also includes autodesign for links (Optical Multiplex Section, OMS) composed of multi_band amplifiers. Multi_band autodesign includes basic tilt and tilt_target calculation when the Raman flag is enabled with the --sim-params option. The spectrum is demultiplexed before propagation in the amplifier and multiplexed in the output fiber at the amplifier output.\n```",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 91
+      },
+      "revId": "4857e1a9885b5403cc83e71d2e3667bc604582dd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1621fcb2_bdce324b",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-11-21T08:38:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "edce326b_c0d130d1",
       "range": {
         "startLine": 15,
         "startChar": 0,
@@ -179,6 +323,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0900e50e_7747b028",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-11-21T08:38:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "518e634a_d47f02b2",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 105
+      },
+      "revId": "4857e1a9885b5403cc83e71d2e3667bc604582dd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94f310f6_5fa94d2c",
@@ -192,6 +360,30 @@
       "writtenOn": "2024-10-31T16:04:30Z",
       "side": 1,
       "message": "```suggestion\nIt is possible to define a set of bands in the SI block instead of a single Spectrum Information. In this case type_variety must be used.\n```",
+      "range": {
+        "startLine": 106,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 38
+      },
+      "revId": "4857e1a9885b5403cc83e71d2e3667bc604582dd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7b5fc68_e7cfea56",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-11-21T08:38:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94f310f6_5fa94d2c",
       "range": {
         "startLine": 106,
         "startChar": 0,
@@ -225,6 +417,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "51034f22_02c5ae52",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-11-21T08:38:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aaa756a7_6c51760f",
+      "range": {
+        "startLine": 110,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 73
+      },
+      "revId": "4857e1a9885b5403cc83e71d2e3667bc604582dd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "215a6e2c_99b247c7",
@@ -238,6 +454,30 @@
       "writtenOn": "2024-10-31T16:04:30Z",
       "side": 1,
       "message": "If this referred to the class Edfa? In that case, probably it is better to rephrase in: If there is no statement on this regard, the class Edfa will be used for all of them.",
+      "range": {
+        "startLine": 117,
+        "startChar": 8,
+        "endLine": 117,
+        "endChar": 49
+      },
+      "revId": "4857e1a9885b5403cc83e71d2e3667bc604582dd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f0e6545_e5be8a24",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-11-21T08:38:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "215a6e2c_99b247c7",
       "range": {
         "startLine": 117,
         "startChar": 8,
@@ -271,6 +511,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "824646c8_06fde6a6",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-11-21T08:38:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e6be16bf_366fa044",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 18
+      },
+      "revId": "4857e1a9885b5403cc83e71d2e3667bc604582dd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21b17559_9b1eb341",
@@ -284,6 +548,30 @@
       "writtenOn": "2024-10-31T16:04:30Z",
       "side": 1,
       "message": "```suggestion\n``f_min`` and ``f_max`` represent the boundary frequencies of the amplification bandwidth (the entire channel must fit within this range).\n```",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 106
+      },
+      "revId": "4857e1a9885b5403cc83e71d2e3667bc604582dd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21e1b6d7_816c2526",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 5
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-11-21T08:38:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21b17559_9b1eb341",
       "range": {
         "startLine": 126,
         "startChar": 0,
