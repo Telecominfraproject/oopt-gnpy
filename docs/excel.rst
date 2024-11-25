@@ -114,10 +114,6 @@ and a fiber span from node3 to node6::
   If filled they must contain strings with the same constraint as "City" names. Its value is used to differenate links having the same end points. In this case different Id should be used. Cable Ids are not meant to be unique in general.
 
 
-
-
-(in progress)
-
 .. _excel-equipment-sheet:
 
 Eqpt sheet 
@@ -192,7 +188,42 @@ This generates a text file meshTopologyExampleV2_eqt_sheet.txt  whose content ca
 
 - **delta_p**, in dBm,  is not mandatory. If filled it is used to set the output target power per channel at the output of the amplifier, if power_mode is True. The output power is then set to power_dbm + delta_power.
 
-# to be completed #
+
+.. _excel-roadms-sheet:
+
+Roadms sheet 
+------------
+
+The ROADM sheet (named "Roadms") is optional.
+If provided, it can be used to specify:
+
+  - per channel power target on a specific ROADM degree (*per_degree_pch_out_db*),
+  - ROADM type variety,
+  - impairment ID (identifier) on a particular ROADM path (from degree - to degree).
+
+This sheet contains six columns:
+
+  Node A ; Node Z ; per degree target power (dBm) ; type_variety ; from degrees ; from degree to degree impairment id
+
+- **Node A** is mandatory. Name of the ROADM node (as listed in Nodes sheet).
+  Must be a 'ROADM' (Type attribute in Node sheet), its number of occurence may be equal to its degree.
+
+- **Node Z** is mandatory. Egress direction from the *Node A* ROADM site. Multiple Links between the same Node A
+  and NodeZ is not supported. 
+
+- **per degree target power (dBm)** (optional). 
+  If filled it must contain a value in dBm corresponding to :ref:`per_degree_pch_out_db<roadm_json_instance>` on the **Node Z** degree.
+  Defaults to equipment library value if not filled.
+
+- **type_variety** (optional). Must be the same for all ROADM entries if filled,
+  and defined in the :ref:`equipment library<roadm>`. Defaults to 'default' if not filled.
+
+- **from degrees** (optional): List of Node names separated by ' | '. Names must be present in Node sheet.
+  Together with Node Z, they define a list of internal path in ROADM for which the impairment ID applies
+
+- **from degree to degree impairment id** (optional):List of impairment IDs separated by ' | '. Must be filled
+  if **from degrees** is defined.
+  The impairment ID must be defined in the equipment library and be of "express" type.
 
 (in progress)
 
