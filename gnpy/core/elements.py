@@ -331,7 +331,7 @@ class Roadm(_Node):
         if self.per_degree_pch_psw:
             to_json['params']['per_degree_psd_out_mWperSlotWidth'] = self.per_degree_pch_psw
         if self.per_degree_impairments:
-            to_json['per_degree_impairments'] = list(self.per_degree_impairments.values())
+            to_json['params']['per_degree_impairments'] = list(self.per_degree_impairments.values())
 
         if self.params.design_bands is not None:
             if len(self.params.design_bands) > 1:
