@@ -15,6 +15,11 @@ WARNING  gnpy.core.network:network.py
 	max flat gain: 16dB ; required gain: 21.22dB. Please check amplifier type.
 
 WARNING  gnpy.core.network:network.py 
+	WARNING: effective gain in Node east edfa in Stbrieuc to Rennes_STA
+	is below user specified amplifier std_medium_gain
+	min gain: 15dB ; required gain: 12.0dB. Please check amplifier type.
+
+WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Rennes_STA to Stbrieuc
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
 	a power reduction of -1.78 is applied

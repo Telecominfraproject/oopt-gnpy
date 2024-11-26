@@ -780,7 +780,12 @@ def set_one_amplifier(node: elements.Edfa, prev_node, next_node, power_mode: boo
                            + '\tmax flat gain: '
                            + f'{equipment["Edfa"][node.params.type_variety].gain_flatmax}dB ; '
                            + f'required gain: {round(gain_target, 2)}dB. Please check amplifier type.\n')
-
+        if gain_target - equipment['Edfa'][node.params.type_variety].gain_min < 0 and verbose:
+            logger.warning(f'\n\tWARNING: effective gain in Node {node.uid}\n'
+                           + f'\tis below user specified amplifier {node.params.type_variety}\n'
+                           + '\tmin gain: '
+                           + f'{equipment["Edfa"][node.params.type_variety].gain_min}dB ; '
+                           + f'required gain: {round(gain_target, 2)}dB. Please check amplifier type.\n')
     node.delta_p = dp if power_mode else None
     node.effective_gain = gain_target
     node.tilt_target = _tilt_target
