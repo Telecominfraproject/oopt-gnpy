@@ -41,6 +41,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "378eda02_469b212b",
+        "filename": "gnpy/tools/service_sheet.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-12-06T15:40:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b1f547b_0a579fd7",
+      "range": {
+        "startLine": 262,
+        "startChar": 7,
+        "endLine": 262,
+        "endChar": 11
+      },
+      "revId": "7981b000b4f8b604deb488721c6080fc8d054923",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b57d23e5_9ed0e2ba",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-11-29T15:51:33Z",
       "side": 1,
       "message": "```suggestion\n    # contains roadm names. If it is a fused node, next ila names might be correct\n```",
+      "range": {
+        "startLine": 324,
+        "startChar": 6,
+        "endLine": 324,
+        "endChar": 13
+      },
+      "revId": "7981b000b4f8b604deb488721c6080fc8d054923",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46fca529_421b634c",
+        "filename": "gnpy/tools/service_sheet.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-12-06T15:40:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b57d23e5_9ed0e2ba",
       "range": {
         "startLine": 324,
         "startChar": 6,
