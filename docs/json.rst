@@ -65,9 +65,15 @@ For all single band amplifier models:
 |                        |           | within this range (center frequency and |
 |                        |           | spectrum width).                        |
 |                        |           | Default is 191.275e-12 Hz and           |
-|                        |           | 196.125e-12 (tunable in                 |
-|                        |           | default_edfa_config.json)               |
+|                        |           | 196.125e-12.                            |
 +------------------------+-----------+-----------------------------------------+
+
+Default values ​​are defined for the frequency range for:
+- noise figure ripple
+- gain ripple
+- dynamic gain tilt
+
+Users can introduce custom values ​​using ``default_config_from_json`` which should be populated with a file name containing the desired parameters.
 
 
 For multi_band amplifier models:
