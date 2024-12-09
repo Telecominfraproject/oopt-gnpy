@@ -6,6 +6,16 @@ Release change log
 Each release introduces some changes and new features.
 
 (prepare text for next release)
+**Important Changes:**
+
+The default values for EDFA configuration, including frequency range, gain ripple, noise figure ripple, or dynamic gain tilt
+are now hardcoded in parameters.py and are no longer read from the default_edfa_config.json file (the file has been removed).
+However, users may define their own default configuration using 'default_config_from_json' parameter, which should
+be populated with a filename that contains the desired configuration. This applies to both variable_gain
+or fixed_gain amplifier types.
+
+This change streamlines the configuration process but requires users to explicitly set parameters through the new
+model if the default values do not suit their needs.
 
 v2.11
 -----
