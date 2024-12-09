@@ -505,3 +505,172 @@ def test_multiband():
             assert freq >= 191.25e12
         if freq < 191.25e12:
             assert freq <= 190.25e12
+
+
+def test_user_defined_config():
+    """Checks that a user defined config is correctly used instead of DEFAULT_EDFA_CONFIG
+    """
+    user_edfa = {
+        "type_variety": "user_defined",
+        "type_def": "variable_gain",
+        "gain_flatmax": 25,
+        "gain_min": 15,
+        "p_max": 21,
+        "nf_min": 6,
+        "nf_max": 10,
+        "default_config_from_json": "user_edfa_config.json",
+        "out_voa_auto": False,
+        "allowed_for_design": True
+    }
+
+    # add the reference to
+    json_data = load_json(eqpt_library)
+    json_data['Edfa'].append(user_edfa)
+    equipment = _equipment_from_json(json_data, eqpt_library)
+    json_data = {
+        "elements": [{
+            "uid": "Edfa1",
+            "type": "Edfa",
+            "type_variety": "user_defined",
+            "operational": {
+                "delta_p": -3,
+                "gain_target": 20,
+                "tilt_target": 0,
+                "out_voa": 0
+            }
+        }],
+        "connections": []
+    }
+    network = network_from_json(json_data, equipment)
+    amp = [n for n in network.nodes()][0]
+    si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12, roll_off=0.15, baud_rate=64e9,
+                                           spacing=75e9, tx_osnr=None, tx_power=1e-5)
+    si = amp(si)
+    assert_allclose(amp.params.f_min, 193.0e12, rtol=1e-13)
+    assert_allclose(amp.params.f_max, 195.0e12, rtol=1e-13)
+    assert_allclose(amp.nf[5], 6.559301085504704, rtol=1e-13)
+    assert_allclose(amp.params.gain_ripple[15], 0.01027114740367, rtol=1e-13)
+    assert_allclose(amp.params.nf_ripple[15], 0.0, rtol=1e-13)
+    assert_allclose(amp.params.dgt[15], 1.847275503201129, rtol=1e-13)
+
+
+def test_default_config():
+    """Checks that a config using a file gives the exact same result as the default config if values are identical
+    to DEFAULT_EDFA_CONFIG
+    """
+    user_edfa = {
+        "type_variety": "user_defined",
+        "type_def": "variable_gain",
+        "gain_flatmax": 25,
+        "gain_min": 15,
+        "p_max": 21,
+        "nf_min": 6,
+        "nf_max": 10,
+        "default_config_from_json": "copy_default_edfa_config.json",
+        "out_voa_auto": False,
+        "allowed_for_design": True
+    }
+
+    default_edfa = {
+        "type_variety": "default",
+        "type_def": "variable_gain",
+        "gain_flatmax": 25,
+        "gain_min": 15,
+        "p_max": 21,
+        "nf_min": 6,
+        "nf_max": 10,
+        "out_voa_auto": False,
+        "allowed_for_design": True
+    }
+
+    # add the reference to
+    json_data = load_json(eqpt_library)
+    json_data['Edfa'].append(user_edfa)
+    json_data['Edfa'].append(default_edfa)
+    equipment = _equipment_from_json(json_data, eqpt_library)
+    json_data = {
+        "elements": [{
+            "uid": "Edfa1",
+            "type": "Edfa",
+            "type_variety": "user_defined",
+            "operational": {
+                "delta_p": -3,
+                "gain_target": 20,
+                "tilt_target": 0,
+                "out_voa": 0
+            }
+        }, {
+            "uid": "Edfa2",
+            "type": "Edfa",
+            "type_variety": "default",
+            "operational": {
+                "delta_p": -3,
+                "gain_target": 20,
+                "tilt_target": 0,
+                "out_voa": 0
+            }
+        }],
+        "connections": []
+    }
+    network = network_from_json(json_data, equipment)
+    amp1, amp2 = [n for n in network.nodes()]
+    si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12, roll_off=0.15, baud_rate=64e9,
+                                           spacing=75e9, tx_osnr=None, tx_power=1e-5)
+    si = amp1(si)
+    si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12, roll_off=0.15, baud_rate=64e9,
+                                           spacing=75e9, tx_osnr=None, tx_power=1e-5)
+    si = amp2(si)
+    assert_allclose(amp1.params.f_min, amp2.params.f_min, rtol=1e-13)
+    assert_allclose(amp1.params.f_max, amp2.params.f_max, rtol=1e-13)
+    assert_allclose(amp1.nf, amp2.nf, rtol=1e-13)
+    assert_allclose(amp1.params.gain_ripple, amp2.params.gain_ripple, rtol=1e-13)
+    assert_allclose(amp1.params.nf_ripple, amp2.params.nf_ripple, rtol=1e-13)
+    assert_allclose(amp1.params.dgt, amp2.params.dgt, rtol=1e-13)
+
+
+@pytest.mark.parametrize("file", [None, "copy_default_edfa_config.json"])
+def test_frequency_range(file):
+    """Checks that a frequency range is correctly read from the library and pre-empts DEFAULT_EDFA_CONFIG
+    """
+    user_edfa = {
+        "type_variety": "user_defined",
+        "type_def": "variable_gain",
+        "f_min": 192.0e12,
+        "f_max": 195.9e12,
+        "gain_flatmax": 25,
+        "gain_min": 15,
+        "p_max": 21,
+        "nf_min": 6,
+        "nf_max": 10,
+        "out_voa_auto": False,
+        "allowed_for_design": True
+    }
+    if file:
+        user_edfa["default_config_from_json"] = file
+    # add the reference to
+    json_data = load_json(eqpt_library)
+    json_data['Edfa'].append(user_edfa)
+    equipment = _equipment_from_json(json_data, eqpt_library)
+    json_data = {
+        "elements": [{
+            "uid": "Edfa1",
+            "type": "Edfa",
+            "type_variety": "user_defined",
+            "operational": {
+                "delta_p": -3,
+                "gain_target": 20,
+                "tilt_target": 0,
+                "out_voa": 0
+            }
+        }],
+        "connections": []
+    }
+    network = network_from_json(json_data, equipment)
+    amp = [n for n in network.nodes()][0]
+    si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12, roll_off=0.15, baud_rate=64e9,
+                                           spacing=75e9, tx_osnr=None, tx_power=1e-5)
+    si = amp(si)
+    assert_allclose(amp.params.f_min, 192.0e12, rtol=1e-13)
+    assert_allclose(amp.params.f_max, 195.9e12, rtol=1e-13)
+    assert si.frequency[0] >= 192.0e12 + 75e9 / 2
+    assert si.frequency[-1] <= 195.9e12 - 75e9 / 2
