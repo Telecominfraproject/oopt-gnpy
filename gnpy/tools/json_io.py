@@ -24,7 +24,7 @@ from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, Netwo
 from gnpy.core.science_utils import estimate_nf_model
 from gnpy.core.info import Carrier
 from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions, dbm2watt
-from gnpy.core.parameters import DEFAULT_RAMAN_COEFFICIENT, EdfaParams, MultiBandParams
+from gnpy.core.parameters import DEFAULT_RAMAN_COEFFICIENT, EdfaParams, MultiBandParams, DEFAULT_EDFA_CONFIG
 from gnpy.topology.request import PathRequest, Disjunction, compute_spectrum_slot_vs_bandwidth
 from gnpy.topology.spectrum_assignment import mvalue_to_slots
 from gnpy.tools.convert import xls_to_json_data
@@ -215,8 +215,9 @@ class Amp(_JsonThing):
     def from_json(cls, filename, **kwargs):
         """
         """
-        config = Path(filename).parent / 'default_edfa_config.json'
-        # default_edfa_config.json assumes a DGT profile independantly from fmin/fmax, that's a generic profile
+        # default EDFA DGT and ripples are defined in parameters DEFAULT_EDFA_CONFIG. copy these values when
+        # creating a new amplifier
+        config = {k: v for k, v in DEFAULT_EDFA_CONFIG.items()}
         type_variety = kwargs['type_variety']
         type_def = kwargs.get('type_def', 'variable_gain')  # default compatibility with older json eqpt files
         nf_def = None
@@ -224,6 +225,9 @@ class Amp(_JsonThing):
         amplifiers = None
 
         if type_def == 'fixed_gain':
+            if 'default_config_from_json' in kwargs:
+                # use user defined default instead of DEFAULT_EDFA_CONFIG
+                config = load_json(Path(filename).parent / kwargs.pop('default_config_from_json'))
             try:
                 nf0 = kwargs.pop('nf0')
             except KeyError as exc:  # nf0 is expected for a fixed gain amp
@@ -236,8 +240,12 @@ class Amp(_JsonThing):
                     pass
             nf_def = Model_fg(nf0)
         elif type_def == 'advanced_model':
-            config = Path(filename).parent / kwargs.pop('advanced_config_from_json')
+            # use the user file name define in library instead of default config
+            config = load_json(Path(filename).parent / kwargs.pop('advanced_config_from_json'))
         elif type_def == 'variable_gain':
+            if 'default_config_from_json' in kwargs:
+                # use user defined default instead of DEFAULT_EDFA_CONFIG
+                config = load_json(Path(filename).parent / kwargs.pop('default_config_from_json'))
             gain_min, gain_max = kwargs['gain_min'], kwargs['gain_flatmax']
             try:  # nf_min and nf_max are expected for a variable gain amp
                 nf_min = kwargs.pop('nf_min')
@@ -274,16 +282,15 @@ class Amp(_JsonThing):
         else:
             raise EquipmentConfigError(f'Edfa type_def {type_def} does not exist')
 
-        json_data = load_json(config)
         # raise an error if config does not contain f_min, f_max
-        if 'f_min' not in json_data or 'f_max' not in json_data:
+        if 'f_min' not in config or 'f_max' not in config:
             raise EquipmentConfigError('default Edfa config does not contain f_min and f_max values.'
                                        + ' Please correct file.')
         # use f_min, f_max from kwargs
         if 'f_min' in kwargs:
-            json_data.pop('f_min', None)
-            json_data.pop('f_max', None)
-        return cls(**{**kwargs, **json_data,
+            config.pop('f_min', None)
+            config.pop('f_max', None)
+        return cls(**{**kwargs, **config,
                       'nf_model': nf_def, 'dual_stage_model': dual_stage_def, 'multi_band': amplifiers})
 
 
