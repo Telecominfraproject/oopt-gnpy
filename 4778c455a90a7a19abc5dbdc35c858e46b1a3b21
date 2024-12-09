@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a01b72c2_587de618",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2024-12-09T16:39:49Z",
+      "side": 1,
+      "message": "Here is my proposal for having default_edfa_config hardcoded.",
+      "revId": "4778c455a90a7a19abc5dbdc35c858e46b1a3b21",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
