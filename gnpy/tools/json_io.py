@@ -368,6 +368,24 @@ def _spectrum_from_json(json_data: dict):
     return spectrum
 
 
+def merge_equipment(equipment: dict, additional_filenames: List[Path]):
+    """Merge additional equipment libraries into the base equipment dictionary.
+    Typical case is the use of third party transceivers which are not part of a the supplier library.
+
+    raise warnings if the same reference is used on two different libraries
+    """
+    for filename in additional_filenames:
+        extra_eqpt = load_equipment(filename)
+        # populate with default eqpt to streamline loading
+        for eqpt_type, extra_items in extra_eqpt.items():
+            for type_variety, item in extra_items.items():
+                if type_variety not in equipment[eqpt_type]:
+                    equipment[eqpt_type][type_variety] = item
+                else:
+                    msg = f'\n\tEquipment file {filename.name}: duplicate equipment entry found: {eqpt_type}-{type_variety}\n'
+                    _logger.warning(msg)
+
+
 def load_equipment(filename: Path) -> dict:
     """Load equipment, returns equipment dict
     """
@@ -388,6 +406,8 @@ def _update_dual_stage(equipment: dict) -> dict:
 
     Returns the updated equiment dictionary
     """
+    if 'Edfa' not in equipment:
+        return equipment
     edfa_dict = equipment['Edfa']
     for edfa in edfa_dict.values():
         if edfa.type_def == 'dual_stage':
@@ -409,6 +429,8 @@ def _update_dual_stage(equipment: dict) -> dict:
 def _update_band(equipment: dict) -> dict:
     """Creates a list of bands for this amplifier, and remove other parameters which are not applicable
     """
+    if 'Edfa' not in equipment:
+        return equipment
     amp_dict = equipment['Edfa']
     for amplifier in amp_dict.values():
         if amplifier.type_def != 'multi_band':
@@ -433,6 +455,8 @@ def _update_band(equipment: dict) -> dict:
 
 def _roadm_restrictions_sanity_check(equipment: dict):
     """verifies that booster and preamp restrictions specified in roadm equipment are listed in the edfa."""
+    if 'Roadm' not in equipment:
+        return equipment
     for roadm_type, roadm_eqpt in equipment['Roadm'].items():
         restrictions = roadm_eqpt.restrictions['booster_variety_list'] + \
             roadm_eqpt.restrictions['preamp_variety_list']
@@ -455,6 +479,19 @@ def _check_fiber_vs_raman_fiber(equipment: dict):
             if a != b:
                 raise EquipmentConfigError(f'WARNING: Fiber and RamanFiber definition of "{fiber_type}" '
                                            f'disagrees for "{attr}": {a} != {b}')
+
+
+def _si_sanity_check(equipment):
+    """Check that 'default' key correctly exists in SI list. (There must be at list one element and it must be default)
+    If not create one entry in the list with this key.
+    """
+    if 'SI' not in equipment:
+        return
+    possible_SI = list(equipment['SI'].keys())
+    if 'default' not in possible_SI:
+        # Use "default" key in the equipment, using the first listed keys
+        equipment['SI']['default'] = equipment['SI'][possible_SI[0]]
+        del equipment['SI'][possible_SI[0]]
 
 
 def _equipment_from_json(json_data: dict, filename: Path) -> dict:
@@ -494,11 +531,7 @@ def _equipment_from_json(json_data: dict, filename: Path) -> dict:
     equipment = _update_dual_stage(equipment)
     equipment = _update_band(equipment)
     _roadm_restrictions_sanity_check(equipment)
-    possible_SI = list(equipment['SI'].keys())
-    if 'default' not in possible_SI:
-        # Use "default" key in the equipment, using the first listed keys
-        equipment['SI']['default'] = equipment['SI'][possible_SI[0]]
-        del equipment['SI'][possible_SI[0]]
+    _si_sanity_check(equipment)
     return equipment
 
 

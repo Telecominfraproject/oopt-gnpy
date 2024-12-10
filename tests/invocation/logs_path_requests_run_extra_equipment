@@ -1,0 +1,33 @@
+INFO     gnpy.tools.cli_examples:cli_examples.py Computing path requests service_pluggable.json into JSON format
+WARNING  gnpy.tools.json_io:json_io.py 
+	WARNING missing type_variety attribute in eqpt_config.json[Roadm]
+	default value is type_variety = default
+
+WARNING  gnpy.tools.json_io:json_io.py 
+	Equipment file extra_eqpt_config.json: duplicate equipment entry found: Transceiver-ZR400G
+
+INFO     gnpy.tools.worker_utils:worker_utils.py List of disjunctions:
+[]
+INFO     gnpy.tools.worker_utils:worker_utils.py Aggregating similar requests
+INFO     gnpy.tools.worker_utils:worker_utils.py The following services have been requested:
+[PathRequest 0
+	source: 	trx Brest_KLA
+	destination:	trx Lannion_CAS
+	trx type:	ZR400G
+	trx mode:	SFF-ID:70
+	baud_rate:	60.13854679800001 Gbaud
+	bit_rate:	400.0 Gb/s
+	spacing:	100.0 GHz
+	power:  	0.0 dBm
+	tx_power_dbm:  	1.76 dBm
+	nb channels: 	48
+	path_bandwidth: 	400.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+]
+INFO     gnpy.tools.worker_utils:worker_utils.py Propagating on selected path
+INFO     gnpy.topology.request:request.py 
+	request 0
+	Computing path from trx Brest_KLA to trx Lannion_CAS
+	with path constraint: ['trx Brest_KLA', 'trx Lannion_CAS']
+	Computed path (roadms):['roadm Brest_KLA', 'roadm Lannion_CAS']
