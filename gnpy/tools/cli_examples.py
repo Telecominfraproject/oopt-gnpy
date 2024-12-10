@@ -12,6 +12,7 @@ import argparse
 import logging
 import sys
 from pathlib import Path
+from typing import List
 from math import ceil
 from numpy import mean
 
@@ -22,7 +23,7 @@ from gnpy.core.parameters import SimParams
 from gnpy.core.utils import lin2db, pretty_summary_print, per_label_average, watt2dbm
 from gnpy.topology.request import (ResultElement, jsontocsv, BLOCKING_NOPATH)
 from gnpy.tools.json_io import (load_equipment, load_network, load_json, load_requests, save_network,
-                                requests_from_json, save_json, load_initial_spectrum)
+                                requests_from_json, save_json, load_initial_spectrum, merge_equipment)
 from gnpy.tools.plots import plot_baseline, plot_results
 from gnpy.tools.worker_utils import designed_network, transmission_simulation, planning
 
@@ -43,11 +44,14 @@ def show_example_data_dir():
     print(f'{_examples_dir}/')
 
 
-def load_common_data(equipment_filename, topology_filename, simulation_filename, save_raw_network_filename):
-    """Load common configuration from JSON files"""
+def load_common_data(equipment_filename: Path, extra_equipment_filenames: List[Path], topology_filename: Path,
+                     simulation_filename: Path, save_raw_network_filename: Path):
+    """Load common configuration from JSON files, merging additional equipment if provided."""
 
     try:
         equipment = load_equipment(equipment_filename)
+        if extra_equipment_filenames:
+            merge_equipment(equipment, extra_equipment_filenames)
         network = load_network(topology_filename, equipment)
         if save_raw_network_filename is not None:
             save_network(network, save_raw_network_filename)
@@ -102,6 +106,10 @@ def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
     parser.add_argument('--no-insert-edfas', action='store_true',
                         help='Disable insertion of EDFAs after ROADMs and fibers '
                              'as well as splitting of fibers by auto-design.')
+    # Option for additional equipment files
+    parser.add_argument('-x', '--extra-equipment', nargs='+', type=Path,
+                        metavar=_help_fname_json, default=None,
+                        help='List of additional equipment files to complement the main equipment file.')
 
 
 def transmission_main_example(args=None):
@@ -125,7 +133,8 @@ def transmission_main_example(args=None):
     args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
 
-    (equipment, network) = load_common_data(args.equipment, args.topology, args.sim_params, args.save_network_before_autodesign)
+    (equipment, network) = load_common_data(args.equipment, args.extra_equipment, args.topology, args.sim_params,
+                                            args.save_network_before_autodesign)
 
     if args.plot:
         plot_baseline(network)
@@ -313,7 +322,8 @@ def path_requests_run(args=None):
     _logger.info(f'Computing path requests {args.service_filename.name} into JSON format')
 
     (equipment, network) = \
-        load_common_data(args.equipment, args.topology, args.sim_params, args.save_network_before_autodesign)
+        load_common_data(args.equipment, args.extra_equipment, args.topology, args.sim_params,
+                         args.save_network_before_autodesign)
 
     # Build the network once using the default power defined in SI in eqpt config
 

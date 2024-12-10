@@ -1,0 +1,22 @@
+{
+  "path-request": [
+    {
+      "request-id": "0",
+      "source": "trx Brest_KLA",
+      "destination": "trx Lannion_CAS",
+      "src-tp-id": "trx Brest_KLA",
+      "dst-tp-id": "trx Lannion_CAS",
+      "bidirectional": false,
+      "path-constraints": {
+        "te-bandwidth": {
+          "technology": "flexi-grid",
+          "trx_type": "ZR400G",
+          "trx_mode": "SFF-ID:70",
+          "spacing": 100000000000.0,
+          "tx_power": 0.0015,
+          "path_bandwidth": 400000000000.0
+        }
+      }
+    }
+  ]
+}

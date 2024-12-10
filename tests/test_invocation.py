@@ -18,11 +18,11 @@ SRC_ROOT = Path(__file__).parent.parent
     ('transmission_main_example__raman', None, transmission_main_example,
      ['gnpy/example-data/raman_edfa_example_network.json', '--sim', 'gnpy/example-data/sim_params.json', '--show-channels', ]),
     ('openroadm-v4-Stockholm-Gothenburg', None, transmission_main_example,
-     ['-e', 'gnpy/example-data/eqpt_config_openroadm_ver4.json', 'gnpy/example-data/Sweden_OpenROADMv4_example_network.json', ]),
+     ['gnpy/example-data/Sweden_OpenROADMv4_example_network.json', '-e', 'gnpy/example-data/eqpt_config_openroadm_ver4.json', ]),
     ('openroadm-v5-Stockholm-Gothenburg', None, transmission_main_example,
-     ['-e', 'gnpy/example-data/eqpt_config_openroadm_ver5.json', 'gnpy/example-data/Sweden_OpenROADMv5_example_network.json', ]),
+     ['gnpy/example-data/Sweden_OpenROADMv5_example_network.json', '-e', 'gnpy/example-data/eqpt_config_openroadm_ver5.json', ]),
     ('transmission_main_example_long', None, transmission_main_example,
-     ['-e', 'tests/data/eqpt_config.json', 'tests/data/test_long_network.json']),
+     ['tests/data/test_long_network.json', '-e', 'tests/data/eqpt_config.json']),
     ('spectrum1_transmission_main_example', None, transmission_main_example,
      ['--spectrum', 'gnpy/example-data/initial_spectrum1.json', 'gnpy/example-data/meshTopologyExampleV2.xls', ]),
     ('spectrum2_transmission_main_example', None, transmission_main_example,
@@ -32,14 +32,16 @@ SRC_ROOT = Path(__file__).parent.parent
     ('power_sweep_example', 'logs_power_sweep_example', transmission_main_example,
      ['tests/data/testTopology_expected.json', 'brest', 'rennes', '-e', 'tests/data/eqpt_config_sweep.json', '--pow', '3']),
     ('transmission_long_pow', None, transmission_main_example,
-     ['-e', 'tests/data/eqpt_config.json', 'tests/data/test_long_network.json', '--spectrum', 'gnpy/example-data/initial_spectrum2.json']),
+     ['tests/data/test_long_network.json', '-e', 'tests/data/eqpt_config.json', '--spectrum', 'gnpy/example-data/initial_spectrum2.json']),
     ('transmission_long_psd', None, transmission_main_example,
-     ['-e', 'tests/data/eqpt_config_psd.json', 'tests/data/test_long_network.json', '--spectrum', 'gnpy/example-data/initial_spectrum2.json', ]),
+     ['tests/data/test_long_network.json', '-e', 'tests/data/eqpt_config_psd.json', '--spectrum', 'gnpy/example-data/initial_spectrum2.json', ]),
     ('transmission_long_psw', None, transmission_main_example,
-     ['-e', 'tests/data/eqpt_config_psw.json', 'tests/data/test_long_network.json', '--spectrum', 'gnpy/example-data/initial_spectrum2.json', ]),
+     ['tests/data/test_long_network.json', '-e', 'tests/data/eqpt_config_psw.json', '--spectrum', 'gnpy/example-data/initial_spectrum2.json', ]),
     ('multiband_transmission', None, transmission_main_example,
      ['gnpy/example-data/multiband_example_network.json', 'Site_A', 'Site_D', '-e', 'gnpy/example-data/eqpt_config_multiband.json',
-      '--spectrum', 'gnpy/example-data/multiband_spectrum.json', '--show-channels'])
+      '--spectrum', 'gnpy/example-data/multiband_spectrum.json', '--show-channels']),
+    ('path_requests_run_extra_equipment', 'logs_path_requests_run_extra_equipment', path_requests_run,
+     ['gnpy/example-data/meshTopologyExampleV2.xls', 'gnpy/example-data/service_pluggable.json', '--extra-equipment', 'gnpy/example-data/extra_eqpt_config.json', 'tests/data/extra_eqpt_config.json'])
 ))
 def test_example_invocation(capfd, caplog, output, log, handler, args):
     """Make sure that our examples produce useful output"""
