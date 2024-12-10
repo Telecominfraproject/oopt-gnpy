@@ -1,0 +1,49 @@
+{
+  "Transceiver": [
+    {
+      "type_variety": "ZR400G",
+      "frequency": {
+        "min": 191.3e12,
+        "max": 196.1e12
+      },
+      "mode": [
+        {
+          "format": "SFF-ID:70",
+          "baud_rate": 60138546798,
+          "OSNR": 24,
+          "bit_rate": 400e9,
+          "roll_off": 0.2,
+          "tx_osnr": 34,
+          "min_spacing": 75e9,
+          "penalties": [
+            {
+              "chromatic_dispersion": 20e3,
+              "penalty_value": 0.5
+            },
+            {
+              "chromatic_dispersion": 0,
+              "penalty_value": 0
+            },
+            {
+              "pmd": 20,
+              "penalty_value": 0.5
+            },
+            {
+              "pdl": 1.5,
+              "penalty_value": 0
+            },
+            {
+              "pdl": 3.5,
+              "penalty_value": 1.8
+            },
+            {
+              "pdl": 3,
+              "penalty_value": 1.3
+            }
+          ],
+          "cost": 1
+        }
+      ]
+    }
+  ]
+}

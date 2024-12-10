@@ -1,0 +1,22 @@
+[1;34;40mList of disjunctions[0m
+[]
+[1;34;40mThe following services have been requested:[0m
+[PathRequest 0
+	source: 	trx Brest_KLA
+	destination:	trx Lannion_CAS
+	trx type:	ZR400G
+	trx mode:	SFF-ID:70
+	baud_rate:	60.13854679800001 Gbaud
+	bit_rate:	400.0 Gb/s
+	spacing:	100.0 GHz
+	power:  	0.0 dBm
+	tx_power_dbm:  	1.76 dBm
+	nb channels: 	48
+	path_bandwidth: 	400.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+]
+[1;34;40mResult summary[0m
+req id   demand                              GSNR@bandwidth A-Z (Z-A)   GSNR@0.1nm A-Z (Z-A)        Receiver minOSNR               mode                    Gbit/s              nb of tsp pairs      N,M or blocking reason 
+0       trx Brest_KLA to trx Lannion_CAS :             21.3                    28.12                      26                   SFF-ID:70                  400.0                      1                   ([-280],[8])      
+[1;33;40mResult summary shows mean GSNR and OSNR (average over all channels)[0m

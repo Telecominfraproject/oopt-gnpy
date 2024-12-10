@@ -1,0 +1,37 @@
+{
+  "Transceiver": [
+    {
+      "type_variety": "ZR400G",
+      "frequency": {
+        "min": 191.35e12,
+        "max": 196.1e12
+      },
+      "mode": [
+        {
+          "format": "400G",
+          "baud_rate": 60e9,
+          "OSNR": 24,
+          "bit_rate": 400e9,
+          "roll_off": 0.2,
+          "tx_osnr": 38,
+          "min_spacing": 75e9,
+          "cost": 1
+        }
+      ]
+    }
+  ],
+  "Edfa": [
+    {
+      "type_variety": "user_defined_default_amplifier",
+      "type_def": "variable_gain",
+      "gain_flatmax": 25,
+      "gain_min": 15,
+      "p_max": 21,
+      "nf_min": 6,
+      "nf_max": 10,
+      "advanced_config_from_json": "default_edfa_config.json",
+      "out_voa_auto": false,
+      "allowed_for_design": false
+    }
+  ]
+}
