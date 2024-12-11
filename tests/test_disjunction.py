@@ -23,10 +23,14 @@ from gnpy.topology.request import (compute_path_dsjctn, isdisjoint, find_reverse
 from gnpy.topology.spectrum_assignment import build_oms_list
 from gnpy.tools.json_io import requests_from_json, load_requests, load_network, load_equipment, disjunctions_from_json
 
-NETWORK_FILE_NAME = Path(__file__).parent.parent / 'tests/data/testTopology_expected.json'
-SERVICE_FILE_NAME = Path(__file__).parent.parent / 'tests/data/testTopology_testservices.json'
-RESULT_FILE_NAME = Path(__file__).parent.parent / 'tests/data/testTopology_testresults.json'
-EQPT_LIBRARY_NAME = Path(__file__).parent.parent / 'tests/data/eqpt_config.json'
+
+DATA_DIR = Path(__file__).parent.parent / 'tests/data'
+NETWORK_FILE_NAME = DATA_DIR / 'testTopology_expected.json'
+SERVICE_FILE_NAME = DATA_DIR / 'testTopology_testservices.json'
+RESULT_FILE_NAME = DATA_DIR / 'testTopology_testresults.json'
+EQPT_LIBRARY_NAME = DATA_DIR / 'eqpt_config.json'
+EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
+                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
 
 
 @pytest.fixture()
@@ -43,7 +47,7 @@ def serv(test_setup):
 @pytest.fixture()
 def test_setup():
     """common setup for tests: builds network, equipment and oms only once"""
-    equipment = load_equipment(EQPT_LIBRARY_NAME)
+    equipment = load_equipment(EQPT_LIBRARY_NAME, EXTRA_CONFIGS)
     network = load_network(NETWORK_FILE_NAME, equipment)
     # Build the network once using the default power defined in SI in eqpt config
     # power density : db2linp(ower_dbm': 0)/power_dbm': 0 * nb channels as defined by
@@ -297,7 +301,7 @@ def test_aggregation(ids, modes, req_n, req_m, disjunction, final_ids, final_ns,
     if mode is not defined, requests must not be merged,
     if requests are in a synchronization vector, they should not be merged
     """
-    equipment = load_equipment(EQPT_LIBRARY_NAME)
+    equipment = load_equipment(EQPT_LIBRARY_NAME, EXTRA_CONFIGS)
     requests = []
     for request_id, mode, req_n, req_m in zip(ids, modes, req_n, req_m):
         params = request_set

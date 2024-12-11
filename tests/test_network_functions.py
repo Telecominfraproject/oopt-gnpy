@@ -18,9 +18,12 @@ from gnpy.core.parameters import SimParams, EdfaParams, MultiBandParams
 
 
 TEST_DIR = Path(__file__).parent
-EQPT_FILENAME = TEST_DIR / 'data/eqpt_config.json'
-EQPT_MULTBAND_FILENAME = TEST_DIR / 'data/eqpt_config_multiband.json'
-NETWORK_FILENAME = TEST_DIR / 'data/bugfixiteratortopo.json'
+DATA_DIR = TEST_DIR / 'data'
+EQPT_FILENAME = DATA_DIR / 'eqpt_config.json'
+EQPT_MULTBAND_FILENAME = DATA_DIR / 'eqpt_config_multiband.json'
+NETWORK_FILENAME = DATA_DIR / 'bugfixiteratortopo.json'
+EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
+                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
 
 
 @pytest.mark.parametrize("node, attenuation", [
@@ -52,7 +55,7 @@ NETWORK_FILENAME = TEST_DIR / 'data/bugfixiteratortopo.json'
     ['Site_B', 0],
 ])
 def test_span_loss(node, attenuation):
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     network = load_network(NETWORK_FILENAME, equipment)
     for x in network.nodes():
         if x.uid == node:
@@ -64,7 +67,7 @@ def test_span_loss(node, attenuation):
 @pytest.mark.parametrize("node", ['fused4'])
 def test_span_loss_unconnected(node):
     '''Fused node that has no next and no previous nodes should be detected'''
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     network = load_network(NETWORK_FILENAME, equipment)
     x = next(x for x in network.nodes() if x.uid == node)
     with pytest.raises(NetworkTopologyError):
@@ -164,7 +167,7 @@ def test_eol(typ, expected_loss):
             }
         ]
     }
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     equipment['Span']['default'].EOL = 1
     network = network_from_json(json_data, equipment)
     p_db = equipment['SI']['default'].power_dbm
@@ -230,7 +233,7 @@ def test_design_non_amplified_link(elem1, elem2, expected_gain, expected_delta_p
             }
         ]
     }
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     equipment['Span']['default'].power_mode = power_mode
     equipment['SI']['default'].power_dbm = p_db
     equipment['SI']['default'].tx_power_dbm = p_db
@@ -441,7 +444,7 @@ def test_design_band(case, site_type, amplifier_type, expected_design_bands, exp
     EOL is then added on the first fiber only.
     """
     json_data = network_base(case, site_type, amplifier_type=amplifier_type)
-    equipment = load_equipment(EQPT_MULTBAND_FILENAME)
+    equipment = load_equipment(EQPT_MULTBAND_FILENAME, EXTRA_CONFIGS)
     network = network_from_json(json_data, equipment)
     p_db = equipment['SI']['default'].power_dbm
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
@@ -462,7 +465,7 @@ def test_design_band(case, site_type, amplifier_type, expected_design_bands, exp
 def test_select_edfa(caplog, raman_allowed, gain_target, power_target, target_extended_gain, warning, expected_selection):
     """
     """
-    equipment = load_equipment(EQPT_MULTBAND_FILENAME)
+    equipment = load_equipment(EQPT_MULTBAND_FILENAME, EXTRA_CONFIGS)
     edfa_eqpt = {n: a for n, a in equipment['Edfa'].items() if a.type_def != 'multi_band'}
     selection = select_edfa(raman_allowed, gain_target, power_target, edfa_eqpt, "toto", target_extended_gain, verbose=True)
     assert selection == expected_selection
@@ -499,7 +502,7 @@ def test_select_edfa(caplog, raman_allowed, gain_target, power_target, target_ex
 def test_get_node_restrictions(cls, defaultparams, variety_list, booster_list, band, expected_restrictions):
     """Check that all combinations of restrictions are correctly captured
     """
-    equipment = load_equipment(EQPT_MULTBAND_FILENAME)
+    equipment = load_equipment(EQPT_MULTBAND_FILENAME, EXTRA_CONFIGS)
     edfa_config = {"uid": "Edfa1"}
     if cls == Multiband_amplifier:
         edfa_config['amplifiers'] = {}
@@ -570,7 +573,7 @@ def test_multiband(case, site_type, band, expected_gain, expected_tilt, expected
     EOL is then added on the first fiber only.
     """
     json_data = network_base(case, site_type)
-    equipment = load_equipment(EQPT_MULTBAND_FILENAME)
+    equipment = load_equipment(EQPT_MULTBAND_FILENAME, EXTRA_CONFIGS)
     network = network_from_json(json_data, equipment)
     p_db = equipment['SI']['default'].power_dbm
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
@@ -600,12 +603,12 @@ def test_tilt_fused():
     SimParams.set_params(load_json(TEST_DIR / 'data' / 'sim_params.json'))
     input_powers = {'CBAND': 0.001, 'LBAND': 0.001}
     json_data = network_base("design", "Multiband_amplifier", length=100)
-    equipment = load_equipment(EQPT_MULTBAND_FILENAME)
+    equipment = load_equipment(EQPT_MULTBAND_FILENAME, EXTRA_CONFIGS)
     network = network_from_json(json_data, equipment)
     node = next(n for n in network.nodes() if n.uid == 'fiber (SITE1 → ILA1)')
     tilt_db, tilt_target = estimate_srs_power_deviation(network, node, equipment, design_bands, input_powers)
     json_data = network_base("design", "Fused", length=50)
-    equipment = load_equipment(EQPT_MULTBAND_FILENAME)
+    equipment = load_equipment(EQPT_MULTBAND_FILENAME, EXTRA_CONFIGS)
     network = network_from_json(json_data, equipment)
     node = next(n for n in network.nodes() if n.uid == 'fiber (ILA1 → ILA2)')
     fused_tilt_db, fused_tilt_target = \
@@ -734,7 +737,7 @@ def test_insert_amp(site_type, expected_type, bands, expected_bands):
     EOL is then added on the first fiber only.
     """
     json_data = network_wo_booster(site_type, bands)
-    equipment = load_equipment(EQPT_MULTBAND_FILENAME)
+    equipment = load_equipment(EQPT_MULTBAND_FILENAME, EXTRA_CONFIGS)
     network = network_from_json(json_data, equipment)
     p_db = equipment['SI']['default'].power_dbm
     p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,

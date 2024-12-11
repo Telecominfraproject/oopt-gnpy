@@ -30,6 +30,8 @@ DATA_DIR = TEST_DIR / 'data'
 EQPT_FILENAME = DATA_DIR / 'eqpt_config.json'
 NETWORK_FILENAME = DATA_DIR / 'testTopology_auto_design_expected.json'
 SERVICE_FILENAME = DATA_DIR / 'testTopology_services_expected.json'
+EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
+                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
 
 grid = 0.00625e12
 slot = 0.0125e12
@@ -40,7 +42,7 @@ cband_freq_max = 196.1e12
 
 @pytest.fixture()
 def equipment():
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     return equipment
 
 
